@@ -60,8 +60,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     int placeY = y + dir.offsetY;
     int placeZ = z + dir.offsetZ;
 
-    int blockID = world.getBlockId(placeX, placeY, placeZ);
-    if (blockID == 0) {
+    if (world.isAirBlock(placeX, placeY, placeZ)) {
       if(!world.isRemote) {
         if(world.setBlock(placeX, placeY, placeZ, ModObject.blockConduitBundle.actualId,0,1)) {
           IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
@@ -72,7 +71,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
         stack.stackSize--;
       }      
       return true;
-    } else if(blockID == ModObject.blockConduitBundle.actualId) {
+    } else if(world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
       
       IConduitBundle bundle = (TileConduitBundle)world.getBlockTileEntity(placeX, placeY, placeZ);
       if(bundle == null) {
