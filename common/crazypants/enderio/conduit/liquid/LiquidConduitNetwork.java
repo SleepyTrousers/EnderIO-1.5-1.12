@@ -148,8 +148,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     if (con.getConduitConnections().contains(ForgeDirection.DOWN)) {
       BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
       ILiquidConduit downCon = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
-      int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false);
-      tank.addAmount(-filled);
+      int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false);
+      tank.addAmount(-filled);      
       downCon.getTank().addAmount(filled);
     }
 

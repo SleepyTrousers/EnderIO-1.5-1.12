@@ -261,9 +261,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
     tank.setLiquid(liquidType);
   }
-
+  
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    return fill(from, resource, doFill, true);
+  }
+
+  @Override
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush) {
     if (network == null) {
       return 0;
     }
@@ -276,10 +281,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if (recieveAmount <= 0) {
       return 0;
     }
-    // int maxPush = Math.min(recieveAmount, tank.getFluidAmount());
-    int maxPush = Math.max(0, recieveAmount + tank.getFluidAmount() - tank.getCapacity());
 
-    int pushedVolume = pushLiquid(from, maxPush, doFill);
+    int pushedVolume = 0;
+    if(doPush) {
+      int maxPush = Math.max(0, recieveAmount + tank.getFluidAmount() - tank.getCapacity());
+      pushedVolume = pushLiquid(from, maxPush, doFill);  
+    }
+    
     if (doFill) {
       tank.drain(pushedVolume, doFill);
       return tank.fill(resource, doFill);
