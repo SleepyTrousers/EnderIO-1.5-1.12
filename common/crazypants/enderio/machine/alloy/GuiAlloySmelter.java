@@ -27,7 +27,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);    
-    RenderUtil.bindTexture("enderio:textures/gui/alloySmelter.png");
+    RenderUtil.bindTexture("/mods/enderio/textures/gui/alloySmelter.png");
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     

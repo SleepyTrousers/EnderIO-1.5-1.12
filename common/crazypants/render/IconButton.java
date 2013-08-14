@@ -61,7 +61,7 @@ public class IconButton extends GuiButton {
   public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
     if (drawButton) {
 
-      RenderUtil.bindTexture("textures/gui/widgets.png");
+      RenderUtil.bindTexture("/gui/gui.png");
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
           && par3 < this.yPosition + height;
