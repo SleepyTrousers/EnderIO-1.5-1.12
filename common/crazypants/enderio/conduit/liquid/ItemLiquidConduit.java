@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 public class ItemLiquidConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.unlocalisedName, ModObject.itemLiquidConduit.name, "enderio:ItemLiquidConduit"),        
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.unlocalisedName, ModObject.itemLiquidConduit.name, "enderio:itemLiquidConduit"),        
   };
   
   public static ItemLiquidConduit create() {

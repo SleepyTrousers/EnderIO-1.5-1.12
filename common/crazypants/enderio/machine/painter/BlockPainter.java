@@ -26,13 +26,6 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   }
 
   @Override
-  protected void init() {
-    super.init();
-    GameRegistry.addRecipe(new ItemStack(this), "bbb", "iri", "bbb", 'i', new ItemStack(Item.ingotIron), 'r', new ItemStack(Item.redstone), 'b', new ItemStack(
-        ModObject.itemIndustrialBinder.id, 1, 0));
-  }
-
-  @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display

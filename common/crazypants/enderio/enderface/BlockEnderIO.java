@@ -40,9 +40,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
   private void init() {
     LanguageRegistry.addName(this, ModObject.blockEnderIo.name);
     GameRegistry.registerBlock(this, ModObject.blockEnderIo.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEnderIO.class, ModObject.blockEnderIo.unlocalisedName + "TileEntity");
-    GameRegistry.addRecipe(new ItemStack(this), "zxz", "xyx", "zxz", 'x', new ItemStack(Item.eyeOfEnder), 'y', new ItemStack(Block.enderChest), 'z',
-        new ItemStack(Item.diamond));
+    GameRegistry.registerTileEntity(TileEnderIO.class, ModObject.blockEnderIo.unlocalisedName + "TileEntity");    
   }
 
   @Override

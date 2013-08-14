@@ -4,6 +4,7 @@ import static crazypants.enderio.ModObject.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.material.Alloy;
 
@@ -20,6 +21,7 @@ public class MachineRecipes {
     ItemStack red = new ItemStack(Item.dyePowder, 1, 1);
     ItemStack green = new ItemStack(Item.dyePowder, 1, 2);
     ItemStack blue = new ItemStack(Item.dyePowder, 1, 4);
+    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! MachineRecipes.addRecipes: Adding painter recipe with output for item stack of " + painter.itemID);
     GameRegistry.addShapedRecipe(painter, "bbb", "RGB", "bcb", 'b', industialBinder, 'R', red, 'G', green, 'B', blue, 'c', capacitor);
 
     ItemStack reservoir = new ItemStack(blockReservoir.actualId, 1, 0);

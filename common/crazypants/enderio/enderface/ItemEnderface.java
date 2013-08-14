@@ -38,8 +38,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemEnderface.name);
-    GameRegistry.addRecipe(new ItemStack(this), " x ", "xyx", " x ", 'x', new ItemStack(Item.diamond), 'y', new ItemStack(Item.eyeOfEnder));
+    LanguageRegistry.addName(this, ModObject.itemEnderface.name);    
     GameRegistry.registerItem(this, ModObject.itemEnderface.unlocalisedName);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }

@@ -28,6 +28,7 @@ import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
+import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.machine.BlockElectricLight;
 import crazypants.enderio.machine.MachineRecipes;
@@ -48,7 +49,7 @@ import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.0", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.2", dependencies = "required-after:Forge@[9.10.0.800,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
@@ -152,6 +153,7 @@ public class EnderIO {
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
+    EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
