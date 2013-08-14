@@ -29,10 +29,11 @@ import crazypants.enderio.ModObject;
 import crazypants.render.IconUtil;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
-
+  
   public static final Icon[] REDSTONE_CONTROL_ICONS = new Icon[RedstoneControlMode.values().length];
 
-  static {
+  @SideOnly(Side.CLIENT)
+  public static void initIcon() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
@@ -48,8 +49,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       }
 
     });
+
   }
 
+  
+  
   @SideOnly(Side.CLIENT)
   public static Icon getRedstoneControlIcon(RedstoneControlMode mode) {
     return REDSTONE_CONTROL_ICONS[mode.ordinal()];

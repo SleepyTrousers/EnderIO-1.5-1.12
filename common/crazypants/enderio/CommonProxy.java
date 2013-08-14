@@ -34,5 +34,10 @@ public class CommonProxy  {
   public void serverStopped() {
     serverTickHandler.serverStopped();    
   }
+
+  public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
+    return 5;
+    
+  }
    
 }

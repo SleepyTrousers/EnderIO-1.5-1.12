@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -25,10 +28,9 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
-  
   static final  Map<String, Icon> ICONS = new HashMap<String, Icon>();
-
   
+  @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {           
 

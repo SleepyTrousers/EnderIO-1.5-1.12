@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -14,7 +15,11 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
+import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
+import crazypants.enderio.conduit.power.PowerConduit;
+import crazypants.enderio.conduit.redstone.RedstoneConduit;
+import crazypants.enderio.conduit.redstone.RedstoneSwitch;
 import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.ConduitRenderer;
@@ -22,6 +27,7 @@ import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
 import crazypants.enderio.machine.painter.BlockCustomFenceGateRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
@@ -44,6 +50,15 @@ public class ClientProxy extends CommonProxy {
     { 4, 5, 4, 5, 3, 2 },
     { 5, 4, 5, 4, 2, 3 } };
 //@formatter:on
+  
+  
+  static {
+    AbstractMachineBlock.initIcon();
+    RedstoneConduit.initIcons();
+    RedstoneSwitch.initIcons();
+    PowerConduit.initIcons();
+    LiquidConduit.initIcons();
+  }
   
   
   private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
@@ -116,5 +131,15 @@ public class ClientProxy extends CommonProxy {
     }
     return dcr;
   }
+
+  @Override
+  public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
+    if (entityPlayer instanceof EntityPlayerMP) {
+      return ((EntityPlayerMP) entityPlayer).theItemInWorldManager.getBlockReachDistance();
+    }
+    return super.getReachDistanceForPlayer(entityPlayer);
+  }
+  
+  
   
 }
