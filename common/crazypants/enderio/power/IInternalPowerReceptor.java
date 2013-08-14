@@ -1,11 +1,10 @@
 package crazypants.enderio.power;
 
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.*;
 
 public interface IInternalPowerReceptor extends IPowerReceptor {
 
-  PowerHandler getPowerHandler();
+  EnderPowerProvider getPowerHandler();
 
   void applyPerdition();
 

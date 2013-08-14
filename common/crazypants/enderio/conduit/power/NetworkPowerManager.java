@@ -1,23 +1,13 @@
 package crazypants.enderio.conduit.power;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
-import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
-import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
+import crazypants.enderio.power.*;
+import crazypants.util.BlockCoord;
 
 public class NetworkPowerManager {
 
@@ -103,48 +93,48 @@ public class NetworkPowerManager {
       
       for (ForgeDirection dir : r.directions) {        
 
-        PowerReceiver pp = r.powerReceptor.getPowerReceiver(dir);
+        IPowerReceptor pp = r.powerReceptor;
         if(pp != null) {  
-          if(pp.getType() != Type.ENGINE) {
+          
             
             float used = 0;
             float nonReservedPower = quantity - reserved;
             float available = nonReservedPower + reservedForEntry;            
             float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(),available);            
-            float requested = pp.powerRequest();
+            float requested = pp.powerRequest(dir);
             
             //If it is possible to supply the minimum amount of energy
-            if(pp.getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {              
+            if(pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {              
               //Buffer energy if we can't meet it now
-              if(pp.getMinEnergyReceived() > canOffer && requested > 0) {
+              if(pp.getPowerProvider().getMinEnergyReceived() > canOffer && requested > 0) {
                 reserveEnergy(r, canOffer);
                 used += canOffer;                
               }  else if (r.powerReceptor instanceof IInternalPowerReceptor) {                
-                used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, dir);                
+                used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, dir);                
               } else {                
-                used = pp.receiveEnergy(Type.PIPE, Math.min(requested, canOffer), dir);                              
+                used = Math.min(requested, canOffer);
+                pp.getPowerProvider().receiveEnergy(used, dir);                              
               }
                             
             }
             quantity -= used;
   
-          } else if(pp.getType() == Type.ENGINE && !(r.powerReceptor instanceof IInternalPowerReceptor)) {
-            numEngines++;
-          }
+          } 
           
           if(quantity <= 0) {
             break;
           }
           
-        } 
+        }
+      appliedCount++;
       }
-      appliedCount++;            
-    }       
-    float leaveForBlowingUpEngines = numEngines * 8;
-    if(leaveForBlowingUpEngines > maxEnergyStored) {
-      leaveForBlowingUpEngines = maxEnergyStored;
-    }
-    energyStored = Math.min(quantity, maxEnergyStored - leaveForBlowingUpEngines); 
+                  
+    
+//    float leaveForBlowingUpEngines = numEngines * 8;
+//    if(leaveForBlowingUpEngines > maxEnergyStored) {
+//      leaveForBlowingUpEngines = maxEnergyStored;
+//    }
+    energyStored = Math.min(quantity, maxEnergyStored); 
     updateConduitStorage();
   }
   
@@ -204,9 +194,9 @@ public class NetworkPowerManager {
   private float extractRecievedEnergy() {
     float extracted = 0;
     for(IPowerConduit conduit : network.getConduits()) {
-      PowerHandler ph = conduit.getPowerHandler();
+      EnderPowerProvider ph = conduit.getPowerHandler();
       extracted += ph.getEnergyStored();
-      ph.update();
+      //ph.update();
       ph.setEnergy(0);
     }
     return extracted;
@@ -222,7 +212,7 @@ public class NetworkPowerManager {
   void onNetworkDestroyed() {
     //Pass out all the stored energy to the conduits
     for(IPowerConduit con : network.getConduits()) {
-      PowerHandler ph = con.getPowerHandler();
+      EnderPowerProvider ph = con.getPowerHandler();
       float give = ph.getMaxEnergyStored() - ph.getEnergyStored();
       give = Math.min(give, energyStored);
       ph.setEnergy(ph.getEnergyStored() + give);

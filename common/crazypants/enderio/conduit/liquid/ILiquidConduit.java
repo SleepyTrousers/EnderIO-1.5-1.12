@@ -1,26 +1,24 @@
 package crazypants.enderio.conduit.liquid;
 
-import crazypants.enderio.conduit.IConduit;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.liquids.*;
+import crazypants.enderio.conduit.IConduit;
 
-public interface ILiquidConduit extends IConduit, IFluidHandler {
+public interface ILiquidConduit extends IConduit, ITankContainer {
 
-  static final int VOLUME_PER_CONNECTION = FluidContainerRegistry.BUCKET_VOLUME/4;
+  static final int VOLUME_PER_CONNECTION = LiquidContainerRegistry.BUCKET_VOLUME/4;
   
   public static final String ICON_KEY ="enderio:liquidConduit";  
   public static final String ICON_CORE_KEY ="enderio:liquidConduitCore";
   public static final String ICON_EXTRACT_KEY ="enderio:liquidConduitExtract"; 
   
-  void setFluidType(FluidStack fluidType);
+  void setFluidType(LiquidStack fluidType);
   
-  FluidStack getFluidType();
+  LiquidStack getFluidType();
 
   ConduitTank getTank();
   
-  IFluidHandler getExternalHandler(ForgeDirection direction);
+  ITankContainer getExternalHandler(ForgeDirection direction);
 
   boolean canOutputToDir(ForgeDirection dir);
   
@@ -28,6 +26,6 @@ public interface ILiquidConduit extends IConduit, IFluidHandler {
   
   void setExtractingFromDir(ForgeDirection dir, boolean extracting);
   
-  int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush);
+  int fill(ForgeDirection from, LiquidStack resource, boolean doFill, boolean doPush);
 
 }

@@ -40,6 +40,7 @@ public abstract class GuiContainerBase extends GuiContainer {
     super.drawGuiContainerForegroundLayer(mouseX, mouseY);
   }
 
+  @SuppressWarnings("rawtypes")
   protected void drawTooltip(GuiToolTip toolTip, int mouseX, int mouseY) {
     List<String> list = toolTip.getToolTipText();
     if(mouseX > (xSize/2)) {

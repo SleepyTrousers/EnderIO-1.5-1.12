@@ -6,20 +6,17 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
+import crazypants.render.*;
 import crazypants.vecmath.Vector3d;
 
 
 public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
-  private ResourceLocation texName = null;
+  private String texName = null;
   private Icon tex = null;
   private float switchSize = 0.25f;
   private float switchHSize = switchSize / 2f;
@@ -153,16 +150,16 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
   }
 
-  private ResourceLocation getLiquidSheet() {
+  private String getLiquidSheet() {
     if (texName == null) {
-      texName = TextureMap.field_110575_b;
+      texName = ReservoirTank.WATER.canonical().getTextureSheet();
     }
     return texName;
   }
 
   private Icon getLiquidTexture() {
     if (tex == null) {
-      tex = ReservoirTank.WATER.getFluid().getStillIcon();
+      tex = ReservoirTank.WATER.canonical().getRenderingIcon();
     }
     return tex;
   }

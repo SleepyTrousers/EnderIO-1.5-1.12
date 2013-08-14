@@ -9,10 +9,11 @@
 
 package buildcraft.api.bptblocks;
 
+import java.util.LinkedList;
+
+import net.minecraft.item.ItemStack;
 import buildcraft.api.blueprints.BptSlotInfo;
 import buildcraft.api.blueprints.IBptContext;
-import java.util.LinkedList;
-import net.minecraft.item.ItemStack;
 
 @Deprecated
 public class BptBlockLever extends BptBlockWallSide {

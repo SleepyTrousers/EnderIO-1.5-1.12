@@ -7,10 +7,10 @@ import net.minecraft.item.*;
 
 public enum Alloy {
     
-  ACTIVATED_IRON("Activated Iron", "activatedIron", new ItemStack(Item.ingotIron), new ItemStack(Item.redstone), new ItemStack(Item.glowstone)),
-  ACTIVATED_GOLD("Activated Gold", "activatedGold", new ItemStack(Item.ingotGold), new ItemStack(Item.redstone), new ItemStack(Item.glowstone)),
-  ENDER_IRON("Ender Iron", "enderIron", new ItemStack(Item.ingotIron), new ItemStack(Item.enderPearl), new ItemStack(Item.glowstone)),
-  ENDER_GOLD("Ender Gold", "enderGold", new ItemStack(Item.ingotGold), new ItemStack(Item.enderPearl), new ItemStack(Item.glowstone)),
+  ACTIVATED_IRON("Activated Iron", "activatedIron", new ItemStack(Item.ingotIron), new ItemStack(Item.redstone), new ItemStack(Item.lightStoneDust)),
+  ACTIVATED_GOLD("Activated Gold", "activatedGold", new ItemStack(Item.ingotGold), new ItemStack(Item.redstone), new ItemStack(Item.lightStoneDust)),
+  ENDER_IRON("Ender Iron", "enderIron", new ItemStack(Item.ingotIron), new ItemStack(Item.enderPearl), new ItemStack(Item.lightStoneDust)),
+  ENDER_GOLD("Ender Gold", "enderGold", new ItemStack(Item.ingotGold), new ItemStack(Item.enderPearl), new ItemStack(Item.lightStoneDust)),
   BLUE_STEEL("Blue Steel", "blueSteel", new ItemStack(Item.ingotIron), new ItemStack(Item.dyePowder,1,4), new ItemStack(Block.obsidian));  
   
   public final String unlocalisedName;

@@ -2,19 +2,13 @@ package crazypants.enderio.enderface;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
+import cpw.mods.fml.common.registry.*;
+import crazypants.enderio.*;
 
 public class ItemEnderface extends Item implements IGuiHandler {
 
@@ -49,7 +43,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   @Override
-  public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+  public boolean hasEffect(ItemStack par1ItemStack) {
     return true;
   }
   
@@ -93,28 +87,28 @@ public class ItemEnderface extends Item implements IGuiHandler {
       int dimension = tag.getInteger(KEY_DIMENSION);
       
       if(world.provider.dimensionId != dimension) {
-        ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
-        entityPlayer.sendChatToPlayer(c);
+        //ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
+        entityPlayer.sendChatToPlayer("EnderIO block is in a different dimension.");
         return itemStack;
       }
       
       Chunk c = world.getChunkFromBlockCoords(x, z);
       if(c == null || !c.isChunkLoaded) {
-        ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
-        entityPlayer.sendChatToPlayer(cm);
+        //ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
+        entityPlayer.sendChatToPlayer("EnderIO block's chunk is not loaded.");
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
       if (blockId != EnderIO.blockEnderIo.blockID) {
-        ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
-        entityPlayer.sendChatToPlayer(cm);
+        //ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
+        entityPlayer.sendChatToPlayer("EnderIO block has been destroyed.");
         return itemStack;
       }
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
       return itemStack;
     }
-    ChatMessageComponent cm = ChatMessageComponent.func_111066_d(" Enderface not synchronized with EnderIO.");
-    entityPlayer.sendChatToPlayer(cm);
+    //ChatMessageComponent cm = ChatMessageComponent.func_111066_d(" Enderface not synchronized with EnderIO.");
+    entityPlayer.sendChatToPlayer(" Enderface not synchronized with EnderIO.");
     return itemStack;
   }
 

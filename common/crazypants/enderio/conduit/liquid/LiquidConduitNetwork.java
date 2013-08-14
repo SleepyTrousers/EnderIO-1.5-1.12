@@ -1,22 +1,16 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.util.BlockCoord;
+import java.util.*;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.liquids.*;
+import crazypants.enderio.conduit.*;
+import crazypants.util.BlockCoord;
 
 public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit> {
 
-  private FluidStack liquidType;
+  private LiquidStack liquidType;
   private long timeAtLastApply;
 
   private int maxFlowsPerTick = 10;
@@ -29,7 +23,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     return ILiquidConduit.class;
   }
 
-  public FluidStack getFluidType() {
+  public LiquidStack getFluidType() {
     return liquidType;
   }
 
@@ -39,8 +33,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     con.setFluidType(liquidType);
   }
 
-  public void setFluidType(FluidStack newType) {
-    if (liquidType != null && liquidType.isFluidEqual(newType)) {
+  public void setFluidType(LiquidStack newType) {
+    if (liquidType != null && liquidType.isLiquidEqual(newType)) {
       return;
     }
     if (newType != null) {
@@ -54,15 +48,15 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     }
   }
 
-  public boolean canAcceptLiquid(FluidStack acceptable) {
+  public boolean canAcceptLiquid(LiquidStack acceptable) {
     return areFluidsCompatable(liquidType, acceptable);
   }
 
-  public static boolean areFluidsCompatable(FluidStack a, FluidStack b) {
+  public static boolean areFluidsCompatable(LiquidStack a, LiquidStack b) {
     if (a == null || b == null) {
       return true;
     }
-    return a.isFluidEqual(b);
+    return a.isLiquidEqual(b);
   }
 
   public int getTotalVolume() {
@@ -87,8 +81,9 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     if (curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
       // 1000 water, 6000 lava
-      if (liquidType != null && liquidType.getFluid() != null) {
-        int visc = liquidType.getFluid().getViscosity();
+      if (liquidType != null) {
+        //int visc = liquidType.getFluid().getViscosity();
+        int visc = 1000;
         if (curTime % (visc / 500) == 0) {
           long start = System.nanoTime();
           if (doFlow() && printFlowTiming) {
@@ -148,7 +143,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     if (con.getConduitConnections().contains(ForgeDirection.DOWN)) {
       BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
       ILiquidConduit downCon = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
-      int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false);
+      int filled = downCon.fill(ForgeDirection.UP, tank.getLiquid().copy(), false, false);
       tank.addAmount(-filled);      
       downCon.getTank().addAmount(filled);
     }
@@ -157,13 +152,13 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     if (totalAmount <= 0) {
       return;
     }
-    FluidStack available = tank.getFluid();
+    LiquidStack available = tank.getLiquid();
     int totalRequested = 0;
     int numRequests = 0;
     // Then to external connections
     for (ForgeDirection dir : con.getExternalConnections()) {
       if (con.canOutputToDir(dir)) {
-        IFluidHandler extCon = con.getExternalHandler(dir);
+        ITankContainer extCon = con.getExternalHandler(dir);
         if (extCon != null) {
           int amount = extCon.fill(dir.getOpposite(), available.copy(), false);
           if (amount > 0) {
@@ -181,11 +176,11 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       amountPerRequest = Math.min(maxFlowVolume, amountPerRequest);
       // ----
 
-      FluidStack requestSource = available.copy();
+      LiquidStack requestSource = available.copy();
       requestSource.amount = amountPerRequest;
       for (ForgeDirection dir : con.getExternalConnections()) {
         if (con.canOutputToDir(dir)) {
-          IFluidHandler extCon = con.getExternalHandler(dir);
+          ITankContainer extCon = con.getExternalHandler(dir);
           if (extCon != null) {
             int amount = extCon.fill(dir.getOpposite(), requestSource.copy(), true);
             if (amount > 0) {

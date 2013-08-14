@@ -1,20 +1,6 @@
 package crazypants.enderio.conduit.power;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.AbstractConduit;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.render.BoundingBox;
-import crazypants.render.IconUtil;
-import crazypants.vecmath.Vector3d;
+import java.util.*;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
@@ -23,11 +9,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import buildcraft.api.power.*;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.*;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.power.*;
+import crazypants.render.*;
+import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
@@ -76,7 +64,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public static final BoundingBox BOUNDS = new BoundingBox(MIN, MAX);
 
   protected PowerConduitNetwork network;
-  private PowerHandler powerHandler;
+  private EnderPowerProvider powerHandler;
 
   private int subtype;
   
@@ -95,8 +83,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return CAPACITORS[subtype];
   }
 
-  private PowerHandler createPowerHandlerForType() {
-    return PowerHandlerUtil.createHandler(CAPACITORS[subtype], this, Type.PIPE);
+  private EnderPowerProvider createPowerHandlerForType() {
+    return PowerHandlerUtil.createHandler(CAPACITORS[subtype]);
   }
 
   public float getEnergyStored() {
@@ -127,27 +115,53 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     }    
   }
 
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    return powerHandler.getPowerReceiver();
-  }
-
-  @Override
-  public PowerHandler getPowerHandler() {
-    return powerHandler;
-  }
+ 
 
   @Override
   public void applyPerdition() {
   }
 
+//  @Override
+//  public PowerReceiver getPowerReceiver(ForgeDirection side) {
+//    return powerHandler.getPowerReceiver();
+//  }
+//
+//  @Override
+//  public PowerHandler getPowerHandler() {
+//    return powerHandler;
+//  }
+//  
+//  @Override
+//  public void doWork(PowerHandler workProvider) {
+//  }
+//
+//  @Override
+//  public World getWorld() {
+//    return getBundle().getEntity().worldObj;
+//  }
+  
   @Override
-  public void doWork(PowerHandler workProvider) {
+  public EnderPowerProvider getPowerHandler() {    
+    return powerHandler;
   }
 
   @Override
-  public World getWorld() {
-    return getBundle().getEntity().worldObj;
+  public void setPowerProvider(IPowerProvider provider) {
+    
+  }
+
+  @Override
+  public IPowerProvider getPowerProvider() {    
+    return powerHandler;
+  }
+
+  @Override
+  public void doWork() {        
+  }
+
+  @Override
+  public int powerRequest(ForgeDirection from) {
+    return powerHandler.getMaxEnergyStored() - powerHandler.getMinEnergyReceived();    
   }
 
   @Override
@@ -164,9 +178,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction) {    
     IPowerReceptor rec = getExternalPowerReceptor(direction);
-    if(rec instanceof IPowerEmitter) {
-      return ((IPowerEmitter)rec).canEmitPowerFrom(direction.getOpposite());
-    }
+//    if(rec instanceof IPowerEmitter) {
+//      return ((IPowerEmitter)rec).canEmitPowerFrom(direction.getOpposite());
+//    }
     return rec != null;
   }
 

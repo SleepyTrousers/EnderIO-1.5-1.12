@@ -1,6 +1,7 @@
 package buildcraft.api.recipes;
 
 import java.util.LinkedList;
+
 import net.minecraft.item.ItemStack;
 
 public class AssemblyRecipe {

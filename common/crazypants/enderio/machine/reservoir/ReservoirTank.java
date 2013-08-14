@@ -1,27 +1,25 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.liquids.*;
 
-public class ReservoirTank extends FluidTank {
+public class ReservoirTank extends LiquidTank {
 
-  static final FluidStack WATER = FluidRegistry.getFluidStack("water", 0);
+  static final LiquidStack WATER = LiquidDictionary.getLiquid("Water", 0);
 
   ReservoirTank(int quantity, int capacity) {
-    super(WATER.getFluid(), quantity, capacity);
+    super(WATER.itemID, quantity, capacity);
   }
 
   ReservoirTank(int capacity) {
     this(0, capacity);
   }
 
-  ReservoirTank(FluidStack liquid, int capacity) {
+  ReservoirTank(LiquidStack liquid, int capacity) {
     super(liquid, capacity);
   }
 
   public int getAmount() {
-    return getFluid().amount;
+    return getLiquid().amount;
   }
 
   public float getFilledRatio() {
@@ -33,17 +31,17 @@ public class ReservoirTank extends FluidTank {
   }
 
   public void setAmount(int amount) {
-    FluidStack newLiquid = WATER.copy();
+    LiquidStack newLiquid = WATER.copy();
     newLiquid.amount = Math.min(getCapacity(), amount);
-    setFluid(newLiquid);
+    setLiquid(newLiquid);
   }
 
   @Override
-  public FluidStack getFluid() {
-    FluidStack l = super.getFluid();
+  public LiquidStack getLiquid() {
+    LiquidStack l = super.getLiquid();
     if (l == null) {
       l = WATER.copy();
-      setFluid(l);
+      setLiquid(l);
     }
     return l;
   }

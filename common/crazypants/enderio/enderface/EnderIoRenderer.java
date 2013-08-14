@@ -3,7 +3,7 @@ package crazypants.enderio.enderface;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +25,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
-    EntityLivingBase entityPlayer = tileEntityRenderer.entityLivingPlayer;
+    EntityLiving entityPlayer = tileEntityRenderer.entityLivingPlayer;
 
     Vector3d playerEye = new Vector3d(entityPlayer.posX, entityPlayer.posY + 1.62 - entityPlayer.yOffset, entityPlayer.posZ);
     Vector3d blockOrigin = new Vector3d(te.xCoord + 0.5, te.yCoord + 0.5, te.zCoord + 0.5);

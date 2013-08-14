@@ -1,7 +1,7 @@
 package buildcraft.api.tools;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.liquids.LiquidStack;
 
 public interface IToolPipette {
 
@@ -20,21 +20,21 @@ public interface IToolPipette {
 
 	/**
 	 * Fills the pipette with the given liquid stack.
-	 *
+	 * 
 	 * @param pipette
 	 * @param liquid
 	 * @param doFill
 	 * @return Amount of liquid used in filling the pipette.
 	 */
-	int fill(ItemStack pipette, FluidStack liquid, boolean doFill);
+	int fill(ItemStack pipette, LiquidStack liquid, boolean doFill);
 
 	/**
 	 * Drains liquid from the pipette
-	 *
+	 * 
 	 * @param pipette
 	 * @param maxDrain
 	 * @param doDrain
-	 * @return Fluid stack representing the liquid and amount drained from the pipette.
+	 * @return Liquid stack representing the liquid and amount drained from the pipette.
 	 */
-	FluidStack drain(ItemStack pipette, int maxDrain, boolean doDrain);
+	LiquidStack drain(ItemStack pipette, int maxDrain, boolean doDrain);
 }

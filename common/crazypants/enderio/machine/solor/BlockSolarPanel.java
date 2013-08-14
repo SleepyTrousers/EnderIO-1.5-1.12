@@ -96,6 +96,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
     setBlockBoundsBasedOnState(par1World, par2, par3, par4);

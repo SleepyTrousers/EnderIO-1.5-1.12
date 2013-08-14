@@ -6,19 +6,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.*;
 
 
 public class RenderUtil {
@@ -51,37 +46,41 @@ public class RenderUtil {
     GL11.glLoadMatrix(MATRIX_BUFFER);
   }
 
-  public static TextureManager engine() {
+  public static RenderEngine engine() {
     return Minecraft.getMinecraft().renderEngine;
   }
 
-  public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
-  public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
-  public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+//  public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
+//  public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
+//  public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+  
+  public static final String BLOCK_TEX = "/terrain.png"; 
+  public static final String ITEM_TEX = "/gui/items.png";
+  public static final String GLINT_TEX = "%blur%/misc/glint.png";
 
   public static void bindItemTexture(ItemStack stack) {
-    engine().func_110577_a(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
+    engine().bindTexture(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
   }
 
   public static void bindItemTexture() {
-    engine().func_110577_a(ITEM_TEX);
+    engine().bindTexture(ITEM_TEX);
   }
 
   public static void bindBlockTexture() {
-    engine().func_110577_a(BLOCK_TEX);
+    engine().bindTexture(BLOCK_TEX);
   }
 
   public static void bindGlintTexture() {
-    engine().func_110577_a(BLOCK_TEX);
+    engine().bindTexture(BLOCK_TEX);
   }
 
   public static void bindTexture(String string) {
-    engine().func_110577_a(new ResourceLocation(string));
+    engine().bindTexture(string);
   }
 
-  public static void bindTexture(ResourceLocation tex) {
-    engine().func_110577_a(tex);
-  }
+//  public static void bindTexture(ResourceLocation tex) {
+//    engine().func_110577_a(tex);
+//  }
 
   public static FontRenderer fontRenderer() {
     return Minecraft.getMinecraft().fontRenderer;

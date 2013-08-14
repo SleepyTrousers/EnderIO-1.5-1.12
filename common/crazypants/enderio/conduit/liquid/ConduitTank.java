@@ -1,14 +1,11 @@
 package crazypants.enderio.conduit.liquid;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.liquids.*;
 
-public class ConduitTank implements IFluidTank {
+public class ConduitTank implements ILiquidTank {
 
-  private FluidStack fluid;
+  private LiquidStack fluid;
   private int capacity;
   private int tankPressure = 0;
 
@@ -48,14 +45,14 @@ public class ConduitTank implements IFluidTank {
     setAmount(getFluidAmount() + amount);
   }
   
-  @Override
-  public FluidTankInfo getInfo() {
-    return new FluidTankInfo(this);
-  }
-  
+//  @Override
+//  public FluidTankInfo getInfo() {
+//    return new FluidTankInfo(this);
+//  }
+//  
 
   @Override
-  public FluidStack getFluid() {
+  public LiquidStack getLiquid() {
     return this.fluid;
   }
 
@@ -64,7 +61,7 @@ public class ConduitTank implements IFluidTank {
     return this.capacity;
   }
 
-  public void setLiquid(FluidStack liquid) {
+  public void setLiquid(LiquidStack liquid) {
     this.fluid = liquid;
   }
 
@@ -76,12 +73,12 @@ public class ConduitTank implements IFluidTank {
   }
 
   @Override
-  public int fill(FluidStack resource, boolean doFill) {
-    if (resource == null || resource.fluidID <= 0) {
+  public int fill(LiquidStack resource, boolean doFill) {
+    if (resource == null || resource.itemID <= 0) {
       return 0;
     }    
 
-    if (fluid == null || fluid.fluidID <= 0) {
+    if (fluid == null || fluid.itemID <= 0) {
       if (resource.amount <= capacity) {
         if (doFill) {
           fluid = resource.copy();
@@ -96,7 +93,7 @@ public class ConduitTank implements IFluidTank {
       }
     }
 
-    if (!fluid.isFluidEqual(resource)) {
+    if (!fluid.isLiquidEqual(resource)) {
       return 0;
     }
 
@@ -116,8 +113,8 @@ public class ConduitTank implements IFluidTank {
   }
 
   @Override
-  public FluidStack drain(int maxDrain, boolean doDrain) {
-    if (fluid == null || fluid.fluidID <= 0) {
+  public LiquidStack drain(int maxDrain, boolean doDrain) {
+    if (fluid == null || fluid.itemID <= 0) {
       return null;
     }
     if (fluid.amount <= 0) {
@@ -133,7 +130,7 @@ public class ConduitTank implements IFluidTank {
       fluid.amount -= used;
     }
 
-    FluidStack drained = new FluidStack(fluid.fluidID, used);
+    LiquidStack drained = new LiquidStack(fluid.itemID, used);
     
     if (fluid.amount < 0) {
       fluid.amount = 0;
@@ -146,11 +143,11 @@ public class ConduitTank implements IFluidTank {
   }
 
   public String getLiquidName() {
-    return fluid != null ? FluidRegistry.getFluidName(fluid) : null;
+    return fluid != null ? LiquidDictionary.findLiquidName(fluid) : null;
   }
 
   public boolean containsValidLiquid() {
-    return fluid != null && FluidRegistry.getFluidName(fluid) != null;
+    return LiquidDictionary.findLiquidName(fluid) != null;
   }
 
   public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -162,9 +159,9 @@ public class ConduitTank implements IFluidTank {
     return nbt;
   }
 
-  public IFluidTank readFromNBT(NBTTagCompound nbt) {
+  public ILiquidTank readFromNBT(NBTTagCompound nbt) {
     if (!nbt.hasKey("emptyTank")) {
-      FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbt);
+      LiquidStack liquid = LiquidStack.loadLiquidStackFromNBT(nbt);
       if (liquid != null) {
         setLiquid(liquid);
       }
@@ -178,6 +175,11 @@ public class ConduitTank implements IFluidTank {
     }
     fluid.amount -= amount;
     fluid.amount = Math.max(0, fluid.amount);    
+  }
+
+  @Override
+  public int getTankPressure() {
+    return 0;
   }
 
 }

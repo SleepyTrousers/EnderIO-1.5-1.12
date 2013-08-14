@@ -1,12 +1,8 @@
 package crazypants.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.gui.*;
 import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -21,10 +17,11 @@ public class IconButton extends GuiButton {
   protected int hheight;
   
   protected Icon icon;
-  protected ResourceLocation texture;
+  //protected ResourceLocation texture;
+  protected String texture;
   
 
-  public IconButton(FontRenderer fr, int id, int x, int y, Icon icon, ResourceLocation texture) {
+  public IconButton(FontRenderer fr, int id, int x, int y, Icon icon, String texture) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");    
     hwidth = HWIDTH;
     hheight = HHEIGHT;
@@ -48,11 +45,11 @@ public class IconButton extends GuiButton {
     this.icon = icon;
   }
 
-  public ResourceLocation getTexture() {
+  public String getTexture() {
     return texture;
   }
 
-  public void setTexture(ResourceLocation textureName) {
+  public void setTexture(String textureName) {
     this.texture = textureName;
   }
 

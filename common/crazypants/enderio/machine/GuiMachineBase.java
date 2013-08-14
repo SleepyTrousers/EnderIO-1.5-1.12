@@ -98,6 +98,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     }
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void initGui() {    
     super.initGui();

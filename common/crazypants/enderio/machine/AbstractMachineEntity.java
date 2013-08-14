@@ -1,10 +1,6 @@
 package crazypants.enderio.machine;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.PacketHandler;
-import crazypants.enderio.power.*;
-import net.minecraft.client.Minecraft;
+import buildcraft.api.power.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -13,9 +9,8 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.*;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.PacketHandler;
+import crazypants.enderio.power.*;
 
 public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
 
@@ -37,25 +32,21 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected ItemStack[] inventory;
   protected final int inventorySize;
 
-  protected PowerHandler powerHandler;
+  protected EnderPowerProvider powerHandler;
   
   protected RedstoneControlMode redstoneControlMode;
 
   protected boolean redstoneCheckPassed;
 
-  public AbstractMachineEntity(int inventorySize, Type powerType) {
+  public AbstractMachineEntity(int inventorySize) {
     this.inventorySize = inventorySize;
     facing = 3;
     capacitor = new BasicCapacitor();
-    powerHandler = PowerHandlerUtil.createHandler(capacitor, this, powerType);
+    powerHandler = PowerHandlerUtil.createHandler(capacitor);
     
     inventory = new ItemStack[inventorySize];
     
     redstoneControlMode = RedstoneControlMode.IGNORE;
-  }
-  
-  public AbstractMachineEntity(int inventorySize) {
-    this(inventorySize, Type.MACHINE);
   }
   
   public RedstoneControlMode getRedstoneControlMode() {
@@ -67,7 +58,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   }
 
   @Override
-  public PowerHandler getPowerHandler() {
+  public EnderPowerProvider getPowerHandler() {
     return powerHandler;
   }
 
@@ -121,22 +112,29 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   // powerProvider.setCapacitor(capacitor);
   // }
 
-  @Override
-  public void doWork(PowerHandler workProvider) {    
-  }
 
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {  
-    return powerHandler.getPowerReceiver();
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
 
   protected float getPowerUsePerTick() {
     return capacitor.getMaxEnergyExtracted();
+  }
+  
+  @Override
+  public void setPowerProvider(IPowerProvider provider) {
+    
+  }
+
+  @Override
+  public IPowerProvider getPowerProvider() {
+    return powerHandler;
+  }
+
+  @Override
+  public void doWork() {   
+  }
+
+  @Override
+  public int powerRequest(ForgeDirection from) {
+    return powerHandler.getMaxEnergyStored() - powerHandler.getMaxEnergyStored();
   }
 
   // --- Process Loop
@@ -159,9 +157,9 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
     } // else is server, do all logic only on the server
     
-    float stored = powerHandler.getEnergyStored();    
-    powerHandler.update();
-    powerHandler.setEnergy(stored);
+//    float stored = powerHandler.getEnergyStored();    
+//    powerHandler.update();
+//    powerHandler.setEnergy(stored);
 
     boolean requiresClientSync = false;
     if (firstUpdate) {

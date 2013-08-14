@@ -1,30 +1,20 @@
 package crazypants.enderio.machine.reservoir;
 
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.UNKNOWN;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+import static net.minecraftforge.common.ForgeDirection.*;
+import static net.minecraftforge.liquids.LiquidContainerRegistry.BUCKET_VOLUME;
 
 import java.util.ArrayList;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.liquids.*;
+import crazypants.enderio.*;
+import crazypants.render.BoundingBox;
+import crazypants.util.BlockCoord;
 
-public class TileReservoir extends TileEntity implements IFluidHandler {
+public class TileReservoir extends TileEntity implements ITankContainer {
 
   enum Pos {
     TL(true, false),
@@ -42,7 +32,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     }
   }
 
-  static final FluidStack WATER_BUCKET = FluidRegistry.getFluidStack("water", BUCKET_VOLUME);
+  static final LiquidStack WATER_BUCKET = LiquidDictionary.getLiquid("Water", BUCKET_VOLUME);
 
   BlockCoord[] multiblock = null;
 
@@ -90,7 +80,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
       if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
         int ejectable = tank.getAmount();
         int amountPerNeighbour = ejectable / tankNeighbours.size();
-        FluidStack source = WATER_BUCKET.copy();
+        LiquidStack source = WATER_BUCKET.copy();
         int used = 0;
         for(TankNeighbour tc : tankNeighbours) {
           source.amount = amountPerNeighbour;
@@ -107,7 +97,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
     if(isMultiblock()) {
       return 0;
     }
@@ -116,44 +106,64 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+  public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
     return getController().doDrain(from, maxDrain, doDrain);
   }
   
+//  @Override
+//  public LiquidStack drain(ForgeDirection from, LiquidStack resource, boolean doDrain) {
+//    if (resource != null && !resource.isLiquidEqual(tank.getLiquid())) {
+//      return null;
+//    }
+//    return drain(from, resource.amount, doDrain);    
+//  }
+  
+//  @Override
+//  public boolean canFill(ForgeDirection from, Fluid fluid) {
+//    if(tank.getFluid() == null) {
+//      return true;
+//    }
+//    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+//      return true;
+//    }
+//    return false;
+//  }
+//
+//  @Override
+//  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+//    if(tank.getFluid() == null || fluid == null) {
+//      return false;
+//    }
+//    return tank.getFluid().getFluid().getID() == fluid.getID();
+//  }
+//
+//  @Override
+//  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+//    return getController().doGetTankInfo(from);
+//  }  
+//
+//  private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
+//    return new FluidTankInfo[]{tank.getInfo()};    
+//  }
+  
   @Override
-  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if (resource != null && !resource.isFluidEqual(tank.getFluid())) {
-      return null;
-    }
-    return drain(from, resource.amount, doDrain);    
+  public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
+    return fill(ForgeDirection.UNKNOWN, resource, doFill);
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(tank.getFluid() == null) {
-      return true;
-    }
-    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
-      return true;
-    }
-    return false;
+  public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
+    return drain(ForgeDirection.UNKNOWN, maxDrain,doDrain);
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(tank.getFluid() == null || fluid == null) {
-      return false;
-    }
-    return tank.getFluid().getFluid().getID() == fluid.getID();
+  public ILiquidTank[] getTanks(ForgeDirection direction) {
+    return getController().doGetTanks(direction);
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-    return getController().doGetTankInfo(from);
-  }  
-
-  private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
-    return new FluidTankInfo[]{tank.getInfo()};    
+  public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
+    return getController().doGetTank(direction, type);
   }
 
   @Override
@@ -207,7 +217,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord check = bc.getLocation(dir);
         if (!inMultiblock(check)) {
-          IFluidHandler tc = getTankContainer(check);
+          ITankContainer tc = getTankContainer(check);
           if (tc != null) {
             tankNeighbours.add(new TankNeighbour(tc, dir.getOpposite()));
           }
@@ -236,12 +246,12 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
     autoEject = nbtRoot.getBoolean("autoEject");
 
-    FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("tank"));
-    FluidStack regenLiquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("regenTank"));
+    LiquidStack liquid = LiquidStack.loadLiquidStackFromNBT(nbtRoot.getCompoundTag("tank"));
+    LiquidStack regenLiquid = LiquidStack.loadLiquidStackFromNBT(nbtRoot.getCompoundTag("regenTank"));
 
     tank.setCapacity(regenLiquid == null ? BUCKET_VOLUME : BUCKET_VOLUME * 2);
     if (liquid != null) {
-      tank.setFluid(liquid);
+      tank.setLiquid(liquid);
     } else {
       tank.setAmount(0);
     }
@@ -286,11 +296,11 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
     nbtRoot.setBoolean("autoEject", autoEject);
 
-    if (tank.getFluid() != null) {
-      nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
+    if (tank.getLiquid() != null) {
+      nbtRoot.setTag("tank", tank.getLiquid().writeToNBT(new NBTTagCompound()));
     }
     if (regenTank != null) {
-      nbtRoot.setTag("regenTank", regenTank.getFluid().writeToNBT(new NBTTagCompound()));
+      nbtRoot.setTag("regenTank", regenTank.getLiquid().writeToNBT(new NBTTagCompound()));
     }
 
     nbtRoot.setBoolean("isMultiblock", isMultiblock());
@@ -373,8 +383,8 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     return result;
   }
 
-  int doFill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if (!WATER_BUCKET.isFluidEqual(resource)) {
+  int doFill(ForgeDirection from, LiquidStack resource, boolean doFill) {
+    if (!WATER_BUCKET.isLiquidEqual(resource)) {
       return 0;
     }
     
@@ -391,10 +401,21 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     return ret;
   }
 
-  protected FluidStack doDrain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    FluidStack ret = tank.drain(maxDrain, doDrain);
+  protected LiquidStack doDrain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    LiquidStack ret = tank.drain(maxDrain, doDrain);
     tankDirty = doDrain;    
     return ret;
+  }
+  
+  protected ILiquidTank[] doGetTanks(ForgeDirection direction) {
+    return new ILiquidTank[] { tank };
+  }
+
+  protected ILiquidTank doGetTank(ForgeDirection direction, LiquidStack type) {
+    if (tank.getLiquid().isLiquidEqual(type)) {
+      return tank;
+    }
+    return null;
   }
 
   private void setMultiblock(BlockCoord[] mb) {
@@ -408,7 +429,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
       for (BlockCoord bc : multiblock) {
         TileReservoir res = getReservoir(bc);
         if (res != null) {
-          FluidStack drained = res.doDrain(ForgeDirection.UNKNOWN, regenTank.getAvailableSpace(), true);
+          LiquidStack drained = res.doDrain(ForgeDirection.UNKNOWN, regenTank.getAvailableSpace(), true);
           if (drained != null) {
             regenTank.addAmount(drained.amount);
           }
@@ -579,17 +600,17 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     return inDirection(dir.offsetX, dir.offsetY, dir.offsetZ);
   }
 
-  private IFluidHandler getTankContainer(BlockCoord bc) {
+  private ITankContainer getTankContainer(BlockCoord bc) {
     return getTankContainer(bc.x, bc.y, bc.z);
   }
 
-  private IFluidHandler getTankContainer(int x, int y, int z) {
+  private ITankContainer getTankContainer(int x, int y, int z) {
     if(worldObj == null) {
       return null;
     }
     TileEntity te = worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof IFluidHandler) {
-      return (IFluidHandler) te;
+    if (te instanceof ITankContainer) {
+      return (ITankContainer) te;
     }
     return null;
   }

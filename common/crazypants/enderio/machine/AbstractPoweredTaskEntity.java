@@ -27,7 +27,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if (i < 0 || i > maxInputIndex) {
       return false;
     }
-    if (!isItemValidForSlot(i, itemstack)) {
+    if (!isStackValidForSlot(i, itemstack)) {
       return false;
     }
     if (inventory[i] == null) {

@@ -16,19 +16,19 @@ public class ContainerAlloySmelter extends Container {
     addSlotToContainer(new Slot(tileEntity, 0, 54, 17) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(0, itemStack);
+        return tileEntity.isStackValidForSlot(0, itemStack);
       }      
     });
     addSlotToContainer(new Slot(tileEntity, 1, 78, 7) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(1, itemStack);
+        return tileEntity.isStackValidForSlot(1, itemStack);
       }
     });
     addSlotToContainer(new Slot(tileEntity, 2, 103, 17) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(2, itemStack);
+        return tileEntity.isStackValidForSlot(2, itemStack);
       }
     });
     addSlotToContainer(new Slot(tileEntity, 3, 79, 57) {
@@ -75,13 +75,13 @@ public class ContainerAlloySmelter extends Container {
         
         boolean merged = false;
        
-        if (tileEntity.isItemValidForSlot(0, origStack)) {
+        if (tileEntity.isStackValidForSlot(0, origStack)) {
           merged = mergeItemStack(origStack, 0, 1, false);                
         } 
-        if (!merged && tileEntity.isItemValidForSlot(1, origStack)) {
+        if (!merged && tileEntity.isStackValidForSlot(1, origStack)) {
           merged = mergeItemStack(origStack, 1, 2, false);
         } 
-        if (!merged && tileEntity.isItemValidForSlot(2, origStack)) {
+        if (!merged && tileEntity.isStackValidForSlot(2, origStack)) {
           merged = mergeItemStack(origStack, 2, 3, false);
         } else if (!merged && slotIndex >= 4 && slotIndex < 30) {
           if (!this.mergeItemStack(origStack, 31, 40, false)) {

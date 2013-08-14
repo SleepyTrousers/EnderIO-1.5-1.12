@@ -107,9 +107,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
           int i2 = this.rand.nextInt(6);
-          EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
-              d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
-          fx.func_110125_a(tex);
+          EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D, d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0,
+              Minecraft.getMinecraft().renderEngine).func_70596_a(x, y, z);
+          fx.setParticleIcon(Minecraft.getMinecraft().renderEngine, tex);
           effectRenderer.addEffect(fx);
         }
       }
@@ -141,11 +141,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     } else if (side == 5) {
       d0 = x + getBlockBoundsMaxX() + f;
     }
-    EntityDiggingFX digFX = new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D,
-        0.0D, this, side, 0);
-    digFX.applyColourMultiplier(x, y,
-        z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
-    digFX.func_110125_a(tex);
+    EntityDiggingFX digFX = new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, this, side, 0, Minecraft.getMinecraft().renderEngine);
+    digFX.func_70596_a(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+    digFX.setParticleIcon(Minecraft.getMinecraft().renderEngine, tex);
     effectRenderer.addEffect(digFX);
   }
 
@@ -408,6 +406,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
         return false;
       }
 
+      @SuppressWarnings("null")
       IConduitItem equipped = (IConduitItem) stack.getItem();
       if (!bundle.hasType(equipped.getBaseConduitType())) {
         bundle.addConduit(equipped.createConduit(stack));

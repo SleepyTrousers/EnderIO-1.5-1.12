@@ -19,13 +19,13 @@ public class PainterContainer extends Container {
     addSlotToContainer(new Slot(tileEntity, 0, 67, 34) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(0, itemStack);
+        return tileEntity.isStackValidForSlot(0, itemStack);
       }      
     });
     addSlotToContainer(new Slot(tileEntity, 1, 37, 34) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(1, itemStack);
+        return tileEntity.isStackValidForSlot(1, itemStack);
       }
     });
     addSlotToContainer(new Slot(tileEntity, 2, 121, 34) {
@@ -70,11 +70,11 @@ public class PainterContainer extends Container {
         
       } else if (slotIndex != 1 && slotIndex != 0) {
         
-        if (tileEntity.isItemValidForSlot(0, origStack)) {
+        if (tileEntity.isStackValidForSlot(0, origStack)) {
           if (!this.mergeItemStack(origStack, 0, 1, false)) {
             return null;
           }       
-        } else if (tileEntity.isItemValidForSlot(1, origStack)) {
+        } else if (tileEntity.isStackValidForSlot(1, origStack)) {
           if (!this.mergeItemStack(origStack, 1, 2, false)) {
             return null;
           }

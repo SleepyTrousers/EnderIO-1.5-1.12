@@ -2,27 +2,18 @@ package crazypants.enderio.machine.generator;
 
 import java.util.*;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.*;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import buildcraft.api.power.*;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.power.*;
+import crazypants.util.BlockCoord;
 
-public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory, IPowerEmitter {
+public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory {
 
   public static final float ENERGY_PER_TICK = 1;
 
@@ -35,13 +26,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   private boolean receptorsDirty = true;
 
   public TileEntityStirlingGenerator() {
-    super(1, Type.ENGINE);
+    super(1);
   }
 
-  @Override
-  public boolean canEmitPowerFrom(ForgeDirection side) {
-    return true;
-  }
 
   @Override
   public String getMachineName() {
@@ -54,7 +41,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isStackValidForSlot(int i, ItemStack itemstack) {
     return TileEntityFurnace.isItemFuel(itemstack);
   }
 
@@ -65,7 +52,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-    return isItemValidForSlot(i, itemstack);
+    return isStackValidForSlot(i, itemstack);
   }
 
   @Override
@@ -136,15 +123,15 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   private boolean transmitEnergy() {
     
     if (powerHandler.getEnergyStored() <= 0) {
-      powerHandler.update();
+      //powerHandler.update();
       return false;
     }
     float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
-    float stored = powerHandler.getEnergyStored();
-    powerHandler.update();
-    float storedAfter = powerHandler.getEnergyStored();    
+//    float stored = powerHandler.getEnergyStored();
+//    powerHandler.update();
+//    float storedAfter = powerHandler.getEnergyStored();    
     
     
     checkReceptors();
@@ -158,15 +145,16 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
 
       Receptor receptor = receptorIterator.next();
-      PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir);
-      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
+      IPowerProvider pp = receptor.receptor.getPowerProvider();
+      if (pp != null && pp.getMinEnergyReceived() <= canTransmit) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
           //System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending " + canTransmit + " to internal.");
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit,Type.ENGINE,receptor.fromDir);          
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);          
         } else {          
           //System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending " + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
-          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir);
+          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
+          pp.receiveEnergy(used, receptor.fromDir);
         }
         transmitted += used;
 //        if (used > 0) {
@@ -201,8 +189,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       BlockCoord checkLoc = bc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if (te instanceof IPowerReceptor) {
-        IPowerReceptor rec = (IPowerReceptor) te;
-        PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
+        IPowerReceptor rec = (IPowerReceptor) te;        
         receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
       }
     }

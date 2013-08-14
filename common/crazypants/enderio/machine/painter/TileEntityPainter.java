@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.painter;
 
+import buildcraft.api.power.IPowerProvider;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.*;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
 
@@ -25,7 +27,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   }
 
   @Override
-  public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+  public boolean isStackValidForSlot(int i, ItemStack itemStack) {
     if (i > 1) {
       return false;
     }
@@ -67,5 +69,6 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
     }
     return true;
   }
+
 
 }

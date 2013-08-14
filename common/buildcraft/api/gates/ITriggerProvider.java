@@ -9,10 +9,11 @@
 
 package buildcraft.api.gates;
 
-import buildcraft.api.transport.IPipe;
 import java.util.LinkedList;
+
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import buildcraft.api.transport.IPipe;
 
 public interface ITriggerProvider {
 

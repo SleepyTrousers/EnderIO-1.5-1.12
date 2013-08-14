@@ -15,10 +15,10 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
     this.windowId = wrapped.windowId;
   }
  
-  @Override
-  public boolean canDragIntoSlot(Slot par1Slot) {
-    return wrapped.canDragIntoSlot(par1Slot);
-  }
+//  @Override
+//  public boolean canDragIntoSlot(Slot par1Slot) {
+//    return wrapped.canDragIntoSlot(par1Slot);
+//  }
 
   @Override
   public boolean canInteractWith(net.minecraft.entity.player.EntityPlayer arg0) {

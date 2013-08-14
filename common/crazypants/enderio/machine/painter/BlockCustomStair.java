@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -90,7 +89,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
  
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
     int id = -1;
     Block b = PainterUtil.getSourceBlock(stack);
     if (b != null) {

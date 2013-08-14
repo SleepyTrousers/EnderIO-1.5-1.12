@@ -1,23 +1,13 @@
 package crazypants.enderio.conduit.power;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.util.BlockCoord;
+import java.util.*;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.conduit.*;
+import crazypants.util.BlockCoord;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
 

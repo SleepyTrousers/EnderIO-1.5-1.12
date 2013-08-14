@@ -18,7 +18,7 @@ public class StirlingGeneratorContainer extends Container {
     addSlotToContainer(new Slot(tileEntity, 0, 80, 34) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(0, itemStack);
+        return tileEntity.isStackValidForSlot(0, itemStack);
       }      
     });    
     
@@ -49,7 +49,7 @@ public class StirlingGeneratorContainer extends Container {
       itemstack = origStack.copy();
 
       if (slotIndex != 0) {        
-        if (tileEntity.isItemValidForSlot(0, origStack)) {
+        if (tileEntity.isStackValidForSlot(0, origStack)) {
           if (!this.mergeItemStack(origStack, 0, 1, false)) {
             return null;
           }               
