@@ -3,7 +3,7 @@
   "modid": "EnderIO",
   "name": "Ender IO",
   "description": "Compact conduits, painted things and access to your stuff through an eye of ender.",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "mcversion": "1.6.2",
   "url": "",
   "updateUrl": "",
