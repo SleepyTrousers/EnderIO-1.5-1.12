@@ -1,16 +1,19 @@
 package crazypants.enderio;
 
+import java.util.List;
 import java.util.logging.Level;
 
+import com.google.common.collect.Lists;
+
+import net.minecraft.world.World;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStopped;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -61,20 +64,20 @@ public class EnderIO {
 
   public static GuiHandler guiHandler = new GuiHandler();
 
-  //Materials  
+  // Materials
   public static ItemIndustrialBinder itemIndustrialBinder;
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
-    
+
   // Enderface
   public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
 
   // Painter
   public static BlockPainter blockPainter;
-  public static BlockCustomFence blockCustomFence;  
+  public static BlockCustomFence blockCustomFence;
   public static BlockCustomFenceGate blockCustomFenceGate;
   public static BlockCustomWall blockCustomWall;
   public static BlockCustomStair blockCustomStair;
@@ -83,24 +86,24 @@ public class EnderIO {
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
   public static ItemConduitFacade itemConduitFacade;
-  public static ItemRedstoneConduit itemRedstoneConduit; 
+  public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
-  
-  //Machines
-  public static BlockStirlingGenerator blockStirlingGenerator;  
-  public static BlockSolarPanel blockSolarPanel;  
-  public static BlockElectricLight blockElectricLight;  
-  public static BlockReservoir blockReservoir;  
+
+  // Machines
+  public static BlockStirlingGenerator blockStirlingGenerator;
+  public static BlockSolarPanel blockSolarPanel;
+  public static BlockElectricLight blockElectricLight;
+  public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  
+
   public static ItemYetaWrench itemYetaWench;
-  
-  @PreInit
+
+  @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
     try {
-      cfg.load();      
+      cfg.load();
       Config.load(cfg);
     } catch (Exception e) {
       FMLLog.log(Level.SEVERE, e, "EnderIO has a problem loading it's configuration");
@@ -109,47 +112,45 @@ public class EnderIO {
         cfg.save();
       }
     }
-    
-    itemIndustrialBinder= ItemIndustrialBinder.create();
+
+    itemIndustrialBinder = ItemIndustrialBinder.create();
     itemBasicCapacitor = ItemCapacitor.create();
-    itemAlloy = ItemAlloy.create();    
+    itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
-    
+
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
-    
-    blockPainter = BlockPainter.create();    
-    blockCustomFence = BlockCustomFence.create();    
+
+    blockPainter = BlockPainter.create();
+    blockCustomFence = BlockCustomFence.create();
     blockCustomFenceGate = BlockCustomFenceGate.create();
     blockCustomWall = BlockCustomWall.create();
     blockCustomStair = BlockCustomStair.create();
-    
+
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
-    blockReservoir = BlockReservoir.create();   
+    blockReservoir = BlockReservoir.create();
     blockAlloySmelter = BlockAlloySmelter.create();
 
-        
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
-    
-    itemRedstoneConduit = ItemRedstoneConduit.create();                       
+
+    itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
-    
-    //blockElectricLight = BlockElectricLight.create();
-    
+
+    // blockElectricLight = BlockElectricLight.create();
+
     itemYetaWench = ItemYetaWrench.create();
   }
-  
 
-  @Init
+  @EventHandler
   public void load(FMLInitializationEvent event) {
 
     instance = this;
-     
+
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
@@ -157,16 +158,16 @@ public class EnderIO {
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
-    
+
     proxy.load();
   }
 
-  @PostInit
+  @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
     TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
   }
-    
-  @ServerStopped
+
+  @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
     proxy.serverStopped();
   }
