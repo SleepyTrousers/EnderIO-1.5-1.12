@@ -40,7 +40,7 @@ import crazypants.render.BoundingBox;
 
 public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
-  private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
+  private static final String KEY_CONNECTOR_ICON = "enderio:conduitConnector";
 
   public static BlockConduitBundle create() {
     BlockConduitBundle result = new BlockConduitBundle();

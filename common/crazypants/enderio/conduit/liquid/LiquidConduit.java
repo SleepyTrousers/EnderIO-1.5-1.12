@@ -537,7 +537,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
     if (active && tank.getLiquid() != null) {
-      return tank.getLiquid().getRenderingIcon();
+      return tank.getLiquid().canonical().getRenderingIcon();
     }
     return null;
   }

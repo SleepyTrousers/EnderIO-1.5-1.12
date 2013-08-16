@@ -144,15 +144,30 @@ public class PacketHandler implements IPacketHandler {
     int z = data.readInt();
 
     EntityPlayerMP player = (EntityPlayerMP) p;
-    EntityPlayerMP proxy = createPlayerProxy(player);
+    net.minecraft.inventory.Container c = player.openContainer;
+    PlayerProxy pp = new PlayerProxy(player);
+    EntityPlayerMP proxy = createPlayerProxy(player, pp);
+    proxy.playerNetServerHandler = player.playerNetServerHandler;
+    proxy.inventory = player.inventory;    
+    proxy.currentWindowId = player.currentWindowId;
+    proxy.inventoryContainer = player.inventoryContainer;
+    proxy.mcServer = player.mcServer;
+    proxy.openContainer = player.openContainer;
+    proxy.theItemInWorldManager = player.theItemInWorldManager;
+    proxy.worldObj = player.worldObj;    
+    
+    
     player.theItemInWorldManager.activateBlockOrUseItem(proxy, player.worldObj, null, x, y, z, 0, 0, 0, 0);
-    player.theItemInWorldManager.thisPlayerMP = player;
+    player.theItemInWorldManager.thisPlayerMP = player;    
+    if(c != proxy.openContainer) {
+      player.openContainer = proxy.openContainer;
+    }
 
   }
 
-  public static <T> T createPlayerProxy(EntityPlayerMP player) {
+  public static <T> T createPlayerProxy(EntityPlayerMP player, PlayerProxy proxy) {
     Enhancer e = new Enhancer();
-    e.setCallback(new PlayerProxy(player));
+    e.setCallback(proxy);
 
     e.setSuperclass(player.getClass());
     Class<?>[] argTypes = new Class[] { MinecraftServer.class, World.class, String.class, ItemInWorldManager.class };
