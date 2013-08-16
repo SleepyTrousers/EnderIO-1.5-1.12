@@ -158,10 +158,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if (hasPower() && nextRecipe.isRecipe(getInputs())) {
       // then get our recipe and take away the source items
       currentTask = new PoweredTask(nextRecipe, getInputs());
-      for(RecipeInput input : getInputs()) {
-        int consumed = nextRecipe.getQuantityConsumed(input);
-        decrStackSize(input.slotNumber, consumed);
-      }      
+      
+      RecipeInput[] consumed = nextRecipe.getQuantitiesConsumed(getInputs());
+      for(RecipeInput item : consumed) {
+        if(item != null && item.item != null && item.item.stackSize > 0) {
+          decrStackSize(item.slotNumber, item.item.stackSize);
+        }
+      }           
       return true;
     }
     return false;

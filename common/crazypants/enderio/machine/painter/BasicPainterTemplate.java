@@ -110,10 +110,27 @@ public class BasicPainterTemplate implements IMachineRecipe {
   protected int getResultId(ItemStack target) {
     return target.itemID;
   }
-
-  @Override
+  
   public int getQuantityConsumed(RecipeInput input) {
     return input.slotNumber == 0 ? 1 : 0;    
   }
+
+  @Override
+  public RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs) {
+    RecipeInput consume = null;
+    for(RecipeInput input : inputs) {
+      if(input != null && input.slotNumber == 0 && input.item != null) {
+        ItemStack consumed = input.item.copy();
+        consumed.stackSize = 1;
+        consume = new RecipeInput(input.slotNumber, consumed);
+      }
+    }
+    if(consume != null) {
+      return new RecipeInput[] {consume};
+    }    
+    return null;
+  }
+  
+  
 
 }

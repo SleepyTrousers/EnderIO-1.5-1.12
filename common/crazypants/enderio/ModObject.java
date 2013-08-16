@@ -28,7 +28,7 @@ public enum ModObject {
   blockFusedQuartz(++Config.BID, CATEGORY_BLOCK, "Fused Quartz"),
 
   // Stirling Gen
-  blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK, "Strirling Generator"),
+  blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK, "Stirling Generator"),
   blockReservoir(++Config.BID, CATEGORY_BLOCK, "Reservoir"),
   blockAlloySmelter(++Config.BID, CATEGORY_BLOCK, "Alloy Smelter"),
   
