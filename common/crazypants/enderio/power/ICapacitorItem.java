@@ -1,7 +1,9 @@
 package crazypants.enderio.power;
 
+import net.minecraft.item.ItemStack;
+
 public interface ICapacitorItem {
 
-  ICapacitor getCapacitor();
+  ICapacitor getCapacitor(ItemStack stack);
   
 }

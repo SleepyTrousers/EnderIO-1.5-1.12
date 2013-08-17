@@ -46,7 +46,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   public AbstractMachineEntity(int inventorySize, Type powerType) {
     this.inventorySize = inventorySize;
     facing = 3;
-    capacitor = new BasicCapacitor();
+    capacitor = Capacitors.BASIC_CAPACITOR.capacitor;
     powerHandler = PowerHandlerUtil.createHandler(capacitor, this, powerType);
     
     inventory = new ItemStack[inventorySize];

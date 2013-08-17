@@ -12,13 +12,26 @@ public class MaterialRecipes {
 
   public static void addRecipes() {
 
-    ItemStack industialBinder = new ItemStack(itemIndustrialBinder.actualId, 8, 0);
+    ItemStack industialBinder = new ItemStack(itemIndustrialBinder.actualId, 4, 0);
     GameRegistry.addSmelting(Block.gravel.blockID, industialBinder, 0);
 
     industialBinder = new ItemStack(itemIndustrialBinder.actualId, 1, 0);
+    
     ItemStack basicCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
     GameRegistry.addShapedRecipe(basicCapacitor, "   ", "gwi", "RbR", 'b', industialBinder, 'g', new ItemStack(Item.ingotGold), 'i', new ItemStack(
         Item.ingotIron), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+    
+    
+    ItemStack blueSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.BLUE_STEEL.ordinal());
+    
+    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
+    GameRegistry.addShapedRecipe(activatedCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g', new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ACTIVATED_GOLD.ordinal()), 'i', 
+        new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ACTIVATED_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+    
+    ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 2);
+    GameRegistry.addShapedRecipe(enderCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g', new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ENDER_GOLD.ordinal()), 'i', 
+        new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ENDER_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+    
     
     int meta = 0;
     for(Alloy alloy : Alloy.values()) {
