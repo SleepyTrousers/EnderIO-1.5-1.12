@@ -1,8 +1,12 @@
 package crazypants.enderio.machine.alloy;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.RecipeInput;
 
 public class BasicAlloyRecipe implements IMachineRecipe {
 
@@ -21,7 +25,11 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     this.uid = uid;
     inputs = new ItemStack[recipeInputs.length];
     for(int i=0;i<inputs.length;i++) {
-      inputs[i] = recipeInputs[i].copy();
+      if(recipeInputs[i] != null) {
+        inputs[i] = recipeInputs[i].copy();
+      } else {
+        inputs[i] = null;
+      }
     }
   }
   
@@ -83,12 +91,11 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     return ModObject.blockAlloySmelter.unlocalisedName;
   }
 
-  @Override
   public int getQuantityConsumed(RecipeInput input) {
     ItemStack ing = getIngrediantForInput(input.item);
     return ing == null ? 0 : ing.stackSize;
   }
-  
+    
   private ItemStack getIngrediantForInput(ItemStack input) {
     if(input == null) {
       return null;
@@ -100,5 +107,22 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     }
     return null;
   }
+
+@Override
+public RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs) {
+  List<RecipeInput> result = new ArrayList<RecipeInput>();
+  for(RecipeInput input : inputs) {
+    int numConsumed = getQuantityConsumed(input);
+    if(numConsumed > 0) {
+      ItemStack consumed = input.item.copy();
+      consumed.stackSize = numConsumed;
+      result.add(new RecipeInput(input.slotNumber, consumed));
+    }
+  }
+  if(result.isEmpty()) {
+    return null;
+  }
+  return result.toArray(new RecipeInput[result.size()]);
+}
 
 }

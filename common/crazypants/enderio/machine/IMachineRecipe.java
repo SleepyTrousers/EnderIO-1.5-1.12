@@ -16,6 +16,6 @@ public interface IMachineRecipe {
   
   String getMachineName();
 
-  int getQuantityConsumed(RecipeInput input);
+  RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs);
   
 }

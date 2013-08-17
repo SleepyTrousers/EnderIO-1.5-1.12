@@ -30,12 +30,9 @@ public class MaterialRecipes {
       meta++;
     }
 
-    ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
-    IMachineRecipe recipe = new BasicAlloyRecipe(fusedQuartz, ModObject.blockFusedQuartz.unlocalisedName, new ItemStack(Item.netherQuartz,4,0));
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, recipe);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, new FusedQuartzRecipe());
     
-    ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId,1,0);
-    
+    ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId,1,0);    
     GameRegistry.addShapedRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', industialBinder, 's', new ItemStack(Item.stick));
     
   }
