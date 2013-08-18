@@ -23,24 +23,13 @@ public class GuiStirlingGenerator extends GuiMachineBase {
   }
 
   /**
-   * Draw the foreground layer for the GuiContainer (everything in front of the
-   * items)
-   */
-  @Override
-  protected void drawForegroundImpl(int par1, int par2) {    
-    String s = this.entity.isInvNameLocalized() ? this.entity.getInvName() : StatCollector.translateToLocal(this.entity.getInvName());
-    this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-    this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 94, 4210752);
-  }
-
-  /**
    * Draw the background layer for the GuiContainer (everything behind the
    * items)
    */
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("/mods/enderio/textures/gui/stirlingGenerator.png");    
+    RenderUtil.bindTexture("enderio:textures/gui/stirlingGenerator.png");    
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     

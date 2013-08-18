@@ -27,7 +27,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   }
 
   @Override
-  public boolean isStackValidForSlot(int i, ItemStack itemStack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemStack) {
     if (i > 1) {
       return false;
     }

@@ -41,8 +41,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   
   @Override
   public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-    int outputIndex = inventory.length - 1;
-    if (outputIndex != 2) {
+    int outputIndex = inventory.length - 2;
+    if (outputIndex != i) {
       return false;
     }
     if (inventory[outputIndex] == null || inventory[outputIndex].stackSize < itemstack.stackSize) {
@@ -94,7 +94,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
   
   protected void taskComplete() {
-    int outputIndex = inventory.length - 1;
+    int outputIndex = inventory.length - 2;
     if (currentTask != null) {
       ItemStack result = currentTask.getCompletedResult()[0];
       if (inventory[outputIndex] == null) {
@@ -109,7 +109,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
   
   protected RecipeInput[] getInputs() {
-    RecipeInput[] res = new RecipeInput[inventorySize - 1];
+    RecipeInput[] res = new RecipeInput[inventorySize - 2];
     for(int i=0;i < res.length;i++) {
       res[i] = new RecipeInput(i, inventory[i]);
     }
@@ -129,7 +129,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return null; // no template
     }
 
-    int outputIndex = inventory.length - 1;
+    int outputIndex = inventory.length - 2;
     // make sure we can merge the recipe output with our result
     if (inventory[outputIndex] == null) {
       return nextRecipe;
@@ -147,7 +147,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
     
   protected boolean canMergeWithCurrentOuput(ItemStack nextResult) {
-    if (!nextResult.isItemEqual(inventory[inventory.length - 1])) {
+    if (!nextResult.isItemEqual(inventory[inventory.length - 2])) {
       // next result is a different item type
       return false;
     }

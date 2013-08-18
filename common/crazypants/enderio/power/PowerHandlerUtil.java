@@ -14,6 +14,16 @@ public class PowerHandlerUtil {
     //ph.setPerdition(new NullPerditionCalculator());
     return ph;
   }  
+
+  public static void configure(EnderPowerProvider ph, ICapacitor capacitor) {
+    ph.configure(0,capacitor.getMinEnergyReceived(),capacitor.getMaxEnergyReceived(),capacitor.getMinActivationEnergy(),capacitor.getMaxEnergyStored());
+    if(ph.getEnergyStored() > ph.getMaxEnergyStored()) {
+      ph.setEnergy(ph.getMaxEnergyStored());
+    }
+    //TODO: Setup perdition properly
+    ph.configurePowerPerdition(0, 0);    
+  }
+
   
   public static float transmitInternal(IInternalPowerReceptor receptor,float quantity, ForgeDirection from) {
     float used = quantity;

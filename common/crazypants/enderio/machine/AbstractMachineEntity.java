@@ -9,7 +9,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import crazypants.enderio.PacketHandler;
+import crazypants.enderio.*;
 import crazypants.enderio.power.*;
 
 public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
@@ -18,17 +18,16 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
-  protected boolean firstUpdate = true;
+  protected boolean forceClientUpdate = true;
   protected boolean lastActive;
   protected float lastSyncPowerStored = -1;
 
-  // Power
-  protected ICapacitor capacitor;
+  // Power 
+  protected Capacitors capacitorType;
 
   // Used on the client as the power provided isn't sinked
   private float storedEnergy;
 
-  
   protected ItemStack[] inventory;
   protected final int inventorySize;
 
@@ -39,16 +38,25 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected boolean redstoneCheckPassed;
 
   public AbstractMachineEntity(int inventorySize) {
-    this.inventorySize = inventorySize;
+    this.inventorySize = inventorySize + 1; //plus one for capacitor ;
     facing = 3;
-    capacitor = new BasicCapacitor();
-    powerHandler = PowerHandlerUtil.createHandler(capacitor);
+    capacitorType = Capacitors.BASIC_CAPACITOR;
+    powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor);
     
-    inventory = new ItemStack[inventorySize];
+    inventory = new ItemStack[this.inventorySize];
     
     redstoneControlMode = RedstoneControlMode.IGNORE;
   }
   
+  @Override
+  public final boolean isStackValidForSlot(int i, ItemStack itemstack) {
+    if(i == inventorySize - 1) {
+      return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
+    }
+    return isMachineItemValidForSlot(i, itemstack);
+  }
+  
+  protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
@@ -94,30 +102,24 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   }
 
   public ICapacitor getCapacitor() {
-    return capacitor;
+    return capacitorType.capacitor;
   }
 
   public int getEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return (int) (scale * (storedEnergy / capacitor.getMaxEnergyStored()));
+    return (int) (scale * (storedEnergy / capacitorType.capacitor.getMaxEnergyStored()));
   }
   
   public float getEnergyStored() {
     return storedEnergy;
   }  
 
-  // Needs NBT support for this
-  // public void setCapacitor(ICapacitor capacitor) {
-  // this.capacitor = capacitor;
-  // powerProvider.setCapacitor(capacitor);
-  // }
-
-
-
-  protected float getPowerUsePerTick() {
-    return capacitor.getMaxEnergyExtracted();
+ public void setCapacitor(Capacitors capacitorType) {
+    this.capacitorType = capacitorType;
+    PowerHandlerUtil.configure(powerHandler, capacitorType.capacitor);
+    forceClientUpdate = true;
   }
-  
+
   @Override
   public void setPowerProvider(IPowerProvider provider) {
     
@@ -136,7 +138,10 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   public int powerRequest(ForgeDirection from) {
     return (int)(powerHandler.getMaxEnergyStored() - powerHandler.getEnergyStored());
   }
-
+  protected float getPowerUsePerTick() {
+    return capacitorType.capacitor.getMaxEnergyExtracted();
+  }
+  
   // --- Process Loop
   // --------------------------------------------------------------------------
 
@@ -157,14 +162,11 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
     } // else is server, do all logic only on the server
     
-//    float stored = powerHandler.getEnergyStored();    
-//    powerHandler.update();
-//    powerHandler.setEnergy(stored);
 
     boolean requiresClientSync = false;
-    if (firstUpdate) {
+    if (forceClientUpdate) {
       // First update, send state to client
-      firstUpdate = false;
+      forceClientUpdate = false;
       requiresClientSync = true;
     }
 
@@ -181,10 +183,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       }      
     }
     
-    
     requiresClientSync |= processTasks(redstoneCheckPassed);
     
-
     // Update if our power has changed by more than 1%
     requiresClientSync |= Math.abs(lastSyncPowerStored - powerHandler.getEnergyStored()) > powerHandler.getMaxEnergyStored() / 100;    
 
@@ -202,11 +202,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   protected abstract boolean processTasks(boolean redstoneCheckPassed);
 
-  
   // ---- Tile Entity
   // ------------------------------------------------------------------------------
-
-  
 
   @Override
   public Packet getDescriptionPacket() {
@@ -218,6 +215,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     super.readFromNBT(nbtRoot);
 
     facing = nbtRoot.getShort("facing");
+
+    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);    
 
     float storedEnergy = nbtRoot.getFloat("storedEnergy");
     powerHandler.setEnergy(storedEnergy);
@@ -249,6 +248,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     super.writeToNBT(nbtRoot);
     nbtRoot.setShort("facing", facing);
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
+    nbtRoot.setShort("capacitorType", (short)capacitorType.ordinal());
     
     // write inventory list
     NBTTagList itemList = new NBTTagList();
@@ -307,6 +307,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     }
     if (fromStack.stackSize <= amount) {
       inventory[fromSlot] = null;
+      updateCapacitorFromSlot();
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.itemID, amount, fromStack.getItemDamage());
@@ -328,6 +329,19 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     if (contents != null && contents.stackSize > getInventoryStackLimit()) {
       contents.stackSize = getInventoryStackLimit();
     }
+    
+    if(slot == inventory.length - 1) {
+      updateCapacitorFromSlot();      
+    }
+  }
+
+  private void updateCapacitorFromSlot() {
+    ItemStack contents = inventory[inventory.length - 1]; 
+    if(contents == null) {
+      setCapacitor(Capacitors.BASIC_CAPACITOR);
+    } else {
+      setCapacitor(Capacitors.values()[contents.getItemDamage()]);
+    }    
   }
 
   @Override
@@ -345,7 +359,5 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   public void onNeighborBlockChange(int blockId) {        
   }
-
-  
 
 }

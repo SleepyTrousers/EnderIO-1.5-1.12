@@ -41,7 +41,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return TileEntityFurnace.isItemFuel(itemstack);
   }
 
@@ -126,7 +126,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       //powerHandler.update();
       return false;
     }
-    float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
+    float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
 //    float stored = powerHandler.getEnergyStored();
