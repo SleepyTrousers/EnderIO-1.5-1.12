@@ -23,17 +23,6 @@ public class GuiStirlingGenerator extends GuiMachineBase {
   }
 
   /**
-   * Draw the foreground layer for the GuiContainer (everything in front of the
-   * items)
-   */
-  @Override
-  protected void drawForegroundImpl(int par1, int par2) {    
-    String s = this.entity.isInvNameLocalized() ? this.entity.getInvName() : StatCollector.translateToLocal(this.entity.getInvName());
-    this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-    this.fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 94, 4210752);
-  }
-
-  /**
    * Draw the background layer for the GuiContainer (everything behind the
    * items)
    */
