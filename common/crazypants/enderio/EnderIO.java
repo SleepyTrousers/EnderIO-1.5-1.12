@@ -40,7 +40,7 @@ import crazypants.enderio.machine.painter.BlockCustomStair;
 import crazypants.enderio.machine.painter.BlockCustomWall;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
-import crazypants.enderio.machine.solor.BlockSolarPanel;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
@@ -49,7 +49,7 @@ import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.5", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.6", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 

@@ -134,7 +134,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public int powerRequest(ForgeDirection from) {
-    return powerHandler.getMaxEnergyStored() - powerHandler.getMaxEnergyStored();
+    return (int)(powerHandler.getMaxEnergyStored() - powerHandler.getEnergyStored());
   }
 
   // --- Process Loop

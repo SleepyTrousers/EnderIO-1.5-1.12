@@ -1,14 +1,16 @@
-package crazypants.enderio.machine.solor;
+package crazypants.enderio.machine.solar;
 
 import java.util.*;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.*;
 import crazypants.enderio.power.*;
 import crazypants.util.BlockCoord;
 
-public class TileEntitySolorPanel extends TileEntity implements IInternalPowerReceptor, IPowerReceptor {
+public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor, IPowerReceptor {
 
   protected EnderPowerProvider powerHandler;
   private BasicCapacitor capacitor;
@@ -19,7 +21,7 @@ public class TileEntitySolorPanel extends TileEntity implements IInternalPowerRe
   
   private float energyPerTick = 1;
 
-  public TileEntitySolorPanel() {
+  public TileEntitySolarPanel() {
     // TODO:
     capacitor = new BasicCapacitor();
     powerHandler = PowerHandlerUtil.createHandler(capacitor);
@@ -49,13 +51,29 @@ public class TileEntitySolorPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void collectEnergy() {
-    if(!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
+    if (!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
       return;
     }
-    float fromSun = worldObj.getSunBrightness(1);
+    float fromSun = calculateLightRatio();
     float collected = energyPerTick * fromSun;
     powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), powerHandler.getEnergyStored() + collected));
-    
+
+  }
+
+  private float calculateLightRatio() {
+    int lightValue = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted;
+    float sunAngle = worldObj.getCelestialAngleRadians(1.0F);
+
+    if (sunAngle < (float) Math.PI) {
+      sunAngle += (0.0F - sunAngle) * 0.2F;
+    } else {
+      sunAngle += (((float) Math.PI * 2F) - sunAngle) * 0.2F;
+    }
+
+    lightValue = Math.round((float) lightValue * MathHelper.cos(sunAngle));
+
+    lightValue = MathHelper.clamp_int(lightValue, 0, 15);
+    return lightValue / 15f;
   }
 
   private boolean transmitEnergy() {
