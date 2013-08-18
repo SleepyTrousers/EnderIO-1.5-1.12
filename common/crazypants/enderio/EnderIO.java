@@ -43,7 +43,7 @@ import crazypants.enderio.machine.painter.BlockCustomStair;
 import crazypants.enderio.machine.painter.BlockCustomWall;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
-import crazypants.enderio.machine.solor.BlockSolarPanel;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;

@@ -49,7 +49,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     capacitorType = Capacitors.BASIC_CAPACITOR;
     powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor, this, powerType);
 
-    inventory = new ItemStack[inventorySize];    
+    inventory = new ItemStack[this.inventorySize];    
 
     redstoneControlMode = RedstoneControlMode.IGNORE;
   }

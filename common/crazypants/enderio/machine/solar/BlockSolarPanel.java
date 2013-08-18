@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.solor;
+package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   private void init() {
     LanguageRegistry.addName(this, ModObject.blockSolarPanel.name);
     GameRegistry.registerBlock(this, ModObject.blockSolarPanel.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntitySolorPanel.class, ModObject.blockSolarPanel.unlocalisedName + "TileEntity");
+    GameRegistry.registerTileEntity(TileEntitySolarPanel.class, ModObject.blockSolarPanel.unlocalisedName + "TileEntity");
   }
 
   @Override
@@ -62,7 +62,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
   @Override
   public TileEntity createNewTileEntity(World world) {
-    return new TileEntitySolorPanel();
+    return new TileEntitySolarPanel();
   }
   
   public Icon getIcon(int side, int meta) {
@@ -75,8 +75,8 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(te instanceof TileEntitySolorPanel) {
-      ((TileEntitySolorPanel)te).onNeighborBlockChange();
+    if(te instanceof TileEntitySolarPanel) {
+      ((TileEntitySolarPanel)te).onNeighborBlockChange();
     }    
   }
 
