@@ -1,5 +1,6 @@
 package crazypants.enderio.power;
 
+import crazypants.enderio.ModObject;
 import net.minecraft.item.ItemStack;
 
 public enum Capacitors {
@@ -26,6 +27,10 @@ public enum Capacitors {
     this.uiName = uiName;
     this.iconKey = "enderio:" + iconKey;   
     this.unlocalisedName = name();
+  }
+
+  public ItemStack getItemStack() {    
+    return new ItemStack(ModObject.itemBasicCapacitor.actualId,1,ordinal());
   }
   
 }

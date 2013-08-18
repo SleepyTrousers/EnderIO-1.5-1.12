@@ -16,10 +16,21 @@ public class PowerHandlerUtil {
   public static PowerHandler createHandler(ICapacitor capacitor, IPowerReceptor pr, Type type) {
     PowerHandler ph = new PowerHandler(pr, type);
     ph.configure(capacitor.getMinEnergyReceived(),capacitor.getMaxEnergyReceived(),capacitor.getMinActivationEnergy(),capacitor.getMaxEnergyStored());
+    //TODO: Setup perdition properly
     ph.configurePowerPerdition(0, 0);
     ph.setPerdition(new NullPerditionCalculator());
     return ph;
   }  
+  
+  public static void configure(PowerHandler ph, ICapacitor capacitor) {
+    ph.configure(capacitor.getMinEnergyReceived(),capacitor.getMaxEnergyReceived(),capacitor.getMinActivationEnergy(),capacitor.getMaxEnergyStored());
+    if(ph.getEnergyStored() > ph.getMaxEnergyStored()) {
+      ph.setEnergy(ph.getMaxEnergyStored());
+    }
+    //TODO: Setup perdition properly
+    ph.configurePowerPerdition(0, 0);
+    ph.setPerdition(new NullPerditionCalculator());
+  }
   
   public static float transmitInternal(IInternalPowerReceptor receptor, PowerReceiver pp, float quantity, Type type, ForgeDirection from) {
     float used = quantity;
@@ -89,7 +100,10 @@ public class PowerHandlerUtil {
       }
       float res = current - 0.001f;      
       if(res >= current) {
-        System.out.println("PowerHandlerUtil.NullPerditionCalculator.applyPerdition: Fail! current is: " + current + " res is:" + res);
+        res -= 0.01f;
+        if(res >= current) {
+          System.out.println("PowerHandlerUtil.NullPerditionCalculator.applyPerdition: Fail! current is: " + current + " res is:" + res);
+        }        
       }
       return  res; 
     }

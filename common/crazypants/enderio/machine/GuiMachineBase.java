@@ -26,7 +26,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   
   protected static final int POWER_Y = 14;
   protected final int POWER_X = 15;
-  protected static final int POWER_WIDTH = 11;
+  protected static final int POWER_WIDTH = 10;
   protected static final int POWER_HEIGHT = 42;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
   
@@ -118,7 +118,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     int l = (height - ySize) / 2;        
     int i1 = tileEntity.getEnergyStoredScaled(POWER_HEIGHT);
     //x, y, u, v, width, height
-    drawTexturedModalRect(k + POWER_X, l + BOTTOM_POWER_Y - i1, 176, 31, 11, i1);
+    drawTexturedModalRect(k + POWER_X, l + BOTTOM_POWER_Y - i1, 176, 31, POWER_WIDTH, i1);
     
     for (int i = 0; i < buttonList.size(); ++i) {
         GuiButton guibutton = (GuiButton)this.buttonList.get(i);

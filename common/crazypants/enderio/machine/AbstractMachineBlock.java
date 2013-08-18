@@ -165,7 +165,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   public void dropContent(int newSize, T inventory, World world, int xCoord, int yCoord, int zCoord) {
-    for (int i = newSize; i < inventory.getSizeInventory(); i++) {
+    for (int i = newSize; i < inventory.getSizeInventory() - 1; i++) { // -1 to leave capacitor in place
       ItemStack itemstack = inventory.getStackInSlot(i);
       if (itemstack == null) {
         continue;

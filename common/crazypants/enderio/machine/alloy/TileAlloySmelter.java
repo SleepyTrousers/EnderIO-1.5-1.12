@@ -21,7 +21,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     if(i >= 3) {
       return false;
     } 
