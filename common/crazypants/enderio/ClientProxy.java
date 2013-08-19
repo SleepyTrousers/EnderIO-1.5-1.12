@@ -28,6 +28,8 @@ import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.light.BlockElectricLight;
+import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
 import crazypants.enderio.machine.painter.BlockCustomFenceGateRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
@@ -89,9 +91,11 @@ public class ClientProxy extends CommonProxy {
     BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();;
     RenderingRegistry.registerBlockHandler(bcfgr);
     
-    FusedQuartzRenderer fqr = new FusedQuartzRenderer();
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();;
-    RenderingRegistry.registerBlockHandler(fqr);
+    RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
+    
+    BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
     
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame.itemID, fqfr);

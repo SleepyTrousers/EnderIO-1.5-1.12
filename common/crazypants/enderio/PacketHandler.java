@@ -12,6 +12,7 @@ import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerBeacon;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.item.ItemInWorldManager;
@@ -24,6 +25,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.world.World;
+import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -189,6 +191,8 @@ public class PacketHandler implements IPacketHandler {
 
     private Set<String> beaconNames = new HashSet<String>();
     private Set<String> anvilNames = new HashSet<String>();   
+    
+    private Set<String> distanceNames = new HashSet<String>();
 
     public PlayerProxy(EntityPlayerMP obj) {
       // TODO: Move to config?
@@ -224,16 +228,38 @@ public class PacketHandler implements IPacketHandler {
       anvilNames.add("displayGUIAnvil");
       anvilNames.add("func_82244_d");
       
+      distanceNames.add("getDistanceSq");
+      distanceNames.add("getDistance");
+      distanceNames.add("func_70092_e");
+      distanceNames.add("func_70011_f");
+      distanceNames.add("func_71569_e");
+      
       
     }
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+     
       if (interceptNames.contains(method.getName())) {
         
         Object res = method.invoke(realObj, objects);
         if (realObj.openContainer != null) {
-          realObj.openContainer = new ContainerWrapper(realObj.openContainer);
+                    
+//          if("appeng.me.container.ContainerTerminal".equals(realObj.openContainer.getClass().getName())) {
+//            try {
+//              realObj.currentWindowId = realObj.openContainer.windowId;
+//              realObj.openContainer = createMeTerminalProxy(realObj, ((Integer)objects[3]).intValue(),((Integer)objects[4]).intValue(),((Integer)objects[5]).intValue());
+//              Method m = realObj.openContainer.getClass().getMethod("setPlayerIsPresent", EntityPlayer.class, boolean.class);
+//              m.invoke(realObj.openContainer, realObj,true);    
+//              
+//            } catch (Exception e) {
+//              System.out.println("PacketHandler.PlayerProxy.intercept: " + e);
+//            }
+            
+//          } else {          
+            realObj.openContainer = new ContainerWrapper(realObj.openContainer);
+//          }
+          
         }
         return res;
         
@@ -267,14 +293,55 @@ public class PacketHandler implements IPacketHandler {
         realObj.openContainer.windowId = realObj.currentWindowId;
         realObj.openContainer.addCraftingToCrafters(realObj);
         return null;
-     
-      } else if(method.getName().equals("getDistanceSq")) { //for forestry
+      } else if(distanceNames.contains(method.getName())) {
         return 6;
-      }
+      } 
       method.setAccessible(true);
       return method.invoke(realObj, objects);
     }    
     
   }
+  
+  public static class ContainerTerminalProxy implements MethodInterceptor {
+
+    Object realObj;
+    
+    
+    
+    private ContainerTerminalProxy(Object realObj) {    
+      this.realObj = realObj;
+    }
+
+
+
+    @Override
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+      if("canInteractWith".equals(method.getName())) {
+        return true;
+      }
+      method.setAccessible(true);
+      return method.invoke(realObj, objects);
+    }
+    
+  }
+  
+  public static <T> T createMeTerminalProxy(EntityPlayerMP player, int x, int y, int z) throws Exception {
+    Enhancer e = new Enhancer();
+    e.setCallback(new ContainerTerminalProxy(player.openContainer));
+
+    e.setSuperclass(Class.forName("appeng.me.container.ContainerTerminal"));
+    //InventoryPlayer ip, IGridTileEntity te, boolean isWireless
+    Class<?> gteClass = Class.forName("appeng.api.me.tiles.IGridTileEntity");
+    Class<?>[] argTypes = new Class[] { InventoryPlayer.class, gteClass, boolean.class};
+    Object[] args = new Object[] { player.inventory, player.worldObj.getBlockTileEntity(x, y, z), false };
+
+    e.setInterceptDuringConstruction(false);
+    @SuppressWarnings("unchecked")
+    T proxifiedObj = (T) e.create(argTypes, args);
+
+    return proxifiedObj;
+  }
+  
+  
 
 }

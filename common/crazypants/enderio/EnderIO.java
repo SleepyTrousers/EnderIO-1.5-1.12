@@ -33,10 +33,10 @@ import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
-import crazypants.enderio.machine.BlockElectricLight;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
+import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.painter.BlockCustomFence;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
 import crazypants.enderio.machine.painter.BlockCustomStair;
@@ -52,7 +52,7 @@ import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.5", dependencies = "required-after:Forge@[9.10.0.800,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.7", dependencies = "required-after:Forge@[9.10.0.800,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
@@ -97,7 +97,7 @@ public class EnderIO {
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
 
-  public static ItemYetaWrench itemYetaWench;
+  public static ItemYetaWrench itemYetaWench;  
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -141,7 +141,7 @@ public class EnderIO {
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
 
-    // blockElectricLight = BlockElectricLight.create();
+    blockElectricLight = BlockElectricLight.create();
 
     itemYetaWench = ItemYetaWrench.create();
   }
