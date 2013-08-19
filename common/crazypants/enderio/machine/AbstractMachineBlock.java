@@ -29,7 +29,7 @@ import crazypants.enderio.ModObject;
 import crazypants.render.IconUtil;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
-  
+
   public static final Icon[] REDSTONE_CONTROL_ICONS = new Icon[RedstoneControlMode.values().length];
 
   @SideOnly(Side.CLIENT)
@@ -44,7 +44,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       }
 
       @Override
-      public int getTextureType() {       
+      public int getTextureType() {
         return 0;
       }
 
@@ -52,8 +52,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   }
 
-  
-  
   @SideOnly(Side.CLIENT)
   public static Icon getRedstoneControlIcon(RedstoneControlMode mode) {
     return REDSTONE_CONTROL_ICONS[mode.ordinal()];
@@ -156,16 +154,21 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    @SuppressWarnings("unchecked")
-    T te = (T) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
-      dropContent(0, te, world, te.xCoord, te.yCoord, te.zCoord);
+    TileEntity ent = world.getBlockTileEntity(x, y, z);
+    if (ent != null) {
+      if (teClass.isAssignableFrom(ent.getClass())) {
+        @SuppressWarnings("unchecked")
+        T te = (T) world.getBlockTileEntity(x, y, z);
+        if (te != null) {
+          dropContent(0, te, world, te.xCoord, te.yCoord, te.zCoord);
+        }
+      }
     }
     super.breakBlock(world, x, y, z, par5, par6);
   }
 
   public void dropContent(int newSize, T inventory, World world, int xCoord, int yCoord, int zCoord) {
-    for (int i = newSize; i < inventory.getSizeInventory(); i++) { 
+    for (int i = newSize; i < inventory.getSizeInventory(); i++) {
       ItemStack itemstack = inventory.getStackInSlot(i);
       if (itemstack == null) {
         continue;
@@ -219,8 +222,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
-    AbstractMachineEntity te = (AbstractMachineEntity) world.getBlockTileEntity(x, y, z);
-    te.onNeighborBlockChange(blockId);
+    TileEntity ent = world.getBlockTileEntity(x, y, z);
+    if (ent instanceof AbstractMachineEntity) {
+      AbstractMachineEntity te = (AbstractMachineEntity) ent;
+      te.onNeighborBlockChange(blockId);
+    }
   }
 
   @Override

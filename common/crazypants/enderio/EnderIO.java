@@ -37,6 +37,7 @@ import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.light.BlockElectricLight;
+import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.painter.BlockCustomFence;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
 import crazypants.enderio.machine.painter.BlockCustomStair;
@@ -92,10 +93,12 @@ public class EnderIO {
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
-  public static BlockSolarPanel blockSolarPanel;
-  public static BlockElectricLight blockElectricLight;
+  public static BlockSolarPanel blockSolarPanel;  
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
+  
+  public static BlockElectricLight blockElectricLight;
+  public static BlockLightNode blockLightNode;
 
   public static ItemYetaWrench itemYetaWench;  
 
@@ -142,6 +145,7 @@ public class EnderIO {
     itemLiquidConduit = ItemLiquidConduit.create();
 
     blockElectricLight = BlockElectricLight.create();
+    blockLightNode = BlockLightNode.create();
 
     itemYetaWench = ItemYetaWrench.create();
   }

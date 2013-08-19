@@ -48,7 +48,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     setUnlocalizedName(ModObject.blockElectricLight.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setLightOpacity(0);
-    setLightValue(1);
+    setLightValue(0);
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
@@ -99,10 +99,12 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     return renderId;
   }
   
-  
-  
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
+    Block block = blocksList[world.getBlockId(x, y, z)];
+    if (block != null && block != this) {
+        return block.getLightValue(world, x, y, z);
+    }
     return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;    
   }
 
@@ -182,13 +184,26 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
-
+  
   @Override
-  public boolean canPlaceBlockOnSide(World par1World, int x, int y, int z, int side) {
-    ForgeDirection dir = ForgeDirection.getOrientation(side);
-    ForgeDirection op = dir.getOpposite();
-    return par1World.isBlockSolidOnSide(x + op.offsetX, y + op.offsetY, z + op.offsetZ, dir);
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+    System.out.println("BlockLightNode.breakBlock: ");
+    TileElectricLight te = (TileElectricLight) world.getBlockTileEntity(x, y, z);
+    if (te != null) {
+      System.out.println("BlockElectricLight.breakBlock: Got tile entity");
+      te.onBlockRemoved();
+    } else {
+      System.out.println("BlockElectricLight.breakBlock: No tile entity");
+    }
+    world.removeBlockTileEntity(x, y, z);
   }
+
+//  @Override
+//  public boolean canPlaceBlockOnSide(World par1World, int x, int y, int z, int side) {
+//    ForgeDirection dir = ForgeDirection.getOrientation(side);
+//    ForgeDirection op = dir.getOpposite();
+//    return par1World.isBlockSolidOnSide(x + op.offsetX, y + op.offsetY, z + op.offsetZ, dir);
+//  }
 
   @Override
   public TileEntity createNewTileEntity(World world) {
