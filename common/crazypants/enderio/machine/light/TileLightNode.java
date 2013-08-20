@@ -3,6 +3,7 @@ package crazypants.enderio.machine.light;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -14,22 +15,35 @@ public class TileLightNode extends TileEntity {
   int parentY;
   int parentZ;
 
+  boolean isDiagnal = false;
+  
   public TileElectricLight getParent() {
     TileEntity te = worldObj.getBlockTileEntity(parentX, parentY, parentZ);
     if(te instanceof TileElectricLight) {
       return (TileElectricLight)te;
     }
     return null;
+  }  
+  
+  
+  
+  
+  @Override
+  public void updateEntity() {
+    if(worldObj.isRemote) {
+      return;
+    }
+    if(worldObj.getWorldTime() % 42 == 0) {
+     if(worldObj.getBlockId(parentX, parentY, parentZ) != ModObject.blockElectricLight.actualId) {
+       System.out.println("TileLightNode.updateEntity: ");
+       worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+     }
+    }    
   }
-  
-//  public int getLightValue() {
-//    TileElectricLight p = getParent();
-//    if(p == null) {
-//      return 0;
-//    }
-//    return EnderIO.blockElectricLight.getLightValue(worldObj, parentX, parentY, parentZ);
-//  }
-  
+
+
+
+
   public void onNeighbourChanged() {
     TileElectricLight p = getParent();
     if(p != null) {
@@ -50,6 +64,7 @@ public class TileLightNode extends TileEntity {
     parentX = root.getInteger("parentX");
     parentY = root.getInteger("parentY");
     parentZ = root.getInteger("parentZ");
+    isDiagnal = root.getBoolean("isDiagnal");
   }
 
   @Override
@@ -58,17 +73,15 @@ public class TileLightNode extends TileEntity {
     root.setInteger("parentX", parentX);
     root.setInteger("parentY", parentY);
     root.setInteger("parentZ", parentZ);    
+    root.setBoolean("isDiagnal", isDiagnal);
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public AxisAlignedBB getRenderBoundingBox() {
-    return null;
+  public String toString() {
+    return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ", isDiagnal=" + isDiagnal + ", xCoord=" + xCoord
+        + ", yCoord=" + yCoord + ", zCoord=" + zCoord + ", tileEntityInvalid=" + tileEntityInvalid + "]";
   }
   
-  
-  
-
   
   
 }

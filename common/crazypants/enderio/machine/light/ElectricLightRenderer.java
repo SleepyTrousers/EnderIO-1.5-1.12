@@ -17,21 +17,23 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-    // this is highly non thread safe but atm all rendereding is single threaded
-    // so it should be fine, i just really dont like it
-    // int renderId = EnderIO.blockElectricLight.renderId;
-    // EnderIO.blockElectricLight.renderId = 0;
-    // renderer.renderBlockAsItem(EnderIO.blockElectricLight, metadata, modelID)
-    // ;
-    // EnderIO.blockElectricLight.renderId = renderId;
-
+    
     BoundingBox bb = new BoundingBox(0, 0, 0, 1, 0.2, 1);
     boolean doDraw = false;
     if (!Tessellator.instance.isDrawing) {
       doDraw = true;
       Tessellator.instance.startDrawingQuads();
-    }
-    CubeRenderer.render(bb, block.getBlockTextureFromSide(0));
+    }    
+    Icon[] textures = new Icon[6];     
+    textures[0] = block.getBlockTextureFromSide(ForgeDirection.NORTH.ordinal());
+    textures[1] = block.getBlockTextureFromSide(ForgeDirection.SOUTH.ordinal());
+    textures[2] = block.getBlockTextureFromSide(ForgeDirection.DOWN.ordinal());
+    textures[3] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal());
+    textures[4] = block.getBlockTextureFromSide(ForgeDirection.WEST.ordinal());
+    textures[5] = block.getBlockTextureFromSide(ForgeDirection.EAST.ordinal());    
+    
+    CubeRenderer.render(bb, textures, null);
+    
     if (doDraw) {
       Tessellator.instance.draw();
     }
@@ -46,8 +48,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     bb = bb.translate(x, y, z);
     RenderUtil.setTesselatorBrightness(world, x, y, z);
 
-    Icon[] textures = new Icon[6];
-     
+    Icon[] textures = new Icon[6];     
     textures[0] = block.getBlockTexture(world, x, y, z, ForgeDirection.NORTH.ordinal());
     textures[1] = block.getBlockTexture(world, x, y, z, ForgeDirection.SOUTH.ordinal());
     textures[2] = block.getBlockTexture(world, x, y, z, ForgeDirection.UP.ordinal());

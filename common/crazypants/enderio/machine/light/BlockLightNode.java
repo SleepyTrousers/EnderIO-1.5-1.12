@@ -40,7 +40,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
     setLightOpacity(0);
     setLightValue(0);
     //setBlockBounds(0.45f, 0.45F, 0.45f, 0.55f, 0.55f, 0.55f);
-    setBlockBounds(0,0,0,0,0,0);
+    setBlockBounds(0, 0, 0, 0, 0, 0);
   }
 
   @Override
@@ -49,75 +49,28 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4) {
-    setBlockBounds(0,0,0,0,0,0);
-  }
-
-  @Override
-  public void setBlockBoundsForItemRender() {
-    setBlockBounds(0,0,0,0,0,0);
-  }
-
-  @Override
-  public boolean isBlockSolid(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+  public boolean isOpaqueCube() {
     return false;
   }
 
   @Override
-  public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
-    return false;
+  public boolean isBlockSolid(IBlockAccess iblockaccess, int x, int y, int z, int l) {
+    int blockID = iblockaccess.getBlockId(x, y, z);
+    if (blockID == this.blockID) {
+      return false;
+    } else {
+
+      return super.isBlockSolid(iblockaccess, x, y, z, l);
+    }
+  }
+
+  @Override
+  public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    return null;
   }
 
   @Override
   public boolean isBlockReplaceable(World world, int x, int y, int z) {
-    return true;
-  }
-
-//  @Override
-//  public MovingObjectPosition collisionRayTrace(World world, int x, int y,
-//      int z, Vec3 origin, Vec3 direction) {
-//    return null;
-//  }
-
-//  @Override
-//  public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int
-//      y, int z) {
-//    return null;
-//  }
-
-  public boolean canCollideCheck(int par1, boolean par2) {
-    return false;
-  }
-
-  public boolean isCollidable() {
-    return false;
-  }
-
-  @Override
-  public void addCollisionBoxesToList(World world, int x, int y, int z,
-      AxisAlignedBB axisalignedbb, @SuppressWarnings("rawtypes") List arraylist,
-      Entity par7Entity) {
-    setBlockBounds(0,0,0,0,0,0);
-    super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist,
-        par7Entity);
-    setBlockBounds(0,0,0,0,0,0);
-  }
-  
-
-  @Override
-  public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int x, int y, int z) {
-    return AxisAlignedBB.getBoundingBox(x, y ,z , x, y , z);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public boolean addBlockHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
-    return true;
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public boolean addBlockDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
     return true;
   }
 
@@ -133,10 +86,16 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     Block block = blocksList[world.getBlockId(x, y, z)];
-    if (block != null && block != this) {
+    if (block != null && block.blockID != blockID) {
       return block.getLightValue(world, x, y, z);
     }
-    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
+    int onVal = 15;
+//    TileEntity te = world.getBlockTileEntity(x, y, z);
+//    if(te instanceof TileLightNode && ((TileLightNode)te).isDiagnal) { 
+//      System.out.println("BlockLightNode.getLightValue: ");
+//      onVal = 5;
+//    }
+    return world.getBlockMetadata(x, y, z) > 0 ? onVal : 0;
   }
 
   @Override
@@ -151,11 +110,6 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
     LanguageRegistry.addName(this, ModObject.blockLightNode.name);
     GameRegistry.registerBlock(this, ModObject.blockLightNode.unlocalisedName);
     GameRegistry.registerTileEntity(TileLightNode.class, ModObject.blockLightNode.unlocalisedName + "TileEntity");
-  }
-
-  @Override
-  public boolean isOpaqueCube() {
-    return false;
   }
 
   @Override

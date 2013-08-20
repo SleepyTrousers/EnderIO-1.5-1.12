@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.*;
@@ -57,6 +58,11 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     GameRegistry.registerBlock(this, ModObject.blockElectricLight.unlocalisedName);
     GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
   }
+  
+  @Override
+  public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    return null;
+  }
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
@@ -73,7 +79,8 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     if (te instanceof TileElectricLight) {
       ForgeDirection onFace = ((TileElectricLight) te).getFace();
       if(side == (onFace.offsetX == 0 ? onFace.getOpposite().ordinal() : onFace.ordinal())) {
-        return ((TileElectricLight) te).isOn() ? blockIcon : blockIconOff;
+        boolean on = blockAccess.getBlockMetadata(x, y, z) != 0;
+        return on ? blockIcon : blockIconOff;
       }
       return blockIconSide;
     }
@@ -186,24 +193,13 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   }
   
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    System.out.println("BlockLightNode.breakBlock: ");
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {    
     TileElectricLight te = (TileElectricLight) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
-      System.out.println("BlockElectricLight.breakBlock: Got tile entity");
+    if (te != null) {      
       te.onBlockRemoved();
-    } else {
-      System.out.println("BlockElectricLight.breakBlock: No tile entity");
-    }
+    } 
     world.removeBlockTileEntity(x, y, z);
   }
-
-//  @Override
-//  public boolean canPlaceBlockOnSide(World par1World, int x, int y, int z, int side) {
-//    ForgeDirection dir = ForgeDirection.getOrientation(side);
-//    ForgeDirection op = dir.getOpposite();
-//    return par1World.isBlockSolidOnSide(x + op.offsetX, y + op.offsetY, z + op.offsetZ, dir);
-//  }
 
   @Override
   public TileEntity createNewTileEntity(World world) {
