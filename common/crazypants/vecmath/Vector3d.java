@@ -34,10 +34,11 @@ public class Vector3d {
     z = vec.z;    
   }
 
-  public void add(Vector3d vec) {
+  public Vector3d add(Vector3d vec) {
     x += vec.x;
     y += vec.y;
     z += vec.z;
+    return this;
   }
 
   public void sub(Vector3d vec) {
@@ -46,10 +47,11 @@ public class Vector3d {
     z -= vec.z;
   }
 
-  public void negate() {
+  public Vector3d negate() {
     x = -x;
     y = -y;
     z = -z;
+    return this;
   }
 
   public void scale(double s) {

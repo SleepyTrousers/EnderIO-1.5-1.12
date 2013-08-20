@@ -27,6 +27,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     super(ModObject.blockCustomStair.actualId, Block.brick, 0);
     setCreativeTab(null);
     setUnlocalizedName(ModObject.blockCustomStair.unlocalisedName);
+    setLightOpacity(0);
   }
 
   

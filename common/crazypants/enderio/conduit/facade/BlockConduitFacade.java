@@ -53,7 +53,11 @@ public class BlockConduitFacade extends Block {
     if (id <= 0 || id == blockID) {
       return blockIcon;
     }    
-    return Block.blocksList[id].getIcon(side, meta);
+    Block block = Block.blocksList[id];
+    if(block != null) {
+      return block.getIcon(side, meta);
+  }
+    return blockIcon;
   }
 
 

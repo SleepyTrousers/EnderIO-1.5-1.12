@@ -21,7 +21,7 @@ public class MachineRecipes {
     ItemStack red = new ItemStack(Item.dyePowder, 1, 1);
     ItemStack green = new ItemStack(Item.dyePowder, 1, 2);
     ItemStack blue = new ItemStack(Item.dyePowder, 1, 4);
-    //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! MachineRecipes.addRecipes: Adding painter recipe with output for item stack of " + painter.itemID);
+
     GameRegistry.addShapedRecipe(painter, "bbb", "RGB", "bcb", 'b', industialBinder, 'R', red, 'G', green, 'B', blue, 'c', capacitor);
 
     ItemStack reservoir = new ItemStack(blockReservoir.actualId, 1, 0);
@@ -37,6 +37,13 @@ public class MachineRecipes {
     ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
     
     GameRegistry.addShapedRecipe(solarPanel, "qqq", "gig", "bcb", 'q', fusedQuartz, 'g', activatedGold, 'i', activatedIron, 'b', industialBinder,'c', capacitor);
+    
+    
+    ItemStack electricLight = new ItemStack(blockElectricLight.actualId,1,0); 
+    ItemStack glowstone = new ItemStack(Item.lightStoneDust);
+    GameRegistry.addShapedRecipe(electricLight, "bqb", "bgb", "bcb", 'q', fusedQuartz, 'g', glowstone, 'b', industialBinder,'c', capacitor);
+    
+    
   }
 
 }

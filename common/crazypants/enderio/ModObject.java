@@ -44,6 +44,7 @@ public enum ModObject {
   blockSolarPanel(++Config.BID, CATEGORY_BLOCK, "Photovoltaic Panel"),
   
   blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Electric Light"),
+  blockLightNode(++Config.BID, CATEGORY_BLOCK, "Light Node (Internal Only)"),
   
   itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench");
 

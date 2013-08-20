@@ -9,15 +9,15 @@ import net.minecraft.util.StringTranslate;
 
 public final class PainterUtil {
 
-  
-  private PainterUtil() {    
+  private PainterUtil() {
   }
 
   public static boolean isMetadataEquivelent(ItemStack one, ItemStack two) {
-    if(one == null || two == null) {
+    if (one == null || two == null) {
       return false;
     }
-    return PainterUtil.getSourceBlockId(one) == PainterUtil.getSourceBlockId(two) && PainterUtil.getSourceBlockMetadata(one) == PainterUtil.getSourceBlockMetadata(two);
+    return PainterUtil.getSourceBlockId(one) == PainterUtil.getSourceBlockId(two)
+        && PainterUtil.getSourceBlockMetadata(one) == PainterUtil.getSourceBlockMetadata(two);
   }
 
   public static Block getSourceBlock(ItemStack item) {
@@ -58,20 +58,23 @@ public final class PainterUtil {
     }
     tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_ID, sourceId);
     tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
-  
+
     String sourceName = "";
-    if (sourceId > 0) {  
-      sourceName = Item.itemsList[sourceId].getUnlocalizedName(new ItemStack(sourceId, 1, meta));
-      sourceName = StatCollector.translateToLocal(sourceName + ".name");
+    if (sourceId > 0) {
+      Item i = Item.itemsList[sourceId];
+      if (i != null) {
+        sourceName = i.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
+        sourceName = StatCollector.translateToLocal(sourceName + ".name");
+      }
     }
     String typeName;
     typeName = Item.itemsList[item.itemID].getUnlocalizedName(item);
     typeName = StatCollector.translateToLocal(typeName + ".name");
-  
+
     NBTTagCompound displayTags = new NBTTagCompound();
     displayTags.setString("Name", "Painted " + sourceName + " " + typeName);
     tag.setCompoundTag("display", displayTags);
-  
+
   }
-  
+
 }
