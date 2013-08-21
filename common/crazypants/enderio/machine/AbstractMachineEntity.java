@@ -348,7 +348,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   private void updateCapacitorFromSlot() {
     ItemStack contents = inventory[inventory.length - 1];
-    if (contents == null) {
+    if (contents == null || contents.itemID != ModObject.itemBasicCapacitor.actualId) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);

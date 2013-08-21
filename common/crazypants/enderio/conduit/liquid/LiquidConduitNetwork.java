@@ -83,11 +83,11 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     }
 
     long curTime = world.getTotalWorldTime();
-    if (curTime != timeAtLastApply) {
+    if (curTime > 0 && curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
       // 1000 water, 6000 lava
       if (liquidType != null && liquidType.getFluid() != null) {
-        int visc = liquidType.getFluid().getViscosity();
+        int visc = Math.max(1000, liquidType.getFluid().getViscosity());
         if (curTime % (visc / 500) == 0) {
           long start = System.nanoTime();
           if (doFlow() && printFlowTiming) {
