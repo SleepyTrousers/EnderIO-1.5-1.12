@@ -96,13 +96,16 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   protected void taskComplete() {
     int outputIndex = inventory.length - 2;
     if (currentTask != null) {
-      ItemStack result = currentTask.getCompletedResult()[0];
-      if (inventory[outputIndex] == null) {
-        inventory[outputIndex] = result.copy();
-      } else {
-        int newStackSize = inventory[outputIndex].stackSize += result.stackSize;
-        inventory[outputIndex] = result.copy();
-        inventory[outputIndex].stackSize = newStackSize;
+      ItemStack[] output = currentTask.getCompletedResult();
+      if (output != null && output.length > 0) {
+        ItemStack result = currentTask.getCompletedResult()[0];
+        if (inventory[outputIndex] == null) {
+          inventory[outputIndex] = result.copy();
+        } else {
+          int newStackSize = inventory[outputIndex].stackSize += result.stackSize;
+          inventory[outputIndex] = result.copy();
+          inventory[outputIndex].stackSize = newStackSize;
+        }
       }
     }
     currentTask = null;
