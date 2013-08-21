@@ -4,23 +4,17 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityCustomBlock;
-import crazypants.enderio.machine.painter.BlockCustomWall.PainterTemplate;
 
 public class ItemFusedQuartzFrame extends Item {
 
@@ -48,27 +42,26 @@ public class ItemFusedQuartzFrame extends Item {
     itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
   }
 
-  
   @Override
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
-        
-    if(world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
-      TileEntityCustomBlock tecb = (TileEntityCustomBlock)world.getBlockTileEntity(x, y, z);
-      if(tecb == null) {
+
+    if (world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
+      TileEntityCustomBlock tecb = (TileEntityCustomBlock) world.getBlockTileEntity(x, y, z);
+      if (tecb == null) {
         return false;
       }
-      //if(!world.isRemote) {
-        tecb.setSourceBlockId(PainterUtil.getSourceBlockId(itemStack));
-        tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
-        world.markBlockForUpdate(x, y, z);
-        world.markBlockForRenderUpdate(x, y, z);
-      //}
-        if(!world.isRemote) {
-          if (!player.capabilities.isCreativeMode) {
-            itemStack.stackSize--;
-          }  
+      // if(!world.isRemote) {
+      tecb.setSourceBlockId(PainterUtil.getSourceBlockId(itemStack));
+      tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
+      world.markBlockForUpdate(x, y, z);
+      world.markBlockForRenderUpdate(x, y, z);
+      // }
+      if (!world.isRemote) {
+        if (!player.capabilities.isCreativeMode) {
+          itemStack.stackSize--;
         }
+      }
       return true;
     } else {
       return false;

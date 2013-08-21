@@ -1,15 +1,9 @@
 package crazypants.enderio;
 
-import java.util.List;
 import java.util.logging.Level;
 
-import com.google.common.collect.Lists;
-
-import net.minecraft.world.World;
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -93,14 +87,14 @@ public class EnderIO {
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
-  public static BlockSolarPanel blockSolarPanel;  
+  public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  
+
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
-  public static ItemYetaWrench itemYetaWench;  
+  public static ItemYetaWrench itemYetaWench;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {

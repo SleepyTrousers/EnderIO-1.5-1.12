@@ -23,7 +23,7 @@ public class Vector2d {
     this.x = x;
     this.y = y;
   }
-  
+
   public void set(Vector2d vec) {
     x = vec.x;
     y = vec.y;
@@ -54,7 +54,6 @@ public class Vector2d {
     scale(scale);
   }
 
-
   public double lengthSquared() {
     return x * x + y * y;
   }
@@ -62,12 +61,12 @@ public class Vector2d {
   public double length() {
     return Math.sqrt(lengthSquared());
   }
-  
+
   public double distanceSquared(Vector2d v) {
     double dx, dy, dz;
-    dx = x-v.x;
-    dy = y-v.y;
-    return (dx*dx+dy*dy);
+    dx = x - v.x;
+    dy = y - v.y;
+    return (dx * dx + dy * dy);
   }
 
   public double distance(Vector2d v) {
@@ -78,5 +77,5 @@ public class Vector2d {
   public String toString() {
     return "Vector2d(" + x + ", " + y + ")";
   }
-  
+
 }

@@ -58,21 +58,20 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     float val = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
     renderTileEntityAt(bundle, x, y, z, partialTick, val);
   }
-  
-  
+
   public void renderTileEntityAt(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
-        
+
     RenderUtil.bindBlockTexture();
     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-    //GL11.glPushAttrib(GL11.GL_POLYGON_BIT);
+    // GL11.glPushAttrib(GL11.GL_POLYGON_BIT);
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glShadeModel(GL11.GL_SMOOTH);
-    //GL11.glDisable (GL11.GL_CULL_FACE);
+    // GL11.glDisable (GL11.GL_CULL_FACE);
 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
@@ -111,7 +110,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPopMatrix();
     GL11.glPopAttrib();
     GL11.glPopAttrib();
-    //GL11.glPopAttrib();
+    // GL11.glPopAttrib();
 
   }
 

@@ -54,14 +54,14 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
     if (renderPass == 0) {
-      
-      RenderUtil.setTesselatorBrightness(blockAccess, x, y, z);      
+
+      RenderUtil.setTesselatorBrightness(blockAccess, x, y, z);
       TileEntityCustomBlock tecb = null;
       TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
-      if(te instanceof TileEntityCustomBlock) {
-        tecb = (TileEntityCustomBlock)te;
+      if (te instanceof TileEntityCustomBlock) {
+        tecb = (TileEntityCustomBlock) te;
       }
-      
+
       renderFrame(blockAccess, x, y, z, tecb, false);
 
     } else {
@@ -69,24 +69,24 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     }
     return true;
   }
-  
-  public void renderFrameItem(ItemStack stack) {   
+
+  public void renderFrameItem(ItemStack stack) {
     RenderUtil.bindBlockTexture();
     Tessellator.instance.startDrawingQuads();
     TileEntityCustomBlock tecb = new TileEntityCustomBlock();
     tecb.setSourceBlockId(PainterUtil.getSourceBlockId(stack));
-    tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));   
-    renderFrame(null,0,0,0,tecb,true);
+    tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
+    renderFrame(null, 0, 0, 0, tecb, true);
     Tessellator.instance.draw();
-    
+
   }
 
   private void renderFrame(IBlockAccess blockAccess, int x, int y, int z, TileEntityCustomBlock tecb, boolean forceAllEdges) {
     Icon texture = EnderIO.blockFusedQuartz.itemIcon;
-    
-    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {      
-    
-      if(tecb != null && tecb.getSourceBlockId() > 0) {        
+
+    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
+
+      if (tecb != null && tecb.getSourceBlockId() > 0) {
         texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
       }
       renderFrame(blockAccess, x, y, z, tecb, face, texture, forceAllEdges);
@@ -99,7 +99,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
         face.ordinal())) {
       return;
     }
-    
+
     BlockCoord bc = new BlockCoord(x, y, z);
 
     List<Edge> edges = new ArrayList<Edge>(4);
@@ -123,7 +123,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     Tessellator tes = Tessellator.instance;
     float cm = RenderUtil.getColorMultiplierForFace(face);
     tes.setColorOpaque_F(cm, cm, cm);
-    
+
     Vector2d uv = new Vector2d();
     int index = 0;
     boolean invertWinding;
@@ -145,51 +145,51 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
         Vector3d in = ForgeDirectionOffsets.offsetScaled(edge.dir, -1 / 16d);
         Vector3d corner = new Vector3d();
         if ((invertWinding && index % 2 == 0) || (!invertWinding && index % 2 != 0)) {
-          
+
           corner.set(edgeCenter);
           corner.add(edgeUp);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
           tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
+
           corner.set(edgeCenter);
           corner.sub(edgeUp);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
           tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
-          corner.set(edgeCenter);
-          corner.sub(edgeUp);
-          corner.add(in);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
-          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
-          corner.set(edgeCenter);
-          corner.add(edgeUp);
-          corner.add(in);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
-          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
-        } else { //reverse winding
-          
-          corner.set(edgeCenter);
-          corner.add(edgeUp);
-          corner.add(in);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
-          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
+
           corner.set(edgeCenter);
           corner.sub(edgeUp);
           corner.add(in);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
           tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
-          corner.set(edgeCenter);
-          corner.sub(edgeUp);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
-          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
-          
+
           corner.set(edgeCenter);
           corner.add(edgeUp);
-          getUvForCorner(uv, corner,x,y,z,face,texture);
+          corner.add(in);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
+          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
+
+        } else { // reverse winding
+
+          corner.set(edgeCenter);
+          corner.add(edgeUp);
+          corner.add(in);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
+          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
+
+          corner.set(edgeCenter);
+          corner.sub(edgeUp);
+          corner.add(in);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
+          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
+
+          corner.set(edgeCenter);
+          corner.sub(edgeUp);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
+          tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
+
+          corner.set(edgeCenter);
+          corner.add(edgeUp);
+          getUvForCorner(uv, corner, x, y, z, face, texture);
           tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
         }
 
@@ -198,61 +198,59 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     }
   }
 
-  
   private void getUvForCorner(Vector2d uv, Vector3d corner, int x, int y, int z, ForgeDirection face, Icon icon) {
     Vector3d p = new Vector3d(corner);
     p.x -= x;
     p.y -= y;
-    p.z -= z;    
-    
+    p.z -= z;
+
     float uWidth = icon.getMaxU() - icon.getMinU();
     float vWidth = icon.getMaxV() - icon.getMinV();
-    
+
     uv.x = VecmathUtil.distanceFromPointToPlane(getUPlaneForFace(face), p);
-    uv.y = VecmathUtil.distanceFromPointToPlane(getVPlaneForFace(face), p);        
-    
+    uv.y = VecmathUtil.distanceFromPointToPlane(getVPlaneForFace(face), p);
+
     uv.x = icon.getMinU() + (uv.x * uWidth);
-    uv.y = icon.getMinV() + (uv.y * vWidth);    
-    
+    uv.y = icon.getMinV() + (uv.y * vWidth);
+
   }
-  
+
   private Vector4d getVPlaneForFace(ForgeDirection face) {
-    switch (face) {    
-    case DOWN:           
+    switch (face) {
+    case DOWN:
     case UP:
-      return new Vector4d(0,0,1,0);      
-    case EAST:               
-    case WEST:      
-    case NORTH:           
-    case SOUTH:      
-      return new Vector4d(0,-1,0,1);
-    case UNKNOWN:           
-    default:     
-      break;
-    }
-    return null;
-  }
-  
-  private Vector4d getUPlaneForFace(ForgeDirection face) {
-    switch (face) {    
-    case DOWN:           
-    case UP:      
-      return new Vector4d(1,0,0,0);
-    case EAST:    
-      return new Vector4d(0,0,-1,1);      
+      return new Vector4d(0, 0, 1, 0);
+    case EAST:
     case WEST:
-      return new Vector4d(0,0,1,0);
-    case NORTH:      
-      return new Vector4d(-1,0,0,1);
-    case SOUTH:      
-      return new Vector4d(1,0,0,0);        
-    case UNKNOWN:           
-    default:     
+    case NORTH:
+    case SOUTH:
+      return new Vector4d(0, -1, 0, 1);
+    case UNKNOWN:
+    default:
       break;
     }
     return null;
   }
 
+  private Vector4d getUPlaneForFace(ForgeDirection face) {
+    switch (face) {
+    case DOWN:
+    case UP:
+      return new Vector4d(1, 0, 0, 0);
+    case EAST:
+      return new Vector4d(0, 0, -1, 1);
+    case WEST:
+      return new Vector4d(0, 0, 1, 0);
+    case NORTH:
+      return new Vector4d(-1, 0, 0, 1);
+    case SOUTH:
+      return new Vector4d(1, 0, 0, 0);
+    case UNKNOWN:
+    default:
+      break;
+    }
+    return null;
+  }
 
   private static class Edge {
     final ForgeDirection dir;

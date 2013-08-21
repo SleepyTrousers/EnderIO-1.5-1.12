@@ -6,9 +6,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -18,28 +24,20 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
-  static final  Map<String, Icon> ICONS = new HashMap<String, Icon>();
-  
+  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {           
+    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
       public void registerIcons(IconRegister register) {
         ICONS.put(KEY_CORE_OFF_ICON, register.registerIcon(KEY_CORE_OFF_ICON));
         ICONS.put(KEY_CORE_ON_ICON, register.registerIcon(KEY_CORE_ON_ICON));
         ICONS.put(KEY_CONDUIT_ICON, register.registerIcon(KEY_CONDUIT_ICON));
-        ICONS.put(KEY_TRANSMISSION_ICON, register.registerIcon(KEY_TRANSMISSION_ICON));        
+        ICONS.put(KEY_TRANSMISSION_ICON, register.registerIcon(KEY_TRANSMISSION_ICON));
       }
 
       @Override
@@ -49,22 +47,22 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
     });
   }
-  
+
   protected RedstoneConduitNetwork network;
 
   protected final Set<Signal> externalSignals = new HashSet<Signal>();
 
   public RedstoneConduit() {
-  }   
+  }
 
   @Override
   public boolean isReplaceableByControl(Class<? extends IRedstoneConduit> replacenebtType) {
     return true;
   }
-  
+
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemRedstoneConduit.actualId,1,0);
+    return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 0);
   }
 
   @Override
@@ -81,7 +79,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   public boolean setNetwork(AbstractConduitNetwork<?> network) {
     this.network = (RedstoneConduitNetwork) network;
     return true;
-  } 
+  }
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction) {
@@ -92,45 +90,47 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
     int id = world.getBlockId(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
     if (id > 0 && id != EnderIO.blockConduitBundle.blockID) {
-      
-      //We can connect to a block if it can provide power or it is receiving a string signal (not emitted by us)
-      
+
+      // We can connect to a block if it can provide power or it is receiving a
+      // string signal (not emitted by us)
+
       BlockCoord loc = getLocation().getLocation(direction);
-      
+
       boolean toggleNetwork = network != null && network.isNetworkEnabled();
-      if(toggleNetwork ) {
+      if (toggleNetwork) {
         network.setNetworkEnabled(false);
       }
       boolean gettingStrongPower = world.getBlockPowerInput(loc.x, loc.y, loc.z) == 15;
-      if(toggleNetwork) {
+      if (toggleNetwork) {
         network.setNetworkEnabled(true);
       }
-      
-      
-      //We can get an input from the block when:
-      return 
-          Block.blocksList[id].canProvidePower() || //The block can provide power           
-          //Or its getting a strong signal that we are not providing
+
+      // We can get an input from the block when:
+      return Block.blocksList[id].canProvidePower() || // The block can provide
+                                                       // power
+          // Or its getting a strong signal that we are not providing
           gettingStrongPower;
-          //( world.getBlockPowerInput(loc.x, loc.y, loc.z) == 15 && isProvidingStrongPower(direction) != 15 ); 
+      // ( world.getBlockPowerInput(loc.x, loc.y, loc.z) == 15 &&
+      // isProvidingStrongPower(direction) != 15 );
     }
     return false;
   }
 
   @Override
-  public Set<Signal> getNetworkInputs() {    
+  public Set<Signal> getNetworkInputs() {
     Set<Signal> res = new HashSet<Signal>();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if (canConnectToExternal(dir)) {
         int input = getExternalPowerLevel(dir);
-        if (input > 1) { //need to degrade external signals by one as they enter
+        if (input > 1) { // need to degrade external signals by one as they
+                         // enter
           BlockCoord loc = getLocation().getLocation(dir);
           Signal signal = new Signal(loc.x, loc.y, loc.z, input - 1, SignalColor.RED);
           res.add(signal);
-        }        
+        }
       }
     }
-    return res;    
+    return res;
   }
 
   @Override
@@ -140,7 +140,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
     return network.getSignals();
   }
-  
+
   @Override
   public boolean onNeighborBlockChange(int blockId) {
     World world = getBundle().getEntity().worldObj;
@@ -151,14 +151,14 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
       return false;
     }
     boolean res = super.onNeighborBlockChange(blockId);
-        
-    if (network == null || network.updatingNetwork) {      
+
+    if (network == null || network.updatingNetwork) {
       return false;
-    }    
-    
-    if(blockId > 0 && Block.blocksList[blockId].canProvidePower() && network != null) {  
-      //TODO: Just recalculate the signals, no need for a full rebuild
-      network.destroyNetwork();      
+    }
+
+    if (blockId > 0 && Block.blocksList[blockId].canProvidePower() && network != null) {
+      // TODO: Just recalculate the signals, no need for a full rebuild
+      network.destroyNetwork();
       return false;
     }
     return res;
@@ -167,11 +167,11 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   private int getExternalPowerLevel(ForgeDirection dir) {
     if (network != null) {
       network.setNetworkEnabled(false);
-    }    
+    }
     World world = getBundle().getEntity().worldObj;
-    BlockCoord loc = getLocation();   
-    int  result = world.getStrongestIndirectPower(loc.x, loc.y, loc.z);    
-    
+    BlockCoord loc = getLocation();
+    int result = world.getStrongestIndirectPower(loc.x, loc.y, loc.z);
+
     if (network != null) {
       network.setNetworkEnabled(true);
     }
@@ -201,18 +201,18 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if (component.dir == ForgeDirection.UNKNOWN) {
       return isActive() ? ICONS.get(KEY_CORE_ON_ICON) : ICONS.get(KEY_CORE_OFF_ICON);
     }
-    //return ICONS.get(KEY_CONDUIT_ICON);
+    // return ICONS.get(KEY_CONDUIT_ICON);
     return isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : ICONS.get(KEY_CONDUIT_ICON);
   }
 
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
-//    if (component.id == ForgeDirection.UNKNOWN) {
-//      return null;
-//    }
-//    return isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : null;
+    // if (component.id == ForgeDirection.UNKNOWN) {
+    // return null;
+    // }
+    // return isActive() ? ICONS.get(KEY_TRANSMISSION_ICON) : null;
     return null;
-        
+
   }
 
   @Override

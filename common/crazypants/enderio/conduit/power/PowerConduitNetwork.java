@@ -6,28 +6,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.util.BlockCoord;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.util.BlockCoord;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
 
   // ----------------------------------------------------------------------
 
   NetworkPowerManager powerManager;
-  
 
   private Map<BlockCoord, ReceptorEntry> powerReceptors = new HashMap<BlockCoord, ReceptorEntry>();
-  
+
   private long timeAtLastApply = -1;
 
   public PowerConduitNetwork() {
@@ -35,7 +30,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
 
   @Override
   public void init(IConduitBundle tile, Collection<IPowerConduit> connections, World world) {
-    super.init(tile, connections, world);    
+    super.init(tile, connections, world);
     powerManager = new NetworkPowerManager(this, world);
     powerManager.receptorsChanged();
   }
@@ -45,7 +40,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     for (IPowerConduit con : conduits) {
       con.setActive(false);
     }
-    powerManager.onNetworkDestroyed();    
+    powerManager.onNetworkDestroyed();
     super.destroyNetwork();
   }
 
@@ -63,8 +58,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
         TileEntity te = con.getBundle().getEntity();
         powerReceptorAdded(con, dir, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, pr);
       }
-    }    
-    if(powerManager != null) {
+    }
+    if (powerManager != null) {
       con.setActive(powerManager.isActive());
     }
   }
@@ -75,17 +70,17 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   }
 
   public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, IPowerReceptor powerReceptor) {
-    if(powerReceptor == null) {      
+    if (powerReceptor == null) {
       return;
-    }    
+    }
     BlockCoord key = new BlockCoord(x, y, z);
     ReceptorEntry re = powerReceptors.get(key);
-    if(re == null) {
+    if (re == null) {
       re = new ReceptorEntry(powerReceptor, key, powerConduit);
       powerReceptors.put(key, re);
     }
-    re.directions.add(direction); 
-    if(powerManager != null) {
+    re.directions.add(direction);
+    if (powerManager != null) {
       powerManager.receptorsChanged();
     }
   }
@@ -98,39 +93,37 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   public Collection<ReceptorEntry> getPowerReceptors() {
     return powerReceptors.values();
   }
-  
+
   @Override
   public void onUpdateEntity(IConduit conduit) {
     World world = conduit.getBundle().getEntity().worldObj;
-    if(world == null) {
+    if (world == null) {
       return;
     }
-    if(world.isRemote) {
+    if (world.isRemote) {
       return;
     }
-    long curTime = world.getTotalWorldTime();    
-    if(curTime != timeAtLastApply) {
+    long curTime = world.getTotalWorldTime();
+    if (curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
       powerManager.applyRecievedPower();
-    }  
+    }
   }
-  
 
   public static class ReceptorEntry {
-    
+
     IPowerConduit emmiter;
     IPowerReceptor powerReceptor;
     BlockCoord coord;
-    //The different directions that we connect to the sucker
+    // The different directions that we connect to the sucker
     Set<ForgeDirection> directions = new HashSet<ForgeDirection>();
-    
-    public ReceptorEntry(IPowerReceptor powerReceptor, BlockCoord coord,IPowerConduit emmiter) {
+
+    public ReceptorEntry(IPowerReceptor powerReceptor, BlockCoord coord, IPowerConduit emmiter) {
       this.powerReceptor = powerReceptor;
-      this.coord = coord;      
+      this.coord = coord;
       this.emmiter = emmiter;
     }
-            
-  }
 
+  }
 
 }

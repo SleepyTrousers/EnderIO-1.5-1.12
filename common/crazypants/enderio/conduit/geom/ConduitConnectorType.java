@@ -5,5 +5,5 @@ public enum ConduitConnectorType {
   VERTICAL,
   HORIZONTAL,
   BOTH
-  
+
 }

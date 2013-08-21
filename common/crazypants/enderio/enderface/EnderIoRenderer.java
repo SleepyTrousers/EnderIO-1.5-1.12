@@ -20,7 +20,6 @@ import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
 
-
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   @Override
@@ -38,7 +37,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
   }
 
   public void render(double x, double y, double z, Matrix4d lookMat, int brightness) {
-    
 
     GL11.glPushMatrix();
     GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -63,23 +61,23 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_ONE);
     float blendFactor = 1F;
     GL11.glColor4f(0.5F * blendFactor, 0.25F * blendFactor, 0.8F * blendFactor, 1.0F);
-    
+
     GL11.glMatrixMode(GL11.GL_TEXTURE);
     GL11.glPushMatrix();
     float scale = 0.125F;
     GL11.glScalef(scale, scale, scale);
     float tans = Minecraft.getSystemTime() % 3000L / 3000.0F * 8.0F;
     GL11.glTranslatef(tans, 0.0F, 0.0F);
-    GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);    
+    GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
     renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
     GL11.glPopMatrix();
-    
+
     GL11.glPushMatrix();
     GL11.glScalef(scale, scale, scale);
-    tans = Minecraft.getSystemTime() % 4873L / 4873.0F * 8.0F;    
+    tans = Minecraft.getSystemTime() % 4873L / 4873.0F * 8.0F;
     GL11.glTranslatef(-tans, 0.0F, 0.0F);
     GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
-    renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8,brightness);
+    renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
     GL11.glPopMatrix();
 
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -87,19 +85,16 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     GL11.glEnable(GL11.GL_LIGHTING);
     GL11.glDepthFunc(GL11.GL_LEQUAL);
 
-  
-
     GL11.glColor4f(1, 1, 1, 1.0F);
     GL11.glPopMatrix();
 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
-    
     RenderUtil.bindBlockTexture();
     Tessellator.instance.startDrawingQuads();
     Tessellator.instance.setBrightness(brightness);
-    
+
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockEnderIo.frameIcon);
@@ -115,7 +110,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     Tessellator tes = Tessellator.instance;
     tes.startDrawingQuads();
     tes.setBrightness(brightness);
-    
+
     double s = size / 2;
     Vector3d v = new Vector3d();
     v.set(-s, s, 0);

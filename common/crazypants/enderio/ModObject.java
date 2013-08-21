@@ -13,7 +13,7 @@ public enum ModObject {
   blockConduitBundle(++Config.BID, CATEGORY_BLOCK, "Conduit Bundle"),
   blockConduitFacade(++Config.BID, CATEGORY_BLOCK, "Conduit Facade"),
   itemConduitFacade(++Config.IID, CATEGORY_ITEM, "Conduit Facade"),
-  itemRedstoneConduit(++Config.IID, CATEGORY_ITEM, "Redstone Conduit"),  
+  itemRedstoneConduit(++Config.IID, CATEGORY_ITEM, "Redstone Conduit"),
 
   // Power
   itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Power Conduit"),
@@ -31,21 +31,21 @@ public enum ModObject {
   blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK, "Stirling Generator"),
   blockReservoir(++Config.BID, CATEGORY_BLOCK, "Reservoir"),
   blockAlloySmelter(++Config.BID, CATEGORY_BLOCK, "Alloy Smelter"),
-  
+
   // Painter
   blockPainter(++Config.BID, CATEGORY_BLOCK, "Painter"),
   blockCustomFence(++Config.BID, CATEGORY_BLOCK, "Fence"),
   blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK, "Gate"),
   blockCustomWall(++Config.BID, CATEGORY_BLOCK, "Wall"),
-  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Stair"), 
+  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Stair"),
   itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM, "Fused Quartz Frame"),
-  
+
   // Solar Panel
   blockSolarPanel(++Config.BID, CATEGORY_BLOCK, "Photovoltaic Panel"),
-  
+
   blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Electric Light"),
   blockLightNode(++Config.BID, CATEGORY_BLOCK, "Light Node (Internal Only)"),
-  
+
   itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench");
 
   public final String unlocalisedName;

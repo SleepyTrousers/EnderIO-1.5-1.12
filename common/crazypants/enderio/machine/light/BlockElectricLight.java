@@ -1,26 +1,21 @@
 package crazypants.enderio.machine.light;
 
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.WEST;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.*;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.*;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.vecmath.Vector3f;
 
 public class BlockElectricLight extends Block implements ITileEntityProvider {
@@ -30,7 +25,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
 
   private static final float BLOCK_EDGE_MAX = 0.5f + (BLOCK_WIDTH / 2);
   private static final float BLOCK_EDGE_MIN = 0.5f - (BLOCK_WIDTH / 2);
-  
+
   public static int renderId;
 
   public static BlockElectricLight create() {
@@ -58,7 +53,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     GameRegistry.registerBlock(this, ModObject.blockElectricLight.unlocalisedName);
     GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
   }
-  
+
   @Override
   public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
     return null;
@@ -70,29 +65,29 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     blockIconOff = iconRegister.registerIcon("enderio:blockElectricLightFaceOff");
     blockIconSide = iconRegister.registerIcon("enderio:conduitConnector");
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
-    
+
     TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
     if (te instanceof TileElectricLight) {
       ForgeDirection onFace = ((TileElectricLight) te).getFace();
-      if(side == (onFace.offsetX == 0 ? onFace.getOpposite().ordinal() : onFace.ordinal())) {
+      if (side == (onFace.offsetX == 0 ? onFace.getOpposite().ordinal() : onFace.ordinal())) {
         boolean on = blockAccess.getBlockMetadata(x, y, z) != 0;
         return on ? blockIcon : blockIconOff;
       }
       return blockIconSide;
     }
-    return getIcon(side,0);
+    return getIcon(side, 0);
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public Icon getIcon(int side, int par2) {
-    if(side == ForgeDirection.DOWN.ordinal()) {
+    if (side == ForgeDirection.DOWN.ordinal()) {
       return blockIcon;
-    } 
+    }
     return blockIconSide;
   }
 
@@ -105,14 +100,14 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   public int getRenderType() {
     return renderId;
   }
-  
+
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     Block block = blocksList[world.getBlockId(x, y, z)];
     if (block != null && block != this) {
-        return block.getLightValue(world, x, y, z);
+      return block.getLightValue(world, x, y, z);
     }
-    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;    
+    return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
   }
 
   @Override
@@ -120,8 +115,8 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     ForgeDirection onFace = ForgeDirection.DOWN;
     TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
     if (te instanceof TileElectricLight) {
-      onFace = ((TileElectricLight) te).getFace();      
-    } 
+      onFace = ((TileElectricLight) te).getFace();
+    }
 
     Vector3f min = new Vector3f();
     Vector3f max = new Vector3f();
@@ -144,7 +139,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
       break;
     case NORTH:
       min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 0);
-      max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, BLOCK_HEIGHT);      
+      max.set(BLOCK_EDGE_MAX, BLOCK_EDGE_MAX, BLOCK_HEIGHT);
       break;
     case SOUTH:
       min.set(BLOCK_EDGE_MIN, BLOCK_EDGE_MIN, 1 - BLOCK_HEIGHT);
@@ -157,7 +152,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
       break;
     }
 
-    setBlockBounds(min.x, min.y,min.z, max.x,max.y,max.z);
+    setBlockBounds(min.x, min.y, min.z, max.x, max.y, max.z);
   }
 
   @Override
@@ -165,6 +160,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
+  @Override
   public int onBlockPlaced(World world, int x, int y, int z, int side, float par6, float par7, float par8, int meta) {
     return side;
   }
@@ -174,9 +170,9 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     ForgeDirection onFace = ForgeDirection.values()[meta].getOpposite();
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof TileElectricLight) {
-      ((TileElectricLight) te).setFace(onFace);      
-    } 
-    world.setBlockMetadataWithNotify(x, y, z, 0, 0);    
+      ((TileElectricLight) te).setFace(onFace);
+    }
+    world.setBlockMetadataWithNotify(x, y, z, 0, 0);
   }
 
   @Override
@@ -191,13 +187,13 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
-  
+
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {    
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     TileElectricLight te = (TileElectricLight) world.getBlockTileEntity(x, y, z);
-    if (te != null) {      
+    if (te != null) {
       te.onBlockRemoved();
-    } 
+    }
     world.removeBlockTileEntity(x, y, z);
   }
 

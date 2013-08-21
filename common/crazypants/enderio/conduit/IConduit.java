@@ -1,10 +1,7 @@
 package crazypants.enderio.conduit;
 
-import java.util.*;
-
-import crazypants.enderio.conduit.geom.*;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.util.BlockCoord;
+import java.util.Collection;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.util.BlockCoord;
 
 public interface IConduit {
 
@@ -33,7 +33,7 @@ public interface IConduit {
   // Container
 
   void setBundle(IConduitBundle tileConduitBundle);
-  
+
   IConduitBundle getBundle();
 
   void onAddedToBundle();
@@ -69,15 +69,15 @@ public interface IConduit {
   void externalConnectionAdded(ForgeDirection fromDirection);
 
   void externalConnectionRemoved(ForgeDirection fromDirection);
- 
+
   boolean isConnectedTo(ForgeDirection dir);
 
   // rendering, only needed us default rendering is used
 
   Icon getTextureForState(CollidableComponent component);
-  
+
   Icon getTransmitionTextureForState(CollidableComponent component);
-  
+
   float getTransmitionGeometryScale();
 
   float getSelfIlluminationForState(CollidableComponent component);
@@ -85,10 +85,10 @@ public interface IConduit {
   // geometry
 
   boolean haveCollidablesChangedSinceLastCall();
-  
+
   Collection<CollidableComponent> getCollidableComponents();
-  
-  Collection<CollidableComponent> createCollidables(CacheKey key);    
+
+  Collection<CollidableComponent> createCollidables(CacheKey key);
 
   // Actions
 

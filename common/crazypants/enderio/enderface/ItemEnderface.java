@@ -38,7 +38,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemEnderface.name);    
+    LanguageRegistry.addName(this, ModObject.itemEnderface.name);
     GameRegistry.registerItem(this, ModObject.itemEnderface.unlocalisedName);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }
@@ -52,7 +52,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   public boolean hasEffect(ItemStack par1ItemStack, int pass) {
     return true;
   }
-  
+
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
     super.onCreated(itemStack, world, entityPlayer);
@@ -61,7 +61,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
     nbttagcompound.setInteger(KEY_IO_X, -1);
     nbttagcompound.setInteger(KEY_IO_Y, -1);
     nbttagcompound.setInteger(KEY_IO_Z, -1);
-    nbttagcompound.setInteger(KEY_DIMENSION, -1);  
+    nbttagcompound.setInteger(KEY_DIMENSION, -1);
     itemStack.setTagCompound(nbttagcompound);
   }
 
@@ -77,7 +77,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
 
   @Override
   public ItemStack onItemRightClick(ItemStack itemStack, World world, final EntityPlayer entityPlayer) {
-    
+
     if (!world.isRemote) {
       return itemStack;
     }
@@ -91,15 +91,15 @@ public class ItemEnderface extends Item implements IGuiHandler {
       int y = tag.getInteger(KEY_IO_Y);
       int z = tag.getInteger(KEY_IO_Z);
       int dimension = tag.getInteger(KEY_DIMENSION);
-      
-      if(world.provider.dimensionId != dimension) {
+
+      if (world.provider.dimensionId != dimension) {
         ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
         entityPlayer.sendChatToPlayer(c);
         return itemStack;
       }
-      
+
       Chunk c = world.getChunkFromBlockCoords(x, z);
-      if(c == null || !c.isChunkLoaded) {
+      if (c == null || !c.isChunkLoaded) {
         ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;

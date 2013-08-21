@@ -1,11 +1,8 @@
 package crazypants.render;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
 
 class EmptySlot {
 
@@ -26,7 +23,7 @@ class EmptySlot {
   }
 
   @SuppressWarnings("synthetic-access")
-  public void drawSlot() {    
+  public void drawSlot() {
     RenderUtil.bindItemTexture();
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

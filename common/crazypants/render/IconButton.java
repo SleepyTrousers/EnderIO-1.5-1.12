@@ -3,8 +3,6 @@ package crazypants.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
@@ -19,26 +17,24 @@ public class IconButton extends GuiButton {
 
   protected int hwidth;
   protected int hheight;
-  
+
   protected Icon icon;
   protected ResourceLocation texture;
-  
 
   public IconButton(FontRenderer fr, int id, int x, int y, Icon icon, ResourceLocation texture) {
-    super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");    
+    super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
     hwidth = HWIDTH;
     hheight = HHEIGHT;
     this.icon = icon;
     this.texture = texture;
   }
-  
+
   public void setSize(int width, int height) {
     this.width = width;
     this.height = height;
-    hwidth = width/2;
-    hheight = height/2;
+    hwidth = width / 2;
+    hheight = height / 2;
   }
-  
 
   public Icon getIcon() {
     return icon;
@@ -71,11 +67,11 @@ public class IconButton extends GuiButton {
       int hoverState = this.getHoverState(this.field_82253_i);
 
       // x, y, u, v, width, height
-      
+
       // top half
       drawTexturedModalRect(xPosition, yPosition, 0, 46 + hoverState * 20, hwidth, hheight);
       drawTexturedModalRect(xPosition + hwidth, yPosition, 200 - hwidth, 46 + hoverState * 20, hwidth, hheight);
-      
+
       // bottom half
       drawTexturedModalRect(xPosition, yPosition + hheight, 0, 66 - hheight + (hoverState * 20), hwidth, hheight);
       drawTexturedModalRect(xPosition + hwidth, yPosition + hheight, 200 - hwidth, 66 - hheight + (hoverState * 20), hwidth, hheight);
@@ -93,15 +89,14 @@ public class IconButton extends GuiButton {
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      
+
       RenderUtil.bindTexture(texture);
       int xLoc = xPosition + 2;
       int yLoc = yPosition + 2;
       drawTexturedModelRectFromIcon(xLoc, yLoc, icon, width - 4, height - 4);
-      
+
       GL11.glPopAttrib();
-      
-      
+
     }
   }
 }

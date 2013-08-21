@@ -1,12 +1,10 @@
 package crazypants.enderio.machine.generator;
 
-import crazypants.enderio.machine.AbstractMachineContainer;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.AbstractMachineContainer;
+import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class StirlingGeneratorContainer extends AbstractMachineContainer {
 
@@ -21,7 +19,7 @@ public class StirlingGeneratorContainer extends AbstractMachineContainer {
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isItemValidForSlot(0, itemStack);
       }
-    });   
+    });
   }
 
 }

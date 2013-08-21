@@ -3,6 +3,13 @@ package crazypants.enderio.conduit.redstone;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -12,14 +19,6 @@ import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
-
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
 
 public class RedstoneSwitch extends RedstoneConduit {
 
@@ -53,7 +52,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemRedstoneConduit.actualId,1,1);
+    return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 1);
   }
 
   @Override
@@ -88,16 +87,15 @@ public class RedstoneSwitch extends RedstoneConduit {
     return super.getTextureForState(component);
   }
 
-
   @Override
   public List<CollidableComponent> getCollidableComponents() {
     if (collidables != null && !collidablesDirty) {
       return collidables;
     }
-    
+
     Offset o = getBundle().getOffset(getBaseConduitType(), ForgeDirection.UNKNOWN);
     Vector3d trans = ConduitGeometryUtil.instance.getTranslation(ForgeDirection.UNKNOWN, o);
-    
+
     List<CollidableComponent> result = super.getCollidableComponents();
     BoundingBox[] aabb = RedstoneSwitchRenderer.instance.getAABB();
 

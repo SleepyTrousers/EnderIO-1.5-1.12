@@ -9,11 +9,6 @@ import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 import java.util.ArrayList;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +18,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
+import crazypants.render.BoundingBox;
+import crazypants.util.BlockCoord;
 
 public class TileReservoir extends TileEntity implements IFluidHandler {
 
@@ -61,7 +60,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   boolean autoEject;
 
   private boolean tankDirty = false;
-  
+
   private boolean neighboursDirty = false;
 
   private long ticksSinceFill = 0;
@@ -84,15 +83,15 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
           tankDirty = true;
         }
       }
-      if(autoEject && neighboursDirty) {
+      if (autoEject && neighboursDirty) {
         doUpdateTankNeighbours();
       }
-      if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
+      if (autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
         int ejectable = tank.getAmount();
         int amountPerNeighbour = ejectable / tankNeighbours.size();
         FluidStack source = WATER_BUCKET.copy();
         int used = 0;
-        for(TankNeighbour tc : tankNeighbours) {
+        for (TankNeighbour tc : tankNeighbours) {
           source.amount = amountPerNeighbour;
           used += tc.container.fill(tc.fillFromDir, source, true);
         }
@@ -108,32 +107,31 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(isMultiblock()) {
+    if (isMultiblock()) {
       return 0;
     }
     return getController().doFill(from, resource, doFill);
   }
 
-  
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
     return getController().doDrain(from, maxDrain, doDrain);
   }
-  
+
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
     if (resource != null && !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
-    return drain(from, resource.amount, doDrain);    
+    return drain(from, resource.amount, doDrain);
   }
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(tank.getFluid() == null) {
+    if (tank.getFluid() == null) {
       return true;
     }
-    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+    if (fluid != null && fluid.getID() == tank.getFluid().fluidID) {
       return true;
     }
     return false;
@@ -141,7 +139,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(tank.getFluid() == null || fluid == null) {
+    if (tank.getFluid() == null || fluid == null) {
       return false;
     }
     return tank.getFluid().getFluid().getID() == fluid.getID();
@@ -150,10 +148,10 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     return getController().doGetTankInfo(from);
-  }  
+  }
 
   private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
-    return new FluidTankInfo[]{tank.getInfo()};    
+    return new FluidTankInfo[] { tank.getInfo() };
   }
 
   @Override
@@ -196,7 +194,6 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
       c.neighboursDirty = true;
     }
   }
-    
 
   private void doUpdateTankNeighbours() {
     if (tankNeighbours == null) {
@@ -377,7 +374,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     if (!WATER_BUCKET.isFluidEqual(resource)) {
       return 0;
     }
-    
+
     int ret = 0;
     // fill buffer first
     if (resource != null && isMaster()) {
@@ -393,7 +390,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   protected FluidStack doDrain(ForgeDirection from, int maxDrain, boolean doDrain) {
     FluidStack ret = tank.drain(maxDrain, doDrain);
-    tankDirty = doDrain;    
+    tankDirty = doDrain;
     return ret;
   }
 
@@ -584,7 +581,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private IFluidHandler getTankContainer(int x, int y, int z) {
-    if(worldObj == null) {
+    if (worldObj == null) {
       return null;
     }
     TileEntity te = worldObj.getBlockTileEntity(x, y, z);

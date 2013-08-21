@@ -7,15 +7,15 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity implements ISidedInventory {
 
   protected PoweredTask currentTask = null;
-  
+
   public AbstractPoweredTaskEntity(int inventorySize) {
     super(inventorySize);
   }
-  
+
   @Override
   public int[] getAccessibleSlotsFromSide(int var1) {
     int[] res = new int[inventory.length];
-    for(int i=0;i<res.length;i++) {
+    for (int i = 0; i < res.length; i++) {
       res[i] = i;
     }
     return res;
@@ -38,7 +38,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     }
     return inventory[i].isItemEqual(itemstack);
   }
-  
+
   @Override
   public boolean canExtractItem(int i, ItemStack itemstack, int j) {
     int outputIndex = inventory.length - 2;
@@ -50,7 +50,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     }
     return itemstack.itemID == inventory[outputIndex].itemID;
   }
-  
+
   @Override
   public boolean isActive() {
     return currentTask == null ? false : currentTask.getProgress() > 0 && hasPower() && redstoneCheckPassed;
@@ -60,23 +60,23 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   public float getProgress() {
     return currentTask == null ? 0 : currentTask.getProgress();
   }
-  
+
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-        
-    if(!redstoneChecksPassed) {
+
+    if (!redstoneChecksPassed) {
       return false;
     }
-    
+
     boolean requiresClientSync = false;
     // Process any current items
     requiresClientSync |= checkProgress();
-    
+
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask();
     if (nextRecipe != null) {
-      requiresClientSync |= startNextTask(nextRecipe);  
-    }   
+      requiresClientSync |= startNextTask(nextRecipe);
+    }
     return requiresClientSync;
   }
 
@@ -92,7 +92,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     }
     return true;
   }
-  
+
   protected void taskComplete() {
     int outputIndex = inventory.length - 2;
     if (currentTask != null) {
@@ -110,10 +110,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     }
     currentTask = null;
   }
-  
+
   protected RecipeInput[] getInputs() {
     RecipeInput[] res = new RecipeInput[inventorySize - 2];
-    for(int i=0;i < res.length;i++) {
+    for (int i = 0; i < res.length; i++) {
       res[i] = new RecipeInput(i, inventory[i]);
     }
     return res;
@@ -142,13 +142,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return null; // no room for output
     }
 
-    if(!canMergeWithCurrentOuput(nextResult)) {
+    if (!canMergeWithCurrentOuput(nextResult)) {
       return null;
     }
 
     return nextRecipe;
   }
-    
+
   protected boolean canMergeWithCurrentOuput(ItemStack nextResult) {
     if (!nextResult.isItemEqual(inventory[inventory.length - 2])) {
       // next result is a different item type
@@ -157,22 +157,21 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     return true;
   }
 
-  protected boolean startNextTask(IMachineRecipe nextRecipe) {    
+  protected boolean startNextTask(IMachineRecipe nextRecipe) {
     if (hasPower() && nextRecipe.isRecipe(getInputs())) {
       // then get our recipe and take away the source items
       currentTask = new PoweredTask(nextRecipe, getInputs());
-      
+
       RecipeInput[] consumed = nextRecipe.getQuantitiesConsumed(getInputs());
-      for(RecipeInput item : consumed) {
-        if(item != null && item.item != null && item.item.stackSize > 0) {
+      for (RecipeInput item : consumed) {
+        if (item != null && item.item != null && item.item.stackSize > 0) {
           decrStackSize(item.slotNumber, item.item.stackSize);
         }
-      }           
+      }
       return true;
     }
     return false;
   }
-  
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
@@ -189,7 +188,5 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       nbtRoot.setCompoundTag("currentTask", currentTaskNBT);
     }
   }
-  
-  
 
 }

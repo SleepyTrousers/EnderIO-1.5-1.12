@@ -1,39 +1,39 @@
 package crazypants.enderio.conduit.geom;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 
-
 public class Offsets {
-    
+
   private static Map<OffsetKey, Offset> OFFSETS = new HashMap<OffsetKey, Offset>();
 
   static {
     OFFSETS.put(key(IRedstoneConduit.class, true, false), Offset.BOTTOM);
     OFFSETS.put(key(IPowerConduit.class, true, false), Offset.TOP);
     OFFSETS.put(key(ILiquidConduit.class, true, false), Offset.NONE);
-    
+
     OFFSETS.put(key(IRedstoneConduit.class, false, true), Offset.LEFT);
     OFFSETS.put(key(IPowerConduit.class, false, true), Offset.RIGHT);
     OFFSETS.put(key(ILiquidConduit.class, false, true), Offset.NONE);
-    
+
     OFFSETS.put(key(IRedstoneConduit.class, true, true), Offset.BL);
     OFFSETS.put(key(IPowerConduit.class, true, true), Offset.TR);
     OFFSETS.put(key(ILiquidConduit.class, true, true), Offset.NONE);
   }
-  
+
   public static Offset get(Class<? extends IConduit> type, boolean horizontal, boolean vertical) {
-    return OFFSETS.get(key(type,horizontal,vertical));
+    return OFFSETS.get(key(type, horizontal, vertical));
   }
-  
+
   public static OffsetKey key(Class<? extends IConduit> type, boolean horizontal, boolean vertical) {
     return new OffsetKey(type, horizontal, vertical);
   }
-  
+
   public static class OffsetKey {
 
     String typeName;
@@ -78,7 +78,5 @@ public class Offsets {
     }
 
   }
-
-    
 
 }

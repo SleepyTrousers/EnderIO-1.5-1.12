@@ -1,22 +1,23 @@
 package crazypants.enderio.machine;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.enderio.power.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.*;
+import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.PowerHandlerUtil;
 
 public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
 
@@ -28,7 +29,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected boolean lastActive;
   protected float lastSyncPowerStored = -1;
 
-  // Power 
+  // Power
   protected Capacitors capacitorType;
 
   // Used on the client as the power provided isn't sinked
@@ -44,23 +45,24 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected boolean redstoneCheckPassed;
 
   public AbstractMachineEntity(int inventorySize, Type powerType) {
-    this.inventorySize = inventorySize + 1; //plus one for capacitor 
+    this.inventorySize = inventorySize + 1; // plus one for capacitor
     facing = 3;
     capacitorType = Capacitors.BASIC_CAPACITOR;
     powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor, this, powerType);
 
-    inventory = new ItemStack[this.inventorySize];    
+    inventory = new ItemStack[this.inventorySize];
 
     redstoneControlMode = RedstoneControlMode.IGNORE;
   }
 
+  @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
-    if(i == inventorySize - 1) {
+    if (i == inventorySize - 1) {
       return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
     }
     return isMachineItemValidForSlot(i, itemstack);
   }
-  
+
   protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
 
   public AbstractMachineEntity(int inventorySize) {
@@ -224,8 +226,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     super.readFromNBT(nbtRoot);
 
     facing = nbtRoot.getShort("facing");
-    
-    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);    
+
+    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
 
     float storedEnergy = nbtRoot.getFloat("storedEnergy");
     powerHandler.setEnergy(storedEnergy);
@@ -257,7 +259,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     super.writeToNBT(nbtRoot);
     nbtRoot.setShort("facing", facing);
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
-    nbtRoot.setShort("capacitorType", (short)capacitorType.ordinal());
+    nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
 
     // write inventory list
     NBTTagList itemList = new NBTTagList();
@@ -338,19 +340,19 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     if (contents != null && contents.stackSize > getInventoryStackLimit()) {
       contents.stackSize = getInventoryStackLimit();
     }
-    
-    if(slot == inventory.length - 1) {
-      updateCapacitorFromSlot();      
+
+    if (slot == inventory.length - 1) {
+      updateCapacitorFromSlot();
     }
   }
 
   private void updateCapacitorFromSlot() {
-    ItemStack contents = inventory[inventory.length - 1]; 
-    if(contents == null) {
+    ItemStack contents = inventory[inventory.length - 1];
+    if (contents == null) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);
-    }    
+    }
   }
 
   @Override

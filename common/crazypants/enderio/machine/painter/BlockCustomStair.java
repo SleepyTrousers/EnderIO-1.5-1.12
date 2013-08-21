@@ -2,18 +2,22 @@ package crazypants.enderio.machine.painter;
 
 import java.util.Random;
 
-import net.minecraft.block.*;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.*;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.registry.*;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.*;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.RecipeInput;
 import crazypants.util.Util;
 
 public class BlockCustomStair extends BlockStairs implements ITileEntityProvider {
@@ -23,7 +27,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     result.init();
     return result;
   }
-  
+
   protected BlockCustomStair() {
     super(ModObject.blockCustomStair.actualId, Block.brick, 0);
     setCreativeTab(null);
@@ -31,14 +35,12 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     setLightOpacity(0);
   }
 
-  
   private void init() {
     LanguageRegistry.addName(this, ModObject.blockCustomStair.name);
-    GameRegistry.registerBlock(this, BlockItemCustomStair.class, ModObject.blockCustomStair.unlocalisedName);    
+    GameRegistry.registerBlock(this, BlockItemCustomStair.class, ModObject.blockCustomStair.unlocalisedName);
     GameRegistry.registerTileEntity(TileEntityCustomBlock.class, ModObject.blockCustomStair.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
-  
 
   public static ItemStack createItemStackForSourceBlock(int id, int damage) {
     ItemStack result = new ItemStack(ModObject.blockCustomStair.id, 1, damage);
@@ -47,7 +49,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
   }
 
   @Override
-  public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {    
+  public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
     int meta = world.getBlockMetadata(x, y, z);
     boolean flipped = ((meta & 4) != 0);
     return ((meta & 3) + side.ordinal() == 5) || (side == ForgeDirection.UP && flipped);
@@ -61,10 +63,9 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
       if (tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
         return blocksList[tef.getSourceBlockId()].getIcon(blockSide, tef.getSourceBlockMetadata());
       }
-    } 
+    }
     return blocksList[Block.anvil.blockID].getBlockTexture(world, x, y, z, blockSide);
   }
-
 
   @Override
   public TileEntity createNewTileEntity(World world) {
@@ -81,14 +82,13 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlockId() > 0) {
+      if (tef.getSourceBlockId() > 0) {
         return Math.min(super.getLightOpacity(world, x, y, z), Block.lightOpacity[tef.getSourceBlockId()]);
       }
-      
+
     }
     return super.getLightOpacity(world, x, y, z);
   }
- 
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
@@ -142,31 +142,30 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
   @Override
   public int quantityDropped(Random par1Random) {
     return 0; // need to do custom dropping to maintain source metadata
-  } 
+  }
 
   public static final class PainterTemplate extends BasicPainterTemplate {
 
-    public PainterTemplate() {      
+    public PainterTemplate() {
     }
 
     @Override
     public ItemStack[] getCompletedResult(RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
-      if(paintSource == null) {
+      if (paintSource == null) {
         return new ItemStack[0];
       }
-      return new ItemStack[] {createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage())};
-    }  
-    
+      return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
+    }
+
     @Override
     public boolean isValidTarget(ItemStack target) {
-      if(target == null) {
+      if (target == null) {
         return false;
       }
       Block blk = Util.getBlockFromItemId(target.itemID);
       return blk instanceof BlockStairs;
     }
   }
-  
-  
+
 }

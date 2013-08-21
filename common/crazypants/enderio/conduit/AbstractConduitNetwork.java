@@ -1,6 +1,8 @@
 package crazypants.enderio.conduit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

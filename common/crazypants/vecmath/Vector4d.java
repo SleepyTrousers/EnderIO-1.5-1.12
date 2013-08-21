@@ -1,20 +1,19 @@
 package crazypants.vecmath;
 
 public class Vector4d {
-  
+
   public double x;
   public double y;
   public double z;
   public double w;
 
-  
   public Vector4d() {
     x = 0;
     y = 0;
     z = 0;
     w = 0;
   }
-  
+
   public Vector4d(double x, double y, double z, double w) {
     this.x = x;
     this.y = y;
@@ -32,7 +31,7 @@ public class Vector4d {
     z = vec.z;
     w = vec.w;
   }
-  
+
   public void set(double x, double y, double z, double w) {
     this.x = x;
     this.y = y;
@@ -72,13 +71,13 @@ public class Vector4d {
     double scale = 1.0 / Math.sqrt(x * x + y * y + z * z + w * w);
     scale(scale);
   }
-  
+
   public double dot(Vector4d other) {
-    return x*other.x + y*other.y + z*other.z + w*other.w;
+    return x * other.x + y * other.y + z * other.z + w * other.w;
   }
 
   public double lengthSquared() {
-     return x*x + y*y + z*z + w*w;
+    return x * x + y * y + z * z + w * w;
   }
 
   public double length() {
@@ -87,6 +86,6 @@ public class Vector4d {
 
   @Override
   public String toString() {
-    return "Vector4d(" + x + ", " + y + ", " + z +  ", " + w + ")";
+    return "Vector4d(" + x + ", " + y + ", " + z + ", " + w + ")";
   }
 }

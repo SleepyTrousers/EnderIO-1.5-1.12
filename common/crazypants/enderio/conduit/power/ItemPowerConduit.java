@@ -15,11 +15,12 @@ import crazypants.enderio.power.ICapacitor;
 public class ItemPowerConduit extends AbstractItemConduit {
 
   static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-    new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName, ModObject.itemPowerConduit.name, "enderio:itemPowerConduit"),        
-    new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName + "Enhanced", "Enhanced " + ModObject.itemPowerConduit.name, "enderio:itemPowerConduitEnhanced"),
-    new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName + "Ender", "Ender " + ModObject.itemPowerConduit.name, "enderio:itemPowerConduitEnder")
+      new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName, ModObject.itemPowerConduit.name, "enderio:itemPowerConduit"),
+      new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName + "Enhanced", "Enhanced " + ModObject.itemPowerConduit.name,
+          "enderio:itemPowerConduitEnhanced"),
+      new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName + "Ender", "Ender " + ModObject.itemPowerConduit.name, "enderio:itemPowerConduitEnder")
   };
-  
+
   public static ItemPowerConduit create() {
     ItemPowerConduit result = new ItemPowerConduit();
     result.init(subtypes);
@@ -27,7 +28,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   }
 
   protected ItemPowerConduit() {
-    super(ModObject.itemPowerConduit);    
+    super(ModObject.itemPowerConduit);
   }
 
   @Override
@@ -46,8 +47,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     ICapacitor cap = PowerConduit.CAPACITORS[itemStack.getItemDamage()];
     list.add(String.format("I/O %d MJ/t", cap.getMaxEnergyExtracted()));
-    list.add(String.format("Storage %d MJ", cap.getMaxEnergyStored()));     
+    list.add(String.format("Storage %d MJ", cap.getMaxEnergyStored()));
   }
-  
-  
+
 }

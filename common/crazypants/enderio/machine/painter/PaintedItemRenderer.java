@@ -2,8 +2,6 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -27,7 +25,7 @@ public class PaintedItemRenderer implements IItemRenderer {
     if (type == ItemRenderType.INVENTORY) {
       RenderBlocks renderBlocks = (RenderBlocks) data[0];
       renderToInventory(item, renderBlocks);
-    } else if (type == ItemRenderType.EQUIPPED) {      
+    } else if (type == ItemRenderType.EQUIPPED) {
       renderEquipped(item, (RenderBlocks) data[0]);
     } else if (type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
       renderEntity(item, (RenderBlocks) data[0]);
@@ -36,12 +34,12 @@ public class PaintedItemRenderer implements IItemRenderer {
     }
 
   }
-  
+
   public void renderEntity(ItemStack item, RenderBlocks renderBlocks) {
     Block block = PainterUtil.getSourceBlock(item);
     if (block != null) {
       renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, item.getItemDamage()));
-    }     
+    }
     renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID], item.getItemDamage(), 1.0f);
     renderBlocks.clearOverrideBlockTexture();
   }
@@ -62,7 +60,7 @@ public class PaintedItemRenderer implements IItemRenderer {
     Block block = PainterUtil.getSourceBlock(item);
     if (block != null) {
       renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, item.getItemDamage()));
-    }    
+    }
     renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID], item.getItemDamage(), 1.0f);
     renderBlocks.clearOverrideBlockTexture();
   }

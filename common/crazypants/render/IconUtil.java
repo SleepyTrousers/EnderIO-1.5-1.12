@@ -10,7 +10,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 public class IconUtil {
 
   public static interface IIconProvider {
-    
+
     public void registerIcons(IconRegister register);
 
     /** 0 = terrain.png, 1 = items.png */
@@ -20,7 +20,7 @@ public class IconUtil {
   static {
     MinecraftForge.EVENT_BUS.register(new IconUtil());
   }
-  
+
   private static ArrayList<IIconProvider> iconProviders = new ArrayList<IIconProvider>();
 
   public static void addIconProvider(IIconProvider registrar) {

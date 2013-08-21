@@ -3,30 +3,26 @@ package crazypants.enderio.conduit.render;
 import static crazypants.util.ForgeDirectionOffsets.offsetScaled;
 import static net.minecraftforge.common.ForgeDirection.SOUTH;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
-import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 
-
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.common.ForgeDirection;
-
 public class RoundedSegmentRenderer {
 
   private static Coord[][] DIR_COORDS = new Coord[ForgeDirection.VALID_DIRECTIONS.length][];
-  
-  private static final Vector3d REF_TRANS = new Vector3d(0.5, 0.5, 0.5);  
+
+  private static final Vector3d REF_TRANS = new Vector3d(0.5, 0.5, 0.5);
 
   static {
     double circ = ConduitGeometryUtil.WIDTH * 0.7;
-    
+
     Coord[] refCoords = createUnitSectionQuads(16, -0.25, 0.25);
 
     for (Coord coord : refCoords) {
@@ -34,33 +30,32 @@ public class RoundedSegmentRenderer {
       coord.xyz.y = coord.xyz.y * circ;
     }
     Matrix4d rotMat = new Matrix4d();
-    rotMat.setIdentity();    
+    rotMat.setIdentity();
     rotMat.setTranslation(REF_TRANS);
 
     DIR_COORDS[SOUTH.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.SOUTH, 0.25));
 
-    rotMat.makeRotationY(Math.PI);    
+    rotMat.makeRotationY(Math.PI);
     rotMat.setTranslation(REF_TRANS);
     DIR_COORDS[ForgeDirection.NORTH.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.NORTH, 0.25));
 
     rotMat.makeRotationY(Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
     DIR_COORDS[ForgeDirection.EAST.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.EAST, 0.25));
-    
+
     rotMat.makeRotationY(-Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
     DIR_COORDS[ForgeDirection.WEST.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.WEST, 0.25));
-    
+
     rotMat.makeRotationX(-Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
     DIR_COORDS[ForgeDirection.UP.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.UP, 0.25));
-    
+
     rotMat.makeRotationX(Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
     DIR_COORDS[ForgeDirection.DOWN.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.DOWN, 0.25));
 
   }
-
 
   private static Coord[] xformCoords(Coord[] refCoords, Matrix4d rotMat, Vector3d trans) {
     Coord[] res = new Coord[refCoords.length];
@@ -72,7 +67,7 @@ public class RoundedSegmentRenderer {
     }
     return res;
   }
-  
+
   private static Coord[] xformCoords(List<Coord> refCoords, Matrix4d rotMat, Vector3d trans) {
     Coord[] res = new Coord[refCoords.size()];
     for (int i = 0; i < res.length; i++) {
@@ -106,9 +101,9 @@ public class RoundedSegmentRenderer {
   public static void renderSegment(ForgeDirection dir, BoundingBox bounds, float minU, float maxU, float minV, float maxV) {
     float uScale = maxU - minU;
     float vScale = maxV - minV;
-    
+
     Vector3d offset = calcOffset(dir, bounds);
-    
+
     Tessellator tes = Tessellator.instance;
     Coord[] coords = DIR_COORDS[dir.ordinal()];
     for (Coord coord : coords) {
@@ -119,14 +114,13 @@ public class RoundedSegmentRenderer {
     }
   }
 
-
   private static Vector3d calcOffset(ForgeDirection dir, BoundingBox bounds) {
     Vector3d res = new Vector3d();
     Vector3d center = bounds.getCenter();
-    if(dir != ForgeDirection.UP && dir != ForgeDirection.DOWN) {
-      res.set(0, center.y - REF_TRANS.y,0);
+    if (dir != ForgeDirection.UP && dir != ForgeDirection.DOWN) {
+      res.set(0, center.y - REF_TRANS.y, 0);
     } else {
-      res.set(center.x - REF_TRANS.x, 0,0);
+      res.set(center.x - REF_TRANS.x, 0, 0);
     }
     return res;
   }
@@ -170,9 +164,9 @@ public class RoundedSegmentRenderer {
     void setUV(double u, double v) {
       uv.set(u, v);
     }
-    
+
     void setNormal(double x, double y, double z) {
-      normal.set((float)x,(float)y,(float)z);
+      normal.set((float) x, (float) y, (float) z);
       normal.normalize();
     }
 

@@ -7,20 +7,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduitBundle;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.IConduitBundle;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit> {
 
   private final Set<Signal> signals = new HashSet<Signal>();
 
   boolean updatingNetwork = false;
-  
+
   private boolean networkEnabled = true;
-  
+
   public RedstoneConduitNetwork() {
   }
 
@@ -43,58 +42,59 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     for (IRedstoneConduit con : conduits) {
       con.setActive(false);
     }
-    //Notify neighbours that all signals have been lost
-    List<Signal> copy = new ArrayList<Signal>(signals);     
+    // Notify neighbours that all signals have been lost
+    List<Signal> copy = new ArrayList<Signal>(signals);
     signals.clear();
-    for(Signal s : copy) {
+    for (Signal s : copy) {
       notifyNeigborsOfSignalUpdate(s);
-    }     
+    }
     updatingNetwork = false;
     super.destroyNetwork();
   }
 
   @Override
-  public void addConduit(IRedstoneConduit con) {  
+  public void addConduit(IRedstoneConduit con) {
     updatingNetwork = true;
     super.addConduit(con);
     Set<Signal> newInputs = con.getNetworkInputs();
     signals.addAll(newInputs);
-    //Notify existing nodes of new signals
-    for (Signal signal : newInputs) {                                 
+    // Notify existing nodes of new signals
+    for (Signal signal : newInputs) {
       notifyNeigborsOfSignalUpdate(signal);
     }
-    //and new nodes neighbours of all signals
-    for (Signal signal : signals) {                                 
+    // and new nodes neighbours of all signals
+    for (Signal signal : signals) {
       notifyConduitNeighbours(con, signal);
-    }    
+    }
     updatingNetwork = false;
   }
 
   public Set<Signal> getSignals() {
-    if(networkEnabled) {
+    if (networkEnabled) {
       return signals;
     } else {
       return Collections.emptySet();
     }
   }
-    
-  //Need to disable the network when determining the strength of external signals
-  //to avoid feed back looops  
+
+  // Need to disable the network when determining the strength of external
+  // signals
+  // to avoid feed back looops
   void setNetworkEnabled(boolean enabled) {
     networkEnabled = enabled;
-  }   
+  }
 
   public boolean isNetworkEnabled() {
     return networkEnabled;
   }
 
-  public void addSignal(Signal signal) {   
+  public void addSignal(Signal signal) {
     updatingNetwork = true;
     signals.add(signal);
     notifyNetworkOfUpdate();
     notifyNeigborsOfSignalUpdate(signal);
     updatingNetwork = false;
-    
+
   }
 
   public void removeSignal(Signal signal) {
@@ -104,7 +104,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     notifyNeigborsOfSignalUpdate(signal);
     updatingNetwork = false;
   }
-  
+
   public void replaceSignal(Signal oldSig, Signal newSig) {
     updatingNetwork = true;
     signals.remove(oldSig);
@@ -148,9 +148,9 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
     return sb.toString();
   }
-  
+
   private void notifyNeigborsOfSignals() {
-    for(Signal signal : signals) {
+    for (Signal signal : signals) {
       notifyNeigborsOfSignalUpdate(signal);
     }
   }
@@ -160,7 +160,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       notifyConduitNeighbours(con, signal);
     }
   }
-  
+
   private void notifyConduitNeighbours(IRedstoneConduit con, Signal signal) {
     if (con.getBundle() == null) {
       System.out.println("RedstoneConduitNetwork.notifyNeigborsOfSignalUpdate: NULL BUNDLE!!!!");

@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.painter;
 
-import crazypants.enderio.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import crazypants.enderio.PacketHandler;
 
 public class TileEntityCustomBlock extends TileEntity {
 
@@ -20,7 +20,7 @@ public class TileEntityCustomBlock extends TileEntity {
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
-    sourceBlockId = nbtRoot.getInteger(KEY_SOURCE_BLOCK_ID);    
+    sourceBlockId = nbtRoot.getInteger(KEY_SOURCE_BLOCK_ID);
     sourceBlockMetadata = nbtRoot.getInteger(KEY_SOURCE_BLOCK_META);
   }
 
@@ -38,7 +38,7 @@ public class TileEntityCustomBlock extends TileEntity {
   public void setSourceBlockId(int sourceBlockId) {
     this.sourceBlockId = sourceBlockId;
   }
-  
+
   public int getSourceBlockMetadata() {
     return sourceBlockMetadata;
   }
@@ -46,12 +46,12 @@ public class TileEntityCustomBlock extends TileEntity {
   public void setSourceBlockMetadata(int sourceBlockMetadata) {
     this.sourceBlockMetadata = sourceBlockMetadata;
   }
-  
+
   public Block getSourceBlock() {
-    if(sourceBlockId <= 0) {
+    if (sourceBlockId <= 0) {
       return null;
     }
-    return Block.blocksList[sourceBlockId];    
+    return Block.blocksList[sourceBlockId];
   }
 
   @Override
@@ -62,6 +62,6 @@ public class TileEntityCustomBlock extends TileEntity {
   @Override
   public boolean canUpdate() {
     return false;
-  }  
+  }
 
 }

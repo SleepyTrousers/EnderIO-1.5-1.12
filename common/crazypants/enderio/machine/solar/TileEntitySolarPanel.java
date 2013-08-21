@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.BlockCoord;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -19,6 +14,10 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.BlockCoord;
 
 public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor, IPowerEmitter {
 
@@ -97,7 +96,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       sunAngle += (((float) Math.PI * 2F) - sunAngle) * 0.2F;
     }
 
-    lightValue = Math.round((float) lightValue * MathHelper.cos(sunAngle));
+    lightValue = Math.round(lightValue * MathHelper.cos(sunAngle));
 
     lightValue = MathHelper.clamp_int(lightValue, 0, 15);
     return lightValue / 15f;

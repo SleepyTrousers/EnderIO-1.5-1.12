@@ -8,21 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.AbstractConduit;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.machine.reservoir.TileReservoir;
-import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -39,6 +24,19 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.AbstractConduit;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.render.IconUtil;
+import crazypants.util.BlockCoord;
 
 public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -92,7 +90,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       if (!getBundle().getEntity().worldObj.isRemote) {
         ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
         if (res.component != null) {
-          ForgeDirection connDir = (ForgeDirection) res.component.dir;
+          ForgeDirection connDir = res.component.dir;
 
           if (connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networls
@@ -265,7 +263,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
     tank.setLiquid(liquidType);
   }
-  
+
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     return fill(from, resource, doFill, true);
@@ -287,11 +285,11 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
 
     int pushedVolume = 0;
-    if(doPush) {
+    if (doPush) {
       int maxPush = Math.max(0, recieveAmount + tank.getFluidAmount() - tank.getCapacity());
-      pushedVolume = pushLiquid(from, maxPush, doFill);  
+      pushedVolume = pushLiquid(from, maxPush, doFill);
     }
-    
+
     if (doFill) {
       tank.drain(pushedVolume, doFill);
       return tank.fill(resource, doFill);
@@ -521,7 +519,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if (component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY);
     }
-    if (isExtractingFromDir((ForgeDirection) component.dir)) {
+    if (isExtractingFromDir(component.dir)) {
       return ICONS.get(ICON_EXTRACT_KEY);
     }
     return ICONS.get(ICON_KEY);

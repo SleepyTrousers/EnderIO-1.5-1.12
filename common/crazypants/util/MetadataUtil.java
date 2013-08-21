@@ -12,7 +12,7 @@ public class MetadataUtil {
     }
     System.out.println();
   }
-  
+
   public static String toBitString(int meta) {
     StringBuilder sb = new StringBuilder();
     for (int k = 0; k < 4; k++) {
@@ -24,21 +24,20 @@ public class MetadataUtil {
     }
     return sb.toString();
   }
-  
+
   public static boolean isBitSet(int position, int meta) {
     return ((meta >> position) & 1) == 1;
   }
-  
+
   public static int setBit(int position, boolean value, int meta) {
-    if(value) {
+    if (value) {
       return meta | (1 << position);
     }
-    return meta & ~(1 << position);    
-  }
-  
-  public static int toggleBit(int position, int meta) {    
-    return setBit(position, !isBitSet(position, meta), meta);    
+    return meta & ~(1 << position);
   }
 
-  
+  public static int toggleBit(int position, int meta) {
+    return setBit(position, !isBitSet(position, meta), meta);
+  }
+
 }

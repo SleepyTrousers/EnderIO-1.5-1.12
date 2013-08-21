@@ -1,7 +1,9 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 
 public class PoweredTask {
@@ -31,7 +33,7 @@ public class PoweredTask {
         numInputs++;
       }
     }
-    
+
     inputs = new RecipeInput[numInputs];
     int index = 0;
     for (int i = 0; i < inputsIn.length; i++) {
@@ -40,7 +42,7 @@ public class PoweredTask {
         index++;
       }
     }
-    
+
     this.recipe = recipe;
     this.usedEnergy = usedEnergy;
     requiredEnergy = recipe.getEnergyRequired(inputsIn);

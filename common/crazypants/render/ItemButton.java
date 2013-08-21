@@ -5,10 +5,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
 
 public class ItemButton extends GuiButton {
 
@@ -22,7 +20,7 @@ public class ItemButton extends GuiButton {
   private ItemStack item;
 
   private FontRenderer fr;
-  
+
   protected int hwidth;
   protected int hheight;
 
@@ -33,12 +31,12 @@ public class ItemButton extends GuiButton {
     hwidth = HWIDTH;
     hheight = HHEIGHT;
   }
-  
+
   public void setSize(int width, int height) {
     this.width = width;
     this.height = height;
-    hwidth = width/2;
-    hheight = height/2;
+    hwidth = width / 2;
+    hheight = height / 2;
   }
 
   /**
@@ -56,11 +54,11 @@ public class ItemButton extends GuiButton {
       int hoverState = this.getHoverState(this.field_82253_i);
 
       // x, y, u, v, width, height
-      
+
       // top half
       drawTexturedModalRect(xPosition, yPosition, 0, 46 + hoverState * 20, hwidth, hheight);
       drawTexturedModalRect(xPosition + hwidth, yPosition, 200 - hwidth, 46 + hoverState * 20, hwidth, hheight);
-      
+
       // bottom half
       drawTexturedModalRect(xPosition, yPosition + hheight, 0, 66 - hheight + (hoverState * 20), hwidth, hheight);
       drawTexturedModalRect(xPosition + hwidth, yPosition + hheight, 200 - hwidth, 66 - hheight + (hoverState * 20), hwidth, hheight);

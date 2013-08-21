@@ -27,11 +27,11 @@ public class Vector3d {
     this.y = y;
     this.z = z;
   }
-  
+
   public void set(Vector3d vec) {
     x = vec.x;
     y = vec.y;
-    z = vec.z;    
+    z = vec.z;
   }
 
   public Vector3d add(Vector3d vec) {
@@ -69,7 +69,7 @@ public class Vector3d {
     return x * other.x + y * other.y + z * other.z;
   }
 
-  public void cross(Vector3d v1, Vector3d v2) {        
+  public void cross(Vector3d v1, Vector3d v2) {
     x = v1.y * v2.z - v1.z * v2.y;
     y = v2.x * v1.z - v2.z * v1.x;
     z = v1.x * v2.y - v1.y * v2.x;
@@ -82,13 +82,13 @@ public class Vector3d {
   public double length() {
     return Math.sqrt(lengthSquared());
   }
-  
+
   public double distanceSquared(Vector3d v) {
     double dx, dy, dz;
-    dx = x-v.x;
-    dy = y-v.y;
-    dz = z-v.z;
-    return (dx*dx+dy*dy+dz*dz);
+    dx = x - v.x;
+    dy = y - v.y;
+    dz = z - v.z;
+    return (dx * dx + dy * dy + dz * dz);
   }
 
   public double distance(Vector3d v) {

@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.util.BlockCoord;
-
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.util.BlockCoord;
 
 public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit> {
 
@@ -82,7 +81,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     if (world.isRemote || liquidType == null) {
       return;
     }
-    
+
     long curTime = world.getTotalWorldTime();
     if (curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
@@ -149,7 +148,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
       ILiquidConduit downCon = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
       int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false);
-      tank.addAmount(-filled);      
+      tank.addAmount(-filled);
       downCon.getTank().addAmount(filled);
     }
 

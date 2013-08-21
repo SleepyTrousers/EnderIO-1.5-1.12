@@ -1,6 +1,5 @@
 package crazypants.enderio;
 
-import java.awt.Container;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -16,7 +15,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerBeacon;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.item.ItemInWorldManager;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet100OpenWindow;
@@ -25,7 +23,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.world.World;
-import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -44,7 +41,6 @@ public class PacketHandler implements IPacketHandler {
   private static final int ID_MACHINE_REDSTONE_PACKET = 2;
 
   private static final String CHANNEL = "EnderIO";
-  
 
   @Override
   public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
@@ -56,12 +52,12 @@ public class PacketHandler implements IPacketHandler {
     try {
       int id = data.readInt();
       if (id == ID_ENDERFACE) {
-        handleEnderfacePacket(data, manager, player);   
-      } else if(id == ID_TILE_ENTITY) {   
+        handleEnderfacePacket(data, manager, player);
+      } else if (id == ID_TILE_ENTITY) {
         PacketUtil.handleTileEntityPacket(false, data);
-      } else if(id == ID_MACHINE_REDSTONE_PACKET) {
+      } else if (id == ID_MACHINE_REDSTONE_PACKET) {
         handleRedstoneControlPacket(data, manager, player);
-      } else {      
+      } else {
         System.out.println("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
       }
     } catch (IOException ex) {
@@ -69,13 +65,12 @@ public class PacketHandler implements IPacketHandler {
     }
   }
 
-  
-
   public static Packet getPacket(TileEntity te) {
     return PacketUtil.createTileEntityPacket(CHANNEL, ID_TILE_ENTITY, te);
   }
 
-  // ---------------- Redstone Control --------------------------------------------------------
+  // ---------------- Redstone Control
+  // --------------------------------------------------------
 
   private void handleRedstoneControlPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
     int x = data.readInt();
@@ -84,14 +79,14 @@ public class PacketHandler implements IPacketHandler {
     short ordinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity)te;
+    if (te instanceof AbstractMachineEntity) {
+      AbstractMachineEntity me = (AbstractMachineEntity) te;
       me.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
-      p.worldObj.markBlockForUpdate(x, y, z);      
+      p.worldObj.markBlockForUpdate(x, y, z);
     }
-    
+
   }
-  
+
   public static Packet getRedstoneControlPacket(AbstractMachineEntity te) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
@@ -100,7 +95,7 @@ public class PacketHandler implements IPacketHandler {
       dos.writeInt(te.xCoord);
       dos.writeInt(te.yCoord);
       dos.writeInt(te.zCoord);
-      dos.writeShort((short)te.getRedstoneControlMode().ordinal());
+      dos.writeShort((short) te.getRedstoneControlMode().ordinal());
     } catch (IOException e) {
       // never thrown
     }
@@ -111,9 +106,8 @@ public class PacketHandler implements IPacketHandler {
     pkt.length = bos.size();
     pkt.isChunkDataPacket = true;
     return pkt;
-    
-  }
 
+  }
 
   // ---------------- Enderface
   // ------------------------------------------------------------
@@ -151,18 +145,17 @@ public class PacketHandler implements IPacketHandler {
     PlayerProxy pp = new PlayerProxy(player);
     EntityPlayerMP proxy = createPlayerProxy(player, pp);
     proxy.playerNetServerHandler = player.playerNetServerHandler;
-    proxy.inventory = player.inventory;    
+    proxy.inventory = player.inventory;
     proxy.currentWindowId = player.currentWindowId;
     proxy.inventoryContainer = player.inventoryContainer;
     proxy.mcServer = player.mcServer;
     proxy.openContainer = player.openContainer;
     proxy.theItemInWorldManager = player.theItemInWorldManager;
-    proxy.worldObj = player.worldObj;    
-    
-    
+    proxy.worldObj = player.worldObj;
+
     player.theItemInWorldManager.activateBlockOrUseItem(proxy, player.worldObj, null, x, y, z, 0, 0, 0, 0);
-    player.theItemInWorldManager.thisPlayerMP = player;    
-    if(c != proxy.openContainer) {
+    player.theItemInWorldManager.thisPlayerMP = player;
+    if (c != proxy.openContainer) {
       player.openContainer = proxy.openContainer;
     }
 
@@ -190,8 +183,8 @@ public class PacketHandler implements IPacketHandler {
     private Set<String> interceptNames = new HashSet<String>();
 
     private Set<String> beaconNames = new HashSet<String>();
-    private Set<String> anvilNames = new HashSet<String>();   
-    
+    private Set<String> anvilNames = new HashSet<String>();
+
     private Set<String> distanceNames = new HashSet<String>();
 
     public PlayerProxy(EntityPlayerMP obj) {
@@ -200,7 +193,7 @@ public class PacketHandler implements IPacketHandler {
       interceptNames.add("openGui");
 
       interceptNames.add("displayGUIBrewingStand");
-      interceptNames.add("func_71017_a");                          
+      interceptNames.add("func_71017_a");
 
       interceptNames.add("displayGUIChest");
       interceptNames.add("func_71007_a");
@@ -219,52 +212,55 @@ public class PacketHandler implements IPacketHandler {
 
       interceptNames.add("displayGuiHopper"); // for when its added
       interceptNames.add("func_94064_a"); // displayGuiHopper
-      
+
       interceptNames.add("displayGUIHopper");
 
       beaconNames.add("displayGUIBeacon");
       beaconNames.add("func_82240_a");
-      
+
       anvilNames.add("displayGUIAnvil");
       anvilNames.add("func_82244_d");
-      
+
       distanceNames.add("getDistanceSq");
       distanceNames.add("getDistance");
       distanceNames.add("func_70092_e");
       distanceNames.add("func_70011_f");
       distanceNames.add("func_71569_e");
-      
-      
+
     }
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-     
+
       if (interceptNames.contains(method.getName())) {
-        
+
         Object res = method.invoke(realObj, objects);
         if (realObj.openContainer != null) {
-                    
-//          if("appeng.me.container.ContainerTerminal".equals(realObj.openContainer.getClass().getName())) {
-//            try {
-//              realObj.currentWindowId = realObj.openContainer.windowId;
-//              realObj.openContainer = createMeTerminalProxy(realObj, ((Integer)objects[3]).intValue(),((Integer)objects[4]).intValue(),((Integer)objects[5]).intValue());
-//              Method m = realObj.openContainer.getClass().getMethod("setPlayerIsPresent", EntityPlayer.class, boolean.class);
-//              m.invoke(realObj.openContainer, realObj,true);    
-//              
-//            } catch (Exception e) {
-//              System.out.println("PacketHandler.PlayerProxy.intercept: " + e);
-//            }
-            
-//          } else {          
-            realObj.openContainer = new ContainerWrapper(realObj.openContainer);
-//          }
-          
+
+          // if("appeng.me.container.ContainerTerminal".equals(realObj.openContainer.getClass().getName()))
+          // {
+          // try {
+          // realObj.currentWindowId = realObj.openContainer.windowId;
+          // realObj.openContainer = createMeTerminalProxy(realObj,
+          // ((Integer)objects[3]).intValue(),((Integer)objects[4]).intValue(),((Integer)objects[5]).intValue());
+          // Method m =
+          // realObj.openContainer.getClass().getMethod("setPlayerIsPresent",
+          // EntityPlayer.class, boolean.class);
+          // m.invoke(realObj.openContainer, realObj,true);
+          //
+          // } catch (Exception e) {
+          // System.out.println("PacketHandler.PlayerProxy.intercept: " + e);
+          // }
+
+          // } else {
+          realObj.openContainer = new ContainerWrapper(realObj.openContainer);
+          // }
+
         }
         return res;
-        
+
       } else if (beaconNames.contains(method.getName())) {
-        
+
         // Beacon needs to be done manually for some reason to work properly
         TileEntityBeacon par1TileEntityBeacon = (TileEntityBeacon) objects[0];
         realObj.incrementWindowID();
@@ -279,12 +275,13 @@ public class PacketHandler implements IPacketHandler {
         realObj.openContainer.windowId = realObj.currentWindowId;
         realObj.openContainer.addCraftingToCrafters(realObj);
         return null;
-        
+
       } else if (anvilNames.contains(method.getName())) {
-        
+
         realObj.incrementWindowID();
         realObj.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(realObj.currentWindowId, 8, "Repairing", 9, true));
-        realObj.openContainer = new ContainerRepair(realObj.inventory, realObj.worldObj,  ((Integer)objects[0]).intValue(),  ((Integer)objects[1]).intValue(),  ((Integer)objects[2]).intValue(), realObj) {
+        realObj.openContainer = new ContainerRepair(realObj.inventory, realObj.worldObj, ((Integer) objects[0]).intValue(), ((Integer) objects[1]).intValue(),
+            ((Integer) objects[2]).intValue(), realObj) {
           @Override
           public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
             return true;
@@ -293,46 +290,42 @@ public class PacketHandler implements IPacketHandler {
         realObj.openContainer.windowId = realObj.currentWindowId;
         realObj.openContainer.addCraftingToCrafters(realObj);
         return null;
-      } else if(distanceNames.contains(method.getName())) {
+      } else if (distanceNames.contains(method.getName())) {
         return 6;
-      } 
+      }
       method.setAccessible(true);
       return method.invoke(realObj, objects);
-    }    
-    
+    }
+
   }
-  
+
   public static class ContainerTerminalProxy implements MethodInterceptor {
 
     Object realObj;
-    
-    
-    
-    private ContainerTerminalProxy(Object realObj) {    
+
+    private ContainerTerminalProxy(Object realObj) {
       this.realObj = realObj;
     }
 
-
-
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-      if("canInteractWith".equals(method.getName())) {
+      if ("canInteractWith".equals(method.getName())) {
         return true;
       }
       method.setAccessible(true);
       return method.invoke(realObj, objects);
     }
-    
+
   }
-  
+
   public static <T> T createMeTerminalProxy(EntityPlayerMP player, int x, int y, int z) throws Exception {
     Enhancer e = new Enhancer();
     e.setCallback(new ContainerTerminalProxy(player.openContainer));
 
     e.setSuperclass(Class.forName("appeng.me.container.ContainerTerminal"));
-    //InventoryPlayer ip, IGridTileEntity te, boolean isWireless
+    // InventoryPlayer ip, IGridTileEntity te, boolean isWireless
     Class<?> gteClass = Class.forName("appeng.api.me.tiles.IGridTileEntity");
-    Class<?>[] argTypes = new Class[] { InventoryPlayer.class, gteClass, boolean.class};
+    Class<?>[] argTypes = new Class[] { InventoryPlayer.class, gteClass, boolean.class };
     Object[] args = new Object[] { player.inventory, player.worldObj.getBlockTileEntity(x, y, z), false };
 
     e.setInterceptDuringConstruction(false);
@@ -341,7 +334,5 @@ public class PacketHandler implements IPacketHandler {
 
     return proxifiedObj;
   }
-  
-  
 
 }

@@ -8,15 +8,15 @@ public final class BlockCoord {
   public final int x;
   public final int y;
   public final int z;
-  
-  public BlockCoord(int x, int y, int z) {    
+
+  public BlockCoord(int x, int y, int z) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
-  
+
   public BlockCoord(TileEntity tile) {
-    this(tile.xCoord,tile.yCoord,tile.zCoord);
+    this(tile.xCoord, tile.yCoord, tile.zCoord);
   }
 
   public BlockCoord getLocation(ForgeDirection dir) {
@@ -56,7 +56,7 @@ public final class BlockCoord {
     return "BlockCoord [x=" + x + ", y=" + y + ", z=" + z + "]";
   }
 
-  public boolean equals(int xCoord, int yCoord, int zCoord) {    
+  public boolean equals(int xCoord, int yCoord, int zCoord) {
     return x == xCoord && y == yCoord && z == zCoord;
   }
 

@@ -1,8 +1,8 @@
 package crazypants.render;
 
-import crazypants.vecmath.Vector3d;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
+import crazypants.vecmath.Vector3d;
 
 public final class CubeRenderer {
 
@@ -20,9 +20,9 @@ public final class CubeRenderer {
   public static void render(BoundingBox bb, Icon tex, VertexTransform xForm) {
     render(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), xForm);
   }
-  
+
   public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV) {
-    render(bb, minU,maxU,minV,maxV,null);
+    render(bb, minU, maxU, minV, maxV, null);
   }
 
   public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV, VertexTransform xForm) {
@@ -31,7 +31,7 @@ public final class CubeRenderer {
     float tmp = minV;
     minV = maxV;
     maxV = tmp;
-    
+
     Tessellator tessellator = Tessellator.instance;
 
     tessellator.setNormal(0, 0, -1);

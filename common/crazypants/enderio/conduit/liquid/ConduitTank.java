@@ -15,16 +15,17 @@ public class ConduitTank implements IFluidTank {
   ConduitTank(int capacity) {
     this.capacity = capacity;
   }
-    
+
+  @Override
   public int getFluidAmount() {
     return fluid == null ? 0 : fluid.amount;
   }
 
   public float getFilledRatio() {
-    if(getFluidAmount() <= 0) {
+    if (getFluidAmount() <= 0) {
       return 0;
     }
-    if(getCapacity() <= 0) {
+    if (getCapacity() <= 0) {
       return -1;
     }
     return (float) getFluidAmount() / getCapacity();
@@ -35,9 +36,9 @@ public class ConduitTank implements IFluidTank {
   }
 
   public void setAmount(int amount) {
-    if(fluid != null) {
+    if (fluid != null) {
       fluid.amount = amount;
-    } 
+    }
   }
 
   public int getAvailableSpace() {
@@ -47,12 +48,11 @@ public class ConduitTank implements IFluidTank {
   public void addAmount(int amount) {
     setAmount(getFluidAmount() + amount);
   }
-  
+
   @Override
   public FluidTankInfo getInfo() {
     return new FluidTankInfo(this);
   }
-  
 
   @Override
   public FluidStack getFluid() {
@@ -79,7 +79,7 @@ public class ConduitTank implements IFluidTank {
   public int fill(FluidStack resource, boolean doFill) {
     if (resource == null || resource.fluidID <= 0) {
       return 0;
-    }    
+    }
 
     if (fluid == null || fluid.fluidID <= 0) {
       if (resource.amount <= capacity) {
@@ -90,7 +90,7 @@ public class ConduitTank implements IFluidTank {
       } else {
         if (doFill) {
           fluid = resource.copy();
-          fluid.amount = capacity;          
+          fluid.amount = capacity;
         }
         return capacity;
       }
@@ -134,7 +134,7 @@ public class ConduitTank implements IFluidTank {
     }
 
     FluidStack drained = new FluidStack(fluid.fluidID, used);
-    
+
     if (fluid.amount < 0) {
       fluid.amount = 0;
     }
@@ -173,11 +173,11 @@ public class ConduitTank implements IFluidTank {
   }
 
   public void remove(int amount) {
-    if(fluid == null) {
+    if (fluid == null) {
       return;
     }
     fluid.amount -= amount;
-    fluid.amount = Math.max(0, fluid.amount);    
+    fluid.amount = Math.max(0, fluid.amount);
   }
 
 }

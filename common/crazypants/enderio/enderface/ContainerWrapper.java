@@ -1,8 +1,6 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class ContainerWrapper extends net.minecraft.inventory.Container {
 
@@ -14,7 +12,7 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
     this.inventorySlots = wrapped.inventorySlots;
     this.windowId = wrapped.windowId;
   }
- 
+
   @Override
   public boolean canDragIntoSlot(Slot par1Slot) {
     return wrapped.canDragIntoSlot(par1Slot);

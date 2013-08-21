@@ -1,19 +1,26 @@
 package crazypants.enderio.conduit;
 
-import java.util.*;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.geom.*;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.util.BlockCoord;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.geom.CollidableCache;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.util.BlockCoord;
 
-public abstract class AbstractConduit implements IConduit {  
+public abstract class AbstractConduit implements IConduit {
 
   protected final Set<ForgeDirection> conduitConnections = new HashSet<ForgeDirection>();
 
@@ -22,7 +29,7 @@ public abstract class AbstractConduit implements IConduit {
   public static final float STUB_WIDTH = 0.2f;
 
   public static final float STUB_HEIGHT = 0.2f;
-  
+
   public static final float TRANSMISSION_SCALE = 0.3f;
 
   // NB: This is a transient field controlled by the owning bundle. It is not
@@ -34,19 +41,19 @@ public abstract class AbstractConduit implements IConduit {
   protected List<CollidableComponent> collidables;
 
   protected boolean collidablesDirty = true;
-  
+
   private boolean clientStateDirty = true;
-  
+
   private boolean dodgyChangeSinceLastCallFlagForBundle = true;
 
-  protected AbstractConduit() {    
+  protected AbstractConduit() {
   }
-  
+
   private int lastNumConections = -1;
-  
+
   @Override
   public boolean haveCollidablesChangedSinceLastCall() {
-    if(dodgyChangeSinceLastCallFlagForBundle) {
+    if (dodgyChangeSinceLastCallFlagForBundle) {
       dodgyChangeSinceLastCallFlagForBundle = false;
       return true;
     }
@@ -142,7 +149,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public void setActive(boolean active) {
-    if(active != this.active) {
+    if (active != this.active) {
       clientStateDirty = true;
     }
     this.active = active;
@@ -180,7 +187,7 @@ public abstract class AbstractConduit implements IConduit {
       externalConnections.add(ForgeDirection.values()[dirs[i]]);
     }
     active = nbtRoot.getBoolean("signalActive");
-    //collidablesDirty = true;
+    // collidablesDirty = true;
   }
 
   @Override
@@ -197,7 +204,7 @@ public abstract class AbstractConduit implements IConduit {
   public float getSelfIlluminationForState(CollidableComponent component) {
     return isActive() ? 1 : 0;
   }
-  
+
   @Override
   public float getTransmitionGeometryScale() {
     return TRANSMISSION_SCALE;
@@ -218,20 +225,19 @@ public abstract class AbstractConduit implements IConduit {
       return;
     }
     updateNetwork(world);
-    
-    if(clientStateDirty) {    
+
+    if (clientStateDirty) {
       getBundle().dirty();
       clientStateDirty = false;
-    }    
+    }
   }
 
-  
-  protected void connectionsChanged() {    
+  protected void connectionsChanged() {
     collidablesDirty = true;
     clientStateDirty = true;
     dodgyChangeSinceLastCallFlagForBundle = true;
   }
-  
+
   protected void updateNetwork(World world) {
     if (getNetwork() == null) {
       ConduitUtil.ensureValidNetwork(this);
@@ -243,7 +249,7 @@ public abstract class AbstractConduit implements IConduit {
   public void onAddedToBundle() {
 
     TileEntity te = bundle.getEntity();
-    World world = te.worldObj;    
+    World world = te.worldObj;
 
     conduitConnections.clear();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -290,13 +296,14 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onNeighborBlockChange(int blockId) {           
+  public boolean onNeighborBlockChange(int blockId) {
     // Check for changes to external connections, connections to conduits are
     // handled by the bundle
-    
-    //NB: No need to check externals if the neighbour that changed was a conduit bundle as this 
-    //can't effect external connections.
-    if(blockId == EnderIO.blockConduitBundle.blockID) {
+
+    // NB: No need to check externals if the neighbour that changed was a
+    // conduit bundle as this
+    // can't effect external connections.
+    if (blockId == EnderIO.blockConduitBundle.blockID) {
       return false;
     }
 
@@ -324,45 +331,44 @@ public abstract class AbstractConduit implements IConduit {
     }
     return externalConnectionsChanged;
   }
-  
+
   @Override
   public Collection<CollidableComponent> createCollidables(CacheKey key) {
-    return Collections.singletonList(new CollidableComponent(getBaseConduitType(),ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset),key.dir,null));
+    return Collections.singletonList(new CollidableComponent(getBaseConduitType(), ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir,
+        key.isStub, key.offset), key.dir, null));
   }
 
   @Override
   public List<CollidableComponent> getCollidableComponents() {
-    
+
     if (collidables != null && !collidablesDirty) {
       return collidables;
     }
-    
-    List<CollidableComponent> result = new ArrayList<CollidableComponent>();    
+
+    List<CollidableComponent> result = new ArrayList<CollidableComponent>();
     CollidableCache cc = CollidableCache.instance;
 
-    for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       Collection<CollidableComponent> col = getCollidables(dir);
-      if(col != null) {
+      if (col != null) {
         result.addAll(col);
       }
     }
     collidables = result;
 
     collidablesDirty = false;
-    
+
     return result;
   }
-  
 
   private Collection<CollidableComponent> getCollidables(ForgeDirection dir) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getBaseConduitType();
-        
+
     if (isConnectedTo(dir)) {
-      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(type, dir), dir, false), this); 
-    }    
+      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(type, dir), dir, false), this);
+    }
     return null;
   }
- 
 
 }

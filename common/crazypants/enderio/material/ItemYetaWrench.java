@@ -17,7 +17,6 @@ import crazypants.enderio.ModObject;
 
 public class ItemYetaWrench extends Item implements IToolWrench {
 
-  
   public static ItemYetaWrench create() {
     ItemYetaWrench result = new ItemYetaWrench();
     result.init();
@@ -32,14 +31,14 @@ public class ItemYetaWrench extends Item implements IToolWrench {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemYetaWrench.name);        
-    GameRegistry.registerItem(this, ModObject.itemYetaWrench.unlocalisedName);    
+    LanguageRegistry.addName(this, ModObject.itemYetaWrench.name);
+    GameRegistry.registerItem(this, ModObject.itemYetaWrench.unlocalisedName);
   }
-    
+
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerIcons(IconRegister iconRegister) {   
-    itemIcon = iconRegister.registerIcon("enderio:yetaWrench");    
+  public void registerIcons(IconRegister iconRegister) {
+    itemIcon = iconRegister.registerIcon("enderio:yetaWrench");
   }
 
   @Override
@@ -68,5 +67,4 @@ public class ItemYetaWrench extends Item implements IToolWrench {
     return true;
   }
 
-  
 }
