@@ -151,6 +151,9 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     @Override
     public ItemStack[] getCompletedResult(RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
+      if(paintSource == null) {
+        return new ItemStack[0];
+      }
       return new ItemStack[] {createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage())};
     }  
     

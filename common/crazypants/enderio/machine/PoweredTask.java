@@ -36,7 +36,7 @@ public class PoweredTask {
     int index = 0;
     for (int i = 0; i < inputsIn.length; i++) {
       if (inputsIn[i] != null && inputsIn[i].item != null) {
-        inputs[index] = inputsIn[i];
+        inputs[index] = new RecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
         index++;
       }
     }
