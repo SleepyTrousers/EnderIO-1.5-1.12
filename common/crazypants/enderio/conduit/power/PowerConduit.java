@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.power;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
@@ -9,12 +10,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.*;
+import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.*;
+import crazypants.enderio.conduit.AbstractConduit;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.power.*;
-import crazypants.render.*;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.EnderPowerProvider;
+import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.render.BoundingBox;
+import crazypants.render.IconUtil;
 import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
@@ -22,17 +31,17 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-    new BasicCapacitor(0, 64, 128, 0, 0, 0, 256),
-    new BasicCapacitor(0, 128, 256, 0, 0, 0, 1024),
-    new BasicCapacitor(0, 1024, 1024, 0, 0, 0, 2048)
-  }; 
-  
+      new BasicCapacitor(0, 64, 128, 0, 0, 0, 256),
+      new BasicCapacitor(0, 128, 256, 0, 0, 0, 1024),
+      new BasicCapacitor(0, 1024, 1024, 0, 0, 0, 2048)
+  };
+
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
-  
+
   static ItemStack createItemStackForSubtype(int subtype) {
-    ItemStack result = new ItemStack(ModObject.itemPowerConduit.actualId, 1, subtype);    
+    ItemStack result = new ItemStack(ModObject.itemPowerConduit.actualId, 1, subtype);
     return result;
-    
+
   }
 
   public static void initIcons() {
@@ -48,7 +57,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       }
 
       @Override
-      public int getTextureType() {       
+      public int getTextureType() {
         return 0;
       }
 
@@ -67,7 +76,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   private EnderPowerProvider powerHandler;
 
   private int subtype;
-  
+
   private float energyStored;
 
   public PowerConduit() {
@@ -77,7 +86,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     this.subtype = meta;
     powerHandler = createPowerHandlerForType();
   }
-  
+
   @Override
   public ICapacitor getCapacitor() {
     return CAPACITORS[subtype];
@@ -87,10 +96,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return PowerHandlerUtil.createHandler(CAPACITORS[subtype]);
   }
 
+  @Override
   public float getEnergyStored() {
     return energyStored;
   }
 
+  @Override
   public void setEnergyStored(float energyStored) {
     this.energyStored = energyStored;
   }
@@ -110,58 +121,56 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       powerHandler = createPowerHandlerForType();
     }
     energyStored = nbtRoot.getFloat("energyStored");
-    if(energyStored < 0) {
+    if (energyStored < 0) {
       energyStored = 0;
-    }    
+    }
   }
-
- 
 
   @Override
   public void applyPerdition() {
   }
 
-//  @Override
-//  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-//    return powerHandler.getPowerReceiver();
-//  }
-//
-//  @Override
-//  public PowerHandler getPowerHandler() {
-//    return powerHandler;
-//  }
-//  
-//  @Override
-//  public void doWork(PowerHandler workProvider) {
-//  }
-//
-//  @Override
-//  public World getWorld() {
-//    return getBundle().getEntity().worldObj;
-//  }
-  
+  // @Override
+  // public PowerReceiver getPowerReceiver(ForgeDirection side) {
+  // return powerHandler.getPowerReceiver();
+  // }
+  //
+  // @Override
+  // public PowerHandler getPowerHandler() {
+  // return powerHandler;
+  // }
+  //
+  // @Override
+  // public void doWork(PowerHandler workProvider) {
+  // }
+  //
+  // @Override
+  // public World getWorld() {
+  // return getBundle().getEntity().worldObj;
+  // }
+
   @Override
-  public EnderPowerProvider getPowerHandler() {    
+  public EnderPowerProvider getPowerHandler() {
     return powerHandler;
   }
 
   @Override
   public void setPowerProvider(IPowerProvider provider) {
-    
+
   }
 
   @Override
-  public IPowerProvider getPowerProvider() {    
+  public IPowerProvider getPowerProvider() {
     return powerHandler;
   }
 
   @Override
-  public void doWork() {        
+  public void doWork() {
   }
 
   @Override
   public int powerRequest(ForgeDirection from) {
-    return powerHandler.getMaxEnergyStored() - powerHandler.getMinEnergyReceived();    
+    return powerHandler.getMaxEnergyStored() - powerHandler.getMinEnergyReceived();
   }
 
   @Override
@@ -176,11 +185,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {    
+  public boolean canConnectToExternal(ForgeDirection direction) {
     IPowerReceptor rec = getExternalPowerReceptor(direction);
-//    if(rec instanceof IPowerEmitter) {
-//      return ((IPowerEmitter)rec).canEmitPowerFrom(direction.getOpposite());
-//    }
+    // if(rec instanceof IPowerEmitter) {
+    // return ((IPowerEmitter)rec).canEmitPowerFrom(direction.getOpposite());
+    // }
     return rec != null;
   }
 
@@ -213,7 +222,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     TileEntity test = world.getBlockTileEntity(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
     if (test instanceof IConduitBundle) {
       return null;
-    }    
+    }
     if (test instanceof IPowerReceptor) {
       return (IPowerReceptor) test;
     }
@@ -222,7 +231,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public ItemStack createItem() {
-    return createItemStackForSubtype(subtype); 
+    return createItemStackForSubtype(subtype);
   }
 
   @Override
@@ -241,7 +250,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
-    //return ICONS.get(ICON_TRANSMISSION_KEY);
+    // return ICONS.get(ICON_TRANSMISSION_KEY);
     return null;
   }
 

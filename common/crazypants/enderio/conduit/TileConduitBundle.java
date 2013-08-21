@@ -6,6 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.LiquidStack;
+import buildcraft.api.power.IPowerProvider;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.geom.CollidableCache;
@@ -18,16 +26,6 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.util.BlockCoord;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.*;
-import buildcraft.api.power.*;
-
 
 public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
@@ -441,9 +439,11 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   // return null;
   // }
 
+  @Override
   public void setPowerProvider(IPowerProvider provider) {
   }
 
+  @Override
   public IPowerProvider getPowerProvider() {
     IPowerConduit pc = getConduit(IPowerConduit.class);
     if (pc != null) {
@@ -452,6 +452,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     return null;
   }
 
+  @Override
   public void doWork() {
     IPowerConduit pc = getConduit(IPowerConduit.class);
     if (pc != null) {
@@ -459,6 +460,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
   }
 
+  @Override
   public int powerRequest(ForgeDirection from) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
     if (pc != null) {
@@ -485,27 +487,23 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     return null;
   }
 
-  
-  
-
-  
   // ------- Liquids -----------------------------
   @Override
   public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
-  ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  if (lc != null) {
-    return lc.fill(from, resource, doFill);
-  }
-  return 0;
+    ILiquidConduit lc = getConduit(ILiquidConduit.class);
+    if (lc != null) {
+      return lc.fill(from, resource, doFill);
+    }
+    return 0;
   }
 
   @Override
   public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
-  ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  if (lc != null) {
-    return lc.fill(tankIndex, resource, doFill);
-  }
-  return 0;
+    ILiquidConduit lc = getConduit(ILiquidConduit.class);
+    if (lc != null) {
+      return lc.fill(tankIndex, resource, doFill);
+    }
+    return 0;
   }
 
   @Override
@@ -543,61 +541,61 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     return null;
   }
-  
 
-
-//  @Override
-//  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-//    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-//    if (lc != null) {
-//      return lc.fill(from, resource, doFill);
-//    }
-//    return 0;
-//  }
-//
-//  @Override
-//  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-//    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-//    if (lc != null) {
-//      return lc.drain(from, resource, doDrain);
-//    }
-//    return null;
-//  }
-//
-//  @Override
-//  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-//    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-//    if (lc != null) {
-//      return lc.drain(from, maxDrain, doDrain);
-//    }
-//    return null;
-//  }
-//
-//  @Override
-//  public boolean canFill(ForgeDirection from, Fluid fluid) {
-//    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-//    if (lc != null) {
-//      return lc.canFill(from, fluid);
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  public boolean canDrain(ForgeDirection from, Fluid fluid) {
-//    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-//    if (lc != null) {
-//      return lc.canDrain(from, fluid);
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-//    ILiquidConduit lc = getConduit(ILiquidConduit.class);
-//    if (lc != null) {
-//      return lc.getTankInfo(from);
-//    }
-//    return null;
-//  }
+  // @Override
+  // public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
+  // if (lc != null) {
+  // return lc.fill(from, resource, doFill);
+  // }
+  // return 0;
+  // }
+  //
+  // @Override
+  // public FluidStack drain(ForgeDirection from, FluidStack resource, boolean
+  // doDrain) {
+  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
+  // if (lc != null) {
+  // return lc.drain(from, resource, doDrain);
+  // }
+  // return null;
+  // }
+  //
+  // @Override
+  // public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+  // {
+  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
+  // if (lc != null) {
+  // return lc.drain(from, maxDrain, doDrain);
+  // }
+  // return null;
+  // }
+  //
+  // @Override
+  // public boolean canFill(ForgeDirection from, Fluid fluid) {
+  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
+  // if (lc != null) {
+  // return lc.canFill(from, fluid);
+  // }
+  // return false;
+  // }
+  //
+  // @Override
+  // public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
+  // if (lc != null) {
+  // return lc.canDrain(from, fluid);
+  // }
+  // return false;
+  // }
+  //
+  // @Override
+  // public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
+  // if (lc != null) {
+  // return lc.getTankInfo(from);
+  // }
+  // return null;
+  // }
 
 }

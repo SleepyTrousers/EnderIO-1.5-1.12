@@ -2,7 +2,6 @@ package crazypants.enderio.machine.reservoir;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -10,9 +9,10 @@ import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.*;
+import crazypants.render.BoundingBox;
+import crazypants.render.CubeRenderer;
+import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector3d;
-
 
 public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
@@ -34,15 +34,14 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     TileReservoir res = (TileReservoir) tileentity;
 
-    float fullness = res.getFilledRatio();       
-     if ((res.isMultiblock() && !res.isMaster() && (fullness >= 0 || res.isAutoEject())) || (!res.isMultiblock() &&
-     fullness <= 0) ) {
-     return;
-     }
-     
-     float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.worldObj, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
-     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
+    float fullness = res.getFilledRatio();
+    if ((res.isMultiblock() && !res.isMaster() && (fullness >= 0 || res.isAutoEject())) || (!res.isMultiblock() &&
+        fullness <= 0)) {
+      return;
+    }
 
+    float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.worldObj, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+    Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
     GL11.glPushMatrix();
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -59,18 +58,18 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     if (res.isMultiblock() && res.isAutoEject()) {
 
       // switch
-      RenderUtil.bindBlockTexture();      
+      RenderUtil.bindBlockTexture();
 
       Tessellator.instance.startDrawingQuads();
       Tessellator.instance.setColorRGBA_F(val, val, val, 1);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         drawSwitch(dir, bb);
       }
-      Tessellator.instance.draw();      
+      Tessellator.instance.draw();
     }
 
     if (fullness > 0) {
-      RenderUtil.bindTexture(getLiquidSheet());      
+      RenderUtil.bindTexture(getLiquidSheet());
 
       float margin = 0.01f;
 
@@ -102,11 +101,11 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     offset.set(cent);
 
     boolean isUp = dir.offsetY != 0;
-    
-    if(dir == ForgeDirection.UP) {
+
+    if (dir == ForgeDirection.UP) {
       int i = 0;
     }
-    
+
     forward.set(dir.offsetX, dir.offsetY, dir.offsetZ);
     forward.scale(0.5);
     forward.x *= bb.sizeX();
@@ -114,16 +113,16 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     forward.z *= bb.sizeZ();
 
     offset.add(forward);
-    
-    if(dir.offsetY == 0) {
-      offset.y += bb.sizeY() * 0.25;  
-    } 
-    if(dir.offsetX == 0) {
+
+    if (dir.offsetY == 0) {
+      offset.y += bb.sizeY() * 0.25;
+    }
+    if (dir.offsetX == 0) {
       offset.x -= (isUp ? dir.offsetY : dir.offsetZ) * bb.sizeX() * 0.25;
-    } 
-    if(dir.offsetZ == 0) {
+    }
+    if (dir.offsetZ == 0) {
       offset.z += (isUp ? -dir.offsetY : dir.offsetX) * bb.sizeZ() * 0.25;
-    } 
+    }
 
     left.set(isUp ? -dir.offsetY : -dir.offsetZ, 0, dir.offsetX);
 

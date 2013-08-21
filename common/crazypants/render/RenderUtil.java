@@ -5,16 +5,19 @@ import java.nio.FloatBuffer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.RenderEngine;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.*;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.vecmath.*;
-
+import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.Vector3d;
 
 public class RenderUtil {
 
@@ -50,11 +53,12 @@ public class RenderUtil {
     return Minecraft.getMinecraft().renderEngine;
   }
 
-//  public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
-//  public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
-//  public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
-  
-  public static final String BLOCK_TEX = "/terrain.png"; 
+  // public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
+  // public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
+  // public static final ResourceLocation GLINT_TEX = new
+  // ResourceLocation("textures/misc/enchanted_item_glint.png");
+
+  public static final String BLOCK_TEX = "/terrain.png";
   public static final String ITEM_TEX = "/gui/items.png";
   public static final String GLINT_TEX = "%blur%/misc/glint.png";
 
@@ -78,9 +82,9 @@ public class RenderUtil {
     engine().bindTexture(string);
   }
 
-//  public static void bindTexture(ResourceLocation tex) {
-//    engine().func_110577_a(tex);
-//  }
+  // public static void bindTexture(ResourceLocation tex) {
+  // engine().func_110577_a(tex);
+  // }
 
   public static FontRenderer fontRenderer() {
     return Minecraft.getMinecraft().fontRenderer;

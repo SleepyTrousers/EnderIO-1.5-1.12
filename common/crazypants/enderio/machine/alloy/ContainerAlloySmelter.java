@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.alloy;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.AbstractMachineContainer;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer {
 
@@ -18,7 +18,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isStackValidForSlot(0, itemStack);
-      }      
+      }
     });
     addSlotToContainer(new Slot(tileEntity, 1, 78, 7) {
       @Override
@@ -38,7 +38,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
         return false;
       }
     });
-    
+
   }
 
 }

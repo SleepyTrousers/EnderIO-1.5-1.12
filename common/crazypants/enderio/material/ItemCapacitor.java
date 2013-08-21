@@ -8,21 +8,25 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.*;
-import crazypants.enderio.*;
-import crazypants.enderio.power.*;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.ICapacitorItem;
 
 public class ItemCapacitor extends Item implements ICapacitorItem {
-  
+
   private static final BasicCapacitor CAP = new BasicCapacitor();
-  
+
   public static ItemCapacitor create() {
     ItemCapacitor result = new ItemCapacitor();
     result.init();
     return result;
   }
-  
+
   private final Icon[] icons;
 
   protected ItemCapacitor() {
@@ -32,18 +36,18 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(64);
-    
+
     icons = new Icon[Capacitors.values().length];
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemBasicCapacitor.name);        
-    GameRegistry.registerItem(this, ModObject.itemBasicCapacitor.unlocalisedName);   
+    LanguageRegistry.addName(this, ModObject.itemBasicCapacitor.name);
+    GameRegistry.registerItem(this, ModObject.itemBasicCapacitor.unlocalisedName);
     for (int i = 0; i < Capacitors.values().length; i++) {
-      LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName + ".name", Capacitors.values()[i].uiName);
-    }    
+      LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName + ".name",
+          Capacitors.values()[i].uiName);
+    }
   }
-     
 
   @Override
   public Icon getIconFromDamage(int damage) {
@@ -52,31 +56,30 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {    
-    for (int i = 0; i < Capacitors.values().length ; i++) {
+  public void registerIcons(IconRegister iconRegister) {
+    for (int i = 0; i < Capacitors.values().length; i++) {
       icons[i] = iconRegister.registerIcon(Capacitors.values()[i].iconKey);
-    }    
+    }
   }
-  
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length);    
-    return super.getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName;    
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length);
+    return super.getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName;
   }
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {    
+  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Capacitors.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
-    }    
+    }
   }
-  
+
   @Override
   public ICapacitor getCapacitor(ItemStack stack) {
     int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, Capacitors.values().length);
     return Capacitors.values()[damage].capacitor;
   }
-  
+
 }

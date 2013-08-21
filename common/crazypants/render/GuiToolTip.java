@@ -32,18 +32,18 @@ public class GuiToolTip {
 
   public GuiToolTip(Rectangle bounds, List<String> lines) {
     this.bounds = bounds;
-    if(lines == null) {
+    if (lines == null) {
       text = new ArrayList<String>();
     } else {
       text = new ArrayList<String>(lines);
-    }    
+    }
   }
 
   public void onTick(int mouseX, int mouseY) {
-    if(lastMouseX != mouseX || lastMouseY != mouseY) {
+    if (lastMouseX != mouseX || lastMouseY != mouseY) {
       mouseOverStart = 0;
     }
-    
+
     if (bounds.contains(mouseX, mouseY)) {
       if (mouseOverStart == 0) {
         mouseOverStart = System.currentTimeMillis();
@@ -51,7 +51,7 @@ public class GuiToolTip {
     } else {
       mouseOverStart = 0;
     }
-    
+
     lastMouseX = mouseX;
     lastMouseY = mouseY;
   }

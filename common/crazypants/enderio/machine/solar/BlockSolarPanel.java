@@ -2,26 +2,21 @@ package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.enderface.BlockEnderIO;
-import crazypants.enderio.enderface.TileEnderIO;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 
 public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
@@ -32,7 +27,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   }
 
   private static final float BLOCK_HEIGHT = 0.15f;
-  
+
   Icon sideIcon;
 
   private BlockSolarPanel() {
@@ -64,9 +59,10 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   public TileEntity createNewTileEntity(World world) {
     return new TileEntitySolarPanel();
   }
-  
+
+  @Override
   public Icon getIcon(int side, int meta) {
-    if(side == ForgeDirection.UP.ordinal()) {
+    if (side == ForgeDirection.UP.ordinal()) {
       return blockIcon;
     }
     return sideIcon;
@@ -75,9 +71,9 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(te instanceof TileEntitySolarPanel) {
-      ((TileEntitySolarPanel)te).onNeighborBlockChange();
-    }    
+    if (te instanceof TileEntitySolarPanel) {
+      ((TileEntitySolarPanel) te).onNeighborBlockChange();
+    }
   }
 
   @Override

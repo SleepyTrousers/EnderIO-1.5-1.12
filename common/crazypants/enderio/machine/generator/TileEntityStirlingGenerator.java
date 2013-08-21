@@ -1,16 +1,21 @@
 package crazypants.enderio.machine.generator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.*;
+import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.power.*;
+import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
 public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory {
@@ -28,7 +33,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public TileEntityStirlingGenerator() {
     super(1);
   }
-
 
   @Override
   public String getMachineName() {
@@ -108,7 +112,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
     if (burnTime <= 0 && powerHandler.getEnergyStored() < powerHandler.getMaxEnergyStored() && redstoneCheckPassed) {
       if (inventory[0] != null && inventory[0].stackSize > 0) {
-        burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);        
+        burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
         if (burnTime > 0) {
           totalBurnTime = burnTime;
           decrStackSize(0, 1);
@@ -121,19 +125,18 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   private boolean transmitEnergy() {
-    
+
     if (powerHandler.getEnergyStored() <= 0) {
-      //powerHandler.update();
+      // powerHandler.update();
       return false;
     }
     float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
-//    float stored = powerHandler.getEnergyStored();
-//    powerHandler.update();
-//    float storedAfter = powerHandler.getEnergyStored();    
-    
-    
+    // float stored = powerHandler.getEnergyStored();
+    // powerHandler.update();
+    // float storedAfter = powerHandler.getEnergyStored();
+
     checkReceptors();
 
     if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
@@ -149,17 +152,20 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          //System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending " + canTransmit + " to internal.");
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);          
-        } else {          
-          //System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending " + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
+          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
+          // + canTransmit + " to internal.");
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+        } else {
+          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
+          // + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
           used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
           pp.receiveEnergy(used, receptor.fromDir);
         }
         transmitted += used;
-//        if (used > 0) {
-//          System.out.println("TileEntityStirlingGenerator.transmitEnergy: Trasnmitted energy " + used + " to " + receptor.receptor);
-//        }
+        // if (used > 0) {
+        // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Trasnmitted energy "
+        // + used + " to " + receptor.receptor);
+        // }
         canTransmit -= used;
       }
       if (canTransmit <= 0) {
@@ -171,7 +177,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       }
       appliedCount++;
     }
-    
+
     powerHandler.setEnergy(powerHandler.getEnergyStored() - transmitted);
 
     return transmitted > 0;
@@ -189,7 +195,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       BlockCoord checkLoc = bc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if (te instanceof IPowerReceptor) {
-        IPowerReceptor rec = (IPowerReceptor) te;        
+        IPowerReceptor rec = (IPowerReceptor) te;
         receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
       }
     }

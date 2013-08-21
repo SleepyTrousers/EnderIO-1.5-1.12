@@ -7,6 +7,7 @@ public interface ConduitRenderer {
 
   boolean isRendererForConduit(IConduit conduit);
 
-  void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick, float worldLight);
+  void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick,
+      float worldLight);
 
 }

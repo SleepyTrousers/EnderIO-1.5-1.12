@@ -1,18 +1,24 @@
 package crazypants.enderio.conduit.power;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
-import crazypants.enderio.power.*;
+import crazypants.enderio.power.EnderPowerProvider;
+import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
 public class NetworkPowerManager {
 
   private PowerConduitNetwork network;
-  
+
   private int maxEnergyStored;
   private float energyStored;
   private float reserved;
@@ -25,34 +31,33 @@ public class NetworkPowerManager {
 
   private boolean lastActiveValue = false;
   private int ticksWithNoPower = 0;
-  
+
   private final Map<BlockCoord, StarveBuffer> starveBuffers = new HashMap<BlockCoord, NetworkPowerManager.StarveBuffer>();
-  
+
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
     this.network = netowrk;
     maxEnergyStored = 64;
   }
 
-  
   public float addEnergy(float quantity) {
     float used = quantity;
-    energyStored += quantity;    
+    energyStored += quantity;
     if (energyStored > maxEnergyStored) {
       used -= energyStored - maxEnergyStored;
       energyStored = maxEnergyStored;
     } else if (energyStored < 0) {
       used -= energyStored;
       energyStored = 0;
-    }    
+    }
     updateConduitStorage();
     return used;
-  }   
-  
+  }
+
   public void applyRecievedPower() {
-   
+
     updateStorage();
-    
-    float extracted = extractRecievedEnergy();    
+
+    float extracted = extractRecievedEnergy();
     addEnergy(extracted);
     checkReserves();
     float quantity = energyStored;
@@ -78,7 +83,6 @@ public class NetworkPowerManager {
       return;
     }
 
-
     int appliedCount = 0;
     int numReceptors = receptors.size();
     int numEngines = 0;
@@ -96,7 +100,6 @@ public class NetworkPowerManager {
         IPowerReceptor pp = r.powerReceptor;
         if (pp != null) {
 
-            
           float used = 0;
           float nonReservedPower = quantity - reserved;
           float available = nonReservedPower + reservedForEntry;
@@ -155,7 +158,6 @@ public class NetworkPowerManager {
     }
   }
 
-
   private void updateConduitStorage() {
     float energyLeft = energyStored;
     for (IPowerConduit con : network.getConduits()) {
@@ -167,7 +169,6 @@ public class NetworkPowerManager {
       energyLeft -= give;
     }
   }
-
 
   boolean isActive() {
     return energyStored > 0;

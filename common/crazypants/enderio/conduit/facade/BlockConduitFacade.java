@@ -52,14 +52,13 @@ public class BlockConduitFacade extends Block {
     int meta = cb.getFacadeMetadata();
     if (id <= 0 || id == blockID) {
       return blockIcon;
-    }    
+    }
     Block block = Block.blocksList[id];
-    if(block != null) {
+    if (block != null) {
       return block.getIcon(side, meta);
-  }
+    }
     return blockIcon;
   }
-
 
   @Override
   public int getDamageValue(World par1World, int x, int y, int z) {
@@ -68,7 +67,7 @@ public class BlockConduitFacade extends Block {
       return m.meta;
     }
     return 0;
-  }  
+  }
 
   private Mimic getMimic(IBlockAccess ba, int x, int y, int z) {
     TileEntity te = ba.getBlockTileEntity(x, y, z);
@@ -80,10 +79,10 @@ public class BlockConduitFacade extends Block {
     int id = cb.getFacadeId();
     int meta = cb.getFacadeMetadata();
 
-    if(id <= 0) {
+    if (id <= 0) {
       return null;
     }
-    
+
     return new Mimic(id, meta);
   }
 

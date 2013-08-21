@@ -1,21 +1,29 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.*;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.*;
-import crazypants.enderio.*;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidStack;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
-import crazypants.util.*;
+import crazypants.util.BlockCoord;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class BlockReservoir extends BlockContainer {
@@ -69,8 +77,9 @@ public class BlockReservoir extends BlockContainer {
 
       TileReservoir tank = (TileReservoir) world.getBlockTileEntity(x, y, z);
 
-       LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(current);
-      //FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
+      LiquidStack liquid = LiquidContainerRegistry.getLiquidForFilledItem(current);
+      // FluidStack liquid =
+      // FluidContainerRegistry.getFluidForFilledItem(current);
 
       if (liquid != null) {
         // Handle filled containers

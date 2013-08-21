@@ -20,45 +20,44 @@ public class MaterialRecipes {
     GameRegistry.addSmelting(Block.gravel.blockID, industialBinder, 0);
 
     industialBinder = new ItemStack(itemIndustrialBinder.actualId, 1, 0);
-    
+
     ItemStack basicCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
     GameRegistry.addShapedRecipe(basicCapacitor, "   ", "gwi", "RbR", 'b', industialBinder, 'g', new ItemStack(Item.ingotGold), 'i', new ItemStack(
         Item.ingotIron), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
-    
-    
+
     ItemStack blueSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.BLUE_STEEL.ordinal());
-    
+
     ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
-    GameRegistry.addShapedRecipe(activatedCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g', new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ACTIVATED_GOLD.ordinal()), 'i', 
-        new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ACTIVATED_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
-    
+    GameRegistry.addShapedRecipe(activatedCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g', new ItemStack(ModObject.itemAlloy.actualId, 1,
+        Alloy.ACTIVATED_GOLD.ordinal()), 'i',
+        new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 2);
-    GameRegistry.addShapedRecipe(enderCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g', new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ENDER_GOLD.ordinal()), 'i', 
-        new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ENDER_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
-    
-    
+    GameRegistry.addShapedRecipe(enderCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g',
+        new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENDER_GOLD.ordinal()), 'i',
+        new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENDER_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+
     int meta = 0;
-    for(Alloy alloy : Alloy.values()) {
+    for (Alloy alloy : Alloy.values()) {
       ItemStack ingot = new ItemStack(ModObject.itemAlloy.actualId, 1, meta);
       IMachineRecipe recipe = new BasicAlloyRecipe(ingot, alloy.unlocalisedName, alloy.ingrediants);
-      
-      ItemStack nugget = new ItemStack(ModObject.itemAlloy.actualId, 9, meta + Alloy.values().length);           
+
+      ItemStack nugget = new ItemStack(ModObject.itemAlloy.actualId, 9, meta + Alloy.values().length);
       GameRegistry.addShapelessRecipe(nugget, ingot);
       nugget = nugget.copy();
       nugget.stackSize = 1;
-      GameRegistry.addShapedRecipe(ingot, "nnn","nnn","nnn",'n',nugget);
-      
-      
+      GameRegistry.addShapedRecipe(ingot, "nnn", "nnn", "nnn", 'n', nugget);
+
       MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, recipe);
       meta++;
     }
 
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, new FusedQuartzRecipe());
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, new VanillaSmeltingRecipe());
-    
-    ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId,1,0);    
+
+    ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);
     GameRegistry.addShapedRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', industialBinder, 's', new ItemStack(Item.stick));
-    
+
   }
 
 }

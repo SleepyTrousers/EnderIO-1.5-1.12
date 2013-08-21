@@ -2,11 +2,9 @@ package crazypants.enderio.conduit;
 
 import java.util.Collection;
 
-import crazypants.enderio.conduit.geom.CollidableComponent;
-
-
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import crazypants.enderio.conduit.geom.CollidableComponent;
 
 public class RaytraceResult {
 

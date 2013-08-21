@@ -2,13 +2,18 @@ package crazypants.enderio.enderface;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.*;
-import crazypants.enderio.*;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
 
 public class ItemEnderface extends Item implements IGuiHandler {
 
@@ -32,7 +37,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemEnderface.name);    
+    LanguageRegistry.addName(this, ModObject.itemEnderface.name);
     GameRegistry.registerItem(this, ModObject.itemEnderface.unlocalisedName);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENDERFACE, this);
   }
@@ -46,7 +51,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
   public boolean hasEffect(ItemStack par1ItemStack) {
     return true;
   }
-  
+
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
     super.onCreated(itemStack, world, entityPlayer);
@@ -55,7 +60,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
     nbttagcompound.setInteger(KEY_IO_X, -1);
     nbttagcompound.setInteger(KEY_IO_Y, -1);
     nbttagcompound.setInteger(KEY_IO_Z, -1);
-    nbttagcompound.setInteger(KEY_DIMENSION, -1);  
+    nbttagcompound.setInteger(KEY_DIMENSION, -1);
     itemStack.setTagCompound(nbttagcompound);
   }
 
@@ -71,7 +76,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
 
   @Override
   public ItemStack onItemRightClick(ItemStack itemStack, World world, final EntityPlayer entityPlayer) {
-    
+
     if (!world.isRemote) {
       return itemStack;
     }
@@ -85,29 +90,33 @@ public class ItemEnderface extends Item implements IGuiHandler {
       int y = tag.getInteger(KEY_IO_Y);
       int z = tag.getInteger(KEY_IO_Z);
       int dimension = tag.getInteger(KEY_DIMENSION);
-      
-      if(world.provider.dimensionId != dimension) {
-        //ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
+
+      if (world.provider.dimensionId != dimension) {
+        // ChatMessageComponent c =
+        // ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
         entityPlayer.sendChatToPlayer("EnderIO block is in a different dimension.");
         return itemStack;
       }
-      
+
       Chunk c = world.getChunkFromBlockCoords(x, z);
-      if(c == null || !c.isChunkLoaded) {
-        //ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
+      if (c == null || !c.isChunkLoaded) {
+        // ChatMessageComponent cm =
+        // ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
         entityPlayer.sendChatToPlayer("EnderIO block's chunk is not loaded.");
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
       if (blockId != EnderIO.blockEnderIo.blockID) {
-        //ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
+        // ChatMessageComponent cm =
+        // ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
         entityPlayer.sendChatToPlayer("EnderIO block has been destroyed.");
         return itemStack;
       }
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
       return itemStack;
     }
-    //ChatMessageComponent cm = ChatMessageComponent.func_111066_d(" Enderface not synchronized with EnderIO.");
+    // ChatMessageComponent cm =
+    // ChatMessageComponent.func_111066_d(" Enderface not synchronized with EnderIO.");
     entityPlayer.sendChatToPlayer(" Enderface not synchronized with EnderIO.");
     return itemStack;
   }

@@ -1,7 +1,9 @@
 package crazypants.enderio.conduit.liquid;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.liquids.*;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
 
 public class ConduitTank implements ILiquidTank {
 
@@ -12,16 +14,16 @@ public class ConduitTank implements ILiquidTank {
   ConduitTank(int capacity) {
     this.capacity = capacity;
   }
-    
+
   public int getFluidAmount() {
     return fluid == null ? 0 : fluid.amount;
   }
 
   public float getFilledRatio() {
-    if(getFluidAmount() <= 0) {
+    if (getFluidAmount() <= 0) {
       return 0;
     }
-    if(getCapacity() <= 0) {
+    if (getCapacity() <= 0) {
       return -1;
     }
     return (float) getFluidAmount() / getCapacity();
@@ -32,9 +34,9 @@ public class ConduitTank implements ILiquidTank {
   }
 
   public void setAmount(int amount) {
-    if(fluid != null) {
+    if (fluid != null) {
       fluid.amount = amount;
-    } 
+    }
   }
 
   public int getAvailableSpace() {
@@ -44,12 +46,12 @@ public class ConduitTank implements ILiquidTank {
   public void addAmount(int amount) {
     setAmount(getFluidAmount() + amount);
   }
-  
-//  @Override
-//  public FluidTankInfo getInfo() {
-//    return new FluidTankInfo(this);
-//  }
-//  
+
+  // @Override
+  // public FluidTankInfo getInfo() {
+  // return new FluidTankInfo(this);
+  // }
+  //
 
   @Override
   public LiquidStack getLiquid() {
@@ -76,7 +78,7 @@ public class ConduitTank implements ILiquidTank {
   public int fill(LiquidStack resource, boolean doFill) {
     if (resource == null || resource.itemID <= 0) {
       return 0;
-    }    
+    }
 
     if (fluid == null || fluid.itemID <= 0) {
       if (resource.amount <= capacity) {
@@ -87,7 +89,7 @@ public class ConduitTank implements ILiquidTank {
       } else {
         if (doFill) {
           fluid = resource.copy();
-          fluid.amount = capacity;          
+          fluid.amount = capacity;
         }
         return capacity;
       }
@@ -131,7 +133,7 @@ public class ConduitTank implements ILiquidTank {
     }
 
     LiquidStack drained = new LiquidStack(fluid.itemID, used);
-    
+
     if (fluid.amount < 0) {
       fluid.amount = 0;
     }
@@ -170,11 +172,11 @@ public class ConduitTank implements ILiquidTank {
   }
 
   public void remove(int amount) {
-    if(fluid == null) {
+    if (fluid == null) {
       return;
     }
     fluid.amount -= amount;
-    fluid.amount = Math.max(0, fluid.amount);    
+    fluid.amount = Math.max(0, fluid.amount);
   }
 
   @Override

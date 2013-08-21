@@ -39,21 +39,19 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 
-
 public class ClientProxy extends CommonProxy {
-  
-  //@formatter:off
+
+  // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
 
-    { 3, 2, 0, 0, 0, 0 }, 
-    { 2, 3, 1, 1, 1, 1 }, 
-    { 1, 1, 3, 2, 5, 4 }, 
-    { 0, 0, 2, 3, 4, 5 }, 
-    { 4, 5, 4, 5, 3, 2 },
-    { 5, 4, 5, 4, 2, 3 } };
-//@formatter:on
-  
-  
+      { 3, 2, 0, 0, 0, 0 },
+      { 2, 3, 1, 1, 1, 1 },
+      { 1, 1, 3, 2, 5, 4 },
+      { 0, 0, 2, 3, 4, 5 },
+      { 4, 5, 4, 5, 3, 2 },
+      { 5, 4, 5, 4, 2, 3 } };
+  // @formatter:on
+
   static {
     AbstractMachineBlock.initIcon();
     RedstoneConduit.initIcons();
@@ -61,75 +59,75 @@ public class ClientProxy extends CommonProxy {
     PowerConduit.initIcons();
     LiquidConduit.initIcons();
   }
-  
-  
+
   private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
-  
+
   private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
-  
+
   @Override
   public World getClientWorld() {
     return FMLClientHandler.instance().getClient().theWorld;
   }
-  
+
   @Override
   public EntityPlayer getClientPlayer() {
     return Minecraft.getMinecraft().thePlayer;
   }
 
   @Override
-  public void load() {    
+  public void load() {
     super.load();
-    
-    //Renderers
-    
+
+    // Renderers
+
     ConduitBundleRenderer cbr = new ConduitBundleRenderer();
     BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(cbr);
-    
+
     BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
-    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();;
+    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
+    ;
     RenderingRegistry.registerBlockHandler(bcfgr);
-    
-    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();;
+
+    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
+    ;
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
-    
+
     BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
-    
+
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame.itemID, fqfr);
-    
+
     ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit.itemID, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit.itemID, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit.itemID, itemConRenderer);
-    
-       
-    PaintedItemRenderer pir = new PaintedItemRenderer();    
+
+    PaintedItemRenderer pir = new PaintedItemRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomFence.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomFenceGate.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomWall.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomStair.blockID, pir);
-    
+
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
-    
+
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
-    conduitRenderers.add(RedstoneSwitchRenderer.instance);   
+    conduitRenderers.add(RedstoneSwitchRenderer.instance);
     conduitRenderers.add(new LiquidConduitRenderer());
-    
+
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockEnderIo.blockID, eior);
-    
+
     ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
-    
+
   }
-  
+
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {
-    for(ConduitRenderer renderer : conduitRenderers) {
-      if(renderer.isRendererForConduit(conduit)) {
+    for (ConduitRenderer renderer : conduitRenderers) {
+      if (renderer.isRendererForConduit(conduit)) {
         return renderer;
       }
     }
@@ -143,7 +141,5 @@ public class ClientProxy extends CommonProxy {
     }
     return super.getReachDistanceForPlayer(entityPlayer);
   }
-  
-  
-  
+
 }

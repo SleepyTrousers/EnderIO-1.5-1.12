@@ -121,7 +121,7 @@ public class PacketUtil {
       return null;
     }
   }
-  
+
   public static void writeNBTTagCompound(NBTTagCompound compound, DataOutputStream dataout) {
     try {
       if (compound == null) {

@@ -1,10 +1,17 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.ModObject.*;
+import static crazypants.enderio.ModObject.blockAlloySmelter;
+import static crazypants.enderio.ModObject.blockElectricLight;
+import static crazypants.enderio.ModObject.blockPainter;
+import static crazypants.enderio.ModObject.blockReservoir;
+import static crazypants.enderio.ModObject.blockSolarPanel;
+import static crazypants.enderio.ModObject.blockStirlingGenerator;
+import static crazypants.enderio.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.ModObject.itemIndustrialBinder;
 import net.minecraft.block.Block;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.material.Alloy;
 
@@ -30,20 +37,19 @@ public class MachineRecipes {
 
     ItemStack alloySmelter = new ItemStack(blockAlloySmelter.actualId, 1, 0);
     GameRegistry.addShapedRecipe(alloySmelter, "bbb", "CfC", "bcb", 'b', industialBinder, 'f', Block.furnaceIdle, 'c', capacitor, 'C', Item.cauldron);
-       
-    ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId,1,0);
-    ItemStack activatedIron = new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ACTIVATED_IRON.ordinal());
-    ItemStack activatedGold = new ItemStack(ModObject.itemAlloy.actualId,1,Alloy.ACTIVATED_GOLD.ordinal());
+
+    ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
+    ItemStack activatedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_IRON.ordinal());
+    ItemStack activatedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_GOLD.ordinal());
     ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
-    
-    GameRegistry.addShapedRecipe(solarPanel, "qqq", "gig", "bcb", 'q', fusedQuartz, 'g', activatedGold, 'i', activatedIron, 'b', industialBinder,'c', capacitor);
-    
-    
-    ItemStack electricLight = new ItemStack(blockElectricLight.actualId,1,0); 
+
+    GameRegistry.addShapedRecipe(solarPanel, "qqq", "gig", "bcb", 'q', fusedQuartz, 'g', activatedGold, 'i', activatedIron, 'b', industialBinder, 'c',
+        capacitor);
+
+    ItemStack electricLight = new ItemStack(blockElectricLight.actualId, 1, 0);
     ItemStack glowstone = new ItemStack(Item.lightStoneDust);
-    GameRegistry.addShapedRecipe(electricLight, "bqb", "bgb", "bcb", 'q', fusedQuartz, 'g', glowstone, 'b', industialBinder,'c', capacitor);
-    
-    
+    GameRegistry.addShapedRecipe(electricLight, "bqb", "bgb", "bcb", 'q', fusedQuartz, 'g', glowstone, 'b', industialBinder, 'c', capacitor);
+
   }
 
 }

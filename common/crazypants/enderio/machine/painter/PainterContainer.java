@@ -1,12 +1,10 @@
 package crazypants.enderio.machine.painter;
 
-import crazypants.enderio.machine.AbstractMachineContainer;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.AbstractMachineContainer;
+import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class PainterContainer extends AbstractMachineContainer {
 
@@ -20,7 +18,7 @@ public class PainterContainer extends AbstractMachineContainer {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isStackValidForSlot(0, itemStack);
-      }      
+      }
     });
     addSlotToContainer(new Slot(tileEntity, 1, 37, 34) {
       @Override
@@ -33,7 +31,7 @@ public class PainterContainer extends AbstractMachineContainer {
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
       }
-    });    
+    });
   }
 
 }

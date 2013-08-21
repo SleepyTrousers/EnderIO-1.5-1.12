@@ -15,31 +15,30 @@ public class ClientTickHandler implements ITickHandler {
 
   private boolean hidingConduits = false;
   private boolean first = true;
-  
+
   @Override
   public void tickStart(EnumSet<TickType> type, Object... tickData) {
-    EntityPlayer player = (EntityPlayer) tickData[0];        
+    EntityPlayer player = (EntityPlayer) tickData[0];
     boolean curVal = ConduitUtil.isToolEquipped(player) || ConduitUtil.isConduitEquipped(player);
-    if(first) {
+    if (first) {
       hidingConduits = curVal;
       first = false;
     }
-    if(curVal != hidingConduits) {      
-      hidingConduits = curVal;      
+    if (curVal != hidingConduits) {
+      hidingConduits = curVal;
       WorldClient world = FMLClientHandler.instance().getClient().theWorld;
-      
+
       @SuppressWarnings("unchecked")
       List<TileEntity> checkList = world.loadedTileEntityList;
-      for(TileEntity o : checkList) {
-        if(o.blockType != null && o.blockType.blockID == EnderIO.blockConduitBundle.blockID) {
-          if(o.getDistanceFrom(player.posX, player.posY, player.posZ) < o.getMaxRenderDistanceSquared()) {
+      for (TileEntity o : checkList) {
+        if (o.blockType != null && o.blockType.blockID == EnderIO.blockConduitBundle.blockID) {
+          if (o.getDistanceFrom(player.posX, player.posY, player.posZ) < o.getMaxRenderDistanceSquared()) {
             world.markBlockForRenderUpdate(o.xCoord, o.yCoord, o.zCoord);
           }
         }
       }
     }
-      
-      
+
   }
 
   @Override
@@ -56,5 +55,4 @@ public class ClientTickHandler implements ITickHandler {
     return "EnderIO Client Tick Handler";
   }
 
-  
 }

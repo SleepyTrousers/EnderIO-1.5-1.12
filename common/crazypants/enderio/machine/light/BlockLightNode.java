@@ -1,28 +1,16 @@
 package crazypants.enderio.machine.light;
 
-import java.util.List;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.IConduitBundle;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.ModObject;
 
 public class BlockLightNode extends Block implements ITileEntityProvider {
 
@@ -39,7 +27,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
     setUnlocalizedName(ModObject.blockLightNode.unlocalisedName);
     setLightOpacity(0);
     setLightValue(0);
-    //setBlockBounds(0.45f, 0.45F, 0.45f, 0.55f, 0.55f, 0.55f);
+    // setBlockBounds(0.45f, 0.45F, 0.45f, 0.55f, 0.55f, 0.55f);
     setBlockBounds(0, 0, 0, 0, 0, 0);
   }
 
@@ -90,11 +78,11 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
       return block.getLightValue(world, x, y, z);
     }
     int onVal = 15;
-//    TileEntity te = world.getBlockTileEntity(x, y, z);
-//    if(te instanceof TileLightNode && ((TileLightNode)te).isDiagnal) { 
-//      System.out.println("BlockLightNode.getLightValue: ");
-//      onVal = 5;
-//    }
+    // TileEntity te = world.getBlockTileEntity(x, y, z);
+    // if(te instanceof TileLightNode && ((TileLightNode)te).isDiagnal) {
+    // System.out.println("BlockLightNode.getLightValue: ");
+    // onVal = 5;
+    // }
     return world.getBlockMetadata(x, y, z) > 0 ? onVal : 0;
   }
 

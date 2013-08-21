@@ -1,17 +1,24 @@
 package crazypants.enderio.conduit.render;
 
-import static crazypants.render.CubeRenderer.*;
-import static net.minecraftforge.common.ForgeDirection.*;
+import static crazypants.render.CubeRenderer.addVecWithUV;
+import static crazypants.render.CubeRenderer.setupVertices;
+import static crazypants.render.CubeRenderer.verts;
+import static net.minecraftforge.common.ForgeDirection.DOWN;
+import static net.minecraftforge.common.ForgeDirection.EAST;
+import static net.minecraftforge.common.ForgeDirection.NORTH;
+import static net.minecraftforge.common.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.ForgeDirection.UP;
+import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Collection;
-
-import crazypants.enderio.conduit.*;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.render.BoundingBox;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.render.BoundingBox;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
@@ -115,9 +122,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       setVerticesForTransmission(bound, dir);
     }
 
-    if (dir == NORTH || dir == UP || dir == EAST) { // maintain consistent texture
-                                                 // dir relative to the cneter
-                                                 // of the conduit
+    if (dir == NORTH || dir == UP || dir == EAST) { // maintain consistent
+                                                    // texture
+      // dir relative to the cneter
+      // of the conduit
       float tmp = minU;
       minU = maxU;
       maxU = tmp;

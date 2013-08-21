@@ -1,19 +1,36 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.*;
-import cpw.mods.fml.relauncher.*;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.*;
+import crazypants.enderio.conduit.AbstractConduit;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.render.IconUtil;
@@ -71,7 +88,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       if (!getBundle().getEntity().worldObj.isRemote) {
         ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
         if (res.component != null) {
-          ForgeDirection connDir = (ForgeDirection) res.component.dir;
+          ForgeDirection connDir = res.component.dir;
 
           if (connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networls
@@ -130,7 +147,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
         if (!getBundle().getEntity().worldObj.isRemote) {
           if (network != null && (network.getFluidType() == null || network.getTotalVolume() < 500)) {
             network.setFluidType(fluid);
-            //ChatMessageComponent c = ChatMessageComponent.func_111066_d(+ FluidRegistry.getFluidName(fluid));
+            // ChatMessageComponent c = ChatMessageComponent.func_111066_d(+
+            // FluidRegistry.getFluidName(fluid));
             player.sendChatToPlayer("Fluid type set to " + LiquidDictionary.findLiquidName(fluid));
           }
         }
@@ -244,7 +262,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
     tank.setLiquid(liquidType);
   }
-  
+
   @Override
   public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
     return fill(from, resource, doFill, true);
@@ -266,11 +284,11 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
 
     int pushedVolume = 0;
-    if(doPush) {
+    if (doPush) {
       int maxPush = Math.max(0, recieveAmount + tank.getFluidAmount() - tank.getCapacity());
-      pushedVolume = pushLiquid(from, maxPush, doFill);  
+      pushedVolume = pushLiquid(from, maxPush, doFill);
     }
-    
+
     if (doFill) {
       tank.drain(pushedVolume, doFill);
       return tank.fill(resource, doFill);
@@ -285,7 +303,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   private int pushLiquid(ForgeDirection from, int amount, boolean doPush) {
     if (pushing || amount <= 0 || tank.getLiquid() == null) { // avoid circular
-                                                             // pushing
+                                                              // pushing
       return 0;
     }
 
@@ -348,43 +366,45 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     return ConduitUtil.getConduit(ent.worldObj, ent, dir, ILiquidConduit.class);
   }
 
-//  @Override
-//  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-//    return tank.drain(maxDrain, doDrain);
-//  }
-//
-//  @Override
-//  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-//    if (resource != null && !resource.isFluidEqual(tank.getFluid())) {
-//      return null;
-//    }
-//    return drain(from, resource.amount, doDrain);
-//  }
-//
-//  @Override
-//  public boolean canFill(ForgeDirection from, Fluid fluid) {
-//    if (tank.getFluid() == null) {
-//      return true;
-//    }
-//    if (fluid != null && fluid.getID() == tank.getFluid().fluidID) {
-//      return true;
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  public boolean canDrain(ForgeDirection from, Fluid fluid) {
-//    if (tank.getFluid() == null || fluid == null) {
-//      return false;
-//    }
-//    return tank.getFluid().getFluid().getID() == fluid.getID();
-//  }
-//
-//  @Override
-//  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-//    return new FluidTankInfo[] { tank.getInfo() };
-//  }
-  
+  // @Override
+  // public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+  // {
+  // return tank.drain(maxDrain, doDrain);
+  // }
+  //
+  // @Override
+  // public FluidStack drain(ForgeDirection from, FluidStack resource, boolean
+  // doDrain) {
+  // if (resource != null && !resource.isFluidEqual(tank.getFluid())) {
+  // return null;
+  // }
+  // return drain(from, resource.amount, doDrain);
+  // }
+  //
+  // @Override
+  // public boolean canFill(ForgeDirection from, Fluid fluid) {
+  // if (tank.getFluid() == null) {
+  // return true;
+  // }
+  // if (fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+  // return true;
+  // }
+  // return false;
+  // }
+  //
+  // @Override
+  // public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  // if (tank.getFluid() == null || fluid == null) {
+  // return false;
+  // }
+  // return tank.getFluid().getFluid().getID() == fluid.getID();
+  // }
+  //
+  // @Override
+  // public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  // return new FluidTankInfo[] { tank.getInfo() };
+  // }
+
   @Override
   public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
     return fill(ForgeDirection.UNKNOWN, resource, doFill);
@@ -402,7 +422,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public ILiquidTank[] getTanks(ForgeDirection direction) {
-    return new ILiquidTank[] {tank};
+    return new ILiquidTank[] { tank };
   }
 
   @Override
@@ -528,7 +548,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if (component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY);
     }
-    if (isExtractingFromDir((ForgeDirection) component.dir)) {
+    if (isExtractingFromDir(component.dir)) {
       return ICONS.get(ICON_EXTRACT_KEY);
     }
     return ICONS.get(ICON_KEY);

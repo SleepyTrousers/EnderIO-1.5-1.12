@@ -14,7 +14,7 @@ public abstract class AbstractMachineContainer extends Container {
     this.tileEntity = te;
 
     addMachineSlots(playerInv);
-    
+
     addSlotToContainer(new Slot(te, te.inventory.length - 1, 12, 60) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
@@ -43,7 +43,8 @@ public abstract class AbstractMachineContainer extends Container {
 
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    boolean hasOutput = tileEntity.getSizeInventory() > 2; //Assume one input and capacitor
+    boolean hasOutput = tileEntity.getSizeInventory() > 2; // Assume one input
+                                                           // and capacitor
     int outputSlot = tileEntity.getSizeInventory() - 2;
     int capacitorSlot = outputSlot + 1;
     int startPlayerSlot = capacitorSlot + 1;
@@ -58,18 +59,18 @@ public abstract class AbstractMachineContainer extends Container {
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
 
-      if ( (hasOutput ? (slotIndex < outputSlot) : (slotIndex <= outputSlot)) || slotIndex == capacitorSlot) {
-        //merge from machine input slots to inventory
+      if ((hasOutput ? (slotIndex < outputSlot) : (slotIndex <= outputSlot)) || slotIndex == capacitorSlot) {
+        // merge from machine input slots to inventory
         if (!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
           return null;
         }
-        
+
       } else if (hasOutput && slotIndex == outputSlot) { // merge result
 
         if (!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, true)) {
           return null;
         }
-  
+
       } else /* if (slotIndex > capacitorSlot) */{ // from inventory into inputs
 
         boolean merged = false;
@@ -78,9 +79,9 @@ public abstract class AbstractMachineContainer extends Container {
             merged = mergeItemStack(origStack, i, i + 1, false);
           }
         }
-        
-        //check for capacitor mergers
-        if(!merged) {
+
+        // check for capacitor mergers
+        if (!merged) {
           merged = mergeItemStack(origStack, capacitorSlot, capacitorSlot + 1, false);
         }
 
@@ -90,17 +91,17 @@ public abstract class AbstractMachineContainer extends Container {
 
           if ((hasOutput ? (slotIndex < outputSlot) : (slotIndex <= outputSlot)) && slotIndex < startHotBarSlot) {
             // merge into hotbar
-            if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {              
+            if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
               return null;
-            } 
-            
-            //merge from hotbar
+            }
+
+            // merge from hotbar
           } else if (!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
             return null;
           }
         }
 
-      }      
+      }
 
       if (origStack.stackSize == 0) {
         slot.putStack((ItemStack) null);

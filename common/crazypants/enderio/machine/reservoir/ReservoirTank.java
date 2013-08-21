@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraftforge.liquids.*;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.liquids.LiquidTank;
 
 public class ReservoirTank extends LiquidTank {
 

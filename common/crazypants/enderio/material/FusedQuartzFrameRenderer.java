@@ -1,24 +1,13 @@
 package crazypants.enderio.material;
 
-import org.lwjgl.opengl.GL11;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.painter.PainterUtil;
-
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
-import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
 
 public class FusedQuartzFrameRenderer implements IItemRenderer {
 
-  
   @Override
   public boolean handleRenderType(ItemStack item, ItemRenderType type) {
     return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED || type == ItemRenderType.INVENTORY || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
@@ -32,36 +21,34 @@ public class FusedQuartzFrameRenderer implements IItemRenderer {
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
     RenderBlocks renderBlocks = (RenderBlocks) data[0];
-    if (type == ItemRenderType.INVENTORY) {      
+    if (type == ItemRenderType.INVENTORY) {
       renderToInventory(item, renderBlocks);
-    } else if (type == ItemRenderType.EQUIPPED) {      
+    } else if (type == ItemRenderType.EQUIPPED) {
       renderEquipped(item, renderBlocks);
     } else if (type == ItemRenderType.ENTITY) {
       renderEntity(item, renderBlocks);
     } else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
       renderEntity(item, renderBlocks);
-    } 
+    }
   }
-  
+
   private void renderEntity(ItemStack item, RenderBlocks renderBlocks) {
     renderToInventory(item, renderBlocks);
   }
 
   private void renderEquipped(ItemStack item, RenderBlocks renderBlocks) {
-    renderToInventory(item, renderBlocks);    
-  }
-  
-  private void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
-    renderFrame(item);    
+    renderToInventory(item, renderBlocks);
   }
 
-  private void renderFrame(ItemStack item) {    
+  private void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
+    renderFrame(item);
+  }
+
+  private void renderFrame(ItemStack item) {
     GL11.glDisable(GL11.GL_LIGHTING);
-    FusedQuartzRenderer r = new FusedQuartzRenderer();    
-    r.renderFrameItem(item);    
+    FusedQuartzRenderer r = new FusedQuartzRenderer();
+    r.renderFrameItem(item);
     GL11.glEnable(GL11.GL_LIGHTING);
   }
 
- 
-  
 }

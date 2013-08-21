@@ -1,8 +1,10 @@
 package crazypants.enderio.machine.alloy;
 
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.*;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.RecipeInput;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
@@ -22,10 +24,10 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if(i >= 3) {
+    if (i >= 3) {
       return false;
-    } 
-    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemstack)).isEmpty();    
+    }
+    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemstack)).isEmpty();
   }
 
 }

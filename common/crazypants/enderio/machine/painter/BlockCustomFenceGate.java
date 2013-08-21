@@ -2,16 +2,22 @@ package crazypants.enderio.machine.painter;
 
 import java.util.Random;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import cpw.mods.fml.common.registry.*;
+import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.*;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.RecipeInput;
 
 public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityProvider {
 

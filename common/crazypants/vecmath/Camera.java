@@ -17,12 +17,12 @@ public class Camera {
   public boolean isValid() {
     return viewMatrix != null && projectionMatrix != null && viewport != null;
   }
-  
+
   public void setProjectionMatrixAsPerspective(double fovDegrees, double near, double far, int viewportWidth, int viewportHeight) {
     setProjectionMatrix(VecmathUtil.createProjectionMatrixAsPerspective(fovDegrees, near, far, viewportWidth, viewportHeight));
   }
-  
-  public void setViewMatrixAsLookAt( Vector3d eyePos, Vector3d lookAtPos,  Vector3d upVec) {
+
+  public void setViewMatrixAsLookAt(Vector3d eyePos, Vector3d lookAtPos, Vector3d upVec) {
     setViewMatrix(VecmathUtil.createMatrixAsLookAt(eyePos, lookAtPos, upVec));
   }
 
@@ -44,7 +44,7 @@ public class Camera {
   }
 
   public boolean getRayForPixel(int x, int y, Vector3d eyeOut, Vector3d normalOut) {
-    if(isValid()) {
+    if (isValid()) {
       VecmathUtil.computeRayForPixel(viewport, getInverseProjectionMatrix(), getInverseViewMatrix(), x, y, eyeOut, normalOut);
       return true;
     }
@@ -84,7 +84,7 @@ public class Camera {
   public Matrix4d getProjectionMatrix() {
     return projectionMatrix;
   }
-  
+
   public Matrix4d getTransposeProjectionMatrix() {
     return projectionTranspose;
   }
@@ -115,7 +115,7 @@ public class Camera {
   public Matrix4d getViewMatrix() {
     return viewMatrix;
   }
-  
+
   public Matrix4d getTransposeViewMatrix() {
     return viewTranspose;
   }

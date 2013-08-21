@@ -62,20 +62,20 @@ public class EnderIO {
 
   public static GuiHandler guiHandler = new GuiHandler();
 
-  //Materials  
+  // Materials
   public static ItemIndustrialBinder itemIndustrialBinder;
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
-    
+
   // Enderface
   public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
 
   // Painter
   public static BlockPainter blockPainter;
-  public static BlockCustomFence blockCustomFence;  
+  public static BlockCustomFence blockCustomFence;
   public static BlockCustomFenceGate blockCustomFenceGate;
   public static BlockCustomWall blockCustomWall;
   public static BlockCustomStair blockCustomStair;
@@ -84,26 +84,26 @@ public class EnderIO {
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
   public static ItemConduitFacade itemConduitFacade;
-  public static ItemRedstoneConduit itemRedstoneConduit; 
+  public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
-  
-  //Machines
-  public static BlockStirlingGenerator blockStirlingGenerator;  
-  public static BlockSolarPanel blockSolarPanel;  
-  public static BlockReservoir blockReservoir;  
+
+  // Machines
+  public static BlockStirlingGenerator blockStirlingGenerator;
+  public static BlockSolarPanel blockSolarPanel;
+  public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  
+
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
   public static ItemYetaWrench itemYetaWench;
-  
+
   @PreInit
   public void preInit(FMLPreInitializationEvent event) {
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
     try {
-      cfg.load();      
+      cfg.load();
       Config.load(cfg);
     } catch (Exception e) {
       FMLLog.log(Level.SEVERE, e, "EnderIO has a problem loading it's configuration");
@@ -112,47 +112,46 @@ public class EnderIO {
         cfg.save();
       }
     }
-    
-    itemIndustrialBinder= ItemIndustrialBinder.create();
+
+    itemIndustrialBinder = ItemIndustrialBinder.create();
     itemBasicCapacitor = ItemCapacitor.create();
-    itemAlloy = ItemAlloy.create();    
+    itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
-    
+
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
-    
-    blockPainter = BlockPainter.create();    
-    blockCustomFence = BlockCustomFence.create();    
+
+    blockPainter = BlockPainter.create();
+    blockCustomFence = BlockCustomFence.create();
     blockCustomFenceGate = BlockCustomFenceGate.create();
     blockCustomWall = BlockCustomWall.create();
     blockCustomStair = BlockCustomStair.create();
-    
+
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
-    blockReservoir = BlockReservoir.create();   
+    blockReservoir = BlockReservoir.create();
     blockAlloySmelter = BlockAlloySmelter.create();
 
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
-    
-    itemRedstoneConduit = ItemRedstoneConduit.create();                       
+
+    itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
-    
+
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
-    
+
     itemYetaWench = ItemYetaWrench.create();
   }
-  
 
   @Init
   public void load(FMLInitializationEvent event) {
 
     instance = this;
-     
+
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
 
@@ -160,7 +159,7 @@ public class EnderIO {
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
-    
+
     proxy.load();
   }
 
@@ -168,7 +167,7 @@ public class EnderIO {
   public void postInit(FMLPostInitializationEvent event) {
     TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
   }
-    
+
   @ServerStopped
   public void serverStopped(FMLServerStoppedEvent event) {
     proxy.serverStopped();

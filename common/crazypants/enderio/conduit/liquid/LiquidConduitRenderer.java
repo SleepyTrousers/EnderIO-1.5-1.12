@@ -1,14 +1,15 @@
 package crazypants.enderio.conduit.liquid;
 
 import static crazypants.render.CubeRenderer.setupVertices;
-import crazypants.enderio.conduit.*;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.render.*;
-import crazypants.render.BoundingBox;
-import crazypants.vecmath.Vector3d;
-
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.render.ConduitBundleRenderer;
+import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.render.BoundingBox;
+import crazypants.vecmath.Vector3d;
 
 public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
@@ -33,6 +34,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
   }
 
+  @Override
   protected void renderConduit(Icon tex, CollidableComponent component) {
     if (isNSEWUP(component.dir)) {
       BoundingBox[] cubes = toCubes(component.bound);
@@ -44,6 +46,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     }
   }
 
+  @Override
   protected void renderTransmission(Icon tex, CollidableComponent component) {
     BoundingBox[] cubes = toCubes(component.bound);
     for (BoundingBox cube : cubes) {
@@ -56,9 +59,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
     float yScale = getRatioForConnection(id);
 
-    float xs = ((ForgeDirection) id).offsetX == 0 ? 0.9f : 1;
-    float ys = ((ForgeDirection) id).offsetY == 0 ? Math.min(yScale, 0.9f) : yScale;
-    float zs = ((ForgeDirection) id).offsetZ == 0 ? 0.9f : 1;
+    float xs = id.offsetX == 0 ? 0.9f : 1;
+    float ys = id.offsetY == 0 ? Math.min(yScale, 0.9f) : yScale;
+    float zs = id.offsetZ == 0 ? 0.9f : 1;
 
     float sizeY = bound.sizeY();
     bound = bound.scale(xs, ys, zs);

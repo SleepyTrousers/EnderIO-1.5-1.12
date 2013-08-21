@@ -157,8 +157,8 @@ public class GuiEnderface extends GuiScreen {
 
     long elapsed = world.getTotalWorldTime() - initTime;
 
-    if (Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() &&  elapsed > 10) {
-           
+    if (Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+
       int x = Mouse.getEventX();
       int y = Mouse.getEventY();
       Vector3d start = new Vector3d();
@@ -237,7 +237,7 @@ public class GuiEnderface extends GuiScreen {
 
         RenderHelper.disableStandardItemLighting();
         mc.entityRenderer.enableLightmap(0);
-        RenderUtil.bindBlockTexture();        
+        RenderUtil.bindBlockTexture();
 
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
         Tessellator.instance.startDrawingQuads();

@@ -6,9 +6,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EnderIOTab extends CreativeTabs {
 
-  
   public static final CreativeTabs tabEnderIO = new EnderIOTab();
-  
+
   public EnderIOTab() {
     super("EnderIO");
   }

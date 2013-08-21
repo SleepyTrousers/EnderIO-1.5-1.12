@@ -10,33 +10,32 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class ServerTickHandler implements ITickHandler {
-  
-  private static final EnumSet<TickType> TICKS =  EnumSet.of(TickType.SERVER);
+
+  private static final EnumSet<TickType> TICKS = EnumSet.of(TickType.SERVER);
 
   private final List<WeakReference<TickListener>> listeners = new CopyOnWriteArrayList<WeakReference<TickListener>>();
-  
+
   public void addListener(TickListener listener) {
-    listeners.add(new WeakReference<TickListener>(listener)); 
+    listeners.add(new WeakReference<TickListener>(listener));
   }
-  
+
   public void removeListener(TickListener listener) {
-    WeakReference<TickListener> toRemove = null; 
-    for(WeakReference<TickListener> ref : listeners) {
-      if(ref.get() == listener) {
+    WeakReference<TickListener> toRemove = null;
+    for (WeakReference<TickListener> ref : listeners) {
+      if (ref.get() == listener) {
         toRemove = ref;
         break;
       }
     }
-    if(toRemove != null) {
+    if (toRemove != null) {
       listeners.remove(toRemove);
     }
   }
-  
-  
+
   @Override
   public void tickStart(EnumSet<TickType> type, Object... tickData) {
     List<TickListener> lists = processListeners();
-    for(TickListener listener : lists) {
+    for (TickListener listener : lists) {
       listener.tickStart(type, tickData);
     }
   }
@@ -44,31 +43,31 @@ public class ServerTickHandler implements ITickHandler {
   @Override
   public void tickEnd(EnumSet<TickType> type, Object... tickData) {
     List<TickListener> lists = processListeners();
-    for(TickListener listener : lists) {
+    for (TickListener listener : lists) {
       listener.tickEnd(type, tickData);
     }
   }
-  
+
   private List<TickListener> processListeners() {
     List<TickListener> result = new ArrayList<TickListener>(listeners.size());
     List<WeakReference<TickListener>> toRemove = new ArrayList<WeakReference<TickListener>>();
-    for(WeakReference<TickListener> ref : listeners) {
+    for (WeakReference<TickListener> ref : listeners) {
       TickListener l = ref.get();
-      if(l == null) {
+      if (l == null) {
         toRemove.add(ref);
       } else {
         result.add(l);
       }
-    }    
+    }
     return result;
   }
-  
+
   public void serverStopped() {
-    listeners.clear();    
+    listeners.clear();
   }
 
   @Override
-  public EnumSet<TickType> ticks() {    
+  public EnumSet<TickType> ticks() {
     return TICKS;
   }
 
@@ -77,5 +76,4 @@ public class ServerTickHandler implements ITickHandler {
     return "EnderIO Server Tick Handler";
   }
 
-  
 }

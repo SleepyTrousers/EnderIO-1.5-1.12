@@ -1,6 +1,10 @@
 package crazypants.enderio.conduit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,37 +12,39 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.*;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.liquid.*;
-import crazypants.enderio.conduit.power.*;
-import crazypants.enderio.conduit.redstone.*;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.power.PowerConduitNetwork;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 
 public class ConduitUtil {
- 
-  
+
   public static final Random RANDOM = new Random();
-  
-    
+
   public static AbstractConduitNetwork<?> createNetworkForType(Class<? extends IConduit> type) {
-    if(IRedstoneConduit.class.isAssignableFrom(type)) {
+    if (IRedstoneConduit.class.isAssignableFrom(type)) {
       return new RedstoneConduitNetwork();
-    } else if(IPowerConduit.class.isAssignableFrom(type)) {
+    } else if (IPowerConduit.class.isAssignableFrom(type)) {
       return new PowerConduitNetwork();
-    } else if(ILiquidConduit.class.isAssignableFrom(type)) {
+    } else if (ILiquidConduit.class.isAssignableFrom(type)) {
       return new LiquidConduitNetwork();
     }
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
     return null;
   }
-  
+
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IConduit conduit) {
     TileEntity te = conduit.getBundle().getEntity();
-    World world = te.worldObj;    
+    World world = te.worldObj;
     Collection<? extends IConduit> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, conduit.getBaseConduitType());
 
     if (reuseNetwork(conduit, connections, world)) {
@@ -49,7 +55,7 @@ public class ConduitUtil {
     res.init(conduit.getBundle(), connections, world);
     return;
   }
-  
+
   @SuppressWarnings({ "unchecked", "rawtypes" })
   private static boolean reuseNetwork(IConduit con, Collection<? extends IConduit> connections, World world) {
     AbstractConduitNetwork network = null;
@@ -62,17 +68,17 @@ public class ConduitUtil {
     }
     if (network == null) {
       return false;
-    }    
+    }
     con.setNetwork(network);
-    network.addConduit(con);        
+    network.addConduit(con);
     network.notifyNetworkOfUpdate();
     return true;
   }
-  
+
   public static void dropConduit(World world, IConduit conduit, int x, int y, int z) {
     dropItems(world, conduit.createItem(), x, y, z);
   }
-  
+
   public static void dropItems(World world, ItemStack stack, int x, int y, int z) {
     if (stack.stackSize <= 0) {
       return;
@@ -86,58 +92,58 @@ public class ConduitUtil {
     entityitem.delayBeforeCanPickup = 10;
 
     world.spawnEntityInWorld(entityitem);
-  } 
+  }
 
   public static void dropItems(World world, IInventory inventory, int x, int y, int z) {
     for (int l = 0; l < inventory.getSizeInventory(); ++l) {
       ItemStack items = inventory.getStackInSlot(l);
 
       if (items != null && items.stackSize > 0) {
-        dropItems(world, inventory.getStackInSlot(l).copy(),  x, y, z);
+        dropItems(world, inventory.getStackInSlot(l).copy(), x, y, z);
       }
     }
   }
-  
+
   public static boolean renderFacade(IConduitBundle bundle, EntityPlayer player) {
     return bundle.getFacadeId() > 0 && !isFacadeHidden(bundle, player);
   }
-  
+
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
     return bundle.getFacadeId() > 0 && (isToolEquipped(player) || isConduitEquipped(player));
   }
-  
+
   public static boolean isConduitEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
     if (equipped == null) {
       return false;
-    }    
-    return equipped.getItem() instanceof IConduitItem ;
+    }
+    return equipped.getItem() instanceof IConduitItem;
   }
-  
+
   public static boolean isToolEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
+    if (player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
     if (equipped == null) {
       return false;
     }
-    return /*equipped.itemID == Block.stone.blockID ||*/ equipped.getItem() instanceof IToolWrench;
+    return /* equipped.itemID == Block.stone.blockID || */equipped.getItem() instanceof IToolWrench;
   }
-  
+
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
-    if(world == null) {
+    if (world == null) {
       return null;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof IConduitBundle) {
-      IConduitBundle con = (IConduitBundle) te;      
-      return con.getConduit(type);      
+      IConduitBundle con = (IConduitBundle) te;
+      return con.getConduit(type);
     }
     return null;
   }
@@ -175,22 +181,20 @@ public class ConduitUtil {
   }
 
   public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot) {
-    String typeName = conduitRoot.getString("conduitType");    
+    String typeName = conduitRoot.getString("conduitType");
     NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
-    if(typeName == null || conduitBody == null) {
+    if (typeName == null || conduitBody == null) {
       return null;
     }
     IConduit result;
     try {
       result = (IConduit) Class.forName(typeName).newInstance();
     } catch (Exception e) {
-     throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
+      throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
     }
     result.readFromNBT(conduitBody);
     return result;
-    
+
   }
-  
-  
 
 }

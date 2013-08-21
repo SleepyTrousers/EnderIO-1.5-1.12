@@ -1,17 +1,23 @@
 package crazypants.enderio.material;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.*;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.*;
-import crazypants.enderio.*;
-import crazypants.enderio.machine.painter.*;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.TileEntityCustomBlock;
 
 public class BlockFusedQuartz extends Block implements ITileEntityProvider {
 
@@ -70,6 +76,7 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
     return 0;
   }
 
+  @Override
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
     int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
     return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
@@ -121,10 +128,10 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   }
 
   private ItemStack createItemStackForSourceBlock(int sourceBlockId, int sourceBlockMetadata) {
-    if(sourceBlockId <= 0) {
+    if (sourceBlockId <= 0) {
       return null;
     }
-    ItemStack result = new ItemStack(ModObject.itemFusedQuartzFrame.actualId,1,0);
+    ItemStack result = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);
     PainterUtil.setSourceBlock(result, sourceBlockId, sourceBlockMetadata);
     return result;
   }

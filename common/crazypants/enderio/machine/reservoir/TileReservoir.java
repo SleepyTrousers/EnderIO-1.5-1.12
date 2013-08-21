@@ -1,6 +1,10 @@
 package crazypants.enderio.machine.reservoir;
 
-import static net.minecraftforge.common.ForgeDirection.*;
+import static net.minecraftforge.common.ForgeDirection.EAST;
+import static net.minecraftforge.common.ForgeDirection.NORTH;
+import static net.minecraftforge.common.ForgeDirection.UNKNOWN;
+import static net.minecraftforge.common.ForgeDirection.UP;
+import static net.minecraftforge.common.ForgeDirection.WEST;
 import static net.minecraftforge.liquids.LiquidContainerRegistry.BUCKET_VOLUME;
 
 import java.util.ArrayList;
@@ -9,8 +13,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.*;
-import crazypants.enderio.*;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidDictionary;
+import net.minecraftforge.liquids.LiquidStack;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 
@@ -51,7 +59,7 @@ public class TileReservoir extends TileEntity implements ITankContainer {
   boolean autoEject;
 
   private boolean tankDirty = false;
-  
+
   private boolean neighboursDirty = false;
 
   private long ticksSinceFill = 0;
@@ -74,15 +82,15 @@ public class TileReservoir extends TileEntity implements ITankContainer {
           tankDirty = true;
         }
       }
-      if(autoEject && neighboursDirty) {
+      if (autoEject && neighboursDirty) {
         doUpdateTankNeighbours();
       }
-      if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
+      if (autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
         int ejectable = tank.getAmount();
         int amountPerNeighbour = ejectable / tankNeighbours.size();
         LiquidStack source = WATER_BUCKET.copy();
         int used = 0;
-        for(TankNeighbour tc : tankNeighbours) {
+        for (TankNeighbour tc : tankNeighbours) {
           source.amount = amountPerNeighbour;
           used += tc.container.fill(tc.fillFromDir, source, true);
         }
@@ -98,54 +106,54 @@ public class TileReservoir extends TileEntity implements ITankContainer {
 
   @Override
   public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
-    if(isMultiblock()) {
+    if (isMultiblock()) {
       return 0;
     }
     return getController().doFill(from, resource, doFill);
   }
 
-  
   @Override
   public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
     return getController().doDrain(from, maxDrain, doDrain);
   }
-  
-//  @Override
-//  public LiquidStack drain(ForgeDirection from, LiquidStack resource, boolean doDrain) {
-//    if (resource != null && !resource.isLiquidEqual(tank.getLiquid())) {
-//      return null;
-//    }
-//    return drain(from, resource.amount, doDrain);    
-//  }
-  
-//  @Override
-//  public boolean canFill(ForgeDirection from, Fluid fluid) {
-//    if(tank.getFluid() == null) {
-//      return true;
-//    }
-//    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
-//      return true;
-//    }
-//    return false;
-//  }
-//
-//  @Override
-//  public boolean canDrain(ForgeDirection from, Fluid fluid) {
-//    if(tank.getFluid() == null || fluid == null) {
-//      return false;
-//    }
-//    return tank.getFluid().getFluid().getID() == fluid.getID();
-//  }
-//
-//  @Override
-//  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-//    return getController().doGetTankInfo(from);
-//  }  
-//
-//  private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
-//    return new FluidTankInfo[]{tank.getInfo()};    
-//  }
-  
+
+  // @Override
+  // public LiquidStack drain(ForgeDirection from, LiquidStack resource, boolean
+  // doDrain) {
+  // if (resource != null && !resource.isLiquidEqual(tank.getLiquid())) {
+  // return null;
+  // }
+  // return drain(from, resource.amount, doDrain);
+  // }
+
+  // @Override
+  // public boolean canFill(ForgeDirection from, Fluid fluid) {
+  // if(tank.getFluid() == null) {
+  // return true;
+  // }
+  // if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+  // return true;
+  // }
+  // return false;
+  // }
+  //
+  // @Override
+  // public boolean canDrain(ForgeDirection from, Fluid fluid) {
+  // if(tank.getFluid() == null || fluid == null) {
+  // return false;
+  // }
+  // return tank.getFluid().getFluid().getID() == fluid.getID();
+  // }
+  //
+  // @Override
+  // public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+  // return getController().doGetTankInfo(from);
+  // }
+  //
+  // private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
+  // return new FluidTankInfo[]{tank.getInfo()};
+  // }
+
   @Override
   public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
     return fill(ForgeDirection.UNKNOWN, resource, doFill);
@@ -153,7 +161,7 @@ public class TileReservoir extends TileEntity implements ITankContainer {
 
   @Override
   public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain) {
-    return drain(ForgeDirection.UNKNOWN, maxDrain,doDrain);
+    return drain(ForgeDirection.UNKNOWN, maxDrain, doDrain);
   }
 
   @Override
@@ -206,7 +214,6 @@ public class TileReservoir extends TileEntity implements ITankContainer {
       c.neighboursDirty = true;
     }
   }
-    
 
   private void doUpdateTankNeighbours() {
     if (tankNeighbours == null) {
@@ -387,7 +394,7 @@ public class TileReservoir extends TileEntity implements ITankContainer {
     if (!WATER_BUCKET.isLiquidEqual(resource)) {
       return 0;
     }
-    
+
     int ret = 0;
     // fill buffer first
     if (resource != null && isMaster()) {
@@ -403,10 +410,10 @@ public class TileReservoir extends TileEntity implements ITankContainer {
 
   protected LiquidStack doDrain(ForgeDirection from, int maxDrain, boolean doDrain) {
     LiquidStack ret = tank.drain(maxDrain, doDrain);
-    tankDirty = doDrain;    
+    tankDirty = doDrain;
     return ret;
   }
-  
+
   protected ILiquidTank[] doGetTanks(ForgeDirection direction) {
     return new ILiquidTank[] { tank };
   }
@@ -605,7 +612,7 @@ public class TileReservoir extends TileEntity implements ITankContainer {
   }
 
   private ITankContainer getTankContainer(int x, int y, int z) {
-    if(worldObj == null) {
+    if (worldObj == null) {
       return null;
     }
     TileEntity te = worldObj.getBlockTileEntity(x, y, z);

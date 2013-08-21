@@ -288,8 +288,6 @@ public class Matrix4d {
 
   }
 
-
-
   public void getTranslation(Vector3d trans) {
     trans.x = m03;
     trans.y = m13;

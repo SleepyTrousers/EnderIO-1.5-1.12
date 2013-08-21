@@ -1,6 +1,5 @@
 package crazypants.vecmath;
 
-
 public class Quat4d {
 
   public static Quat4d makeRotate(double angle, Vector3d axis) {

@@ -6,7 +6,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ import crazypants.enderio.ModObject;
 import crazypants.render.IconUtil;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
-  
+
   public static final Icon[] REDSTONE_CONTROL_ICONS = new Icon[RedstoneControlMode.values().length];
 
   @SideOnly(Side.CLIENT)
@@ -44,7 +44,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       }
 
       @Override
-      public int getTextureType() {       
+      public int getTextureType() {
         return 0;
       }
 
@@ -157,18 +157,18 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     TileEntity ent = world.getBlockTileEntity(x, y, z);
     if (ent != null) {
       if (teClass.isAssignableFrom(ent.getClass())) {
-    @SuppressWarnings("unchecked")
-    T te = (T) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
-      dropContent(0, te, world, te.xCoord, te.yCoord, te.zCoord);
-    }
+        @SuppressWarnings("unchecked")
+        T te = (T) world.getBlockTileEntity(x, y, z);
+        if (te != null) {
+          dropContent(0, te, world, te.xCoord, te.yCoord, te.zCoord);
+        }
       }
     }
     super.breakBlock(world, x, y, z, par5, par6);
   }
 
   public void dropContent(int newSize, T inventory, World world, int xCoord, int yCoord, int zCoord) {
-    for (int i = newSize; i < inventory.getSizeInventory(); i++) { 
+    for (int i = newSize; i < inventory.getSizeInventory(); i++) {
       ItemStack itemstack = inventory.getStackInSlot(i);
       if (itemstack == null) {
         continue;

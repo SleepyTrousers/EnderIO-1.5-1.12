@@ -1,6 +1,7 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,9 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.*;
-import cpw.mods.fml.common.registry.*;
-import crazypants.enderio.*;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 
 public class BlockEnderIO extends Block implements ITileEntityProvider {
 
@@ -33,7 +38,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
   private void init() {
     LanguageRegistry.addName(this, ModObject.blockEnderIo.name);
     GameRegistry.registerBlock(this, ModObject.blockEnderIo.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEnderIO.class, ModObject.blockEnderIo.unlocalisedName + "TileEntity");    
+    GameRegistry.registerTileEntity(TileEnderIO.class, ModObject.blockEnderIo.unlocalisedName + "TileEntity");
   }
 
   @Override
@@ -57,7 +62,8 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
       entityPlayer.setCurrentItemOrArmor(0, enderFaceStack);
 
       if (world.isRemote) {
-        //ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO Interface Selected");        
+        // ChatMessageComponent c =
+        // ChatMessageComponent.func_111066_d("EnderIO Interface Selected");
         entityPlayer.sendChatToPlayer("EnderIO Interface Selected");
       }
 

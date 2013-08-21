@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import crazypants.enderio.conduit.IConduit;
-
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.conduit.IConduit;
 
 public class CollidableCache {
 
@@ -17,21 +16,21 @@ public class CollidableCache {
   public CacheKey createKey(Class<? extends IConduit> baseType, Offset offset, ForgeDirection dir, boolean isStub) {
     return new CacheKey(baseType, offset, dir, isStub);
   }
-  
+
   public Collection<CollidableComponent> getCollidables(CacheKey key, IConduit conduit) {
     Collection<CollidableComponent> result = cache.get(key);
-    if(result == null) {
+    if (result == null) {
       result = conduit.createCollidables(key);
       cache.put(key, result);
     }
     return result;
   }
 
-
   public static class CacheKey {
 
     public final Class<? extends IConduit> baseType;
-    public final String className; //used to generate reliable equals / hashcode
+    public final String className; // used to generate reliable equals /
+                                   // hashcode
     public final Offset offset;
     public final ForgeDirection dir;
     public final boolean isStub;

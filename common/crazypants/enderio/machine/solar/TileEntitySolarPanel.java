@@ -1,13 +1,19 @@
 package crazypants.enderio.machine.solar;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.*;
-import crazypants.enderio.power.*;
+import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.IPowerReceptor;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.EnderPowerProvider;
+import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
 public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor, IPowerReceptor {
@@ -18,7 +24,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
-  
+
   private float energyPerTick = 1;
 
   public TileEntitySolarPanel() {
@@ -27,7 +33,6 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     powerHandler = PowerHandlerUtil.createHandler(capacitor);
   }
 
-  
   public void onNeighborBlockChange() {
     receptorsDirty = true;
   }
@@ -70,7 +75,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       sunAngle += (((float) Math.PI * 2F) - sunAngle) * 0.2F;
     }
 
-    lightValue = Math.round((float) lightValue * MathHelper.cos(sunAngle));
+    lightValue = Math.round(lightValue * MathHelper.cos(sunAngle));
 
     lightValue = MathHelper.clamp_int(lightValue, 0, 15);
     return lightValue / 15f;
@@ -79,14 +84,14 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private boolean transmitEnergy() {
 
     if (powerHandler.getEnergyStored() <= 0) {
-      //powerHandler.update();
+      // powerHandler.update();
       return false;
     }
 
     // Mandatory power handler update
-//    float stored = powerHandler.getEnergyStored();
-//    powerHandler.update();
-//    powerHandler.setEnergy(stored);
+    // float stored = powerHandler.getEnergyStored();
+    // powerHandler.update();
+    // powerHandler.setEnergy(stored);
 
     float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
@@ -142,23 +147,24 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
     if (te instanceof IPowerReceptor) {
       IPowerReceptor rec = (IPowerReceptor) te;
-      //PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-      //if(reciever != null) {
-        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
-      //}
+      // PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
+      // if(reciever != null) {
+      receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+      // }
     }
-    
-    //NB: This is to supports connections from any direction
-//    BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
-//    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-//      BlockCoord checkLoc = bc.getLocation(dir);
-//      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-//      if (te instanceof IPowerReceptor) {
-//        IPowerReceptor rec = (IPowerReceptor) te;
-//        PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-//        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
-//      }
-//    }
+
+    // NB: This is to supports connections from any direction
+    // BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
+    // for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+    // BlockCoord checkLoc = bc.getLocation(dir);
+    // TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y,
+    // checkLoc.z);
+    // if (te instanceof IPowerReceptor) {
+    // IPowerReceptor rec = (IPowerReceptor) te;
+    // PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
+    // receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+    // }
+    // }
     receptorIterator = receptors.listIterator();
     receptorsDirty = false;
 
@@ -177,25 +183,21 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   @Override
   public void setPowerProvider(IPowerProvider provider) {
-    
-  }
 
+  }
 
   @Override
   public IPowerProvider getPowerProvider() {
     return powerHandler;
   }
 
-
   @Override
-  public void doWork() {    
+  public void doWork() {
   }
-
 
   @Override
   public int powerRequest(ForgeDirection from) {
     return 0;
   }
-
 
 }

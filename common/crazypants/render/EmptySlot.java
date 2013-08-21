@@ -4,7 +4,6 @@ import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.opengl.GL11;
 
-
 class EmptySlot {
 
   private static final int WIDTH = ItemButton.DEFAULT_WIDTH;
@@ -24,7 +23,7 @@ class EmptySlot {
   }
 
   @SuppressWarnings("synthetic-access")
-  public void drawSlot() {    
+  public void drawSlot() {
     RenderUtil.bindItemTexture();
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 

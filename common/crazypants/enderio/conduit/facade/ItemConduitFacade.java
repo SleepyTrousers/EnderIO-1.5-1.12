@@ -2,15 +2,21 @@ package crazypants.enderio.conduit.facade;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.*;
-import crazypants.enderio.*;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.painter.*;
+import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.PainterUtil;
 
 public class ItemConduitFacade extends Item {
 
@@ -31,7 +37,7 @@ public class ItemConduitFacade extends Item {
 
   protected void init() {
     LanguageRegistry.addName(this, ModObject.itemConduitFacade.name);
-    GameRegistry.registerItem(this, ModObject.itemConduitFacade.unlocalisedName);        
+    GameRegistry.registerItem(this, ModObject.itemConduitFacade.unlocalisedName);
   }
 
   @Override
@@ -66,7 +72,7 @@ public class ItemConduitFacade extends Item {
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
       if (!player.capabilities.isCreativeMode) {
         itemStack.stackSize--;
-      }      
+      }
       return true;
     }
 
@@ -82,7 +88,7 @@ public class ItemConduitFacade extends Item {
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
     if (PainterUtil.getSourceBlock(itemStack) == null) {
-      PainterUtil.setSourceBlock(itemStack, ModObject.blockConduitFacade.id, 0);      
+      PainterUtil.setSourceBlock(itemStack, ModObject.blockConduitFacade.id, 0);
     }
   }
 

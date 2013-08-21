@@ -4,12 +4,11 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.render.BoundingBox;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
-
-import net.minecraftforge.common.ForgeDirection;
 
 public class ConduitGeometryUtil {
 
@@ -72,8 +71,8 @@ public class ConduitGeometryUtil {
     return result;
   }
 
-  public Vector3d getTranslation(ForgeDirection dir, Offset offset) { 
-    Vector3d result = new Vector3d(offset.xOffset, offset.yOffset,0);
+  public Vector3d getTranslation(ForgeDirection dir, Offset offset) {
+    Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, 0);
     result.scale(WIDTH);
     return result;
   }
@@ -84,9 +83,9 @@ public class ConduitGeometryUtil {
 
   private BoundingBox createConduitBounds(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
     BoundingBox bb = CORE_BOUNDS;
-//    if(type == IRedstoneConduit.class) {      
-//      bb = bb.scale(0.5f, 0.5f, 0.5f);
-//    }  
+    // if(type == IRedstoneConduit.class) {
+    // bb = bb.scale(0.5f, 0.5f, 0.5f);
+    // }
     Vector3d min = bb.getMin();
     Vector3d max = bb.getMax();
 
@@ -122,10 +121,8 @@ public class ConduitGeometryUtil {
     Vector3d trans = getTranslation(dir, offset);
     min.add(trans);
     max.add(trans);
-    bb = new BoundingBox(VecmathUtil.clamp(min,0,1), VecmathUtil.clamp(max,0,1));
+    bb = new BoundingBox(VecmathUtil.clamp(min, 0, 1), VecmathUtil.clamp(max, 0, 1));
     return bb;
   }
-
-  
 
 }

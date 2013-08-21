@@ -45,7 +45,7 @@ public class ViewFrustum {
   public ViewFrustum(ViewFrustum other) {
     eye = new Vector3d(other.eye);
     min = new Vector3d(other.min);
-    max = new Vector3d(other.max);    
+    max = new Vector3d(other.max);
     for (int i = 0; i < VERTEX_COUNT; i++) {
       vertices[i] = new Vector4d(other.vertices[i]);
     }
@@ -119,7 +119,7 @@ public class ViewFrustum {
    *          the inverse projection matrix
    */
   public void computeFrustum(Matrix4d ivm, Matrix4d ipm) {
-    
+
     Matrix4d vpm = new Matrix4d();
     vpm.mul(ivm, ipm);
 
@@ -162,7 +162,7 @@ public class ViewFrustum {
     VecmathUtil.computePlaneEquation(vertices[LBN], vertices[LTN], vertices[RTN], planes[NEAR]);
     VecmathUtil.computePlaneEquation(vertices[LBF], vertices[RTF], vertices[LTF], planes[FAR]);
 
-  } 
+  }
 
   private final Vector4d getPlane(int index) {
     assert ((index >= 0) && (index < PLANE_COUNT)) : "Illegal index : 0 <= index < " + PLANE_COUNT;
