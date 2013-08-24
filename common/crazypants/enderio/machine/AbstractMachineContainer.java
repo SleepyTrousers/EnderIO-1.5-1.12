@@ -1,5 +1,6 @@
 package crazypants.enderio.machine;
 
+import crazypants.enderio.ModObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,7 +19,7 @@ public abstract class AbstractMachineContainer extends Container {
     addSlotToContainer(new Slot(te, te.inventory.length - 1, 12, 60) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(tileEntity.inventory.length - 1, itemStack);
+        return tileEntity.isItemValidForSlot(tileEntity.inventory.length - 1, itemStack);        
       }
     });
 
@@ -82,23 +83,22 @@ public abstract class AbstractMachineContainer extends Container {
 
         // check for capacitor mergers
         if (!merged) {
-          merged = mergeItemStack(origStack, capacitorSlot, capacitorSlot + 1, false);
+          if (tileEntity.isItemValidForSlot(capacitorSlot, origStack)) {
+            merged = mergeItemStack(origStack, capacitorSlot, capacitorSlot + 1, false);
+          }
         }
-
-        // If we cant merge into the machine, see if we can merge stacks within
-        // the inventory
-        if (!merged) {
-
-          if ((hasOutput ? (slotIndex < outputSlot) : (slotIndex <= outputSlot)) && slotIndex < startHotBarSlot) {
-            // merge into hotbar
-            if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+        
+        if(!merged) {
+          if(slotIndex >= startPlayerSlot && slotIndex <= endPlayerSlot) {
+            if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+              return null;
+            } 
+          } else if(slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+            if(!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
               return null;
             }
-
-            // merge from hotbar
-          } else if (!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
-            return null;
           }
+          
         }
 
       }
@@ -108,6 +108,8 @@ public abstract class AbstractMachineContainer extends Container {
       } else {
         slot.onSlotChanged();
       }
+      
+      slot.onSlotChanged();
 
       if (origStack.stackSize == copystack.stackSize) {
         return null;
