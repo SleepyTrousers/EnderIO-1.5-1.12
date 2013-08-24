@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.power;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -27,6 +28,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.CoordUV;
 import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vector4d;
@@ -35,25 +37,27 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
   private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);
   private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] { DEFAULT_BC };
+  private static final double PIXEL_SIZE = 1 / 16d;
 
-  enum VPos {
+  
+//------------------------- Item renderer
 
-    SINGLE_BLOCK(0, 10, 3),
-    BOTTOM(0.5f, 13, 3),
-    MIDDLE(0.75f, 16, 0),
-    TOP(0.25f, 13, 0);
+ @Override
+ public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+   return true;
+ }
 
-    final float uOffset;
-    final int numFillPixels;
-    final int fillOffset;
+ @Override
+ public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+   return true;
+ }
 
-    private VPos(float uOffset, int numFillPixels, int fillOffset) {
-      this.uOffset = uOffset;
-      this.numFillPixels = numFillPixels;
-      this.fillOffset = fillOffset;
-    }
-
-  }
+ @Override
+ public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+   renderBlock(null, 0.66f, 1);
+ }
+ 
+//------------------------- Entity renderer
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
@@ -63,7 +67,6 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
 
     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
-
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
@@ -89,6 +92,8 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       myBC = DEFAULT_BC;
       mb = DEFAULT_MB;
     }
+    
+    List<GaugeBounds> gaugeBounds = calculateGaugeBounds(myBC, mb);
 
     tes.startDrawingQuads();
     tes.setColorRGBA_F(brightness, brightness, brightness, 1);
@@ -105,167 +110,93 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     } else {
       renderBorder(null, 0, 0, 0);
     }
-    renderGauge(myBC, mb, brightness);
+    for(GaugeBounds gb : gaugeBounds) {
+      renderGaugeOnFace(gb,  EnderIO.blockCapacitorBank.overlayIcon);
+    }
     tes.draw();
 
     GL11.glPolygonOffset(-3.0F, -3.0F);
     tes.startDrawingQuads();
-    tes.setColorRGBA_F(brightness, brightness, brightness, 1);
-    renderFillBar(myBC, mb, 0.25f, brightness);
+    tes.setColorRGBA_F(brightness, brightness, brightness, 1);    
+    for(GaugeBounds gb : gaugeBounds) {
+      renderFillBarOnFace(gb,  EnderIO.blockCapacitorBank.fillBarIcon, filledRatio);
+    }    
     tes.draw();
 
     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
   }
+  
+  private void renderBorder(IBlockAccess blockAccess, int x, int y, int z) {
+    Icon texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
+    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
+      RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
+          blockAccess == null, false, false);
+    }
+  }
 
-  private void renderGauge(BlockCoord me, BlockCoord[] mb, float brightness) {
-    Icon icon = EnderIO.blockCapacitorBank.overlayIcon;
+  private List<GaugeBounds> calculateGaugeBounds(BlockCoord me, BlockCoord[] mb) {
+    List<GaugeBounds> res = new ArrayList<GaugeBounds>();
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       if (face != ForgeDirection.UP && face != ForgeDirection.DOWN) {
         boolean isRight = isRightFace(me, mb, face);
         if (isRight) {
-          renderGaugeOnFace(me, mb, icon, face, brightness);
+          res.add(new GaugeBounds(me, mb, face));          
         }
       }
     }
+    return res;
   }
 
-  private void renderGaugeOnFace(BlockCoord me, BlockCoord[] mb, Icon icon, ForgeDirection face, float brightness) {
-    float minU = icon.getMinU();
-    float uWidth = icon.getMaxU() - icon.getMinU();
-    float maxU = minU + (uWidth * 0.25f);
-    float vWidth = icon.getMaxV() - icon.getMinV();
-
-    float scaleX = 1;
-    float scaleY = 1;
-    float scaleZ = 1;
-
-    Vector4d uPlane = RenderUtil.getUPlaneForFace(face);
-    scaleX = uPlane.x != 0 ? 0.25f : scaleX;
-    scaleY = uPlane.y != 0 ? 0.25f : scaleY;
-    scaleZ = uPlane.z != 0 ? 0.25f : scaleZ;
-
-    VInfo vInfo = getVPosForFace(me, mb, face);
-    VPos yPos = vInfo.pos;
-
-    BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scaleX, scaleY, scaleZ);
-    float uOffset = yPos.uOffset * uWidth;
-
+  private void renderGaugeOnFace(GaugeBounds gb, Icon icon) {    
     Tessellator tes = Tessellator.instance;
-    tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
-    List<CoordUV> corners = bb.getCornersWithUvForFace(face, minU + uOffset, maxU + uOffset, icon.getMinV(), icon.getMaxV());
+    tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
+    Vector2f u = gb.getMinMaxU(icon);
+    List<CoordUV> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
     for (CoordUV coord : corners) {
       tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), coord.u(), coord.v());
     }
-
   }
 
-  private void renderFillBar(BlockCoord me, BlockCoord[] mb, float filledRatio, float brightness) {
-    Icon icon = EnderIO.blockCapacitorBank.fillBarIcon;
-    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      if (face != ForgeDirection.UP && face != ForgeDirection.DOWN) {
-        boolean isRight = isRightFace(me, mb, face);
-        if (isRight) {
-          renderFillBarOnFace(me, mb, icon, face, filledRatio, brightness);
-        }
-      }
-    }
-  }
 
-  private void renderFillBarOnFace(BlockCoord me, BlockCoord[] mb, Icon icon, ForgeDirection face, float filledRatio, float brightness) {
-    // Filled bar
-    if (filledRatio <= 0) {
-      return;
-    }
-    float minU = icon.getMinU();
-    float uWidth = icon.getMaxU() - icon.getMinU();
-    float maxU = minU + (uWidth * 0.25f);
-    float vWidth = icon.getMaxV() - icon.getMinV();
-
-    float scaleX = 1;
-    float scaleY = 1;
-    float scaleZ = 1;
-
-    Vector4d uPlane = RenderUtil.getUPlaneForFace(face);
-    scaleX = uPlane.x != 0 ? 0.25f : scaleX;
-    scaleY = uPlane.y != 0 ? 0.25f : scaleY;
-    scaleZ = uPlane.z != 0 ? 0.25f : scaleZ;
-
-    VInfo vInfo = getVPosForFace(me, mb, face);
-    VPos yPos = vInfo.pos;
-
-    BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scaleX, scaleY, scaleZ);
-    float uOffset = yPos.uOffset * uWidth;
+  private void renderFillBarOnFace(GaugeBounds gb, Icon icon, float filledRatio) {
 
     int totalPixels;
-    if (vInfo.verticalHeight == 1) {
+    if (gb.vInfo.verticalHeight == 1) {
       totalPixels = VPos.SINGLE_BLOCK.numFillPixels;
     } else {
-      totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (vInfo.verticalHeight - 2));
+      totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
     }
 
     int targetPixelCount = Math.max(1, Math.round(totalPixels * filledRatio));
-
     int pixelsBellowFace;
-    if (vInfo.index < 2) {
+    if (gb.vInfo.index < 2) {
       // either none or a bottom section
-      pixelsBellowFace = vInfo.index * VPos.BOTTOM.numFillPixels;
+      pixelsBellowFace = gb.vInfo.index * VPos.BOTTOM.numFillPixels;
     } else { // has middle section
-      pixelsBellowFace = VPos.BOTTOM.numFillPixels + (VPos.MIDDLE.numFillPixels * (vInfo.index - 1));
+      pixelsBellowFace = VPos.BOTTOM.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.index - 1));
     }
 
     if (pixelsBellowFace >= targetPixelCount) {
       return;
     }
 
+    VPos yPos = gb.vInfo.pos;
     int numPixelsLeft = targetPixelCount - pixelsBellowFace;
     int fillPixels = Math.min(numPixelsLeft, yPos.numFillPixels);
 
-    double pixelSize = 1 / 16d;
-    double startY = yPos.fillOffset * pixelSize;
-    double endY = startY + (fillPixels * pixelSize);
+    double maxY = (yPos.fillOffset * PIXEL_SIZE) + (fillPixels * PIXEL_SIZE);
+    float vWidth = icon.getMaxV() - icon.getMinV();
+    float maxV = icon.getMinV() + ((float) maxY * vWidth);
 
-    Vector3d max = bb.getMax();
-    max.y = endY;
-
-    bb = new BoundingBox(bb.getMin(), max);
-    
     Tessellator tes = Tessellator.instance;
-    tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
-    float maxV = icon.getMinV() + ((float)endY * vWidth);
-    List<CoordUV> corners = bb.getCornersWithUvForFace(face, minU + uOffset, maxU + uOffset, icon.getMinV(), maxV);
+    tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
+    Vector2f u = gb.getMinMaxU(icon);
+    List<CoordUV> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
     for (CoordUV coord : corners) {
-      tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), coord.u(), coord.v());
+      tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());
     }
   }
 
-  private VInfo getVPosForFace(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
-    int maxY = me.y;
-    int minY = me.y;
-    int vHeight = 1;
-    for (BlockCoord bc : mb) {
-      if (bc.x == me.x && bc.z == me.z && !containsLocaction(mb, bc.getLocation(face))) {
-        maxY = Math.max(maxY, bc.y);
-        minY = Math.min(minY, bc.y);
-      }
-    }
-    if (maxY == me.y && minY == me.y) {
-      return new VInfo(VPos.SINGLE_BLOCK, 1, 0);
-    }
-    int height = maxY - minY + 1;
-    if (maxY > me.y) {
-      return me.y > minY ? new VInfo(VPos.MIDDLE, height, me.y - minY) : new VInfo(VPos.BOTTOM, height, 0);
-    }
-    return new VInfo(VPos.TOP, height, height - 1);
-  }
-
-  private boolean containsLocaction(BlockCoord[] mb, BlockCoord location) {
-    for (BlockCoord bc : mb) {
-      if (location.equals(bc)) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   private boolean isRightFace(BlockCoord me, BlockCoord[] mb, ForgeDirection dir) {
     Vector4d uPlane = RenderUtil.getUPlaneForFace(dir);
@@ -281,29 +212,25 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     return myRightVal == max;
   }
 
-  private void renderBorder(IBlockAccess blockAccess, int x, int y, int z) {
-    Icon texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
-    for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
-          blockAccess == null, false, false);
+  //------------ Inner Classes
+  
+  enum VPos {
+
+    SINGLE_BLOCK(0, 10, 3),
+    BOTTOM(0.5f, 13, 3),
+    MIDDLE(0.75f, 16, 0),
+    TOP(0.25f, 13, 0);
+
+    final float uOffset;
+    final int numFillPixels;
+    final int fillOffset;
+
+    private VPos(float uOffset, int numFillPixels, int fillOffset) {
+      this.uOffset = uOffset;
+      this.numFillPixels = numFillPixels;
+      this.fillOffset = fillOffset;
     }
-  }
 
-  // ------------------------- Item renderer
-
-  @Override
-  public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    return true;
-  }
-
-  @Override
-  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-    return true;
-  }
-
-  @Override
-  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    renderBlock(null, 0.66f, 1);
   }
 
   static class VInfo {
@@ -315,6 +242,63 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       this.pos = pos;
       this.verticalHeight = verticalHeight;
       this.index = index;
+    }
+
+  }
+
+  static class GaugeBounds {
+
+    final BoundingBox bb;
+    final VInfo vInfo;
+    final ForgeDirection face;
+    
+    GaugeBounds(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
+      this.face = face;
+      vInfo = getVPosForFace(me, mb, face);
+
+      Vector4d uPlane = RenderUtil.getUPlaneForFace(face);
+      float scaleX = uPlane.x != 0 ? 0.25f : 1;
+      float scaleY = uPlane.y != 0 ? 0.25f : 1;
+      float scaleZ = uPlane.z != 0 ? 0.25f : 1;
+      bb = BoundingBox.UNIT_CUBE.scale(scaleX, scaleY, scaleZ);
+    }
+    
+    Vector2f getMinMaxU(Icon icon) {
+      VPos yPos = vInfo.pos;
+      float uWidth = icon.getMaxU() - icon.getMinU();
+      float uOffset = yPos.uOffset * uWidth;
+      float minU = icon.getMinU() + uOffset;
+      float maxU = minU + (uWidth * 0.25f);
+      return new Vector2f(minU, maxU);
+    }
+    
+    private VInfo getVPosForFace(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
+      int maxY = me.y;
+      int minY = me.y;
+      int vHeight = 1;
+      for (BlockCoord bc : mb) {
+        if (bc.x == me.x && bc.z == me.z && !containsLocaction(mb, bc.getLocation(face))) {
+          maxY = Math.max(maxY, bc.y);
+          minY = Math.min(minY, bc.y);
+        }
+      }
+      if (maxY == me.y && minY == me.y) {
+        return new VInfo(VPos.SINGLE_BLOCK, 1, 0);
+      }
+      int height = maxY - minY + 1;
+      if (maxY > me.y) {
+        return me.y > minY ? new VInfo(VPos.MIDDLE, height, me.y - minY) : new VInfo(VPos.BOTTOM, height, 0);
+      }
+      return new VInfo(VPos.TOP, height, height - 1);
+    }
+    
+    private boolean containsLocaction(BlockCoord[] mb, BlockCoord location) {
+      for (BlockCoord bc : mb) {
+        if (location.equals(bc)) {
+          return true;
+        }
+      }
+      return false;
     }
 
   }
