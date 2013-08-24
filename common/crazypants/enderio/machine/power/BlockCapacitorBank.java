@@ -18,6 +18,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -52,14 +53,14 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     GameRegistry.registerTileEntity(TileCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName + "TileEntity");
   }
 
-  @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if (entityPlayer.isSneaking()) {
-      return false;
-    }
-    // TODO: Print storage or open GUI?
-    return true;
-  }
+//  @Override
+//  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+//    if (entityPlayer.isSneaking()) {
+//      return false;
+//    }
+//    // TODO: Print storage or open GUI?
+//    return true;
+//  }
 
   @SideOnly(Side.CLIENT)
   @Override
@@ -74,6 +75,11 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     return -1;
   }
   
+  @Override
+  public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+    return true;
+  }
+
   @Override
   public boolean isOpaqueCube() {
     return false;

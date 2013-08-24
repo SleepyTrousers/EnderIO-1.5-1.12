@@ -54,7 +54,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
  @Override
  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-   renderBlock(null, 0.66f, 1);
+   renderBlock(null, 0.66f);
  }
  
 //------------------------- Entity renderer
@@ -70,16 +70,14 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
-    float filledRatio = 0.66f;
-    float brightness = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-
-    renderBlock((TileCapacitorBank) te, filledRatio, brightness);
+    float filledRatio = 0.66f;    
+    renderBlock((TileCapacitorBank) te, filledRatio);
 
     GL11.glPopMatrix();
 
   }
 
-  private void renderBlock(TileCapacitorBank te, float filledRatio, float brightness) {
+  private void renderBlock(TileCapacitorBank te, float filledRatio) {
     RenderUtil.bindBlockTexture();
     Tessellator tes = Tessellator.instance;
 
@@ -94,9 +92,20 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
     
     List<GaugeBounds> gaugeBounds = calculateGaugeBounds(myBC, mb);
+    
+    float brightness;
+    if(te != null) {
+      brightness = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);            
+    } else {
+      brightness = 1;
+    }
 
     tes.startDrawingQuads();
     tes.setColorRGBA_F(brightness, brightness, brightness, 1);
+//    tes.setColorRGBA_F(1, 1, 1, 1);
+//    if(te != null) {      
+//      RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+//    }
     CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockCapacitorBank.getIcon(0, 0));
     tes.draw();
 
@@ -104,10 +113,12 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPolygonOffset(-1.0f, -1.0f);
 
     tes.startDrawingQuads();
+    //tes.setColorRGBA_F(1, 1, 1, 1);
     tes.setColorRGBA_F(brightness, brightness, brightness, 1);
-    if (te != null) {
+    if (te != null) {      
+      //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
       renderBorder(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-    } else {
+    } else {            
       renderBorder(null, 0, 0, 0);
     }
     for(GaugeBounds gb : gaugeBounds) {
@@ -117,7 +128,11 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
     GL11.glPolygonOffset(-3.0F, -3.0F);
     tes.startDrawingQuads();
-    tes.setColorRGBA_F(brightness, brightness, brightness, 1);    
+    //tes.setColorRGBA_F(1, 1, 1, 1);
+    tes.setColorRGBA_F(brightness, brightness, brightness, 1);
+    //if (te != null) {      
+      //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+    //} 
     for(GaugeBounds gb : gaugeBounds) {
       renderFillBarOnFace(gb,  EnderIO.blockCapacitorBank.fillBarIcon, filledRatio);
     }    
