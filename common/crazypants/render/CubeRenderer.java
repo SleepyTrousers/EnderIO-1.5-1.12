@@ -2,6 +2,7 @@ package crazypants.render;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.vecmath.Vector3d;
 
 public final class CubeRenderer {
@@ -14,18 +15,34 @@ public final class CubeRenderer {
   }
 
   public static void render(BoundingBox bb, Icon tex) {
-    render(bb, tex, null);
+    render(bb, tex, null, false);
+  }
+
+  public static void render(BoundingBox bb, Icon tex, boolean tintSides) {
+    render(bb, tex, null, tintSides);
   }
 
   public static void render(BoundingBox bb, Icon tex, VertexTransform xForm) {
-    render(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), xForm);
+    render(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), xForm, false);
+  }
+
+  public static void render(BoundingBox bb, Icon tex, VertexTransform xForm, boolean tintSides) {
+    render(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), xForm, tintSides);
+  }
+
+  public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV, boolean tintSides) {
+    render(bb, minU, maxU, minV, maxV, null, tintSides);
   }
 
   public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV) {
-    render(bb, minU, maxU, minV, maxV, null);
+    render(bb, minU, maxU, minV, maxV, null, false);
   }
 
   public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV, VertexTransform xForm) {
+    render(bb, minU, maxU, minV, maxV, xForm, false);
+  }
+
+  public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV, VertexTransform xForm, boolean tintSides) {
     setupVertices(bb, xForm);
 
     float tmp = minV;
@@ -35,40 +52,60 @@ public final class CubeRenderer {
     Tessellator tessellator = Tessellator.instance;
 
     tessellator.setNormal(0, 0, -1);
-
+    if(tintSides) {
+      float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }    
     addVecWithUV(verts[1], minU, minV);
     addVecWithUV(verts[0], maxU, minV);
     addVecWithUV(verts[3], maxU, maxV);
     addVecWithUV(verts[2], minU, maxV);
 
     tessellator.setNormal(0, 0, 1);
-
+    if(tintSides) {
+      float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
+      tessellator.setColorOpaque_F(cm, cm, cm);      
+    }
     addVecWithUV(verts[4], minU, minV);
     addVecWithUV(verts[5], maxU, minV);
     addVecWithUV(verts[6], maxU, maxV);
     addVecWithUV(verts[7], minU, maxV);
 
     tessellator.setNormal(0, 1, 0);
-
+    if(tintSides) {
+      float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
+      tessellator.setColorOpaque_F(cm, cm, cm);      
+    }
     addVecWithUV(verts[6], minU, minV);
     addVecWithUV(verts[2], minU, maxV);
     addVecWithUV(verts[3], maxU, maxV);
     addVecWithUV(verts[7], maxU, minV);
 
     tessellator.setNormal(0, -1, 0);
-
+    if(tintSides) {
+      float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
+      tessellator.setColorOpaque_F(cm, cm, cm);      
+    }
     addVecWithUV(verts[0], maxU, maxV);
     addVecWithUV(verts[1], minU, maxV);
     addVecWithUV(verts[5], minU, minV);
     addVecWithUV(verts[4], maxU, minV);
 
     tessellator.setNormal(1, 0, 0);
+    if(tintSides) {
+      float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
+      tessellator.setColorOpaque_F(cm, cm, cm);      
+    }
     addVecWithUV(verts[2], minU, maxV);
     addVecWithUV(verts[6], maxU, maxV);
     addVecWithUV(verts[5], maxU, minV);
     addVecWithUV(verts[1], minU, minV);
 
     tessellator.setNormal(-1, 0, 0);
+    if(tintSides) {
+      float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
+      tessellator.setColorOpaque_F(cm, cm, cm);      
+    }
     addVecWithUV(verts[0], minU, minV);
     addVecWithUV(verts[4], maxU, minV);
     addVecWithUV(verts[7], maxU, maxV);

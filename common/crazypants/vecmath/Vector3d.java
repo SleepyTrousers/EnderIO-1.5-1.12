@@ -22,6 +22,10 @@ public class Vector3d {
     this(other.x, other.y, other.z);
   }
 
+  public Vector3d(Vector3f corner) {
+    this(corner.x,corner.y,corner.z);
+  }
+
   public void set(double x, double y, double z) {
     this.x = x;
     this.y = y;

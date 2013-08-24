@@ -2,3 +2,5 @@
 /build
 /download
 /.settings/org.eclipse.jdt.core.prefs
+
+/eclipseBin

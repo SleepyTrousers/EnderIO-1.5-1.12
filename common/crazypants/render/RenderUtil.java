@@ -1,6 +1,16 @@
 package crazypants.render;
 
+import static net.minecraftforge.common.ForgeDirection.DOWN;
+import static net.minecraftforge.common.ForgeDirection.EAST;
+import static net.minecraftforge.common.ForgeDirection.NORTH;
+import static net.minecraftforge.common.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.ForgeDirection.UP;
+import static net.minecraftforge.common.ForgeDirection.WEST;
+
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -10,6 +20,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -18,8 +29,13 @@ import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.util.BlockCoord;
 import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vector4d;
 
 public class RenderUtil {
 
@@ -28,6 +44,12 @@ public class RenderUtil {
   public static final Vector3d ZERO_V = new Vector3d(0, 0, 0);
 
   private static final FloatBuffer MATRIX_BUFFER = GLAllocation.createDirectFloatBuffer(16);
+
+  public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
+
+  public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
+
+  public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
   public static void loadMatrix(Matrix4d mat) {
     MATRIX_BUFFER.rewind();
@@ -54,10 +76,6 @@ public class RenderUtil {
   public static TextureManager engine() {
     return Minecraft.getMinecraft().renderEngine;
   }
-
-  public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
-  public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
-  public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
   public static void bindItemTexture(ItemStack stack) {
     engine().func_110577_a(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
@@ -119,6 +137,188 @@ public class RenderUtil {
     Tessellator.instance.setBrightness(res);
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 1);
     return res;
+  }
+
+  public static List<ForgeDirection> getEdgesForFace(ForgeDirection face) {
+    List<ForgeDirection> result = new ArrayList<>(4);
+    if (face.offsetY != 0) {
+      result.add(EAST);
+      result.add(WEST);
+      result.add(NORTH);
+      result.add(SOUTH);
+    } else if (face.offsetX != 0) {
+      result.add(DOWN);
+      result.add(UP);
+      result.add(SOUTH);
+      result.add(NORTH);
+    } else {
+      result.add(UP);
+      result.add(DOWN);
+      result.add(WEST);
+      result.add(EAST);
+    }
+    return result;
+  }
+
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges) {
+    renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges, true, true);
+  }
+
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges,
+      boolean translateToXYZ, boolean applyFaceShading) {
+
+
+    if (!forceAllEdges) {
+      int blockID = blockAccess.getBlockId(x, y, z);
+      if (blockID <= 0 || Block.blocksList[blockID] == null) {
+        return;
+      }
+      if (!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+        return;
+      }
+    }
+
+    BlockCoord bc = new BlockCoord(x, y, z);
+
+    List<ForgeDirection> edges;
+    if (forceAllEdges) {
+      edges = RenderUtil.getEdgesForFace(face);
+    } else {
+      edges = RenderUtil.getNonConectedEdgesForFace(blockAccess, x, y, z, face);
+    }
+
+    Tessellator tes = Tessellator.instance;
+    tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
+    if (applyFaceShading) {
+      float cm = RenderUtil.getColorMultiplierForFace(face);
+      tes.setColorOpaque_F(cm, cm, cm);
+    }
+
+    float scaleFactor = 15f / 16f;
+    Vector2d uv = new Vector2d();
+    for (ForgeDirection edge : edges) {
+
+      float xLen = 1 - (float) Math.abs(edge.offsetX) * scaleFactor;
+      float yLen = 1 - (float) Math.abs(edge.offsetY) * scaleFactor;
+      float zLen = 1 - (float) Math.abs(edge.offsetZ) * scaleFactor;
+      BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
+
+      List<Vector3f> corners = bb.getCornersForFace(face);
+
+      for (Vector3f unitCorn : corners) {
+        Vector3d corner = new Vector3d(unitCorn);
+        if (translateToXYZ) {
+          corner.x += x;
+          corner.y += y;
+          corner.z += z;
+        }
+
+        corner.x += (float) (edge.offsetX * 0.5) - (float) Math.signum(edge.offsetX) * xLen / 2f;
+        corner.y += (float) (edge.offsetY * 0.5) - (float) Math.signum(edge.offsetY) * yLen / 2f;
+        corner.z += (float) (edge.offsetZ * 0.5) - (float) Math.signum(edge.offsetZ) * zLen / 2f;
+
+        if (translateToXYZ) {
+          RenderUtil.getUvForCorner(uv, corner, x, y, z, face, texture);
+        } else {
+          RenderUtil.getUvForCorner(uv, corner, 0, 0, 0, face, texture);
+        }
+        tes.addVertexWithUV(corner.x, corner.y, corner.z, uv.x, uv.y);
+      }
+
+    }
+
+  }
+
+  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
+    int blockID = blockAccess.getBlockId(x, y, z);
+    if (blockID <= 0 || Block.blocksList[blockID] == null) {
+      return Collections.emptyList();
+    }
+    if (!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+      return Collections.emptyList();
+    }
+    BlockCoord bc = new BlockCoord(x, y, z);
+
+    List<EdgeNeighbour> edges = new ArrayList<EdgeNeighbour>(4);
+    for (ForgeDirection dir : getEdgesForFace(face)) {
+      edges.add(new EdgeNeighbour(bc, dir));
+    }
+    List<ForgeDirection> result = new ArrayList<>(4);
+    for (EdgeNeighbour edge : edges) {
+      if (blockAccess.getBlockId(edge.bc.x, edge.bc.y, edge.bc.z) != blockID) {
+        result.add(edge.dir);
+      }
+      // else if(blockAccess.getBlockId(edge.bc.x + face.offsetX, edge.bc.y +
+      // face.offsetY, edge.bc.z + face.offsetZ) == blockID) {
+      // result.add(edge.dir); //corner
+      // }
+    }
+    return result;
+  }
+
+  public static void getUvForCorner(Vector2d uv, Vector3d corner, int x, int y, int z, ForgeDirection face, Icon icon) {
+    Vector3d p = new Vector3d(corner);
+    p.x -= x;
+    p.y -= y;
+    p.z -= z;
+
+    float uWidth = icon.getMaxU() - icon.getMinU();
+    float vWidth = icon.getMaxV() - icon.getMinV();
+
+    uv.x = VecmathUtil.distanceFromPointToPlane(getUPlaneForFace(face), p);
+    uv.y = VecmathUtil.distanceFromPointToPlane(getVPlaneForFace(face), p);
+
+    uv.x = icon.getMinU() + (uv.x * uWidth);
+    uv.y = icon.getMinV() + (uv.y * vWidth);
+
+  }
+
+  public static Vector4d getVPlaneForFace(ForgeDirection face) {
+    switch (face) {
+    case DOWN:
+    case UP:
+      return new Vector4d(0, 0, 1, 0);
+    case EAST:
+    case WEST:
+    case NORTH:
+    case SOUTH:
+      return new Vector4d(0, -1, 0, 1);
+    case UNKNOWN:
+    default:
+      break;
+    }
+    return null;
+  }
+
+  public static Vector4d getUPlaneForFace(ForgeDirection face) {
+    switch (face) {
+    case DOWN:
+    case UP:
+      return new Vector4d(1, 0, 0, 0);
+    case EAST:
+      return new Vector4d(0, 0, -1, 1);
+    case WEST:
+      return new Vector4d(0, 0, 1, 0);
+    case NORTH:
+      return new Vector4d(-1, 0, 0, 1);
+    case SOUTH:
+      return new Vector4d(1, 0, 0, 0);
+    case UNKNOWN:
+    default:
+      break;
+    }
+    return null;
+  }
+
+  private static class EdgeNeighbour {
+    final ForgeDirection dir;
+    final BlockCoord bc;
+
+    public EdgeNeighbour(BlockCoord bc, ForgeDirection dir) {
+      this.dir = dir;
+      this.bc = bc.getLocation(dir);
+    }
+
   }
 
 }
