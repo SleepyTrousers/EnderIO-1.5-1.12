@@ -206,19 +206,8 @@ public class NetworkPowerManager {
     return extracted;
   }
 
-  public void receptorsChanged() {
+  public void receptorsChanged() {    
     receptors.clear();
-//    storageReceptors.clear();
-//    for(ReceptorEntry re : network.getPowerReceptors()) {
-//     PowerReceiver reciever = re.powerReceptor.getPowerReceiver(re.direction);
-//     if(reciever != null) {
-//       if(reciever.getType() == Type.STORAGE) {
-//         storageReceptors.add(re);
-//       } else {
-//         receptors.add(re);
-//       }
-//     }
-//    }
     receptors.addAll(network.getPowerReceptors());
     receptorIterator = receptors.listIterator();
   }

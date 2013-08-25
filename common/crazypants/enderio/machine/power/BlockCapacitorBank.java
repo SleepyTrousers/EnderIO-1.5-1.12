@@ -1,35 +1,39 @@
 package crazypants.enderio.machine.power;
 
+import java.text.NumberFormat;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import crazypants.enderio.EnderIO;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.TileEntityCustomBlock;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
 public class BlockCapacitorBank extends Block implements ITileEntityProvider {
 
+  static final NumberFormat NF = NumberFormat.getIntegerInstance();
+  
   public static BlockCapacitorBank create() {
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
@@ -49,18 +53,31 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
 
   protected void init() {
     LanguageRegistry.addName(this, ModObject.blockCapacitorBank.name);
-    GameRegistry.registerBlock(this, ModObject.blockCapacitorBank.unlocalisedName);
+    GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName);
     GameRegistry.registerTileEntity(TileCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName + "TileEntity");
   }
 
-//  @Override
-//  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-//    if (entityPlayer.isSneaking()) {
-//      return false;
-//    }
-//    // TODO: Print storage or open GUI?
-//    return true;
-//  }
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    if (entityPlayer.isSneaking()) {
+      return false;
+    }
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(! (te instanceof TileCapacitorBank) ) {
+      return false;
+    }
+    TileCapacitorBank tr = (TileCapacitorBank)te;
+    
+    if (world.isRemote) {
+      ChatMessageComponent c = ChatMessageComponent.func_111066_d("Storing " + NF.format(tr.getEnergyStored()) + " of " + NF.format(tr.getMaxEnergyStored()) + " MJ. Max IO is " + NF.format(tr.getMaxIO()) + " MJ/t");
+      entityPlayer.sendChatToPlayer(c);
+//      c = ChatMessageComponent.func_111066_d("Is multi block: " + tr.isMultiblock() + " with " + (tr.isMultiblock() ? tr.multiblock.length : 0) + " blocks.");
+//      entityPlayer.sendChatToPlayer(c);
+    }
+    
+    // TODO: Print storage or open GUI?
+    return true;
+  }
 
   @SideOnly(Side.CLIENT)
   @Override
@@ -113,7 +130,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     }
     TileCapacitorBank tr = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
     tr.onBlockAdded();
-
   }
 
   @Override
@@ -125,15 +141,53 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     te.onNeighborBlockChange(blockId);
   }
   
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {    
+    if (!world.isRemote) {
+      TileEntity te = world.getBlockTileEntity(x, y, z);
+      if (te instanceof TileCapacitorBank) {
+        TileCapacitorBank cb = (TileCapacitorBank) te;
+        cb.onBreakBlock();
+
+        System.out.println("BlockCapacitorBank.breakBlock: Energy is: " + cb.doGetEnergyStored());        
+        ItemStack itemStack = BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
+
+        float f = 0.7F;
+        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+        entityitem.delayBeforeCanPickup = 10;
+        world.spawnEntityInWorld(entityitem);
+      } 
+    }
+
+    world.removeBlockTileEntity(x, y, z);    
+  }
+  
+ 
+  @Override
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {   
     if(world.isRemote) {
       return;
-    }    
-    TileCapacitorBank te = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
-    te.onBreakBlock();
-    super.breakBlock(world, x, y, z, par5, par6);
-    
+    }
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      TileCapacitorBank cb = (TileCapacitorBank) te;
+      cb.addEnergy(BlockItemCapacitorBank.getStoredEnergyForItem(stack));
+    }
+    world.markBlockForUpdate(x, y, z);    
   }
+ 
+  @Override
+  public int idDropped(int par1, Random par2Random, int par3) {
+    return 0;
+  }
+
+  @Override
+  public int quantityDropped(Random r) {
+    return 0;
+  }
+  
   
   @Override
   @SideOnly(Side.CLIENT)

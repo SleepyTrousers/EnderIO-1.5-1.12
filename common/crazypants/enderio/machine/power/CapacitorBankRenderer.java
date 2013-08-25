@@ -54,7 +54,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
  @Override
  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-   renderBlock(null, 0.66f);
+   renderBlock(null, BlockItemCapacitorBank.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
  }
  
 //------------------------- Entity renderer

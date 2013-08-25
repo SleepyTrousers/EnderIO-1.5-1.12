@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,7 +88,16 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   }
 
   public void powerReceptorRemoved(int x, int y, int z) {
-    powerReceptors.remove(new BlockCoord(x, y, z));
+    BlockCoord bc = new BlockCoord(x, y, z);
+    List<ReceptorKey> remove = new ArrayList<>();
+    for(ReceptorKey key : powerReceptors.keySet()) {
+      if(key != null && key.coord.equals(bc)) {
+        remove.add(key);
+      }
+    }
+    for(ReceptorKey key : remove) {
+      powerReceptors.remove(key);
+    }
     powerManager.receptorsChanged();
   }
 

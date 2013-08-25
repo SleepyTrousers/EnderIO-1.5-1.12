@@ -99,13 +99,12 @@ public class PowerHandlerUtil {
       if (current <= 0) {
         return 0;
       }
-      float res = current - 0.001f;
-      if (res >= current) {
-        res -= 0.01f;
-        if (res >= current) {
-          System.out.println("PowerHandlerUtil.NullPerditionCalculator.applyPerdition: Fail! current is: " + current + " res is:" + res);
-        }
-      }
+      float decAmount = 0.001f;
+      float res;
+      do {
+        res = current - decAmount;
+        decAmount *= 10;
+      } while(res >= current && decAmount < PerditionCalculator.MIN_POWERLOSS);
       return res;
     }
   }
