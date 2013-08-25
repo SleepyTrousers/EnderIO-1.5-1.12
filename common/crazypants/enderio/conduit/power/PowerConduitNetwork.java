@@ -89,7 +89,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
 
   public void powerReceptorRemoved(int x, int y, int z) {
     BlockCoord bc = new BlockCoord(x, y, z);
-    List<ReceptorKey> remove = new ArrayList<>();
+    List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
     for(ReceptorKey key : powerReceptors.keySet()) {
       if(key != null && key.coord.equals(bc)) {
         remove.add(key);

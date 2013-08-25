@@ -140,7 +140,7 @@ public class RenderUtil {
   }
 
   public static List<ForgeDirection> getEdgesForFace(ForgeDirection face) {
-    List<ForgeDirection> result = new ArrayList<>(4);
+    List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     if (face.offsetY != 0) {
       result.add(EAST);
       result.add(WEST);
@@ -243,7 +243,7 @@ public class RenderUtil {
     for (ForgeDirection dir : getEdgesForFace(face)) {
       edges.add(new EdgeNeighbour(bc, dir));
     }
-    List<ForgeDirection> result = new ArrayList<>(4);
+    List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     for (EdgeNeighbour edge : edges) {
       if (blockAccess.getBlockId(edge.bc.x, edge.bc.y, edge.bc.z) != blockID) {
         result.add(edge.dir);
