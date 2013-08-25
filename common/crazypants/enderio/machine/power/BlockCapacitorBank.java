@@ -125,6 +125,16 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     te.onNeighborBlockChange(blockId);
   }
   
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+    if(world.isRemote) {
+      return;
+    }    
+    TileCapacitorBank te = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
+    te.onBreakBlock();
+    super.breakBlock(world, x, y, z, par5, par6);
+    
+  }
+  
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {

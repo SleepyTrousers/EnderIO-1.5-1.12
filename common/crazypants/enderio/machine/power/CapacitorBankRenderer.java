@@ -70,8 +70,8 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
-    float filledRatio = 0.66f;    
-    renderBlock((TileCapacitorBank) te, filledRatio);
+    TileCapacitorBank cb = (TileCapacitorBank)te;    
+    renderBlock(cb, cb.getEnergyStoredRatio());
 
     GL11.glPopMatrix();
 
@@ -182,7 +182,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
     }
 
-    int targetPixelCount = Math.max(1, Math.round(totalPixels * filledRatio));
+    int targetPixelCount = Math.max(0, Math.round(totalPixels * filledRatio));
     int pixelsBellowFace;
     if (gb.vInfo.index < 2) {
       // either none or a bottom section

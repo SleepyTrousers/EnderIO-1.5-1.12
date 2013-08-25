@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -28,6 +29,7 @@ public class NetworkPowerManager {
   private int inactiveTicks = 100;
 
   private final List<ReceptorEntry> receptors = new ArrayList<PowerConduitNetwork.ReceptorEntry>();
+  //private final List<ReceptorEntry> storageReceptors = new ArrayList<PowerConduitNetwork.ReceptorEntry>();
   private ListIterator<ReceptorEntry> receptorIterator = receptors.listIterator();
 
   private boolean lastActiveValue = false;
@@ -96,43 +98,41 @@ public class NetworkPowerManager {
       ReceptorEntry r = receptorIterator.next();
       float reservedForEntry = removeReservedEnergy(r);
 
-      for (ForgeDirection dir : r.directions) {
+      PowerReceiver pp = r.powerReceptor.getPowerReceiver(r.direction);
+      if (pp != null) {
+        if (pp.getType() != Type.ENGINE) {
 
-        PowerReceiver pp = r.powerReceptor.getPowerReceiver(dir);
-        if (pp != null) {
-          if (pp.getType() != Type.ENGINE) {
+          float used = 0;
+          float nonReservedPower = quantity - reserved;
+          float available = nonReservedPower + reservedForEntry;
+          float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), available);
+          float requested = pp.powerRequest();
 
-            float used = 0;
-            float nonReservedPower = quantity - reserved;
-            float available = nonReservedPower + reservedForEntry;
-            float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), available);
-            float requested = pp.powerRequest();
-
-            // If it is possible to supply the minimum amount of energy
-            if (pp.getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {
-              // Buffer energy if we can't meet it now
-              if (pp.getMinEnergyReceived() > canOffer && requested > 0) {
-                reserveEnergy(r, canOffer);
-                used += canOffer;
-              } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
-                used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, dir);
-              } else {
-                used = pp.receiveEnergy(Type.PIPE, Math.min(requested, canOffer), dir);
-              }
-
+          // If it is possible to supply the minimum amount of energy
+          if (pp.getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {
+            // Buffer energy if we can't meet it now
+            if (pp.getMinEnergyReceived() > canOffer && requested > 0) {
+              reserveEnergy(r, canOffer);
+              used += canOffer;
+            } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
+              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, r.direction);
+            } else {
+              used = pp.receiveEnergy(Type.PIPE, Math.min(requested, canOffer), r.direction);
             }
-            quantity -= used;
 
-          } else if (pp.getType() == Type.ENGINE && !(r.powerReceptor instanceof IInternalPowerReceptor)) {
-            numEngines++;
           }
+          quantity -= used;
 
-          if (quantity <= 0) {
-            break;
-          }
-
+        } else if (pp.getType() == Type.ENGINE && !(r.powerReceptor instanceof IInternalPowerReceptor)) {
+          numEngines++;
         }
+
+        if (quantity <= 0) {
+          break;
+        }
+
       }
+
       appliedCount++;
     }
     float leaveForBlowingUpEngines = numEngines * 8;
@@ -188,6 +188,7 @@ public class NetworkPowerManager {
       maxEnergyStored += con.getCapacitor().getMaxEnergyStored();
       energyStored += con.getEnergyStored();
     }
+
     if (energyStored > maxEnergyStored) {
       energyStored = maxEnergyStored;
     }
@@ -207,6 +208,17 @@ public class NetworkPowerManager {
 
   public void receptorsChanged() {
     receptors.clear();
+//    storageReceptors.clear();
+//    for(ReceptorEntry re : network.getPowerReceptors()) {
+//     PowerReceiver reciever = re.powerReceptor.getPowerReceiver(re.direction);
+//     if(reciever != null) {
+//       if(reciever.getType() == Type.STORAGE) {
+//         storageReceptors.add(re);
+//       } else {
+//         receptors.add(re);
+//       }
+//     }
+//    }
     receptors.addAll(network.getPowerReceptors());
     receptorIterator = receptors.listIterator();
   }
