@@ -19,18 +19,21 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityCustomBlock;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapacitorBank extends Block implements ITileEntityProvider {
+public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
 
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
   
@@ -55,6 +58,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     LanguageRegistry.addName(this, ModObject.blockCapacitorBank.name);
     GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName);
     GameRegistry.registerTileEntity(TileCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName + "TileEntity");
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
   }
 
   @Override
@@ -66,17 +70,35 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider {
     if(! (te instanceof TileCapacitorBank) ) {
       return false;
     }
-    TileCapacitorBank tr = (TileCapacitorBank)te;
-    
-    if (world.isRemote) {
-      ChatMessageComponent c = ChatMessageComponent.func_111066_d("Storing " + NF.format(tr.getEnergyStored()) + " of " + NF.format(tr.getMaxEnergyStored()) + " MJ. Max IO is " + NF.format(tr.getMaxIO()) + " MJ/t");
-      entityPlayer.sendChatToPlayer(c);
-//      c = ChatMessageComponent.func_111066_d("Is multi block: " + tr.isMultiblock() + " with " + (tr.isMultiblock() ? tr.multiblock.length : 0) + " blocks.");
+//    TileCapacitorBank tr = (TileCapacitorBank)te;   
+//    if (world.isRemote) {
+//      ChatMessageComponent c = ChatMessageComponent.func_111066_d("Storing " + NF.format(tr.getEnergyStored()) + " of " + NF.format(tr.getMaxEnergyStored()) + " MJ. Max IO is " + NF.format(tr.getMaxIO()) + " MJ/t");
 //      entityPlayer.sendChatToPlayer(c);
-    }
+////      c = ChatMessageComponent.func_111066_d("Is multi block: " + tr.isMultiblock() + " with " + (tr.isMultiblock() ? tr.multiblock.length : 0) + " blocks.");
+////      entityPlayer.sendChatToPlayer(c);
+//    }
+    
+    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
     
     // TODO: Print storage or open GUI?
     return true;
+  }
+  
+
+  @Override
+  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  
+  @Override
+  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      return new GuiCapacitorBank((TileCapacitorBank)te);   
+    }    
+    return null;
   }
 
   @SideOnly(Side.CLIENT)

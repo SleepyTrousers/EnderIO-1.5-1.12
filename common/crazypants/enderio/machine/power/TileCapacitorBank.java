@@ -15,6 +15,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -35,15 +36,27 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   private int maxStoredEnergy;
 
   private int maxIO;
-  
+
   private boolean multiblockDirty = false;
+
+  private RedstoneControlMode inputControlMode;
+
+  private RedstoneControlMode outputControlMode; 
+  
+  private boolean outputEnabled;
+  
+  private boolean inputEnabled;
 
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
+  private PowerHandler disabledPowerHandler;
+
   public TileCapacitorBank() {
     storedEnergy = 0;
+    inputControlMode = RedstoneControlMode.IGNORE;
+    outputControlMode = RedstoneControlMode.IGNORE;
     maxStoredEnergy = BASE_CAP.getMaxEnergyStored();
     maxIO = BASE_CAP.getMaxEnergyExtracted();
     updatePowerHandler();
@@ -59,13 +72,13 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if (worldObj.isRemote) {
       return;
     } // else is server, do all logic only on the server
-    
-    if(multiblockDirty) {
+
+    if (multiblockDirty) {
       formMultiblock();
       multiblockDirty = false;
     }
-    
-    if(!isContoller()) {
+
+    if (!isContoller()) {
       return;
     }
 
@@ -74,33 +87,34 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     powerHandler.update();
     powerHandler.setEnergy(stored);
 
-    // redstoneCheckPassed = true;
-    // if (redstoneControlMode == RedstoneControlMode.ON) {
-    // int powerLevel = worldObj.getStrongestIndirectPower(xCoord, yCoord,
-    // zCoord);
-    // if (powerLevel < 1) {
-    // redstoneCheckPassed = false;
-    // }
-    // } else if (redstoneControlMode == RedstoneControlMode.OFF) {
-    // int powerLevel = worldObj.getStrongestIndirectPower(xCoord, yCoord,
-    // zCoord);
-    // if (powerLevel > 0) {
-    // redstoneCheckPassed = false;
-    // }
-    // }
+    boolean requiresClientSync = false;
 
-    transmitEnergy();
+    boolean hasSignal = isRecievingRedstoneSignal();
+    if(inputControlMode == RedstoneControlMode.IGNORE) {
+      inputEnabled = true;
+    } else {
+      inputEnabled = (inputControlMode == RedstoneControlMode.ON && hasSignal) || (inputControlMode == RedstoneControlMode.OFF && !hasSignal); 
+    }
+    if(outputControlMode == RedstoneControlMode.IGNORE) {
+      outputEnabled = true;
+    } else {
+      outputEnabled = (outputControlMode == RedstoneControlMode.ON && hasSignal) || (outputControlMode == RedstoneControlMode.OFF && !hasSignal); 
+    }
+
+    if(outputEnabled) {
+      transmitEnergy();
+    }
 
     storedEnergy = powerHandler.getEnergyStored();
 
     // Update if our power has changed by more than 0.5%
-    boolean requiresClientSync = lastSyncPowerStored != storedEnergy && worldObj.getWorldTime() % 21 == 0;    
+    requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getWorldTime() % 21 == 0;
 
     if (requiresClientSync) {
       lastSyncPowerStored = powerHandler.getEnergyStored();
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
-      // client/server connection      
+      // client/server connection
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
       worldObj.updateTileEntityChunkAndDoNothing(xCoord, yCoord, zCoord, this);
@@ -223,14 +237,60 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
     return getPowerHandler().getPowerReceiver();
   }
-  
+
   public void addEnergy(float add) {
     getController().doAddEnergy(add);
-    
   }
 
+  private boolean isRecievingRedstoneSignal() {
+    if (!isMultiblock()) {
+      return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+    }
+    for (BlockCoord bc : multiblock) {
+      if (worldObj.getStrongestIndirectPower(bc.x, bc.y, bc.z) > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public RedstoneControlMode getInputControlMode() {
+    return inputControlMode;
+  }
+
+  public void setInputControlMode(RedstoneControlMode inputControlMode) {
+    if(!isMultiblock()) {
+      this.inputControlMode = inputControlMode;
+    } else {
+      for(BlockCoord bc : multiblock) {
+        TileCapacitorBank cp = getCapBank(bc);
+        if(cp != null) {
+          cp.inputControlMode = inputControlMode;
+        }
+      }
+    }   
+  }
+  
+  public RedstoneControlMode getOutputControlMode() {
+    return outputControlMode;
+  }
+
+  public void setOutputControlMode(RedstoneControlMode outputControlMode) {
+    if(!isMultiblock()) {
+      this.outputControlMode = outputControlMode;
+    } else {
+      for(BlockCoord bc : multiblock) {
+        TileCapacitorBank cp = getCapBank(bc);
+        if(cp != null) {
+          cp.outputControlMode = outputControlMode;
+        }
+      }
+    }
+  }
+  
   // ------------ Multiblock implementations
 
+  
   int doGetMaxIO() {
     return maxIO;
   }
@@ -240,7 +300,17 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   PowerHandler doGetPowerHandler() {
-    return powerHandler;
+    if(inputEnabled) {
+      return powerHandler;
+    } 
+    return getDisabledPowerHandler();
+  }
+
+  private PowerHandler getDisabledPowerHandler() {
+    if(disabledPowerHandler == null) {
+      disabledPowerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0,0), this, Type.STORAGE);
+    }
+    return disabledPowerHandler;
   }
 
   int doGetEnergyStoredScaled(int scale) {
@@ -255,10 +325,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   float doGetEnergyStoredRatio() {
     return storedEnergy / maxStoredEnergy;
   }
-  
+
   void doAddEnergy(float add) {
     storedEnergy = Math.min(maxStoredEnergy, storedEnergy + add);
-    powerHandler.setEnergy(storedEnergy);        
+    powerHandler.setEnergy(storedEnergy);
   }
 
   // ------------ Common power functions
@@ -278,31 +348,34 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private void updatePowerHandler() {
     powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxIO, maxStoredEnergy), this, Type.STORAGE);
+    if(storedEnergy > maxStoredEnergy) {
+      storedEnergy = maxStoredEnergy;
+    }
     powerHandler.setEnergy(storedEnergy);
   }
 
   // ------------ Multiblock management
 
   public void onBlockAdded() {
-    //formMultiblock();
+    // formMultiblock();
     multiblockDirty = true;
   }
 
-  public void onNeighborBlockChange(int blockId) {    
-    if (blockId != ModObject.blockCapacitorBank.actualId) { 
+  public void onNeighborBlockChange(int blockId) {
+    if (blockId != ModObject.blockCapacitorBank.actualId) {
       getController().receptorsDirty = true;
     }
   }
 
-  public void onBreakBlock() {    
-    TileCapacitorBank controller = getController();    
-    controller.clearCurrentMultiblock();        
+  public void onBreakBlock() {
+    TileCapacitorBank controller = getController();
+    controller.clearCurrentMultiblock();
   }
-  
+
   private void clearCurrentMultiblock() {
     if (multiblock == null) {
       return;
-    }    
+    }
     for (BlockCoord bc : multiblock) {
       TileCapacitorBank res = getCapBank(bc);
       if (res != null) {
@@ -314,7 +387,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   private void formMultiblock() {
-    List<TileCapacitorBank> blocks = new ArrayList<TileCapacitorBank>();   
+    List<TileCapacitorBank> blocks = new ArrayList<TileCapacitorBank>();
     blocks.add(this);
     findNighbouringBanks(this, blocks);
 
@@ -331,7 +404,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
     for (TileCapacitorBank cb : blocks) {
       cb.setMultiblock(mb);
-    }        
+    }
   }
 
   private void findNighbouringBanks(TileCapacitorBank tileCapacitorBank, List<TileCapacitorBank> blocks) {
@@ -365,14 +438,12 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     multiblock = mb;
     if (isMaster()) {
       float totalStored = 0;
-      int totalCap = 0;
-      int totalIO = 0;
+      int totalCap = multiblock.length * BASE_CAP.getMaxEnergyStored();
+      int totalIO = multiblock.length * BASE_CAP.getMaxEnergyExtracted();
       for (BlockCoord bc : multiblock) {
         TileCapacitorBank cb = getCapBank(bc);
         if (cb != null) {
-          totalStored += cb.getEnergyStored();
-          totalCap += cb.getPowerHandler().getMaxEnergyStored();
-          totalIO += cb.getPowerHandler().getMaxEnergyReceived();
+          totalStored += cb.storedEnergy;
         }
         cb.multiblockDirty = false;
       }
@@ -444,6 +515,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergy");
     maxIO = nbtRoot.getInteger("maxIO");
 
+    inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
+    outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
+
     updatePowerHandler();
 
     boolean wasMulti = isMultiblock();
@@ -467,6 +541,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     nbtRoot.setFloat("storedEnergy", storedEnergy);
     nbtRoot.setInteger("maxStoredEnergy", maxStoredEnergy);
     nbtRoot.setInteger("maxIO", maxIO);
+    nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
+    nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
 
     nbtRoot.setBoolean("isMultiblock", isMultiblock());
     if (isMultiblock()) {
