@@ -7,7 +7,7 @@ import java.util.List;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 
-public class TooltipManager {
+public class ToolTipManager {
 
   public static interface TooltipRender {
     int getGuiLeft();
@@ -35,12 +35,12 @@ public class TooltipManager {
   protected void drawTooltip(GuiToolTip toolTip, int mouseX, int mouseY, TooltipRender renderer) {
     List<String> list = toolTip.getToolTipText();
     
-    List<String> formatted = new ArrayList<>(list.size());
+    List<String> formatted = new ArrayList<String>(list.size());
     for(int i=0;i<list.size();i++) {
       if(i == 0) {
-        formatted.add("§" + Integer.toHexString(15) + list.get(i));
+        formatted.add("\u00a7" + Integer.toHexString(15) + list.get(i));
       } else {
-        formatted.add("§7" + list.get(i));
+        formatted.add("\u00a77" + list.get(i));
       }
     }
     
