@@ -46,9 +46,12 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       if (ri != null && ri.item != null) {
         if (output == null) {
           output = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
+          if(output == null) {
+            return false;
+          }
         } else {
           ItemStack newOutput = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
-          if (newOutput != null && !newOutput.isItemEqual(output)) {
+          if (newOutput == null || !newOutput.isItemEqual(output)) {
             return false;
           }
         }
@@ -90,7 +93,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int consumed = 0;
     List<RecipeInput> result = new ArrayList<RecipeInput>();
     for (RecipeInput ri : inputs) {
-      if (consumed < 3 && ri != null && ri.item != null) {
+      if (isValidInput(ri.slotNumber, ri.item) && consumed < 3 && ri != null && ri.item != null) {
         int available = ri.item.stackSize;
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);

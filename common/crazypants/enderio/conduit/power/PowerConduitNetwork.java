@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +23,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
 
   NetworkPowerManager powerManager;
 
-  private Map<BlockCoord, ReceptorEntry> powerReceptors = new HashMap<BlockCoord, ReceptorEntry>();
+  private Map<ReceptorKey, ReceptorEntry> powerReceptors = new HashMap<ReceptorKey, ReceptorEntry>();
 
   private long timeAtLastApply = -1;
 
@@ -73,20 +75,29 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     if (powerReceptor == null) {
       return;
     }
-    BlockCoord key = new BlockCoord(x, y, z);
+    BlockCoord location = new BlockCoord(x, y, z);
+    ReceptorKey key = new ReceptorKey(location, direction);
     ReceptorEntry re = powerReceptors.get(key);
     if (re == null) {
-      re = new ReceptorEntry(powerReceptor, key, powerConduit);
+      re = new ReceptorEntry(powerReceptor, location, powerConduit, direction);
       powerReceptors.put(key, re);
-    }
-    re.directions.add(direction);
+    }    
     if (powerManager != null) {
       powerManager.receptorsChanged();
     }
   }
 
   public void powerReceptorRemoved(int x, int y, int z) {
-    powerReceptors.remove(new BlockCoord(x, y, z));
+    BlockCoord bc = new BlockCoord(x, y, z);
+    List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
+    for(ReceptorKey key : powerReceptors.keySet()) {
+      if(key != null && key.coord.equals(bc)) {
+        remove.add(key);
+      }
+    }
+    for(ReceptorKey key : remove) {
+      powerReceptors.remove(key);
+    }
     powerManager.receptorsChanged();
   }
 
@@ -115,15 +126,54 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     IPowerConduit emmiter;
     IPowerReceptor powerReceptor;
     BlockCoord coord;
-    // The different directions that we connect to the sucker
-    Set<ForgeDirection> directions = new HashSet<ForgeDirection>();
+    ForgeDirection direction;
 
-    public ReceptorEntry(IPowerReceptor powerReceptor, BlockCoord coord, IPowerConduit emmiter) {
+    public ReceptorEntry(IPowerReceptor powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
       this.powerReceptor = powerReceptor;
       this.coord = coord;
       this.emmiter = emmiter;
+      this.direction = direction;
     }
 
+  }
+  
+  private static class ReceptorKey {
+    BlockCoord coord;
+    ForgeDirection direction;
+    
+    ReceptorKey(BlockCoord coord, ForgeDirection direction) {    
+      this.coord = coord;
+      this.direction = direction;
+    }
+
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((coord == null) ? 0 : coord.hashCode());
+      result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+      return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      ReceptorKey other = (ReceptorKey) obj;
+      if (coord == null) {
+        if (other.coord != null)
+          return false;
+      } else if (!coord.equals(other.coord))
+        return false;
+      if (direction != other.direction)
+        return false;
+      return true;
+    }
+ 
   }
 
 }

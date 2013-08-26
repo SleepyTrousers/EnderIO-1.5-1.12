@@ -95,16 +95,14 @@ public class NetworkPowerManager {
       ReceptorEntry r = receptorIterator.next();
       float reservedForEntry = removeReservedEnergy(r);
 
-      for (ForgeDirection dir : r.directions) {
-
-        IPowerReceptor pp = r.powerReceptor;
-        if (pp != null) {
+      IPowerReceptor pp = r.powerReceptor;
+      if (pp != null) {
 
           float used = 0;
           float nonReservedPower = quantity - reserved;
           float available = nonReservedPower + reservedForEntry;
           float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), available);
-          float requested = pp.powerRequest(dir);
+          float requested = pp.powerRequest(r.direction);
 
           // If it is possible to supply the minimum amount of energy
           if (pp.getPowerProvider() != null && pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {
@@ -113,10 +111,10 @@ public class NetworkPowerManager {
               reserveEnergy(r, canOffer);
               used += canOffer;
             } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
-              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, dir);
+              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, r.direction);
             } else {
               used = Math.min(requested, canOffer);
-              pp.getPowerProvider().receiveEnergy(used, dir);
+              pp.getPowerProvider().receiveEnergy(used, r.direction);
             }
 
           }
@@ -127,8 +125,7 @@ public class NetworkPowerManager {
         if (quantity <= 0) {
           break;
         }
-
-      }
+      
       appliedCount++;
     }
 

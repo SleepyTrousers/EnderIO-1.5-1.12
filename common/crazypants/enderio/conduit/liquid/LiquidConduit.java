@@ -184,23 +184,25 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
     for (ForgeDirection dir : extractDirs) {
       ITankContainer extTank = getTankContainer(getLocation().getLocation(dir));
+      if (extTank != null) {
 
-      int maxPush = tank.getFluidAmount();
-      int couldPush = pushLiquid(dir, maxPush, false);
-      int targetExtract = Math.min(maxDrainPerTick, tank.getAvailableSpace() + couldPush);
-      LiquidStack couldDrain = extTank.drain(dir.getOpposite(), targetExtract, false);
-      if (couldDrain != null && network != null && network.canAcceptLiquid(couldDrain)) {
-        couldDrain = extTank.drain(dir.getOpposite(), targetExtract, true);
-        if (couldDrain != null) {
-          LiquidStack drained = couldDrain.copy();
+        int maxPush = tank.getFluidAmount();
+        int couldPush = pushLiquid(dir, maxPush, false);
+        int targetExtract = Math.min(maxDrainPerTick, tank.getAvailableSpace() + couldPush);
+        LiquidStack couldDrain = extTank.drain(dir.getOpposite(), targetExtract, false);
+        if (couldDrain != null && network != null && network.canAcceptLiquid(couldDrain)) {
+          couldDrain = extTank.drain(dir.getOpposite(), targetExtract, true);
+          if (couldDrain != null) {
+            LiquidStack drained = couldDrain.copy();
 
-          int totalVolume = tank.getFluidAmount() + drained.amount;
-          int pushed = pushLiquid(dir, Math.min(drained.amount, maxPush), true);
-          // System.out.println("LiquidConduit.doExtract: Drained: " +
-          // drained.amount + " pushed = " + pushed + " contains volume " +
-          // tank.getAmount());
-          drained.amount = totalVolume - pushed;
-          tank.setLiquid(drained);
+            int totalVolume = tank.getFluidAmount() + drained.amount;
+            int pushed = pushLiquid(dir, Math.min(drained.amount, maxPush), true);
+            // System.out.println("LiquidConduit.doExtract: Drained: " +
+            // drained.amount + " pushed = " + pushed + " contains volume " +
+            // tank.getAmount());
+            drained.amount = totalVolume - pushed;
+            tank.setLiquid(drained);
+          }
         }
       }
     }

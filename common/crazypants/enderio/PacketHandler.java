@@ -32,6 +32,7 @@ import cpw.mods.fml.common.network.Player;
 import crazypants.enderio.enderface.ContainerWrapper;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.util.PacketUtil;
 
 public class PacketHandler implements IPacketHandler {
@@ -39,8 +40,10 @@ public class PacketHandler implements IPacketHandler {
   public static int ID_ENDERFACE = 1;
   private static final int ID_TILE_ENTITY = 4;
   private static final int ID_MACHINE_REDSTONE_PACKET = 2;
+  private static final int ID_CAP_BANK_REDSTONE_PACKET = 3;
 
   private static final String CHANNEL = "EnderIO";
+  
 
   @Override
   public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
@@ -57,6 +60,8 @@ public class PacketHandler implements IPacketHandler {
         PacketUtil.handleTileEntityPacket(false, data);
       } else if (id == ID_MACHINE_REDSTONE_PACKET) {
         handleRedstoneControlPacket(data, manager, player);
+      } else if (id == ID_CAP_BANK_REDSTONE_PACKET) {
+        handleCapBankRedstoneControlPacket(data, manager, player);
       } else {
         System.out.println("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
       }
@@ -96,6 +101,46 @@ public class PacketHandler implements IPacketHandler {
       dos.writeInt(te.yCoord);
       dos.writeInt(te.zCoord);
       dos.writeShort((short) te.getRedstoneControlMode().ordinal());
+    } catch (IOException e) {
+      // never thrown
+    }
+
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+
+  }
+  
+  private void handleCapBankRedstoneControlPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
+    int x = data.readInt();
+    int y = data.readInt();
+    int z = data.readInt();
+    short inputOrdinal = data.readShort();
+    short outputOrdinal = data.readShort();
+    EntityPlayerMP p = (EntityPlayerMP) player;
+    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      TileCapacitorBank cb = (TileCapacitorBank) te;
+      cb.setInputControlMode(RedstoneControlMode.values()[inputOrdinal]);
+      cb.setOutputControlMode(RedstoneControlMode.values()[outputOrdinal]);
+      p.worldObj.markBlockForUpdate(x, y, z);
+    }
+
+  }
+  
+  public static Packet getRedstoneControlPacket(TileCapacitorBank te) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
+    DataOutputStream dos = new DataOutputStream(bos);
+    try {
+      dos.writeInt(ID_CAP_BANK_REDSTONE_PACKET);
+      dos.writeInt(te.xCoord);
+      dos.writeInt(te.yCoord);
+      dos.writeInt(te.zCoord);
+      dos.writeShort((short) te.getInputControlMode().ordinal());
+      dos.writeShort((short) te.getOutputControlMode().ordinal());
     } catch (IOException e) {
       // never thrown
     }

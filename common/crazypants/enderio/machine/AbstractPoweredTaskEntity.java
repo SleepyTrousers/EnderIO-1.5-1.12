@@ -68,6 +68,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return false;
     }
 
+    if(inventory[0] != null) {
+      int i  = 1;
+    }
+    
     boolean requiresClientSync = false;
     // Process any current items
     requiresClientSync |= checkProgress();

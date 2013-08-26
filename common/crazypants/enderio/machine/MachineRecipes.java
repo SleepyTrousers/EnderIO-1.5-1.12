@@ -8,12 +8,15 @@ import static crazypants.enderio.ModObject.blockSolarPanel;
 import static crazypants.enderio.ModObject.blockStirlingGenerator;
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.ModObject.itemIndustrialBinder;
+import static crazypants.enderio.ModObject.blockCapacitorBank;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.ItemCapacitor;
+import crazypants.enderio.power.Capacitors;
 
 public class MachineRecipes {
 
@@ -49,6 +52,11 @@ public class MachineRecipes {
     ItemStack electricLight = new ItemStack(blockElectricLight.actualId, 1, 0);
     ItemStack glowstone = new ItemStack(Item.lightStoneDust);
     GameRegistry.addShapedRecipe(electricLight, "bqb", "bgb", "bcb", 'q', fusedQuartz, 'g', glowstone, 'b', industialBinder, 'c', capacitor);
+    
+    ItemStack activtedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ACTIVATED_CAPACITOR.ordinal());
+    ItemStack capacitorBank = new ItemStack(blockCapacitorBank.actualId,1,0);
+    GameRegistry.addShapedRecipe(capacitorBank , "ccc", "ccc", "ccc", 'c', activtedCapacitor);
+    
 
   }
 

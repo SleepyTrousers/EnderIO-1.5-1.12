@@ -23,7 +23,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   protected static final int POWER_HEIGHT = 42;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  protected static final int BUTTON_SIZE = 16;
+  public static final int BUTTON_SIZE = 16;
   protected static final int REDSTONE_BUTTON_ID = 99;
 
   private AbstractMachineEntity tileEntity;
@@ -47,22 +47,8 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        switch (tileEntity.getRedstoneControlMode()) {
-        case ON:
-          text.add("Active when");
-          text.add("recieving a");
-          text.add("redstone signal.");
-          break;
-        case OFF:
-          text.add("Active when not");
-          text.add("recieving a");
-          text.add("redstone signal.");
-          break;
-        case IGNORE:
-        default:
-          text.add("Allways active.");
-        }
-
+        text.add("Redstone Mode");
+        text.add(tileEntity.getRedstoneControlMode().tooltip);
       }
 
       @Override

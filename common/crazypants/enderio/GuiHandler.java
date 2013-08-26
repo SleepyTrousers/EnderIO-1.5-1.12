@@ -13,6 +13,8 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_PAINTER = 2;
   public static final int GUI_ID_STIRLING_GEN = 3;
   public static final int GUI_ID_ALLOY_SMELTER = 4;
+  public static final int GUI_ID_CAPACITOR_BANK = 5;
+  
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

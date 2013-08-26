@@ -1,7 +1,14 @@
 package crazypants.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.CoordUV;
+import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector3f;
 
 public final class BoundingBox {
 
@@ -83,6 +90,112 @@ public final class BoundingBox {
         Math.min(min.x, max.x), Math.min(min.y, max.y), Math.min(min.z, max.z),
         Math.max(min.x, max.x), Math.max(min.y, max.y), Math.max(min.z, max.z));
 
+  }
+  
+  
+  /**
+   * Returns the vertices of the corners for the specified face in counter clockwise order. 
+   * @param face
+   * @return
+   */
+  public List<CoordUV> getCornersWithUvForFace(ForgeDirection face) {
+    return getCornersWithUvForFace(face, 0, 1, 0, 1);
+  }
+  
+  
+  public List<CoordUV> getCornersWithUvForFace(ForgeDirection face, float minU, float maxU, float minV, float  maxV) {     
+    List<CoordUV> result = new ArrayList<CoordUV>(4);
+    switch(face) {
+    case NORTH:
+      result.add(new CoordUV(new Vector3d(maxX, minY, minZ), new Vector2f(minU, minV)));
+      result.add(new CoordUV(new Vector3d(minX, minY, minZ), new Vector2f(maxU, minV)));
+      result.add(new CoordUV(new Vector3d(minX, maxY, minZ), new Vector2f(maxU, maxV)));
+      result.add(new CoordUV(new Vector3d(maxX, maxY, minZ), new Vector2f(minU, maxV)));
+      break;
+    case SOUTH:
+      result.add(new CoordUV(new Vector3d(minX, minY, maxZ), new Vector2f(minU, minV)));
+      result.add(new CoordUV(new Vector3d(maxX, minY, maxZ), new Vector2f(maxU, minV)));
+      result.add(new CoordUV(new Vector3d(maxX, maxY, maxZ), new Vector2f(maxU, maxV)));
+      result.add(new CoordUV(new Vector3d(minX, maxY, maxZ), new Vector2f(minU, maxV)));
+      break;
+    case EAST:
+      result.add(new CoordUV(new Vector3d(maxX, maxY, minZ), new Vector2f(minU, maxV)));
+      result.add(new CoordUV(new Vector3d(maxX, maxY, maxZ), new Vector2f(maxU, maxV)));
+      result.add(new CoordUV(new Vector3d(maxX, minY, maxZ), new Vector2f(maxU, minV)));
+      result.add(new CoordUV(new Vector3d(maxX, minY, minZ), new Vector2f(minU, minV)));
+      break;
+    case WEST:  
+      result.add(new CoordUV(new Vector3d(minX, minY, minZ), new Vector2f(minU, minV)));
+      result.add(new CoordUV(new Vector3d(minX, minY, maxZ), new Vector2f(maxU, minV)));
+      result.add(new CoordUV(new Vector3d(minX, maxY, maxZ), new Vector2f(maxU, maxV)));
+      result.add(new CoordUV(new Vector3d(minX, maxY, minZ), new Vector2f(minU, maxV)));
+      break;
+    case UP:
+      result.add(new CoordUV(new Vector3d(maxX, maxY, maxZ), new Vector2f(minU, minV)));
+      result.add(new CoordUV(new Vector3d(maxX, maxY, minZ), new Vector2f(minU, maxV)));
+      result.add(new CoordUV(new Vector3d(minX, maxY, minZ), new Vector2f(maxU, maxV)));
+      result.add(new CoordUV(new Vector3d(minX, maxY, maxZ), new Vector2f(maxU, minV)));
+      break;
+    case DOWN:
+    case UNKNOWN:
+    default:
+      result.add(new CoordUV(new Vector3d(minX, minY, minZ), new Vector2f(maxU, maxV)));
+      result.add(new CoordUV(new Vector3d(maxX, minY, minZ), new Vector2f(minU, maxV)));
+      result.add(new CoordUV(new Vector3d(maxX, minY, maxZ), new Vector2f(minU, minV)));
+      result.add(new CoordUV(new Vector3d(minX, minY, maxZ), new Vector2f(maxU, minV)));
+      break;   
+    }
+    return result;
+  }
+  
+  /**
+   * Returns the vertices of the corners for the specified face in counter clockwise order. 
+   * @param face
+   * @return
+   */
+  public List<Vector3f> getCornersForFace(ForgeDirection face) {
+    List<Vector3f> result = new ArrayList<Vector3f>(4);
+    switch(face) {
+    case NORTH:
+      result.add(new Vector3f(maxX, minY, minZ));
+      result.add(new Vector3f(minX, minY, minZ));
+      result.add(new Vector3f(minX, maxY, minZ));
+      result.add(new Vector3f(maxX, maxY, minZ));
+      break;
+    case SOUTH:
+      result.add(new Vector3f(minX, minY, maxZ));
+      result.add(new Vector3f(maxX, minY, maxZ));
+      result.add(new Vector3f(maxX, maxY, maxZ));
+      result.add(new Vector3f(minX, maxY, maxZ));
+      break;
+    case EAST:
+      result.add(new Vector3f(maxX, maxY, minZ));
+      result.add(new Vector3f(maxX, maxY, maxZ));
+      result.add(new Vector3f(maxX, minY, maxZ));
+      result.add(new Vector3f(maxX, minY, minZ));
+      break;
+    case WEST:      
+      result.add(new Vector3f(minX, minY, minZ));
+      result.add(new Vector3f(minX, minY, maxZ));
+      result.add(new Vector3f(minX, maxY, maxZ));
+      result.add(new Vector3f(minX, maxY, minZ));
+      break;
+    case UP:
+      result.add(new Vector3f(maxX, maxY, maxZ));
+      result.add(new Vector3f(maxX, maxY, minZ));
+      result.add(new Vector3f(minX, maxY, minZ));
+      result.add(new Vector3f(minX, maxY, maxZ));
+      break;
+    case DOWN:
+    case UNKNOWN:
+    default:
+      result.add(new Vector3f(minX, minY, minZ));
+      result.add(new Vector3f(maxX, minY, minZ));
+      result.add(new Vector3f(maxX, minY, maxZ));
+      result.add(new Vector3f(minX, minY, maxZ));
+      break;   
+    }
+    return result;
   }
 
   public Vector3d getCenter() {

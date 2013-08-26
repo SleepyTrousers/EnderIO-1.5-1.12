@@ -18,6 +18,10 @@ public class BasicCapacitor implements ICapacitor {
   public BasicCapacitor(int maxEnergyIO, int maxEnergyStored) {
     this(0, maxEnergyIO, maxEnergyStored, 0, 1, 200, maxEnergyIO);
   }
+  
+  public BasicCapacitor(int maxEnergyIn, int maxEnergyOut, int maxEnergyStored) {
+    this(0, maxEnergyIn, maxEnergyStored, 0, 1, 200, maxEnergyOut);
+  }
 
   public BasicCapacitor(int minEnergyReceived, int maxEnergyReceived, int maxEnergyStored, int minActivationEnergy, int powerLoss, int powerLossRegularity,
       int maxEnergyExtracted) {
