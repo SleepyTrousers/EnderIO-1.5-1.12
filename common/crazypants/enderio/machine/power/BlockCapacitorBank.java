@@ -3,6 +3,8 @@ package crazypants.enderio.machine.power;
 import java.text.NumberFormat;
 import java.util.Random;
 
+import buildcraft.api.tools.IToolWrench;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -28,6 +30,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityCustomBlock;
 import crazypants.util.BlockCoord;
@@ -63,6 +66,17 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    
+    if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      //if (!world.isRemote) {
+        removeBlockByPlayer(world, entityPlayer, x, y, z);
+        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+        }
+      //}
+      return true;
+    }
+    
     if (entityPlayer.isSneaking()) {
       return false;
     }

@@ -2,6 +2,8 @@ package crazypants.enderio.machine;
 
 import java.util.Random;
 
+import buildcraft.api.tools.IToolWrench;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -26,7 +28,9 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.render.IconUtil;
+import crazypants.util.Util;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
 
@@ -73,7 +77,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setHardness(2.0F);
     setStepSound(soundMetalFootstep);
     setUnlocalizedName(mo.unlocalisedName);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(EnderIOTab.tabEnderIO);    
     random = new Random();
 
   }
@@ -102,6 +106,17 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+
+    if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      //if (world.isRemote) {
+        removeBlockByPlayer(world, entityPlayer, x, y, z);
+        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+        }
+      //}
+      return true;
+    }
+
     if (entityPlayer.isSneaking()) {
       return false;
     }
@@ -154,41 +169,31 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    TileEntity ent = world.getBlockTileEntity(x, y, z);
-    if (ent != null) {
-      if (teClass.isAssignableFrom(ent.getClass())) {
-        @SuppressWarnings("unchecked")
-        T te = (T) world.getBlockTileEntity(x, y, z);
-        if (te != null) {
-          dropContent(0, te, world, te.xCoord, te.yCoord, te.zCoord);
+    if (!world.isRemote) {
+      TileEntity ent = world.getBlockTileEntity(x, y, z);
+      if (ent != null) {
+        if (teClass.isAssignableFrom(ent.getClass())) {
+          @SuppressWarnings("unchecked")
+          T te = (T) world.getBlockTileEntity(x, y, z);
+          Util.dropItems(world, te, x, y, z);
         }
       }
+      ItemStack st = new ItemStack(this);
+      Util.dropItems(world, st, x, y, z);
     }
-    super.breakBlock(world, x, y, z, par5, par6);
+    world.removeBlockTileEntity(x, y, z);
+  }
+  
+  @Override
+  public int idDropped(int par1, Random par2Random, int par3) {
+    return 0;
   }
 
-  public void dropContent(int newSize, T inventory, World world, int xCoord, int yCoord, int zCoord) {
-    for (int i = newSize; i < inventory.getSizeInventory(); i++) {
-      ItemStack itemstack = inventory.getStackInSlot(i);
-      if (itemstack == null) {
-        continue;
-      }
-      float f = random.nextFloat() * 0.8F + 0.1F;
-      float f1 = random.nextFloat() * 0.8F + 0.1F;
-      float f2 = random.nextFloat() * 0.8F + 0.1F;
-
-      EntityItem entityitem = new EntityItem(world, xCoord + f, (float) yCoord + (newSize > 0 ? 1 : 0) + f1, zCoord + f2, new ItemStack(
-          itemstack.itemID, itemstack.stackSize, itemstack.getItemDamage()));
-      float f3 = 0.05F;
-      entityitem.motionX = (float) random.nextGaussian() * f3;
-      entityitem.motionY = (float) random.nextGaussian() * f3 + 0.2F;
-      entityitem.motionZ = (float) random.nextGaussian() * f3;
-      if (itemstack.hasTagCompound()) {
-        entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-      }
-      world.spawnEntityInWorld(entityitem);
-    }
+  @Override
+  public int quantityDropped(Random r) {
+    return 0;
   }
+
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
