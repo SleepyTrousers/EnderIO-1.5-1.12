@@ -242,7 +242,9 @@ public abstract class AbstractConduit implements IConduit {
     if (getNetwork() == null) {
       ConduitUtil.ensureValidNetwork(this);
     }
-    getNetwork().onUpdateEntity(this);
+    if(getNetwork() != null) {
+      getNetwork().onUpdateEntity(this);
+    }
   }
 
   @Override
