@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -16,8 +17,15 @@ public class MaterialRecipes {
 
   public static void addRecipes() {
 
-    ItemStack industialBinder = new ItemStack(itemIndustrialBinder.actualId, 4, 0);
-    GameRegistry.addSmelting(Block.gravel.blockID, industialBinder, 0);
+    ItemStack industialBinder;
+    if(Config.useAlternateBinderRecipe) {
+      industialBinder = new ItemStack(itemIndustrialBinder.actualId, 8, 0);
+      GameRegistry.addShapedRecipe(industialBinder, "   ", "gg ", "gg ", 'g', Block.gravel);
+      GameRegistry.addShapedRecipe(industialBinder, "   ", " gg", " gg", 'g',Block.gravel);
+    } else {
+      industialBinder = new ItemStack(itemIndustrialBinder.actualId, 4, 0);
+      GameRegistry.addSmelting(Block.gravel.blockID, industialBinder, 0);
+    }
 
     industialBinder = new ItemStack(itemIndustrialBinder.actualId, 1, 0);
 
