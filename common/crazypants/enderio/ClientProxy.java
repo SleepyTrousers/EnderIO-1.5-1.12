@@ -114,6 +114,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomFenceGate.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomWall.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomStair.blockID, pir);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomSlab.blockID, pir);
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
 

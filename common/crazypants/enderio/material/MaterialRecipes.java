@@ -57,6 +57,9 @@ public class MaterialRecipes {
 
     ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);
     GameRegistry.addShapedRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', industialBinder, 's', new ItemStack(Item.stick));
+    
+    ItemStack wrench = new ItemStack(ModObject.itemYetaWrench.actualId,1,0);
+    GameRegistry.addShapedRecipe(wrench, "i i", " b ", " i ", 'b', industialBinder, 'i', new ItemStack(Item.ingotIron));
 
   }
 

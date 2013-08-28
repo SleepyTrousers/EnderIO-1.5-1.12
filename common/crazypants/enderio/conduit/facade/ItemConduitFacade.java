@@ -1,10 +1,13 @@
 package crazypants.enderio.conduit.facade;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,8 +18,10 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.power.ICapacitor;
 
 public class ItemConduitFacade extends Item {
 
@@ -88,7 +93,7 @@ public class ItemConduitFacade extends Item {
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
     if (PainterUtil.getSourceBlock(itemStack) == null) {
-      PainterUtil.setSourceBlock(itemStack, ModObject.blockConduitFacade.id, 0);
+      PainterUtil.setSourceBlock(itemStack, ModObject.itemConduitFacade.id, 0);
     }
   }
 
@@ -99,6 +104,13 @@ public class ItemConduitFacade extends Item {
     ItemStack result = new ItemStack(itemID, 1, 0);
     PainterUtil.setSourceBlock(result, id, itemDamage);
     return result;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    super.addInformation(item, par2EntityPlayer, list, par4);    
+    list.add(PainterUtil.getTooltTipText(item));    
   }
 
   public static final class FacadePainterRecipe extends BasicPainterTemplate {

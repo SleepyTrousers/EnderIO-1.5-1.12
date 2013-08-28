@@ -70,24 +70,13 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(! (te instanceof TileCapacitorBank) ) {
       return false;
     }
-//    TileCapacitorBank tr = (TileCapacitorBank)te;   
-//    if (world.isRemote) {
-//      ChatMessageComponent c = ChatMessageComponent.func_111066_d("Storing " + NF.format(tr.getEnergyStored()) + " of " + NF.format(tr.getMaxEnergyStored()) + " MJ. Max IO is " + NF.format(tr.getMaxIO()) + " MJ/t");
-//      entityPlayer.sendChatToPlayer(c);
-////      c = ChatMessageComponent.func_111066_d("Is multi block: " + tr.isMultiblock() + " with " + (tr.isMultiblock() ? tr.multiblock.length : 0) + " blocks.");
-////      entityPlayer.sendChatToPlayer(c);
-//    }
-    
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
-    
-    // TODO: Print storage or open GUI?
+    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);    
     return true;
   }
   
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -168,11 +157,9 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if (te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
-        cb.onBreakBlock();
-
-        System.out.println("BlockCapacitorBank.breakBlock: Energy is: " + cb.doGetEnergyStored());        
+        cb.onBreakBlock();   
+        
         ItemStack itemStack = BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -182,7 +169,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         world.spawnEntityInWorld(entityitem);
       } 
     }
-
     world.removeBlockTileEntity(x, y, z);    
   }
   

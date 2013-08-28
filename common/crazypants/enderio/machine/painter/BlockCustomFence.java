@@ -6,14 +6,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +33,12 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     result.init();
     return result;
   }
+  
+  @SideOnly(Side.CLIENT)
+  private Icon lastRemovedComponetIcon = null;
+
+  @SideOnly(Side.CLIENT)
+  private Random rand = new Random();
 
   public BlockCustomFence() {
     super(ModObject.blockCustomFence.id, ModObject.blockCustomFence.unlocalisedName, Material.wood);
@@ -50,6 +60,82 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     ItemStack result = new ItemStack(ModObject.blockCustomFence.id, 1, damage);
     PainterUtil.setSourceBlock(result, id, damage);
     return result;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  @Override
+  public boolean addBlockHitEffects(World world, MovingObjectPosition target,
+      EffectRenderer effectRenderer) {
+    Icon tex = null;
+
+    TileEntityCustomBlock cb = (TileEntityCustomBlock)
+        world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
+    Block b = cb.getSourceBlock();
+    if(b != null) {
+      tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
+    }
+    if (tex == null) {
+      tex = blockIcon;
+    }
+    lastRemovedComponetIcon = tex;
+    addBlockHitEffects(world, effectRenderer, target.blockX, target.blockY,
+        target.blockZ, target.sideHit, tex);
+    return true;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean addBlockDestroyEffects(World world, int x, int y, int z, int
+      meta, EffectRenderer effectRenderer) {
+    Icon tex = lastRemovedComponetIcon;
+    byte b0 = 4;
+    for (int j1 = 0; j1 < b0; ++j1) {
+      for (int k1 = 0; k1 < b0; ++k1) {
+        for (int l1 = 0; l1 < b0; ++l1) {
+          double d0 = x + (j1 + 0.5D) / b0;
+          double d1 = y + (k1 + 0.5D) / b0;
+          double d2 = z + (l1 + 0.5D) / b0;
+          int i2 = this.rand.nextInt(6);
+          EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
+              d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
+          fx.func_110125_a(tex);
+          effectRenderer.addEffect(fx);
+        }
+      }
+    }
+    return true;
+
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void addBlockHitEffects(World world, EffectRenderer effectRenderer,
+      int x, int y, int z, int side, Icon tex) {
+    float f = 0.1F;
+    double d0 = x + rand.nextDouble() * (getBlockBoundsMaxX() -
+        getBlockBoundsMinX() - f * 2.0F) + f + getBlockBoundsMinX();
+    double d1 = y + rand.nextDouble() * (getBlockBoundsMaxY() -
+        getBlockBoundsMinY() - f * 2.0F) + f + getBlockBoundsMinY();
+    double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() -
+        getBlockBoundsMinZ() - f * 2.0F) + f + getBlockBoundsMinZ();
+    if (side == 0) {
+      d1 = y + getBlockBoundsMinY() - f;
+    } else if (side == 1) {
+      d1 = y + getBlockBoundsMaxY() + f;
+    } else if (side == 2) {
+      d2 = z + getBlockBoundsMinZ() - f;
+    } else if (side == 3) {
+      d2 = z + getBlockBoundsMaxZ() + f;
+    } else if (side == 4) {
+      d0 = x + getBlockBoundsMinX() - f;
+    } else if (side == 5) {
+      d0 = x + getBlockBoundsMaxX() + f;
+    }
+    EntityDiggingFX digFX = new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D,
+        0.0D, this, side, 0);
+    digFX.applyColourMultiplier(x, y,
+        z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+    digFX.func_110125_a(tex);
+    effectRenderer.addEffect(digFX);
   }
 
   @Override

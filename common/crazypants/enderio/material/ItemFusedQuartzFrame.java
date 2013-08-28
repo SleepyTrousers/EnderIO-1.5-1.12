@@ -1,5 +1,7 @@
 package crazypants.enderio.material;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -72,6 +74,13 @@ public class ItemFusedQuartzFrame extends Item {
   @SideOnly(Side.CLIENT)
   public boolean isFull3D() {
     return true;
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    super.addInformation(item, par2EntityPlayer, list, par4);    
+    list.add(PainterUtil.getTooltTipText(item));    
   }
 
   public static final class FramePainterRecipe extends BasicPainterTemplate {
