@@ -37,6 +37,7 @@ import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
+import crazypants.util.Util;
 
 public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
@@ -352,7 +353,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     if (!world.isRemote && !player.capabilities.isCreativeMode) {
       for (ItemStack st : drop) {
-        ConduitUtil.dropItems(world, st, x, y, z);
+        Util.dropItems(world, st, x, y, z);
       }
     }
 

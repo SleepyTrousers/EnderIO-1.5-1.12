@@ -37,6 +37,7 @@ import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.painter.BlockCustomFence;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
+import crazypants.enderio.machine.painter.BlockCustomSlab;
 import crazypants.enderio.machine.painter.BlockCustomStair;
 import crazypants.enderio.machine.painter.BlockCustomWall;
 import crazypants.enderio.machine.painter.BlockPainter;
@@ -51,7 +52,7 @@ import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.9", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.10", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
@@ -80,7 +81,9 @@ public class EnderIO {
   public static BlockCustomFenceGate blockCustomFenceGate;
   public static BlockCustomWall blockCustomWall;
   public static BlockCustomStair blockCustomStair;
-
+  public static BlockCustomSlab blockCustomSlab;
+  public static BlockCustomSlab blockCustomDoubleSlab;
+  
   // Conduits
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
@@ -129,6 +132,10 @@ public class EnderIO {
     blockCustomFenceGate = BlockCustomFenceGate.create();
     blockCustomWall = BlockCustomWall.create();
     blockCustomStair = BlockCustomStair.create();
+    blockCustomSlab = new BlockCustomSlab(false);
+    blockCustomDoubleSlab = new BlockCustomSlab(true);
+    blockCustomSlab.init();
+    blockCustomDoubleSlab.init();
 
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();

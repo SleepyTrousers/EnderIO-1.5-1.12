@@ -34,10 +34,10 @@ public enum ModObject {
 
   // Painter
   blockPainter(++Config.BID, CATEGORY_BLOCK, "Painter"),
-  blockCustomFence(++Config.BID, CATEGORY_BLOCK, "Fence"),
-  blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK, "Gate"),
-  blockCustomWall(++Config.BID, CATEGORY_BLOCK, "Wall"),
-  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Stair"),
+  blockCustomFence(++Config.BID, CATEGORY_BLOCK, "Painted Fence"),
+  blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK, "Painted Gate"),
+  blockCustomWall(++Config.BID, CATEGORY_BLOCK, "Painted Wall"),
+  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Painted Stair"),  
   itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM, "Fused Quartz Frame"),
 
   // Solar Panel
@@ -48,7 +48,10 @@ public enum ModObject {
   
   blockCapacitorBank(++Config.BID, CATEGORY_BLOCK, "Capacitor Bank"),
 
-  itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench");
+  itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench"),
+  
+  blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
+  blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab");
 
   public final String unlocalisedName;
   public final String name;

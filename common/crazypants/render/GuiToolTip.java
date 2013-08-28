@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GuiToolTip {
 
-  private static final long DELAY = 500;
+  private static final long DELAY = 200;
 
   protected Rectangle bounds;
 

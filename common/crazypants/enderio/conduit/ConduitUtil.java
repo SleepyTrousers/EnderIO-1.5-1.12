@@ -24,6 +24,7 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
+import crazypants.util.Util;
 
 public class ConduitUtil {
 
@@ -76,33 +77,10 @@ public class ConduitUtil {
   }
 
   public static void dropConduit(World world, IConduit conduit, int x, int y, int z) {
-    dropItems(world, conduit.createItem(), x, y, z);
+    Util.dropItems(world, conduit.createItem(), x, y, z);
   }
 
-  public static void dropItems(World world, ItemStack stack, int x, int y, int z) {
-    if (stack.stackSize <= 0) {
-      return;
-    }
 
-    float f1 = 0.7F;
-    double d = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
-    double d1 = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
-    double d2 = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
-    EntityItem entityitem = new EntityItem(world, x + d, y + d1, z + d2, stack);
-    entityitem.delayBeforeCanPickup = 10;
-
-    world.spawnEntityInWorld(entityitem);
-  }
-
-  public static void dropItems(World world, IInventory inventory, int x, int y, int z) {
-    for (int l = 0; l < inventory.getSizeInventory(); ++l) {
-      ItemStack items = inventory.getStackInSlot(l);
-
-      if (items != null && items.stackSize > 0) {
-        dropItems(world, inventory.getStackInSlot(l).copy(), x, y, z);
-      }
-    }
-  }
 
   public static boolean renderFacade(IConduitBundle bundle, EntityPlayer player) {
     return bundle.getFacadeId() > 0 && !isFacadeHidden(bundle, player);

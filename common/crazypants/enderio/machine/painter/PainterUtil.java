@@ -48,6 +48,20 @@ public final class PainterUtil {
     }
     return 0;
   }
+  
+  public static String getTooltTipText(ItemStack item) {
+    String sourceName = "";
+    int sourceId = PainterUtil.getSourceBlockId(item);
+    int meta = PainterUtil.getSourceBlockMetadata(item);
+    if (sourceId > 0) {
+      Item i = Item.itemsList[sourceId];
+      if (i != null) {
+        sourceName = i.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
+        sourceName = StatCollector.translateToLocal(sourceName + ".name");
+      }
+    }   
+    return "Painted with: " + sourceName;
+  }
 
   public static void setSourceBlock(ItemStack item, int sourceId, int meta) {
     NBTTagCompound tag = item.getTagCompound();
@@ -57,23 +71,6 @@ public final class PainterUtil {
     }
     tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_ID, sourceId);
     tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
-
-    String sourceName = "";
-    if (sourceId > 0) {
-      Item i = Item.itemsList[sourceId];
-      if (i != null) {
-        sourceName = i.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
-        sourceName = StatCollector.translateToLocal(sourceName + ".name");
-      }
-    }
-    String typeName;
-    typeName = Item.itemsList[item.itemID].getUnlocalizedName(item);
-    typeName = StatCollector.translateToLocal(typeName + ".name");
-
-    NBTTagCompound displayTags = new NBTTagCompound();
-    displayTags.setString("Name", "Painted " + sourceName + " " + typeName);
-    tag.setCompoundTag("display", displayTags);
-
   }
 
 }

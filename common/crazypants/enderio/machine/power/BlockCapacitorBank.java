@@ -18,6 +18,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -27,6 +28,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
@@ -60,6 +62,17 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    
+    if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      //if (!world.isRemote) {
+        removeBlockByPlayer(world, entityPlayer, x, y, z);
+        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+        }
+      //}
+      return true;
+    }
+    
     if (entityPlayer.isSneaking()) {
       return false;
     }
@@ -67,24 +80,13 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(! (te instanceof TileCapacitorBank) ) {
       return false;
     }
-//    TileCapacitorBank tr = (TileCapacitorBank)te;   
-//    if (world.isRemote) {
-//      ChatMessageComponent c = ChatMessageComponent.func_111066_d("Storing " + NF.format(tr.getEnergyStored()) + " of " + NF.format(tr.getMaxEnergyStored()) + " MJ. Max IO is " + NF.format(tr.getMaxIO()) + " MJ/t");
-//      entityPlayer.sendChatToPlayer(c);
-////      c = ChatMessageComponent.func_111066_d("Is multi block: " + tr.isMultiblock() + " with " + (tr.isMultiblock() ? tr.multiblock.length : 0) + " blocks.");
-////      entityPlayer.sendChatToPlayer(c);
-//    }
-    
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
-    
-    // TODO: Print storage or open GUI?
     return true;
   }
   
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -167,9 +169,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
 
-        System.out.println("BlockCapacitorBank.breakBlock: Energy is: " + cb.doGetEnergyStored());        
         ItemStack itemStack = BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -179,7 +179,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         world.spawnEntityInWorld(entityitem);
       } 
     }
-
     world.removeBlockTileEntity(x, y, z);    
   }
   
