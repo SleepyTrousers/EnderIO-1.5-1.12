@@ -39,10 +39,8 @@ import crazypants.util.Util;
 
 public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvider {
 
-  @SideOnly(Side.CLIENT)
   private Icon lastRemovedComponetIcon = null;
 
-  @SideOnly(Side.CLIENT)
   private Random rand = new Random();
 
   private final boolean isDouble;

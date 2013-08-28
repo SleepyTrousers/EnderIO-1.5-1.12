@@ -33,10 +33,8 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
     return result;
   }
   
-  @SideOnly(Side.CLIENT)
   private Icon lastRemovedComponetIcon = null;
 
-  @SideOnly(Side.CLIENT)
   private Random rand = new Random();
 
   public BlockCustomWall() {
