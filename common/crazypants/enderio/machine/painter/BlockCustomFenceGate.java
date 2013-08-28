@@ -35,10 +35,8 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     return result;
   }
   
-  @SideOnly(Side.CLIENT)
   private Icon lastRemovedComponetIcon = null;
 
-  @SideOnly(Side.CLIENT)
   private Random rand = new Random();
 
   public BlockCustomFenceGate() {
