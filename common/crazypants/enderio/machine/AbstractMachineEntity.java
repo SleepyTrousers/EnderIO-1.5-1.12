@@ -109,8 +109,9 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   // --------------------------------------------------------------------------------------
 
   public boolean hasPower() {
-    boolean hasPower = powerHandler.getEnergyStored() > 0;
-    return hasPower;
+//    boolean hasPower = powerHandler.getEnergyStored() > 0;
+//    return hasPower;
+    return storedEnergy > 0;
   }
 
   public ICapacitor getCapacitor() {
@@ -173,6 +174,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     float stored = powerHandler.getEnergyStored();
     powerHandler.update();
     powerHandler.setEnergy(stored);
+    storedEnergy = stored;
 
     boolean requiresClientSync = false;
     if (forceClientUpdate) {
@@ -180,7 +182,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       forceClientUpdate = false;
       requiresClientSync = true;
     }
-
+    
+    boolean prevRedCheck = redstoneCheckPassed;
     redstoneCheckPassed = true;
     if (redstoneControlMode == RedstoneControlMode.ON) {
       int powerLevel = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord);
@@ -193,7 +196,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
         redstoneCheckPassed = false;
       }
     }
-
+    requiresClientSync |= prevRedCheck != redstoneCheckPassed;
+    
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
     // Update if our power has changed by more than 1%
@@ -233,6 +237,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     powerHandler.setEnergy(storedEnergy);
     // For the client as provider is not saved to NBT
     this.storedEnergy = storedEnergy;
+    
+    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
 
     // read in the inventories contents
     inventory = new ItemStack[inventorySize];
@@ -260,6 +266,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     nbtRoot.setShort("facing", facing);
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
+    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
 
     // write inventory list
     NBTTagList itemList = new NBTTagList();
