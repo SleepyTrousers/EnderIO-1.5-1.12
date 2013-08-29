@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
 import static crazypants.render.CubeRenderer.setupVertices;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
@@ -9,6 +10,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.render.BoundingBox;
+import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector3d;
 
 public class LiquidConduitRenderer extends DefaultConduitRenderer {
@@ -47,10 +49,28 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderTransmission(Icon tex, CollidableComponent component) {
+  protected void renderTransmission(Icon tex, CollidableComponent component,IConduit conduit, float selfIllum) {
+    String textureSheet = ((ILiquidConduit)conduit).getTextureSheetForLiquid();
+    boolean changedTexture = false;
+    if(!RenderUtil.BLOCK_TEX.equals(textureSheet)) {
+      Tessellator tes = Tessellator.instance;
+      tes.draw();
+      
+      RenderUtil.bindTexture(textureSheet);
+      tes.startDrawingQuads();
+      tes.setColorRGBA_F(selfIllum, selfIllum,
+          selfIllum, 0.75f);      
+      changedTexture = true;
+    }
     BoundingBox[] cubes = toCubes(component.bound);
     for (BoundingBox cube : cubes) {
       drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+    }
+    if(changedTexture) {
+      Tessellator tes = Tessellator.instance;
+      tes.draw();      
+      RenderUtil.bindBlockTexture();
+      tes.startDrawingQuads();            
     }
   }
 

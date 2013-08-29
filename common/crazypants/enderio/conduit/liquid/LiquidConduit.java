@@ -565,6 +565,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
+  public String getTextureSheetForLiquid() {
+    if (tank.getLiquid() != null && tank.getLiquid().canonical() != null) {
+      return tank.getLiquid().canonical().getTextureSheet();
+    }       
+    return null;
+  }
+
+  @Override
   public float getTransmitionGeometryScale() {
     return tank.getFilledRatio();
   }
