@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import crazypants.render.ToolTipManager.TooltipRender;
+import crazypants.render.TooltipManager.TooltipRender;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,7 +15,7 @@ import net.minecraft.inventory.Container;
 
 public abstract class GuiScreenBase extends GuiScreen implements TooltipRender {
 
-  protected ToolTipManager ttMan = new ToolTipManager();
+  protected TooltipManager ttMan = new TooltipManager();
 
   /** The X size of the inventory window in pixels. */
   protected int xSize = 176;

@@ -23,7 +23,7 @@ import crazypants.render.GuiScreenBase;
 import crazypants.render.GuiToolTip;
 import crazypants.render.IconButton;
 import crazypants.render.RenderUtil;
-import crazypants.render.ToolTipManager.TooltipRender;
+import crazypants.render.TooltipManager.TooltipRender;
 
 public class GuiCapacitorBank extends GuiScreenBase {
 
