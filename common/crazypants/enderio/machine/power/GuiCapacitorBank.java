@@ -3,27 +3,21 @@ package crazypants.enderio.machine.power;
 import java.awt.Rectangle;
 import java.util.List;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.network.packet.Packet;
+
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.network.packet.Packet;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.render.GuiContainerBase;
 import crazypants.render.GuiScreenBase;
 import crazypants.render.GuiToolTip;
 import crazypants.render.IconButton;
 import crazypants.render.RenderUtil;
-import crazypants.render.ToolTipManager.TooltipRender;
 
 public class GuiCapacitorBank extends GuiScreenBase {
 
