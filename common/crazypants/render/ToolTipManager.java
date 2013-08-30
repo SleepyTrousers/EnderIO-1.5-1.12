@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class ToolTipManager {
 
-  public static interface TooltipRender {
+  public static interface ToolTipRenderer {
     int getGuiLeft();
     int getGuiTop();
     int getXSize();
@@ -23,7 +23,7 @@ public class ToolTipManager {
     toolTips.add(toolTip);
   }
 
-  protected final void drawTooltips(TooltipRender renderer, int mouseX, int mouseY) {
+  protected final void drawTooltips(ToolTipRenderer renderer, int mouseX, int mouseY) {
     for (GuiToolTip toolTip : toolTips) {
       toolTip.onTick(mouseX - renderer.getGuiLeft(), mouseY - renderer.getGuiTop());
       if (toolTip.shouldDraw()) {
@@ -32,7 +32,7 @@ public class ToolTipManager {
     }
   }
 
-  protected void drawTooltip(GuiToolTip toolTip, int mouseX, int mouseY, TooltipRender renderer) {
+  protected void drawTooltip(GuiToolTip toolTip, int mouseX, int mouseY, ToolTipRenderer renderer) {
     List<String> list = toolTip.getToolTipText();
     
     List<String> formatted = new ArrayList<String>(list.size());

@@ -6,14 +6,14 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import crazypants.render.ToolTipManager.TooltipRender;
+import crazypants.render.ToolTipManager.ToolTipRenderer;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
 
-public abstract class GuiScreenBase extends GuiScreen implements TooltipRender {
+public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer {
 
   protected ToolTipManager ttMan = new ToolTipManager();
 

@@ -108,10 +108,11 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     storedEnergy = powerHandler.getEnergyStored();
 
     // Update if our power has changed by more than 0.5%
-    requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getWorldTime() % 21 == 0;
+    requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
 
     if (requiresClientSync) {
-      lastSyncPowerStored = powerHandler.getEnergyStored();
+      lastSyncPowerStored = storedEnergy;
+      
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
