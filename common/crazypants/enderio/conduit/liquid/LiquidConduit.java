@@ -67,9 +67,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   private float lastSyncRatio = -99;
 
-  private boolean pushing = false;
-
   private final Set<ForgeDirection> extractDirs = new HashSet<ForgeDirection>();
+
+  private int currentPushToken;
 
   // -----------------------------
 
@@ -79,6 +79,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private boolean stateDirty = false;
 
   private int maxDrainPerTick = 50;
+
+  private ForgeDirection startPushDir = ForgeDirection.DOWN;
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
@@ -166,6 +168,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if (world.isRemote) {
       return;
     }
+    updateStartPushDir();
     doExtract();
     // Limit these updates to prevent spamming during flow
     if (stateDirty || (lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
@@ -179,32 +182,38 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private void doExtract() {
 
     BlockCoord loc = getLocation();
-    if (!getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z)) {
+    if (!getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z) || extractDirs.isEmpty()) {
       return;
     }
 
+    int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : extractDirs) {
       IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
       if (extTank != null) {
 
-        int maxPush = tank.getFluidAmount();
-        int couldPush = pushLiquid(dir, maxPush, false);
-        int targetExtract = Math.min(maxDrainPerTick, tank.getAvailableSpace() + couldPush);
-        FluidStack couldDrain = extTank.drain(dir.getOpposite(), targetExtract, false);
-        if (couldDrain != null && network != null && network.canAcceptLiquid(couldDrain)) {
-          couldDrain = extTank.drain(dir.getOpposite(), targetExtract, true);
-          if (couldDrain != null) {
-            FluidStack drained = couldDrain.copy();
+        FluidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
+        if (couldDrain != null && couldDrain.amount > 0) {
 
-            int totalVolume = tank.getFluidAmount() + drained.amount;
-            int pushed = pushLiquid(dir, Math.min(drained.amount, maxPush), true);
-            // System.out.println("LiquidConduit.doExtract: Drained: " +
-            // drained.amount + " pushed = " + pushed + " contains volume " +
-            // tank.getAmount());
-            drained.amount = totalVolume - pushed;
-            tank.setLiquid(drained);
+          // if we drained all this, how much overflow do we need to push out
+          int requiredPush = (tank.getFluidAmount() + couldDrain.amount) - tank.getCapacity();
+          if (requiredPush <= 0) {
+            FluidStack drained = extTank.drain(dir.getOpposite(), maxDrainPerTick, true);
+            if (drained != null) {
+              tank.fill(drained, true);
+            }
+          } else {
+
+            // push as much as we can, to out target max
+            int pushed = pushLiquid(dir, requiredPush, true, token);
+            tank.addAmount(-pushed);
+            if (tank.getAvailableSpace() > 0) {
+              FluidStack drained = extTank.drain(dir.getOpposite(), Math.min(tank.getAvailableSpace(), maxDrainPerTick), true);
+              if (drained != null) {
+                tank.addAmount(drained.amount);
+              }
+            }
           }
-        }
+        }        
       }
     }
 
@@ -268,11 +277,15 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    return fill(from, resource, doFill, true);
+    int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
+    if (doFill && externalConnections.contains(from) && network != null) {
+      network.addedFromExternal(res);
+    }
+    return res;
   }
 
   @Override
-  public int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush) {
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
     if (network == null) {
       return 0;
     }
@@ -289,7 +302,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     int pushedVolume = 0;
     if (doPush) {
       int maxPush = Math.max(0, recieveAmount + tank.getFluidAmount() - tank.getCapacity());
-      pushedVolume = pushLiquid(from, maxPush, doFill);
+      pushedVolume = pushLiquid(from, maxPush, doFill, pushToken);
     }
 
     if (doFill) {
@@ -304,62 +317,58 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
   }
 
-  private int pushLiquid(ForgeDirection from, int amount, boolean doPush) {
-    if (pushing || amount <= 0 || tank.getFluid() == null) { // avoid circular
-                                                             // pushing
+  private void updateStartPushDir() {
+
+    ForgeDirection newVal = getNextDir(startPushDir);
+    boolean foundNewStart = false;
+    while (newVal != startPushDir && !foundNewStart) {
+      foundNewStart = getConduitConnections().contains(newVal) || getExternalConnections().contains(newVal);
+      newVal = getNextDir(newVal);
+    }
+    startPushDir = newVal;
+  }
+
+  private ForgeDirection getNextDir(ForgeDirection dir) {
+    if (dir.ordinal() >= ForgeDirection.UNKNOWN.ordinal() - 1) {
+      return ForgeDirection.VALID_DIRECTIONS[0];
+    }
+    return ForgeDirection.VALID_DIRECTIONS[dir.ordinal() + 1];
+  }
+
+  private int pushLiquid(ForgeDirection from, int amount, boolean doPush, int token) {
+    if (token == currentPushToken || amount <= 0 || tank.getFluid() == null) {
       return 0;
     }
-
-    pushing = true;
+    currentPushToken = token;
     int pushed = 0;
 
-    try {
+    ForgeDirection dir = startPushDir;
+    FluidStack toPush = tank.getFluid().copy();
+    toPush.amount = amount;
 
-      Set<ForgeDirection> cons = new HashSet<ForgeDirection>(getConduitConnections());
-      cons.addAll(getExternalConnections());
-      cons.remove(from);
-
-      if (cons.size() == 0) {
-        return pushed;
-      }
-
-      int numToPushTo;
-      int amountPerCon;
-      List<ForgeDirection> toRemove = new ArrayList<ForgeDirection>(cons.size());
-      FluidStack toPush = tank.getFluid().copy();
-      do {
-        numToPushTo = cons.size();
-        amountPerCon = amount / numToPushTo;
-        amountPerCon = Math.max(1, amountPerCon);
-        toPush.amount = amountPerCon;
-        for (ForgeDirection dir : cons) {
-          IFluidHandler con = getTankContainer(getLocation().getLocation(dir));
-          // NB: Dont push liquid into a conduit that is fuller than yourself
+    do {
+      if (dir != from && canOutputToDir(dir)) {
+        if (getConduitConnections().contains(dir)) {
           ILiquidConduit conduitCon = getFluidConduit(dir);
-          if (con == null || !canOutputToDir(dir) || (conduitCon != null && conduitCon.getTank().getFilledRatio() > tank.getFilledRatio())) {
-            toRemove.add(dir);
-          } else {
-            int filled = con.fill(dir.getOpposite(), toPush, doPush);
-            if (filled < amountPerCon) {
-              toRemove.add(dir);
+          if (conduitCon != null && conduitCon.getTank().getFilledRatio() <= tank.getFilledRatio()) {
+            int toCon = conduitCon.fill(dir.getOpposite(), toPush, doPush, true, token);
+            toPush.amount -= toCon;
+            pushed += toCon;
+          }
+        } else if (getExternalConnections().contains(dir)) {
+          IFluidHandler con = getTankContainer(getLocation().getLocation(dir));
+          if (con != null) {
+            int toExt = con.fill(dir.getOpposite(), toPush, doPush);
+            toPush.amount -= toExt;
+            pushed += toExt;
+            if (doPush) {
+              network.outputedToExternal(toExt);
             }
-            pushed += filled;
-
-          }
-          toPush.amount = amountPerCon;
-          if (pushed >= amount) {
-            return amount;
           }
         }
-        for (ForgeDirection dir : toRemove) {
-          cons.remove(dir);
-        }
-
-      } while (!cons.isEmpty() && pushed < amount);
-
-    } finally {
-      pushing = false;
-    }
+      }
+      dir = getNextDir(dir);
+    } while (dir != startPushDir && pushed < amount);
 
     return pushed;
   }

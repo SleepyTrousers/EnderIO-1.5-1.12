@@ -28,6 +28,6 @@ public interface ILiquidConduit extends IConduit, IFluidHandler {
 
   void setExtractingFromDir(ForgeDirection dir, boolean extracting);
 
-  int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush);
+  int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush, int pushToken);
 
 }

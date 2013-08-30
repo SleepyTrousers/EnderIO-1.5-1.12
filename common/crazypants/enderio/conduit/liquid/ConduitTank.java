@@ -28,7 +28,8 @@ public class ConduitTank implements IFluidTank {
     if (getCapacity() <= 0) {
       return -1;
     }
-    return (float) getFluidAmount() / getCapacity();
+    float res = (float) getFluidAmount() / getCapacity();
+    return res;
   }
 
   public boolean isFull() {
@@ -36,7 +37,7 @@ public class ConduitTank implements IFluidTank {
   }
 
   public void setAmount(int amount) {
-    if (fluid != null) {
+    if (fluid != null) {      
       fluid.amount = amount;
     }
   }
@@ -84,7 +85,7 @@ public class ConduitTank implements IFluidTank {
     if (fluid == null || fluid.fluidID <= 0) {
       if (resource.amount <= capacity) {
         if (doFill) {
-          fluid = resource.copy();
+          setLiquid(resource.copy());
         }
         return resource.amount;
       } else {
@@ -103,7 +104,7 @@ public class ConduitTank implements IFluidTank {
     int space = capacity - fluid.amount;
     if (resource.amount <= space) {
       if (doFill) {
-        fluid.amount += resource.amount;
+        addAmount(resource.amount);
       }
       return resource.amount;
     } else {
@@ -130,7 +131,7 @@ public class ConduitTank implements IFluidTank {
     }
 
     if (doDrain) {
-      fluid.amount -= used;
+      addAmount(-used);
     }
 
     FluidStack drained = new FluidStack(fluid.fluidID, used);
@@ -172,12 +173,5 @@ public class ConduitTank implements IFluidTank {
     return this;
   }
 
-  public void remove(int amount) {
-    if (fluid == null) {
-      return;
-    }
-    fluid.amount -= amount;
-    fluid.amount = Math.max(0, fluid.amount);
-  }
 
 }
