@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import crazypants.render.ToolTipManager.TooltipRender;
+import crazypants.render.TooltipManager.TooltipRender;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,7 +12,7 @@ import net.minecraft.inventory.Container;
 
 public abstract class GuiContainerBase extends GuiContainer implements TooltipRender {
 
-  protected ToolTipManager ttMan = new ToolTipManager();
+  protected TooltipManager ttMan = new TooltipManager();
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
