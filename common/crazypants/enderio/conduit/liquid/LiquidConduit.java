@@ -336,7 +336,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   private int pushLiquid(ForgeDirection from, int amount, boolean doPush, int token) {
-    if (token == currentPushToken || amount <= 0 || tank.getFluid() == null) {
+    if (token == currentPushToken || amount <= 0 || tank.getFluid() == null || tank.getFluid().getFluid() == null) {
       return 0;
     }
     currentPushToken = token;

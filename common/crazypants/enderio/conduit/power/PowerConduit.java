@@ -31,11 +31,11 @@ import crazypants.vecmath.Vector3d;
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
-
+  
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-      new BasicCapacitor(0, 64, 128, 0, 0, 0, 256),
-      new BasicCapacitor(0, 128, 256, 0, 0, 0, 1024),
-      new BasicCapacitor(0, 1024, 1024, 0, 0, 0, 2048)
+      new BasicCapacitor(250, 1500, 128),
+      new BasicCapacitor(350, 3000, 512),
+      new BasicCapacitor(500, 5000, 2048)
   };
 
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };

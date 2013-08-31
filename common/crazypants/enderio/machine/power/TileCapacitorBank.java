@@ -41,10 +41,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private RedstoneControlMode inputControlMode;
 
-  private RedstoneControlMode outputControlMode; 
-  
+  private RedstoneControlMode outputControlMode;
+
   private boolean outputEnabled;
-  
+
   private boolean inputEnabled;
 
   private final List<Receptor> receptors = new ArrayList<Receptor>();
@@ -85,23 +85,29 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update();
+
+    // do a dummy recieve of power to force the updating of what is an isn't a
+    // power source as we rely on this
+    // to make sure we dont both send and recieve to the same source
+    powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
+
     powerHandler.setEnergy(stored);
 
     boolean requiresClientSync = false;
 
     boolean hasSignal = isRecievingRedstoneSignal();
-    if(inputControlMode == RedstoneControlMode.IGNORE) {
+    if (inputControlMode == RedstoneControlMode.IGNORE) {
       inputEnabled = true;
     } else {
-      inputEnabled = (inputControlMode == RedstoneControlMode.ON && hasSignal) || (inputControlMode == RedstoneControlMode.OFF && !hasSignal); 
+      inputEnabled = (inputControlMode == RedstoneControlMode.ON && hasSignal) || (inputControlMode == RedstoneControlMode.OFF && !hasSignal);
     }
-    if(outputControlMode == RedstoneControlMode.IGNORE) {
+    if (outputControlMode == RedstoneControlMode.IGNORE) {
       outputEnabled = true;
     } else {
-      outputEnabled = (outputControlMode == RedstoneControlMode.ON && hasSignal) || (outputControlMode == RedstoneControlMode.OFF && !hasSignal); 
+      outputEnabled = (outputControlMode == RedstoneControlMode.ON && hasSignal) || (outputControlMode == RedstoneControlMode.OFF && !hasSignal);
     }
 
-    if(outputEnabled) {
+    if (outputEnabled) {
       transmitEnergy();
     }
 
@@ -112,7 +118,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
     if (requiresClientSync) {
       lastSyncPowerStored = storedEnergy;
-      
+
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
@@ -143,7 +149,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
       Receptor receptor = receptorIterator.next();
       PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir);
-      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
+      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE && !powerHandler.isPowerSource(receptor.fromDir)) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
           // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
@@ -254,41 +260,41 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
     return false;
   }
-  
+
   public RedstoneControlMode getInputControlMode() {
     return inputControlMode;
   }
 
   public void setInputControlMode(RedstoneControlMode inputControlMode) {
-    if(!isMultiblock()) {
+    if (!isMultiblock()) {
       this.inputControlMode = inputControlMode;
     } else {
-      for(BlockCoord bc : multiblock) {
+      for (BlockCoord bc : multiblock) {
         TileCapacitorBank cp = getCapBank(bc);
-        if(cp != null) {
+        if (cp != null) {
           cp.inputControlMode = inputControlMode;
         }
       }
-    }   
+    }
   }
-  
+
   public RedstoneControlMode getOutputControlMode() {
     return outputControlMode;
   }
 
   public void setOutputControlMode(RedstoneControlMode outputControlMode) {
-    if(!isMultiblock()) {
+    if (!isMultiblock()) {
       this.outputControlMode = outputControlMode;
     } else {
-      for(BlockCoord bc : multiblock) {
+      for (BlockCoord bc : multiblock) {
         TileCapacitorBank cp = getCapBank(bc);
-        if(cp != null) {
+        if (cp != null) {
           cp.outputControlMode = outputControlMode;
         }
       }
     }
   }
-  
+
   // ------------ Multiblock implementations
 
   
@@ -301,15 +307,15 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   PowerHandler doGetPowerHandler() {
-    if(inputEnabled) {
+    if (inputEnabled) {
       return powerHandler;
-    } 
+    }
     return getDisabledPowerHandler();
   }
 
   private PowerHandler getDisabledPowerHandler() {
-    if(disabledPowerHandler == null) {
-      disabledPowerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0,0), this, Type.STORAGE);
+    if (disabledPowerHandler == null) {
+      disabledPowerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.STORAGE);
     }
     return disabledPowerHandler;
   }
@@ -349,7 +355,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private void updatePowerHandler() {
     powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxIO, maxStoredEnergy), this, Type.STORAGE);
-    if(storedEnergy > maxStoredEnergy) {
+    if (storedEnergy > maxStoredEnergy) {
       storedEnergy = maxStoredEnergy;
     }
     powerHandler.setEnergy(storedEnergy);
