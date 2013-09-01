@@ -18,17 +18,19 @@ import crazypants.vecmath.Vector3d;
 
 public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
 
-  public static RedstoneSwitchRenderer instance = new RedstoneSwitchRenderer();
+  
+  
+  
 
-  private static final float SIZE = 0.2f;
-  private static final float HW = SIZE / 3;
-  private static final float HH = SIZE / 2;
-  private static final float DEPTH = 0.05f;
-  private static final float HD = DEPTH / 2;
-
-  private static final float DIST = 0.25f;
-
-  private static final float CON_HW = 0.015f;
+    
+  static RedstoneSwitchRenderer instance;
+  
+  public static RedstoneSwitchRenderer createInstance(float conduitScale) {
+    instance = new RedstoneSwitchRenderer(conduitScale);    
+    return instance;
+  }
+  
+  
 
   private final VertexTransform[] xForms;
   private final BoundingBox switchBounds;
@@ -36,11 +38,21 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
 
   private final BoundingBox[] aabb;
 
-  private RedstoneSwitchRenderer() {
-    BoundingBox bb = new BoundingBox(0.5 - HW, 0.5 - HH, 0.5 - HD, 0.5 + HW, 0.5 + HH, 0.5 + HD);
-    switchBounds = bb.translate(0, 0, DIST);
+  private RedstoneSwitchRenderer(float conduitScale) {
+    
+    float size = Math.max(0.2f, conduitScale * 0.5f);
+    float halfWidth = size / 3;
+    float halfHeight = size / 2;
+    
+    //float DEPTH = 0.05f;
+    float halfDepth = 0.025f;
+    float distance = Math.max(0.25f, conduitScale * 0.3f);
 
-    connectorBounds = new BoundingBox(0.5 - CON_HW, 0.5 - CON_HW, 0.5 - CON_HW, 0.5 + CON_HW, 0.5 + CON_HW, 0.5 + DIST);
+    BoundingBox bb = new BoundingBox(0.5 - halfWidth, 0.5 - halfHeight, 0.5 - halfDepth, 0.5 + halfWidth, 0.5 + halfHeight, 0.5 + halfDepth);
+    switchBounds = bb.translate(0, 0, distance);
+
+    float connectorHalfWidth = (float)Math.max(0.015, conduitScale * 0.05);
+    connectorBounds = new BoundingBox(0.5 - connectorHalfWidth, 0.5 - connectorHalfWidth, 0.5 - connectorHalfWidth, 0.5 + connectorHalfWidth, 0.5 + connectorHalfWidth, 0.5 + distance);
 
     Vector3d axis = new Vector3d(0, 1, 0);
     Vector3d p = new Vector3d(0.5, 0.5, 0.5);

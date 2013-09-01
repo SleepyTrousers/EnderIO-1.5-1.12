@@ -83,7 +83,7 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-    ConduitBundleRenderer cbr = new ConduitBundleRenderer();
+    ConduitBundleRenderer cbr = new ConduitBundleRenderer((float)Config.conduitScale);
     BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(cbr);
 
@@ -119,7 +119,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
-    conduitRenderers.add(RedstoneSwitchRenderer.instance);
+    conduitRenderers.add(RedstoneSwitchRenderer.createInstance((float)Config.conduitScale));
     conduitRenderers.add(new LiquidConduitRenderer());
 
     EnderIoRenderer eior = new EnderIoRenderer();
