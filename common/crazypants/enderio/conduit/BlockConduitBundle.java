@@ -337,15 +337,17 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
           }
           // If there isn't, then drop em all
           if (!droppedUnconected) {
-            for (IConduit con : cons) {
+            for (IConduit con : cons) {              
               te.removeConduit(con);
               drop.add(con.createItem());
             }
           }
         } else {
           IConduit con = te.getConduit(type);
-          te.removeConduit(con);
-          drop.add(con.createItem());
+          if(con != null) {
+             te.removeConduit(con);
+             drop.add(con.createItem());
+          }
 
         }
       }
