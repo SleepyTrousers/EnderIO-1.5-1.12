@@ -16,8 +16,4 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
 
   ICapacitor getCapacitor();
 
-  float getEnergyStored();
-
-  void setEnergyStored(float energyStored);
-
 }

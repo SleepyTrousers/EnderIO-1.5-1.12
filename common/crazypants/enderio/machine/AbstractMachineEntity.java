@@ -202,6 +202,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
     // Update if our power has changed by more than 1%
     requiresClientSync |= Math.abs(lastSyncPowerStored - powerHandler.getEnergyStored()) > powerHandler.getMaxEnergyStored() / 100;
+    requiresClientSync |= lastSyncPowerStored != powerHandler.getMaxEnergyStored() && powerHandler.getEnergyStored() == powerHandler.getMaxEnergyStored();
 
     if (requiresClientSync) {
       lastSyncPowerStored = powerHandler.getEnergyStored();

@@ -16,7 +16,6 @@ public class PowerHandlerUtil {
   public static PowerHandler createHandler(ICapacitor capacitor, IPowerReceptor pr, Type type) {
     PowerHandler ph = new PowerHandler(pr, type);
     ph.configure(capacitor.getMinEnergyReceived(), capacitor.getMaxEnergyReceived(), capacitor.getMinActivationEnergy(), capacitor.getMaxEnergyStored());
-    // TODO: Setup perdition properly
     ph.configurePowerPerdition(0, 0);
     ph.setPerdition(new NullPerditionCalculator());
     return ph;
@@ -27,69 +26,38 @@ public class PowerHandlerUtil {
     if (ph.getEnergyStored() > ph.getMaxEnergyStored()) {
       ph.setEnergy(ph.getMaxEnergyStored());
     }
-    // TODO: Setup perdition properly
     ph.configurePowerPerdition(0, 0);
     ph.setPerdition(new NullPerditionCalculator());
   }
 
   public static float transmitInternal(IInternalPowerReceptor receptor, PowerReceiver pp, float quantity, Type type, ForgeDirection from) {
-    float used = quantity;
-
-    if (receptor instanceof IConduitBundle) {
-      return transferToPowerNetwork((IConduitBundle) receptor, pp, quantity);
-    }
 
     PowerHandler ph = receptor.getPowerHandler();
     if (ph == null) {
       return 0;
     }
 
-    float maxEnergyStored = pp.getMaxEnergyStored();
-    float maxEnergyRecieved = pp.getMaxEnergyReceived();
-    float energyStored = pp.getEnergyStored();
-
     // Do all required functions except:
     // - We will handle perd'n ourselves and there is not need to drain excess
     // from our engines as they are self regulating
     // - Also not making use of the doWork calls.
+    float energyStored = pp.getEnergyStored();
     pp.receiveEnergy(type, quantity, from);
-
     ph.setEnergy(energyStored);
 
-    if (used < pp.getMinEnergyReceived()) {
+    float canUse = quantity;
+    if (canUse < pp.getMinEnergyReceived()) {
       return 0;
     }
+        
+    canUse = Math.min(canUse, pp.getMaxEnergyReceived());
+    //Don't overflow it    
+    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);    
 
-    if (used > maxEnergyRecieved) {
-      used = maxEnergyRecieved;
-    }
-
-    energyStored += used;
-
-    if (energyStored > maxEnergyStored) {
-      used -= energyStored - maxEnergyStored;
-      energyStored = maxEnergyStored;
-    } else if (energyStored < 0) {
-      used -= energyStored;
-      energyStored = 0;
-    }
-
-    ph.setEnergy(energyStored);
-
+    ph.setEnergy(energyStored + canUse);
     receptor.applyPerdition();
 
-    return used;
-
-  }
-
-  public static float transferToPowerNetwork(IConduitBundle bundle, PowerReceiver pp, float quantity) {
-    IPowerConduit receptor = bundle.getConduit(IPowerConduit.class);
-    if (receptor.getNetwork() == null) {
-      return 0;
-    }
-    NetworkPowerManager network = ((PowerConduitNetwork) receptor.getNetwork()).getPowerManager();
-    float used = network.addEnergy(quantity);
-    return used;
+    return canUse;
   }
 
   private static class NullPerditionCalculator extends PerditionCalculator {

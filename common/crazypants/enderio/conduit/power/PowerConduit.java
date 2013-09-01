@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -18,14 +19,17 @@ import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
@@ -79,14 +83,24 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   private int subtype;
 
-  private float energyStored;
-
   public PowerConduit() {
   }
 
   public PowerConduit(int meta) {
     this.subtype = meta;
     powerHandler = createPowerHandlerForType();
+  }
+
+  @Override
+  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
+    if(ConduitUtil.isToolEquipped(player)) {
+      if(network != null) {
+        System.out.println("PowerConduit.onBlockActivated: Network contains " + network.getPowerManager().energyStored + " of max energy " + network.getPowerManager().maxEnergyStored);
+        System.out.println("Conduit contains: " + powerHandler.getEnergyStored() + " of max " + powerHandler.getMaxEnergyStored());
+      }
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -99,20 +113,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public float getEnergyStored() {
-    return energyStored;
-  }
-
-  @Override
-  public void setEnergyStored(float energyStored) {
-    this.energyStored = energyStored;
-  }
-
-  @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     nbtRoot.setShort("subtype", (short) subtype);
-    nbtRoot.setFloat("energyStored", energyStored);
+    nbtRoot.setFloat("energyStored", powerHandler.getEnergyStored());
   }
 
   @Override
@@ -121,11 +125,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     subtype = nbtRoot.getShort("subtype");
     if (powerHandler == null) {
       powerHandler = createPowerHandlerForType();
-    }
-    energyStored = nbtRoot.getFloat("energyStored");
-    if (energyStored < 0) {
-      energyStored = 0;
-    }
+    }    
+    powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), nbtRoot.getFloat("energyStored")));
   }
 
   @Override
