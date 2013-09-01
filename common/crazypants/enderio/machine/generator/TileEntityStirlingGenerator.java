@@ -14,6 +14,7 @@ import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
@@ -32,6 +33,17 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   public TileEntityStirlingGenerator() {
     super(1);
+    configurePowerHandler();       
+  }
+
+  @Override
+  public void setCapacitor(Capacitors capacitorType) {
+    super.setCapacitor(capacitorType);
+    configurePowerHandler();
+  }
+  
+  void configurePowerHandler() {
+    powerHandler.configure(0,0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());    
   }
 
   @Override

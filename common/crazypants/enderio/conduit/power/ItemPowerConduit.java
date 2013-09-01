@@ -46,8 +46,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     ICapacitor cap = PowerConduit.CAPACITORS[itemStack.getItemDamage()];
-    list.add(String.format("I/O %d MJ/t", cap.getMaxEnergyExtracted()));
-    list.add(String.format("Storage %d MJ", cap.getMaxEnergyStored()));
+    list.add(String.format("Max Ouput %d MJ/t", cap.getMaxEnergyExtracted()));
   }
 
 }

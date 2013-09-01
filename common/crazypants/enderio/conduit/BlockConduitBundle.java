@@ -342,9 +342,10 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
           }
         } else {
           IConduit con = te.getConduit(type);
-          te.removeConduit(con);
-          drop.add(con.createItem());
-
+          if(con != null) {
+            te.removeConduit(con);
+            drop.add(con.createItem());
+          }
         }
       }
     }

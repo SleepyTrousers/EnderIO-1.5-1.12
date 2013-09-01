@@ -83,9 +83,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
 
     // do the required tick to keep BC API happy
-//    float stored = powerHandler.getEnergyStored();
-//    powerHandler.update();
-//    powerHandler.setEnergy(stored);
+    float stored = powerHandler.getEnergyStored();
+    powerHandler.update(this);
+    powerHandler.setEnergy(stored);
+    
 
     boolean requiresClientSync = false;
 
@@ -112,6 +113,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
     if (requiresClientSync) {
       lastSyncPowerStored = storedEnergy;
+
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
@@ -142,7 +144,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
       Receptor receptor = receptorIterator.next();
       IPowerProvider pp = receptor.receptor.getPowerProvider();
-      if (pp != null && pp.getMinEnergyReceived() <= canTransmit) {
+      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && !powerHandler.isPowerSource(receptor.fromDir)) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
           // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "

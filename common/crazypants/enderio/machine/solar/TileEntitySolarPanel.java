@@ -28,8 +28,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private float energyPerTick = 1;
 
   public TileEntitySolarPanel() {
-    // TODO:
-    capacitor = new BasicCapacitor();
+    capacitor = new BasicCapacitor(0,10000,10);
     powerHandler = PowerHandlerUtil.createHandler(capacitor);
   }
 

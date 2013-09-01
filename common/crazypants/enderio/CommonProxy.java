@@ -6,10 +6,14 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.render.ConduitRenderer;
+import crazypants.util.DebugGuiTPS;
 
 public class CommonProxy {
 
   private final ServerTickHandler serverTickHandler = new ServerTickHandler();
+
+
+  private boolean showTpdGUI = false;
 
   public World getClientWorld() {
     return null;
@@ -21,6 +25,11 @@ public class CommonProxy {
 
   public void load() {
     TickRegistry.registerTickHandler(serverTickHandler, Side.SERVER);
+
+    if (showTpdGUI) {
+      DebugGuiTPS.showTpsGUI();
+  }
+
   }
 
   public ConduitRenderer getRendererForConduit(IConduit conduit) {

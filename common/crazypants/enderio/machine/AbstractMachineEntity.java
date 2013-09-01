@@ -176,6 +176,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       requiresClientSync = true;
     }
 
+    boolean prevRedCheck = redstoneCheckPassed;
     redstoneCheckPassed = true;
     if (redstoneControlMode == RedstoneControlMode.ON) {
       int powerLevel = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord);
@@ -188,11 +189,13 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
         redstoneCheckPassed = false;
       }
     }
+    requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
     // Update if our power has changed by more than 1%
     requiresClientSync |= Math.abs(lastSyncPowerStored - powerHandler.getEnergyStored()) > powerHandler.getMaxEnergyStored() / 100;
+    requiresClientSync |= lastSyncPowerStored != powerHandler.getMaxEnergyStored() && powerHandler.getEnergyStored() == powerHandler.getMaxEnergyStored();
 
     if (requiresClientSync) {
       lastSyncPowerStored = powerHandler.getEnergyStored();
@@ -229,6 +232,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     // For the client as provider is not saved to NBT
     this.storedEnergy = storedEnergy;
 
+    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
+
     // read in the inventories contents
     inventory = new ItemStack[inventorySize];
     NBTTagList itemList = nbtRoot.getTagList("Items");
@@ -255,6 +260,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     nbtRoot.setShort("facing", facing);
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
+    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
 
     // write inventory list
     NBTTagList itemList = new NBTTagList();
@@ -343,7 +349,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   private void updateCapacitorFromSlot() {
     ItemStack contents = inventory[inventory.length - 1];
-    if (contents == null) {
+    if (contents == null || contents.itemID != ModObject.itemBasicCapacitor.actualId) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);

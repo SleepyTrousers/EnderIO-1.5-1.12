@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
+import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -19,8 +20,8 @@ public class NetworkPowerManager {
 
   private PowerConduitNetwork network;
 
-  private int maxEnergyStored;
-  private float energyStored;
+  int maxEnergyStored;
+  float energyStored;
   private float reserved;
 
   private int updateRenderTicks = 10;
@@ -28,6 +29,8 @@ public class NetworkPowerManager {
 
   private final List<ReceptorEntry> receptors = new ArrayList<PowerConduitNetwork.ReceptorEntry>();
   private ListIterator<ReceptorEntry> receptorIterator = receptors.listIterator();
+
+  private final List<ReceptorEntry> storageReceptors = new ArrayList<ReceptorEntry>();
 
   private boolean lastActiveValue = false;
   private int ticksWithNoPower = 0;
@@ -39,54 +42,20 @@ public class NetworkPowerManager {
     maxEnergyStored = 64;
   }
 
-  public float addEnergy(float quantity) {
-    float used = quantity;
-    energyStored += quantity;
-    if (energyStored > maxEnergyStored) {
-      used -= energyStored - maxEnergyStored;
-      energyStored = maxEnergyStored;
-    } else if (energyStored < 0) {
-      used -= energyStored;
-      energyStored = 0;
-    }
-    updateConduitStorage();
-    return used;
-  }
-
   public void applyRecievedPower() {
 
-    updateStorage();
-
-    float extracted = extractRecievedEnergy();
-    addEnergy(extracted);
+    // Update our energy stored based on what's in our conduits
+    updateNetorkStorage();
     checkReserves();
-    float quantity = energyStored;
-    boolean active;
-    if (quantity > 0) {
-      ticksWithNoPower = 0;
-      active = true;
-    } else {
-      ticksWithNoPower++;
-      active = false;
-    }
-
-    boolean doRender = active != lastActiveValue && (active || (!active && ticksWithNoPower > updateRenderTicks));
-
-    if (doRender) {
-      lastActiveValue = active;
-      for (IPowerConduit con : network.getConduits()) {
-        con.setActive(active);
-      }
-    }
-
-    if (quantity <= 0 || receptors.isEmpty()) {
+    updateActiveState();
+    if (energyStored <= 0 || receptors.isEmpty()) {
       return;
     }
 
     int appliedCount = 0;
     int numReceptors = receptors.size();
-    int numEngines = 0;
-    while (quantity > 0 && appliedCount < numReceptors) {
+    storageReceptors.clear();
+    while (energyStored > 0 && appliedCount < numReceptors) {
 
       if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = receptors.listIterator();
@@ -97,9 +66,13 @@ public class NetworkPowerManager {
 
       IPowerReceptor pp = r.powerReceptor;
       if (pp != null) {
+        if (pp instanceof TileCapacitorBank) {
+          // only apply energy to these guys if there is any left over
+          storageReceptors.add(r);
+        } else {
 
           float used = 0;
-          float nonReservedPower = quantity - reserved;
+          float nonReservedPower = energyStored - reserved;
           float available = nonReservedPower + reservedForEntry;
           float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), available);
           float requested = pp.powerRequest(r.direction);
@@ -118,19 +91,60 @@ public class NetworkPowerManager {
             }
 
           }
-          quantity -= used;
+          energyStored -= used;
 
         }
-
-        if (quantity <= 0) {
+        if (energyStored <= 0) {
           break;
         }
-      
+
+      }
       appliedCount++;
     }
 
-    energyStored = Math.min(quantity, maxEnergyStored);
-    updateConduitStorage();
+    // send any energy left over to the storage once we are more than 90% full
+    // internallly
+    if (energyStored > 0 && !storageReceptors.isEmpty() && (energyStored / maxEnergyStored > 0.9)) {
+      for (ReceptorEntry r : storageReceptors) {
+        IPowerReceptor pp = r.powerReceptor;
+        if (pp != null) {
+          float used = 0;
+          float available = energyStored - reserved;
+          float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), available);
+          float requested = pp.powerRequest(r.direction);
+          if (r.powerReceptor instanceof IInternalPowerReceptor) {
+            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, r.direction);
+          } else {
+            used = Math.min(requested, canOffer);
+            pp.getPowerProvider().receiveEnergy(used, r.direction);
+          }
+          energyStored -= used;
+        }
+        if (energyStored <= 0) {
+          break;
+        }
+      }
+    }
+    distributeStorageToConduits();
+  }
+
+  private void updateActiveState() {
+    boolean active;
+    if (energyStored > 0) {
+      ticksWithNoPower = 0;
+      active = true;
+    } else {
+      ticksWithNoPower++;
+      active = false;
+    }
+
+    boolean doRender = active != lastActiveValue && (active || (!active && ticksWithNoPower > updateRenderTicks));
+    if (doRender) {
+      lastActiveValue = active;
+      for (IPowerConduit con : network.getConduits()) {
+        con.setActive(active);
+      }
+    }
   }
 
   private float removeReservedEnergy(ReceptorEntry r) {
@@ -155,15 +169,32 @@ public class NetworkPowerManager {
     }
   }
 
-  private void updateConduitStorage() {
-    float energyLeft = energyStored;
-    for (IPowerConduit con : network.getConduits()) {
-      float give = con.getCapacitor().getMaxEnergyStored();
-      if (give > energyLeft) {
-        give = energyLeft;
+  private void distributeStorageToConduits() {
+    if (maxEnergyStored <= 0 || energyStored <= 0) {
+      for (IPowerConduit con : network.getConduits()) {
+        con.getPowerHandler().setEnergy(0);
       }
-      con.setEnergyStored(give);
+      return;
+    }
+    if (energyStored > maxEnergyStored) {
+      energyStored = maxEnergyStored;
+    }
+
+    float filledRatio = energyStored / maxEnergyStored;
+    float energyLeft = energyStored;
+    float given = 0;
+    for (IPowerConduit con : network.getConduits()) {
+      // NB: use ceil to ensure we dont through away any energy due to rounding
+      // errors
+      float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
+      give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
+      give = Math.min(give, energyLeft);
+      con.getPowerHandler().setEnergy(give);
+      given += give;
       energyLeft -= give;
+      if (energyLeft <= 0) {
+        return;
+      }
     }
   }
 
@@ -171,28 +202,18 @@ public class NetworkPowerManager {
     return energyStored > 0;
   }
 
-  private void updateStorage() {
+  private void updateNetorkStorage() {
     maxEnergyStored = 0;
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
       maxEnergyStored += con.getCapacitor().getMaxEnergyStored();
-      energyStored += con.getEnergyStored();
+      energyStored += con.getPowerHandler().getEnergyStored();
     }
+
     if (energyStored > maxEnergyStored) {
       energyStored = maxEnergyStored;
     }
 
-  }
-
-  private float extractRecievedEnergy() {
-    float extracted = 0;
-    for (IPowerConduit conduit : network.getConduits()) {
-      EnderPowerProvider ph = conduit.getPowerHandler();
-      extracted += ph.getEnergyStored();
-      // ph.update();
-      ph.setEnergy(0);
-    }
-    return extracted;
   }
 
   public void receptorsChanged() {
@@ -202,18 +223,6 @@ public class NetworkPowerManager {
   }
 
   void onNetworkDestroyed() {
-    // Pass out all the stored energy to the conduits
-    for (IPowerConduit con : network.getConduits()) {
-      EnderPowerProvider ph = con.getPowerHandler();
-      float give = ph.getMaxEnergyStored() - ph.getEnergyStored();
-      give = Math.min(give, energyStored);
-      ph.setEnergy(ph.getEnergyStored() + give);
-      energyStored -= give;
-      if (energyStored <= 0) {
-        return;
-      }
-    }
-
   }
 
   private static class StarveBuffer {
