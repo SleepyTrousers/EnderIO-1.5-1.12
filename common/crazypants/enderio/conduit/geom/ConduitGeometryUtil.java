@@ -14,20 +14,40 @@ public class ConduitGeometryUtil {
 
   public static final ConduitGeometryUtil instance = new ConduitGeometryUtil();
 
-  public static final float STUB_WIDTH = 0.2f;
-  public static final float STUB_HEIGHT = 0.2f;
+  public static float STUB_WIDTH = 0.2f;
+  public static float STUB_HEIGHT = 0.2f;
+  
+  public static float WIDTH;
+  public static float HEIGHT;  
 
-  public static final float WIDTH = 0.075f;
-  public static final float HEIGHT = 0.075f;
-
-  public static final float HWIDTH = WIDTH / 2;
-  public static final float HHEIGHT = HEIGHT / 2;
+  public static float HWIDTH;
+  public static float HHEIGHT;
 
   // All values are for a single conduit core
-  public static final Vector3d CORE_MIN = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
-  public static final Vector3d CORE_MAX = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
-  public static final BoundingBox CORE_BOUNDS = new BoundingBox(CORE_MIN, CORE_MAX);
+  public static Vector3d CORE_MIN;
+  public static Vector3d CORE_MAX;
+  public static BoundingBox CORE_BOUNDS;
+  
+  static {
+    setupBounds(0.5f);
+  }
 
+  
+  public static void setupBounds(float scale) {
+    float size = 0.075f + (0.175f * scale);
+    
+    WIDTH = size;
+    HEIGHT = size;
+    HWIDTH = WIDTH / 2;
+    HHEIGHT = HEIGHT / 2;
+
+    CORE_MIN = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
+    CORE_MAX = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
+    CORE_BOUNDS = new BoundingBox(CORE_MIN, CORE_MAX);
+     
+  }
+  
+  
   private Map<GeometryKey, BoundingBox> boundsCache = new HashMap<GeometryKey, BoundingBox>();
 
   private EnumMap<ConduitConnectorType, BoundingBox> connectorBounds = new EnumMap<ConduitConnectorType, BoundingBox>(ConduitConnectorType.class);

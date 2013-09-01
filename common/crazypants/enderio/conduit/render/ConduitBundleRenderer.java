@@ -35,14 +35,18 @@ import crazypants.render.RenderUtil;
 
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
-  private static final float CONNECTOR_DEPTH = 0.05f;
-  private static final float CONNECTOR_WIDTH = 0.3f;
+  
 
   private Map<ForgeDirection, BoundingBox[]> connectorBounds = new HashMap<ForgeDirection, BoundingBox[]>();
 
-  public ConduitBundleRenderer() {
+  public ConduitBundleRenderer(float conduitScale) {
+    
+    float connectorDepth = 0.05f;
+    //float connectorWidth = 0.3f;
+    float connectorWidth = 0.25f + (conduitScale * 0.5f);
+    
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      connectorBounds.put(dir, createConnector(dir));
+      connectorBounds.put(dir, createConnector(dir, connectorDepth, connectorWidth));
     }
   }
 
@@ -122,21 +126,21 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     }
   }
 
-  private static BoundingBox[] createConnector(ForgeDirection dir) {
+  private BoundingBox[] createConnector(ForgeDirection dir, float connectorDepth, float connectorWidth) {
 
     BoundingBox[] res = new BoundingBox[2];
 
-    float cMin = 0.5f - CONNECTOR_WIDTH / 2;
-    float cMax = 0.5f + CONNECTOR_WIDTH / 2;
-    float dMin = 1 - CONNECTOR_DEPTH / 2;
+    float cMin = 0.5f - connectorWidth / 2;
+    float cMax = 0.5f + connectorWidth / 2;
+    float dMin = 1 - connectorDepth / 2;
     float dMax = 1;
 
     res[0] = createConnectorComponent(dir, cMin, cMax, dMin, dMax);
 
-    cMin = 0.5f - CONNECTOR_WIDTH / 3;
-    cMax = 0.5f + CONNECTOR_WIDTH / 3;
-    dMin = 1 - CONNECTOR_DEPTH;
-    dMax = 1 - CONNECTOR_DEPTH / 2;
+    cMin = 0.5f - connectorWidth / 3;
+    cMax = 0.5f + connectorWidth / 3;
+    dMin = 1 - connectorDepth;
+    dMax = 1 - connectorDepth / 2;
 
     res[1] = createConnectorComponent(dir, cMin, cMax, dMin, dMax);
 

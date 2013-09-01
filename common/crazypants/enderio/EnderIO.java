@@ -24,6 +24,7 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -117,6 +118,8 @@ public class EnderIO {
         cfg.save();
       }
     }
+
+    ConduitGeometryUtil.setupBounds((float)Config.conduitScale);
 
     itemIndustrialBinder = ItemIndustrialBinder.create();
     itemBasicCapacitor = ItemCapacitor.create();
