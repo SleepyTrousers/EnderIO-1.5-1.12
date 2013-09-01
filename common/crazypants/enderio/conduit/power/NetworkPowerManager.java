@@ -76,6 +76,12 @@ public class NetworkPowerManager {
           float available = nonReservedPower + reservedForEntry;
           float canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), available);
           float requested = pp.powerRequest(r.direction);
+          if(pp.getPowerProvider() != null) {
+            int max = pp.getPowerProvider().getMaxEnergyStored();
+            float st = pp.getPowerProvider().getEnergyStored();
+            float needs = max - st;
+            requested = Math.min(needs, pp.getPowerProvider().getMaxEnergyReceived());            
+          }
 
           // If it is possible to supply the minimum amount of energy
           if (pp.getPowerProvider() != null && pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {
