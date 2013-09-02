@@ -17,7 +17,7 @@ public class BlockItemCustomStair extends ItemBlock {
 
   @Override
   public int getMetadata(int par1) {
-    return par1;
+    return 0;
   }
   
   @Override
