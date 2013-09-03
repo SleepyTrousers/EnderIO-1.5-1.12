@@ -81,6 +81,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private int maxDrainPerTick = 50;
 
   private ForgeDirection startPushDir = ForgeDirection.DOWN;
+  
+  private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
@@ -168,6 +170,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if (world.isRemote) {
       return;
     }
+    filledFromThisTick.clear();
     updateStartPushDir();
     doExtract();
     // Limit these updates to prevent spamming during flow
@@ -213,7 +216,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
               }
             }
           }
-        }        
+        }
       }
     }
 
@@ -277,6 +280,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+
+    //Note: This is just a guard against mekansims pipes that will continuously call
+    //fill on us if we push liquid to them.
+    if(filledFromThisTick.contains(getLocation().getLocation(from))) {
+      return 0;
+    }
+    filledFromThisTick.add(getLocation().getLocation(from));
+
     int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
     if (doFill && externalConnections.contains(from) && network != null) {
       network.addedFromExternal(res);
