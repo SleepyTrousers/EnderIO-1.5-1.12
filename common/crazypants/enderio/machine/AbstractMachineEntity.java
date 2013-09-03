@@ -200,9 +200,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    // Update if our power has changed by more than 1%
-    requiresClientSync |= Math.abs(lastSyncPowerStored - powerHandler.getEnergyStored()) > powerHandler.getMaxEnergyStored() / 100;
-    requiresClientSync |= lastSyncPowerStored != powerHandler.getMaxEnergyStored() && powerHandler.getEnergyStored() == powerHandler.getMaxEnergyStored();
+    requiresClientSync |= lastSyncPowerStored != powerHandler.getEnergyStored() && worldObj.getTotalWorldTime() % 16 == 0;
 
     if (requiresClientSync) {
       lastSyncPowerStored = powerHandler.getEnergyStored();
