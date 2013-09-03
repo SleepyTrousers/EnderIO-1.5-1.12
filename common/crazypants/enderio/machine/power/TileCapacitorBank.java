@@ -14,6 +14,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerProvider;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.EnderPowerProvider;
@@ -87,7 +88,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     powerHandler.update(this);
     powerHandler.setEnergy(stored);
     
-
     boolean requiresClientSync = false;
 
     boolean hasSignal = isRecievingRedstoneSignal();
@@ -124,6 +124,14 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   }
 
+  public boolean isOutputEnabled() {
+    return getController().outputEnabled;    
+  }
+
+  public boolean isInputEnabled() {
+    return getController().inputEnabled;
+  }
+
   private boolean transmitEnergy() {
 
     if (powerHandler.getEnergyStored() <= 0) {
@@ -149,7 +157,11 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if (receptor.receptor instanceof IInternalPowerReceptor) {
           // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
           // + canTransmit + " to internal.");
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+          if(! (receptor.receptor instanceof IConduitBundle) ) { //power conduits manage the exchange between them an the cap bank
+            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+          } else {
+            used = 0;
+          }
         } else {
           // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
           // + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
