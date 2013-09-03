@@ -30,6 +30,7 @@ import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
@@ -95,13 +96,13 @@ public class EnderIO {
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  public static BlockCapacitorBank blockCapacitorBank;
+  public static BlockCapacitorBank blockCapacitorBank;  
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
   public static ItemYetaWrench itemYetaWench;
-
+  
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
@@ -115,8 +116,8 @@ public class EnderIO {
         cfg.save();
       }
     }
-    
-    ConduitGeometryUtil.setupBounds((float)Config.conduitScale);
+
+    ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     itemIndustrialBinder = ItemIndustrialBinder.create();
     itemBasicCapacitor = ItemCapacitor.create();
@@ -164,7 +165,8 @@ public class EnderIO {
 
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
-
+    
+    CrusherRecipeManager.addRecipes();
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
@@ -172,6 +174,40 @@ public class EnderIO {
 
     proxy.load();
   }
+
+// This is AEs way of registering new grindables.  
+//  @EventHandler
+//  public void processIMC(FMLInterModComms.IMCEvent event) {
+//    System.out.println("EnderIO.processIMC: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//    Splitter splitter = Splitter.on(",").trimResults();
+//    for (FMLInterModComms.IMCMessage m : event.getMessages()) {
+//      String[] array = (String[]) Iterables.toArray(splitter.split(m.getStringValue()), String.class);
+//      Integer localInteger1;
+//      Integer localInteger2;
+//      if (m.key.equals("add-grindable")) {
+//        System.out.println("EnderIO.processIMC: Got a grindable!!");
+//        if (array.length != 5) {
+//          FMLLog.warning("IMC failed - add-grindable expects itemid,meta,itemid,meta,effort", new Object[0]);
+//        } else {
+//          Integer inId = Ints.tryParse(array[0]);
+//          Integer inMeta = Ints.tryParse(array[1]);
+//          Integer outId = Ints.tryParse(array[2]);
+//          Integer outMeta = Ints.tryParse(array[3]);
+//          Integer effort = Ints.tryParse(array[4]);
+//          if ((inId == null) || (inMeta == null) || (outId == null) || (outMeta == null) || (effort == null)) {
+//            FMLLog.warning("IMC failed - add-grindable expects itemid,meta,itemid,meta,effort", new Object[0]);
+//          } else {
+//            ItemStack i = new ItemStack(inId.intValue(), 1, inMeta.intValue());
+//            ItemStack o = new ItemStack(outId.intValue(), 1, outMeta.intValue());
+//            System.out.println("EnderIO.processIMC: And could make a recipe out of it!!");
+//          }
+//        }
+//      } else {
+//        FMLLog.warning("IMC failed - " + m.key + " - is not a valid ICM for AE.", new Object[0]);
+//      }
+//    }    
+//    System.out.println("EnderIO.processIMC: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//  }
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
