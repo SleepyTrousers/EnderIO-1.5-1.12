@@ -55,7 +55,7 @@ public class MachineRecipes {
     
     ItemStack activtedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ACTIVATED_CAPACITOR.ordinal());
     ItemStack capacitorBank = new ItemStack(blockCapacitorBank.actualId,1,0);
-    GameRegistry.addShapedRecipe(capacitorBank , "ccc", "ccc", "ccc", 'c', activtedCapacitor);
+    GameRegistry.addShapedRecipe(capacitorBank , "bab", "aca", "bab", 'a', activtedCapacitor,'b', industialBinder, 'c', capacitor);
     
 
   }
