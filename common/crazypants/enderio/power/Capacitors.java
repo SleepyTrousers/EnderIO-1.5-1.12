@@ -10,7 +10,7 @@ public enum Capacitors {
       "Capacitor", "basicCapacitor"),
 
   ACTIVATED_CAPACITOR(
-      new BasicCapacitor(40, 20000, 4),
+      new BasicCapacitor(40, 20000, 6),
       "Activated Capacitor", "activatedCapacitor"),
 
   ENDER_CAPACITOR(
