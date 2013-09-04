@@ -15,9 +15,9 @@ import net.minecraftforge.oredict.OreDictionary;
 public class CrusherRecipeManager {
 
   
-  static final float ORE_ENERGY_COST = 500;
+  static final float ORE_ENERGY_COST = 400;
   
-  static final float INGOT_ENERGY_COST = 300;
+  static final float INGOT_ENERGY_COST = 240;
   
   static CrusherRecipeManager instance;
   
