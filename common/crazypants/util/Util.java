@@ -50,28 +50,37 @@ public class Util {
       return stack;
     }
   }
-  
-  public static void dropItems(World world, ItemStack stack, int x, int y, int z) {
+
+  public static void dropItems(World world, ItemStack stack, int x, int y, int z, boolean doRandomSpread) {
     if (stack.stackSize <= 0) {
       return;
     }
 
-    float f1 = 0.7F;
-    double d = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
-    double d1 = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
-    double d2 = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
-    EntityItem entityitem = new EntityItem(world, x + d, y + d1, z + d2, stack);
-    entityitem.delayBeforeCanPickup = 10;
+    if (doRandomSpread) {
+      float f1 = 0.7F;
+      double d = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
+      double d1 = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
+      double d2 = (world.rand.nextFloat() * f1) + (1.0F - f1) * 0.5D;
+      EntityItem entityitem = new EntityItem(world, x + d, y + d1, z + d2, stack);
+      entityitem.delayBeforeCanPickup = 10;
+      world.spawnEntityInWorld(entityitem);      
+    } else {
+      EntityItem entityitem = new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, stack);
+      entityitem.motionX = 0;
+      entityitem.motionY = 0;
+      entityitem.motionZ = 0;
+      entityitem.delayBeforeCanPickup = 0;
+      world.spawnEntityInWorld(entityitem);
+    }
 
-    world.spawnEntityInWorld(entityitem);
   }
 
-  public static void dropItems(World world, IInventory inventory, int x, int y, int z) {
+  public static void dropItems(World world, IInventory inventory, int x, int y, int z, boolean doRandomSpread) {
     for (int l = 0; l < inventory.getSizeInventory(); ++l) {
       ItemStack items = inventory.getStackInSlot(l);
 
       if (items != null && items.stackSize > 0) {
-        dropItems(world, inventory.getStackInSlot(l).copy(), x, y, z);
+        dropItems(world, inventory.getStackInSlot(l).copy(), x, y, z, doRandomSpread);
       }
     }
   }

@@ -169,17 +169,17 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    if (!world.isRemote) {
+    if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
     TileEntity ent = world.getBlockTileEntity(x, y, z);
     if (ent != null) {
       if (teClass.isAssignableFrom(ent.getClass())) {
         @SuppressWarnings("unchecked")
         T te = (T) world.getBlockTileEntity(x, y, z);
-          Util.dropItems(world, te, x, y, z);
+          Util.dropItems(world, te, x, y, z, true);
         }
       }
       ItemStack st = new ItemStack(this);
-      Util.dropItems(world, st, x, y, z);
+      Util.dropItems(world, st, x, y, z, false);
     }
     world.removeBlockTileEntity(x, y, z);
   }

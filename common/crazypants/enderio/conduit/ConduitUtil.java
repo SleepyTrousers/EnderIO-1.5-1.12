@@ -76,11 +76,6 @@ public class ConduitUtil {
     return true;
   }
 
-  public static void dropConduit(World world, IConduit conduit, int x, int y, int z) {
-    Util.dropItems(world, conduit.createItem(), x, y, z);
-  }
-
-
 
   public static boolean renderFacade(IConduitBundle bundle, EntityPlayer player) {
     return bundle.getFacadeId() > 0 && !isFacadeHidden(bundle, player);
