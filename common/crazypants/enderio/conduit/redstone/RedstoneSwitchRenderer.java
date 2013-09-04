@@ -18,63 +18,22 @@ import crazypants.vecmath.Vector3d;
 
 public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
 
+  private static final RedstoneSwitchRenderer instance = new RedstoneSwitchRenderer();
   
-  
-  
-
-    
-  static RedstoneSwitchRenderer instance;
-  
-  public static RedstoneSwitchRenderer createInstance(float conduitScale) {
-    instance = new RedstoneSwitchRenderer(conduitScale);    
+  public static RedstoneSwitchRenderer getInstance() {
     return instance;
   }
   
-  
-
   private final VertexTransform[] xForms;
   private final BoundingBox switchBounds;
   private final BoundingBox connectorBounds;
 
-  private final BoundingBox[] aabb;
-
-  private RedstoneSwitchRenderer(float conduitScale) {
-    
-    float size = Math.max(0.2f, conduitScale * 0.5f);
-    float halfWidth = size / 3;
-    float halfHeight = size / 2;
-    
-    //float DEPTH = 0.05f;
-    float halfDepth = 0.025f;
-    float distance = Math.max(0.25f, conduitScale * 0.3f);
-
-    BoundingBox bb = new BoundingBox(0.5 - halfWidth, 0.5 - halfHeight, 0.5 - halfDepth, 0.5 + halfWidth, 0.5 + halfHeight, 0.5 + halfDepth);
-    switchBounds = bb.translate(0, 0, distance);
-
-    float connectorHalfWidth = (float)Math.max(0.015, conduitScale * 0.05);
-    connectorBounds = new BoundingBox(0.5 - connectorHalfWidth, 0.5 - connectorHalfWidth, 0.5 - connectorHalfWidth, 0.5 + connectorHalfWidth, 0.5 + connectorHalfWidth, 0.5 + distance);
-
-    Vector3d axis = new Vector3d(0, 1, 0);
-    Vector3d p = new Vector3d(0.5, 0.5, 0.5);
-    xForms = new VertexTransform[4];
-    double angle = Math.toRadians(45);
-    for (int i = 0; i < xForms.length; i++) {
-      // TODO
-      // xForms[i] = new Rotation(angle, axis, p);
-      xForms[i] = new VertexRotation(angle, axis, p);
-      angle += Math.toRadians(90);
+  private RedstoneSwitchRenderer() {       
+    xForms = RedstoneSwitchBounds.getInstance().xForms;
+    switchBounds = RedstoneSwitchBounds.getInstance().switchBounds;
+    connectorBounds = RedstoneSwitchBounds.getInstance().connectorBounds; 
     }
 
-    aabb = new BoundingBox[xForms.length];
-    for (int i = 0; i < xForms.length; i++) {
-      aabb[i] = switchBounds.transform(xForms[i]);
-    }
-
-  }
-
-  public BoundingBox[] getAABB() {
-    return aabb;
-  }
 
   @Override
   public boolean isRendererForConduit(IConduit conduit) {

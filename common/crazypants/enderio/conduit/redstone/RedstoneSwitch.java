@@ -97,7 +97,7 @@ public class RedstoneSwitch extends RedstoneConduit {
     Vector3d trans = ConduitGeometryUtil.instance.getTranslation(ForgeDirection.UNKNOWN, o);
 
     List<CollidableComponent> result = super.getCollidableComponents();
-    BoundingBox[] aabb = RedstoneSwitchRenderer.instance.getAABB();
+    BoundingBox[] aabb = RedstoneSwitchBounds.getInstance().getAABB();
 
     for (BoundingBox bb : aabb) {
       result.add(new CollidableComponent(IRedstoneConduit.class, bb.translate(trans), ForgeDirection.UNKNOWN, SWITCH_TAG));
