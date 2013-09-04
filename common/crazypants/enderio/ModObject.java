@@ -51,7 +51,9 @@ public enum ModObject {
   itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench"),
   
   blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
-  blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab");
+  blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
+  
+  blockCrusher(++Config.BID, CATEGORY_BLOCK,"Crusher");
 
   public final String unlocalisedName;
   public final String name;
