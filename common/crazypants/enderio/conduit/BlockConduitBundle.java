@@ -357,7 +357,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     if (!world.isRemote && !player.capabilities.isCreativeMode) {
       for (ItemStack st : drop) {
-        Util.dropItems(world, st, x, y, z);
+        Util.dropItems(world, st, x, y, z, false);
       }
     }
 
