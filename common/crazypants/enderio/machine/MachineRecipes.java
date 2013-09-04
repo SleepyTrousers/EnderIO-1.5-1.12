@@ -4,6 +4,7 @@ import static crazypants.enderio.ModObject.blockAlloySmelter;
 import static crazypants.enderio.ModObject.blockElectricLight;
 import static crazypants.enderio.ModObject.blockPainter;
 import static crazypants.enderio.ModObject.blockReservoir;
+import static crazypants.enderio.ModObject.blockCrusher;
 import static crazypants.enderio.ModObject.blockSolarPanel;
 import static crazypants.enderio.ModObject.blockStirlingGenerator;
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
@@ -40,6 +41,9 @@ public class MachineRecipes {
 
     ItemStack alloySmelter = new ItemStack(blockAlloySmelter.actualId, 1, 0);
     GameRegistry.addShapedRecipe(alloySmelter, "bbb", "CfC", "bcb", 'b', industialBinder, 'f', Block.furnaceIdle, 'c', capacitor, 'C', Item.cauldron);
+    
+    ItemStack crusher = new ItemStack(blockCrusher.actualId, 1, 0);
+    GameRegistry.addShapedRecipe(crusher, "iii", "ipi", "ici", 'i', Item.ingotIron, 'c', capacitor, 'p', Block.pistonBase);
 
     ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
     ItemStack activatedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_IRON.ordinal());
