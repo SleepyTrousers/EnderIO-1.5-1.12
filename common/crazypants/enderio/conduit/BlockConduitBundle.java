@@ -346,6 +346,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
             te.removeConduit(con);
             drop.add(con.createItem());
           }
+
         }
       }
     }
@@ -413,6 +414,8 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       if (!bundle.hasType(equipped.getBaseConduitType())) {
         bundle.addConduit(equipped.createConduit(stack));
         if (!player.capabilities.isCreativeMode) {
+          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), stepSound.getPlaceSound(),
+              (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
           player.getCurrentEquippedItem().stackSize--;
         }
         return true;

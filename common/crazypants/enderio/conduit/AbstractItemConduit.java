@@ -2,6 +2,7 @@ package crazypants.enderio.conduit;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
@@ -67,6 +69,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
         if (world.setBlock(placeX, placeY, placeZ, ModObject.blockConduitBundle.actualId, 0, 1)) {
           IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
           bundle.addConduit(createConduit(stack));
+          Block b = EnderIO.blockConduitBundle;
+          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), b.stepSound.getPlaceSound(),
+              (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
         }
       }
       if (!player.capabilities.isCreativeMode) {
@@ -88,6 +93,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
       if (bundle.getConduit(con.getBaseConduitType()) == null) {
         if (!world.isRemote) {
           bundle.addConduit(con);
+          if (!player.capabilities.isCreativeMode) {
+            stack.stackSize--;
+          }
         }
         return true;
       }
