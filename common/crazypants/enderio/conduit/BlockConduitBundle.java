@@ -61,7 +61,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     super(ModObject.blockConduitBundle.id, Material.ground);
     setHardness(0.5F);
     setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
-    setStepSound(Block.soundStoneFootstep);
+    setStepSound(Block.soundMetalFootstep);
     setUnlocalizedName(ModObject.blockConduitBundle.unlocalisedName);
     setCreativeTab(null);
   }
@@ -337,16 +337,16 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
           }
           // If there isn't, then drop em all
           if (!droppedUnconected) {
-            for (IConduit con : cons) {              
+            for (IConduit con : cons) {
               te.removeConduit(con);
               drop.add(con.createItem());
             }
           }
         } else {
           IConduit con = te.getConduit(type);
-          if(con != null) {
-             te.removeConduit(con);
-             drop.add(con.createItem());
+          if (con != null) {
+            te.removeConduit(con);
+            drop.add(con.createItem());
           }
 
         }
@@ -415,6 +415,8 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       if (!bundle.hasType(equipped.getBaseConduitType())) {
         bundle.addConduit(equipped.createConduit(stack));
         if (!player.capabilities.isCreativeMode) {
+          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), stepSound.getPlaceSound(),
+              (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
           player.getCurrentEquippedItem().stackSize--;
         }
         return true;
