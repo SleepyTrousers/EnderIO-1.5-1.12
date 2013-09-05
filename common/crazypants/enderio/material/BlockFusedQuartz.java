@@ -29,7 +29,8 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
     return result;
   }
 
-  Icon itemIcon;
+  //Icon itemIcon;
+  Icon realBlockIcon;
 
   private BlockFusedQuartz() {
     super(ModObject.blockFusedQuartz.id, Material.glass);
@@ -84,8 +85,13 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:fusedQuartz");
-    itemIcon = iconRegister.registerIcon("enderio:fusedQuartzItem");
+//    blockIcon = iconRegister.registerIcon("enderio:fusedQuartz");
+//    itemIcon = iconRegister.registerIcon("enderio:fusedQuartzItem");
+
+    //This little oddity is so the standard rendering used for items and breaking effects
+    //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
+    realBlockIcon = iconRegister.registerIcon("enderio:fusedQuartz");
+    blockIcon = iconRegister.registerIcon("enderio:fusedQuartzItem");
   }
 
   @Override
