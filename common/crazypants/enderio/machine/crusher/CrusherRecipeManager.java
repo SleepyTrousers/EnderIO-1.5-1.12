@@ -14,7 +14,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class CrusherRecipeManager {
 
-  
   static final float ORE_ENERGY_COST = 400;
 
   static final float INGOT_ENERGY_COST = 240;
@@ -66,7 +65,9 @@ public class CrusherRecipeManager {
 
   @ForgeSubscribe
   public void onOreDictionaryRegister(OreDictionary.OreRegisterEvent event) {
-    oreRegistered(event.Name, event.Ore);
+    if(event != null) {
+      oreRegistered(event.Name, event.Ore);
+    }
   }
 
   public void createRecipes() {
@@ -103,18 +104,21 @@ public class CrusherRecipeManager {
   }
 
   private void addRecipe(ItemStack input, ItemStack output, Type type) {
+    if (input == null || output == null || type == null) {
+      return;
+    }
     // System.out.println("CrusherRecipeManager.addRecipe: Recipe added conveting:");
     // System.out.println("CrusherRecipeManager.addRecipe:      " +
     // input.getItemName() + " to " + output.stackSize + " " +
     // output.getItemName());
     CrusherRecipe rec = getRecipeForInput(input);
-    if(rec == null) {
-      recipes.add(new CrusherRecipe(input, output, type));  
-    } else if(rec != null && isCloser(input, output, rec.output)) {
+    if (rec == null) {
+      recipes.add(new CrusherRecipe(input, output, type));
+    } else if (rec != null && isCloser(input, output, rec.output)) {
       recipes.remove(rec);
       recipes.add(new CrusherRecipe(input, output, type));
     }
-    
+
   }
 
   private void addVanillaOres() {
@@ -169,7 +173,7 @@ public class CrusherRecipeManager {
   private void addDust(String name, ItemStack item) {
 
     add(name, item, dusts);
-    if ("CertusQuartz".equals(name)) {
+    if ("CertusQuartz".equals(name) && crystalCertusQuartz != null) {
       ItemStack input = crystalCertusQuartz.copy();
       ItemStack output = item.copy();
       addRecipe(input, output, Type.ORE);
@@ -177,19 +181,23 @@ public class CrusherRecipeManager {
     } else if (ores.containsKey(name)) {
 
       List<ItemStack> matchingOres = ores.get(name);
-      for (ItemStack input : matchingOres) {
-        if (input != null) {
-          ItemStack output = item.copy();
-          output.stackSize = getDustToOreRatio(name);
-          addRecipe(input.copy(), output, Type.ORE);
+      if (matchingOres != null) {
+        for (ItemStack input : matchingOres) {
+          if (input != null) {
+            ItemStack output = item.copy();
+            output.stackSize = getDustToOreRatio(name);
+            addRecipe(input.copy(), output, Type.ORE);
+          }
         }
       }
     }
     if (ingots.containsKey(name)) {
       List<ItemStack> matchingIngots = ingots.get(name);
-      for (ItemStack input : matchingIngots) {
-        if (input != null) {
-          addRecipe(input.copy(), item.copy(), Type.INGOT);
+      if (matchingIngots != null) {
+        for (ItemStack input : matchingIngots) {
+          if (input != null) {
+            addRecipe(input.copy(), item.copy(), Type.INGOT);
+          }
         }
       }
     }
@@ -252,7 +260,7 @@ public class CrusherRecipeManager {
     }
     return result;
   }
-  
+
   private boolean isCloser(ItemStack input, ItemStack output1, ItemStack output2) {
     int diff1 = Math.abs(input.itemID - output1.itemID);
     int diff2 = Math.abs(input.itemID - output2.itemID);
