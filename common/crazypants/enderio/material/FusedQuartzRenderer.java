@@ -39,7 +39,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-    renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.itemIcon);
+    renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getIcon(0, 0));
     renderer.renderBlockAsItem(Block.glass, 0, 1);
     renderer.clearOverrideBlockTexture();
   }
@@ -65,8 +65,9 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
       }
       renderFrame(blockAccess, x, y, z, tecb, false);
     } else {
-      
+      renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.realBlockIcon);
       renderer.renderStandardBlock(block, x, y, z);
+      renderer.clearOverrideBlockTexture();
     }
     return true;
   }
@@ -82,7 +83,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
   }
 
   private void renderFrame(IBlockAccess blockAccess, int x, int y, int z, TileEntityCustomBlock tecb, boolean forceAllEdges) {
-    Icon texture = EnderIO.blockFusedQuartz.itemIcon;
+    Icon texture = EnderIO.blockFusedQuartz.getIcon(0, 0);
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       if (tecb != null && tecb.getSourceBlockId() > 0) {
         texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
