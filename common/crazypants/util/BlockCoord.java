@@ -22,6 +22,14 @@ public final class BlockCoord {
   public BlockCoord getLocation(ForgeDirection dir) {
     return new BlockCoord(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
   }
+  
+  public int distanceSquared(BlockCoord other) {
+    int dx, dy, dz;
+    dx = x - other.x;
+    dy = y - other.y;
+    dz = z - other.z;
+    return (dx * dx + dy * dy + dz * dz);    
+  }
 
   @Override
   public int hashCode() {
@@ -59,5 +67,7 @@ public final class BlockCoord {
   public boolean equals(int xCoord, int yCoord, int zCoord) {
     return x == xCoord && y == yCoord && z == zCoord;
   }
+
+  
 
 }
