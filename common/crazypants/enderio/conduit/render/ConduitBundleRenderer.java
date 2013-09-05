@@ -35,8 +35,6 @@ import crazypants.render.RenderUtil;
 
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
-  
-
   private Map<ForgeDirection, BoundingBox[]> connectorBounds = new HashMap<ForgeDirection, BoundingBox[]>();
 
   public ConduitBundleRenderer(float conduitScale) {
@@ -187,9 +185,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       }
 
       BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
+      facb.setBlockOverride(bundle);
       facb.setBlockBounds(0, 0, 0, 1, 1, 1);
       rb.setRenderBoundsFromBlock(facb);
       rb.renderStandardBlock(facb, x, y, z);
+      facb.setBlockOverride(null);
 
       bundle.setFacadeId(facadeId);
 
