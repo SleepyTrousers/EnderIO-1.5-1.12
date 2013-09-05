@@ -181,7 +181,11 @@ public class GuiCapacitorBank extends GuiScreenBase {
 
   @Override
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
+    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+    GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
     super.drawHoveringText(par1List, par2, par3, font);
+    GL11.glPopAttrib();
+    GL11.glPopAttrib();
   }
 
   public int getGuiLeft() {

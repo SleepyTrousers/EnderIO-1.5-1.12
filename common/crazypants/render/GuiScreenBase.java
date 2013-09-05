@@ -88,10 +88,13 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
   protected void drawForegroundImpl(int mouseX, int mouseY) {
   }
 
-  public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font)
-  {
-    if (!par1List.isEmpty())
-    {
+  public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
+        
+    if (!par1List.isEmpty()) {
+      
+      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+      GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+      
       GL11.glDisable(GL12.GL_RESCALE_NORMAL);
       RenderHelper.disableStandardItemLighting();
       GL11.glDisable(GL11.GL_LIGHTING);
@@ -163,6 +166,10 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       RenderHelper.enableStandardItemLighting();
       GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+      
+      GL11.glPopAttrib();
+      GL11.glPopAttrib();
+      
     }
   }
 
