@@ -65,7 +65,9 @@ public class CrusherRecipeManager {
 
   @ForgeSubscribe
   public void onOreDictionaryRegister(OreDictionary.OreRegisterEvent event) {
+    if(event != null) {
     oreRegistered(event.Name, event.Ore);
+  }
   }
 
   public void createRecipes() {
@@ -102,6 +104,9 @@ public class CrusherRecipeManager {
   }
 
   private void addRecipe(ItemStack input, ItemStack output, Type type) {
+    if (input == null || output == null || type == null) {
+      return;
+    }
     // System.out.println("CrusherRecipeManager.addRecipe: Recipe added conveting:");
     // System.out.println("CrusherRecipeManager.addRecipe:      " +
     // input.getItemName() + " to " + output.stackSize + " " +
@@ -168,7 +173,7 @@ public class CrusherRecipeManager {
   private void addDust(String name, ItemStack item) {
 
     add(name, item, dusts);
-    if ("CertusQuartz".equals(name)) {
+    if ("CertusQuartz".equals(name) && crystalCertusQuartz != null) {
       ItemStack input = crystalCertusQuartz.copy();
       ItemStack output = item.copy();
       addRecipe(input, output, Type.ORE);
@@ -176,6 +181,7 @@ public class CrusherRecipeManager {
     } else if (ores.containsKey(name)) {
 
       List<ItemStack> matchingOres = ores.get(name);
+      if (matchingOres != null) {
       for (ItemStack input : matchingOres) {
         if (input != null) {
           ItemStack output = item.copy();
@@ -184,14 +190,17 @@ public class CrusherRecipeManager {
         }
       }
     }
+    }
     if (ingots.containsKey(name)) {
       List<ItemStack> matchingIngots = ingots.get(name);
+      if (matchingIngots != null) {
       for (ItemStack input : matchingIngots) {
         if (input != null) {
           addRecipe(input.copy(), item.copy(), Type.INGOT);
         }
       }
     }
+  }
   }
 
   public void oreRegistered(String name, ItemStack item) {
