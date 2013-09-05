@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.liquid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -28,7 +29,6 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
   private int inputVolume;
   
   private int outputVolume;
-  
   
   @Override
   public Class<? extends ILiquidConduit> getBaseConduitType() {
@@ -129,7 +129,6 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     outputVolume += filled;
   }
 
-  
   int getNextPushToken() {
     return ++pushToken;
   }
@@ -156,6 +155,41 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       action.apply();
     }
 
+    boolean result = !actions.isEmpty();
+
+    // Flush any tanks with a tiny bit left
+    List<ILiquidConduit> toEmpty = new ArrayList<ILiquidConduit>();
+    for (ILiquidConduit con : conduits) {
+      if (con.getTank().getFluidAmount() < 10) {
+        toEmpty.add(con);
+      }
+
+    }
+    if (toEmpty.isEmpty()) {
+      return result;
+    }
+
+    List<LocatedFluidHandler> externals = new ArrayList<LocatedFluidHandler>();
+    for (ILiquidConduit con : conduits) {
+      Set<ForgeDirection> extCons = con.getExternalConnections();
+
+      for (ForgeDirection dir : extCons) {
+        if (con.canOutputToDir(dir)) {
+          ITankContainer externalTank = con.getExternalHandler(dir);
+          if (externalTank != null) {
+            externals.add(new LocatedFluidHandler(externalTank, con.getLocation().getLocation(dir), dir.getOpposite()));
+          }
+        }
+      }
+    }
+    if (externals.isEmpty()) {
+      return result;
+    }
+
+    for (ILiquidConduit con : toEmpty) {
+      drainConduitToNearestExternal(con, externals);
+    }
+
     // int postVol = 0;
     // for (ILiquidConduit con : conduits) {
     // postVol += con.getTank().getAmount();
@@ -165,7 +199,33 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     // (postVol - preVol));
     // }
 
-    return !actions.isEmpty();
+    return result;
+  }
+
+  private void drainConduitToNearestExternal(ILiquidConduit con, List<LocatedFluidHandler> externals) {
+    BlockCoord conLoc = con.getLocation();
+    LiquidStack toDrain = con.getTank().getLiquid();
+    if (toDrain == null) {
+      return;
+    }
+    int closestDistance = Integer.MAX_VALUE;
+    LocatedFluidHandler closestTank = null;
+    for (LocatedFluidHandler lh : externals) {
+      int distance = lh.bc.distanceSquared(conLoc);
+      if (distance < closestDistance) {
+        int couldFill = lh.tank.fill(lh.dir, toDrain.copy(), false);
+        if (couldFill > 0) {
+          closestTank = lh;
+          closestDistance = distance;
+        }
+      }
+    }
+
+    if (closestTank != null) {
+      int filled = closestTank.tank.fill(closestTank.dir, toDrain.copy(), true);
+      con.getTank().addAmount(-filled);
+    }
+
   }
 
   private void flowFrom(ILiquidConduit con, List<FlowAction> actions, int pushPoken) {
@@ -320,6 +380,19 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
         
       }
     }
+
+  }
+
+  static class LocatedFluidHandler {
+    final ITankContainer tank;
+    final BlockCoord bc;
+    final ForgeDirection dir;
+
+    LocatedFluidHandler(ITankContainer tank, BlockCoord bc, ForgeDirection dir) {
+      this.tank = tank;
+      this.bc = bc;
+      this.dir = dir;
+}
 
   }
 
