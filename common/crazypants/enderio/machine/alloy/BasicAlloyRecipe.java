@@ -1,7 +1,9 @@
 package crazypants.enderio.machine.alloy;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
@@ -18,19 +20,24 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
   private ItemStack[] inputs;
 
+  private Set<InputKey> inputKeys;
+
   private ItemStack output;
 
   public BasicAlloyRecipe(ItemStack output, String uid, ItemStack... recipeInputs) {
     this.output = output.copy();
     this.uid = uid;
     inputs = new ItemStack[recipeInputs.length];
+    inputKeys = new HashSet<InputKey>();
     for (int i = 0; i < inputs.length; i++) {
       if (recipeInputs[i] != null) {
         inputs[i] = recipeInputs[i].copy();
+        inputKeys.add(new InputKey(inputs[i].itemID, inputs[i].getItemDamage()));
       } else {
         inputs[i] = null;
       }
     }
+    
   }
 
   @Override
@@ -49,13 +56,16 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     if (inputs.length != checking.length) {
       return false;
     }
+    
+    Set<InputKey> keys = new HashSet<BasicAlloyRecipe.InputKey>(inputKeys);
     for (RecipeInput input : checking) {
       ItemStack ing = getIngrediantForInput(input.item);
       if (ing == null || ing.stackSize > input.item.stackSize) {
         return false;
       }
+      keys.remove(new InputKey(ing.itemID, ing.getItemDamage()));
     }
-    return true;
+    return keys.isEmpty();
   }
 
   private RecipeInput[] getNonNullInputs(RecipeInput[] checking) {
@@ -123,6 +133,47 @@ public class BasicAlloyRecipe implements IMachineRecipe {
       return null;
     }
     return result.toArray(new RecipeInput[result.size()]);
+  }
+
+  static class InputKey {
+    
+    int itemID;
+    int damage;
+    
+    InputKey(int itemID, int damage) {    
+      this.itemID = itemID;
+      this.damage = damage;
+}
+
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + damage;
+      result = prime * result + itemID;
+      return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      InputKey other = (InputKey) obj;
+      if (damage != other.damage)
+        return false;
+      if (itemID != other.itemID)
+        return false;
+      return true;
+    }
+    
+    
+    
+    
+    
   }
 
 }
