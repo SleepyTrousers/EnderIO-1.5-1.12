@@ -34,7 +34,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   private float storedEnergy;
 
   protected ItemStack[] inventory;
-  protected final int inventorySize;
+  protected final SlotDefinition slotDefinition;
 
   protected EnderPowerProvider powerHandler;
 
@@ -42,20 +42,20 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   protected boolean redstoneCheckPassed;
 
-  public AbstractMachineEntity(int inventorySize) {
-    this.inventorySize = inventorySize + 1; // plus one for capacitor ;
+  public AbstractMachineEntity(SlotDefinition slotDefinition) {
+    this.slotDefinition = slotDefinition; 
     facing = 3;
     capacitorType = Capacitors.BASIC_CAPACITOR;
     powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor);
 
-    inventory = new ItemStack[this.inventorySize];
+    inventory = new ItemStack[slotDefinition.getNumSlots()];
 
     redstoneControlMode = RedstoneControlMode.IGNORE;
   }
 
   @Override
   public final boolean isStackValidForSlot(int i, ItemStack itemstack) {
-    if (i == inventorySize - 1) {
+    if (slotDefinition.isUpgradeSlot(i)) {
       return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
     }
     return isMachineItemValidForSlot(i, itemstack);
@@ -78,8 +78,6 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public void applyPerdition() {
-    // TODO Apply values derived capcitor
-
   }
 
   public short getFacing() {
@@ -233,7 +231,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
 
     // read in the inventories contents
-    inventory = new ItemStack[inventorySize];
+    inventory = new ItemStack[slotDefinition.getNumSlots()];
     NBTTagList itemList = nbtRoot.getTagList("Items");
 
     for (int i = 0; i < itemList.tagCount(); i++) {
@@ -296,7 +294,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public int getSizeInventory() {
-    return inventorySize;
+    return slotDefinition.getNumSlots();
   }
 
   @Override
@@ -340,13 +338,13 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       contents.stackSize = getInventoryStackLimit();
     }
 
-    if (slot == inventory.length - 1) {
+    if (slotDefinition.isUpgradeSlot(slot)) {
       updateCapacitorFromSlot();
     }
   }
 
   private void updateCapacitorFromSlot() {
-    ItemStack contents = inventory[inventory.length - 1];
+    ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
     if (contents == null || contents.itemID != ModObject.itemBasicCapacitor.actualId) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {

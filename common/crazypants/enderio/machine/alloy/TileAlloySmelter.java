@@ -5,11 +5,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.RecipeInput;
+import crazypants.enderio.machine.SlotDefinition;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
   public TileAlloySmelter() {
-    super(4);
+    super(new SlotDefinition(3, 1));
   }
 
   @Override
