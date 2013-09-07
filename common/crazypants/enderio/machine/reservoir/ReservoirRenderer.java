@@ -13,6 +13,7 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector3f;
 
 public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
@@ -33,10 +34,12 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
 
     TileReservoir res = (TileReservoir) tileentity;
+    if(res.haveRendered(tileentity.worldObj.getTotalWorldTime(), f)) {
+      return;
+    }
 
     float fullness = res.getFilledRatio();
-    if ((res.isMultiblock() && !res.isMaster() && (fullness >= 0 || res.isAutoEject())) || (!res.isMultiblock() &&
-        fullness <= 0)) {
+    if(fullness <= 0 && !res.isAutoEject()) {
       return;
     }
 
@@ -50,12 +53,15 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    
 
-    GL11.glTranslatef((float) x, (float) y, (float) z);
+    Vector3f offset = res.getOffsetFromController();
+    
+    GL11.glTranslatef((float) x + offset.x, (float) y + offset.y, (float) z + offset.z);
 
     BoundingBox bb = res.getLiquidRenderBounds();
 
-    if (res.isMultiblock() && res.isAutoEject()) {
+    if(res.isAutoEject()) {
 
       // switch
       RenderUtil.bindBlockTexture();
@@ -162,4 +168,5 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     }
     return tex;
   }
+    
 }

@@ -25,11 +25,11 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
   private boolean printFlowTiming = false;
 
   private int pushToken = 0;
-  
+
   private int inputVolume;
-  
+
   private int outputVolume;
-  
+
   @Override
   public Class<? extends ILiquidConduit> getBaseConduitType() {
     return ILiquidConduit.class;
@@ -162,6 +162,9 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     for (ILiquidConduit con : conduits) {
       if (con.getTank().getFluidAmount() < 10) {
         toEmpty.add(con);
+      } else {
+        //some of the conduits have fluid left in them so don't do the final drain yet
+        return result;        
       }
 
     }
