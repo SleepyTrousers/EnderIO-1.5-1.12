@@ -55,7 +55,7 @@ import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.20", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.21", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
