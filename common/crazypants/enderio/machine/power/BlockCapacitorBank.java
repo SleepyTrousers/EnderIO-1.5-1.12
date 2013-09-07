@@ -1,7 +1,10 @@
 package crazypants.enderio.machine.power;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Random;
+
+import buildcraft.api.tools.IToolWrench;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -18,7 +21,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -163,14 +165,32 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     te.onNeighborBlockChange(blockId);
   }
   
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {    
+  public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
     if (!world.isRemote) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if (te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
 
-        ItemStack itemStack = BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
+        ItemStack itemStack =
+            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
+        ret.add(itemStack);
+      }
+    }        
+    return ret;
+  }
+
+  @Override
+  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {    
+    if (!world.isRemote) {
+      TileEntity te = world.getBlockTileEntity(x, y, z);
+      if (te instanceof TileCapacitorBank) {
+        TileCapacitorBank cb = (TileCapacitorBank) te;
+        cb.onBreakBlock();
+
+        ItemStack itemStack =
+            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -180,10 +200,9 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         world.spawnEntityInWorld(entityitem);
       } 
     }
-    world.removeBlockTileEntity(x, y, z);    
+    return super.removeBlockByPlayer(world, player, x, y, z);
   }
   
- 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {   
     if(world.isRemote) {
@@ -206,7 +225,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public int quantityDropped(Random r) {
     return 0;
   }
-  
   
   @Override
   @SideOnly(Side.CLIENT)
