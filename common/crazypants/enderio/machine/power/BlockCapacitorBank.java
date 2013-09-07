@@ -39,7 +39,7 @@ import crazypants.vecmath.Vector3d;
 public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
 
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
-  
+
   public static BlockCapacitorBank create() {
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
@@ -66,41 +66,42 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    
+
     if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      //if (!world.isRemote) {
-        removeBlockByPlayer(world, entityPlayer, x, y, z);
-        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+      if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if (wrench.canWrench(entityPlayer, x, y, z)) {
+          removeBlockByPlayer(world, entityPlayer, x, y, z);
+          if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
         }
-      //}
-      return true;
+      }
     }
-    
+
     if (entityPlayer.isSneaking()) {
       return false;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(! (te instanceof TileCapacitorBank) ) {
+    if (!(te instanceof TileCapacitorBank)) {
       return false;
     }
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);    
+    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
     return true;
   }
-  
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return null;
   }
 
-  
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof TileCapacitorBank) {
-      return new GuiCapacitorBank((TileCapacitorBank)te);   
-    }    
+      return new GuiCapacitorBank((TileCapacitorBank) te);
+    }
     return null;
   }
 
@@ -116,7 +117,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public int getRenderType() {
     return -1;
   }
-  
+
   @Override
   public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
     return true;
@@ -141,13 +142,13 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileCapacitorBank();
   }
-  
+
   @Override
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
     int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
     return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
   }
-  
+
   @Override
   public void onBlockAdded(World world, int x, int y, int z) {
     if (world.isRemote) {
@@ -165,14 +166,14 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     TileCapacitorBank te = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
     te.onNeighborBlockChange(blockId);
   }
-  
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {    
+
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     if (!world.isRemote) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if (te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
-        cb.onBreakBlock();   
-        
+        cb.onBreakBlock();
+
         ItemStack itemStack = BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -181,15 +182,14 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
-      } 
+      }
     }
-    world.removeBlockTileEntity(x, y, z);    
+    world.removeBlockTileEntity(x, y, z);
   }
-  
- 
+
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {   
-    if(world.isRemote) {
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    if (world.isRemote) {
       return;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -197,9 +197,9 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(BlockItemCapacitorBank.getStoredEnergyForItem(stack));
     }
-    world.markBlockForUpdate(x, y, z);    
+    world.markBlockForUpdate(x, y, z);
   }
- 
+
   @Override
   public int idDropped(int par1, Random par2Random, int par3) {
     return 0;
@@ -209,8 +209,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public int quantityDropped(Random r) {
     return 0;
   }
-  
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {

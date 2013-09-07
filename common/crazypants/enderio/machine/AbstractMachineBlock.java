@@ -77,7 +77,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setHardness(2.0F);
     setStepSound(soundMetalFootstep);
     setUnlocalizedName(mo.unlocalisedName);
-    setCreativeTab(EnderIOTab.tabEnderIO);    
+    setCreativeTab(EnderIOTab.tabEnderIO);
     random = new Random();
 
   }
@@ -108,13 +108,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
     if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      //if (world.isRemote) {
-        removeBlockByPlayer(world, entityPlayer, x, y, z);
-        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+      if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if (wrench.canWrench(entityPlayer, x, y, z)) {
+          removeBlockByPlayer(world, entityPlayer, x, y, z);
+          if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
         }
-      //}
-      return true;
+      }
     }
 
     if (entityPlayer.isSneaking()) {
@@ -183,7 +186,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
     world.removeBlockTileEntity(x, y, z);
   }
-  
+
   @Override
   public int idDropped(int par1, Random par2Random, int par3) {
     return 0;
@@ -193,7 +196,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int quantityDropped(Random r) {
     return 0;
   }
-
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {

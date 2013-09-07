@@ -426,13 +426,18 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     // Break conduit with tool
     if (ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
-      if (!world.isRemote) {
-        removeBlockByPlayer(world, player, x, y, z);
-        if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-          ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
+      if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
+        if (wrench.canWrench(player, x, y, z)) {
+          if (!world.isRemote) {
+            removeBlockByPlayer(world, player, x, y, z);
+            if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+              ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
+            }
+          }
+          return true;
         }
       }
-      return true;
     }
 
     // Check conduit defined actions
