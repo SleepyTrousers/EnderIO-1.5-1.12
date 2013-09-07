@@ -108,13 +108,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
     if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      //if (world.isRemote) {
+      if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if (wrench.canWrench(entityPlayer, x, y, z)) {
         removeBlockByPlayer(world, entityPlayer, x, y, z);
         if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
           ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
         }
-      //}
       return true;
+    }
+      }
     }
 
     if (entityPlayer.isSneaking()) {

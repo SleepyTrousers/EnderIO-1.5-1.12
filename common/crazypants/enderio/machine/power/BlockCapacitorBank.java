@@ -62,17 +62,20 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    
+
     if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      //if (!world.isRemote) {
-        removeBlockByPlayer(world, entityPlayer, x, y, z);
-        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+      if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if (wrench.canWrench(entityPlayer, x, y, z)) {
+          removeBlockByPlayer(world, entityPlayer, x, y, z);
+          if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
         }
-      //}
-      return true;
+      }
     }
-    
+
     if (entityPlayer.isSneaking()) {
       return false;
     }
@@ -83,14 +86,12 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
     return true;
   }
-  
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     return null;
   }
 
-  
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);

@@ -61,7 +61,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     super(ModObject.blockConduitBundle.id, Material.ground);
     setHardness(0.5F);
     setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
-    setStepSound(Block.soundStoneFootstep);
+    setStepSound(Block.soundMetalFootstep);
     setUnlocalizedName(ModObject.blockConduitBundle.unlocalisedName);
     setCreativeTab(null);
   }
@@ -425,6 +425,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     // Break conduit with tool
     if (ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
+      if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
+        if (wrench.canWrench(player, x, y, z)) {
       if (!world.isRemote) {
         removeBlockByPlayer(world, player, x, y, z);
         if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
@@ -432,6 +435,8 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
         }
       }
       return true;
+    }
+      }
     }
 
     // Check conduit defined actions
