@@ -3,6 +3,7 @@ package crazypants.enderio.machine.light;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -74,8 +75,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
     }
 
     boolean isActivated = hasPower() && hasRedstone;
-    if (init) {
-      lightNodes = new ArrayList<TileLightNode>();
+    if (init) {      
       updateLightNodes();
     }
 
@@ -205,7 +205,9 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
   private void clearLightNodes() {
     if (lightNodes != null) {
       for (TileLightNode ln : lightNodes) {
-        worldObj.setBlockToAir(ln.xCoord, ln.yCoord, ln.zCoord);
+        if(worldObj.getBlockId(ln.xCoord, ln.yCoord, ln.zCoord) == ModObject.blockLightNode.actualId) {
+          worldObj.setBlockToAir(ln.xCoord, ln.yCoord, ln.zCoord);
+        } 
       }
       lightNodes.clear();
     }
@@ -234,8 +236,23 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
     lightNodes.add(ln);
   }
+  
+  private boolean isRailcraftException(int id) {
+    if(id > 0 && Block.blocksList[id] != null) {
+      //Pretty bad hack, by only feasable way I can think of to prevent our light nodes getting placed inside railcraft tanks.
+      String className = Block.blocksList[id].getClass().getName();      
+      if(className.equals("mods.railcraft.common.blocks.machine.BlockMachine")) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   private boolean isTranparent(Vector3d offset) {
+    int id = worldObj.getBlockId(xCoord + (int) offset.x, yCoord + (int) offset.y, zCoord + (int) offset.z);
+    if(isRailcraftException(id)) {
+      return false;
+    }
     return worldObj.getBlockLightOpacity(xCoord + (int) offset.x, yCoord + (int) offset.y, zCoord + (int) offset.z) == 0;
   }
 
