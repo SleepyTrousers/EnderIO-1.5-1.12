@@ -8,8 +8,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   protected PoweredTask currentTask = null;
 
-  public AbstractPoweredTaskEntity(int inventorySize) {
-    super(inventorySize);
+  public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
+    super(slotDefinition);
   }
 
   @Override
@@ -23,8 +23,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-    int maxInputIndex = inventory.length - 2;
-    if (i < 0 || i > maxInputIndex) {
+
+    if (!slotDefinition.isInputSlot(i)) {
       return false;
     }
     if (!isItemValidForSlot(i, itemstack)) {
@@ -41,14 +41,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-    int outputIndex = inventory.length - 2;
-    if (outputIndex != i) {
+    if (!slotDefinition.isOutputSlot(i)) {
       return false;
     }
-    if (inventory[outputIndex] == null || inventory[outputIndex].stackSize < itemstack.stackSize) {
+    if (inventory[i] == null || inventory[i].stackSize < itemstack.stackSize) {
       return false;
     }
-    return itemstack.itemID == inventory[outputIndex].itemID;
+    return itemstack.itemID == inventory[i].itemID;
   }
 
   @Override
@@ -68,10 +67,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return false;
     }
 
-    if(inventory[0] != null) {
-      int i  = 1;
+    if (inventory[0] != null) {
+      int i = 1;
     }
-    
+
     boolean requiresClientSync = false;
     // Process any current items
     requiresClientSync |= checkProgress();
@@ -116,10 +115,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected RecipeInput[] getInputs() {
-    RecipeInput[] res = new RecipeInput[inventorySize - 2];
+    RecipeInput[] res = new RecipeInput[slotDefinition.getNumInputSlots()];
+    int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
-      res[i] = new RecipeInput(i, inventory[i]);
+      res[i] = new RecipeInput(fromSlot, inventory[fromSlot]);
+      fromSlot++;
     }
+
     return res;
   }
 
@@ -136,30 +138,37 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return null; // no template
     }
 
-    int outputIndex = inventory.length - 2;
-    // make sure we can merge the recipe output with our result
-    if (inventory[outputIndex] == null) {
-      return nextRecipe;
+    //make sure we have room for the next output
+    
+    //if we have an empty output, all good
+    for(int i=slotDefinition.minOutputSlot; i < (slotDefinition.maxOutputSlot + 1); i++) {
+      if(inventory[i] == null) {
+        return nextRecipe;
+      }
     }
-    ItemStack nextResult = nextRecipe.getCompletedResult(getInputs())[0];
-    if (inventory[outputIndex].stackSize + nextResult.stackSize > inventory[outputIndex].getMaxStackSize()) {
-      return null; // no room for output
+    
+    ItemStack[] nextResults = nextRecipe.getCompletedResult(getInputs());
+    for(ItemStack result : nextResults) {
+      int canMerge = 0;
+      for(int i=slotDefinition.minOutputSlot; i < (slotDefinition.maxOutputSlot + 1); i++) {
+        canMerge += getNumCanMerge(inventory[i], result);
+      }
+      if(canMerge < result.stackSize) {
+        return null;
+      }
     }
 
-    if (!canMergeWithCurrentOuput(nextResult)) {
-      return null;
-    }
 
     return nextRecipe;
   }
 
-  protected boolean canMergeWithCurrentOuput(ItemStack nextResult) {
-    if (!nextResult.isItemEqual(inventory[inventory.length - 2])) {
-      // next result is a different item type
-      return false;
+  protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
+    if(!itemStack.isItemEqual(result)) {
+      return 0;  
     }
-    return true;
+    return itemStack.getMaxStackSize() - itemStack.stackSize;
   }
+
 
   protected boolean startNextTask(IMachineRecipe nextRecipe) {
     if (hasPower() && nextRecipe.isRecipe(getInputs())) {

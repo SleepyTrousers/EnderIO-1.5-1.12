@@ -16,6 +16,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -35,7 +36,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   private boolean receptorsDirty = true;
 
   public TileEntityStirlingGenerator() {
-    super(1, Type.ENGINE);
+    super(new SlotDefinition(1, 0), Type.ENGINE);
     configurePowerHandler();       
   }
 

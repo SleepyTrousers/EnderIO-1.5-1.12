@@ -3,11 +3,12 @@ package crazypants.enderio.machine.crusher;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.SlotDefinition;
 
 public class TileCrusher extends AbstractPoweredTaskEntity {
 
   public TileCrusher() {
-    super(2);
+    super(new SlotDefinition(1, 1));
   }
 
   @Override
