@@ -32,6 +32,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.conduit.redstone.RedstoneSwitch;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -184,7 +186,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private void doExtract() {
 
     BlockCoord loc = getLocation();
-    if (!getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z) || extractDirs.isEmpty()) {
+    if (!isPowered() || extractDirs.isEmpty()) {
       return;
     }
 
@@ -219,6 +221,16 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       }
     }
 
+  }
+
+  private boolean isPowered() {
+    BlockCoord loc = getLocation();
+    IRedstoneConduit rsCon = getBundle().getConduit(IRedstoneConduit.class);
+    if(rsCon instanceof RedstoneSwitch && ((RedstoneSwitch)rsCon).isActive()) {
+      //Need to check for this manually as if we ask the tile if it is being powered it dies not check if it is providing power itself.
+      return true;
+    }
+    return getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z);
   }
 
   @Override
