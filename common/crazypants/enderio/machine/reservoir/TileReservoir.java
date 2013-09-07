@@ -22,6 +22,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.Vector3f;
 
 public class TileReservoir extends TileEntity implements IFluidHandler {
 
@@ -622,6 +623,30 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     res[2] = matchDir.getRotation(matchDir.offsetX == 0 ? ForgeDirection.EAST : ForgeDirection.NORTH);
     res[3] = res[2].getOpposite();
     return res;
+  }
+
+  public Vector3f getOffsetFromController() {
+    if(!isMultiblock()) {
+      return new Vector3f();
+    }    
+    BlockCoord masterBC = multiblock[0];
+    BlockCoord myBC = new BlockCoord(xCoord, yCoord, zCoord);    
+    return new Vector3f(masterBC.x - myBC.x, masterBC.y - myBC.y, masterBC.z - myBC.z);
+  }
+
+  long lastRenderTick;
+  float lastRenderPartialTick;
+  
+  public boolean haveRendered(long renderTick, float renderPartialTick) {
+    TileReservoir c = getController();
+    if(c.lastRenderTick == renderTick && renderPartialTick == c.lastRenderPartialTick) {
+      return true;
+    }    
+    
+    c.lastRenderTick = renderTick;
+    c.lastRenderPartialTick = renderPartialTick;
+    
+    return false;
   }
 
 }
