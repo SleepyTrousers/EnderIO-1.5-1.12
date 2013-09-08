@@ -13,6 +13,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import crazypants.enderio.EnderIO;
 
 public class PacketUtil {
@@ -62,7 +63,7 @@ public class PacketUtil {
 
     World world = EnderIO.proxy.getClientWorld();
     if (world == null) {
-      FMLCommonHandler.instance().raiseException(new Exception("World was null"), "PacketUtil.readTileEntityPacket", true);
+      FMLLog.finer("PacketUtil.handleTileEntityPacket: Recieved packet for tile that did not exist or was not loaded on client.", (Object[])null);
       return null;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
