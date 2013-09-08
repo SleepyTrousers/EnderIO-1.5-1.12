@@ -37,14 +37,16 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
   private Map<ForgeDirection, BoundingBox[]> connectorBounds = new HashMap<ForgeDirection, BoundingBox[]>();
 
+  public static final float CONNECTOR_DEPTH = 0.05f;
+  
   public ConduitBundleRenderer(float conduitScale) {
     
-    float connectorDepth = 0.05f;
+    
     //float connectorWidth = 0.3f;
     float connectorWidth = 0.25f + (conduitScale * 0.5f);
     
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      connectorBounds.put(dir, createConnector(dir, connectorDepth, connectorWidth));
+      connectorBounds.put(dir, createConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
   }
 

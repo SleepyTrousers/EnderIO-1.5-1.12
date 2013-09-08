@@ -52,8 +52,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         }
 
         tex = conduit.getTextureForState(component);
-        tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
-        renderConduit(tex, component);
+        if(tex != null) {
+          tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
+          renderConduit(tex, component);
+        }
       }
 
     }
@@ -70,38 +72,6 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   protected void renderTransmission(Icon tex, CollidableComponent component) {
     RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
-  }
-
-  // @Override
-  public void renderEntity2(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight) {
-
-    Collection<CollidableComponent> components = conduit.getCollidableComponents();
-    Tessellator tessellator = Tessellator.instance;
-
-    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
-
-    Icon tex;
-    boolean active = conduit.isActive();
-    for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
-        float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if (active && isNSEWUP(component.dir) && conduit.getTransmitionTextureForState(component) != null) {
-          tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f, selfIllum + 0.1f, 0.75f);
-          tex = conduit.getTransmitionTextureForState(component);
-          drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
-        }
-
-        tex = conduit.getTextureForState(component);
-        tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
-        BoundingBox[] cubes = toCubes(component.bound);
-        for (BoundingBox cube : cubes) {
-          drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
-        }
-      }
-
-    }
-
   }
 
   protected boolean renderComponent(CollidableComponent component) {

@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.liquid;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -69,8 +71,6 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   private float lastSyncRatio = -99;
 
-  private final Set<ForgeDirection> extractDirs = new HashSet<ForgeDirection>();
-
   private int currentPushToken;
 
   // -----------------------------
@@ -83,7 +83,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private int maxDrainPerTick = 50;
 
   private ForgeDirection startPushDir = ForgeDirection.DOWN;
-  
+
   private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
 
   @Override
@@ -187,34 +187,36 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private void doExtract() {
 
     BlockCoord loc = getLocation();
-    if (!isPowered() || extractDirs.isEmpty()) {
+    if (!isPowered() || !hasConnectionMode(ConnectionMode.INPUT)) {
       return;
     }
 
     int token = network == null ? -1 : network.getNextPushToken();
-    for (ForgeDirection dir : extractDirs) {
-      IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
-      if (extTank != null) {
+    for (ForgeDirection dir : externalConnections) {
+      if (isExtractingFromDir(dir)) {
+        IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
+        if (extTank != null) {
 
-        FluidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
-        if (couldDrain != null && couldDrain.amount > 0) {
+          FluidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
+          if (couldDrain != null && couldDrain.amount > 0) {
 
-          // if we drained all this, how much overflow do we need to push out
-          int requiredPush = (tank.getFluidAmount() + couldDrain.amount) - tank.getCapacity();
-          if (requiredPush <= 0) {
-            FluidStack drained = extTank.drain(dir.getOpposite(), maxDrainPerTick, true);
-            if (drained != null) {
-              tank.fill(drained, true);
-            }
-          } else {
-
-            // push as much as we can, to out target max
-            int pushed = pushLiquid(dir, requiredPush, true, token);
-            tank.addAmount(-pushed);
-            if (tank.getAvailableSpace() > 0) {
-              FluidStack drained = extTank.drain(dir.getOpposite(), Math.min(tank.getAvailableSpace(), maxDrainPerTick), true);
+            // if we drained all this, how much overflow do we need to push out
+            int requiredPush = (tank.getFluidAmount() + couldDrain.amount) - tank.getCapacity();
+            if (requiredPush <= 0) {
+              FluidStack drained = extTank.drain(dir.getOpposite(), maxDrainPerTick, true);
               if (drained != null) {
-                tank.addAmount(drained.amount);
+                tank.fill(drained, true);
+              }
+            } else {
+
+              // push as much as we can, to out target max
+              int pushed = pushLiquid(dir, requiredPush, true, token);
+              tank.addAmount(-pushed);
+              if (tank.getAvailableSpace() > 0) {
+                FluidStack drained = extTank.drain(dir.getOpposite(), Math.min(tank.getAvailableSpace(), maxDrainPerTick), true);
+                if (drained != null) {
+                  tank.addAmount(drained.amount);
+                }
               }
             }
           }
@@ -223,12 +225,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
 
   }
-  
+
   private boolean isPowered() {
     BlockCoord loc = getLocation();
     IRedstoneConduit rsCon = getBundle().getConduit(IRedstoneConduit.class);
-    if(rsCon instanceof RedstoneSwitch && ((RedstoneSwitch)rsCon).isActive()) {
-      //Need to check for this manually as if we ask the tile if it is being powered it dies not check if it is providing power itself.
+    if (rsCon instanceof RedstoneSwitch && ((RedstoneSwitch) rsCon).isActive()) {
+      // Need to check for this manually as if we ask the tile if it is being
+      // powered it dies not check if it is providing power itself.
       return true;
     }
     return getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z);
@@ -257,7 +260,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public boolean isExtractingFromDir(ForgeDirection dir) {
-    return extractDirs.contains(dir);
+    return getConectionMode(dir) == ConnectionMode.INPUT;
   }
 
   @Override
@@ -266,9 +269,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       return;
     }
     if (!extracting) {
-      extractDirs.remove(dir);
+      conectionModes.remove(dir);
     } else {
-      extractDirs.add(dir);
+      conectionModes.put(dir, ConnectionMode.INPUT);
     }
     stateDirty = true;
   }
@@ -293,9 +296,10 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-    //Note: This is just a guard against mekansims pipes that will continuously call
-    //fill on us if we push liquid to them.
-    if(filledFromThisTick.contains(getLocation().getLocation(from))) {
+    // Note: This is just a guard against mekansims pipes that will continuously
+    // call
+    // fill on us if we push liquid to them.
+    if (filledFromThisTick.contains(getLocation().getLocation(from))) {
       return 0;
     }
     filledFromThisTick.add(getLocation().getLocation(from));
@@ -446,13 +450,6 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if (tank.containsValidLiquid()) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
     }
-
-    int[] dirs = new int[extractDirs.size()];
-    Iterator<ForgeDirection> cons = extractDirs.iterator();
-    for (int i = 0; i < dirs.length; i++) {
-      dirs[i] = cons.next().ordinal();
-    }
-    nbtRoot.setIntArray("extractDirs", dirs);
   }
 
   @Override
@@ -461,12 +458,6 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     updateTanksCapacity();
     FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("tank"));
     tank.setLiquid(liquid);
-
-    extractDirs.clear();
-    int[] dirs = nbtRoot.getIntArray("extractDirs");
-    for (int i = 0; i < dirs.length; i++) {
-      extractDirs.add(ForgeDirection.values()[dirs[i]]);
-    }
   }
 
   @Override

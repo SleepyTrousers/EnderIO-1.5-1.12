@@ -5,12 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
@@ -77,11 +73,11 @@ public class NetworkPowerManager {
           float used = 0;
           float reservedForEntry = removeReservedEnergy(r);
           float canOffer = available + reservedForEntry;
-          canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), canOffer);
+          canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
           float requested = pp.powerRequest();
 
           // If it is possible to supply the minimum amount of energy
-          if (pp.getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {
+          if (pp.getMinEnergyReceived() <= r.emmiter.getMaxEnergyExtracted(r.direction)) {
             // Buffer energy if we can't meet it now
             if (pp.getMinEnergyReceived() > canOffer && requested > 0) {
               reserveEnergy(r, canOffer);
@@ -103,7 +99,7 @@ public class NetworkPowerManager {
 
       }
       appliedCount++;
-    }
+    }    
 
     float used = wasAvailable - available;
     // use all the capacator storage first
@@ -284,13 +280,14 @@ public class NetworkPowerManager {
 
         float canGet = 0;
         if (cb.isOutputEnabled()) {
-          canGet = Math.min(cb.getEnergyStored(), cb.getMaxIO());
-          canGet = Math.min(canGet, rec.emmiter.getCapacitor().getMaxEnergyExtracted());
+          canGet = Math.min(cb.getEnergyStored(), cb.getMaxIO());          
+          canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
           canExtract += canGet;
         } 
         float canFill = 0;
         if(cb.isInputEnabled()) {
           canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxIO());
+          canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
           this.canFill += canFill;
         } 
         enteries.add(new CapBankSupplyEntry(cb, canGet, canFill));

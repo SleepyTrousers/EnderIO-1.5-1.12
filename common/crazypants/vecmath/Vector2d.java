@@ -23,6 +23,11 @@ public class Vector2d {
     this.x = x;
     this.y = y;
   }
+  
+  public void set(Vector2f vec) {
+    x = vec.x;
+    y = vec.y;    
+  }
 
   public void set(Vector2d vec) {
     x = vec.x;
@@ -39,6 +44,18 @@ public class Vector2d {
     y -= vec.y;
   }
 
+  
+  public void add(Vector2f vec) {
+    x += vec.x;
+    y += vec.y;
+  }
+
+  public void sub(Vector2f vec) {
+    x -= vec.x;
+    y -= vec.y;
+  }
+
+  
   public void negate() {
     x = -x;
     y = -y;

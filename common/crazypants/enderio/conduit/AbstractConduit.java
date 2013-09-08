@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -39,18 +40,39 @@ public abstract class AbstractConduit implements IConduit {
   protected boolean active;
 
   protected List<CollidableComponent> collidables;
+  
+  protected final EnumMap<ForgeDirection, ConnectionMode> conectionModes = new EnumMap<ForgeDirection, ConnectionMode>(ForgeDirection.class);
 
   protected boolean collidablesDirty = true;
 
   private boolean clientStateDirty = true;
 
   private boolean dodgyChangeSinceLastCallFlagForBundle = true;
+  
+  private int lastNumConections = -1;
 
   protected AbstractConduit() {
   }
 
-  private int lastNumConections = -1;
+  @Override
+  public ConnectionMode getConectionMode(ForgeDirection dir) {
+    ConnectionMode res = conectionModes.get(dir);
+    if (res == null) {
+      return ConnectionMode.IN_OUT;
+    }
+    return res;
+  }
 
+  @Override
+  public boolean hasConnectionMode(ConnectionMode mode) {
+    for (ConnectionMode cm : conectionModes.values()) {
+      if (cm == mode) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   @Override
   public boolean haveCollidablesChangedSinceLastCall() {
     if (dodgyChangeSinceLastCallFlagForBundle) {
@@ -171,6 +193,16 @@ public abstract class AbstractConduit implements IConduit {
     }
     nbtRoot.setIntArray("externalConnections", dirs);
     nbtRoot.setBoolean("signalActive", active);
+    
+    if (conectionModes.size() > 0) {
+      byte[] modes = new byte[6];
+      int i = 0;
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        modes[i] = (byte) getConectionMode(dir).ordinal();
+        i++;
+      }
+      nbtRoot.setByteArray("conModes", modes);
+    }
   }
 
   @Override
@@ -187,7 +219,23 @@ public abstract class AbstractConduit implements IConduit {
       externalConnections.add(ForgeDirection.values()[dirs[i]]);
     }
     active = nbtRoot.getBoolean("signalActive");
-    // collidablesDirty = true;
+
+    conectionModes.clear();
+    byte[] modes = nbtRoot.getByteArray("conModes");
+    if (modes != null && modes.length == 6) {
+      int i = 0;
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        conectionModes.put(dir, ConnectionMode.values()[modes[i]]);
+        i++;
+      }
+    }
+    // Support for old code
+    dirs = nbtRoot.getIntArray("extractDirs");
+    if (dirs != null) {
+      for (int i = 0; i < dirs.length; i++) {
+        conectionModes.put(ForgeDirection.values()[dirs[i]], ConnectionMode.INPUT);
+      }
+    }
   }
 
   @Override
@@ -236,6 +284,10 @@ public abstract class AbstractConduit implements IConduit {
     collidablesDirty = true;
     clientStateDirty = true;
     dodgyChangeSinceLastCallFlagForBundle = true;
+  }
+  
+  protected void setClientStateDirty() {
+    clientStateDirty = true;
   }
 
   protected void updateNetwork(World world) {

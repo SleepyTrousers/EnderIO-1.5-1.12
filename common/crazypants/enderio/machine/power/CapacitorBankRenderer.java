@@ -3,35 +3,26 @@ package crazypants.enderio.machine.power;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
-import crazypants.vecmath.CoordUV;
-import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vector4d;
+import crazypants.vecmath.Vertex;
 
 public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
@@ -166,8 +157,9 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     Tessellator tes = Tessellator.instance;
     tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
     Vector2f u = gb.getMinMaxU(icon);
-    List<CoordUV> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
-    for (CoordUV coord : corners) {
+    List<Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
+    for (Vertex coord : corners) {
+      tes.setNormal(coord.nx(), coord.ny(), coord.nz());
       tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), coord.u(), coord.v());
     }
   }
@@ -206,8 +198,8 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     Tessellator tes = Tessellator.instance;
     tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
     Vector2f u = gb.getMinMaxU(icon);
-    List<CoordUV> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
-    for (CoordUV coord : corners) {
+    List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
+    for (Vertex coord : corners) {
       tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());
     }
   }

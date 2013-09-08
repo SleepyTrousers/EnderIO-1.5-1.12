@@ -71,6 +71,10 @@ public interface IConduit {
   void externalConnectionRemoved(ForgeDirection fromDirection);
 
   boolean isConnectedTo(ForgeDirection dir);
+  
+  ConnectionMode getConectionMode(ForgeDirection dir);
+
+  boolean hasConnectionMode(ConnectionMode mode);
 
   // rendering, only needed us default rendering is used
 
