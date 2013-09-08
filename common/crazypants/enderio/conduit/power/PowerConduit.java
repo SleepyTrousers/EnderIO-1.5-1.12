@@ -17,6 +17,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
@@ -24,9 +25,11 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.MutablePowerProvider;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
+import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
@@ -54,6 +57,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       public void registerIcons(IconRegister register) {
         for (String pf : POSTFIX) {
           ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
+          ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT + pf));
+          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT + pf));
           ICONS.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
         }
         ICONS.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
@@ -76,7 +81,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public static final BoundingBox BOUNDS = new BoundingBox(MIN, MAX);
 
   protected PowerConduitNetwork network;
-  private EnderPowerProvider powerHandler;
+  private ConduitPowerProvider powerHandler;
 
   private int subtype;
 
@@ -91,6 +96,18 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
     if (ConduitUtil.isToolEquipped(player)) {
+      if (!getBundle().getEntity().worldObj.isRemote) {
+        if (res.component != null) {
+          ForgeDirection connDir = res.component.dir;
+          if (externalConnections.contains(connDir)) {
+            ConnectionMode curMode = getConectionMode(connDir);
+            ConnectionMode newMode = ConnectionMode.getNext(curMode);
+            conectionModes.put(connDir, newMode);
+            BlockCoord bc = getLocation();
+            setClientStateDirty();
+          }
+        }
+      }
       if (network != null) {
         System.out.println("PowerConduit.onBlockActivated: Network contains " + network.getPowerManager().energyStored + " of max energy "
             + network.getPowerManager().maxEnergyStored);
@@ -106,8 +123,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return CAPACITORS[subtype];
   }
 
-  private EnderPowerProvider createPowerHandlerForType() {
-    return PowerHandlerUtil.createHandler(CAPACITORS[subtype]);
+  private ConduitPowerProvider createPowerHandlerForType() {    
+    return ConduitPowerProvider.createHandler(CAPACITORS[subtype], this);
+    //return PowerHandlerUtil.createHandler(CAPACITORS[subtype]);
   }
 
   @Override
@@ -132,7 +150,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public EnderPowerProvider getPowerHandler() {
+  public MutablePowerProvider getPowerHandler() {
     return powerHandler;
   }
 
@@ -142,7 +160,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public IPowerProvider getPowerProvider() {
+  public IPowerProvider getPowerProvider() {    
     return powerHandler;
   }
 
@@ -152,7 +170,28 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int powerRequest(ForgeDirection from) {
+    if (getConectionMode(from) == ConnectionMode.OUTPUT) {
+      return 0;
+    }
     return powerHandler.getMaxEnergyStored() - powerHandler.getMinEnergyReceived();
+  }
+
+  @Override
+  public float getMaxEnergyExtracted(ForgeDirection dir) {
+    ConnectionMode mode = getConectionMode(dir);
+    if (mode == ConnectionMode.INPUT) {
+      return 0;
+    }
+    return getCapacitor().getMaxEnergyExtracted();
+  }
+
+  @Override
+  public float getMaxEnergyRecieved(ForgeDirection dir) {
+    ConnectionMode mode = getConectionMode(dir);
+    if (mode == ConnectionMode.OUTPUT) {
+      return 0;
+    }
+    return getCapacitor().getMaxEnergyReceived();
   }
 
   @Override
@@ -172,7 +211,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     // if(rec instanceof IPowerEmitter) {
     // return ((IPowerEmitter)rec).canEmitPowerFrom(direction.getOpposite());
     // }
-    return rec != null;
+    return rec != null && rec.getPowerProvider() != null;
   }
 
   @Override
@@ -231,8 +270,17 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public Icon getTextureForInputMode() {
+    return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]);
+  }
+
+  @Override
+  public Icon getTextureForOutputMode() {
+    return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]);
+  }
+
+  @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
-    // return ICONS.get(ICON_TRANSMISSION_KEY);
     return null;
   }
 

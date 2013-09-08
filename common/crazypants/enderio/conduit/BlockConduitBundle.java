@@ -462,7 +462,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     }
 
     // Conduit specific actions
-    if (bundle.getConduit(res.component.conduitType).onBlockActivated(player,
+    if (bundle.getConduit(res.component.conduitType) != null && bundle.getConduit(res.component.conduitType).onBlockActivated(player,
         res)) {
       world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
       return true;

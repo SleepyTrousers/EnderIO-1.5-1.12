@@ -25,6 +25,7 @@ import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.power.EnderPowerProvider;
+import crazypants.enderio.power.MutablePowerProvider;
 import crazypants.util.BlockCoord;
 
 public class TileConduitBundle extends TileEntity implements IConduitBundle {
@@ -479,7 +480,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   @Override
-  public EnderPowerProvider getPowerHandler() {
+  public MutablePowerProvider getPowerHandler() {
     IPowerConduit pc = getConduit(IPowerConduit.class);
     if (pc != null) {
       return pc.getPowerHandler();

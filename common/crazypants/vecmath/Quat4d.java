@@ -44,4 +44,14 @@ public class Quat4d {
     vec.z = d3 * w - d * z - d1 * y + d2 * x;
   }
 
+  public void rotate(Vector3f vec) {
+    double d = -x * vec.x - y * vec.y - z * vec.z;
+    double d1 = w * vec.x + y * vec.z - z * vec.y;
+    double d2 = w * vec.y - x * vec.z + z * vec.x;
+    double d3 = w * vec.z + x * vec.y - y * vec.x;
+    vec.x = (float)(d1 * w - d * x - d2 * z + d3 * y);
+    vec.y = (float)(d2 * w - d * y + d1 * z - d3 * x);
+    vec.z = (float)(d3 * w - d * z - d1 * y + d2 * x);
+  }
+
 }

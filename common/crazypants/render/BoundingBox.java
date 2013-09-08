@@ -5,10 +5,10 @@ import java.util.List;
 
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.util.BlockCoord;
-import crazypants.vecmath.CoordUV;
 import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public final class BoundingBox {
 
@@ -98,51 +98,50 @@ public final class BoundingBox {
    * @param face
    * @return
    */
-  public List<CoordUV> getCornersWithUvForFace(ForgeDirection face) {
+  public List<Vertex> getCornersWithUvForFace(ForgeDirection face) {
     return getCornersWithUvForFace(face, 0, 1, 0, 1);
-  }
-  
-  
-  public List<CoordUV> getCornersWithUvForFace(ForgeDirection face, float minU, float maxU, float minV, float  maxV) {     
-    List<CoordUV> result = new ArrayList<CoordUV>(4);
+  }  
+    
+  public List<Vertex> getCornersWithUvForFace(ForgeDirection face, float minU, float maxU, float minV, float  maxV) {     
+    List<Vertex> result = new ArrayList<Vertex>(4);
     switch(face) {
     case NORTH:
-      result.add(new CoordUV(new Vector3d(maxX, minY, minZ), new Vector2f(minU, minV)));
-      result.add(new CoordUV(new Vector3d(minX, minY, minZ), new Vector2f(maxU, minV)));
-      result.add(new CoordUV(new Vector3d(minX, maxY, minZ), new Vector2f(maxU, maxV)));
-      result.add(new CoordUV(new Vector3d(maxX, maxY, minZ), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(maxX, minY, minZ), new Vector3f(0,0,-1), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(minX, minY, minZ), new Vector3f(0,0,-1), new Vector2f(maxU, minV)));
+      result.add(new Vertex(new Vector3d(minX, maxY, minZ), new Vector3f(0,0,-1), new Vector2f(maxU, maxV)));
+      result.add(new Vertex(new Vector3d(maxX, maxY, minZ), new Vector3f(0,0,-1), new Vector2f(minU, maxV)));
       break;
     case SOUTH:
-      result.add(new CoordUV(new Vector3d(minX, minY, maxZ), new Vector2f(minU, minV)));
-      result.add(new CoordUV(new Vector3d(maxX, minY, maxZ), new Vector2f(maxU, minV)));
-      result.add(new CoordUV(new Vector3d(maxX, maxY, maxZ), new Vector2f(maxU, maxV)));
-      result.add(new CoordUV(new Vector3d(minX, maxY, maxZ), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(minX, minY, maxZ), new Vector3f(0,0,1), new Vector2f(maxU, minV)));
+      result.add(new Vertex(new Vector3d(maxX, minY, maxZ), new Vector3f(0,0,1), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(maxX, maxY, maxZ), new Vector3f(0,0,1), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(minX, maxY, maxZ), new Vector3f(0,0,1), new Vector2f(maxU, maxV)));
       break;
     case EAST:
-      result.add(new CoordUV(new Vector3d(maxX, maxY, minZ), new Vector2f(minU, maxV)));
-      result.add(new CoordUV(new Vector3d(maxX, maxY, maxZ), new Vector2f(maxU, maxV)));
-      result.add(new CoordUV(new Vector3d(maxX, minY, maxZ), new Vector2f(maxU, minV)));
-      result.add(new CoordUV(new Vector3d(maxX, minY, minZ), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(maxX, maxY, minZ), new Vector3f(1,0,0), new Vector2f(maxU, maxV)));
+      result.add(new Vertex(new Vector3d(maxX, maxY, maxZ), new Vector3f(1,0,0), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(maxX, minY, maxZ), new Vector3f(1,0,0), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(maxX, minY, minZ), new Vector3f(1,0,0), new Vector2f(maxU, minV)));
       break;
     case WEST:  
-      result.add(new CoordUV(new Vector3d(minX, minY, minZ), new Vector2f(minU, minV)));
-      result.add(new CoordUV(new Vector3d(minX, minY, maxZ), new Vector2f(maxU, minV)));
-      result.add(new CoordUV(new Vector3d(minX, maxY, maxZ), new Vector2f(maxU, maxV)));
-      result.add(new CoordUV(new Vector3d(minX, maxY, minZ), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(minX, minY, minZ), new Vector3f(-1,0,0), new Vector2f(maxU, minV)));
+      result.add(new Vertex(new Vector3d(minX, minY, maxZ), new Vector3f(-1,0,0), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(minX, maxY, maxZ), new Vector3f(-1,0,0), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(minX, maxY, minZ), new Vector3f(-1,0,0), new Vector2f(maxU, maxV)));
       break;
     case UP:
-      result.add(new CoordUV(new Vector3d(maxX, maxY, maxZ), new Vector2f(minU, minV)));
-      result.add(new CoordUV(new Vector3d(maxX, maxY, minZ), new Vector2f(minU, maxV)));
-      result.add(new CoordUV(new Vector3d(minX, maxY, minZ), new Vector2f(maxU, maxV)));
-      result.add(new CoordUV(new Vector3d(minX, maxY, maxZ), new Vector2f(maxU, minV)));
+      result.add(new Vertex(new Vector3d(maxX, maxY, maxZ), new Vector3f(0,1,0), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(maxX, maxY, minZ), new Vector3f(0,1,0), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(minX, maxY, minZ), new Vector3f(0,1,0), new Vector2f(maxU, maxV)));
+      result.add(new Vertex(new Vector3d(minX, maxY, maxZ), new Vector3f(0,1,0), new Vector2f(maxU, minV)));
       break;
-    case DOWN:
+    case DOWN: //
     case UNKNOWN:
     default:
-      result.add(new CoordUV(new Vector3d(minX, minY, minZ), new Vector2f(maxU, maxV)));
-      result.add(new CoordUV(new Vector3d(maxX, minY, minZ), new Vector2f(minU, maxV)));
-      result.add(new CoordUV(new Vector3d(maxX, minY, maxZ), new Vector2f(minU, minV)));
-      result.add(new CoordUV(new Vector3d(minX, minY, maxZ), new Vector2f(maxU, minV)));
+      result.add(new Vertex(new Vector3d(minX, minY, minZ), new Vector3f(0,-1,0), new Vector2f(maxU, maxV)));
+      result.add(new Vertex(new Vector3d(maxX, minY, minZ), new Vector3f(0,-1,0), new Vector2f(minU, maxV)));
+      result.add(new Vertex(new Vector3d(maxX, minY, maxZ), new Vector3f(0,-1,0), new Vector2f(minU, minV)));
+      result.add(new Vertex(new Vector3d(minX, minY, maxZ), new Vector3f(0,-1,0), new Vector2f(maxU, minV)));
       break;   
     }
     return result;

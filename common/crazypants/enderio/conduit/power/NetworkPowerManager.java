@@ -68,26 +68,25 @@ public class NetworkPowerManager {
       ReceptorEntry r = receptorIterator.next();
 
       IPowerReceptor pp = r.powerReceptor;
-      if (pp != null) {
+      if (pp != null && pp.getPowerProvider() != null) {
 
         float used = 0;
         float reservedForEntry = removeReservedEnergy(r);
         float canOffer = available + reservedForEntry;
-        canOffer = Math.min(r.emmiter.getCapacitor().getMaxEnergyExtracted(), canOffer);
+        canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
+
         float requested = pp.powerRequest(r.direction);
-        if (pp.getPowerProvider() != null) {
-          int max = pp.getPowerProvider().getMaxEnergyStored();
-          float st = pp.getPowerProvider().getEnergyStored();
-          float needs = max - st;
-          requested = Math.min(needs, pp.getPowerProvider().getMaxEnergyReceived());
-        }
+        requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyStored() - pp.getPowerProvider().getEnergyStored());
+        requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyReceived());
 
         // If it is possible to supply the minimum amount of energy
-        if (pp.getPowerProvider() != null && pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getCapacitor().getMaxEnergyExtracted()) {
+        if (pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getMaxEnergyExtracted(r.direction)) {
           // Buffer energy if we can't meet it now
           if (pp.getPowerProvider().getMinEnergyReceived() > canOffer && requested > 0) {
-            reserveEnergy(r, canOffer);
-            used += canOffer;
+            if (pp.getPowerProvider().getMinEnergyReceived() < r.emmiter.getMaxEnergyExtracted(r.direction)) {
+              reserveEnergy(r, canOffer);
+              used += canOffer;
+            }
           } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
             used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, r.direction);
           } else {
@@ -287,12 +286,13 @@ public class NetworkPowerManager {
         float canGet = 0;
         if (cb.isOutputEnabled()) {
           canGet = Math.min(cb.getEnergyStored(), cb.getMaxIO());
-          canGet = Math.min(canGet, rec.emmiter.getCapacitor().getMaxEnergyExtracted());
+          canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
           canExtract += canGet;
         }
         float canFill = 0;
         if (cb.isInputEnabled()) {
           canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxIO());
+          canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
           this.canFill += canFill;
         }
         enteries.add(new CapBankSupplyEntry(cb, canGet, canFill));

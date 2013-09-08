@@ -66,7 +66,7 @@ public class PacketHandler implements IPacketHandler {
         System.out.println("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
       }
     } catch (IOException ex) {
-      FMLCommonHandler.instance().raiseException(ex, "PacketHandler.onPacketData", true);
+      FMLCommonHandler.instance().raiseException(ex, "PacketHandler.onPacketData", false);
     }
   }
 

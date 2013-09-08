@@ -172,6 +172,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
           // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
           // + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
           used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
+          used = Math.min(used, pp.getMaxEnergyStored() - pp.getMaxEnergyReceived());
           pp.receiveEnergy(used, receptor.fromDir);
         }
         transmitted += used;

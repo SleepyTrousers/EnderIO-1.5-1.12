@@ -32,6 +32,10 @@ public class VecmathUtil {
   public static double clamp(double val, double min, double max) {
     return val < min ? min : (val > max ? max : val);
   }
+  
+  public static int clamp(int val, int min, int max) {
+    return val < min ? min : (val > max ? max : val);
+  }
 
   /**
    * Compute the plane equation <code>Ax + By + Cz + D = 0</code> for the plane

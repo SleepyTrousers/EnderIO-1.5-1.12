@@ -4,7 +4,7 @@ import buildcraft.api.power.IPowerReceptor;
 
 public interface IInternalPowerReceptor extends IPowerReceptor {
 
-  EnderPowerProvider getPowerHandler();
+  MutablePowerProvider getPowerHandler();
 
   void applyPerdition();
 

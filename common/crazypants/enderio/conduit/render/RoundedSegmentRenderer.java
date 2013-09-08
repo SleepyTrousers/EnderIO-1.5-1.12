@@ -10,22 +10,21 @@ import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
 import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class RoundedSegmentRenderer {
 
-  private static Coord[][] DIR_COORDS = new Coord[ForgeDirection.VALID_DIRECTIONS.length][];
+  private static Vertex[][] DIR_COORDS = new Vertex[ForgeDirection.VALID_DIRECTIONS.length][];
 
   private static final Vector3d REF_TRANS = new Vector3d(0.5, 0.5, 0.5);
 
   static {
     double circ = ConduitGeometryUtil.WIDTH * 0.7;
 
-    Coord[] refCoords = createUnitSectionQuads(16, -0.25, 0.25);
+    Vertex[] refCoords = createUnitSectionQuads(16, -0.25, 0.25);
 
-    for (Coord coord : refCoords) {
+    for (Vertex coord : refCoords) {
       coord.xyz.x = coord.xyz.x * circ;
       coord.xyz.y = coord.xyz.y * circ;
     }
@@ -57,31 +56,29 @@ public class RoundedSegmentRenderer {
 
   }
 
-  private static Coord[] xformCoords(Coord[] refCoords, Matrix4d rotMat, Vector3d trans) {
-    Coord[] res = new Coord[refCoords.length];
+  private static Vertex[] xformCoords(Vertex[] refCoords, Matrix4d rotMat, Vector3d trans) {
+    Vertex[] res = new Vertex[refCoords.length];
     for (int i = 0; i < res.length; i++) {
-      res[i] = new Coord(refCoords[i]);
-      rotMat.transform(res[i].xyz);
-      rotMat.transformNormal(res[i].normal);
-      res[i].xyz.add(trans);
+      res[i] = new Vertex(refCoords[i]);
+      res[i].transform(rotMat);
+      res[i].translate(trans);
     }
     return res;
   }
 
-  private static Coord[] xformCoords(List<Coord> refCoords, Matrix4d rotMat, Vector3d trans) {
-    Coord[] res = new Coord[refCoords.size()];
+  private static Vertex[] xformCoords(List<Vertex> refCoords, Matrix4d rotMat, Vector3d trans) {
+    Vertex[] res = new Vertex[refCoords.size()];
     for (int i = 0; i < res.length; i++) {
-      res[i] = new Coord(refCoords.get(i));
-      rotMat.transform(res[i].xyz);
-      rotMat.transformNormal(res[i].normal);
-      res[i].xyz.add(trans);
+      res[i] = new Vertex(refCoords.get(i));
+      res[i].transform(rotMat);
+      res[i].translate(trans);
     }
     return res;
   }
 
-  public static Coord[] createUnitCrossSection(double xOffset, double yOffset, double zOffset, int numCoords, int u) {
+  public static Vertex[] createUnitCrossSection(double xOffset, double yOffset, double zOffset, int numCoords, int u) {
 
-    Coord[] crossSection = new Coord[numCoords];
+    Vertex[] crossSection = new Vertex[numCoords];
 
     double angle = 0;
     double inc = (Math.PI * 2) / (crossSection.length - 1);
@@ -89,7 +86,7 @@ public class RoundedSegmentRenderer {
       double x = Math.cos(angle) * 0.5;
       double y = Math.sin(angle) * 0.5;
       angle += inc;
-      crossSection[i] = new Coord();
+      crossSection[i] = new Vertex();
       crossSection[i].setXYZ(xOffset + x, yOffset + y, zOffset);
       crossSection[i].setNormal(x, y, 0);
       crossSection[i].setUV(u, y + 0.5);
@@ -105,8 +102,8 @@ public class RoundedSegmentRenderer {
     Vector3d offset = calcOffset(dir, bounds);
 
     Tessellator tes = Tessellator.instance;
-    Coord[] coords = DIR_COORDS[dir.ordinal()];
-    for (Coord coord : coords) {
+    Vertex[] coords = DIR_COORDS[dir.ordinal()];
+    for (Vertex coord : coords) {
       double u = minU + (coord.uv.x * uScale);
       double v = minV + (coord.uv.y * vScale);
       tes.setNormal(coord.normal.x, coord.normal.y, coord.normal.z);
@@ -125,55 +122,20 @@ public class RoundedSegmentRenderer {
     return res;
   }
 
-  public static Coord[] createUnitSectionQuads(int numCoords, double minZ, double maxZ) {
+  public static Vertex[] createUnitSectionQuads(int numCoords, double minZ, double maxZ) {
 
-    Coord[] z0 = createUnitCrossSection(0, 0, minZ, numCoords + 1, 0);
-    Coord[] z1 = createUnitCrossSection(0, 0, maxZ, numCoords + 1, 1);
+    Vertex[] z0 = createUnitCrossSection(0, 0, minZ, numCoords + 1, 0);
+    Vertex[] z1 = createUnitCrossSection(0, 0, maxZ, numCoords + 1, 1);
 
-    Coord[] result = new Coord[numCoords * 4];
+    Vertex[] result = new Vertex[numCoords * 4];
     for (int i = 0; i < numCoords; i++) {
       int index = i * 4;
-      result[index] = new Coord(z0[i]);
-      result[index + 1] = new Coord(z0[i + 1]);
-      result[index + 2] = new Coord(z1[i + 1]);
-      result[index + 3] = new Coord(z1[i]);
+      result[index] = new Vertex(z0[i]);
+      result[index + 1] = new Vertex(z0[i + 1]);
+      result[index + 2] = new Vertex(z1[i + 1]);
+      result[index + 3] = new Vertex(z1[i]);
     }
     return result;
-
-  }
-
-  public static class Coord {
-
-    Vector3d xyz = new Vector3d();
-    Vector2d uv = new Vector2d();
-    Vector3f normal = new Vector3f();
-
-    Coord() {
-    }
-
-    Coord(Coord other) {
-      xyz.set(other.xyz);
-      uv.set(other.uv);
-      normal.set(other.normal);
-    }
-
-    void setXYZ(double x, double y, double z) {
-      xyz.set(x, y, z);
-    }
-
-    void setUV(double u, double v) {
-      uv.set(u, v);
-    }
-
-    void setNormal(double x, double y, double z) {
-      normal.set((float) x, (float) y, (float) z);
-      normal.normalize();
-    }
-
-    @Override
-    public String toString() {
-      return "Coord [xyz=" + xyz + ", uv=" + uv + "]";
-    }
 
   }
 

@@ -16,6 +16,7 @@ import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.vecmath.VecmathUtil;
 
 public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
 
@@ -111,7 +112,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   public int getEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return (int) (scale * (storedEnergy / capacitorType.capacitor.getMaxEnergyStored()));
+    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / capacitorType.capacitor.getMaxEnergyStored())), 0, scale);
   }
 
   public float getEnergyStored() {

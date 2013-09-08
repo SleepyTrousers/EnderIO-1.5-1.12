@@ -26,7 +26,7 @@ public class PowerHandlerUtil {
 
   public static float transmitInternal(IInternalPowerReceptor receptor, float quantity, ForgeDirection from) {
 
-    EnderPowerProvider ph = receptor.getPowerHandler();
+    MutablePowerProvider ph = receptor.getPowerHandler();
     if (ph == null) {
       return 0;
     }
