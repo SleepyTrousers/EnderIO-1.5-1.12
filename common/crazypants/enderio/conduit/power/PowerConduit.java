@@ -105,7 +105,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
           if(externalConnections.contains(connDir)) {
             ConnectionMode curMode = getConectionMode(connDir);
             ConnectionMode newMode = ConnectionMode.getNext(curMode);
-            System.out.println("PowerConduit.onBlockActivated: Setting mode to: " + newMode);
             conectionModes.put(connDir, newMode);  
             BlockCoord bc = getLocation();
             setClientStateDirty();
@@ -237,7 +236,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       network.powerReceptorRemoved(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
     }
   }
-
+  
   @Override
   public IPowerReceptor getExternalPowerReceptor(ForgeDirection direction) {
     TileEntity te = bundle.getEntity();
