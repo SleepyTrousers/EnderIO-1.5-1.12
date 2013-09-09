@@ -92,9 +92,16 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   @Override
-  public void setFacadeId(int blockID) {
+  public void setFacadeId(int blockID, boolean triggerUpdate) {
     this.facadeId = blockID;
+    if(triggerUpdate) {
     facadeChanged = true;
+  }
+  }
+
+  @Override
+  public void setFacadeId(int blockID) {
+    setFacadeId(blockID, true);    
   }
 
   @Override
