@@ -183,7 +183,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
       int facadeId = bundle.getFacadeId();
       if (ConduitUtil.isFacadeHidden(bundle, player)) {
-        bundle.setFacadeId(0);
+        bundle.setFacadeId(0, false);
       }
 
       BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
@@ -193,7 +193,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       rb.renderStandardBlock(facb, x, y, z);
       facb.setBlockOverride(null);
 
-      bundle.setFacadeId(facadeId);
+      bundle.setFacadeId(facadeId, false);
 
     }
 

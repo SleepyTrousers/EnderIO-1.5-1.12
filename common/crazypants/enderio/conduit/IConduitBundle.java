@@ -50,6 +50,8 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler {
   boolean hasFacade();
 
   void setFacadeId(int blockID);
+  
+  void setFacadeId(int blockID, boolean triggerUpdate);
 
   int getFacadeId();
 
