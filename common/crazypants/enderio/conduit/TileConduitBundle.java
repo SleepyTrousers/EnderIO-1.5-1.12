@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
@@ -19,6 +22,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -42,6 +46,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
+  
+  @SideOnly(Side.CLIENT)
+  private FacadeRenderState facadeRenderAs = FacadeRenderState.NONE;
 
   public TileConduitBundle() {
     blockType = EnderIO.blockConduitBundle;
@@ -118,6 +125,20 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public int getFacadeMetadata() {
     return facadeMeta;
+  }
+  
+  
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public FacadeRenderState getFacadeRenderedAs() {   
+    return facadeRenderAs;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void setFacadeRenderAs(FacadeRenderState state) {
+    this.facadeRenderAs = state;    
   }
 
   @Override

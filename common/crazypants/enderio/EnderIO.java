@@ -213,8 +213,7 @@ public class EnderIO {
 //  }
 
   @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {
-    TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
+  public void postInit(FMLPostInitializationEvent event) {    
   }
 
   @EventHandler

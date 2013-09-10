@@ -74,7 +74,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     TileConduitBundle cb = (TileConduitBundle)
         world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
-    if (ConduitUtil.renderFacade(cb, Minecraft.getMinecraft().thePlayer)) {
+    if (ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
       if (cb.getFacadeId() > 0) {
         tex = Block.blocksList[cb.getFacadeId()].getIcon(target.sideHit,
             cb.getFacadeMetadata());
@@ -309,7 +309,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     boolean breakBlock = true;
     List<ItemStack> drop = new ArrayList<ItemStack>();
-    if (ConduitUtil.renderFacade(te, player)) {
+    if (ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
       ItemStack fac = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
       PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
@@ -527,7 +527,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     IConduitBundle con = (IConduitBundle) te;
 
     BoundingBox minBB = new BoundingBox(1, 1, 1, 0, 0, 0);
-    if (!ConduitUtil.renderFacade(con, EnderIO.proxy.getClientPlayer())) {
+    if (!ConduitUtil.isSolidFacadeRendered(con, EnderIO.proxy.getClientPlayer())) {
 
       Collection<CollidableComponent> bounds = con.getCollidableComponents();
       for (CollidableComponent bnd : bounds) {
@@ -597,7 +597,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     IConduitBundle bundle = (IConduitBundle) te;
     List<RaytraceResult> hits = new ArrayList<RaytraceResult>();
 
-    if (ConduitUtil.renderFacade(bundle, player)) {
+    if (ConduitUtil.isSolidFacadeRendered(bundle, player)) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       MovingObjectPosition hitPos = super.collisionRayTrace(world, x, y, z,
           origin, direction);

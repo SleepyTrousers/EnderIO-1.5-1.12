@@ -27,6 +27,7 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.BoundingBox;
@@ -39,12 +40,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
   public static final float CONNECTOR_DEPTH = 0.05f;
   
-  public ConduitBundleRenderer(float conduitScale) {
-    
-    
-    //float connectorWidth = 0.3f;
-    float connectorWidth = 0.25f + (conduitScale * 0.5f);
-    
+  public ConduitBundleRenderer(float conduitScale) {        
+    float connectorWidth = 0.25f + (conduitScale * 0.5f);    
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       connectorBounds.put(dir, createConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
@@ -54,7 +51,14 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    if (ConduitUtil.renderFacade(bundle, player)) {
+    
+    FacadeRenderState curRS = bundle.getFacadeRenderedAs();
+    FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(bundle, player);
+    if(curRS != rs) {   
+      te.worldObj.markBlockForRenderUpdate(te.xCoord, te.yCoord, te.zCoord);
+    }
+    
+    if (curRS == FacadeRenderState.FULL) {
       return;
     }
 
@@ -184,6 +188,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       int facadeId = bundle.getFacadeId();
       if (ConduitUtil.isFacadeHidden(bundle, player)) {
         bundle.setFacadeId(0, false);
+        bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
+      } else {
+        bundle.setFacadeRenderAs(FacadeRenderState.FULL);
       }
 
       BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
@@ -195,6 +202,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
       bundle.setFacadeId(facadeId, false);
 
+    } else {
+      bundle.setFacadeRenderAs(FacadeRenderState.NONE);
     }
 
     return true;
