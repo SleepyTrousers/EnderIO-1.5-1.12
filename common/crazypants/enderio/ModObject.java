@@ -25,7 +25,8 @@ public enum ModObject {
   itemIndustrialBinder(++Config.IID, CATEGORY_ITEM, "Industrial Binder"),
   itemBasicCapacitor(++Config.IID, CATEGORY_ITEM, "Basic Capacitor"),
   itemAlloy(++Config.IID, CATEGORY_ITEM, "Alloy"),
-  itemRedstoneInductor(++Config.IID, CATEGORY_BLOCK, "Redstone Inductor"),
+  itemRedstoneInductor(++Config.IID, CATEGORY_ITEM, "Redstone Inductor"),
+  itemBasicGear(++Config.IID, CATEGORY_ITEM, "Basic Gear"),
   blockFusedQuartz(++Config.BID, CATEGORY_BLOCK, "Fused Quartz"),
   blockMachineChassi(++Config.BID, CATEGORY_BLOCK, "Machine Chassi"),
 
@@ -51,6 +52,7 @@ public enum ModObject {
   blockCapacitorBank(++Config.BID, CATEGORY_BLOCK, "Capacitor Bank"),
 
   itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench"),
+  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)"),
   
   blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
   blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),

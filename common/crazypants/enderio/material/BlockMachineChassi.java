@@ -37,5 +37,4 @@ public class BlockMachineChassi extends Block {
   public void registerIcons(IconRegister iconRegister) {
   blockIcon = iconRegister.registerIcon("enderio:machineChassi");
   }
-
 }
