@@ -17,6 +17,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.util.BlockCoord;
+import crazypants.util.Util;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
@@ -59,15 +61,11 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   @Override
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 
-    ForgeDirection dir = ForgeDirection.values()[side];
-    int placeX = x + dir.offsetX;
-    int placeY = y + dir.offsetY;
-    int placeZ = z + dir.offsetZ;
-
-    if (world.isAirBlock(placeX, placeY, placeZ)) {
+    BlockCoord placeAt = Util.canPlaceItem(stack, ModObject.blockConduitBundle.actualId, player, world, x, y, z, side);
+    if (placeAt != null) {
       if (!world.isRemote) {
-        if (world.setBlock(placeX, placeY, placeZ, ModObject.blockConduitBundle.actualId, 0, 1)) {
-          IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
+        if (world.setBlock(placeAt.x, placeAt.y, placeAt.z, ModObject.blockConduitBundle.actualId, 0, 1)) {
+          IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeAt.x, placeAt.y, placeAt.z);
           bundle.addConduit(createConduit(stack));
           Block b = EnderIO.blockConduitBundle;
           world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), b.stepSound.getPlaceSound(),
@@ -78,27 +76,36 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
         stack.stackSize--;
       }
       return true;
-    } else if (world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
+      
+    } else {
+      
+      ForgeDirection dir = ForgeDirection.values()[side];
+      int placeX = x + dir.offsetX;
+      int placeY = y + dir.offsetY;
+      int placeZ = z + dir.offsetZ;
+      
+      if (world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
 
-      IConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
-      if (bundle == null) {
-        System.out.println("AbstractItemConduit.onItemUse: Bunle null");
-        return false;
-      }
-      IConduit con = createConduit(stack);
-      if (con == null) {
-        System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
-        return false;
-      }
-      if (bundle.getConduit(con.getBaseConduitType()) == null) {
-        if (!world.isRemote) {
-          bundle.addConduit(con);
-          if (!player.capabilities.isCreativeMode) {
-            stack.stackSize--;
-          }
+        IConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
+        if (bundle == null) {
+          System.out.println("AbstractItemConduit.onItemUse: Bunle null");
+          return false;
         }
-        return true;
-      }
+        IConduit con = createConduit(stack);
+        if (con == null) {
+          System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
+          return false;
+        }
+        if (bundle.getConduit(con.getBaseConduitType()) == null) {
+          if (!world.isRemote) {
+            bundle.addConduit(con);
+            if (!player.capabilities.isCreativeMode) {
+              stack.stackSize--;
+            }
+          }
+          return true;
+        }
+      } 
     }
 
     return false;
