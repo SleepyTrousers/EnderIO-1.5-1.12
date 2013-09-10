@@ -32,6 +32,7 @@ import cpw.mods.fml.common.network.Player;
 import crazypants.enderio.enderface.ContainerWrapper;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.alloy.TileAlloySmelter;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.util.PacketUtil;
 
@@ -41,6 +42,7 @@ public class PacketHandler implements IPacketHandler {
   private static final int ID_TILE_ENTITY = 4;
   private static final int ID_MACHINE_REDSTONE_PACKET = 2;
   private static final int ID_CAP_BANK_REDSTONE_PACKET = 3;
+  private static final int ID_ALLOY_SMELTING_MODE_PACKET = 5;
 
   private static final String CHANNEL = "EnderIO";
   
@@ -62,6 +64,8 @@ public class PacketHandler implements IPacketHandler {
         handleRedstoneControlPacket(data, manager, player);
       } else if (id == ID_CAP_BANK_REDSTONE_PACKET) {
         handleCapBankRedstoneControlPacket(data, manager, player);
+      } else if (id == ID_ALLOY_SMELTING_MODE_PACKET) {
+        handleSmeltingModePacket(data, manager, player);
       } else {
         System.out.println("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
       }
@@ -77,6 +81,44 @@ public class PacketHandler implements IPacketHandler {
   // ---------------- Redstone Control
   // --------------------------------------------------------
 
+  private void handleSmeltingModePacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
+    int x = data.readInt();
+    int y = data.readInt();
+    int z = data.readInt();
+    boolean val = data.readBoolean();
+    EntityPlayerMP p = (EntityPlayerMP) player;
+    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    if (te instanceof TileAlloySmelter) {
+      TileAlloySmelter me = (TileAlloySmelter) te;
+      me.setFurnaceRecipesEnabled(val);
+      p.worldObj.markBlockForUpdate(x, y, z);
+    }
+
+  }
+
+  
+  public static Packet getSmeltingModePacket(TileAlloySmelter te) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
+    DataOutputStream dos = new DataOutputStream(bos);
+    try {
+      dos.writeInt(ID_ALLOY_SMELTING_MODE_PACKET);
+      dos.writeInt(te.xCoord);
+      dos.writeInt(te.yCoord);
+      dos.writeInt(te.zCoord);
+      dos.writeBoolean(te.areFurnaceRecipesEnabled());
+    } catch (IOException e) {
+      // never thrown
+    }
+
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+
+  }
+  
   private void handleRedstoneControlPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
     int x = data.readInt();
     int y = data.readInt();
@@ -92,6 +134,7 @@ public class PacketHandler implements IPacketHandler {
 
   }
 
+  
   public static Packet getRedstoneControlPacket(AbstractMachineEntity te) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
