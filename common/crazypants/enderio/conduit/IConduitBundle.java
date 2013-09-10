@@ -82,8 +82,4 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler {
 
   int getFacadeMetadata();
 
-  
-
-    
-  
 }
