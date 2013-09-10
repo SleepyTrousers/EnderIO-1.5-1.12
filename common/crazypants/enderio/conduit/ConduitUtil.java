@@ -17,7 +17,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -76,8 +79,18 @@ public class ConduitUtil {
     return true;
   }
 
+  @SideOnly(Side.CLIENT)
+  public static FacadeRenderState getRequiredFacadeRenderState(IConduitBundle bundle, EntityPlayer player) {
+    if(!bundle.hasFacade()) {
+      return FacadeRenderState.NONE;
+    }
+    if(isFacadeHidden(bundle, player)) {
+      return FacadeRenderState.WIRE_FRAME;
+    }
+    return FacadeRenderState.FULL;    
+  }
 
-  public static boolean renderFacade(IConduitBundle bundle, EntityPlayer player) {
+  public static boolean isSolidFacadeRendered(IConduitBundle bundle, EntityPlayer player) {
     return bundle.getFacadeId() > 0 && !isFacadeHidden(bundle, player);
   }
 

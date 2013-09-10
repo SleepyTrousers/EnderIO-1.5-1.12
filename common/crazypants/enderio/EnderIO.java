@@ -183,7 +183,6 @@ public class EnderIO {
 
   @PostInit
   public void postInit(FMLPostInitializationEvent event) {
-    TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
   }
 
   @ServerStopped

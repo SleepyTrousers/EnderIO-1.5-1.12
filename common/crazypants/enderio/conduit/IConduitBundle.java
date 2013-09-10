@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ITankContainer;
@@ -38,14 +41,34 @@ public interface IConduitBundle extends IInternalPowerReceptor, ITankContainer {
   Set<ForgeDirection> getAllConnections();
 
   boolean containsConnection(ForgeDirection dir);
+  
+  //geometry
+  
+  List<CollidableComponent> getCollidableComponents();
+
+  List<CollidableComponent> getConnectors();
 
   // events
 
   void onNeighborBlockChange(int blockId);
 
   void onBlockRemoved();
+  
+  void dirty();
 
   // Facade
+    
+  enum FacadeRenderState {
+    NONE,
+    FULL,
+    WIRE_FRAME
+  }
+  
+  @SideOnly(Side.CLIENT)
+  FacadeRenderState getFacadeRenderedAs();
+  
+  @SideOnly(Side.CLIENT)
+  void setFacadeRenderAs(FacadeRenderState state);
 
   boolean hasFacade();
 
@@ -58,11 +81,5 @@ public interface IConduitBundle extends IInternalPowerReceptor, ITankContainer {
   void setFacadeMetadata(int meta);
 
   int getFacadeMetadata();
-
-  List<CollidableComponent> getCollidableComponents();
-
-  List<CollidableComponent> getConnectors();
-
-  void dirty();
 
 }

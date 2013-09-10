@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
@@ -16,6 +19,7 @@ import net.minecraftforge.liquids.LiquidStack;
 import buildcraft.api.power.IPowerProvider;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -41,6 +45,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
+  
+  @SideOnly(Side.CLIENT)
+  private FacadeRenderState facadeRenderAs = FacadeRenderState.NONE;
 
   public TileConduitBundle() {
     blockType = EnderIO.blockConduitBundle;
@@ -95,8 +102,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public void setFacadeId(int blockID, boolean triggerUpdate) {
     this.facadeId = blockID;
     if(triggerUpdate) {
-    facadeChanged = true;
-  }
+      facadeChanged = true;
+    }    
   }
 
   @Override
@@ -117,6 +124,20 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public int getFacadeMetadata() {
     return facadeMeta;
+  }
+  
+  
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public FacadeRenderState getFacadeRenderedAs() {   
+    return facadeRenderAs;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void setFacadeRenderAs(FacadeRenderState state) {
+    this.facadeRenderAs = state;    
   }
 
   @Override
@@ -421,32 +442,6 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   // ------------ Power -----------------------------
 
-  // @Override
-  // public void doWork(PowerHandler workProvider) {
-  // IPowerConduit pc = getConduit(IPowerConduit.class);
-  // if (pc != null) {
-  // pc.doWork(workProvider);
-  // }
-  // }
-  //
-  // @Override
-  // public PowerReceiver getPowerReceiver(ForgeDirection side) {
-  // IPowerConduit pc = getConduit(IPowerConduit.class);
-  // if (pc != null) {
-  // return pc.getPowerReceiver(side);
-  // }
-  // return null;
-  // }
-  //
-  // @Override
-  // public PowerProvider getPowerHandler() {
-  // IPowerConduit pc = getConduit(IPowerConduit.class);
-  // if (pc != null) {
-  // return pc.getPowerHandler();
-  // }
-  // return null;
-  // }
-
   @Override
   public void setPowerProvider(IPowerProvider provider) {
   }
@@ -496,6 +491,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   // ------- Liquids -----------------------------
+
   @Override
   public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
@@ -549,61 +545,5 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     return null;
   }
-
-  // @Override
-  // public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  // if (lc != null) {
-  // return lc.fill(from, resource, doFill);
-  // }
-  // return 0;
-  // }
-  //
-  // @Override
-  // public FluidStack drain(ForgeDirection from, FluidStack resource, boolean
-  // doDrain) {
-  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  // if (lc != null) {
-  // return lc.drain(from, resource, doDrain);
-  // }
-  // return null;
-  // }
-  //
-  // @Override
-  // public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
-  // {
-  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  // if (lc != null) {
-  // return lc.drain(from, maxDrain, doDrain);
-  // }
-  // return null;
-  // }
-  //
-  // @Override
-  // public boolean canFill(ForgeDirection from, Fluid fluid) {
-  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  // if (lc != null) {
-  // return lc.canFill(from, fluid);
-  // }
-  // return false;
-  // }
-  //
-  // @Override
-  // public boolean canDrain(ForgeDirection from, Fluid fluid) {
-  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  // if (lc != null) {
-  // return lc.canDrain(from, fluid);
-  // }
-  // return false;
-  // }
-  //
-  // @Override
-  // public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-  // ILiquidConduit lc = getConduit(ILiquidConduit.class);
-  // if (lc != null) {
-  // return lc.getTankInfo(from);
-  // }
-  // return null;
-  // }
 
 }
