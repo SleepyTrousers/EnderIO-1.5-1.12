@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.alloy;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -18,6 +20,9 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     ppainter.init();
     return ppainter;
   }
+  
+  Icon vanillaSmeltingOn;
+  Icon vanillaSmeltingOff;
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
@@ -38,6 +43,15 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     recipe = new BasicAlloyRecipe(new ItemStack(Item.blazeRod), "Blazedy Blaze", new ItemStack(Item.ingotIron, 1, 0), new ItemStack(Item.ingotGold, 1, 0),
         new ItemStack(Item.diamond, 1, 0));
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, recipe);
+  }
+  
+  
+
+  @Override
+  public void registerIcons(IconRegister iconRegister) {
+    super.registerIcons(iconRegister);
+    vanillaSmeltingOn = iconRegister.registerIcon("enderio:furnaceSmeltingOn");
+    vanillaSmeltingOff = iconRegister.registerIcon("enderio:furnaceSmeltingOff");
   }
 
   @Override

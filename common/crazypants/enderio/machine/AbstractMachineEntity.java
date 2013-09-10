@@ -43,7 +43,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   protected RedstoneControlMode redstoneControlMode;
 
-  protected boolean redstoneCheckPassed;
+  protected boolean redstoneCheckPassed;    
 
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition; // plus one for capacitor
