@@ -25,7 +25,9 @@ public enum ModObject {
   itemIndustrialBinder(++Config.IID, CATEGORY_ITEM, "Industrial Binder"),
   itemBasicCapacitor(++Config.IID, CATEGORY_ITEM, "Basic Capacitor"),
   itemAlloy(++Config.IID, CATEGORY_ITEM, "Alloy"),
+  itemRedstoneInductor(++Config.IID, CATEGORY_BLOCK, "Redstone Inductor"),
   blockFusedQuartz(++Config.BID, CATEGORY_BLOCK, "Fused Quartz"),
+  blockMachineChassi(++Config.BID, CATEGORY_BLOCK, "Machine Chassi"),
 
   // Stirling Gen
   blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK, "Stirling Generator"),
