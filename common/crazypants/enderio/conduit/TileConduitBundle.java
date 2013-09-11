@@ -47,7 +47,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   private boolean collidablesDirty = true;
   
   @SideOnly(Side.CLIENT)
-  private FacadeRenderState facadeRenderAs = FacadeRenderState.NONE;
+  private FacadeRenderState facadeRenderAs;
 
   public TileConduitBundle() {
     blockType = EnderIO.blockConduitBundle;
@@ -131,6 +131,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   @SideOnly(Side.CLIENT)
   public FacadeRenderState getFacadeRenderedAs() {   
+	if(facadeRenderAs == null) {
+      facadeRenderAs = FacadeRenderState.NONE;
+    }
     return facadeRenderAs;
   }
 
