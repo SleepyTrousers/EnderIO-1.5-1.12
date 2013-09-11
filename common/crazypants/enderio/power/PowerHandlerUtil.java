@@ -1,11 +1,14 @@
 package crazypants.enderio.power;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PerditionCalculator;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
@@ -13,6 +16,23 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 
 public class PowerHandlerUtil {
 
+  public static float getStoredEnergyForItem(ItemStack item) {
+    NBTTagCompound tag = item.getTagCompound();
+    if(tag == null) {
+      return 0;
+    }
+    return tag.getFloat("storedEnergy");
+  }
+  
+  public static void setStoredEnergyForItem(ItemStack item, float storedEnergy) {
+    NBTTagCompound tag = item.getTagCompound();
+    if(tag == null) {
+      tag = new NBTTagCompound();
+    }    
+    tag.setFloat("storedEnergy", storedEnergy);   
+    item.setTagCompound(tag);    
+  }
+  
   public static PowerHandler createHandler(ICapacitor capacitor, IPowerReceptor pr, Type type) {
     PowerHandler ph = new PowerHandler(pr, type);
     ph.configure(capacitor.getMinEnergyReceived(), capacitor.getMaxEnergyReceived(), capacitor.getMinActivationEnergy(), capacitor.getMaxEnergyStored());

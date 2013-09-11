@@ -181,22 +181,11 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     }
     
     boolean prevRedCheck = redstoneCheckPassed;
-    redstoneCheckPassed = true;
-    if (redstoneControlMode == RedstoneControlMode.ON) {
-      int powerLevel = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord);
-      if (powerLevel < 1) {
-        redstoneCheckPassed = false;
-      }
-    } else if (redstoneControlMode == RedstoneControlMode.OFF) {
-      int powerLevel = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord);
-      if (powerLevel > 0) {
-        redstoneCheckPassed = false;
-      }
-    }
-    requiresClientSync |= prevRedCheck != redstoneCheckPassed;
+    redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);    
+    requiresClientSync |= prevRedCheck != redstoneCheckPassed;    
     
     requiresClientSync |= processTasks(redstoneCheckPassed);
-
+    
     requiresClientSync |= lastSyncPowerStored != powerHandler.getEnergyStored() && worldObj.getTotalWorldTime() % 16 == 0;
 
     if (requiresClientSync) {

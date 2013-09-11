@@ -101,11 +101,15 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     boolean hasSignal = isRecievingRedstoneSignal();
     if (inputControlMode == RedstoneControlMode.IGNORE) {
       inputEnabled = true;
+    } else if (inputControlMode == RedstoneControlMode.NEVER) {
+      inputEnabled = false;
     } else {
       inputEnabled = (inputControlMode == RedstoneControlMode.ON && hasSignal) || (inputControlMode == RedstoneControlMode.OFF && !hasSignal);
     }
     if (outputControlMode == RedstoneControlMode.IGNORE) {
       outputEnabled = true;
+    } else if (outputControlMode == RedstoneControlMode.NEVER) {
+      outputEnabled = false;
     } else {
       outputEnabled = (outputControlMode == RedstoneControlMode.ON && hasSignal) || (outputControlMode == RedstoneControlMode.OFF && !hasSignal);
     }
