@@ -33,6 +33,7 @@ import crazypants.enderio.enderface.ContainerWrapper;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.alloy.TileAlloySmelter;
+import crazypants.enderio.machine.hypercube.TileHyperCube;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.util.PacketUtil;
 
@@ -43,6 +44,7 @@ public class PacketHandler implements IPacketHandler {
   private static final int ID_MACHINE_REDSTONE_PACKET = 2;
   private static final int ID_CAP_BANK_REDSTONE_PACKET = 3;
   private static final int ID_ALLOY_SMELTING_MODE_PACKET = 5;
+  private static final int ID_HYPER_CUBE_REDSTONE_PACKET = 6;
 
   private static final String CHANNEL = "EnderIO";
   
@@ -66,6 +68,8 @@ public class PacketHandler implements IPacketHandler {
         handleCapBankRedstoneControlPacket(data, manager, player);
       } else if (id == ID_ALLOY_SMELTING_MODE_PACKET) {
         handleSmeltingModePacket(data, manager, player);
+      } else if (id == ID_HYPER_CUBE_REDSTONE_PACKET) {
+        handleHyperCubeRedstoneControlPacket(data, manager, player);
       } else {
         System.out.println("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
       }
@@ -196,6 +200,47 @@ public class PacketHandler implements IPacketHandler {
     return pkt;
 
   }
+  
+  public static Packet getRedstoneControlPacket(TileHyperCube te) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
+    DataOutputStream dos = new DataOutputStream(bos);
+    try {
+      dos.writeInt(ID_HYPER_CUBE_REDSTONE_PACKET);
+      dos.writeInt(te.xCoord);
+      dos.writeInt(te.yCoord);
+      dos.writeInt(te.zCoord);
+      dos.writeShort((short) te.getPowerInputControlMode().ordinal());
+      dos.writeShort((short) te.getPowerOutputControlMode().ordinal());
+    } catch (IOException e) {
+      // never thrown
+    }
+
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+
+  }
+  
+  private void handleHyperCubeRedstoneControlPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
+    int x = data.readInt();
+    int y = data.readInt();
+    int z = data.readInt();
+    short powerInputOrdinal = data.readShort();
+    short powerOutputOrdinal = data.readShort();
+    EntityPlayerMP p = (EntityPlayerMP) player;
+    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    if (te instanceof TileHyperCube) {
+      TileHyperCube cb = (TileHyperCube) te;
+      cb.setPowerInputControlMode(RedstoneControlMode.values()[powerInputOrdinal]);
+      cb.setPowerOutputControlMode(RedstoneControlMode.values()[powerOutputOrdinal]);
+      p.worldObj.markBlockForUpdate(x, y, z);
+    }
+
+  }
+  
 
   // ---------------- Enderface
   // ------------------------------------------------------------

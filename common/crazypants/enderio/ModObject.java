@@ -57,7 +57,9 @@ public enum ModObject {
   blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
   blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
   
-  blockCrusher(++Config.BID, CATEGORY_BLOCK,"SAG Mill");
+  blockCrusher(++Config.BID, CATEGORY_BLOCK,"SAG Mill"),
+  
+  blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Hyper Cube");
 
   public final String unlocalisedName;
   public final String name;

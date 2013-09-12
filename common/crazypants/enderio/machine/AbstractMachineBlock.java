@@ -45,6 +45,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         REDSTONE_CONTROL_ICONS[RedstoneControlMode.IGNORE.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneIgnore");
         REDSTONE_CONTROL_ICONS[RedstoneControlMode.ON.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneOn");
         REDSTONE_CONTROL_ICONS[RedstoneControlMode.OFF.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneOff");
+        REDSTONE_CONTROL_ICONS[RedstoneControlMode.NEVER.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneNever");
       }
 
       @Override

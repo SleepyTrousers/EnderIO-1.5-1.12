@@ -33,6 +33,7 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
+import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.painter.BlockCustomFence;
@@ -56,7 +57,7 @@ import crazypants.enderio.material.ItemRedstoneInductor;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.23", dependencies = "required-after:Forge@[9.10.0.800,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.1.25", dependencies = "required-after:Forge@[9.10.0.800,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
@@ -106,6 +107,7 @@ public class EnderIO {
   public static BlockAlloySmelter blockAlloySmelter;
   public static BlockCapacitorBank blockCapacitorBank;  
   public static BlockCrusher blockCrusher;
+  public static BlockHyperCube blockHyperCube;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -140,6 +142,8 @@ public class EnderIO {
 
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
+    
+    blockHyperCube = BlockHyperCube.create();
 
     blockPainter = BlockPainter.create();
     blockCustomFence = BlockCustomFence.create();
