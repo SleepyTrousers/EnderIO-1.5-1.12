@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.hypercube;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,25 +13,35 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHandler {
 
+  static final NumberFormat NF = NumberFormat.getIntegerInstance();
+  
   public static BlockHyperCube create() {
     BlockHyperCube result = new BlockHyperCube();
     result.init();
     return result;
   }
 
+  
+  Icon addIcon;
+  Icon lockIcon;
+  
+  
   private BlockHyperCube() {
     super(ModObject.blockHyperCube.id, Material.ground);
     setHardness(0.5F);
@@ -44,6 +55,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     LanguageRegistry.addName(this, ModObject.blockHyperCube.name);
     GameRegistry.registerBlock(this, ModObject.blockHyperCube.unlocalisedName);
     GameRegistry.registerTileEntity(TileHyperCube.class, ModObject.blockHyperCube.unlocalisedName + "TileEntity");
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
   }
 
   @Override
@@ -54,6 +66,8 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public void registerIcons(IconRegister iconRegister) {
     blockIcon = iconRegister.registerIcon("enderio:solarPanelTop");    
+    addIcon = iconRegister.registerIcon("enderio:add");
+    lockIcon = iconRegister.registerIcon("enderio:lock");
   }
   
 //  @Override
@@ -185,8 +199,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if(ConduitUtil.isToolEquipped(entityPlayer)) {
       System.out.println("BlockHyperCube.onBlockActivated: Energy stored = " + ((TileHyperCube)te).getPowerHandler().getEnergyStored());
     }
-    //TODO: GUI
-    //entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
+    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
     return true;
   }
 
@@ -197,10 +210,13 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    // TODO: GUI
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if (te instanceof TileHyperCube) {
+      System.out.println("BlockHyperCube.getClientGuiElement: !!!!!!");
+      TileHyperCube hc = (TileHyperCube) te;
+      return new GuiHyperCube(hc);
+    }
     return null;
   }
-
   
-
 }

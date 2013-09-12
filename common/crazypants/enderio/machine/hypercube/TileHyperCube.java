@@ -35,7 +35,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   private final BasicCapacitor internalCapacitor = new BasicCapacitor(256, 25000);
 
-  private PowerHandler powerHandler;
+  PowerHandler powerHandler;
 
   private float lastSyncPowerStored = 0;
 
@@ -45,7 +45,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   private PowerHandler disabledPowerHandler;
   
-  private String channel = "Default";
+  private Channel channel = new Channel("Default", null);
   
   private boolean init = true;
 
@@ -53,6 +53,34 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
   }
 
+  public RedstoneControlMode getPowerInputControlMode() {
+    return powerInputControlMode;
+  }
+
+  public void setPowerInputControlMode(RedstoneControlMode powerInputControlMode) {
+    this.powerInputControlMode = powerInputControlMode;
+  }
+
+  public RedstoneControlMode getPowerOutputControlMode() {
+    return powerOutputControlMode;
+  }
+
+  public void setPowerOutputControlMode(RedstoneControlMode powerOutputControlMode) {
+    this.powerOutputControlMode = powerOutputControlMode;
+  }
+
+  public Channel getChannel() {
+    return channel;
+  }
+
+  public void setChannel(Channel channel) {
+    this.channel = channel;
+  }
+
+  int getEnergyStoredScaled(int scale) { 
+    return (int) (scale * (powerHandler.getEnergyStored() / powerHandler.getMaxEnergyStored()));
+  }
+  
   public void onBreakBlock() {
     HyperCubeRegister.instance.deregister(this, channel);
   }
@@ -62,6 +90,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   private void balanceCubeNetworkEnergy() {
+    //TODO: Energy loss
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
     if(cubes == null || cubes.isEmpty()) {
       return;
@@ -158,12 +187,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
       Receptor receptor = receptorIterator.next();
       PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir);
-      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE && !powerHandler.isPowerSource(receptor.fromDir)) {
+      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE /*&& !powerHandler.isPowerSource(receptor.fromDir)*/) {
         float used;
+        float boundCanTransmit = Math.min(canTransmit, pp.getMaxEnergyReceived());        
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.STORAGE, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, boundCanTransmit, Type.STORAGE, receptor.fromDir);
         } else {
-          used = pp.receiveEnergy(Type.STORAGE, canTransmit, receptor.fromDir);
+          used = pp.receiveEnergy(Type.STORAGE, boundCanTransmit, receptor.fromDir);
         }
         transmitted += used;
         canTransmit -= used;
@@ -242,6 +272,14 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
     powerInputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("powerInputControlMode")];
     powerOutputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("powerOutputControlMode")];
+    
+    String channelName = nbtRoot.getString("channelName");
+    String channelUser = nbtRoot.getString("channelUser");
+    if(channelName != null && !channelName.isEmpty()) {
+      channel = new Channel(channelName, channelUser.isEmpty() ? null : channelUser);
+    } else {
+      channel = null;
+    }
   }
 
   @Override
@@ -250,6 +288,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
     nbtRoot.setShort("powerInputControlMode", (short) powerInputControlMode.ordinal());
     nbtRoot.setShort("powerOutputControlMode", (short) powerOutputControlMode.ordinal());
+    if(channel == null) {
+      nbtRoot.setString("channelName", "");
+      nbtRoot.setString("channelUser", "");
+    } else {
+      nbtRoot.setString("channelName", channel.name);
+      nbtRoot.setString("channelUser", channel.user == null ? "" : channel.user);
+    }
   }
 
   @Override

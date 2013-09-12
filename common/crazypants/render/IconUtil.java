@@ -3,6 +3,8 @@ package crazypants.render;
 import java.util.ArrayList;
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.Item;
+import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -34,6 +36,18 @@ public class IconUtil {
         reg.registerIcons(event.map);
       }
     }
+  }
+  
+  
+  public static Icon getIconForItem(int itemId, int meta) {
+    if(itemId < 0 || itemId >= Item.itemsList.length) {
+      return null;
+    }    
+    Item item = Item.itemsList[itemId];
+    if(item == null) {
+      return null;
+    }
+    return item.getIconFromDamage(meta);
   }
 
 }
