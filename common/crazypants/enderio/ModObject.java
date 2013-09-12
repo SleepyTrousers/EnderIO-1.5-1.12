@@ -16,7 +16,7 @@ public enum ModObject {
   itemRedstoneConduit(++Config.IID, CATEGORY_ITEM, "Redstone Conduit"),
 
   // Power
-  itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Power Conduit"),
+  itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Energy Conduit"),
 
   // Liquid
   itemLiquidConduit(++Config.IID, CATEGORY_ITEM, "Liquid Conduit"),
@@ -25,7 +25,10 @@ public enum ModObject {
   itemIndustrialBinder(++Config.IID, CATEGORY_ITEM, "Industrial Binder"),
   itemBasicCapacitor(++Config.IID, CATEGORY_ITEM, "Basic Capacitor"),
   itemAlloy(++Config.IID, CATEGORY_ITEM, "Alloy"),
+  itemRedstoneInductor(++Config.IID, CATEGORY_ITEM, "Redstone Inductor"),
+  itemBasicGear(++Config.IID, CATEGORY_ITEM, "Basic Gear"),
   blockFusedQuartz(++Config.BID, CATEGORY_BLOCK, "Fused Quartz"),
+  blockMachineChassi(++Config.BID, CATEGORY_BLOCK, "Machine Chassi"),
 
   // Stirling Gen
   blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK, "Stirling Generator"),
@@ -49,13 +52,14 @@ public enum ModObject {
   blockCapacitorBank(++Config.BID, CATEGORY_BLOCK, "Capacitor Bank"),
 
   itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench"),
+  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)"),
   
   blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
   blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
   
   blockCrusher(++Config.BID, CATEGORY_BLOCK,"SAG Mill"),
   
-  blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Hyper Cube");
+  blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Tesseract");
 
   public final String unlocalisedName;
   public final String name;

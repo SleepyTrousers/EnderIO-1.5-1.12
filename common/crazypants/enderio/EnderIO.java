@@ -16,7 +16,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.Side; 
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
@@ -46,10 +46,14 @@ import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.material.BlockFusedQuartz;
+import crazypants.enderio.material.BlockMachineChassi;
 import crazypants.enderio.material.ItemAlloy;
+import crazypants.enderio.material.ItemBasicGear;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemIndustrialBinder;
+import crazypants.enderio.material.ItemMJReader;
+import crazypants.enderio.material.ItemRedstoneInductor;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
@@ -71,6 +75,9 @@ public class EnderIO {
   public static ItemAlloy itemAlloy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
+  public static ItemRedstoneInductor itemRedstoneInductor;
+  public static BlockMachineChassi blockMachineChassi;
+  public static ItemBasicGear itemBasicGear;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -106,6 +113,7 @@ public class EnderIO {
   public static BlockLightNode blockLightNode;
 
   public static ItemYetaWrench itemYetaWench;
+  public static ItemMJReader itemMJReader;
   
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -128,6 +136,9 @@ public class EnderIO {
     itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+    itemRedstoneInductor = ItemRedstoneInductor.create();
+    blockMachineChassi = BlockMachineChassi.create();
+    itemBasicGear = ItemBasicGear.create();
 
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
@@ -163,6 +174,7 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
 
     itemYetaWench = ItemYetaWrench.create();
+    itemMJReader = ItemMJReader.create();
   }
 
   @EventHandler

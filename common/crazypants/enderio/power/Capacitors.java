@@ -11,11 +11,11 @@ public enum Capacitors {
 
   ACTIVATED_CAPACITOR(
       new BasicCapacitor(40, 20000, 6),
-      "Activated Capacitor", "activatedCapacitor"),
+      "D-L Capacitor", "activatedCapacitor"),
 
   ENDER_CAPACITOR(
       new BasicCapacitor(100, 100000, 10),
-      "Ender Capacitor", "enderCapacitor");
+      "Hybrid Capacitor", "enderCapacitor");
 
   public final ICapacitor capacitor;
   public final String unlocalisedName;
