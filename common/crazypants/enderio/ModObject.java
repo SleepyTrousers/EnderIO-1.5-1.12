@@ -16,7 +16,7 @@ public enum ModObject {
   itemRedstoneConduit(++Config.IID, CATEGORY_ITEM, "Redstone Conduit"),
 
   // Power
-  itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Power Conduit"),
+  itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Energy Conduit"),
 
   // Liquid
   itemLiquidConduit(++Config.IID, CATEGORY_ITEM, "Liquid Conduit"),
@@ -59,7 +59,7 @@ public enum ModObject {
   
   blockCrusher(++Config.BID, CATEGORY_BLOCK,"SAG Mill"),
   
-  blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Hyper Cube");
+  blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Tesseract");
 
   public final String unlocalisedName;
   public final String name;
