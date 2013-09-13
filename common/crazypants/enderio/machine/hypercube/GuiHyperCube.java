@@ -2,6 +2,7 @@ package crazypants.enderio.machine.hypercube;
 
 import static crazypants.enderio.machine.GuiMachineBase.BUTTON_SIZE;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import crazypants.render.GuiScreenBase;
 import crazypants.render.GuiToolTip;
 import crazypants.render.IconButton;
 import crazypants.render.RenderUtil;
+import crazypants.render.ToggleButton;
 
 public class GuiHyperCube extends GuiScreenBase {
 
@@ -31,7 +33,7 @@ public class GuiHyperCube extends GuiScreenBase {
   protected static final int ADD_BUTTON_ID = 42;
   protected static final int PRIVATE_BUTTON_ID = 76;
 
-  private static final int POWER_X = 167;
+  private static final int POWER_X = 222;
   private static final int POWER_Y = 148;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 46;
@@ -42,16 +44,17 @@ public class GuiHyperCube extends GuiScreenBase {
   private IconButton powerInputRedstoneButton;
   private IconButton powerOutputRedstoneButton;
   private GuiIconRenderer powerIcon;
-  
+
   private IconButton addButton;
-  private IconButton privateButton;
+  private ToggleButton privateButton;
 
   private GuiTextField newChannelTF;
-  
+
   private GuiChannelList publicChannelList;
+  private GuiChannelList privateChannelList;
 
   public GuiHyperCube(TileHyperCube te) {
-    super(189, 200);
+    super(245, 199);
     this.cube = te;
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
@@ -64,29 +67,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
     });
 
-  }
-
-  @Override
-  public void initGui() {
-    super.initGui();
-
-    int x = guiLeft + xSize - 5 - BUTTON_SIZE - 5 - 14;
-    int y = guiTop + 5 + BUTTON_SIZE / 2;
-
-    powerIcon = new GuiIconRenderer(x, y + 1, ModObject.itemPowerConduit.actualId, 0);
-    powerIcon.setAlpha(0.5F);
-    powerIcon.setSize(14, 14);
-
-    y = guiTop + 5;
-    x = guiLeft + xSize - 5 - BUTTON_SIZE;
-
-    powerInputRedstoneButton = new IconButton(fontRenderer, POWER_INPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(cube
-        .getPowerInputControlMode()),
-        RenderUtil.BLOCK_TEX);
-    powerInputRedstoneButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    buttonList.add(powerInputRedstoneButton);
-
-    addToolTip(new GuiToolTip(new Rectangle(x, y, BUTTON_SIZE, BUTTON_SIZE), "") {
+    addToolTip(new GuiToolTip(new Rectangle(188, 152, BUTTON_SIZE, BUTTON_SIZE), "") {
 
       @Override
       protected void updateText() {
@@ -95,22 +76,8 @@ public class GuiHyperCube extends GuiScreenBase {
         text.add(cube.getPowerInputControlMode().tooltip);
       }
 
-      @Override
-      public void onTick(int mouseX, int mouseY) {
-        bounds.setBounds(xSize - 5 - BUTTON_SIZE, 5, BUTTON_SIZE, BUTTON_SIZE);
-        super.onTick(mouseX, mouseY);
-      }
-
     });
-
-    y = y + 5 + BUTTON_SIZE;
-    powerOutputRedstoneButton = new IconButton(fontRenderer, POWER_OUTPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(cube
-        .getPowerOutputControlMode()),
-        RenderUtil.BLOCK_TEX);
-    powerOutputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
-    buttonList.add(powerOutputRedstoneButton);
-
-    addToolTip(new GuiToolTip(new Rectangle(x, y, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "") {
+    addToolTip(new GuiToolTip(new Rectangle(188, 173, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "") {
 
       @Override
       protected void updateText() {
@@ -119,43 +86,82 @@ public class GuiHyperCube extends GuiScreenBase {
         text.add(cube.getPowerOutputControlMode().tooltip);
       }
 
-      @Override
-      public void onTick(int mouseX, int mouseY) {
-        bounds.setBounds(xSize - 5 - BUTTON_SIZE, 5 + BUTTON_SIZE, BUTTON_SIZE, BUTTON_SIZE);
-        super.onTick(mouseX, mouseY);
-      }
-
     });
+    
+    addToolTip(new GuiToolTip(new Rectangle(121, 8, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "Private Channel"));
+    addToolTip(new GuiToolTip(new Rectangle(142, 8, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "Add Channel"));
 
-    newChannelTF = new GuiTextField(fontRenderer, guiLeft + 16, guiTop + 14, 106, 16);
+  }
+
+  @Override
+  public void initGui() {
+    super.initGui();
+
+    buttonList.clear();
+    
+    int x = guiLeft + 169;
+    int y = guiTop + 161;
+
+    powerIcon = new GuiIconRenderer(x, y + 1, ModObject.itemPowerConduit.actualId, 0);
+    powerIcon.setAlpha(0.5F);
+    powerIcon.setSize(14, 14);
+
+    x = guiLeft + 188;
+    y = guiTop + 152;
+
+    powerInputRedstoneButton = new IconButton(fontRenderer, POWER_INPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(cube
+        .getPowerInputControlMode()),
+        RenderUtil.BLOCK_TEX);
+    powerInputRedstoneButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+    buttonList.add(powerInputRedstoneButton);
+
+    y = y + 5 + BUTTON_SIZE;
+    powerOutputRedstoneButton = new IconButton(fontRenderer, POWER_OUTPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(cube
+        .getPowerOutputControlMode()),
+        RenderUtil.BLOCK_TEX);
+    powerOutputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
+    buttonList.add(powerOutputRedstoneButton);
+
+    y = guiTop + 12;
+    x = guiLeft + 8;
+    newChannelTF = new GuiTextField(fontRenderer, x, y, 106, 16);
     newChannelTF.setCanLoseFocus(false);
     newChannelTF.setMaxStringLength(64);
     newChannelTF.setFocused(true);
+
+    x = x + 110;
+    boolean selected = false;
+    if(privateButton != null) {
+      selected = privateButton.isSelected();
+    }
+    privateButton = new ToggleButton(fontRenderer, PRIVATE_BUTTON_ID, x, y, EnderIO.blockHyperCube.lockIcon, RenderUtil.BLOCK_TEX);
+    privateButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+    privateButton.setSelected(selected);
+    buttonList.add(privateButton);
     
-    x = guiLeft + 107;
-    y = guiTop + 33;
+    x = x + 5 + BUTTON_SIZE;
     addButton = new IconButton(fontRenderer, ADD_BUTTON_ID, x, y, EnderIO.blockHyperCube.addIcon, RenderUtil.BLOCK_TEX);
     addButton.enabled = false;
     addButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
     buttonList.add(addButton);
-    addToolTip(new GuiToolTip(new Rectangle(x, y, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "Add Channel"));
-        
-    x = x - 5 - BUTTON_SIZE;
-    privateButton = new IconButton(fontRenderer, PRIVATE_BUTTON_ID, x, y, EnderIO.blockHyperCube.lockIcon, RenderUtil.BLOCK_TEX);   
-    privateButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    buttonList.add(privateButton);
-    addToolTip(new GuiToolTip(new Rectangle(x, y, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "Private Channel"));
-    
+
     int w = 104;
-    int h = 60;        
-    publicChannelList = new GuiChannelList(this, w, h, guiLeft + 19, guiTop + 66);
-    
+    int h = 68;
+    x = guiLeft + 7;
+    y = guiTop + 45;
+    publicChannelList = new GuiChannelList(this, w, h, x, y);
     publicChannelList.setChannels(ClientChannelRegister.instance.getPublicChannels());
-    publicChannelList.setShowSelectionBox(true);    
+    publicChannelList.setShowSelectionBox(true);
     publicChannelList.setScrollButtonIds(87, 88);
 
+    x = x + 15 + w;
+    privateChannelList = new GuiChannelList(this, w, h, x, y);
+    privateChannelList.setChannels(ClientChannelRegister.instance.getPrivateChannels());
+    privateChannelList.setShowSelectionBox(true);
+    privateChannelList.setScrollButtonIds(89, 90);
+
   }
-  
+
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     if (par1GuiButton.id == POWER_INPUT_BUTTON_ID) {
@@ -178,13 +184,15 @@ public class GuiHyperCube extends GuiScreenBase {
       powerOutputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getPowerOutputControlMode()));
       Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
-    } else if(par1GuiButton.id == ADD_BUTTON_ID) {
-      
-      Channel c = new Channel(newChannelTF.getText(), null);      
+    } else if (par1GuiButton.id == ADD_BUTTON_ID) {
+
+      Channel c = new Channel(newChannelTF.getText(), null);
       ClientChannelRegister.instance.addChannel(c);
       Packet pkt = HyperCubePacketHandler.createAddChannelPacket(c);
       PacketDispatcher.sendPacketToServer(pkt);
-      
+
+    } else if (par1GuiButton.id == PRIVATE_BUTTON_ID) {
+      privateButton.setSelected(!privateButton.isSelected());
     }
   }
 
@@ -206,7 +214,7 @@ public class GuiHyperCube extends GuiScreenBase {
     super.mouseClicked(par1, par2, par3);
     newChannelTF.mouseClicked(par1, par2, par3);
   }
-  
+
   @Override
   public void updateScreen() {
     newChannelTF.updateCursorCounter();
@@ -223,19 +231,28 @@ public class GuiHyperCube extends GuiScreenBase {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
     int i1 = cube.getEnergyStoredScaled(POWER_HEIGHT);
-    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 190, 0, POWER_WIDTH, i1);
+    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 245, 0, POWER_WIDTH, i1);
 
     powerIcon.draw();
-    newChannelTF.drawTextBox();   
-    publicChannelList.drawScreen(mouseX, mouseY,partialTick);    
+    newChannelTF.drawTextBox();
+    publicChannelList.drawScreen(mouseX, mouseY, partialTick);
+    privateChannelList.drawScreen(mouseX, mouseY, partialTick);
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);
       guibutton.drawButton(this.mc, 0, 0);
     }
 
-  }
+    int x = guiLeft + 12;
+    int y = guiTop + 35;
+    // int rgb = RenderUtil.getRGB(62,128,120);
+    int rgb = RenderUtil.getRGB(Color.white);
+    drawString(fontRenderer, "Public", x, y, rgb);
 
+    x += 119;
+    drawString(fontRenderer, "Private", x, y, rgb);
+
+  }
 
   @Override
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {

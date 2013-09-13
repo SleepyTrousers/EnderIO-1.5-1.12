@@ -29,7 +29,7 @@ public class ClientChannelRegister {
   }
 
   public List<Channel> getPrivateChannels() {
-    return publicChannelsRO;
+    return privateChannelsRO;
   }
 
   void addChannel(Channel channel) {

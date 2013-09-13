@@ -64,7 +64,7 @@ public class IconButton extends GuiButton {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
           && par3 < this.yPosition + height;
-      int hoverState = this.getHoverState(this.field_82253_i);
+      int hoverState = getHoverState(this.field_82253_i);
 
       // x, y, u, v, width, height
 
@@ -78,12 +78,12 @@ public class IconButton extends GuiButton {
 
       mouseDragged(par1Minecraft, par2, par3);
 
-      int l = 14737632;
+      int color = 14737632;
 
       if (!this.enabled) {
-        l = -6250336;
+        color = -6250336;
       } else if (this.field_82253_i) {
-        l = 16777120;
+        color = 16777120;
       }
 
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);

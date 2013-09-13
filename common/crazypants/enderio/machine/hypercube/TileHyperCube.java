@@ -184,7 +184,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
       Receptor receptor = receptorIterator.next();
       PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir);
-      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE /*&& !powerHandler.isPowerSource(receptor.fromDir)*/) {
+      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE && !powerHandler.isPowerSource(receptor.fromDir)) {
         float used;
         float boundCanTransmit = Math.min(canTransmit, pp.getMaxEnergyReceived());        
         if (receptor.receptor instanceof IInternalPowerReceptor) {
