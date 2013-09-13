@@ -71,7 +71,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       }
       tileEntity.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
       redstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(tileEntity.getRedstoneControlMode()));
-      Packet pkt = PacketHandler.getRedstoneControlPacket(tileEntity);
+      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(tileEntity);
       PacketDispatcher.sendPacketToServer(pkt);
     }
   }

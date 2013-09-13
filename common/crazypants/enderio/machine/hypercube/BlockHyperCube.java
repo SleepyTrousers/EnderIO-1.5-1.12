@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -18,12 +19,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.power.PowerHandlerUtil;
 
@@ -32,6 +35,10 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
   
   public static BlockHyperCube create() {
+    HyperCubePacketHandler pp = new HyperCubePacketHandler();
+    PacketHandler.instance.addPacketProcessor(pp);
+    NetworkRegistry.instance().registerConnectionHandler(pp);
+    
     BlockHyperCube result = new BlockHyperCube();
     result.init();
     return result;
@@ -94,8 +101,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileHyperCube();
   }
-
-
+    
   @Override
   public void onBlockAdded(World world, int x, int y, int z) {
     if (world.isRemote) {
@@ -159,6 +165,9 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if (te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.getPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
+      if(player instanceof EntityPlayerMP) {
+        cb.setOwner(((EntityPlayerMP)player).username);
+      }
     }
     world.markBlockForUpdate(x, y, z);
   }

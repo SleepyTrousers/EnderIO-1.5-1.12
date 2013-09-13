@@ -12,11 +12,10 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
@@ -29,11 +28,13 @@ import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.machine.MachineRecipes;
+import crazypants.enderio.machine.RedstoneModePacketProcessor;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
+import crazypants.enderio.machine.hypercube.HyperCubeRegister;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.painter.BlockCustomFence;
@@ -109,8 +110,9 @@ public class EnderIO {
   
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
+    
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
-    try {
+    try {      
       cfg.load();
       Config.load(cfg);
     } catch (Exception e) {
@@ -167,11 +169,13 @@ public class EnderIO {
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
-
+    
     instance = this;
 
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
+    
+    PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
     
     CrusherRecipeManager.addRecipes();
     EnderfaceRecipes.addRecipes();
@@ -217,12 +221,20 @@ public class EnderIO {
 //  }
 
   @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {    
+  public void postInit(FMLPostInitializationEvent event) {  
   }
-
+ 
+  
+  @EventHandler
+  public void serverStarted(FMLServerStartedEvent event) {
+    HyperCubeRegister.load();
+  }
+  
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
-    proxy.serverStopped();
+    HyperCubeRegister.unload();
   }
+  
+
 
 }

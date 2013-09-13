@@ -1,20 +1,13 @@
 package crazypants.enderio.machine.hypercube;
 
 import java.awt.Color;
-import java.io.ObjectInputStream.GetField;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.client.renderer.Tessellator;
 import crazypants.render.GuiScrollableList;
 import crazypants.render.RenderUtil;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiSlot;
-import net.minecraft.client.renderer.Tessellator;
 
 public class GuiChannelList extends GuiScrollableList {
 
@@ -23,7 +16,7 @@ public class GuiChannelList extends GuiScrollableList {
   
   private int currentSelection = -1;
   
-  private final List<Channel> channels = new ArrayList<Channel>();
+  private List<Channel> channels = new ArrayList<Channel>();
   
   private Channel activeChannel;
   
@@ -37,12 +30,10 @@ public class GuiChannelList extends GuiScrollableList {
   }
   
   void setChannels(List<Channel> val) {
-    channels.clear();
-    channels.addAll(val);
-  }
-  
-  void addChannel(Channel chanel) {
-    channels.add(chanel);
+    if(val == null) {
+      channels = Collections.emptyList();
+    }
+    channels = val;    
   }
   
   void setActiveChannel(Channel channel) {
@@ -70,7 +61,7 @@ public class GuiChannelList extends GuiScrollableList {
   }
   
   @Override
-  protected void drawSlot(int index, int xPosition, int yPosition, int l, Tessellator tessellator) {
+  protected void drawElement(int index, int xPosition, int yPosition, int l, Tessellator tessellator) {
     if(index < 0 || index >= channels.size()) {
       return;
     }    

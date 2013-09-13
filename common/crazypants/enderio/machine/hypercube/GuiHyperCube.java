@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.hypercube;
 
+import static crazypants.enderio.machine.GuiMachineBase.BUTTON_SIZE;
+
 import java.awt.Rectangle;
 import java.util.List;
 
@@ -13,13 +15,9 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
-import static crazypants.enderio.machine.GuiMachineBase.BUTTON_SIZE;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.power.BlockCapacitorBank;
-import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.render.GuiIconRenderer;
 import crazypants.render.GuiScreenBase;
 import crazypants.render.GuiToolTip;
@@ -151,11 +149,13 @@ public class GuiHyperCube extends GuiScreenBase {
     int w = 104;
     int h = 60;        
     publicChannelList = new GuiChannelList(this, w, h, guiLeft + 19, guiTop + 66);
+    
+    publicChannelList.setChannels(ClientChannelRegister.instance.getPublicChannels());
     publicChannelList.setShowSelectionBox(true);    
     publicChannelList.setScrollButtonIds(87, 88);
 
   }
-
+  
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     if (par1GuiButton.id == POWER_INPUT_BUTTON_ID) {
@@ -166,7 +166,7 @@ public class GuiHyperCube extends GuiScreenBase {
       }
       cube.setPowerInputControlMode(RedstoneControlMode.values()[ordinal]);
       powerInputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getPowerInputControlMode()));
-      Packet pkt = PacketHandler.getRedstoneControlPacket(cube);
+      Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
     } else if (par1GuiButton.id == POWER_OUTPUT_BUTTON_ID) {
       int ordinal = cube.getPowerOutputControlMode().ordinal();
@@ -176,12 +176,14 @@ public class GuiHyperCube extends GuiScreenBase {
       }
       cube.setPowerOutputControlMode(RedstoneControlMode.values()[ordinal]);
       powerOutputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getPowerOutputControlMode()));
-      Packet pkt = PacketHandler.getRedstoneControlPacket(cube);
+      Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
     } else if(par1GuiButton.id == ADD_BUTTON_ID) {
       
-      Channel c = new Channel(newChannelTF.getText(), null);
-      publicChannelList.addChannel(c);
+      Channel c = new Channel(newChannelTF.getText(), null);      
+      ClientChannelRegister.instance.addChannel(c);
+      Packet pkt = HyperCubePacketHandler.createAddChannelPacket(c);
+      PacketDispatcher.sendPacketToServer(pkt);
       
     }
   }
@@ -224,14 +226,8 @@ public class GuiHyperCube extends GuiScreenBase {
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 190, 0, POWER_WIDTH, i1);
 
     powerIcon.draw();
-
-    newChannelTF.drawTextBox();
-    
-//    GL11.glPushMatrix();
-//    GL11.glTranslatef(getPublicListLeft(), getPublicListTop(), 0);
-//    RenderUtil.bindTexture("enderio:textures/gui/hyperCube.png");
-    publicChannelList.drawScreen(mouseX, mouseY,partialTick);
-    //GL11.glPopMatrix();
+    newChannelTF.drawTextBox();   
+    publicChannelList.drawScreen(mouseX, mouseY,partialTick);    
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);

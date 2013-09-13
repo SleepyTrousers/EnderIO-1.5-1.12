@@ -14,9 +14,6 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -45,7 +42,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   private PowerHandler disabledPowerHandler;
   
-  private Channel channel = new Channel("Default", null);
+  private Channel channel = null;
+  private String owner;
   
   private boolean init = true;
 
@@ -73,7 +71,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     return channel;
   }
 
-  public void setChannel(Channel channel) {
+  public void setChannel(Channel channel) {    
     this.channel = channel;
   }
 
@@ -82,11 +80,15 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
   
   public void onBreakBlock() {
-    HyperCubeRegister.instance.deregister(this, channel);
+    HyperCubeRegister.instance.deregister(this);
   }
 
   public void onBlockAdded() {
-    HyperCubeRegister.instance.register(this, channel);
+    HyperCubeRegister.instance.register(this);
+  }
+  
+  public void setOwner(String owner) {
+    this.owner = owner;    
   }
 
   private void balanceCubeNetworkEnergy() {
@@ -108,7 +110,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   
   @Override
   public void onChunkUnload() {
-    HyperCubeRegister.instance.deregister(this, channel);
+    HyperCubeRegister.instance.deregister(this);
   }
 
   public void onNeighborBlockChange() {
@@ -120,15 +122,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     if (worldObj == null) { // sanity check
       return;
     }
-    if (worldObj.isRemote) {
+    if (worldObj.isRemote) {      
       return;
     } // else is server, do all logic only on the server
 
-    if(init) {
-      onBlockAdded();
-      init = false;
-    }
-    
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update();
@@ -280,6 +277,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     } else {
       channel = null;
     }
+    
+    owner = nbtRoot.getString("owner");
   }
 
   @Override
@@ -295,6 +294,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
       nbtRoot.setString("channelName", channel.name);
       nbtRoot.setString("channelUser", channel.user == null ? "" : channel.user);
     }
+    nbtRoot.setString("owner", owner);
   }
 
   @Override

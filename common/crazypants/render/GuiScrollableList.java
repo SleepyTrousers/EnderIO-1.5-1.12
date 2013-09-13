@@ -1,7 +1,6 @@
 package crazypants.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
@@ -55,26 +54,26 @@ public abstract class GuiScrollableList {
     minY = originY;
     maxY = minY + height;
     minX = originX;
-    maxX = minX + width;
-    
+    maxX = minX + width;   
     this.slotHeight = slotHeight;    
-  }
-
-  public void setShowSelectionBox(boolean val) {
-    this.showSelectionBox = val;
   }
 
   protected abstract int getNumElements();
 
-  protected abstract void elementClicked(int i, boolean doubleClick);
+  protected abstract void elementClicked(int elementIndex, boolean doubleClick);
 
-  protected abstract boolean isSelected(int i);
+  protected abstract boolean isSelected(int elementIndex);
+  
+  protected abstract void drawElement(int elementIndex, int x, int y, int height, Tessellator tessellator);
 
-  protected int getContentHeight() {
-    return this.getNumElements() * slotHeight;
+  
+  public void setShowSelectionBox(boolean val) {
+    showSelectionBox = val;
   }
-
-  protected abstract void drawSlot(int i, int j, int k, int l, Tessellator tessellator);
+  
+  protected int getContentHeight() {
+    return getNumElements() * slotHeight;
+  }
 
   public void setScrollButtonIds(int scrollUpButtonID, int scrollDownButtonID) {
     this.scrollUpButtonID = scrollUpButtonID;
@@ -82,22 +81,19 @@ public abstract class GuiScrollableList {
   }
 
   private void clampScrollToBounds() {
-    int i = this.getHeightOverBounds();
-
+    int i = getContentOverhang();
     if (i < 0) {
       i *= -1;
     }
-
     if (amountScrolled < 0.0F) {
       amountScrolled = 0.0F;
     }
-
     if (amountScrolled > (float) i) {
       amountScrolled = (float) i;
     }
   }
 
-  public int getHeightOverBounds() {
+  public int getContentOverhang() {
     return getContentHeight() - (height - margin);
   }
 
@@ -169,7 +165,7 @@ public abstract class GuiScrollableList {
           GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
         
-        drawSlot(i, minX, elementY, slotHeight, tessellator);
+        drawElement(i, minX, elementY, slotHeight, tessellator);
       }
     }
 
@@ -209,7 +205,7 @@ public abstract class GuiScrollableList {
 
   protected void renderScrollBar(Tessellator tessellator) {
 
-    int contentHeightOverBounds = getHeightOverBounds();
+    int contentHeightOverBounds = getContentOverhang();
     if (contentHeightOverBounds > 0) {
 
       int clear = (maxY - minY) * (maxY - minY) / getContentHeight();
@@ -284,15 +280,15 @@ public abstract class GuiScrollableList {
 
         boolean clickInBounds = true;
 
-        int k1 = mouseY - minY + (int) amountScrolled - margin;
-        int mouseOverElement = k1 / slotHeight;
+        int y = mouseY - minY + (int) amountScrolled - margin;
+        int mouseOverElement = y / slotHeight;
 
-        if (mouseX >= minX && mouseX <= maxX && mouseOverElement >= 0 && k1 >= 0 && mouseOverElement < getNumElements()) {
+        if (mouseX >= minX && mouseX <= maxX && mouseOverElement >= 0 && y >= 0 && mouseOverElement < getNumElements()) {
           boolean doubleClick = mouseOverElement == selectedElement && Minecraft.getSystemTime() - lastClickedTime < 250L;
           elementClicked(mouseOverElement, doubleClick);
           lastClickedTime = Minecraft.getSystemTime();
 
-        } else if (mouseX >= minX && mouseX <= maxX && k1 < 0) {
+        } else if (mouseX >= minX && mouseX <= maxX && y < 0) {
           clickInBounds = false;
         }
 
@@ -301,20 +297,20 @@ public abstract class GuiScrollableList {
         if (mouseX >= scrollBarMinX && mouseX <= scrollBarMaxX) {
 
           scrollMultiplier = -1.0F;
-          contentHeightOverBounds = getHeightOverBounds();
+          contentHeightOverBounds = getContentOverhang();
 
           if (contentHeightOverBounds < 1) {
             contentHeightOverBounds = 1;
           }
 
-          int i2 = (int) ((float) ((maxY - minY) * (maxY - minY)) / (float) getContentHeight());
-          if (i2 < 32) {
-            i2 = 32;
+          int empty = (int) ((float) ((maxY - minY) * (maxY - minY)) / (float) getContentHeight());
+          if (empty < 32) {
+            empty = 32;
           }
-          if (i2 > maxY - minY - 8) {
-            i2 = maxY - minY - 8;
+          if (empty > maxY - minY - 8) {
+            empty = maxY - minY - 8;
           }
-          scrollMultiplier /= (float) (maxY - minY - i2) / (float) contentHeightOverBounds;
+          scrollMultiplier /= (float) (maxY - minY - empty) / (float) contentHeightOverBounds;
 
         } else {
           scrollMultiplier = 1.0F;

@@ -14,6 +14,7 @@ import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.RedstoneModePacketProcessor;
 import crazypants.render.GuiScreenBase;
 import crazypants.render.GuiToolTip;
 import crazypants.render.IconButton;
@@ -95,7 +96,7 @@ public class GuiCapacitorBank extends GuiScreenBase {
       }
       capBank.setInputControlMode(RedstoneControlMode.values()[ordinal]);
       inputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getInputControlMode()));
-      Packet pkt = PacketHandler.getRedstoneControlPacket(capBank);
+      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
       PacketDispatcher.sendPacketToServer(pkt);
     } else if (par1GuiButton.id == OUTPUT_BUTTON_ID) {
       int ordinal = capBank.getOutputControlMode().ordinal();
@@ -105,7 +106,7 @@ public class GuiCapacitorBank extends GuiScreenBase {
       }
       capBank.setOutputControlMode(RedstoneControlMode.values()[ordinal]);
       outputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getOutputControlMode()));
-      Packet pkt = PacketHandler.getRedstoneControlPacket(capBank);
+      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
       PacketDispatcher.sendPacketToServer(pkt);
     }        
   }
