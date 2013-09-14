@@ -41,6 +41,7 @@ import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
+import crazypants.enderio.material.MachinePartRenderer;
 
 public class ClientProxy extends CommonProxy {
 
@@ -116,6 +117,9 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomStair.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomSlab.blockID, pir);
 
+    
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart.itemID, new MachinePartRenderer());
+    
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);

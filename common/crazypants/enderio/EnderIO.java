@@ -51,6 +51,8 @@ import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemIndustrialBinder;
+import crazypants.enderio.material.ItemMJReader;
+import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
@@ -72,6 +74,7 @@ public class EnderIO {
   public static ItemAlloy itemAlloy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
+  public static ItemMachinePart itemMachinePart;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -107,6 +110,7 @@ public class EnderIO {
   public static BlockLightNode blockLightNode;
 
   public static ItemYetaWrench itemYetaWench;
+  public static ItemMJReader itemMJReader;
   
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -129,7 +133,8 @@ public class EnderIO {
     itemBasicCapacitor = ItemCapacitor.create();
     itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
-    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();    
+    itemMachinePart = ItemMachinePart.create();
 
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
@@ -165,6 +170,7 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
 
     itemYetaWench = ItemYetaWrench.create();
+    itemMJReader = ItemMJReader.create();
   }
 
   @EventHandler

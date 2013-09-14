@@ -73,8 +73,8 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public void registerIcons(IconRegister iconRegister) {
     blockIcon = iconRegister.registerIcon("enderio:solarPanelTop");    
-    addIcon = iconRegister.registerIcon("enderio:add");
-    lockIcon = iconRegister.registerIcon("enderio:lock");
+    addIcon = iconRegister.registerIcon("enderio:icons/add");
+    lockIcon = iconRegister.registerIcon("enderio:icons/public");
   }
   
 //  @Override
