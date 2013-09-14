@@ -53,6 +53,7 @@ import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemMJReader;
 import crazypants.enderio.material.ItemMachinePart;
+import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
@@ -75,6 +76,7 @@ public class EnderIO {
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
   public static ItemMachinePart itemMachinePart;
+  public static ItemPowderIngot itemPowderIngot;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -135,7 +137,8 @@ public class EnderIO {
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();    
     itemMachinePart = ItemMachinePart.create();
-
+    itemPowderIngot = ItemPowderIngot.create();
+    
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
     

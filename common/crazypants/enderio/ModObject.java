@@ -58,6 +58,7 @@ public enum ModObject {
   blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Tesseract"),
 
   itemMachinePart(++Config.IID, CATEGORY_ITEM, "Machine Parts"),
+  itemPowderIngot(++Config.IID, CATEGORY_ITEM, "Powders & Ingots"),
   
   itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)");
 
