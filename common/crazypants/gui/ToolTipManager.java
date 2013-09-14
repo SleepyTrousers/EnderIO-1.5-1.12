@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;

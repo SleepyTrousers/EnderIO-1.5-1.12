@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import java.util.Iterator;
 import java.util.List;
@@ -6,14 +6,15 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import crazypants.render.ToolTipManager.ToolTipRenderer;
+import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
 
-public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer {
+public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer, IGuiScreen {
 
   protected ToolTipManager ttMan = new ToolTipManager();
 
@@ -38,10 +39,12 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
     this.ySize = ySize;
   }
 
-  protected void addToolTip(GuiToolTip toolTip) {
+  @Override
+  public void addToolTip(GuiToolTip toolTip) {
     ttMan.addToolTip(toolTip);
   }
 
+  @Override
   public void initGui() {
     super.initGui();
     guiLeft = (this.width - this.xSize) / 2;
@@ -88,6 +91,7 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
   protected void drawForegroundImpl(int mouseX, int mouseY) {
   }
 
+  @Override
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
         
     if (!par1List.isEmpty()) {
@@ -173,19 +177,28 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
     }
   }
 
+  @Override
   public int getGuiLeft() {
     return guiLeft;
   }
 
+  @Override
   public int getGuiTop() {
     return guiTop;
   }
 
+  @Override
   public int getXSize() {
     return xSize;
   }
 
+  @Override
   public FontRenderer getFontRenderer() {
     return fontRenderer;
+  }
+  
+  @Override
+  public void addButton(GuiButton button) {
+    buttonList.add(button);    
   }
 }

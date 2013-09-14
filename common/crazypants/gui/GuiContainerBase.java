@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,13 +6,14 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.render.ToolTipManager.ToolTipRenderer;
+import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
-public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer {
+public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen {
 
   protected ToolTipManager ttMan = new ToolTipManager();
 
@@ -20,7 +21,8 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super(par1Container);
   }
 
-  protected void addToolTip(GuiToolTip toolTip) {
+  @Override
+  public void addToolTip(GuiToolTip toolTip) {
     ttMan.addToolTip(toolTip);
   }
 
@@ -43,20 +45,29 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     GL11.glPopAttrib();
   }
 
+  @Override
   public int getGuiLeft() {
     return guiLeft;
   }
 
+  @Override
   public int getGuiTop() {
     return guiTop;
   }
 
+  @Override
   public int getXSize() {
     return xSize;
   }
 
+  @Override
   public FontRenderer getFontRenderer() {
     return fontRenderer;
+  }
+  
+  @Override
+  public void addButton(GuiButton button) {
+    buttonList.add(button);    
   }
 
 }

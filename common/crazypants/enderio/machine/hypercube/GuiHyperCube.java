@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -16,15 +17,18 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IconButtonEIO;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.IconToggleButtonEIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.render.GuiIconRenderer;
-import crazypants.render.GuiScreenBase;
-import crazypants.render.GuiToolTip;
-import crazypants.render.IconButton;
+import crazypants.gui.GuiIconRenderer;
+import crazypants.gui.GuiScreenBase;
+import crazypants.gui.GuiToolTip;
+import crazypants.gui.IconButton;
+import crazypants.gui.ToggleButton;
 import crazypants.render.RenderUtil;
-import crazypants.render.ToggleButton;
 
 public class GuiHyperCube extends GuiScreenBase {
 
@@ -44,9 +48,9 @@ public class GuiHyperCube extends GuiScreenBase {
   private IconButton powerInputRedstoneButton;
   private IconButton powerOutputRedstoneButton;
   private GuiIconRenderer powerIcon;
-
-  private IconButton addButton;
-  private ToggleButton privateButton;
+  
+  private IconButtonEIO addButton;
+  private IconToggleButtonEIO privateButton;
 
   private GuiTextField newChannelTF;
 
@@ -88,8 +92,28 @@ public class GuiHyperCube extends GuiScreenBase {
 
     });
     
-    addToolTip(new GuiToolTip(new Rectangle(121, 8, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "Private Channel"));
-    addToolTip(new GuiToolTip(new Rectangle(142, 8, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "Add Channel"));
+    addButton = new IconButtonEIO(this, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
+    addButton.setToolTip("Add Channel");
+    addButton.enabled = false;
+    
+    privateButton = new IconToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.PUBLIC, IconEIO.PRIVATE);
+    privateButton.setSelectedToolTip("Private Channel");
+    privateButton.setUnselectedToolTip("Public Channel");    
+    
+    int w = 104;
+    int h = 68;
+    int x = 7;
+    int y = 45;
+    publicChannelList = new GuiChannelList(this, w, h, x, y);
+    publicChannelList.setChannels(ClientChannelRegister.instance.getPublicChannels());
+    publicChannelList.setShowSelectionBox(true);
+    publicChannelList.setScrollButtonIds(87, 88);
+
+    x = x + 15 + w;
+    privateChannelList = new GuiChannelList(this, w, h, x, y);
+    privateChannelList.setChannels(ClientChannelRegister.instance.getPrivateChannels());
+    privateChannelList.setShowSelectionBox(true);
+    privateChannelList.setScrollButtonIds(89, 90);
 
   }
 
@@ -129,36 +153,11 @@ public class GuiHyperCube extends GuiScreenBase {
     newChannelTF.setMaxStringLength(64);
     newChannelTF.setFocused(true);
 
-    x = x + 110;
-    boolean selected = false;
-    if(privateButton != null) {
-      selected = privateButton.isSelected();
-    }
-    privateButton = new ToggleButton(fontRenderer, PRIVATE_BUTTON_ID, x, y, EnderIO.blockHyperCube.lockIcon, RenderUtil.BLOCK_TEX);
-    privateButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    privateButton.setSelected(selected);
-    buttonList.add(privateButton);
+    privateButton.onGuiInit();
+    addButton.onGuiInit();
     
-    x = x + 5 + BUTTON_SIZE;
-    addButton = new IconButton(fontRenderer, ADD_BUTTON_ID, x, y, EnderIO.blockHyperCube.addIcon, RenderUtil.BLOCK_TEX);
-    addButton.enabled = false;
-    addButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    buttonList.add(addButton);
-
-    int w = 104;
-    int h = 68;
-    x = guiLeft + 7;
-    y = guiTop + 45;
-    publicChannelList = new GuiChannelList(this, w, h, x, y);
-    publicChannelList.setChannels(ClientChannelRegister.instance.getPublicChannels());
-    publicChannelList.setShowSelectionBox(true);
-    publicChannelList.setScrollButtonIds(87, 88);
-
-    x = x + 15 + w;
-    privateChannelList = new GuiChannelList(this, w, h, x, y);
-    privateChannelList.setChannels(ClientChannelRegister.instance.getPrivateChannels());
-    privateChannelList.setShowSelectionBox(true);
-    privateChannelList.setScrollButtonIds(89, 90);
+    publicChannelList.onGuiInit(this);
+    privateChannelList.onGuiInit(this);
 
   }
 
@@ -186,14 +185,18 @@ public class GuiHyperCube extends GuiScreenBase {
       PacketDispatcher.sendPacketToServer(pkt);
     } else if (par1GuiButton.id == ADD_BUTTON_ID) {
 
-      Channel c = new Channel(newChannelTF.getText(), null);
+      Channel c;
+      if(privateButton.isSelected()) {
+        c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.username);
+      } else {
+        c = new Channel(newChannelTF.getText(), null);
+      }
       ClientChannelRegister.instance.addChannel(c);
       Packet pkt = HyperCubePacketHandler.createAddChannelPacket(c);
       PacketDispatcher.sendPacketToServer(pkt);
 
-    } else if (par1GuiButton.id == PRIVATE_BUTTON_ID) {
-      privateButton.setSelected(!privateButton.isSelected());
-    }
+    } 
+
   }
 
   @Override
@@ -245,7 +248,6 @@ public class GuiHyperCube extends GuiScreenBase {
 
     int x = guiLeft + 12;
     int y = guiTop + 35;
-    // int rgb = RenderUtil.getRGB(62,128,120);
     int rgb = RenderUtil.getRGB(Color.white);
     drawString(fontRenderer, "Public", x, y, rgb);
 

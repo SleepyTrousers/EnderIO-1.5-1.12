@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -8,6 +8,9 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import crazypants.render.IconUtil;
+import crazypants.render.RenderUtil;
 
 public class GuiIconRenderer extends Gui {
 

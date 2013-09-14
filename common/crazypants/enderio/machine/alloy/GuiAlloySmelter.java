@@ -16,8 +16,8 @@ import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.render.GuiToolTip;
-import crazypants.render.IconButton;
+import crazypants.gui.GuiToolTip;
+import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
 
 public class GuiAlloySmelter extends GuiMachineBase {

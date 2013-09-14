@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -12,16 +12,13 @@ public abstract class GuiScrollableList {
 
   private final Minecraft mc = Minecraft.getMinecraft();
 
+  private int originX;
+  private int originY;
   private int width;
-
   private int height;
-
   protected int minY;
-
   protected int maxY;
-
   private int minX;
-
   private int maxX;
 
   protected final int slotHeight;
@@ -51,11 +48,21 @@ public abstract class GuiScrollableList {
   public GuiScrollableList(int width, int height, int originX, int originY, int slotHeight) {
     this.width = width;
     this.height = height;
+    this.originX = originX;
+    this.originY = originY;
+    this.slotHeight = slotHeight;
+    
     minY = originY;
     maxY = minY + height;
     minX = originX;
-    maxX = minX + width;   
-    this.slotHeight = slotHeight;    
+    maxX = minX + width;           
+  }
+  
+  public void onGuiInit(IGuiScreen gui) {
+    minY = originY + gui.getGuiTop();
+    maxY = minY + height;
+    minX = originX + gui.getGuiLeft();
+    maxX = minX + width;
   }
 
   protected abstract int getNumElements();
@@ -276,7 +283,7 @@ public abstract class GuiScrollableList {
     int contentHeightOverBounds;
     if (initialClickY == -1.0F) {
 
-      if (mouseY >= minY && mouseY <= maxY) {
+      if (mouseY >= minY && mouseY <= maxY && mouseX >= minX && mouseX <= maxX + 6) {
 
         boolean clickInBounds = true;
 

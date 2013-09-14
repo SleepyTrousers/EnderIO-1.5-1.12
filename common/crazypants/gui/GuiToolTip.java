@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -39,6 +39,16 @@ public class GuiToolTip {
     }
   }
 
+  
+  
+  public Rectangle getBounds() {
+    return bounds;
+  }
+
+  public void setBounds(Rectangle bounds) {
+    this.bounds = bounds;
+  }
+
   public void onTick(int mouseX, int mouseY) {
     if (lastMouseX != mouseX || lastMouseY != mouseY) {
       mouseOverStart = 0;
@@ -65,6 +75,13 @@ public class GuiToolTip {
   }
 
   protected void updateText() {
+  }
+  
+  public void setToolTipText(String... txt) {
+    text.clear();
+    for(String line : txt) {
+      text.add(line);
+    }
   }
 
   public List<String> getToolTipText() {

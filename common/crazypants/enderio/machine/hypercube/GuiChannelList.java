@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import crazypants.render.GuiScrollableList;
+import crazypants.gui.GuiScrollableList;
 import crazypants.render.RenderUtil;
 
 public class GuiChannelList extends GuiScrollableList {
 
-  private int width;
-  private int height;
-  
   private int currentSelection = -1;
   
   private List<Channel> channels = new ArrayList<Channel>();
@@ -23,10 +22,8 @@ public class GuiChannelList extends GuiScrollableList {
   private final GuiHyperCube parent;
   
   public GuiChannelList(GuiHyperCube parent, int width, int height, int originX, int originY) {
-    super(width, height, originX, originY, parent.getFontRenderer().FONT_HEIGHT + 4);
-    this.parent = parent;
-    this.width = width;
-    this.height = height;
+    super(width, height, originX, originY, Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 4);
+    this.parent = parent;  
   }
   
   void setChannels(List<Channel> val) {
@@ -42,7 +39,6 @@ public class GuiChannelList extends GuiScrollableList {
   
   @Override
   protected int getNumElements() {
-    //return Math.max(1,channels.size()); // avoid /0 in base class
     return channels.size();
   }
 

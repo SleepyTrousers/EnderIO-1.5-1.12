@@ -15,9 +15,9 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.RedstoneModePacketProcessor;
-import crazypants.render.GuiScreenBase;
-import crazypants.render.GuiToolTip;
-import crazypants.render.IconButton;
+import crazypants.gui.GuiScreenBase;
+import crazypants.gui.GuiToolTip;
+import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
 
 public class GuiCapacitorBank extends GuiScreenBase {

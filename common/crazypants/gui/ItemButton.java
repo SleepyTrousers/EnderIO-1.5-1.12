@@ -1,32 +1,37 @@
-package crazypants.render;
+package crazypants.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-public class IconButton extends GuiButton {
+import crazypants.render.RenderUtil;
+
+public class ItemButton extends GuiButton {
+
+  public static final RenderItem ITEM_RENDERER = new RenderItem();
 
   public static final int DEFAULT_WIDTH = 24;
   public static final int HWIDTH = DEFAULT_WIDTH / 2;
   public static final int DEFAULT_HEIGHT = 24;
   public static final int HHEIGHT = DEFAULT_HEIGHT / 2;
 
+  private ItemStack item;
+
+  private FontRenderer fr;
+
   protected int hwidth;
   protected int hheight;
 
-  protected Icon icon;
-  protected ResourceLocation texture;
-
-  public IconButton(FontRenderer fr, int id, int x, int y, Icon icon, ResourceLocation texture) {
+  public ItemButton(FontRenderer fr, int id, int x, int y, int itemId) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
+    this.fr = fr;
+    item = new ItemStack(itemId, 1, 0);
     hwidth = HWIDTH;
     hheight = HHEIGHT;
-    this.icon = icon;
-    this.texture = texture;
   }
 
   public void setSize(int width, int height) {
@@ -34,22 +39,6 @@ public class IconButton extends GuiButton {
     this.height = height;
     hwidth = width / 2;
     hheight = height / 2;
-  }
-
-  public Icon getIcon() {
-    return icon;
-  }
-
-  public void setIcon(Icon icon) {
-    this.icon = icon;
-  }
-
-  public ResourceLocation getTexture() {
-    return texture;
-  }
-
-  public void setTexture(ResourceLocation textureName) {
-    this.texture = textureName;
   }
 
   /**
@@ -64,7 +53,7 @@ public class IconButton extends GuiButton {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
           && par3 < this.yPosition + height;
-      int hoverState = getHoverState(this.field_82253_i);
+      int hoverState = this.getHoverState(this.field_82253_i);
 
       // x, y, u, v, width, height
 
@@ -78,25 +67,18 @@ public class IconButton extends GuiButton {
 
       mouseDragged(par1Minecraft, par2, par3);
 
-      int color = 14737632;
+      int l = 14737632;
 
       if (!this.enabled) {
-        color = -6250336;
+        l = -6250336;
       } else if (this.field_82253_i) {
-        color = 16777120;
+        l = 16777120;
       }
 
-      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-      RenderUtil.bindTexture(texture);
-      int xLoc = xPosition + 2;
-      int yLoc = yPosition + 2;
-      drawTexturedModelRectFromIcon(xLoc, yLoc, icon, width - 4, height - 4);
-
-      GL11.glPopAttrib();
-
+      int xLoc = xPosition + hwidth - 8;
+      int yLoc = yPosition + hheight - 10;
+      ITEM_RENDERER.renderItemIntoGUI(fr, par1Minecraft.renderEngine, item, xLoc, yLoc);
     }
   }
+
 }

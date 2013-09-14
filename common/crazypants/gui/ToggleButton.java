@@ -1,4 +1,4 @@
-package crazypants.render;
+package crazypants.gui;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.Icon;
