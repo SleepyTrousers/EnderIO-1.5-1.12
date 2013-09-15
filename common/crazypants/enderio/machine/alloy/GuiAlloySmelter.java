@@ -72,7 +72,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
       tileEntity.setFurnaceRecipesEnabled(!tileEntity.areFurnaceRecipesEnabled());
       Icon icon = tileEntity.areFurnaceRecipesEnabled() ? EnderIO.blockAlloySmelter.vanillaSmeltingOn : EnderIO.blockAlloySmelter.vanillaSmeltingOff;      
       vanillaFurnaceButton.setIcon(icon);
-      Packet pkt = PacketHandler.getSmeltingModePacket(tileEntity);
+      Packet pkt = AlloySmelterPacketProcessor.getSmeltingModePacket(tileEntity);
       PacketDispatcher.sendPacketToServer(pkt);
     } else {
       super.actionPerformed(par1GuiButton); 

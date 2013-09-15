@@ -9,6 +9,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -16,6 +17,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   public static BlockAlloySmelter create() {
+    PacketHandler.instance.addPacketProcessor(new AlloySmelterPacketProcessor());
     BlockAlloySmelter ppainter = new BlockAlloySmelter();
     ppainter.init();
     return ppainter;
