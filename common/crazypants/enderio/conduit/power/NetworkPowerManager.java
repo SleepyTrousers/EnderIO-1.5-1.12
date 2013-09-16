@@ -51,7 +51,7 @@ public class NetworkPowerManager {
 
     int appliedCount = 0;
     int numReceptors = receptors.size();
-    float available = energyStored + capSupply.canExtract - reserved;
+    float available = energyStored + capSupply.canExtract;
     float wasAvailable = available;
 
     if (available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
@@ -81,8 +81,8 @@ public class NetworkPowerManager {
 
             float used = 0;
             float reservedForEntry = removeReservedEnergy(r);
-            float canOffer = available + reservedForEntry;
-            canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
+            available += reservedForEntry;
+            float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
             float requested = pp.powerRequest();
 
             // If it is possible to supply the minimum amount of energy
@@ -95,7 +95,7 @@ public class NetworkPowerManager {
                 used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, r.direction.getOpposite());
               } else {
                 float offer = Math.min(requested, canOffer);
-                used = pp.receiveEnergy(Type.PIPE, offer, r.direction.getOpposite());
+                used = pp.receiveEnergy(Type.PIPE, offer, r.direction.getOpposite());                
               }
 
             }
@@ -167,7 +167,7 @@ public class NetworkPowerManager {
   }
 
   private void reserveEnergy(ReceptorEntry r, float amount) {
-    starveBuffers.put(r.coord, new StarveBuffer(amount));
+      starveBuffers.put(r.coord, new StarveBuffer(amount));
     reserved += amount;
   }
 
