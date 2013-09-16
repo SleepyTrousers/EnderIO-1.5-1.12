@@ -47,7 +47,7 @@ public class ItemConduitFacade extends Item {
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    itemIcon = iconRegister.registerIcon("enderio:ConduitFacade");
+    itemIcon = iconRegister.registerIcon("enderio:conduitFacade");
     overlayIcon = iconRegister.registerIcon("enderio:conduitFacadeOverlay");
   }
 
