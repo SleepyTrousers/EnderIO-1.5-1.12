@@ -132,20 +132,21 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void registerIcons(IconRegister iconRegister) {
 
     iconBuffer = new Icon[1][12];
+    String side = getSideIconKey();
     // first the 6 sides in OFF state
-    iconBuffer[0][0] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][1] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][2] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][0] = iconRegister.registerIcon(side);
+    iconBuffer[0][1] = iconRegister.registerIcon(side);
+    iconBuffer[0][2] = iconRegister.registerIcon(side);
     iconBuffer[0][3] = iconRegister.registerIcon(getMachineFrontIconKey(false));
-    iconBuffer[0][4] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][5] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][4] = iconRegister.registerIcon(side);
+    iconBuffer[0][5] = iconRegister.registerIcon(side);
 
-    iconBuffer[0][6] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][7] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][8] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][6] = iconRegister.registerIcon(side);
+    iconBuffer[0][7] = iconRegister.registerIcon(side);
+    iconBuffer[0][8] = iconRegister.registerIcon(side);
     iconBuffer[0][9] = iconRegister.registerIcon(getMachineFrontIconKey(true));
-    iconBuffer[0][10] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][11] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][10] = iconRegister.registerIcon(side);
+    iconBuffer[0][11] = iconRegister.registerIcon(side);
 
   }
 
@@ -256,6 +257,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected abstract int getGuiId();
 
   protected abstract String getMachineFrontIconKey(boolean active);
+    
+  protected String getSideIconKey() {
+    return "enderio:machineSide";
+  }
 
   private boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
     return ((AbstractMachineEntity) blockAccess.getBlockTileEntity(x, y, z)).isActive();
