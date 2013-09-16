@@ -132,9 +132,9 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir.getOpposite());
         } else {
-          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir);
+          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir.getOpposite());
         }
         transmitted += used;
         canTransmit -= used;
@@ -169,7 +169,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       IPowerReceptor rec = (IPowerReceptor) te;
       PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
       if (reciever != null) {
-        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+        receptors.add(new Receptor((IPowerReceptor) te, dir));
       }
     }
 

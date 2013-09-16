@@ -173,9 +173,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir.getOpposite());
         } else {
-          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir);
+          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir.getOpposite());
         }
         transmitted += used;
         canTransmit -= used;
@@ -208,8 +208,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if (te instanceof IPowerReceptor) {
         IPowerReceptor rec = (IPowerReceptor) te;
-        PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+        receptors.add(new Receptor((IPowerReceptor) te, dir));
       }
     }
     receptorIterator = receptors.listIterator();

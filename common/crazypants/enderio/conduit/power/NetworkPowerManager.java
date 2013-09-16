@@ -65,41 +65,51 @@ public class NetworkPowerManager {
       }
 
       ReceptorEntry r = receptorIterator.next();
+      if (r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
 
-      PowerReceiver pp = r.powerReceptor.getPowerReceiver(r.direction);
-      if (pp != null) {
-        if (pp.getType() != Type.ENGINE) {
+        //do a summy recieve or recieve energy counter will never tick down
+        float es = r.emmiter.getPowerHandler().getEnergyStored();
+        PowerReceiver pr = r.emmiter.getPowerReceiver(r.direction.getOpposite());
+        pr.receiveEnergy(Type.STORAGE, 0, null);
+        r.emmiter.getPowerHandler().setEnergy(energyStored);               
+        
+      } else {
 
-          float used = 0;
-          float reservedForEntry = removeReservedEnergy(r);
-          float canOffer = available + reservedForEntry;
-          canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
-          float requested = pp.powerRequest();
+        PowerReceiver pp = r.powerReceptor.getPowerReceiver(r.direction);
+        if (pp != null) {
+          if (pp.getType() != Type.ENGINE) {
 
-          // If it is possible to supply the minimum amount of energy
-          if (pp.getMinEnergyReceived() <= r.emmiter.getMaxEnergyExtracted(r.direction)) {
-            // Buffer energy if we can't meet it now
-            if (pp.getMinEnergyReceived() > canOffer && requested > 0) {
-              reserveEnergy(r, canOffer);
-              used += canOffer;
-            } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
-              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, r.direction);
-            } else {
-              float offer = Math.min(requested, canOffer);
-              used = pp.receiveEnergy(Type.PIPE, offer, r.direction);
+            float used = 0;
+            float reservedForEntry = removeReservedEnergy(r);
+            float canOffer = available + reservedForEntry;
+            canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
+            float requested = pp.powerRequest();
+
+            // If it is possible to supply the minimum amount of energy
+            if (pp.getMinEnergyReceived() <= r.emmiter.getMaxEnergyExtracted(r.direction)) {
+              // Buffer energy if we can't meet it now
+              if (pp.getMinEnergyReceived() > canOffer && requested > 0) {
+                reserveEnergy(r, canOffer);
+                used += canOffer;
+              } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
+                used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, r.direction.getOpposite());
+              } else {
+                float offer = Math.min(requested, canOffer);
+                used = pp.receiveEnergy(Type.PIPE, offer, r.direction.getOpposite());
+              }
+
             }
+            available -= used;
 
           }
-          available -= used;
-
-        }
-        if (available <= 0) {
-          break;
+          if (available <= 0) {
+            break;
+          }
         }
 
       }
       appliedCount++;
-    }    
+    }
 
     float used = wasAvailable - available;
     // use all the capacator storage first
@@ -183,7 +193,8 @@ public class NetworkPowerManager {
     float energyLeft = energyStored;
     float given = 0;
     for (IPowerConduit con : network.getConduits()) {
-      //NB: use ceil to ensure we dont through away any energy due to rounding errors
+      // NB: use ceil to ensure we dont through away any energy due to rounding
+      // errors
       float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
       give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
       give = Math.min(give, energyLeft);
@@ -280,16 +291,16 @@ public class NetworkPowerManager {
 
         float canGet = 0;
         if (cb.isOutputEnabled()) {
-          canGet = Math.min(cb.getEnergyStored(), cb.getMaxIO());          
+          canGet = Math.min(cb.getEnergyStored(), cb.getMaxIO());
           canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
           canExtract += canGet;
-        } 
+        }
         float canFill = 0;
-        if(cb.isInputEnabled()) {
+        if (cb.isInputEnabled()) {
           canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxIO());
           canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
           this.canFill += canFill;
-        } 
+        }
         enteries.add(new CapBankSupplyEntry(cb, canGet, canFill));
 
       }

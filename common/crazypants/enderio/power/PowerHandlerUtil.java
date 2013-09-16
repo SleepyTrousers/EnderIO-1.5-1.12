@@ -57,22 +57,25 @@ public class PowerHandlerUtil {
       return 0;
     }
 
+    float energyStored = pp.getEnergyStored();
+    float canUse = quantity;
+    canUse = Math.min(canUse, pp.getMaxEnergyReceived());
+    //Don't overflow it    
+    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);   
+    if (canUse <= pp.getMinEnergyReceived()) {            
+      pp.receiveEnergy(type, 0, null);
+      ph.setEnergy(energyStored);
+      return 0;
+    }
+    
+    
+        
     // Do all required functions except:
     // - We will handle perd'n ourselves and there is not need to drain excess
     // from our engines as they are self regulating
-    // - Also not making use of the doWork calls.
-    float energyStored = pp.getEnergyStored();
-    pp.receiveEnergy(type, quantity, from);
+    // - Also not making use of the doWork calls.    
+    pp.receiveEnergy(type, 0, from);
     ph.setEnergy(energyStored);
-
-    float canUse = quantity;
-    if (canUse < pp.getMinEnergyReceived()) {
-      return 0;
-    }
-        
-    canUse = Math.min(canUse, pp.getMaxEnergyReceived());
-    //Don't overflow it    
-    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);    
 
     ph.setEnergy(energyStored + canUse);
     receptor.applyPerdition();

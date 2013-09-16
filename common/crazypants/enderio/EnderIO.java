@@ -236,13 +236,11 @@ public class EnderIO {
   
   @EventHandler
   public void serverStarted(FMLServerStartedEvent event) {
-    System.out.println("EnderIO.serverStarted: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     HyperCubeRegister.load();
   }
   
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
-    System.out.println("EnderIO.serverStarted: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     HyperCubeRegister.unload();
   }
   

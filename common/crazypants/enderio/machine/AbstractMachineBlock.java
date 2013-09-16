@@ -183,8 +183,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           Util.dropItems(world, te, x, y, z, true);
         }
       }
-      ItemStack st = new ItemStack(this);
-      Util.dropItems(world, st, x, y, z, false);
     }
     world.removeBlockTileEntity(x, y, z);
   }
@@ -197,6 +195,15 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public int quantityDropped(Random r) {
     return 0;
+  }
+
+  @Override
+  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    if (!world.isRemote && !player.capabilities.isCreativeMode) {
+      ItemStack st = new ItemStack(this);
+      Util.dropItems(world, st, x, y, z, false);
+    }
+    return super.removeBlockByPlayer(world, player, x, y, z);
   }
 
   @Override
@@ -257,7 +264,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected abstract int getGuiId();
 
   protected abstract String getMachineFrontIconKey(boolean active);
-    
+
   protected String getSideIconKey() {
     return "enderio:machineSide";
   }
