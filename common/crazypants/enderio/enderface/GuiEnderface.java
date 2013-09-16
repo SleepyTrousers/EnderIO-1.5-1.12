@@ -189,7 +189,11 @@ public class GuiEnderface extends GuiScreen {
     MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
     if (hit != null) {
       int id = world.getBlockId(hit.blockX, hit.blockY, hit.blockZ);
-      openInterface(hit.blockX, hit.blockY, hit.blockZ);
+      if(id == ModObject.blockHyperCube.actualId || id == ModObject.blockCapacitorBank.actualId) {
+        Block.blocksList[id].onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
+      } else {
+        openInterface(hit.blockX, hit.blockY, hit.blockZ);
+      }      
     }
 
   }
