@@ -53,7 +53,7 @@ public class NetworkPowerManager {
 
     int appliedCount = 0;
     int numReceptors = receptors.size();
-    float available = energyStored + capSupply.canExtract - reserved;
+    float available = energyStored + capSupply.canExtract;
     float wasAvailable = available;
 
     if (available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
@@ -82,8 +82,8 @@ public class NetworkPowerManager {
 
           float used = 0;
           float reservedForEntry = removeReservedEnergy(r);
-          float canOffer = available + reservedForEntry;
-          canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
+          available += reservedForEntry;
+          float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
 
           float requested = pp.powerRequest(r.direction);
           requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyStored() - pp.getPowerProvider().getEnergyStored());
