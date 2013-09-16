@@ -9,12 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import crazypants.gui.GuiScrollableList;
+import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
-public class GuiChannelList extends GuiScrollableList {
+public class GuiChannelList extends GuiScrollableList<Channel> {
 
-  private int currentSelection = -1;
-  
   private List<Channel> channels = new ArrayList<Channel>();
   
   private Channel activeChannel;
@@ -38,32 +37,57 @@ public class GuiChannelList extends GuiScrollableList {
   }
   
   @Override
-  protected int getNumElements() {
-    return channels.size();
+  public int getNumElements() {
+    return isActiveChannelListed() ? channels.size() : channels.size() + 1;
+  }
+  
+  @Override
+  public Channel getElementAt(int index) {
+    if(!isActiveChannelListed()) {
+      if(index == 0) {
+        return activeChannel;
+      }
+      index--;
+    }
+    if(index < 0 || index >= channels.size()) {
+      return null;
+    }
+    return channels.get(index);
+  }
+  
+  protected boolean isActiveChannelListed() {
+    return activeChannel == null || channels.contains(activeChannel);
   }
 
   @Override
-  protected void elementClicked(int i, boolean flag) {
-    if(i < 0 || i >= channels.size()) {
-      currentSelection = -1;
+  protected boolean elementClicked(int i, boolean flag) {
+    if(getElementAt(i) == null) {
+      return false;
     } else {
-      currentSelection = i;
+      return true;
     }
   }
 
+ 
   @Override
-  protected boolean isSelected(int i) {    
-    return i == currentSelection;
-  }
-  
-  @Override
-  protected void drawElement(int index, int xPosition, int yPosition, int l, Tessellator tessellator) {
+  protected void drawElement(int index, int xPosition, int yPosition, int rowHeight, Tessellator tessellator) {
     if(index < 0 || index >= channels.size()) {
       return;
     }    
-    Channel c = channels.get(index);        
-    parent.drawString(parent.getFontRenderer(), c.name, xPosition + margin, yPosition + margin/2, RenderUtil.getRGB(Color.white));
+    Channel c = getElementAt(index);
+    if(c == null) {
+      return;
+    }
+    int col = ColorUtil.getRGB(Color.white);
+    if(c.equals(activeChannel)) {      
+      col = ColorUtil.getRGB(Color.cyan);
+      if(isActiveChannelListed()) {
+        RenderUtil.renderQuad2D(xPosition - 1, yPosition, 0, width, rowHeight + 2, ColorUtil.getRGB(Color.darkGray));
+      } else {
+        RenderUtil.renderQuad2D(xPosition - 1, yPosition, 0, width, rowHeight + 2, ColorUtil.getRGB(Color.red.darker()));
+      }
+    }
+    parent.drawString(parent.getFontRenderer(), c.name, xPosition + margin, yPosition + margin/2, col);
   }
-  
 
 }

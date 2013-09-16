@@ -1,5 +1,8 @@
 package crazypants.gui;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
@@ -8,18 +11,18 @@ import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GuiScrollableList {
+public abstract class GuiScrollableList<T> {
 
   private final Minecraft mc = Minecraft.getMinecraft();
 
-  private int originX;
-  private int originY;
-  private int width;
-  private int height;
+  protected int originX;
+  protected int originY;
+  protected int width;
+  protected int height;
   protected int minY;
   protected int maxY;
-  private int minX;
-  private int maxX;
+  protected int minX;
+  protected int maxX;
 
   protected final int slotHeight;
 
@@ -37,13 +40,15 @@ public abstract class GuiScrollableList {
 
   private float amountScrolled;
 
-  private int selectedElement = -1;
+  protected int selectedIndex = -1;
 
   private long lastClickedTime;
 
   private boolean showSelectionBox = true;
   
   protected int margin = 4;
+  
+  protected List<ListSelectionListener<T>> listeners = new CopyOnWriteArrayList<ListSelectionListener<T>>();
 
   public GuiScrollableList(int width, int height, int originX, int originY, int slotHeight) {
     this.width = width;
@@ -65,14 +70,54 @@ public abstract class GuiScrollableList {
     maxX = minX + width;
   }
 
-  protected abstract int getNumElements();
-
-  protected abstract void elementClicked(int elementIndex, boolean doubleClick);
-
-  protected abstract boolean isSelected(int elementIndex);
+  public void addSelectionListener(ListSelectionListener<T> listener) {
+    listeners.add(listener);
+  }
+  
+  public void removeSelectionListener(ListSelectionListener<T> listener) {
+    listeners.remove(listener);
+  }
+  
+  public T getSelectedElement() {
+    return getElementAt(selectedIndex);
+  }
+  
+  public void setSelection(T selection) {
+    setSelection(getIndexOf(selection));    
+  }
+  
+  public void setSelection(int index) {
+    if(index == selectedIndex) {
+      return;
+    }
+    selectedIndex = index;
+    for(ListSelectionListener<T> listener : listeners) {
+      listener.selectionChanged(this, selectedIndex);
+    }
+  }
+    
+  
+  public int getIndexOf(T element) {
+    if(element == null) {
+      return -1;
+    }
+    for(int i=0; i < getNumElements(); i++) {
+      if(element.equals(getElementAt(i))) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  
+  public abstract T getElementAt(int index);
+  
+  public abstract int getNumElements();
   
   protected abstract void drawElement(int elementIndex, int x, int y, int height, Tessellator tessellator);
 
+  protected boolean elementClicked(int elementIndex, boolean doubleClick) {
+    return true;
+  }
   
   public void setShowSelectionBox(boolean val) {
     showSelectionBox = val;
@@ -154,7 +199,7 @@ public abstract class GuiScrollableList {
 
       if (elementY <= maxY && elementY + slotHeight >= minY) {
         
-        if (showSelectionBox && isSelected(i)) {          
+        if (showSelectionBox && i == selectedIndex) {          
           GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
           GL11.glDisable(GL11.GL_TEXTURE_2D);
           tessellator.startDrawingQuads();
@@ -291,8 +336,10 @@ public abstract class GuiScrollableList {
         int mouseOverElement = y / slotHeight;
 
         if (mouseX >= minX && mouseX <= maxX && mouseOverElement >= 0 && y >= 0 && mouseOverElement < getNumElements()) {
-          boolean doubleClick = mouseOverElement == selectedElement && Minecraft.getSystemTime() - lastClickedTime < 250L;
-          elementClicked(mouseOverElement, doubleClick);
+          boolean doubleClick = mouseOverElement == selectedIndex && Minecraft.getSystemTime() - lastClickedTime < 250L;
+          if(elementClicked(mouseOverElement, doubleClick)) {
+            setSelection(mouseOverElement);
+          }
           lastClickedTime = Minecraft.getSystemTime();
 
         } else if (mouseX >= minX && mouseX <= maxX && y < 0) {

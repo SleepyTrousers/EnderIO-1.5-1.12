@@ -43,11 +43,6 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     result.init();
     return result;
   }
-
-  
-  Icon addIcon;
-  Icon lockIcon;
-  
   
   private BlockHyperCube() {
     super(ModObject.blockHyperCube.id, Material.ground);
@@ -73,8 +68,6 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public void registerIcons(IconRegister iconRegister) {
     blockIcon = iconRegister.registerIcon("enderio:solarPanelTop");    
-    addIcon = iconRegister.registerIcon("enderio:icons/add");
-    lockIcon = iconRegister.registerIcon("enderio:icons/public");
   }
   
 //  @Override
@@ -197,17 +190,13 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         }
       }
     }
-
     if (entityPlayer.isSneaking()) {
       return false;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (!(te instanceof TileHyperCube)) {
       return false;
-    }
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
-      System.out.println("BlockHyperCube.onBlockActivated: Energy stored = " + ((TileHyperCube)te).getPowerHandler().getEnergyStored());
-    }
+    }    
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
     return true;
   }
@@ -221,7 +210,6 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof TileHyperCube) {
-      System.out.println("BlockHyperCube.getClientGuiElement: !!!!!!");
       TileHyperCube hc = (TileHyperCube) te;
       return new GuiHyperCube(hc);
     }

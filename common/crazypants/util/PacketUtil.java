@@ -44,7 +44,7 @@ public class PacketUtil {
 
   }
 
-  public static TileEntity handleTileEntityPacket(boolean readId, DataInputStream dis) {
+  public static TileEntity handleTileEntityPacket(World world, boolean readId, DataInputStream dis) {
     int x;
     int y;
     int z;
@@ -61,14 +61,14 @@ public class PacketUtil {
     }
     NBTTagCompound tags = readNBTTagCompound(dis);
 
-    World world = EnderIO.proxy.getClientWorld();
+
     if (world == null) {
-      FMLLog.finer("PacketUtil.handleTileEntityPacket: Recieved packet for tile that did not exist or was not loaded on client.", (Object[])null);
+      FMLLog.warning("PacketUtil.handleTileEntityPacket: Null world recieved when processing tile entity packet.");
       return null;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te == null) {
-      FMLCommonHandler.instance().raiseException(new Exception("TileEntity was null"), "PacketUtil.readTileEntityPacket", true);
+      FMLLog.warning("PacketUtil.handleTileEntityPacket: TileEntity null when processing tile entity packet.");
       return null;
     }
     te.readFromNBT(tags);

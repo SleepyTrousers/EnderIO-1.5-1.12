@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.DimensionManager;
@@ -50,7 +51,7 @@ public class HyperCubeRegister {
       }
     }  
     Property userNamesProp = config.get(CATEGORY_PRIVATE_CHANNELS, "users", new String[] {});
-    String[] userNames = pcNamesProp.getStringList();
+    String[] userNames = userNamesProp.getStringList();
     if (userNames != null) {
       for (String user : userNames) {
         Property userChannles = config.get(CATEGORY_PRIVATE_CHANNELS, user + ".channels", new String[] {});
@@ -81,6 +82,13 @@ public class HyperCubeRegister {
     }
   }
   
+  public synchronized void deregister(TileHyperCube cube, Channel channel) {
+    List<TileHyperCube> cubes = innerGetCubesForChannel(channel);
+    if(cubes != null) {
+      cubes.remove(cube);
+    }
+  }
+  
   public synchronized void deregister(TileHyperCube cube) {
     List<TileHyperCube> cubes = innerGetCubesForChannel(cube.getChannel());
     if(cubes != null) {
@@ -105,7 +113,32 @@ public class HyperCubeRegister {
         publicChannels.add(channel);
         updateConfig();
       }
+    } else {      
+      List<Channel> channels = getChannelsForUser(channel.user);
+      if(!channels.contains(channel)) {        
+        channels.add(channel);
+        updateConfig();
+      }
     }
+  }
+  
+  public void removeChannel(Channel channel) {
+    if(channel == null || channel.name == null) {
+      return;
+    }    
+    if(channel.user == null) {
+      if(publicChannels.contains(channel)) {
+        publicChannels.remove(channel);
+        updateConfig();
+      }
+    } else {      
+      List<Channel> channels = getChannelsForUser(channel.user);
+      if(channels.contains(channel)) {        
+        channels.remove(channel);
+        updateConfig();
+      }
+    }
+    
   }
 
   private void updateConfig() {
@@ -119,6 +152,29 @@ public class HyperCubeRegister {
     }
     Property pcNamesProp = config.get(CATEGORY_PUBLIC_CHANNELS, "names", new String[] {});
     pcNamesProp.set(publicNames);
+    
+    Set<String> users = userChannels.keySet();    
+    Property userNamesProp = config.get(CATEGORY_PRIVATE_CHANNELS, "users", new String[] {});
+    userNamesProp.set(users == null ? new String[0] : users.toArray(new String[users.size()]));
+    
+    for(String user : users) {
+      Property userChansProp = config.get(CATEGORY_PRIVATE_CHANNELS, user + ".channels", new String[] {});
+      List<Channel> val = userChannels.get(user);
+      String[] channelNames;
+      if(val == null) {
+        channelNames = new String[0];
+      } else {
+        channelNames = new String[val.size()];
+        int i=0;
+        for(Channel chan : val) {
+          channelNames[i] = chan.name;
+          ++i;
+        }
+      }
+      userChansProp.set(channelNames);
+      
+    }
+    
     config.save();    
   }
 
@@ -137,7 +193,5 @@ public class HyperCubeRegister {
   public List<Channel> getPublicChannels() {    
     return publicChannelsRO;
   }
-
-  
 
 }

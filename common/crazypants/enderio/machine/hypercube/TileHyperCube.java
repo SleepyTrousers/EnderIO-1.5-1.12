@@ -22,9 +22,11 @@ import crazypants.util.BlockCoord;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
 
-  private RedstoneControlMode powerInputControlMode = RedstoneControlMode.IGNORE;
+  private static final float ENERGY_LOSS = 0.1f;
 
-  private RedstoneControlMode powerOutputControlMode = RedstoneControlMode.IGNORE;
+  private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
+
+  private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
 
   private boolean powerOutputEnabled = true;
 
@@ -43,6 +45,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   private PowerHandler disabledPowerHandler;
   
   private Channel channel = null;
+  private Channel registeredChannel = null;
   private String owner;
   
   private boolean init = true;
@@ -51,20 +54,20 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
   }
 
-  public RedstoneControlMode getPowerInputControlMode() {
-    return powerInputControlMode;
+  public RedstoneControlMode getInputControlMode() {
+    return inputControlMode;
   }
 
-  public void setPowerInputControlMode(RedstoneControlMode powerInputControlMode) {
-    this.powerInputControlMode = powerInputControlMode;
+  public void setInputControlMode(RedstoneControlMode powerInputControlMode) {
+    this.inputControlMode = powerInputControlMode;
   }
 
-  public RedstoneControlMode getPowerOutputControlMode() {
-    return powerOutputControlMode;
+  public RedstoneControlMode getOutputControlMode() {
+    return outputControlMode;
   }
 
-  public void setPowerOutputControlMode(RedstoneControlMode powerOutputControlMode) {
-    this.powerOutputControlMode = powerOutputControlMode;
+  public void setOutputControlMode(RedstoneControlMode powerOutputControlMode) {
+    this.outputControlMode = powerOutputControlMode;
   }
 
   public Channel getChannel() {
@@ -92,7 +95,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   private void balanceCubeNetworkEnergy() {
-    //TODO: Energy loss
+    
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
     if(cubes == null || cubes.isEmpty()) {
       return;
@@ -103,9 +106,21 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     }
     
     float energyPerNode = totalEnergy / cubes.size();
+    float totalToTranfer = 0;        
     for(TileHyperCube cube : cubes) {
-     cube.getPowerHandler().setEnergy(energyPerNode);
+      if(cube.getPowerHandler().getEnergyStored() < energyPerNode) {
+        totalToTranfer += (energyPerNode - cube.getPowerHandler().getEnergyStored());
+      }
     }
+    
+    float totalLoss = totalToTranfer * ENERGY_LOSS;   
+    totalEnergy -= totalLoss;
+    energyPerNode = totalEnergy / cubes.size();
+    
+    for(TileHyperCube cube : cubes) {
+      cube.getPowerHandler().setEnergy(energyPerNode);      
+    }
+    
   }
   
   @Override
@@ -135,12 +150,20 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
 
     powerHandler.setEnergy(stored);
+    
+    if(registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {
+      if(registeredChannel != null) {
+        HyperCubeRegister.instance.deregister(this, registeredChannel);
+      }
+      HyperCubeRegister.instance.register(this);
+      registeredChannel = channel;
+    }
 
     balanceCubeNetworkEnergy();
 
     boolean requiresClientSync = false;
-    powerInputEnabled = RedstoneControlMode.isConditionMet(powerInputControlMode, this);
-    powerOutputEnabled = RedstoneControlMode.isConditionMet(powerOutputControlMode, this);
+    powerInputEnabled = RedstoneControlMode.isConditionMet(inputControlMode, this);
+    powerOutputEnabled = RedstoneControlMode.isConditionMet(outputControlMode, this);
 
     if (powerOutputEnabled) {
       transmitEnergy();
@@ -164,8 +187,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   private boolean transmitEnergy() {
-
-    //TODO: Energy loss on energy transfer
+    
     if (powerHandler.getEnergyStored() <= 0) {
       return false;
     }
@@ -267,8 +289,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
-    powerInputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("powerInputControlMode")];
-    powerOutputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("powerOutputControlMode")];
+    inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
+    outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
     
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
@@ -285,8 +307,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
-    nbtRoot.setShort("powerInputControlMode", (short) powerInputControlMode.ordinal());
-    nbtRoot.setShort("powerOutputControlMode", (short) powerOutputControlMode.ordinal());
+    nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
+    nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
     if(channel == null) {
       nbtRoot.setString("channelName", "");
       nbtRoot.setString("channelUser", "");

@@ -45,10 +45,12 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_ALLOY_SMELTING_MODE_PACKET = 5;
   public static final int ID_HYPER_CUBE_REDSTONE_PACKET = 6;
   public static final int ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST = 7;
-  public static final int ID_HYPER_CUBE_ADD_CHANNEL = 8;
+  public static final int ID_HYPER_CUBE_ADD_REMOVE_CHANNEL = 8;
   public static final int ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST = 9;
+  public static final int ID_HYPER_CUBE_CHANNEL_SELECTED = 10;
 
   public static final String CHANNEL = "EnderIO";
+  
   
   public static PacketHandler instance;
   
@@ -77,8 +79,8 @@ public class PacketHandler implements IPacketHandler {
       int id = data.readInt();
       if (id == ID_ENDERFACE) {
         handleEnderfacePacket(data, manager, player);
-      } else if (id == ID_TILE_ENTITY) {
-        PacketUtil.handleTileEntityPacket(false, data);
+      } else if (id == ID_TILE_ENTITY && player instanceof EntityPlayer) {
+        PacketUtil.handleTileEntityPacket(((EntityPlayer) player).worldObj, false, data);
       } else {
         for(IPacketProcessor proc : processors) {
           if(proc.canProcessPacket(id)) {
