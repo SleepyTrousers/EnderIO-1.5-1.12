@@ -22,6 +22,7 @@ import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor {
 
@@ -85,9 +86,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
 
     // do the required tick to keep BC API happy
-    // float stored = powerHandler.getEnergyStored();
-    // powerHandler.update(this);
-    // powerHandler.setEnergy(stored);
+     float stored = powerHandler.getEnergyStored();
+     powerHandler.update(this);
+     powerHandler.setEnergy(stored);
 
     boolean requiresClientSync = false;
 
@@ -162,26 +163,22 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if (receptor.receptor instanceof IInternalPowerReceptor) {
 
           if (!(receptor.receptor instanceof IConduitBundle)) {
-            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir.getOpposite());
           } else {
             IConduitBundle bundle = (IConduitBundle) receptor.receptor;
             IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
             if (conduit != null && conduit.getConectionMode(receptor.fromDir) == ConnectionMode.INPUT) {
-              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir.getOpposite());
             } else {
               used = 0;
             }
           }
         } else {
-          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
+          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir.getOpposite()));
           used = Math.min(used, pp.getMaxEnergyStored() - pp.getEnergyStored());       
-          pp.receiveEnergy(used, receptor.fromDir);
+          pp.receiveEnergy(used, receptor.fromDir.getOpposite());
         }
         transmitted += used;
-        // if (used > 0) {
-        // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Trasnmitted energy "
-        // + used + " to " + receptor.receptor);
-        // }
         canTransmit -= used;
       }
       if (canTransmit <= 0) {
@@ -220,7 +217,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if (te instanceof IPowerReceptor) {
           IPowerReceptor rec = (IPowerReceptor) te;
           if (!(te instanceof TileCapacitorBank)) {
-            receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+            receptors.add(new Receptor((IPowerReceptor) te, dir));
           }
         }
       }
@@ -349,7 +346,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   int doGetEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return (int) (scale * (storedEnergy / maxStoredEnergy));
+    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / maxStoredEnergy)), 0, scale);    
   }
 
   float doGetEnergyStored() {

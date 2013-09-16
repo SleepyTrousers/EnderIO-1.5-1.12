@@ -18,6 +18,7 @@ import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.MutablePowerProvider;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
 
@@ -78,7 +79,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   int getEnergyStoredScaled(int scale) { 
-    return (int) (scale * (powerHandler.getEnergyStored() / powerHandler.getMaxEnergyStored()));
+    return VecmathUtil.clamp(Math.round(scale * (powerHandler.getEnergyStored() / powerHandler.getMaxEnergyStored())), 0, scale);
   }
   
   public void onBreakBlock() {
@@ -136,19 +137,14 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     if (worldObj == null) { // sanity check
       return;
     }
-    if (worldObj.isRemote) {      
+    if (worldObj.isRemote) {       
       return;
     } // else is server, do all logic only on the server
-
+    
     // do the required tick to keep BC API happy
-//    float stored = powerHandler.getEnergyStored();
-//    powerHandler.update();
-//    // do a dummy recieve of power to force the updating of what is an isn't a
-//    // power source as we rely on this
-//    // to make sure we dont both send and recieve to the same source
-//    powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
-//
-//    powerHandler.setEnergy(stored);
+    float stored = powerHandler.getEnergyStored();
+    powerHandler.update(this);
+    powerHandler.setEnergy(stored);
     
     if(registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {
       if(registeredChannel != null) {
@@ -209,11 +205,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
         float used;
         float boundCanTransmit = Math.min(canTransmit, pp.getMaxEnergyReceived());        
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir.getOpposite());
         } else {
-          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
-          used = Math.min(used, pp.getMaxEnergyStored() - pp.getMaxEnergyReceived());
-          pp.receiveEnergy(used, receptor.fromDir);
+          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir.getOpposite()));
+          used = Math.min(used, pp.getMaxEnergyStored() - pp.getEnergyStored());
+          pp.receiveEnergy(used, receptor.fromDir.getOpposite());
         }
         transmitted += used;
         canTransmit -= used;
@@ -286,7 +282,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if (te instanceof IPowerReceptor) {
         IPowerReceptor rec = (IPowerReceptor) te;
-        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+        receptors.add(new Receptor((IPowerReceptor) te, dir));
       }
     }
 
