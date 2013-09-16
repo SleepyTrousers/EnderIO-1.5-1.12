@@ -26,7 +26,9 @@ public class ConduitPowerProvider extends PowerProvider implements MutablePowerP
   
   @Override
   public void receiveEnergy(float quantity, ForgeDirection from) {
-    powerSources[from.ordinal()] = 2;
+    if(from != null) {
+      powerSources[from.ordinal()] = 2;
+    }
 
     if(conduit.getConectionMode(from) == ConnectionMode.OUTPUT) {
       return;
