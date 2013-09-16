@@ -179,11 +179,18 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           T te = (T) world.getBlockTileEntity(x, y, z);
           Util.dropItems(world, te, x, y, z, true);
         }
-      }
+      }      
+    }
+    world.removeBlockTileEntity(x, y, z);
+  }
+  
+  @Override
+  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    if (!world.isRemote && !player.capabilities.isCreativeMode) {
       ItemStack st = new ItemStack(this);
       Util.dropItems(world, st, x, y, z, false);
     }
-    world.removeBlockTileEntity(x, y, z);
+    return super.removeBlockByPlayer(world, player, x, y, z);
   }
 
   @Override

@@ -83,14 +83,14 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private boolean transmitEnergy() {
 
     if (powerHandler.getEnergyStored() <= 0) {
-      // powerHandler.update();
+      powerHandler.update(this);
       return false;
     }
 
     // Mandatory power handler update
-    // float stored = powerHandler.getEnergyStored();
-    // powerHandler.update();
-    // powerHandler.setEnergy(stored);
+     float stored = powerHandler.getEnergyStored();
+     powerHandler.update(this);
+     powerHandler.setEnergy(stored);
 
     float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
@@ -110,9 +110,9 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir.getOpposite());
         } else {
-          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
+          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir.getOpposite()));
           pp.receiveEnergy(used, receptor.fromDir);
         }
         transmitted += used;
@@ -146,10 +146,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
     if (te instanceof IPowerReceptor) {
       IPowerReceptor rec = (IPowerReceptor) te;
-      // PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-      // if(reciever != null) {
-      receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
-      // }
+      receptors.add(new Receptor((IPowerReceptor) te, dir));
     }
 
     // NB: This is to supports connections from any direction

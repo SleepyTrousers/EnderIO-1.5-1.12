@@ -140,15 +140,15 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   private boolean transmitEnergy() {
 
     if (powerHandler.getEnergyStored() <= 0) {
-      // powerHandler.update();
+      powerHandler.update(this);
       return false;
     }
     float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
-    // float stored = powerHandler.getEnergyStored();
-    // powerHandler.update();
-    // float storedAfter = powerHandler.getEnergyStored();
+    float stored = powerHandler.getEnergyStored();
+    powerHandler.update(this);
+    float storedAfter = powerHandler.getEnergyStored();
 
     checkReceptors();
 
@@ -165,21 +165,13 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
-          // + canTransmit + " to internal.");
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir.getOpposite());
         } else {
-          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
-          // + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
-          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir));
+          used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir.getOpposite()));
           used = Math.min(used, pp.getMaxEnergyStored() - pp.getEnergyStored());
           pp.receiveEnergy(used, receptor.fromDir);
         }
         transmitted += used;
-        // if (used > 0) {
-        // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Trasnmitted energy "
-        // + used + " to " + receptor.receptor);
-        // }
         canTransmit -= used;
       }
       if (canTransmit <= 0) {
@@ -210,7 +202,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if (te instanceof IPowerReceptor) {
         IPowerReceptor rec = (IPowerReceptor) te;
-        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+        receptors.add(new Receptor((IPowerReceptor) te, dir));
       }
     }
     receptorIterator = receptors.listIterator();

@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.MutablePowerProvider;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
@@ -66,39 +67,49 @@ public class NetworkPowerManager {
       }
 
       ReceptorEntry r = receptorIterator.next();
+      if (r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
 
-      IPowerReceptor pp = r.powerReceptor;
-      if (pp != null && pp.getPowerProvider() != null) {
+        // do a dummy receive energy so counter will never tick down
+        float es = r.emmiter.getPowerHandler().getEnergyStored();
+        MutablePowerProvider pr = r.emmiter.getPowerHandler();
+        pr.receiveEnergy(0, null);
+        pr.setEnergy(energyStored);
 
-        float used = 0;
-        float reservedForEntry = removeReservedEnergy(r);
-        float canOffer = available + reservedForEntry;
-        canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
+      } else {
 
-        float requested = pp.powerRequest(r.direction);
-        requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyStored() - pp.getPowerProvider().getEnergyStored());
-        requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyReceived());
+        IPowerReceptor pp = r.powerReceptor;
+        if (pp != null && pp.getPowerProvider() != null) {
 
-        // If it is possible to supply the minimum amount of energy
-        if (pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getMaxEnergyExtracted(r.direction)) {
-          // Buffer energy if we can't meet it now
-          if (pp.getPowerProvider().getMinEnergyReceived() > canOffer && requested > 0) {
-            if (pp.getPowerProvider().getMinEnergyReceived() < r.emmiter.getMaxEnergyExtracted(r.direction)) {
-              reserveEnergy(r, canOffer);
-              used += canOffer;
+          float used = 0;
+          float reservedForEntry = removeReservedEnergy(r);
+          float canOffer = available + reservedForEntry;
+          canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), canOffer);
+
+          float requested = pp.powerRequest(r.direction);
+          requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyStored() - pp.getPowerProvider().getEnergyStored());
+          requested = Math.min(requested, pp.getPowerProvider().getMaxEnergyReceived());
+
+          // If it is possible to supply the minimum amount of energy
+          if (pp.getPowerProvider().getMinEnergyReceived() <= r.emmiter.getMaxEnergyExtracted(r.direction)) {
+            // Buffer energy if we can't meet it now
+            if (pp.getPowerProvider().getMinEnergyReceived() > canOffer && requested > 0) {
+              if (pp.getPowerProvider().getMinEnergyReceived() < r.emmiter.getMaxEnergyExtracted(r.direction)) {
+                reserveEnergy(r, canOffer);
+                used += canOffer;
+              }
+            } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
+              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, r.direction.getOpposite());
+            } else {
+              used = Math.min(requested, canOffer);
+              pp.getPowerProvider().receiveEnergy(used, r.direction.getOpposite());
             }
-          } else if (r.powerReceptor instanceof IInternalPowerReceptor) {
-            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, canOffer, r.direction);
-          } else {
-            used = Math.min(requested, canOffer);
-            pp.getPowerProvider().receiveEnergy(used, r.direction);
+
           }
+          available -= used;
 
-        }
-        available -= used;
-
-        if (available <= 0) {
-          break;
+          if (available <= 0) {
+            break;
+          }
         }
 
       }
