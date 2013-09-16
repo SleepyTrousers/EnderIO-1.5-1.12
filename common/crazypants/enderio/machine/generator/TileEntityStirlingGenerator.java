@@ -137,6 +137,13 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return needsUpdate;
   }
 
+  
+  
+  @Override
+  public int powerRequest(ForgeDirection from) {
+    return 0;
+  }
+
   private boolean transmitEnergy() {
 
     if (powerHandler.getEnergyStored() <= 0) {
