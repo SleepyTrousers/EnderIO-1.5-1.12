@@ -1,12 +1,32 @@
 package crazypants.enderio.power;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 
 public class PowerHandlerUtil {
+
+  public static float getStoredEnergyForItem(ItemStack item) {
+    NBTTagCompound tag = item.getTagCompound();
+    if(tag == null) {
+      return 0;
+    }
+    return tag.getFloat("storedEnergy");
+  }
+  
+  public static void setStoredEnergyForItem(ItemStack item, float storedEnergy) {
+    NBTTagCompound tag = item.getTagCompound();
+    if(tag == null) {
+      tag = new NBTTagCompound();
+    }    
+    tag.setFloat("storedEnergy", storedEnergy);   
+    item.setTagCompound(tag);    
+  }
 
   public static EnderPowerProvider createHandler(ICapacitor capacitor) {
     EnderPowerProvider ph = new EnderPowerProvider();

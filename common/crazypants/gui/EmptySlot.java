@@ -1,8 +1,10 @@
-package crazypants.render;
+package crazypants.gui;
 
 import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.opengl.GL11;
+
+import crazypants.render.RenderUtil;
 
 class EmptySlot {
 

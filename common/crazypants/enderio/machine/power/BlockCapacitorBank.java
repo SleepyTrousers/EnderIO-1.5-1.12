@@ -31,6 +31,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
@@ -211,7 +212,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
-      cb.addEnergy(BlockItemCapacitorBank.getStoredEnergyForItem(stack));
+      cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
     }
     world.markBlockForUpdate(x, y, z);    
   }

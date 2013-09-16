@@ -16,8 +16,8 @@ import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.render.GuiToolTip;
-import crazypants.render.IconButton;
+import crazypants.gui.GuiToolTip;
+import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
 
 public class GuiAlloySmelter extends GuiMachineBase {
@@ -72,7 +72,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
       tileEntity.setFurnaceRecipesEnabled(!tileEntity.areFurnaceRecipesEnabled());
       Icon icon = tileEntity.areFurnaceRecipesEnabled() ? EnderIO.blockAlloySmelter.vanillaSmeltingOn : EnderIO.blockAlloySmelter.vanillaSmeltingOff;      
       vanillaFurnaceButton.setIcon(icon);
-      Packet pkt = PacketHandler.getSmeltingModePacket(tileEntity);
+      Packet pkt = AlloySmelterPacketProcessor.getSmeltingModePacket(tileEntity);
       PacketDispatcher.sendPacketToServer(pkt);
     } else {
       super.actionPerformed(par1GuiButton); 

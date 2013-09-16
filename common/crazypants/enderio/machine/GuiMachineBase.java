@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.PacketHandler;
-import crazypants.render.GuiContainerBase;
-import crazypants.render.GuiToolTip;
-import crazypants.render.IconButton;
+import crazypants.gui.GuiContainerBase;
+import crazypants.gui.GuiToolTip;
+import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
 
 public abstract class GuiMachineBase extends GuiContainerBase {
@@ -71,7 +71,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       }
       tileEntity.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
       redstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(tileEntity.getRedstoneControlMode()));
-      Packet pkt = PacketHandler.getRedstoneControlPacket(tileEntity);
+      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(tileEntity);
       PacketDispatcher.sendPacketToServer(pkt);
     }
   }

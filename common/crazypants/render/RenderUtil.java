@@ -7,6 +7,7 @@ import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
+import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,6 +136,20 @@ public class RenderUtil {
     return res;
   }
 
+  public static void renderQuad2D(double x, double y, double z, double width, double height, int colorRGB) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);    
+    GL11.glDisable(GL11.GL_TEXTURE_2D);
+    Tessellator tessellator = Tessellator.instance;
+    tessellator.startDrawingQuads();
+    tessellator.setColorOpaque_I(colorRGB);
+    tessellator.addVertex(x, y + height, z);
+    tessellator.addVertex(x + width, y + height, z);
+    tessellator.addVertex(x + width, y, z);
+    tessellator.addVertex(x, y, z);        
+    tessellator.draw();
+    GL11.glEnable(GL11.GL_TEXTURE_2D);
+  }
+  
   public static List<ForgeDirection> getEdgesForFace(ForgeDirection face) {
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     if (face.offsetY != 0) {
@@ -162,7 +177,6 @@ public class RenderUtil {
 
   public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
-
 
     if (!forceAllEdges) {
       int blockID = blockAccess.getBlockId(x, y, z);

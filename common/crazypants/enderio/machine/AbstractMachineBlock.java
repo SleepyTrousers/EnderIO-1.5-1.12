@@ -2,22 +2,19 @@ package crazypants.enderio.machine;
 
 import java.util.Random;
 
-import buildcraft.api.tools.IToolWrench;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -45,6 +42,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         REDSTONE_CONTROL_ICONS[RedstoneControlMode.IGNORE.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneIgnore");
         REDSTONE_CONTROL_ICONS[RedstoneControlMode.ON.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneOn");
         REDSTONE_CONTROL_ICONS[RedstoneControlMode.OFF.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneOff");
+        REDSTONE_CONTROL_ICONS[RedstoneControlMode.NEVER.ordinal()] = iconRegister.registerIcon("enderio:iconRedstoneNever");
       }
 
       @Override
@@ -111,12 +109,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
         if (wrench.canWrench(entityPlayer, x, y, z)) {
-        removeBlockByPlayer(world, entityPlayer, x, y, z);
-        if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-          ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          removeBlockByPlayer(world, entityPlayer, x, y, z);
+          if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
         }
-      return true;
-    }
       }
     }
 
@@ -131,20 +129,21 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void registerIcons(IconRegister iconRegister) {
 
     iconBuffer = new Icon[1][12];
+    String side = getSideIconKey();
     // first the 6 sides in OFF state
-    iconBuffer[0][0] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][1] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][2] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][0] = iconRegister.registerIcon(side);
+    iconBuffer[0][1] = iconRegister.registerIcon(side);
+    iconBuffer[0][2] = iconRegister.registerIcon(side);
     iconBuffer[0][3] = iconRegister.registerIcon(getMachineFrontIconKey(false));
-    iconBuffer[0][4] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][5] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][4] = iconRegister.registerIcon(side);
+    iconBuffer[0][5] = iconRegister.registerIcon(side);
 
-    iconBuffer[0][6] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][7] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][8] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][6] = iconRegister.registerIcon(side);
+    iconBuffer[0][7] = iconRegister.registerIcon(side);
+    iconBuffer[0][8] = iconRegister.registerIcon(side);
     iconBuffer[0][9] = iconRegister.registerIcon(getMachineFrontIconKey(true));
-    iconBuffer[0][10] = iconRegister.registerIcon("enderio:machineSide");
-    iconBuffer[0][11] = iconRegister.registerIcon("enderio:machineSide");
+    iconBuffer[0][10] = iconRegister.registerIcon(side);
+    iconBuffer[0][11] = iconRegister.registerIcon(side);
 
   }
 
@@ -173,11 +172,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-    TileEntity ent = world.getBlockTileEntity(x, y, z);
-    if (ent != null) {
-      if (teClass.isAssignableFrom(ent.getClass())) {
-        @SuppressWarnings("unchecked")
-        T te = (T) world.getBlockTileEntity(x, y, z);
+      TileEntity ent = world.getBlockTileEntity(x, y, z);
+      if (ent != null) {
+        if (teClass.isAssignableFrom(ent.getClass())) {
+          @SuppressWarnings("unchecked")
+          T te = (T) world.getBlockTileEntity(x, y, z);
           Util.dropItems(world, te, x, y, z, true);
         }
       }
@@ -190,13 +189,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public int idDropped(int par1, Random par2Random, int par3) {
     return 0;
-      }
+  }
 
   @Override
   public int quantityDropped(Random r) {
     return 0;
-      }
-
+  }
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
@@ -253,6 +251,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
   }
 
+  protected String getSideIconKey() {
+    return "enderio:machineSide";
+  }
+  
   protected abstract int getGuiId();
 
   protected abstract String getMachineFrontIconKey(boolean active);

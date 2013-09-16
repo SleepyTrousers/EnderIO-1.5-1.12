@@ -11,6 +11,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -19,22 +20,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class BlockItemCapacitorBank extends ItemBlock {
 
-  public static ItemStack createItemStackWithPower(float storedEnergy) {    
-    NBTTagCompound tag = new NBTTagCompound();
-    tag.setFloat("storedEnergy", storedEnergy);
-    
+  public static ItemStack createItemStackWithPower(float storedEnergy) {        
     ItemStack res = new ItemStack(EnderIO.blockCapacitorBank);
-    res.setTagCompound(tag);
-    
+    PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);    
     return res;
-  }
-  
-  public static float getStoredEnergyForItem(ItemStack item) {
-    NBTTagCompound tag = item.getTagCompound();
-    if(tag == null) {
-      return 0;
-    }
-    return tag.getFloat("storedEnergy");
   }
 
   public BlockItemCapacitorBank(int id) {
@@ -45,7 +34,7 @@ public class BlockItemCapacitorBank extends ItemBlock {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-    list.add("Contains " + BlockCapacitorBank.NF.format(getStoredEnergyForItem(itemStack)) + " MJ");
+    list.add("Contains " + BlockCapacitorBank.NF.format(PowerHandlerUtil.getStoredEnergyForItem(itemStack)) + " MJ");
     super.addInformation(itemStack, par2EntityPlayer, list, par4);  
   }
   

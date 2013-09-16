@@ -22,6 +22,7 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
@@ -54,7 +55,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
  @Override
  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-   renderBlock(null, BlockItemCapacitorBank.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
+   renderBlock(null, PowerHandlerUtil.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
  }
  
 //------------------------- Entity renderer
