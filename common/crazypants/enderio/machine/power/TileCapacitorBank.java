@@ -23,6 +23,7 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor {
 
@@ -167,29 +168,21 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE && !powerHandler.isPowerSource(receptor.fromDir)) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
-          // + canTransmit + " to internal.");
           if(! (receptor.receptor instanceof IConduitBundle) ) { //power conduits manage the exchange between them an the cap bank
-            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.STORAGE, receptor.fromDir);
+            used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.STORAGE, receptor.fromDir.getOpposite());
           } else {
             IConduitBundle bundle = (IConduitBundle)receptor.receptor;
             IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
             if(conduit != null && conduit.getConectionMode(receptor.fromDir) == ConnectionMode.INPUT) {              
-              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.STORAGE, receptor.fromDir);
+              used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.STORAGE, receptor.fromDir.getOpposite());
             } else {
               used = 0;
             }
           }
         } else {
-          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
-          // + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
-          used = pp.receiveEnergy(Type.STORAGE, canTransmit, receptor.fromDir);
+          used = pp.receiveEnergy(Type.STORAGE, canTransmit, receptor.fromDir.getOpposite());
         }
         transmitted += used;
-        // if (used > 0) {
-        // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Trasnmitted energy "
-        // + used + " to " + receptor.receptor);
-        // }
         canTransmit -= used;
       }
       if (canTransmit <= 0) {
@@ -227,9 +220,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
         if (te instanceof IPowerReceptor) {
           IPowerReceptor rec = (IPowerReceptor) te;
-          if (!(te instanceof TileCapacitorBank)) {
-            PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-            receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+          if (!(te instanceof TileCapacitorBank)) {            
+            receptors.add(new Receptor((IPowerReceptor) te, dir));
           }
         }
       }
@@ -347,7 +339,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   int doGetEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return (int) (scale * (storedEnergy / maxStoredEnergy));
+    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / maxStoredEnergy)), 0, scale);
   }
 
   float doGetEnergyStored() {

@@ -19,6 +19,7 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
 
@@ -79,7 +80,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   int getEnergyStoredScaled(int scale) { 
-    return (int) (scale * (powerHandler.getEnergyStored() / powerHandler.getMaxEnergyStored()));
+    return VecmathUtil.clamp(Math.round(scale * (powerHandler.getEnergyStored() / powerHandler.getMaxEnergyStored())), 0, scale);
   }
   
   public void onBreakBlock() {
@@ -210,9 +211,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
         float used;
         float boundCanTransmit = Math.min(canTransmit, pp.getMaxEnergyReceived());        
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, boundCanTransmit, Type.STORAGE, receptor.fromDir);
+          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, boundCanTransmit, Type.STORAGE, receptor.fromDir.getOpposite());
         } else {
-          used = pp.receiveEnergy(Type.STORAGE, boundCanTransmit, receptor.fromDir);
+          used = pp.receiveEnergy(Type.STORAGE, boundCanTransmit, receptor.fromDir.getOpposite());
         }
         transmitted += used;
         canTransmit -= used;
@@ -276,8 +277,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if (te instanceof IPowerReceptor) {
         IPowerReceptor rec = (IPowerReceptor) te;
-        PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-        receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
+        receptors.add(new Receptor((IPowerReceptor) te, dir));
       }
     }
 

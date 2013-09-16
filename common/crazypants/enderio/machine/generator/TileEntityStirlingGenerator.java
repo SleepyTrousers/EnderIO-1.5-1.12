@@ -173,19 +173,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
         float used;
         if (receptor.receptor instanceof IInternalPowerReceptor) {
-          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
-          // + canTransmit + " to internal.");
           used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir);
         } else {
-          // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Sending "
-          // + canTransmit + " to EXTERNAL. Receptor is: " + receptor.receptor);
           used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir);
         }
         transmitted += used;
-        // if (used > 0) {
-        // System.out.println("TileEntityStirlingGenerator.transmitEnergy: Trasnmitted energy "
-        // + used + " to " + receptor.receptor);
-        // }
         canTransmit -= used;
       }
       if (canTransmit <= 0) {
