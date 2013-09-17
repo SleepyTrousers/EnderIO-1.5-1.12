@@ -170,10 +170,11 @@ public class BasicAlloyRecipe implements IMachineRecipe {
       return true;
     }
     
-    
-    
-    
-    
+  }
+
+  @Override
+  public float getExperianceForOutput(ItemStack output) {    
+    return 0;
   }
 
 }

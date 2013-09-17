@@ -118,4 +118,8 @@ public class PoweredTask {
     return null;
 
   }
+
+  public IMachineRecipe getRecipe() {
+    return recipe;
+  }
 }

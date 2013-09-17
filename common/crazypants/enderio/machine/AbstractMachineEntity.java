@@ -56,12 +56,47 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     redstoneControlMode = RedstoneControlMode.IGNORE;
   }
 
+  public SlotDefinition getSlotDefinition() {
+    return slotDefinition;
+  }
+
+  public boolean isValidUpgrade(ItemStack itemstack) {
+    for(int i=slotDefinition.getMinUpgradeSlot(); i <= slotDefinition.getMaxUpgradeSlot(); i++) {
+      if(isItemValidForSlot(i, itemstack)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public boolean isValidInput(ItemStack itemstack) {
+    for(int i=slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+      if(isItemValidForSlot(i, itemstack)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public boolean isValidOutput(ItemStack itemstack) {
+    for(int i=slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
+      if(isItemValidForSlot(i, itemstack)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
+    System.out.println("AbstractMachineEntity.isItemValidForSlot: Testing slot " + i + " from valid input.");
     if (slotDefinition.isUpgradeSlot(i)) {
+      System.out.println("AbstractMachineEntity.isItemValidForSlot: is a valid upgrade");
       return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
     }
-    return isMachineItemValidForSlot(i, itemstack);
+    boolean ret = isMachineItemValidForSlot(i, itemstack);
+    System.out.println("AbstractMachineEntity.isItemValidForSlot: isMachineItemValidForSlot says: " + ret);
+    return ret;
   }
 
   protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);

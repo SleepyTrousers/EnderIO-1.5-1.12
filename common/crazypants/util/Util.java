@@ -2,11 +2,13 @@ package crazypants.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class Util {
@@ -49,6 +51,22 @@ public class Util {
     } else {
       stack.splitStack(1);
       return stack;
+    }
+  }
+
+  public static void giveExperience(EntityPlayer thePlayer, float experience) {
+    if (experience < 1.0F) {
+      int rndRound = MathHelper.floor_float(experience);
+      if (rndRound < MathHelper.ceiling_float_int(experience) && (float) Math.random() < experience) {
+        ++rndRound;
+      }
+      experience = rndRound;
+    }
+    int intExp = Math.round(experience);
+    while (intExp > 0) {
+      int j = EntityXPOrb.getXPSplit(intExp);
+      intExp -= j;
+      thePlayer.worldObj.spawnEntityInWorld(new EntityXPOrb(thePlayer.worldObj, thePlayer.posX, thePlayer.posY + 0.5D, thePlayer.posZ + 0.5D, j));
     }
   }
 

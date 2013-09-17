@@ -26,6 +26,9 @@ public class MachineRecipeRegistry {
   }
 
   public IMachineRecipe getRecipeForUid(String uid) {
+    if(uid == null) {
+      return null;
+    }
     for (Map<String, IMachineRecipe> recipes : machineRecipes.values()) {
       for (IMachineRecipe recipe : recipes.values()) {
         if (uid.equals(recipe.getUid())) {

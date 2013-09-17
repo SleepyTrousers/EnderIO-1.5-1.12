@@ -63,4 +63,9 @@ public class CrusherMachineRecipe implements IMachineRecipe {
     return res;
   }
 
+  @Override
+  public float getExperianceForOutput(ItemStack output) {
+    return 0;
+  }
+
 }

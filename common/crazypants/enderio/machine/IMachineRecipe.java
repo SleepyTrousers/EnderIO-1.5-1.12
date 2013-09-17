@@ -11,6 +11,8 @@ public interface IMachineRecipe {
   public boolean isRecipe(RecipeInput... inputs);
 
   ItemStack[] getCompletedResult(RecipeInput... inputs);
+  
+  float getExperianceForOutput(ItemStack output);
 
   boolean isValidInput(int slotNumber, ItemStack item);
 
