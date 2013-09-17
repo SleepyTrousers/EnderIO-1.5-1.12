@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
@@ -59,6 +60,10 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
   }
 
+  public Icon getPortalIcon() {
+    return blockIcon;
+  }
+  
   @Override
   public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
     return true;
@@ -66,23 +71,23 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:solarPanelTop");    
+    blockIcon = iconRegister.registerIcon("enderio:tesseractPortal");    
   }
   
-//  @Override
-//  public int getRenderType() {
-//    return -1;
-//  }
-//
-//  @Override
-//  public boolean isOpaqueCube() {
-//    return false;
-//  }
-//
-//  @Override
-//  public boolean renderAsNormalBlock() {
-//    return false;
-//  }
+  @Override
+  public int getRenderType() {
+    return -1;
+  }
+
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+
+  @Override
+  public boolean renderAsNormalBlock() {
+    return false;
+  }
 
   @Override
   public TileEntity createNewTileEntity(World world) {

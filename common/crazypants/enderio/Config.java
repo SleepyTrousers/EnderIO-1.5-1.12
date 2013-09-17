@@ -13,6 +13,8 @@ public final class Config {
   
   public static boolean useAlternateBinderRecipe;
   
+  public static boolean useAlternateTesseractModel;
+  
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
   public static void load(Configuration config) {
@@ -20,6 +22,7 @@ public final class Config {
       e.load(config);
     }
     useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false).getBoolean(false);
+    useAlternateTesseractModel = config.get("Settings", "useAlternateTesseractModel", false).getBoolean(false);
     conduitScale = config.get("Settings", "conduitScale", DEFAULT_CONDUIT_SCALE, 
         "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" +
         "In SMP, all clients must be using the same value as the server.").getDouble(DEFAULT_CONDUIT_SCALE);
