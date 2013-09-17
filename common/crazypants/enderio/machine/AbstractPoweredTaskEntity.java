@@ -105,18 +105,32 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected void taskComplete() {
-    int outputIndex = inventory.length - 2;
+
     if (currentTask != null) {
       lastCompletedRecipe = currentTask.getRecipe();
       ItemStack[] output = currentTask.getCompletedResult();
       if (output != null && output.length > 0) {
-        ItemStack result = currentTask.getCompletedResult()[0];
+        ItemStack[] results = currentTask.getCompletedResult();
+        for (ItemStack result : results) {
+          if (result != null) {
+            int toMerge = result.stackSize;
+            for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot() && toMerge > 0; i++) {
+              int outputIndex = i;
         if (inventory[outputIndex] == null) {
           inventory[outputIndex] = result.copy();
+                toMerge = 0;
         } else {
-          int newStackSize = inventory[outputIndex].stackSize += result.stackSize;
+                int newStackSize = Math.min(inventory[outputIndex].stackSize + getNumCanMerge(inventory[outputIndex], result),
+                    inventory[outputIndex].getMaxStackSize());
+                int merged = newStackSize - inventory[outputIndex].stackSize;
+                toMerge -= merged;
+                if (merged > 0) {
           inventory[outputIndex] = result.copy();
           inventory[outputIndex].stackSize = newStackSize;
+        }
+      }
+    }
+          }
         }
       }
     }
@@ -150,17 +164,31 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     //make sure we have room for the next output
     
     //if we have an empty output, all good
-    for(int i=slotDefinition.minOutputSlot; i < (slotDefinition.maxOutputSlot + 1); i++) {
+    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
       if(inventory[i] == null) {
         return nextRecipe;
       }
     }
     
     ItemStack[] nextResults = nextRecipe.getCompletedResult(getInputs());
+    ItemStack[] outputStacks = new ItemStack[slotDefinition.getNumOutputSlots()];
+    int copyIndex = 0;
+    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+      ItemStack inv = inventory[i];
+      if (inv != null) {
+        outputStacks[copyIndex] = inv.copy();
+      }
+      copyIndex++;
+    }
+
     for(ItemStack result : nextResults) {
       int canMerge = 0;
-      for(int i=slotDefinition.minOutputSlot; i < (slotDefinition.maxOutputSlot + 1); i++) {
-        canMerge += getNumCanMerge(inventory[i], result);
+      // for (int i = slotDefinition.minOutputSlot; i <=
+      // slotDefinition.maxOutputSlot; i++) {
+      // canMerge += getNumCanMerge(inventory[i], result);
+      // }
+      for (ItemStack outStack : outputStacks) {
+        canMerge += getNumCanMerge(outStack, result);
       }
       if(canMerge < result.stackSize) {
         return null;
@@ -175,7 +203,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if(!itemStack.isItemEqual(result)) {
       return 0;  
     }
-    return itemStack.getMaxStackSize() - itemStack.stackSize;
+    return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
 
 
