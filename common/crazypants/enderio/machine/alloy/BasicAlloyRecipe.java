@@ -19,7 +19,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   private float energyRequired = DEFAULT_ENERGY_USE;
 
   private ItemStack[] inputs;
-
+  
   private Set<InputKey> inputKeys;
 
   private ItemStack output;
@@ -134,7 +134,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     }
     return result.toArray(new RecipeInput[result.size()]);
   }
-
+  
   static class InputKey {
     
     int itemID;
@@ -143,7 +143,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     InputKey(int itemID, int damage) {    
       this.itemID = itemID;
       this.damage = damage;
-}
+    }
 
     @Override
     public int hashCode() {
@@ -170,10 +170,11 @@ public class BasicAlloyRecipe implements IMachineRecipe {
       return true;
     }
     
-    
-    
-    
-    
+  }
+
+  @Override
+  public float getExperianceForOutput(ItemStack output) {    
+    return 0;
   }
 
 }

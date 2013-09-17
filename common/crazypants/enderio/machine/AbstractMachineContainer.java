@@ -15,10 +15,10 @@ public abstract class AbstractMachineContainer extends Container {
 
     addMachineSlots(playerInv);
 
-    addSlotToContainer(new Slot(te, te.inventory.length - 1, 12, 60) {
+    addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), 12, 60) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isStackValidForSlot(tileEntity.inventory.length - 1, itemStack);
+        return tileEntity.isStackValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
       }
     });
 
@@ -43,11 +43,10 @@ public abstract class AbstractMachineContainer extends Container {
 
   @Override
   public ItemStack transferStackInSlot(EntityPlayer entityPlayer, int slotIndex) {
-    boolean hasOutput = tileEntity.getSizeInventory() > 2; // Assume one input
-                                                           // and capacitor
-    int outputSlot = tileEntity.getSizeInventory() - 2;
-    int capacitorSlot = outputSlot + 1;
-    int startPlayerSlot = capacitorSlot + 1;
+
+    SlotDefinition slotDef = tileEntity.getSlotDefinition();
+
+    int startPlayerSlot = slotDef.getNumSlots();
     int endPlayerSlot = startPlayerSlot + 26;
     int startHotBarSlot = endPlayerSlot + 1;
     int endHotBarSlot = startHotBarSlot + 9;
@@ -59,47 +58,36 @@ public abstract class AbstractMachineContainer extends Container {
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
 
-      if ((hasOutput ? (slotIndex < outputSlot) : (slotIndex <= outputSlot)) || slotIndex == capacitorSlot) {
+      if (slotDef.isInputSlot(slotIndex) || slotDef.isUpgradeSlot(slotIndex)) {
         // merge from machine input slots to inventory
         if (!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
           return null;
         }
 
-      } else if (hasOutput && slotIndex == outputSlot) { // merge result
-
+      } else if (slotDef.isOutputSlot(slotIndex)) {
+        // merge result
         if (!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, true)) {
           return null;
         }
+        slot.onSlotChange(origStack, copystack);
 
-      } else /* if (slotIndex > capacitorSlot) */{ // from inventory into inputs
-
-        boolean merged = false;
-        for (int i = 0; (hasOutput ? (i < outputSlot) : (i <= outputSlot)) && !merged; i++) {
-          if (tileEntity.isStackValidForSlot(i, origStack)) {
-            merged = mergeItemStack(origStack, i, i + 1, false);
-          }
-        }
-
-        // check for capacitor mergers
-        if (!merged) {
-          if (tileEntity.isStackValidForSlot(capacitorSlot, origStack)) {
-            merged = mergeItemStack(origStack, capacitorSlot, capacitorSlot + 1, false);
-          }
-        }
-        
-        if(!merged) {
-          if(slotIndex >= startPlayerSlot && slotIndex <= endPlayerSlot) {
-            if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
-              return null;
-            } 
-          } else if(slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
-            if(!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
-              return null;
+      } else {
+        //Check from inv->input then inv->upgrade then inv->hotbar or hotbar->inv
+        if (slotIndex >= startPlayerSlot) {
+          if (!tileEntity.isValidInput(origStack) || !mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
+            if (!tileEntity.isValidUpgrade(origStack) || !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
+              if (slotIndex <= endPlayerSlot) {
+                if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+                  return null;
+                }
+              } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+                if (!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+                  return null;
+                }
+              }
             }
           }
-          
         }
-
       }
 
       if (origStack.stackSize == 0) {
@@ -107,7 +95,7 @@ public abstract class AbstractMachineContainer extends Container {
       } else {
         slot.onSlotChanged();
       }
-      
+
       slot.onSlotChanged();
 
       if (origStack.stackSize == copystack.stackSize) {

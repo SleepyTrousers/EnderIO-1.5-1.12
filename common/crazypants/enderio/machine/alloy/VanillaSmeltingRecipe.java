@@ -76,6 +76,15 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     result.stackSize = result.stackSize * getNumInputs(inputs);
     return new ItemStack[] { result };
   }
+  
+  @Override
+  public float getExperianceForOutput(ItemStack output) {
+    if(output == null) {
+      return 0;
+    }
+    float result = FurnaceRecipes.smelting().getExperience(output);
+    return result * output.stackSize;
+  }
 
   @Override
   public boolean isValidInput(int slotNumber, ItemStack item) {

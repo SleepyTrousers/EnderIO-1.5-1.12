@@ -50,7 +50,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (i >= 3) {
+    if (i >= slotDefinition.getNumSlots()) {
       return false;
     }
     return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemstack)).isEmpty();

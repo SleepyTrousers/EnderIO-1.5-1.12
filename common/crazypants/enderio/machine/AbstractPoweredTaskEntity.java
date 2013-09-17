@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity implements ISidedInventory {
 
   protected PoweredTask currentTask = null;
+  protected IMachineRecipe lastCompletedRecipe;
 
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
@@ -59,6 +60,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   public float getProgress() {
     return currentTask == null ? 0 : currentTask.getProgress();
   }
+  
+  public float getExperienceForOutput(ItemStack output) {
+    if(lastCompletedRecipe == null) {
+      return 0;
+    }
+    return lastCompletedRecipe.getExperianceForOutput(output);
+  }
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
@@ -67,10 +75,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return false;
     }
 
-    if(inventory[0] != null) {
-      int i  = 1;
+    if (inventory[0] != null) {
+      int i = 1;
     }
-    
+
     boolean requiresClientSync = false;
     // Process any current items
     requiresClientSync |= checkProgress();
@@ -99,6 +107,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   protected void taskComplete() {
     int outputIndex = inventory.length - 2;
     if (currentTask != null) {
+      lastCompletedRecipe = currentTask.getRecipe();
       ItemStack[] output = currentTask.getCompletedResult();
       if (output != null && output.length > 0) {
         ItemStack result = currentTask.getCompletedResult()[0];
@@ -143,10 +152,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     //if we have an empty output, all good
     for(int i=slotDefinition.minOutputSlot; i < (slotDefinition.maxOutputSlot + 1); i++) {
       if(inventory[i] == null) {
-      return nextRecipe;
+        return nextRecipe;
+      }
     }
-    }
-
+    
     ItemStack[] nextResults = nextRecipe.getCompletedResult(getInputs());
     for(ItemStack result : nextResults) {
       int canMerge = 0;
@@ -154,8 +163,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
         canMerge += getNumCanMerge(inventory[i], result);
       }
       if(canMerge < result.stackSize) {
-      return null;
-    }
+        return null;
+      }
     }
 
 
@@ -190,6 +199,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
+    String uid = nbtRoot.getString("lastCompletedRecipe");
+    lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);    
   }
 
   @Override
@@ -200,6 +211,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       currentTask.writeToNBT(currentTaskNBT);
       nbtRoot.setCompoundTag("currentTask", currentTaskNBT);
     }
+    if(lastCompletedRecipe != null) {
+      nbtRoot.setString("lastCompletedRecipe", lastCompletedRecipe.getUid());
+    } 
   }
 
 }

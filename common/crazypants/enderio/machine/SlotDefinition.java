@@ -44,13 +44,37 @@ public class SlotDefinition {
   public int getNumInputSlots() {
     return Math.max(0, maxInputSlot - minInputSlot + 1);
   }
-  
-public int getNumOutputSlots() {
-  return Math.max(0, maxOutputSlot - minOutputSlot + 1);
+
+  public int getNumOutputSlots() {
+    return Math.max(0, maxOutputSlot - minOutputSlot + 1);
   }
-  
+
   public int getNumSlots() {
     return Math.max(Math.max(maxInputSlot, maxOutputSlot), maxUpgradeSlot) + 1;
+  }
+
+  public int getMinUpgradeSlot() {
+    return minUpgradeSlot;
+  }
+
+  public int getMaxUpgradeSlot() {
+    return maxUpgradeSlot;
+  }
+
+  public int getMinInputSlot() {
+    return minInputSlot;
+  }
+
+  public int getMaxInputSlot() {
+    return maxInputSlot;
+  }
+
+  public int getMinOutputSlot() {
+    return minOutputSlot;
+  }
+
+  public int getMaxOutputSlot() {
+    return maxOutputSlot;
   }
 
   @Override

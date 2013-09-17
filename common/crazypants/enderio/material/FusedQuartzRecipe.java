@@ -98,4 +98,12 @@ public class FusedQuartzRecipe implements IMachineRecipe {
     return 0;
   }
 
+  @Override
+  public float getExperianceForOutput(ItemStack output) {
+    if(output == null) {
+      return 0;
+    }
+    return 0.2F * output.stackSize;
+  }
+
 }

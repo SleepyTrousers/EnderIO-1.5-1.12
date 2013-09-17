@@ -63,6 +63,12 @@ public class MachineRecipes {
     ItemStack capacitorBank = new ItemStack(blockCapacitorBank.actualId,1,0);
     GameRegistry.addShapedRecipe(capacitorBank , "bab", "aca", "bab", 'a', activtedCapacitor,'b', industialBinder, 'c', capacitor);
     
+	ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ENDER_CAPACITOR.ordinal());
+    ItemStack tesseract = new ItemStack(ModObject.blockHyperCube.actualId, 1, 0);
+    ItemStack obsidian = new ItemStack(Block.obsidian);    
+    ItemStack enderPearl = new ItemStack(Item.enderPearl);
+    GameRegistry.addShapedRecipe(tesseract, "oeo", "e e", "oco", 'o', obsidian,'e', enderPearl, 'c', enderCapacitor);
+
     //To-do: Sort this class
     
   }
