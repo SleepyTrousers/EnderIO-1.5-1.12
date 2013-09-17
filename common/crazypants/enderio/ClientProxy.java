@@ -29,6 +29,8 @@ import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
+import crazypants.enderio.machine.hypercube.TileHyperCube;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
@@ -132,6 +134,10 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockEnderIo.blockID, eior);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+    
+    HyperCubeRenderer hcr = new HyperCubeRenderer();
+    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.blockHyperCube.blockID, hcr);
 
   }
 

@@ -42,7 +42,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     BlockHyperCube result = new BlockHyperCube();
     result.init();
     return result;
-  }
+  }    
   
   private BlockHyperCube() {
     super(ModObject.blockHyperCube.id, Material.ground);
@@ -59,7 +59,11 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     GameRegistry.registerTileEntity(TileHyperCube.class, ModObject.blockHyperCube.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
   }
-
+  
+  public Icon getPortalIcon() {
+    return blockIcon;
+  }
+  
   @Override
   public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
     return true;
@@ -67,23 +71,23 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:solarPanelTop");    
+    blockIcon = iconRegister.registerIcon("enderio:tesseractPortal");    
   }
   
-//  @Override
-//  public int getRenderType() {
-//    return -1;
-//  }
-//
-//  @Override
-//  public boolean isOpaqueCube() {
-//    return false;
-//  }
-//
-//  @Override
-//  public boolean renderAsNormalBlock() {
-//    return false;
-//  }
+  @Override
+  public int getRenderType() {
+    return -1;
+  }
+
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+
+  @Override
+  public boolean renderAsNormalBlock() {
+    return false;
+  }
 
   @Override
   public TileEntity createNewTileEntity(World world) {
@@ -215,5 +219,5 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     }
     return null;
   }
-  
+
 }

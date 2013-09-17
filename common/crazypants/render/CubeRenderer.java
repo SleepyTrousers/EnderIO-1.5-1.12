@@ -27,7 +27,17 @@ public final class CubeRenderer {
   }
 
   public static void render(BoundingBox bb, Icon tex, VertexTransform xForm, boolean tintSides) {
-    render(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), xForm, tintSides);
+    float minU = 0;
+    float minV = 0;
+    float maxU = 1;
+    float maxV = 1;
+    if(tex != null) {
+      minU = tex.getMinU();
+      minV = tex.getMinV();
+      maxU = tex.getMaxU();
+      maxV = tex.getMaxV();
+    }
+    render(bb, minU, maxU, minV, maxV, xForm, tintSides);
   }
 
   public static void render(BoundingBox bb, float minU, float maxU, float minV, float maxV, boolean tintSides) {
