@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
@@ -97,6 +98,11 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileHyperCube();
+  }
+  
+  @Override
+  public int getLightValue(IBlockAccess world, int x, int y, int z) {    
+    return 8;
   }
     
   @Override
