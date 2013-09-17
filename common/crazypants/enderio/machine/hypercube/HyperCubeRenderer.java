@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.hypercube;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
@@ -44,12 +45,17 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
 
     TileHyperCube cube = (TileHyperCube) te;
+    
+    GL11.glEnable(GL11.GL_LIGHTING);
+    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+    
     model.render(cube, x, y, z);
 
     if (cube.getPowerHandler().getEnergyStored() > 0) {
       renderPower(te.worldObj, x, y, z, cube.getChannel() != null);
     }
 
+    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   }
 
   @Override
@@ -92,7 +98,6 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
     RenderUtil.bindBlockTexture();
-    //Icon icon = Block.portal.getBlockTextureFromSide(1);
     Icon icon = EnderIO.blockHyperCube.getPortalIcon();
 
     Tessellator tessellator = Tessellator.instance;
