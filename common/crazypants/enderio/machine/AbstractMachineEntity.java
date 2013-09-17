@@ -89,14 +89,10 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
-    System.out.println("AbstractMachineEntity.isItemValidForSlot: Testing slot " + i + " from valid input.");
-    if (slotDefinition.isUpgradeSlot(i)) {
-      System.out.println("AbstractMachineEntity.isItemValidForSlot: is a valid upgrade");
+    if (slotDefinition.isUpgradeSlot(i)) {      
       return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
     }
-    boolean ret = isMachineItemValidForSlot(i, itemstack);
-    System.out.println("AbstractMachineEntity.isItemValidForSlot: isMachineItemValidForSlot says: " + ret);
-    return ret;
+    return isMachineItemValidForSlot(i, itemstack);
   }
 
   protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);

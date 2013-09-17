@@ -8,7 +8,7 @@ import crazypants.enderio.machine.SlotDefinition;
 public class TileCrusher extends AbstractPoweredTaskEntity {
 
   public TileCrusher() {
-    super(new SlotDefinition(1, 1));
+    super(new SlotDefinition(1, 4));
   }
 
   @Override
