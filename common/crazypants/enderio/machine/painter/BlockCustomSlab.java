@@ -4,12 +4,9 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHalfSlab;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.BlockStep;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -26,15 +23,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.RecipeInput;
-import crazypants.enderio.machine.painter.BlockCustomStair.PainterTemplate;
 import crazypants.util.Util;
 
 public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvider {
@@ -46,7 +37,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   private final boolean isDouble;
 
   public BlockCustomSlab(boolean isDouble) {
-    super(isDouble ? ModObject.blockCustomDoubleSlab.actualId : ModObject.blockCustomSlab.actualId, isDouble,new Material(MapColor.stoneColor));
+    super(isDouble ? ModObject.blockCustomDoubleSlab.actualId : ModObject.blockCustomSlab.actualId, isDouble, new Material(MapColor.stoneColor));
     this.isDouble = isDouble;
     setCreativeTab(null);
     setUnlocalizedName(ModObject.blockCustomSlab.unlocalisedName);
@@ -58,7 +49,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   public void init() {
     // This is required so it is assigned prior to the BlockItem being
     // registered.
-    if (isDouble) {
+    if(isDouble) {
       LanguageRegistry.addName(this, ModObject.blockCustomDoubleSlab.name);
       GameRegistry.registerBlock(this, BlockItemCustomSlab.class, ModObject.blockCustomDoubleSlab.unlocalisedName);
       GameRegistry.registerTileEntity(TileEntityCustomSlab.class, ModObject.blockCustomDoubleSlab.unlocalisedName + "TileEntity");
@@ -79,9 +70,9 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   @Override
   public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityCustomBlock) {
+    if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if (tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
+      if(tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
         return blocksList[tef.getSourceBlockId()].getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
@@ -103,10 +94,10 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     TileEntityCustomBlock cb = (TileEntityCustomBlock)
         world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
     Block b = cb.getSourceBlock();
-    if (b != null) {
+    if(b != null) {
       tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
     }
-    if (tex == null) {
+    if(tex == null) {
       tex = blockIcon;
     }
     lastRemovedComponetIcon = tex;
@@ -149,17 +140,17 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
         getBlockBoundsMinY() - f * 2.0F) + f + getBlockBoundsMinY();
     double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() -
         getBlockBoundsMinZ() - f * 2.0F) + f + getBlockBoundsMinZ();
-    if (side == 0) {
+    if(side == 0) {
       d1 = y + getBlockBoundsMinY() - f;
-    } else if (side == 1) {
+    } else if(side == 1) {
       d1 = y + getBlockBoundsMaxY() + f;
-    } else if (side == 2) {
+    } else if(side == 2) {
       d2 = z + getBlockBoundsMinZ() - f;
-    } else if (side == 3) {
+    } else if(side == 3) {
       d2 = z + getBlockBoundsMaxZ() + f;
-    } else if (side == 4) {
+    } else if(side == 4) {
       d0 = x + getBlockBoundsMinX() - f;
-    } else if (side == 5) {
+    } else if(side == 5) {
       d0 = x + getBlockBoundsMaxX() + f;
     }
     EntityDiggingFX digFX = new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D,
@@ -183,9 +174,9 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   @Override
   public int getLightOpacity(World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityCustomBlock) {
+    if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if (tef.getSourceBlockId() > 0) {
+      if(tef.getSourceBlockId() > 0) {
         return Math.min(super.getLightOpacity(world, x, y, z), Block.lightOpacity[tef.getSourceBlockId()]);
       }
 
@@ -197,12 +188,12 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     int id = -1;
     Block b = PainterUtil.getSourceBlock(stack);
-    if (b != null) {
+    if(b != null) {
       id = b.blockID;
     }
 
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityCustomBlock) {
+    if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
       tef.setSourceBlockId(id);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
@@ -217,10 +208,10 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
-    if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
 
-      if (te instanceof TileEntityCustomSlab && !((TileEntityCustomSlab)te).isConvertingToFullBlock) {
+      if(te instanceof TileEntityCustomSlab && !((TileEntityCustomSlab) te).isConvertingToFullBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
 
         for (int i = 0; i < super.quantityDropped(null); i++) {
@@ -248,12 +239,13 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   public int quantityDropped(Random par1Random) {
     return 0; // need to do custom dropping to maintain source metadata
   }
-  
+
   /**
    * Returns the ID of the items to drop on destruction.
    */
+  @Override
   public int idDropped(int par1, Random par2Random, int par3) {
-      return ModObject.blockCustomSlab.id;
+    return ModObject.blockCustomSlab.id;
   }
 
   public static final class PainterTemplate extends BasicPainterTemplate {
@@ -262,9 +254,9 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     }
 
     @Override
-    public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
-      if (paintSource == null) {
+      if(paintSource == null) {
         return new ItemStack[0];
       }
       return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
@@ -272,7 +264,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
 
     @Override
     public boolean isValidTarget(ItemStack target) {
-      if (target == null) {
+      if(target == null) {
         return false;
       }
       Block blk = Util.getBlockFromItemId(target.itemID);

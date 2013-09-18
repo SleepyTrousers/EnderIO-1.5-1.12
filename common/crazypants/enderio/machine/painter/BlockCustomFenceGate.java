@@ -240,7 +240,7 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     }
 
     @Override
-    public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
       return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
     }

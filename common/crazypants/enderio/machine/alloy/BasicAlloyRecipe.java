@@ -19,7 +19,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   private float energyRequired = DEFAULT_ENERGY_USE;
 
   private ItemStack[] inputs;
-  
+
   private Set<InputKey> inputKeys;
 
   private ItemStack output;
@@ -30,14 +30,14 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     inputs = new ItemStack[recipeInputs.length];
     inputKeys = new HashSet<InputKey>();
     for (int i = 0; i < inputs.length; i++) {
-      if (recipeInputs[i] != null) {
+      if(recipeInputs[i] != null) {
         inputs[i] = recipeInputs[i].copy();
         inputKeys.add(new InputKey(inputs[i].itemID, inputs[i].getItemDamage()));
       } else {
         inputs[i] = null;
       }
     }
-    
+
   }
 
   @Override
@@ -53,14 +53,14 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   @Override
   public boolean isRecipe(RecipeInput... checking) {
     checking = getNonNullInputs(checking);
-    if (inputs.length != checking.length) {
+    if(inputs.length != checking.length) {
       return false;
     }
-    
+
     Set<InputKey> keys = new HashSet<BasicAlloyRecipe.InputKey>(inputKeys);
     for (RecipeInput input : checking) {
       ItemStack ing = getIngrediantForInput(input.item);
-      if (ing == null || ing.stackSize > input.item.stackSize) {
+      if(ing == null || ing.stackSize > input.item.stackSize) {
         return false;
       }
       keys.remove(new InputKey(ing.itemID, ing.getItemDamage()));
@@ -71,14 +71,14 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   private RecipeInput[] getNonNullInputs(RecipeInput[] checking) {
     int numNonNulls = 0;
     for (int i = 0; i < checking.length; i++) {
-      if (checking[i] != null && checking[i].item != null) {
+      if(checking[i] != null && checking[i].item != null) {
         numNonNulls++;
       }
     }
     RecipeInput[] result = new RecipeInput[numNonNulls];
     int index = 0;
     for (int i = 0; i < checking.length; i++) {
-      if (checking[i] != null && checking[i].item != null) {
+      if(checking[i] != null && checking[i].item != null) {
         result[index] = checking[i];
         index++;
       }
@@ -87,13 +87,16 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+  public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
     return new ItemStack[] { output.copy() };
   }
 
   @Override
-  public boolean isValidInput(int slotNumber, ItemStack item) {
-    return getIngrediantForInput(item) != null;
+  public boolean isValidInput(RecipeInput input) {
+    if(input == null) {
+      return false;
+    }
+    return getIngrediantForInput(input.item) != null;
   }
 
   @Override
@@ -107,11 +110,11 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   }
 
   private ItemStack getIngrediantForInput(ItemStack input) {
-    if (input == null) {
+    if(input == null) {
       return null;
     }
     for (ItemStack st : inputs) {
-      if (st != null && st.itemID == input.itemID) {
+      if(st != null && st.itemID == input.itemID) {
         return st;
       }
     }
@@ -123,24 +126,24 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     List<RecipeInput> result = new ArrayList<RecipeInput>();
     for (RecipeInput input : inputs) {
       int numConsumed = getQuantityConsumed(input);
-      if (numConsumed > 0) {
+      if(numConsumed > 0) {
         ItemStack consumed = input.item.copy();
         consumed.stackSize = numConsumed;
         result.add(new RecipeInput(input.slotNumber, consumed));
       }
     }
-    if (result.isEmpty()) {
+    if(result.isEmpty()) {
       return null;
     }
     return result.toArray(new RecipeInput[result.size()]);
   }
-  
+
   static class InputKey {
-    
+
     int itemID;
     int damage;
-    
-    InputKey(int itemID, int damage) {    
+
+    InputKey(int itemID, int damage) {
       this.itemID = itemID;
       this.damage = damage;
     }
@@ -156,24 +159,29 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
+      if(this == obj) {
         return true;
-      if (obj == null)
+      }
+      if(obj == null) {
         return false;
-      if (getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       InputKey other = (InputKey) obj;
-      if (damage != other.damage)
+      if(damage != other.damage) {
         return false;
-      if (itemID != other.itemID)
+      }
+      if(itemID != other.itemID) {
         return false;
+      }
       return true;
     }
-    
+
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {    
+  public float getExperianceForOutput(ItemStack output) {
     return 0;
   }
 

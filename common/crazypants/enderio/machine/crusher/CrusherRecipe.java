@@ -1,25 +1,36 @@
 package crazypants.enderio.machine.crusher;
 
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.crusher.CrusherRecipeManager.Type;
 
-class CrusherRecipe {
+public class CrusherRecipe {
 
-  final ItemStack input;
-  final ItemStack output;
-  final Type type;
-  
-  CrusherRecipe(ItemStack input, ItemStack outupt, Type type) {      
+  private final ItemStack input;
+  private final CrusherOutput[] output;
+  private final float energyRequired;
+
+  public CrusherRecipe(ItemStack input, float energyRequired, CrusherOutput... outupt) {
     this.input = input;
     this.output = outupt;
-    this.type = type;
+    this.energyRequired = energyRequired;
   }
-  
-  boolean isInput(ItemStack test) {
+
+  public boolean isInput(ItemStack test) {
     if(test == null) {
       return false;
     }
     return test.itemID == input.itemID && test.getItemDamage() == input.getItemDamage();
   }
-  
+
+  public ItemStack getInput() {
+    return input;
+  }
+
+  public CrusherOutput[] getOutput() {
+    return output;
+  }
+
+  public float getEnergyRequired() {
+    return energyRequired;
+  }
+
 }

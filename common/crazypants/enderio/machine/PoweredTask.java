@@ -12,6 +12,7 @@ public class PoweredTask {
   public static final String KEY_INPUTS_STACKS = "inputsStacks";
   public static final String KEY_RECIPE = "recipeUid";
   public static final String KEY_USED_ENERGY = "usedEnergy";
+  private static final String KEY_CHANCE = "chance";
 
   private float usedEnergy = 0;
 
@@ -21,15 +22,17 @@ public class PoweredTask {
 
   private IMachineRecipe recipe;
 
-  public PoweredTask(IMachineRecipe recipe, RecipeInput... inputs) {
-    this(recipe, 0, inputs);
+  private float chance;
+
+  public PoweredTask(IMachineRecipe recipe, float chance, RecipeInput... inputs) {
+    this(recipe, 0, chance, inputs);
   }
 
-  public PoweredTask(IMachineRecipe recipe, float usedEnergy, RecipeInput... inputsIn) {
+  protected PoweredTask(IMachineRecipe recipe, float usedEnergy, float chance, RecipeInput... inputsIn) {
     this.inputs = inputsIn;
     int numInputs = 0;
     for (int i = 0; i < inputsIn.length; i++) {
-      if (inputsIn[i] != null && inputsIn[i].item != null) {
+      if(inputsIn[i] != null && inputsIn[i].item != null) {
         numInputs++;
       }
     }
@@ -37,7 +40,7 @@ public class PoweredTask {
     inputs = new RecipeInput[numInputs];
     int index = 0;
     for (int i = 0; i < inputsIn.length; i++) {
-      if (inputsIn[i] != null && inputsIn[i].item != null) {
+      if(inputsIn[i] != null && inputsIn[i].item != null) {
         inputs[index] = new RecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
         index++;
       }
@@ -45,6 +48,7 @@ public class PoweredTask {
 
     this.recipe = recipe;
     this.usedEnergy = usedEnergy;
+    this.chance = chance;
     requiredEnergy = recipe.getEnergyRequired(inputsIn);
   }
 
@@ -61,7 +65,7 @@ public class PoweredTask {
   }
 
   public ItemStack[] getCompletedResult() {
-    return recipe.getCompletedResult(inputs);
+    return recipe.getCompletedResult(chance, inputs);
   }
 
   public void writeToNBT(NBTTagCompound nbtRoot) {
@@ -83,23 +87,26 @@ public class PoweredTask {
 
     nbtRoot.setString(KEY_RECIPE, recipe.getUid());
     nbtRoot.setFloat(KEY_USED_ENERGY, usedEnergy);
+
+    nbtRoot.setFloat(KEY_CHANCE, chance);
   }
 
   public static PoweredTask readFromNBT(NBTTagCompound nbtRoot) {
-    if (nbtRoot == null) {
+    if(nbtRoot == null) {
       return null;
     }
 
     IMachineRecipe recipe;
 
     float usedEnergy = nbtRoot.getFloat(KEY_USED_ENERGY);
+    float chance = nbtRoot.getFloat(KEY_CHANCE);
 
     int[] inputSlots = nbtRoot.getIntArray(KEY_INPUTS_SLOTS);
-    if (inputSlots == null || inputSlots.length <= 0) {
+    if(inputSlots == null || inputSlots.length <= 0) {
       return null;
     }
     NBTTagList inputItems = nbtRoot.getTagList(KEY_INPUTS_STACKS);
-    if (inputItems == null || inputItems.tagCount() != inputSlots.length) {
+    if(inputItems == null || inputItems.tagCount() != inputSlots.length) {
       return null;
     }
 
@@ -112,8 +119,8 @@ public class PoweredTask {
 
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
-    if (recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, inputs);
+    if(recipe != null) {
+      return new PoweredTask(recipe, usedEnergy, chance, inputs);
     }
     return null;
 

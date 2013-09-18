@@ -11,6 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.FMLLog;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.material.PowderIngot;
 
 public class CrusherRecipeManager {
 
@@ -72,7 +75,7 @@ public class CrusherRecipeManager {
 
   public void createRecipes() {
     addVanillaOres();
-    addVanillaRecipes();
+    addDefaultRecipes();
     for (String name : OreDictionary.getOreNames()) {
       for (ItemStack item : OreDictionary.getOres(name)) {
         oreRegistered(name, item);
@@ -81,42 +84,64 @@ public class CrusherRecipeManager {
   }
 
   CrusherRecipe getRecipeForInput(ItemStack input) {
-    if (input == null) {
+    if(input == null) {
       return null;
     }
     for (CrusherRecipe recipe : recipes) {
-      if (recipe.isInput(input)) {
+      if(recipe.isInput(input)) {
         return recipe;
       }
     }
     return null;
   }
 
-  private void addVanillaRecipes() {
-    addRecipe(new ItemStack(Block.stone), new ItemStack(Block.cobblestone), Type.INGOT);
-    addRecipe(new ItemStack(Block.cobblestone), new ItemStack(Block.sand), Type.INGOT);
-    addRecipe(new ItemStack(Block.sandStone), new ItemStack(Block.sand), Type.INGOT);
-    addRecipe(new ItemStack(Block.glass), new ItemStack(Block.sand), Type.INGOT);
-    addRecipe(new ItemStack(Item.blazeRod), new ItemStack(Item.blazePowder, 4), Type.INGOT);
-    addRecipe(new ItemStack(Block.glowStone), new ItemStack(Item.glowstone, 4), Type.INGOT);
-    addRecipe(new ItemStack(Block.gravel), new ItemStack(Item.flint), Type.INGOT);
-    addRecipe(new ItemStack(Item.bone), new ItemStack(Item.dyePowder, 6, 15), Type.INGOT);
+  private void addDefaultRecipes() {
+    addRecipe(new ItemStack(Block.stone), Type.INGOT, new ItemStack(Block.cobblestone));
+    addRecipe(new ItemStack(Block.cobblestone), Type.INGOT, new ItemStack(Block.sand));
+    addRecipe(new ItemStack(Block.sandStone), Type.INGOT, new ItemStack(Block.sand));
+    addRecipe(new ItemStack(Block.glass), Type.INGOT, new ItemStack(Block.sand));
+    addRecipe(new ItemStack(Item.blazeRod), Type.INGOT, new ItemStack(Item.blazePowder, 4));
+    addRecipe(new ItemStack(Block.glowStone), Type.INGOT, new ItemStack(Item.glowstone, 4));
+    addRecipe(new ItemStack(Block.gravel), Type.INGOT, new ItemStack(Item.flint));
+    addRecipe(new ItemStack(Item.bone), Type.INGOT, new ItemStack(Item.dyePowder, 6, 15));
+
+    addRecipe(new ItemStack(Item.coal), Type.INGOT, new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COAL.ordinal()));
+    addRecipe(new ItemStack(Block.oreCoal), Type.ORE, new ItemStack(ModObject.itemPowderIngot.actualId, 2, PowderIngot.POWDER_COAL.ordinal()));
+
+    ItemStack ironDust = new ItemStack(ModObject.itemPowderIngot.actualId, 2, PowderIngot.POWDER_IRON.ordinal());
+    ItemStack goldDust = new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_GOLD.ordinal());
+    addRecipe(new ItemStack(Block.oreIron), Type.ORE.energyCost, new CrusherOutput(ironDust), new CrusherOutput(goldDust, 0.2f));
+
+    goldDust.stackSize = 2;
+    addRecipe(new ItemStack(Block.oreGold), Type.ORE.energyCost, new CrusherOutput(goldDust));
   }
 
-  private void addRecipe(ItemStack input, ItemStack output, Type type) {
-    if (input == null || output == null || type == null) {
+  private void addRecipe(ItemStack input, Type type, ItemStack output) {
+    addRecipe(input, type.energyCost, new CrusherOutput(output, 1));
+  }
+
+  private void addRecipe(ItemStack input, float energyCost, CrusherOutput... output) {
+    if(input == null || output == null) {
       return;
     }
-    // System.out.println("CrusherRecipeManager.addRecipe: Recipe added conveting:");
-    // System.out.println("CrusherRecipeManager.addRecipe:      " +
-    // input.getItemName() + " to " + output.stackSize + " " +
-    // output.getItemName());
     CrusherRecipe rec = getRecipeForInput(input);
-    if (rec == null) {
-      recipes.add(new CrusherRecipe(input, output, type));
-    } else if (rec != null && isCloser(input, output, rec.output)) {
+    if(rec != null) {
+      FMLLog.warning("Not adding supplied recipe as a recipe already exists for the input stack ItemID=" + input.itemID + " damage=" + input.getItemDamage());
+      return;
+    }
+    recipes.add(new CrusherRecipe(input, energyCost, output));
+  }
+
+  private void mergeRecipe(ItemStack input, ItemStack output, Type type) {
+    if(input == null || output == null || type == null) {
+      return;
+    }
+    CrusherRecipe rec = getRecipeForInput(input);
+    if(rec == null) {
+      recipes.add(new CrusherRecipe(input, type.energyCost, new CrusherOutput(output, 1)));
+    } else if(rec != null && isCloser(input, output, rec.getOutput()[0].getOutput())) {
       recipes.remove(rec);
-      recipes.add(new CrusherRecipe(input, output, type));
+      recipes.add(new CrusherRecipe(input, type.energyCost, new CrusherOutput(output, 1)));
     }
 
   }
@@ -135,7 +160,7 @@ public class CrusherRecipeManager {
 
   private int getDustToOreRatio(String name) {
     for (String s : ONE_TO_ONE_ORES) {
-      if (s.equals(name)) {
+      if(s.equals(name)) {
         return 1;
       }
     }
@@ -145,27 +170,27 @@ public class CrusherRecipeManager {
   private void addOre(String name, ItemStack item) {
     add(name, item, ores);
 
-    if ("CertusQuartz".equals(name)) {
-      if (crystalCertusQuartz != null) {
-        addRecipe(item.copy(), crystalCertusQuartz.copy(), Type.INGOT);
+    if("CertusQuartz".equals(name)) {
+      if(crystalCertusQuartz != null) {
+        mergeRecipe(item.copy(), crystalCertusQuartz.copy(), Type.INGOT);
       }
-    } else if (dusts.containsKey(name)) {
+    } else if(dusts.containsKey(name)) {
       ItemStack output = getBestMatch(name, item, dusts);
-      if (output != null) {
+      if(output != null) {
         output = output.copy();
         output.stackSize = getDustToOreRatio(name);
-        addRecipe(item.copy(), output, Type.ORE);
+        mergeRecipe(item.copy(), output, Type.ORE);
       }
     }
   }
 
   private void addIngot(String name, ItemStack item) {
     add(name, item, ingots);
-    if (dusts.containsKey(name)) {
+    if(dusts.containsKey(name)) {
       ItemStack input = item.copy();
       ItemStack output = getBestMatch(name, input, dusts);
-      if (output != null) {
-        addRecipe(input, output.copy(), Type.INGOT);
+      if(output != null) {
+        mergeRecipe(input, output.copy(), Type.INGOT);
       }
     }
   }
@@ -173,30 +198,30 @@ public class CrusherRecipeManager {
   private void addDust(String name, ItemStack item) {
 
     add(name, item, dusts);
-    if ("CertusQuartz".equals(name) && crystalCertusQuartz != null) {
+    if("CertusQuartz".equals(name) && crystalCertusQuartz != null) {
       ItemStack input = crystalCertusQuartz.copy();
       ItemStack output = item.copy();
-      addRecipe(input, output, Type.ORE);
+      mergeRecipe(input, output, Type.ORE);
 
-    } else if (ores.containsKey(name)) {
+    } else if(ores.containsKey(name)) {
 
       List<ItemStack> matchingOres = ores.get(name);
-      if (matchingOres != null) {
+      if(matchingOres != null) {
         for (ItemStack input : matchingOres) {
-          if (input != null) {
+          if(input != null) {
             ItemStack output = item.copy();
             output.stackSize = getDustToOreRatio(name);
-            addRecipe(input.copy(), output, Type.ORE);
+            mergeRecipe(input.copy(), output, Type.ORE);
           }
         }
       }
     }
-    if (ingots.containsKey(name)) {
+    if(ingots.containsKey(name)) {
       List<ItemStack> matchingIngots = ingots.get(name);
-      if (matchingIngots != null) {
+      if(matchingIngots != null) {
         for (ItemStack input : matchingIngots) {
-          if (input != null) {
-            addRecipe(input.copy(), item.copy(), Type.INGOT);
+          if(input != null) {
+            mergeRecipe(input.copy(), item.copy(), Type.INGOT);
           }
         }
       }
@@ -204,31 +229,31 @@ public class CrusherRecipeManager {
   }
 
   public void oreRegistered(String name, ItemStack item) {
-    if (name == null || item == null) {
+    if(name == null || item == null) {
       return;
     }
-    if (name.equals("crystalCertusQuartz")) {
+    if(name.equals("crystalCertusQuartz")) {
       crystalCertusQuartz = item;
-      if (dusts.containsKey("CertusQuartz")) {
+      if(dusts.containsKey("CertusQuartz")) {
         ItemStack output = getBestMatch(name, crystalCertusQuartz, dusts);
-        if (output != null) {
-          addRecipe(crystalCertusQuartz.copy(), output.copy(), Type.INGOT);
+        if(output != null) {
+          mergeRecipe(crystalCertusQuartz.copy(), output.copy(), Type.INGOT);
         }
       }
-      if (ores.containsKey("CertusQuartz")) {
+      if(ores.containsKey("CertusQuartz")) {
         ItemStack input = getBestMatch("CertusQuartz", crystalCertusQuartz, ores);
-        if (input != null) {
-          addRecipe(input.copy(), crystalCertusQuartz.copy(), Type.ORE);
+        if(input != null) {
+          mergeRecipe(input.copy(), crystalCertusQuartz.copy(), Type.ORE);
         }
       }
     }
 
     for (String ore : CANDIDATE_ORES) {
-      if (name.equals("ore" + ore)) {
+      if(name.equals("ore" + ore)) {
         addOre(ore, item);
-      } else if (name.equals("ingot" + ore)) {
+      } else if(name.equals("ingot" + ore)) {
         addIngot(ore, item);
-      } else if (name.equals("dust" + ore)) {
+      } else if(name.equals("dust" + ore)) {
         addDust(ore, item);
       }
     }
@@ -236,7 +261,7 @@ public class CrusherRecipeManager {
 
   private void add(String name, ItemStack item, Map<String, List<ItemStack>> map) {
     List<ItemStack> list = map.get(name);
-    if (list == null) {
+    if(list == null) {
       list = new ArrayList<ItemStack>();
       map.put(name, list);
     }
@@ -248,12 +273,12 @@ public class CrusherRecipeManager {
     int fromID = from.itemID;
     int minDiff = Integer.MAX_VALUE;
     List<ItemStack> list = map.get(name);
-    if (list == null) {
+    if(list == null) {
       return null;
     }
     for (ItemStack item : list) {
       int diff = Math.abs(fromID - item.itemID);
-      if (diff < minDiff) {
+      if(diff < minDiff) {
         minDiff = diff;
         result = item;
       }

@@ -28,15 +28,15 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   public void setFurnaceRecipesEnabled(boolean furnaceRecipesEnabled) {
-    if (this.furnaceRecipesEnabled != furnaceRecipesEnabled) {
+    if(this.furnaceRecipesEnabled != furnaceRecipesEnabled) {
       this.furnaceRecipesEnabled = furnaceRecipesEnabled;
       forceClientUpdate = true;
     }
   }
 
   @Override
-  protected IMachineRecipe canStartNextTask() {
-    IMachineRecipe result = super.canStartNextTask();
+  protected IMachineRecipe canStartNextTask(float chance) {
+    IMachineRecipe result = super.canStartNextTask(chance);
     if(!furnaceRecipesEnabled && result instanceof VanillaSmeltingRecipe) {
       result = null;
     }
@@ -50,7 +50,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if (i >= slotDefinition.getNumSlots()) {
+    if(i >= slotDefinition.getNumSlots()) {
       return false;
     }
     return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemstack)).isEmpty();

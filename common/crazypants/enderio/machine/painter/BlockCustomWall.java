@@ -243,7 +243,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
     }
 
     @Override
-    public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
       return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
     }
