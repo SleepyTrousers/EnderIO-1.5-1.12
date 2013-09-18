@@ -70,7 +70,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
       // next result has a different source item than the current one
       return 0;
     }
-    return itemStack.getMaxStackSize() - itemStack.stackSize;
+    return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
 
 }
