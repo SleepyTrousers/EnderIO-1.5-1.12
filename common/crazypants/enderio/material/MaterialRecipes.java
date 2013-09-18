@@ -2,10 +2,14 @@ package crazypants.enderio.material;
 
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.ModObject.itemIndustrialBinder;
+
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
@@ -15,6 +19,13 @@ import crazypants.enderio.machine.alloy.BasicAlloyRecipe;
 import crazypants.enderio.machine.alloy.VanillaSmeltingRecipe;
 
 public class MaterialRecipes {
+
+  public static void registerOresInDictionary() {
+    OreDictionary.registerOre("dustIron", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_IRON.ordinal()));
+    OreDictionary.registerOre("dustGold", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_GOLD.ordinal()));
+    OreDictionary.registerOre("dustCopper", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COPPER.ordinal()));
+    OreDictionary.registerOre("dustTin", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_TIN.ordinal()));
+  }
 
   public static void addRecipes() {
 
@@ -88,8 +99,21 @@ public class MaterialRecipes {
     GameRegistry.addShapedRecipe(basicGear, "scs", "c c", "scs", 's', Item.stick, 'c', Block.cobblestone);
 
     // MJ Reader
-    GameRegistry.addShapedRecipe(mJReader, "r r", "rir", "gxg", 'r', Item.redstone, 'i', Item.ingotIron, 'g', basicGear, 'x', redstoneInductor);
-    // TO-DO: Sort this class!
+    //GameRegistry.addShapedRecipe(mJReader, "r r", "rir", "gxg", 'r', Item.redstone, 'i', Item.ingotIron, 'g', basicGear, 'x', redstoneInductor);
+    // TO-DO: Sort this class!    
+  }
+
+  public static void addOreDictionaryRecipes() {
+    int oreId = OreDictionary.getOreID("ingotCopper");
+    ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
+    if(!ingots.isEmpty()) {
+      FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_COPPER.ordinal(), ingots.get(0), 0);
+    }
+    oreId = OreDictionary.getOreID("ingotTin");
+    ingots = OreDictionary.getOres(oreId);
+    if(!ingots.isEmpty()) {
+      FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_TIN.ordinal(), ingots.get(0), 0);
+    }
   }
 
 }

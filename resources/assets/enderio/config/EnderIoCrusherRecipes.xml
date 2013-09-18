@@ -1,0 +1,290 @@
+
+<!--
+
+  Recipes are organised into named groups. A group of recipes can be disabled by setting the attribiute 'enabled=fale'.
+  A recipe group is composed of one or more recipes.
+
+  Examples:
+  <recipeGroup name="EnderIO">
+  <recipe>...</recipe>
+  <recipe>...</recipe>
+  <recipeGroup/>
+
+  <recipeGroup name="EnderIO" enabled="false">
+  <recipe>...</recipe>
+  <recipe>...</recipe>
+  <recipeGroup/>
+
+
+  Each recipe must contain one or more input item stack definition and one or more output stack definitions.
+  For each input, all outputs are produced.
+  A recipe may also define the amount of energy used to complete it (in MJ). The default value used is 400 MJ. A typical
+  value for an ingot to dust recipe is 240 MJ.
+
+  Examples:
+  <recipe>
+  <input> <itemStack/> </input>
+  <output> <itemStack/> </output>
+  </recipe>
+
+  <recipe energyCost="240">
+  <input> <itemStack/> </input>
+  <output> <itemStack/> </output>
+  <output> <itemStack/> </output>
+  </recipe>
+
+
+  Valid input item definitions:
+  - Must have either: itemID, modID + itemName or oreDictionary
+  - 'itemID' must be a valid blockID or itemID.
+  - 'modID' is the identifier registered by the mod with Forge (for example, Ender IO is EnderIO).
+  This value can be found in the details panel of Forge's 'mods' UI.
+  - 'itemName' the name used to register the block/item with forge. To dump all registered items to config/modObjectsRegistery.txt
+  include: <dumpRegistry modObjects="true/>
+  - 'oreDictionary' will use the OreDictionary to find the appropriate itemStack. The first entry returned by the dictionary
+  will be used. The dump the contents of the dictionary to config/oreDictionaryRegistery.txt include <dumpRegistery oreDictionary="true"/>
+  - The item metadata/damage may optionally be specified for all types except
+  oreDictionary.
+
+  Examples:
+  <itemStack itemID="" />
+  <itemStack itemID="" itemMeta="" />
+  <itemStack modID="" itemName="" />
+  <itemStack modID="" itemName="" itemMeta="" />
+  <itemStack oreDictionary="" />
+
+  Valid output definitions:
+  - As per inputs with the additional optional fields, number and chance (both default to 1)
+  - 'number' is the number of output items for each input
+  - 'chance' is the chance the output will be crafted. Values are clamped between 0 - 1.
+  For example, a chance of 0.25 will result, on average, one of these outputs
+  being crafted for each 4 inputs processed by the SAG Mill.
+
+  Examples:
+  <itemStack itemID="" number="2"/>
+  <itemStack itemID="" itemMeta="" chance="0.2"/>
+  <itemStack modID="" itemName="" itemMeta="" number="4" chance="0.1"/>
+
+-->
+
+<SAGMillRecipes>
+
+  <!-- <dumpRegistery oreDictionary="true" modObjects="true" /> -->
+
+  <recipeGroup name="EnderIO">
+
+    <recipe> <!-- Stone -> Cobblestone -->
+      <input>
+        <itemStack itemID="1" />
+      </input>
+      <output>
+        <itemStack itemID="4" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Cobblestone -> Sand -->
+      <input>
+        <itemStack itemID="4" />
+      </input>
+      <output>
+        <itemStack itemID="12" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Sandstone -> Sand -->
+      <input>
+        <itemStack itemID="24" />
+      </input>
+      <output>
+        <itemStack itemID="12" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Glass -> Sand -->
+      <input>
+        <itemStack itemID="20" />
+      </input>
+      <output>
+        <itemStack itemID="12" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Gravel -> flint -->
+      <input>
+        <itemStack itemID="13" />
+      </input>
+      <output>
+        <itemStack itemID="318" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Blaze Rod -> Blaze Powder -->
+      <input>
+        <itemStack itemID="369" />
+      </input>
+      <output>
+        <itemStack itemID="377" number="4" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Glow Stont -> dust -->
+      <input>
+        <itemStack itemID="89" />
+      </input>
+      <output>
+        <itemStack itemID="348" number="4" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Bone -> bonemeal -->
+      <input>
+        <itemStack itemID="352" />
+      </input>
+      <output>
+        <itemStack itemID="351" itemMeta="15" number="6" />
+      </output>
+    </recipe>
+
+
+    <recipe> <!-- Coal Ore-> coal powder -->
+      <input>
+        <itemStack itemID="16" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="2" />
+      </output>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="1" chance="0.5" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Coal -> coal powder -->
+      <input>
+        <itemStack itemID="263" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Iron Ore-> iron dust + gold dust -->
+      <input>
+        <itemStack itemID="15" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
+      </output>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="1" chance="0.2" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Iron Ingot -> iron dust -->
+      <input>
+        <itemStack itemID="265" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Gold Ore-> gold dust -->
+      <input>
+        <itemStack itemID="14" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="2" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Gold Ingot -> gold dust -->
+      <input>
+        <itemStack itemID="266" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" />
+      </output>
+    </recipe>
+
+    <recipe> <!-- Copper Ore-> copper dust -->
+      <input>
+        <itemStack oreDictionary="oreCopper" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" number="2" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Copper Ingot -> copper dust -->
+      <input>
+        <itemStack oreDictionary="ingotCopper" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" />
+      </output>
+    </recipe>
+
+  </recipeGroup>
+
+  <recipeGroup name="Common Ores">
+    <recipe> <!-- Tin Ore-> tin dust -->
+      <input>
+        <itemStack oreDictionary="oreTin" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="2" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Tin Ingot -> tin dust -->
+      <input>
+        <itemStack oreDictionary="ingotTin" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
+  <recipeGroup name="Forestry">
+    <recipe energyCost="240">
+      <input>
+        <itemStack oreDictionary="logWood" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="4" />
+      </output>
+    </recipe>
+    <recipe>
+      <input>
+        <itemStack oreDictionary="plankWood" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
+  <recipeGroup name="Applied Energistics">
+
+    <recipe energyCost="240"> <!-- Certus Quartz-> dust -->
+      <input>
+        <itemStack oreDictionary="crystalCertusQuartz" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustCertusQuartz" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="240"> <!-- Nether Quartz-> dust -->
+      <input>
+        <itemStack itemID="406" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustNetherQuartz" />
+      </output>
+    </recipe>
+
+  </recipeGroup>
+
+</SAGMillRecipes>

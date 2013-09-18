@@ -1,10 +1,7 @@
 package crazypants.enderio;
 
-import java.util.logging.Level;
-
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -104,7 +101,7 @@ public class EnderIO {
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  public static BlockCapacitorBank blockCapacitorBank;  
+  public static BlockCapacitorBank blockCapacitorBank;
   public static BlockCrusher blockCrusher;
   public static BlockHyperCube blockHyperCube;
 
@@ -113,18 +110,18 @@ public class EnderIO {
 
   public static ItemYetaWrench itemYetaWench;
   public static ItemMJReader itemMJReader;
-  
+
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
-    
+
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
-    try {      
+    try {
       cfg.load();
-      Config.load(cfg);
+      Config.load(cfg, event);
     } catch (Exception e) {
-      FMLLog.log(Level.SEVERE, e, "EnderIO has a problem loading it's configuration");
+      Log.error("EnderIO has a problem loading it's configuration");
     } finally {
-      if (cfg.hasChanged()) {
+      if(cfg.hasChanged()) {
         cfg.save();
       }
     }
@@ -135,13 +132,13 @@ public class EnderIO {
     itemBasicCapacitor = ItemCapacitor.create();
     itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
-    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();    
+    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
     itemMachinePart = ItemMachinePart.create();
     itemPowderIngot = ItemPowderIngot.create();
-    
+
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
-    
+
     blockHyperCube = BlockHyperCube.create();
 
     blockPainter = BlockPainter.create();
@@ -174,19 +171,20 @@ public class EnderIO {
 
     itemYetaWench = ItemYetaWrench.create();
     itemMJReader = ItemMJReader.create();
+
+    MaterialRecipes.registerOresInDictionary();
   }
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
-    
+
     instance = this;
 
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
-    
+
     PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
-    
-    CrusherRecipeManager.addRecipes();
+
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
@@ -195,55 +193,20 @@ public class EnderIO {
     proxy.load();
   }
 
-// This is AEs way of registering new grindables.  
-//  @EventHandler
-//  public void processIMC(FMLInterModComms.IMCEvent event) {
-//    System.out.println("EnderIO.processIMC: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//    Splitter splitter = Splitter.on(",").trimResults();
-//    for (FMLInterModComms.IMCMessage m : event.getMessages()) {
-//      String[] array = (String[]) Iterables.toArray(splitter.split(m.getStringValue()), String.class);
-//      Integer localInteger1;
-//      Integer localInteger2;
-//      if (m.key.equals("add-grindable")) {
-//        System.out.println("EnderIO.processIMC: Got a grindable!!");
-//        if (array.length != 5) {
-//          FMLLog.warning("IMC failed - add-grindable expects itemid,meta,itemid,meta,effort", new Object[0]);
-//        } else {
-//          Integer inId = Ints.tryParse(array[0]);
-//          Integer inMeta = Ints.tryParse(array[1]);
-//          Integer outId = Ints.tryParse(array[2]);
-//          Integer outMeta = Ints.tryParse(array[3]);
-//          Integer effort = Ints.tryParse(array[4]);
-//          if ((inId == null) || (inMeta == null) || (outId == null) || (outMeta == null) || (effort == null)) {
-//            FMLLog.warning("IMC failed - add-grindable expects itemid,meta,itemid,meta,effort", new Object[0]);
-//          } else {
-//            ItemStack i = new ItemStack(inId.intValue(), 1, inMeta.intValue());
-//            ItemStack o = new ItemStack(outId.intValue(), 1, outMeta.intValue());
-//            System.out.println("EnderIO.processIMC: And could make a recipe out of it!!");
-//          }
-//        }
-//      } else {
-//        FMLLog.warning("IMC failed - " + m.key + " - is not a valid ICM for AE.", new Object[0]);
-//      }
-//    }    
-//    System.out.println("EnderIO.processIMC: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//  }
-
   @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {  
+  public void postInit(FMLPostInitializationEvent event) {
+    CrusherRecipeManager.getInstance().loadRecipesFromConfig();
+    MaterialRecipes.addOreDictionaryRecipes();
   }
- 
-  
+
   @EventHandler
   public void serverStarted(FMLServerStartedEvent event) {
     HyperCubeRegister.load();
   }
-  
+
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
     HyperCubeRegister.unload();
   }
-  
-
 
 }

@@ -10,11 +10,10 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.Player;
 import crazypants.enderio.IPacketProcessor;
+import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.machine.hypercube.TileHyperCube;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 
 public class RedstoneModePacketProcessor implements IPacketProcessor {
@@ -74,9 +73,9 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
       handleRedstoneControlPacket(data, manager, player);
     } else if(id == PacketHandler.ID_CAP_BANK_REDSTONE_PACKET) {
       handleCapBankRedstoneControlPacket(data, manager, player);
-    
+
     } else {
-      FMLLog.warning("RedstoneModePacketProcessor: Recieved unknow packet: " + id);
+      Log.warn("RedstoneModePacketProcessor: Recieved unknow packet: " + id);
     }
 
   }
@@ -88,7 +87,7 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
     short ordinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof AbstractMachineEntity) {
+    if(te instanceof AbstractMachineEntity) {
       AbstractMachineEntity me = (AbstractMachineEntity) te;
       me.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
       p.worldObj.markBlockForUpdate(x, y, z);
@@ -104,7 +103,7 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
     short outputOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof TileCapacitorBank) {
+    if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.setInputControlMode(RedstoneControlMode.values()[inputOrdinal]);
       cb.setOutputControlMode(RedstoneControlMode.values()[outputOrdinal]);

@@ -4,9 +4,9 @@ public enum PowderIngot {
 
   POWDER_COAL("powderCoal", "Coal Powder", "powderCoal"),
   POWDER_IRON("powderIron", "Iron Powder", "powderIron"),
-  POWDER_GOLD("powderGold", "Gold Powder", "powderGold");
-  // POWDER_COPPER("powderCopper", "Copper Powder", "powderCopper"),
-  // POWDER_TIN("powderTin", "Tin Powder", "powderTin"),
+  POWDER_GOLD("powderGold", "Gold Powder", "powderGold"),
+  POWDER_COPPER("powderCopper", "Copper Powder", "powderCopper"),
+  POWDER_TIN("powderTin", "Tin Powder", "powderTin");
   // POWDER_LEAD("powderLead", "Lead Powder", "powderLead"),
   // POWDER_SILVER("powderSilver", "Silver Powder", "powderSilver"),
   // POWDER_BRONZE("powderBronze", "Bronze Powder", "powderBronze"),
