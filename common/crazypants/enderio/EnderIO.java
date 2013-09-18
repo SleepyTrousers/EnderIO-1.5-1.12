@@ -1,10 +1,7 @@
 package crazypants.enderio;
 
-import java.util.logging.Level;
-
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -124,9 +121,9 @@ public class EnderIO {
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
     try {      
       cfg.load();
-      Config.load(cfg);
+      Config.load(cfg, event);
     } catch (Exception e) {
-      FMLLog.log(Level.SEVERE, e, "EnderIO has a problem loading it's configuration");
+      Log.error("EnderIO has a problem loading it's configuration");
     } finally {
       if (cfg.hasChanged()) {
         cfg.save();
@@ -178,6 +175,8 @@ public class EnderIO {
 
     itemYetaWench = ItemYetaWrench.create();
     itemMJReader = ItemMJReader.create();
+
+    MaterialRecipes.registerOresInDictionary();
   }
 
   @Init
@@ -190,7 +189,6 @@ public class EnderIO {
     
     PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
     
-    CrusherRecipeManager.addRecipes();
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
@@ -201,6 +199,8 @@ public class EnderIO {
 
   @PostInit
   public void postInit(FMLPostInitializationEvent event) {
+    CrusherRecipeManager.getInstance().loadRecipesFromConfig();
+    MaterialRecipes.addOreDictionaryRecipes();
   }
 
   @ServerStarted
@@ -213,6 +213,4 @@ public class EnderIO {
     HyperCubeRegister.unload();
   }
   
-
-
 }

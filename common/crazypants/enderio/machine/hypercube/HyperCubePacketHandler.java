@@ -19,33 +19,33 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.IPacketProcessor;
+import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.RedstoneControlMode;
 
 public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHandler {
 
-
   @Override
   public boolean canProcessPacket(int packetID) {
     return PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET == packetID || PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST == packetID
-        || PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL == packetID || PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST == packetID || PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED == packetID;
+        || PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL == packetID || PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST == packetID
+        || PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED == packetID;
   }
 
   @Override
   public void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException {
-    if (packetID == PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET) {
+    if(packetID == PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET) {
       handleHyperCubeRedstoneControlPacket(data, manager, player);
-    } else if (packetID == PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST) {
+    } else if(packetID == PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST) {
       handlePublicChannelListPacket(data, manager, player);
-    } else if (packetID == PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL) {
+    } else if(packetID == PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL) {
       handleAddRemoveChannelPacket(data, manager, player);
-    } else if (packetID == PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST) {
+    } else if(packetID == PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST) {
       handlePrivateChannelPacket(data, manager, player);
     } else if(packetID == PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED) {
       handleChannelSelectedPacket(data, manager, player);
@@ -60,11 +60,11 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
       dos.writeInt(cube.xCoord);
       dos.writeInt(cube.yCoord);
       dos.writeInt(cube.zCoord);
-      dos.writeBoolean(channel != null);      
-      if (channel != null) {
+      dos.writeBoolean(channel != null);
+      if(channel != null) {
         dos.writeBoolean(channel.isPublic());
         dos.writeUTF(channel.name);
-        if (!channel.isPublic()) {
+        if(!channel.isPublic()) {
           dos.writeUTF(channel.user);
         }
       }
@@ -78,27 +78,27 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     pkt.isChunkDataPacket = true;
     return pkt;
   }
-  
+
   private void handleChannelSelectedPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
-    if(! (player instanceof EntityPlayer) ) {
-      FMLLog.warning("handleChannelSelectedPacket: Could not handle packet as player not an entity player.");
-      return;
-    }    
-    World world = ((EntityPlayer)player).worldObj;
-    if(world == null) {
-      FMLLog.warning("handleChannelSelectedPacket: Could not handle packet as player world was null.");
+    if(!(player instanceof EntityPlayer)) {
+      Log.warn("handleChannelSelectedPacket: Could not handle packet as player not an entity player.");
       return;
     }
-    
+    World world = ((EntityPlayer) player).worldObj;
+    if(world == null) {
+      Log.warn("handleChannelSelectedPacket: Could not handle packet as player world was null.");
+      return;
+    }
+
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(! (te instanceof TileHyperCube)) {
-      FMLLog.warning("handleChannelSelectedPacket: Could not handle packet as TileEntity was not a HyperCube.");
+    if(!(te instanceof TileHyperCube)) {
+      Log.warn("handleChannelSelectedPacket: Could not handle packet as TileEntity was not a HyperCube.");
       return;
     }
-    TileHyperCube hc = (TileHyperCube)te;
+    TileHyperCube hc = (TileHyperCube) te;
     boolean hasCan = data.readBoolean();
     if(!hasCan) {
       hc.setChannel(null);
@@ -110,13 +110,13 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     if(!isPublic) {
       user = data.readUTF();
     }
-    hc.setChannel(new Channel(name, user));        
+    hc.setChannel(new Channel(name, user));
   }
 
   public static Packet createUserChannelListPacket(String username) {
 
     List<Channel> channels = HyperCubeRegister.instance.getChannelsForUser(username);
-    if (channels.isEmpty()) {
+    if(channels.isEmpty()) {
       return null;
     }
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -140,7 +140,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     return pkt;
 
   }
-  
+
   private void handlePrivateChannelPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
 
     String user = data.readUTF();
@@ -152,7 +152,6 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     ClientChannelRegister.instance.setPrivateChannels(channels);
   }
 
-  
   public static Packet createAddRemoveChannelPacket(Channel channel, boolean isAdd) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
@@ -161,7 +160,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
       dos.writeBoolean(isAdd);
       dos.writeBoolean(channel.isPublic());
       dos.writeUTF(channel.name);
-      if (!channel.isPublic()) {
+      if(!channel.isPublic()) {
         dos.writeUTF(channel.user);
       }
 
@@ -175,18 +174,18 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     pkt.isChunkDataPacket = true;
     return pkt;
   }
-  
+
   private void handleAddRemoveChannelPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
     boolean isAdd = data.readBoolean();
     boolean isPublic = data.readBoolean();
     String name = data.readUTF();
     String user = null;
-    if (!isPublic) {
+    if(!isPublic) {
       user = data.readUTF();
     }
     Channel channel = new Channel(name, user);
     Side side = FMLCommonHandler.instance().getEffectiveSide();
-    if (side == Side.SERVER) {
+    if(side == Side.SERVER) {
       if(isAdd) {
         HyperCubeRegister.instance.addChannel(channel);
       } else {
@@ -202,7 +201,6 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     }
   }
 
-  
   public static Packet createPublicChannelListPacket() {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
@@ -224,7 +222,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     pkt.isChunkDataPacket = true;
     return pkt;
   }
-  
+
   private void handlePublicChannelListPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
     int numChannels = data.readInt();
     List<Channel> channels = new ArrayList<Channel>();
@@ -234,7 +232,6 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     ClientChannelRegister.instance.setPublicChannels(channels);
   }
 
-  
   public static Packet createRedstoneControlPacket(TileHyperCube te) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
@@ -256,7 +253,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     pkt.isChunkDataPacket = true;
     return pkt;
   }
-  
+
   private void handleHyperCubeRedstoneControlPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
     int x = data.readInt();
     int y = data.readInt();
@@ -265,7 +262,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     short powerOutputOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof TileHyperCube) {
+    if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.setInputControlMode(RedstoneControlMode.values()[powerInputOrdinal]);
       cb.setOutputControlMode(RedstoneControlMode.values()[powerOutputOrdinal]);
@@ -279,15 +276,15 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     Packet pkt = createPublicChannelListPacket();
     PacketDispatcher.sendPacketToPlayer(pkt, player);
 
-    if (player instanceof EntityPlayerMP) {
+    if(player instanceof EntityPlayerMP) {
       EntityPlayerMP ep = (EntityPlayerMP) player;
       pkt = createUserChannelListPacket(ep.username);
-      if (pkt != null) {
+      if(pkt != null) {
         PacketDispatcher.sendPacketToPlayer(pkt, player);
       }
     } else {
 
-      FMLLog.warning("HyperCubePacketHandler.playerLoggedIn: Could not determine player user name");
+      Log.warn("HyperCubePacketHandler.playerLoggedIn: Could not determine player user name");
     }
 
   }
@@ -308,7 +305,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
   @Override
   public void connectionClosed(INetworkManager manager) {
     Side side = FMLCommonHandler.instance().getEffectiveSide();
-    if (side == Side.CLIENT) {
+    if(side == Side.CLIENT) {
       ClientChannelRegister.instance.reset();
     }
 

@@ -13,8 +13,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 
 public class PacketUtil {
 
@@ -49,7 +48,7 @@ public class PacketUtil {
     int y;
     int z;
     try {
-      if (readId) {
+      if(readId) {
         int id = dis.readInt();
       }
       x = dis.readInt();
@@ -61,14 +60,13 @@ public class PacketUtil {
     }
     NBTTagCompound tags = readNBTTagCompound(dis);
 
-
-    if (world == null) {
-      FMLLog.warning("PacketUtil.handleTileEntityPacket: Null world recieved when processing tile entity packet.");
+    if(world == null) {
+      Log.warn("PacketUtil.handleTileEntityPacket: Null world recieved when processing tile entity packet.");
       return null;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te == null) {
-      FMLLog.warning("PacketUtil.handleTileEntityPacket: TileEntity null when processing tile entity packet.");
+    if(te == null) {
+      Log.warn("PacketUtil.handleTileEntityPacket: TileEntity null when processing tile entity packet.");
       return null;
     }
     te.readFromNBT(tags);
@@ -79,7 +77,7 @@ public class PacketUtil {
     ItemStack var2 = null;
     short itemID = dataIn.readShort();
 
-    if (itemID >= 0) {
+    if(itemID >= 0) {
       byte stackSize = dataIn.readByte();
       short damage = dataIn.readShort();
       var2 = new ItemStack(itemID, stackSize, damage);
@@ -98,7 +96,7 @@ public class PacketUtil {
   }
 
   public static void writeItemStack(ItemStack spawnstack, DataOutputStream dataout) throws IOException {
-    if (spawnstack == null) {
+    if(spawnstack == null) {
       dataout.writeShort(-1);
     } else {
       dataout.writeShort(spawnstack.itemID);
@@ -111,7 +109,7 @@ public class PacketUtil {
   public static NBTTagCompound readNBTTagCompound(DataInputStream dataIn) {
     try {
       short var2 = dataIn.readShort();
-      if (var2 < 0) {
+      if(var2 < 0) {
         return null;
       } else {
         byte[] var3 = readByteArray(var2, dataIn);
@@ -125,7 +123,7 @@ public class PacketUtil {
 
   public static void writeNBTTagCompound(NBTTagCompound compound, DataOutputStream dataout) {
     try {
-      if (compound == null) {
+      if(compound == null) {
         dataout.writeShort(-1);
       } else {
         byte[] var3 = CompressedStreamTools.compress(compound);

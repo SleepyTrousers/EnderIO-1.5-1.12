@@ -21,11 +21,13 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
+import crazypants.enderio.Log;
 
 public class MachinePartRenderer implements IItemRenderer {
 
   private ItemRenderer itemRenderer = new ItemRenderer(Minecraft.getMinecraft());
   private RenderItem renderItem = new RenderItem();
+  private boolean loggedError = false;
 
   public MachinePartRenderer() {
   }
@@ -55,8 +57,11 @@ public class MachinePartRenderer implements IItemRenderer {
     } else if (type == ItemRenderType.ENTITY) {
       renderEntity(item, (RenderBlocks) data[0]);
     } else {
-      FMLLog.warning("MachinePartRenderer.renderItem: Unsupported render type");
+      if(loggedError) {
+        Log.warn("MachinePartRenderer.renderItem: Unsupported render type");
+        loggedError = true;
     }
+  }
   }
 
   private void renderEntity(ItemStack item, RenderBlocks renderBlocks) {
