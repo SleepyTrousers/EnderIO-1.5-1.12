@@ -35,8 +35,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  protected IMachineRecipe canStartNextTask() {
-    IMachineRecipe result = super.canStartNextTask();
+  protected IMachineRecipe canStartNextTask(float chance) {
+    IMachineRecipe result = super.canStartNextTask(chance);
     if(!furnaceRecipesEnabled && result instanceof VanillaSmeltingRecipe) {
       result = null;
     }

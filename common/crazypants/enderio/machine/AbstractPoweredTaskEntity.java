@@ -1,5 +1,7 @@
 package crazypants.enderio.machine;
 
+import java.util.Random;
+
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,6 +10,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   protected PoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
+
+  private final Random random = new Random();
 
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
@@ -83,10 +87,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     // Process any current items
     requiresClientSync |= checkProgress();
 
+    float chance = random.nextFloat();
     // Then see if we need to start a new one
-    IMachineRecipe nextRecipe = canStartNextTask();
+    IMachineRecipe nextRecipe = canStartNextTask(chance);
     if (nextRecipe != null) {
-      requiresClientSync |= startNextTask(nextRecipe);
+      requiresClientSync |= startNextTask(nextRecipe, chance);
     }
     return requiresClientSync;
   }
@@ -148,7 +153,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     return res;
   }
 
-  protected IMachineRecipe canStartNextTask() {
+  protected IMachineRecipe canStartNextTask(float chance) {
     if (currentTask != null) {
       return null; // already cooking something
     }
@@ -170,7 +175,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       }
     }
     
-    ItemStack[] nextResults = nextRecipe.getCompletedResult(getInputs());
+    ItemStack[] nextResults = nextRecipe.getCompletedResult(chance, getInputs());
     ItemStack[] outputStacks = new ItemStack[slotDefinition.getNumOutputSlots()];
     int copyIndex = 0;
     for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
@@ -183,10 +188,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
     for(ItemStack result : nextResults) {
       int canMerge = 0;
-      // for (int i = slotDefinition.minOutputSlot; i <=
-      // slotDefinition.maxOutputSlot; i++) {
-      // canMerge += getNumCanMerge(inventory[i], result);
-      // }
       for (ItemStack outStack : outputStacks) {
         canMerge += getNumCanMerge(outStack, result);
       }
@@ -194,7 +195,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
         return null;
       }
     }
-
 
     return nextRecipe;
   }
@@ -206,11 +206,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
 
-
-  protected boolean startNextTask(IMachineRecipe nextRecipe) {
+  protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
     if (hasPower() && nextRecipe.isRecipe(getInputs())) {
       // then get our recipe and take away the source items
-      currentTask = new PoweredTask(nextRecipe, getInputs());
+      currentTask = new PoweredTask(nextRecipe, chance, getInputs());
 
       RecipeInput[] consumed = nextRecipe.getQuantitiesConsumed(getInputs());
       for (RecipeInput item : consumed) {

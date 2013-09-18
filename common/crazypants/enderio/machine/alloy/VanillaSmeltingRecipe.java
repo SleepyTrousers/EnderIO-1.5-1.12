@@ -32,7 +32,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   private int getNumInputs(RecipeInput[] inputs) {
     int numInputs = 0;
     for (RecipeInput input : inputs) {
-      if (input != null && isValidInput(input.slotNumber, input.item)) {
+      if(input != null && isValidInput(input)) {
         numInputs += input.item.stackSize;
       }
     }
@@ -43,15 +43,15 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   public boolean isRecipe(RecipeInput... inputs) {
     ItemStack output = null;
     for (RecipeInput ri : inputs) {
-      if (ri != null && ri.item != null) {
-        if (output == null) {
+      if(ri != null && ri.item != null) {
+        if(output == null) {
           output = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
           if(output == null) {
             return false;
           }
         } else {
           ItemStack newOutput = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
-          if (newOutput == null || !newOutput.isItemEqual(output)) {
+          if(newOutput == null || !newOutput.isItemEqual(output)) {
             return false;
           }
         }
@@ -61,22 +61,22 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+  public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
     ItemStack output = null;
     int inputCount = 0;
     for (RecipeInput ri : inputs) {
-      if (ri != null && ri.item != null && output == null) {
+      if(ri != null && ri.item != null && output == null) {
         output = FurnaceRecipes.smelting().getSmeltingResult(ri.item);
       }
     }
-    if (output == null) {
+    if(output == null) {
       return new ItemStack[0];
     }
     ItemStack result = output.copy();
     result.stackSize = result.stackSize * getNumInputs(inputs);
     return new ItemStack[] { result };
   }
-  
+
   @Override
   public float getExperianceForOutput(ItemStack output) {
     if(output == null) {
@@ -87,8 +87,11 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isValidInput(int slotNumber, ItemStack item) {
-    ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(item);
+  public boolean isValidInput(RecipeInput input) {
+    if(input == null) {
+      return false;
+    }
+    ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(input.item);
     return itemstack != null;
   }
 
@@ -102,11 +105,11 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int consumed = 0;
     List<RecipeInput> result = new ArrayList<RecipeInput>();
     for (RecipeInput ri : inputs) {
-      if (isValidInput(ri.slotNumber, ri.item) && consumed < 3 && ri != null && ri.item != null) {
+      if(isValidInput(new RecipeInput(ri.slotNumber, ri.item)) && consumed < 3 && ri != null && ri.item != null) {
         int available = ri.item.stackSize;
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);
-        if (use > 0) {
+        if(use > 0) {
           ItemStack st = ri.item.copy();
           st.stackSize = use;
           result.add(new RecipeInput(ri.slotNumber, st));

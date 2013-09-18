@@ -8,18 +8,17 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.RecipeInput;
 import crazypants.util.Util;
 
-public class BasicPainterTemplate implements IMachineRecipe {
+public abstract class BasicPainterTemplate implements IMachineRecipe {
 
-  public static float DEFAULT_ENERGY_PER_TASK = 200; // 5 seconds at the default
-                                                     // energy use of 2 mj per
-                                                     // tick.
+  // 5 seconds at the default energy use of 2 mj per tick.
+  public static float DEFAULT_ENERGY_PER_TASK = 200;
 
   public static boolean isValidSourceDefault(ItemStack paintSource) {
-    if (paintSource == null) {
+    if(paintSource == null) {
       return false;
     }
     Block block = Util.getBlockFromItemId(paintSource.itemID);
-    if (block == null) {
+    if(block == null) {
       return false;
     }
     return Block.isNormalCube(block.blockID) || block.blockID == Block.glass.blockID;
@@ -42,10 +41,10 @@ public class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+  public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
     ItemStack target = getTarget(inputs);
     ItemStack paintSource = getPaintSource(inputs);
-    if (target == null || paintSource == null) {
+    if(target == null || paintSource == null) {
       return null;
     }
     ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
@@ -62,12 +61,15 @@ public class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public boolean isValidInput(int slotNumber, ItemStack item) {
-    if (slotNumber == 0) {
-      return isValidTarget(item);
+  public boolean isValidInput(RecipeInput input) {
+    if(input == null) {
+      return false;
     }
-    if (slotNumber == 1) {
-      return isValidPaintSource(item);
+    if(input.slotNumber == 0) {
+      return isValidTarget(input.item);
+    }
+    if(input.slotNumber == 1) {
+      return isValidPaintSource(input.item);
     }
     return false;
   }
@@ -83,22 +85,22 @@ public class BasicPainterTemplate implements IMachineRecipe {
 
   public boolean isValidTarget(ItemStack target) {
     // first check for exact matches, then check for item blocks
-    if (target == null) {
+    if(target == null) {
       return false;
     }
 
     for (int i = 0; i < validIds.length; i++) {
-      if (validIds[i] == target.itemID) {
+      if(validIds[i] == target.itemID) {
         return true;
       }
     }
 
     Block blk = Util.getBlockFromItemId(target.itemID);
-    if (blk == null) {
+    if(blk == null) {
       return false;
     }
     for (int i = 0; i < validIds.length; i++) {
-      if (validIds[i] == blk.blockID) {
+      if(validIds[i] == blk.blockID) {
         return true;
       }
     }
@@ -122,13 +124,13 @@ public class BasicPainterTemplate implements IMachineRecipe {
   public RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs) {
     RecipeInput consume = null;
     for (RecipeInput input : inputs) {
-      if (input != null && input.slotNumber == 0 && input.item != null) {
+      if(input != null && input.slotNumber == 0 && input.item != null) {
         ItemStack consumed = input.item.copy();
         consumed.stackSize = 1;
         consume = new RecipeInput(input.slotNumber, consumed);
       }
     }
-    if (consume != null) {
+    if(consume != null) {
       return new RecipeInput[] { consume };
     }
     return null;

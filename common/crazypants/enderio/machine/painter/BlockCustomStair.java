@@ -35,7 +35,6 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     return result;
   }
 
-  
   private Icon lastRemovedComponetIcon = null;
 
   private Random rand = new Random();
@@ -133,7 +132,6 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     digFX.setParticleIcon(Minecraft.getMinecraft().renderEngine, tex);
     effectRenderer.addEffect(digFX);
   }
-
 
   @Override
   public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
@@ -243,7 +241,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     }
 
     @Override
-    public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
       if (paintSource == null) {
         return new ItemStack[0];

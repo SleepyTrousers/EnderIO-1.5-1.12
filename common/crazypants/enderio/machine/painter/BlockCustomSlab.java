@@ -4,8 +4,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHalfSlab;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.BlockStep;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -26,15 +24,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.RecipeInput;
-import crazypants.enderio.machine.painter.BlockCustomStair.PainterTemplate;
 import crazypants.util.Util;
 
 public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvider {
@@ -168,7 +160,6 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     effectRenderer.addEffect(digFX);
   }
 
-
   @Override
   public TileEntity createNewTileEntity(World world) {
     return null;
@@ -251,6 +242,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   /**
    * Returns the ID of the items to drop on destruction.
    */
+  @Override
   public int idDropped(int par1, Random par2Random, int par3) {
       return ModObject.blockCustomSlab.id;
   }
@@ -261,7 +253,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     }
 
     @Override
-    public ItemStack[] getCompletedResult(RecipeInput... inputs) {
+    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
       ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
       if (paintSource == null) {
         return new ItemStack[0];
