@@ -29,13 +29,13 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
 
   @Override
   public boolean isMachineItemValidForSlot(int i, ItemStack itemStack) {
-    if (i > 1) {
+    if(i > 1) {
       return false;
     }
-    if (i == 0) {
+    if(i == 0) {
       return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemStack)).isEmpty();
     }
-    if (inventory[0] == null) {
+    if(inventory[0] == null) {
       return BasicPainterTemplate.isValidSourceDefault(itemStack);
     }
     return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(),
@@ -54,23 +54,22 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   private RecipeInput paintSource() {
     return RecipeInput.create(1, inventory[1]);
   }
-  
-  
 
   @Override
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if (!result.isItemEqual(inventory[2])) {
+    if(!result.isItemEqual(inventory[2])) {
       // next result is a different item type
       return 0;
     }
 
     int cookedId = result.getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
     int invId = inventory[2].getTagCompound().getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-    if (cookedId != invId) {
+    if(cookedId != invId) {
       // next result has a different source item than the current one
       return 0;
     }
-    return itemStack.getMaxStackSize() - itemStack.stackSize;
+
+    return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
 
 }
