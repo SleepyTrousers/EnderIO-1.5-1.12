@@ -10,26 +10,34 @@ import static crazypants.enderio.ModObject.blockSolarPanel;
 import static crazypants.enderio.ModObject.blockStirlingGenerator;
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.ModObject.itemIndustrialBinder;
+
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
+import crazypants.enderio.material.PowderIngot;
 import crazypants.enderio.power.Capacitors;
 
-public class MachineRecipes {
 
+public class MachineRecipes {
+	
+	public static void registerOresInDictionary() {
+	    OreDictionary.registerOre("ingotCopper", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.INGOT_COPPER.ordinal()));
+	  }
   public static void addRecipes() {
     ItemStack industialBinder = new ItemStack(itemIndustrialBinder.actualId, 1, 0);
     ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
-    ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
     ItemStack stirlingGen = new ItemStack(blockStirlingGenerator.actualId, 1, 0);
     ItemStack basicGear = new ItemStack(ModObject.itemMachinePart.actualId, 1,  MachinePart.BASIC_GEAR.ordinal());
     
-    GameRegistry.addShapedRecipe(stirlingGen, " s ", "sfs", "gpg", 's', Block.stone, 'f', Block.furnaceIdle, 'p', Block.pistonBase, 'g', basicGear);
-
     ItemStack painter = new ItemStack(blockPainter.actualId, 1, 0);
     ItemStack red = new ItemStack(Item.dyePowder, 1, 1);
     ItemStack green = new ItemStack(Item.dyePowder, 1, 2);
@@ -44,9 +52,7 @@ public class MachineRecipes {
     ItemStack alloySmelter = new ItemStack(blockAlloySmelter.actualId, 1, 0);
     GameRegistry.addShapedRecipe(alloySmelter, "bbb", "CfC", "bcb", 'b', industialBinder, 'f', Block.furnaceIdle, 'c', capacitor, 'C', Item.cauldron);
     
-    ItemStack crusher = new ItemStack(blockCrusher.actualId, 1, 0);
-    GameRegistry.addShapedRecipe(crusher, "f f", "imi", "ipi", 'i', Item.ingotIron, 'm', machineChassi, 'f', Item.flint, 'p', Block.pistonBase);
-
+    
     ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
     ItemStack activatedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_IRON.ordinal());
     ItemStack activatedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_GOLD.ordinal());
@@ -69,8 +75,20 @@ public class MachineRecipes {
     ItemStack enderPearl = new ItemStack(Item.enderPearl);
     GameRegistry.addShapedRecipe(tesseract, "oeo", "e e", "oco", 'o', obsidian,'e', enderPearl, 'c', enderCapacitor);
     
-    //To-do: Sort this class
-    
   }
+    //To-do: Sort this class
+    public static void addOreDictionaryRecipes() {
+    	ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
+		ItemStack crusher = new ItemStack(blockCrusher.actualId, 1, 0);
+	    ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
+	    int ingotCopper = OreDictionary.getOreID("ingotCopper");
+	    
+	    if(!OreDictionary.getOres("ingotCopper").isEmpty()) {
+	    	GameRegistry.addShapedRecipe(crusher, "frf", "cmc", "cpc", 'c', ingotCopper, 'm', machineChassi, 'f', Item.flint, 'p', Block.pistonBase, 'r', capacitor);
+    	}
+    	else {
+    		GameRegistry.addShapedRecipe(crusher, "frf", "imi", "ipi", 'i', Item.ingotIron, 'm', machineChassi, 'f', Item.flint, 'p', Block.pistonBase, 'r', capacitor);
 
+    	}
+  }
 }
