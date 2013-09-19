@@ -1,7 +1,7 @@
 
 <!--
 
-  Recipes are organised into named groups. A group of recipes can be disabled by setting the attribiute 'enabled=fale'.
+  Recipes are organised into named groups. A group of recipes can be disabled by setting the attribiute 'enabled=false'.
   A recipe group is composed of one or more recipes.
 
   Examples:
@@ -203,6 +203,30 @@
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="300"> <!-- Redstone Ore -> Redstone Dust -->
+      <input>
+        <itemStack itemID="73" />
+      </input>
+      <output>
+        <itemStack itemID="331" number="8" />
+      </output>
+      <output>
+        <itemStack itemID="331" number="2" chance="0.125" />
+      </output>
+    </recipe>
+
+    <recipe energyCost="300"> <!-- Lapis Lazuli Ore -> Lapis Lazuli -->
+      <input>
+        <itemStack itemID="21" />
+      </input>
+      <output>
+        <itemStack itemID="351" itemMeta="4" number="8" />
+      </output>
+      <output>
+        <itemStack itemID="351" itemMeta="4" number="2" chance="0.125" />
       </output>
     </recipe>
 

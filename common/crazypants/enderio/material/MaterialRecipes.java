@@ -91,7 +91,7 @@ public class MaterialRecipes {
     GameRegistry.addShapedRecipe(wrench, "i i", " b ", " i ", 'b', industialBinder, 'i', new ItemStack(Item.ingotIron));
 
     // Machine Chassi
-    GameRegistry.addShapedRecipe(machineChassi, "fff", "iri", "fff", 'f', Block.fenceIron, 'i', Item.ingotIron, 'r', redstoneInductor);
+    GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Block.fenceIron, 'i', Item.ingotIron);
 
     // Redstone Inductor
     GameRegistry.addShapedRecipe(redstoneInductor, "grg", "gig", "grg", 'r', Item.redstone, 'g', Item.goldNugget, 'i', Item.ingotIron);
