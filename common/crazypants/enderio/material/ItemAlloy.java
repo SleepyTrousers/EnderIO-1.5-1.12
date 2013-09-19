@@ -15,7 +15,10 @@ import crazypants.enderio.ModObject;
 
 public class ItemAlloy extends Item {
 
+  static final boolean useNuggets = false;
+
   private final Icon[] icons;
+  private final int numItems;
 
   public static ItemAlloy create() {
     ItemAlloy alloy = new ItemAlloy();
@@ -30,7 +33,11 @@ public class ItemAlloy extends Item {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemAlloy.unlocalisedName);
 
-    icons = new Icon[Alloy.values().length * 2];
+    numItems = Alloy.values().length;
+    if(useNuggets) {
+      numItems = numItems * 2;
+    }
+    icons = new Icon[numItems];
   }
 
   private void init() {
@@ -39,15 +46,17 @@ public class ItemAlloy extends Item {
     for (int i = 0; i < Alloy.values().length; i++) {
       LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName + ".name", Alloy.values()[i].uiName);
     }
-    for (int i = 0; i < Alloy.values().length; i++) {
-      LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName + "Nugget" + ".name",
-          Alloy.values()[i].uiName + " Nugget");
+    if(useNuggets) {
+      for (int i = 0; i < Alloy.values().length; i++) {
+        LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName + "Nugget" + ".name",
+            Alloy.values()[i].uiName + " Nugget");
+      }
     }
   }
 
   @Override
   public Icon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, Alloy.values().length * 2);
+    damage = MathHelper.clamp_int(damage, 0, numItems);
     return icons[damage];
   }
 
@@ -57,15 +66,17 @@ public class ItemAlloy extends Item {
     for (int i = 0; i < numAlloys; i++) {
       icons[i] = iconRegister.registerIcon(Alloy.values()[i].iconKey);
     }
-    for (int i = 0; i < numAlloys; i++) {
-      icons[i + numAlloys] = iconRegister.registerIcon(Alloy.values()[i].iconKey + "Nugget");
+    if(useNuggets) {
+      for (int i = 0; i < numAlloys; i++) {
+        icons[i + numAlloys] = iconRegister.registerIcon(Alloy.values()[i].iconKey + "Nugget");
+      }
     }
   }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Alloy.values().length * 2);
-    if (i < Alloy.values().length) {
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, numItems);
+    if(i < Alloy.values().length) {
       return super.getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName;
     } else {
       return super.getUnlocalizedName() + "." + Alloy.values()[i - Alloy.values().length].unlocalisedName + "Nugget";
@@ -75,7 +86,7 @@ public class ItemAlloy extends Item {
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-    for (int j = 0; j < Alloy.values().length * 2; ++j) {
+    for (int j = 0; j < numItems; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }

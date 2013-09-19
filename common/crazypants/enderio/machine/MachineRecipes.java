@@ -20,23 +20,27 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.power.Capacitors;
 
 public class MachineRecipes {
 
   public static void addRecipes() {
+    //Common ingredients
     ItemStack industialBinder = new ItemStack(itemIndustrialBinder.actualId, 1, 0);
     ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
-    ItemStack stirlingGen = new ItemStack(blockStirlingGenerator.actualId, 1, 0);
+    ItemStack activtedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ACTIVATED_CAPACITOR.ordinal());
+    ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ENDER_CAPACITOR.ordinal());
     ItemStack basicGear = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal());
+    ItemStack redstoneInductor = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.REDSTONE_INDUCTOR.ordinal());
+
+    ItemStack stirlingGen = new ItemStack(blockStirlingGenerator.actualId, 1, 0);
+    GameRegistry.addShapedRecipe(stirlingGen, " s ", "sfs", "gpg", 's', Block.stone, 'f', Block.furnaceIdle, 'p', Block.pistonBase, 'g', basicGear);
 
     ItemStack painter = new ItemStack(blockPainter.actualId, 1, 0);
     ItemStack red = new ItemStack(Item.dyePowder, 1, 1);
     ItemStack green = new ItemStack(Item.dyePowder, 1, 2);
     ItemStack blue = new ItemStack(Item.dyePowder, 1, 4);
-
     GameRegistry.addShapedRecipe(painter, "bbb", "RGB", "bcb", 'b', industialBinder, 'R', red, 'G', green, 'B', blue, 'c', capacitor);
 
     ItemStack reservoir = new ItemStack(blockReservoir.actualId, 1, 0);
@@ -47,22 +51,16 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(alloySmelter, "bbb", "CfC", "bcb", 'b', industialBinder, 'f', Block.furnaceIdle, 'c', capacitor, 'C', Item.cauldron);
 
     ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
-    ItemStack activatedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_IRON.ordinal());
-    ItemStack activatedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_GOLD.ordinal());
     ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
-    ItemStack redstoneInductor = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.REDSTONE_INDUCTOR.ordinal());
-
-    GameRegistry.addShapedRecipe(solarPanel, "fff", "fdf", "cic", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', Item.coal, 'i', redstoneInductor);
+    GameRegistry.addShapedRecipe(solarPanel, "fff", "fdf", "ici", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', activtedCapacitor, 'i', redstoneInductor);
 
     ItemStack electricLight = new ItemStack(blockElectricLight.actualId, 1, 0);
     ItemStack glowstone = new ItemStack(Item.glowstone);
     GameRegistry.addShapedRecipe(electricLight, "bqb", "bgb", "bcb", 'q', fusedQuartz, 'g', glowstone, 'b', industialBinder, 'c', capacitor);
 
-    ItemStack activtedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ACTIVATED_CAPACITOR.ordinal());
     ItemStack capacitorBank = new ItemStack(blockCapacitorBank.actualId, 1, 0);
     GameRegistry.addShapedRecipe(capacitorBank, "bab", "aca", "bab", 'a', activtedCapacitor, 'b', industialBinder, 'c', capacitor);
 
-    ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, Capacitors.ENDER_CAPACITOR.ordinal());
     ItemStack tesseract = new ItemStack(ModObject.blockHyperCube.actualId, 1, 0);
     ItemStack obsidian = new ItemStack(Block.obsidian);
     ItemStack enderPearl = new ItemStack(Item.enderPearl);
@@ -84,5 +82,6 @@ public class MachineRecipes {
           .addShapedRecipe(crusher, "frf", "imi", "ipi", 'i', Item.ingotIron, 'm', machineChassi, 'f', Item.flint, 'p', Block.pistonBase, 'r', capacitor);
 
     }
+
   }
 }

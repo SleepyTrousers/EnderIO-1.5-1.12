@@ -67,12 +67,13 @@ public class MaterialRecipes {
     for (Alloy alloy : Alloy.values()) {
       ItemStack ingot = new ItemStack(ModObject.itemAlloy.actualId, 1, meta);
       IMachineRecipe recipe = new BasicAlloyRecipe(ingot, alloy.unlocalisedName, alloy.ingrediants);
-      ItemStack nugget = new ItemStack(ModObject.itemAlloy.actualId, 9, meta + Alloy.values().length);
-      GameRegistry.addShapelessRecipe(nugget, ingot);
-      nugget = nugget.copy();
-      nugget.stackSize = 1;
-      GameRegistry.addShapedRecipe(ingot, "nnn", "nnn", "nnn", 'n', nugget);
-
+      if(ItemAlloy.useNuggets) {
+        ItemStack nugget = new ItemStack(ModObject.itemAlloy.actualId, 9, meta + Alloy.values().length);
+        GameRegistry.addShapelessRecipe(nugget, ingot);
+        nugget = nugget.copy();
+        nugget.stackSize = 1;
+        GameRegistry.addShapedRecipe(ingot, "nnn", "nnn", "nnn", 'n', nugget);
+      }
       MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, recipe);
       meta++;
     }
