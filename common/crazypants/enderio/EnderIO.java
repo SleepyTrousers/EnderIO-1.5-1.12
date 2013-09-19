@@ -7,8 +7,8 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStopped;
 import cpw.mods.fml.common.Mod.ServerStarted;
+import cpw.mods.fml.common.Mod.ServerStopped;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -105,7 +105,7 @@ public class EnderIO {
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  public static BlockCapacitorBank blockCapacitorBank;  
+  public static BlockCapacitorBank blockCapacitorBank;
   public static BlockCrusher blockCrusher;
   public static BlockHyperCube blockHyperCube;
 
@@ -117,9 +117,9 @@ public class EnderIO {
 
   @PreInit
   public void preInit(FMLPreInitializationEvent event) {
-    
+
     Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
-    try {      
+    try {
       cfg.load();
       Config.load(cfg, event);
     } catch (Exception e) {
@@ -136,13 +136,13 @@ public class EnderIO {
     itemBasicCapacitor = ItemCapacitor.create();
     itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
-    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();    
+    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
     itemMachinePart = ItemMachinePart.create();
     itemPowderIngot = ItemPowderIngot.create();
-    
+
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
-    
+
     blockHyperCube = BlockHyperCube.create();
 
     blockPainter = BlockPainter.create();
@@ -181,14 +181,14 @@ public class EnderIO {
 
   @Init
   public void load(FMLInitializationEvent event) {
-    
+
     instance = this;
 
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
-    
+
     PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
-    
+
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
@@ -201,6 +201,7 @@ public class EnderIO {
   public void postInit(FMLPostInitializationEvent event) {
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     MaterialRecipes.addOreDictionaryRecipes();
+    MachineRecipes.addOreDictionaryRecipes();
   }
 
   @ServerStarted
@@ -212,5 +213,5 @@ public class EnderIO {
   public void serverStopped(FMLServerStoppedEvent event) {
     HyperCubeRegister.unload();
   }
-  
+
 }
