@@ -54,6 +54,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     
     FacadeRenderState curRS = bundle.getFacadeRenderedAs();
     FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(bundle, player);
+
+    int curLO = bundle.getLightOpacity();
+    int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
+    if(curLO != shouldBeLO) {
+      bundle.setLightOpacity(shouldBeLO);
+      te.worldObj.updateAllLightTypes(te.xCoord, te.yCoord, te.zCoord);
+    }
     if(curRS != rs) {   
       te.worldObj.markBlockForRenderUpdate(te.xCoord, te.yCoord, te.zCoord);
     }
@@ -74,12 +81,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-    // GL11.glPushAttrib(GL11.GL_POLYGON_BIT);
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     GL11.glShadeModel(GL11.GL_SMOOTH);
-    // GL11.glDisable (GL11.GL_CULL_FACE);
 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
@@ -115,10 +120,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     }
 
     tessellator.draw();
+
+    GL11.glShadeModel(GL11.GL_FLAT);
     GL11.glPopMatrix();
     GL11.glPopAttrib();
     GL11.glPopAttrib();
-    // GL11.glPopAttrib();
+    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
 
   }
 

@@ -7,7 +7,6 @@ import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
-import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +43,12 @@ public class RenderUtil {
 
   private static final FloatBuffer MATRIX_BUFFER = GLAllocation.createDirectFloatBuffer(16);
 
+  public static final String BLOCK_TEX = "/terrain.png";
+
+  public static final String ITEM_TEX = "/gui/items.png";
+ 
+  public static final String GLINT_TEX = "%blur%/misc/glint.png"; 
+
   public static void loadMatrix(Matrix4d mat) {
     MATRIX_BUFFER.rewind();
     MATRIX_BUFFER.put((float) mat.m00);
@@ -70,10 +75,6 @@ public class RenderUtil {
     return Minecraft.getMinecraft().renderEngine;
   }
 
-  public static final String BLOCK_TEX = "/terrain.png";
-  public static final String ITEM_TEX = "/gui/items.png";
-  public static final String GLINT_TEX = "%blur%/misc/glint.png";
-
   public static void bindItemTexture(ItemStack stack) {
     engine().bindTexture(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
   }
@@ -94,9 +95,6 @@ public class RenderUtil {
     engine().bindTexture(string);
   }
 
-  // public static void bindTexture(ResourceLocation tex) {
-  // engine().func_110577_a(tex);
-  // }
 
   public static FontRenderer fontRenderer() {
     return Minecraft.getMinecraft().fontRenderer;
@@ -105,14 +103,20 @@ public class RenderUtil {
   public static float claculateTotalBrightnessForLocation(World worldObj, int xCoord, int yCoord, int zCoord) {
     int i = worldObj.getLightBrightnessForSkyBlocks(xCoord, yCoord, zCoord, 0);
     int j = i % 65536;
-    float fromSun = worldObj.getSunBrightness(1);
-    float fromLights = j / 255f;
     int k = i / 65536;
-    float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
 
-    float val = (fromSun + fromLights) * recievedPercent;
-    val = MathHelper.clamp_float(val, 0, 1);
-    return val;
+    //0.2 - 1
+    float sunBrightness = worldObj.getSunBrightness(1);
+
+    float percentRecievedFromSun = k / 255f;
+
+    //Highest value recieved from a light
+    float fromLights = j / 255f;
+
+    // 0 - 1 for sun only, 0 - 0.6 for light only
+    float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
+    float highestValue = Math.max(fromLights, percentRecievedFromSun * sunBrightness);
+    return highestValue;
   }
 
   public static float getColorMultiplierForFace(ForgeDirection face) {
@@ -208,9 +212,9 @@ public class RenderUtil {
     Vector2d uv = new Vector2d();
     for (ForgeDirection edge : edges) {
 
-      float xLen = 1 - (float) Math.abs(edge.offsetX) * scaleFactor;
-      float yLen = 1 - (float) Math.abs(edge.offsetY) * scaleFactor;
-      float zLen = 1 - (float) Math.abs(edge.offsetZ) * scaleFactor;
+      float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
+      float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
+      float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
       List<Vector3f> corners = bb.getCornersForFace(face);
@@ -223,9 +227,9 @@ public class RenderUtil {
           corner.z += z;
         }
 
-        corner.x += (float) (edge.offsetX * 0.5) - (float) Math.signum(edge.offsetX) * xLen / 2f;
-        corner.y += (float) (edge.offsetY * 0.5) - (float) Math.signum(edge.offsetY) * yLen / 2f;
-        corner.z += (float) (edge.offsetZ * 0.5) - (float) Math.signum(edge.offsetZ) * zLen / 2f;
+        corner.x += (float) (edge.offsetX * 0.5) - Math.signum(edge.offsetX) * xLen / 2f;
+        corner.y += (float) (edge.offsetY * 0.5) - Math.signum(edge.offsetY) * yLen / 2f;
+        corner.z += (float) (edge.offsetZ * 0.5) - Math.signum(edge.offsetZ) * zLen / 2f;
 
         if (translateToXYZ) {
           RenderUtil.getUvForCorner(uv, corner, x, y, z, face, texture);

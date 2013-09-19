@@ -70,6 +70,10 @@ public interface IConduitBundle extends IInternalPowerReceptor, ITankContainer {
   @SideOnly(Side.CLIENT)
   void setFacadeRenderAs(FacadeRenderState state);
 
+  int getLightOpacity();
+
+  void setLightOpacity(int opacity);
+
   boolean hasFacade();
 
   void setFacadeId(int blockID);

@@ -54,7 +54,6 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     
-
     Vector3f offset = res.getOffsetFromController();
     
     GL11.glTranslatef((float) x + offset.x, (float) y + offset.y, (float) z + offset.z);
@@ -92,6 +91,8 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     GL11.glPopAttrib();
     GL11.glPopMatrix();
+
+    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
 
   }
 

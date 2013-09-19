@@ -245,6 +245,16 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   }
 
   @Override
+  public int getLightOpacity(World world, int x, int y, int z) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return super.getLightOpacity(world, x, y, z);
+    }
+    IConduitBundle con = (IConduitBundle) te;
+    return con.getLightOpacity();
+  }
+
+  @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (!(te instanceof IConduitBundle)) {
@@ -414,7 +424,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       if (!bundle.hasType(equipped.getBaseConduitType())) {
         bundle.addConduit(equipped.createConduit(stack));
         if (!player.capabilities.isCreativeMode) {
-          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), stepSound.getPlaceSound(),
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(),
               (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
           player.getCurrentEquippedItem().stackSize--;
         }

@@ -46,6 +46,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
   
+  private int lightOpacity = 255;
+
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
 
@@ -126,8 +128,6 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     return facadeMeta;
   }
   
-  
-
   @Override
   @SideOnly(Side.CLIENT)
   public FacadeRenderState getFacadeRenderedAs() {   
@@ -141,6 +141,16 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @SideOnly(Side.CLIENT)
   public void setFacadeRenderAs(FacadeRenderState state) {
     this.facadeRenderAs = state;    
+  }
+
+  @Override
+  public int getLightOpacity() {
+    return lightOpacity;
+  }
+
+  @Override
+  public void setLightOpacity(int opacity) {
+    lightOpacity = opacity;
   }
 
   @Override
