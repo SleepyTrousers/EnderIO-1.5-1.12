@@ -7,7 +7,6 @@ import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
-import java.awt.Color;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +21,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -74,7 +72,6 @@ public class RenderUtil {
     GL11.glLoadMatrix(MATRIX_BUFFER);
   }
 
-  
   public static TextureManager engine() {
     return Minecraft.getMinecraft().renderEngine;
   }
@@ -110,24 +107,30 @@ public class RenderUtil {
   public static float claculateTotalBrightnessForLocation(World worldObj, int xCoord, int yCoord, int zCoord) {
     int i = worldObj.getLightBrightnessForSkyBlocks(xCoord, yCoord, zCoord, 0);
     int j = i % 65536;
-    float fromSun = worldObj.getSunBrightness(1);
-    float fromLights = j / 255f;
     int k = i / 65536;
-    float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
 
-    float val = (fromSun + fromLights) * recievedPercent;
-    val = MathHelper.clamp_float(val, 0, 1);
-    return val;
+    //0.2 - 1
+    float sunBrightness = worldObj.getSunBrightness(1);
+
+    float percentRecievedFromSun = k / 255f;
+
+    //Highest value recieved from a light
+    float fromLights = j / 255f;
+
+    // 0 - 1 for sun only, 0 - 0.6 for light only
+    float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
+    float highestValue = Math.max(fromLights, percentRecievedFromSun * sunBrightness);
+    return highestValue;
   }
 
   public static float getColorMultiplierForFace(ForgeDirection face) {
-    if (face == ForgeDirection.UP) {
+    if(face == ForgeDirection.UP) {
       return 1;
     }
-    if (face == ForgeDirection.DOWN) {
+    if(face == ForgeDirection.DOWN) {
       return 0.5f;
     }
-    if (face.offsetX != 0) {
+    if(face.offsetX != 0) {
       return 0.6f;
     }
     return 0.8f; // z
@@ -142,7 +145,7 @@ public class RenderUtil {
   }
 
   public static void renderQuad2D(double x, double y, double z, double width, double height, int colorRGB) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);    
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();
@@ -150,19 +153,19 @@ public class RenderUtil {
     tessellator.addVertex(x, y + height, z);
     tessellator.addVertex(x + width, y + height, z);
     tessellator.addVertex(x + width, y, z);
-    tessellator.addVertex(x, y, z);        
+    tessellator.addVertex(x, y, z);
     tessellator.draw();
     GL11.glEnable(GL11.GL_TEXTURE_2D);
   }
-  
+
   public static List<ForgeDirection> getEdgesForFace(ForgeDirection face) {
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
-    if (face.offsetY != 0) {
+    if(face.offsetY != 0) {
       result.add(EAST);
       result.add(WEST);
       result.add(NORTH);
       result.add(SOUTH);
-    } else if (face.offsetX != 0) {
+    } else if(face.offsetX != 0) {
       result.add(DOWN);
       result.add(UP);
       result.add(SOUTH);
@@ -183,12 +186,12 @@ public class RenderUtil {
   public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
 
-    if (!forceAllEdges) {
+    if(!forceAllEdges) {
       int blockID = blockAccess.getBlockId(x, y, z);
-      if (blockID <= 0 || Block.blocksList[blockID] == null) {
+      if(blockID <= 0 || Block.blocksList[blockID] == null) {
         return;
       }
-      if (!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+      if(!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
         return;
       }
     }
@@ -196,7 +199,7 @@ public class RenderUtil {
     BlockCoord bc = new BlockCoord(x, y, z);
 
     List<ForgeDirection> edges;
-    if (forceAllEdges) {
+    if(forceAllEdges) {
       edges = RenderUtil.getEdgesForFace(face);
     } else {
       edges = RenderUtil.getNonConectedEdgesForFace(blockAccess, x, y, z, face);
@@ -204,7 +207,7 @@ public class RenderUtil {
 
     Tessellator tes = Tessellator.instance;
     tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
-    if (applyFaceShading) {
+    if(applyFaceShading) {
       float cm = RenderUtil.getColorMultiplierForFace(face);
       tes.setColorOpaque_F(cm, cm, cm);
     }
@@ -213,26 +216,26 @@ public class RenderUtil {
     Vector2d uv = new Vector2d();
     for (ForgeDirection edge : edges) {
 
-      float xLen = 1 - (float) Math.abs(edge.offsetX) * scaleFactor;
-      float yLen = 1 - (float) Math.abs(edge.offsetY) * scaleFactor;
-      float zLen = 1 - (float) Math.abs(edge.offsetZ) * scaleFactor;
+      float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
+      float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
+      float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
       List<Vector3f> corners = bb.getCornersForFace(face);
 
       for (Vector3f unitCorn : corners) {
         Vector3d corner = new Vector3d(unitCorn);
-        if (translateToXYZ) {
+        if(translateToXYZ) {
           corner.x += x;
           corner.y += y;
           corner.z += z;
         }
 
-        corner.x += (float) (edge.offsetX * 0.5) - (float) Math.signum(edge.offsetX) * xLen / 2f;
-        corner.y += (float) (edge.offsetY * 0.5) - (float) Math.signum(edge.offsetY) * yLen / 2f;
-        corner.z += (float) (edge.offsetZ * 0.5) - (float) Math.signum(edge.offsetZ) * zLen / 2f;
+        corner.x += (float) (edge.offsetX * 0.5) - Math.signum(edge.offsetX) * xLen / 2f;
+        corner.y += (float) (edge.offsetY * 0.5) - Math.signum(edge.offsetY) * yLen / 2f;
+        corner.z += (float) (edge.offsetZ * 0.5) - Math.signum(edge.offsetZ) * zLen / 2f;
 
-        if (translateToXYZ) {
+        if(translateToXYZ) {
           RenderUtil.getUvForCorner(uv, corner, x, y, z, face, texture);
         } else {
           RenderUtil.getUvForCorner(uv, corner, 0, 0, 0, face, texture);
@@ -246,10 +249,10 @@ public class RenderUtil {
 
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
     int blockID = blockAccess.getBlockId(x, y, z);
-    if (blockID <= 0 || Block.blocksList[blockID] == null) {
+    if(blockID <= 0 || Block.blocksList[blockID] == null) {
       return Collections.emptyList();
     }
-    if (!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+    if(!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
       return Collections.emptyList();
     }
     BlockCoord bc = new BlockCoord(x, y, z);
@@ -260,7 +263,7 @@ public class RenderUtil {
     }
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     for (EdgeNeighbour edge : edges) {
-      if (blockAccess.getBlockId(edge.bc.x, edge.bc.y, edge.bc.z) != blockID) {
+      if(blockAccess.getBlockId(edge.bc.x, edge.bc.y, edge.bc.z) != blockID) {
         result.add(edge.dir);
       }
       // else if(blockAccess.getBlockId(edge.bc.x + face.offsetX, edge.bc.y +

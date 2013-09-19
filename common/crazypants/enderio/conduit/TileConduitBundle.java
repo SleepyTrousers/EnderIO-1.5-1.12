@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
@@ -20,9 +17,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -46,7 +44,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
-  
+
+  private int lightOpacity = 255;
+
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
 
@@ -84,7 +84,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     for (int i = 0; i < conduitTags.tagCount(); i++) {
       NBTTagCompound conduitTag = (NBTTagCompound) conduitTags.tagAt(i);
       IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag);
-      if (conduit != null) {
+      if(conduit != null) {
         conduit.setBundle(this);
         conduits.add(conduit);
       }
@@ -104,12 +104,12 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     this.facadeId = blockID;
     if(triggerUpdate) {
       facadeChanged = true;
-    }    
+    }
   }
 
   @Override
   public void setFacadeId(int blockID) {
-    setFacadeId(blockID, true);    
+    setFacadeId(blockID, true);
   }
 
   @Override
@@ -126,8 +126,6 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public int getFacadeMetadata() {
     return facadeMeta;
   }
-  
-  
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -141,7 +139,17 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   @SideOnly(Side.CLIENT)
   public void setFacadeRenderAs(FacadeRenderState state) {
-    this.facadeRenderAs = state;    
+    this.facadeRenderAs = state;
+  }
+
+  @Override
+  public int getLightOpacity() {
+    return lightOpacity;
+  }
+
+  @Override
+  public void setLightOpacity(int opacity) {
+    lightOpacity = opacity;
   }
 
   @Override
@@ -162,12 +170,12 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       conduit.updateEntity(worldObj);
     }
 
-    if (worldObj != null && !worldObj.isRemote && conduitsDirty) {
+    if(worldObj != null && !worldObj.isRemote && conduitsDirty) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       conduitsDirty = false;
     }
 
-    if (worldObj != null && facadeChanged) {
+    if(worldObj != null && facadeChanged) {
       worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
       facadeChanged = false;
     }
@@ -183,7 +191,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     for (IConduit conduit : conduits) {
       needsUpdate |= conduit.onNeighborBlockChange(blockId);
     }
-    if (needsUpdate) {
+    if(needsUpdate) {
       dirty();
     }
   }
@@ -201,11 +209,11 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @SuppressWarnings("unchecked")
   @Override
   public <T extends IConduit> T getConduit(Class<T> type) {
-    if (type == null) {
+    if(type == null) {
       return null;
     }
     for (IConduit conduit : conduits) {
-      if (type.isInstance(conduit)) {
+      if(type.isInstance(conduit)) {
         return (T) conduit;
       }
     }
@@ -214,7 +222,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   @Override
   public void addConduit(IConduit conduit) {
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       return;
     }
     conduits.add(conduit);
@@ -225,26 +233,26 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   @Override
   public void removeConduit(IConduit conduit) {
-    if (conduit != null) {
+    if(conduit != null) {
       removeConduit(conduit, true);
     }
   }
 
   public void removeConduit(IConduit conduit, boolean notify) {
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       return;
     }
     conduit.onRemovedFromBundle();
     conduits.remove(conduit);
     conduit.setBundle(null);
-    if (notify) {
+    if(notify) {
       dirty();
     }
   }
 
   @Override
   public void onBlockRemoved() {
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       return;
     }
     List<IConduit> copy = new ArrayList<IConduit>(conduits);
@@ -262,7 +270,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public Set<ForgeDirection> getConnections(Class<? extends IConduit> type) {
     IConduit con = getConduit(type);
-    if (con != null) {
+    if(con != null) {
       return con.getConduitConnections();
     }
     return null;
@@ -271,7 +279,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public boolean containsConnection(Class<? extends IConduit> type, ForgeDirection dir) {
     IConduit con = getConduit(type);
-    if (con != null) {
+    if(con != null) {
       return con.containsConduitConnection(dir);
     }
     return false;
@@ -280,7 +288,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public boolean containsConnection(ForgeDirection dir) {
     for (IConduit con : conduits) {
-      if (con.containsConduitConnection(dir)) {
+      if(con.containsConduitConnection(dir)) {
         return true;
       }
     }
@@ -301,22 +309,22 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public Offset getOffset(Class<? extends IConduit> type, ForgeDirection dir) {
 
-    if (getConnectionCount(dir) < 2) {
+    if(getConnectionCount(dir) < 2) {
       return Offset.NONE;
     }
 
-    if (dir == ForgeDirection.UNKNOWN) {
-      if (containsOnlySingleVerticalConnections()) {
+    if(dir == ForgeDirection.UNKNOWN) {
+      if(containsOnlySingleVerticalConnections()) {
         return Offsets.get(type, true, false);
       }
-      if (containsOnlySingleHorizontalConnections()) {
+      if(containsOnlySingleHorizontalConnections()) {
         return Offsets.get(type, false, true);
       }
       return Offsets.get(type, true, true);
     }
 
     boolean isVertical = dir == ForgeDirection.UP || dir == ForgeDirection.DOWN;
-    if (isVertical) {
+    if(isVertical) {
       return Offsets.get(type, false, true);
     }
     return Offsets.get(type, true, false);
@@ -328,7 +336,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     for (IConduit con : conduits) {
       collidablesDirty = collidablesDirty || con.haveCollidablesChangedSinceLastCall();
     }
-    if (!collidablesDirty && !cachedCollidables.isEmpty()) {
+    if(!collidablesDirty && !cachedCollidables.isEmpty()) {
       return cachedCollidables;
     }
     cachedCollidables.clear();
@@ -351,18 +359,18 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   private void addConnectors(List<CollidableComponent> result) {
-    if (conduits.isEmpty()) {
+    if(conduits.isEmpty()) {
       return;
     }
     CollidableCache cc = CollidableCache.instance;
-    if (conduits.size() == 1) {
+    if(conduits.size() == 1) {
 
       IConduit con = conduits.get(0);
       result.addAll(cc.getCollidables(cc.createKey(con.getBaseConduitType(), Offset.NONE, ForgeDirection.UNKNOWN, false), con));
 
-    } else if (containsOnlySingleVerticalConnections()) {
+    } else if(containsOnlySingleVerticalConnections()) {
 
-      if (allDirectionsHaveSameConnectionCount()) {
+      if(allDirectionsHaveSameConnectionCount()) {
         for (IConduit con : conduits) {
           Class<? extends IConduit> type = con.getBaseConduitType();
           result.addAll(cc.getCollidables(cc.createKey(type, getOffset(type, ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
@@ -373,9 +381,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
             ConduitConnectorType.VERTICAL));
       }
 
-    } else if (containsOnlySingleHorizontalConnections()) {
+    } else if(containsOnlySingleHorizontalConnections()) {
 
-      if (allDirectionsHaveSameConnectionCount()) {
+      if(allDirectionsHaveSameConnectionCount()) {
         for (IConduit con : conduits) {
           Class<? extends IConduit> type = con.getBaseConduitType();
           result.addAll(cc.getCollidables(cc.createKey(type, getOffset(type, ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
@@ -407,7 +415,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       boolean hasCon = conduits.get(0).isConnectedTo(dir);
       for (int i = 1; i < conduits.size(); i++) {
-        if (hasCon != conduits.get(i).isConnectedTo(dir)) {
+        if(hasCon != conduits.get(i).isConnectedTo(dir)) {
           return false;
         }
       }
@@ -418,12 +426,12 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   private boolean containsOnlyHorizontalConnections() {
     for (IConduit con : conduits) {
       for (ForgeDirection dir : con.getConduitConnections()) {
-        if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
+        if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
           return false;
         }
       }
       for (ForgeDirection dir : con.getExternalConnections()) {
-        if (dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
+        if(dir == ForgeDirection.UP || dir == ForgeDirection.DOWN) {
           return false;
         }
       }
@@ -432,12 +440,12 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   private int getConnectionCount(ForgeDirection dir) {
-    if (dir == ForgeDirection.UNKNOWN) {
+    if(dir == ForgeDirection.UNKNOWN) {
       return conduits.size();
     }
     int result = 0;
     for (IConduit con : conduits) {
-      if (con.containsConduitConnection(dir) || con.containsExternalConnection(dir)) {
+      if(con.containsConduitConnection(dir) || con.containsExternalConnection(dir)) {
         result++;
       }
     }
@@ -449,7 +457,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public void doWork(PowerHandler workProvider) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
+    if(pc != null) {
       pc.doWork(workProvider);
     }
   }
@@ -457,7 +465,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
+    if(pc != null) {
       return pc.getPowerReceiver(side);
     }
     return null;
@@ -466,7 +474,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public PowerHandler getPowerHandler() {
     IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
+    if(pc != null) {
       return pc.getPowerHandler();
     }
     return null;
@@ -475,7 +483,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public void applyPerdition() {
     IPowerConduit pc = getConduit(IPowerConduit.class);
-    if (pc != null) {
+    if(pc != null) {
       pc.applyPerdition();
     }
 
@@ -491,7 +499,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
+    if(lc != null) {
       return lc.fill(from, resource, doFill);
     }
     return 0;
@@ -500,7 +508,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
+    if(lc != null) {
       return lc.drain(from, resource, doDrain);
     }
     return null;
@@ -509,7 +517,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
+    if(lc != null) {
       return lc.drain(from, maxDrain, doDrain);
     }
     return null;
@@ -518,7 +526,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
+    if(lc != null) {
       return lc.canFill(from, fluid);
     }
     return false;
@@ -527,7 +535,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
+    if(lc != null) {
       return lc.canDrain(from, fluid);
     }
     return false;
@@ -536,7 +544,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);
-    if (lc != null) {
+    if(lc != null) {
       return lc.getTankInfo(from);
     }
     return null;

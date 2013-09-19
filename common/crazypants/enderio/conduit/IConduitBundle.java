@@ -4,12 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -41,9 +40,9 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler {
   Set<ForgeDirection> getAllConnections();
 
   boolean containsConnection(ForgeDirection dir);
-  
+
   //geometry
-  
+
   List<CollidableComponent> getCollidableComponents();
 
   List<CollidableComponent> getConnectors();
@@ -53,27 +52,31 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler {
   void onNeighborBlockChange(int blockId);
 
   void onBlockRemoved();
-  
+
   void dirty();
 
   // Facade
-    
+
   enum FacadeRenderState {
     NONE,
     FULL,
     WIRE_FRAME
   }
-  
+
   @SideOnly(Side.CLIENT)
   FacadeRenderState getFacadeRenderedAs();
-  
+
   @SideOnly(Side.CLIENT)
   void setFacadeRenderAs(FacadeRenderState state);
+
+  int getLightOpacity();
+
+  void setLightOpacity(int opacity);
 
   boolean hasFacade();
 
   void setFacadeId(int blockID);
-  
+
   void setFacadeId(int blockID, boolean triggerUpdate);
 
   int getFacadeId();

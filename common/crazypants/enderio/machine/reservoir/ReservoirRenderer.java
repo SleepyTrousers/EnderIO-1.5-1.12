@@ -56,9 +56,8 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-    
     Vector3f offset = res.getOffsetFromController();
-    
+
     GL11.glTranslatef((float) x + offset.x, (float) y + offset.y, (float) z + offset.z);
 
     BoundingBox bb = res.getLiquidRenderBounds();
@@ -76,7 +75,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
       Tessellator.instance.draw();
     }
 
-    if (fullness > 0) {
+    if(fullness > 0) {
       RenderUtil.bindTexture(getLiquidSheet());
 
       float margin = 0.01f;
@@ -95,6 +94,8 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     GL11.glPopAttrib();
     GL11.glPopMatrix();
 
+    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
+
   }
 
   private Vector3d forward = new Vector3d();
@@ -110,7 +111,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     boolean isUp = dir.offsetY != 0;
 
-    if (dir == ForgeDirection.UP) {
+    if(dir == ForgeDirection.UP) {
       int i = 0;
     }
 
@@ -122,19 +123,19 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     offset.add(forward);
 
-    if (dir.offsetY == 0) {
+    if(dir.offsetY == 0) {
       offset.y += bb.sizeY() * 0.25;
     }
-    if (dir.offsetX == 0) {
+    if(dir.offsetX == 0) {
       offset.x -= (isUp ? dir.offsetY : dir.offsetZ) * bb.sizeX() * 0.25;
     }
-    if (dir.offsetZ == 0) {
+    if(dir.offsetZ == 0) {
       offset.z += (isUp ? -dir.offsetY : dir.offsetX) * bb.sizeZ() * 0.25;
     }
 
     left.set(isUp ? -dir.offsetY : -dir.offsetZ, 0, dir.offsetX);
 
-    if (isUp) {
+    if(isUp) {
       up.set(0, 0, -1);
     } else {
       up.set(0, 1, 0);
@@ -158,17 +159,17 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
   }
 
   private ResourceLocation getLiquidSheet() {
-    if (texName == null) {
+    if(texName == null) {
       texName = TextureMap.field_110575_b;
     }
     return texName;
   }
 
   private Icon getLiquidTexture() {
-    if (tex == null) {
+    if(tex == null) {
       tex = ReservoirTank.WATER.getFluid().getStillIcon();
     }
     return tex;
   }
-    
+
 }

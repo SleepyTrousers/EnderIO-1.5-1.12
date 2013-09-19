@@ -74,19 +74,19 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     TileConduitBundle cb = (TileConduitBundle)
         world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
-    if (ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
-      if (cb.getFacadeId() > 0) {
+    if(ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
+      if(cb.getFacadeId() > 0) {
         tex = Block.blocksList[cb.getFacadeId()].getIcon(target.sideHit,
             cb.getFacadeMetadata());
       }
-    } else if (target.hitInfo instanceof CollidableComponent) {
+    } else if(target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       IConduit con = cb.getConduit(cc.conduitType);
-      if (con != null) {
+      if(con != null) {
         tex = con.getTextureForState(cc);
       }
     }
-    if (tex == null) {
+    if(tex == null) {
       tex = blockIcon;
     }
     lastRemovedComponetIcon = tex;
@@ -129,17 +129,17 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
         getBlockBoundsMinY() - f * 2.0F) + f + getBlockBoundsMinY();
     double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() -
         getBlockBoundsMinZ() - f * 2.0F) + f + getBlockBoundsMinZ();
-    if (side == 0) {
+    if(side == 0) {
       d1 = y + getBlockBoundsMinY() - f;
-    } else if (side == 1) {
+    } else if(side == 1) {
       d1 = y + getBlockBoundsMaxY() + f;
-    } else if (side == 2) {
+    } else if(side == 2) {
       d2 = z + getBlockBoundsMinZ() - f;
-    } else if (side == 3) {
+    } else if(side == 3) {
       d2 = z + getBlockBoundsMaxZ() + f;
-    } else if (side == 4) {
+    } else if(side == 4) {
       d0 = x + getBlockBoundsMinX() - f;
-    } else if (side == 5) {
+    } else if(side == 5) {
       d0 = x + getBlockBoundsMaxX() + f;
     }
     EntityDiggingFX digFX = new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D,
@@ -159,14 +159,14 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int
       x, int y, int z) {
-    if (target != null && target.hitInfo instanceof CollidableComponent) {
+    if(target != null && target.hitInfo instanceof CollidableComponent) {
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       TileConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(x,
           y, z);
       IConduit conduit = bundle.getConduit(cc.conduitType);
-      if (conduit != null) {
+      if(conduit != null) {
         return conduit.createItem();
-      } else if (cc.conduitType == null && bundle.getFacadeId() > 0) {
+      } else if(cc.conduitType == null && bundle.getFacadeId() > 0) {
         // use the facde
         ItemStack fac = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
         PainterUtil.setSourceBlock(fac, bundle.getFacadeId(),
@@ -180,7 +180,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   @Override
   public int getDamageValue(World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return 0;
     }
     IConduitBundle bun = (IConduitBundle) te;
@@ -211,11 +211,11 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   public boolean isBlockSolidOnSide(World world, int x, int y, int z,
       ForgeDirection side) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return false;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if (con.getFacadeId() > 0) {
+    if(con.getFacadeId() > 0) {
       return true;
     }
     return false;
@@ -247,13 +247,23 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   }
 
   @Override
+  public int getLightOpacity(World world, int x, int y, int z) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return super.getLightOpacity(world, x, y, z);
+    }
+    IConduitBundle con = (IConduitBundle) te;
+    return con.getLightOpacity();
+  }
+
+  @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return super.getLightValue(world, x, y, z);
     }
     IConduitBundle con = (IConduitBundle) te;
-    if (con.getFacadeId() > 0) {
+    if(con.getFacadeId() > 0) {
       return 0;
     }
     Collection<IConduit> conduits = con.getConduits();
@@ -268,12 +278,12 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z,
       int par5) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return 0;
     }
     IConduitBundle bundle = (IConduitBundle) te;
     IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
-    if (con == null) {
+    if(con == null) {
       return 0;
     }
     return con.isProvidingStrongPower(getOrientation(par5));
@@ -283,12 +293,12 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z,
       int par5) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return 0;
     }
     IConduitBundle bundle = (IConduitBundle) te;
     IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
-    if (con == null) {
+    if(con == null) {
       return 0;
     }
     return con.isProvidingWeakPower(getOrientation(par5));
@@ -303,13 +313,13 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x,
       int y, int z) {
     IConduitBundle te = (IConduitBundle) world.getBlockTileEntity(x, y, z);
-    if (te == null) {
+    if(te == null) {
       return true;
     }
 
     boolean breakBlock = true;
     List<ItemStack> drop = new ArrayList<ItemStack>();
-    if (ConduitUtil.isSolidFacadeRendered(te, player)) {
+    if(ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
       ItemStack fac = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
       PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
@@ -318,17 +328,17 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       te.setFacadeMetadata(0);
     }
 
-    if (breakBlock) {
+    if(breakBlock) {
       RaytraceResult rt = doRayTrace(world, x, y, z, player);
-      if (rt != null && rt.component != null) {
+      if(rt != null && rt.component != null) {
         Class<? extends IConduit> type = rt.component.conduitType;
-        if (type == null) {
+        if(type == null) {
           // broke a conector so drop any conduits with no connections as there
           // is no other way to remove these
           List<IConduit> cons = new ArrayList<IConduit>(te.getConduits());
           boolean droppedUnconected = false;
           for (IConduit con : cons) {
-            if (con.getConduitConnections().isEmpty() &&
+            if(con.getConduitConnections().isEmpty() &&
                 con.getExternalConnections().isEmpty()) {
               te.removeConduit(con);
               drop.add(con.createItem());
@@ -336,7 +346,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
             }
           }
           // If there isn't, then drop em all
-          if (!droppedUnconected) {
+          if(!droppedUnconected) {
             for (IConduit con : cons) {
               te.removeConduit(con);
               drop.add(con.createItem());
@@ -344,7 +354,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
           }
         } else {
           IConduit con = te.getConduit(type);
-          if (con != null) {
+          if(con != null) {
             te.removeConduit(con);
             drop.add(con.createItem());
           }
@@ -355,13 +365,13 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     breakBlock = te.getConduits().isEmpty() && !te.hasFacade();
 
-    if (!world.isRemote && !player.capabilities.isCreativeMode) {
+    if(!world.isRemote && !player.capabilities.isCreativeMode) {
       for (ItemStack st : drop) {
         Util.dropItems(world, st, x, y, z, false);
       }
     }
 
-    if (!breakBlock) {
+    if(!breakBlock) {
       world.markBlockForUpdate(x, y, z);
       return false;
     }
@@ -373,7 +383,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   public void breakBlock(World world, int x, int y, int z, int par5, int
       par6) {
     IConduitBundle te = (IConduitBundle) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
+    if(te != null) {
       te.onBlockRemoved();
     }
     world.removeBlockTileEntity(x, y, z);
@@ -384,38 +394,38 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       EntityPlayer player, int par6, float par7, float par8, float par9) {
 
     IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(x, y, z);
-    if (bundle == null) {
+    if(bundle == null) {
       return false;
     }
 
     ItemStack stack = player.getCurrentEquippedItem();
-    if (stack != null && stack.itemID == ModObject.itemConduitFacade.actualId
+    if(stack != null && stack.itemID == ModObject.itemConduitFacade.actualId
         && !bundle.hasFacade()) {
       // Add facade
-      if (player.isSneaking()) {
+      if(player.isSneaking()) {
         return false;
       }
 
       bundle.setFacadeId(PainterUtil.getSourceBlockId(player.getCurrentEquippedItem()));
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
-      if (!player.capabilities.isCreativeMode) {
+      if(!player.capabilities.isCreativeMode) {
         stack.stackSize--;
       }
       world.markBlockForUpdate(x, y, z);
       world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
       return true;
 
-    } else if (ConduitUtil.isConduitEquipped(player)) {
+    } else if(ConduitUtil.isConduitEquipped(player)) {
       // Add conduit
-      if (player.isSneaking()) {
+      if(player.isSneaking()) {
         return false;
       }
 
       IConduitItem equipped = (IConduitItem) stack.getItem();
-      if (!bundle.hasType(equipped.getBaseConduitType())) {
+      if(!bundle.hasType(equipped.getBaseConduitType())) {
         bundle.addConduit(equipped.createConduit(stack));
-        if (!player.capabilities.isCreativeMode) {
-          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), stepSound.getPlaceSound(),
+        if(!player.capabilities.isCreativeMode) {
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(),
               (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
           player.getCurrentEquippedItem().stackSize--;
         }
@@ -425,13 +435,13 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     }
 
     // Break conduit with tool
-    if (ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
-      if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    if(ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
+      if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
-        if (wrench.canWrench(player, x, y, z)) {
-          if (!world.isRemote) {
+        if(wrench.canWrench(player, x, y, z)) {
+          if(!world.isRemote) {
             removeBlockByPlayer(world, player, x, y, z);
-            if (player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
               ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
             }
           }
@@ -443,11 +453,11 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     // Check conduit defined actions
     RaytraceResult res = doRayTrace(world, x, y, z, player);
 
-    if (res != null && res.component != null && res.component.data instanceof
+    if(res != null && res.component != null && res.component.data instanceof
         ConduitConnectorType) {
       // if its a connector pass the event on to all conduits
       for (IConduit con : bundle.getConduits()) {
-        if (con.onBlockActivated(player, res)) {
+        if(con.onBlockActivated(player, res)) {
           world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
           return true;
         }
@@ -456,14 +466,14 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       return false;
     }
 
-    if (res == null || res.component == null || res.component.conduitType ==
+    if(res == null || res.component == null || res.component.conduitType ==
         null) {
       // Nothing of interest hit
       return false;
     }
 
     // Conduit specific actions
-    if (bundle.getConduit(res.component.conduitType) != null && bundle.getConduit(res.component.conduitType).onBlockActivated(player,
+    if(bundle.getConduit(res.component.conduitType) != null && bundle.getConduit(res.component.conduitType).onBlockActivated(player,
         res)) {
       world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
       return true;
@@ -476,7 +486,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   public void onNeighborBlockChange(World world, int x, int y, int z, int
       blockId) {
     TileEntity tile = world.getBlockTileEntity(x, y, z);
-    if ((tile instanceof IConduitBundle)) {
+    if((tile instanceof IConduitBundle)) {
       ((IConduitBundle) tile).onNeighborBlockChange(blockId);
     }
   }
@@ -487,11 +497,11 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       Entity par7Entity) {
 
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if (con.getFacadeId() > 0) {
+    if(con.getFacadeId() > 0) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist,
           par7Entity);
@@ -505,7 +515,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
             par7Entity);
       }
 
-      if (con.getConduits().isEmpty()) { // just in case
+      if(con.getConduits().isEmpty()) { // just in case
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist,
             par7Entity);
@@ -521,13 +531,13 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       y, int z) {
 
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return null;
     }
     IConduitBundle con = (IConduitBundle) te;
 
     BoundingBox minBB = new BoundingBox(1, 1, 1, 0, 0, 0);
-    if (!ConduitUtil.isSolidFacadeRendered(con, EnderIO.proxy.getClientPlayer())) {
+    if(!ConduitUtil.isSolidFacadeRendered(con, EnderIO.proxy.getClientPlayer())) {
 
       Collection<CollidableComponent> bounds = con.getCollidableComponents();
       for (CollidableComponent bnd : bounds) {
@@ -538,7 +548,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       minBB = new BoundingBox(0, 0, 0, 1, 1, 1);
     }
 
-    if (!minBB.isValid()) {
+    if(!minBB.isValid()) {
       minBB = new BoundingBox(0, 0, 0, 1, 1, 1);
     }
 
@@ -552,11 +562,11 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       int z, Vec3 origin, Vec3 direction) {
     RaytraceResult raytraceResult = doRayTrace(world, x, y, z, origin,
         direction, null);
-    if (raytraceResult == null) {
+    if(raytraceResult == null) {
       return null;
     }
 
-    if (raytraceResult.movingObjectPosition != null) {
+    if(raytraceResult.movingObjectPosition != null) {
       raytraceResult.movingObjectPosition.hitInfo = raytraceResult.component;
 
     }
@@ -575,7 +585,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     double reachDistance = EnderIO.proxy.getReachDistanceForPlayer(entityPlayer);
 
     double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
-    if (!world.isRemote && entityPlayer.isSneaking()) {
+    if(!world.isRemote && entityPlayer.isSneaking()) {
       posY -= 0.08;
     }
     Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
@@ -591,17 +601,17 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       origin, Vec3 direction, EntityPlayer player) {
 
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return null;
     }
     IConduitBundle bundle = (IConduitBundle) te;
     List<RaytraceResult> hits = new ArrayList<RaytraceResult>();
 
-    if (ConduitUtil.isSolidFacadeRendered(bundle, player)) {
+    if(ConduitUtil.isSolidFacadeRendered(bundle, player)) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       MovingObjectPosition hitPos = super.collisionRayTrace(world, x, y, z,
           origin, direction);
-      if (hitPos != null) {
+      if(hitPos != null) {
         hits.add(new RaytraceResult(new CollidableComponent(null,
             BoundingBox.UNIT_CUBE, ForgeDirection.UNKNOWN, null), hitPos));
       }
@@ -615,18 +625,18 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
             component.bound.maxZ);
         MovingObjectPosition hitPos = super.collisionRayTrace(world, x, y, z,
             origin, direction);
-        if (hitPos != null) {
+        if(hitPos != null) {
           hits.add(new RaytraceResult(component, hitPos));
         }
       }
 
       // safety to prevent unbreakable empty bundles in case of a bug
-      if (bundle.getConduits().isEmpty() && !ConduitUtil.isFacadeHidden(bundle,
+      if(bundle.getConduits().isEmpty() && !ConduitUtil.isFacadeHidden(bundle,
           player)) {
         setBlockBounds(0, 0, 0, 1, 1, 1);
         MovingObjectPosition hitPos = super.collisionRayTrace(world, x, y, z,
             origin, direction);
-        if (hitPos != null) {
+        if(hitPos != null) {
           hits.add(new RaytraceResult(null, hitPos));
         }
       }

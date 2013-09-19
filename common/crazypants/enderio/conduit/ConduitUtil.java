@@ -6,9 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -27,18 +25,17 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
-import crazypants.util.Util;
 
 public class ConduitUtil {
 
   public static final Random RANDOM = new Random();
 
   public static AbstractConduitNetwork<?> createNetworkForType(Class<? extends IConduit> type) {
-    if (IRedstoneConduit.class.isAssignableFrom(type)) {
+    if(IRedstoneConduit.class.isAssignableFrom(type)) {
       return new RedstoneConduitNetwork();
-    } else if (IPowerConduit.class.isAssignableFrom(type)) {
+    } else if(IPowerConduit.class.isAssignableFrom(type)) {
       return new PowerConduitNetwork();
-    } else if (ILiquidConduit.class.isAssignableFrom(type)) {
+    } else if(ILiquidConduit.class.isAssignableFrom(type)) {
       return new LiquidConduitNetwork();
     }
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
@@ -51,7 +48,7 @@ public class ConduitUtil {
     World world = te.worldObj;
     Collection<? extends IConduit> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, conduit.getBaseConduitType());
 
-    if (reuseNetwork(conduit, connections, world)) {
+    if(reuseNetwork(conduit, connections, world)) {
       return;
     }
 
@@ -64,13 +61,13 @@ public class ConduitUtil {
   private static boolean reuseNetwork(IConduit con, Collection<? extends IConduit> connections, World world) {
     AbstractConduitNetwork network = null;
     for (IConduit conduit : connections) {
-      if (network == null) {
+      if(network == null) {
         network = conduit.getNetwork();
-      } else if (network != conduit.getNetwork()) {
+      } else if(network != conduit.getNetwork()) {
         return false;
       }
     }
-    if (network == null) {
+    if(network == null) {
       return false;
     }
     con.setNetwork(network);
@@ -87,7 +84,7 @@ public class ConduitUtil {
     if(isFacadeHidden(bundle, player)) {
       return FacadeRenderState.WIRE_FRAME;
     }
-    return FacadeRenderState.FULL;    
+    return FacadeRenderState.FULL;
   }
 
   public static boolean isSolidFacadeRendered(IConduitBundle bundle, EntityPlayer player) {
@@ -95,16 +92,17 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
+    //ModuleManager.itemHasActiveModule(player.getCurrentEquippedItem, OmniWrenchModule.MODULE_OMNI_WRENCH)
     return bundle.getFacadeId() > 0 && (isToolEquipped(player) || isConduitEquipped(player));
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if (player == null) {
+    if(player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if (equipped == null) {
+    if(equipped == null) {
       return false;
     }
     return equipped.getItem() instanceof IConduitItem;
@@ -112,22 +110,22 @@ public class ConduitUtil {
 
   public static boolean isToolEquipped(EntityPlayer player) {
     player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if (player == null) {
+    if(player == null) {
       return false;
     }
     ItemStack equipped = player.getCurrentEquippedItem();
-    if (equipped == null) {
+    if(equipped == null) {
       return false;
     }
     return /* equipped.itemID == Block.stone.blockID || */equipped.getItem() instanceof IToolWrench;
   }
 
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
-    if (world == null) {
+    if(world == null) {
       return null;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof IConduitBundle) {
+    if(te instanceof IConduitBundle) {
       IConduitBundle con = (IConduitBundle) te;
       return con.getConduit(type);
     }
@@ -140,14 +138,14 @@ public class ConduitUtil {
 
   public static <T extends IConduit> Collection<T> getConnectedConduits(IBlockAccess world, int x, int y, int z, Class<T> type) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof IConduitBundle)) {
+    if(!(te instanceof IConduitBundle)) {
       return Collections.emptyList();
     }
     List<T> result = new ArrayList<T>();
     IConduitBundle root = (IConduitBundle) te;
     for (ForgeDirection dir : root.getAllConnections()) {
       T con = getConduit(world, root.getEntity(), dir, type);
-      if (con != null) {
+      if(con != null) {
         result.add(con);
       }
     }
@@ -155,7 +153,7 @@ public class ConduitUtil {
   }
 
   public static void writeToNBT(IConduit conduit, NBTTagCompound conduitRoot) {
-    if (conduit == null) {
+    if(conduit == null) {
       return;
     }
 
@@ -169,7 +167,7 @@ public class ConduitUtil {
   public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot) {
     String typeName = conduitRoot.getString("conduitType");
     NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
-    if (typeName == null || conduitBody == null) {
+    if(typeName == null || conduitBody == null) {
       return null;
     }
     IConduit result;

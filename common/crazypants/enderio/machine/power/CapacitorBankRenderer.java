@@ -31,30 +31,29 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
   private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] { DEFAULT_BC };
   private static final double PIXEL_SIZE = 1 / 16d;
 
-  
-//------------------------- Item renderer
+  //------------------------- Item renderer
 
- @Override
- public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-   return true;
- }
+  @Override
+  public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    return true;
+  }
 
- @Override
- public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-   return true;
- }
+  @Override
+  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    return true;
+  }
 
- @Override
- public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-   renderBlock(null, PowerHandlerUtil.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
- }
- 
-//------------------------- Entity renderer
+  @Override
+  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    renderBlock(null, PowerHandlerUtil.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
+  }
+
+  //------------------------- Entity renderer
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
 
-    if (!(te instanceof TileCapacitorBank)) {
+    if(!(te instanceof TileCapacitorBank)) {
       return;
     }
 
@@ -62,10 +61,11 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
-    TileCapacitorBank cb = (TileCapacitorBank)te;    
+    TileCapacitorBank cb = (TileCapacitorBank) te;
     renderBlock(cb, cb.getEnergyStoredRatio());
 
     GL11.glPopMatrix();
+    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
 
   }
 
@@ -75,29 +75,29 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
     BlockCoord myBC;
     BlockCoord[] mb;
-    if (te != null && te.isMultiblock()) {
+    if(te != null && te.isMultiblock()) {
       myBC = new BlockCoord(te);
       mb = te.multiblock;
     } else {
       myBC = DEFAULT_BC;
       mb = DEFAULT_MB;
     }
-    
+
     List<GaugeBounds> gaugeBounds = calculateGaugeBounds(myBC, mb);
-    
+
     float brightness;
     if(te != null) {
-      brightness = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);            
+      brightness = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
     } else {
       brightness = 1;
     }
 
     tes.startDrawingQuads();
     tes.setColorRGBA_F(brightness, brightness, brightness, 1);
-//    tes.setColorRGBA_F(1, 1, 1, 1);
-//    if(te != null) {      
-//      RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-//    }
+    //    tes.setColorRGBA_F(1, 1, 1, 1);
+    //    if(te != null) {      
+    //      RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+    //    }
     CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockCapacitorBank.getIcon(0, 0));
     tes.draw();
 
@@ -107,14 +107,14 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     tes.startDrawingQuads();
     //tes.setColorRGBA_F(1, 1, 1, 1);
     tes.setColorRGBA_F(brightness, brightness, brightness, 1);
-    if (te != null) {      
+    if(te != null) {
       //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
       renderBorder(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-    } else {            
+    } else {
       renderBorder(null, 0, 0, 0);
     }
-    for(GaugeBounds gb : gaugeBounds) {
-      renderGaugeOnFace(gb,  EnderIO.blockCapacitorBank.overlayIcon);
+    for (GaugeBounds gb : gaugeBounds) {
+      renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon);
     }
     tes.draw();
 
@@ -123,16 +123,16 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     //tes.setColorRGBA_F(1, 1, 1, 1);
     tes.setColorRGBA_F(brightness, brightness, brightness, 1);
     //if (te != null) {      
-      //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+    //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
     //} 
-    for(GaugeBounds gb : gaugeBounds) {
-      renderFillBarOnFace(gb,  EnderIO.blockCapacitorBank.fillBarIcon, filledRatio);
-    }    
+    for (GaugeBounds gb : gaugeBounds) {
+      renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon, filledRatio);
+    }
     tes.draw();
 
     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
   }
-  
+
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z) {
     Icon texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
@@ -144,17 +144,17 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
   private List<GaugeBounds> calculateGaugeBounds(BlockCoord me, BlockCoord[] mb) {
     List<GaugeBounds> res = new ArrayList<GaugeBounds>();
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      if (face != ForgeDirection.UP && face != ForgeDirection.DOWN) {
+      if(face != ForgeDirection.UP && face != ForgeDirection.DOWN) {
         boolean isRight = isRightFace(me, mb, face);
-        if (isRight) {
-          res.add(new GaugeBounds(me, mb, face));          
+        if(isRight) {
+          res.add(new GaugeBounds(me, mb, face));
         }
       }
     }
     return res;
   }
 
-  private void renderGaugeOnFace(GaugeBounds gb, Icon icon) {    
+  private void renderGaugeOnFace(GaugeBounds gb, Icon icon) {
     Tessellator tes = Tessellator.instance;
     tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
     Vector2f u = gb.getMinMaxU(icon);
@@ -165,11 +165,10 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
   }
 
-
   private void renderFillBarOnFace(GaugeBounds gb, Icon icon, float filledRatio) {
 
     int totalPixels;
-    if (gb.vInfo.verticalHeight == 1) {
+    if(gb.vInfo.verticalHeight == 1) {
       totalPixels = VPos.SINGLE_BLOCK.numFillPixels;
     } else {
       totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
@@ -177,14 +176,14 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
     int targetPixelCount = Math.max(0, Math.round(totalPixels * filledRatio));
     int pixelsBellowFace;
-    if (gb.vInfo.index < 2) {
+    if(gb.vInfo.index < 2) {
       // either none or a bottom section
       pixelsBellowFace = gb.vInfo.index * VPos.BOTTOM.numFillPixels;
     } else { // has middle section
       pixelsBellowFace = VPos.BOTTOM.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.index - 1));
     }
 
-    if (pixelsBellowFace >= targetPixelCount) {
+    if(pixelsBellowFace >= targetPixelCount) {
       return;
     }
 
@@ -205,7 +204,6 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
   }
 
-
   private boolean isRightFace(BlockCoord me, BlockCoord[] mb, ForgeDirection dir) {
     Vector4d uPlane = RenderUtil.getUPlaneForFace(dir);
 
@@ -213,7 +211,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     int max = myRightVal;
     for (BlockCoord bc : mb) {
       int val = (int) uPlane.x * bc.x + (int) uPlane.y * bc.y + (int) uPlane.z * bc.z;
-      if (val > max) {
+      if(val > max) {
         max = val;
       }
     }
@@ -221,7 +219,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
   }
 
   //------------ Inner Classes
-  
+
   enum VPos {
 
     SINGLE_BLOCK(0, 10, 3),
@@ -259,7 +257,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     final BoundingBox bb;
     final VInfo vInfo;
     final ForgeDirection face;
-    
+
     GaugeBounds(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
       this.face = face;
       vInfo = getVPosForFace(me, mb, face);
@@ -270,7 +268,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       float scaleZ = uPlane.z != 0 ? 0.25f : 1;
       bb = BoundingBox.UNIT_CUBE.scale(scaleX, scaleY, scaleZ);
     }
-    
+
     Vector2f getMinMaxU(Icon icon) {
       VPos yPos = vInfo.pos;
       float uWidth = icon.getMaxU() - icon.getMinU();
@@ -279,30 +277,30 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       float maxU = minU + (uWidth * 0.25f);
       return new Vector2f(minU, maxU);
     }
-    
+
     private VInfo getVPosForFace(BlockCoord me, BlockCoord[] mb, ForgeDirection face) {
       int maxY = me.y;
       int minY = me.y;
       int vHeight = 1;
       for (BlockCoord bc : mb) {
-        if (bc.x == me.x && bc.z == me.z && !containsLocaction(mb, bc.getLocation(face))) {
+        if(bc.x == me.x && bc.z == me.z && !containsLocaction(mb, bc.getLocation(face))) {
           maxY = Math.max(maxY, bc.y);
           minY = Math.min(minY, bc.y);
         }
       }
-      if (maxY == me.y && minY == me.y) {
+      if(maxY == me.y && minY == me.y) {
         return new VInfo(VPos.SINGLE_BLOCK, 1, 0);
       }
       int height = maxY - minY + 1;
-      if (maxY > me.y) {
+      if(maxY > me.y) {
         return me.y > minY ? new VInfo(VPos.MIDDLE, height, me.y - minY) : new VInfo(VPos.BOTTOM, height, 0);
       }
       return new VInfo(VPos.TOP, height, height - 1);
     }
-    
+
     private boolean containsLocaction(BlockCoord[] mb, BlockCoord location) {
       for (BlockCoord bc : mb) {
-        if (location.equals(bc)) {
+        if(location.equals(bc)) {
           return true;
         }
       }
