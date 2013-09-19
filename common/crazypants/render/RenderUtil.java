@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.RenderEngine;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -46,8 +45,8 @@ public class RenderUtil {
   public static final String BLOCK_TEX = "/terrain.png";
 
   public static final String ITEM_TEX = "/gui/items.png";
- 
-  public static final String GLINT_TEX = "%blur%/misc/glint.png"; 
+
+  public static final String GLINT_TEX = "%blur%/misc/glint.png";
 
   public static void loadMatrix(Matrix4d mat) {
     MATRIX_BUFFER.rewind();
@@ -95,7 +94,6 @@ public class RenderUtil {
     engine().bindTexture(string);
   }
 
-
   public static FontRenderer fontRenderer() {
     return Minecraft.getMinecraft().fontRenderer;
   }
@@ -105,18 +103,18 @@ public class RenderUtil {
     int j = i % 65536;
     int k = i / 65536;
 
-    //0.2 - 1
+    // 0.2 - 1
     float sunBrightness = worldObj.getSunBrightness(1);
 
     float percentRecievedFromSun = k / 255f;
 
-    //Highest value recieved from a light
+    // Highest value recieved from a light
     float fromLights = j / 255f;
 
     // 0 - 1 for sun only, 0 - 0.6 for light only
     float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
     float highestValue = Math.max(fromLights, percentRecievedFromSun * sunBrightness);
-    return highestValue;
+    return Math.max(0.2f, highestValue);
   }
 
   public static float getColorMultiplierForFace(ForgeDirection face) {
@@ -141,7 +139,7 @@ public class RenderUtil {
   }
 
   public static void renderQuad2D(double x, double y, double z, double width, double height, int colorRGB) {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);    
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     GL11.glDisable(GL11.GL_TEXTURE_2D);
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();
@@ -149,11 +147,11 @@ public class RenderUtil {
     tessellator.addVertex(x, y + height, z);
     tessellator.addVertex(x + width, y + height, z);
     tessellator.addVertex(x + width, y, z);
-    tessellator.addVertex(x, y, z);        
+    tessellator.addVertex(x, y, z);
     tessellator.draw();
     GL11.glEnable(GL11.GL_TEXTURE_2D);
   }
-  
+
   public static List<ForgeDirection> getEdgesForFace(ForgeDirection face) {
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     if (face.offsetY != 0) {
