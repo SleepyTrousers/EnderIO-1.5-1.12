@@ -173,30 +173,29 @@ public class EnderIO {
     itemMJReader = ItemMJReader.create();
 
     MaterialRecipes.registerOresInDictionary();
-    MachineRecipes.registerOresInDictionary();
   }
 
   @EventHandler
   public void load(FMLInitializationEvent event) {
-   
+
     instance = this;
- 
+
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
-   
+
     PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
-   
-   
-    proxy.load();
-  }
- 
-  @EventHandler
-  public void postInit(FMLPostInitializationEvent event) {
+
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
- 
+
+    proxy.load();
+  }
+
+  @EventHandler
+  public void postInit(FMLPostInitializationEvent event) {
+
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();
