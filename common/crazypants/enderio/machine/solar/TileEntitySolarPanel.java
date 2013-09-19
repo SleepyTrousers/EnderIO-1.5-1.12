@@ -31,7 +31,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private float energyPerTick = 1;
 
   public TileEntitySolarPanel() {
-    capacitor = new BasicCapacitor(0,10000,10);
+    capacitor = new BasicCapacitor(0, 10000, 10);
     powerHandler = PowerHandlerUtil.createHandler(capacitor, this, Type.ENGINE);
   }
 
@@ -69,7 +69,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   @Override
   public void updateEntity() {
-    if (worldObj == null || worldObj.isRemote) {
+    if(worldObj == null || worldObj.isRemote) {
       return;
     }
     collectEnergy();
@@ -77,7 +77,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void collectEnergy() {
-    if (!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
+    if(!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
       return;
     }
     float fromSun = calculateLightRatio();
@@ -90,7 +90,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     int lightValue = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted;
     float sunAngle = worldObj.getCelestialAngleRadians(1.0F);
 
-    if (sunAngle < (float) Math.PI) {
+    if(sunAngle < (float) Math.PI) {
       sunAngle += (0.0F - sunAngle) * 0.2F;
     } else {
       sunAngle += (((float) Math.PI * 2F) - sunAngle) * 0.2F;
@@ -104,7 +104,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   private boolean transmitEnergy() {
 
-    if (powerHandler.getEnergyStored() <= 0) {
+    if(powerHandler.getEnergyStored() <= 0) {
       powerHandler.update();
       return false;
     }
@@ -119,7 +119,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
     checkReceptors();
 
-    if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
+    if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
     }
 
@@ -128,10 +128,10 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
 
       Receptor receptor = receptorIterator.next();
-      PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir);
-      if (pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
+      PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir.getOpposite());
+      if(pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
         float used;
-        if (receptor.receptor instanceof IInternalPowerReceptor) {
+        if(receptor.receptor instanceof IInternalPowerReceptor) {
           used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir.getOpposite());
         } else {
           used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir.getOpposite());
@@ -139,11 +139,11 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
         transmitted += used;
         canTransmit -= used;
       }
-      if (canTransmit <= 0) {
+      if(canTransmit <= 0) {
         break;
       }
 
-      if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
+      if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = receptors.listIterator();
       }
       appliedCount++;
@@ -156,7 +156,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void checkReceptors() {
-    if (!receptorsDirty) {
+    if(!receptorsDirty) {
       return;
     }
     receptors.clear();
@@ -165,10 +165,10 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     ForgeDirection dir = ForgeDirection.DOWN;
     BlockCoord checkLoc = bc.getLocation(dir);
     TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-    if (te instanceof IPowerReceptor) {
+    if(te instanceof IPowerReceptor) {
       IPowerReceptor rec = (IPowerReceptor) te;
       PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-      if (reciever != null) {
+      if(reciever != null) {
         receptors.add(new Receptor((IPowerReceptor) te, dir));
       }
     }
