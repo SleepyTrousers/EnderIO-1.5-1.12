@@ -37,7 +37,7 @@ public enum ModObject {
   blockCustomFence(++Config.BID, CATEGORY_BLOCK, "Painted Fence"),
   blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK, "Painted Gate"),
   blockCustomWall(++Config.BID, CATEGORY_BLOCK, "Painted Wall"),
-  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Painted Stair"),  
+  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Painted Stair"),
   itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM, "Fused Quartz Frame"),
 
   // Solar Panel
@@ -45,21 +45,21 @@ public enum ModObject {
 
   blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Electric Light"),
   blockLightNode(++Config.BID, CATEGORY_BLOCK, "Light Node (Internal Only)"),
-  
+
   blockCapacitorBank(++Config.BID, CATEGORY_BLOCK, "Capacitor Bank"),
 
   itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench"),
-  
+
   blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
   blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
-  
-  blockCrusher(++Config.BID, CATEGORY_BLOCK,"SAG Mill"),
-  
-  blockHyperCube(++Config.BID, CATEGORY_BLOCK,"Tesseract"),
+
+  blockCrusher(++Config.BID, CATEGORY_BLOCK, "SAG Mill"),
+
+  blockHyperCube(++Config.BID, CATEGORY_BLOCK, "Dimensional Transceiver"),
 
   itemMachinePart(++Config.IID, CATEGORY_ITEM, "Machine Parts"),
   itemPowderIngot(++Config.IID, CATEGORY_ITEM, "Powders & Ingots"),
-  
+
   itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)");
 
   public final String unlocalisedName;
@@ -79,15 +79,15 @@ public enum ModObject {
   }
 
   void load(Configuration config) {
-    if (CATEGORY_ITEM.equals(category)) {
+    if(CATEGORY_ITEM.equals(category)) {
       id = config.getItem(unlocalisedName, defaultId).getInt();
-    } else if (CATEGORY_BLOCK.equals(category)) {
+    } else if(CATEGORY_BLOCK.equals(category)) {
       id = config.getBlock(unlocalisedName, defaultId).getInt();
     } else {
       throw new RuntimeException("Unknown category " + category);
     }
     actualId = id;
-    if (CATEGORY_ITEM.equals(category)) {
+    if(CATEGORY_ITEM.equals(category)) {
       actualId += 256;
     }
   }

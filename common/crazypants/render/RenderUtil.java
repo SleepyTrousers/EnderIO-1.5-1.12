@@ -109,6 +109,7 @@ public class RenderUtil {
     int j = i % 65536;
     int k = i / 65536;
 
+    float minLight = 0;
     //0.2 - 1
     float sunBrightness = worldObj.getSunBrightness(1);
 
@@ -120,7 +121,7 @@ public class RenderUtil {
     // 0 - 1 for sun only, 0 - 0.6 for light only
     float recievedPercent = worldObj.getLightBrightness(xCoord, yCoord, zCoord);
     float highestValue = Math.max(fromLights, percentRecievedFromSun * sunBrightness);
-    return highestValue;
+    return Math.max(0.2f, highestValue);
   }
 
   public static float getColorMultiplierForFace(ForgeDirection face) {
