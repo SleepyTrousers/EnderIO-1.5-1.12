@@ -1,5 +1,13 @@
 package crazypants.enderio.machine.hypercube;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
+import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -9,23 +17,12 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.ForgeDirection;
-
 public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
   private IModel model;
 
   private BoundingBox bb;
-  
+
   private boolean adjustForItem = false;
 
   public HyperCubeRenderer() {
@@ -39,19 +36,18 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
     }
     bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
   }
-  
-  
+
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
 
     TileHyperCube cube = (TileHyperCube) te;
-    
+
     GL11.glEnable(GL11.GL_LIGHTING);
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-    
+
     model.render(cube, x, y, z);
 
-    if (cube.getPowerHandler().getEnergyStored() > 0) {
+    if(cube.getInternalPowerHandler().getEnergyStored() > 0) {
       renderPower(te.worldObj, x, y, z, cube.getChannel() != null);
     }
 
@@ -70,7 +66,7 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    if (adjustForItem) {
+    if(adjustForItem) {
       switch (type) {
       case ENTITY:
         renderItem(0f, 0f, 0f);
@@ -93,7 +89,6 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
 
   private void renderPower(World world, double x, double y, double z, boolean isActive) {
 
-    
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
@@ -105,10 +100,10 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    if (!isActive) {
-      GL11.glColor4f(0, 1, 1, 0.5f);      
+    if(!isActive) {
+      GL11.glColor4f(0, 1, 1, 0.5f);
     } else {
-      GL11.glColor4f(1, 1, 1, 1f);  
+      GL11.glColor4f(1, 1, 1, 1f);
     }
     CubeRenderer.render(bb, icon);
     tessellator.draw();
