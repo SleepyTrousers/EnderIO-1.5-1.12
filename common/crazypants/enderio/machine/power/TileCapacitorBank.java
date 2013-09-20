@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.transport.IPipeTile;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -86,9 +85,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
 
     // do the required tick to keep BC API happy
-     float stored = powerHandler.getEnergyStored();
-     powerHandler.update(this);
-     powerHandler.setEnergy(stored);
+    float stored = powerHandler.getEnergyStored();
+    powerHandler.update(this);
+    powerHandler.setEnergy(stored);
 
     boolean requiresClientSync = false;
 
@@ -167,7 +166,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
           } else {
             IConduitBundle bundle = (IConduitBundle) receptor.receptor;
             IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
-            if (conduit != null && conduit.getConectionMode(receptor.fromDir) == ConnectionMode.INPUT) {
+            if (conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
               used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, canTransmit, receptor.fromDir.getOpposite());
             } else {
               used = 0;
@@ -175,7 +174,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
           }
         } else {
           used = Math.min(canTransmit, receptor.receptor.powerRequest(receptor.fromDir.getOpposite()));
-          used = Math.min(used, pp.getMaxEnergyStored() - pp.getEnergyStored());       
+          used = Math.min(used, pp.getMaxEnergyStored() - pp.getEnergyStored());
           pp.receiveEnergy(used, receptor.fromDir.getOpposite());
         }
         transmitted += used;
@@ -316,7 +315,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   // ------------ Multiblock implementations
 
   private int doGetPowerRequest(ForgeDirection from) {
-    if(!inputEnabled) {
+    if (!inputEnabled) {
       return 0;
     }
     return (int) Math.min(maxIO, powerHandler.getMaxEnergyStored() - powerHandler.getEnergyStored());
@@ -346,7 +345,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   int doGetEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / maxStoredEnergy)), 0, scale);    
+    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / maxStoredEnergy)), 0, scale);
   }
 
   float doGetEnergyStored() {
