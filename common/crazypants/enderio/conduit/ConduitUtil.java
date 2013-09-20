@@ -117,7 +117,10 @@ public class ConduitUtil {
     if(equipped == null) {
       return false;
     }
-    return /* equipped.itemID == Block.stone.blockID || */equipped.getItem() instanceof IToolWrench;
+    if(MpsUtil.instance.isPowerFistEquiped(equipped)) {
+      return MpsUtil.instance.isOmniToolActive(equipped);
+  }
+    return equipped.getItem() instanceof IToolWrench;
   }
 
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
