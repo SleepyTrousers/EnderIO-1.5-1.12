@@ -173,7 +173,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
           } else {
             IConduitBundle bundle = (IConduitBundle) receptor.receptor;
             IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
-            if(conduit != null && conduit.getConectionMode(receptor.fromDir) == ConnectionMode.INPUT) {
+            if(conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
               used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.STORAGE,
                   receptor.fromDir.getOpposite());
             } else {
