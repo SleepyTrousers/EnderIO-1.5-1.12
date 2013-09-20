@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
+import crazypants.enderio.Config;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
@@ -97,7 +98,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   private boolean isConnected() {
-    if(channel == null || HyperCubeRegister.instance == null) {
+    if (channel == null || HyperCubeRegister.instance == null) {
       return false;
     }
     List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
@@ -157,7 +158,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     float stored = powerHandler.getEnergyStored();
     powerHandler.update(this);
 
-    //Pay update
+    // Pay update
     stored -= ENERGY_UPKEEP;
     Math.max(stored, 0);
 
