@@ -155,7 +155,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
         if (!getBundle().getEntity().worldObj.isRemote) {
           if (network != null && (network.getFluidType() == null || network.getTotalVolume() < 500)) {
             network.setFluidType(fluid);
-            ChatMessageComponent c = ChatMessageComponent.func_111066_d("Fluid type set to " + FluidRegistry.getFluidName(fluid));
+            ChatMessageComponent c = ChatMessageComponent.createFromText("Fluid type set to " + FluidRegistry.getFluidName(fluid));
             player.sendChatToPlayer(c);
           }
         }
