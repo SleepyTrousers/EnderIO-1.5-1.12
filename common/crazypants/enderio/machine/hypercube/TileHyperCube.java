@@ -22,7 +22,9 @@ import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
 
-  private static final float ENERGY_LOSS = 0.1f;
+  private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
+
+  private static final float ENERGY_UPKEEP = (float) Config.transceiverUpkeepCost;
 
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
 
@@ -32,7 +34,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   private boolean powerInputEnabled = true;
 
-  private final BasicCapacitor internalCapacitor = new BasicCapacitor(256, 25000);
+  private final BasicCapacitor internalCapacitor = new BasicCapacitor(Config.transceiverMaxIO, 25000);
 
   EnderPowerProvider powerHandler;
 
@@ -94,6 +96,14 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     this.owner = owner;
   }
 
+  private boolean isConnected() {
+    if(channel == null || HyperCubeRegister.instance == null) {
+      return false;
+    }
+    List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
+    return cons != null && cons.size() > 1;
+  }
+
   private void balanceCubeNetworkEnergy() {
 
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
@@ -146,6 +156,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update(this);
+
+    //Pay update
+    stored -= ENERGY_UPKEEP;
+    Math.max(stored, 0);
+
     powerHandler.setEnergy(stored);
 
     if (registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {

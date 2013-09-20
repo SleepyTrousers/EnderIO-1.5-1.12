@@ -41,7 +41,7 @@ public class ItemFusedQuartzFrame extends Item {
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
+    // itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
   }
 
   @Override
@@ -75,12 +75,12 @@ public class ItemFusedQuartzFrame extends Item {
   public boolean isFull3D() {
     return true;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-    super.addInformation(item, par2EntityPlayer, list, par4);    
-    list.add(PainterUtil.getTooltTipText(item));    
+    super.addInformation(item, par2EntityPlayer, list, par4);
+    list.add(PainterUtil.getTooltTipText(item));
   }
 
   public static final class FramePainterRecipe extends BasicPainterTemplate {
