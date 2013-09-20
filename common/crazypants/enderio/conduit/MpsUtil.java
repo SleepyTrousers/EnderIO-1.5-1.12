@@ -21,35 +21,31 @@ public class MpsUtil {
     isMpsInstalled = false;
     try {
       powerFistClass = Class.forName("net.machinemuse.powersuits.item.ItemPowerFist");
-
-      Class<?> moduleManagerClass = Class.forName("net.machinemuse.api.ModuleManager");
+      Class<?> moduleManagerClass = Class.forName("net.machinemuse.utils.MuseItemUtils");
       itemActiveMethod = moduleManagerClass.getMethod("itemHasActiveModule", ItemStack.class, String.class);
-
       isMpsInstalled = true;
     } catch (Exception e) {
-
     }
-
   }
 
   public boolean isPowerFistEquiped(ItemStack equipped) {
-    if(!isMpsInstalled || equipped == null || Item.itemsList[equipped.itemID] == null) {
+    if (!isMpsInstalled || equipped == null || Item.itemsList[equipped.itemID] == null) {
       return false;
     }
     Item item = Item.itemsList[equipped.itemID];
-    if(powerFistClass.isAssignableFrom(item.getClass())) {
+    if (powerFistClass.isAssignableFrom(item.getClass())) {
       return true;
     }
     return false;
   }
 
   public boolean isOmniToolActive(ItemStack equipped) {
-    if(!isMpsInstalled || equipped == null || itemActiveMethod == null) {
+    if (!isMpsInstalled || equipped == null || itemActiveMethod == null) {
       return false;
     }
     try {
       Object res = itemActiveMethod.invoke(null, equipped, WRENCH_MODUL_NAME);
-      if(res instanceof Boolean) {
+      if (res instanceof Boolean) {
         return ((Boolean) res).booleanValue();
       }
     } catch (Exception e) {
