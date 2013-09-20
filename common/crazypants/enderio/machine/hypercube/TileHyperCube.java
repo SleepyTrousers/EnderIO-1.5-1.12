@@ -126,7 +126,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   @Override
   public void onChunkUnload() {
-    HyperCubeRegister.instance.deregister(this);
+    if(HyperCubeRegister.instance != null) {
+      HyperCubeRegister.instance.deregister(this);
+    }
   }
 
   public void onNeighborBlockChange() {

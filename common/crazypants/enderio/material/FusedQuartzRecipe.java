@@ -12,7 +12,7 @@ import crazypants.enderio.machine.alloy.BasicAlloyRecipe;
 
 public class FusedQuartzRecipe implements IMachineRecipe {
 
-  private static final int NUM_QUARTZ = 6;
+  private static final int NUM_QUARTZ = 4;
 
   @Override
   public String getUid() {
@@ -37,7 +37,7 @@ public class FusedQuartzRecipe implements IMachineRecipe {
 
   @Override
   public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
-    return new ItemStack[] { new ItemStack(ModObject.blockFusedQuartz.actualId, 2, 0) };
+    return new ItemStack[] { new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0) };
   }
 
   @Override

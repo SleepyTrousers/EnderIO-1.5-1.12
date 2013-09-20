@@ -45,7 +45,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
 
-  private int lightOpacity = 255;
+  private int lightOpacity = 0;
 
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
