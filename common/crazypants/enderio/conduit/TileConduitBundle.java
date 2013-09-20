@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
@@ -17,9 +14,10 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.ILiquidTank;
 import net.minecraftforge.liquids.LiquidStack;
 import buildcraft.api.power.IPowerProvider;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -28,7 +26,6 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.MutablePowerProvider;
 import crazypants.util.BlockCoord;
 
@@ -45,8 +42,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   private boolean conduitsDirty = true;
   private boolean collidablesDirty = true;
-  
-  private int lightOpacity = 255;
+
+  private int lightOpacity = 0;
 
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
@@ -103,14 +100,14 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   public void setFacadeId(int blockID, boolean triggerUpdate) {
     this.facadeId = blockID;
-    if(triggerUpdate) {
+    if (triggerUpdate) {
       facadeChanged = true;
-    }    
+    }
   }
 
   @Override
   public void setFacadeId(int blockID) {
-    setFacadeId(blockID, true);    
+    setFacadeId(blockID, true);
   }
 
   @Override
@@ -127,11 +124,11 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public int getFacadeMetadata() {
     return facadeMeta;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
-  public FacadeRenderState getFacadeRenderedAs() {   
-	if(facadeRenderAs == null) {
+  public FacadeRenderState getFacadeRenderedAs() {
+    if (facadeRenderAs == null) {
       facadeRenderAs = FacadeRenderState.NONE;
     }
     return facadeRenderAs;
@@ -140,7 +137,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @Override
   @SideOnly(Side.CLIENT)
   public void setFacadeRenderAs(FacadeRenderState state) {
-    this.facadeRenderAs = state;    
+    this.facadeRenderAs = state;
   }
 
   @Override

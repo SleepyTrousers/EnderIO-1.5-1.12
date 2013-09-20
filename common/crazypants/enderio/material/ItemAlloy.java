@@ -56,7 +56,7 @@ public class ItemAlloy extends Item {
 
   @Override
   public Icon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, numItems);
+    damage = MathHelper.clamp_int(damage, 0, numItems - 1);
     return icons[damage];
   }
 
@@ -75,7 +75,7 @@ public class ItemAlloy extends Item {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, numItems);
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, numItems - 1);
     if (i < Alloy.values().length) {
       return super.getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName;
     } else {
