@@ -1,4 +1,3 @@
-
 <!--
 
   Recipes are organised into named groups. A group of recipes can be disabled by setting the attribiute 'enabled=false'.
@@ -136,12 +135,15 @@
       </output>
     </recipe>
 
-    <recipe energyCost="240"> <!-- Bone -> bonemeal -->
+    <recipe energyCost="240"> <!-- Bone -> bone meal -->
       <input>
         <itemStack itemID="352" />
       </input>
       <output>
         <itemStack itemID="351" itemMeta="15" number="6" />
+      </output>
+      <output>
+        <itemStack itemID="351" itemMeta="15" number="2" chance="0.1" />
       </output>
     </recipe>
 
@@ -310,5 +312,54 @@
     </recipe>
 
   </recipeGroup>
-
+  
+  <recipeGroup name="Railcraft">
+  
+    <recipe energyCost="240"> <!-- Obsidian-> dust -->
+      <input>
+            <itemStack itemID="49" />
+      </input>
+      <output>
+            <itemStack oreDictionary="dustObsidian" />
+      </output>
+	  <output>
+            <itemStack oreDictionary="dustObsidian" number="1" chance="0.15" />
+      </output>
+	  <output>
+            <itemStack oreDictionary="dustObsidian" number="2" chance="0.025" />
+      </output>
+    </recipe>
+    
+  </recipeGroup>
+  
+  <recipeGroup name="Biomes O Plenty">
+  
+    <recipe energyCost="260"> <!-- small bone segment -> bone meal -->
+      <input>
+            <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="0" />
+      </input>
+      <output>
+            <itemStack itemID="351" itemMeta="15" number="8" />
+      </output>
+    </recipe>
+	
+    <recipe energyCost="300"> <!-- medium bone segment -> bone meal -->
+      <input>
+            <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="1" />
+      </input>
+      <output>
+            <itemStack itemID="351" itemMeta="15" number="12" />
+      </output>
+    </recipe>
+	
+    <recipe energyCost="350"> <!-- large bone segment -> bone meal -->
+      <input>
+            <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="2" />
+      </input>
+      <output>
+            <itemStack itemID="351" itemMeta="15" number="24" />
+      </output>
+    </recipe>
+  
+  </recipeGroup>
 </SAGMillRecipes>
