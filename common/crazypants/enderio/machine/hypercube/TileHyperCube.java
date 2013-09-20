@@ -102,14 +102,14 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     }
     float totalEnergy = 0;
     for (TileHyperCube cube : cubes) {
-      totalEnergy += cube.getPowerHandler().getEnergyStored();
+      totalEnergy += cube.powerHandler.getEnergyStored();
     }
 
     float energyPerNode = totalEnergy / cubes.size();
     float totalToTranfer = 0;
     for (TileHyperCube cube : cubes) {
-      if (cube.getPowerHandler().getEnergyStored() < energyPerNode) {
-        totalToTranfer += (energyPerNode - cube.getPowerHandler().getEnergyStored());
+      if (cube.powerHandler.getEnergyStored() < energyPerNode) {
+        totalToTranfer += (energyPerNode - cube.powerHandler.getEnergyStored());
       }
     }
 
@@ -118,7 +118,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     energyPerNode = totalEnergy / cubes.size();
 
     for (TileHyperCube cube : cubes) {
-      cube.getPowerHandler().setEnergy(energyPerNode);
+      cube.powerHandler.setEnergy(energyPerNode);
     }
 
   }
