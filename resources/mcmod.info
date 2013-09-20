@@ -3,7 +3,7 @@
   "modid": "EnderIO",
   "name": "Ender IO",
   "description": "Compact conduits, painted things and access to your stuff through an eye of ender.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "mcversion": "1.6.2",
   "url": "http://www.minecraftforum.net/topic/1937619-162152-ender-io-how-many-pipes-in-one-block-updated-198/",
   "updateUrl": "",
