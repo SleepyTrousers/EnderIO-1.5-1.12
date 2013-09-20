@@ -1,4 +1,3 @@
-
 <!--
 
   Recipes are organised into named groups. A group of recipes can be disabled by setting the attribiute 'enabled=false'.
@@ -309,6 +308,19 @@
       </output>
     </recipe>
 
+  </recipeGroup>
+  
+  <recipeGroup name="Railcraft">
+  
+    <recipe energyCost="240"> <!-- Obsidian-> dust -->
+      <input>
+            <itemStack itemID="49" />
+      </input>
+      <output>
+            <itemStack oreDictionary="dustObsidian" />
+      </output>
+    </recipe>
+    
   </recipeGroup>
 
 </SAGMillRecipes>
