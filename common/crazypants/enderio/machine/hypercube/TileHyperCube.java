@@ -13,6 +13,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.Config;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
@@ -23,7 +24,9 @@ import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
 
-  private static final float ENERGY_LOSS = 0.1f;
+  private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
+
+  private static final float ENERGY_UPKEEP = (float) Config.transceiverUpkeepCost;
 
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
 
@@ -33,7 +36,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   private boolean powerInputEnabled = true;
 
-  private final BasicCapacitor internalCapacitor = new BasicCapacitor(256, 25000);
+  private final BasicCapacitor internalCapacitor = new BasicCapacitor(Config.transceiverMaxIO, 25000);
 
   PowerHandler powerHandler;
 
@@ -95,6 +98,14 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     this.owner = owner;
   }
 
+  private boolean isConnected() {
+    if(channel == null || HyperCubeRegister.instance == null) {
+      return false;
+    }
+    List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
+    return cons != null && cons.size() > 1;
+  }
+
   private void balanceCubeNetworkEnergy() {
 
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
@@ -151,6 +162,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     // power source as we rely on this
     // to make sure we dont both send and recieve to the same source
     powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
+
+    //Pay update
+    stored -= ENERGY_UPKEEP;
+    Math.max(stored, 0);
 
     powerHandler.setEnergy(stored);
 
