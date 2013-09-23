@@ -71,6 +71,18 @@
   <!-- <dumpRegistery oreDictionary="true" modObjects="true" /> -->
 
   <recipeGroup name="EnderIO">
+  
+    <recipe> <!-- Wheat -> Seeds + Wheat -->
+      <input>
+        <itemStack itemID="296" />
+      </input>
+      <output>
+        <itemStack itemID="295" number="2" />
+      </output>
+      <output>
+        <itemStack itemID="296" number="1" chance="0.15" />
+      </output>
+    </recipe>
 
     <recipe> <!-- Stone -> Cobblestone -->
       <input>
