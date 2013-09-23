@@ -177,7 +177,7 @@
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
       </output>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="1" chance="0.2" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="1" chance="0.05" />
       </output>
     </recipe>
 
