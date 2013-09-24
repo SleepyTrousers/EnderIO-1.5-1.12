@@ -199,7 +199,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
       // client/server connection
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
-      worldObj.updateTileEntityChunkAndDoNothing(xCoord, yCoord, zCoord, this);
+      onInventoryChanged();
     }
 
   }

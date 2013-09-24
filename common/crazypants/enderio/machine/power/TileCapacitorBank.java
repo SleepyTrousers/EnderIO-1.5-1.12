@@ -131,8 +131,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       // will be sent to the PacketHandler on the other end of
       // client/server connection
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      // And this will make sure our current tile entity state is saved
-      worldObj.updateTileEntityChunkAndDoNothing(xCoord, yCoord, zCoord, this);
+      onInventoryChanged();
     }
 
   }

@@ -412,7 +412,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
         stack.stackSize--;
       }
       world.markBlockForUpdate(x, y, z);
-      world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
+      bundle.getEntity().onInventoryChanged();
       return true;
 
     } else if(ConduitUtil.isConduitEquipped(player)) {
@@ -458,7 +458,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       // if its a connector pass the event on to all conduits
       for (IConduit con : bundle.getConduits()) {
         if(con.onBlockActivated(player, res)) {
-          world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
+          bundle.getEntity().onInventoryChanged();
           return true;
         }
 
@@ -475,7 +475,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     // Conduit specific actions
     if(bundle.getConduit(res.component.conduitType) != null && bundle.getConduit(res.component.conduitType).onBlockActivated(player,
         res)) {
-      world.updateTileEntityChunkAndDoNothing(x, y, z, bundle.getEntity());
+      bundle.getEntity().onInventoryChanged();
       return true;
     }
     return false;

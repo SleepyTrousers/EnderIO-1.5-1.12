@@ -43,7 +43,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   protected RedstoneControlMode redstoneControlMode;
 
-  protected boolean redstoneCheckPassed;    
+  protected boolean redstoneCheckPassed;
 
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition; // plus one for capacitor
@@ -61,35 +61,35 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   }
 
   public boolean isValidUpgrade(ItemStack itemstack) {
-    for(int i=slotDefinition.getMinUpgradeSlot(); i <= slotDefinition.getMaxUpgradeSlot(); i++) {
+    for (int i = slotDefinition.getMinUpgradeSlot(); i <= slotDefinition.getMaxUpgradeSlot(); i++) {
       if(isItemValidForSlot(i, itemstack)) {
         return true;
       }
     }
     return false;
   }
-  
+
   public boolean isValidInput(ItemStack itemstack) {
-    for(int i=slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if(isItemValidForSlot(i, itemstack)) {
         return true;
       }
     }
     return false;
   }
-  
+
   public boolean isValidOutput(ItemStack itemstack) {
-    for(int i=slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
+    for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
       if(isItemValidForSlot(i, itemstack)) {
         return true;
       }
     }
     return false;
   }
-  
+
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
-    if (slotDefinition.isUpgradeSlot(i)) {      
+    if(slotDefinition.isUpgradeSlot(i)) {
       return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
     }
     return isMachineItemValidForSlot(i, itemstack);
@@ -185,13 +185,13 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   @Override
   public void updateEntity() {
 
-    if (worldObj == null) { // sanity check
+    if(worldObj == null) { // sanity check
       return;
     }
 
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       // check if the block on the client needs to update its texture
-      if (isActive() != lastActive) {
+      if(isActive() != lastActive) {
         worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
       }
       lastActive = isActive();
@@ -199,34 +199,34 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
     } // else is server, do all logic only on the server
 
-    float stored = powerHandler.getEnergyStored();    
+    float stored = powerHandler.getEnergyStored();
     powerHandler.update();
     powerHandler.setEnergy(stored);
     storedEnergy = stored;
 
     boolean requiresClientSync = false;
-    if (forceClientUpdate) {
+    if(forceClientUpdate) {
       // First update, send state to client
       forceClientUpdate = false;
       requiresClientSync = true;
     }
-    
+
     boolean prevRedCheck = redstoneCheckPassed;
-    redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);    
-    requiresClientSync |= prevRedCheck != redstoneCheckPassed;    
-    
+    redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
+    requiresClientSync |= prevRedCheck != redstoneCheckPassed;
+
     requiresClientSync |= processTasks(redstoneCheckPassed);
-    
+
     requiresClientSync |= lastSyncPowerStored != powerHandler.getEnergyStored() && worldObj.getTotalWorldTime() % 16 == 0;
 
-    if (requiresClientSync) {
+    if(requiresClientSync) {
       lastSyncPowerStored = powerHandler.getEnergyStored();
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
-      worldObj.updateTileEntityChunkAndDoNothing(xCoord, yCoord, zCoord, this);
+      onInventoryChanged();
     }
 
   }
@@ -253,7 +253,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     powerHandler.setEnergy(storedEnergy);
     // For the client as provider is not saved to NBT
     this.storedEnergy = storedEnergy;
-    
+
     redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
 
     // read in the inventories contents
@@ -263,13 +263,13 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     for (int i = 0; i < itemList.tagCount(); i++) {
       NBTTagCompound itemStack = (NBTTagCompound) itemList.tagAt(i);
       byte slot = itemStack.getByte("Slot");
-      if (slot >= 0 && slot < inventory.length) {
+      if(slot >= 0 && slot < inventory.length) {
         inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
       }
     }
 
     int rsContr = nbtRoot.getInteger("redstoneControlMode");
-    if (rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
+    if(rsContr < 0 || rsContr >= RedstoneControlMode.values().length) {
       rsContr = 0;
     }
     redstoneControlMode = RedstoneControlMode.values()[rsContr];
@@ -287,7 +287,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     // write inventory list
     NBTTagList itemList = new NBTTagList();
     for (int i = 0; i < inventory.length; i++) {
-      if (inventory[i] != null) {
+      if(inventory[i] != null) {
         NBTTagCompound itemStackNBT = new NBTTagCompound();
         itemStackNBT.setByte("Slot", (byte) i);
         inventory[i].writeToNBT(itemStackNBT);
@@ -309,10 +309,10 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
-    if (worldObj == null) {
+    if(worldObj == null) {
       return true;
     }
-    if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+    if(worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
       return false;
     }
     return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
@@ -336,16 +336,16 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack fromStack = inventory[fromSlot];
-    if (fromStack == null) {
+    if(fromStack == null) {
       return null;
     }
-    if (fromStack.stackSize <= amount) {
+    if(fromStack.stackSize <= amount) {
       inventory[fromSlot] = null;
       updateCapacitorFromSlot();
       return fromStack;
     }
     ItemStack result = new ItemStack(fromStack.itemID, amount, fromStack.getItemDamage());
-    if (fromStack.stackTagCompound != null) {
+    if(fromStack.stackTagCompound != null) {
       result.stackTagCompound = (NBTTagCompound) fromStack.stackTagCompound.copy();
     }
     fromStack.stackSize -= amount;
@@ -354,24 +354,24 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public void setInventorySlotContents(int slot, ItemStack contents) {
-    if (contents == null) {
+    if(contents == null) {
       inventory[slot] = contents;
     } else {
       inventory[slot] = contents.copy();
     }
 
-    if (contents != null && contents.stackSize > getInventoryStackLimit()) {
+    if(contents != null && contents.stackSize > getInventoryStackLimit()) {
       contents.stackSize = getInventoryStackLimit();
     }
 
-    if (slotDefinition.isUpgradeSlot(slot)) {
+    if(slotDefinition.isUpgradeSlot(slot)) {
       updateCapacitorFromSlot();
     }
   }
 
   private void updateCapacitorFromSlot() {
     ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-    if (contents == null || contents.itemID != ModObject.itemBasicCapacitor.actualId) {
+    if(contents == null || contents.itemID != ModObject.itemBasicCapacitor.actualId) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);
