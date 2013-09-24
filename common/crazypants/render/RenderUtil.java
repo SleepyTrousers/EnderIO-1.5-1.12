@@ -44,9 +44,9 @@ public class RenderUtil {
 
   private static final FloatBuffer MATRIX_BUFFER = GLAllocation.createDirectFloatBuffer(16);
 
-  public static final ResourceLocation BLOCK_TEX = TextureMap.field_110575_b;
+  public static final ResourceLocation BLOCK_TEX = TextureMap.locationBlocksTexture;
 
-  public static final ResourceLocation ITEM_TEX = TextureMap.field_110576_c;
+  public static final ResourceLocation ITEM_TEX = TextureMap.locationItemsTexture;
 
   public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
 
@@ -77,27 +77,27 @@ public class RenderUtil {
   }
 
   public static void bindItemTexture(ItemStack stack) {
-    engine().func_110577_a(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
+    engine().bindTexture(stack.getItemSpriteNumber() == 0 ? BLOCK_TEX : ITEM_TEX);
   }
 
   public static void bindItemTexture() {
-    engine().func_110577_a(ITEM_TEX);
+    engine().bindTexture(ITEM_TEX);
   }
 
   public static void bindBlockTexture() {
-    engine().func_110577_a(BLOCK_TEX);
+    engine().bindTexture(BLOCK_TEX);
   }
 
   public static void bindGlintTexture() {
-    engine().func_110577_a(BLOCK_TEX);
+    engine().bindTexture(BLOCK_TEX);
   }
 
   public static void bindTexture(String string) {
-    engine().func_110577_a(new ResourceLocation(string));
+    engine().bindTexture(new ResourceLocation(string));
   }
 
   public static void bindTexture(ResourceLocation tex) {
-    engine().func_110577_a(tex);
+    engine().bindTexture(tex);
   }
 
   public static FontRenderer fontRenderer() {

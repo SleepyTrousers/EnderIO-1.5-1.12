@@ -63,7 +63,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
       entityPlayer.setCurrentItemOrArmor(0, enderFaceStack);
 
       if (world.isRemote) {
-        ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO Interface Selected");
+        ChatMessageComponent c = ChatMessageComponent.createFromText("EnderIO Interface Selected");
         entityPlayer.sendChatToPlayer(c);
       }
 
