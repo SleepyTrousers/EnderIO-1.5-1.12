@@ -110,7 +110,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
           int i2 = this.rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
-          fx.setParticleIcon(tex)setParticleIcon;
+          fx.setParticleIcon(tex);
           effectRenderer.addEffect(fx);
         }
       }
