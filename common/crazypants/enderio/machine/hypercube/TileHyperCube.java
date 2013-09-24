@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.hypercube;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -9,6 +10,10 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -22,7 +27,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
+public class TileHyperCube extends TileEntity implements IInternalPowerReceptor, IFluidHandler {
 
   private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
 
@@ -46,6 +51,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
+  private final List<NetworkFluidHandler> fluidHandlers = new ArrayList<NetworkFluidHandler>();
+  private boolean fluidHandlersDirty = true;
+
   private PowerHandler disabledPowerHandler;
 
   private Channel channel = null;
@@ -53,6 +61,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   private String owner;
 
   private boolean init = true;
+
+  private float milliBucketsTransfered = 0;
 
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
@@ -144,6 +154,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   public void onNeighborBlockChange() {
     receptorsDirty = true;
+    fluidHandlersDirty = true;
   }
 
   @Override
@@ -155,6 +166,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
       return;
     } // else is server, do all logic only on the server
 
+    updateFluidHandlers();
+
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update();
@@ -165,6 +178,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
     //Pay update
     stored -= ENERGY_UPKEEP;
+
+    //    if(milliBucketsTransfered > 0) {
+    //      System.out.println("TileHyperCube.updateEntity: Buckets sent=" + milliBucketsTransfered);
+    //    }
+
+    milliBucketsTransfered = 0;
+
     Math.max(stored, 0);
 
     powerHandler.setEnergy(stored);
@@ -310,6 +330,166 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   @Override
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    if(!powerInputEnabled) {
+      return 0;
+    }
+    FluidStack in = resource.copy();
+    int result = 0;
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if(h.node.powerOutputEnabled && h.handler.canFill(h.dirOp, in.getFluid())) {
+        int filled = h.handler.fill(h.dirOp, in, doFill);
+        in.amount -= filled;
+        result += filled;
+      }
+    }
+    if(doFill) {
+      milliBucketsTransfered += result;
+    }
+    return result;
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    if(!powerOutputEnabled || resource == null) {
+      return null;
+    }
+
+    FluidStack in = resource.copy();
+    FluidStack result = null;
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if(h.node.powerInputEnabled && h.handler.canDrain(h.dirOp, in.getFluid())) {
+        FluidStack res = h.handler.drain(h.dirOp, in, false);
+        if(res != null) {
+          if(result == null) {
+            result = res.copy();
+            if(doDrain) {
+              h.handler.drain(h.dirOp, in, true);
+            }
+
+          } else if(result.isFluidEqual(res)) {
+            result.amount += res.amount;
+            if(doDrain) {
+              h.handler.drain(h.dirOp, in, true);
+            }
+            in.amount -= res.amount;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, int maxDrainIn, boolean doDrain) {
+    if(!powerOutputEnabled) {
+      return null;
+    }
+    int maxDrain = maxDrainIn;
+    FluidStack result = null;
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if(h.node.powerInputEnabled) {
+        FluidStack res = h.handler.drain(h.dirOp, maxDrain, false);
+        if(res != null) {
+          if(result == null) {
+            result = res.copy();
+            if(doDrain) {
+              h.handler.drain(h.dirOp, maxDrain, true);
+            }
+            maxDrain -= res.amount;
+          } else if(result.isFluidEqual(res)) {
+            result.amount += res.amount;
+            if(doDrain) {
+              h.handler.drain(h.dirOp, maxDrain, true);
+            }
+            maxDrain -= res.amount;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public boolean canFill(ForgeDirection from, Fluid fluid) {
+    if(!powerInputEnabled) {
+      return false;
+    }
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if(h.node.powerOutputEnabled) {
+        if(h.handler.canFill(h.dirOp, fluid)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    if(!powerOutputEnabled) {
+      return false;
+    }
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if(h.node.powerInputEnabled) {
+        if(h.handler.canDrain(h.dirOp, fluid)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    List<FluidTankInfo> res = new ArrayList<FluidTankInfo>();
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      FluidTankInfo[] ti = h.handler.getTankInfo(h.dirOp);
+      if(ti != null) {
+        for (FluidTankInfo t : ti) {
+          if(t != null) {
+            res.add(t);
+          }
+        }
+      }
+    }
+    return res.toArray(new FluidTankInfo[res.size()]);
+  }
+
+  private List<NetworkFluidHandler> getNetworkHandlers() {
+
+    List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
+    if(cubes == null || cubes.isEmpty()) {
+      return Collections.emptyList();
+    }
+    List<NetworkFluidHandler> result = new ArrayList<NetworkFluidHandler>();
+    for (TileHyperCube cube : cubes) {
+      if(cube != this) {
+        result.addAll(cube.fluidHandlers);
+      }
+    }
+    return result;
+
+  }
+
+  private void updateFluidHandlers() {
+    if(!fluidHandlersDirty) {
+      return;
+    }
+    fluidHandlers.clear();
+    BlockCoord myLoc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord checkLoc = myLoc.getLocation(dir);
+      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      if(te instanceof IFluidHandler) {
+        IFluidHandler fh = (IFluidHandler) te;
+        fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
+      }
+    }
+    fluidHandlersDirty = false;
+  }
+
+  @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
@@ -353,10 +533,24 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     ForgeDirection fromDir;
 
     private Receptor(IPowerReceptor rec, ForgeDirection fromDir) {
-      super();
       this.receptor = rec;
       this.fromDir = fromDir;
     }
+  }
+
+  static class NetworkFluidHandler {
+    final TileHyperCube node;
+    final IFluidHandler handler;
+    final ForgeDirection dir;
+    final ForgeDirection dirOp;
+
+    private NetworkFluidHandler(TileHyperCube node, IFluidHandler handler, ForgeDirection dir) {
+      this.node = node;
+      this.handler = handler;
+      this.dir = dir;
+      dirOp = dir.getOpposite();
+    }
+
   }
 
 }
