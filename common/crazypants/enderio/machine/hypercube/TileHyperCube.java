@@ -33,6 +33,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private static final float ENERGY_UPKEEP = (float) Config.transceiverUpkeepCost;
 
+  private static final float MILLIBUCKET_TRANSMISSION_COST = (float) Config.transceiverBucketTransmissionCost / 1000F;
+
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
 
   private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
@@ -176,12 +178,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     // to make sure we dont both send and recieve to the same source
     powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
 
-    //Pay update
+    //Pay upkeep cost
     stored -= ENERGY_UPKEEP;
-
-    //    if(milliBucketsTransfered > 0) {
-    //      System.out.println("TileHyperCube.updateEntity: Buckets sent=" + milliBucketsTransfered);
-    //    }
+    //Pay fluid transmission cost
+    stored -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
 
     milliBucketsTransfered = 0;
 
