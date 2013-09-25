@@ -23,6 +23,8 @@ public final class Config {
 
   public static double transceiverUpkeepCost = 0.25;
 
+  public static double transceiverBucketTransmissionCost = 1;
+
   public static int transceiverMaxIO = 256;
 
   public static File configDirectory;
@@ -49,7 +51,8 @@ public final class Config {
         "Number of MJ/t required to a Dimensional Transceiver connection open").getDouble(transceiverUpkeepCost);
     transceiverMaxIO = config.get("Settings", "transceiverMaxIO", transceiverMaxIO,
         "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limites are no cumulative").getInt(transceiverMaxIO);
-
+    transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
+        "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
     configDirectory = event.getModConfigurationDirectory();
   }
 

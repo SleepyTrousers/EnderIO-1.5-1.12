@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.hypercube;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -8,10 +9,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.liquids.ILiquidTank;
+import net.minecraftforge.liquids.ITankContainer;
+import net.minecraftforge.liquids.LiquidStack;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.Config;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.EnderPowerProvider;
@@ -21,11 +27,13 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileHyperCube extends TileEntity implements IInternalPowerReceptor {
+public class TileHyperCube extends TileEntity implements IInternalPowerReceptor, ITankContainer {
 
   private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
 
   private static final float ENERGY_UPKEEP = (float) Config.transceiverUpkeepCost;
+
+  private static final float MILLIBUCKET_TRANSMISSION_COST = (float) Config.transceiverBucketTransmissionCost / 1000F;
 
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
 
@@ -45,6 +53,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
+  private final List<NetworkFluidHandler> fluidHandlers = new ArrayList<NetworkFluidHandler>();
+  private boolean fluidHandlersDirty = true;
+
   private EnderPowerProvider disabledPowerHandler;
 
   private Channel channel = null;
@@ -52,6 +63,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   private String owner;
 
   private boolean init = true;
+
+  private float milliBucketsTransfered = 0;
 
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor);
@@ -143,6 +156,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
 
   public void onNeighborBlockChange() {
     receptorsDirty = true;
+    fluidHandlersDirty = true;
   }
 
   @Override
@@ -154,12 +168,19 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
       return;
     } // else is server, do all logic only on the server
 
+    updateFluidHandlers();
+
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update(this);
 
-    // Pay update
+    // Pay upkeep cost
     stored -= ENERGY_UPKEEP;
+    // Pay fluid transmission cost
+    stored -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
+
+    milliBucketsTransfered = 0;
+
     Math.max(stored, 0);
 
     powerHandler.setEnergy(stored);
@@ -309,6 +330,138 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
   }
 
   @Override
+  public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
+    if (!powerInputEnabled) {
+      return 0;
+    }
+    LiquidStack in = resource.copy();
+    int result = 0;
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if (h.node.powerOutputEnabled) {
+        if (h.handler instanceof IConduitBundle) {
+          ILiquidConduit lc = ((IConduitBundle) h.handler).getConduit(ILiquidConduit.class);
+          if (lc != null) {
+            if (lc.getFluidType() == null || lc.getFluidType().isLiquidEqual(in)) {
+              int filled = h.handler.fill(h.dirOp, in, doFill);
+              in.amount -= filled;
+              result += filled;
+            }
+          }
+        } else {
+          int filled = h.handler.fill(h.dirOp, in, doFill);
+          in.amount -= filled;
+          result += filled;
+        }
+      }
+    }
+    if (doFill) {
+      milliBucketsTransfered += result;
+    }
+    return result;
+  }
+
+  @Override
+  public int fill(int tankIndex, LiquidStack resource, boolean doFill) {
+    return fill(ForgeDirection.UNKNOWN, resource, doFill);
+  }
+
+  @Override
+  public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    return drain(0, maxDrain, doDrain);
+  }
+
+  @Override
+  public LiquidStack drain(int tankIndex, int maxDrainIn, boolean doDrain) {
+    if (!powerOutputEnabled) {
+      return null;
+    }
+    int maxDrain = maxDrainIn;
+    LiquidStack result = null;
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      if (h.node.powerInputEnabled) {
+        LiquidStack res = h.handler.drain(h.dirOp, maxDrain, false);
+        if (res != null) {
+          if (result == null) {
+            result = res.copy();
+            if (doDrain) {
+              h.handler.drain(h.dirOp, maxDrain, true);
+            }
+            maxDrain -= res.amount;
+          } else if (result.isLiquidEqual(res)) {
+            result.amount += res.amount;
+            if (doDrain) {
+              h.handler.drain(h.dirOp, maxDrain, true);
+            }
+            maxDrain -= res.amount;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public ILiquidTank[] getTanks(ForgeDirection direction) {
+    List<ILiquidTank> res = new ArrayList<ILiquidTank>();
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      ILiquidTank[] ti = h.handler.getTanks(h.dirOp);
+      if (ti != null) {
+        for (ILiquidTank t : ti) {
+          if (t != null) {
+            res.add(t);
+          }
+        }
+      }
+    }
+    return res.toArray(new ILiquidTank[res.size()]);
+  }
+
+  @Override
+  public ILiquidTank getTank(ForgeDirection direction, LiquidStack type) {
+    List<ILiquidTank> res = new ArrayList<ILiquidTank>();
+    for (NetworkFluidHandler h : getNetworkHandlers()) {
+      ILiquidTank ti = h.handler.getTank(h.dirOp, type);
+      if (ti != null) {
+        return ti;
+      }
+    }
+    return null;
+  }
+
+  private List<NetworkFluidHandler> getNetworkHandlers() {
+
+    List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
+    if (cubes == null || cubes.isEmpty()) {
+      return Collections.emptyList();
+    }
+    List<NetworkFluidHandler> result = new ArrayList<NetworkFluidHandler>();
+    for (TileHyperCube cube : cubes) {
+      if (cube != this) {
+        result.addAll(cube.fluidHandlers);
+      }
+    }
+    return result;
+
+  }
+
+  private void updateFluidHandlers() {
+    if (!fluidHandlersDirty) {
+      return;
+    }
+    fluidHandlers.clear();
+    BlockCoord myLoc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord checkLoc = myLoc.getLocation(dir);
+      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      if (te instanceof ITankContainer) {
+        ITankContainer fh = (ITankContainer) te;
+        fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
+      }
+    }
+    fluidHandlersDirty = false;
+  }
+
+  @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
@@ -352,10 +505,24 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor 
     ForgeDirection fromDir;
 
     private Receptor(IPowerReceptor rec, ForgeDirection fromDir) {
-      super();
       this.receptor = rec;
       this.fromDir = fromDir;
     }
+  }
+
+  static class NetworkFluidHandler {
+    final TileHyperCube node;
+    final ITankContainer handler;
+    final ForgeDirection dir;
+    final ForgeDirection dirOp;
+
+    private NetworkFluidHandler(TileHyperCube node, ITankContainer handler, ForgeDirection dir) {
+      this.node = node;
+      this.handler = handler;
+      this.dir = dir;
+      dirOp = dir.getOpposite();
+    }
+
   }
 
 }
