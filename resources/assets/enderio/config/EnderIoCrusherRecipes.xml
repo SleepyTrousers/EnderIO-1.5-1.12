@@ -349,7 +349,29 @@
             <itemStack oreDictionary="dustObsidian" number="2" chance="0.01" />
       </output>
     </recipe>
-    
+	
+	<recipe energyCost="240"> <!-- Charcoal -> Charcoal Dust -->
+      <input>
+            <itemStack itemID="263" itemMeta="1" />
+      </input>	
+	  <output>
+            <itemStack oreDictionary="dustCharcoal" number="1"/>
+      </output>	
+	</recipe>
+
+  </recipeGroup>
+  
+  <recipeGroup name="Traincraft">
+  
+    <recipe energyCost="240"> <!-- 4 Coal -> 1 Coal Dust -->
+      <input>
+            <itemStack itemID="263" itemMeta="0" />
+      </input>
+      <output>
+            <itemStack oreDictionary="dustCoal" number="1" chance="0.25"/>
+      </output>
+    </recipe>
+	
   </recipeGroup>
   
   <recipeGroup name="Biomes O Plenty">
