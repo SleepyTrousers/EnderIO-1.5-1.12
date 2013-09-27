@@ -147,6 +147,14 @@
       </output>
     </recipe>
 
+    <recipe> <!-- Wheat -> Seeds -->
+      <input>
+        <itemStack itemID="296" />
+      </input>
+      <output>
+        <itemStack itemID="295" number="2" />
+      </output>
+   </recipe>
 
     <recipe> <!-- Coal Ore-> coal powder -->
       <input>
@@ -177,7 +185,7 @@
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
       </output>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="1" chance="0.2" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="1" chance="0.05" />
       </output>
     </recipe>
 
