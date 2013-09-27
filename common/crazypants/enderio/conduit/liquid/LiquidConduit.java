@@ -49,8 +49,10 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       @Override
       public void registerIcons(IconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
+        ICONS.put(ICON_EMPTY_KEY, register.registerIcon(ICON_EMPTY_KEY));
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
+        ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerIcon(ICON_EMPTY_EXTRACT_KEY));
       }
 
       @Override
@@ -287,6 +289,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       liquidType = liquidType.copy();
     }
     tank.setLiquid(liquidType);
+    stateDirty = true;
   }
 
   @Override
@@ -447,6 +450,10 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     super.writeToNBT(nbtRoot);
     if(tank.containsValidLiquid()) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
+    } else if(getFluidType() != null) {
+      FluidStack ft = getFluidType().copy();
+      ft.amount = 0;
+      nbtRoot.setTag("tank", ft.writeToNBT(new NBTTagCompound()));
     }
   }
 
@@ -543,7 +550,10 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       return ICONS.get(ICON_CORE_KEY);
     }
     if(isExtractingFromDir(component.dir)) {
-      return ICONS.get(ICON_EXTRACT_KEY);
+      return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
+    }
+    if(getFluidType() == null) {
+      return ICONS.get(ICON_EMPTY_KEY);
     }
     return ICONS.get(ICON_KEY);
   }
