@@ -54,7 +54,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         tex = conduit.getTextureForState(component);
         if(tex != null) {
           tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
-          renderConduit(tex, component);
+          renderConduit(tex, conduit, component, selfIllum);
         }
       }
 
@@ -62,7 +62,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   }
 
-  protected void renderConduit(Icon tex, CollidableComponent component) {
+  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
     if (isNSEWUP(component.dir)) {
       RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
     } else {
