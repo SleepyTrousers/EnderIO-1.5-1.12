@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -34,7 +35,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0));
-    configurePowerHandler();       
+    configurePowerHandler();
   }
 
   @Override
@@ -42,9 +43,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     super.setCapacitor(capacitorType);
     configurePowerHandler();
   }
-  
+
   void configurePowerHandler() {
-    powerHandler.configure(0,0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());    
+    powerHandler.configure(0, 0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
   }
 
   @Override
@@ -128,7 +129,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
         burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
         if (burnTime > 0) {
           totalBurnTime = burnTime;
-          decrStackSize(0, 1);
+          if (inventory[0].itemID == Item.bucketLava.itemID) {
+            inventory[0] = new ItemStack(Item.bucketEmpty);
+          } else {
+            decrStackSize(0, 1);
+          }
         }
         needsUpdate = true;
       }
@@ -137,8 +142,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return needsUpdate;
   }
 
-  
-  
   @Override
   public int powerRequest(ForgeDirection from) {
     return 0;
