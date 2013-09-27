@@ -11,8 +11,10 @@ public interface ILiquidConduit extends IConduit, IFluidHandler {
   static final int VOLUME_PER_CONNECTION = FluidContainerRegistry.BUCKET_VOLUME / 4;
 
   public static final String ICON_KEY = "enderio:liquidConduit";
+  public static final String ICON_EMPTY_KEY = "enderio:emptyLiquidConduit";
   public static final String ICON_CORE_KEY = "enderio:liquidConduitCore";
   public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitExtract";
+  public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:emptyLiquidConduitExtract";
 
   void setFluidType(FluidStack fluidType);
 

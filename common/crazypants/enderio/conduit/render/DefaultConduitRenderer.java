@@ -41,20 +41,20 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     Icon tex;
     boolean active = conduit.isActive();
     for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
+      if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if (active && isNSEWUP(component.dir) &&
+        if(active && isNSEWUP(component.dir) &&
             conduit.getTransmitionTextureForState(component) != null) {
           tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f,
               selfIllum + 0.1f, 0.75f);
           tex = conduit.getTransmitionTextureForState(component);
-          renderTransmission(tex, component);
+          renderTransmission(tex, component, selfIllum);
         }
 
         tex = conduit.getTextureForState(component);
         if(tex != null) {
           tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
-          renderConduit(tex, component);
+          renderConduit(tex, conduit, component, selfIllum);
         }
       }
 
@@ -62,15 +62,15 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   }
 
-  protected void renderConduit(Icon tex, CollidableComponent component) {
-    if (isNSEWUP(component.dir)) {
+  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
+    if(isNSEWUP(component.dir)) {
       RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
     } else {
       drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
     }
   }
 
-  protected void renderTransmission(Icon tex, CollidableComponent component) {
+  protected void renderTransmission(Icon tex, CollidableComponent component, float selfIllum) {
     RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
   }
 
@@ -88,12 +88,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     Tessellator tessellator = Tessellator.instance;
 
-    if (isTransmission) {
+    if(isTransmission) {
       setVerticesForTransmission(bound, dir);
     }
 
-    if (dir == NORTH || dir == UP || dir == EAST) { // maintain consistent
-                                                    // texture
+    if(dir == NORTH || dir == UP || dir == EAST) { // maintain consistent
+                                                   // texture
       // dir relative to the cneter
       // of the conduit
       float tmp = minU;
@@ -104,9 +104,9 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     boolean rotateSides = dir == UP || dir == DOWN;
     boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
 
-    if (dir != NORTH && dir != SOUTH) {
+    if(dir != NORTH && dir != SOUTH) {
       tessellator.setNormal(0, 0, -1);
-      if (rotateSides) {
+      if(rotateSides) {
         addVecWithUV(verts[1], maxU, maxV);
         addVecWithUV(verts[0], maxU, minV);
         addVecWithUV(verts[3], minU, minV);
@@ -117,13 +117,13 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[3], maxU, maxV);
         addVecWithUV(verts[2], minU, maxV);
       }
-      if (dir == WEST || dir == EAST) {
+      if(dir == WEST || dir == EAST) {
         float tmp = minU;
         minU = maxU;
         maxU = tmp;
       }
       tessellator.setNormal(0, 0, 1);
-      if (rotateSides) {
+      if(rotateSides) {
         addVecWithUV(verts[4], maxU, maxV);
         addVecWithUV(verts[5], maxU, minV);
         addVecWithUV(verts[6], minU, minV);
@@ -134,17 +134,17 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[6], maxU, maxV);
         addVecWithUV(verts[7], minU, maxV);
       }
-      if (dir == WEST || dir == EAST) {
+      if(dir == WEST || dir == EAST) {
         float tmp = minU;
         minU = maxU;
         maxU = tmp;
       }
     }
 
-    if (dir != UP && dir != DOWN) {
+    if(dir != UP && dir != DOWN) {
 
       tessellator.setNormal(0, 1, 0);
-      if (rotateTopBottom) {
+      if(rotateTopBottom) {
         addVecWithUV(verts[6], maxU, maxV);
         addVecWithUV(verts[2], minU, maxV);
         addVecWithUV(verts[3], minU, minV);
@@ -157,7 +157,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
       tessellator.setNormal(0, -1, 0);
-      if (rotateTopBottom) {
+      if(rotateTopBottom) {
         addVecWithUV(verts[0], minU, minV);
         addVecWithUV(verts[1], minU, maxV);
         addVecWithUV(verts[5], maxU, maxV);
@@ -170,7 +170,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
     }
 
-    if (dir != EAST && dir != WEST) {
+    if(dir != EAST && dir != WEST) {
 
       // if(id == NORTH) {
       // float tmp = minU;
@@ -179,7 +179,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       // }
 
       tessellator.setNormal(1, 0, 0);
-      if (rotateSides) {
+      if(rotateSides) {
         addVecWithUV(verts[2], minU, maxV);
         addVecWithUV(verts[6], minU, minV);
         addVecWithUV(verts[5], maxU, minV);
@@ -192,7 +192,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
       tessellator.setNormal(-1, 0, 0);
-      if (rotateSides) {
+      if(rotateSides) {
         addVecWithUV(verts[0], maxU, maxV);
         addVecWithUV(verts[4], maxU, minV);
         addVecWithUV(verts[7], minU, minV);
@@ -222,10 +222,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     float height = bb.maxY - bb.minY;
     float depth = bb.maxZ - bb.minZ;
 
-    if (width > 0 && height > 0 && depth > 0) {
-      if (width / depth > 1.5f || depth / width > 1.5f) {
+    if(width > 0 && height > 0 && depth > 0) {
+      if(width / depth > 1.5f || depth / width > 1.5f) {
         // split horizontally
-        if (width > depth) {
+        if(width > depth) {
           int numSplits = Math.round(width / depth);
           float newWidth = width / numSplits;
           BoundingBox[] result = new BoundingBox[numSplits];
@@ -252,7 +252,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
         }
 
-      } else if (height / width > 1.5) {
+      } else if(height / width > 1.5) {
 
         int numSplits = Math.round(height / width);
         float newWidth = height / numSplits;
