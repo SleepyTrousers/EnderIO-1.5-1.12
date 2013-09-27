@@ -67,110 +67,13 @@
 -->
 
 <SAGMillRecipes>
-
-  <!-- <dumpRegistery oreDictionary="true" modObjects="true" /> -->
-
-  <recipeGroup name="EnderIO"> <!--  Required for EnderIO to function correctly.  -->
   
-     <!-- Sand to Silicon -->
-    <recipe energyCost="720">
-      <input>
-        <itemStack itemID="12" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" />
-      </output>
-    </recipe>
-    
-    <!-- Coal Ore -->
-    <recipe>
-      <input>
-        <itemStack itemID="16" />
-      </input>
-      <output>
-        <itemStack itemID="263" number="3" />
-      </output>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="1" chance="0.6" />
-      </output>
-      <output>
-        <itemStack itemID="4" chance="0.15" />
-      </output>
-      <output>
-        <itemStack itemID="264" chance="0.001" />
-      </output>
-    </recipe>
-
-    <!-- Coal -->
-    <recipe energyCost="240">
-      <input>
-        <itemStack itemID="263" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" />
-      </output>
-    </recipe>
-
-    <!-- Iron Ore -->
-    <recipe>
-      <input>
-        <itemStack itemID="15" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
-      </output>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="1" chance="0.05" />
-      </output>
-      <output>
-        <itemStack oreDictionary="dustNickel" number="1" chance="0.2" />
-      </output>
-      <output>
-        <itemStack itemID="4" chance="0.15" />
-      </output>
-    </recipe>
-
-    <!-- Iron Ingot -->
-    <recipe energyCost="240">
-      <input>
-        <itemStack itemID="265" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" />
-      </output>
-    </recipe>
-
-    <!-- Gold Ore -->
-    <recipe>
-      <input>
-        <itemStack itemID="14" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="2" />
-      </output>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" number="1" chance="0.2" />
-      </output>
-      <output>
-        <itemStack itemID="4" chance="0.15" />
-      </output>
-    </recipe>
-
-    <!-- Gold Ingot -->
-    <recipe>
-      <input>
-        <itemStack itemID="266" />
-      </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" />
-      </output>
-    </recipe>
-    
-  </recipeGroup>
+  <!-- <dumpRegistery oreDictionary="true" modObjects="true" /> -->
 
   <recipeGroup name="Vanilla">
 
-    <recipe> <!-- Stone -> Cobblestone -->
+    <!-- Stone -->
+    <recipe>
       <input>
         <itemStack itemID="1" />
       </input>
@@ -179,12 +82,23 @@
       </output>
     </recipe>
 
-    <recipe> <!-- Cobblestone -> Sand -->
+    <!-- Cobblestone -->
+    <recipe>
       <input>
         <itemStack itemID="4" />
       </input>
       <output>
         <itemStack itemID="12" />
+      </output>
+    </recipe>
+
+    <!-- Sand -->
+    <recipe energyCost="720">
+      <input>
+        <itemStack itemID="12" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" />
       </output>
     </recipe>
 
@@ -194,14 +108,15 @@
         <itemStack itemID="24" />
       </input>
       <output>
-        <itemStack itemID="12" number="2" />
+        <itemStack itemID="12" number="2"/>
       </output>
       <output>
-        <itemStack itemID="12" number="2" chance="0.4" />
+        <itemStack itemID="12" number="2" chance="0.4"/>
       </output>
     </recipe>
 
-    <recipe> <!-- Glass -> Sand -->
+    <!-- Glass -->
+    <recipe>
       <input>
         <itemStack itemID="20" />
       </input>
@@ -220,11 +135,12 @@
         <itemStack itemID="318" />
       </output>
       <output>
-        <itemStack itemID="318" chance="0.1" />
+        <itemStack itemID="318" chance="0.1"/>
       </output>
     </recipe>
 
-    <recipe energyCost="240"> <!-- Blaze Rod -> Blaze Powder -->
+    <!-- Blaze Rod -->
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="369" />
       </input>
@@ -236,19 +152,18 @@
       </output>
     </recipe>
 
-    <recipe energyCost="240"> <!-- Glow Stont -> dust -->
+    <!-- Glowstone -->
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="89" />
       </input>
       <output>
-        <itemStack itemID="348" number="3" />
-      </output>
-      <output>
-        <itemStack itemID="348" number="1" chance="0.8" />
+        <itemStack itemID="348" number="4" />
       </output>
     </recipe>
 
-    <recipe energyCost="240"> <!-- Bone -> bone meal -->
+    <!-- Bone -->
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="352" />
       </input>
@@ -283,16 +198,104 @@
       </output>
     </recipe>
 
-    <recipe> <!-- Wheat -> Seeds -->
+    <!-- Wheat -->
+    <recipe> 
       <input>
         <itemStack itemID="296" />
       </input>
       <output>
         <itemStack itemID="295" number="2" />
       </output>
+   </recipe>
+  </recipeGroup>
+
+  <recipeGroup name="Common Ores/Ingots">
+
+    <!-- Coal Ore -->
+    <recipe>
+      <input>
+        <itemStack itemID="16" />
+      </input>
+      <output>
+        <itemStack itemID="263" number="3" />
+      </output>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="1" chance="0.5" />
+      </output>
+      <output>
+        <itemStack itemID="4" chance="0.15" />
+      </output>
+      <output>
+        <itemStack itemID="264" chance="0.001" />
+      </output>
     </recipe>
-    
-     <!-- Redstone Ore -->
+
+    <!-- Coal -->
+    <recipe energyCost="240">
+      <input>
+        <itemStack itemID="263" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" />
+      </output>
+    </recipe>
+
+    <!-- Iron Ore -->
+    <recipe>
+      <input>
+        <itemStack itemID="15" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
+      </output>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="1" chance="0.05" />
+      </output>
+      <output>
+        <itemStack oreDictionary="dustNickel" number="1" chance="0.08" />
+      </output>
+      <output>
+        <itemStack itemID="4" chance="0.15" />
+      </output>
+    </recipe>
+
+    <!-- Iron Ingot -->
+    <recipe energyCost="240">
+      <input>
+        <itemStack itemID="265" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" />
+      </output>
+    </recipe>
+
+    <!-- Gold Ore -->
+    <recipe>
+      <input>
+        <itemStack itemID="14" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="2" />
+      </output>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" number="1" chance="0.2"/>
+      </output>
+      <output>
+        <itemStack itemID="4" chance="0.15" />
+      </output>
+    </recipe>
+
+    <!-- Gold Ingot -->
+    <recipe>
+      <input>
+        <itemStack itemID="266" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" />
+      </output>
+    </recipe>
+
+    <!-- Redstone Ore -->
     <recipe energyCost="300">
       <input>
         <itemStack itemID="73" />
@@ -300,18 +303,18 @@
       <output>
         <itemStack itemID="331" number="8" />
       </output>
-      <output>
+       <output>
         <itemStack itemID="331" number="1" chance="0.2" />
       </output>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" chance="0.8" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" chance="0.8"/>
       </output>
       <output>
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
 
-    <!-- Lapis Lazuli Ore -->
+    <!-- Lapis Lazuli Ore  -->
     <recipe energyCost="300">
       <input>
         <itemStack itemID="21" />
@@ -326,10 +329,6 @@
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
-
-  </recipeGroup>
-
-  <recipeGroup name="Common Ores/Ingots">
 
     <!-- Copper Ore -->
     <recipe>
@@ -407,7 +406,7 @@
     </recipe>
 
     <!-- Silver Ore -->
-    <recipe>
+    <recipe >
       <input>
         <itemStack oreDictionary="oreSilver" />
       </input>
@@ -420,7 +419,7 @@
     </recipe>
 
     <!-- Silver Ingot -->
-    <recipe energyCost="240">
+    <recipe energyCost="240"> 
       <input>
         <itemStack oreDictionary="ingotSilver" />
       </input>
@@ -430,7 +429,7 @@
     </recipe>
 
     <!-- Bronze Ingot -->
-    <recipe energyCost="240">
+    <recipe energyCost="240"> 
       <input>
         <itemStack oreDictionary="ingotBronze" />
       </input>
@@ -448,12 +447,12 @@
         <itemStack oreDictionary="logWood" />
       </input>
       <output>
-        <itemStack oreDictionary="pulpWood" number="1" />
+        <itemStack oreDictionary="pulpWood" number="1"/>
       </output>
       <output>
         <itemStack oreDictionary="pulpWood" number="1" chance="0.9" />
       </output>
-      <output>
+       <output>
         <itemStack oreDictionary="pulpWood" number="1" chance="0.5" />
       </output>
       <output>
@@ -500,21 +499,21 @@
     <!-- Nether Quartz Ore -->
     <recipe>
       <input>
-        <itemStack itemID="153" />
+        <itemStack itemID="153"/>
       </input>
       <output>
-        <itemStack itemID="406" number="2" />
+        <itemStack itemID="406" number="2"/>
       </output>
-      <output>
+       <output>
         <itemStack oreDictionary="dustNetherQuartz" />
       </output>
-      <output>
-        <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />
+       <output>
+        <itemStack oreDictionary="dustCertusQuartz" chance="0.05"/>
       </output>
     </recipe>
 
     <!-- Nether Quartz -->
-    <recipe energyCost="240">
+    <recipe energyCost="240"> 
       <input>
         <itemStack itemID="406" />
       </input>
@@ -523,10 +522,10 @@
       </output>
     </recipe>
   </recipeGroup>
-
+  
   <recipeGroup name="Railcraft">
 
-    <!-- Obsidian -> Crushed Obsidian + Dust -->
+    <!-- Obsidian -->
     <recipe energyCost="480">
       <input>
         <itemStack itemID="49" />
@@ -542,7 +541,7 @@
       </output>
     </recipe>
 
-    <!-- Crushed Obsidian -> Obsidian Dust -->
+    <!-- Crushed Obsidian -->
     <recipe energyCost="240">
       <input>
         <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" />
@@ -554,8 +553,19 @@
         <itemStack oreDictionary="dustObsidian" number="1" chance="0.01" />
       </output>
     </recipe>
+
+    <!-- Charcoal -->
+    <recipe energyCost="240"> 
+      <input>
+        <itemStack itemID="263" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustCharcoal" number="1"/>
+      </output>  
+      </recipe>
   </recipeGroup>
 
+  
   <recipeGroup name="Biomes O' Plenty">
 
     <!-- Small Bone Segment -> Bone Meal -->
