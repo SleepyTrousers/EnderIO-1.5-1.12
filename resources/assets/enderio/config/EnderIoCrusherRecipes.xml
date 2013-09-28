@@ -583,6 +583,19 @@
       </recipe>
   </recipeGroup>
 
+    <!-- Sand -> Saltpeter Dust -->
+    <recipe energyCost="240"> 
+      <input>
+        <itemStack itemID="12" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSaltpeter" number="1" chance="0.25" />
+      </output>  
+    </recipe>
+  </recipeGroup>
+  
+  
+
   
   <recipeGroup name="Biomes O' Plenty">
 
