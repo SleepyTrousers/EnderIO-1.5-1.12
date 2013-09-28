@@ -494,6 +494,24 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.1" />
       </output>
     </recipe>
+    
+    <recipe energyCost="240">
+      <input>
+        <itemStack oreDictionary="woodLog" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1"/>
+      </output>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.9" />
+      </output>
+       <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.5" />
+      </output>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.1" />
+      </output>
+    </recipe>
 
     <!-- Plank -> Wood Pulp -->
     <recipe energyCost="120">
@@ -504,6 +522,37 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.9" />
       </output>
     </recipe>
+   
+    <!-- Stairs #1 -> Wood Pulp -->
+    <recipe energyCost="120">
+      <input>
+        <itemStack oreDictionary="stairsWood" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.8" />
+      </output>
+    </recipe>
+    
+    <!-- Stairs #1 -> Wood Pulp -->
+    <recipe energyCost="120">
+      <input>
+        <itemStack oreDictionary="stairWood" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.8" />
+      </output>
+    </recipe>
+    
+    <!-- Slab -> Wood Pulp -->
+    <recipe energyCost="120">
+      <input>
+        <itemStack oreDictionary="slabWood" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.7" />
+      </output>
+    </recipe>
+    
     
     <!-- Stick -> Wood Pulp -->
     <recipe energyCost="80">
@@ -516,7 +565,6 @@
     </recipe>	
   </recipeGroup>
 
-  
 
   <recipeGroup name="Applied Energistics">
 
