@@ -7,15 +7,15 @@ public enum Capacitors {
 
   BASIC_CAPACITOR(
       new BasicCapacitor(20, 10000, 2),
-      "Capacitor", "basicCapacitor"),
+      "Basic Capacitor", "basicCapacitor"),
 
   ACTIVATED_CAPACITOR(
       new BasicCapacitor(40, 20000, 6),
-      "D-L Capacitor", "activatedCapacitor"),
+      "Double-Layer Capacitor", "activatedCapacitor"),
 
   ENDER_CAPACITOR(
       new BasicCapacitor(100, 100000, 10),
-      "Hybrid Capacitor", "enderCapacitor");
+      "Octadic Capacitor", "enderCapacitor");
 
   public final ICapacitor capacitor;
   public final String unlocalisedName;
