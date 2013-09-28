@@ -100,6 +100,9 @@
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" />
       </output>
+	  <output>
+        <itemStack oreDictionary="dustSaltpeter" number="1" chance="0.25" />
+      </output> 
     </recipe>
 
     <!-- Sandstone -->
@@ -136,6 +139,32 @@
       </output>
       <output>
         <itemStack itemID="318" chance="0.1"/>
+      </output>
+    </recipe>
+    
+    <!-- Stone Bricks -->
+    <recipe> <!-- Stone Brick -> 4 Cobblestone -->
+      <input>
+        <itemStack itemID="98" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack itemID="4" number ="4" />
+      </output>
+    </recipe>
+    <recipe> <!-- Cracked Stone Brick -> 2 Cobblestone -->
+      <input>
+        <itemStack itemID="98" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack itemID="4" number ="2" />
+      </output>
+    </recipe>
+    <recipe> <!-- Chiseled Stone Brick -> 4 Cobblestone -->
+      <input>
+        <itemStack itemID="98" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack itemID="4" number ="4" />
       </output>
     </recipe>
 
@@ -476,7 +505,7 @@
       </output>
     </recipe>
     
-	<!-- Stick -> Wood Pulp -->
+    <!-- Stick -> Wood Pulp -->
     <recipe>
       <input>
         <itemStack oreDictionary="stickWood" />
@@ -581,19 +610,8 @@
         <itemStack oreDictionary="dustCharcoal" number="1"/>
       </output>  
       </recipe>
-	  
-	<!-- Sand -> Saltpeter Dust -->
-    <recipe energyCost="240"> 
-      <input>
-        <itemStack itemID="12" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustSaltpeter" number="1" chance="0.25" />
-      </output>  
-    </recipe>
-	 
   </recipeGroup>
-  
+ 
   <recipeGroup name="Biomes O' Plenty">
 
     <!-- Small Bone Segment -> Bone Meal -->
