@@ -63,6 +63,12 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   private void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
     //TODO: Should cache these vertices as relatively heavy weight to calc each frame
     Icon texture = fluid.getFluid().getStillIcon();
+    if(texture == null) {
+      texture = fluid.getFluid().getIcon();
+      if(texture == null) {
+        return;
+      }
+    }
     BoundingBox bbb = component.bound;
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       if(face != component.dir && face != component.dir.getOpposite()) {
