@@ -1,7 +1,6 @@
 package crazypants.enderio.material;
 
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.ModObject.itemIndustrialBinder;
 
 import java.util.ArrayList;
 
@@ -10,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
@@ -21,6 +21,8 @@ import crazypants.enderio.machine.alloy.VanillaSmeltingRecipe;
 public class MaterialRecipes {
 
   public static void registerOresInDictionary() {
+    //Ore Dictionary Registeration
+    OreDictionary.registerOre("dustCoal", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COAL.ordinal()));
     OreDictionary.registerOre("dustIron", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_IRON.ordinal()));
     OreDictionary.registerOre("dustGold", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_GOLD.ordinal()));
     OreDictionary.registerOre("dustCopper", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COPPER.ordinal()));
@@ -29,45 +31,37 @@ public class MaterialRecipes {
 
   public static void addRecipes() {
 
-    ItemStack industialBinder;
-    if (Config.useAlternateBinderRecipe) {
-      industialBinder = new ItemStack(itemIndustrialBinder.actualId, 8, 0);
-      GameRegistry.addShapedRecipe(industialBinder, "   ", "gg ", "gg ", 'g', Block.gravel);
-      GameRegistry.addShapedRecipe(industialBinder, "   ", " gg", " gg", 'g', Block.gravel);
-    } else {
-      industialBinder = new ItemStack(itemIndustrialBinder.actualId, 4, 0);
-      GameRegistry.addSmelting(Block.gravel.blockID, industialBinder, 0);
-    }
-    ItemStack redstoneInductor = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.REDSTONE_INDUCTOR.ordinal());
+    //Common Ingredients
+    ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 6, Material.CONDUIT_BINDER.ordinal());
     ItemStack basicGear = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal());
-    ItemStack IndustrialBinder = new ItemStack(ModObject.itemIndustrialBinder.actualId, 1, 0);
-    ItemStack basicCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
+    ItemStack industrialBinder = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.CONDUIT_BINDER.ordinal());
     ItemStack wrench = new ItemStack(ModObject.itemYetaWrench.actualId, 1, 0);
-    ItemStack blueSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.BLUE_STEEL.ordinal());
-    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 2);
     ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);
     ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
     ItemStack mJReader = new ItemStack(ModObject.itemMJReader.actualId, 1, 0);
+    ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
+    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
+    ItemStack enderiron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
+    ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
 
-    // Basic Capacitor
-    GameRegistry.addShapedRecipe(basicCapacitor, "   ", "rpr", "   ", 'r', redstoneInductor, 'p', Item.paper);
-
-    // Activated Capacitor
-    GameRegistry.addShapedRecipe(activatedCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g', new ItemStack(ModObject.itemAlloy.actualId, 1,
-        Alloy.ACTIVATED_GOLD.ordinal()), 'i',
-        new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ACTIVATED_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+    //Conduit Binder
+    if(Config.useAlternateBinderRecipe) {
+      ItemStack cb = conduitBinder.copy();
+      cb.stackSize = 4;
+      GameRegistry.addShapedRecipe(cb, "gg ", "gg ", "   ", 'g', Block.gravel);
+    } else {
+      GameRegistry.addSmelting(Block.gravel.blockID, conduitBinder, 0);
+    }
 
     // Ender Capacitor
-    GameRegistry.addShapedRecipe(enderCapacitor, "   ", "gwi", "RbR", 'b', blueSteel, 'g',
-        new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENDER_GOLD.ordinal()), 'i',
-        new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENDER_IRON.ordinal()), 'R', new ItemStack(Item.redstoneRepeater), 'w', Block.cloth);
+    GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', enderiron, 'c', activatedCapacitor, 'g', Block.glowStone);
 
     int meta = 0;
     for (Alloy alloy : Alloy.values()) {
       ItemStack ingot = new ItemStack(ModObject.itemAlloy.actualId, 1, meta);
       IMachineRecipe recipe = new BasicAlloyRecipe(ingot, alloy.unlocalisedName, alloy.ingrediants);
-      if (ItemAlloy.useNuggets) {
+      if(ItemAlloy.useNuggets) {
         ItemStack nugget = new ItemStack(ModObject.itemAlloy.actualId, 9, meta + Alloy.values().length);
         GameRegistry.addShapelessRecipe(nugget, ingot);
         nugget = nugget.copy();
@@ -84,39 +78,44 @@ public class MaterialRecipes {
     FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_IRON.ordinal(), new ItemStack(Item.ingotIron), 0);
     FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_GOLD.ordinal(), new ItemStack(Item.ingotGold), 0);
 
-    // Industrial Binder - will be removed!
-    GameRegistry.addShapedRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', industialBinder, 's', new ItemStack(Item.stick));
+    // Fused Quartz Frame
+    GameRegistry.addShapedRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', new ItemStack(Item.stick));
 
     // Wrench
-    GameRegistry.addShapedRecipe(wrench, "i i", " b ", " i ", 'b', industialBinder, 'i', new ItemStack(Item.ingotIron));
+    GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
 
     // Machine Chassi
-    GameRegistry.addShapedRecipe(machineChassi, "fff", "iri", "fff", 'f', Block.fenceIron, 'i', Item.ingotIron, 'r', redstoneInductor);
-
-    // Redstone Inductor
-    GameRegistry.addShapedRecipe(redstoneInductor, "grg", "gig", "grg", 'r', Item.redstone, 'g', Item.goldNugget, 'i', Item.ingotIron);
+    GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Block.fenceIron, 'i', Item.ingotIron);
 
     // Basic Gear
     GameRegistry.addShapedRecipe(basicGear, "scs", "c c", "scs", 's', Item.stick, 'c', Block.cobblestone);
 
-    // MJ Reader
-    // GameRegistry.addShapedRecipe(mJReader, "r r", "rir", "gxg", 'r',
-    // Item.redstone, 'i', Item.ingotIron, 'g', basicGear, 'x',
-    // redstoneInductor);
-    // TO-DO: Sort this class!
   }
 
   public static void addOreDictionaryRecipes() {
     int oreId = OreDictionary.getOreID("ingotCopper");
     ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
-    if (!ingots.isEmpty()) {
+    if(!ingots.isEmpty()) {
       FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_COPPER.ordinal(), ingots.get(0), 0);
     }
     oreId = OreDictionary.getOreID("ingotTin");
     ingots = OreDictionary.getOres(oreId);
-    if (!ingots.isEmpty()) {
+    if(!ingots.isEmpty()) {
       FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_TIN.ordinal(), ingots.get(0), 0);
     }
-  }
 
+    ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
+    ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
+    if(copperIngots != null && !copperIngots.isEmpty()) {
+
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitor, " gr", "gcg", "rg ", 'r', Item.redstone, 'g', Item.goldNugget, 'c', "ingotCopper"));
+    } else {
+      GameRegistry.
+          addShapedRecipe(capacitor, " gr", "gig", "rg ", 'r', Item.redstone, 'g', Item.goldNugget, 'i', Item.ingotIron);
+    }
+    int dustCoal = OreDictionary.getOreID("dustCoal");
+    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
+    ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, " e ", "cCc", " e ", 'e', electricalSteel, 'c', capacitor, 'C', "dustCoal"));
+  }
 }

@@ -1,18 +1,18 @@
 package crazypants.enderio.material;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-//public static final String[] alloyNames = new String[] {"Activated Iron", "Activated Gold", "Ender Iron", "Ender Gold"};
+import crazypants.enderio.ModObject;
 
 public enum Alloy {
 
-  ACTIVATED_IRON("Activated Iron", "activatedIron", new ItemStack(Item.ingotIron), new ItemStack(Item.redstone), new ItemStack(Item.lightStoneDust)),
-  ACTIVATED_GOLD("Activated Gold", "activatedGold", new ItemStack(Item.ingotGold), new ItemStack(Item.redstone), new ItemStack(Item.lightStoneDust)),
-  ENDER_IRON("Ender Iron", "enderIron", new ItemStack(Item.ingotIron), new ItemStack(Item.enderPearl), new ItemStack(Item.lightStoneDust)),
-  ENDER_GOLD("Ender Gold", "enderGold", new ItemStack(Item.ingotGold), new ItemStack(Item.enderPearl), new ItemStack(Item.lightStoneDust)),
-  BLUE_STEEL("Blue Steel", "blueSteel", new ItemStack(Item.ingotIron), new ItemStack(Item.dyePowder, 1, 4), new ItemStack(Block.obsidian));
+  ELECTRICAL_STEEL("Silicon Steel", "electricalSteel", new ItemStack(Item.ingotIron), new ItemStack(Item.coal, 2, 1), new ItemStack(
+      ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal())),
+  ENERGETIC_ALLOY("Energetic Alloy", "energeticAlloy", new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), new ItemStack(
+      Item.redstone), new ItemStack(Item.lightStoneDust)),
+  PHASED_IRON("Phased Iron", "phasedIron", new ItemStack(Item.ingotIron), new ItemStack(Item.lightStoneDust), new ItemStack(Item.enderPearl)),
+  PHASED_GOLD("Phased Gold", "phasedGold", new ItemStack(Item.ingotGold), new ItemStack(Item.lightStoneDust), new ItemStack(Item.enderPearl)),
+  REDSTONE_ALLOY("Redstone Alloy", "redstoneAlloy", new ItemStack(Item.ingotIron), new ItemStack(Item.redstone, 4, 0));
 
   public final String unlocalisedName;
   public final String uiName;
