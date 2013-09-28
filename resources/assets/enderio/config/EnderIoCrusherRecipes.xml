@@ -220,7 +220,7 @@
         <itemStack itemID="263" number="3" />
       </output>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="1" chance="0.5" />
+        <itemStack oreDictionary="dustCoal" number="1" chance="0.5" />
       </output>
       <output>
         <itemStack itemID="4" chance="0.15" />
@@ -236,7 +236,7 @@
         <itemStack itemID="263" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" />
+        <itemStack oreDictionary="dustCoal" />
       </output>
     </recipe>
 
