@@ -47,10 +47,10 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
-import crazypants.enderio.material.ItemIndustrialBinder;
 import crazypants.enderio.material.ItemMJReader;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemPowderIngot;
+import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
@@ -67,13 +67,13 @@ public class EnderIO {
   public static GuiHandler guiHandler = new GuiHandler();
 
   // Materials
-  public static ItemIndustrialBinder itemIndustrialBinder;
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
+  public static ItemMaterial itemMaterial;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -128,13 +128,13 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    itemIndustrialBinder = ItemIndustrialBinder.create();
     itemBasicCapacitor = ItemCapacitor.create();
     itemAlloy = ItemAlloy.create();
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
     itemMachinePart = ItemMachinePart.create();
     itemPowderIngot = ItemPowderIngot.create();
+    itemMaterial = ItemMaterial.create();
 
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();

@@ -19,10 +19,9 @@ public enum ModObject {
   itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Energy Conduit"),
 
   // Liquid
-  itemLiquidConduit(++Config.IID, CATEGORY_ITEM, "Liquid Conduit"),
+  itemLiquidConduit(++Config.IID, CATEGORY_ITEM, "Fluid Conduit"),
 
   // Materials
-  itemIndustrialBinder(++Config.IID, CATEGORY_ITEM, "Industrial Binder"),
   itemBasicCapacitor(++Config.IID, CATEGORY_ITEM, "Basic Capacitor"),
   itemAlloy(++Config.IID, CATEGORY_ITEM, "Alloy"),
   blockFusedQuartz(++Config.BID, CATEGORY_BLOCK, "Fused Quartz"),
@@ -33,15 +32,15 @@ public enum ModObject {
   blockAlloySmelter(++Config.BID, CATEGORY_BLOCK, "Alloy Smelter"),
 
   // Painter
-  blockPainter(++Config.BID, CATEGORY_BLOCK, "Painter"),
+  blockPainter(++Config.BID, CATEGORY_BLOCK, "Painting Machine"),
   blockCustomFence(++Config.BID, CATEGORY_BLOCK, "Painted Fence"),
   blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK, "Painted Gate"),
   blockCustomWall(++Config.BID, CATEGORY_BLOCK, "Painted Wall"),
-  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Painted Stair"),
+  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Painted Stairs"),
   itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM, "Fused Quartz Frame"),
 
   // Solar Panel
-  blockSolarPanel(++Config.BID, CATEGORY_BLOCK, "Photovoltaic Panel"),
+  blockSolarPanel(++Config.BID, CATEGORY_BLOCK, "Photovoltaic Cell"),
 
   blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Electric Light"),
   blockLightNode(++Config.BID, CATEGORY_BLOCK, "Light Node (Internal Only)"),
@@ -60,8 +59,9 @@ public enum ModObject {
   itemMachinePart(++Config.IID, CATEGORY_ITEM, "Machine Parts"),
   itemPowderIngot(++Config.IID, CATEGORY_ITEM, "Powders & Ingots"),
 
-  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)");
-
+  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)"),
+  itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials");
+  
   public final String unlocalisedName;
   public final String name;
   public final int defaultId;
