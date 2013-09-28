@@ -73,7 +73,7 @@
   <recipeGroup name="Vanilla">
 
     <!-- Stone -->
-    <recipe>
+    <recipe energyCost="280">
       <input>
         <itemStack itemID="1" />
       </input>
@@ -83,7 +83,7 @@
     </recipe>
 
     <!-- Cobblestone -->
-    <recipe>
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="4" />
       </input>
@@ -106,7 +106,7 @@
     </recipe>
 
     <!-- Sandstone -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="24" />
       </input>
@@ -119,7 +119,7 @@
     </recipe>
 
     <!-- Glass -->
-    <recipe>
+    <recipe energyCost="120">
       <input>
         <itemStack itemID="20" />
       </input>
@@ -130,7 +130,7 @@
     </recipe>
 
     <!-- Gravel -->
-    <recipe>
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="13" />
       </input>
@@ -143,7 +143,7 @@
     </recipe>
     
     <!-- Stone Bricks -->
-    <recipe> <!-- Stone Brick -> 4 Cobblestone -->
+    <recipe energyCost="240"> <!-- Stone Brick -> 4 Cobblestone -->
       <input>
         <itemStack itemID="98" itemMeta="0" />
       </input>
@@ -151,7 +151,7 @@
         <itemStack itemID="4" number ="4" />
       </output>
     </recipe>
-    <recipe> <!-- Cracked Stone Brick -> 2 Cobblestone -->
+    <recipe energyCost="120"> <!-- Cracked Stone Brick -> 2 Cobblestone -->
       <input>
         <itemStack itemID="98" itemMeta="2" />
       </input>
@@ -159,7 +159,7 @@
         <itemStack itemID="4" number ="2" />
       </output>
     </recipe>
-    <recipe> <!-- Chiseled Stone Brick -> 4 Cobblestone -->
+    <recipe energyCost="360"> <!-- Chiseled Stone Brick -> 4 Cobblestone -->
       <input>
         <itemStack itemID="98" itemMeta="3" />
       </input>
@@ -208,7 +208,7 @@
     </recipe>
 
     <!-- Clay (Block) -->
-    <recipe>
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="82" />
       </input>
@@ -224,7 +224,7 @@
     </recipe>
 
     <!-- Wool -->
-    <recipe>
+    <recipe energyCost="120">
       <input>
         <itemStack itemID="35" />
       </input>
@@ -234,7 +234,7 @@
     </recipe>
 
     <!-- Wheat -->
-    <recipe> 
+    <recipe energyCost="120"> 
       <input>
         <itemStack itemID="296" />
       </input>
@@ -247,7 +247,7 @@
   <recipeGroup name="Common Ores/Ingots">
 
     <!-- Coal Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="16" />
       </input>
@@ -276,7 +276,7 @@
     </recipe>
 
     <!-- Iron Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="15" />
       </input>
@@ -305,7 +305,7 @@
     </recipe>
 
     <!-- Gold Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="14" />
       </input>
@@ -321,7 +321,7 @@
     </recipe>
 
     <!-- Gold Ingot -->
-    <recipe>
+    <recipe energyCost="240">
       <input>
         <itemStack itemID="266" />
       </input>
@@ -331,7 +331,7 @@
     </recipe>
 
     <!-- Redstone Ore -->
-    <recipe energyCost="300">
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="73" />
       </input>
@@ -350,7 +350,7 @@
     </recipe>
 
     <!-- Lapis Lazuli Ore  -->
-    <recipe energyCost="300">
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="21" />
       </input>
@@ -366,7 +366,7 @@
     </recipe>
 
     <!-- Copper Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack oreDictionary="oreCopper" />
       </input>
@@ -392,7 +392,7 @@
     </recipe>
 
     <!-- Tin Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack oreDictionary="oreTin" />
       </input>
@@ -415,7 +415,7 @@
     </recipe>
 
     <!-- Lead Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack oreDictionary="oreLead" />
       </input>
@@ -441,7 +441,7 @@
     </recipe>
 
     <!-- Silver Ore -->
-    <recipe >
+    <recipe energyCost="360">
       <input>
         <itemStack oreDictionary="oreSilver" />
       </input>
@@ -496,7 +496,7 @@
     </recipe>
 
     <!-- Plank -> Wood Pulp -->
-    <recipe>
+    <recipe energyCost="120">
       <input>
         <itemStack oreDictionary="plankWood" />
       </input>
@@ -506,7 +506,7 @@
     </recipe>
     
     <!-- Stick -> Wood Pulp -->
-    <recipe>
+    <recipe energyCost="80">
       <input>
         <itemStack oreDictionary="stickWood" />
       </input>
@@ -521,7 +521,7 @@
   <recipeGroup name="Applied Energistics">
 
     <!-- Certus Quartz Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack oreDictionary="oreCertusQuartz" />
       </input>
@@ -544,7 +544,7 @@
     </recipe>
 
     <!-- Nether Quartz Ore -->
-    <recipe>
+    <recipe energyCost="360">
       <input>
         <itemStack itemID="153"/>
       </input>
