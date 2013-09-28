@@ -160,6 +160,9 @@
       <output>
         <itemStack itemID="348" number="4" />
       </output>
+	  <output>
+        <itemStack itemID="348" number="2" chance="0.1" />
+      </output>
     </recipe>
 
     <!-- Bone -->
@@ -182,6 +185,9 @@
       </input>
       <output>
         <itemStack oreDictionary="dustClay" number="2" />
+      </output>
+	 <output>
+        <itemStack oreDictionary="dustClay" number="2" chance="0.15" />
       </output>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="2" itemMeta="0" chance="0.8" />
@@ -469,7 +475,19 @@
         <itemStack oreDictionary="pulpWood" number="1" chance="0.9" />
       </output>
     </recipe>
+    
+	<!-- Stick -> Wood Pulp -->
+    <recipe>
+      <input>
+        <itemStack oreDictionary="stickWood" />
+      </input>
+      <output>
+        <itemStack oreDictionary="pulpWood" number="1" chance="0.15" />
+      </output>
+    </recipe>	
   </recipeGroup>
+
+  
 
   <recipeGroup name="Applied Energistics">
 
