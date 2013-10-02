@@ -167,6 +167,16 @@
         <itemStack itemID="4" number ="4" />
       </output>
     </recipe>
+    
+    <!-- Netherrack -->
+    <recipe energyCost="240">
+      <input>
+        <itemStack itemID="87" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustSulfur" chance="0.15" />
+      </output>
+    </recipe>    
 
     <!-- Blaze Rod -->
     <recipe energyCost="240">
