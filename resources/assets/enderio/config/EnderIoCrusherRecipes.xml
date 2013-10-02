@@ -223,10 +223,10 @@
         <itemStack itemID="82" />
       </input>
       <output>
-        <itemStack oreDictionary="dustClay" number="2" />
+        <itemStack itemID="337" number="4" />
       </output>
 	 <output>
-        <itemStack oreDictionary="dustClay" number="2" chance="0.15" />
+        <itemStack itemID="337" number="2" chance="0.1" />
       </output>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="2" itemMeta="0" chance="0.8" />
