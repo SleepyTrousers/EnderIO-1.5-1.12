@@ -1,5 +1,6 @@
 package crazypants.enderio.material;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -13,6 +14,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -41,16 +44,16 @@ public class ItemFusedQuartzFrame extends Item {
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    // itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
+    //itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
   }
 
   @Override
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
 
-    if (world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
+    if(world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
       TileEntityCustomBlock tecb = (TileEntityCustomBlock) world.getBlockTileEntity(x, y, z);
-      if (tecb == null) {
+      if(tecb == null) {
         return false;
       }
       // if(!world.isRemote) {
@@ -59,8 +62,8 @@ public class ItemFusedQuartzFrame extends Item {
       world.markBlockForUpdate(x, y, z);
       world.markBlockForRenderUpdate(x, y, z);
       // }
-      if (!world.isRemote) {
-        if (!player.capabilities.isCreativeMode) {
+      if(!world.isRemote) {
+        if(!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
       }
@@ -89,5 +92,11 @@ public class ItemFusedQuartzFrame extends Item {
       super(ModObject.itemFusedQuartzFrame.actualId);
     }
 
+    @Override
+    public List<IEnderIoRecipe> getAllRecipes() {
+      ItemStack is = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);
+      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
+      return Collections.singletonList(recipe);
+    }
   }
 }

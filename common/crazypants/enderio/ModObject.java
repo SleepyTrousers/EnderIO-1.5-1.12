@@ -42,7 +42,7 @@ public enum ModObject {
   // Solar Panel
   blockSolarPanel(++Config.BID, CATEGORY_BLOCK, "Photovoltaic Cell"),
 
-  blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Electric Light"),
+  blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Powered Light"),
   blockLightNode(++Config.BID, CATEGORY_BLOCK, "Light Node (Internal Only)"),
 
   blockCapacitorBank(++Config.BID, CATEGORY_BLOCK, "Capacitor Bank"),
@@ -61,7 +61,7 @@ public enum ModObject {
 
   itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)"),
   itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials");
-  
+
   public final String unlocalisedName;
   public final String name;
   public final int defaultId;
@@ -79,15 +79,15 @@ public enum ModObject {
   }
 
   void load(Configuration config) {
-    if(CATEGORY_ITEM.equals(category)) {
+    if (CATEGORY_ITEM.equals(category)) {
       id = config.getItem(unlocalisedName, defaultId).getInt();
-    } else if(CATEGORY_BLOCK.equals(category)) {
+    } else if (CATEGORY_BLOCK.equals(category)) {
       id = config.getBlock(unlocalisedName, defaultId).getInt();
     } else {
       throw new RuntimeException("Unknown category " + category);
     }
     actualId = id;
-    if(CATEGORY_ITEM.equals(category)) {
+    if (CATEGORY_ITEM.equals(category)) {
       actualId += 256;
     }
   }

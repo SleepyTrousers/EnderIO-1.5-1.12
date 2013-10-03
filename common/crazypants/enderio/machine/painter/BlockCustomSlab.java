@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -25,8 +27,14 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.IRecipeInput;
+import crazypants.enderio.crafting.IRecipeOutput;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.crafting.impl.RecipeInputClass;
+import crazypants.enderio.crafting.impl.RecipeOutput;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RecipeInput;
 import crazypants.util.Util;
 
 public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvider {
@@ -38,7 +46,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   private final boolean isDouble;
 
   public BlockCustomSlab(boolean isDouble) {
-    super(isDouble ? ModObject.blockCustomDoubleSlab.actualId : ModObject.blockCustomSlab.actualId, isDouble,new Material(MapColor.stoneColor));
+    super(isDouble ? ModObject.blockCustomDoubleSlab.actualId : ModObject.blockCustomSlab.actualId, isDouble, new Material(MapColor.stoneColor));
     this.isDouble = isDouble;
     setCreativeTab(null);
     setUnlocalizedName(ModObject.blockCustomSlab.unlocalisedName);
@@ -210,7 +218,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
 
-      if (te instanceof TileEntityCustomSlab && !((TileEntityCustomSlab)te).isConvertingToFullBlock) {
+      if (te instanceof TileEntityCustomSlab && !((TileEntityCustomSlab) te).isConvertingToFullBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
 
         for (int i = 0; i < super.quantityDropped(null); i++) {
@@ -238,13 +246,13 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   public int quantityDropped(Random par1Random) {
     return 0; // need to do custom dropping to maintain source metadata
   }
-  
+
   /**
    * Returns the ID of the items to drop on destruction.
    */
   @Override
   public int idDropped(int par1, Random par2Random, int par3) {
-      return ModObject.blockCustomSlab.id;
+    return ModObject.blockCustomSlab.id;
   }
 
   public static final class PainterTemplate extends BasicPainterTemplate {
@@ -253,8 +261,8 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     }
 
     @Override
-    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
-      ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
+    public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+      ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if (paintSource == null) {
         return new ItemStack[0];
       }
@@ -268,6 +276,15 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
       }
       Block blk = Util.getBlockFromItemId(target.itemID);
       return blk instanceof BlockHalfSlab;
+    }
+
+    @Override
+    public List<IEnderIoRecipe> getAllRecipes() {
+      IRecipeInput input = new RecipeInputClass<BlockHalfSlab>(new ItemStack(Block.stoneSingleSlab), BlockHalfSlab.class, new ItemStack(Block.woodSingleSlab));
+      IRecipeOutput output = new RecipeOutput(new ItemStack(ModObject.blockCustomSlab.actualId, 1, 0));
+
+      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
+      return Collections.singletonList(recipe);
     }
   }
 

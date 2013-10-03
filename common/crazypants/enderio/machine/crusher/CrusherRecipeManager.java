@@ -39,7 +39,7 @@ public class CrusherRecipeManager {
     File customDefFile = new File(Config.configDirectory, CUSTOM_DEF_FILE_NAME);
 
     String defaultVals = null;
-    if(!customDefFile.exists()) {
+    if (!customDefFile.exists()) {
       try {
         defaultVals = createCustomDefFileFromDefault(customDefFile);
       } catch (IOException e) {
@@ -49,14 +49,14 @@ public class CrusherRecipeManager {
       }
     }
 
-    if(!customDefFile.exists()) {
+    if (!customDefFile.exists()) {
       Log.error("Could load default SAG Mill recipes from " + customDefFile + " as the file does not exist.");
       return;
     }
 
     RecipeConfig config;
     try {
-      if(defaultVals != null) {
+      if (defaultVals != null) {
         config = RecipeConfigParser.parse(defaultVals);
       } else {
         config = RecipeConfigParser.parse(customDefFile);
@@ -66,7 +66,7 @@ public class CrusherRecipeManager {
       return;
     }
 
-    if(config == null) {
+    if (config == null) {
       Log.error("Could not load " + CUSTOM_DEF_FILE_NAME);
       return;
     }
@@ -83,7 +83,7 @@ public class CrusherRecipeManager {
       return;
     }
 
-    if(config == null) {
+    if (config == null) {
       Log.error("Could process custom XML");
       return;
     }
@@ -91,11 +91,11 @@ public class CrusherRecipeManager {
   }
 
   public CrusherRecipe getRecipeForInput(ItemStack input) {
-    if(input == null) {
+    if (input == null) {
       return null;
     }
     for (CrusherRecipe recipe : recipes) {
-      if(recipe.isInput(input)) {
+      if (recipe.isInput(input)) {
         return recipe;
       }
     }
@@ -103,10 +103,10 @@ public class CrusherRecipeManager {
   }
 
   private void processConfig(RecipeConfig config) {
-    if(config.isDumpItemRegistery()) {
+    if (config.isDumpItemRegistery()) {
       Util.dumpModObjects(new File(Config.configDirectory, "modObjectsRegistery.txt"));
     }
-    if(config.isDumpOreDictionary()) {
+    if (config.isDumpOreDictionary()) {
       Util.dumpOreNames(new File(Config.configDirectory, "oreDictionaryRegistery.txt"));
     }
 
@@ -120,7 +120,7 @@ public class CrusherRecipeManager {
 
   private String createCustomDefFileFromDefault(File customDefFile) throws IOException {
     InputStream in = getClass().getResourceAsStream("/mods/enderio/config/" + CUSTOM_DEF_FILE_NAME);
-    if(in == null) {
+    if (in == null) {
       Log.error("Could load default SAG Mill recipes.");
       throw new IOException("Could not resource /assets/enderio/config/" + CUSTOM_DEF_FILE_NAME + " form classpath. ");
     }
@@ -153,23 +153,27 @@ public class CrusherRecipeManager {
   }
 
   public void addRecipe(ItemStack input, float energyCost, CrusherOutput... output) {
-    if(input == null || output == null) {
+    if (input == null || output == null) {
       return;
     }
     addRecipe(new CrusherRecipe(input, energyCost, output));
   }
 
   public void addRecipe(CrusherRecipe recipe) {
-    if(recipe == null || !recipe.isValid()) {
+    if (recipe == null || !recipe.isValid()) {
       Log.warn("Could not invalid recipe: " + recipe);
       return;
     }
     CrusherRecipe rec = getRecipeForInput(recipe.getInput());
-    if(rec != null) {
+    if (rec != null) {
       Log.warn("Not adding supplied recipe as a recipe already exists for the input: " + recipe.getInput());
       return;
     }
     recipes.add(recipe);
+  }
+
+  public List<CrusherRecipe> getRecipes() {
+    return recipes;
   }
 
 }

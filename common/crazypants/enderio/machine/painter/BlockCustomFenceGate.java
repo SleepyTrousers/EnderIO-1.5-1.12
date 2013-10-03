@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -8,7 +10,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.entity.EntityLiving;import net.minecraft.item.ItemStack;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,8 +25,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RecipeInput;
 
 public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityProvider {
 
@@ -65,7 +69,7 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     TileEntityCustomBlock cb = (TileEntityCustomBlock)
         world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
     Block b = cb.getSourceBlock();
-    if(b != null) {
+    if (b != null) {
       tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
     }
     if (tex == null) {
@@ -129,7 +133,6 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     digFX.setParticleIcon(Minecraft.getMinecraft().renderEngine, tex);
     effectRenderer.addEffect(digFX);
   }
-
 
   @Override
   public int getRenderType() {
@@ -240,11 +243,18 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     }
 
     @Override
-    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
-      ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
+    public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+      ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
     }
 
+    @Override
+    public List<IEnderIoRecipe> getAllRecipes() {
+      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, new ItemStack(Block.fence), new ItemStack(
+          ModObject.blockCustomFenceGate.actualId,
+          1, 0));
+      return Collections.singletonList(recipe);
+    }
   }
 
 }

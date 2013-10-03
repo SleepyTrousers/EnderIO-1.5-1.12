@@ -39,7 +39,7 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public IMachineRecipe getRecipeForInputs(String machineName, RecipeInput... inputs) {
+  public IMachineRecipe getRecipeForInputs(String machineName, MachineRecipeInput... inputs) {
     Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
     if(recipes == null) {
       return null;
@@ -52,7 +52,7 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public List<IMachineRecipe> getRecipesForInput(String machineName, RecipeInput input) {
+  public List<IMachineRecipe> getRecipesForInput(String machineName, MachineRecipeInput input) {
     if(input == null) {
       return Collections.emptyList();
     }
