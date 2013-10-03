@@ -6,7 +6,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RecipeInput;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
@@ -53,7 +53,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     if(i >= slotDefinition.getNumSlots()) {
       return false;
     }
-    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemstack)).isEmpty();
+    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(i, itemstack)).isEmpty();
   }
 
   @Override

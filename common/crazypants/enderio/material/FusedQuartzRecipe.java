@@ -1,13 +1,16 @@
 package crazypants.enderio.material;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.RecipeInput;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.alloy.BasicAlloyRecipe;
 
 public class FusedQuartzRecipe implements IMachineRecipe {
@@ -20,14 +23,14 @@ public class FusedQuartzRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getEnergyRequired(RecipeInput... inputs) {
+  public float getEnergyRequired(MachineRecipeInput... inputs) {
     return BasicAlloyRecipe.DEFAULT_ENERGY_USE;
   }
 
   @Override
-  public boolean isRecipe(RecipeInput... inputs) {
+  public boolean isRecipe(MachineRecipeInput... inputs) {
     int numQuartz = 0;
-    for (RecipeInput input : inputs) {
+    for (MachineRecipeInput input : inputs) {
       if(input != null && input.item != null && input.item.itemID == Item.netherQuartz.itemID) {
         numQuartz += input.item.stackSize;
       }
@@ -36,12 +39,12 @@ public class FusedQuartzRecipe implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
+  public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     return new ItemStack[] { new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0) };
   }
 
   @Override
-  public boolean isValidInput(RecipeInput input) {
+  public boolean isValidInput(MachineRecipeInput input) {
     if(input != null && input.item != null && input.item.itemID == Item.netherQuartz.itemID) {
       return true;
     }
@@ -54,7 +57,7 @@ public class FusedQuartzRecipe implements IMachineRecipe {
   }
 
   @Override
-  public RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs) {
+  public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     int[] numPerInput = new int[inputs.length];
     int numFound = 0;
 
@@ -75,23 +78,23 @@ public class FusedQuartzRecipe implements IMachineRecipe {
 
     if(total < NUM_QUARTZ) {
       System.out.println("FusedQuartzRecipe.getQuantitiesConsumed: Error!! No QuartzConsumed Consumed.");
-      return new RecipeInput[0];
+      return new MachineRecipeInput[0];
     }
     if(total > NUM_QUARTZ) {
       System.out.println("FusedQuartzRecipe.getQuantitiesConsumed: Error!! Consumed more than we should have.");
     }
 
-    List<RecipeInput> res = new ArrayList<RecipeInput>();
+    List<MachineRecipeInput> res = new ArrayList<MachineRecipeInput>();
     for (int i = 0; i < consumedPerInput.length; i++) {
       if(consumedPerInput[i] > 0) {
-        RecipeInput consumed = new RecipeInput(inputs[i].slotNumber, new ItemStack(Item.netherQuartz, consumedPerInput[i]));
+        MachineRecipeInput consumed = new MachineRecipeInput(inputs[i].slotNumber, new ItemStack(Item.netherQuartz, consumedPerInput[i]));
         res.add(consumed);
       }
     }
-    return res.toArray(new RecipeInput[res.size()]);
+    return res.toArray(new MachineRecipeInput[res.size()]);
   }
 
-  private int getQuartzQuanity(RecipeInput ri) {
+  private int getQuartzQuanity(MachineRecipeInput ri) {
     if(ri != null && ri.item != null && ri.item.itemID == Item.netherQuartz.itemID) {
       return ri.item.stackSize;
     }
@@ -104,6 +107,14 @@ public class FusedQuartzRecipe implements IMachineRecipe {
       return 0;
     }
     return 0.2F * output.stackSize;
+  }
+
+  @Override
+  public List<IEnderIoRecipe> getAllRecipes() {
+    IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, BasicAlloyRecipe.DEFAULT_ENERGY_USE, new ItemStack(Item.netherQuartz, NUM_QUARTZ),
+        new ItemStack(
+            ModObject.blockFusedQuartz.actualId, 1, 0));
+    return Collections.singletonList(recipe);
   }
 
 }

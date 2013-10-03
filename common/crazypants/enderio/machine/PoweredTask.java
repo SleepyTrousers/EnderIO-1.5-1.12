@@ -16,7 +16,7 @@ public class PoweredTask {
 
   private float usedEnergy = 0;
 
-  private RecipeInput[] inputs;
+  private MachineRecipeInput[] inputs;
 
   private float requiredEnergy;
 
@@ -24,11 +24,11 @@ public class PoweredTask {
 
   private float chance;
 
-  public PoweredTask(IMachineRecipe recipe, float chance, RecipeInput... inputs) {
+  public PoweredTask(IMachineRecipe recipe, float chance, MachineRecipeInput... inputs) {
     this(recipe, 0, chance, inputs);
   }
 
-  protected PoweredTask(IMachineRecipe recipe, float usedEnergy, float chance, RecipeInput... inputsIn) {
+  protected PoweredTask(IMachineRecipe recipe, float usedEnergy, float chance, MachineRecipeInput... inputsIn) {
     this.inputs = inputsIn;
     int numInputs = 0;
     for (int i = 0; i < inputsIn.length; i++) {
@@ -37,11 +37,11 @@ public class PoweredTask {
       }
     }
 
-    inputs = new RecipeInput[numInputs];
+    inputs = new MachineRecipeInput[numInputs];
     int index = 0;
     for (int i = 0; i < inputsIn.length; i++) {
       if(inputsIn[i] != null && inputsIn[i].item != null) {
-        inputs[index] = new RecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
+        inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
         index++;
       }
     }
@@ -78,7 +78,7 @@ public class PoweredTask {
     nbtRoot.setIntArray(KEY_INPUTS_SLOTS, inputSlots);
 
     NBTTagList inputItems = new NBTTagList();
-    for (RecipeInput ri : inputs) {
+    for (MachineRecipeInput ri : inputs) {
       stackRoot = new NBTTagCompound();
       ri.item.writeToNBT(stackRoot);
       inputItems.appendTag(stackRoot);
@@ -110,11 +110,11 @@ public class PoweredTask {
       return null;
     }
 
-    RecipeInput[] inputs = new RecipeInput[inputSlots.length];
+    MachineRecipeInput[] inputs = new MachineRecipeInput[inputSlots.length];
     for (int i = 0; i < inputSlots.length; i++) {
       NBTBase stackTag = inputItems.tagAt(i);
       ItemStack item = ItemStack.loadItemStackFromNBT((NBTTagCompound) stackTag);
-      inputs[i] = new RecipeInput(inputSlots[i], item);
+      inputs[i] = new MachineRecipeInput(inputSlots[i], item);
     }
 
     String uid = nbtRoot.getString(KEY_RECIPE);

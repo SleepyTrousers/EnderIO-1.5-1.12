@@ -142,11 +142,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     currentTask = null;
   }
 
-  protected RecipeInput[] getInputs() {
-    RecipeInput[] res = new RecipeInput[slotDefinition.getNumInputSlots()];
+  protected MachineRecipeInput[] getInputs() {
+    MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots()];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
-      res[i] = new RecipeInput(fromSlot, inventory[fromSlot]);
+      res[i] = new MachineRecipeInput(fromSlot, inventory[fromSlot]);
       fromSlot++;
     }
 
@@ -211,8 +211,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       // then get our recipe and take away the source items
       currentTask = new PoweredTask(nextRecipe, chance, getInputs());
 
-      RecipeInput[] consumed = nextRecipe.getQuantitiesConsumed(getInputs());
-      for (RecipeInput item : consumed) {
+      MachineRecipeInput[] consumed = nextRecipe.getQuantitiesConsumed(getInputs());
+      for (MachineRecipeInput item : consumed) {
         if(item != null && item.item != null && item.item.stackSize > 0) {
           decrStackSize(item.slotNumber, item.item.stackSize);
         }

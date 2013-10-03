@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RecipeInput;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
@@ -33,13 +33,13 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
       return false;
     }
     if(i == 0) {
-      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), RecipeInput.create(i, itemStack)).isEmpty();
+      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(i, itemStack)).isEmpty();
     }
     if(inventory[0] == null) {
       return BasicPainterTemplate.isValidSourceDefault(itemStack);
     }
     return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(),
-        i == 0 ? RecipeInput.create(0, itemStack) : targetInput(), i == 1 ? RecipeInput.create(1, itemStack) : paintSource()) != null;
+        i == 0 ? MachineRecipeInput.create(0, itemStack) : targetInput(), i == 1 ? MachineRecipeInput.create(1, itemStack) : paintSource()) != null;
   }
 
   @Override
@@ -47,12 +47,12 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
     return ModObject.blockPainter.unlocalisedName;
   }
 
-  private RecipeInput targetInput() {
-    return RecipeInput.create(0, inventory[0]);
+  private MachineRecipeInput targetInput() {
+    return MachineRecipeInput.create(0, inventory[0]);
   }
 
-  private RecipeInput paintSource() {
-    return RecipeInput.create(1, inventory[1]);
+  private MachineRecipeInput paintSource() {
+    return MachineRecipeInput.create(1, inventory[1]);
   }
 
   @Override

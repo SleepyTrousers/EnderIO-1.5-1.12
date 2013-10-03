@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -22,8 +24,10 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RecipeInput;
 
 public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityProvider {
 
@@ -34,7 +38,7 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     result.init();
     return result;
   }
-  
+
   private Icon lastRemovedComponetIcon = null;
 
   private Random rand = new Random();
@@ -54,7 +58,7 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     GameRegistry.registerTileEntity(TileEntityCustomBlock.class, ModObject.blockCustomFenceGate.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
-  
+
   @SideOnly(Side.CLIENT)
   @Override
   public boolean addBlockHitEffects(World world, MovingObjectPosition target,
@@ -67,7 +71,7 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     if(b != null) {
       tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
     }
-    if (tex == null) {
+    if(tex == null) {
       tex = blockIcon;
     }
     lastRemovedComponetIcon = tex;
@@ -110,17 +114,17 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
         getBlockBoundsMinY() - f * 2.0F) + f + getBlockBoundsMinY();
     double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() -
         getBlockBoundsMinZ() - f * 2.0F) + f + getBlockBoundsMinZ();
-    if (side == 0) {
+    if(side == 0) {
       d1 = y + getBlockBoundsMinY() - f;
-    } else if (side == 1) {
+    } else if(side == 1) {
       d1 = y + getBlockBoundsMaxY() + f;
-    } else if (side == 2) {
+    } else if(side == 2) {
       d2 = z + getBlockBoundsMinZ() - f;
-    } else if (side == 3) {
+    } else if(side == 3) {
       d2 = z + getBlockBoundsMaxZ() + f;
-    } else if (side == 4) {
+    } else if(side == 4) {
       d0 = x + getBlockBoundsMinX() - f;
-    } else if (side == 5) {
+    } else if(side == 5) {
       d0 = x + getBlockBoundsMaxX() + f;
     }
     EntityDiggingFX digFX = new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D,
@@ -144,9 +148,9 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
   @Override
   public int getLightOpacity(World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityCustomBlock) {
+    if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if (tef.getSourceBlockId() > 0) {
+      if(tef.getSourceBlockId() > 0) {
         return Math.min(super.getLightOpacity(world, x, y, z), Block.lightOpacity[tef.getSourceBlockId()]);
       }
 
@@ -162,9 +166,9 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
   @Override
   public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityCustomBlock) {
+    if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if (tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
+      if(tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
         return blocksList[tef.getSourceBlockId()].getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     } else {
@@ -177,12 +181,12 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     int id = -1;
     Block b = PainterUtil.getSourceBlock(stack);
-    if (b != null) {
+    if(b != null) {
       id = b.blockID;
     }
 
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityCustomBlock) {
+    if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
       tef.setSourceBlockId(id);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
@@ -205,10 +209,10 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
-    if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
 
-      if (te instanceof TileEntityCustomBlock) {
+      if(te instanceof TileEntityCustomBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
 
         ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlockId(), tef.getSourceBlockMetadata());
@@ -240,11 +244,18 @@ public class BlockCustomFenceGate extends BlockFenceGate implements ITileEntityP
     }
 
     @Override
-    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
-      ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
+    public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+      ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
     }
 
+    @Override
+    public List<IEnderIoRecipe> getAllRecipes() {
+      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, new ItemStack(Block.fence), new ItemStack(
+          ModObject.blockCustomFenceGate.actualId,
+          1, 0));
+      return Collections.singletonList(recipe);
+    }
   }
 
 }

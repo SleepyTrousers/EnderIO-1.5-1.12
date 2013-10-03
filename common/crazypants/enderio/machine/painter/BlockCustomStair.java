@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -22,8 +24,14 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.IRecipeInput;
+import crazypants.enderio.crafting.IRecipeOutput;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.crafting.impl.RecipeInputClass;
+import crazypants.enderio.crafting.impl.RecipeOutput;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.RecipeInput;
 import crazypants.util.Util;
 
 public class BlockCustomStair extends BlockStairs implements ITileEntityProvider {
@@ -242,8 +250,8 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     }
 
     @Override
-    public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
-      ItemStack paintSource = RecipeInput.getInputForSlot(1, inputs);
+    public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+      ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if(paintSource == null) {
         return new ItemStack[0];
       }
@@ -257,6 +265,16 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
       }
       Block blk = Util.getBlockFromItemId(target.itemID);
       return blk instanceof BlockStairs;
+    }
+
+    @Override
+    public List<IEnderIoRecipe> getAllRecipes() {
+      IRecipeInput input = new RecipeInputClass<BlockStairs>(new ItemStack(Block.stairsWoodOak), BlockStairs.class, new ItemStack(Block.stairsCobblestone),
+          new ItemStack(Block.stairsStoneBrick));
+      IRecipeOutput output = new RecipeOutput(new ItemStack(ModObject.blockCustomStair.actualId, 1, 0));
+
+      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
+      return Collections.singletonList(recipe);
     }
   }
 
