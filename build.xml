@@ -102,9 +102,15 @@
 			</filterset>
 		</copy>
 
+		<unzip dest="${mcpsrc.dir}/minecraft" src="${src.dir}/lib/neiDummyInterface-src.zip"/>
+
 		<copy todir="${mcp.dir}/lib">
 			<fileset dir="${src.dir}/lib"/>
        </copy>
+
+	   <delete file="${mcp.dir}/lib/neiDummyInterface.jar"/>
+	   <delete file="${mcp.dir}/lib/neiDummyInterface-src.zip"/>
+
 
 		<!-- Recompile -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
@@ -121,6 +127,8 @@
 				<resourcecontains resource="${mcp.dir}/logs/client_compile.log" substring="error:"/>
 			</condition>
 		</fail>
+
+		
 		
 		<!-- Reobfuscate -->
 		<exec dir="${mcp.dir}" executable="cmd" osfamily="windows">
@@ -158,8 +166,12 @@
 		<jar destfile="${jar.dir}/${ant.project.name}-${mc.version}-${project.version.full}.jar" basedir="${classes.dir}"/>
 
 		<jar destfile="${jar.dir}/${ant.project.name}-${mc.version}-${project.version.full}.jar">
-          <fileset dir="${classes.dir}"/>
+          <fileset dir="${classes.dir}" includes="crazypants/, buildcraft/"/>
           <zipfileset includes="**/*.class" src="${lib.dir}/cglib-nodep-2.2.3.jar"/>
+		  <fileset dir="${resources.dir}">
+				<exclude name="build.xml"/>
+			    <exclude name="**/*.pdn"/>
+			</fileset>
        </jar>
 		
 	</target>

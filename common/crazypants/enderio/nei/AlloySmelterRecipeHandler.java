@@ -131,4 +131,5 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       this.energy = energy;
     }
   }
+
 }
