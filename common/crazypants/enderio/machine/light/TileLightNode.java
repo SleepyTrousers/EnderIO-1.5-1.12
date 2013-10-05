@@ -14,7 +14,7 @@ public class TileLightNode extends TileEntity {
 
   public TileElectricLight getParent() {
     TileEntity te = worldObj.getBlockTileEntity(parentX, parentY, parentZ);
-    if (te instanceof TileElectricLight) {
+    if(te instanceof TileElectricLight) {
       return (TileElectricLight) te;
     }
     return null;
@@ -22,11 +22,11 @@ public class TileLightNode extends TileEntity {
 
   @Override
   public void updateEntity() {
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       return;
     }
-    if (worldObj.getWorldTime() % 42 == 0) {
-      if (worldObj.getBlockId(parentX, parentY, parentZ) != ModObject.blockElectricLight.actualId) {
+    if(worldObj.getWorldTime() % 42 == 0) {
+      if(worldObj.getBlockId(parentX, parentY, parentZ) != ModObject.blockElectricLight.actualId) {
         System.out.println("TileLightNode.updateEntity: ");
         worldObj.setBlockToAir(xCoord, yCoord, zCoord);
       }
@@ -35,14 +35,14 @@ public class TileLightNode extends TileEntity {
 
   public void onNeighbourChanged() {
     TileElectricLight p = getParent();
-    if (p != null) {
+    if(p != null) {
       p.nodeNeighbourChanged(this);
     }
   }
 
   public void onBlockRemoved() {
     TileElectricLight p = getParent();
-    if (p != null) {
+    if(p != null) {
       p.nodeRemoved(this);
     }
   }

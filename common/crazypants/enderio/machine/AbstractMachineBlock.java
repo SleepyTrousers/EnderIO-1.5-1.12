@@ -2,22 +2,19 @@ package crazypants.enderio.machine;
 
 import java.util.Random;
 
-import buildcraft.api.tools.IToolWrench;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -108,12 +105,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
-    if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if (wrench.canWrench(entityPlayer, x, y, z)) {
+        if(wrench.canWrench(entityPlayer, x, y, z)) {
           removeBlockByPlayer(world, entityPlayer, x, y, z);
-          if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
             ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
           }
           return true;
@@ -121,7 +118,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       }
     }
 
-    if (entityPlayer.isSneaking()) {
+    if(entityPlayer.isSneaking()) {
       return false;
     }
     entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);
@@ -155,11 +152,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     // used to render the block in the world
     TileEntity te = world.getBlockTileEntity(x, y, z);
     int facing = 0;
-    if (te instanceof AbstractMachineEntity) {
+    if(te instanceof AbstractMachineEntity) {
       AbstractMachineEntity me = (AbstractMachineEntity) te;
       facing = me.facing;
     }
-    if (isActive(world, x, y, z)) {
+    if(isActive(world, x, y, z)) {
       return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
     } else {
       return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
@@ -174,10 +171,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity ent = world.getBlockTileEntity(x, y, z);
-      if (ent != null) {
-        if (teClass.isAssignableFrom(ent.getClass())) {
+      if(ent != null) {
+        if(teClass.isAssignableFrom(ent.getClass())) {
           @SuppressWarnings("unchecked")
           T te = (T) world.getBlockTileEntity(x, y, z);
           Util.dropItems(world, te, x, y, z, true);
@@ -199,7 +196,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if (!world.isRemote && !player.capabilities.isCreativeMode) {
+    if(!world.isRemote && !player.capabilities.isCreativeMode) {
       ItemStack st = new ItemStack(this);
       Util.dropItems(world, st, x, y, z, false);
     }
@@ -239,7 +236,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
     TileEntity ent = world.getBlockTileEntity(x, y, z);
-    if (ent instanceof AbstractMachineEntity) {
+    if(ent instanceof AbstractMachineEntity) {
       AbstractMachineEntity te = (AbstractMachineEntity) ent;
       te.onNeighborBlockChange(blockId);
     }
@@ -248,7 +245,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
     // If active, randomly throw some smoke around
-    if (isActive(world, x, y, z)) {
+    if(isActive(world, x, y, z)) {
       float startX = x + 1.0F;
       float startY = y + 1.0F;
       float startZ = z + 1.0F;

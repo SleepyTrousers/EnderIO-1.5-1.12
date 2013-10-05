@@ -78,34 +78,34 @@ public class ItemEnderface extends Item implements IGuiHandler {
   @Override
   public ItemStack onItemRightClick(ItemStack itemStack, World world, final EntityPlayer entityPlayer) {
 
-    if (!world.isRemote) {
+    if(!world.isRemote) {
       return itemStack;
     }
 
     NBTTagCompound tag = itemStack.getTagCompound();
     boolean tagsSet = tag != null && tag.getBoolean(KEY_IO_SET);
 
-    if (tag != null && tag.getBoolean(KEY_IO_SET)) {
+    if(tag != null && tag.getBoolean(KEY_IO_SET)) {
 
       int x = tag.getInteger(KEY_IO_X);
       int y = tag.getInteger(KEY_IO_Y);
       int z = tag.getInteger(KEY_IO_Z);
       int dimension = tag.getInteger(KEY_DIMENSION);
 
-      if (world.provider.dimensionId != dimension) {
+      if(world.provider.dimensionId != dimension) {
         ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
         entityPlayer.sendChatToPlayer(c);
         return itemStack;
       }
 
       Chunk c = world.getChunkFromBlockCoords(x, z);
-      if (c == null || !c.isChunkLoaded) {
+      if(c == null || !c.isChunkLoaded) {
         ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
-      if (blockId != EnderIO.blockEnderIo.blockID) {
+      if(blockId != EnderIO.blockEnderIo.blockID) {
         ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;

@@ -41,7 +41,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
     float f4 = 0.3125F;
     float f5 = 1.0F;
 
-    if ((i1 == 2 || i1 == 0) && rb.blockAccess.getBlockId(par2 - 1, par3, par4) == Block.cobblestoneWall.blockID
+    if((i1 == 2 || i1 == 0) && rb.blockAccess.getBlockId(par2 - 1, par3, par4) == Block.cobblestoneWall.blockID
         && rb.blockAccess.getBlockId(par2 + 1, par3, par4) == Block.cobblestoneWall.blockID ||
         (i1 == 3 || i1 == 1) && rb.blockAccess.getBlockId(par2, par3, par4 - 1) == Block.cobblestoneWall.blockID
         && rb.blockAccess.getBlockId(par2, par3, par4 + 1) == Block.cobblestoneWall.blockID ||
@@ -64,7 +64,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
     float f8;
     float f9;
 
-    if (i1 != 3 && i1 != 1)
+    if(i1 != 3 && i1 != 1)
     {
       f6 = 0.0F;
       f8 = 0.125F;
@@ -93,14 +93,14 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
       rb.uvRotateTop = 0;
     }
 
-    if (flag1)
+    if(flag1)
     {
-      if (i1 == 2 || i1 == 0)
+      if(i1 == 2 || i1 == 0)
       {
         rb.uvRotateTop = 1;
       }
 
-      if (i1 == 3)
+      if(i1 == 3)
       {
         rb.setRenderBounds(0.8125D, f, 0.0D, 0.9375D, f3, 0.125D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
@@ -115,7 +115,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
         rb.setRenderBounds(0.5625D, f2, 0.875D, 0.8125D, f3, 1.0D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
       }
-      else if (i1 == 1)
+      else if(i1 == 1)
       {
         rb.setRenderBounds(0.0625D, f, 0.0D, 0.1875D, f3, 0.125D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
@@ -130,7 +130,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
         rb.setRenderBounds(0.1875D, f2, 0.875D, 0.4375D, f3, 1.0D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
       }
-      else if (i1 == 0)
+      else if(i1 == 0)
       {
         rb.setRenderBounds(0.0D, f, 0.8125D, 0.125D, f3, 0.9375D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
@@ -145,7 +145,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
         rb.setRenderBounds(0.875D, f2, 0.5625D, 1.0D, f3, 0.8125D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
       }
-      else if (i1 == 2)
+      else if(i1 == 2)
       {
         rb.setRenderBounds(0.0D, f, 0.0625D, 0.125D, f3, 0.1875D);
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
@@ -161,7 +161,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
         rb.renderStandardBlock(par1BlockFenceGate, par2, par3, par4);
       }
     }
-    else if (i1 != 3 && i1 != 1)
+    else if(i1 != 3 && i1 != 1)
     {
       f6 = 0.375F;
       f8 = 0.5F;

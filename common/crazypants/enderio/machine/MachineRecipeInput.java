@@ -6,7 +6,7 @@ public class MachineRecipeInput {
 
   public static ItemStack getInputForSlot(int slot, MachineRecipeInput... inputs) {
     for (MachineRecipeInput ri : inputs) {
-      if (ri.slotNumber == slot) {
+      if(ri.slotNumber == slot) {
         return ri.item;
       }
     }

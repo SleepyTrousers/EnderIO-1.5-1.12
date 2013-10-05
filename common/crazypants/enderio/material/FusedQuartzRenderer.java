@@ -1,16 +1,5 @@
 package crazypants.enderio.material;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -23,22 +12,14 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityCustomBlock;
-import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector2d;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vector4d;
 
 public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   static int renderPass;
 
   @Override
-  public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {    
+  public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
     renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getIcon(0, 0));
     renderer.renderBlockAsItem(Block.glass, 0, 1);
     renderer.clearOverrideBlockTexture();
@@ -56,11 +37,11 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    if (renderPass == 0) {
+    if(renderPass == 0) {
       RenderUtil.setTesselatorBrightness(blockAccess, x, y, z);
       TileEntityCustomBlock tecb = null;
       TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
-      if (te instanceof TileEntityCustomBlock) {
+      if(te instanceof TileEntityCustomBlock) {
         tecb = (TileEntityCustomBlock) te;
       }
       renderFrame(blockAccess, x, y, z, tecb, false);
@@ -85,15 +66,11 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
   private void renderFrame(IBlockAccess blockAccess, int x, int y, int z, TileEntityCustomBlock tecb, boolean forceAllEdges) {
     Icon texture = EnderIO.blockFusedQuartz.getIcon(0, 0);
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      if (tecb != null && tecb.getSourceBlockId() > 0) {
+      if(tecb != null && tecb.getSourceBlockId() > 0) {
         texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
       }
       RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges);
     }
   }
-
- 
-
- 
 
 }

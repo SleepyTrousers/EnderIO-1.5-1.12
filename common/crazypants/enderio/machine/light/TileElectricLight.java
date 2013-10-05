@@ -53,7 +53,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
   }
 
   public void nodeRemoved(TileLightNode tileLightNode) {
-    if (!updatingLightNodes) {
+    if(!updatingLightNodes) {
       init = true;
     }
   }
@@ -68,7 +68,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
   @Override
   public void updateEntity() {
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       return;
     }
 
@@ -77,19 +77,19 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
     powerHandler.update();
     powerHandler.setEnergy(stored);
 
-    if (hasRedstone) {
+    if(hasRedstone) {
       powerHandler.setEnergy(Math.max(0, powerHandler.getEnergyStored() - MJ_USE_PER_TICK));
     }
 
     boolean isActivated = hasPower() && hasRedstone;
-    if (init) {
+    if(init) {
       updateLightNodes();
     }
 
-    if (isActivated != lastActive || init) {
+    if(isActivated != lastActive || init) {
       worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isActivated ? 1 : 0, 2);
       for (TileLightNode ln : lightNodes) {
-        if (ln != null) {
+        if(ln != null) {
           worldObj.setBlockMetadataWithNotify(ln.xCoord, ln.yCoord, ln.zCoord, isActivated ? 1 : 0, 2);
           worldObj.markBlockForUpdate(ln.xCoord, ln.yCoord, ln.zCoord);
           worldObj.updateLightByType(EnumSkyBlock.Block, ln.xCoord, ln.yCoord, ln.zCoord);
@@ -114,34 +114,34 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
   private void updateLightNodes() {
     updatingLightNodes = true;
     List<NodeEntry> before = new ArrayList<NodeEntry>(17);
-    if (lightNodes != null) {
+    if(lightNodes != null) {
       for (TileLightNode node : lightNodes) {
         before.add(new NodeEntry(node));
       }
     }
     List<NodeEntry> after = new ArrayList<NodeEntry>(17);
     try {
-      if (lightNodeCoords != null) {
-       
+      if(lightNodeCoords != null) {
+
         // just loaded
         lightNodes = new ArrayList<TileLightNode>();
         for (int i = 0; i < lightNodeCoords.length; i += 3) {
           TileEntity te = worldObj.getBlockTileEntity(lightNodeCoords[i], lightNodeCoords[i + 1], lightNodeCoords[i + 2]);
-          if (te instanceof TileLightNode) {
+          if(te instanceof TileLightNode) {
             lightNodes.add((TileLightNode) te);
           }
         }
         lightNodeCoords = null;
 
-      } else if (lightNodes == null) { // just created
+      } else if(lightNodes == null) { // just created
 
         lightNodes = new ArrayList<TileLightNode>();
 
-      } 
-      
+      }
+
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        if (dir != face && dir != face.getOpposite()) { // don't project behind
-                                                        // us
+        if(dir != face && dir != face.getOpposite()) { // don't project behind
+                                                       // us
           Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
           addNodeInDirection(new Vector3d(offset), after);
           addNodeInDirection(offset.add(ForgeDirectionOffsets.forDirCopy(face.getOpposite())), after);
@@ -151,10 +151,10 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
       addNodeInDirection(ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);
 
       Vector3d[] diags = new Vector3d[2];
-      if (face.offsetX != 0) {
+      if(face.offsetX != 0) {
         diags[0] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.UP);
         diags[1] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.SOUTH);
-      } else if (face.offsetY != 0) {
+      } else if(face.offsetY != 0) {
         diags[0] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.EAST);
         diags[1] = ForgeDirectionOffsets.forDirCopy(ForgeDirection.SOUTH);
       } else {
@@ -164,10 +164,10 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
       addDiaganals(diags, new Vector3d(), after);
       addDiaganals(diags, ForgeDirectionOffsets.forDirCopy(face.getOpposite()), after);
 
-      if (!areEqual(before, after)) {
-        
+      if(!areEqual(before, after)) {
+
         clearLightNodes();
-        
+
         for (NodeEntry entry : after) {
           worldObj.setBlock(entry.coord.x, entry.coord.y, entry.coord.z, ModObject.blockLightNode.actualId);
           TileLightNode ln = (TileLightNode) worldObj.getBlockTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
@@ -177,7 +177,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
           ln.isDiagnal = entry.isDiagnal;
           lightNodes.add(ln);
         }
-        
+
       } else {
         init = false;
       }
@@ -191,7 +191,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
     if(before.size() != after.size()) {
       return false;
     }
-    for(NodeEntry entry : before) {
+    for (NodeEntry entry : before) {
       if(!after.contains(entry)) {
         return false;
       }
@@ -226,11 +226,11 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
     boolean isAir = isAir(offset);
     boolean isTransp = isTranparent(offset);
-    if (isAir || isTransp) {
+    if(isAir || isTransp) {
       offset.scale(2);
-      if (isAir(offset)) {
+      if(isAir(offset)) {
         addLightNode(offset, diagnal, result);
-      } else if (isAir) {
+      } else if(isAir) {
         offset.scale(0.5);
         addLightNode(offset, diagnal, result);
       }
@@ -242,9 +242,9 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
   }
 
   private void clearLightNodes() {
-    if (lightNodes != null) {
+    if(lightNodes != null) {
       for (TileLightNode ln : lightNodes) {
-        if (worldObj.getBlockId(ln.xCoord, ln.yCoord, ln.zCoord) == ModObject.blockLightNode.actualId) {
+        if(worldObj.getBlockId(ln.xCoord, ln.yCoord, ln.zCoord) == ModObject.blockLightNode.actualId) {
           worldObj.setBlockToAir(ln.xCoord, ln.yCoord, ln.zCoord);
         }
       }
@@ -258,22 +258,22 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
     int y = yCoord + (int) offset.y;
     int z = zCoord + (int) offset.z;
 
-    if (isLightNode(offset)) {
+    if(isLightNode(offset)) {
       TileLightNode te = (TileLightNode) worldObj.getBlockTileEntity(x, y, z);
-      if (te.parentX != xCoord || te.parentY != yCoord || te.parentZ != zCoord) {
+      if(te.parentX != xCoord || te.parentY != yCoord || te.parentZ != zCoord) {
         // its somebody else's so leave it alone
         return;
       }
-    }   
+    }
     result.add(new NodeEntry(new BlockCoord(x, y, z), isDiag));
   }
 
   private boolean isRailcraftException(int id) {
-    if (id > 0 && Block.blocksList[id] != null) {
+    if(id > 0 && Block.blocksList[id] != null) {
       // Pretty bad hack, by only feasable way I can think of to prevent our
       // light nodes getting placed inside railcraft tanks.
       String className = Block.blocksList[id].getClass().getName();
-      if (className.equals("mods.railcraft.common.blocks.machine.BlockMachine")) {
+      if(className.equals("mods.railcraft.common.blocks.machine.BlockMachine")) {
         return true;
       }
     }
@@ -282,7 +282,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
   private boolean isTranparent(Vector3d offset) {
     int id = worldObj.getBlockId(xCoord + (int) offset.x, yCoord + (int) offset.y, zCoord + (int) offset.z);
-    if (isRailcraftException(id)) {
+    if(isRailcraftException(id)) {
       return false;
     }
     return worldObj.getBlockLightOpacity(xCoord + (int) offset.x, yCoord + (int) offset.y, zCoord + (int) offset.z) == 0;
@@ -308,7 +308,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
     root.setShort("face", (short) face.ordinal());
     root.setFloat("storedEnergy", powerHandler.getEnergyStored());
 
-    if (lightNodes != null) {
+    if(lightNodes != null) {
       int[] lnLoc = new int[lightNodes.size() * 3];
       int index = 0;
       for (TileLightNode ln : lightNodes) {
@@ -381,24 +381,22 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
+      if(this == obj)
         return true;
-      if (obj == null)
+      if(obj == null)
         return false;
-      if (getClass() != obj.getClass())
+      if(getClass() != obj.getClass())
         return false;
       NodeEntry other = (NodeEntry) obj;
-      if (coord == null) {
-        if (other.coord != null)
+      if(coord == null) {
+        if(other.coord != null)
           return false;
-      } else if (!coord.equals(other.coord))
+      } else if(!coord.equals(other.coord))
         return false;
-      if (isDiagnal != other.isDiagnal)
+      if(isDiagnal != other.isDiagnal)
         return false;
       return true;
     }
-    
-    
 
   }
 

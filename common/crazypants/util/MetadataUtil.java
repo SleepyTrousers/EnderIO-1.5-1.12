@@ -4,7 +4,7 @@ public class MetadataUtil {
 
   public static void printBits(int meta) {
     for (int k = 0; k < 4; k++) {
-      if (((meta >> k) & 1) == 1) {
+      if(((meta >> k) & 1) == 1) {
         System.out.print(1);
       } else {
         System.out.print(0);
@@ -16,7 +16,7 @@ public class MetadataUtil {
   public static String toBitString(int meta) {
     StringBuilder sb = new StringBuilder();
     for (int k = 0; k < 4; k++) {
-      if (((meta >> k) & 1) == 1) {
+      if(((meta >> k) & 1) == 1) {
         sb.append(1);
       } else {
         sb.append(0);
@@ -30,7 +30,7 @@ public class MetadataUtil {
   }
 
   public static int setBit(int position, boolean value, int meta) {
-    if (value) {
+    if(value) {
       return meta | (1 << position);
     }
     return meta & ~(1 << position);

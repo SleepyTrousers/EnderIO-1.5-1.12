@@ -31,7 +31,7 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
 
   @Override
   public IConduit createConduit(ItemStack stack) {
-    if (stack.getItemDamage() == 1) {
+    if(stack.getItemDamage() == 1) {
       return new RedstoneSwitch();
     } else {
       return new RedstoneConduit();

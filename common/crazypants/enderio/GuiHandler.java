@@ -16,7 +16,6 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_CAPACITOR_BANK = 5;
   public static final int GUI_ID_CRUSHER = 6;
   public static final int GUI_ID_HYPER_CUBE = 7;
-  
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 
@@ -27,7 +26,7 @@ public class GuiHandler implements IGuiHandler {
   @Override
   public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
     IGuiHandler handler = guiHandlers.get(id);
-    if (handler != null) {
+    if(handler != null) {
       return handler.getServerGuiElement(id, player, world, x, y, z);
     }
     return null;
@@ -36,7 +35,7 @@ public class GuiHandler implements IGuiHandler {
   @Override
   public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
     IGuiHandler handler = guiHandlers.get(id);
-    if (handler != null) {
+    if(handler != null) {
       return handler.getClientGuiElement(id, player, world, x, y, z);
     }
     return null;

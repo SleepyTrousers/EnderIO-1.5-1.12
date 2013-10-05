@@ -1,17 +1,15 @@
 package crazypants.gui;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
-import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+
+import org.lwjgl.opengl.GL11;
+
+import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
 public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen {
 
@@ -64,10 +62,10 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   public FontRenderer getFontRenderer() {
     return fontRenderer;
   }
-  
+
   @Override
   public void addButton(GuiButton button) {
-    buttonList.add(button);    
+    buttonList.add(button);
   }
 
 }

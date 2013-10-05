@@ -62,7 +62,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
   @Override
   public Icon getIcon(int side, int meta) {
-    if (side == ForgeDirection.UP.ordinal()) {
+    if(side == ForgeDirection.UP.ordinal()) {
       return blockIcon;
     }
     return sideIcon;
@@ -71,7 +71,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntitySolarPanel) {
+    if(te instanceof TileEntitySolarPanel) {
       ((TileEntitySolarPanel) te).onNeighborBlockChange();
     }
   }

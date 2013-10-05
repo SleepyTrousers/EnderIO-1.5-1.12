@@ -3,16 +3,15 @@ package crazypants.gui;
 import java.util.Iterator;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import crazypants.gui.ToolTipManager.ToolTipRenderer;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.inventory.Container;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
 public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer, IGuiScreen {
 
@@ -67,13 +66,13 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
     GL11.glPushMatrix();
-    GL11.glTranslatef((float)guiLeft, (float)guiTop, 0.0F);
+    GL11.glTranslatef(guiLeft, guiTop, 0.0F);
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    
+
     GL11.glDisable(GL11.GL_LIGHTING);
     drawForegroundLayer(par1, par2);
     GL11.glEnable(GL11.GL_LIGHTING);
-    
+
     GL11.glPopMatrix();
 
     GL11.glEnable(GL11.GL_LIGHTING);
@@ -93,12 +92,12 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
 
   @Override
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
-        
-    if (!par1List.isEmpty()) {
-      
+
+    if(!par1List.isEmpty()) {
+
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-      
+
       GL11.glDisable(GL12.GL_RESCALE_NORMAL);
       RenderHelper.disableStandardItemLighting();
       GL11.glDisable(GL11.GL_LIGHTING);
@@ -111,7 +110,7 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
         String s = (String) iterator.next();
         int l = font.getStringWidth(s);
 
-        if (l > k)
+        if(l > k)
         {
           k = l;
         }
@@ -121,17 +120,17 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
       int j1 = par3 - 12;
       int k1 = 8;
 
-      if (par1List.size() > 1)
+      if(par1List.size() > 1)
       {
         k1 += 2 + (par1List.size() - 1) * 10;
       }
 
-      if (i1 + k > this.width)
+      if(i1 + k > this.width)
       {
         i1 -= 28 + k;
       }
 
-      if (j1 + k1 + 6 > this.height)
+      if(j1 + k1 + 6 > this.height)
       {
         j1 = this.height - k1 - 6;
       }
@@ -156,7 +155,7 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
         String s1 = (String) par1List.get(k2);
         font.drawStringWithShadow(s1, i1, j1, -1);
 
-        if (k2 == 0)
+        if(k2 == 0)
         {
           j1 += 2;
         }
@@ -170,10 +169,10 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       RenderHelper.enableStandardItemLighting();
       GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-      
+
       GL11.glPopAttrib();
       GL11.glPopAttrib();
-      
+
     }
   }
 
@@ -196,9 +195,9 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
   public FontRenderer getFontRenderer() {
     return fontRenderer;
   }
-  
+
   @Override
   public void addButton(GuiButton button) {
-    buttonList.add(button);    
+    buttonList.add(button);
   }
 }

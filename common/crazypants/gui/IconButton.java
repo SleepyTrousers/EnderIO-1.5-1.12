@@ -60,7 +60,7 @@ public class IconButton extends GuiButton {
   @SuppressWarnings("synthetic-access")
   @Override
   public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
-    if (drawButton) {
+    if(drawButton) {
 
       RenderUtil.bindTexture("textures/gui/widgets.png");
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

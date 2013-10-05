@@ -22,13 +22,13 @@ public final class BlockCoord {
   public BlockCoord getLocation(ForgeDirection dir) {
     return new BlockCoord(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
   }
-  
+
   public int distanceSquared(BlockCoord other) {
     int dx, dy, dz;
     dx = x - other.x;
     dy = y - other.y;
     dz = z - other.z;
-    return (dx * dx + dy * dy + dz * dz);    
+    return (dx * dx + dy * dy + dz * dz);
   }
 
   @Override
@@ -43,18 +43,18 @@ public final class BlockCoord {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if(this == obj)
       return true;
-    if (obj == null)
+    if(obj == null)
       return false;
-    if (getClass() != obj.getClass())
+    if(getClass() != obj.getClass())
       return false;
     BlockCoord other = (BlockCoord) obj;
-    if (x != other.x)
+    if(x != other.x)
       return false;
-    if (y != other.y)
+    if(y != other.y)
       return false;
-    if (z != other.z)
+    if(z != other.z)
       return false;
     return true;
   }
@@ -67,7 +67,5 @@ public final class BlockCoord {
   public boolean equals(int xCoord, int yCoord, int zCoord) {
     return x == xCoord && y == yCoord && z == zCoord;
   }
-
-  
 
 }

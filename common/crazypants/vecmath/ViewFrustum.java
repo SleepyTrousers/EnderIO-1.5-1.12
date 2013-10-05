@@ -56,7 +56,7 @@ public class ViewFrustum {
 
   public boolean containsPoint(Vector3d point) {
     for (Vector4d plane : planes) {
-      if (distanceFromPointToPlane(plane, point) < 0) {
+      if(distanceFromPointToPlane(plane, point) < 0) {
         return false;
       }
     }

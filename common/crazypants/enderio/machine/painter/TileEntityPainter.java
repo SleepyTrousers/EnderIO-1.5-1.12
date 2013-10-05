@@ -4,8 +4,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {

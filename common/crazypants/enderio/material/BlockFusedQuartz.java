@@ -85,8 +85,8 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-//    blockIcon = iconRegister.registerIcon("enderio:fusedQuartz");
-//    itemIcon = iconRegister.registerIcon("enderio:fusedQuartzItem");
+    //    blockIcon = iconRegister.registerIcon("enderio:fusedQuartz");
+    //    itemIcon = iconRegister.registerIcon("enderio:fusedQuartzItem");
 
     //This little oddity is so the standard rendering used for items and breaking effects
     //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
@@ -110,14 +110,14 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
-    if (!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
 
-      if (te instanceof TileEntityCustomBlock) {
+      if(te instanceof TileEntityCustomBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
 
         ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlockId(), tef.getSourceBlockMetadata());
-        if (itemStack != null) {
+        if(itemStack != null) {
           float f = 0.7F;
           double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
           double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -134,7 +134,7 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   }
 
   private ItemStack createItemStackForSourceBlock(int sourceBlockId, int sourceBlockMetadata) {
-    if (sourceBlockId <= 0) {
+    if(sourceBlockId <= 0) {
       return null;
     }
     ItemStack result = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);

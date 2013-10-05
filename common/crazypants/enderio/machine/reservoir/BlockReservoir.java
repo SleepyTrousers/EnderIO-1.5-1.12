@@ -73,7 +73,7 @@ public class BlockReservoir extends BlockContainer {
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
     ItemStack current = entityPlayer.inventory.getCurrentItem();
-    if (current != null) {
+    if(current != null) {
 
       TileReservoir tank = (TileReservoir) world.getBlockTileEntity(x, y, z);
 
@@ -81,11 +81,11 @@ public class BlockReservoir extends BlockContainer {
       // LiquidContainerRegistry.getLiquidForFilledItem(current);
       FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
 
-      if (liquid != null) {
+      if(liquid != null) {
         // Handle filled containers
         int qty = tank.getController().doFill(ForgeDirection.UNKNOWN, liquid, true);
 
-        if (qty != 0 && !entityPlayer.capabilities.isCreativeMode) {
+        if(qty != 0 && !entityPlayer.capabilities.isCreativeMode) {
           entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(current));
         }
         return true;
@@ -94,15 +94,15 @@ public class BlockReservoir extends BlockContainer {
         // Handle empty containers
 
         FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-        if (available != null) {
+        if(available != null) {
           ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
 
           liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
 
-          if (liquid != null) {
-            if (!entityPlayer.capabilities.isCreativeMode) {
-              if (current.stackSize > 1) {
-                if (!entityPlayer.inventory.addItemStackToInventory(filled))
+          if(liquid != null) {
+            if(!entityPlayer.capabilities.isCreativeMode) {
+              if(current.stackSize > 1) {
+                if(!entityPlayer.inventory.addItemStackToInventory(filled))
                   return false;
                 else {
                   entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(current));
@@ -115,7 +115,7 @@ public class BlockReservoir extends BlockContainer {
             tank.drain(ForgeDirection.UNKNOWN, liquid.amount, true);
             return true;
 
-          } else if (ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
+          } else if(ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
             tank.setAutoEject(!tank.isAutoEject());
             for (BlockCoord bc : tank.multiblock) {
               world.markBlockForUpdate(bc.x, bc.y, bc.z);
@@ -135,11 +135,11 @@ public class BlockReservoir extends BlockContainer {
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof TileReservoir)) {
+    if(!(te instanceof TileReservoir)) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
     TileReservoir tr = (TileReservoir) te;
-    if (!tr.isMultiblock()) {
+    if(!tr.isMultiblock()) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
 
@@ -179,7 +179,7 @@ public class BlockReservoir extends BlockContainer {
 
   @Override
   public void onBlockAdded(World world, int x, int y, int z) {
-    if (world.isRemote) {
+    if(world.isRemote) {
       return;
     }
     TileReservoir tr = (TileReservoir) world.getBlockTileEntity(x, y, z);
@@ -189,7 +189,7 @@ public class BlockReservoir extends BlockContainer {
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
-    if (world.isRemote) {
+    if(world.isRemote) {
       return;
     }
     TileReservoir te = (TileReservoir) world.getBlockTileEntity(x, y, z);
@@ -209,11 +209,11 @@ public class BlockReservoir extends BlockContainer {
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof TileReservoir)) {
+    if(!(te instanceof TileReservoir)) {
       return true;
     }
     TileReservoir tr = (TileReservoir) te;
-    if (!tr.isMultiblock()) {
+    if(!tr.isMultiblock()) {
       return true;
     }
     return false;
@@ -224,42 +224,42 @@ public class BlockReservoir extends BlockContainer {
     // used to render the block in the world
     TileEntity te = world.getBlockTileEntity(x, y, z);
 
-    if (!(te instanceof TileReservoir)) {
+    if(!(te instanceof TileReservoir)) {
       return blockIcon;
     }
     TileReservoir tr = (TileReservoir) te;
-    if (!tr.isMultiblock()) {
+    if(!tr.isMultiblock()) {
       return blockIcon;
     }
 
     ForgeDirection side = ForgeDirection.getOrientation(blockSide);
     Pos pos = tr.pos;
 
-    if (tr.front == side || tr.front == side.getOpposite()) { // 2x2 area
+    if(tr.front == side || tr.front == side.getOpposite()) { // 2x2 area
 
       boolean isRight;
-      if (tr.isVertical()) { // to to flip right and left for back faces of
-                             // vertical multiblocks
+      if(tr.isVertical()) { // to to flip right and left for back faces of
+                            // vertical multiblocks
         isRight = (pos.isRight && tr.front != side.getOpposite()) || (!pos.isRight && tr.front == side.getOpposite());
       } else {
         isRight = pos.isRight;
       }
-      if (pos.isTop) {
+      if(pos.isTop) {
         return isRight ? mbIcons[MbFace.TR.ordinal()] : mbIcons[MbFace.TL.ordinal()];
       } else {
         return isRight ? mbIcons[MbFace.BR.ordinal()] : mbIcons[MbFace.BL.ordinal()];
       }
 
     }
-    if (tr.up == side || tr.up == side.getOpposite()) { // up or down face
-      if (tr.isVertical()) {
-        if (tr.right.offsetX != 0) {
+    if(tr.up == side || tr.up == side.getOpposite()) { // up or down face
+      if(tr.isVertical()) {
+        if(tr.right.offsetX != 0) {
           return pos.isRight ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
         } else {
           return pos.isRight ? mbIcons[MbFace.T.ordinal()] : mbIcons[MbFace.B.ordinal()];
         }
       } else {
-        if (tr.up == side) {
+        if(tr.up == side) {
           return pos.isRight ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
         } else {
           return pos.isRight ? mbIcons[MbFace.R.ordinal()] : mbIcons[MbFace.L.ordinal()];
@@ -267,10 +267,10 @@ public class BlockReservoir extends BlockContainer {
       }
 
     } else {
-      if (tr.isVertical()) {
+      if(tr.isVertical()) {
         return pos.isTop ? mbIcons[MbFace.T.ordinal()] : mbIcons[MbFace.B.ordinal()];
       } else {
-        if (tr.right != side) {
+        if(tr.right != side) {
           return pos.isTop ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
         } else {
           return pos.isTop ? mbIcons[MbFace.R.ordinal()] : mbIcons[MbFace.L.ordinal()];

@@ -5,8 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {

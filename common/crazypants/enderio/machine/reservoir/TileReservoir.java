@@ -72,22 +72,22 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public void updateEntity() {
-    if (worldObj == null || worldObj.isRemote) {
+    if(worldObj == null || worldObj.isRemote) {
       return;
     }
-    if (isMaster()) {
-      if (regenTank.isFull() && !tank.isFull()) {
+    if(isMaster()) {
+      if(regenTank.isFull() && !tank.isFull()) {
         ++ticksSinceFill;
-        if (ticksSinceFill >= 20) {
+        if(ticksSinceFill >= 20) {
           ticksSinceFill = 0;
           tank.fill(WATER_BUCKET, true);
           tankDirty = true;
         }
       }
-      if (autoEject && neighboursDirty) {
+      if(autoEject && neighboursDirty) {
         doUpdateTankNeighbours();
       }
-      if (autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
+      if(autoEject && tankNeighbours != null && !tankNeighbours.isEmpty() && tank.getAmount() > 0) {
         int ejectable = tank.getAmount();
         int amountPerNeighbour = ejectable / tankNeighbours.size();
         FluidStack source = WATER_BUCKET.copy();
@@ -100,7 +100,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
         tankDirty = true;
       }
     }
-    if (tankDirty) {
+    if(tankDirty) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       tankDirty = false;
     }
@@ -108,7 +108,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if (isMultiblock()) {
+    if(isMultiblock()) {
       return 0;
     }
     return getController().doFill(from, resource, doFill);
@@ -121,7 +121,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if (resource != null && !resource.isFluidEqual(tank.getFluid())) {
+    if(resource != null && !resource.isFluidEqual(tank.getFluid())) {
       return null;
     }
     return drain(from, resource.amount, doDrain);
@@ -129,10 +129,10 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if (tank.getFluid() == null) {
+    if(tank.getFluid() == null) {
       return true;
     }
-    if (fluid != null && fluid.getID() == tank.getFluid().fluidID) {
+    if(fluid != null && fluid.getID() == tank.getFluid().fluidID) {
       return true;
     }
     return false;
@@ -140,7 +140,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if (tank.getFluid() == null || fluid == null) {
+    if(tank.getFluid() == null || fluid == null) {
       return false;
     }
     return tank.getFluid().getFluid().getID() == fluid.getID();
@@ -162,7 +162,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   public void setAutoEject(boolean autoEject) {
     TileReservoir c = getController();
-    if (c != null) {
+    if(c != null) {
       c.doSetAutoEject(autoEject);
     } else {
       doSetAutoEject(autoEject);
@@ -170,7 +170,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private void doSetAutoEject(boolean newVal) {
-    if (newVal && !autoEject) {
+    if(newVal && !autoEject) {
       updateTankNeighbours();
     }
     this.autoEject = newVal;
@@ -178,7 +178,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   public boolean isAutoEject() {
     TileReservoir c = getController();
-    if (c != null) {
+    if(c != null) {
       return c.doIsAutoEject();
     } else {
       return doIsAutoEject();
@@ -191,22 +191,22 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   private void updateTankNeighbours() {
     TileReservoir c = getController();
-    if (c != null) {
+    if(c != null) {
       c.neighboursDirty = true;
     }
   }
 
   private void doUpdateTankNeighbours() {
-    if (tankNeighbours == null) {
+    if(tankNeighbours == null) {
       tankNeighbours = new ArrayList<TankNeighbour>();
     }
     tankNeighbours.clear();
     for (BlockCoord bc : multiblock) {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord check = bc.getLocation(dir);
-        if (!inMultiblock(check)) {
+        if(!inMultiblock(check)) {
           IFluidHandler tc = getTankContainer(check);
-          if (tc != null) {
+          if(tc != null) {
             tankNeighbours.add(new TankNeighbour(tc, dir.getOpposite()));
           }
         }
@@ -217,7 +217,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   private boolean inMultiblock(BlockCoord check) {
     for (BlockCoord bc : multiblock) {
-      if (check.equals(bc)) {
+      if(check.equals(bc)) {
         return true;
       }
     }
@@ -238,13 +238,13 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     FluidStack regenLiquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("regenTank"));
 
     tank.setCapacity(regenLiquid == null ? BUCKET_VOLUME : BUCKET_VOLUME * 2);
-    if (liquid != null) {
+    if(liquid != null) {
       tank.setFluid(liquid);
     } else {
       tank.setAmount(0);
     }
 
-    if (regenLiquid == null) {
+    if(regenLiquid == null) {
       regenTank = null;
     } else {
       regenTank = new ReservoirTank(regenLiquid, BUCKET_VOLUME * 2);
@@ -252,7 +252,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
     boolean wasMulti = isMultiblock();
 
-    if (nbtRoot.getBoolean("isMultiblock")) {
+    if(nbtRoot.getBoolean("isMultiblock")) {
       int[] coords = nbtRoot.getIntArray("multiblock");
       multiblock = new BlockCoord[4];
       int c = 0;
@@ -260,7 +260,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
         multiblock[i] = new BlockCoord(coords[c++], coords[c++], coords[c++]);
       }
 
-      if (isMaster() && autoEject) {
+      if(isMaster() && autoEject) {
         updateTankNeighbours();
       }
 
@@ -268,7 +268,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
       multiblock = null;
     }
 
-    if (wasMulti != isMultiblock()) {
+    if(wasMulti != isMultiblock()) {
       liquidRenderBounds = null;
     }
 
@@ -284,15 +284,15 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
     nbtRoot.setBoolean("autoEject", autoEject);
 
-    if (tank.getFluid() != null) {
+    if(tank.getFluid() != null) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
     }
-    if (regenTank != null) {
+    if(regenTank != null) {
       nbtRoot.setTag("regenTank", regenTank.getFluid().writeToNBT(new NBTTagCompound()));
     }
 
     nbtRoot.setBoolean("isMultiblock", isMultiblock());
-    if (isMultiblock()) {
+    if(isMultiblock()) {
       int[] vals = new int[12];
       int i = 0;
       for (BlockCoord bc : multiblock) {
@@ -310,12 +310,12 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   public boolean onNeighborBlockChange(int blockId) {
-    if (blockId == ModObject.blockReservoir.actualId) {
+    if(blockId == ModObject.blockReservoir.actualId) {
 
-      if (!isCurrentMultiblockValid()) {
+      if(!isCurrentMultiblockValid()) {
         // if its not, try and form a new one
         TileReservoir controller = getController();
-        if (controller != null) {
+        if(controller != null) {
           controller.clearCurrentMultiblock();
           controller.formMultiblock();
         } else {
@@ -324,7 +324,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
         }
         return true;
       }
-    } else if (isMultiblock() && isAutoEject()) {
+    } else if(isMultiblock() && isAutoEject()) {
       updateTankNeighbours();
     }
     return false;
@@ -335,7 +335,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   boolean isMaster() {
-    if (multiblock != null) {
+    if(multiblock != null) {
       return multiblock[0].equals(xCoord, yCoord, zCoord);
     }
     return false;
@@ -350,8 +350,8 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   BoundingBox getLiquidRenderBounds() {
-    if (liquidRenderBounds == null) {
-      if (!isMultiblock()) {
+    if(liquidRenderBounds == null) {
+      if(!isMultiblock()) {
         return BoundingBox.UNIT_CUBE;
       }
       BoundingBox bounds = new BoundingBox(multiblock[0]);
@@ -365,20 +365,20 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   protected float doGetFilledRatio() {
     float result = tank.getFilledRatio();
-    if (isMaster()) {
+    if(isMaster()) {
       result = regenTank.getFilledRatio() * 0.5f + result * 0.5f;
     }
     return result;
   }
 
   int doFill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if (!WATER_BUCKET.isFluidEqual(resource)) {
+    if(!WATER_BUCKET.isFluidEqual(resource)) {
       return 0;
     }
 
     int ret = 0;
     // fill buffer first
-    if (resource != null && isMaster()) {
+    if(resource != null && isMaster()) {
       resource = resource.copy();
       int filled = regenTank.fill(resource, doFill);
       resource.amount -= filled;
@@ -399,26 +399,26 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     multiblock = mb;
     updatePosition();
 
-    if (isMaster()) {
+    if(isMaster()) {
 
       regenTank = new ReservoirTank(BUCKET_VOLUME * 2);
       tank.setCapacity(BUCKET_VOLUME * 2);
       for (BlockCoord bc : multiblock) {
         TileReservoir res = getReservoir(bc);
-        if (res != null) {
+        if(res != null) {
           FluidStack drained = res.doDrain(ForgeDirection.UNKNOWN, regenTank.getAvailableSpace(), true);
-          if (drained != null) {
+          if(drained != null) {
             regenTank.addAmount(drained.amount);
           }
           // incase regen tank is full, add to normal tank
           drained = res.doDrain(ForgeDirection.UNKNOWN, tank.getAvailableSpace(), true);
-          if (drained != null) {
+          if(drained != null) {
             tank.addAmount(drained.amount);
           }
         }
       }
 
-      if (doIsAutoEject()) {
+      if(doIsAutoEject()) {
         updateTankNeighbours();
       }
 
@@ -435,7 +435,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   TileReservoir getController() {
-    if (isMaster() || !isMultiblock()) {
+    if(isMaster() || !isMultiblock()) {
       return this;
     }
     TileReservoir res = getReservoir(multiblock[0]);
@@ -443,7 +443,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private void updatePosition() {
-    if (multiblock == null) {
+    if(multiblock == null) {
       front = UNKNOWN;
       up = UNKNOWN;
       right = UNKNOWN;
@@ -452,16 +452,16 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
     boolean isVertical = false;
     for (BlockCoord bc : multiblock) {
-      if (bc.y != yCoord) {
+      if(bc.y != yCoord) {
         isVertical = true;
         break;
       }
     }
-    if (isVertical) {
+    if(isVertical) {
       up = ForgeDirection.UP;
       boolean isWestEast = false;
       for (BlockCoord bc : multiblock) {
-        if (bc.x != xCoord) {
+        if(bc.x != xCoord) {
           isWestEast = true;
           break;
         }
@@ -477,17 +477,17 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     boolean isRight = false;
     BlockCoord myCoord = new BlockCoord(this);
     for (BlockCoord bc : multiblock) {
-      if (isInDir(myCoord, right, bc)) {
+      if(isInDir(myCoord, right, bc)) {
         isRight = true;
       }
     }
     boolean isTop = false;
     for (BlockCoord bc : multiblock) {
-      if (isInDir(myCoord, up, bc)) {
+      if(isInDir(myCoord, up, bc)) {
         isTop = true;
       }
     }
-    if (isTop) {
+    if(isTop) {
       pos = isRight ? Pos.TR : Pos.TL;
     } else {
       pos = isRight ? Pos.BR : Pos.BL;
@@ -496,31 +496,31 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private boolean isInDir(BlockCoord from, ForgeDirection inDir, BlockCoord to) {
-    if (inDir.offsetX != 0) {
+    if(inDir.offsetX != 0) {
       return from.x - inDir.offsetX == to.x;
-    } else if (inDir.offsetY != 0) {
+    } else if(inDir.offsetY != 0) {
       return from.y - inDir.offsetY == to.y;
-    } else if (inDir.offsetZ != 0) {
+    } else if(inDir.offsetZ != 0) {
       return from.z - inDir.offsetZ == to.z;
     }
     return false;
   }
 
   private void clearCurrentMultiblock() {
-    if (multiblock == null) {
+    if(multiblock == null) {
       return;
     }
     boolean fillTanks = false;
-    if (isMaster()) {
+    if(isMaster()) {
       fillTanks = regenTank.isFull();
       regenTank = null;
     }
 
     for (BlockCoord bc : multiblock) {
       TileReservoir res = getReservoir(bc);
-      if (res != null) {
+      if(res != null) {
         res.setMultiblock(null);
-        if (fillTanks) {
+        if(fillTanks) {
           res.tank.fill(WATER_BUCKET, true);
         } else {
           res.tank.drain(BUCKET_VOLUME, true);
@@ -532,12 +532,12 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private boolean isCurrentMultiblockValid() {
-    if (multiblock == null) {
+    if(multiblock == null) {
       return false;
     }
     for (BlockCoord bc : multiblock) {
       TileReservoir res = getReservoir(bc);
-      if (res == null || !res.isMultiblock()) {
+      if(res == null || !res.isMultiblock()) {
         return false;
       }
     }
@@ -546,11 +546,11 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   private boolean formMultiblock() {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      if (isNonMultiReservoir(dir)) {
+      if(isNonMultiReservoir(dir)) {
         ForgeDirection[] cans = candidates(dir);
         for (ForgeDirection neighbor : cans) {
-          if (isNonMultiReservoir(neighbor)) {
-            if (isNonMultiReservoir(dir.offsetX + neighbor.offsetX, dir.offsetY + neighbor.offsetY, dir.offsetZ + neighbor.offsetZ)) {
+          if(isNonMultiReservoir(neighbor)) {
+            if(isNonMultiReservoir(dir.offsetX + neighbor.offsetX, dir.offsetY + neighbor.offsetY, dir.offsetZ + neighbor.offsetZ)) {
               BlockCoord[] mb = new BlockCoord[4];
               mb[0] = inDirection(dir);
               mb[1] = inDirection(neighbor);
@@ -582,11 +582,11 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private IFluidHandler getTankContainer(int x, int y, int z) {
-    if (worldObj == null) {
+    if(worldObj == null) {
       return null;
     }
     TileEntity te = worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof IFluidHandler) {
+    if(te instanceof IFluidHandler) {
       return (IFluidHandler) te;
     }
     return null;
@@ -598,7 +598,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   private TileReservoir getReservoir(int x, int y, int z) {
     TileEntity te = worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof TileReservoir) {
+    if(te instanceof TileReservoir) {
       return (TileReservoir) te;
     }
     return null;
@@ -606,7 +606,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   private boolean isNonMultiReservoir(int offsetX, int offsetY, int offsetZ) {
     TileReservoir res = getReservoir(xCoord + offsetX, yCoord + offsetY, zCoord + offsetZ);
-    if (res == null) {
+    if(res == null) {
       return false;
     }
     return !res.isMultiblock();
@@ -628,24 +628,24 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   public Vector3f getOffsetFromController() {
     if(!isMultiblock()) {
       return new Vector3f();
-    }    
+    }
     BlockCoord masterBC = multiblock[0];
-    BlockCoord myBC = new BlockCoord(xCoord, yCoord, zCoord);    
+    BlockCoord myBC = new BlockCoord(xCoord, yCoord, zCoord);
     return new Vector3f(masterBC.x - myBC.x, masterBC.y - myBC.y, masterBC.z - myBC.z);
   }
 
   long lastRenderTick;
   float lastRenderPartialTick;
-  
+
   public boolean haveRendered(long renderTick, float renderPartialTick) {
     TileReservoir c = getController();
     if(c.lastRenderTick == renderTick && renderPartialTick == c.lastRenderPartialTick) {
       return true;
-    }    
-    
+    }
+
     c.lastRenderTick = renderTick;
     c.lastRenderPartialTick = renderPartialTick;
-    
+
     return false;
   }
 

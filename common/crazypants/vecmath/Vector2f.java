@@ -2,7 +2,6 @@ package crazypants.vecmath;
 
 public class Vector2f {
 
-  
   public float x;
   public float y;
 
@@ -12,10 +11,10 @@ public class Vector2f {
   }
 
   public Vector2f(double x, double y) {
-    this.x = (float)x;
-    this.y = (float)y;
+    this.x = (float) x;
+    this.y = (float) y;
   }
-  
+
   public Vector2f(float x, float y) {
     this.x = x;
     this.y = y;
@@ -24,16 +23,16 @@ public class Vector2f {
   public Vector2f(Vector2d other) {
     this(other.x, other.y);
   }
-  
+
   public Vector2f(Vector2f other) {
     this(other.x, other.y);
   }
 
   public void set(double x, double y) {
-    this.x = (float)x;
-    this.y = (float)y;
+    this.x = (float) x;
+    this.y = (float) y;
   }
-  
+
   public void set(float x, float y) {
     this.x = x;
     this.y = y;
@@ -92,5 +91,5 @@ public class Vector2f {
   public String toString() {
     return "Vector2f(" + x + ", " + y + ")";
   }
-  
+
 }

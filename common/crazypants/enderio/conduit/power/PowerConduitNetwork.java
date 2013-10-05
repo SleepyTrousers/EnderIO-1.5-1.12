@@ -3,7 +3,6 @@ package crazypants.enderio.conduit.power;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,12 +55,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     Set<ForgeDirection> externalDirs = con.getExternalConnections();
     for (ForgeDirection dir : externalDirs) {
       IPowerReceptor pr = con.getExternalPowerReceptor(dir);
-      if (pr != null) {
+      if(pr != null) {
         TileEntity te = con.getBundle().getEntity();
         powerReceptorAdded(con, dir, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, pr);
       }
     }
-    if (powerManager != null) {
+    if(powerManager != null) {
       con.setActive(powerManager.isActive());
     }
   }
@@ -72,17 +71,17 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   }
 
   public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, IPowerReceptor powerReceptor) {
-    if (powerReceptor == null) {
+    if(powerReceptor == null) {
       return;
     }
     BlockCoord location = new BlockCoord(x, y, z);
     ReceptorKey key = new ReceptorKey(location, direction);
     ReceptorEntry re = powerReceptors.get(key);
-    if (re == null) {
+    if(re == null) {
       re = new ReceptorEntry(powerReceptor, location, powerConduit, direction);
       powerReceptors.put(key, re);
-    }    
-    if (powerManager != null) {
+    }
+    if(powerManager != null) {
       powerManager.receptorsChanged();
     }
   }
@@ -90,12 +89,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   public void powerReceptorRemoved(int x, int y, int z) {
     BlockCoord bc = new BlockCoord(x, y, z);
     List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
-    for(ReceptorKey key : powerReceptors.keySet()) {
+    for (ReceptorKey key : powerReceptors.keySet()) {
       if(key != null && key.coord.equals(bc)) {
         remove.add(key);
       }
     }
-    for(ReceptorKey key : remove) {
+    for (ReceptorKey key : remove) {
       powerReceptors.remove(key);
     }
     powerManager.receptorsChanged();
@@ -108,14 +107,14 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   @Override
   public void onUpdateEntity(IConduit conduit) {
     World world = conduit.getBundle().getEntity().worldObj;
-    if (world == null) {
+    if(world == null) {
       return;
     }
-    if (world.isRemote) {
+    if(world.isRemote) {
       return;
     }
     long curTime = world.getTotalWorldTime();
-    if (curTime != timeAtLastApply) {
+    if(curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
       powerManager.applyRecievedPower();
     }
@@ -136,12 +135,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     }
 
   }
-  
+
   private static class ReceptorKey {
     BlockCoord coord;
     ForgeDirection direction;
-    
-    ReceptorKey(BlockCoord coord, ForgeDirection direction) {    
+
+    ReceptorKey(BlockCoord coord, ForgeDirection direction) {
       this.coord = coord;
       this.direction = direction;
     }
@@ -157,23 +156,23 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
+      if(this == obj)
         return true;
-      if (obj == null)
+      if(obj == null)
         return false;
-      if (getClass() != obj.getClass())
+      if(getClass() != obj.getClass())
         return false;
       ReceptorKey other = (ReceptorKey) obj;
-      if (coord == null) {
-        if (other.coord != null)
+      if(coord == null) {
+        if(other.coord != null)
           return false;
-      } else if (!coord.equals(other.coord))
+      } else if(!coord.equals(other.coord))
         return false;
-      if (direction != other.direction)
+      if(direction != other.direction)
         return false;
       return true;
     }
- 
+
   }
 
 }

@@ -41,7 +41,7 @@ public class ReservoirTank extends FluidTank {
   @Override
   public FluidStack getFluid() {
     FluidStack l = super.getFluid();
-    if (l == null) {
+    if(l == null) {
       l = WATER.copy();
       setFluid(l);
     }
@@ -59,7 +59,7 @@ public class ReservoirTank extends FluidTank {
   @Override
   public void setCapacity(int capacity) {
     super.setCapacity(capacity);
-    if (getAmount() > capacity) {
+    if(getAmount() > capacity) {
       setAmount(capacity);
     }
   }

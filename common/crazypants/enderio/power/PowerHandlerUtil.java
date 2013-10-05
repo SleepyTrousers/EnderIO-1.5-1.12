@@ -8,11 +8,6 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PerditionCalculator;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.conduit.power.NetworkPowerManager;
-import crazypants.enderio.conduit.power.PowerConduitNetwork;
 
 public class PowerHandlerUtil {
 
@@ -23,16 +18,16 @@ public class PowerHandlerUtil {
     }
     return tag.getFloat("storedEnergy");
   }
-  
+
   public static void setStoredEnergyForItem(ItemStack item, float storedEnergy) {
     NBTTagCompound tag = item.getTagCompound();
     if(tag == null) {
       tag = new NBTTagCompound();
-    }    
-    tag.setFloat("storedEnergy", storedEnergy);   
-    item.setTagCompound(tag);    
+    }
+    tag.setFloat("storedEnergy", storedEnergy);
+    item.setTagCompound(tag);
   }
-  
+
   public static PowerHandler createHandler(ICapacitor capacitor, IPowerReceptor pr, Type type) {
     PowerHandler ph = new PowerHandler(pr, type);
     ph.configure(capacitor.getMinEnergyReceived(), capacitor.getMaxEnergyReceived(), capacitor.getMinActivationEnergy(), capacitor.getMaxEnergyStored());
@@ -43,7 +38,7 @@ public class PowerHandlerUtil {
 
   public static void configure(PowerHandler ph, ICapacitor capacitor) {
     ph.configure(capacitor.getMinEnergyReceived(), capacitor.getMaxEnergyReceived(), capacitor.getMinActivationEnergy(), capacitor.getMaxEnergyStored());
-    if (ph.getEnergyStored() > ph.getMaxEnergyStored()) {
+    if(ph.getEnergyStored() > ph.getMaxEnergyStored()) {
       ph.setEnergy(ph.getMaxEnergyStored());
     }
     ph.configurePowerPerdition(0, 0);
@@ -53,7 +48,7 @@ public class PowerHandlerUtil {
   public static float transmitInternal(IInternalPowerReceptor receptor, PowerReceiver pp, float quantity, Type type, ForgeDirection from) {
 
     PowerHandler ph = receptor.getPowerHandler();
-    if (ph == null) {
+    if(ph == null) {
       return 0;
     }
 
@@ -61,15 +56,13 @@ public class PowerHandlerUtil {
     float canUse = quantity;
     canUse = Math.min(canUse, pp.getMaxEnergyReceived());
     //Don't overflow it    
-    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);   
-    if (canUse <= pp.getMinEnergyReceived()) {            
+    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);
+    if(canUse <= pp.getMinEnergyReceived()) {
       pp.receiveEnergy(type, 0, null);
       ph.setEnergy(energyStored);
       return 0;
     }
-    
-    
-        
+
     // Do all required functions except:
     // - We will handle perd'n ourselves and there is not need to drain excess
     // from our engines as they are self regulating
@@ -87,7 +80,7 @@ public class PowerHandlerUtil {
 
     @Override
     public float applyPerdition(PowerHandler powerHandler, float current, long ticksPassed) {
-      if (current <= 0) {
+      if(current <= 0) {
         return 0;
       }
       float decAmount = 0.001f;
@@ -95,7 +88,7 @@ public class PowerHandlerUtil {
       do {
         res = current - decAmount;
         decAmount *= 10;
-      } while(res >= current && decAmount < PerditionCalculator.MIN_POWERLOSS);
+      } while (res >= current && decAmount < PerditionCalculator.MIN_POWERLOSS);
       return res;
     }
   }

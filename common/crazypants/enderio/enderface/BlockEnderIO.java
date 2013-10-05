@@ -44,13 +44,13 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if (entityPlayer.isSneaking()) {
+    if(entityPlayer.isSneaking()) {
       return false;
     }
-    if (entityPlayer.getCurrentEquippedItem() != null && entityPlayer.getCurrentEquippedItem().itemID == EnderIO.itemEnderface.itemID) {
+    if(entityPlayer.getCurrentEquippedItem() != null && entityPlayer.getCurrentEquippedItem().itemID == EnderIO.itemEnderface.itemID) {
       ItemStack enderFaceStack = entityPlayer.getCurrentEquippedItem();
       NBTTagCompound nbttagcompound = enderFaceStack.getTagCompound();
-      if (nbttagcompound == null) {
+      if(nbttagcompound == null) {
         nbttagcompound = new NBTTagCompound();
       }
       nbttagcompound.setBoolean(ItemEnderface.KEY_IO_SET, true);
@@ -62,7 +62,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
 
       entityPlayer.setCurrentItemOrArmor(0, enderFaceStack);
 
-      if (world.isRemote) {
+      if(world.isRemote) {
         ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO Interface Selected");
         entityPlayer.sendChatToPlayer(c);
       }

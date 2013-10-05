@@ -1,12 +1,10 @@
 package crazypants.util;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,40 +17,37 @@ import net.minecraftforge.common.DimensionManager;
 public class DebugGuiTPS extends JFrame {
 
   public static void showTpsGUI() {
-    DebugGuiTPS g = new DebugGuiTPS();    
+    DebugGuiTPS g = new DebugGuiTPS();
     g.setVisible(true);
   }
-  
+
   private static final DecimalFormat FORMAT = new DecimalFormat("########0.000");
 
-  
   private JPanel contentPane = new JPanel();
-  
+
   private DebugGuiTPS() {
     Timer timer = new Timer(2000, new ActionListener() {
-      
+
       @Override
       public void actionPerformed(ActionEvent arg0) {
-        updateTps();        
+        updateTps();
       }
     });
     timer.setRepeats(true);
     timer.start();
-    
-    
-    
+
     contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-    
+
     setTitle("TPS");
     setLayout(new BorderLayout());
     add(contentPane, BorderLayout.CENTER);
     setSize(200, 120);
   }
-  
+
   private void updateTps() {
-    
+
     contentPane.removeAll();
-    
+
     MinecraftServer server = MinecraftServer.getServer();
     if(server == null) {
       return;
@@ -62,16 +57,16 @@ public class DebugGuiTPS extends JFrame {
     JLabel l = new JLabel(s);
     contentPane.add(l);
 
-    if (server.worldServers != null) {
+    if(server.worldServers != null) {
       for (Integer id : DimensionManager.getIDs()) {
         s = "Lvl " + id + " tick: " + FORMAT.format(average(server.worldTickTimes.get(id)) * 1.0E-6D) + " ms";
         l = new JLabel(s);
         contentPane.add(l);
       }
-    }    
+    }
     revalidate();
     repaint();
-    
+
   }
 
   private double average(long[] values) {
@@ -81,5 +76,5 @@ public class DebugGuiTPS extends JFrame {
     }
     return (double) i / (double) values.length;
   }
-  
+
 }

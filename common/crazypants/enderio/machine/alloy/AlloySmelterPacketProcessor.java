@@ -33,7 +33,7 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
     boolean val = data.readBoolean();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if (te instanceof TileAlloySmelter) {
+    if(te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setFurnaceRecipesEnabled(val);
       p.worldObj.markBlockForUpdate(x, y, z);
@@ -41,7 +41,6 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
 
   }
 
-  
   public static Packet getSmeltingModePacket(TileAlloySmelter te) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
@@ -63,5 +62,5 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
     return pkt;
 
   }
-  
+
 }

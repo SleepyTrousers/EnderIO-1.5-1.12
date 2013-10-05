@@ -53,35 +53,35 @@ public abstract class AbstractMachineContainer extends Container {
 
     ItemStack copystack = null;
     Slot slot = (Slot) inventorySlots.get(slotIndex);
-    if (slot != null && slot.getHasStack()) {
+    if(slot != null && slot.getHasStack()) {
 
       ItemStack origStack = slot.getStack();
       copystack = origStack.copy();
 
-      if (slotDef.isInputSlot(slotIndex) || slotDef.isUpgradeSlot(slotIndex)) {
+      if(slotDef.isInputSlot(slotIndex) || slotDef.isUpgradeSlot(slotIndex)) {
         // merge from machine input slots to inventory
-        if (!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
+        if(!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
           return null;
         }
 
-      } else if (slotDef.isOutputSlot(slotIndex)) {
+      } else if(slotDef.isOutputSlot(slotIndex)) {
         // merge result
-        if (!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, true)) {
+        if(!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, true)) {
           return null;
         }
         slot.onSlotChange(origStack, copystack);
 
       } else {
         //Check from inv->input then inv->upgrade then inv->hotbar or hotbar->inv
-        if (slotIndex >= startPlayerSlot) {
-          if (!tileEntity.isValidInput(origStack) || !mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
-            if (!tileEntity.isValidUpgrade(origStack) || !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
-              if (slotIndex <= endPlayerSlot) {
-                if (!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
+        if(slotIndex >= startPlayerSlot) {
+          if(!tileEntity.isValidInput(origStack) || !mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
+            if(!tileEntity.isValidUpgrade(origStack) || !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
+              if(slotIndex <= endPlayerSlot) {
+                if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                   return null;
                 }
-              } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
-                if (!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
+              } else if(slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
+                if(!mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
                   return null;
                 }
               }
@@ -90,7 +90,7 @@ public abstract class AbstractMachineContainer extends Container {
         }
       }
 
-      if (origStack.stackSize == 0) {
+      if(origStack.stackSize == 0) {
         slot.putStack((ItemStack) null);
       } else {
         slot.onSlotChanged();
@@ -98,7 +98,7 @@ public abstract class AbstractMachineContainer extends Container {
 
       slot.onSlotChanged();
 
-      if (origStack.stackSize == copystack.stackSize) {
+      if(origStack.stackSize == copystack.stackSize) {
         return null;
       }
 

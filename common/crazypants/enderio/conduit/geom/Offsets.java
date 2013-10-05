@@ -58,21 +58,21 @@ public class Offsets {
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
+      if(this == obj)
         return true;
-      if (obj == null)
+      if(obj == null)
         return false;
-      if (getClass() != obj.getClass())
+      if(getClass() != obj.getClass())
         return false;
       OffsetKey other = (OffsetKey) obj;
-      if (horizontal != other.horizontal)
+      if(horizontal != other.horizontal)
         return false;
-      if (typeName == null) {
-        if (other.typeName != null)
+      if(typeName == null) {
+        if(other.typeName != null)
           return false;
-      } else if (!typeName.equals(other.typeName))
+      } else if(!typeName.equals(other.typeName))
         return false;
-      if (vertical != other.vertical)
+      if(vertical != other.vertical)
         return false;
       return true;
     }

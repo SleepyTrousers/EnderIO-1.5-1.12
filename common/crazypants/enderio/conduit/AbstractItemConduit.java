@@ -62,50 +62,50 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 
     BlockCoord placeAt = Util.canPlaceItem(stack, ModObject.blockConduitBundle.actualId, player, world, x, y, z, side);
-    if (placeAt != null) {
-      if (!world.isRemote) {
-        if (world.setBlock(placeAt.x, placeAt.y, placeAt.z, ModObject.blockConduitBundle.actualId, 0, 1)) {
+    if(placeAt != null) {
+      if(!world.isRemote) {
+        if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, ModObject.blockConduitBundle.actualId, 0, 1)) {
           IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeAt.x, placeAt.y, placeAt.z);
           bundle.addConduit(createConduit(stack));
           Block b = EnderIO.blockConduitBundle;
-          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), b.stepSound.getPlaceSound(),
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getPlaceSound(),
               (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
         }
       }
-      if (!player.capabilities.isCreativeMode) {
+      if(!player.capabilities.isCreativeMode) {
         stack.stackSize--;
       }
       return true;
-      
+
     } else {
-      
+
       ForgeDirection dir = ForgeDirection.values()[side];
       int placeX = x + dir.offsetX;
       int placeY = y + dir.offsetY;
       int placeZ = z + dir.offsetZ;
-      
-      if (world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
+
+      if(world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
 
         IConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
-        if (bundle == null) {
+        if(bundle == null) {
           System.out.println("AbstractItemConduit.onItemUse: Bunle null");
           return false;
         }
         IConduit con = createConduit(stack);
-        if (con == null) {
+        if(con == null) {
           System.out.println("AbstractItemConduit.onItemUse: Conduit null.");
           return false;
         }
-        if (bundle.getConduit(con.getBaseConduitType()) == null) {
-          if (!world.isRemote) {
+        if(bundle.getConduit(con.getBaseConduitType()) == null) {
+          if(!world.isRemote) {
             bundle.addConduit(con);
-            if (!player.capabilities.isCreativeMode) {
+            if(!player.capabilities.isCreativeMode) {
               stack.stackSize--;
             }
           }
           return true;
         }
-      } 
+      }
     }
 
     return false;

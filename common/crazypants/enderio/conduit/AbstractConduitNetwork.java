@@ -16,14 +16,14 @@ public abstract class AbstractConduitNetwork<T extends IConduit> {
 
   public void init(IConduitBundle tile, Collection<T> connections, World world) {
 
-    if (world.isRemote) {
+    if(world.isRemote) {
       throw new UnsupportedOperationException();
     }
 
     // Destroy all existing redstone networks around this block
     for (T con : connections) {
       AbstractConduitNetwork<?> network = con.getNetwork();
-      if (network != null) {
+      if(network != null) {
         network.destroyNetwork();
       }
     }
@@ -36,12 +36,12 @@ public abstract class AbstractConduitNetwork<T extends IConduit> {
   protected void setNetwork(World world, IConduitBundle tile) {
 
     T conduit = tile.getConduit(getBaseConduitType());
-    if (conduit.setNetwork(this)) {
+    if(conduit.setNetwork(this)) {
       addConduit(conduit);
       TileEntity te = tile.getEntity();
       Collection<? extends T> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, getBaseConduitType());
       for (T con : connections) {
-        if (con.getNetwork() == null) {
+        if(con.getNetwork() == null) {
           setNetwork(world, con.getBundle());
         }
       }

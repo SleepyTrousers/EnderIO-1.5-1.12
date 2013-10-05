@@ -15,25 +15,19 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IconToggleButtonEIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.gui.GuiIconRenderer;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.gui.ListSelectionListener;
-import crazypants.gui.ToggleButton;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.PacketUtil;
 
 public class GuiHyperCube extends GuiScreenBase {
 
@@ -127,12 +121,11 @@ public class GuiHyperCube extends GuiScreenBase {
     selectPrivateB = new IconButtonEIO(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
     selectPrivateB.setToolTip("Activate Channel");
 
-    
     int w = 104;
     int h = 68;
     int x = 7;
     int y = 45;
-    
+
     Channel activeChannel = cube.getChannel();
     publicChannelList = new GuiChannelList(this, w, h, x, y);
     publicChannelList.setChannels(ClientChannelRegister.instance.getPublicChannels());
@@ -152,7 +145,7 @@ public class GuiHyperCube extends GuiScreenBase {
       @Override
       public void selectionChanged(GuiScrollableList<Channel> list, int selectedIndex) {
         Channel selected = list.getSelectedElement();
-        if (selected != null) {
+        if(selected != null) {
           GuiChannelList clear = list == publicChannelList ? privateChannelList : publicChannelList;
           clear.setSelection(-1);
         }
@@ -164,14 +157,14 @@ public class GuiHyperCube extends GuiScreenBase {
     privateChannelList.addSelectionListener(selectionListener);
 
   }
-  
+
   private boolean isPublic(Channel chan) {
     if(chan == null) {
       return false;
     }
     return chan.isPublic();
   }
-  
+
   private boolean isPrivate(Channel chan) {
     if(chan == null) {
       return false;
@@ -222,56 +215,56 @@ public class GuiHyperCube extends GuiScreenBase {
 
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
-    if (par1GuiButton.id == POWER_INPUT_BUTTON_ID) {
+    if(par1GuiButton.id == POWER_INPUT_BUTTON_ID) {
       int ordinal = cube.getInputControlMode().ordinal();
       ordinal++;
-      if (ordinal >= RedstoneControlMode.values().length) {
+      if(ordinal >= RedstoneControlMode.values().length) {
         ordinal = 0;
       }
       cube.setInputControlMode(RedstoneControlMode.values()[ordinal]);
       powerInputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getInputControlMode()));
       Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
-    } else if (par1GuiButton.id == POWER_OUTPUT_BUTTON_ID) {
+    } else if(par1GuiButton.id == POWER_OUTPUT_BUTTON_ID) {
       int ordinal = cube.getOutputControlMode().ordinal();
       ordinal++;
-      if (ordinal >= RedstoneControlMode.values().length) {
+      if(ordinal >= RedstoneControlMode.values().length) {
         ordinal = 0;
       }
       cube.setOutputControlMode(RedstoneControlMode.values()[ordinal]);
       powerOutputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getOutputControlMode()));
       Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
-    } else if (par1GuiButton.id == ADD_BUTTON_ID) {
+    } else if(par1GuiButton.id == ADD_BUTTON_ID) {
 
       Channel c;
-      if (privateButton.isSelected()) {
+      if(privateButton.isSelected()) {
         c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.username);
       } else {
         c = new Channel(newChannelTF.getText(), null);
       }
       ClientChannelRegister.instance.addChannel(c);
-      Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c,true);
+      Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, true);
       PacketDispatcher.sendPacketToServer(pkt);
 
-      if (privateButton.isSelected()) {
+      if(privateButton.isSelected()) {
         privateChannelList.setSelection(c);
       } else {
         publicChannelList.setSelection(c);
       }
 
-    } else if (par1GuiButton.id == SELECT_PUBLIC_BUTTON_ID || par1GuiButton.id == SELECT_PRIVATE_BUTTON_ID) {
+    } else if(par1GuiButton.id == SELECT_PUBLIC_BUTTON_ID || par1GuiButton.id == SELECT_PRIVATE_BUTTON_ID) {
       Channel c = (par1GuiButton.id == SELECT_PUBLIC_BUTTON_ID) ? publicChannelList.getSelectedElement() : privateChannelList.getSelectedElement();
-      if (c != null) {
+      if(c != null) {
         setActiveChannel(c);
       }
-    } else if (par1GuiButton.id == DELETE_PRIVATE_BUTTON_ID || par1GuiButton.id == DELETE_PUBLIC_BUTTON_ID) {
+    } else if(par1GuiButton.id == DELETE_PRIVATE_BUTTON_ID || par1GuiButton.id == DELETE_PUBLIC_BUTTON_ID) {
       Channel c = (par1GuiButton.id == DELETE_PUBLIC_BUTTON_ID) ? publicChannelList.getSelectedElement() : privateChannelList.getSelectedElement();
-      if (c != null) {
-        if (c.equals(cube.getChannel())) {
+      if(c != null) {
+        if(c.equals(cube.getChannel())) {
           setActiveChannel(null);
-        }        
-        ClientChannelRegister.instance.channelRemoved(c);        
+        }
+        ClientChannelRegister.instance.channelRemoved(c);
         Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, false);
         PacketDispatcher.sendPacketToServer(pkt);
       }
@@ -360,18 +353,22 @@ public class GuiHyperCube extends GuiScreenBase {
     GL11.glPopAttrib();
   }
 
+  @Override
   public int getGuiLeft() {
     return guiLeft;
   }
 
+  @Override
   public int getGuiTop() {
     return guiTop;
   }
 
+  @Override
   public int getXSize() {
     return xSize;
   }
 
+  @Override
   public FontRenderer getFontRenderer() {
     return fontRenderer;
   }

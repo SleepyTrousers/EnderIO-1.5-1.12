@@ -9,7 +9,6 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
@@ -63,10 +62,10 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
-    if (par1GuiButton.id == REDSTONE_BUTTON_ID) {
+    if(par1GuiButton.id == REDSTONE_BUTTON_ID) {
       int ordinal = tileEntity.getRedstoneControlMode().ordinal();
       ordinal++;
-      if (ordinal >= RedstoneControlMode.values().length) {
+      if(ordinal >= RedstoneControlMode.values().length) {
         ordinal = 0;
       }
       tileEntity.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);

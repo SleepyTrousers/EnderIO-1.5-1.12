@@ -29,19 +29,19 @@ public class VertexRotation implements VertexTransform {
     this.angle = angle;
     quat = Quat4d.makeRotate(angle, axis);
   }
-  
+
   public void setAxis(Vector3d axis) {
     this.axis.set(axis);
     quat = Quat4d.makeRotate(angle, axis);
   }
-  
+
   public void setCenter(Vector3d cen) {
     center.set(cen);
   }
 
   @Override
   public void applyToNormal(Vector3f vec) {
-    quat.rotate(vec);    
+    quat.rotate(vec);
   }
 
 }

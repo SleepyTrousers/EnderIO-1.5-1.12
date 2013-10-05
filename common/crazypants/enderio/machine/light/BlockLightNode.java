@@ -44,7 +44,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   @Override
   public boolean isBlockSolid(IBlockAccess iblockaccess, int x, int y, int z, int l) {
     int blockID = iblockaccess.getBlockId(x, y, z);
-    if (blockID == this.blockID) {
+    if(blockID == this.blockID) {
       return false;
     } else {
 
@@ -65,7 +65,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     TileLightNode te = (TileLightNode) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
+    if(te != null) {
       te.onBlockRemoved();
     }
     world.removeBlockTileEntity(x, y, z);
@@ -74,7 +74,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     Block block = blocksList[world.getBlockId(x, y, z)];
-    if (block != null && block.blockID != blockID) {
+    if(block != null && block.blockID != blockID) {
       return block.getLightValue(world, x, y, z);
     }
     int onVal = 15;
@@ -89,7 +89,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
     TileLightNode te = (TileLightNode) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
+    if(te != null) {
       te.onNeighbourChanged();
     }
   }

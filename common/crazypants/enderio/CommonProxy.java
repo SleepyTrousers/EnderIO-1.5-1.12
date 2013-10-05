@@ -15,10 +15,10 @@ public class CommonProxy {
   private boolean showTpdGUI;
 
   public CommonProxy() {
-    String prop = System.getProperty("EnderIO.showTpsGui") ;
+    String prop = System.getProperty("EnderIO.showTpsGui");
     showTpdGUI = prop != null && prop.trim().length() > 0;
   }
-  
+
   public World getClientWorld() {
     return null;
   }
@@ -28,7 +28,7 @@ public class CommonProxy {
   }
 
   public void load() {
-    if (showTpdGUI) {
+    if(showTpdGUI) {
       DebugGuiTPS.showTpsGUI();
     }
   }

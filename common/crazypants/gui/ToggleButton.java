@@ -20,11 +20,12 @@ public class ToggleButton extends IconButton {
     this.selected = selected;
   }
 
+  @Override
   protected int getHoverState(boolean par1) {
     int result = 1;
-    if (!enabled || selected) {
+    if(!enabled || selected) {
       result = 0;
-    } else if (par1) {
+    } else if(par1) {
       result = 2;
     }
     return result;

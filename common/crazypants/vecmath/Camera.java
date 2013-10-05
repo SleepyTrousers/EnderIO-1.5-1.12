@@ -29,11 +29,11 @@ public class Camera {
   public Vector3d getEyePoint() {
     Matrix4d vpm = new Matrix4d();
     Matrix4d ivm = getInverseViewMatrix();
-    if (ivm == null) {
+    if(ivm == null) {
       return null;
     }
     Matrix4d ipm = getInverseProjectionMatrix();
-    if (ipm == null) {
+    if(ipm == null) {
       return null;
     }
     vpm.mul(ivm, ipm);
@@ -44,7 +44,7 @@ public class Camera {
   }
 
   public boolean getRayForPixel(int x, int y, Vector3d eyeOut, Vector3d normalOut) {
-    if (isValid()) {
+    if(isValid()) {
       VecmathUtil.computeRayForPixel(viewport, getInverseProjectionMatrix(), getInverseViewMatrix(), x, y, eyeOut, normalOut);
       return true;
     }
@@ -68,7 +68,7 @@ public class Camera {
   }
 
   public void setViewport(Rectangle viewport) {
-    if (viewport != null) {
+    if(viewport != null) {
       setViewport(viewport.x, viewport.y, viewport.width, viewport.height);
     }
   }
@@ -90,8 +90,8 @@ public class Camera {
   }
 
   public Matrix4d getInverseProjectionMatrix() {
-    if (projectionMatrix != null) {
-      if (projectionInverse == null) {
+    if(projectionMatrix != null) {
+      if(projectionInverse == null) {
         projectionInverse = new Matrix4d(projectionMatrix);
         projectionInverse.invert();
       }
@@ -102,7 +102,7 @@ public class Camera {
   }
 
   public void setProjectionMatrix(Matrix4d matrix) {
-    if (projectionMatrix == null) {
+    if(projectionMatrix == null) {
       projectionMatrix = new Matrix4d();
       projectionTranspose = new Matrix4d();
     }
@@ -121,8 +121,8 @@ public class Camera {
   }
 
   public Matrix4d getInverseViewMatrix() {
-    if (viewMatrix != null) {
-      if (viewInverse == null) {
+    if(viewMatrix != null) {
+      if(viewInverse == null) {
         viewInverse = new Matrix4d(viewMatrix);
         viewInverse.invert();
       }
@@ -133,7 +133,7 @@ public class Camera {
   }
 
   public void setViewMatrix(Matrix4d matrix) {
-    if (viewMatrix == null) {
+    if(viewMatrix == null) {
       viewMatrix = new Matrix4d();
       viewTranspose = new Matrix4d();
     }

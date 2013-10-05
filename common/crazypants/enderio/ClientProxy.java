@@ -86,23 +86,23 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-    ConduitBundleRenderer cbr = new ConduitBundleRenderer((float)Config.conduitScale);
+    ConduitBundleRenderer cbr = new ConduitBundleRenderer((float) Config.conduitScale);
     BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(cbr);
 
     BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
-    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();   
+    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(bcfgr);
 
-    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();    
+    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
 
     BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
-        
+
     CapacitorBankRenderer capr = new CapacitorBankRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileCapacitorBank.class, capr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.blockCapacitorBank.blockID, capr);    
+    MinecraftForgeClient.registerItemRenderer(EnderIO.blockCapacitorBank.blockID, capr);
 
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame.itemID, fqfr);
@@ -119,9 +119,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomStair.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomSlab.blockID, pir);
 
-    
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart.itemID, new MachinePartRenderer());
-    
+
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
@@ -134,7 +133,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockEnderIo.blockID, eior);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
-    
+
     HyperCubeRenderer hcr = new HyperCubeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockHyperCube.blockID, hcr);
@@ -144,7 +143,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {
     for (ConduitRenderer renderer : conduitRenderers) {
-      if (renderer.isRendererForConduit(conduit)) {
+      if(renderer.isRendererForConduit(conduit)) {
         return renderer;
       }
     }
@@ -153,7 +152,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    if (entityPlayer instanceof EntityPlayerMP) {
+    if(entityPlayer instanceof EntityPlayerMP) {
       return ((EntityPlayerMP) entityPlayer).theItemInWorldManager.getBlockReachDistance();
     }
     return super.getReachDistanceForPlayer(entityPlayer);

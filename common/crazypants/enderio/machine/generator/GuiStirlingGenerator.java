@@ -33,7 +33,7 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     int scaled;
 
-    if (entity.getProgress() < 1 && entity.getProgress() > 0) {
+    if(entity.getProgress() < 1 && entity.getProgress() > 0) {
       scaled = entity.getProgressScaled(12);
       drawTexturedModalRect(sx + 80, sy + 65 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }
