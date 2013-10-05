@@ -55,7 +55,8 @@ public class MaterialRecipes {
       ItemStack result = binderComposite.copy();
       result.stackSize = 8;
       GameRegistry.addShapedRecipe(result, "ggg", "scs", "ggg", 'g', Block.gravel, 's', Block.sand, 'c', Item.clay);
-      GameRegistry.addSmelting(binderComposite.itemID, conduitBinder, 0);
+      //GameRegistry.addSmelting(binderComposite.itemID, conduitBinder, 0);
+      FurnaceRecipes.smelting().addSmelting(binderComposite.itemID, binderComposite.getItemDamage(), conduitBinder, 0);
     }
 
     // Ender Capacitor
