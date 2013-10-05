@@ -187,7 +187,7 @@ public class RenderUtil {
   public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
 
-    if(blockAccess == null || face == null || texture == null) {
+    if((blockAccess == null && !forceAllEdges) || face == null || texture == null) {
       return;
     }
 
