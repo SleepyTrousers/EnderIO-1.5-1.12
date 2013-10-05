@@ -39,9 +39,9 @@ public class EnderIoRecipe implements IEnderIoRecipe {
   public EnderIoRecipe(String crafterId, float requiredEnergy, IRecipeComponent... components) {
     this(crafterId, requiredEnergy);
     for (IRecipeComponent component : components) {
-      if(component instanceof IRecipeOutput) {
+      if (component instanceof IRecipeOutput) {
         outputs.add((IRecipeOutput) component);
-      } else if(component instanceof IRecipeInput) {
+      } else if (component instanceof IRecipeInput) {
         inputs.add((IRecipeInput) component);
       }
     }
@@ -50,9 +50,9 @@ public class EnderIoRecipe implements IEnderIoRecipe {
   public EnderIoRecipe(String crafterId, float requiredEnergy, Collection<IRecipeComponent> components) {
     this(crafterId, requiredEnergy);
     for (IRecipeComponent component : components) {
-      if(component instanceof IRecipeOutput) {
+      if (component instanceof IRecipeOutput) {
         outputs.add((IRecipeOutput) component);
-      } else if(component instanceof IRecipeInput) {
+      } else if (component instanceof IRecipeInput) {
         inputs.add((IRecipeInput) component);
       }
     }
@@ -81,7 +81,7 @@ public class EnderIoRecipe implements IEnderIoRecipe {
   @Override
   public boolean isInput(ItemStack input) {
     for (IRecipeComponent rc : inputs) {
-      if(rc.isEquivalent(input)) {
+      if (rc.isEquivalent(input)) {
         return true;
       }
     }
@@ -91,7 +91,7 @@ public class EnderIoRecipe implements IEnderIoRecipe {
   @Override
   public boolean isOutput(ItemStack output) {
     for (IRecipeComponent rc : outputs) {
-      if(rc.isEquivalent(output)) {
+      if (rc.isEquivalent(output)) {
         return true;
       }
     }

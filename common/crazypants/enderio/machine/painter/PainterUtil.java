@@ -48,7 +48,7 @@ public final class PainterUtil {
     }
     return 0;
   }
-  
+
   public static String getTooltTipText(ItemStack item) {
     String sourceName = "";
     int sourceId = PainterUtil.getSourceBlockId(item);
@@ -59,7 +59,7 @@ public final class PainterUtil {
         sourceName = i.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
         sourceName = StatCollector.translateToLocal(sourceName + ".name");
       }
-    }   
+    }
     return "Painted with: " + sourceName;
   }
 

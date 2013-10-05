@@ -34,12 +34,12 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
 
     TileReservoir res = (TileReservoir) tileentity;
-    if(res.haveRendered(tileentity.worldObj.getTotalWorldTime(), f)) {
+    if (res.haveRendered(tileentity.worldObj.getTotalWorldTime(), f)) {
       return;
     }
 
     float fullness = res.getFilledRatio();
-    if(fullness <= 0 && !res.isAutoEject()) {
+    if (fullness <= 0 && !res.isAutoEject()) {
       return;
     }
 
@@ -53,14 +53,14 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    
+
     Vector3f offset = res.getOffsetFromController();
-    
+
     GL11.glTranslatef((float) x + offset.x, (float) y + offset.y, (float) z + offset.z);
 
     BoundingBox bb = res.getLiquidRenderBounds();
 
-    if(res.isAutoEject()) {
+    if (res.isAutoEject()) {
 
       // switch
       RenderUtil.bindBlockTexture();
@@ -169,5 +169,5 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     }
     return tex;
   }
-    
+
 }

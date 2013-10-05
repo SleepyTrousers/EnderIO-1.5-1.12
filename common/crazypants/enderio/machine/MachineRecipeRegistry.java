@@ -18,7 +18,7 @@ public class MachineRecipeRegistry {
 
   public Map<String, IMachineRecipe> getRecipesForMachine(String machineName) {
     Map<String, IMachineRecipe> res = machineRecipes.get(machineName);
-    if(res == null) {
+    if (res == null) {
       res = new HashMap<String, IMachineRecipe>();
       machineRecipes.put(machineName, res);
     }
@@ -26,12 +26,12 @@ public class MachineRecipeRegistry {
   }
 
   public IMachineRecipe getRecipeForUid(String uid) {
-    if(uid == null) {
+    if (uid == null) {
       return null;
     }
     for (Map<String, IMachineRecipe> recipes : machineRecipes.values()) {
       for (IMachineRecipe recipe : recipes.values()) {
-        if(uid.equals(recipe.getUid())) {
+        if (uid.equals(recipe.getUid())) {
           return recipe;
         }
       }
@@ -41,11 +41,11 @@ public class MachineRecipeRegistry {
 
   public IMachineRecipe getRecipeForInputs(String machineName, MachineRecipeInput... inputs) {
     Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
-    if(recipes == null) {
+    if (recipes == null) {
       return null;
     }
     for (IMachineRecipe recipe : recipes.values()) {
-      if(recipe.isRecipe(inputs)) {
+      if (recipe.isRecipe(inputs)) {
         return recipe;
       }
     }
@@ -53,13 +53,13 @@ public class MachineRecipeRegistry {
   }
 
   public List<IMachineRecipe> getRecipesForInput(String machineName, MachineRecipeInput input) {
-    if(input == null) {
+    if (input == null) {
       return Collections.emptyList();
     }
     List<IMachineRecipe> result = new ArrayList<IMachineRecipe>();
     Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
     for (IMachineRecipe recipe : recipes.values()) {
-      if(recipe.isValidInput(input)) {
+      if (recipe.isValidInput(input)) {
         result.add(recipe);
       }
     }

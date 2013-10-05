@@ -18,7 +18,7 @@ public class RecipeInputClass<T> extends RecipeComponent implements IRecipeInput
   public RecipeInputClass(ItemStack protoType, Class<T> allowedClass, ItemStack... knownSubtypes) {
     super(protoType, -1);
     this.allowedClass = allowedClass;
-    if(knownSubtypes == null) {
+    if (knownSubtypes == null) {
       equivelents = Collections.emptyList();
     } else {
       equivelents = new ArrayList<ItemStack>();

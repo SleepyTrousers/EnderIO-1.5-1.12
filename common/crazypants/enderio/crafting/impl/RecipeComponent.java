@@ -38,7 +38,7 @@ public abstract class RecipeComponent implements IRecipeComponent {
   }
 
   protected boolean isEqual(ItemStack left, ItemStack right) {
-    if(left.isItemEqual(right)) {
+    if (left.isItemEqual(right)) {
       return left.stackTagCompound == null ? true : left.stackTagCompound.equals(right.stackTagCompound);
     }
     return false;

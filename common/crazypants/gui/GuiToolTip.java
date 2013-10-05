@@ -39,8 +39,6 @@ public class GuiToolTip {
     }
   }
 
-  
-  
   public Rectangle getBounds() {
     return bounds;
   }
@@ -76,10 +74,10 @@ public class GuiToolTip {
 
   protected void updateText() {
   }
-  
+
   public void setToolTipText(String... txt) {
     text.clear();
-    for(String line : txt) {
+    for (String line : txt) {
       text.add(line);
     }
   }

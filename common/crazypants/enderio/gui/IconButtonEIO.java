@@ -23,9 +23,9 @@ public class IconButtonEIO extends GuiButton {
   private int yOrigin;
 
   protected GuiScreenBase gui;
-  
+
   protected GuiToolTip toolTip;
-  
+
   public IconButtonEIO(GuiScreenBase gui, int id, int x, int y, IconEIO icon) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
     this.gui = gui;
@@ -34,26 +34,26 @@ public class IconButtonEIO extends GuiButton {
     this.xOrigin = x;
     this.yOrigin = y;
   }
-  
+
   public void setToolTip(String... tooltipText) {
-    if(toolTip == null) {
-      toolTip = new GuiToolTip(new Rectangle(xOrigin,yOrigin,width,height), tooltipText);
+    if (toolTip == null) {
+      toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
       gui.addToolTip(toolTip);
     } else {
       toolTip.setToolTipText(tooltipText);
-    }       
+    }
   }
 
   public void onGuiInit() {
     gui.addButton(this);
     xPosition = xOrigin + gui.getGuiLeft();
     yPosition = yOrigin + gui.getGuiTop();
-  }    
+  }
 
   public void setSize(int width, int height) {
     this.width = width;
     this.height = height;
-    if(toolTip != null) {
+    if (toolTip != null) {
       toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
     }
   }
@@ -94,8 +94,8 @@ public class IconButtonEIO extends GuiButton {
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      
-      background.renderIcon(x, y, width, height, 0, false);            
+
+      background.renderIcon(x, y, width, height, 0, false);
       icon.renderIcon(x, y, width, height, 0, false);
 
       tes.draw();
@@ -104,7 +104,7 @@ public class IconButtonEIO extends GuiButton {
 
     }
   }
-  
+
   protected IconEIO getIconForHoverState(int hoverState) {
     if (hoverState == 0) {
       return IconEIO.BUTTON_DISABLED;
@@ -113,6 +113,6 @@ public class IconButtonEIO extends GuiButton {
       return IconEIO.BUTTON_HIGHLIGHT;
     }
     return IconEIO.BUTTON;
-  }  
+  }
 
 }

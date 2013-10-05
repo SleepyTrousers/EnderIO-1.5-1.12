@@ -11,7 +11,7 @@ package buildcraft.api.transport;
 
 public interface IPipeTile {
 
-	IPipe getPipe();
+  IPipe getPipe();
 
-	boolean isInitialized();
+  boolean isInitialized();
 }

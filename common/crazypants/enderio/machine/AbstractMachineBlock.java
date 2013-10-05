@@ -179,11 +179,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           T te = (T) world.getBlockTileEntity(x, y, z);
           Util.dropItems(world, te, x, y, z, true);
         }
-      }      
+      }
     }
     world.removeBlockTileEntity(x, y, z);
   }
-  
+
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if (!world.isRemote && !player.capabilities.isCreativeMode) {
@@ -261,7 +261,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected String getSideIconKey() {
     return "enderio:machineSide";
   }
-  
+
   protected abstract int getGuiId();
 
   protected abstract String getMachineFrontIconKey(boolean active);

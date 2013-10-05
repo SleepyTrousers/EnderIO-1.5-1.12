@@ -18,7 +18,7 @@ public class ConduitRecipes {
 
   public static void addRecipes() {
 
-    //Crafting Components
+    // Crafting Components
     ItemStack redstoneConduit = new ItemStack(itemRedstoneConduit.actualId, 1, 0);
     ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.CONDUIT_BINDER.ordinal());
     ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
@@ -27,7 +27,7 @@ public class ConduitRecipes {
     ItemStack phasedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
     ItemStack redstoneAlloy = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.REDSTONE_ALLOY.ordinal());
 
-    //Recipes
+    // Recipes
     GameRegistry.addShapedRecipe(new ItemStack(itemConduitFacade.actualId, 1, 0), "bbb", "b b", "bbb", 'b', conduitBinder);
     GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, 4, 0), "bfb", "f f", "bfb", 'b', conduitBinder, 'f', fusedQuartz, 'g', Block.glass);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, 4, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', electricalSteel);

@@ -10,25 +10,26 @@
 package buildcraft.api.core;
 
 /**
- * To be implemented by TileEntities able to provide a square area on the world, typically BuildCraft markers.
+ * To be implemented by TileEntities able to provide a square area on the world,
+ * typically BuildCraft markers.
  */
 public interface IAreaProvider {
 
-	public int xMin();
+  public int xMin();
 
-	public int yMin();
+  public int yMin();
 
-	public int zMin();
+  public int zMin();
 
-	public int xMax();
+  public int xMax();
 
-	public int yMax();
+  public int yMax();
 
-	public int zMax();
+  public int zMax();
 
-	/**
-	 * Remove from the world all objects used to define the area.
-	 */
-	public void removeFromWorld();
+  /**
+   * Remove from the world all objects used to define the area.
+   */
+  public void removeFromWorld();
 
 }

@@ -657,26 +657,26 @@ public class TileReservoir extends TileEntity implements ITankContainer {
   }
 
   public Vector3f getOffsetFromController() {
-    if(!isMultiblock()) {
+    if (!isMultiblock()) {
       return new Vector3f();
-}
+    }
     BlockCoord masterBC = multiblock[0];
-    BlockCoord myBC = new BlockCoord(xCoord, yCoord, zCoord);    
+    BlockCoord myBC = new BlockCoord(xCoord, yCoord, zCoord);
     return new Vector3f(masterBC.x - myBC.x, masterBC.y - myBC.y, masterBC.z - myBC.z);
   }
 
   long lastRenderTick;
   float lastRenderPartialTick;
-  
+
   public boolean haveRendered(long renderTick, float renderPartialTick) {
     TileReservoir c = getController();
-    if(c.lastRenderTick == renderTick && renderPartialTick == c.lastRenderPartialTick) {
+    if (c.lastRenderTick == renderTick && renderPartialTick == c.lastRenderPartialTick) {
       return true;
-    }    
-    
+    }
+
     c.lastRenderTick = renderTick;
     c.lastRenderPartialTick = renderPartialTick;
-    
+
     return false;
   }
 

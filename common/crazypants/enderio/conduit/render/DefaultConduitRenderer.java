@@ -52,7 +52,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         }
 
         tex = conduit.getTextureForState(component);
-        if(tex != null) {
+        if (tex != null) {
           tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
           renderConduit(tex, conduit, component, selfIllum);
         }
@@ -70,7 +70,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     }
   }
 
-  protected void renderTransmission(Icon tex, CollidableComponent component,IConduit conduit, float selfIllum) {
+  protected void renderTransmission(Icon tex, CollidableComponent component, IConduit conduit, float selfIllum) {
     RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
   }
 
@@ -83,7 +83,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
   }
 
   protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir, boolean isTransmission) {
-    
+
     setupVertices(bound);
 
     Tessellator tessellator = Tessellator.instance;

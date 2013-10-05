@@ -23,7 +23,7 @@ public class GuiCapacitorBank extends GuiScreenBase {
 
   protected static final int INPUT_BUTTON_ID = 18;
   protected static final int OUTPUT_BUTTON_ID = 37;
-  
+
   private static final int POWER_X = 15;
   private static final int POWER_Y = 7;
   private static final int POWER_WIDTH = 10;
@@ -31,12 +31,12 @@ public class GuiCapacitorBank extends GuiScreenBase {
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
   private final TileCapacitorBank capBank;
-  
+
   private IconButton inputRedstoneButton;
   private IconButton outputRedstoneButton;
 
-  public GuiCapacitorBank(TileCapacitorBank te) {    
-    super(97,88);
+  public GuiCapacitorBank(TileCapacitorBank te) {
+    super(97, 88);
     this.capBank = te;
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
@@ -107,7 +107,7 @@ public class GuiCapacitorBank extends GuiScreenBase {
       outputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getOutputControlMode()));
       Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
       PacketDispatcher.sendPacketToServer(pkt);
-    }        
+    }
   }
 
   @Override
@@ -125,34 +125,32 @@ public class GuiCapacitorBank extends GuiScreenBase {
         RenderUtil.BLOCK_TEX);
     inputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
     buttonList.add(inputRedstoneButton);
-    
-    y = y + 5 + GuiMachineBase.BUTTON_SIZE; 
+
+    y = y + 5 + GuiMachineBase.BUTTON_SIZE;
     outputRedstoneButton = new IconButton(fontRenderer, OUTPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(capBank.getOutputControlMode()),
         RenderUtil.BLOCK_TEX);
     outputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
     buttonList.add(outputRedstoneButton);
   }
-  
-  
-  
+
   @Override
   protected void keyTyped(char par1, int par2) {
     super.keyTyped(par1, par2);
-    if(par1 == 'e') {
+    if (par1 == 'e') {
       super.keyTyped(par1, 1);
     }
   }
 
   @Override
   protected void drawBackgroundLayer(float par1, int par2, int par3) {
-    
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.bindTexture("/mods/enderio/textures/gui/capacitorBank.png");    
+    RenderUtil.bindTexture("/mods/enderio/textures/gui/capacitorBank.png");
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-                
+
     int i1 = capBank.getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 97, 0, POWER_WIDTH, i1);
 
@@ -160,22 +158,22 @@ public class GuiCapacitorBank extends GuiScreenBase {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);
       guibutton.drawButton(this.mc, 0, 0);
     }
-    
-    int midX =  sx + xSize/2;    
-    
+
+    int midX = sx + xSize / 2;
+
     String str = "Max Storage " + BlockCapacitorBank.NF.format(capBank.getMaxEnergyStored()) + " MJ";
     int swid = fontRenderer.getStringWidth(str);
-    int x = midX - swid/2;
+    int x = midX - swid / 2;
     int y = guiTop - 5 - fontRenderer.FONT_HEIGHT - 5 - fontRenderer.FONT_HEIGHT;
-    
-    drawString(fontRenderer, str, x,y,  -1);
-    
+
+    drawString(fontRenderer, str, x, y, -1);
+
     str = "Max I/O " + BlockCapacitorBank.NF.format(capBank.getMaxIO()) + " MJ/t";
     swid = fontRenderer.getStringWidth(str);
-    x = midX - swid/2;
+    x = midX - swid / 2;
     y += fontRenderer.FONT_HEIGHT + 5;
-    
-    drawString(fontRenderer, str, x,y,  -1);
+
+    drawString(fontRenderer, str, x, y, -1);
 
   }
 
@@ -188,21 +186,24 @@ public class GuiCapacitorBank extends GuiScreenBase {
     GL11.glPopAttrib();
   }
 
+  @Override
   public int getGuiLeft() {
     return guiLeft;
   }
 
+  @Override
   public int getGuiTop() {
     return guiTop;
   }
 
+  @Override
   public int getXSize() {
     return xSize;
   }
 
+  @Override
   public FontRenderer getFontRenderer() {
     return fontRenderer;
   }
 
- 
 }

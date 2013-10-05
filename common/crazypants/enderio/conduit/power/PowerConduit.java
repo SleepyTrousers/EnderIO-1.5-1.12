@@ -23,10 +23,8 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.MutablePowerProvider;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -123,9 +121,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return CAPACITORS[subtype];
   }
 
-  private ConduitPowerProvider createPowerHandlerForType() {    
+  private ConduitPowerProvider createPowerHandlerForType() {
     return ConduitPowerProvider.createHandler(CAPACITORS[subtype], this);
-    //return PowerHandlerUtil.createHandler(CAPACITORS[subtype]);
+    // return PowerHandlerUtil.createHandler(CAPACITORS[subtype]);
   }
 
   @Override
@@ -160,7 +158,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public IPowerProvider getPowerProvider() {    
+  public IPowerProvider getPowerProvider() {
     return powerHandler;
   }
 

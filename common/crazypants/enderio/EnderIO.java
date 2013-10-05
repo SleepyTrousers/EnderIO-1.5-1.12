@@ -55,8 +55,8 @@ import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMJReader;
 import crazypants.enderio.material.ItemMachinePart;
-import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemMaterial;
+import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 

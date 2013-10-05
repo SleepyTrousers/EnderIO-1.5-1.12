@@ -106,23 +106,25 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
         }
       }
     }
-    
-//    boolean printed = false;
-//    for(ILiquidConduit con : conduits) {
-//      if(con.getTank().getFilledRatio() > 1) {
-//        System.out.println("LiquidConduitNetwork.onUpdateEntity: capacity= " + con.getTank().getCapacity() + " amount= " + con.getTank().getFluidAmount());
-//        printed = true;
-//      }
-//    }
-//    
-//    if(printed) {
-//      System.out.println("LiquidConduitNetwork.onUpdateEntity: ");
-//    }
-    
+
+    // boolean printed = false;
+    // for(ILiquidConduit con : conduits) {
+    // if(con.getTank().getFilledRatio() > 1) {
+    // System.out.println("LiquidConduitNetwork.onUpdateEntity: capacity= " +
+    // con.getTank().getCapacity() + " amount= " +
+    // con.getTank().getFluidAmount());
+    // printed = true;
+    // }
+    // }
+    //
+    // if(printed) {
+    // System.out.println("LiquidConduitNetwork.onUpdateEntity: ");
+    // }
+
   }
 
   void addedFromExternal(int res) {
-    inputVolume += res;    
+    inputVolume += res;
   }
 
   void outputedToExternal(int filled) {
@@ -163,8 +165,9 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       if (con.getTank().getFluidAmount() < 10) {
         toEmpty.add(con);
       } else {
-        //some of the conduits have fluid left in them so don't do the final drain yet
-        return result;        
+        // some of the conduits have fluid left in them so don't do the final
+        // drain yet
+        return result;
       }
 
     }
@@ -316,8 +319,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     }
 
     float targetRatio = (float) totalAmount / totalCapacity;
-    //int netChange = 0;
-    int flowVolume = (int)Math.floor((targetRatio - tank.getFilledRatio()) * tank.getCapacity());
+    // int netChange = 0;
+    int flowVolume = (int) Math.floor((targetRatio - tank.getFilledRatio()) * tank.getCapacity());
     flowVolume = Math.min(maxFlowVolume, flowVolume);
 
     if (Math.abs(flowVolume) < 2) {
@@ -326,18 +329,18 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
     for (ILiquidConduit neigbour : connections) {
       if (canFlowTo(con, neigbour)) { // can only flow within same network
-        flowVolume = (int)Math.floor((targetRatio - neigbour.getTank().getFilledRatio()) * neigbour.getTank().getCapacity());
+        flowVolume = (int) Math.floor((targetRatio - neigbour.getTank().getFilledRatio()) * neigbour.getTank().getCapacity());
         if (flowVolume != 0) {
           actions.add(new FlowAction(con, neigbour, flowVolume));
-          //netChange += flowVolume;
+          // netChange += flowVolume;
         }
       }
     }
 
-//    if (netChange != 0) {
-//      actions.add(new FlowAction(con, -netChange));
-//    }
-    }
+    // if (netChange != 0) {
+    // actions.add(new FlowAction(con, -netChange));
+    // }
+  }
 
   private boolean canFlowTo(ILiquidConduit con, ILiquidConduit neighbour) {
     if (neighbour.getNetwork() != this) {
@@ -359,7 +362,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     final int amount;
 
     FlowAction(ILiquidConduit fromIn, ILiquidConduit toIn, int amountIn) {
-      if(amountIn < 0) {        
+      if (amountIn < 0) {
         to = fromIn;
         from = toIn;
         amount = -amountIn;
@@ -367,20 +370,20 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
         to = toIn;
         from = fromIn;
         amount = amountIn;
-    }
+      }
     }
 
     void apply() {
       if (amount != 0) {
 
-        //don't take more than it has
+        // don't take more than it has
         int actual = Math.min(amount, from.getTank().getFluidAmount());
-        //and don't add more than it can take
+        // and don't add more than it can take
         actual = Math.min(actual, to.getTank().getAvailableSpace());
-        
+
         from.getTank().addAmount(-actual);
         to.getTank().addAmount(actual);
-        
+
       }
     }
 
@@ -395,7 +398,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       this.tank = tank;
       this.bc = bc;
       this.dir = dir;
-}
+    }
 
   }
 

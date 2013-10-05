@@ -28,7 +28,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private float energyPerTick = 1;
 
   public TileEntitySolarPanel() {
-    capacitor = new BasicCapacitor(0,10000,10);
+    capacitor = new BasicCapacitor(0, 10000, 10);
     powerHandler = PowerHandlerUtil.createHandler(capacitor);
   }
 
@@ -88,9 +88,9 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     }
 
     // Mandatory power handler update
-     float stored = powerHandler.getEnergyStored();
-     powerHandler.update(this);
-     powerHandler.setEnergy(stored);
+    float stored = powerHandler.getEnergyStored();
+    powerHandler.update(this);
+    powerHandler.setEnergy(stored);
 
     float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
     float transmitted = 0;

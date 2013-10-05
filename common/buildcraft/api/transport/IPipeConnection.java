@@ -13,5 +13,5 @@ import net.minecraftforge.common.ForgeDirection;
 
 public interface IPipeConnection {
 
-	public boolean isPipeConnected(ForgeDirection with);
+  public boolean isPipeConnected(ForgeDirection with);
 }

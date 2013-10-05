@@ -15,7 +15,7 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
 
   public RecipeInput(ItemStack itemPrototype, int slot, boolean checkNBT, ItemStack... equivs) {
     super(itemPrototype, slot);
-    if(equivs == null) {
+    if (equivs == null) {
       equivelents = Collections.emptyList();
     } else {
       equivelents = new ArrayList<ItemStack>(equivs.length);
@@ -32,12 +32,12 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
   public RecipeInput(ItemStack input, boolean addSubtypes) {
     super(input, -1);
     Item inputItem = Util.getItem(input.itemID);
-    if(addSubtypes && inputItem != null && inputItem.getHasSubtypes()) {
+    if (addSubtypes && inputItem != null && inputItem.getHasSubtypes()) {
       equivelents = new ArrayList<ItemStack>();
       ArrayList<ItemStack> sublist = new ArrayList<ItemStack>();
       inputItem.getSubItems(inputItem.itemID, null, sublist);
       for (ItemStack st : sublist) {
-        if(itemPrototype.getItemDamage() != st.getItemDamage()) {
+        if (itemPrototype.getItemDamage() != st.getItemDamage()) {
           equivelents.add(st.copy());
         }
       }
@@ -48,11 +48,11 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
 
   @Override
   public boolean isEquivalent(ItemStack candidate) {
-    if(isEqual(itemPrototype, candidate)) {
+    if (isEqual(itemPrototype, candidate)) {
       return true;
     }
     for (ItemStack stack : equivelents) {
-      if(isEqual(stack, candidate)) {
+      if (isEqual(stack, candidate)) {
         return true;
       }
     }

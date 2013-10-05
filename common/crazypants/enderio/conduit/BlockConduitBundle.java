@@ -247,7 +247,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   @Override
   public int getLightOpacity(World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
+    if (!(te instanceof IConduitBundle)) {
       return super.getLightOpacity(world, x, y, z);
     }
     IConduitBundle con = (IConduitBundle) te;

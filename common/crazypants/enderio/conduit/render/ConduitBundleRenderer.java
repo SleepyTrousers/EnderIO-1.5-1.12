@@ -39,9 +39,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   private Map<ForgeDirection, BoundingBox[]> connectorBounds = new HashMap<ForgeDirection, BoundingBox[]>();
 
   public static final float CONNECTOR_DEPTH = 0.05f;
-  
-  public ConduitBundleRenderer(float conduitScale) {        
-    float connectorWidth = 0.25f + (conduitScale * 0.5f);    
+
+  public ConduitBundleRenderer(float conduitScale) {
+    float connectorWidth = 0.25f + (conduitScale * 0.5f);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       connectorBounds.put(dir, createConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
@@ -51,20 +51,20 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    
+
     FacadeRenderState curRS = bundle.getFacadeRenderedAs();
     FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(bundle, player);
 
     int curLO = bundle.getLightOpacity();
     int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
-    if(curLO != shouldBeLO) {
+    if (curLO != shouldBeLO) {
       bundle.setLightOpacity(shouldBeLO);
       te.worldObj.updateAllLightTypes(te.xCoord, te.yCoord, te.zCoord);
     }
-    if(curRS != rs) {   
+    if (curRS != rs) {
       te.worldObj.markBlockForRenderUpdate(te.xCoord, te.yCoord, te.zCoord);
     }
-    
+
     if (curRS == FacadeRenderState.FULL) {
       return;
     }

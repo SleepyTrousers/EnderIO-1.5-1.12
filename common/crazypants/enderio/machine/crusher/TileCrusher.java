@@ -22,7 +22,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {    
+  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return CrusherRecipeManager.instance.getRecipeForInput(itemstack) != null;
   }
 

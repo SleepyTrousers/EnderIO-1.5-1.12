@@ -67,20 +67,20 @@ public class PacketHandler implements IPacketHandler {
 
   @Override
   public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-    if(packet.data != null && packet.data.length <= 0) {
+    if (packet.data != null && packet.data.length <= 0) {
       return;
     }
 
     DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
     try {
       int id = data.readInt();
-      if(id == ID_ENDERFACE) {
+      if (id == ID_ENDERFACE) {
         handleEnderfacePacket(data, manager, player);
-      } else if(id == ID_TILE_ENTITY && player instanceof EntityPlayer) {
+      } else if (id == ID_TILE_ENTITY && player instanceof EntityPlayer) {
         PacketUtil.handleTileEntityPacket(((EntityPlayer) player).worldObj, false, data);
       } else {
         for (IPacketProcessor proc : processors) {
-          if(proc.canProcessPacket(id)) {
+          if (proc.canProcessPacket(id)) {
             proc.processPacket(id, manager, data, player);
             return;
           }
@@ -125,7 +125,7 @@ public class PacketHandler implements IPacketHandler {
   }
 
   private void handleEnderfacePacket(DataInputStream data, INetworkManager manager, Player p) throws IOException {
-    if(!(p instanceof EntityPlayerMP)) {
+    if (!(p instanceof EntityPlayerMP)) {
       System.out.println("kitchenbench.PacketHandler.handleEnderfacePacket: <ERROR> Not an EntityPlayerMP");
       return;
     }
@@ -148,7 +148,7 @@ public class PacketHandler implements IPacketHandler {
 
     player.theItemInWorldManager.activateBlockOrUseItem(proxy, player.worldObj, null, x, y, z, 0, 0, 0, 0);
     player.theItemInWorldManager.thisPlayerMP = player;
-    if(c != proxy.openContainer) {
+    if (c != proxy.openContainer) {
       player.openContainer = proxy.openContainer;
     }
 
@@ -225,10 +225,10 @@ public class PacketHandler implements IPacketHandler {
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
 
-      if(interceptNames.contains(method.getName())) {
+      if (interceptNames.contains(method.getName())) {
 
         Object res = method.invoke(realObj, objects);
-        if(realObj.openContainer != null) {
+        if (realObj.openContainer != null) {
 
           // if("appeng.me.container.ContainerTerminal".equals(realObj.openContainer.getClass().getName()))
           // {
@@ -252,7 +252,7 @@ public class PacketHandler implements IPacketHandler {
         }
         return res;
 
-      } else if(beaconNames.contains(method.getName())) {
+      } else if (beaconNames.contains(method.getName())) {
 
         // Beacon needs to be done manually for some reason to work properly
         TileEntityBeacon par1TileEntityBeacon = (TileEntityBeacon) objects[0];
@@ -269,7 +269,7 @@ public class PacketHandler implements IPacketHandler {
         realObj.openContainer.addCraftingToCrafters(realObj);
         return null;
 
-      } else if(anvilNames.contains(method.getName())) {
+      } else if (anvilNames.contains(method.getName())) {
 
         realObj.incrementWindowID();
         realObj.playerNetServerHandler.sendPacketToPlayer(new Packet100OpenWindow(realObj.currentWindowId, 8, "Repairing", 9, true));
@@ -283,7 +283,7 @@ public class PacketHandler implements IPacketHandler {
         realObj.openContainer.windowId = realObj.currentWindowId;
         realObj.openContainer.addCraftingToCrafters(realObj);
         return null;
-      } else if(distanceNames.contains(method.getName())) {
+      } else if (distanceNames.contains(method.getName())) {
         return 6;
       }
       method.setAccessible(true);
@@ -302,7 +302,7 @@ public class PacketHandler implements IPacketHandler {
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-      if("canInteractWith".equals(method.getName())) {
+      if ("canInteractWith".equals(method.getName())) {
         return true;
       }
       method.setAccessible(true);

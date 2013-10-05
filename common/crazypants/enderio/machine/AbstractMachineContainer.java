@@ -72,7 +72,8 @@ public abstract class AbstractMachineContainer extends Container {
         slot.onSlotChange(origStack, copystack);
 
       } else {
-        //Check from inv->input then inv->upgrade then inv->hotbar or hotbar->inv
+        // Check from inv->input then inv->upgrade then inv->hotbar or
+        // hotbar->inv
         if (slotIndex >= startPlayerSlot) {
           if (!tileEntity.isValidInput(origStack) || !mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
             if (!tileEntity.isValidUpgrade(origStack) || !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {

@@ -4,23 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
-
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 import crazypants.enderio.Log;
 
 public class MachinePartRenderer implements IItemRenderer {
@@ -57,15 +47,15 @@ public class MachinePartRenderer implements IItemRenderer {
     } else if (type == ItemRenderType.ENTITY) {
       renderEntity(item, (RenderBlocks) data[0]);
     } else {
-      if(loggedError) {
+      if (loggedError) {
         Log.warn("MachinePartRenderer.renderItem: Unsupported render type");
         loggedError = true;
+      }
     }
-  }
   }
 
   private void renderEntity(ItemStack item, RenderBlocks renderBlocks) {
-    GL11.glPushMatrix();    
+    GL11.glPushMatrix();
     GL11.glScalef(0.5f, 0.5f, 0.5f);
     renderToInventory(item, renderBlocks);
     GL11.glPopMatrix();

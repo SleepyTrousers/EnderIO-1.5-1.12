@@ -31,7 +31,7 @@ public interface ILiquidConduit extends IConduit, ITankContainer {
   void setExtractingFromDir(ForgeDirection dir, boolean extracting);
 
   int fill(ForgeDirection from, LiquidStack resource, boolean doFill, boolean doPush, int pushToken);
-  
+
   String getTextureSheetForLiquid();
 
 }

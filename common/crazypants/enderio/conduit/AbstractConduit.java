@@ -72,7 +72,7 @@ public abstract class AbstractConduit implements IConduit {
     }
     return false;
   }
-  
+
   @Override
   public boolean haveCollidablesChangedSinceLastCall() {
     if (dodgyChangeSinceLastCallFlagForBundle) {
@@ -193,14 +193,14 @@ public abstract class AbstractConduit implements IConduit {
     }
     nbtRoot.setIntArray("externalConnections", dirs);
     nbtRoot.setBoolean("signalActive", active);
-    
+
     if (conectionModes.size() > 0) {
       byte[] modes = new byte[6];
       int i = 0;
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         modes[i] = (byte) getConectionMode(dir).ordinal();
         i++;
-  }
+      }
       nbtRoot.setByteArray("conModes", modes);
     }
   }
@@ -227,7 +227,7 @@ public abstract class AbstractConduit implements IConduit {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         conectionModes.put(dir, ConnectionMode.values()[modes[i]]);
         i++;
-  }
+      }
     }
     // Support for old code
     dirs = nbtRoot.getIntArray("extractDirs");
@@ -293,7 +293,7 @@ public abstract class AbstractConduit implements IConduit {
     if (getNetwork() == null) {
       ConduitUtil.ensureValidNetwork(this);
     }
-    if(getNetwork() != null) {
+    if (getNetwork() != null) {
       getNetwork().onUpdateEntity(this);
     }
   }

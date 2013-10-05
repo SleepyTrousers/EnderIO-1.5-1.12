@@ -13,12 +13,12 @@ import net.minecraftforge.common.ForgeDirection;
 
 public interface IPowerReceptor {
 
-	public void setPowerProvider(IPowerProvider provider);
+  public void setPowerProvider(IPowerProvider provider);
 
-	public IPowerProvider getPowerProvider();
+  public IPowerProvider getPowerProvider();
 
-	public void doWork();
+  public void doWork();
 
-	public int powerRequest(ForgeDirection from);
+  public int powerRequest(ForgeDirection from);
 
 }

@@ -17,7 +17,7 @@ public class CrusherRecipe {
   }
 
   public boolean isInput(ItemStack test) {
-    if(test == null) {
+    if (test == null) {
       return false;
     }
     return test.itemID == input.itemID && test.getItemDamage() == input.getItemDamage();

@@ -41,7 +41,6 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
 
   }
 
-  
   public static Packet getSmeltingModePacket(TileAlloySmelter te) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
@@ -63,5 +62,5 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
     return pkt;
 
   }
-  
+
 }

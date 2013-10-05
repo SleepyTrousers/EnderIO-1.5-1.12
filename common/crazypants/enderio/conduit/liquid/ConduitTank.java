@@ -172,7 +172,6 @@ public class ConduitTank implements ILiquidTank {
     return this;
   }
 
-
   @Override
   public int getTankPressure() {
     return 0;

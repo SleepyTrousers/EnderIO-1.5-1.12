@@ -37,14 +37,13 @@ public class IconUtil {
       }
     }
   }
-  
-  
+
   public static Icon getIconForItem(int itemId, int meta) {
-    if(itemId < 0 || itemId >= Item.itemsList.length) {
+    if (itemId < 0 || itemId >= Item.itemsList.length) {
       return null;
-    }    
+    }
     Item item = Item.itemsList[itemId];
-    if(item == null) {
+    if (item == null) {
       return null;
     }
     return item.getIconFromDamage(meta);

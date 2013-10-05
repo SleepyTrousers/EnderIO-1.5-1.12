@@ -4,8 +4,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
-import buildcraft.api.tools.IToolWrench;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
@@ -21,6 +19,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -38,7 +37,7 @@ import crazypants.vecmath.Vector3d;
 public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
 
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
-  
+
   public static BlockCapacitorBank create() {
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
@@ -83,7 +82,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       return false;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(! (te instanceof TileCapacitorBank) ) {
+    if (!(te instanceof TileCapacitorBank)) {
       return false;
     }
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
@@ -99,8 +98,8 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if (te instanceof TileCapacitorBank) {
-      return new GuiCapacitorBank((TileCapacitorBank)te);   
-    }    
+      return new GuiCapacitorBank((TileCapacitorBank) te);
+    }
     return null;
   }
 
@@ -116,7 +115,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public int getRenderType() {
     return -1;
   }
-  
+
   @Override
   public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
     return true;
@@ -141,13 +140,13 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileCapacitorBank();
   }
-  
+
   @Override
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
     int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
     return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
   }
-  
+
   @Override
   public void onBlockAdded(World world, int x, int y, int z) {
     if (world.isRemote) {
@@ -165,7 +164,8 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     TileCapacitorBank te = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
     te.onNeighborBlockChange(blockId);
   }
-  
+
+  @Override
   public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
     ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
     if (!world.isRemote) {
@@ -178,12 +178,12 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
             BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
         ret.add(itemStack);
       }
-    }        
+    }
     return ret;
   }
 
   @Override
-  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {    
+  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if (!world.isRemote) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if (te instanceof TileCapacitorBank) {
@@ -199,14 +199,14 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
-      } 
+      }
     }
     return super.removeBlockByPlayer(world, player, x, y, z);
   }
-  
+
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {   
-    if(world.isRemote) {
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {
+    if (world.isRemote) {
       return;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -214,9 +214,9 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
     }
-    world.markBlockForUpdate(x, y, z);    
+    world.markBlockForUpdate(x, y, z);
   }
- 
+
   @Override
   public int idDropped(int par1, Random par2Random, int par3) {
     return 0;
@@ -226,7 +226,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public int quantityDropped(Random r) {
     return 0;
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {

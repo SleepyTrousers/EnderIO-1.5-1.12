@@ -10,15 +10,15 @@ public enum RedstoneControlMode {
   NEVER("Never active.");
 
   public final String tooltip;
-  
+
   RedstoneControlMode(String tooltip) {
     this.tooltip = tooltip;
   }
-  
+
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
     boolean redstoneCheckPassed = true;
-    if (redstoneControlMode == RedstoneControlMode.NEVER) {      
-      redstoneCheckPassed = false;      
+    if (redstoneControlMode == RedstoneControlMode.NEVER) {
+      redstoneCheckPassed = false;
     } else if (redstoneControlMode == RedstoneControlMode.ON) {
       int powerLevel = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
       if (powerLevel < 1) {
@@ -32,5 +32,5 @@ public enum RedstoneControlMode {
     }
     return redstoneCheckPassed;
   }
-  
+
 }

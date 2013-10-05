@@ -39,15 +39,15 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
 
   @Override
   public void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException {
-    if(packetID == PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET) {
+    if (packetID == PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET) {
       handleHyperCubeRedstoneControlPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST) {
+    } else if (packetID == PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST) {
       handlePublicChannelListPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL) {
+    } else if (packetID == PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL) {
       handleAddRemoveChannelPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST) {
+    } else if (packetID == PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST) {
       handlePrivateChannelPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED) {
+    } else if (packetID == PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED) {
       handleChannelSelectedPacket(data, manager, player);
     }
   }
@@ -61,10 +61,10 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
       dos.writeInt(cube.yCoord);
       dos.writeInt(cube.zCoord);
       dos.writeBoolean(channel != null);
-      if(channel != null) {
+      if (channel != null) {
         dos.writeBoolean(channel.isPublic());
         dos.writeUTF(channel.name);
-        if(!channel.isPublic()) {
+        if (!channel.isPublic()) {
           dos.writeUTF(channel.user);
         }
       }
@@ -80,12 +80,12 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
   }
 
   private void handleChannelSelectedPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
-    if(!(player instanceof EntityPlayer)) {
+    if (!(player instanceof EntityPlayer)) {
       Log.warn("handleChannelSelectedPacket: Could not handle packet as player not an entity player.");
       return;
     }
     World world = ((EntityPlayer) player).worldObj;
-    if(world == null) {
+    if (world == null) {
       Log.warn("handleChannelSelectedPacket: Could not handle packet as player world was null.");
       return;
     }
@@ -94,20 +94,20 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     int y = data.readInt();
     int z = data.readInt();
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if(!(te instanceof TileHyperCube)) {
+    if (!(te instanceof TileHyperCube)) {
       Log.warn("handleChannelSelectedPacket: Could not handle packet as TileEntity was not a HyperCube.");
       return;
     }
     TileHyperCube hc = (TileHyperCube) te;
     boolean hasCan = data.readBoolean();
-    if(!hasCan) {
+    if (!hasCan) {
       hc.setChannel(null);
       return;
     }
     boolean isPublic = data.readBoolean();
     String name = data.readUTF();
     String user = null;
-    if(!isPublic) {
+    if (!isPublic) {
       user = data.readUTF();
     }
     hc.setChannel(new Channel(name, user));
@@ -116,7 +116,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
   public static Packet createUserChannelListPacket(String username) {
 
     List<Channel> channels = HyperCubeRegister.instance.getChannelsForUser(username);
-    if(channels.isEmpty()) {
+    if (channels.isEmpty()) {
       return null;
     }
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -160,7 +160,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
       dos.writeBoolean(isAdd);
       dos.writeBoolean(channel.isPublic());
       dos.writeUTF(channel.name);
-      if(!channel.isPublic()) {
+      if (!channel.isPublic()) {
         dos.writeUTF(channel.user);
       }
 
@@ -180,20 +180,20 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     boolean isPublic = data.readBoolean();
     String name = data.readUTF();
     String user = null;
-    if(!isPublic) {
+    if (!isPublic) {
       user = data.readUTF();
     }
     Channel channel = new Channel(name, user);
     Side side = FMLCommonHandler.instance().getEffectiveSide();
-    if(side == Side.SERVER) {
-      if(isAdd) {
+    if (side == Side.SERVER) {
+      if (isAdd) {
         HyperCubeRegister.instance.addChannel(channel);
       } else {
         HyperCubeRegister.instance.removeChannel(channel);
       }
       PacketDispatcher.sendPacketToAllPlayers(createAddRemoveChannelPacket(channel, isAdd));
     } else {
-      if(isAdd) {
+      if (isAdd) {
         ClientChannelRegister.instance.channelAdded(channel);
       } else {
         ClientChannelRegister.instance.channelRemoved(channel);
@@ -262,7 +262,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     short powerOutputOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if(te instanceof TileHyperCube) {
+    if (te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.setInputControlMode(RedstoneControlMode.values()[powerInputOrdinal]);
       cb.setOutputControlMode(RedstoneControlMode.values()[powerOutputOrdinal]);
@@ -276,10 +276,10 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     Packet pkt = createPublicChannelListPacket();
     PacketDispatcher.sendPacketToPlayer(pkt, player);
 
-    if(player instanceof EntityPlayerMP) {
+    if (player instanceof EntityPlayerMP) {
       EntityPlayerMP ep = (EntityPlayerMP) player;
       pkt = createUserChannelListPacket(ep.username);
-      if(pkt != null) {
+      if (pkt != null) {
         PacketDispatcher.sendPacketToPlayer(pkt, player);
       }
     } else {
@@ -305,7 +305,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
   @Override
   public void connectionClosed(INetworkManager manager) {
     Side side = FMLCommonHandler.instance().getEffectiveSide();
-    if(side == Side.CLIENT) {
+    if (side == Side.CLIENT) {
       ClientChannelRegister.instance.reset();
     }
 

@@ -69,9 +69,9 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
 
   @Override
   public void processPacket(int id, INetworkManager manager, DataInputStream data, Player player) throws IOException {
-    if(id == PacketHandler.ID_MACHINE_REDSTONE_PACKET) {
+    if (id == PacketHandler.ID_MACHINE_REDSTONE_PACKET) {
       handleRedstoneControlPacket(data, manager, player);
-    } else if(id == PacketHandler.ID_CAP_BANK_REDSTONE_PACKET) {
+    } else if (id == PacketHandler.ID_CAP_BANK_REDSTONE_PACKET) {
       handleCapBankRedstoneControlPacket(data, manager, player);
 
     } else {
@@ -87,7 +87,7 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
     short ordinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if(te instanceof AbstractMachineEntity) {
+    if (te instanceof AbstractMachineEntity) {
       AbstractMachineEntity me = (AbstractMachineEntity) te;
       me.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
       p.worldObj.markBlockForUpdate(x, y, z);
@@ -103,7 +103,7 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
     short outputOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
-    if(te instanceof TileCapacitorBank) {
+    if (te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.setInputControlMode(RedstoneControlMode.values()[inputOrdinal]);
       cb.setOutputControlMode(RedstoneControlMode.values()[outputOrdinal]);

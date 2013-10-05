@@ -7,11 +7,9 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.MutablePowerProvider;
 import crazypants.enderio.power.PowerHandlerUtil;

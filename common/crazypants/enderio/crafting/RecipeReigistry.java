@@ -37,12 +37,12 @@ public final class RecipeReigistry {
   }
 
   public List<IEnderIoRecipe> getRecipesForOutput(String crafterId, ItemStack output, List<IEnderIoRecipe> result) {
-    if(result == null) {
+    if (result == null) {
       result = new ArrayList<IEnderIoRecipe>();
     }
     List<IEnderIoRecipe> recipes = getRecipesForCrafter(crafterId);
     for (IEnderIoRecipe recipe : recipes) {
-      if(recipe.isOutput(output)) {
+      if (recipe.isOutput(output)) {
         result.add(recipe);
       }
     }
@@ -51,7 +51,7 @@ public final class RecipeReigistry {
 
   public List<IEnderIoRecipe> getRecipesForCrafter(String crafterId) {
     List<IEnderIoRecipe> result = crafterRecipes.get(crafterId);
-    if(result == null) {
+    if (result == null) {
       result = new ArrayList<IEnderIoRecipe>();
       crafterRecipes.put(crafterId, result);
     }

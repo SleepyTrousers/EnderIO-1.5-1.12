@@ -9,7 +9,6 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;

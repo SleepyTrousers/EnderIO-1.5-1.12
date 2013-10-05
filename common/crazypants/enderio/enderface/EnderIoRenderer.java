@@ -97,10 +97,10 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    
+
     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
     GL11.glPolygonOffset(-1.0f, -1.0f);
-    
+
     CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockEnderIo.frameIcon);
     Tessellator.instance.draw();
     GL11.glPopMatrix();

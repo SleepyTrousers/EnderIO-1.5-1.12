@@ -14,11 +14,11 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   public static float DEFAULT_ENERGY_PER_TASK = 200;
 
   public static boolean isValidSourceDefault(ItemStack paintSource) {
-    if(paintSource == null) {
+    if (paintSource == null) {
       return false;
     }
     Block block = Util.getBlockFromItemId(paintSource.itemID);
-    if(block == null) {
+    if (block == null) {
       return false;
     }
     return Block.isNormalCube(block.blockID) || block.blockID == Block.glass.blockID;
@@ -44,7 +44,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     ItemStack target = getTarget(inputs);
     ItemStack paintSource = getPaintSource(inputs);
-    if(target == null || paintSource == null) {
+    if (target == null || paintSource == null) {
       return null;
     }
     ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
@@ -62,13 +62,13 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
-    if(input == null) {
+    if (input == null) {
       return false;
     }
-    if(input.slotNumber == 0) {
+    if (input.slotNumber == 0) {
       return isValidTarget(input.item);
     }
-    if(input.slotNumber == 1) {
+    if (input.slotNumber == 1) {
       return isValidPaintSource(input.item);
     }
     return false;
@@ -85,22 +85,22 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
 
   public boolean isValidTarget(ItemStack target) {
     // first check for exact matches, then check for item blocks
-    if(target == null) {
+    if (target == null) {
       return false;
     }
 
     for (int i = 0; i < validIds.length; i++) {
-      if(validIds[i] == target.itemID) {
+      if (validIds[i] == target.itemID) {
         return true;
       }
     }
 
     Block blk = Util.getBlockFromItemId(target.itemID);
-    if(blk == null) {
+    if (blk == null) {
       return false;
     }
     for (int i = 0; i < validIds.length; i++) {
-      if(validIds[i] == blk.blockID) {
+      if (validIds[i] == blk.blockID) {
         return true;
       }
     }
@@ -124,13 +124,13 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     MachineRecipeInput consume = null;
     for (MachineRecipeInput input : inputs) {
-      if(input != null && input.slotNumber == 0 && input.item != null) {
+      if (input != null && input.slotNumber == 0 && input.item != null) {
         ItemStack consumed = input.item.copy();
         consumed.stackSize = 1;
         consume = new MachineRecipeInput(input.slotNumber, consumed);
       }
     }
-    if(consume != null) {
+    if (consume != null) {
       return new MachineRecipeInput[] { consume };
     }
     return null;

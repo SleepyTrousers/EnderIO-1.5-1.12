@@ -24,7 +24,7 @@ public class RecipeConfig {
   }
 
   public void addRecipeGroup(RecipeGroup group) {
-    if(group.isValid()) {
+    if (group.isValid()) {
       recipeGroups.put(group.getName(), group);
     }
   }
@@ -60,7 +60,7 @@ public class RecipeConfig {
   public List<CrusherRecipe> getRecipes() {
     List<CrusherRecipe> result = new ArrayList<CrusherRecipe>(32);
     for (RecipeGroup rg : recipeGroups.values()) {
-      if(rg.isEnabled()) {
+      if (rg.isEnabled()) {
         result.addAll(rg.createRecipes());
       }
     }
@@ -69,7 +69,7 @@ public class RecipeConfig {
 
   public List<CrusherRecipe> getRecipesForGroup(String group) {
     RecipeGroup grp = recipeGroups.get(group);
-    if(grp == null) {
+    if (grp == null) {
       return Collections.emptyList();
     }
     return grp.createRecipes();
@@ -88,10 +88,10 @@ public class RecipeConfig {
     private boolean enabled = true;
 
     public RecipeGroup(String name) {
-      if(name != null) {
+      if (name != null) {
         name = name.trim();
       }
-      if(name.length() <= 0) {
+      if (name.length() <= 0) {
         name = null;
       }
       this.name = name;
@@ -110,7 +110,7 @@ public class RecipeConfig {
     }
 
     public void addRecipe(Recipe recipe) {
-      if(recipe.isValid()) {
+      if (recipe.isValid()) {
         recipes.add(recipe);
       }
     }

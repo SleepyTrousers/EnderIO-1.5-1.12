@@ -86,23 +86,23 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-    ConduitBundleRenderer cbr = new ConduitBundleRenderer((float)Config.conduitScale);
+    ConduitBundleRenderer cbr = new ConduitBundleRenderer((float) Config.conduitScale);
     BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(cbr);
 
     BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
-    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();   
+    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(bcfgr);
 
-    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();    
+    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
 
     BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
-        
+
     CapacitorBankRenderer capr = new CapacitorBankRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileCapacitorBank.class, capr);
-    MinecraftForgeClient.registerItemRenderer(EnderIO.blockCapacitorBank.blockID, capr);    
+    MinecraftForgeClient.registerItemRenderer(EnderIO.blockCapacitorBank.blockID, capr);
 
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame.itemID, fqfr);
@@ -118,10 +118,9 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomWall.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomStair.blockID, pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomSlab.blockID, pir);
- 
-    
+
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart.itemID, new MachinePartRenderer());
-    
+
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);

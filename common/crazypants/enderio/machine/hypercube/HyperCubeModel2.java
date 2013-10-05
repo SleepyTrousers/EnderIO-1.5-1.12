@@ -1,13 +1,11 @@
 package crazypants.enderio.machine.hypercube;
 
-import javax.swing.text.html.parser.Entity;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.render.RenderUtil;
-
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
 
 public class HyperCubeModel2 extends ModelBase implements IModel {
 
@@ -78,7 +76,7 @@ public class HyperCubeModel2 extends ModelBase implements IModel {
     Shape6.setRotationPoint(-7F, 13F, 8F);
     Shape6.setTextureSize(32, 32);
     Shape6.mirror = true;
-    //setRotation(Shape6, 1.570796F, 1.570796F, 1.570796F);
+    // setRotation(Shape6, 1.570796F, 1.570796F, 1.570796F);
     setRotation(Shape6, 0F, 1.570796F, 1.570796F);
     Shape7 = new ModelRenderer(this, 0, 7);
     Shape7.addBox(0F, 0F, 0F, 6, 1, 6);
@@ -196,13 +194,14 @@ public class HyperCubeModel2 extends ModelBase implements IModel {
     setRotation(Shape25, 0F, 0F, 0F);
   }
 
+  @Override
   public void render() {
-    
+
     RenderUtil.bindTexture(TEXTURE);
     GL11.glPushMatrix();
     GL11.glTranslatef(0.5f, -1.5f, 0.5f);
     GL11.glPushMatrix();
-    
+
     float f5 = 0.0625f;
     Shape1.render(f5);
     Shape2.render(f5);
@@ -228,8 +227,8 @@ public class HyperCubeModel2 extends ModelBase implements IModel {
     Shape22.render(f5);
     Shape23.render(f5);
     Shape24.render(f5);
-    //Shape25.render(f5);
-    
+    // Shape25.render(f5);
+
     GL11.glPopMatrix();
     GL11.glPopMatrix();
   }
@@ -240,8 +239,7 @@ public class HyperCubeModel2 extends ModelBase implements IModel {
     model.rotateAngleZ = z;
   }
 
-
-
+  @Override
   public void render(TileHyperCube cube, double x, double y, double z) {
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y + 1, (float) z);

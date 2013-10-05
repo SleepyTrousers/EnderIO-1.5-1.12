@@ -68,7 +68,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeAt.x, placeAt.y, placeAt.z);
           bundle.addConduit(createConduit(stack));
           Block b = EnderIO.blockConduitBundle;
-          world.playSoundEffect((double) ((float) x + 0.5F), (double) ((float) y + 0.5F), (double) ((float) z + 0.5F), b.stepSound.getPlaceSound(),
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getPlaceSound(),
               (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
         }
       }
@@ -76,14 +76,14 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
         stack.stackSize--;
       }
       return true;
-      
+
     } else {
-      
+
       ForgeDirection dir = ForgeDirection.values()[side];
       int placeX = x + dir.offsetX;
       int placeY = y + dir.offsetY;
       int placeZ = z + dir.offsetZ;
-      
+
       if (world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
 
         IConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
@@ -105,7 +105,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
           }
           return true;
         }
-      } 
+      }
     }
 
     return false;

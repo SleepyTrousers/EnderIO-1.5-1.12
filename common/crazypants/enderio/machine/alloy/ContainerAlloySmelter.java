@@ -57,6 +57,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
       super(par1iInventory, par2, par3, par4);
     }
 
+    @Override
     public ItemStack decrStackSize(int par1) {
       if (getHasStack()) {
         numResults += Math.min(par1, getStack().stackSize);
@@ -69,27 +70,30 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
       return false;
     }
 
+    @Override
     public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack output) {
       onCrafting(output);
       super.onPickupFromSlot(par1EntityPlayer, output);
     }
 
+    @Override
     protected void onCrafting(ItemStack par1ItemStack, int par2) {
       numResults += par2;
-      onCrafting(par1ItemStack);    
+      onCrafting(par1ItemStack);
     }
 
-    protected void onCrafting(ItemStack output) {    
+    @Override
+    protected void onCrafting(ItemStack output) {
       output.onCrafting(thePlayer.worldObj, thePlayer, numResults);
-      if (output != null) {        
+      if (output != null) {
         if (!thePlayer.worldObj.isRemote) {
           ItemStack outputSized = output.copy();
           outputSized.stackSize = numResults;
-          float experience = smelter.getExperienceForOutput(outputSized);          
-          Util.giveExperience(thePlayer, experience);          
+          float experience = smelter.getExperienceForOutput(outputSized);
+          Util.giveExperience(thePlayer, experience);
         }
-        
-      }      
+
+      }
       numResults = 0;
     }
 

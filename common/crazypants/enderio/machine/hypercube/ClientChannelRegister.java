@@ -41,7 +41,7 @@ public class ClientChannelRegister {
         publicChannels.add(channel);
       }
     } else {
-      if(!privateChannels.contains(channel)) {
+      if (!privateChannels.contains(channel)) {
         privateChannels.add(channel);
       }
     }
@@ -55,16 +55,16 @@ public class ClientChannelRegister {
 
   public void reset() {
     publicChannels.clear();
-    privateChannels.clear();    
+    privateChannels.clear();
   }
 
   public void channelRemoved(Channel c) {
-    if(c.isPublic()) {
+    if (c.isPublic()) {
       publicChannels.remove(c);
     } else {
       privateChannels.remove(c);
     }
-    
+
   }
 
 }

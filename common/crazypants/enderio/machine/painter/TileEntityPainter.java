@@ -4,8 +4,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
@@ -54,8 +54,6 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   private MachineRecipeInput paintSource() {
     return MachineRecipeInput.create(1, inventory[1]);
   }
-  
-  
 
   @Override
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {

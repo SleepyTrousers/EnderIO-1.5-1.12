@@ -5,8 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
@@ -37,7 +37,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
     IMachineRecipe result = super.canStartNextTask(chance);
-    if(!furnaceRecipesEnabled && result instanceof VanillaSmeltingRecipe) {
+    if (!furnaceRecipesEnabled && result instanceof VanillaSmeltingRecipe) {
       result = null;
     }
     return result;

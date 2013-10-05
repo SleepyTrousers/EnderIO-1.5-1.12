@@ -44,16 +44,16 @@ public class ItemFusedQuartzFrame extends Item {
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    //itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
+    // itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
   }
 
   @Override
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
 
-    if(world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
+    if (world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
       TileEntityCustomBlock tecb = (TileEntityCustomBlock) world.getBlockTileEntity(x, y, z);
-      if(tecb == null) {
+      if (tecb == null) {
         return false;
       }
       // if(!world.isRemote) {
@@ -62,8 +62,8 @@ public class ItemFusedQuartzFrame extends Item {
       world.markBlockForUpdate(x, y, z);
       world.markBlockForRenderUpdate(x, y, z);
       // }
-      if(!world.isRemote) {
-        if(!player.capabilities.isCreativeMode) {
+      if (!world.isRemote) {
+        if (!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
         }
       }

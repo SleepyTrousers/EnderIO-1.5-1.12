@@ -4,22 +4,22 @@ public class Channel {
 
   final String name;
   final String user;
-  
-  Channel(String name, String user) {  
-    this.name = trim(name);    
-    this.user = trim(user);    
+
+  Channel(String name, String user) {
+    this.name = trim(name);
+    this.user = trim(user);
   }
-  
+
   public boolean isPublic() {
     return user == null;
   }
-  
+
   private String trim(String str) {
-    if(str == null) {
+    if (str == null) {
       return null;
     }
     str = str.trim();
-    if(str.isEmpty()) {
+    if (str.isEmpty()) {
       return null;
     }
     return str;
@@ -55,5 +55,5 @@ public class Channel {
       return false;
     return true;
   }
-  
+
 }

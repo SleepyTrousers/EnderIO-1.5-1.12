@@ -30,7 +30,7 @@ public class ContainerCrusher extends AbstractMachineContainer {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
-  }
+      }
     });
     addSlotToContainer(new Slot(tileEntity, 3, 91, 59) {
       @Override
@@ -45,6 +45,5 @@ public class ContainerCrusher extends AbstractMachineContainer {
       }
     });
   }
-
 
 }

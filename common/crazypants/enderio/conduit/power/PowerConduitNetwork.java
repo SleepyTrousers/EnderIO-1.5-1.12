@@ -3,7 +3,6 @@ package crazypants.enderio.conduit.power;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,7 +80,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     if (re == null) {
       re = new ReceptorEntry(powerReceptor, location, powerConduit, direction);
       powerReceptors.put(key, re);
-    }    
+    }
     if (powerManager != null) {
       powerManager.receptorsChanged();
     }
@@ -90,12 +89,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   public void powerReceptorRemoved(int x, int y, int z) {
     BlockCoord bc = new BlockCoord(x, y, z);
     List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
-    for(ReceptorKey key : powerReceptors.keySet()) {
-      if(key != null && key.coord.equals(bc)) {
+    for (ReceptorKey key : powerReceptors.keySet()) {
+      if (key != null && key.coord.equals(bc)) {
         remove.add(key);
       }
     }
-    for(ReceptorKey key : remove) {
+    for (ReceptorKey key : remove) {
       powerReceptors.remove(key);
     }
     powerManager.receptorsChanged();
@@ -136,12 +135,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     }
 
   }
-  
+
   private static class ReceptorKey {
     BlockCoord coord;
     ForgeDirection direction;
-    
-    ReceptorKey(BlockCoord coord, ForgeDirection direction) {    
+
+    ReceptorKey(BlockCoord coord, ForgeDirection direction) {
       this.coord = coord;
       this.direction = direction;
     }
@@ -173,7 +172,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
         return false;
       return true;
     }
- 
+
   }
 
 }

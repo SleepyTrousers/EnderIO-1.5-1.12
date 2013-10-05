@@ -64,9 +64,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   public float getProgress() {
     return currentTask == null ? 0 : currentTask.getProgress();
   }
-  
+
   public float getExperienceForOutput(ItemStack output) {
-    if(lastCompletedRecipe == null) {
+    if (lastCompletedRecipe == null) {
       return 0;
     }
     return lastCompletedRecipe.getExperianceForOutput(output);
@@ -121,20 +121,20 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
             int toMerge = result.stackSize;
             for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot() && toMerge > 0; i++) {
               int outputIndex = i;
-        if (inventory[outputIndex] == null) {
-          inventory[outputIndex] = result.copy();
+              if (inventory[outputIndex] == null) {
+                inventory[outputIndex] = result.copy();
                 toMerge = 0;
-        } else {
+              } else {
                 int newStackSize = Math.min(inventory[outputIndex].stackSize + getNumCanMerge(inventory[outputIndex], result),
                     inventory[outputIndex].getMaxStackSize());
                 int merged = newStackSize - inventory[outputIndex].stackSize;
                 toMerge -= merged;
                 if (merged > 0) {
-          inventory[outputIndex] = result.copy();
-          inventory[outputIndex].stackSize = newStackSize;
-        }
-      }
-    }
+                  inventory[outputIndex] = result.copy();
+                  inventory[outputIndex].stackSize = newStackSize;
+                }
+              }
+            }
           }
         }
       }
@@ -166,15 +166,15 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return null; // no template
     }
 
-    //make sure we have room for the next output
-    
-    //if we have an empty output, all good
+    // make sure we have room for the next output
+
+    // if we have an empty output, all good
     for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
-      if(inventory[i] == null) {
+      if (inventory[i] == null) {
         return nextRecipe;
       }
     }
-    
+
     ItemStack[] nextResults = nextRecipe.getCompletedResult(chance, getInputs());
     ItemStack[] outputStacks = new ItemStack[slotDefinition.getNumOutputSlots()];
     int copyIndex = 0;
@@ -186,12 +186,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       copyIndex++;
     }
 
-    for(ItemStack result : nextResults) {
+    for (ItemStack result : nextResults) {
       int canMerge = 0;
       for (ItemStack outStack : outputStacks) {
         canMerge += getNumCanMerge(outStack, result);
       }
-      if(canMerge < result.stackSize) {
+      if (canMerge < result.stackSize) {
         return null;
       }
     }
@@ -200,8 +200,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if(!itemStack.isItemEqual(result)) {
-      return 0;  
+    if (!itemStack.isItemEqual(result)) {
+      return 0;
     }
     return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
@@ -227,7 +227,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     super.readFromNBT(nbtRoot);
     currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
     String uid = nbtRoot.getString("lastCompletedRecipe");
-    lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);    
+    lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
   }
 
   @Override
@@ -238,9 +238,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       currentTask.writeToNBT(currentTaskNBT);
       nbtRoot.setCompoundTag("currentTask", currentTaskNBT);
     }
-    if(lastCompletedRecipe != null) {
+    if (lastCompletedRecipe != null) {
       nbtRoot.setString("lastCompletedRecipe", lastCompletedRecipe.getUid());
-    } 
+    }
   }
 
 }
