@@ -111,7 +111,8 @@ public class FusedQuartzRecipe implements IMachineRecipe {
 
   @Override
   public List<IEnderIoRecipe> getAllRecipes() {
-    IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, BasicAlloyRecipe.DEFAULT_ENERGY_USE, new ItemStack(Item.netherQuartz, NUM_QUARTZ),
+    IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, BasicAlloyRecipe.DEFAULT_ENERGY_USE,
+        new ItemStack(Item.netherQuartz, NUM_QUARTZ),
         new ItemStack(
             ModObject.blockFusedQuartz.actualId, 1, 0));
     return Collections.singletonList(recipe);
