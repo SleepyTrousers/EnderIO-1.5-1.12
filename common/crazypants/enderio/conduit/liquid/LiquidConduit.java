@@ -189,14 +189,17 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       return;
     }
 
+    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
+
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
       if(isExtractingFromDir(dir)) {
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
+
         if(extTank != null) {
 
           FluidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
-          if(couldDrain != null && couldDrain.amount > 0) {
+          if(couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
 
             // if we drained all this, how much overflow do we need to push out
             int requiredPush = (tank.getFluidAmount() + couldDrain.amount) - tank.getCapacity();
@@ -204,7 +207,11 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
               FluidStack drained = extTank.drain(dir.getOpposite(), maxDrainPerTick, true);
               if(drained != null) {
                 tank.fill(drained, true);
+                if(network != null && network.getFluidType() == null) {
+                  network.setFluidType(drained);
+                }
               }
+
             } else {
 
               // push as much as we can, to out target max
@@ -217,6 +224,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
                 }
               }
             }
+
           }
         }
       }
