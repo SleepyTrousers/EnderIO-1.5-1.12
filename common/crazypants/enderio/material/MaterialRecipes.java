@@ -52,10 +52,9 @@ public class MaterialRecipes {
       cb.stackSize = 4;
       GameRegistry.addShapedRecipe(cb, "gg ", "gg ", "   ", 'g', Block.gravel);
     } else {
-      //GameRegistry.addSmelting(Block.gravel.blockID, conduitBinder, 0);
       ItemStack result = binderComposite.copy();
       result.stackSize = 8;
-      GameRegistry.addShapedRecipe(result, "ggg", "scs ", "ggg", 'g', Block.gravel, 's', Block.sand, 'c', Item.clay);
+      GameRegistry.addShapedRecipe(result, "ggg", "scs", "ggg", 'g', Block.gravel, 's', Block.sand, 'c', Item.clay);
       GameRegistry.addSmelting(binderComposite.itemID, conduitBinder, 0);
     }
 
