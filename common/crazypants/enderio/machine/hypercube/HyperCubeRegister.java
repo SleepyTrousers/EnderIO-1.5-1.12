@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.DimensionManager;
@@ -28,7 +27,8 @@ public class HyperCubeRegister {
 
   private final Map<String, List<Channel>> userChannels = new HashMap<String, List<Channel>>();
 
-  private Configuration config;
+  //private Configuration config;
+  private HyperCubeConfig conf;
 
   public static void load() {
     instance = new HyperCubeRegister();
@@ -40,7 +40,20 @@ public class HyperCubeRegister {
   }
 
   private void innerLoad() {
-    config = new Configuration(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg"));
+    conf = new HyperCubeConfig(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/dimensionalTransceiver.cfg"));
+    File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg");
+    if(oldFile.exists()) {
+      convertOldFile();
+    } else {
+      publicChannels.addAll(conf.getPublicChannels());
+      userChannels.putAll(conf.getUserChannels());
+    }
+
+  }
+
+  private void convertOldFile() {
+    File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg");
+    Configuration config = new Configuration(oldFile);
     config.load();
 
     Property pcNamesProp = config.get(CATEGORY_PUBLIC_CHANNELS, "names", new String[] {});
@@ -64,6 +77,11 @@ public class HyperCubeRegister {
         }
       }
     }
+
+    updateConfig();
+
+    oldFile.renameTo(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg.old"));
+
   }
 
   public synchronized List<Channel> getChannelsForUser(String user) {
@@ -142,40 +160,52 @@ public class HyperCubeRegister {
   }
 
   private void updateConfig() {
-    if(config == null) {
+
+    if(conf == null) {
       Log.warn("HyperCubeRegister.updateConfig: Config was null.");
       return;
     }
-    String[] publicNames = new String[publicChannels.size()];
-    for (int i = 0; i < publicChannels.size(); i++) {
-      publicNames[i] = publicChannels.get(i).name;
-    }
-    Property pcNamesProp = config.get(CATEGORY_PUBLIC_CHANNELS, "names", new String[] {});
-    pcNamesProp.set(publicNames);
 
-    Set<String> users = userChannels.keySet();
-    Property userNamesProp = config.get(CATEGORY_PRIVATE_CHANNELS, "users", new String[] {});
-    userNamesProp.set(users == null ? new String[0] : users.toArray(new String[users.size()]));
+    conf.setPublicChannels(publicChannels);
+    conf.setUserChannels(userChannels);
+    conf.save();
 
-    for (String user : users) {
-      Property userChansProp = config.get(CATEGORY_PRIVATE_CHANNELS, user + ".channels", new String[] {});
-      List<Channel> val = userChannels.get(user);
-      String[] channelNames;
-      if(val == null) {
-        channelNames = new String[0];
-      } else {
-        channelNames = new String[val.size()];
-        int i = 0;
-        for (Channel chan : val) {
-          channelNames[i] = chan.name;
-          ++i;
-        }
-      }
-      userChansProp.set(channelNames);
+    //    if(config == null) {
+    //      Log.warn("HyperCubeRegister.updateConfig: Config was null.");
+    //      return;
+    //    }
+    //    //Configuration config = new Configuration(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg"));
+    //    String[] publicNames = new String[publicChannels.size()];
+    //    for (int i = 0; i < publicChannels.size(); i++) {
+    //      publicNames[i] = "\"" + publicChannels.get(i).name + "\"";
+    //    }
+    //    Property pcNamesProp = config.get(CATEGORY_PUBLIC_CHANNELS, "names", new String[] {});
+    //    pcNamesProp.set(publicNames);
+    //
+    //    Set<String> users = userChannels.keySet();
+    //    Property userNamesProp = config.get(CATEGORY_PRIVATE_CHANNELS, "users", new String[] {});
+    //    userNamesProp.set(users == null ? new String[0] : users.toArray(new String[users.size()]));
+    //
+    //    for (String user : users) {
+    //      Property userChansProp = config.get(CATEGORY_PRIVATE_CHANNELS, user + ".channels", new String[] {});
+    //      List<Channel> val = userChannels.get(user);
+    //      String[] channelNames;
+    //      if(val == null) {
+    //        channelNames = new String[0];
+    //      } else {
+    //        channelNames = new String[val.size()];
+    //        int i = 0;
+    //        for (Channel chan : val) {
+    //          channelNames[i] = chan.name;
+    //          ++i;
+    //        }
+    //      }
+    //      userChansProp.set(channelNames);
+    //
+    //    }
+    //
+    //    config.save();
 
-    }
-
-    config.save();
   }
 
   private List<TileHyperCube> innerGetCubesForChannel(Channel channel) {
