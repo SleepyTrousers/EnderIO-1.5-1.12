@@ -195,7 +195,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
         if (extTank != null) {
 
           LiquidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
-          if (couldDrain != null && couldDrain.amount > 0) {
+          if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain)) {
 
             // if we drained all this, how much overflow do we need to push out
             int requiredPush = (tank.getFluidAmount() + couldDrain.amount) - tank.getCapacity();
@@ -221,6 +221,16 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       }
     }
 
+  }
+
+  private boolean canFill(ForgeDirection dir, LiquidStack fluid) {
+    if (tank.getLiquid() == null) {
+      return true;
+    }
+    if (fluid != null && fluid.isLiquidEqual(tank.getLiquid())) {
+      return true;
+    }
+    return false;
   }
 
   private boolean isPowered() {
