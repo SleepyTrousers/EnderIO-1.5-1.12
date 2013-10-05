@@ -204,6 +204,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
               if (drained != null) {
                 tank.fill(drained, true);
               }
+              if (network != null && network.getFluidType() == null) {
+                network.setFluidType(drained);
+              }
             } else {
 
               // push as much as we can, to out target max
@@ -399,6 +402,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
             toPush.amount -= toExt;
             pushed += toExt;
             if (doPush) {
+              System.out.println("LiquidConduit.pushLiquid: Did output of: " + toPush.amount + " of type: " + toPush.itemID + ":" + toPush.itemMeta);
               network.outputedToExternal(toExt);
             }
           }
