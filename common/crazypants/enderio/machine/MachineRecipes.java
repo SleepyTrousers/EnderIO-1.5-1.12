@@ -18,11 +18,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
-import crazypants.enderio.material.PowderIngot;
 import crazypants.enderio.power.Capacitors;
 
 public class MachineRecipes {
@@ -37,29 +37,60 @@ public class MachineRecipes {
     ItemStack basicGear = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal());
     ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
 
+    //stirling gen
     ItemStack stirlingGen = new ItemStack(blockStirlingGenerator.actualId, 1, 0);
     GameRegistry.addShapedRecipe(stirlingGen, "bcb", "bfb", "gpg", 'b', Block.stoneBrick, 'f', Block.furnaceIdle, 'p', Block.pistonBase, 'g', basicGear, 'c',
         capacitor);
 
+    //reservoir
     ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
     ItemStack reservoir = new ItemStack(blockReservoir.actualId, 2, 0);
-    ItemStack glassPane = new ItemStack(Block.thinGlass, 1, 0);
-    GameRegistry.addShapedRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassPane, 'c', Item.cauldron, 'f', fusedQuartz);
+    ItemStack glassSides;
+    if(Config.useHardRecipes) {
+      glassSides = fusedQuartz;
+    } else {
+      glassSides = new ItemStack(Block.thinGlass, 1, 0);
+    }
+    GameRegistry.addShapedRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassSides, 'c', Item.cauldron, 'f', fusedQuartz);
 
-    ItemStack coalPowder = new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COAL.ordinal());
-
+    //light
     ItemStack poweredLamp = new ItemStack(blockElectricLight.actualId, 1, 0);
     ItemStack glowstone = new ItemStack(Item.glowstone);
-    GameRegistry.addShapedRecipe(poweredLamp, "ggg", "sds", "scs", 'g', Block.glass, 'd', glowstone, 's', silicon, 'c', capacitor);
+    if(Config.useHardRecipes) {
+      GameRegistry.addShapedRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor);
+    } else {
+      GameRegistry.addShapedRecipe(poweredLamp, "ggg", "sds", "scs", 'g', Block.glass, 'd', glowstone, 's', silicon, 'c', capacitor);
+    }
 
+    //mill
     ItemStack crusher = new ItemStack(blockCrusher.actualId, 1, 0);
-    GameRegistry.addShapedRecipe(crusher, "fff", "imi", "ici", 'f', Item.flint, 'm', machineChassi, 'i', Item.ingotIron, 'c', capacitor);
+    if(Config.useHardRecipes) {
+      GameRegistry.addShapedRecipe(crusher, "ooo", "fpf", "cmc", 'f', Item.flint, 'm', machineChassi, 'i', Item.ingotIron, 'c', capacitor, 'p',
+          Block.pistonBase,
+          'o', Block.obsidian);
+    } else {
+      GameRegistry.addShapedRecipe(crusher, "fff", "imi", "ici", 'f', Item.flint, 'm', machineChassi, 'i', Item.ingotIron, 'c', capacitor);
+    }
 
-    ItemStack tesseract = new ItemStack(ModObject.blockHyperCube.actualId, 1, 0);
+    //transceiver
+    ItemStack transceiver = new ItemStack(ModObject.blockHyperCube.actualId, 1, 0);
     ItemStack obsidian = new ItemStack(Block.obsidian);
     ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
-    GameRegistry.addShapedRecipe(tesseract, "oeo", "pdp", "oco", 'o', obsidian, 'e', Item.eyeOfEnder, 'c', enderCapacitor, 'p', phasedGold, 'd', Item.diamond);
+    GameRegistry
+        .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Item.eyeOfEnder, 'c', enderCapacitor, 'p', phasedGold, 'd', Item.diamond);
 
+    //solar panel
+    if(Config.photovoltaicCellEnabled) {
+      ItemStack energeticAlloy = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENERGETIC_ALLOY.ordinal());
+      ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
+      if(Config.useHardRecipes) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', capacitor, 'e',
+            energeticAlloy, 'p', phasedGold));
+      } else {
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "efe", "cdc", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', "dustCoal", 'e',
+            energeticAlloy));
+      }
+    }
   }
 
   public static void addOreDictionaryRecipes() {
@@ -67,35 +98,48 @@ public class MachineRecipes {
     ItemStack alloySmelter = new ItemStack(blockAlloySmelter.actualId, 1, 0);
     ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
 
-    ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
-    if(copperIngots != null && !copperIngots.isEmpty()) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "cmc", "cCc", 'c', "ingotCopper", 'm', machineChassi, 'b', Block.stoneBrick, 'f',
-          Block.furnaceIdle,
-          'C', capacitor));
+    //alloy smelter
+    if(Config.useHardRecipes) {
+      GameRegistry.addShapedRecipe(alloySmelter, "nnn", "nfn", "CmC", 'o', Block.netherBrick, 'm', machineChassi, 'f', Block.furnaceIdle, 'C', capacitor, 'n',
+          Block.netherBrick);
     } else {
-      GameRegistry
-          .addShapedRecipe(alloySmelter, "bfb", "imi", "iCi", 'i', Item.ingotIron, 'm', machineChassi, 'b', Block.stoneBrick, 'C', capacitor);
+      ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
+      if(copperIngots != null && !copperIngots.isEmpty()) {
+        GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "cmc", "cCc", 'c', "ingotCopper", 'm', machineChassi, 'b', Block.stoneBrick, 'f',
+            Block.furnaceIdle, 'C', capacitor));
+      } else {
+        GameRegistry.addShapedRecipe(alloySmelter, "bfb", "imi", "iCi", 'i', Item.ingotIron, 'm', machineChassi, 'b', Block.stoneBrick, 'f',
+            Block.furnaceIdle, 'C', capacitor);
+      }
     }
-
-    ItemStack painter = new ItemStack(blockPainter.actualId, 1, 0);
-    ItemStack capacitorBank = new ItemStack(blockCapacitorBank.actualId, 1, 0);
-    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
 
     ArrayList<ItemStack> tinIngots = OreDictionary.getOres("ingotTin");
+    Object metal;
     if(tinIngots != null && !tinIngots.isEmpty()) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "tmt", "tCt", 't', "ingotTin", 'm', machineChassi, 'q', Item.netherQuartz, 'd', Item.diamond,
-          'C', capacitor));
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "tct", "crc", "tct", 't', "ingotTin", 'c', activatedCapacitor, 'r', Block.blockRedstone));
+      metal = "ingotTin";
+    } else {
+      metal = Item.ingotIron;
     }
-    else {
-      GameRegistry.addShapedRecipe(painter, "qdq", "imi", "iCi", 'i', Item.ingotIron, 'm', machineChassi, 'b', Block.netherBrick, 'C', activatedCapacitor);
-      GameRegistry.addShapedRecipe(capacitorBank, "ici", "crc", "ici", 'i', Item.ingotIron, 'c', activatedCapacitor, 'r', Block.blockRedstone);
+
+    //painter
+    ItemStack painter = new ItemStack(blockPainter.actualId, 1, 0);
+    if(Config.useHardRecipes) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qqq", "mdm", "CMC", 'm', metal, 'M', machineChassi, 'q', Item.netherQuartz, 'd', Item.diamond,
+          'C', capacitor, 'q', Item.netherQuartz, 'd', Item.diamond));
+    } else {
+      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "mMm", "mCm", 'm', metal, 'M', machineChassi, 'q', Item.netherQuartz, 'd', Item.diamond,
+          'C', capacitor, 'q', Item.netherQuartz, 'd', Item.diamond));
     }
-    int dustCoal = OreDictionary.getOreID("dustCoal");
-    ItemStack energeticAlloy = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENERGETIC_ALLOY.ordinal());
-    ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
-    ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
-    GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "efe", "cdc", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', "dustCoal", 'e',
-        energeticAlloy));
+
+    //capacitor bank
+    ItemStack capacitorBank = new ItemStack(blockCapacitorBank.actualId, 1, 0);
+    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
+    if(Config.useHardRecipes) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', metal, 'c', activatedCapacitor, 'r', Block.blockRedstone, 'M',
+          machineChassi));
+    } else {
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', metal, 'c', activatedCapacitor, 'r', Block.blockRedstone));
+    }
+
   }
 }

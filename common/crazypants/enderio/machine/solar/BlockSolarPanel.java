@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
@@ -35,7 +36,11 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
     setHardness(0.5F);
     setStepSound(Block.soundStoneFootstep);
     setUnlocalizedName(ModObject.blockSolarPanel.unlocalisedName);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    if(Config.photovoltaicCellEnabled) {
+      setCreativeTab(EnderIOTab.tabEnderIO);
+    } else {
+      setCreativeTab(null);
+    }
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
