@@ -16,9 +16,9 @@ public class ConduitGeometryUtil {
 
   public static float STUB_WIDTH = 0.2f;
   public static float STUB_HEIGHT = 0.2f;
-  
+
   public static float WIDTH;
-  public static float HEIGHT;  
+  public static float HEIGHT;
 
   public static float HWIDTH;
   public static float HHEIGHT;
@@ -27,15 +27,14 @@ public class ConduitGeometryUtil {
   public static Vector3d CORE_MIN;
   public static Vector3d CORE_MAX;
   public static BoundingBox CORE_BOUNDS;
-  
+
   static {
     setupBounds(0.5f);
   }
 
-  
   public static void setupBounds(float scale) {
     float size = 0.075f + (0.175f * scale);
-    
+
     WIDTH = size;
     HEIGHT = size;
     HWIDTH = WIDTH / 2;
@@ -44,10 +43,9 @@ public class ConduitGeometryUtil {
     CORE_MIN = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
     CORE_MAX = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
     CORE_BOUNDS = new BoundingBox(CORE_MIN, CORE_MAX);
-     
+
   }
-  
-  
+
   private Map<GeometryKey, BoundingBox> boundsCache = new HashMap<GeometryKey, BoundingBox>();
 
   private EnumMap<ConduitConnectorType, BoundingBox> connectorBounds = new EnumMap<ConduitConnectorType, BoundingBox>(ConduitConnectorType.class);
@@ -58,7 +56,7 @@ public class ConduitGeometryUtil {
 
   public BoundingBox getBoundingBox(ConduitConnectorType type) {
     BoundingBox result = connectorBounds.get(type);
-    if (result == null) {
+    if(result == null) {
       result = createConnector(type);
       result = result.scale(1.2f, 1.2f, 1.2f);
       connectorBounds.put(type, result);
@@ -84,7 +82,7 @@ public class ConduitGeometryUtil {
   public BoundingBox getBoundingBox(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);
     BoundingBox result = boundsCache.get(key);
-    if (result == null) {
+    if(result == null) {
       result = createConduitBounds(type, key);
       boundsCache.put(key, result);
     }

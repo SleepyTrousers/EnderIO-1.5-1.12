@@ -174,4 +174,8 @@ public class CrusherRecipeManager {
     recipes.add(recipe);
   }
 
+  public List<CrusherRecipe> getRecipes() {
+    return recipes;
+  }
+
 }

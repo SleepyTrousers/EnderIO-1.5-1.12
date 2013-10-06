@@ -32,13 +32,13 @@ public class ItemConduitRenderer implements IItemRenderer {
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
     RenderBlocks renderBlocks = (RenderBlocks) data[0];
-    if (type == ItemRenderType.INVENTORY) {
+    if(type == ItemRenderType.INVENTORY) {
       renderToInventory(item, renderBlocks);
-    } else if (type == ItemRenderType.EQUIPPED) {
+    } else if(type == ItemRenderType.EQUIPPED) {
       renderEquipped(item, renderBlocks);
-    } else if (type == ItemRenderType.ENTITY) {
+    } else if(type == ItemRenderType.ENTITY) {
       renderEntity(item, renderBlocks);
-    } else if (type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+    } else if(type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
       renderEntity(item, renderBlocks);
     } else {
       System.out.println("FacadeRenderer.renderItem: Unsupported render type");

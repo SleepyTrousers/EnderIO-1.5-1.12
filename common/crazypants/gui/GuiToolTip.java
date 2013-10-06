@@ -20,7 +20,7 @@ public class GuiToolTip {
 
   public GuiToolTip(Rectangle bounds, String... lines) {
     this.bounds = bounds;
-    if (lines != null) {
+    if(lines != null) {
       text = new ArrayList<String>(lines.length);
       for (String line : lines) {
         text.add(line);
@@ -32,15 +32,13 @@ public class GuiToolTip {
 
   public GuiToolTip(Rectangle bounds, List<String> lines) {
     this.bounds = bounds;
-    if (lines == null) {
+    if(lines == null) {
       text = new ArrayList<String>();
     } else {
       text = new ArrayList<String>(lines);
     }
   }
 
-  
-  
   public Rectangle getBounds() {
     return bounds;
   }
@@ -50,12 +48,12 @@ public class GuiToolTip {
   }
 
   public void onTick(int mouseX, int mouseY) {
-    if (lastMouseX != mouseX || lastMouseY != mouseY) {
+    if(lastMouseX != mouseX || lastMouseY != mouseY) {
       mouseOverStart = 0;
     }
 
-    if (bounds.contains(mouseX, mouseY)) {
-      if (mouseOverStart == 0) {
+    if(bounds.contains(mouseX, mouseY)) {
+      if(mouseOverStart == 0) {
         mouseOverStart = System.currentTimeMillis();
       }
     } else {
@@ -68,7 +66,7 @@ public class GuiToolTip {
 
   public boolean shouldDraw() {
     updateText();
-    if (mouseOverStart == 0) {
+    if(mouseOverStart == 0) {
       return false;
     }
     return System.currentTimeMillis() - mouseOverStart >= DELAY;
@@ -76,10 +74,10 @@ public class GuiToolTip {
 
   protected void updateText() {
   }
-  
+
   public void setToolTipText(String... txt) {
     text.clear();
-    for(String line : txt) {
+    for (String line : txt) {
       text.add(line);
     }
   }

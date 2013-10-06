@@ -85,11 +85,11 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   public boolean canConnectToExternal(ForgeDirection direction) {
     TileEntity te = bundle.getEntity();
     World world = te.worldObj;
-    if (world == null) {
+    if(world == null) {
       return false;
     }
     int id = world.getBlockId(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
-    if (id > 0 && id != EnderIO.blockConduitBundle.blockID) {
+    if(id > 0 && id != EnderIO.blockConduitBundle.blockID) {
 
       // We can connect to a block if it can provide power or it is receiving a
       // string signal (not emitted by us)
@@ -97,11 +97,11 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
       BlockCoord loc = getLocation().getLocation(direction);
 
       boolean toggleNetwork = network != null && network.isNetworkEnabled();
-      if (toggleNetwork) {
+      if(toggleNetwork) {
         network.setNetworkEnabled(false);
       }
       boolean gettingStrongPower = world.getBlockPowerInput(loc.x, loc.y, loc.z) == 15;
-      if (toggleNetwork) {
+      if(toggleNetwork) {
         network.setNetworkEnabled(true);
       }
 
@@ -120,10 +120,10 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   public Set<Signal> getNetworkInputs() {
     Set<Signal> res = new HashSet<Signal>();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      if (canConnectToExternal(dir)) {
+      if(canConnectToExternal(dir)) {
         int input = getExternalPowerLevel(dir);
-        if (input > 1) { // need to degrade external signals by one as they
-                         // enter
+        if(input > 1) { // need to degrade external signals by one as they
+                        // enter
           BlockCoord loc = getLocation().getLocation(dir);
           Signal signal = new Signal(loc.x, loc.y, loc.z, input - 1, SignalColor.RED);
           res.add(signal);
@@ -135,7 +135,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public Set<Signal> getNetworkOutputs(ForgeDirection side) {
-    if (network == null) {
+    if(network == null) {
       return Collections.emptySet();
     }
     return network.getSignals();
@@ -144,19 +144,19 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   @Override
   public boolean onNeighborBlockChange(int blockId) {
     World world = getBundle().getEntity().worldObj;
-    if (world.isRemote) {
+    if(world.isRemote) {
       return false;
     }
-    if (blockId == EnderIO.blockConduitBundle.blockID) {
+    if(blockId == EnderIO.blockConduitBundle.blockID) {
       return false;
     }
     boolean res = super.onNeighborBlockChange(blockId);
 
-    if (network == null || network.updatingNetwork) {
+    if(network == null || network.updatingNetwork) {
       return false;
     }
 
-    if (blockId > 0 && Block.blocksList[blockId].canProvidePower() && network != null) {
+    if(blockId > 0 && Block.blocksList[blockId].canProvidePower() && network != null) {
       // TODO: Just recalculate the signals, no need for a full rebuild
       network.destroyNetwork();
       return false;
@@ -165,14 +165,14 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   private int getExternalPowerLevel(ForgeDirection dir) {
-    if (network != null) {
+    if(network != null) {
       network.setNetworkEnabled(false);
     }
     World world = getBundle().getEntity().worldObj;
     BlockCoord loc = getLocation();
     int result = world.getStrongestIndirectPower(loc.x, loc.y, loc.z);
 
-    if (network != null) {
+    if(network != null) {
       network.setNetworkEnabled(true);
     }
     return result;
@@ -186,7 +186,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public int isProvidingWeakPower(ForgeDirection toDirection) {
-    if (network == null || !network.isNetworkEnabled()) {
+    if(network == null || !network.isNetworkEnabled()) {
       return 0;
     }
     int result = 0;
@@ -198,7 +198,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public Icon getTextureForState(CollidableComponent component) {
-    if (component.dir == ForgeDirection.UNKNOWN) {
+    if(component.dir == ForgeDirection.UNKNOWN) {
       return isActive() ? ICONS.get(KEY_CORE_ON_ICON) : ICONS.get(KEY_CORE_OFF_ICON);
     }
     // return ICONS.get(KEY_CONDUIT_ICON);

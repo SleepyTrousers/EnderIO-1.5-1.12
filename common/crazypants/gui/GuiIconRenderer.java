@@ -1,9 +1,6 @@
 package crazypants.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
@@ -26,23 +23,22 @@ public class GuiIconRenderer extends Gui {
 
   protected Icon icon;
   protected ResourceLocation texture;
-  
+
   private int yPosition;
   private int xPosition;
-  
+
   private float alpha = 1.0f;
 
-  
   public GuiIconRenderer(int x, int y, int itemId, int itemMeta) {
     xPosition = x;
     yPosition = y;
     icon = IconUtil.getIconForItem(itemId, itemMeta);
     texture = RenderUtil.ITEM_TEX;
   }
-  
+
   public GuiIconRenderer(int x, int y, Icon icon, ResourceLocation texture) {
     xPosition = x;
-    yPosition = y;    
+    yPosition = y;
     this.icon = icon;
     this.texture = texture;
   }
@@ -87,18 +83,18 @@ public class GuiIconRenderer extends Gui {
   }
 
   public void draw() {
-    
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
 
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-    RenderUtil.bindTexture(texture);    
+    RenderUtil.bindTexture(texture);
     drawTexturedModelRectFromIcon(xPosition, yPosition, icon, width, height);
 
     GL11.glPopAttrib();
-    
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
   }
 

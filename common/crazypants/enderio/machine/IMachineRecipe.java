@@ -1,6 +1,9 @@
 package crazypants.enderio.machine;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.crafting.IEnderIoRecipe;
 
 /**
  * A MachineRecipe implementation must be stateless, always returning the same
@@ -29,7 +32,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  float getEnergyRequired(RecipeInput... inputs);
+  float getEnergyRequired(MachineRecipeInput... inputs);
 
   /**
    * Only returns true if output can be generated using these inputs. If
@@ -39,7 +42,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  public boolean isRecipe(RecipeInput... inputs);
+  public boolean isRecipe(MachineRecipeInput... inputs);
 
   /**
    * Returns the output from a single 'cycle' of the recipe (even if the inputs
@@ -54,7 +57,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  ItemStack[] getCompletedResult(float randomChance, RecipeInput... inputs);
+  ItemStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs);
 
   /**
    * Returns the experience a user gains when this recipe has generated the
@@ -73,7 +76,7 @@ public interface IMachineRecipe {
    * @param input
    * @return
    */
-  boolean isValidInput(RecipeInput input);
+  boolean isValidInput(MachineRecipeInput input);
 
   /**
    * The name of the machine this recipe can be crafted by.
@@ -88,6 +91,13 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs);
+  MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs);
+
+  /**
+   * Returns all possible outputs from the recipe.
+   * 
+   * @return
+   */
+  List<IEnderIoRecipe> getAllRecipes();
 
 }

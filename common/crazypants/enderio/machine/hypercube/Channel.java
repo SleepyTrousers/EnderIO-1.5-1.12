@@ -4,16 +4,16 @@ public class Channel {
 
   final String name;
   final String user;
-  
-  Channel(String name, String user) {  
-    this.name = trim(name);    
-    this.user = trim(user);    
+
+  Channel(String name, String user) {
+    this.name = trim(name);
+    this.user = trim(user);
   }
-  
+
   public boolean isPublic() {
     return user == null;
   }
-  
+
   private String trim(String str) {
     if(str == null) {
       return null;
@@ -36,24 +36,24 @@ public class Channel {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if(this == obj)
       return true;
-    if (obj == null)
+    if(obj == null)
       return false;
-    if (getClass() != obj.getClass())
+    if(getClass() != obj.getClass())
       return false;
     Channel other = (Channel) obj;
-    if (name == null) {
-      if (other.name != null)
+    if(name == null) {
+      if(other.name != null)
         return false;
-    } else if (!name.equals(other.name))
+    } else if(!name.equals(other.name))
       return false;
-    if (user == null) {
-      if (other.user != null)
+    if(user == null) {
+      if(other.user != null)
         return false;
-    } else if (!user.equals(other.user))
+    } else if(!user.equals(other.user))
       return false;
     return true;
   }
-  
+
 }

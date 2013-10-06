@@ -65,7 +65,7 @@ public final class CubeRenderer {
     if(tintSides) {
       float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
       tessellator.setColorOpaque_F(cm, cm, cm);
-    }    
+    }
     addVecWithUV(verts[1], minU, minV);
     addVecWithUV(verts[0], maxU, minV);
     addVecWithUV(verts[3], maxU, maxV);
@@ -74,7 +74,7 @@ public final class CubeRenderer {
     tessellator.setNormal(0, 0, 1);
     if(tintSides) {
       float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
-      tessellator.setColorOpaque_F(cm, cm, cm);      
+      tessellator.setColorOpaque_F(cm, cm, cm);
     }
     addVecWithUV(verts[4], minU, minV);
     addVecWithUV(verts[5], maxU, minV);
@@ -84,7 +84,7 @@ public final class CubeRenderer {
     tessellator.setNormal(0, 1, 0);
     if(tintSides) {
       float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
-      tessellator.setColorOpaque_F(cm, cm, cm);      
+      tessellator.setColorOpaque_F(cm, cm, cm);
     }
     addVecWithUV(verts[6], minU, minV);
     addVecWithUV(verts[2], minU, maxV);
@@ -94,7 +94,7 @@ public final class CubeRenderer {
     tessellator.setNormal(0, -1, 0);
     if(tintSides) {
       float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
-      tessellator.setColorOpaque_F(cm, cm, cm);      
+      tessellator.setColorOpaque_F(cm, cm, cm);
     }
     addVecWithUV(verts[0], maxU, maxV);
     addVecWithUV(verts[1], minU, maxV);
@@ -104,7 +104,7 @@ public final class CubeRenderer {
     tessellator.setNormal(1, 0, 0);
     if(tintSides) {
       float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
-      tessellator.setColorOpaque_F(cm, cm, cm);      
+      tessellator.setColorOpaque_F(cm, cm, cm);
     }
     addVecWithUV(verts[2], minU, maxV);
     addVecWithUV(verts[6], maxU, maxV);
@@ -114,7 +114,7 @@ public final class CubeRenderer {
     tessellator.setNormal(-1, 0, 0);
     if(tintSides) {
       float cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
-      tessellator.setColorOpaque_F(cm, cm, cm);      
+      tessellator.setColorOpaque_F(cm, cm, cm);
     }
     addVecWithUV(verts[0], minU, minV);
     addVecWithUV(verts[4], maxU, minV);
@@ -213,7 +213,7 @@ public final class CubeRenderer {
     verts[6].set(bound.maxX, bound.maxY, bound.maxZ);
     verts[7].set(bound.minX, bound.maxY, bound.maxZ);
 
-    if (xForm != null) {
+    if(xForm != null) {
       for (Vector3d vec : verts) {
         xForm.apply(vec);
       }

@@ -102,7 +102,7 @@ public class GuiEnderface extends GuiScreen {
       for (int y = ioY - range; y <= ioY + range; y++) {
         for (int z = ioZ - range; z <= ioZ + range; z++) {
           int blockId = world.getBlockId(x, y, z);
-          if (blockId > 0 && blockId < Block.blocksList.length) {
+          if(blockId > 0 && blockId < Block.blocksList.length) {
             blocks.add(new ViewableBlocks(x, y, z, blockId));
           }
         }
@@ -142,11 +142,11 @@ public class GuiEnderface extends GuiScreen {
   public void handleMouseInput() {
     super.handleMouseInput();
 
-    if (Mouse.getEventButton() == 0) {
+    if(Mouse.getEventButton() == 0) {
       dragging = Mouse.getEventButtonState();
     }
 
-    if (dragging) {
+    if(dragging) {
       yaw -= (Mouse.getEventDX() / (double) mc.displayWidth) * 180;
       pitch += (Mouse.getEventDY() / (double) mc.displayHeight) * 180;
       pitch = (float) VecmathUtil.clamp(pitch, -80, 80);
@@ -157,13 +157,13 @@ public class GuiEnderface extends GuiScreen {
 
     long elapsed = world.getTotalWorldTime() - initTime;
 
-    if (Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+    if(Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
 
       int x = Mouse.getEventX();
       int y = Mouse.getEventY();
       Vector3d start = new Vector3d();
       Vector3d end = new Vector3d();
-      if (camera.getRayForPixel(x, y, start, end)) {
+      if(camera.getRayForPixel(x, y, start, end)) {
         end.scale(distance * 2);
         end.add(start);
         doSelection(start, end);
@@ -178,16 +178,16 @@ public class GuiEnderface extends GuiScreen {
     end.add(origin);
     List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
     for (ViewableBlocks ug : blocks) {
-      if (!ug.bc.equals(new BlockCoord(ioX, ioY, ioZ))) {
+      if(!ug.bc.equals(new BlockCoord(ioX, ioY, ioZ))) {
         MovingObjectPosition res = Block.blocksList[ug.blockId].collisionRayTrace(world, ug.bc.x, ug.bc.y, ug.bc.z,
             Vec3.createVectorHelper(start.x, start.y, start.z), Vec3.createVectorHelper(end.x, end.y, end.z));
-        if (res != null) {
+        if(res != null) {
           hits.add(res);
         }
       }
     }
     MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
-    if (hit != null) {
+    if(hit != null) {
       int id = world.getBlockId(hit.blockX, hit.blockY, hit.blockZ);
       if(id == ModObject.blockHyperCube.actualId || id == ModObject.blockCapacitorBank.actualId) {
         Block.blocksList[id].onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
@@ -203,9 +203,9 @@ public class GuiEnderface extends GuiScreen {
     MovingObjectPosition closest = null;
 
     for (MovingObjectPosition hit : candidates) {
-      if (hit != null) {
+      if(hit != null) {
         double lengthSquared = hit.hitVec.squareDistanceTo(origin);
-        if (lengthSquared < minLengthSquared) {
+        if(lengthSquared < minLengthSquared) {
           minLengthSquared = lengthSquared;
           closest = hit;
         }
@@ -227,14 +227,14 @@ public class GuiEnderface extends GuiScreen {
     RenderHelper.enableGUIStandardItemLighting();
     drawEnderfaceBackground();
 
-    if (!updateCamera(partialTick)) {
+    if(!updateCamera(partialTick)) {
       return;
     }
     applyCamera(partialTick);
 
-    if (!animateInX && !animateInY) {
+    if(!animateInX && !animateInY) {
 
-      if (chunkLoaded) {
+      if(chunkLoaded) {
 
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -262,7 +262,7 @@ public class GuiEnderface extends GuiScreen {
         TileEntityRenderer.staticPlayerZ = origin.z - eye.z;
         for (ViewableBlocks ug : blocks) {
           TileEntity tile = world.getBlockTileEntity(ug.bc.x, ug.bc.y, ug.bc.z);
-          if (tile != null) {
+          if(tile != null) {
             TileEntityRenderer.instance.renderTileEntity(tile, partialTick);
           }
         }
@@ -281,7 +281,7 @@ public class GuiEnderface extends GuiScreen {
     int vpy = guiTop * scaledresolution.getScaleFactor();
     int vpw = (int) ((float) gw / width * mc.displayWidth);
     int vph = (int) ((float) gh / height * mc.displayHeight);
-    if (vpw <= 0 || vph <= 0) {
+    if(vpw <= 0 || vph <= 0) {
       return false;
     }
 
@@ -340,7 +340,7 @@ public class GuiEnderface extends GuiScreen {
 
     portalFade -= (partialTick * (1f / animationDuration));
     portalFade = Math.max(0, portalFade);
-    if (portalFade >= 0) {
+    if(portalFade >= 0) {
       drawRect(scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight(), 0, 0.3f, 0.16f, Math.max(0.3f, portalFade));
     }
 
@@ -360,7 +360,7 @@ public class GuiEnderface extends GuiScreen {
    * Renders the portal overlay. Args: portalStrength, width, height
    */
   protected void renderPortalOverlay(float par1, int par2, int par3) {
-    if (par1 < 1.0F) {
+    if(par1 < 1.0F) {
       par1 *= par1;
       par1 *= par1;
       par1 = par1 * 0.8F + 0.2F;
@@ -401,7 +401,7 @@ public class GuiEnderface extends GuiScreen {
 
   private void animateBackground(float partialTick) {
 
-    if (!animating()) {
+    if(!animating()) {
       return;
     }
 
@@ -415,10 +415,10 @@ public class GuiEnderface extends GuiScreen {
     // int ymag = mag;
     int ymag2 = ymag * 2;
 
-    if (animateInX) {
+    if(animateInX) {
       gw -= mag2;
       guiLeft += mag;
-      if (gw <= 0) {
+      if(gw <= 0) {
         animateInX = false;
         // animateInY = false;
       }
@@ -427,10 +427,10 @@ public class GuiEnderface extends GuiScreen {
       guiLeft -= mag;
     }
 
-    if (animateInY) {
+    if(animateInY) {
       gh -= ymag2;
       guiTop += ymag;
-      if (gh <= 0) {
+      if(gh <= 0) {
         animateInY = false;
         // animateInX= false;
       }
@@ -467,11 +467,11 @@ public class GuiEnderface extends GuiScreen {
     int botH = 0xFF555555;
     int rightH = 0xFF555555;
     int leftH = 0xFFFFFFFF;
-    if (animateInX) {
+    if(animateInX) {
       leftH = 0xFF555555;
       rightH = 0xFFFFFFFF;
     }
-    if (animateInY) {
+    if(animateInY) {
       topH = 0xFF555555;
       botH = 0xFFFFFFFF;
     }
@@ -491,7 +491,7 @@ public class GuiEnderface extends GuiScreen {
 
   }
 
-  void openInterface(int targetX, int targetY, int targetZ) {    
+  void openInterface(int targetX, int targetY, int targetZ) {
     Packet250CustomPayload pkt = PacketHandler.getPacketEnderface(targetX, targetY, targetZ);
     PacketDispatcher.sendPacketToServer(pkt);
   }

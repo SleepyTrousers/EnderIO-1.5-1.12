@@ -18,13 +18,13 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
   IPowerReceptor getExternalPowerReceptor(ForgeDirection direction);
 
   ICapacitor getCapacitor();
-  
-  float getMaxEnergyExtracted(ForgeDirection dir);  
-  
+
+  float getMaxEnergyExtracted(ForgeDirection dir);
+
   float getMaxEnergyRecieved(ForgeDirection dir);
-  
+
   Icon getTextureForInputMode();
-  
+
   Icon getTextureForOutputMode();
 
 }

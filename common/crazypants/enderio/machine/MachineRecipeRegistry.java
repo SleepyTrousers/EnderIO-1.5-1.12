@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import crazypants.enderio.crafting.RecipeReigistry;
+
 public class MachineRecipeRegistry {
 
   public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();
@@ -14,6 +16,7 @@ public class MachineRecipeRegistry {
 
   public void registerRecipe(String machine, IMachineRecipe recipe) {
     getRecipesForMachine(machine).put(recipe.getUid(), recipe);
+    RecipeReigistry.instance.registerRecipes(recipe.getAllRecipes());
   }
 
   public Map<String, IMachineRecipe> getRecipesForMachine(String machineName) {
@@ -39,7 +42,7 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public IMachineRecipe getRecipeForInputs(String machineName, RecipeInput... inputs) {
+  public IMachineRecipe getRecipeForInputs(String machineName, MachineRecipeInput... inputs) {
     Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
     if(recipes == null) {
       return null;
@@ -52,7 +55,7 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public List<IMachineRecipe> getRecipesForInput(String machineName, RecipeInput input) {
+  public List<IMachineRecipe> getRecipesForInput(String machineName, MachineRecipeInput input) {
     if(input == null) {
       return Collections.emptyList();
     }

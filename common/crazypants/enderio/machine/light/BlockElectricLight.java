@@ -71,9 +71,9 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
 
     TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
-    if (te instanceof TileElectricLight) {
+    if(te instanceof TileElectricLight) {
       ForgeDirection onFace = ((TileElectricLight) te).getFace();
-      if (side == (onFace.offsetX == 0 ? onFace.getOpposite().ordinal() : onFace.ordinal())) {
+      if(side == (onFace.offsetX == 0 ? onFace.getOpposite().ordinal() : onFace.ordinal())) {
         boolean on = blockAccess.getBlockMetadata(x, y, z) != 0;
         return on ? blockIcon : blockIconOff;
       }
@@ -85,7 +85,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   @Override
   @SideOnly(Side.CLIENT)
   public Icon getIcon(int side, int par2) {
-    if (side == ForgeDirection.DOWN.ordinal()) {
+    if(side == ForgeDirection.DOWN.ordinal()) {
       return blockIcon;
     }
     return blockIconSide;
@@ -104,7 +104,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     Block block = blocksList[world.getBlockId(x, y, z)];
-    if (block != null && block != this) {
+    if(block != null && block != this) {
       return block.getLightValue(world, x, y, z);
     }
     return world.getBlockMetadata(x, y, z) > 0 ? 15 : 0;
@@ -114,7 +114,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int x, int y, int z) {
     ForgeDirection onFace = ForgeDirection.DOWN;
     TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
-    if (te instanceof TileElectricLight) {
+    if(te instanceof TileElectricLight) {
       onFace = ((TileElectricLight) te).getFace();
     }
 
@@ -169,7 +169,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
     ForgeDirection onFace = ForgeDirection.values()[meta].getOpposite();
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileElectricLight) {
+    if(te instanceof TileElectricLight) {
       ((TileElectricLight) te).setFace(onFace);
     }
     world.setBlockMetadataWithNotify(x, y, z, 0, 0);
@@ -183,7 +183,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileElectricLight) {
+    if(te instanceof TileElectricLight) {
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
@@ -191,7 +191,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     TileElectricLight te = (TileElectricLight) world.getBlockTileEntity(x, y, z);
-    if (te != null) {
+    if(te != null) {
       te.onBlockRemoved();
     }
     world.removeBlockTileEntity(x, y, z);

@@ -437,7 +437,7 @@ public class Matrix4d {
 
   public void invert() {
     double det = determinant();
-    if (det == 0) {
+    if(det == 0) {
       throw new RuntimeException("Cannot invert matrix with a determinat of 0.");
     }
     double detInv = 1f / det;

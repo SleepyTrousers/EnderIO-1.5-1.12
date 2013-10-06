@@ -48,7 +48,7 @@ public class TileEntityCustomBlock extends TileEntity {
   }
 
   public Block getSourceBlock() {
-    if (sourceBlockId <= 0) {
+    if(sourceBlockId <= 0) {
       return null;
     }
     return Block.blocksList[sourceBlockId];

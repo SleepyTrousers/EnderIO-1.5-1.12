@@ -14,9 +14,9 @@ public class RaytraceResult {
 
     for (RaytraceResult candidate : candidates) {
       MovingObjectPosition hit = candidate.movingObjectPosition;
-      if (hit != null) {
+      if(hit != null) {
         double lengthSquared = hit.hitVec.squareDistanceTo(origin);
-        if (lengthSquared < minLengthSquared) {
+        if(lengthSquared < minLengthSquared) {
           minLengthSquared = lengthSquared;
           closest = candidate;
         }

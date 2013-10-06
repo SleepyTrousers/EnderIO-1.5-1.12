@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.painter.PainterContainer;
 import crazypants.render.RenderUtil;
 
 public class GuiCrusher extends GuiMachineBase {

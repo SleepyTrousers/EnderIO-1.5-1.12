@@ -18,7 +18,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
     BoundingBox bb = new BoundingBox(0, 0, 0, 1, 0.2, 1);
     boolean doDraw = false;
-    if (!Tessellator.instance.isDrawing) {
+    if(!Tessellator.instance.isDrawing) {
       doDraw = true;
       Tessellator.instance.startDrawingQuads();
     }
@@ -32,7 +32,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
     CubeRenderer.render(bb, textures, null);
 
-    if (doDraw) {
+    if(doDraw) {
       Tessellator.instance.draw();
     }
   }

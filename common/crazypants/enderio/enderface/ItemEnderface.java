@@ -78,14 +78,14 @@ public class ItemEnderface extends Item implements IGuiHandler {
   @Override
   public ItemStack onItemRightClick(ItemStack itemStack, World world, final EntityPlayer entityPlayer) {
 
-    if (!world.isRemote) {
+    if(!world.isRemote) {
       return itemStack;
     }
 
     NBTTagCompound tag = itemStack.getTagCompound();
     boolean tagsSet = tag != null && tag.getBoolean(KEY_IO_SET);
 
-    if (tag != null && tag.getBoolean(KEY_IO_SET)) {
+    if(tag != null && tag.getBoolean(KEY_IO_SET)) {
 
       int x = tag.getInteger(KEY_IO_X);
       int y = tag.getInteger(KEY_IO_Y);
@@ -99,12 +99,14 @@ public class ItemEnderface extends Item implements IGuiHandler {
       }
 
       Chunk c = world.getChunkFromBlockCoords(x, z);
+
       if (c == null || !c.isChunkLoaded) {
         ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block's chunk is not loaded.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
+
       if (blockId != EnderIO.blockEnderIo.blockID) {
         ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block has been destroyed.");
         entityPlayer.sendChatToPlayer(cm);

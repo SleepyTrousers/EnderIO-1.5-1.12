@@ -28,19 +28,19 @@ public class SignalSource {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if(this == obj)
       return true;
-    if (obj == null)
+    if(obj == null)
       return false;
-    if (getClass() != obj.getClass())
+    if(getClass() != obj.getClass())
       return false;
     SignalSource other = (SignalSource) obj;
-    if (fromDirection != other.fromDirection)
+    if(fromDirection != other.fromDirection)
       return false;
-    if (signal == null) {
-      if (other.signal != null)
+    if(signal == null) {
+      if(other.signal != null)
         return false;
-    } else if (!signal.equals(other.signal))
+    } else if(!signal.equals(other.signal))
       return false;
     return true;
   }

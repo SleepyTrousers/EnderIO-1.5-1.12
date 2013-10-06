@@ -28,7 +28,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntityPainter) {
+    if(te instanceof TileEntityPainter) {
       return new PainterContainer(player.inventory, (AbstractMachineEntity) te);
     }
     return null;
@@ -47,7 +47,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {
-    if (active) {
+    if(active) {
       return "enderio:painterFrontOn";
     }
     return "enderio:painterFrontOff";

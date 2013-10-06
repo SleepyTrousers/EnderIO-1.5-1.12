@@ -32,7 +32,7 @@ public class VecmathUtil {
   public static double clamp(double val, double min, double max) {
     return val < min ? min : (val > max ? max : val);
   }
-  
+
   public static int clamp(int val, int min, int max) {
     return val < min ? min : (val > max ? max : val);
   }
@@ -112,12 +112,12 @@ public class VecmathUtil {
       Vector3d pointInLine, Vector3d lineDirection) {
     // check for no intersection
     Vector3d planeNormal = new Vector3d(plane.x, plane.y, plane.z);
-    if (planeNormal.dot(lineDirection) == 0) {
+    if(planeNormal.dot(lineDirection) == 0) {
       // line and plane are perpendicular
       return null;
     }
     // check if line is on the plane
-    if (planeNormal.dot(pointInLine) + plane.w == 0) {
+    if(planeNormal.dot(pointInLine) + plane.w == 0) {
       return null;
     }
 

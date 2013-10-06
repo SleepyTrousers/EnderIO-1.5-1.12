@@ -25,12 +25,12 @@ public class FacadeRenderer implements IItemRenderer {
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    if (type == ItemRenderType.INVENTORY) {
+    if(type == ItemRenderType.INVENTORY) {
       RenderBlocks renderBlocks = (RenderBlocks) data[0];
       renderToInventory(item, renderBlocks);
-    } else if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+    } else if(type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
       renderEquipped(item, (RenderBlocks) data[0]);
-    } else if (type == ItemRenderType.ENTITY) {
+    } else if(type == ItemRenderType.ENTITY) {
       renderEntity(item, (RenderBlocks) data[0]);
     } else {
       System.out.println("FacadeRenderer.renderItem: Unsupported render type");
@@ -51,7 +51,7 @@ public class FacadeRenderer implements IItemRenderer {
   private void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
 
     Block block = PainterUtil.getSourceBlock(item);
-    if (block != null) {
+    if(block != null) {
       // Render the facade block
 
       RenderUtil.bindBlockTexture();

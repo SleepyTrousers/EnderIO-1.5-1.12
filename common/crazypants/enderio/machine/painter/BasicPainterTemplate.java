@@ -1,11 +1,11 @@
 package crazypants.enderio.machine.painter;
 
-import static crazypants.enderio.machine.RecipeInput.getInputForSlot;
+import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.RecipeInput;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.util.Util;
 
 public abstract class BasicPainterTemplate implements IMachineRecipe {
@@ -31,17 +31,17 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public float getEnergyRequired(RecipeInput... inputs) {
+  public float getEnergyRequired(MachineRecipeInput... inputs) {
     return DEFAULT_ENERGY_PER_TASK;
   }
 
   @Override
-  public boolean isRecipe(RecipeInput... inputs) {
+  public boolean isRecipe(MachineRecipeInput... inputs) {
     return isValidTarget(getTarget(inputs)) && isValidPaintSource(getPaintSource(inputs));
   }
 
   @Override
-  public ItemStack[] getCompletedResult(float chance, RecipeInput... inputs) {
+  public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     ItemStack target = getTarget(inputs);
     ItemStack paintSource = getPaintSource(inputs);
     if(target == null || paintSource == null) {
@@ -52,16 +52,16 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     return new ItemStack[] { result };
   }
 
-  public ItemStack getTarget(RecipeInput... inputs) {
+  public ItemStack getTarget(MachineRecipeInput... inputs) {
     return getInputForSlot(0, inputs);
   }
 
-  public ItemStack getPaintSource(RecipeInput... inputs) {
+  public ItemStack getPaintSource(MachineRecipeInput... inputs) {
     return getInputForSlot(1, inputs);
   }
 
   @Override
-  public boolean isValidInput(RecipeInput input) {
+  public boolean isValidInput(MachineRecipeInput input) {
     if(input == null) {
       return false;
     }
@@ -116,22 +116,22 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     return target.itemID;
   }
 
-  public int getQuantityConsumed(RecipeInput input) {
+  public int getQuantityConsumed(MachineRecipeInput input) {
     return input.slotNumber == 0 ? 1 : 0;
   }
 
   @Override
-  public RecipeInput[] getQuantitiesConsumed(RecipeInput[] inputs) {
-    RecipeInput consume = null;
-    for (RecipeInput input : inputs) {
+  public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+    MachineRecipeInput consume = null;
+    for (MachineRecipeInput input : inputs) {
       if(input != null && input.slotNumber == 0 && input.item != null) {
         ItemStack consumed = input.item.copy();
         consumed.stackSize = 1;
-        consume = new RecipeInput(input.slotNumber, consumed);
+        consume = new MachineRecipeInput(input.slotNumber, consumed);
       }
     }
     if(consume != null) {
-      return new RecipeInput[] { consume };
+      return new MachineRecipeInput[] { consume };
     }
     return null;
   }

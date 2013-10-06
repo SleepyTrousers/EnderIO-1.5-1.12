@@ -30,23 +30,23 @@ public final class GeometryKey {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if(this == obj)
       return true;
-    if (obj == null)
+    if(obj == null)
       return false;
-    if (getClass() != obj.getClass())
+    if(getClass() != obj.getClass())
       return false;
     GeometryKey other = (GeometryKey) obj;
-    if (className == null) {
-      if (other.className != null)
+    if(className == null) {
+      if(other.className != null)
         return false;
-    } else if (!className.equals(other.className))
+    } else if(!className.equals(other.className))
       return false;
-    if (dir != other.dir)
+    if(dir != other.dir)
       return false;
-    if (isStub != other.isStub)
+    if(isStub != other.isStub)
       return false;
-    if (offset != other.offset)
+    if(offset != other.offset)
       return false;
     return true;
   }

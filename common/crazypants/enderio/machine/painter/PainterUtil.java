@@ -12,7 +12,7 @@ public final class PainterUtil {
   }
 
   public static boolean isMetadataEquivelent(ItemStack one, ItemStack two) {
-    if (one == null || two == null) {
+    if(one == null || two == null) {
       return false;
     }
     return PainterUtil.getSourceBlockId(one) == PainterUtil.getSourceBlockId(two)
@@ -21,9 +21,9 @@ public final class PainterUtil {
 
   public static Block getSourceBlock(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
-    if (tag != null) {
+    if(tag != null) {
       int blockId = tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      if (blockId >= 0 && blockId < Block.blocksList.length) {
+      if(blockId >= 0 && blockId < Block.blocksList.length) {
         return Block.blocksList[blockId];
       }
     }
@@ -32,9 +32,9 @@ public final class PainterUtil {
 
   public static int getSourceBlockId(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
-    if (tag != null) {
+    if(tag != null) {
       int blockId = tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      if (blockId >= 0 && blockId < Block.blocksList.length) {
+      if(blockId >= 0 && blockId < Block.blocksList.length) {
         return blockId;
       }
     }
@@ -43,29 +43,29 @@ public final class PainterUtil {
 
   public static int getSourceBlockMetadata(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
-    if (tag != null) {
+    if(tag != null) {
       return tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_META);
     }
     return 0;
   }
-  
+
   public static String getTooltTipText(ItemStack item) {
     String sourceName = "";
     int sourceId = PainterUtil.getSourceBlockId(item);
     int meta = PainterUtil.getSourceBlockMetadata(item);
-    if (sourceId > 0) {
+    if(sourceId > 0) {
       Item i = Item.itemsList[sourceId];
-      if (i != null) {
+      if(i != null) {
         sourceName = i.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
         sourceName = StatCollector.translateToLocal(sourceName + ".name");
       }
-    }   
+    }
     return "Painted with: " + sourceName;
   }
 
   public static void setSourceBlock(ItemStack item, int sourceId, int meta) {
     NBTTagCompound tag = item.getTagCompound();
-    if (tag == null) {
+    if(tag == null) {
       tag = new NBTTagCompound();
       item.setTagCompound(tag);
     }

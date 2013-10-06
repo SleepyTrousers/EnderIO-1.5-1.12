@@ -32,17 +32,16 @@ public class IconUtil {
   @ForgeSubscribe
   public void onIconLoad(TextureStitchEvent.Pre event) {
     for (IIconProvider reg : iconProviders) {
-      if (reg.getTextureType() == event.map.textureType) {
+      if(reg.getTextureType() == event.map.textureType) {
         reg.registerIcons(event.map);
       }
     }
   }
-  
-  
+
   public static Icon getIconForItem(int itemId, int meta) {
     if(itemId < 0 || itemId >= Item.itemsList.length) {
       return null;
-    }    
+    }
     Item item = Item.itemsList[itemId];
     if(item == null) {
       return null;

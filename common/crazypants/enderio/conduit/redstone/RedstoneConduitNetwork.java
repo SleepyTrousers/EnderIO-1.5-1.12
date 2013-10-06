@@ -70,7 +70,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   public Set<Signal> getSignals() {
-    if (networkEnabled) {
+    if(networkEnabled) {
       return signals;
     } else {
       return Collections.emptySet();
@@ -162,7 +162,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   private void notifyConduitNeighbours(IRedstoneConduit con, Signal signal) {
-    if (con.getBundle() == null) {
+    if(con.getBundle() == null) {
       System.out.println("RedstoneConduitNetwork.notifyNeigborsOfSignalUpdate: NULL BUNDLE!!!!");
       return;
     }
@@ -170,7 +170,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
     te.worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord, te.yCoord, te.zCoord));
     // Need to notify neighbours neighbours for changes to string signals
-    if (signal != null && signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord) {
+    if(signal != null && signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord) {
 
       te.worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord + 1, te.yCoord, te.zCoord));
       te.worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord - 1, te.yCoord, te.zCoord));

@@ -57,7 +57,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public int isProvidingStrongPower(ForgeDirection toDirection) {
-    if (network == null || !network.isNetworkEnabled()) {
+    if(network == null || !network.isNetworkEnabled()) {
       return 0;
     }
     return isOn ? 15 : 0;
@@ -81,7 +81,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public Icon getTextureForState(CollidableComponent component) {
-    if (SWITCH_TAG.equals(component.data)) {
+    if(SWITCH_TAG.equals(component.data)) {
       return isOn ? ICONS.get(SWITCH_ICON_ON_KEY) : ICONS.get(SWITHC_ICON_OFF_KEY);
     }
     return super.getTextureForState(component);
@@ -89,7 +89,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public List<CollidableComponent> getCollidableComponents() {
-    if (collidables != null && !collidablesDirty) {
+    if(collidables != null && !collidablesDirty) {
       return collidables;
     }
 
@@ -108,7 +108,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
-    if (res.component.data != null && res.component.data.equals(SWITCH_TAG)) {
+    if(res.component.data != null && res.component.data.equals(SWITCH_TAG)) {
       toggleSwitch();
       return true;
     }
@@ -117,12 +117,12 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   private void toggleSwitch() {
     isOn = !isOn;
-    if (network == null) {
+    if(network == null) {
       return;
     }
     TileEntity te = bundle.getEntity();
     Signal signal = new Signal(te.xCoord, te.yCoord, te.zCoord, 15, SignalColor.RED);
-    if (isOn) {
+    if(isOn) {
       network.addSignal(signal);
     } else {
       network.removeSignal(signal);
@@ -132,7 +132,7 @@ public class RedstoneSwitch extends RedstoneConduit {
   @Override
   public Set<Signal> getNetworkInputs() {
     Set<Signal> res = super.getNetworkInputs();
-    if (isOn) {
+    if(isOn) {
       BlockCoord loc = getLocation();
       Signal signal = new Signal(loc.x, loc.y, loc.z, 15, SignalColor.RED);
       res.add(signal);

@@ -3,19 +3,14 @@ package crazypants.enderio.gui;
 import java.awt.Rectangle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiToolTip;
-import crazypants.gui.IGuiScreen;
 import crazypants.render.RenderUtil;
 
 public class IconButtonEIO extends GuiButton {
@@ -29,9 +24,9 @@ public class IconButtonEIO extends GuiButton {
   private int yOrigin;
 
   protected GuiScreenBase gui;
-  
+
   protected GuiToolTip toolTip;
-  
+
   public IconButtonEIO(GuiScreenBase gui, int id, int x, int y, IconEIO icon) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
     this.gui = gui;
@@ -40,21 +35,21 @@ public class IconButtonEIO extends GuiButton {
     this.xOrigin = x;
     this.yOrigin = y;
   }
-  
+
   public void setToolTip(String... tooltipText) {
     if(toolTip == null) {
-      toolTip = new GuiToolTip(new Rectangle(xOrigin,yOrigin,width,height), tooltipText);
+      toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
       gui.addToolTip(toolTip);
     } else {
       toolTip.setToolTipText(tooltipText);
-    }       
+    }
   }
 
   public void onGuiInit() {
     gui.addButton(this);
     xPosition = xOrigin + gui.getGuiLeft();
     yPosition = yOrigin + gui.getGuiTop();
-  }    
+  }
 
   public void setSize(int width, int height) {
     this.width = width;
@@ -78,7 +73,7 @@ public class IconButtonEIO extends GuiButton {
   @SuppressWarnings("synthetic-access")
   @Override
   public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-    if (drawButton) {
+    if(drawButton) {
 
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.field_82253_i = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + width
@@ -100,8 +95,8 @@ public class IconButtonEIO extends GuiButton {
       GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      
-      background.renderIcon(x, y, width, height, 0, false);            
+
+      background.renderIcon(x, y, width, height, 0, false);
       icon.renderIcon(x, y, width, height, 0, false);
 
       tes.draw();
@@ -110,15 +105,15 @@ public class IconButtonEIO extends GuiButton {
 
     }
   }
-  
+
   protected IconEIO getIconForHoverState(int hoverState) {
-    if (hoverState == 0) {
+    if(hoverState == 0) {
       return IconEIO.BUTTON_DISABLED;
     }
-    if (hoverState == 2) {
+    if(hoverState == 2) {
       return IconEIO.BUTTON_HIGHLIGHT;
     }
     return IconEIO.BUTTON;
-  }  
+  }
 
 }

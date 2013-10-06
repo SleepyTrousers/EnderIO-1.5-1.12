@@ -1,6 +1,5 @@
 package crazypants.vecmath;
 
-
 public class Vertex {
 
   public final Vector3d xyz = new Vector3d();
@@ -47,35 +46,35 @@ public class Vertex {
   public double x() {
     return xyz.x;
   }
-  
+
   public double y() {
     return xyz.y;
   }
-  
+
   public double z() {
     return xyz.z;
   }
-  
+
   public float nx() {
     return normal.x;
   }
-  
+
   public float ny() {
     return normal.y;
   }
-  
+
   public float nz() {
     return normal.z;
   }
-  
+
   public float u() {
     return uv.x;
   }
-  
+
   public float v() {
     return uv.y;
   }
-  
+
   @Override
   public String toString() {
     return "Vertex [xyz=" + xyz + ", uv=" + uv + "]";

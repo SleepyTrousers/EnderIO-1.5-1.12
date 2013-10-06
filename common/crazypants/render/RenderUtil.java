@@ -187,6 +187,10 @@ public class RenderUtil {
   public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
 
+    if((blockAccess == null && !forceAllEdges) || face == null || texture == null) {
+      return;
+    }
+
     if(!forceAllEdges) {
       int blockID = blockAccess.getBlockId(x, y, z);
       if(blockID <= 0 || Block.blocksList[blockID] == null) {
@@ -276,6 +280,10 @@ public class RenderUtil {
   }
 
   public static void getUvForCorner(Vector2d uv, Vector3d corner, int x, int y, int z, ForgeDirection face, Icon icon) {
+    if(icon == null) {
+      return;
+    }
+
     Vector3d p = new Vector3d(corner);
     p.x -= x;
     p.y -= y;

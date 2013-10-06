@@ -22,10 +22,10 @@ public class ConduitTank implements IFluidTank {
   }
 
   public float getFilledRatio() {
-    if (getFluidAmount() <= 0) {
+    if(getFluidAmount() <= 0) {
       return 0;
     }
-    if (getCapacity() <= 0) {
+    if(getCapacity() <= 0) {
       return -1;
     }
     float res = (float) getFluidAmount() / getCapacity();
@@ -37,7 +37,7 @@ public class ConduitTank implements IFluidTank {
   }
 
   public void setAmount(int amount) {
-    if (fluid != null) {      
+    if(fluid != null) {
       fluid.amount = amount;
     }
   }
@@ -71,25 +71,25 @@ public class ConduitTank implements IFluidTank {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
-    if (getFluidAmount() > capacity) {
+    if(getFluidAmount() > capacity) {
       setAmount(capacity);
     }
   }
 
   @Override
   public int fill(FluidStack resource, boolean doFill) {
-    if (resource == null || resource.fluidID <= 0) {
+    if(resource == null || resource.fluidID <= 0) {
       return 0;
     }
 
-    if (fluid == null || fluid.fluidID <= 0) {
-      if (resource.amount <= capacity) {
-        if (doFill) {
+    if(fluid == null || fluid.fluidID <= 0) {
+      if(resource.amount <= capacity) {
+        if(doFill) {
           setLiquid(resource.copy());
         }
         return resource.amount;
       } else {
-        if (doFill) {
+        if(doFill) {
           fluid = resource.copy();
           fluid.amount = capacity;
         }
@@ -97,18 +97,18 @@ public class ConduitTank implements IFluidTank {
       }
     }
 
-    if (!fluid.isFluidEqual(resource)) {
+    if(!fluid.isFluidEqual(resource)) {
       return 0;
     }
 
     int space = capacity - fluid.amount;
-    if (resource.amount <= space) {
-      if (doFill) {
+    if(resource.amount <= space) {
+      if(doFill) {
         addAmount(resource.amount);
       }
       return resource.amount;
     } else {
-      if (doFill) {
+      if(doFill) {
         fluid.amount = capacity;
       }
       return space;
@@ -118,25 +118,25 @@ public class ConduitTank implements IFluidTank {
 
   @Override
   public FluidStack drain(int maxDrain, boolean doDrain) {
-    if (fluid == null || fluid.fluidID <= 0) {
+    if(fluid == null || fluid.fluidID <= 0) {
       return null;
     }
-    if (fluid.amount <= 0) {
+    if(fluid.amount <= 0) {
       return null;
     }
 
     int used = maxDrain;
-    if (fluid.amount < used) {
+    if(fluid.amount < used) {
       used = fluid.amount;
     }
 
-    if (doDrain) {
+    if(doDrain) {
       addAmount(-used);
     }
 
     FluidStack drained = new FluidStack(fluid.fluidID, used);
 
-    if (fluid.amount < 0) {
+    if(fluid.amount < 0) {
       fluid.amount = 0;
     }
     return drained;
@@ -151,11 +151,17 @@ public class ConduitTank implements IFluidTank {
   }
 
   public boolean containsValidLiquid() {
-    return fluid != null && FluidRegistry.getFluidName(fluid) != null;
+    if(fluid != null) {
+      String name = FluidRegistry.getFluidName(fluid);
+      if(name != null && !name.isEmpty()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-    if (containsValidLiquid()) {
+    if(containsValidLiquid()) {
       fluid.writeToNBT(nbt);
     } else {
       nbt.setString("emptyTank", "");
@@ -164,14 +170,13 @@ public class ConduitTank implements IFluidTank {
   }
 
   public IFluidTank readFromNBT(NBTTagCompound nbt) {
-    if (!nbt.hasKey("emptyTank")) {
+    if(!nbt.hasKey("emptyTank")) {
       FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbt);
-      if (liquid != null) {
+      if(liquid != null) {
         setLiquid(liquid);
       }
     }
     return this;
   }
-
 
 }

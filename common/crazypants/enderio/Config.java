@@ -17,9 +17,13 @@ public final class Config {
 
   public static boolean useAlternateTesseractModel;
 
+  public static boolean photovoltaicCellEnabled = true;
+
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static double transceiverEnergyLoss = 0;
+  public static int numConduitsPerRecipe = 4;
+
+  public static double transceiverEnergyLoss = 0.1;
 
   public static double transceiverUpkeepCost = 0.25;
 
@@ -29,11 +33,23 @@ public final class Config {
 
   public static File configDirectory;
 
+  public static boolean useHardRecipes = false;
+
   public static void load(Configuration config, FMLPreInitializationEvent event) {
 
     for (ModObject e : ModObject.values()) {
       e.load(config);
     }
+
+    useHardRecipes = config.get("Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
+        .getBoolean(useHardRecipes);
+
+    numConduitsPerRecipe = config.get("Settings", "numConduitsPerRecipe", numConduitsPerRecipe,
+        "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
+
+    photovoltaicCellEnabled = config.get("Settings", "photovoltaicCellEnabled", photovoltaicCellEnabled,
+        "If set to false Photovoltaic Cells will not be craftable.")
+        .getBoolean(photovoltaicCellEnabled);
 
     useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(false);

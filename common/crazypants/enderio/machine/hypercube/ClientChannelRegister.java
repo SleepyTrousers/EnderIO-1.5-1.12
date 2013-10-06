@@ -33,11 +33,11 @@ public class ClientChannelRegister {
   }
 
   void addChannel(Channel channel) {
-    if (channel == null) {
+    if(channel == null) {
       return;
     }
-    if (channel.isPublic()) {
-      if (!publicChannels.contains(channel)) {
+    if(channel.isPublic()) {
+      if(!publicChannels.contains(channel)) {
         publicChannels.add(channel);
       }
     } else {
@@ -48,14 +48,14 @@ public class ClientChannelRegister {
   }
 
   public void channelAdded(Channel channel) {
-    if (channel.isPublic() && !publicChannels.contains(channel)) {
+    if(channel.isPublic() && !publicChannels.contains(channel)) {
       publicChannels.add(channel);
     }
   }
 
   public void reset() {
     publicChannels.clear();
-    privateChannels.clear();    
+    privateChannels.clear();
   }
 
   public void channelRemoved(Channel c) {
@@ -64,7 +64,7 @@ public class ClientChannelRegister {
     } else {
       privateChannels.remove(c);
     }
-    
+
   }
 
 }
