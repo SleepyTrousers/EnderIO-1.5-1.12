@@ -1,5 +1,7 @@
 package crazypants.enderio;
 
+import buildcraft.api.gates.ActionManager;
+import buildcraft.api.gates.ITrigger;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
@@ -55,6 +57,8 @@ import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
+import crazypants.enderio.trigger.TriggerEnergyStorage;
+import crazypants.enderio.trigger.TriggerProviderEIO;
 
 @Mod(name = "EnderIO", modid = "EnderIO", version = "0.2.4b", dependencies = "required-after:Forge@[9.10.0.800,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
@@ -112,6 +116,8 @@ public class EnderIO {
 
   public static ItemYetaWrench itemYetaWench;
   public static ItemMJReader itemMJReader;
+  
+  public static ITrigger triggerNoEnergy, triggerHasEnergy, triggerFullEnergy;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -192,6 +198,12 @@ public class EnderIO {
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
 
+    triggerNoEnergy = new TriggerEnergyStorage("enderIO.trigger.noEnergy");
+    triggerHasEnergy = new TriggerEnergyStorage("enderIO.trigger.hasEnergy");
+    triggerFullEnergy = new TriggerEnergyStorage("enderIO.trigger.fullEnergy");
+    
+    ActionManager.registerTriggerProvider(new TriggerProviderEIO());
+    
     proxy.load();
   }
 
