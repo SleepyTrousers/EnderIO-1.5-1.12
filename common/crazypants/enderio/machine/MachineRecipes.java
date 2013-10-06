@@ -57,8 +57,8 @@ public class MachineRecipes {
 
     ItemStack tesseract = new ItemStack(ModObject.blockHyperCube.actualId, 1, 0);
     ItemStack obsidian = new ItemStack(Block.obsidian);
-    ItemStack phasedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
-    GameRegistry.addShapedRecipe(tesseract, "oeo", "pdp", "oco", 'o', obsidian, 'e', Item.eyeOfEnder, 'c', enderCapacitor, 'p', phasedIron, 'd', Item.diamond);
+    ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
+    GameRegistry.addShapedRecipe(tesseract, "oeo", "pdp", "oco", 'o', obsidian, 'e', Item.eyeOfEnder, 'c', enderCapacitor, 'p', phasedGold, 'd', Item.diamond);
 
   }
 

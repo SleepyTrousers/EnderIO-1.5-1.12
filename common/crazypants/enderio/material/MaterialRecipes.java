@@ -43,7 +43,7 @@ public class MaterialRecipes {
     ItemStack mJReader = new ItemStack(ModObject.itemMJReader.actualId, 1, 0);
     ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
     ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
-    ItemStack enderiron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
+    ItemStack endergold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
 
     //Conduit Binder
@@ -55,12 +55,11 @@ public class MaterialRecipes {
       ItemStack result = binderComposite.copy();
       result.stackSize = 8;
       GameRegistry.addShapedRecipe(result, "ggg", "scs", "ggg", 'g', Block.gravel, 's', Block.sand, 'c', Item.clay);
-      //GameRegistry.addSmelting(binderComposite.itemID, conduitBinder, 0);
       FurnaceRecipes.smelting().addSmelting(binderComposite.itemID, binderComposite.getItemDamage(), conduitBinder, 0);
     }
 
     // Ender Capacitor
-    GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', enderiron, 'c', activatedCapacitor, 'g', Block.glowStone);
+    GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', endergold, 'c', activatedCapacitor, 'g', Block.glowStone);
 
     int meta = 0;
     for (Alloy alloy : Alloy.values()) {
