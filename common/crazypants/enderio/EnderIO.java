@@ -60,7 +60,7 @@ import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.2.3", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.2.4", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
@@ -127,7 +127,7 @@ public class EnderIO {
     } catch (Exception e) {
       Log.error("EnderIO has a problem loading it's configuration");
     } finally {
-      if (cfg.hasChanged()) {
+      if(cfg.hasChanged()) {
         cfg.save();
       }
     }
