@@ -429,15 +429,20 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private List<NetworkFluidHandler> getNetworkHandlers() {
-
+    if(HyperCubeRegister.instance == null) {
+      return Collections.emptyList();
+    }
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
-    if (cubes == null || cubes.isEmpty()) {
+    if(cubes == null || cubes.isEmpty()) {
       return Collections.emptyList();
     }
     List<NetworkFluidHandler> result = new ArrayList<NetworkFluidHandler>();
     for (TileHyperCube cube : cubes) {
-      if (cube != this) {
-        result.addAll(cube.fluidHandlers);
+      if(cube != this && cube != null) {
+        List<NetworkFluidHandler> handlers = cube.fluidHandlers;
+        if(handlers != null && !handlers.isEmpty()) {
+          result.addAll(handlers);
+        }
       }
     }
     return result;

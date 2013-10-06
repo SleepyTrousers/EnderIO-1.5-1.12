@@ -28,7 +28,7 @@ import crazypants.enderio.power.Capacitors;
 public class MachineRecipes {
 
   public static void addRecipes() {
-    // Common ingredients
+    //Common ingredients
     ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 4, Material.CONDUIT_BINDER.ordinal());
     ItemStack silicon = new ItemStack(ModObject.itemMaterial.actualId, 4, Material.SILICON.ordinal());
     ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
@@ -57,8 +57,8 @@ public class MachineRecipes {
 
     ItemStack tesseract = new ItemStack(ModObject.blockHyperCube.actualId, 1, 0);
     ItemStack obsidian = new ItemStack(Block.obsidian);
-    ItemStack phasedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
-    GameRegistry.addShapedRecipe(tesseract, "oeo", "pdp", "oco", 'o', obsidian, 'e', Item.eyeOfEnder, 'c', enderCapacitor, 'p', phasedIron, 'd', Item.diamond);
+    ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
+    GameRegistry.addShapedRecipe(tesseract, "oeo", "pdp", "oco", 'o', obsidian, 'e', Item.eyeOfEnder, 'c', enderCapacitor, 'p', phasedGold, 'd', Item.diamond);
 
   }
 
@@ -68,7 +68,7 @@ public class MachineRecipes {
     ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
 
     ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
-    if (copperIngots != null && !copperIngots.isEmpty()) {
+    if(copperIngots != null && !copperIngots.isEmpty()) {
       GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "cmc", "cCc", 'c', "ingotCopper", 'm', machineChassi, 'b', Block.stoneBrick, 'f',
           Block.furnaceIdle,
           'C', capacitor));
@@ -82,7 +82,7 @@ public class MachineRecipes {
     ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
 
     ArrayList<ItemStack> tinIngots = OreDictionary.getOres("ingotTin");
-    if (tinIngots != null && !tinIngots.isEmpty()) {
+    if(tinIngots != null && !tinIngots.isEmpty()) {
       GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "tmt", "tCt", 't', "ingotTin", 'm', machineChassi, 'q', Item.netherQuartz, 'd', Item.diamond,
           'C', capacitor));
       GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "tct", "crc", "tct", 't', "ingotTin", 'c', activatedCapacitor, 'r', Block.blockRedstone));
