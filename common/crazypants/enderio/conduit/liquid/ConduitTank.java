@@ -20,10 +20,10 @@ public class ConduitTank implements ILiquidTank {
   }
 
   public float getFilledRatio() {
-    if (getFluidAmount() <= 0) {
+    if(getFluidAmount() <= 0) {
       return 0;
     }
-    if (getCapacity() <= 0) {
+    if(getCapacity() <= 0) {
       return -1;
     }
     float res = (float) getFluidAmount() / getCapacity();
@@ -35,7 +35,7 @@ public class ConduitTank implements ILiquidTank {
   }
 
   public void setAmount(int amount) {
-    if (fluid != null) {
+    if(fluid != null) {
       fluid.amount = amount;
     }
   }
@@ -70,25 +70,25 @@ public class ConduitTank implements ILiquidTank {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
-    if (getFluidAmount() > capacity) {
+    if(getFluidAmount() > capacity) {
       setAmount(capacity);
     }
   }
 
   @Override
   public int fill(LiquidStack resource, boolean doFill) {
-    if (resource == null || resource.itemID <= 0) {
+    if(resource == null || resource.itemID <= 0) {
       return 0;
     }
 
-    if (fluid == null || fluid.itemID <= 0) {
-      if (resource.amount <= capacity) {
-        if (doFill) {
+    if(fluid == null || fluid.itemID <= 0) {
+      if(resource.amount <= capacity) {
+        if(doFill) {
           setLiquid(resource.copy());
         }
         return resource.amount;
       } else {
-        if (doFill) {
+        if(doFill) {
           fluid = resource.copy();
           fluid.amount = capacity;
         }
@@ -96,18 +96,18 @@ public class ConduitTank implements ILiquidTank {
       }
     }
 
-    if (!fluid.isLiquidEqual(resource)) {
+    if(!fluid.isLiquidEqual(resource)) {
       return 0;
     }
 
     int space = capacity - fluid.amount;
-    if (resource.amount <= space) {
-      if (doFill) {
+    if(resource.amount <= space) {
+      if(doFill) {
         addAmount(resource.amount);
       }
       return resource.amount;
     } else {
-      if (doFill) {
+      if(doFill) {
         fluid.amount = capacity;
       }
       return space;
@@ -117,25 +117,25 @@ public class ConduitTank implements ILiquidTank {
 
   @Override
   public LiquidStack drain(int maxDrain, boolean doDrain) {
-    if (fluid == null || fluid.itemID <= 0) {
+    if(fluid == null || fluid.itemID <= 0) {
       return null;
     }
-    if (fluid.amount <= 0) {
+    if(fluid.amount <= 0) {
       return null;
     }
 
     int used = maxDrain;
-    if (fluid.amount < used) {
+    if(fluid.amount < used) {
       used = fluid.amount;
     }
 
-    if (doDrain) {
+    if(doDrain) {
       addAmount(-used);
     }
 
     LiquidStack drained = new LiquidStack(fluid.itemID, used);
 
-    if (fluid.amount < 0) {
+    if(fluid.amount < 0) {
       fluid.amount = 0;
     }
     return drained;
@@ -150,11 +150,12 @@ public class ConduitTank implements ILiquidTank {
   }
 
   public boolean containsValidLiquid() {
-    return LiquidDictionary.findLiquidName(fluid) != null;
+    String name = LiquidDictionary.findLiquidName(fluid);
+    return name != null && !name.isEmpty();
   }
 
   public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-    if (containsValidLiquid()) {
+    if(containsValidLiquid()) {
       fluid.writeToNBT(nbt);
     } else {
       nbt.setString("emptyTank", "");
@@ -163,9 +164,9 @@ public class ConduitTank implements ILiquidTank {
   }
 
   public ILiquidTank readFromNBT(NBTTagCompound nbt) {
-    if (!nbt.hasKey("emptyTank")) {
+    if(!nbt.hasKey("emptyTank")) {
       LiquidStack liquid = LiquidStack.loadLiquidStackFromNBT(nbt);
-      if (liquid != null) {
+      if(liquid != null) {
         setLiquid(liquid);
       }
     }
