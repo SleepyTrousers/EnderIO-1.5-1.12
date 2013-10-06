@@ -151,7 +151,13 @@ public class ConduitTank implements IFluidTank {
   }
 
   public boolean containsValidLiquid() {
-    return fluid != null && FluidRegistry.getFluidName(fluid) != null;
+    if(fluid != null) {
+      String name = FluidRegistry.getFluidName(fluid);
+      if(name != null && !name.isEmpty()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
