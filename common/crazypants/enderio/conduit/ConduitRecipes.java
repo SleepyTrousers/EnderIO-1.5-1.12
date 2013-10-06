@@ -8,6 +8,7 @@ import static crazypants.enderio.ModObject.itemRedstoneConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -29,11 +30,14 @@ public class ConduitRecipes {
 
     //Recipes
     GameRegistry.addShapedRecipe(new ItemStack(itemConduitFacade.actualId, 1, 0), "bbb", "b b", "bbb", 'b', conduitBinder);
-    GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, 4, 0), "bfb", "f f", "bfb", 'b', conduitBinder, 'f', fusedQuartz, 'g', Block.glass);
-    GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, 4, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
-    GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, 4, 1), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#', energeticGold);
-    GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, 4, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
-    GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, 4, 0), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#',
+
+    int numConduits = Config.numConduitsPerRecipe;
+    GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedQuartz);
+    GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
+    GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#',
+        energeticGold);
+    GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
+    GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#',
         redstoneAlloy);
     GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, 1, 1), "lbl", "bcb", "lbl", 'b', conduitBinder, 'c', redstoneConduit, 'l',
         Block.lever);

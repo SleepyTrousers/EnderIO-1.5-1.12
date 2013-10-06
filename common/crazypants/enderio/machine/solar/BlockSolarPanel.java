@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
@@ -35,7 +36,11 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
     setHardness(0.5F);
     setStepSound(Block.soundStoneFootstep);
     setUnlocalizedName(ModObject.blockSolarPanel.unlocalisedName);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    if(Config.photovoltaicCellEnabled) {
+      setCreativeTab(EnderIOTab.tabEnderIO);
+    } else {
+      setCreativeTab(null);
+    }
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
@@ -62,7 +67,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
   @Override
   public Icon getIcon(int side, int meta) {
-    if (side == ForgeDirection.UP.ordinal()) {
+    if(side == ForgeDirection.UP.ordinal()) {
       return blockIcon;
     }
     return sideIcon;
@@ -71,7 +76,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileEntitySolarPanel) {
+    if(te instanceof TileEntitySolarPanel) {
       ((TileEntitySolarPanel) te).onNeighborBlockChange();
     }
   }
