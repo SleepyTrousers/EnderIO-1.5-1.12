@@ -57,7 +57,7 @@ import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
-import crazypants.enderio.trigger.TriggerEnergyStorage;
+import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
 @Mod(name = "EnderIO", modid = "EnderIO", version = "0.2.4b", dependencies = "required-after:Forge@[9.10.0.800,)")
@@ -117,7 +117,11 @@ public class EnderIO {
   public static ItemYetaWrench itemYetaWench;
   public static ItemMJReader itemMJReader;
   
-  public static ITrigger triggerNoEnergy, triggerHasEnergy, triggerFullEnergy;
+  public static ITrigger triggerNoEnergy;
+  public static ITrigger triggerHasEnergy;
+  public static ITrigger triggerFullEnergy;
+  public static ITrigger triggerIsCharging;
+  public static ITrigger triggerFinishedCharging;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -198,9 +202,11 @@ public class EnderIO {
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
 
-    triggerNoEnergy = new TriggerEnergyStorage("enderIO.trigger.noEnergy");
-    triggerHasEnergy = new TriggerEnergyStorage("enderIO.trigger.hasEnergy");
-    triggerFullEnergy = new TriggerEnergyStorage("enderIO.trigger.fullEnergy");
+    triggerNoEnergy = new TriggerEnderIO("enderIO.trigger.noEnergy", 0);
+    triggerHasEnergy = new TriggerEnderIO("enderIO.trigger.hasEnergy", 1);
+    triggerFullEnergy = new TriggerEnderIO("enderIO.trigger.fullEnergy", 2);
+    triggerIsCharging = new TriggerEnderIO("enderIO.trigger.isCharging", 3);
+    triggerFinishedCharging = new TriggerEnderIO("enderIO.trigger.finishedCharging", 4);
     
     ActionManager.registerTriggerProvider(new TriggerProviderEIO());
     
