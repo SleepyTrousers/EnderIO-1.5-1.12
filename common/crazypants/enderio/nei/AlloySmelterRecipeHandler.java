@@ -26,7 +26,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getGuiTexture() {
-    return "enderio:textures/gui/alloySmelter.png";
+    return "/mods/enderio/textures/gui/alloySmelter.png";
   }
 
   public PositionedStack getResult() {
@@ -111,13 +111,13 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     public AlloySmelterRecipe(float energy, ItemStack ingredients[], ItemStack result) {
       int recipeSize = ingredients.length;
       this.input = new ArrayList<PositionedStack>();
-      if (recipeSize > 0) {
+      if(recipeSize > 0) {
         this.input.add(new PositionedStack(ingredients[0], 49, 14));
       }
-      if (recipeSize > 1) {
+      if(recipeSize > 1) {
         this.input.add(new PositionedStack(ingredients[1], 73, 4));
       }
-      if (recipeSize > 2) {
+      if(recipeSize > 2) {
         this.input.add(new PositionedStack(ingredients[2], 98, 14));
       }
       this.output = new PositionedStack(result, 74, 54);
