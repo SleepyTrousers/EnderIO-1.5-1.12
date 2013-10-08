@@ -37,15 +37,20 @@ import crazypants.util.PacketUtil;
 public class PacketHandler implements IPacketHandler {
 
   public static int ID_ENDERFACE = 1;
-  public static final int ID_TILE_ENTITY = 4;
-  public static final int ID_MACHINE_REDSTONE_PACKET = 2;
-  public static final int ID_CAP_BANK_REDSTONE_PACKET = 3;
-  public static final int ID_ALLOY_SMELTING_MODE_PACKET = 5;
-  public static final int ID_HYPER_CUBE_REDSTONE_PACKET = 6;
-  public static final int ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST = 7;
-  public static final int ID_HYPER_CUBE_ADD_REMOVE_CHANNEL = 8;
-  public static final int ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST = 9;
-  public static final int ID_HYPER_CUBE_CHANNEL_SELECTED = 10;
+
+  public static final int ID_TILE_ENTITY = 2;
+  public static final int ID_MACHINE_REDSTONE_PACKET = 3;
+
+  public static final int ID_CAP_BANK_REDSTONE_PACKET = 4;
+  public static final int ID_CAP_BANK_IO_PACKET = 5;
+
+  public static final int ID_ALLOY_SMELTING_MODE_PACKET = 6;
+
+  public static final int ID_HYPER_CUBE_REDSTONE_PACKET = 7;
+  public static final int ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST = 8;
+  public static final int ID_HYPER_CUBE_ADD_REMOVE_CHANNEL = 9;
+  public static final int ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST = 10;
+  public static final int ID_HYPER_CUBE_CHANNEL_SELECTED = 11;
 
   public static final String CHANNEL = "EnderIO";
 

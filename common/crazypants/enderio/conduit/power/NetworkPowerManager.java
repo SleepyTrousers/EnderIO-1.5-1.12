@@ -294,13 +294,13 @@ public class NetworkPowerManager {
 
         float canGet = 0;
         if (cb.isOutputEnabled()) {
-          canGet = Math.min(cb.getEnergyStored(), cb.getMaxIO());
+          canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
           canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
           canExtract += canGet;
         }
         float canFill = 0;
         if (cb.isInputEnabled()) {
-          canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxIO());
+          canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
           canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
           this.canFill += canFill;
         }
