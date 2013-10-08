@@ -10,8 +10,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.crafting.RecipeReigistry;
 
-import crazypants.enderio.crafting.RecipeReigistry;
-
 public class MachineRecipeRegistry {
 
   public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();

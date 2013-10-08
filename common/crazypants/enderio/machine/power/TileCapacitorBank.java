@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import thermalexpansion.api.item.IChargeableItem;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -23,9 +28,10 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor {
+public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor, IInventory {
 
   static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 250000);
 
@@ -40,6 +46,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   private int maxStoredEnergy;
 
   private int maxIO;
+
+  private int maxInput;
+
+  private int maxOutput;
 
   private boolean multiblockDirty = false;
 
@@ -57,12 +67,17 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private PowerHandler disabledPowerHandler;
 
+  private final ItemStack[] inventory;
+
   public TileCapacitorBank() {
+    inventory = new ItemStack[4];
     storedEnergy = 0;
     inputControlMode = RedstoneControlMode.IGNORE;
     outputControlMode = RedstoneControlMode.IGNORE;
     maxStoredEnergy = BASE_CAP.getMaxEnergyStored();
     maxIO = BASE_CAP.getMaxEnergyExtracted();
+    maxInput = maxIO;
+    maxOutput = maxIO;
     updatePowerHandler();
   }
 
@@ -89,15 +104,14 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update();
-
     // do a dummy recieve of power to force the updating of what is an isn't a
     // power source as we rely on this
     // to make sure we dont both send and recieve to the same source
     powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
-
     powerHandler.setEnergy(stored);
 
     boolean requiresClientSync = false;
+    requiresClientSync = chargeItems(stored);
 
     boolean hasSignal = isRecievingRedstoneSignal();
     if(inputControlMode == RedstoneControlMode.IGNORE) {
@@ -136,6 +150,44 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   }
 
+  private boolean chargeItems(float stored) {
+    boolean chargedItem = false;
+    float available = Math.min(maxIO, stored);
+    for (ItemStack item : inventory) {
+      if(item != null && item.getItem() instanceof IChargeableItem && available > 0) {
+        IChargeableItem chargable = (IChargeableItem) item.getItem();
+        float max = chargable.getMaxEnergyStored(item);
+        float cur = chargable.getEnergyStored(item);
+        float canUse = Math.min(available, max - cur);
+
+        if(cur < max) {
+
+          float used = 0;
+          if("appeng.common.base.AppEngMultiChargeable".equals(chargable.getClass().getName())) {
+            //256 max limit          
+            canUse = Math.min(canUse, 256);
+            NBTTagCompound tc = item.getTagCompound();
+            if(tc == null) {
+              item.setTagCompound(tc = new NBTTagCompound());
+            }
+            double newVal = (cur + canUse) * 5.0;
+            tc.setDouble("powerLevel", newVal);
+            used = canUse;
+
+          } else {
+            used = chargable.receiveEnergy(item, canUse, true);
+          }
+          if(used > 0) {
+            powerHandler.setEnergy(stored - used);
+            chargedItem = true;
+            available -= used;
+          }
+        }
+      }
+    }
+    return chargedItem;
+  }
+
   public boolean isOutputEnabled() {
     return getController().outputEnabled;
   }
@@ -149,7 +201,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(powerHandler.getEnergyStored() <= 0) {
       return false;
     }
-    float canTransmit = Math.min(storedEnergy, maxIO);
+    float canTransmit = Math.min(storedEnergy, maxOutput);
     float transmitted = 0;
 
     checkReceptors();
@@ -234,6 +286,22 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   public int getEnergyStoredScaled(int scale) {
     return getController().doGetEnergyStoredScaled(scale);
+  }
+
+  public int getMaxInput() {
+    return maxInput;
+  }
+
+  public void setMaxInput(int maxInput) {
+    getController().doSetMaxInput(maxInput);
+  }
+
+  public int getMaxOutput() {
+    return maxOutput;
+  }
+
+  public void setMaxOutput(int maxOutput) {
+    getController().doSetMaxOutput(maxOutput);
   }
 
   public float getEnergyStored() {
@@ -354,6 +422,34 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     powerHandler.setEnergy(storedEnergy);
   }
 
+  void doSetMaxInput(int in) {
+    maxInput = Math.min(in, maxIO);
+    maxInput = Math.max(0, maxInput);
+    if(isMultiblock()) {
+      for (BlockCoord bc : multiblock) {
+        TileCapacitorBank cp = getCapBank(bc);
+        if(cp != null) {
+          cp.maxInput = maxInput;
+        }
+      }
+    }
+    updatePowerHandler();
+  }
+
+  void doSetMaxOutput(int out) {
+    maxOutput = Math.min(out, maxIO);
+    maxOutput = Math.max(0, maxOutput);
+    if(isMultiblock()) {
+      for (BlockCoord bc : multiblock) {
+        TileCapacitorBank cp = getCapBank(bc);
+        if(cp != null) {
+          cp.maxOutput = maxOutput;
+        }
+      }
+    }
+    updatePowerHandler();
+  }
+
   // ------------ Common power functions
 
   @Override
@@ -370,7 +466,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   private void updatePowerHandler() {
-    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxIO, maxStoredEnergy), this, Type.STORAGE);
+
+    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxInput, maxStoredEnergy, maxOutput), this, Type.STORAGE);
     if(storedEnergy > maxStoredEnergy) {
       storedEnergy = maxStoredEnergy;
     }
@@ -425,9 +522,11 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     for (int i = 0; i < blocks.size(); i++) {
       mb[i] = new BlockCoord(blocks.get(i));
     }
+
     for (TileCapacitorBank cb : blocks) {
       cb.setMultiblock(mb);
     }
+
   }
 
   private void findNighbouringBanks(TileCapacitorBank tileCapacitorBank, List<TileCapacitorBank> blocks) {
@@ -451,6 +550,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if(cb != null) {
           cb.maxStoredEnergy = BASE_CAP.getMaxEnergyStored();
           cb.maxIO = BASE_CAP.getMaxEnergyExtracted();
+          cb.maxInput = cb.maxIO;
+          cb.maxOutput = cb.maxIO;
           cb.storedEnergy = powerPerBlock;
           cb.updatePowerHandler();
           cb.multiblockDirty = true;
@@ -460,6 +561,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
     multiblock = mb;
     if(isMaster()) {
+
+      List<ItemStack> invItems = new ArrayList<ItemStack>();
+
       float totalStored = 0;
       int totalCap = multiblock.length * BASE_CAP.getMaxEnergyStored();
       int totalIO = multiblock.length * BASE_CAP.getMaxEnergyExtracted();
@@ -468,11 +572,30 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if(cb != null) {
           totalStored += cb.storedEnergy;
         }
+        ItemStack[] inv = cb.inventory;
+        for (int i = 0; i < inv.length; i++) {
+          if(inv[i] != null) {
+            invItems.add(inv[i]);
+            inv[i] = null;
+          }
+        }
         cb.multiblockDirty = false;
       }
       storedEnergy = totalStored;
       maxStoredEnergy = totalCap;
       maxIO = totalIO;
+      maxInput = maxIO;
+      maxOutput = maxIO;
+
+      if(invItems.size() > inventory.length) {
+        for (int i = inventory.length; i < invItems.size(); i++) {
+          Util.dropItems(worldObj, invItems.get(i), xCoord, yCoord, zCoord, true);
+        }
+      }
+      for (int i = 0; i < inventory.length && i < invItems.size(); i++) {
+        inventory[i] = invItems.get(i);
+      }
+
       updatePowerHandler();
     }
     receptorsDirty = true;
@@ -530,6 +653,88 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     return null;
   }
 
+  //------------- Inventory
+
+  @Override
+  public int getSizeInventory() {
+    return inventory.length;
+  }
+
+  @Override
+  public ItemStack getStackInSlot(int i) {
+    if(i < 0 || i >= inventory.length) {
+      return null;
+    }
+    return inventory[i];
+  }
+
+  @Override
+  public ItemStack decrStackSize(int fromSlot, int amount) {
+    if(fromSlot < 0 || fromSlot >= inventory.length) {
+      return null;
+    }
+    ItemStack item = inventory[fromSlot];
+    if(item == null) {
+      return null;
+    }
+    if(item.stackSize <= amount) {
+      ItemStack result = item.copy();
+      inventory[fromSlot] = null;
+      return result;
+    }
+    item.stackSize -= amount;
+    return item.copy();
+  }
+
+  @Override
+  public ItemStack getStackInSlotOnClosing(int i) {
+    return null;
+  }
+
+  @Override
+  public void setInventorySlotContents(int i, ItemStack itemstack) {
+    if(i < 0 || i >= inventory.length) {
+      return;
+    }
+    inventory[i] = itemstack;
+  }
+
+  @Override
+  public String getInvName() {
+    return ModObject.blockCapacitorBank.name();
+  }
+
+  @Override
+  public boolean isInvNameLocalized() {
+    return false;
+  }
+
+  @Override
+  public int getInventoryStackLimit() {
+    return 1;
+  }
+
+  @Override
+  public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+    return true;
+  }
+
+  @Override
+  public void openChest() {
+  }
+
+  @Override
+  public void closeChest() {
+  }
+
+  @Override
+  public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+    if(itemstack == null) {
+      return false;
+    }
+    return itemstack.getItem() instanceof IChargeableItem;
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
@@ -537,6 +742,13 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     storedEnergy = nbtRoot.getFloat("storedEnergy");
     maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergy");
     maxIO = nbtRoot.getInteger("maxIO");
+    if(nbtRoot.hasKey("maxInput")) {
+      maxInput = nbtRoot.getInteger("maxInput");
+      maxOutput = nbtRoot.getInteger("maxOutput");
+    } else {
+      maxInput = maxIO;
+      maxOutput = maxIO;
+    }
 
     inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
     outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
@@ -555,6 +767,19 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     } else {
       multiblock = null;
     }
+
+    for (int i = 0; i < inventory.length; i++) {
+      inventory[i] = null;
+    }
+
+    NBTTagList itemList = nbtRoot.getTagList("Items");
+    for (int i = 0; i < itemList.tagCount(); i++) {
+      NBTTagCompound itemStack = (NBTTagCompound) itemList.tagAt(i);
+      byte slot = itemStack.getByte("Slot");
+      if(slot >= 0 && slot < inventory.length) {
+        inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
+      }
+    }
   }
 
   @Override
@@ -564,6 +789,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     nbtRoot.setFloat("storedEnergy", storedEnergy);
     nbtRoot.setInteger("maxStoredEnergy", maxStoredEnergy);
     nbtRoot.setInteger("maxIO", maxIO);
+    nbtRoot.setInteger("maxInput", maxInput);
+    nbtRoot.setInteger("maxOutput", maxOutput);
     nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
     nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
 
@@ -578,6 +805,18 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       }
       nbtRoot.setIntArray("multiblock", vals);
     }
+
+    // write inventory list
+    NBTTagList itemList = new NBTTagList();
+    for (int i = 0; i < inventory.length; i++) {
+      if(inventory[i] != null) {
+        NBTTagCompound itemStackNBT = new NBTTagCompound();
+        itemStackNBT.setByte("Slot", (byte) i);
+        inventory[i].writeToNBT(itemStackNBT);
+        itemList.appendTag(itemStackNBT);
+      }
+    }
+    nbtRoot.setTag("Items", itemList);
   }
 
   @Override
