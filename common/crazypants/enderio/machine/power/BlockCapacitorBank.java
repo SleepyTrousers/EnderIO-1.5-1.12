@@ -29,9 +29,11 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
@@ -41,6 +43,10 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public static BlockCapacitorBank create() {
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
+
+    CapacitorBankPacketHandler pp = new CapacitorBankPacketHandler();
+    PacketHandler.instance.addPacketProcessor(pp);
+
     return res;
   }
 
@@ -91,6 +97,10 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof TileCapacitorBank) {
+      return new ContainerCapacitorBank(player.inventory, ((TileCapacitorBank) te).getController());
+    }
     return null;
   }
 
@@ -98,7 +108,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
-      return new GuiCapacitorBank((TileCapacitorBank) te);
+      return new GuiCapacitorBank(player.inventory, ((TileCapacitorBank) te).getController());
     }
     return null;
   }
@@ -225,6 +235,20 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   @Override
   public int quantityDropped(Random r) {
     return 0;
+  }
+
+  @Override
+  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+      TileEntity te = world.getBlockTileEntity(x, y, z);
+      if(!(te instanceof TileCapacitorBank)) {
+        super.breakBlock(world, x, y, z, par5, par6);
+        return;
+      }
+      TileCapacitorBank cb = (TileCapacitorBank) te;
+      Util.dropItems(world, cb, x, y, z, true);
+    }
+    world.removeBlockTileEntity(x, y, z);
   }
 
   @Override
