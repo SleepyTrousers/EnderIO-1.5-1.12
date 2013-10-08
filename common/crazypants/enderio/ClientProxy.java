@@ -44,6 +44,7 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.enderio.material.MachinePartRenderer;
+import crazypants.enderio.trigger.TriggerIconProvider;
 
 public class ClientProxy extends CommonProxy {
 
@@ -64,6 +65,7 @@ public class ClientProxy extends CommonProxy {
     RedstoneSwitch.initIcons();
     PowerConduit.initIcons();
     LiquidConduit.initIcons();
+    TriggerIconProvider.initIcons();
   }
 
   private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
@@ -143,7 +145,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {
     for (ConduitRenderer renderer : conduitRenderers) {
-      if (renderer.isRendererForConduit(conduit)) {
+      if(renderer.isRendererForConduit(conduit)) {
         return renderer;
       }
     }
@@ -152,7 +154,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    if (entityPlayer instanceof EntityPlayerMP) {
+    if(entityPlayer instanceof EntityPlayerMP) {
       return ((EntityPlayerMP) entityPlayer).theItemInWorldManager.getBlockReachDistance();
     }
     return super.getReachDistanceForPlayer(entityPlayer);
