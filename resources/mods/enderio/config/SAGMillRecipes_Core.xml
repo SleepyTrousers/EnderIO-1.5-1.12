@@ -135,7 +135,7 @@
       </output>
     </recipe>
 
-    <recipe name="IronOre" energyCost="240">
+    <recipe name="IronIngot" energyCost="240">
       <input>
         <itemStack itemID="265" />
       </input>
