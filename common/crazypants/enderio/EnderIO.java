@@ -1,6 +1,5 @@
 package crazypants.enderio;
 
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.ITrigger;
@@ -130,17 +129,7 @@ public class EnderIO {
   @PreInit
   public void preInit(FMLPreInitializationEvent event) {
 
-    Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
-    try {
-      cfg.load();
-      Config.load(cfg, event);
-    } catch (Exception e) {
-      Log.error("EnderIO has a problem loading it's configuration");
-    } finally {
-      if(cfg.hasChanged()) {
-        cfg.save();
-      }
-    }
+    Config.load(event);
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 

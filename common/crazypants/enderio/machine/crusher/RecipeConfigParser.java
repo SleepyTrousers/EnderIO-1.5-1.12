@@ -94,7 +94,7 @@ public class RecipeConfigParser extends DefaultHandler {
   private boolean outputTagOpen = false;
   private boolean inputTagOpen = false;
 
-  private boolean debug = true;
+  private boolean debug = false;
 
   RecipeConfigParser() {
 
@@ -123,32 +123,30 @@ public class RecipeConfigParser extends DefaultHandler {
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    if (ELEMENT_ROOT.equals(localName)) {
+    if(ELEMENT_ROOT.equals(localName)) {
       result = root;
       root = null;
-      if (debug) {
+      if(debug) {
         Log.debug(LP + "Closing root");
       }
       return;
     }
-    if (ELEMENT_RECIPE_GROUP.equals(localName)) {
+    if(ELEMENT_RECIPE_GROUP.equals(localName)) {
 
-      if (debug) {
+      if(debug) {
         Log.debug(LP + "Closing recipe group");
       }
-      if (recipeGroup != null && recipeGroup.isValid() && root != null) {
+      if(recipeGroup != null && root != null) {
         root.addRecipeGroup(recipeGroup);
-      } else {
-        Log.warn(LP + "Could not add recipe group " + recipeGroup + " to root " + root);
       }
       recipeGroup = null;
       return;
     }
-    if (ELEMENT_RECIPE.equals(localName)) {
-      if (debug) {
+    if(ELEMENT_RECIPE.equals(localName)) {
+      if(debug) {
         Log.debug(LP + "Closing recipe");
       }
-      if (recipe != null && recipeGroup != null) {
+      if(recipe != null && recipeGroup != null) {
         recipeGroup.addRecipe(recipe);
       } else {
         Log.warn(LP + "Could not add recipe " + recipe + " to group " + recipeGroup);
@@ -157,16 +155,16 @@ public class RecipeConfigParser extends DefaultHandler {
       recipe = null;
       return;
     }
-    if (ELEMENT_OUTPUT.equals(localName)) {
+    if(ELEMENT_OUTPUT.equals(localName)) {
       outputTagOpen = false;
-      if (debug) {
+      if(debug) {
         Log.debug(LP + "Closing output");
       }
       return;
     }
-    if (ELEMENT_INPUT.equals(localName)) {
+    if(ELEMENT_INPUT.equals(localName)) {
       inputTagOpen = false;
-      if (debug) {
+      if(debug) {
         Log.debug(LP + "Closing input");
       }
       return;
@@ -176,7 +174,7 @@ public class RecipeConfigParser extends DefaultHandler {
   @Override
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-    if (debug) {
+    if(debug) {
       StringBuilder sb = new StringBuilder();
       for (int i = 0; i < attributes.getLength(); i++) {
         sb.append("[" + attributes.getQName(i) + "=" + attributes.getValue(i) + "]");
@@ -184,8 +182,8 @@ public class RecipeConfigParser extends DefaultHandler {
       Log.debug(LP + "RecipeConfigParser.startElement: localName:" + localName + " attrs:" + sb);
     }
 
-    if (ELEMENT_ROOT.equals(localName)) {
-      if (root != null) {
+    if(ELEMENT_ROOT.equals(localName)) {
+      if(root != null) {
         Log.warn(LP + "Multiple " + ELEMENT_ROOT + " elements found.");
       } else {
         root = new RecipeConfig();
@@ -193,82 +191,87 @@ public class RecipeConfigParser extends DefaultHandler {
       return;
     }
 
-    if (root == null) {
+    if(root == null) {
       Log.warn(LP + "<" + ELEMENT_ROOT + "> not specified before element " + localName + ".");
       root = new RecipeConfig();
     }
 
-    if (ELEMENT_DUMP_REGISTERY.equals(localName)) {
+    if(ELEMENT_DUMP_REGISTERY.equals(localName)) {
       root.setDumpOreDictionary(getBooleanValue(AT_ORE_DICT, attributes, false));
       root.setDumpItemRegistery(getBooleanValue(AT_DUMP_ITEMS, attributes, false));
       return;
     }
 
-    if (ELEMENT_RECIPE_GROUP.equals(localName)) {
-      if (recipeGroup != null) {
+    if(ELEMENT_RECIPE_GROUP.equals(localName)) {
+      if(recipeGroup != null) {
         Log.warn(LP + "Recipe group " + recipeGroup.getName() + " not closed before encountering a new recipe group.");
       }
       recipeGroup = root.createRecipeGroup(attributes.getValue(AT_NAME));
       recipeGroup.setEnabled(getBooleanValue(AT_ENABLED, attributes, true));
-      if (!recipeGroup.isNameValid()) {
+      if(!recipeGroup.isNameValid()) {
         Log.warn(LP + "A recipe group was found with an invalid name: " + attributes.getValue(AT_NAME));
         recipeGroup = null;
       }
       return;
     }
 
-    if (ELEMENT_RECIPE.equals(localName)) {
-      if (recipeGroup == null) {
+    if(ELEMENT_RECIPE.equals(localName)) {
+      if(recipeGroup == null) {
         Log.warn(LP + "A recipe was found outside of a recipe groups tags.");
         return;
       }
-      if (recipe != null) {
+      if(recipe != null) {
         Log.warn(LP + "A new recipe was started before the recipe was closed.");
       }
-      recipe = recipeGroup.createRecipe();
+      String name = getStringValue(AT_NAME, attributes, null);
+      if(name == null) {
+        Log.warn(LP + "An unnamed recipe was found.");
+        return;
+      }
+      recipe = recipeGroup.createRecipe(name);
       recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
       return;
     }
 
-    if (recipe == null) {
-      Log.warn(LP + "Found element <" + localName + "> outside of a recipe decleration.");
+    if(recipe == null) {
+      Log.warn(LP + "Found element <" + localName + "> with no recipe decleration.");
       return;
     }
 
-    if (ELEMENT_OUTPUT.equals(localName)) {
-      if (inputTagOpen) {
+    if(ELEMENT_OUTPUT.equals(localName)) {
+      if(inputTagOpen) {
         Log.warn(LP + "<output> encounterd before <input> closed.");
         inputTagOpen = false;
       }
-      if (outputTagOpen) {
+      if(outputTagOpen) {
         Log.warn(LP + "<output> encounterd before previous <output> closed.");
       }
       outputTagOpen = true;
       return;
     }
 
-    if (ELEMENT_INPUT.equals(localName)) {
-      if (outputTagOpen) {
+    if(ELEMENT_INPUT.equals(localName)) {
+      if(outputTagOpen) {
         Log.warn(LP + "<input> encounterd before <output> closed.");
         outputTagOpen = false;
       }
-      if (inputTagOpen) {
+      if(inputTagOpen) {
         Log.warn(LP + "<input> encounterd before previous <input> closed.");
       }
       inputTagOpen = true;
       return;
     }
 
-    if (ELEMENT_ITEM_STACK.equals(localName)) {
-      if (!inputTagOpen && !outputTagOpen) {
+    if(ELEMENT_ITEM_STACK.equals(localName)) {
+      if(!inputTagOpen && !outputTagOpen) {
         Log.warn(LP + "Encounterd an item stack outside of either an <input> or <output> tag.");
         return;
       }
-      if (inputTagOpen && outputTagOpen) {
+      if(inputTagOpen && outputTagOpen) {
         Log.warn(LP + "Encounterd an item stack within both an <input> and <output> tag.");
         return;
       }
-      if (inputTagOpen) {
+      if(inputTagOpen) {
         addInputStack(attributes);
       } else {
         addOutputStack(attributes);
@@ -279,7 +282,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   private void addOutputStack(Attributes attributes) {
     ItemStack stack = getItemStack(attributes);
-    if (stack == null) {
+    if(stack == null) {
       return;
     }
     recipe.addOutput(new CrusherOutput(stack, getFloatValue(AT_CHANCE, attributes, 1f)));
@@ -288,17 +291,17 @@ public class RecipeConfigParser extends DefaultHandler {
   private void addInputStack(Attributes attributes) {
 
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
-    if (oreDict != null) {
+    if(oreDict != null) {
       ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
-      if (ores == null) {
+      if(ores == null) {
         return;
       }
       int stackSize = getIntValue(AT_NUMBER, attributes, 1);
       for (ItemStack st : ores) {
-        if (st != null) {
+        if(st != null) {
           ItemStack stack = st.copy();
           stack.stackSize = stackSize;
-          if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+          if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
             for (int i = 0; i < 16; i++) {
               stack = stack.copy();
               stack.setItemDamage(i);
@@ -312,7 +315,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
     } else {
       ItemStack stack = getItemStack(attributes);
-      if (stack == null) {
+      if(stack == null) {
         return;
       }
       stack.stackSize = 1;
@@ -322,42 +325,42 @@ public class RecipeConfigParser extends DefaultHandler {
 
   private ItemStack getItemStack(Attributes attributes) {
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
-    if (oreDict != null) {
+    if(oreDict != null) {
       ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
-      if (ores == null || ores.isEmpty() || ores.get(0) == null) {
-        Log.warn(LP + "Could not find an entry in the ore dictionary for " + oreDict);
+      if(ores == null || ores.isEmpty() || ores.get(0) == null) {
+        Log.debug(LP + "Could not find an entry in the ore dictionary for " + oreDict);
         return null;
       }
       ItemStack stack = ores.get(0).copy();
       stack.stackSize = getIntValue(AT_NUMBER, attributes, 1);
-      if (stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+      if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
         stack.setItemDamage(0);
       }
       return stack;
     }
 
     int itemID = getIntValue(AT_ITEM_ID, attributes, -1);
-    if (itemID <= 0) {
+    if(itemID <= 0) {
 
       String modId = getStringValue(AT_MOD_ID, attributes, null);
       String name = getStringValue(AT_ITEM_NAME, attributes, null);
 
-      if (modId != null && name != null) {
+      if(modId != null && name != null) {
 
         Item i = GameRegistry.findItem(modId, name);
-        if (i != null) {
+        if(i != null) {
           itemID = i.itemID;
         } else {
           Block b = GameRegistry.findBlock(modId, name);
-          if (b != null) {
+          if(b != null) {
             itemID = b.blockID;
           }
         }
       }
     }
 
-    if (itemID <= 0) {
-      Log.warn("Could not create an item stack from the attributes " + toString(attributes));
+    if(itemID <= 0) {
+      Log.debug("Could not create an item stack from the attributes " + toString(attributes));
       return null;
     }
 
@@ -369,7 +372,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   private boolean getBooleanValue(String qName, Attributes attributes, boolean def) {
     String val = attributes.getValue(qName);
-    if (val == null) {
+    if(val == null) {
       return def;
     }
     val = val.toLowerCase().trim();
@@ -396,11 +399,11 @@ public class RecipeConfigParser extends DefaultHandler {
 
   private String getStringValue(String qName, Attributes attributes, String def) {
     String val = attributes.getValue(qName);
-    if (val == null) {
+    if(val == null) {
       return def;
     }
     val = val.trim();
-    if (val.length() <= 0) {
+    if(val.length() <= 0) {
       return null;
     }
     return val;

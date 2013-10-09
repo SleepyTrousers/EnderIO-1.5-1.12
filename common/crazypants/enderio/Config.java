@@ -1,9 +1,11 @@
 package crazypants.enderio;
 
 import java.io.File;
+import java.io.IOException;
 
 import net.minecraftforge.common.Configuration;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import crazypants.util.IOUtils;
 import crazypants.vecmath.VecmathUtil;
 
 public final class Config {
@@ -35,7 +37,39 @@ public final class Config {
 
   public static boolean useHardRecipes = false;
 
-  public static void load(Configuration config, FMLPreInitializationEvent event) {
+  public static void load(FMLPreInitializationEvent event) {
+    configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
+    if(!configDirectory.exists()) {
+      configDirectory.mkdir();
+    }
+
+    File deprecatedFile = event.getSuggestedConfigurationFile();
+
+    File configFile = new File(configDirectory, "EnderIO.cfg");
+    if(deprecatedFile.exists()) {
+      try {
+        IOUtils.moveFile(deprecatedFile, configFile);
+      } catch (IOException e) {
+        Log.error("Could not move old config file to new directory: " + e);
+        e.printStackTrace();
+        throw new RuntimeException("Could not move old config file to new directory.", e);
+      }
+    }
+
+    Configuration cfg = new Configuration(configFile);
+    try {
+      cfg.load();
+      Config.processConfig(cfg);
+    } catch (Exception e) {
+      Log.error("EnderIO has a problem loading it's configuration");
+    } finally {
+      if(cfg.hasChanged()) {
+        cfg.save();
+      }
+    }
+  }
+
+  public static void processConfig(Configuration config) {
 
     for (ModObject e : ModObject.values()) {
       e.load(config);
@@ -70,7 +104,7 @@ public final class Config {
         "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limites are no cumulative").getInt(transceiverMaxIO);
     transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
         "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
-    configDirectory = event.getModConfigurationDirectory();
+
   }
 
   private Config() {
