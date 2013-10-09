@@ -1,9 +1,8 @@
 package crazypants.enderio;
 
+import net.minecraftforge.common.MinecraftForge;
 import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.ITrigger;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,7 +56,7 @@ import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
-import crazypants.enderio.trigger.TriggerEnergyStorage;
+import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
 @Mod(name = "EnderIO", modid = "EnderIO", version = "0.2.4b", dependencies = "required-after:Forge@[9.11.0.883,)")
@@ -116,23 +115,17 @@ public class EnderIO {
 
   public static ItemYetaWrench itemYetaWench;
   public static ItemMJReader itemMJReader;
-  
-  public static ITrigger triggerNoEnergy, triggerHasEnergy, triggerFullEnergy;
+
+  public static ITrigger triggerNoEnergy;
+  public static ITrigger triggerHasEnergy;
+  public static ITrigger triggerFullEnergy;
+  public static ITrigger triggerIsCharging;
+  public static ITrigger triggerFinishedCharging;
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
-    Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
-    try {
-      cfg.load();
-      Config.load(cfg, event);
-    } catch (Exception e) {
-      Log.error("EnderIO has a problem loading it's configuration");
-    } finally {
-      if(cfg.hasChanged()) {
-        cfg.save();
-      }
-    }
+    Config.load(event);
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
@@ -198,12 +191,14 @@ public class EnderIO {
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
 
-    triggerNoEnergy = new TriggerEnergyStorage("enderIO.trigger.noEnergy");
-    triggerHasEnergy = new TriggerEnergyStorage("enderIO.trigger.hasEnergy");
-    triggerFullEnergy = new TriggerEnergyStorage("enderIO.trigger.fullEnergy");
-    
+    triggerNoEnergy = new TriggerEnderIO("enderIO.trigger.noEnergy", 0);
+    triggerHasEnergy = new TriggerEnderIO("enderIO.trigger.hasEnergy", 1);
+    triggerFullEnergy = new TriggerEnderIO("enderIO.trigger.fullEnergy", 2);
+    triggerIsCharging = new TriggerEnderIO("enderIO.trigger.isCharging", 3);
+    triggerFinishedCharging = new TriggerEnderIO("enderIO.trigger.finishedCharging", 4);
+
     ActionManager.registerTriggerProvider(new TriggerProviderEIO());
-    
+
     proxy.load();
   }
 

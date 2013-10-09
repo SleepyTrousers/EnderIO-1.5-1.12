@@ -94,7 +94,7 @@ public class RecipeConfigParser extends DefaultHandler {
   private boolean outputTagOpen = false;
   private boolean inputTagOpen = false;
 
-  private boolean debug = true;
+  private boolean debug = false;
 
   RecipeConfigParser() {
 
@@ -136,10 +136,8 @@ public class RecipeConfigParser extends DefaultHandler {
       if(debug) {
         Log.debug(LP + "Closing recipe group");
       }
-      if(recipeGroup != null && recipeGroup.isValid() && root != null) {
+      if(recipeGroup != null && root != null) {
         root.addRecipeGroup(recipeGroup);
-      } else {
-        Log.warn(LP + "Could not add recipe group " + recipeGroup + " to root " + root);
       }
       recipeGroup = null;
       return;
@@ -225,13 +223,18 @@ public class RecipeConfigParser extends DefaultHandler {
       if(recipe != null) {
         Log.warn(LP + "A new recipe was started before the recipe was closed.");
       }
-      recipe = recipeGroup.createRecipe();
+      String name = getStringValue(AT_NAME, attributes, null);
+      if(name == null) {
+        Log.warn(LP + "An unnamed recipe was found.");
+        return;
+      }
+      recipe = recipeGroup.createRecipe(name);
       recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
       return;
     }
 
     if(recipe == null) {
-      Log.warn(LP + "Found element <" + localName + "> outside of a recipe decleration.");
+      Log.warn(LP + "Found element <" + localName + "> with no recipe decleration.");
       return;
     }
 
@@ -325,7 +328,7 @@ public class RecipeConfigParser extends DefaultHandler {
     if(oreDict != null) {
       ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
       if(ores == null || ores.isEmpty() || ores.get(0) == null) {
-        Log.warn(LP + "Could not find an entry in the ore dictionary for " + oreDict);
+        Log.debug(LP + "Could not find an entry in the ore dictionary for " + oreDict);
         return null;
       }
       ItemStack stack = ores.get(0).copy();
@@ -357,7 +360,7 @@ public class RecipeConfigParser extends DefaultHandler {
     }
 
     if(itemID <= 0) {
-      Log.warn("Could not create an item stack from the attributes " + toString(attributes));
+      Log.debug("Could not create an item stack from the attributes " + toString(attributes));
       return null;
     }
 
