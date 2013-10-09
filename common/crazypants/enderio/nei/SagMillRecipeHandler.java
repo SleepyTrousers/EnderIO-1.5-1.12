@@ -205,7 +205,11 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
       }
       int num1 = o1.numTargetOuput;
       int num2 = o2.numTargetOuput;
-      return -Integer.compare(num1, num2);
+      return -compare(num1, num2);
+    }
+
+    public int compare(int x, int y) {
+      return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
   }
 
