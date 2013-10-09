@@ -8,8 +8,22 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PerditionCalculator;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import buildcraft.api.transport.IPipeTile;
+import buildcraft.api.transport.IPipeTile.PipeType;
 
 public class PowerHandlerUtil {
+
+  public static boolean canConnectRecievePower(IPowerReceptor rec) {
+    if(rec == null) {
+      return false;
+    }
+    if(rec instanceof IPipeTile) {
+      IPipeTile pipeTile = (IPipeTile) rec;
+      return pipeTile.getPipeType() == PipeType.POWER;
+    }
+    return true;
+
+  }
 
   public static float getStoredEnergyForItem(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();

@@ -272,9 +272,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
         if(te instanceof IPowerReceptor) {
           IPowerReceptor rec = (IPowerReceptor) te;
-          if(!(te instanceof TileCapacitorBank)) {
+          if(!(te instanceof TileCapacitorBank) && PowerHandlerUtil.canConnectRecievePower(rec)) {
             receptors.add(new Receptor((IPowerReceptor) te, dir));
           }
+
         }
       }
     }

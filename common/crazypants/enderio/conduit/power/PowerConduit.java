@@ -212,7 +212,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(rec instanceof IPowerEmitter) {
       return ((IPowerEmitter) rec).canEmitPowerFrom(direction.getOpposite());
     }
-    return rec != null;
+    return rec != null && PowerHandlerUtil.canConnectRecievePower(rec);
   }
 
   @Override
