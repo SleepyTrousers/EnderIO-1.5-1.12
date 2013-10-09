@@ -1,0 +1,63 @@
+<!--
+This is the user configurable SAG Mill recipe file. This file will not be modified or removed by EnderIO.
+
+Adding new Recipes:
+For details of how to add a new recipe please see the documentation at the top of SAGMillRecipes_Core.xml.
+
+Removing Recipes:
+To disable all recipes within a group, in this example Forestry, include the following in this file:
+
+<recipeGroup name="Forestry" enabled="false"/>
+
+To disable individual recipes, simply provide an invalid recipe for them:
+
+<recipeGroup name="Applied Energistics">
+  <recipe name="CertusQuartzOre"/>
+</recipeGroup>
+
+To change an existing recipe, just add the recipe to this file using the same recipe group and recipe name as
+found in the core file.
+ 
+-->
+
+<SAGMillRecipes>
+
+<!-- Disables all recipes in the group 'Vanilla'
+<recipeGroup name="Vanilla" enabled="false"/> 
+-->
+
+<!-- Disables the glass recipes in the group 'Vanilla' 
+<recipeGroup name="Vanilla"> 
+  <recipe name="Glass"/> 
+</recipeGroup>
+-->
+
+
+<!-- Modify a core recipe defination, in this case, make glass give diamonds. 
+<recipeGroup name="Vanilla">
+  <recipe name="Glass" energyCost="120"> 
+      <input>
+        <itemStack itemID="20" />
+      </input>
+      <output>
+        <itemStack itemID="264" />
+      </output>
+    </recipe>
+</recipeGroup>
+-->
+
+<!-- Adding a new recipe to a new group 
+<recipeGroup name="CrazyPantsGroup">
+  <recipe name="SolarToGlass" energyCost="120"> 
+      <input>
+        <itemStack modID="EnderIO" itemName="enderIO:blockSolarPanel"/>
+      </input>
+      <output>
+        <itemStack itemID="20" />
+      </output>
+    </recipe>
+</recipeGroup>
+-->
+  
+
+</SAGMillRecipes>

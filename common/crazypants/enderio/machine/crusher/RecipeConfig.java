@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.Log;
 
 public class RecipeConfig {
 
@@ -19,12 +20,42 @@ public class RecipeConfig {
   public RecipeConfig() {
   }
 
+  public void merge(RecipeConfig userConfig) {
+    for (RecipeGroup group : userConfig.getRecipeGroups().values()) {
+      if(!group.enabled) {
+        if(recipeGroups.remove(group.name) != null) {
+          Log.info("Disabled core SAG Mill recipe group " + group.name + " due to user config.");
+        }
+      } else {
+        RecipeGroup modifyGroup = recipeGroups.get(group.name);
+        if(modifyGroup == null) {
+          Log.info("Added user defined SAG Mill recipe group " + group.name);
+          modifyGroup = new RecipeGroup(group.name);
+          recipeGroups.put(group.name, modifyGroup);
+        }
+        for (Recipe recipe : group.recipes.values()) {
+          if(recipe.isValid()) {
+            if(modifyGroup.recipes.containsKey(recipe.name)) {
+              Log.info("Replacing core SAG Mill recipe " + recipe.name + "  with user defined recipe.");
+            } else {
+              Log.info("Added user defined SAG Mill recipe " + recipe.name);
+            }
+            modifyGroup.addRecipe(recipe);
+          } else {
+            Log.info("Removed SAG Mill recipe " + recipe.name + " due to user config.");
+            modifyGroup.recipes.remove(recipe.name);
+          }
+        }
+      }
+    }
+  }
+
   public RecipeGroup createRecipeGroup(String name) {
     return new RecipeGroup(name);
   }
 
   public void addRecipeGroup(RecipeGroup group) {
-    if(group.isValid()) {
+    if(group.isNameValid()) {
       recipeGroups.put(group.getName(), group);
     }
   }
@@ -60,7 +91,7 @@ public class RecipeConfig {
   public List<CrusherRecipe> getRecipes() {
     List<CrusherRecipe> result = new ArrayList<CrusherRecipe>(32);
     for (RecipeGroup rg : recipeGroups.values()) {
-      if(rg.isEnabled()) {
+      if(rg.isEnabled() && rg.isValid()) {
         result.addAll(rg.createRecipes());
       }
     }
@@ -83,7 +114,7 @@ public class RecipeConfig {
 
     private final String name;
 
-    private List<Recipe> recipes = new ArrayList<Recipe>();
+    private Map<String, Recipe> recipes = new HashMap<String, Recipe>();
 
     private boolean enabled = true;
 
@@ -105,14 +136,12 @@ public class RecipeConfig {
       this.enabled = enabled;
     }
 
-    public Recipe createRecipe() {
-      return new Recipe();
+    public Recipe createRecipe(String name) {
+      return new Recipe(name);
     }
 
     public void addRecipe(Recipe recipe) {
-      if(recipe.isValid()) {
-        recipes.add(recipe);
-      }
+      recipes.put(recipe.name, recipe);
     }
 
     public String getName() {
@@ -121,8 +150,10 @@ public class RecipeConfig {
 
     public List<CrusherRecipe> createRecipes() {
       List<CrusherRecipe> result = new ArrayList<CrusherRecipe>(recipes.size());
-      for (Recipe recipe : recipes) {
-        result.addAll(recipe.createRecipes());
+      for (Recipe recipe : recipes.values()) {
+        if(recipe.isValid()) {
+          result.addAll(recipe.createRecipes());
+        }
       }
       return result;
     }
@@ -149,6 +180,12 @@ public class RecipeConfig {
     private List<CrusherOutput> outputs = new ArrayList<CrusherOutput>();
 
     private int energyRequired;
+
+    private String name;
+
+    private Recipe(String name) {
+      this.name = name;
+    }
 
     public void addInput(ItemStack stack) {
       inputs.add(stack);
