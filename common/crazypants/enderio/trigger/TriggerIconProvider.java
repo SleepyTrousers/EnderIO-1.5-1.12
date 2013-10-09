@@ -9,7 +9,7 @@ import crazypants.render.IconUtil;
 
 public class TriggerIconProvider implements IIconProvider {
 
-  public static Icon[] ICONS = new Icon[3];
+  public static Icon[] ICONS = new Icon[5];
 
   public static TriggerIconProvider instance = new TriggerIconProvider();
 
@@ -42,6 +42,8 @@ public class TriggerIconProvider implements IIconProvider {
     ICONS[0] = iconRegistry.registerIcon("enderio:triggers/noEnergy");
     ICONS[1] = iconRegistry.registerIcon("enderio:triggers/hasEnergy");
     ICONS[2] = iconRegistry.registerIcon("enderio:triggers/fullEnergy");
+    ICONS[3] = iconRegistry.registerIcon("enderio:triggers/charging");
+    ICONS[4] = iconRegistry.registerIcon("enderio:triggers/chargingDone");
   }
 
 }
