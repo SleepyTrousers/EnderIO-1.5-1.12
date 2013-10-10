@@ -161,7 +161,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     // Flush any tanks with a tiny bit left
     List<ILiquidConduit> toEmpty = new ArrayList<ILiquidConduit>();
     for (ILiquidConduit con : conduits) {
-      if(con.getTank().getFluidAmount() < 10) {
+      if(con != null && con.getTank().getFluidAmount() < 10) {
         toEmpty.add(con);
       } else {
         //some of the conduits have fluid left in them so don't do the final drain yet
@@ -246,12 +246,14 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     if(con.getConduitConnections().contains(ForgeDirection.DOWN)) {
       BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
       ILiquidConduit downCon = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
-      int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
-      int actual = filled;
-      actual = Math.min(actual, tank.getFluidAmount());
-      actual = Math.min(actual, downCon.getTank().getAvailableSpace());
-      tank.addAmount(-actual);
-      downCon.getTank().addAmount(actual);
+      if(downCon != null) {
+        int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
+        int actual = filled;
+        actual = Math.min(actual, tank.getFluidAmount());
+        actual = Math.min(actual, downCon.getTank().getAvailableSpace());
+        tank.addAmount(-actual);
+        downCon.getTank().addAmount(actual);
+      }
     }
 
     totalAmount = tank.getFluidAmount();
@@ -341,6 +343,9 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
   }
 
   private boolean canFlowTo(ILiquidConduit con, ILiquidConduit neighbour) {
+    if(con == null || neighbour == null) {
+      return false;
+    }
     if(neighbour.getNetwork() != this) {
       return false;
     }
@@ -379,8 +384,10 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
         // and don't add more than it can take
         actual = Math.min(actual, to.getTank().getAvailableSpace());
 
-        from.getTank().addAmount(-actual);
-        to.getTank().addAmount(actual);
+        if(from != null && to != null) {
+          from.getTank().addAmount(-actual);
+          to.getTank().addAmount(actual);
+        }
 
       }
     }
