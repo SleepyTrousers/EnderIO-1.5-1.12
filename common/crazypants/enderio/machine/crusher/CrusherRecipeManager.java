@@ -126,10 +126,10 @@ public class CrusherRecipeManager {
       return readStream(new FileInputStream(copyTo));
     }
 
-    InputStream in = getClass().getResourceAsStream("/assets/enderio/config/" + fileName);
+    InputStream in = getClass().getResourceAsStream("/mods/enderio/config/" + fileName);
     if(in == null) {
       Log.error("Could load default SAG Mill recipes.");
-      throw new IOException("Could not resource /assets/enderio/config/" + fileName + " form classpath. ");
+      throw new IOException("Could not resource /mods/enderio/config/" + fileName + " form classpath. ");
     }
     String output = readStream(in);
     BufferedWriter writer = null;
