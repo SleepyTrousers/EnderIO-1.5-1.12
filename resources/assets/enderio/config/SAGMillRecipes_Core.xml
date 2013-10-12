@@ -301,7 +301,7 @@
         <itemStack itemID="82" />
       </input>
       <output>
-        <itemStack itemID="337" number="4" />
+        <itemStack itemID="337" number="2" />
       </output>
 	 <output>
         <itemStack itemID="337" number="2" chance="0.1" />
@@ -311,16 +311,151 @@
       </output>
     </recipe>
     
-    <recipe name="Wool" energyCost="120">
+    <recipe name="Wool (white)" energyCost="120">
       <input>
         <itemStack itemID="35" />
       </input>
       <output>
         <itemStack itemID="287" number="4" />
-      </output>
+      </output>	  
     </recipe>
 	
-    <recipe name="Wheat" energyCost="80"> 
+	<recipe name="Wool (orange)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (magenta)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (light blue)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (yellow)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (lime)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (pink)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="6" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (gray)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="7" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (light gray)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="8" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (cyan)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="9" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (purple)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="10" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (blue)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="11" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (brown)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="12" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (green)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="13" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (red)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="14" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wool (black)" energyCost="120">
+      <input>
+        <itemStack itemID="35" itemMeta="15" />
+      </input>
+      <output>
+        <itemStack itemID="287" number="4" />
+      </output>	  
+    </recipe>
+	
+	<recipe name="Wheat" energyCost="80"> 
       <input>
         <itemStack itemID="296" />
       </input>
@@ -328,7 +463,7 @@
         <itemStack itemID="295" number="2" />
       </output>
     </recipe>
-    
+	
     <recipe name="RedstoneOre" energyCost="300">
       <input>
         <itemStack itemID="73" />
