@@ -455,6 +455,15 @@
       </output>	  
     </recipe>
 	
+	<recipe name="Wheat" energyCost="80"> 
+      <input>
+        <itemStack itemID="296" />
+      </input>
+      <output>
+        <itemStack itemID="295" number="2" />
+      </output>
+    </recipe>
+	
     <recipe name="RedstoneOre" energyCost="300">
       <input>
         <itemStack itemID="73" />
