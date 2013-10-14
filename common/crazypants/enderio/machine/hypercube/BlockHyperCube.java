@@ -208,8 +208,6 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if(!(te instanceof TileHyperCube)) {
       return false;
     }
-    TileHyperCube thc = (TileHyperCube) te;
-    thc.getTankInfo(ForgeDirection.EAST);
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
     return true;
   }
