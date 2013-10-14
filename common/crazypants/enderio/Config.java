@@ -23,7 +23,7 @@ public final class Config {
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static int numConduitsPerRecipe = 4;
+  public static int numConduitsPerRecipe = 8;
 
   public static double transceiverEnergyLoss = 0.1;
 

@@ -66,11 +66,13 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
       if (!world.isRemote) {
         if (world.setBlock(placeAt.x, placeAt.y, placeAt.z, ModObject.blockConduitBundle.actualId, 0, 1)) {
           IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeAt.x, placeAt.y, placeAt.z);
+          if(bundle != null) {
           bundle.addConduit(createConduit(stack));
           Block b = EnderIO.blockConduitBundle;
           world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getPlaceSound(),
               (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
         }
+      }
       }
       if (!player.capabilities.isCreativeMode) {
         stack.stackSize--;
@@ -88,7 +90,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
         IConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
         if (bundle == null) {
-          System.out.println("AbstractItemConduit.onItemUse: Bunle null");
+          System.out.println("AbstractItemConduit.onItemUse: Bundle null");
           return false;
         }
         IConduit con = createConduit(stack);
