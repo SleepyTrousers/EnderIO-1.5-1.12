@@ -49,11 +49,47 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    if(i >= slotDefinition.getNumSlots()) {
+  public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+    if(slot >= slotDefinition.getNumSlots()) {
       return false;
     }
-    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(i, itemstack)).isEmpty();
+
+    //if we are already processing a recipe and have more ingrediaents for it, only allow more items for that same recipe to be added
+
+    boolean slotsEmpty = true;
+    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+      if(i >= 0 && i < inventory.length) {
+        if(inventory[i] != null && inventory[i].stackSize > 0) {
+          slotsEmpty = false;
+        }
+      }
+    }
+
+    //No task or all teh slots are empty so just check for a new recipe
+    if(slotsEmpty || currentTask == null) {
+      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack)).isEmpty();
+    }
+
+    //If we are processing as vanilla recipe, allow all the slots to be filled with a single item
+    if(currentTask.getRecipe() instanceof VanillaSmeltingRecipe) {
+      ItemStack currentStackType = null;
+      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
+        currentStackType = inventory[i];
+      }
+      if(currentStackType != null && currentStackType.isItemEqual(itemstack)) {
+        return true;
+      }
+      return false;
+
+    } else {
+      //Its an alloy so only allow existing stacks to be added to
+      ItemStack stackInSlot = inventory[slot];
+      if(stackInSlot == null) {
+        return false;
+      }
+
+      return stackInSlot.isItemEqual(itemstack);
+    }
   }
 
   @Override
