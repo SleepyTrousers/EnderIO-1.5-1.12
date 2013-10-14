@@ -39,8 +39,7 @@ public class MachineRecipes {
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(blockStirlingGenerator.actualId, 1, 0);
-    GameRegistry.addShapedRecipe(stirlingGen, "bcb", "bfb", "gpg", 'b', Block.stoneBrick, 'f', Block.furnaceIdle, 'p', Block.pistonBase, 'g', basicGear, 'c',
-        capacitor);
+    GameRegistry.addShapedRecipe(stirlingGen, "bbb", "bfb", "gpg", 'b', Block.stoneBrick, 'f', Block.furnaceIdle, 'p', Block.pistonBase, 'g', basicGear);
 
     //reservoir
     ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);

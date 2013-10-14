@@ -25,7 +25,7 @@ public final class Config {
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
-  public static int numConduitsPerRecipe = 4;
+  public static int numConduitsPerRecipe = 8;
 
   public static double transceiverEnergyLoss = 0.1;
 
@@ -52,9 +52,7 @@ public final class Config {
       try {
         FileUtils.moveFile(deprecatedFile, configFile);
       } catch (IOException e) {
-        Log.error("Could not move old config file to new directory: " + e);
-        e.printStackTrace();
-        throw new RuntimeException("Could not move old config file to new directory.", e);
+        Log.warn("Could not move old config file to new directory: " + e);
       }
     }
 
