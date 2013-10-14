@@ -21,6 +21,14 @@ public class RecipeConfig {
   }
 
   public void merge(RecipeConfig userConfig) {
+
+    if(userConfig.dumpItemRegistery) {
+      dumpItemRegistery = true;
+    }
+    if(userConfig.dumpOreDictionary) {
+      dumpOreDictionary = true;
+    }
+
     for (RecipeGroup group : userConfig.getRecipeGroups().values()) {
       if(!group.enabled) {
         if(recipeGroups.remove(group.name) != null) {

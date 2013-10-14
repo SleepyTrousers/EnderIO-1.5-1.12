@@ -52,35 +52,39 @@ public class HyperCubeRegister {
   }
 
   private void convertOldFile() {
-    File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg");
-    Configuration config = new Configuration(oldFile);
-    config.load();
+    try {
+      File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg");
+      Configuration config = new Configuration(oldFile);
+      config.load();
 
-    Property pcNamesProp = config.get(CATEGORY_PUBLIC_CHANNELS, "names", new String[] {});
-    String[] pcNames = pcNamesProp.getStringList();
-    if(pcNames != null) {
-      for (String name : pcNames) {
-        publicChannels.add(new Channel(name, null));
+      Property pcNamesProp = config.get(CATEGORY_PUBLIC_CHANNELS, "names", new String[] {});
+      String[] pcNames = pcNamesProp.getStringList();
+      if(pcNames != null) {
+        for (String name : pcNames) {
+          publicChannels.add(new Channel(name, null));
+        }
       }
-    }
-    Property userNamesProp = config.get(CATEGORY_PRIVATE_CHANNELS, "users", new String[] {});
-    String[] userNames = userNamesProp.getStringList();
-    if(userNames != null) {
-      for (String user : userNames) {
-        Property userChannles = config.get(CATEGORY_PRIVATE_CHANNELS, user + ".channels", new String[] {});
-        String[] channelNames = userChannles.getStringList();
-        if(channelNames != null && channelNames.length > 0) {
-          List<Channel> channels = getChannelsForUser(user);
-          for (String chanName : channelNames) {
-            channels.add(new Channel(chanName, user));
+      Property userNamesProp = config.get(CATEGORY_PRIVATE_CHANNELS, "users", new String[] {});
+      String[] userNames = userNamesProp.getStringList();
+      if(userNames != null) {
+        for (String user : userNames) {
+          Property userChannles = config.get(CATEGORY_PRIVATE_CHANNELS, user + ".channels", new String[] {});
+          String[] channelNames = userChannles.getStringList();
+          if(channelNames != null && channelNames.length > 0) {
+            List<Channel> channels = getChannelsForUser(user);
+            for (String chanName : channelNames) {
+              channels.add(new Channel(chanName, user));
+            }
           }
         }
       }
+
+      updateConfig();
+
+      oldFile.renameTo(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg.old"));
+    } catch (Exception e) {
+      Log.warn("Could not convert old Dimensional Transciever (hypercube.cfg) to new format. Channles will be reset.");
     }
-
-    updateConfig();
-
-    oldFile.renameTo(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg.old"));
 
   }
 
