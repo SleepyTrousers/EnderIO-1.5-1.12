@@ -12,10 +12,21 @@ import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.alloy.BasicAlloyRecipe;
+import crazypants.enderio.machine.alloy.IAlloyRecipe;
 
-public class FusedQuartzRecipe implements IMachineRecipe {
+public class FusedQuartzRecipe implements IMachineRecipe, IAlloyRecipe {
 
   private static final int NUM_QUARTZ = 4;
+
+  @Override
+  public boolean isValidRecipeComponents(ItemStack... items) {
+    for (ItemStack item : items) {
+      if(item != null && item.itemID != Item.netherQuartz.itemID) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   @Override
   public String getUid() {

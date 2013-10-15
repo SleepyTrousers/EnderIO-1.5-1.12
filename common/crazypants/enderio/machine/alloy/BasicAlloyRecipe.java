@@ -16,9 +16,9 @@ import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 
-public class BasicAlloyRecipe implements IMachineRecipe {
+public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
 
-  public static final int DEFAULT_ENERGY_USE = 1600;
+  public static final int DEFAULT_ENERGY_USE = 1400;
 
   private final String uid;
 
@@ -55,6 +55,21 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
   }
 
+  @Override
+  public boolean isValidRecipeComponents(ItemStack... items) {
+    Set<InputKey> remainingInputs = new HashSet<InputKey>(inputKeys);
+    for (ItemStack item : items) {
+      if(item != null) {
+        InputKey key = new InputKey(item.itemID, item.getItemDamage());
+        if(!remainingInputs.contains(key)) {
+          return false;
+        }
+        remainingInputs.remove(key);
+      }
+    }
+    return true;
+  }
+
   public ItemStack[] getInputs() {
     return inputs;
   }
@@ -82,7 +97,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
     Set<InputKey> keys = new HashSet<BasicAlloyRecipe.InputKey>(inputKeys);
     for (MachineRecipeInput input : checking) {
-      ItemStack ing = getIngrediantForInput(input.item);
+      ItemStack ing = getRecipeComponentFromInput(input.item);
       if(ing == null || ing.stackSize > input.item.stackSize) {
         return false;
       }
@@ -119,7 +134,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     if(input == null) {
       return false;
     }
-    return getIngrediantForInput(input.item) != null;
+    return getRecipeComponentFromInput(input.item) != null;
   }
 
   @Override
@@ -128,16 +143,16 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   }
 
   public int getQuantityConsumed(MachineRecipeInput input) {
-    ItemStack ing = getIngrediantForInput(input.item);
+    ItemStack ing = getRecipeComponentFromInput(input.item);
     return ing == null ? 0 : ing.stackSize;
   }
 
-  private ItemStack getIngrediantForInput(ItemStack input) {
+  private ItemStack getRecipeComponentFromInput(ItemStack input) {
     if(input == null) {
       return null;
     }
     for (ItemStack st : inputs) {
-      if(st != null && st.itemID == input.itemID) {
+      if(st != null && st.isItemEqual(input)) {
         return st;
       }
     }

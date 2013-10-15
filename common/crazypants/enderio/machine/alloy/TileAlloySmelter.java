@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -73,11 +74,15 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
   @Override
   public boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
-    if(slot >= slotDefinition.getNumSlots()) {
+    if(!slotDefinition.isInputSlot(slot)) {
       return false;
     }
 
-    //if we are already processing a recipe and have more ingredients for it, only allow more items for that same recipe to be added
+    //We will assume anything that is in a slot is valid, so just return whether the new input can be stacked with the current one
+    ItemStack currentStackInSlot = inventory[slot];
+    if(currentStackInSlot != null) {
+      return currentStackInSlot.isItemEqual(itemstack);
+    }
 
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
@@ -87,38 +92,63 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
         }
       }
     }
+    List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
 
-    //No task or all the slots are empty so just check for a new recipe
-    if(numSlotsFilled == 0 || currentTask == null) {
-      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
-      if(mode == Mode.ALLOY) {
-        return containsAlloyRecipe(recipes);
-      } else if(mode == mode.FURNACE) {
-        return containsFurnaceRecipe(recipes);
-      }
-      return !recipes.isEmpty();
+    if(mode == Mode.FURNACE) {
+      return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
+    } else if(mode == Mode.ALLOY) {
+      return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
     }
+    return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes) || isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
+  }
 
-    //If we are processing as vanilla recipe, allow all the slots to be filled with a single item
-    if(currentTask.getRecipe() instanceof VanillaSmeltingRecipe || mode == Mode.FURNACE) {
-      ItemStack currentStackType = null;
-      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
-        currentStackType = inventory[i];
+  private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+    if(numSlotsFilled == 0) {
+      return containsAlloyRecipe(recipes);
+    }
+    for (IMachineRecipe recipe : recipes) {
+      if(!(recipe instanceof VanillaSmeltingRecipe)) {
+
+        if(recipe instanceof IAlloyRecipe) {
+          ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
+          for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+            if(i >= 0 && i < inventory.length) {
+              if(i == slot) {
+                resultInv[i] = itemstack;
+              } else {
+                resultInv[i] = inventory[i];
+              }
+            }
+          }
+          if(((IAlloyRecipe) recipe).isValidRecipeComponents(resultInv)) {
+            return true;
+          }
+
+        } else {
+          Log.warn("TileAlloySmelter.isMachineItemValidForSlot: A non alloy recipe was returned for the alloy smelter");
+          return true;
+        }
       }
+    }
+    return false;
+  }
+
+  private boolean isValidInputForFurnaceRecipe(ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+    if(numSlotsFilled == 0) {
+      return containsFurnaceRecipe(recipes);
+    }
+    return containsFurnaceRecipe(recipes) && isItemAlreadyInASlot(itemstack);
+  }
+
+  private boolean isItemAlreadyInASlot(ItemStack itemstack) {
+    ItemStack currentStackType = null;
+    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
+      currentStackType = inventory[i];
       if(currentStackType != null && currentStackType.isItemEqual(itemstack)) {
         return true;
       }
-      return false;
-
-    } else {
-      //Its an alloy so only allow existing stacks to be added to
-      ItemStack stackInSlot = inventory[slot];
-      if(stackInSlot == null) {
-        return false;
-      }
-
-      return stackInSlot.isItemEqual(itemstack);
     }
+    return false;
   }
 
   private boolean containsFurnaceRecipe(List<IMachineRecipe> recipes) {
