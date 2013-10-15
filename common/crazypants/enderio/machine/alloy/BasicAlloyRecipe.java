@@ -16,9 +16,9 @@ import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 
-public class BasicAlloyRecipe implements IMachineRecipe {
+public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
 
-  public static final int DEFAULT_ENERGY_USE = 1600;
+  public static final int DEFAULT_ENERGY_USE = 1400;
 
   private final String uid;
 
@@ -40,7 +40,7 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
     List<IRecipeComponent> reipceComps = new ArrayList<IRecipeComponent>(recipeInputs.length);
     for (int i = 0; i < inputs.length; i++) {
-      if (recipeInputs[i] != null) {
+      if(recipeInputs[i] != null) {
         inputs[i] = recipeInputs[i].copy();
         inputKeys.add(new InputKey(inputs[i].itemID, inputs[i].getItemDamage()));
         reipceComps.add(new RecipeInput(inputs[i], false));
@@ -53,6 +53,21 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     IEnderIoRecipe rec = new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, energyRequired, reipceComps);
     recipe = Collections.singletonList(rec);
 
+  }
+
+  @Override
+  public boolean isValidRecipeComponents(ItemStack... items) {
+    Set<InputKey> remainingInputs = new HashSet<InputKey>(inputKeys);
+    for (ItemStack item : items) {
+      if(item != null) {
+        InputKey key = new InputKey(item.itemID, item.getItemDamage());
+        if(!remainingInputs.contains(key)) {
+          return false;
+        }
+        remainingInputs.remove(key);
+      }
+    }
+    return true;
   }
 
   public ItemStack[] getInputs() {
@@ -76,14 +91,14 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   @Override
   public boolean isRecipe(MachineRecipeInput... checking) {
     checking = getNonNullInputs(checking);
-    if (inputs.length != checking.length) {
+    if(inputs.length != checking.length) {
       return false;
     }
 
     Set<InputKey> keys = new HashSet<BasicAlloyRecipe.InputKey>(inputKeys);
     for (MachineRecipeInput input : checking) {
-      ItemStack ing = getIngrediantForInput(input.item);
-      if (ing == null || ing.stackSize > input.item.stackSize) {
+      ItemStack ing = getRecipeComponentFromInput(input.item);
+      if(ing == null || ing.stackSize > input.item.stackSize) {
         return false;
       }
       keys.remove(new InputKey(ing.itemID, ing.getItemDamage()));
@@ -94,14 +109,14 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   private MachineRecipeInput[] getNonNullInputs(MachineRecipeInput[] checking) {
     int numNonNulls = 0;
     for (int i = 0; i < checking.length; i++) {
-      if (checking[i] != null && checking[i].item != null) {
+      if(checking[i] != null && checking[i].item != null) {
         numNonNulls++;
       }
     }
     MachineRecipeInput[] result = new MachineRecipeInput[numNonNulls];
     int index = 0;
     for (int i = 0; i < checking.length; i++) {
-      if (checking[i] != null && checking[i].item != null) {
+      if(checking[i] != null && checking[i].item != null) {
         result[index] = checking[i];
         index++;
       }
@@ -116,10 +131,10 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
-    if (input == null) {
+    if(input == null) {
       return false;
     }
-    return getIngrediantForInput(input.item) != null;
+    return getRecipeComponentFromInput(input.item) != null;
   }
 
   @Override
@@ -128,16 +143,16 @@ public class BasicAlloyRecipe implements IMachineRecipe {
   }
 
   public int getQuantityConsumed(MachineRecipeInput input) {
-    ItemStack ing = getIngrediantForInput(input.item);
+    ItemStack ing = getRecipeComponentFromInput(input.item);
     return ing == null ? 0 : ing.stackSize;
   }
 
-  private ItemStack getIngrediantForInput(ItemStack input) {
-    if (input == null) {
+  private ItemStack getRecipeComponentFromInput(ItemStack input) {
+    if(input == null) {
       return null;
     }
     for (ItemStack st : inputs) {
-      if (st != null && st.itemID == input.itemID) {
+      if(st != null && st.isItemEqual(input)) {
         return st;
       }
     }
@@ -149,13 +164,13 @@ public class BasicAlloyRecipe implements IMachineRecipe {
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput input : inputs) {
       int numConsumed = getQuantityConsumed(input);
-      if (numConsumed > 0) {
+      if(numConsumed > 0) {
         ItemStack consumed = input.item.copy();
         consumed.stackSize = numConsumed;
         result.add(new MachineRecipeInput(input.slotNumber, consumed));
       }
     }
-    if (result.isEmpty()) {
+    if(result.isEmpty()) {
       return null;
     }
     return result.toArray(new MachineRecipeInput[result.size()]);
@@ -187,20 +202,20 @@ public class BasicAlloyRecipe implements IMachineRecipe {
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj) {
+      if(this == obj) {
         return true;
       }
-      if (obj == null) {
+      if(obj == null) {
         return false;
       }
-      if (getClass() != obj.getClass()) {
+      if(getClass() != obj.getClass()) {
         return false;
       }
       InputKey other = (InputKey) obj;
-      if (damage != other.damage) {
+      if(damage != other.damage) {
         return false;
       }
-      if (itemID != other.itemID) {
+      if(itemID != other.itemID) {
         return false;
       }
       return true;

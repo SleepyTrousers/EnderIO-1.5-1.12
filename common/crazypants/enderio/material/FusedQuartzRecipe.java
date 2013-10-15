@@ -12,10 +12,21 @@ import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.alloy.BasicAlloyRecipe;
+import crazypants.enderio.machine.alloy.IAlloyRecipe;
 
-public class FusedQuartzRecipe implements IMachineRecipe {
+public class FusedQuartzRecipe implements IMachineRecipe, IAlloyRecipe {
 
   private static final int NUM_QUARTZ = 4;
+
+  @Override
+  public boolean isValidRecipeComponents(ItemStack... items) {
+    for (ItemStack item : items) {
+      if(item != null && item.itemID != Item.netherQuartz.itemID) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   @Override
   public String getUid() {
@@ -31,7 +42,7 @@ public class FusedQuartzRecipe implements IMachineRecipe {
   public boolean isRecipe(MachineRecipeInput... inputs) {
     int numQuartz = 0;
     for (MachineRecipeInput input : inputs) {
-      if (input != null && input.item != null && input.item.itemID == Item.netherQuartz.itemID) {
+      if(input != null && input.item != null && input.item.itemID == Item.netherQuartz.itemID) {
         numQuartz += input.item.stackSize;
       }
     }
@@ -45,7 +56,7 @@ public class FusedQuartzRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
-    if (input != null && input.item != null && input.item.itemID == Item.netherQuartz.itemID) {
+    if(input != null && input.item != null && input.item.itemID == Item.netherQuartz.itemID) {
       return true;
     }
     return false;
@@ -69,24 +80,24 @@ public class FusedQuartzRecipe implements IMachineRecipe {
     int[] consumedPerInput = new int[inputs.length];
     for (int i = 0; i < NUM_QUARTZ; i++) {
       for (int j = 0; j < consumedPerInput.length; j++) {
-        if (total < NUM_QUARTZ && numPerInput[j] - consumedPerInput[j] > 0) {
+        if(total < NUM_QUARTZ && numPerInput[j] - consumedPerInput[j] > 0) {
           total++;
           consumedPerInput[j]++;
         }
       }
     }
 
-    if (total < NUM_QUARTZ) {
+    if(total < NUM_QUARTZ) {
       System.out.println("FusedQuartzRecipe.getQuantitiesConsumed: Error!! No QuartzConsumed Consumed.");
       return new MachineRecipeInput[0];
     }
-    if (total > NUM_QUARTZ) {
+    if(total > NUM_QUARTZ) {
       System.out.println("FusedQuartzRecipe.getQuantitiesConsumed: Error!! Consumed more than we should have.");
     }
 
     List<MachineRecipeInput> res = new ArrayList<MachineRecipeInput>();
     for (int i = 0; i < consumedPerInput.length; i++) {
-      if (consumedPerInput[i] > 0) {
+      if(consumedPerInput[i] > 0) {
         MachineRecipeInput consumed = new MachineRecipeInput(inputs[i].slotNumber, new ItemStack(Item.netherQuartz, consumedPerInput[i]));
         res.add(consumed);
       }
@@ -95,7 +106,7 @@ public class FusedQuartzRecipe implements IMachineRecipe {
   }
 
   private int getQuartzQuanity(MachineRecipeInput ri) {
-    if (ri != null && ri.item != null && ri.item.itemID == Item.netherQuartz.itemID) {
+    if(ri != null && ri.item != null && ri.item.itemID == Item.netherQuartz.itemID) {
       return ri.item.stackSize;
     }
     return 0;
@@ -103,7 +114,7 @@ public class FusedQuartzRecipe implements IMachineRecipe {
 
   @Override
   public float getExperianceForOutput(ItemStack output) {
-    if (output == null) {
+    if(output == null) {
       return 0;
     }
     return 0.2F * output.stackSize;
