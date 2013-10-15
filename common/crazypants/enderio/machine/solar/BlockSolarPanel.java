@@ -7,17 +7,20 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 
 public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
@@ -63,6 +66,26 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   @Override
   public TileEntity createNewTileEntity(World world) {
     return new TileEntitySolarPanel();
+  }
+
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if(wrench.canWrench(entityPlayer, x, y, z)) {
+          removeBlockByPlayer(world, entityPlayer, x, y, z);
+          if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
+            dropBlockAsItem(world, x, y, z, 0, 0);
+          }
+          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override
