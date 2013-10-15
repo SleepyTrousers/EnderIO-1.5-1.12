@@ -30,12 +30,12 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    boolean val = data.readBoolean();
+    short val = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
     if(te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
-      me.setFurnaceRecipesEnabled(val);
+      me.setMode(TileAlloySmelter.Mode.values()[val]);
       p.worldObj.markBlockForUpdate(x, y, z);
     }
 
@@ -49,7 +49,7 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
       dos.writeInt(te.xCoord);
       dos.writeInt(te.yCoord);
       dos.writeInt(te.zCoord);
-      dos.writeBoolean(te.areFurnaceRecipesEnabled());
+      dos.writeShort(te.getMode().ordinal());
     } catch (IOException e) {
       // never thrown
     }
