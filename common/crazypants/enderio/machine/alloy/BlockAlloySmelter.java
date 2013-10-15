@@ -21,6 +21,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   Icon vanillaSmeltingOn;
   Icon vanillaSmeltingOff;
+  Icon vanillaSmeltingOnly;
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
@@ -31,6 +32,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     super.registerIcons(iconRegister);
     vanillaSmeltingOn = iconRegister.registerIcon("enderio:furnaceSmeltingOn");
     vanillaSmeltingOff = iconRegister.registerIcon("enderio:furnaceSmeltingOff");
+    vanillaSmeltingOnly = iconRegister.registerIcon("enderio:furnaceSmeltingOnly");
   }
 
   @Override
