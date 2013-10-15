@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
@@ -34,7 +35,13 @@ public class GuiAlloySmelter extends GuiMachineBase {
       protected void updateText() {
         text.clear();
         text.add("Furnace Mode");
-        text.add(tileEntity.areFurnaceRecipesEnabled() ? "All Smelting" : "Alloys Only");
+        String txt = "All Smelting";
+        if(tileEntity.getMode() == Mode.ALLOY) {
+          txt = "Alloys Only";
+        } else if(tileEntity.getMode() == Mode.FURNACE) {
+          txt = "Furnace Only";
+      }
+        text.add(txt);
       }
 
       @Override
@@ -53,8 +60,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
     int x = guiLeft + xSize - 5 - BUTTON_SIZE;
     int y = guiTop + 60;
 
-    Icon icon = tileEntity.areFurnaceRecipesEnabled() ? EnderIO.blockAlloySmelter.vanillaSmeltingOn : EnderIO.blockAlloySmelter.vanillaSmeltingOff;
-    vanillaFurnaceButton = new IconButton(fontRenderer, SMELT_MODE_BUTTON_ID, x, y, icon, RenderUtil.BLOCK_TEX);
+    vanillaFurnaceButton = new IconButton(fontRenderer, SMELT_MODE_BUTTON_ID, x, y, getIconForMode(), RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 
     buttonList.add(vanillaFurnaceButton);
@@ -63,14 +69,23 @@ public class GuiAlloySmelter extends GuiMachineBase {
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     if (par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
-      tileEntity.setFurnaceRecipesEnabled(!tileEntity.areFurnaceRecipesEnabled());
-      Icon icon = tileEntity.areFurnaceRecipesEnabled() ? EnderIO.blockAlloySmelter.vanillaSmeltingOn : EnderIO.blockAlloySmelter.vanillaSmeltingOff;
-      vanillaFurnaceButton.setIcon(icon);
+      tileEntity.setMode(tileEntity.getMode().next());
+      vanillaFurnaceButton.setIcon(getIconForMode());
       Packet pkt = AlloySmelterPacketProcessor.getSmeltingModePacket(tileEntity);
       PacketDispatcher.sendPacketToServer(pkt);
     } else {
       super.actionPerformed(par1GuiButton);
     }
+  }
+
+  private Icon getIconForMode() {
+    Icon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
+    if(tileEntity.getMode() == Mode.ALLOY) {
+      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
+    } else if(tileEntity.getMode() == Mode.FURNACE) {
+      icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly;
+    }
+    return icon;
   }
 
   /**

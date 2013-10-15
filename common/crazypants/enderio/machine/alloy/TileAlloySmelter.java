@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.alloy;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
@@ -11,11 +13,25 @@ import crazypants.enderio.machine.SlotDefinition;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
-  private boolean furnaceRecipesEnabled;
+  public static enum Mode {
+    ALL,
+    ALLOY,
+    FURNACE;
+
+    Mode next() {
+      int nextOrd = ordinal() + 1;
+      if(nextOrd >= values().length) {
+        nextOrd = 0;
+      }
+      return values()[nextOrd];
+    }
+  }
+
+  private Mode mode;
 
   public TileAlloySmelter() {
     super(new SlotDefinition(3, 1));
-    furnaceRecipesEnabled = true;
+    mode = Mode.ALL;
   }
 
   @Override
@@ -23,21 +39,28 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     return "Alloy Smelter";
   }
 
-  public boolean areFurnaceRecipesEnabled() {
-    return furnaceRecipesEnabled;
+  public Mode getMode() {
+    return mode;
   }
 
-  public void setFurnaceRecipesEnabled(boolean furnaceRecipesEnabled) {
-    if (this.furnaceRecipesEnabled != furnaceRecipesEnabled) {
-      this.furnaceRecipesEnabled = furnaceRecipesEnabled;
+  public void setMode(Mode mode) {
+    if(mode == null) {
+      mode = Mode.ALL;
+    }
+    if(this.mode != mode) {
+      this.mode = mode;
       forceClientUpdate = true;
     }
+
   }
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
     IMachineRecipe result = super.canStartNextTask(chance);
-    if (!furnaceRecipesEnabled && result instanceof VanillaSmeltingRecipe) {
+    if(mode == Mode.ALLOY && result instanceof VanillaSmeltingRecipe) {
+      result = null;
+    }
+    if(mode == Mode.FURNACE && !(result instanceof VanillaSmeltingRecipe)) {
       result = null;
     }
     return result;
@@ -54,26 +77,30 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
       return false;
     }
 
-    // if we are already processing a recipe and have more ingrediaents for it,
-    // only allow more items for that same recipe to be added
+    //if we are already processing a recipe and have more ingredients for it, only allow more items for that same recipe to be added
 
-    boolean slotsEmpty = true;
+    int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if (i >= 0 && i < inventory.length) {
         if (inventory[i] != null && inventory[i].stackSize > 0) {
-          slotsEmpty = false;
+          numSlotsFilled++;
         }
       }
     }
 
-    // No task or all teh slots are empty so just check for a new recipe
-    if (slotsEmpty || currentTask == null) {
-      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack)).isEmpty();
+    //No task or all the slots are empty so just check for a new recipe
+    if(numSlotsFilled == 0 || currentTask == null) {
+      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
+      if(mode == Mode.ALLOY) {
+        return containsAlloyRecipe(recipes);
+      } else if(mode == mode.FURNACE) {
+        return containsFurnaceRecipe(recipes);
+    }
+      return !recipes.isEmpty();
     }
 
-    // If we are processing as vanilla recipe, allow all the slots to be filled
-    // with a single item
-    if (currentTask.getRecipe() instanceof VanillaSmeltingRecipe) {
+    //If we are processing as vanilla recipe, allow all the slots to be filled with a single item
+    if(currentTask.getRecipe() instanceof VanillaSmeltingRecipe || mode == Mode.FURNACE) {
       ItemStack currentStackType = null;
       for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
         currentStackType = inventory[i];
@@ -94,16 +121,35 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     }
   }
 
+  private boolean containsFurnaceRecipe(List<IMachineRecipe> recipes) {
+    for (IMachineRecipe rec : recipes) {
+      if(rec instanceof VanillaSmeltingRecipe) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean containsAlloyRecipe(List<IMachineRecipe> recipes) {
+    for (IMachineRecipe rec : recipes) {
+      if(!(rec instanceof VanillaSmeltingRecipe)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
-    furnaceRecipesEnabled = nbtRoot.getBoolean("furnaceRecipesEnabled");
+    short mb = nbtRoot.getShort("mode");
+    mode = Mode.values()[mb];
   }
 
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
-    nbtRoot.setBoolean("furnaceRecipesEnabled", furnaceRecipesEnabled);
+    nbtRoot.setShort("mode", (short) mode.ordinal());
   }
 
 }
