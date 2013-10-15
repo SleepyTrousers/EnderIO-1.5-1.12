@@ -74,8 +74,8 @@ public abstract class AbstractMachineContainer extends Container {
       } else {
         //Check from inv->input then inv->upgrade then inv->hotbar or hotbar->inv
         if(slotIndex >= startPlayerSlot) {
-          if(!tileEntity.isValidInput(origStack) || !mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
-            if(!tileEntity.isValidUpgrade(origStack) || !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
+          if(!mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
+            if(!mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
               if(slotIndex <= endPlayerSlot) {
                 if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                   return null;
@@ -106,6 +106,85 @@ public abstract class AbstractMachineContainer extends Container {
     }
 
     return copystack;
+  }
+
+  /**
+   * Added validation of slot input
+   */
+  @Override
+  protected boolean mergeItemStack(ItemStack par1ItemStack, int fromIndex, int toIndex, boolean reversOrder) {
+
+    boolean result = false;
+    int checkIndex = fromIndex;
+
+    if(reversOrder) {
+      checkIndex = toIndex - 1;
+    }
+
+    Slot slot;
+    ItemStack itemstack1;
+
+    if(par1ItemStack.isStackable()) {
+
+      while (par1ItemStack.stackSize > 0 && (!reversOrder && checkIndex < toIndex || reversOrder && checkIndex >= fromIndex)) {
+        slot = (Slot) this.inventorySlots.get(checkIndex);
+        itemstack1 = slot.getStack();
+
+        if(itemstack1 != null && itemstack1.itemID == par1ItemStack.itemID
+            && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == itemstack1.getItemDamage())
+            && ItemStack.areItemStackTagsEqual(par1ItemStack, itemstack1)
+            && slot.isItemValid(par1ItemStack)) {
+
+          int mergedSize = itemstack1.stackSize + par1ItemStack.stackSize;
+          if(mergedSize <= par1ItemStack.getMaxStackSize()) {
+            par1ItemStack.stackSize = 0;
+            itemstack1.stackSize = mergedSize;
+            slot.onSlotChanged();
+            result = true;
+          } else if(itemstack1.stackSize < par1ItemStack.getMaxStackSize()) {
+            par1ItemStack.stackSize -= par1ItemStack.getMaxStackSize() - itemstack1.stackSize;
+            itemstack1.stackSize = par1ItemStack.getMaxStackSize();
+            slot.onSlotChanged();
+            result = true;
+          }
+        }
+
+        if(reversOrder) {
+          --checkIndex;
+        } else {
+          ++checkIndex;
+        }
+      }
+    }
+
+    if(par1ItemStack.stackSize > 0) {
+      if(reversOrder) {
+        checkIndex = toIndex - 1;
+      } else {
+        checkIndex = fromIndex;
+      }
+
+      while (!reversOrder && checkIndex < toIndex || reversOrder && checkIndex >= fromIndex) {
+        slot = (Slot) this.inventorySlots.get(checkIndex);
+        itemstack1 = slot.getStack();
+
+        if(itemstack1 == null && slot.isItemValid(par1ItemStack)) {
+          slot.putStack(par1ItemStack.copy());
+          slot.onSlotChanged();
+          par1ItemStack.stackSize = 0;
+          result = true;
+          break;
+        }
+
+        if(reversOrder) {
+          --checkIndex;
+        } else {
+          ++checkIndex;
+        }
+      }
+    }
+
+    return result;
   }
 
 }
