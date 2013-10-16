@@ -196,15 +196,16 @@ public class NetworkPowerManager {
     float energyLeft = energyStored;
     float given = 0;
     for (IPowerConduit con : network.getConduits()) {
-      if(energyLeft <= 0) {
-      // NB: use ceil to ensure we dont through away any energy due to rounding
-      // errors
-      float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
-      give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
-      give = Math.min(give, energyLeft);
-      con.getPowerHandler().setEnergy(give);
-      given += give;
-      energyLeft -= give;
+      if (energyLeft >= 0) {
+        // NB: use ceil to ensure we dont through away any energy due to
+        // rounding
+        // errors
+        float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
+        give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
+        give = Math.min(give, energyLeft);
+        con.getPowerHandler().setEnergy(give);
+        given += give;
+        energyLeft -= give;
       } else {
         con.getPowerHandler().setEnergy(0);
       }

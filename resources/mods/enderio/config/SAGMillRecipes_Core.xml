@@ -83,7 +83,7 @@
         <itemStack itemID="12" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" chance="0.25" />
       </output>
     </recipe>
     
@@ -301,13 +301,13 @@
         <itemStack itemID="82" />
       </input>
       <output>
-        <itemStack itemID="337" number="4" />
+        <itemStack oreDictionary="dustClay" number="4" />
       </output>
 	 <output>
         <itemStack itemID="337" number="2" chance="0.1" />
       </output>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="2" itemMeta="0" chance="0.8" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="4" itemMeta="0" chance="0.4" />
       </output>
     </recipe>
     
