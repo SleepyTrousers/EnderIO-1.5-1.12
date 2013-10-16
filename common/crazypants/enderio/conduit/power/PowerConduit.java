@@ -102,20 +102,39 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       if(!getBundle().getEntity().worldObj.isRemote) {
         if(res.component != null) {
           ForgeDirection connDir = res.component.dir;
-          if(externalConnections.contains(connDir)) {
-            ConnectionMode curMode = getConectionMode(connDir);
-            ConnectionMode newMode = ConnectionMode.getNext(curMode);
-            conectionModes.put(connDir, newMode);
-            BlockCoord bc = getLocation();
-            setClientStateDirty();
+          ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
+
+          if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+            // Attempt to join networks
+            BlockCoord loc = getLocation().getLocation(connDir);
+            IPowerConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IPowerConduit.class);
+            if(neighbour != null) {
+              if(network != null) {
+                network.destroyNetwork();
+              }
+              onAddedToBundle();
+            }
+          } else if(externalConnections.contains(connDir)) {
+            setConnectionMode(connDir, getNextConnectionMode(connDir));
+          } else if(containsConduitConnection(connDir)) {
+            conduitConnectionRemoved(connDir);
+            BlockCoord loc = getLocation().getLocation(connDir);
+            IPowerConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IPowerConduit.class);
+            if(neighbour != null) {
+              neighbour.conduitConnectionRemoved(connDir.getOpposite());
+            }
+            if(network != null) {
+              network.destroyNetwork();
+            }
+
           }
         }
       }
-      if(network != null) {
-        System.out.println("PowerConduit.onBlockActivated: Network contains " + network.getPowerManager().energyStored + " of max energy "
-            + network.getPowerManager().maxEnergyStored);
-        System.out.println("Conduit contains: " + powerHandler.getEnergyStored() + " of max " + powerHandler.getMaxEnergyStored());
-      }
+      //      if(network != null) {
+      //        System.out.println("PowerConduit.onBlockActivated: Network contains " + network.getPowerManager().energyStored + " of max energy "
+      //            + network.getPowerManager().maxEnergyStored);
+      //        System.out.println("Conduit contains: " + powerHandler.getEnergyStored() + " of max " + powerHandler.getMaxEnergyStored());
+      //      }
       return true;
     }
     return false;
@@ -149,7 +168,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    if(getConectionMode(side) == ConnectionMode.OUTPUT) {
+    ConnectionMode mode = getConectionMode(side);
+    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED) {
       if(noInputPH == null) {
         noInputPH = new PowerHandler(this, Type.PIPE);
         noInputPH.configure(0, 0, 0, powerHandler.getMaxEnergyStored());
@@ -162,7 +182,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public float getMaxEnergyExtracted(ForgeDirection dir) {
     ConnectionMode mode = getConectionMode(dir);
-    if(mode == ConnectionMode.INPUT) {
+    if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED) {
       return 0;
     }
     return getCapacitor().getMaxEnergyExtracted();
@@ -171,7 +191,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public float getMaxEnergyRecieved(ForgeDirection dir) {
     ConnectionMode mode = getConectionMode(dir);
-    if(mode == ConnectionMode.OUTPUT) {
+    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED) {
       return 0;
     }
     return getCapacitor().getMaxEnergyReceived();

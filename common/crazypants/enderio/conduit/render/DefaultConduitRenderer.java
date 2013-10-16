@@ -11,14 +11,18 @@ import static net.minecraftforge.common.ForgeDirection.UP;
 import static net.minecraftforge.common.ForgeDirection.WEST;
 
 import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.BoundingBox;
+import crazypants.vecmath.Vertex;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
@@ -48,7 +52,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
           tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f,
               selfIllum + 0.1f, 0.75f);
           tex = conduit.getTransmitionTextureForState(component);
-          renderTransmission(tex, component, selfIllum);
+          renderTransmission(conduit, tex, component, selfIllum);
         }
 
         tex = conduit.getTextureForState(component);
@@ -64,14 +68,25 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
     if(isNSEWUP(component.dir)) {
-      RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+      RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
+          conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
     } else {
       drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+      if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
+        tex = EnderIO.blockConduitBundle.getConnectorIcon();
+        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+        Tessellator tessellator = Tessellator.instance;
+        for (Vertex c : corners) {
+          addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+        }
+      }
     }
+
   }
 
-  protected void renderTransmission(Icon tex, CollidableComponent component, float selfIllum) {
-    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+  protected void renderTransmission(IConduit conduit, Icon tex, CollidableComponent component, float selfIllum) {
+    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
+        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
   }
 
   protected boolean renderComponent(CollidableComponent component) {

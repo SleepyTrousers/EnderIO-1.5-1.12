@@ -74,6 +74,8 @@ public interface IConduit {
 
   ConnectionMode getConectionMode(ForgeDirection dir);
 
+  void setConnectionMode(ForgeDirection dir, ConnectionMode mode);
+
   boolean hasConnectionMode(ConnectionMode mode);
 
   // rendering, only needed us default rendering is used

@@ -64,6 +64,21 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
+  public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+    ConnectionMode oldVal = conectionModes.get(dir);
+    if(oldVal == mode) {
+      return;
+    }
+    if(mode == null) {
+      conectionModes.remove(dir);
+    } else {
+      conectionModes.put(dir, mode);
+    }
+    clientStateDirty = true;
+    collidablesDirty = true;
+  }
+
+  @Override
   public boolean hasConnectionMode(ConnectionMode mode) {
     for (ConnectionMode cm : conectionModes.values()) {
       if(cm == mode) {
@@ -71,6 +86,11 @@ public abstract class AbstractConduit implements IConduit {
       }
     }
     return false;
+  }
+
+  protected ConnectionMode getNextConnectionMode(ForgeDirection dir) {
+    ConnectionMode curMode = getConectionMode(dir);
+    return ConnectionMode.getNext(curMode);
   }
 
   @Override
@@ -156,6 +176,7 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void externalConnectionRemoved(ForgeDirection fromDirection) {
     externalConnections.remove(fromDirection);
+    conectionModes.remove(fromDirection);
     connectionsChanged();
   }
 
@@ -227,13 +248,6 @@ public abstract class AbstractConduit implements IConduit {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         conectionModes.put(dir, ConnectionMode.values()[modes[i]]);
         i++;
-      }
-    }
-    // Support for old code
-    dirs = nbtRoot.getIntArray("extractDirs");
-    if(dirs != null) {
-      for (int i = 0; i < dirs.length; i++) {
-        conectionModes.put(ForgeDirection.values()[dirs[i]], ConnectionMode.INPUT);
       }
     }
   }
@@ -419,7 +433,7 @@ public abstract class AbstractConduit implements IConduit {
     Class<? extends IConduit> type = getBaseConduitType();
 
     if(isConnectedTo(dir)) {
-      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(type, dir), dir, false), this);
+      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(type, dir), dir, getConectionMode(dir) == ConnectionMode.DISABLED), this);
     }
     return null;
   }
