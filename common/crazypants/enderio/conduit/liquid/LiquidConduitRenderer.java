@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
+import static crazypants.render.CubeRenderer.addVecWithUV;
 import static crazypants.render.CubeRenderer.setupVertices;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -18,6 +21,7 @@ import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
@@ -57,6 +61,20 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
     } else {
       drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+    }
+
+    if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
+      tex = EnderIO.blockConduitBundle.getConnectorIcon();
+      List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+      Tessellator tessellator = Tessellator.instance;
+      for (Vertex c : corners) {
+        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+      }
+      //back face
+      for (int i = corners.size() - 1; i >= 0; i--) {
+        Vertex c = corners.get(i);
+        addVecWithUV(c.xyz, c.uv.x, c.uv.y);
+      }
     }
   }
 
@@ -107,7 +125,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderTransmission(Icon tex, CollidableComponent component, float brightness) {
+  protected void renderTransmission(IConduit con, Icon tex, CollidableComponent component, float brightness) {
     BoundingBox[] cubes = toCubes(component.bound);
     for (BoundingBox cube : cubes) {
       drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);

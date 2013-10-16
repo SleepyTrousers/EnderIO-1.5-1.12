@@ -15,6 +15,8 @@ public interface ILiquidConduit extends IConduit, IFluidHandler {
   public static final String ICON_CORE_KEY = "enderio:liquidConduitCore";
   public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitExtract";
   public static final String ICON_EMPTY_EXTRACT_KEY = "enderio:emptyLiquidConduitExtract";
+  public static final String ICON_INSERT_KEY = "enderio:liquidConduitInsert";
+  public static final String ICON_EMPTY_INSERT_KEY = "enderio:emptyLiquidConduitInsert";
 
   void setFluidType(FluidStack fluidType);
 
@@ -27,8 +29,6 @@ public interface ILiquidConduit extends IConduit, IFluidHandler {
   boolean canOutputToDir(ForgeDirection dir);
 
   boolean isExtractingFromDir(ForgeDirection dir);
-
-  void setExtractingFromDir(ForgeDirection dir, boolean extracting);
 
   int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush, int pushToken);
 

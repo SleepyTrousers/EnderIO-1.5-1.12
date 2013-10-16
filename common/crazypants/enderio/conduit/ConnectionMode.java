@@ -4,7 +4,8 @@ public enum ConnectionMode {
 
   IN_OUT,
   INPUT,
-  OUTPUT;
+  OUTPUT,
+  DISABLED;
 
   public static ConnectionMode getNext(ConnectionMode mode) {
     int ord = mode.ordinal() + 1;

@@ -53,6 +53,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
         ICONS.put(ICON_EMPTY_EXTRACT_KEY, register.registerIcon(ICON_EMPTY_EXTRACT_KEY));
+        ICONS.put(ICON_EMPTY_INSERT_KEY, register.registerIcon(ICON_EMPTY_INSERT_KEY));
+        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
       }
 
       @Override
@@ -92,12 +94,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if(ConduitUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().worldObj.isRemote) {
-        ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
+
         if(res.component != null) {
           ForgeDirection connDir = res.component.dir;
+          ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
-            // Attempt to join networls
+            // Attempt to join networks
             ILiquidConduit neighbour = getFluidConduit(faceHit);
             if(neighbour != null && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), neighbour.getFluidType())) {
               // kill the networks so a new one is formed combining then
@@ -113,16 +116,16 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
             }
           } else if(containsExternalConnection(connDir)) {
             // Toggle extraction mode
-            setExtractingFromDir(connDir, !isExtractingFromDir(connDir));
+            setConnectionMode(connDir, getNextConnectionMode(connDir));
+          } else if(containsConduitConnection(connDir)) {
+            conduitConnectionRemoved(connDir);
+            BlockCoord loc = getLocation().getLocation(connDir);
+            ILiquidConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
+            if(neighbour != null) {
+              neighbour.conduitConnectionRemoved(connDir.getOpposite());
+            }
           }
         }
-
-      } else {
-        String str = player.worldObj.isRemote ? "[Client]" : "[Server]";
-        System.out.println(str +
-            " LiquidConduit.onBlockActivated: Tank volume is: " +
-            tank.getCapacity() + " tank contains: " + tank.getFluidAmount()
-            + " filled ratio is: " + tank.getFilledRatio());
       }
       return true;
 
@@ -245,14 +248,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public boolean canOutputToDir(ForgeDirection dir) {
-    // TODO: In/Out control on externals
+    if(isExtractingFromDir(dir) || getConectionMode(dir) == ConnectionMode.DISABLED) {
+      return false;
+    }
     if(conduitConnections.contains(dir)) {
       return true;
     }
     if(!externalConnections.contains(dir)) {
-      return false;
-    }
-    if(isExtractingFromDir(dir)) {
       return false;
     }
     IFluidHandler ext = getExternalHandler(dir);
@@ -270,25 +272,6 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
-  public void setExtractingFromDir(ForgeDirection dir, boolean extracting) {
-    if(isExtractingFromDir(dir) == extracting) {
-      return;
-    }
-    if(!extracting) {
-      conectionModes.remove(dir);
-    } else {
-      conectionModes.put(dir, ConnectionMode.INPUT);
-    }
-    stateDirty = true;
-  }
-
-  @Override
-  public void externalConnectionRemoved(ForgeDirection fromDirection) {
-    super.externalConnectionRemoved(fromDirection);
-    setExtractingFromDir(fromDirection, false);
-  }
-
-  @Override
   public void setFluidType(FluidStack liquidType) {
     if(tank.getFluid() != null && tank.getFluid().isFluidEqual(liquidType)) {
       return;
@@ -302,6 +285,10 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+
+    if(!canFill(from, resource.getFluid())) {
+      return 0;
+    }
 
     // Note: This is just a guard against mekansims pipes that will continuously
     // call
@@ -322,6 +309,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush, int pushToken) {
+    if(resource == null || resource.amount <= 0) {
+      return 0;
+    }
+
+    if(!canFill(from, resource.getFluid())) {
+      return 0;
+    }
+
     if(network == null) {
       return 0;
     }
@@ -330,10 +325,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     } else {
       return 0;
     }
-    int recieveAmount = resource == null ? 0 : resource.amount;
-    if(recieveAmount <= 0) {
-      return 0;
-    }
+    int recieveAmount = resource.amount;
 
     int pushedVolume = 0;
     if(doPush) {
@@ -416,6 +408,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+      return null;
+    }
     return tank.drain(maxDrain, doDrain);
   }
 
@@ -429,6 +424,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
+    if(getConectionMode(from) == ConnectionMode.OUTPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+      return false;
+    }
     if(tank.getFluid() == null) {
       return true;
     }
@@ -440,7 +438,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(tank.getFluid() == null || fluid == null) {
+    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED
+        || tank.getFluid() == null || fluid == null) {
       return false;
     }
     return tank.getFluid().getFluid().getID() == fluid.getID();
@@ -559,6 +558,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
     if(isExtractingFromDir(component.dir)) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
+    }
+    if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
+      return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
     }
     if(getFluidType() == null) {
       return ICONS.get(ICON_EMPTY_KEY);

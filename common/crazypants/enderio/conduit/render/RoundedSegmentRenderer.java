@@ -10,20 +10,64 @@ import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
 import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
 
 public class RoundedSegmentRenderer {
 
+  private static final int NUM_VERTICES = 16;
   private static Vertex[][] DIR_COORDS = new Vertex[ForgeDirection.VALID_DIRECTIONS.length][];
+  private static Vertex[][] DIR_STUB_COORDS = new Vertex[ForgeDirection.VALID_DIRECTIONS.length][];
+  private static Vertex[][] DIR_STUB_CAPS = new Vertex[ForgeDirection.VALID_DIRECTIONS.length][];
 
   private static final Vector3d REF_TRANS = new Vector3d(0.5, 0.5, 0.5);
 
   static {
     double circ = ConduitGeometryUtil.WIDTH * 0.7;
 
-    Vertex[] refCoords = createUnitSectionQuads(16, -0.25, 0.25);
+    double halfLength = 0.25 + ConduitGeometryUtil.CORE_BOUNDS.sizeX() / 4;
+    createDirectionSegments(DIR_COORDS, circ, halfLength);
 
+    halfLength = ConduitGeometryUtil.STUB_WIDTH / 2 + ConduitGeometryUtil.CORE_BOUNDS.sizeX() / 4;
+    createDirectionSegments(DIR_STUB_COORDS, circ, halfLength);
+
+    createCaps(DIR_STUB_CAPS, circ, halfLength);
+
+  }
+
+  private static void createDirectionSegments(Vertex[][] segments, double circ, double halfLength) {
+    Vertex[] refCoords = createUnitSectionQuads(NUM_VERTICES, -halfLength, halfLength);
+
+    createSegmentsForDirections(segments, circ, halfLength, refCoords);
+  }
+
+  private static void createCaps(Vertex[][] segments, double circ, double halfLength) {
+    Vertex[] refCrossSection = createUnitCrossSection(0, 0, halfLength, 16, 0);
+
+    Vertex center = new Vertex(new Vector3d(0, 0, halfLength), new Vector3f(0, 0, 1), new Vector2f(0.5f, 0.5f));
+
+    Vertex[] refCoords = new Vertex[refCrossSection.length * 4];
+    int index = 0;
+    for (int i = 0; i < refCrossSection.length; i++) {
+      refCoords[index] = new Vertex(center);
+      refCoords[index + 1] = new Vertex(refCrossSection[i]);
+
+      int next = i + 1;
+      if(next >= refCrossSection.length - 1) {
+        next = 0;
+      }
+      refCoords[index + 2] = new Vertex(refCrossSection[next]);
+      refCoords[index + 3] = new Vertex(center);
+      index += 4;
+    }
+
+    createSegmentsForDirections(segments, circ, halfLength, refCoords);
+
+  }
+
+  private static void createSegmentsForDirections(Vertex[][] segments, double circ, double halfLength, Vertex[] refCoords) {
     for (Vertex coord : refCoords) {
       coord.xyz.x = coord.xyz.x * circ;
       coord.xyz.y = coord.xyz.y * circ;
@@ -32,28 +76,27 @@ public class RoundedSegmentRenderer {
     rotMat.setIdentity();
     rotMat.setTranslation(REF_TRANS);
 
-    DIR_COORDS[SOUTH.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.SOUTH, 0.25));
+    segments[SOUTH.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.SOUTH, halfLength));
 
     rotMat.makeRotationY(Math.PI);
     rotMat.setTranslation(REF_TRANS);
-    DIR_COORDS[ForgeDirection.NORTH.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.NORTH, 0.25));
+    segments[ForgeDirection.NORTH.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.NORTH, halfLength));
 
     rotMat.makeRotationY(Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
-    DIR_COORDS[ForgeDirection.EAST.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.EAST, 0.25));
+    segments[ForgeDirection.EAST.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.EAST, halfLength));
 
     rotMat.makeRotationY(-Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
-    DIR_COORDS[ForgeDirection.WEST.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.WEST, 0.25));
+    segments[ForgeDirection.WEST.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.WEST, halfLength));
 
     rotMat.makeRotationX(-Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
-    DIR_COORDS[ForgeDirection.UP.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.UP, 0.25));
+    segments[ForgeDirection.UP.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.UP, halfLength));
 
     rotMat.makeRotationX(Math.PI / 2);
     rotMat.setTranslation(REF_TRANS);
-    DIR_COORDS[ForgeDirection.DOWN.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.DOWN, 0.25));
-
+    segments[ForgeDirection.DOWN.ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.DOWN, halfLength));
   }
 
   private static Vertex[] xformCoords(Vertex[] refCoords, Matrix4d rotMat, Vector3d trans) {
@@ -95,19 +138,35 @@ public class RoundedSegmentRenderer {
 
   }
 
-  public static void renderSegment(ForgeDirection dir, BoundingBox bounds, float minU, float maxU, float minV, float maxV) {
+  public static void renderSegment(ForgeDirection dir, BoundingBox bounds, float minU, float maxU, float minV, float maxV, boolean isStub) {
     float uScale = maxU - minU;
     float vScale = maxV - minV;
 
     Vector3d offset = calcOffset(dir, bounds);
 
     Tessellator tes = Tessellator.instance;
-    Vertex[] coords = DIR_COORDS[dir.ordinal()];
+    Vertex[] coords;
+    if(isStub) {
+      coords = DIR_STUB_COORDS[dir.ordinal()];
+    } else {
+      coords = DIR_COORDS[dir.ordinal()];
+    }
+
     for (Vertex coord : coords) {
       double u = minU + (coord.uv.x * uScale);
       double v = minV + (coord.uv.y * vScale);
       tes.setNormal(coord.normal.x, coord.normal.y, coord.normal.z);
       tes.addVertexWithUV(offset.x + coord.xyz.x, offset.y + coord.xyz.y, offset.z + coord.xyz.z, u, v);
+    }
+
+    if(isStub) {
+      coords = DIR_STUB_CAPS[dir.ordinal()];
+      for (Vertex coord : coords) {
+        double u = minU + (coord.uv.x * uScale);
+        double v = minV + (coord.uv.y * vScale);
+        tes.setNormal(coord.normal.x, coord.normal.y, coord.normal.z);
+        tes.addVertexWithUV(offset.x + coord.xyz.x, offset.y + coord.xyz.y, offset.z + coord.xyz.z, u, v);
+      }
     }
   }
 

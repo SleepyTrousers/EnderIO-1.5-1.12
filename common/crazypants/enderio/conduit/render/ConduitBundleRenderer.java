@@ -25,6 +25,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
@@ -97,7 +98,13 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     for (IConduit con : bundle.getConduits()) {
       ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
       renderer.renderEntity(this, bundle, con, x, y, z, partialTick, brightness);
-      externals.addAll(con.getExternalConnections());
+      Set<ForgeDirection> extCons = con.getExternalConnections();
+      for (ForgeDirection dir : extCons) {
+        if(con.getConectionMode(dir) != ConnectionMode.DISABLED) {
+          externals.add(dir);
+        }
+      }
+
     }
 
     // Internal conectors between conduits
