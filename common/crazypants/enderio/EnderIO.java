@@ -63,7 +63,7 @@ import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.3.2", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.3.3", dependencies = "required-after:Forge@[7.1,);required-after:FML@[5.0.5,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
