@@ -46,11 +46,6 @@ public class RedstoneSwitch extends RedstoneConduit {
   }
 
   @Override
-  public boolean isReplaceableByControl(Class<? extends IRedstoneConduit> replacenebtType) {
-    return false;
-  }
-
-  @Override
   public ItemStack createItem() {
     return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 1);
   }

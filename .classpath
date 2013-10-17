@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry exported="true" kind="lib" path="lib/cglib-nodep-2.2.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Minecraft"/>
-	<classpathentry kind="lib" path="lib/NotEnoughItems-dev 1.6.1.4.jar" sourcepath="C:/MyData/Dev/Minecraft/Workspace16/OtherMods/CodeChicken/NEI"/>
 	<classpathentry kind="lib" path="lib/CodeChickenCore-dev 0.9.0.5_d2.jar"/>
+	<classpathentry kind="lib" path="lib/NotEnoughItems-dev 1.6.1.4.jar"/>
 	<classpathentry kind="output" path="eclipseBin"/>
 </classpath>

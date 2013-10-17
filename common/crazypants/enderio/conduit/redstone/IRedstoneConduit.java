@@ -22,15 +22,12 @@ public interface IRedstoneConduit extends IConduit {
 
   int isProvidingWeakPower(ForgeDirection toDirection);
 
-  // signals
-
-  // --- Server Side Only
   Set<Signal> getNetworkInputs();
+
+  Set<Signal> getNetworkInputs(ForgeDirection side);
 
   Set<Signal> getNetworkOutputs(ForgeDirection side);
 
-  // --- Set on server side, used on client side for rendering
-
-  boolean isReplaceableByControl(Class<? extends IRedstoneConduit> replacenebtType);
+  void updateNetwork();
 
 }

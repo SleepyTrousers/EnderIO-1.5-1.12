@@ -106,7 +106,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networks
-            BlockCoord loc = getLocation().getLocation(connDir);
+            BlockCoord loc = getLocation().getLocation(faceHit);
             IPowerConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IPowerConduit.class);
             if(neighbour != null) {
               if(network != null) {
