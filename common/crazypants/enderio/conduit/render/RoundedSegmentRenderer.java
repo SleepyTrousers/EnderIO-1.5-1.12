@@ -27,7 +27,7 @@ public class RoundedSegmentRenderer {
   static {
     double circ = ConduitGeometryUtil.WIDTH * 0.7;
 
-    double halfLength = 0.25 + ConduitGeometryUtil.CORE_BOUNDS.sizeX() / 4;
+    double halfLength = 0.25;
     createDirectionSegments(DIR_COORDS, circ, halfLength);
 
     halfLength = ConduitGeometryUtil.STUB_WIDTH / 2 + ConduitGeometryUtil.CORE_BOUNDS.sizeX() / 4;

@@ -114,8 +114,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
               }
               onAddedToBundle();
             }
+            return true;
           } else if(externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
+            return true;
           } else if(containsConduitConnection(connDir)) {
             conduitConnectionRemoved(connDir);
             BlockCoord loc = getLocation().getLocation(connDir);
@@ -126,7 +128,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
             if(network != null) {
               network.destroyNetwork();
             }
-
+            return true;
           }
         }
       }
@@ -135,7 +137,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       //            + network.getPowerManager().maxEnergyStored);
       //        System.out.println("Conduit contains: " + powerHandler.getEnergyStored() + " of max " + powerHandler.getMaxEnergyStored());
       //      }
-      return true;
+
     }
     return false;
   }

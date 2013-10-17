@@ -7,14 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
+import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
+import buildcraft.api.power.IPowerEmitter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
@@ -67,13 +73,13 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             BlockCoord loc = getLocation().getLocation(faceHit);
             IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IRedstoneConduit.class);
             if(neighbour != null) {
-              //              if(network != null) {
-              //                network.destroyNetwork();
-              //              }
-              //              if(neighbour.getNetwork() != null) {
-              //                neighbour.getNetwork().destroyNetwork();
-              //              }
-              //              onAddedToBundle();
+              if(network != null) {
+                network.destroyNetwork();
+              }
+              if(neighbour.getNetwork() != null) {
+                neighbour.getNetwork().destroyNetwork();
+              }
+              onAddedToBundle();
 
             } else {
 
@@ -95,22 +101,21 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             network.notifyNeigborsOfSignals();
 
           } else if(containsConduitConnection(connDir)) {
-            //            BlockCoord loc = getLocation().getLocation(connDir);
-            //            IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IRedstoneConduit.class);
-            //            if(neighbour != null) {
-            //
-            //              if(network != null) {
-            //                network.destroyNetwork();
-            //              }
-            //              if(neighbour.getNetwork() != null) {
-            //                neighbour.getNetwork().destroyNetwork();
-            //              }
-            //              neighbour.conduitConnectionRemoved(connDir.getOpposite());
-            //              conduitConnectionRemoved(connDir);
-            //              updateNetwork();
-            //              neighbour.updateNetwork();
-            //
-            //            }
+            BlockCoord loc = getLocation().getLocation(connDir);
+            IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IRedstoneConduit.class);
+            if(neighbour != null) {
+              if(network != null) {
+                network.destroyNetwork();
+              }
+              if(neighbour.getNetwork() != null) {
+                neighbour.getNetwork().destroyNetwork();
+              }
+              neighbour.conduitConnectionRemoved(connDir.getOpposite());
+              conduitConnectionRemoved(connDir);
+              updateNetwork();
+              neighbour.updateNetwork();
+
+            }
 
           }
         }
@@ -131,24 +136,38 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     BlockCoord loc = getLocation().getLocation(direction);
     int id = getBundle().getEntity().worldObj.getBlockId(loc.x, loc.y, loc.z);
 
-    return VANILLA_CONECTABLES.contains(Integer.valueOf(id));
+    if(VANILLA_CONECTABLES.contains(Integer.valueOf(id))) {
+      return true;
+    }
 
-    //    TileEntity te = bundle.getEntity();
-    //    World world = te.worldObj;
-    //    if(world == null) {
-    //      return false;
-    //    }
+    if(id == ModObject.blockConduitBundle.actualId) {
+      return false;
+    }
 
-    //    if(getConectionMode(direction) == ConnectionMode.INPUT) {
-    //      System.out.println("RedstoneConduit.canConnectToExternal: ");
-    //      return true;
-    //    }
-    //
-    //    int id = world.getBlockId(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
-    //    if(id > 0 && id != EnderIO.blockConduitBundle.blockID) {
-    //      return Block.blocksList[id].canProvidePower();
-    //    }
-    //    return false;
+    if(id == ModObject.blockCapacitorBank.actualId) {
+      return true;
+    }
+
+    Block block = Block.blocksList[id];
+    if(block == null) {
+      return false;
+    }
+
+    if(block instanceof IRedNetNoConnection) {
+      return false;
+    }
+
+    World world = getBundle().getEntity().worldObj;
+    if(block instanceof IConnectableRedNet) {
+      RedNetConnectionType conType = ((IConnectableRedNet) block).getConnectionType(world, loc.x, loc.y, loc.z, direction.getOpposite());
+      return conType != null && conType.isSingleSubnet;
+    }
+
+    if(world.getBlockTileEntity(loc.x, loc.y, loc.z) instanceof IPowerEmitter) {
+      return true;
+    }
+
+    return false;
   }
 
   @Override

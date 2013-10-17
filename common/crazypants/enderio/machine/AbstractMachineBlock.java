@@ -14,6 +14,9 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
+import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -29,7 +32,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.Util;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IConnectableRedNet {
 
   public static final Icon[] REDSTONE_CONTROL_ICONS = new Icon[RedstoneControlMode.values().length];
 
@@ -256,6 +259,29 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         world.spawnParticle("smoke", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
       }
     }
+  }
+
+  @Override
+  public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
+    return RedNetConnectionType.PlateSingle;
+  }
+
+  @Override
+  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
+    return new int[16];
+  }
+
+  @Override
+  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
+    return 0;
+  }
+
+  @Override
+  public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
+  }
+
+  @Override
+  public void onInputChanged(World world, int x, int y, int z, ForgeDirection side, int inputValue) {
   }
 
   protected abstract int getGuiId();

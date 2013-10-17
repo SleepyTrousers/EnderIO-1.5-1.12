@@ -37,10 +37,12 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#',
         energeticGold);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
-    GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#',
+    GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, numConduits, 0), "   ", "###", "   ", 'b', conduitBinder, 'f', fusedQuartz, '#',
         redstoneAlloy);
     GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, 1, 1), "lbl", "bcb", "lbl", 'b', conduitBinder, 'c', redstoneConduit, 'l',
         Block.lever);
+    GameRegistry.addShapedRecipe(new ItemStack(itemRedstoneConduit.actualId, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, 'f', fusedQuartz, '#',
+        redstoneAlloy);
     MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
 
   }

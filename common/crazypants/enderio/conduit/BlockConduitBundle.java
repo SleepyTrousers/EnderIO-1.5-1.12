@@ -455,15 +455,17 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     if(res != null && res.component != null && res.component.data instanceof
         ConduitConnectorType) {
+      System.out.println("BlockConduitBundle.onBlockActivated: Connector hit");
+      boolean result = false;
       // if its a connector pass the event on to all conduits
       for (IConduit con : bundle.getConduits()) {
         if(con.onBlockActivated(player, res)) {
           bundle.getEntity().onInventoryChanged();
-          return true;
+          result = true;
         }
 
       }
-      return false;
+      return result;
     }
 
     if(res == null || res.component == null || res.component.conduitType ==
