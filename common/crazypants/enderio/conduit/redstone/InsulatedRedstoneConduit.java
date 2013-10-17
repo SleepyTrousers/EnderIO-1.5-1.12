@@ -148,6 +148,10 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return true;
     }
 
+    if(id == ModObject.blockElectricLight.actualId) {
+      return true;
+    }
+
     Block block = Block.blocksList[id];
     if(block == null) {
       return false;
