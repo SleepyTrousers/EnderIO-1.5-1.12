@@ -10,7 +10,9 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
       new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName, ModObject.itemRedstoneConduit.name, "enderio:itemRedstoneConduit"),
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName + "switch", "Conduit Switch", "enderio:itemRedstoneSwitch")
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName + "switch", "Conduit Switch", "enderio:itemRedstoneSwitch"),
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName + "Insulated", "Insulated " + ModObject.itemRedstoneConduit.name,
+          "enderio:itemRedstoneInsulatedConduit")
 
   };
 
@@ -31,10 +33,13 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
 
   @Override
   public IConduit createConduit(ItemStack stack) {
+    if(stack.getItemDamage() == 0) {
+      return new RedstoneConduit();
+    }
     if(stack.getItemDamage() == 1) {
       return new RedstoneSwitch();
     } else {
-      return new RedstoneConduit();
+      return new InsulatedRedstoneConduit();
     }
   }
 

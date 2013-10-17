@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.render.BoundingBox;
@@ -124,17 +125,21 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
         tex = pc.getTextureForOutputMode();
       }
       if(tex != null) {
-        renderModeConnector(pc, dir, tex);
+        Offset offset = te.getOffset(IPowerConduit.class, dir);
+        renderModeConnector(pc, dir, offset, tex);
       }
     }
 
   }
 
-  private void renderModeConnector(IPowerConduit pc, ForgeDirection dir, Icon tex) {
+  private void renderModeConnector(IPowerConduit pc, ForgeDirection dir, Offset offset, Icon tex) {
     List<Vertex> verts = VERTS.get(dir);
     if(verts == null) {
       return;
     }
+
+    double xOffset = offset.xOffset * ConduitGeometryUtil.WIDTH;
+    double yOffset = offset.yOffset * ConduitGeometryUtil.HEIGHT;
 
     float uWidth = tex.getMaxU() - tex.getMinU();
     float uScale = uWidth * 0.64f;
@@ -144,7 +149,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     Tessellator tes = Tessellator.instance;
     for (Vertex v : verts) {
       tes.setNormal(v.nx(), v.ny(), v.nz());
-      tes.addVertexWithUV(v.x(), v.y(), v.z(), minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
+      tes.addVertexWithUV(v.x() + xOffset, v.y() + yOffset, v.z(), minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
     }
 
   }

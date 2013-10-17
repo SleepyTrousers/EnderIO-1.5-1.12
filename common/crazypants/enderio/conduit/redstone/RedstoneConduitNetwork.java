@@ -88,13 +88,24 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     return networkEnabled;
   }
 
+  public void addSignals(Set<Signal> newSignals) {
+    for (Signal signal : newSignals) {
+      addSignal(signal);
+    }
+  }
+
   public void addSignal(Signal signal) {
     updatingNetwork = true;
     signals.add(signal);
     notifyNetworkOfUpdate();
     notifyNeigborsOfSignalUpdate(signal);
     updatingNetwork = false;
+  }
 
+  public void removeSignals(Set<Signal> remove) {
+    for (Signal signal : remove) {
+      removeSignal(signal);
+    }
   }
 
   public void removeSignal(Signal signal) {
@@ -149,13 +160,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     return sb.toString();
   }
 
-  private void notifyNeigborsOfSignals() {
+  public void notifyNeigborsOfSignals() {
     for (Signal signal : signals) {
       notifyNeigborsOfSignalUpdate(signal);
     }
   }
 
-  private void notifyNeigborsOfSignalUpdate(Signal signal) {
+  public void notifyNeigborsOfSignalUpdate(Signal signal) {
     for (IRedstoneConduit con : conduits) {
       notifyConduitNeighbours(con, signal);
     }

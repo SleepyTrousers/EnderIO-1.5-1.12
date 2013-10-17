@@ -46,11 +46,6 @@ public class RedstoneSwitch extends RedstoneConduit {
   }
 
   @Override
-  public boolean isReplaceableByControl(Class<? extends IRedstoneConduit> replacenebtType) {
-    return false;
-  }
-
-  @Override
   public ItemStack createItem() {
     return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 1);
   }
@@ -121,7 +116,7 @@ public class RedstoneSwitch extends RedstoneConduit {
       return;
     }
     TileEntity te = bundle.getEntity();
-    Signal signal = new Signal(te.xCoord, te.yCoord, te.zCoord, 15, SignalColor.RED);
+    Signal signal = new Signal(te.xCoord, te.yCoord, te.zCoord, ForgeDirection.UNKNOWN, 15, SignalColor.RED);
     if(isOn) {
       network.addSignal(signal);
     } else {
@@ -134,10 +129,9 @@ public class RedstoneSwitch extends RedstoneConduit {
     Set<Signal> res = super.getNetworkInputs();
     if(isOn) {
       BlockCoord loc = getLocation();
-      Signal signal = new Signal(loc.x, loc.y, loc.z, 15, SignalColor.RED);
+      Signal signal = new Signal(loc.x, loc.y, loc.z, ForgeDirection.UNKNOWN, 15, SignalColor.RED);
       res.add(signal);
     }
     return res;
   }
-
 }
