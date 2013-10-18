@@ -112,7 +112,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
         if(input > 1) { // need to degrade external signals by one as they
                         // enter
           BlockCoord loc = getLocation().getLocation(dir);
-          Signal signal = new Signal(loc.x, loc.y, loc.z, dir, input - 1, SignalColor.RED);
+          Signal signal = new Signal(loc.x, loc.y, loc.z, dir, input - 1, getSignalColor(dir));
           res.add(signal);
         }
       }
@@ -123,6 +123,11 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
 
     return res;
+  }
+
+  @Override
+  public SignalColor getSignalColor(ForgeDirection dir) {
+    return SignalColor.RED;
   }
 
   @Override
@@ -160,8 +165,6 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   protected int getExternalPowerLevel(ForgeDirection dir) {
     World world = getBundle().getEntity().worldObj;
     BlockCoord loc = getLocation();
-    //return world.getStrongestIndirectPower(loc.x, loc.y, loc.z);
-
     loc = loc.getLocation(dir);
     return world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.getOpposite().ordinal());
   }
@@ -177,7 +180,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
       return 0;
     }
     int result = 0;
-    for (Signal signal : network.getSignals()) {
+    for (Signal signal : getNetworkOutputs(toDirection.getOpposite())) {
       result = Math.max(result, signal.strength);
     }
     return result;

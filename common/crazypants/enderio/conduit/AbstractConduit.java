@@ -262,7 +262,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
+  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     return false;
   }
 

@@ -1,8 +1,11 @@
 package crazypants.enderio.conduit.redstone;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,10 +13,12 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
@@ -24,7 +29,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -42,6 +50,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
         ICONS.put(KEY_INS_CORE_ON_ICON, register.registerIcon(KEY_INS_CORE_ON_ICON));
         ICONS.put(KEY_INS_CONDUIT_ICON, register.registerIcon(KEY_INS_CONDUIT_ICON));
         ICONS.put(KEY_INS_TRANSMISSION_ICON, register.registerIcon(KEY_INS_TRANSMISSION_ICON));
+        ICONS.put(KEY_COLOR_CONTROLLER, register.registerIcon(KEY_COLOR_CONTROLLER));
       }
 
       @Override
@@ -58,17 +67,37 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
-  @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
+  private Map<ForgeDirection, SignalColor> signalColors = new HashMap<ForgeDirection, SignalColor>();
 
-    if(ConduitUtil.isToolEquipped(player)) {
-      World world = getBundle().getEntity().worldObj;
-      if(!world.isRemote) {
+  @Override
+  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
+
+    World world = getBundle().getEntity().worldObj;
+    if(!world.isRemote) {
+
+      SignalColor col = getSignalColorFromEquippedItem(player.getCurrentEquippedItem());
+      if(col != null && res.component != null) {
+        setSignalColor(res.component.dir, col);
+      } else if(ConduitUtil.isToolEquipped(player)) {
+
         if(res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 
-          if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+          boolean colorHit = false;
+          if(all != null && containsExternalConnection(connDir)) {
+            for (RaytraceResult rtr : all) {
+              if(rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
+                colorHit = true;
+              }
+            }
+          }
+
+          if(colorHit) {
+
+            setSignalColor(connDir, SignalColor.getNext(getSignalColor(connDir)));
+
+          } else if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networks
             BlockCoord loc = getLocation().getLocation(faceHit);
             IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IRedstoneConduit.class);
@@ -123,6 +152,46 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return true;
     }
     return false;
+  }
+
+  private SignalColor getSignalColorFromEquippedItem(ItemStack currentEquippedItem) {
+    if(currentEquippedItem == null) {
+      return null;
+    }
+    int oreId = OreDictionary.getOreID(currentEquippedItem);
+    if(oreId < 0) {
+      return null;
+    }
+    for (int i = 0; i < DYE_ORE_NAMES.length; i++) {
+      String dyeName = DYE_ORE_NAMES[i];
+      if(OreDictionary.getOreID(dyeName) == oreId) {
+        return SignalColor.values()[i];
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public SignalColor getSignalColor(ForgeDirection dir) {
+    SignalColor res = signalColors.get(dir);
+    if(res == null) {
+      return SignalColor.RED;
+    }
+    return res;
+  }
+
+  public void setSignalColor(ForgeDirection dir, SignalColor col) {
+    System.out.println("InsulatedRedstoneConduit.setSignalColor: " + col);
+
+    Set<Signal> toRemove = getNetworkInputs(dir);
+    signalColors.put(dir, col);
+    Set<Signal> toAdd = getNetworkInputs(dir);
+    if(network != null) {
+      network.removeSignals(toRemove);
+      network.addSignals(toAdd);
+      network.notifyNeigborsOfSignals();
+    }
+    setClientStateDirty();
   }
 
   @Override
@@ -210,7 +279,20 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     if(network == null || mode != ConnectionMode.IN_OUT) {
       return Collections.emptySet();
     }
-    return network.getSignals();
+    Set<Signal> allSigs = network.getSignals();
+    if(allSigs.isEmpty()) {
+      return allSigs;
+    }
+
+    SignalColor col = getSignalColor(side);
+    Set<Signal> result = new HashSet<Signal>();
+    for (Signal signal : allSigs) {
+      if(signal.color == col) {
+        result.add(signal);
+      }
+    }
+
+    return result;
   }
 
   @Override
@@ -228,9 +310,29 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
+  public Collection<CollidableComponent> createCollidables(CacheKey key) {
+    Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
+    if(key.dir == ForgeDirection.UNKNOWN) {
+      return baseCollidables;
+    }
+
+    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(key.dir, key.offset);
+    CollidableComponent cc = new CollidableComponent(IRedstoneConduit.class, bb, key.dir, COLOR_CONTROLLER_ID);
+
+    List<CollidableComponent> result = new ArrayList<CollidableComponent>();
+    result.addAll(baseCollidables);
+    result.add(cc);
+
+    return result;
+  }
+
+  @Override
   public Icon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
+    }
+    if(COLOR_CONTROLLER_ID.equals(component.data)) {
+      return ICONS.get(KEY_COLOR_CONTROLLER);
     }
     return isActive() ? ICONS.get(KEY_INS_TRANSMISSION_ICON) : ICONS.get(KEY_INS_CONDUIT_ICON);
   }
@@ -244,7 +346,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
-    if(forcedConnections.size() > 0) {
+    if(forcedConnections.size() >= 0) {
       byte[] modes = new byte[6];
       int i = 0;
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -256,7 +358,22 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
         }
         i++;
       }
-      nbtRoot.setByteArray("forcedCons", modes);
+      nbtRoot.setByteArray("forcedConnections", modes);
+    }
+
+    if(signalColors.size() >= 0) {
+      byte[] modes = new byte[6];
+      int i = 0;
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        SignalColor col = signalColors.get(dir);
+        if(col != null) {
+          modes[i] = (byte) col.ordinal();
+        } else {
+          modes[i] = -1;
+        }
+        i++;
+      }
+      nbtRoot.setByteArray("signalColors", modes);
     }
   }
 
@@ -265,12 +382,24 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     super.readFromNBT(nbtRoot);
 
     forcedConnections.clear();
-    byte[] modes = nbtRoot.getByteArray("forcedCons");
+    byte[] modes = nbtRoot.getByteArray("forcedConnections");
     if(modes != null && modes.length == 6) {
       int i = 0;
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        if(modes[i] > 0) {
+        if(modes[i] >= 0) {
           forcedConnections.put(dir, ConnectionMode.values()[modes[i]]);
+        }
+        i++;
+      }
+    }
+
+    signalColors.clear();
+    byte[] cols = nbtRoot.getByteArray("signalColors");
+    if(cols != null && cols.length == 6) {
+      int i = 0;
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if(cols[i] >= 0) {
+          signalColors.put(dir, SignalColor.values()[cols[i]]);
         }
         i++;
       }

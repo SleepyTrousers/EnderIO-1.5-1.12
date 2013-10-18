@@ -21,6 +21,7 @@ import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduit;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
 import crazypants.enderio.conduit.redstone.RedstoneSwitch;
 import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
@@ -129,6 +130,7 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new LiquidConduitRenderer());
     conduitRenderers.add(new PowerConduitRenderer());
+    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
 
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);

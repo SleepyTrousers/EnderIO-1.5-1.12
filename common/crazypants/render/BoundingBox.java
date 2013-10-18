@@ -61,6 +61,10 @@ public final class BoundingBox {
     return minX < maxX && minY < maxY && minZ < maxZ;
   }
 
+  public BoundingBox scale(double x, double y, double z) {
+    return scale((float) x, (float) y, (float) z);
+  }
+
   public BoundingBox scale(float x, float y, float z) {
     x = 1 - x;
     y = 1 - y;

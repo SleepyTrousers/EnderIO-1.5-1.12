@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.power;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -97,7 +98,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
+  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(ConduitUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().worldObj.isRemote) {
         if(res.component != null) {

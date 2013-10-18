@@ -7,6 +7,7 @@ import java.util.Map;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.render.BoundingBox;
+import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
 
@@ -93,6 +94,28 @@ public class ConduitGeometryUtil {
     Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, 0);
     result.scale(WIDTH);
     return result;
+  }
+
+  public BoundingBox createBoundsForConnectionController(ForgeDirection dir, Offset offset) {
+
+    Vector3d nonUniformScale = ForgeDirectionOffsets.forDirCopy(dir);
+    nonUniformScale.scale(0.5);
+
+    nonUniformScale.x = 0.8 * (1 - Math.abs(nonUniformScale.x));
+    nonUniformScale.y = 0.8 * (1 - Math.abs(nonUniformScale.y));
+    nonUniformScale.z = 0.8 * (1 - Math.abs(nonUniformScale.z));
+
+    BoundingBox bb = CORE_BOUNDS;
+    //bb = bb.scale(0.8f, 0.8f, 0.8f);
+    bb = bb.scale(nonUniformScale.x, nonUniformScale.y, nonUniformScale.z);
+
+    double transMag = 0.5 - bb.sizeX() * 2;
+
+    Vector3d trans = ForgeDirectionOffsets.forDirCopy(dir);
+    trans.scale(transMag);
+    bb = bb.translate(trans);
+    bb = bb.translate(getTranslation(dir, offset));
+    return bb;
   }
 
   private BoundingBox createConduitBounds(Class<? extends IConduit> type, GeometryKey key) {

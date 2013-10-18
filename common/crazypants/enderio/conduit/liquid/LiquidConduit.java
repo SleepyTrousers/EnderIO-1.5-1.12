@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -87,7 +88,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
 
   @Override
-  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res) {
+  public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(player.getCurrentEquippedItem() == null) {
       return false;
     }

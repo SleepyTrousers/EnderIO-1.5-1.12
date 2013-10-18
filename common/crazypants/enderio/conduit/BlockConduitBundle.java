@@ -451,15 +451,20 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
     }
 
     // Check conduit defined actions
-    RaytraceResult res = doRayTrace(world, x, y, z, player);
+    RaytraceResult closest = doRayTrace(world, x, y, z, player);
+    List<RaytraceResult> all = null;
+    if(closest != null) {
+      all = doRayTraceAll(world, x, y, z, player);
+    }
 
-    if(res != null && res.component != null && res.component.data instanceof
+    if(closest != null && closest.component != null && closest.component.data instanceof
         ConduitConnectorType) {
       System.out.println("BlockConduitBundle.onBlockActivated: Connector hit");
       boolean result = false;
+
       // if its a connector pass the event on to all conduits
       for (IConduit con : bundle.getConduits()) {
-        if(con.onBlockActivated(player, res)) {
+        if(con.onBlockActivated(player, closest, all)) {
           bundle.getEntity().onInventoryChanged();
           result = true;
         }
@@ -468,15 +473,15 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
       return result;
     }
 
-    if(res == null || res.component == null || res.component.conduitType ==
+    if(closest == null || closest.component == null || closest.component.conduitType ==
         null) {
       // Nothing of interest hit
       return false;
     }
 
     // Conduit specific actions
-    if(bundle.getConduit(res.component.conduitType) != null && bundle.getConduit(res.component.conduitType).onBlockActivated(player,
-        res)) {
+    if(bundle.getConduit(closest.component.conduitType) != null && bundle.getConduit(closest.component.conduitType).onBlockActivated(player,
+        closest, all)) {
       bundle.getEntity().onInventoryChanged();
       return true;
     }
@@ -577,6 +582,21 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
   public RaytraceResult doRayTrace(World world, int x, int y, int z,
       EntityPlayer entityPlayer) {
+    List<RaytraceResult> allHits = doRayTraceAll(world, x, y, z, entityPlayer);
+    if(allHits == null) {
+      return null;
+    }
+    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
+    if(!world.isRemote && entityPlayer.isSneaking()) {
+      posY -= 0.08;
+    }
+    Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
+        entityPlayer.posZ);
+    return RaytraceResult.getClosestHit(origin, allHits);
+  }
+
+  public List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z,
+      EntityPlayer entityPlayer) {
     double pitch = Math.toRadians(entityPlayer.rotationPitch);
     double yaw = Math.toRadians(entityPlayer.rotationYaw);
 
@@ -594,12 +614,19 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
         entityPlayer.posZ);
     Vec3 direction = origin.addVector(dirX * reachDistance, dirY *
         reachDistance, dirZ * reachDistance);
-    RaytraceResult res = doRayTrace(world, x, y, z, origin, direction,
+    return doRayTraceAll(world, x, y, z, origin, direction,
         entityPlayer);
-    return res;
   }
 
-  protected RaytraceResult doRayTrace(World world, int x, int y, int z, Vec3
+  private RaytraceResult doRayTrace(World world, int x, int y, int z, Vec3 origin, Vec3 direction, EntityPlayer entityPlayer) {
+    List<RaytraceResult> allHits = doRayTraceAll(world, x, y, z, origin, direction, entityPlayer);
+    if(allHits == null) {
+      return null;
+    }
+    return RaytraceResult.getClosestHit(origin, allHits);
+  }
+
+  protected List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z, Vec3
       origin, Vec3 direction, EntityPlayer player) {
 
     TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -646,7 +673,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
 
     setBlockBounds(0, 0, 0, 1, 1, 1);
 
-    return RaytraceResult.getClosestHit(origin, hits);
+    return hits;
   }
 
 }
