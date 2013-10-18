@@ -464,6 +464,76 @@
       </output>
     </recipe>
 	
+	 <recipe name="Quartz Ore" energyCost="720"> 
+      <input>
+        <itemStack itemID="153" />
+      </input>
+      <output>
+        <itemStack itemID="406" number="4" />
+      </output>
+    </recipe>
+	
+    <recipe name="Block of Quartz" energyCost="240"> 
+      <input>
+        <itemStack itemID="155" itemMeta="0"/>
+      </input>
+      <output>
+        <itemStack itemID="406" number="2" />
+      </output>
+	  <output>
+        <itemStack itemID="406" number="2" chance="0.25" />
+      </output>
+    </recipe>
+
+    <recipe name="Chiseled Quartz Block" energyCost="240"> 
+      <input>
+        <itemStack itemID="155" itemMeta="1"/>
+      </input>
+      <output>
+        <itemStack itemID="406" number="2" />
+      </output>
+	  <output>
+        <itemStack itemID="406" number="2" chance="0.25" />
+      </output>
+    </recipe>
+	
+	<recipe name="Pillar Quartz Block" energyCost="240"> 
+      <input>
+        <itemStack itemID="155" itemMeta="2"/>
+      </input>
+      <output>
+        <itemStack itemID="406" number="2" />
+      </output>
+	  <output>
+        <itemStack itemID="406" number="2" chance="0.25" />
+      </output>
+    </recipe>
+	
+	<recipe name="Quartz Stairs" energyCost="120"> 
+      <input>
+        <itemStack itemID="156" itemMeta="1"/>
+      </input>
+      <output>
+        <itemStack itemID="406" number="1" />
+      </output>
+	  <output>
+        <itemStack itemID="406" number="1" chance="0.25" />
+      </output>
+    </recipe>
+	
+	<recipe name="Quartz Slab" energyCost="120"> 
+      <input>
+        <itemStack itemID="44" itemMeta="7"/>
+      </input>
+      <output>
+        <itemStack itemID="406" number="1" />
+      </output>
+	  <output>
+        <itemStack itemID="406" number="1" chance="0.25" />
+      </output>
+    </recipe>
+	 
+	
     <recipe name="RedstoneOre" energyCost="300">
       <input>
         <itemStack itemID="73" />
