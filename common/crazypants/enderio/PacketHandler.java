@@ -52,6 +52,8 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST = 10;
   public static final int ID_HYPER_CUBE_CHANNEL_SELECTED = 11;
 
+  public static final int ID_MJ_READER_INFO_REQUEST = 12;
+
   public static final String CHANNEL = "EnderIO";
 
   public static PacketHandler instance;

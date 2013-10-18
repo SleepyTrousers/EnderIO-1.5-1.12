@@ -2,13 +2,18 @@ package crazypants.enderio.conduit.power;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.world.World;
+import buildcraft.api.power.IPowerEmitter;
+import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.Config;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -36,18 +41,100 @@ public class NetworkPowerManager {
 
   private final Map<BlockCoord, StarveBuffer> starveBuffers = new HashMap<BlockCoord, NetworkPowerManager.StarveBuffer>();
 
+  private final Map<IPowerConduit, PowerTracker> powerTrackers = new HashMap<IPowerConduit, PowerTracker>();
+
+  private PowerTracker networkPowerTracker = new PowerTracker();
+
+  private CapBankSupply capSupply;
+
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
     this.network = netowrk;
     maxEnergyStored = 64;
   }
 
+  public PowerTracker getTracker(IPowerConduit conduit) {
+    return powerTrackers.get(conduit);
+  }
+
+  public PowerTracker getNetworkPowerTracker() {
+    return networkPowerTracker;
+  }
+
+  public float getPowerInConduits() {
+    return energyStored;
+  }
+
+  public float getMaxPowerInConduits() {
+    return maxEnergyStored;
+  }
+
+  public float getPowerInCapacitorBanks() {
+    if(capSupply == null) {
+      return 0;
+    }
+    return capSupply.stored;
+  }
+
+  public float getMaxPowerInCapacitorBanks() {
+    if(capSupply == null) {
+      return 0;
+    }
+    return capSupply.maxCap;
+  }
+
+  public float getPowerInReceptors() {
+    float result = 0;
+    Set<IPowerReceptor> done = new HashSet<IPowerReceptor>();
+    for (ReceptorEntry re : receptors) {
+      IPowerReceptor powerReceptor = re.powerReceptor;
+      if(!done.contains(powerReceptor)) {
+        done.add(powerReceptor);
+        if(powerReceptor instanceof IInternalPowerReceptor) {
+          result += ((IInternalPowerReceptor) powerReceptor).getPowerHandler().getEnergyStored();
+        } else {
+          PowerReceiver pr = powerReceptor.getPowerReceiver(re.direction);
+          if(pr != null) {
+            result += pr.getEnergyStored();
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  public float getMaxPowerInReceptors() {
+    float result = 0;
+    Set<IPowerReceptor> done = new HashSet<IPowerReceptor>();
+    for (ReceptorEntry re : receptors) {
+      IPowerReceptor powerReceptor = re.powerReceptor;
+      if(!done.contains(powerReceptor)) {
+        done.add(powerReceptor);
+        if(!(powerReceptor instanceof IPowerEmitter)) {
+          if(powerReceptor instanceof IInternalPowerReceptor) {
+            result += ((IInternalPowerReceptor) powerReceptor).getPowerHandler().getMaxEnergyStored();
+          } else {
+            PowerReceiver pr = powerReceptor.getPowerReceiver(re.direction);
+            if(pr != null) {
+              result += pr.getMaxEnergyStored();
+            }
+          }
+        }
+      }
+    }
+    return result;
+  }
+
   public void applyRecievedPower() {
+
+    trackerStartTick();
 
     // Update our energy stored based on what's in our conduits
     updateNetorkStorage();
+    networkPowerTracker.tickStart(energyStored);
+
     checkReserves();
     updateActiveState();
-    CapBankSupply capSupply = new CapBankSupply();
+    capSupply = new CapBankSupply();
 
     int appliedCount = 0;
     int numReceptors = receptors.size();
@@ -55,6 +142,8 @@ public class NetworkPowerManager {
     float wasAvailable = available;
 
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
+      System.out.println("NetworkPowerManager.applyRecievedPower: ");
+      trackerEndTick();
       return;
     }
 
@@ -71,7 +160,7 @@ public class NetworkPowerManager {
         float es = r.emmiter.getPowerHandler().getEnergyStored();
         PowerReceiver pr = r.emmiter.getPowerReceiver(r.direction.getOpposite());
         pr.receiveEnergy(Type.STORAGE, 0, null);
-        r.emmiter.getPowerHandler().setEnergy(energyStored);
+        r.emmiter.getPowerHandler().setEnergy(es);
 
       } else {
 
@@ -93,9 +182,11 @@ public class NetworkPowerManager {
                 used += canOffer;
               } else if(r.powerReceptor instanceof IInternalPowerReceptor) {
                 used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) r.powerReceptor, pp, canOffer, Type.PIPE, r.direction.getOpposite());
+                trackerSend(r.emmiter, used, false);
               } else {
                 float offer = Math.min(requested, canOffer);
                 used = pp.receiveEnergy(Type.PIPE, offer, r.direction.getOpposite());
+                trackerSend(r.emmiter, used, false);
               }
 
             }
@@ -135,6 +226,64 @@ public class NetworkPowerManager {
     capSupply.balance();
 
     distributeStorageToConduits();
+
+    trackerEndTick();
+
+    networkPowerTracker.tickEnd(energyStored);
+  }
+
+  private void trackerStartTick() {
+
+    if(!Config.detailedPowerTrackingEnabled) {
+      return;
+    }
+    for (IPowerConduit con : network.getConduits()) {
+      if(con.hasExternalConnections()) {
+        PowerTracker tracker = getOrCreateTracker(con);
+        tracker.tickStart(con.getPowerHandler().getEnergyStored());
+      }
+    }
+  }
+
+  private void trackerSend(IPowerConduit con, float sent, boolean fromBank) {
+    if(!fromBank) {
+      networkPowerTracker.powerSent(sent);
+    }
+    if(!Config.detailedPowerTrackingEnabled) {
+      return;
+    }
+    getOrCreateTracker(con).powerSent(sent);
+  }
+
+  private void trackerRecieve(IPowerConduit con, float recieved, boolean fromBank) {
+    if(!fromBank) {
+      networkPowerTracker.powerRecieved(recieved);
+    }
+    if(!Config.detailedPowerTrackingEnabled) {
+      return;
+    }
+    getOrCreateTracker(con).powerRecieved(recieved);
+  }
+
+  private void trackerEndTick() {
+    if(!Config.detailedPowerTrackingEnabled) {
+      return;
+    }
+    for (IPowerConduit con : network.getConduits()) {
+      if(con.hasExternalConnections()) {
+        PowerTracker tracker = getOrCreateTracker(con);
+        tracker.tickEnd(con.getPowerHandler().getEnergyStored());
+      }
+    }
+  }
+
+  private PowerTracker getOrCreateTracker(IPowerConduit con) {
+    PowerTracker result = powerTrackers.get(con);
+    if(result == null) {
+      result = new PowerTracker();
+      powerTrackers.put(con, result);
+    }
+    return result;
   }
 
   private void updateActiveState() {
@@ -302,7 +451,7 @@ public class NetworkPowerManager {
           canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
           this.canFill += canFill;
         }
-        enteries.add(new CapBankSupplyEntry(cb, canGet, canFill));
+        enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter));
 
       }
 
@@ -362,6 +511,7 @@ public class NetworkPowerManager {
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
         entry.capBank.addEnergy(-(float) use);
+        trackerRecieve(entry.emmiter, (float) use, true);
         amount -= use;
         if(amount == 0) {
           return;
@@ -380,6 +530,7 @@ public class NetworkPowerManager {
         add = Math.min(add, entry.canFill);
         add = Math.min(add, amount);
         entry.capBank.addEnergy((float) add);
+        trackerSend(entry.emmiter, (float) add, true);
         amount -= add;
         if(amount == 0) {
           return;
@@ -395,8 +546,9 @@ public class NetworkPowerManager {
     final float canExtract;
     final float canFill;
     float toBalance;
+    IPowerConduit emmiter;
 
-    private CapBankSupplyEntry(TileCapacitorBank capBank, float available, float canFill) {
+    private CapBankSupplyEntry(TileCapacitorBank capBank, float available, float canFill, IPowerConduit emmiter) {
       this.capBank = capBank;
       this.canExtract = available;
       this.canFill = canFill;

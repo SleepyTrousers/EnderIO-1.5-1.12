@@ -67,6 +67,8 @@ public interface IConduit {
 
   boolean containsExternalConnection(ForgeDirection dir);
 
+  boolean hasExternalConnections();
+
   void externalConnectionAdded(ForgeDirection fromDirection);
 
   void externalConnectionRemoved(ForgeDirection fromDirection);
