@@ -167,6 +167,11 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
+  public boolean hasExternalConnections() {
+    return !externalConnections.isEmpty();
+  }
+
+  @Override
   public boolean containsExternalConnection(ForgeDirection dir) {
     return externalConnections.contains(dir);
   }

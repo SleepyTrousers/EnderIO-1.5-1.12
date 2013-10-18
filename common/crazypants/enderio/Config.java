@@ -39,6 +39,8 @@ public final class Config {
 
   public static boolean useHardRecipes = false;
 
+  public static boolean detailedPowerTrackingEnabled = true;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -86,14 +88,14 @@ public final class Config {
         .getBoolean(photovoltaicCellEnabled);
 
     useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
-        .getBoolean(false);
+        .getBoolean(useAlternateBinderRecipe);
 
     conduitScale = config.get("Settings", "conduitScale", DEFAULT_CONDUIT_SCALE,
         "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" +
             "In SMP, all clients must be using the same value as the server.").getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
 
-    useAlternateTesseractModel = config.get("Settings", "useAlternateTransceiverModel", false,
+    useAlternateTesseractModel = config.get("Settings", "useAlternateTransceiverModel", useAlternateTesseractModel,
         "Use TheKazador's alternatice model for the Dimensional Transceiver")
         .getBoolean(false);
     transceiverEnergyLoss = config.get("Settings", "transceiverEnergyLoss", transceiverEnergyLoss,
@@ -104,6 +106,10 @@ public final class Config {
         "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limites are no cumulative").getInt(transceiverMaxIO);
     transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
         "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
+
+    detailedPowerTrackingEnabled = config.get("Settings", "detailedPowerTrackingEnabled", detailedPowerTrackingEnabled,
+        "Enable per tick sampling on individual power inputs and outputs")
+        .getBoolean(detailedPowerTrackingEnabled);
 
   }
 

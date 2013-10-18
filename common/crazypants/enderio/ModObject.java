@@ -59,7 +59,7 @@ public enum ModObject {
   itemMachinePart(++Config.IID, CATEGORY_ITEM, "Machine Parts"),
   itemPowderIngot(++Config.IID, CATEGORY_ITEM, "Powders & Ingots"),
 
-  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader (WIP)"),
+  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader"),
   itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials");
 
   public final String unlocalisedName;

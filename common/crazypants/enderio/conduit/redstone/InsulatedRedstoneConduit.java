@@ -78,6 +78,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       SignalColor col = getSignalColorFromEquippedItem(player.getCurrentEquippedItem());
       if(col != null && res.component != null) {
         setSignalColor(res.component.dir, col);
+        return true;
       } else if(ConduitUtil.isToolEquipped(player)) {
 
         if(res.component != null) {
@@ -94,8 +95,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
           }
 
           if(colorHit) {
-
             setSignalColor(connDir, SignalColor.getNext(getSignalColor(connDir)));
+            return true;
 
           } else if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networks
@@ -120,6 +121,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
               network.notifyNeigborsOfSignals();
 
             }
+            return true;
+
           } else if(externalConnections.contains(connDir)) {
 
             Set<Signal> signals = getNetworkInputs(connDir);
@@ -128,6 +131,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             onAddedToBundle();
             network.removeSignals(signals);
             network.notifyNeigborsOfSignals();
+            return true;
 
           } else if(containsConduitConnection(connDir)) {
             BlockCoord loc = getLocation().getLocation(connDir);
@@ -143,15 +147,20 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
               conduitConnectionRemoved(connDir);
               updateNetwork();
               neighbour.updateNetwork();
+              return true;
 
             }
 
           }
         }
       }
-      return true;
     }
     return false;
+  }
+
+  @Override
+  public ItemStack createItem() {
+    return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 2);
   }
 
   private SignalColor getSignalColorFromEquippedItem(ItemStack currentEquippedItem) {
