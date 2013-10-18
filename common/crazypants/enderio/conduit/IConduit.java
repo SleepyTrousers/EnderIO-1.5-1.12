@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -98,7 +99,7 @@ public interface IConduit {
 
   // Actions
 
-  boolean onBlockActivated(EntityPlayer player, RaytraceResult res);
+  boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all);
 
   void onChunkUnload(World worldObj);
 

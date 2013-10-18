@@ -138,8 +138,10 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
       return;
     }
 
-    double xOffset = offset.xOffset * ConduitGeometryUtil.WIDTH;
-    double yOffset = offset.yOffset * ConduitGeometryUtil.HEIGHT;
+    Vector3d trans = ConduitGeometryUtil.instance.getTranslation(dir, offset);
+
+    //    double xOffset = offset.xOffset * ConduitGeometryUtil.WIDTH;
+    //    double yOffset = offset.yOffset * ConduitGeometryUtil.HEIGHT;
 
     float uWidth = tex.getMaxU() - tex.getMinU();
     float uScale = uWidth * 0.64f;
@@ -149,7 +151,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     Tessellator tes = Tessellator.instance;
     for (Vertex v : verts) {
       tes.setNormal(v.nx(), v.ny(), v.nz());
-      tes.addVertexWithUV(v.x() + xOffset, v.y() + yOffset, v.z(), minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
+      tes.addVertexWithUV(v.x() + trans.x, v.y() + trans.y, v.z() + trans.z, minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
     }
 
   }
