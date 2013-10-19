@@ -146,7 +146,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
       IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
       PowerHandler ph = pr.getPowerHandler();
       if(ph == null) {
-        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(block.getLocalizedName() + " cannot recieve power from this side."));
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(block.getLocalizedName() + " cannot recieve power from this side."));
       }
 
       sendPowerReciptorInfo(player, block, ph.getEnergyStored(), ph.getMaxEnergyStored(), ph.getMinEnergyReceived(), ph.getMaxEnergyReceived(), ph
@@ -157,7 +157,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
       IPowerReceptor pr = (IPowerReceptor) te;
       PowerReceiver rec = pr.getPowerReceiver(ForgeDirection.values()[side]);
       if(rec == null) {
-        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(block.getLocalizedName() + " cannot recieve power from this side."));
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(block.getLocalizedName() + " cannot recieve power from this side."));
       }
 
       sendPowerReciptorInfo(player, block, rec.getEnergyStored(), rec.getMaxEnergyStored(), rec.getMinEnergyReceived(), rec.getMaxEnergyReceived(),
@@ -173,7 +173,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     StringBuilder sb = new StringBuilder();
     sb.append(color);
     sb.append("Power Network");
-    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+    player.sendChatToPlayer(ChatMessageComponent.createFromText(sb.toString()));
 
     color = "\u00A79 ";
     sb = new StringBuilder();
@@ -201,7 +201,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     sb.append("\n");
     sb.append(" Average input over 5 seconds: ");
     sb.append(FLOAT_NF.format(tracker.getAverageMjTickRecieved()));
-    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+    player.sendChatToPlayer(ChatMessageComponent.createFromText(sb.toString()));
   }
 
   private void sendPowerConduitInfo(EntityPlayer player, IPowerConduit con, PowerTracker tracker) {
@@ -209,7 +209,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     StringBuilder sb = new StringBuilder();
     sb.append(color);
     sb.append("Power Conduit");
-    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+    player.sendChatToPlayer(ChatMessageComponent.createFromText(sb.toString()));
 
     color = "\u00A79 ";
     sb = new StringBuilder();
@@ -225,7 +225,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     sb.append("\n");
     sb.append(" Average input over 5 seconds: ");
     sb.append(FLOAT_NF.format(tracker.getAverageMjTickRecieved()));
-    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+    player.sendChatToPlayer(ChatMessageComponent.createFromText(sb.toString()));
 
   }
 
@@ -234,7 +234,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     StringBuilder sb = new StringBuilder();
     sb.append(color);
     sb.append(block.getLocalizedName());
-    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+    player.sendChatToPlayer(ChatMessageComponent.createFromText(sb.toString()));
 
     color = "\u00A79 ";
     sb = new StringBuilder();
@@ -256,7 +256,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     sb.append(INT_NF.format(request));
     sb.append(" MJ.");
 
-    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+    player.sendChatToPlayer(ChatMessageComponent.createFromText(sb.toString()));
   }
 
 }
