@@ -165,6 +165,6 @@
 	</target>
 
 	<!-- Default target to run -->
-	<target name="main" depends="clean,package"/>
+	<target name="main" depends="package"/>
 
 </project>
