@@ -1,4 +1,4 @@
-<project name="EnderIO" default="main">
+<project name="EnderIO" default="clean">
 	<property environment="env"/>
 	<!-- Properties -->
 
