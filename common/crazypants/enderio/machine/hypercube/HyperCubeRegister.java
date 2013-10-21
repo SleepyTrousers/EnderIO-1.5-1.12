@@ -40,8 +40,9 @@ public class HyperCubeRegister {
   }
 
   private void innerLoad() {
-    conf = new HyperCubeConfig(new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/dimensionalTransceiver.cfg"));
-    File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg");
+    File f = DimensionManager.getCurrentSaveRootDirectory();
+    conf = new HyperCubeConfig(new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/dimensionalTransceiver.cfg"));
+    File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/hypercubes.cfg");
     if(oldFile.exists()) {
       convertOldFile();
     } else {
@@ -53,7 +54,7 @@ public class HyperCubeRegister {
 
   private void convertOldFile() {
     try {
-      File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "/enderio/hypercubes.cfg");
+      File oldFile = new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/hypercubes.cfg");
       Configuration config = new Configuration(oldFile);
       config.load();
 

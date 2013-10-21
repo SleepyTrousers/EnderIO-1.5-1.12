@@ -90,6 +90,7 @@ public class HyperCubeConfig {
 
     FileOutputStream fos = null;
     try {
+      file.getParentFile().mkdirs();
       fos = new FileOutputStream(file);
       props.store(fos, null);
     } catch (IOException ex) {
