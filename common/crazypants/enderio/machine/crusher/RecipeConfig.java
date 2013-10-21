@@ -183,7 +183,7 @@ public class RecipeConfig {
 
   public static class Recipe {
 
-    private List<ItemStack> inputs = new ArrayList<ItemStack>();
+    private List<RecipeInput> inputs = new ArrayList<RecipeInput>();
 
     private List<CrusherOutput> outputs = new ArrayList<CrusherOutput>();
 
@@ -195,8 +195,12 @@ public class RecipeConfig {
       this.name = name;
     }
 
-    public void addInput(ItemStack stack) {
-      inputs.add(stack);
+    public void addInput(RecipeInput input) {
+      inputs.add(input);
+    }
+
+    public void addInput(ItemStack stack, boolean useMetadata) {
+      inputs.add(new RecipeInput(stack, useMetadata));
     }
 
     public void addOutput(CrusherOutput output) {
@@ -206,8 +210,8 @@ public class RecipeConfig {
     public List<CrusherRecipe> createRecipes() {
       CrusherOutput[] output = outputs.toArray(new CrusherOutput[outputs.size()]);
       List<CrusherRecipe> result = new ArrayList<CrusherRecipe>();
-      for (ItemStack input : inputs) {
-        result.add(new CrusherRecipe(input, energyRequired, output));
+      for (RecipeInput input : inputs) {
+        result.add(new CrusherRecipe(input.input, input.useMetadata, energyRequired, output));
       }
       return result;
     }
@@ -227,6 +231,18 @@ public class RecipeConfig {
     @Override
     public String toString() {
       return "Recipe [input=" + inputs + ", outputs=" + outputs + ", energyRequired=" + energyRequired + "]";
+    }
+
+  }
+
+  static class RecipeInput {
+    ItemStack input;
+    boolean useMetadata;
+
+    RecipeInput(ItemStack input, boolean useMetadata) {
+      super();
+      this.input = input;
+      this.useMetadata = useMetadata;
     }
 
   }

@@ -9,18 +9,27 @@ public class CrusherRecipe {
   private final ItemStack input;
   private final CrusherOutput[] output;
   private final float energyRequired;
+  private final boolean useMetadata;
 
   public CrusherRecipe(ItemStack input, float energyRequired, CrusherOutput... output) {
+    this(input, true, energyRequired, output);
+  }
+
+  public CrusherRecipe(ItemStack input, boolean useMetadata, float energyRequired, CrusherOutput... output) {
     this.input = input;
     this.output = output;
     this.energyRequired = energyRequired;
+    this.useMetadata = useMetadata;
   }
 
   public boolean isInput(ItemStack test) {
     if(test == null) {
       return false;
     }
-    return test.itemID == input.itemID && test.getItemDamage() == input.getItemDamage();
+    if(useMetadata) {
+      return test.itemID == input.itemID && test.getItemDamage() == input.getItemDamage();
+    }
+    return test.itemID == input.itemID;
   }
 
   public ItemStack getInput() {
