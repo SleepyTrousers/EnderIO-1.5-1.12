@@ -541,7 +541,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
-  public net.minecraftforge.fluids.FluidStack getFluidType() {
+  public FluidStack getFluidType() {
     FluidStack result = null;
     if(network != null) {
       result = network.getFluidType();
