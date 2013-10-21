@@ -13,8 +13,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
+
 import crazypants.enderio.Log;
-import crazypants.util.IOUtils;
 
 public class HyperCubeConfig {
 
@@ -37,7 +38,7 @@ public class HyperCubeConfig {
 
   public HyperCubeConfig(File file) {
     this.file = file;
-    if (file.exists()) {
+    if(file.exists()) {
       load(file);
     }
   }
@@ -70,25 +71,26 @@ public class HyperCubeConfig {
     while (itr.hasNext()) {
       Entry<String, List<Channel>> entry = itr.next();
       String user = entry.getKey();
-      if (user != null) {
+      if(user != null) {
         user = user.trim();
       }
       List<Channel> channels = entry.getValue();
-      if (user != null && channels != null && !channels.isEmpty()) {
+      if(user != null && channels != null && !channels.isEmpty()) {
         userListStr.append(user);
         setChannelListProperty(user + KEY_USER_CHANNEL, channels);
       }
-      if (itr.hasNext()) {
+      if(itr.hasNext()) {
         userListStr.append(DELIM);
       }
     }
 
-    if (userListStr.length() > 0) {
+    if(userListStr.length() > 0) {
       props.setProperty(KEY_USERS, userListStr.toString());
     }
 
     FileOutputStream fos = null;
     try {
+      file.getParentFile().mkdirs();
       fos = new FileOutputStream(file);
       props.store(fos, null);
     } catch (IOException ex) {
@@ -102,16 +104,16 @@ public class HyperCubeConfig {
   private void setChannelListProperty(String key, List<Channel> channels) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < channels.size(); i++) {
-      // DELIM_ESC;
+      //DELIM_ESC;
       String name = channels.get(i).name;
-      if (name != null) {
+      if(name != null) {
         name = name.trim();
         name = name.replaceAll(DELIM, DELIM_ESC);
-        if (name.length() > 0) {
+        if(name.length() > 0) {
           sb.append(name);
         }
       }
-      if (i != channels.size() - 1) {
+      if(i != channels.size() - 1) {
         sb.append(DELIM);
       }
     }
@@ -137,9 +139,9 @@ public class HyperCubeConfig {
     String usersStr = props.getProperty(KEY_USERS, "");
     String[] usersSplit = usersStr.split(DELIM);
     for (String user : usersSplit) {
-      if (user != null) {
+      if(user != null) {
         user = user.trim();
-        if (!user.isEmpty()) {
+        if(!user.isEmpty()) {
           users.add(user);
         }
       }
@@ -147,7 +149,7 @@ public class HyperCubeConfig {
     for (String user : users) {
       List<Channel> channels = new ArrayList<Channel>();
       loadChannelList(user + KEY_USER_CHANNEL, user, channels);
-      if (!channels.isEmpty()) {
+      if(!channels.isEmpty()) {
         userChannels.put(user, channels);
       }
     }
@@ -156,12 +158,12 @@ public class HyperCubeConfig {
 
   private void loadChannelList(String key, String user, List<Channel> channels) {
     String chans = props.getProperty(key, "");
-    // chans = chans.replaceAll(DELIM_ESC, DELIM);
+    //chans = chans.replaceAll(DELIM_ESC, DELIM);
     String[] chanSplit = chans.split(DELIM);
     for (String chan : chanSplit) {
-      if (chan != null) {
+      if(chan != null) {
         chan = chan.trim();
-        if (!chan.isEmpty()) {
+        if(!chan.isEmpty()) {
           channels.add(new Channel(chan.replaceAll(DELIM_ESC, DELIM), user));
         }
       }
