@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.monitor;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.text.NumberFormat;
 
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.gui.GuiScreenBase;
+import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
@@ -58,13 +60,23 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
   private String emmitStr;
 
-  public GuiPowerMonitor(TilePowerMonitor te) {
+  public GuiPowerMonitor(final TilePowerMonitor te) {
     super(WIDTH, HEIGHT);
     this.te = te;
     drawButtons = false;
 
     titleStr = "Engine Control";
     emmitStr = "  Emmit";
+
+    addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
+
+      @Override
+      protected void updateText() {
+        text.clear();
+        text.add(INT_NF.format(te.getPowerHandler().getEnergyStored()) + "/" + INT_NF.format(te.getPowerHandler().getMaxEnergyStored()) + " MJ");
+      }
+
+    });
 
     fontRenderer = Minecraft.getMinecraft().fontRenderer;
     int x = MARGIN + fontRenderer.getStringWidth(titleStr) + SPACING;
