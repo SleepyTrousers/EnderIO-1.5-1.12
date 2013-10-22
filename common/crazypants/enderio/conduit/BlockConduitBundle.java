@@ -25,6 +25,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
+import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -39,7 +41,7 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
 
-public class BlockConduitBundle extends Block implements ITileEntityProvider {
+public class BlockConduitBundle extends Block implements ITileEntityProvider, IConnectableRedNet {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
 
@@ -307,6 +309,65 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider {
   @Override
   public boolean canProvidePower() {
     return true;
+  }
+
+  @Override
+  public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
+    return RedNetConnectionType.CableAll;
+  }
+
+  @Override
+  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return new int[16];
+    }
+    IConduitBundle bundle = (IConduitBundle) te;
+    IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
+    if(con == null) {
+      return new int[16];
+    }
+    return con.getOutputValues(world, x, y, z, side);
+  }
+
+  @Override
+  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return 0;
+    }
+    IConduitBundle bundle = (IConduitBundle) te;
+    IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
+    if(con == null) {
+      return 0;
+    }
+    return con.getOutputValue(world, x, y, z, side, subnet);
+  }
+
+  @Override
+  public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof IConduitBundle) {
+      IConduitBundle bundle = (IConduitBundle) te;
+      IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
+      if(con != null) {
+        con.onNeighborBlockChange(world.getBlockId(x, y, z));
+      }
+    }
+
+  }
+
+  @Override
+  public void onInputChanged(World world, int x, int y, int z, ForgeDirection side, int inputValue) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof IConduitBundle) {
+      IConduitBundle bundle = (IConduitBundle) te;
+      IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
+      if(con != null) {
+        con.onNeighborBlockChange(world.getBlockId(x, y, z));
+      }
+    }
+
   }
 
   @Override

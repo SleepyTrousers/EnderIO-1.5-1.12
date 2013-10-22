@@ -40,6 +40,7 @@ public class IconButtonEIO extends GuiButton {
     if(toolTip == null) {
       toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
       gui.addToolTip(toolTip);
+      toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
     } else {
       toolTip.setToolTipText(tooltipText);
     }
@@ -97,7 +98,9 @@ public class IconButtonEIO extends GuiButton {
       GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
       background.renderIcon(x, y, width, height, 0, false);
-      icon.renderIcon(x, y, width, height, 0, false);
+      if(icon != null) {
+        icon.renderIcon(x, y, width, height, 0, false);
+      }
 
       tes.draw();
 

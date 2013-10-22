@@ -18,6 +18,7 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
 public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
@@ -54,6 +55,10 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     inventory = new ItemStack[slotDefinition.getNumSlots()];
 
     redstoneControlMode = RedstoneControlMode.IGNORE;
+  }
+
+  public BlockCoord getLocation() {
+    return new BlockCoord(this);
   }
 
   public SlotDefinition getSlotDefinition() {

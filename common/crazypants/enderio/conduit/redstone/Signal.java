@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
 import net.minecraftforge.common.ForgeDirection;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit.SignalColor;
 
 public class Signal {
 

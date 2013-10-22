@@ -60,7 +60,9 @@ public enum ModObject {
   itemPowderIngot(++Config.IID, CATEGORY_ITEM, "Powders & Ingots"),
 
   itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader"),
-  itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials");
+  itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials"),
+
+  blockPowerMonitor(++Config.BID, CATEGORY_BLOCK, "Power Monitor");
 
   public final String unlocalisedName;
   public final String name;

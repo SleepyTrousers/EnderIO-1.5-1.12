@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.gui.IconToggleButtonEIO;
+import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -54,7 +54,7 @@ public class GuiHyperCube extends GuiScreenBase {
   private IconButton powerOutputRedstoneButton;
 
   private IconButtonEIO addButton;
-  private IconToggleButtonEIO privateButton;
+  private ToggleButtonEIO privateButton;
 
   private GuiTextField newChannelTF;
 
@@ -107,7 +107,7 @@ public class GuiHyperCube extends GuiScreenBase {
     addButton.setToolTip("Add Channel");
     addButton.enabled = false;
 
-    privateButton = new IconToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.PUBLIC, IconEIO.PRIVATE);
+    privateButton = new ToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.PUBLIC, IconEIO.PRIVATE);
     privateButton.setSelectedToolTip("Private Channel");
     privateButton.setUnselectedToolTip("Public Channel");
 

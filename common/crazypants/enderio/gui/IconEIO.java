@@ -17,6 +17,7 @@ public final class IconEIO {
   public static final IconEIO PLUS = new IconEIO(80, 100);
 
   public static final IconEIO BUTTON = new IconEIO(0, 116);
+  public static final IconEIO CHECKED_BUTTON = new IconEIO(0, 132);
   public static final IconEIO BUTTON_HIGHLIGHT = new IconEIO(16, 116);
   public static final IconEIO BUTTON_DISABLED = new IconEIO(32, 116);
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);

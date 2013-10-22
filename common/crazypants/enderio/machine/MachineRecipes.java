@@ -9,6 +9,8 @@ import static crazypants.enderio.ModObject.blockReservoir;
 import static crazypants.enderio.ModObject.blockSolarPanel;
 import static crazypants.enderio.ModObject.blockStirlingGenerator;
 import static crazypants.enderio.ModObject.itemBasicCapacitor;
+import static crazypants.enderio.ModObject.itemPowerConduit;
+import static crazypants.enderio.ModObject.itemRedstoneConduit;
 
 import java.util.ArrayList;
 
@@ -90,6 +92,24 @@ public class MachineRecipes {
             energeticAlloy));
       }
     }
+
+    //MJ Reader    
+    ItemStack mJReader = new ItemStack(ModObject.itemMJReader.actualId, 1, 0);
+    ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    ItemStack powerConduit = new ItemStack(itemPowerConduit.actualId, 1, 0);
+    ItemStack redstoneConduit = new ItemStack(itemRedstoneConduit.actualId, 1, 2);
+
+    GameRegistry
+        .addShapedRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Item.comparator, 'g', Block.thinGlass, 's', silicon, 'e',
+            electricalSteel);
+
+    //MJ Monitor
+
+    ItemStack mJMonitor = new ItemStack(ModObject.blockPowerMonitor.actualId, 1, 0);
+    GameRegistry
+        .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Block.stoneBrick, 'e', Item.eyeOfEnder, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
+            'r', redstoneConduit, 'c', capacitor);
+
   }
 
   public static void addOreDictionaryRecipes() {

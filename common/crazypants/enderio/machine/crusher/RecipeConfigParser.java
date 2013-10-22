@@ -26,6 +26,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.crusher.RecipeConfig.Recipe;
 import crazypants.enderio.machine.crusher.RecipeConfig.RecipeGroup;
+import crazypants.enderio.machine.crusher.RecipeConfig.RecipeInput;
 
 public class RecipeConfigParser extends DefaultHandler {
 
@@ -281,11 +282,11 @@ public class RecipeConfigParser extends DefaultHandler {
   }
 
   private void addOutputStack(Attributes attributes) {
-    ItemStack stack = getItemStack(attributes);
+    RecipeConfig.RecipeInput stack = getItemStack(attributes);
     if(stack == null) {
       return;
     }
-    recipe.addOutput(new CrusherOutput(stack, getFloatValue(AT_CHANCE, attributes, 1f)));
+    recipe.addOutput(new CrusherOutput(stack.input, getFloatValue(AT_CHANCE, attributes, 1f)));
   }
 
   private void addInputStack(Attributes attributes) {
@@ -305,25 +306,25 @@ public class RecipeConfigParser extends DefaultHandler {
             for (int i = 0; i < 16; i++) {
               stack = stack.copy();
               stack.setItemDamage(i);
-              recipe.addInput(stack);
+              recipe.addInput(stack, true);
             }
           } else {
-            recipe.addInput(stack);
+            recipe.addInput(stack, true);
           }
         }
       }
 
     } else {
-      ItemStack stack = getItemStack(attributes);
+      RecipeConfig.RecipeInput stack = getItemStack(attributes);
       if(stack == null) {
         return;
       }
-      stack.stackSize = 1;
+      stack.input.stackSize = 1;
       recipe.addInput(stack);
     }
   }
 
-  private ItemStack getItemStack(Attributes attributes) {
+  private RecipeConfig.RecipeInput getItemStack(Attributes attributes) {
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
     if(oreDict != null) {
       ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
@@ -333,10 +334,11 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       ItemStack stack = ores.get(0).copy();
       stack.stackSize = getIntValue(AT_NUMBER, attributes, 1);
+      boolean useMeta = true;
       if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-        stack.setItemDamage(0);
+        useMeta = false;
       }
-      return stack;
+      return new RecipeInput(stack, useMeta);
     }
 
     int itemID = getIntValue(AT_ITEM_ID, attributes, -1);
@@ -364,10 +366,15 @@ public class RecipeConfigParser extends DefaultHandler {
       return null;
     }
 
+    boolean useMeta = true;
+    String metaString = getStringValue(AT_ITEM_META, attributes, "0");
+    if("*".equals(metaString)) {
+      useMeta = false;
+    }
     int itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
     int stackSize = getIntValue(AT_NUMBER, attributes, 1);
 
-    return new ItemStack(itemID, stackSize, itemMeta);
+    return new RecipeInput(new ItemStack(itemID, stackSize, itemMeta), useMeta);
   }
 
   private boolean getBooleanValue(String qName, Attributes attributes, boolean def) {

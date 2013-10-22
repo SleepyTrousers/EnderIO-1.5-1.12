@@ -37,6 +37,8 @@ import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.hypercube.HyperCubeRegister;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
+import crazypants.enderio.machine.monitor.BlockPowerMonitor;
+import crazypants.enderio.machine.monitor.ItemMJReader;
 import crazypants.enderio.machine.painter.BlockCustomFence;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
 import crazypants.enderio.machine.painter.BlockCustomSlab;
@@ -50,7 +52,6 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
-import crazypants.enderio.material.ItemMJReader;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
@@ -109,6 +110,7 @@ public class EnderIO {
   public static BlockCapacitorBank blockCapacitorBank;
   public static BlockCrusher blockCrusher;
   public static BlockHyperCube blockHyperCube;
+  public static BlockPowerMonitor blockPowerMonitor;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -158,6 +160,7 @@ public class EnderIO {
     blockAlloySmelter = BlockAlloySmelter.create();
     blockCapacitorBank = BlockCapacitorBank.create();
     blockCrusher = BlockCrusher.create();
+    blockPowerMonitor = BlockPowerMonitor.create();
 
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();

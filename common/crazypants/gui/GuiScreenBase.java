@@ -33,6 +33,8 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
    */
   protected int guiTop;
 
+  protected boolean drawButtons = true;
+
   protected GuiScreenBase(int xSize, int ySize) {
     this.xSize = xSize;
     this.ySize = ySize;
@@ -60,9 +62,10 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glDisable(GL11.GL_DEPTH_TEST);
     GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-    super.drawScreen(par1, par2, par3);
-    RenderHelper.enableGUIStandardItemLighting();
-    super.drawScreen(par1, par2, par3);
+    if(drawButtons) {
+      RenderHelper.enableGUIStandardItemLighting();
+      super.drawScreen(par1, par2, par3);
+    }
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
     GL11.glPushMatrix();

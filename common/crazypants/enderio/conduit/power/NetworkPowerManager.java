@@ -142,7 +142,6 @@ public class NetworkPowerManager {
     float wasAvailable = available;
 
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
-      System.out.println("NetworkPowerManager.applyRecievedPower: ");
       trackerEndTick();
       return;
     }
