@@ -1,4 +1,4 @@
-package crazypants.enderio.material;
+package crazypants.enderio.machine.monitor;
 
 import java.text.NumberFormat;
 

@@ -190,8 +190,6 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   public void setSignalColor(ForgeDirection dir, SignalColor col) {
-    System.out.println("InsulatedRedstoneConduit.setSignalColor: " + col);
-
     Set<Signal> toRemove = getNetworkInputs(dir);
     signalColors.put(dir, col);
     Set<Signal> toAdd = getNetworkInputs(dir);
@@ -242,7 +240,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().worldObj;
     if(block instanceof IConnectableRedNet) {
       RedNetConnectionType conType = ((IConnectableRedNet) block).getConnectionType(world, loc.x, loc.y, loc.z, direction.getOpposite());
-      return conType != null && conType.isSingleSubnet;
+      return conType != null && (conType.isSingleSubnet || conType.isAllSubnets);
     }
 
     if(world.getBlockTileEntity(loc.x, loc.y, loc.z) instanceof IPowerEmitter) {

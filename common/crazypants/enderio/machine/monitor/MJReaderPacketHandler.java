@@ -1,4 +1,4 @@
-package crazypants.enderio.material;
+package crazypants.enderio.machine.monitor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

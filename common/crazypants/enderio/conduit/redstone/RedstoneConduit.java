@@ -152,6 +152,9 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(network == null || network.updatingNetwork) {
       return false;
     }
+    if(blockId <= 0) {
+      return res;
+    }
 
     if(blockId > 0 && Block.blocksList[blockId].canProvidePower() && network != null) {
       // TODO: Just recalculate the signals, no need for a full rebuild
@@ -203,6 +206,31 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   @Override
   public String toString() {
     return "RedstoneConduit [network=" + network + " connections=" + conduitConnections + " active=" + active + "]";
+  }
+
+  @Override
+  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
+    int[] result = new int[16];
+    Set<Signal> outs = getNetworkOutputs(side);
+    if(outs != null) {
+      for (Signal s : outs) {
+        result[s.color.ordinal()] = s.strength;
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
+    Set<Signal> outs = getNetworkOutputs(side);
+    if(outs != null) {
+      for (Signal s : outs) {
+        if(subnet == s.color.ordinal()) {
+          return s.strength;
+        }
+      }
+    }
+    return 0;
   }
 
 }

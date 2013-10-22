@@ -40,7 +40,6 @@ public class MaterialRecipes {
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 2);
     ItemStack fusedQuartzFrame = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, 0);
     ItemStack machineChassi = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.MACHINE_CHASSI.ordinal());
-    ItemStack mJReader = new ItemStack(ModObject.itemMJReader.actualId, 1, 0);
     ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
     ItemStack endergold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());

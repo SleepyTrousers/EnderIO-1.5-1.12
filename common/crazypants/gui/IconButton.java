@@ -80,16 +80,18 @@ public class IconButton extends GuiButton {
 
       mouseDragged(par1Minecraft, par2, par3);
 
-      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-      GL11.glEnable(GL11.GL_BLEND);
-      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      if(icon != null && texture != null) {
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-      RenderUtil.bindTexture(texture);
-      int xLoc = xPosition + 2;
-      int yLoc = yPosition + 2;
-      drawTexturedModelRectFromIcon(xLoc, yLoc, icon, width - 4, height - 4);
+        RenderUtil.bindTexture(texture);
+        int xLoc = xPosition + 2;
+        int yLoc = yPosition + 2;
+        drawTexturedModelRectFromIcon(xLoc, yLoc, icon, width - 4, height - 4);
 
-      GL11.glPopAttrib();
+        GL11.glPopAttrib();
+      }
 
     }
   }

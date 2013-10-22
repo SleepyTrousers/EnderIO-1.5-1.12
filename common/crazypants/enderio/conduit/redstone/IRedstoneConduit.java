@@ -2,7 +2,7 @@ package crazypants.enderio.conduit.redstone;
 
 import java.util.Set;
 
-import net.minecraft.item.ItemDye;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 
@@ -32,41 +32,6 @@ public interface IRedstoneConduit extends IConduit {
       "dyeWhite"
   };
 
-  enum SignalColor {
-    BLACK,
-    RED,
-    GREEN,
-    BROWN,
-    BLUE,
-    PURPLE,
-    CYAN,
-    SILVER,
-    GRAY,
-    PINK,
-    LIME,
-    YELLOW,
-    LIGHT_BLUE,
-    MAGENTA,
-    ORANGE,
-    WHITE;
-
-    public static SignalColor getNext(SignalColor mode) {
-      int ord = mode.ordinal() + 1;
-      if(ord >= SignalColor.values().length) {
-        ord = 0;
-      }
-      return SignalColor.values()[ord];
-    }
-
-    private SignalColor() {
-    }
-
-    int getColor() {
-      return ItemDye.dyeColors[ordinal()];
-    }
-
-  }
-
   // External redstone interface
 
   int isProvidingStrongPower(ForgeDirection toDirection);
@@ -82,5 +47,9 @@ public interface IRedstoneConduit extends IConduit {
   SignalColor getSignalColor(ForgeDirection dir);
 
   void updateNetwork();
+
+  int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
+
+  int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
 
 }
