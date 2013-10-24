@@ -156,7 +156,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   private void notifyNeigborsOfSignalUpdate(Signal signal) {
-    for (IRedstoneConduit con : conduits) {
+    ArrayList<IRedstoneConduit> conduitsCopy = new ArrayList<IRedstoneConduit>(conduits);
+    for (IRedstoneConduit con : conduitsCopy) {
       notifyConduitNeighbours(con, signal);
     }
   }
