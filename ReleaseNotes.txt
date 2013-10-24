@@ -1,0 +1,173 @@
+0.4.0
+- Added greater control over conduit connections. Can now disable connections between external blocks and other conduits using a wrench.
+- Added Insulated Redstone Conduits
+  - Supports mutliple signals with different 'colors' to be transimitted within a single conduit.
+  - Only limited rednet support with this release, full support coming soon.
+- Added portable MJ monitor / reader.
+- Added block MJ monitor. Displays information about the power network and can optionaly emmit a redstone signal to conrol engines / generators (Textures Alchemist + zephraph).
+- Added wildcard option when specifying metadata values in SAG Mill recipes
+- Recipes added to the SAG Mill (Unrepentant-Atheist)
+- Fixed bug preventing the Transeivers config file from being saved.
+- Allowed EIO recipies requiring sticks to use ore dictionary sticks.
+- Fixed #199 
+- Fixed #203
+
+0.3.3
+- Fixed bug that was deleting power stored in conduits.
+- Fixed dupe bug in mill recipes.
+
+0.3.2
+- Made alloy furnace more automation friendly.
+- Fixed bug that could create extra power.
+- Fixed use of item and ore dictionary dumps from the SAGMillRecipes_user.xml file
+- #173 Fixed rare crash with conduit placement
+- #174 Fixed crash when invalid characters in transceiver name
+- #177 Fixed crash when using force wrench om fluid conduits (force wrench is still not supported, it just shouldn't crash the game)
+- #184 Fixed crash when removal of old config file failed
+
+0.3.1
+- Added configurable input and output limits to Capacitor Banks
+- Added item charging to Capacitor Banks
+- Added BC gate triggers for Capacitor Banks (implemented by domi1819)
+- Update SAG Mill recipe update mecansim. The are now 'core' and user defined recipe files to avoid conflicts on update.
+- Tweaked SAG Mill recipes (implemented by Unrepentant-Atheist)
+- #168 Fixed crash when using Java 1.6
+- #170 Stopped conduits and capacitor banks from draining power into BC item and fluid pipes.
+
+0.2.4/b/c
+- Alot of new improved recipes (Thanks Alchemist and DaeDoug)
+- Added NEI integration for SAG Mill and Alloy Furnace (only in 1.6, any volenteers for port to 1.5?)
+- New config options to:
+  - disable solars
+  - set number of conduits created per recipe
+  - use 'hard' recipes (feedback required with these, not sure how hard 'hard' should be)
+#160 Crash when using transceiver
+#159 Added guard to prevent crash with poorly defined fluids.
+#153 Changed format of file format for transceiver channels to allow special chars (old format is automatically updated).
+#137 Fixed fluids being 'destroyed' when a conduits attempts to extract fluids that are not allowed in it.
+#135 Fixed crash when some fluids used with liquid conduits.
+
+0.2.3
+- Added fluid support to transceivers
+- Liquid conduits now display fluid type.
+- SAG Mill recipe updates from Unrepentant-Atheist
+- #102 Bucket no longer consumed when lava bucket used in Stirling Gen.
+
+0.2.1 
+- Made energy loss, energy up keep and max IO for transceiver configurable. Default is 0 loss, 0.25 upkeep, 256 max IO.
+- Merged SAG Mill recipes for railcraft and BoP Bonesegments provided by Unrepentant-Atheist
+- #117 fixed
+- #100 Added code to make facade hiding compatible with MPS Omni Wrench module.
+- #106 Fixed vanishing power when set to 'do not allow input'
+- #133 Fixed trivial NPE error.
+- #111 Conduits where defaulting to opaque to light when no facade was present.
+- #110 Fixed possibility of crash occurring, caused by EIO nuggests being removed in previous version.
+- # Fixed missing textures in 1.5.2
+
+0.2.0 
+- Added 'Dimensional Transceiver'.
+- Added ability to specify SAG Mill recipes via an XML config file
+- Updated and Improved recipes for some machines.
+- #96 Provided progamtic access to the XML config to other developers / mods to add recipes at runtime.
+- #25 Breaking any of machines gives you the block back in creative
+- #40 Stirling gen not filling a TE energy cell
+- #70 Performance loss when using Electric Lights
+- #78 Light passing through facades
+- #88 Forestry's Fermenter not accepting power
+- #94 Crash when removing Capacitor Banks
+- #99 Lighting issue
+- #103 Crash wehn using transciever
+
+0.1.25 
+- Fixed server crash added in 0.1.24
+
+0.1.24
+- #63 Fixed placement issues with conduits
+- Improved mechanism to update facade rendering when a wrench is equipped
+- #62 Small change to enderface recipe due to conflict (still a tempory recipe)
+- #45 The Alloy Furnace now allows standard furnace recipes to be disabled
+0.1.23
+- Fixed #47 Facades causing large performance decrease
+
+0.1.22 
+- Added ability to set power conduits to input,output or both by right clicking with a wrench.
+- Fixed crashes in issues #55 and #58
+
+0.1.21 
+- #37 Fixed case where liquid conduit not powered by conduit switch in the same block.
+- #44 Liquids in reservoir and conduits not always rendering correctly.
+- #28: Fixed electric light updates when light occluded.
+- #9: Railcraft tanks not forming near electric lights
+- #43: SAG Mill accepting items into the output slot.
+- #19: Capacitor banks not getting picked up by turtles.
+- #36: Fixed interaction with modular power suits glove wrench.
+
+0.1.20 
+  - Issue 33: Fixed crash on startup when used with some mods
+  - Issue 24: Fused Quartz doesn't have breaking particles.
+  - Issue 7: Lighting glitch in NEI when displayed EIO tool tips
+  - Issue 39: Grass facades not rendered correctly.
+  - Issue 35: Alloy recipes would accept the incorrect ingredients.
+  - Issue 31: Liquid conduits now drain any small amount of liquid left in pipes.
+  - Issue 22: Added sound for conduit placement.
+  - Issue 34:  Conduit not removed from inventory when placed in empty facade.
+
+0.1.19 
+- Renamed crusher to SAG Mill
+- Fixed crash with SAG Mill when Tinkers Construct installed
+- Fixed missing SAG recipes when multiple ores of the same type where found
+- Fixed animated texture in 1.5.2 version
+- Changed drop behaviour of Capacitor Banks to allow them to be retrieved using turtles
+
+0.1.18.1 
+- Added crusher (tempory textures and UI), aka Pulverizer, aka Macerator
+- Fixed server crash when using conduit switches
+- Fixed crash when mekanism and EnderIO liquid conduits combined
+- Reduced cost of capacitor banks
+
+0.1.17.1 
+- Fixed missing texture
+
+0.1.17
+- Reworked algorithm for energy distribution between a power conduit network and Capacitor Banks
+- Shiny new textures from Alchemist and KEGARR, thanks!
+- Fixed bug with alignment of painted dyed wool stairs
+- Fixed bug with painted half slabs not merging correctly
+- Various other minor bug fixes
+
+0.1.15 
+          - Conduit sizes can now be changed via the config file.
+          - Power conduits reworked to resolve reported issues.
+0.1.14 
+           - Fixed output and other issues with power conduits  
+           - Capacitor banks should now correctly absorb any excess power supply across the conduit network, and only output power when their is a deficit.
+0.1.13 
+           - Fixed fluid duplication in liquid conduits
+0.1.11 
+           - Fixed SMP
+0.1.10 
+          - Added painted half slabs
+          - Added alternate binder recipe
+          - Added wrench recipe
+          - Fixed facade recipe
+          - Added shift-click with wrench to instantaly break all machines and conduits
+          - Bug fixes and tweaks
+0.1.9   
+         - Added Capacitor Bank MJ storage block
+         - Furnace recipes can now be cooked up in the alloy furnace
+         - Dupe bug and various other bug fixes
+         - Texture improvements
+0.1.8 
+         - Added electric lights
+         - Fixed lighting bug with custom stairs
+         - Fixed missing Stirling Generator UI texture.
+0.1.7 
+         - Fixed Solar Panels in SMP
+         - Added new capacitor upgrades
+         - Added nugget -> ingot recipes
+         - Reduced industrial binder per gravel from 8 to 4
+         - Fixed EnderIO operation with Forestry machines.
+0.1.6 - Fixed integration with redstone conduits/cells from TE.
+         - Fixed crash when conecting EIO conduits to BC pipes.
+0.1.5 - Fixed typo and Fused Quartz recipe
+0.1.4 - Initial Release. EnderIO not working correctly with some Forestry blocks.
