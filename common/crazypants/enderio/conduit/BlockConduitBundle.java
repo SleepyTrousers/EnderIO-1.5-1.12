@@ -706,7 +706,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     } else {
 
       Collection<CollidableComponent> components =
-          bundle.getCollidableComponents();
+          new ArrayList<CollidableComponent>(bundle.getCollidableComponents());
       for (CollidableComponent component : components) {
         setBlockBounds(component.bound.minX, component.bound.minY,
             component.bound.minZ, component.bound.maxX, component.bound.maxY,
