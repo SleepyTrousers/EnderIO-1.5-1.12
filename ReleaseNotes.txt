@@ -1,6 +1,7 @@
 0.3.4
 - Fixed bug preventing the Transeivers config file from being saved. 
 - Fixed #199 #203
+- Allowed ore dictionary sticks to be used in recipes.
 
 0.3.3
 - Fixed bug that was deleting power stored in conduits.

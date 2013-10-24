@@ -21,7 +21,7 @@ import crazypants.enderio.machine.alloy.VanillaSmeltingRecipe;
 public class MaterialRecipes {
 
   public static void registerOresInDictionary() {
-    //Ore Dictionary Registeration
+    // Ore Dictionary Registeration
     OreDictionary.registerOre("dustCoal", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COAL.ordinal()));
     OreDictionary.registerOre("dustIron", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_IRON.ordinal()));
     OreDictionary.registerOre("dustGold", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_GOLD.ordinal()));
@@ -31,7 +31,7 @@ public class MaterialRecipes {
 
   public static void addRecipes() {
 
-    //Common Ingredients
+    // Common Ingredients
     ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 4, Material.CONDUIT_BINDER.ordinal());
     ItemStack basicGear = new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal());
     ItemStack binderComposite = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.BINDER_COMPOSITE.ordinal());
@@ -45,22 +45,22 @@ public class MaterialRecipes {
     ItemStack endergold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
 
-    //Conduit Binder
+    // Conduit Binder
     ItemStack cbc = binderComposite.copy();
     cbc.stackSize = 8;
-    if(Config.useAlternateBinderRecipe) {
+    if (Config.useAlternateBinderRecipe) {
       GameRegistry.addShapedRecipe(cbc, "gcg", "sgs", "gcg", 'g', Block.gravel, 's', Block.sand, 'c', Item.clay);
     } else {
       GameRegistry.addShapedRecipe(cbc, "ggg", "scs", "ggg", 'g', Block.gravel, 's', Block.sand, 'c', Item.clay);
     }
     FurnaceRecipes.smelting().addSmelting(binderComposite.itemID, binderComposite.getItemDamage(), conduitBinder, 0);
 
-    //Aloys
+    // Aloys
     int meta = 0;
     for (Alloy alloy : Alloy.values()) {
       ItemStack ingot = new ItemStack(ModObject.itemAlloy.actualId, 1, meta);
       IMachineRecipe recipe = new BasicAlloyRecipe(ingot, alloy.unlocalisedName, alloy.ingrediants);
-      if(ItemAlloy.useNuggets) {
+      if (ItemAlloy.useNuggets) {
         ItemStack nugget = new ItemStack(ModObject.itemAlloy.actualId, 9, meta + Alloy.values().length);
         GameRegistry.addShapelessRecipe(nugget, ingot);
         nugget = nugget.copy();
@@ -78,7 +78,8 @@ public class MaterialRecipes {
     FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_GOLD.ordinal(), new ItemStack(Item.ingotGold), 0);
 
     // Fused Quartz Frame
-    GameRegistry.addShapedRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', new ItemStack(Item.stick));
+    GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
 
     // Wrench
     GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
@@ -87,10 +88,11 @@ public class MaterialRecipes {
     GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Block.fenceIron, 'i', Item.ingotIron);
 
     // Basic Gear
-    GameRegistry.addShapedRecipe(basicGear, "scs", "c c", "scs", 's', Item.stick, 'c', Block.cobblestone);
+    GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "stickWood", 'c', Block.cobblestone));
+    GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "woodStick", 'c', Block.cobblestone));
 
     // Ender Capacitor
-    if(Config.useHardRecipes) {
+    if (Config.useHardRecipes) {
       GameRegistry.addShapedRecipe(enderCapacitor, "eee", "cgc", "eee", 'e', endergold, 'c', activatedCapacitor, 'g', Block.glowStone);
     } else {
       GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', endergold, 'c', activatedCapacitor, 'g', Block.glowStone);
@@ -101,24 +103,24 @@ public class MaterialRecipes {
   public static void addOreDictionaryRecipes() {
     int oreId = OreDictionary.getOreID("ingotCopper");
     ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
-    if(!ingots.isEmpty()) {
+    if (!ingots.isEmpty()) {
       FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_COPPER.ordinal(), ingots.get(0), 0);
     }
     oreId = OreDictionary.getOreID("ingotTin");
     ingots = OreDictionary.getOres(oreId);
-    if(!ingots.isEmpty()) {
+    if (!ingots.isEmpty()) {
       FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_TIN.ordinal(), ingots.get(0), 0);
     }
 
     ItemStack capacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 0);
     ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
     Item gold;
-    if(Config.useHardRecipes) {
+    if (Config.useHardRecipes) {
       gold = Item.ingotGold;
     } else {
       gold = Item.goldNugget;
     }
-    if(copperIngots != null && !copperIngots.isEmpty()) {
+    if (copperIngots != null && !copperIngots.isEmpty()) {
       GameRegistry.addRecipe(new ShapedOreRecipe(capacitor, " gr", "gcg", "rg ", 'r', Item.redstone, 'g', gold, 'c', "ingotCopper"));
     } else {
       GameRegistry.
@@ -128,7 +130,7 @@ public class MaterialRecipes {
     int dustCoal = OreDictionary.getOreID("dustCoal");
     ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor.actualId, 1, 1);
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
-    if(Config.useHardRecipes) {
+    if (Config.useHardRecipes) {
       GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, "eee", "cCc", "eee", 'e', electricalSteel, 'c', capacitor, 'C', "dustCoal"));
     } else {
       GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, " e ", "cCc", " e ", 'e', electricalSteel, 'c', capacitor, 'C', "dustCoal"));
