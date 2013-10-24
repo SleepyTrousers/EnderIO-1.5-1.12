@@ -78,6 +78,7 @@ public class MaterialRecipes {
 
     // Fused Quartz Frame
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
 
     // Wrench
     GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
@@ -87,6 +88,7 @@ public class MaterialRecipes {
 
     // Basic Gear
     GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "stickWood", 'c', Block.cobblestone));
+    GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "woodStick", 'c', Block.cobblestone));
 
     // Ender Capacitor
     if(Config.useHardRecipes) {
