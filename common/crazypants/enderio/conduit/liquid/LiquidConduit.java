@@ -35,6 +35,7 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneSwitch;
+import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -189,7 +190,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private void doExtract() {
 
     BlockCoord loc = getLocation();
-    if(!isPowered() || !hasConnectionMode(ConnectionMode.INPUT)) {
+    if(!hasConnectionMode(ConnectionMode.INPUT)) {
       return;
     }
 
@@ -197,7 +198,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
-      if(isExtractingFromDir(dir)) {
+      if(isExtractingFromDir(dir) && isPowered(dir)) {
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
 
         if(extTank != null) {
@@ -236,13 +237,20 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   }
 
-  private boolean isPowered() {
+  private boolean isPowered(ForgeDirection side) {
     BlockCoord loc = getLocation();
     IRedstoneConduit rsCon = getBundle().getConduit(IRedstoneConduit.class);
     if(rsCon instanceof RedstoneSwitch && ((RedstoneSwitch) rsCon).isActive()) {
       // Need to check for this manually as if we ask the tile if it is being
       // powered it dies not check if it is providing power itself.
       return true;
+    }
+    if(rsCon instanceof IRedstoneConduit) {
+      IRedstoneConduit con = rsCon;
+      Set<Signal> signals = con.getNetworkOutputs(side);
+      if(signals != null && !signals.isEmpty()) {
+        return true;
+      }
     }
     return getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z);
   }
