@@ -267,7 +267,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected abstract String getMachineFrontIconKey(boolean active);
 
   private boolean isActive(IBlockAccess blockAccess, int x, int y, int z) {
-    return ((AbstractMachineEntity) blockAccess.getBlockTileEntity(x, y, z)).isActive();
+    TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
+    if(te instanceof AbstractMachineEntity) {
+      return ((AbstractMachineEntity) te).isActive();
+    }
+    return false;
   }
 
 }

@@ -75,6 +75,12 @@ public class TileReservoir extends TileEntity implements ITankContainer {
       return;
     }
     if (isMaster()) {
+
+      //sanity check to prevent crash when moved using redstone in motion
+      if(regenTank == null || tank == null) {
+        return;
+      }
+
       if (regenTank.isFull() && !tank.isFull()) {
         ++ticksSinceFill;
         if (ticksSinceFill >= 20) {
