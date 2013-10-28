@@ -75,7 +75,13 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     if(worldObj == null || worldObj.isRemote) {
       return;
     }
+
     if(isMaster()) {
+      //sanity check to prevent crash when moved using redstone in motion
+      if(regenTank == null || tank == null) {
+        return;
+      }
+
       if(regenTank.isFull() && !tank.isFull()) {
         ++ticksSinceFill;
         if(ticksSinceFill >= 20) {
