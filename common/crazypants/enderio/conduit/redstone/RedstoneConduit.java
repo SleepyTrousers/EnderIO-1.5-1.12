@@ -169,9 +169,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     World world = getBundle().getEntity().worldObj;
     BlockCoord loc = getLocation();
     loc = loc.getLocation(dir);
-    int blockID = world.getBlockId(loc.x, loc.y, loc.z);
-    int res = blockID == 0 ? 0 : Block.blocksList[blockID].isProvidingWeakPower(world, loc.x, loc.y, loc.z, dir.ordinal());
-    return res;
+    return world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
   }
 
   @Override
