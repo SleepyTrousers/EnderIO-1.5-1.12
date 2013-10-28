@@ -99,6 +99,8 @@ public interface IConduit {
 
   Collection<CollidableComponent> createCollidables(CacheKey key);
 
+  Class<? extends IConduit> getCollidableType();
+
   // Actions
 
   boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all);

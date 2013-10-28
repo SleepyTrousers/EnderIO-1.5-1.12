@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -161,6 +162,11 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   @Override
   public ItemStack createItem() {
     return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 2);
+  }
+
+  @Override
+  public Class<? extends IConduit> getCollidableType() {
+    return InsulatedRedstoneConduit.class;
   }
 
   private SignalColor getSignalColorFromEquippedItem(ItemStack currentEquippedItem) {
