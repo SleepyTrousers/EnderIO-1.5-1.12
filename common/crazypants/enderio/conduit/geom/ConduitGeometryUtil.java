@@ -106,10 +106,12 @@ public class ConduitGeometryUtil {
     nonUniformScale.z = 0.8 * (1 - Math.abs(nonUniformScale.z));
 
     BoundingBox bb = CORE_BOUNDS;
-    //bb = bb.scale(0.8f, 0.8f, 0.8f);
     bb = bb.scale(nonUniformScale.x, nonUniformScale.y, nonUniformScale.z);
 
-    double transMag = 0.5 - bb.sizeX() * 2;
+    double offsetFromEnd = Math.min(bb.sizeX(), bb.sizeY());
+    offsetFromEnd = Math.min(offsetFromEnd, bb.sizeZ());
+    offsetFromEnd = Math.max(offsetFromEnd, 0.075);
+    double transMag = 0.5 - (offsetFromEnd * 1.2);
 
     Vector3d trans = ForgeDirectionOffsets.forDirCopy(dir);
     trans.scale(transMag);
@@ -124,9 +126,7 @@ public class ConduitGeometryUtil {
 
   private BoundingBox createConduitBounds(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
     BoundingBox bb = CORE_BOUNDS;
-    // if(type == IRedstoneConduit.class) {
-    // bb = bb.scale(0.5f, 0.5f, 0.5f);
-    // }
+
     Vector3d min = bb.getMin();
     Vector3d max = bb.getMax();
 
