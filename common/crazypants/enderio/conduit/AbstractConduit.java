@@ -410,8 +410,13 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public Collection<CollidableComponent> createCollidables(CacheKey key) {
-    return Collections.singletonList(new CollidableComponent(getBaseConduitType(), ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir,
+    return Collections.singletonList(new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir,
         key.isStub, key.offset), key.dir, null));
+  }
+
+  @Override
+  public Class<? extends IConduit> getCollidableType() {
+    return getBaseConduitType();
   }
 
   @Override
@@ -443,7 +448,7 @@ public abstract class AbstractConduit implements IConduit {
 
   private Collection<CollidableComponent> getCollidables(ForgeDirection dir) {
     CollidableCache cc = CollidableCache.instance;
-    Class<? extends IConduit> type = getBaseConduitType();
+    Class<? extends IConduit> type = getCollidableType();
     if(isConnectedTo(dir)) {
       return cc.getCollidables(cc.createKey(type, getBundle().getOffset(type, dir), dir, renderStub(dir)), this);
     }
