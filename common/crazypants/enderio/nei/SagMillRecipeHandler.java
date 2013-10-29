@@ -87,11 +87,15 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipeIndex) {
-    // TODO Auto-generated method stub
     MillRecipe recipe = (MillRecipe) arecipes.get(recipeIndex);
     float chance = recipe.getChanceForOutput(stack);
     if(chance > 0 && chance < 1) {
-      currenttip.add((int) (chance * 100) + "% Chance");
+      int chanceInt = (int) (chance * 100);
+      if(chanceInt == 0) {
+        currenttip.add("Less than 1%");
+      } else {
+        currenttip.add(chanceInt + "% Chance");
+      }
     }
     return currenttip;
   }
