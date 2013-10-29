@@ -1,3 +1,16 @@
+0.4.1
+- #192 Transceivers remember their channel when broken.
+- Output of Photovoltaic panel can now be set in the config file
+- Insulated redstone conduits now provide signals to liquid conduits.
+- Fixed rendering of 'color bands' on insulated conduits
+- #207 Fixed '0% Chance' tool tip in NEI.
+- #208 Redstone conduits now receive signals from computer craft terminals
+- #214 Fixed crash when reservoir used with red stone in motion (it doesn't work after moving, but it won't crash)
+- #215 Fixed crash when ender io block used with Archimedes Ship Marker
+- #219 Allow mod iron and gold ores / ingots to be processed in SAG Mill
+- #225 Fixed crash with insulated conduits
+- #227 Fixed crash when using powered lights
+
 0.4.0
 - Added greater control over conduit connections. Can now disable connections between external blocks and other conduits using a wrench.
 - Added Insulated Redstone Conduits
