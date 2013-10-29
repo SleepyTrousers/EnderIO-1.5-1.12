@@ -170,12 +170,15 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
         for (NodeEntry entry : after) {
           worldObj.setBlock(entry.coord.x, entry.coord.y, entry.coord.z, ModObject.blockLightNode.actualId);
-          TileLightNode ln = (TileLightNode) worldObj.getBlockTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
-          ln.parentX = xCoord;
-          ln.parentY = yCoord;
-          ln.parentZ = zCoord;
-          ln.isDiagnal = entry.isDiagnal;
-          lightNodes.add(ln);
+          TileEntity te = worldObj.getBlockTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
+          if(te instanceof TileLightNode) {
+            TileLightNode ln = (TileLightNode) te;
+            ln.parentX = xCoord;
+            ln.parentY = yCoord;
+            ln.parentZ = zCoord;
+            ln.isDiagnal = entry.isDiagnal;
+            lightNodes.add(ln);
+          }
         }
 
       } else {
@@ -381,20 +384,26 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj)
+      if(this == obj) {
         return true;
-      if(obj == null)
+      }
+      if(obj == null) {
         return false;
-      if(getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       NodeEntry other = (NodeEntry) obj;
       if(coord == null) {
-        if(other.coord != null)
+        if(other.coord != null) {
           return false;
-      } else if(!coord.equals(other.coord))
+        }
+      } else if(!coord.equals(other.coord)) {
         return false;
-      if(isDiagnal != other.isDiagnal)
+      }
+      if(isDiagnal != other.isDiagnal) {
         return false;
+      }
       return true;
     }
 
