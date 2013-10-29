@@ -10,6 +10,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
+import crazypants.enderio.Config;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.EnderPowerProvider;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -25,7 +26,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
-  private float energyPerTick = 1;
+  private float energyPerTick = (float) Config.maxPhotovoltaicOutput;
 
   public TileEntitySolarPanel() {
     capacitor = new BasicCapacitor(0, 10000, 10);
