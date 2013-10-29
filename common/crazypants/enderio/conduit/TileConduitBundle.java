@@ -373,7 +373,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       if(allDirectionsHaveSameConnectionCount()) {
         for (IConduit con : conduits) {
           Class<? extends IConduit> type = con.getCollidableType();
-          result.addAll(cc.getCollidables(cc.createKey(type, getOffset(type, ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
+          result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
         }
       } else {
         // vertical box
@@ -386,7 +386,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       if(allDirectionsHaveSameConnectionCount()) {
         for (IConduit con : conduits) {
           Class<? extends IConduit> type = con.getCollidableType();
-          result.addAll(cc.getCollidables(cc.createKey(type, getOffset(type, ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
+          result.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), ForgeDirection.UNKNOWN), ForgeDirection.UNKNOWN, false), con));
         }
 
       } else {
