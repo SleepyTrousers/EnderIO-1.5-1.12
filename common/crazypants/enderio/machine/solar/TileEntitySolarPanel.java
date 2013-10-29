@@ -100,7 +100,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     lightValue = Math.round(lightValue * MathHelper.cos(sunAngle));
 
     lightValue = MathHelper.clamp_int(lightValue, 0, 15);
-    return lightValue / 15f;
+    return lightValue / 30f;
   }
 
   private boolean transmitEnergy() {
