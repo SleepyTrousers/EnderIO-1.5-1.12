@@ -1,3 +1,12 @@
+0.3.5
+- #192 Transceivers remember their channel when broken.
+- Output of Photovoltaic panel can now be set in the config file
+- #207 Fixed '0% Chance' tool tip in NEI.
+- #214 Fixed crash when reservoir used with red stone in motion (it doesn't work after moving, but it won't crash)
+- #215 Fixed crash when ender io block used with Archimedes Ship Marker
+- #219 Allow mod iron and gold ores / ingots to be processed in SAG Mill
+- #227 Fixed crash when using powered lights
+
 0.3.4
 - Fixed bug preventing the Transeivers config file from being saved. 
 - Fixed #199 #203
