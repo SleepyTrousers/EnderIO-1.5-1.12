@@ -115,7 +115,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       return false;
     }
     List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
-    return cons != null && cons.size() > 1;
+    return cons != null && cons.size() > 1 && powerHandler.getEnergyStored() > 0;
   }
 
   private void balanceCubeNetworkEnergy() {
@@ -139,10 +139,15 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
     float totalLoss = totalToTranfer * ENERGY_LOSS;
     totalEnergy -= totalLoss;
+    totalEnergy = Math.max(0, totalEnergy);
     energyPerNode = totalEnergy / cubes.size();
 
     for (TileHyperCube cube : cubes) {
+      boolean wasConnected = cube.isConnected();
       cube.powerHandler.setEnergy(energyPerNode);
+      if(wasConnected != cube.isConnected()) {
+        cube.fluidHandlersDirty = true;
+    }
     }
 
   }
@@ -168,22 +173,38 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       return;
     } // else is server, do all logic only on the server
 
-    updateFluidHandlers();
-
     // do the required tick to keep BC API happy
     float stored = powerHandler.getEnergyStored();
     powerHandler.update(this);
+
+    boolean wasConnected = isConnected();
 
     // Pay upkeep cost
     stored -= ENERGY_UPKEEP;
     // Pay fluid transmission cost
     stored -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
 
+    //update power status
+    stored = Math.max(stored, 0);
+    powerHandler.setEnergy(stored);
+
     milliBucketsTransfered = 0;
 
-    Math.max(stored, 0);
+    powerInputEnabled = RedstoneControlMode.isConditionMet(inputControlMode, this);
+    powerOutputEnabled = RedstoneControlMode.isConditionMet(outputControlMode, this);
 
-    powerHandler.setEnergy(stored);
+    if(powerOutputEnabled) {
+      transmitEnergy();
+    }
+
+    balanceCubeNetworkEnergy();
+
+    //check we are still connected (i.e. we haven't run out of power or started receiving power)
+    boolean stillConnected = isConnected();
+    if(wasConnected != stillConnected) {
+      fluidHandlersDirty = true;
+    }
+    updateFluidHandlers();
 
     if (registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {
       if (registeredChannel != null) {
@@ -193,18 +214,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       registeredChannel = channel;
     }
 
-    balanceCubeNetworkEnergy();
-
-    boolean requiresClientSync = false;
-    powerInputEnabled = RedstoneControlMode.isConditionMet(inputControlMode, this);
-    powerOutputEnabled = RedstoneControlMode.isConditionMet(outputControlMode, this);
-
-    if (powerOutputEnabled) {
-      transmitEnergy();
-    }
+    boolean requiresClientSync = wasConnected == stillConnected;
 
     float storedEnergy = powerHandler.getEnergyStored();
-
     // Update if our power has changed by more than 0.5%
     requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
 
@@ -454,6 +466,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       return;
     }
     fluidHandlers.clear();
+    if(isConnected()) {
     BlockCoord myLoc = new BlockCoord(this);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
@@ -462,6 +475,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
         ITankContainer fh = (ITankContainer) te;
         fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
       }
+    }
     }
     fluidHandlersDirty = false;
   }
