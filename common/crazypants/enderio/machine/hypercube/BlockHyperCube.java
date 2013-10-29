@@ -13,6 +13,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -133,10 +134,46 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
         PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getPowerHandler().getEnergyStored());
+        setChannelOnItem(hc, itemStack);
         ret.add(itemStack);
       }
     }
     return ret;
+  }
+
+  private void setChannelOnItem(TileHyperCube hc, ItemStack itemStack) {
+    Channel chan = hc.getChannel();
+    if (chan != null) {
+      NBTTagCompound tag = itemStack.getTagCompound();
+      if (tag == null) {
+        tag = new NBTTagCompound();
+        itemStack.setTagCompound(tag);
+      }
+      tag.setString("channelName", chan.name);
+      tag.setBoolean("channelIsPublic", chan.isPublic());
+      if(!chan.isPublic()) {
+        tag.setString("channelUser", chan.user);
+      }                    
+    }
+  }
+  
+  private Channel getChannelFromItem(ItemStack itemStack) {
+    NBTTagCompound tag = itemStack.getTagCompound();
+    if(tag == null) {
+      return null;      
+    }
+    
+    String channelName = tag.getString("channelName");
+    if(channelName == null) {
+      return null;
+    }
+    
+    String user = null;
+    if(!tag.getBoolean("channelIsPublic")) {
+      user = tag.getString("channelUser");
+    }
+    return new Channel(channelName, user);
+    
   }
 
   @Override
@@ -148,6 +185,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
         PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getPowerHandler().getEnergyStored());
+        setChannelOnItem(hc, itemStack);
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -172,6 +210,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
       if (player instanceof EntityPlayerMP) {
         cb.setOwner(((EntityPlayerMP) player).username);
       }
+      cb.setChannel(getChannelFromItem(stack));
     }
     world.markBlockForUpdate(x, y, z);
   }
