@@ -88,11 +88,15 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List currenttip, int recipeIndex) {
-    // TODO Auto-generated method stub
     MillRecipe recipe = (MillRecipe) arecipes.get(recipeIndex);
     float chance = recipe.getChanceForOutput(stack);
-    if(chance > 0 && chance < 1) {
-      currenttip.add((int) (chance * 100) + "% Chance");
+    if (chance > 0 && chance < 1) {
+      int chanceInt = (int) (chance * 100);
+      if (chanceInt == 0) {
+        currenttip.add("Less than 1%");
+      } else {
+        currenttip.add(chanceInt + "% Chance");
+      }
     }
     return currenttip;
   }
@@ -140,11 +144,11 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     }
 
     public float getChanceForOutput(ItemStack stack) {
-      if(output.item.equals(stack)) {
+      if (output.item.equals(stack)) {
         return outputChance[0];
       }
       for (int i = 0; i < otherOutputs.size(); i++) {
-        if(otherOutputs.get(i).item.equals(stack)) {
+        if (otherOutputs.get(i).item.equals(stack)) {
           return outputChance[i + 1];
         }
       }
@@ -171,13 +175,13 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
       input = new PositionedStack(ingredient, 80 - offset.x, 12 - offset.y);
       output = new PositionedStack(outputs.get(0).getItem(), 49 - offset.x, 59 - offset.y);
       otherOutputs = new ArrayList<PositionedStack>();
-      if(outputs.size() > 1) {
+      if (outputs.size() > 1) {
         otherOutputs.add(new PositionedStack(outputs.get(1).getItem(), 70 - offset.x, 59 - offset.y));
       }
-      if(outputs.size() > 2) {
+      if (outputs.size() > 2) {
         otherOutputs.add(new PositionedStack(outputs.get(2).getItem(), 91 - offset.x, 59 - offset.y));
       }
-      if(outputs.size() > 3) {
+      if (outputs.size() > 3) {
         otherOutputs.add(new PositionedStack(outputs.get(3).getItem(), 112 - offset.x, 59 - offset.y));
       }
 
@@ -186,7 +190,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
       numTargetOuput = 1;
       for (int i = 0; i < outputChance.length; i++) {
         outputChance[i] = outputs.get(i).getChance();
-        if(outputs.get(i).isEquivalent(targetedResult)) {
+        if (outputs.get(i).isEquivalent(targetedResult)) {
           indexOfTargetOutput = i;
           numTargetOuput = outputs.get(i).getQuantity();
         }
@@ -200,7 +204,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     public int compare(MillRecipe o1, MillRecipe o2) {
       float c1 = o1.outputChance[o1.indexOfTargetOutput];
       float c2 = o2.outputChance[o2.indexOfTargetOutput];
-      if(c1 != c2) {
+      if (c1 != c2) {
         return -Float.compare(c1, c2);
       }
       int num1 = o1.numTargetOuput;
