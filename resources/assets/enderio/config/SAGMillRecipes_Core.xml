@@ -120,8 +120,8 @@
 
     <recipe name="IronOre">
       <input>
-        <itemStack itemID="15" />
-      </input>
+        <itemStack oreDictionary="oreIron" />
+      </input>            
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
       </output>
@@ -140,6 +140,9 @@
       <input>
         <itemStack itemID="265" />
       </input>
+      <input>
+        <itemStack oreDictionary="ingotIron" />
+      </input> 
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" />
       </output>
@@ -147,8 +150,8 @@
 
 
     <recipe name="GoldOre" energyCost="360">
-      <input>
-        <itemStack itemID="14" />
+     <input>
+        <itemStack oreDictionary="oreGold" />
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="2" />
@@ -166,6 +169,9 @@
       <input>
         <itemStack itemID="266" />
       </input>
+      <input>
+        <itemStack oreDictionary="ingotGold" />
+      </input> 
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" />
       </output>
