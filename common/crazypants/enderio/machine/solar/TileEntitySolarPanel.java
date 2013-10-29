@@ -14,6 +14,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.Config;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -28,7 +29,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
-  private float energyPerTick = 1;
+  private float energyPerTick = (float) Config.maxPhotovoltaicOutput;;
 
   public TileEntitySolarPanel() {
     capacitor = new BasicCapacitor(0, 10000, 10);

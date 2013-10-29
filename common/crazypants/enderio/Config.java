@@ -40,6 +40,8 @@ public final class Config {
   public static boolean useHardRecipes = false;
 
   public static boolean detailedPowerTrackingEnabled = true;
+  
+  public static double maxPhotovoltaicOutput = 1.0;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -87,6 +89,9 @@ public final class Config {
         "If set to false Photovoltaic Cells will not be craftable.")
         .getBoolean(photovoltaicCellEnabled);
 
+    maxPhotovoltaicOutput = config.get("Settings", "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
+        "Maximum output in MJ/t of the Photovoltaic Panels.").getDouble(maxPhotovoltaicOutput);
+    
     useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);
 
@@ -110,6 +115,8 @@ public final class Config {
     detailedPowerTrackingEnabled = config.get("Settings", "detailedPowerTrackingEnabled", detailedPowerTrackingEnabled,
         "Enable per tick sampling on individual power inputs and outputs")
         .getBoolean(detailedPowerTrackingEnabled);
+    
+    
 
   }
 
