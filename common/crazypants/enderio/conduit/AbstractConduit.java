@@ -450,7 +450,7 @@ public abstract class AbstractConduit implements IConduit {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getCollidableType();
     if(isConnectedTo(dir)) {
-      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(type, dir), dir, renderStub(dir)), this);
+      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)), this);
     }
     return null;
   }
