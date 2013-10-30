@@ -108,7 +108,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   @Override
   public void onBlockAdded(World world, int x, int y, int z) {
-    if (world.isRemote) {
+    if(world.isRemote) {
       return;
     }
     TileHyperCube tr = (TileHyperCube) world.getBlockTileEntity(x, y, z);
@@ -117,7 +117,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
-    if (world.isRemote) {
+    if(world.isRemote) {
       return;
     }
     TileHyperCube te = (TileHyperCube) world.getBlockTileEntity(x, y, z);
@@ -127,9 +127,9 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
     ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    if (!world.isRemote) {
+    if(!world.isRemote) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
-      if (te instanceof TileHyperCube) {
+      if(te instanceof TileHyperCube) {
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
@@ -143,9 +143,9 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   private void setChannelOnItem(TileHyperCube hc, ItemStack itemStack) {
     Channel chan = hc.getChannel();
-    if (chan != null) {
+    if(chan != null) {
       NBTTagCompound tag = itemStack.getTagCompound();
-      if (tag == null) {
+      if(tag == null) {
         tag = new NBTTagCompound();
         itemStack.setTagCompound(tag);
       }
@@ -153,34 +153,34 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
       tag.setBoolean("channelIsPublic", chan.isPublic());
       if(!chan.isPublic()) {
         tag.setString("channelUser", chan.user);
-      }                    
+      }
     }
   }
-  
+
   private Channel getChannelFromItem(ItemStack itemStack) {
     NBTTagCompound tag = itemStack.getTagCompound();
     if(tag == null) {
-      return null;      
-    }
-    
-    String channelName = tag.getString("channelName");
-    if(channelName == null) {
       return null;
     }
-    
+
+    String channelName = tag.getString("channelName");
+    if(channelName == null || channelName.trim().isEmpty()) {
+      return null;
+    }
+
     String user = null;
     if(!tag.getBoolean("channelIsPublic")) {
       user = tag.getString("channelUser");
     }
     return new Channel(channelName, user);
-    
+
   }
 
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if (!world.isRemote) {
+    if(!world.isRemote) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
-      if (te instanceof TileHyperCube) {
+      if(te instanceof TileHyperCube) {
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
@@ -200,14 +200,14 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    if (world.isRemote) {
+    if(world.isRemote) {
       return;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileHyperCube) {
+    if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.getInternalPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
-      if (player instanceof EntityPlayerMP) {
+      if(player instanceof EntityPlayerMP) {
         cb.setOwner(((EntityPlayerMP) player).username);
       }
       cb.setChannel(getChannelFromItem(stack));
@@ -228,23 +228,23 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
-    if (ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if (wrench.canWrench(entityPlayer, x, y, z)) {
+        if(wrench.canWrench(entityPlayer, x, y, z)) {
           removeBlockByPlayer(world, entityPlayer, x, y, z);
-          if (entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
             ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
           }
           return true;
         }
       }
     }
-    if (entityPlayer.isSneaking()) {
+    if(entityPlayer.isSneaking()) {
       return false;
     }
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (!(te instanceof TileHyperCube)) {
+    if(!(te instanceof TileHyperCube)) {
       return false;
     }
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
@@ -259,7 +259,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
-    if (te instanceof TileHyperCube) {
+    if(te instanceof TileHyperCube) {
       TileHyperCube hc = (TileHyperCube) te;
       return new GuiHyperCube(hc);
     }
