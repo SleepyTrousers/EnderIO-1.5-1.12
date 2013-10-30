@@ -41,7 +41,9 @@ public class ItemMJReader extends Item {
       float par9, float par10) {
 
     if(MJReaderPacketHandler.canCreatePacket(world, x, y, z)) {
-      PacketDispatcher.sendPacketToServer(MJReaderPacketHandler.createInfoRequestPacket(x, y, z, side));
+      if(world.isRemote) {
+        PacketDispatcher.sendPacketToServer(MJReaderPacketHandler.createInfoRequestPacket(x, y, z, side));
+      }
       return true;
     }
 
