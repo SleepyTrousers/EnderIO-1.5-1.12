@@ -25,6 +25,7 @@ import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.power.IPowerEmitter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -246,7 +247,12 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().worldObj;
     if(block instanceof IConnectableRedNet) {
       RedNetConnectionType conType = ((IConnectableRedNet) block).getConnectionType(world, loc.x, loc.y, loc.z, direction.getOpposite());
-      return conType != null && (conType.isSingleSubnet || conType.isAllSubnets);
+      try {
+        return conType != null && (conType.isSingleSubnet || conType.isAllSubnets);
+      } catch (NoSuchFieldError ex) {
+        Log.error("InsulatedRedstoneConduit: An outdated version of the Rednet API has been found.");
+        return true;
+      }
     }
 
     if(world.getBlockTileEntity(loc.x, loc.y, loc.z) instanceof IPowerEmitter) {
