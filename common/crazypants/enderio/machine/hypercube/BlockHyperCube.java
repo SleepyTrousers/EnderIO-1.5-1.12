@@ -164,7 +164,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     }
     
     String channelName = tag.getString("channelName");
-    if(channelName == null) {
+    if(channelName == null || channelName.trim().isEmpty()) {
       return null;
     }
     

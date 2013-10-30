@@ -214,7 +214,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       registeredChannel = channel;
     }
 
-    boolean requiresClientSync = wasConnected == stillConnected;
+    boolean requiresClientSync = wasConnected != stillConnected;
 
     float storedEnergy = powerHandler.getEnergyStored();
     // Update if our power has changed by more than 0.5%
