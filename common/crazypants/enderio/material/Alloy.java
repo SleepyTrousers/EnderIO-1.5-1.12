@@ -25,9 +25,8 @@ public enum Alloy {
       new ItemStack(ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal())),
 
   CONDUCTIVE_IRON("Conductive Iron", "conductiveIron",
-      new ItemStack(Item.redstone),
-      new ItemStack(Item.ingotIron),
-      new ItemStack(Item.redstone));
+      new ItemStack(Item.redstone, 2),
+      new ItemStack(Item.ingotIron));
 
   public final String unlocalisedName;
   public final String uiName;
