@@ -317,7 +317,7 @@
         <itemStack itemID="82" />
       </input>
       <output>
-        <itemStack oreDictionary="dustClay" number="4" />
+        <itemStack itemID="337" number="2" />
       </output>
       <output>
         <itemStack itemID="337" number="2" chance="0.1" />
