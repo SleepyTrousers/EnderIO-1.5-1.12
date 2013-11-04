@@ -136,8 +136,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
         burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
         if(burnTime > 0) {
           totalBurnTime = burnTime;
-          if(inventory[0].itemID == Item.bucketLava.itemID) {
-            inventory[0] = new ItemStack(Item.bucketEmpty);
+          ItemStack containedItem = inventory[0].getItem().getContainerItemStack(inventory[0]);
+          if(containedItem!=null){
+          //if(inventory[0].itemID == Item.bucketLava.itemID) {
+            //inventory[0] = new ItemStack(Item.bucketEmpty);
+            inventory[0] = containedItem;
           } else {
             decrStackSize(0, 1);
           }
