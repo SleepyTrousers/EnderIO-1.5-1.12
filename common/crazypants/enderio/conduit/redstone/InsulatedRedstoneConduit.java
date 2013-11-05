@@ -170,6 +170,16 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     return InsulatedRedstoneConduit.class;
   }
 
+  @Override
+  public void onInputsChanged(ForgeDirection side, int[] inputValues) {
+    //System.out.println("InsulatedRedstoneConduit.onInputsChanged: ");
+  }
+
+  @Override
+  public void onInputChanged(ForgeDirection side, int inputValue) {
+    //System.out.println("InsulatedRedstoneConduit.onInputChanged: ");
+  }
+
   private SignalColor getSignalColorFromEquippedItem(ItemStack currentEquippedItem) {
     if(currentEquippedItem == null) {
       return null;
