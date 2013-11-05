@@ -416,6 +416,8 @@ public class NetworkPowerManager {
 
     float canExtract;
     float canFill;
+    Set<TileCapacitorBank> capBanks = new HashSet<TileCapacitorBank>();
+
     float filledRatio;
     float stored = 0;
     float maxCap = 0;
@@ -427,6 +429,7 @@ public class NetworkPowerManager {
     }
 
     void init() {
+      capBanks.clear();
       canExtract = 0;
       canFill = 0;
       stored = 0;
@@ -435,8 +438,11 @@ public class NetworkPowerManager {
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerReceptor;
 
-        stored += cb.getEnergyStored();
-        maxCap += cb.getMaxEnergyStored();
+        if(!capBanks.contains(cb)) {
+          stored += cb.getEnergyStored();
+          maxCap += cb.getMaxEnergyStored();
+          capBanks.add(cb);
+        }
 
         float canGet = 0;
         if(cb.isOutputEnabled()) {
