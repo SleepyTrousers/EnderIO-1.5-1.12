@@ -518,7 +518,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser.isEmpty() ? null : channelUser);
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
     } else {
       channel = null;
     }
@@ -532,12 +532,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
     nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
     nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
-    if(channel == null) {
-      nbtRoot.setString("channelName", "");
-      nbtRoot.setString("channelUser", "");
-    } else {
+    if(channel != null) {
       nbtRoot.setString("channelName", channel.name);
-      nbtRoot.setString("channelUser", channel.user == null ? "" : channel.user);
+      if(channel.user != null) {
+        nbtRoot.setString("channelUser", channel.user);
+      }
     }
     nbtRoot.setString("owner", owner);
   }
