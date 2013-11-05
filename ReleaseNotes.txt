@@ -1,3 +1,11 @@
+0.4.2
+- Fixed DimensionalTransceiver transferring fluids without power.
+- #232 Fixed transceiver crashes 
+- #241 Fixed Power Pipe with MJ Reader crash
+- #245 Fixed placing unpainted facade uses item
+- #246 Fixed power monitor does not see full size of capacitor bank
+- #253 Fixed charging of AE Vibration Catalyst and Entropy Accelerator in the Capacitor Bank
+
 0.4.1
 - #192 Transceivers remember their channel when broken.
 - Output of Photovoltaic panel can now be set in the config file
