@@ -467,6 +467,10 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
         return false;
       }
 
+      if(PainterUtil.getSourceBlockId(player.getCurrentEquippedItem()) <= 0) {
+        return false;
+      }
+
       bundle.setFacadeId(PainterUtil.getSourceBlockId(player.getCurrentEquippedItem()));
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
       if(!player.capabilities.isCreativeMode) {
