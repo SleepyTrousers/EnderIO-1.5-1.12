@@ -1,3 +1,9 @@
+0.3.6
+- Fixed DimensionalTransceiver transferring fluids without power.
+- #228 Can now make conductive alloy
+- #232 Fixed transceiver crashes 
+- #245 Fixed placing unpainted facade uses item
+
 0.3.5
 - #192 Transceivers remember their channel when broken.
 - Output of Photovoltaic panel can now be set in the config file
