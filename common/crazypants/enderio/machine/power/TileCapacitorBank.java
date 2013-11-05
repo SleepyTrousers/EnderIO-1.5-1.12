@@ -163,7 +163,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if(cur < max) {
 
           float used = 0;
-          if("appeng.common.base.AppEngMultiChargeable".equals(chargable.getClass().getName())) {
+          if(chargable.getClass().getName().startsWith("appeng") || "appeng.common.base.AppEngMultiChargeable".equals(chargable.getClass().getName())) {
             //256 max limit          
             canUse = Math.min(canUse, 256);
             NBTTagCompound tc = item.getTagCompound();

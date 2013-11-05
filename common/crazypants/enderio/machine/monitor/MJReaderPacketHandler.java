@@ -158,10 +158,10 @@ public class MJReaderPacketHandler implements IPacketProcessor {
       PowerReceiver rec = pr.getPowerReceiver(ForgeDirection.values()[side]);
       if(rec == null) {
         player.sendChatToPlayer(ChatMessageComponent.createFromText(block.getLocalizedName() + " cannot recieve power from this side."));
+      } else {
+        sendPowerReciptorInfo(player, block, rec.getEnergyStored(), rec.getMaxEnergyStored(), rec.getMinEnergyReceived(), rec.getMaxEnergyReceived(),
+            rec.powerRequest());
       }
-
-      sendPowerReciptorInfo(player, block, rec.getEnergyStored(), rec.getMaxEnergyStored(), rec.getMinEnergyReceived(), rec.getMaxEnergyReceived(),
-          rec.powerRequest());
 
     }
 

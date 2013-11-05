@@ -36,6 +36,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
@@ -351,6 +352,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       IConduitBundle bundle = (IConduitBundle) te;
       IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
       if(con != null) {
+        if(con instanceof IInsulatedRedstoneConduit) {
+          ((IInsulatedRedstoneConduit) con).onInputsChanged(side, inputValues);
+        }
         con.onNeighborBlockChange(world.getBlockId(x, y, z));
       }
     }
@@ -364,6 +368,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       IConduitBundle bundle = (IConduitBundle) te;
       IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
       if(con != null) {
+        if(con instanceof IInsulatedRedstoneConduit) {
+          ((IInsulatedRedstoneConduit) con).onInputChanged(side, inputValue);
+        }
         con.onNeighborBlockChange(world.getBlockId(x, y, z));
       }
     }
@@ -464,6 +471,10 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
         && !bundle.hasFacade()) {
       // Add facade
       if(player.isSneaking()) {
+        return false;
+      }
+
+      if(PainterUtil.getSourceBlockId(player.getCurrentEquippedItem()) <= 0) {
         return false;
       }
 
