@@ -145,9 +145,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (TileHyperCube cube : cubes) {
       boolean wasConnected = cube.isConnected();
       cube.powerHandler.setEnergy(energyPerNode);
-      if(wasConnected != cube.isConnected()) {
+      if (wasConnected != cube.isConnected()) {
         cube.fluidHandlersDirty = true;
-    }
+      }
     }
 
   }
@@ -184,7 +184,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     // Pay fluid transmission cost
     stored -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
 
-    //update power status
+    // update power status
     stored = Math.max(stored, 0);
     powerHandler.setEnergy(stored);
 
@@ -193,15 +193,16 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     powerInputEnabled = RedstoneControlMode.isConditionMet(inputControlMode, this);
     powerOutputEnabled = RedstoneControlMode.isConditionMet(outputControlMode, this);
 
-    if(powerOutputEnabled) {
+    if (powerOutputEnabled) {
       transmitEnergy();
     }
 
     balanceCubeNetworkEnergy();
 
-    //check we are still connected (i.e. we haven't run out of power or started receiving power)
+    // check we are still connected (i.e. we haven't run out of power or started
+    // receiving power)
     boolean stillConnected = isConnected();
-    if(wasConnected != stillConnected) {
+    if (wasConnected != stillConnected) {
       fluidHandlersDirty = true;
     }
     updateFluidHandlers();
@@ -441,18 +442,18 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private List<NetworkFluidHandler> getNetworkHandlers() {
-    if(HyperCubeRegister.instance == null) {
+    if (HyperCubeRegister.instance == null) {
       return Collections.emptyList();
     }
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
-    if(cubes == null || cubes.isEmpty()) {
+    if (cubes == null || cubes.isEmpty()) {
       return Collections.emptyList();
     }
     List<NetworkFluidHandler> result = new ArrayList<NetworkFluidHandler>();
     for (TileHyperCube cube : cubes) {
-      if(cube != this && cube != null) {
+      if (cube != this && cube != null) {
         List<NetworkFluidHandler> handlers = cube.fluidHandlers;
-        if(handlers != null && !handlers.isEmpty()) {
+        if (handlers != null && !handlers.isEmpty()) {
           result.addAll(handlers);
         }
       }
@@ -466,16 +467,16 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       return;
     }
     fluidHandlers.clear();
-    if(isConnected()) {
-    BlockCoord myLoc = new BlockCoord(this);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      if (te instanceof ITankContainer) {
-        ITankContainer fh = (ITankContainer) te;
-        fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
+    if (isConnected()) {
+      BlockCoord myLoc = new BlockCoord(this);
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        BlockCoord checkLoc = myLoc.getLocation(dir);
+        TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+        if (te instanceof ITankContainer) {
+          ITankContainer fh = (ITankContainer) te;
+          fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
+        }
       }
-    }
     }
     fluidHandlersDirty = false;
   }
@@ -504,13 +505,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
     nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
     nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
-    if(channel != null) {
+    if (channel != null) {
       nbtRoot.setString("channelName", channel.name);
-      if(channel.user != null) {
+      if (channel.user != null) {
         nbtRoot.setString("channelUser", channel.user);
+      }
     }
-    }
-    if (owner != null && !(owner.isEmpty()) {
+    if (owner != null && !(owner.isEmpty())) {
       nbtRoot.setString("owner", owner);
     }
   }
