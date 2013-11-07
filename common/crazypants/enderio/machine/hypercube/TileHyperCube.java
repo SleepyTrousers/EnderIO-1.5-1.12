@@ -538,7 +538,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
         nbtRoot.setString("channelUser", channel.user);
       }
     }
-    nbtRoot.setString("owner", owner);
+    if (owner != null && !(owner.isEmpty()) {
+      nbtRoot.setString("owner", owner);
+    }
   }
 
   @Override
