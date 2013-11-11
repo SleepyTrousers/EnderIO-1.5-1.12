@@ -160,7 +160,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
   private ResourceLocation getLiquidSheet() {
     if(texName == null) {
-      texName = TextureMap.field_110575_b;
+      texName = TextureMap.locationBlocksTexture;
     }
     return texName;
   }

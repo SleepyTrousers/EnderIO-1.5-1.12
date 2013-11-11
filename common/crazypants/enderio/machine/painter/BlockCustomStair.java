@@ -102,7 +102,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
           int i2 = this.rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
-          fx.func_110125_a(tex);
+          fx.setParticleIcon(tex);
           effectRenderer.addEffect(fx);
         }
       }
@@ -138,7 +138,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
         0.0D, this, side, 0);
     digFX.applyColourMultiplier(x, y,
         z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
-    digFX.func_110125_a(tex);
+    digFX.setParticleIcon(tex);
     effectRenderer.addEffect(digFX);
   }
 

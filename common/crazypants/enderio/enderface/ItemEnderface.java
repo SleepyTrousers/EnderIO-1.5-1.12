@@ -92,28 +92,30 @@ public class ItemEnderface extends Item implements IGuiHandler {
       int z = tag.getInteger(KEY_IO_Z);
       int dimension = tag.getInteger(KEY_DIMENSION);
 
-      if(world.provider.dimensionId != dimension) {
-        ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
+      if (world.provider.dimensionId != dimension) {
+        ChatMessageComponent c = ChatMessageComponent.createFromText("EnderIO block is in a different dimension.");
         entityPlayer.sendChatToPlayer(c);
         return itemStack;
       }
 
       Chunk c = world.getChunkFromBlockCoords(x, z);
-      if(c == null || !c.isChunkLoaded) {
-        ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block's chunk is not loaded.");
+
+      if (c == null || !c.isChunkLoaded) {
+        ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block's chunk is not loaded.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
-      if(blockId != EnderIO.blockEnderIo.blockID) {
-        ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
+
+      if (blockId != EnderIO.blockEnderIo.blockID) {
+        ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block has been destroyed.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
       return itemStack;
     }
-    ChatMessageComponent cm = ChatMessageComponent.func_111066_d(" Enderface not synchronized with EnderIO.");
+    ChatMessageComponent cm = ChatMessageComponent.createFromText(" Enderface not synchronized with EnderIO.");
     entityPlayer.sendChatToPlayer(cm);
     return itemStack;
   }
