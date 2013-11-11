@@ -97,7 +97,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
       if(!getBundle().getEntity().worldObj.isRemote) {
 
-        if(res.component != null) {
+        if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 

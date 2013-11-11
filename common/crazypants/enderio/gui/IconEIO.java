@@ -2,9 +2,6 @@ package crazypants.enderio.gui;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import crazypants.render.RenderUtil;
 
 public final class IconEIO {
@@ -23,6 +20,13 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
+  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(32, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148);
+  public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(16, 148);
+  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(0, 164);
+  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(16, 164);
+
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 
@@ -30,6 +34,8 @@ public final class IconEIO {
   public final double maxU;
   public final double minV;
   public final double maxV;
+  public final double width;
+  public final double height;
 
   public static final ResourceLocation TEXTURE = new ResourceLocation("enderio:textures/gui/widgets.png");
 
@@ -38,22 +44,20 @@ public final class IconEIO {
   }
 
   public IconEIO(int x, int y, int width, int height) {
-    this((float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)));
+    this(width, height, (float) (PIX_SIZE * x), (float) (PIX_SIZE * (x + width)), (float) (PIX_SIZE * y), (float) (PIX_SIZE * (y + height)));
   }
 
-  public IconEIO(double minU, double maxU, double minV, double maxV) {
+  public IconEIO(double width, double height, double minU, double maxU, double minV, double maxV) {
+    this.width = width;
+    this.height = height;
     this.minU = minU;
     this.maxU = maxU;
     this.minV = minV;
     this.maxV = maxV;
-    //    this.minU = maxU;
-    //    this.maxU = minU;
-    //    this.minV = maxV;
-    //    this.maxV = minV;
   }
 
   public void renderIcon(double x, double y) {
-    renderIcon(x, y, 16, 16, 0, false);
+    renderIcon(x, y, width, height, 0, false);
   }
 
   public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw) {
@@ -61,7 +65,6 @@ public final class IconEIO {
     Tessellator tessellator = Tessellator.instance;
     if(doDraw) {
       RenderUtil.bindTexture(TEXTURE);
-      GL11.glColor3f(1, 1, 1);
       tessellator.startDrawingQuads();
     }
     tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);

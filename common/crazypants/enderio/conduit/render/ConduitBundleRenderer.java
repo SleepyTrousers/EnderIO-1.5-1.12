@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.render;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +26,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -46,6 +49,12 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       connectorBounds.put(dir, createConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
+  }
+
+  public BoundingBox getExternalConnectorBoundsForDirection(ForgeDirection dir) {
+    BoundingBox[] bbs = connectorBounds.get(dir);
+    BoundingBox result = bbs[0];
+    return result;
   }
 
   @Override
@@ -95,13 +104,25 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
     // Conduits
     Set<ForgeDirection> externals = new HashSet<ForgeDirection>();
+    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+
+    List<BoundingBox> wireBounds = new ArrayList<BoundingBox>();
+
     for (IConduit con : bundle.getConduits()) {
-      ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
-      renderer.renderEntity(this, bundle, con, x, y, z, partialTick, brightness);
-      Set<ForgeDirection> extCons = con.getExternalConnections();
-      for (ForgeDirection dir : extCons) {
-        if(con.getConectionMode(dir) != ConnectionMode.DISABLED && con.getConectionMode(dir) != ConnectionMode.NOT_SET) {
-          externals.add(dir);
+
+      if(ConduitUtil.renderConduit(player, con)) {
+        ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
+        renderer.renderEntity(this, bundle, con, x, y, z, partialTick, brightness);
+        Set<ForgeDirection> extCons = con.getExternalConnections();
+        for (ForgeDirection dir : extCons) {
+          if(con.getConectionMode(dir) != ConnectionMode.DISABLED && con.getConectionMode(dir) != ConnectionMode.NOT_SET) {
+            externals.add(dir);
+          }
+        }
+      } else if(con != null) {
+        Collection<CollidableComponent> components = con.getCollidableComponents();
+        for (CollidableComponent component : components) {
+          wireBounds.add(component.bound);
         }
       }
 
@@ -111,14 +132,28 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     List<CollidableComponent> connectors = bundle.getConnectors();
     for (CollidableComponent component : connectors) {
       if(component.conduitType != null) {
-        IConduit con = bundle.getConduit(component.conduitType);
-        float selfIllum = Math.max(brightness, con.getSelfIlluminationForState(component));
-        tessellator.setColorRGBA_F(selfIllum, selfIllum, selfIllum, 1);
-        CubeRenderer.render(component.bound, con.getTextureForState(component));
-      } else {
+        IConduit conduit = bundle.getConduit(component.conduitType);
+        if(conduit != null) {
+          if(ConduitUtil.renderConduit(player, component.conduitType)) {
+            float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
+            tessellator.setColorRGBA_F(selfIllum, selfIllum, selfIllum, 1);
+            CubeRenderer.render(component.bound, conduit.getTextureForState(component));
+          } else {
+            wireBounds.add(component.bound);
+          }
+        }
+
+      } else if(ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
         Icon tex = EnderIO.blockConduitBundle.getConnectorIcon();
         CubeRenderer.render(component.bound, tex);
       }
+    }
+
+    //render these after the 'normal' conduits so help with proper blending
+    for (BoundingBox wireBound : wireBounds) {
+      Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.25f);
+      CubeRenderer.render(wireBound, EnderIO.blockConduitFacade.getIcon(0, 0));
+      Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
     }
 
     // External connection terminations

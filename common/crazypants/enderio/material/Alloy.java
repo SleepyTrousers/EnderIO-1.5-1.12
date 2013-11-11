@@ -26,7 +26,11 @@ public enum Alloy {
 
   CONDUCTIVE_IRON("Conductive Iron", "conductiveIron",
       new ItemStack(Item.redstone, 2),
-      new ItemStack(Item.ingotIron));
+      new ItemStack(Item.ingotIron)),
+
+  PHASED_IRON("Phased Iron", "phasedIron",
+      new ItemStack(Item.ingotIron),
+      new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_ENDER.ordinal()));
 
   public final String unlocalisedName;
   public final String uiName;

@@ -58,9 +58,13 @@ public abstract class AbstractConduit implements IConduit {
   public ConnectionMode getConectionMode(ForgeDirection dir) {
     ConnectionMode res = conectionModes.get(dir);
     if(res == null) {
-      return ConnectionMode.IN_OUT;
+      return getDefaultConnectionMode();
     }
     return res;
+  }
+
+  protected ConnectionMode getDefaultConnectionMode() {
+    return ConnectionMode.IN_OUT;
   }
 
   @Override
@@ -169,6 +173,16 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public boolean hasExternalConnections() {
     return !externalConnections.isEmpty();
+  }
+
+  @Override
+  public boolean hasConnections() {
+    return hasConduitConnections() || hasExternalConnections();
+  }
+
+  @Override
+  public boolean hasConduitConnections() {
+    return !conduitConnections.isEmpty();
   }
 
   @Override

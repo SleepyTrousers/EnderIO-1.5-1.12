@@ -40,8 +40,12 @@ public final class Config {
   public static boolean useHardRecipes = false;
 
   public static boolean detailedPowerTrackingEnabled = true;
-  
+
   public static double maxPhotovoltaicOutput = 1.0;
+
+  public static boolean useSneakMouseWheelYetaWrench = true;
+
+  public static boolean useSneakRightClickYetaWrench = false;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -91,7 +95,7 @@ public final class Config {
 
     maxPhotovoltaicOutput = config.get("Settings", "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
         "Maximum output in MJ/t of the Photovoltaic Panels.").getDouble(maxPhotovoltaicOutput);
-    
+
     useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);
 
@@ -115,8 +119,19 @@ public final class Config {
     detailedPowerTrackingEnabled = config.get("Settings", "detailedPowerTrackingEnabled", detailedPowerTrackingEnabled,
         "Enable per tick sampling on individual power inputs and outputs")
         .getBoolean(detailedPowerTrackingEnabled);
-    
-    
+
+    useSneakMouseWheelYetaWrench = config.get("Settings", "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
+        "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is eqipped.")
+        .getBoolean(useSneakMouseWheelYetaWrench);
+
+    useSneakRightClickYetaWrench = config.get("Settings", "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
+        "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
+        .getBoolean(useSneakRightClickYetaWrench);
+
+    if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
+      Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
+      useSneakMouseWheelYetaWrench = true;
+    }
 
   }
 

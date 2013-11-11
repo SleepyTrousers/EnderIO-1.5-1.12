@@ -104,4 +104,10 @@ public class Vector3d {
     return "Vector3d(" + x + ", " + y + ", " + z + ")";
   }
 
+  public void abs() {
+    x = Math.abs(x);
+    y = Math.abs(y);
+    z = Math.abs(z);
+  }
+
 }

@@ -101,7 +101,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(ConduitUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().worldObj.isRemote) {
-        if(res.component != null) {
+        if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 

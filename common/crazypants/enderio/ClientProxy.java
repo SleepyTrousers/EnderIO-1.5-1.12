@@ -15,13 +15,14 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
+import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.RedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
+import crazypants.enderio.conduit.redstone.RedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneSwitch;
 import crazypants.enderio.conduit.redstone.RedstoneSwitchRenderer;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
@@ -67,11 +68,14 @@ public class ClientProxy extends CommonProxy {
     RedstoneSwitch.initIcons();
     PowerConduit.initIcons();
     LiquidConduit.initIcons();
+    ItemConduit.initIcons();
   }
 
   private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
 
   private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
+
+  private ConduitBundleRenderer cbr;
 
   @Override
   public World getClientWorld() {
@@ -83,13 +87,21 @@ public class ClientProxy extends CommonProxy {
     return Minecraft.getMinecraft().thePlayer;
   }
 
+  public ConduitBundleRenderer getConduitBundleRenderer() {
+    return cbr;
+  }
+
+  public void setCbr(ConduitBundleRenderer cbr) {
+    this.cbr = cbr;
+  }
+
   @Override
   public void load() {
     super.load();
 
     // Renderers
 
-    ConduitBundleRenderer cbr = new ConduitBundleRenderer((float) Config.conduitScale);
+    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
     BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(cbr);
 
@@ -114,6 +126,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit.itemID, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit.itemID, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit.itemID, itemConRenderer);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit.itemID, itemConRenderer);
 
     PaintedItemRenderer pir = new PaintedItemRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomFence.blockID, pir);
@@ -131,6 +144,7 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new LiquidConduitRenderer());
     conduitRenderers.add(new PowerConduitRenderer());
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
+    conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
 
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);

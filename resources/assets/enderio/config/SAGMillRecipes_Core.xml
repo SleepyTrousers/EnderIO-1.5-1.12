@@ -176,6 +176,15 @@
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" />
       </output>
     </recipe>
+    
+     <recipe name="EnderPearl" energyCost="160">
+      <input>
+        <itemStack itemID="368" />
+      </input>      
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="5" number="9" />
+      </output>
+    </recipe>
 
   </recipeGroup>
 
