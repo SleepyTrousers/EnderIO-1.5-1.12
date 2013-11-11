@@ -18,11 +18,15 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 
@@ -37,6 +41,8 @@ public class ConduitUtil {
       return new PowerConduitNetwork();
     } else if(ILiquidConduit.class.isAssignableFrom(type)) {
       return new LiquidConduitNetwork();
+    } else if(IItemConduit.class.isAssignableFrom(type)) {
+      return new ItemConduitNetwork();
     }
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
     return null;
@@ -94,6 +100,54 @@ public class ConduitUtil {
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
     //ModuleManager.itemHasActiveModule(player.getCurrentEquippedItem, OmniWrenchModule.MODULE_OMNI_WRENCH)
     return bundle.getFacadeId() > 0 && (isToolEquipped(player) || isConduitEquipped(player));
+  }
+
+  public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
+    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
+    if(player == null) {
+      return ConduitDisplayMode.ALL;
+    }
+    ItemStack equipped = player.getCurrentEquippedItem();
+    if(equipped == null) {
+      return ConduitDisplayMode.ALL;
+    }
+    if(equipped.itemID != ModObject.itemYetaWrench.actualId) {
+      return ConduitDisplayMode.ALL;
+    }
+    ConduitDisplayMode result = ConduitDisplayMode.getDisplayMode(equipped);
+    if(result == null) {
+      return ConduitDisplayMode.ALL;
+    }
+    return result;
+  }
+
+  public static boolean renderConduit(EntityPlayer player, IConduit con) {
+    if(player == null || con == null) {
+      return true;
+    }
+    return renderConduit(player, con.getBaseConduitType());
+  }
+
+  public static boolean renderConduit(EntityPlayer player, Class<? extends IConduit> conduitType) {
+    if(player == null || conduitType == null) {
+      return true;
+    }
+    ConduitDisplayMode mode = getDisplayMode(player);
+    switch (mode) {
+    case ALL:
+      return true;
+    case FLUID:
+      return conduitType == ILiquidConduit.class;
+    case ITEM:
+      return conduitType == IItemConduit.class;
+    case POWER:
+      return conduitType == IPowerConduit.class;
+    case REDSTONE:
+      return conduitType == IRedstoneConduit.class || conduitType == IInsulatedRedstoneConduit.class;
+    default:
+      break;
+    }
+    return true;
   }
 
   public static boolean isConduitEquipped(EntityPlayer player) {

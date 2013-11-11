@@ -55,6 +55,8 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_MJ_READER_INFO_REQUEST = 12;
   public static final int ID_POWER_MONITOR_PACKET = 13;
 
+  public static final int ID_YETA_WRENCH_MODE_PACKET = 14;
+
   public static final String CHANNEL = "EnderIO";
 
   public static PacketHandler instance;

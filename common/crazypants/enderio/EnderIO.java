@@ -19,12 +19,15 @@ import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.item.ItemRecipes;
+import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.RedstoneModePacketProcessor;
@@ -55,7 +58,6 @@ import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
-import crazypants.enderio.material.ItemYetaWrench;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
@@ -101,6 +103,7 @@ public class EnderIO {
   public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
+  public static ItemItemConduit itemItemConduit;
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
@@ -169,6 +172,7 @@ public class EnderIO {
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
+    itemItemConduit = ItemItemConduit.create();
 
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
@@ -193,6 +197,7 @@ public class EnderIO {
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
+    ItemRecipes.addRecipes();
 
     triggerNoEnergy = new TriggerEnderIO("enderIO.trigger.noEnergy", 0);
     triggerHasEnergy = new TriggerEnderIO("enderIO.trigger.hasEnergy", 1);

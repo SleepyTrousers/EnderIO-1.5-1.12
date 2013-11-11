@@ -91,7 +91,7 @@ public class ConduitGeometryUtil {
   }
 
   public Vector3d getTranslation(ForgeDirection dir, Offset offset) {
-    Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, 0);
+    Vector3d result = new Vector3d(offset.xOffset, offset.yOffset, offset.zOffset);
     result.scale(WIDTH);
     return result;
   }

@@ -534,29 +534,57 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       boolean result = false;
       // if its a connector pass the event on to all conduits
       for (IConduit con : bundle.getConduits()) {
-        if(con.onBlockActivated(player, closest, all)) {
+        if(ConduitUtil.renderConduit(player, con.getCollidableType()) && con.onBlockActivated(player, getHitForConduitType(all, con.getCollidableType()), all)) {
           bundle.getEntity().onInventoryChanged();
           result = true;
         }
 
       }
-      return result;
+      if(result) {
+        return true;
+      }
     }
 
     if(closest == null || closest.component == null || closest.component.conduitType ==
-        null) {
+        null && all == null) {
       // Nothing of interest hit
       return false;
     }
 
     // Conduit specific actions
-    if(bundle.getConduit(closest.component.conduitType) != null && bundle.getConduit(closest.component.conduitType).onBlockActivated(player,
-        closest, all)) {
-      bundle.getEntity().onInventoryChanged();
-      return true;
+    if(all != null) {
+      RaytraceResult.sort(getEyePosition(world, player), all);
+      for (RaytraceResult rr : all) {
+        if(ConduitUtil.renderConduit(player, rr.component.conduitType) && !(rr.component.data instanceof
+            ConduitConnectorType)) {
+
+          IConduit con = bundle.getConduit(rr.component.conduitType);
+          if(con != null && con.onBlockActivated(player,
+              rr, all)) {
+            bundle.getEntity().onInventoryChanged();
+            return true;
+          }
+        }
+      }
+    } else {
+      IConduit closestConduit = bundle.getConduit(closest.component.conduitType);
+      if(closestConduit != null && ConduitUtil.renderConduit(player, closestConduit) && closestConduit.onBlockActivated(player,
+          closest, all)) {
+        bundle.getEntity().onInventoryChanged();
+        return true;
+      }
     }
     return false;
 
+  }
+
+  private RaytraceResult getHitForConduitType(List<RaytraceResult> all, Class<? extends IConduit> collidableType) {
+    for (RaytraceResult rr : all) {
+      if(rr.component != null && rr.component.conduitType == collidableType) {
+        return rr;
+      }
+    }
+    return null;
   }
 
   @Override
@@ -656,13 +684,18 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     if(allHits == null) {
       return null;
     }
+    Vec3 origin = getEyePosition(world, entityPlayer);
+    return RaytraceResult.getClosestHit(origin, allHits);
+  }
+
+  private Vec3 getEyePosition(World world, EntityPlayer entityPlayer) {
     double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
     if(!world.isRemote && entityPlayer.isSneaking()) {
       posY -= 0.08;
     }
     Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
         entityPlayer.posZ);
-    return RaytraceResult.getClosestHit(origin, allHits);
+    return origin;
   }
 
   public List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z,
@@ -676,12 +709,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     double reachDistance = EnderIO.proxy.getReachDistanceForPlayer(entityPlayer);
 
-    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
-    if(!world.isRemote && entityPlayer.isSneaking()) {
-      posY -= 0.08;
-    }
-    Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
-        entityPlayer.posZ);
+    Vec3 origin = getEyePosition(world, entityPlayer);
     Vec3 direction = origin.addVector(dirX * reachDistance, dirY *
         reachDistance, dirZ * reachDistance);
     return doRayTraceAll(world, x, y, z, origin, direction,

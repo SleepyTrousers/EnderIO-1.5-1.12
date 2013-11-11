@@ -94,7 +94,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
         Tessellator tes = Tessellator.instance;
         tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
 
-        float scaleFactor = 14f / 16f;
+        float scaleFactor = 13f / 16f;
         Vector2d uv = new Vector2d();
         List<ForgeDirection> edges = RenderUtil.getEdgesForFace(face);
         for (ForgeDirection edge : edges) {

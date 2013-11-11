@@ -8,6 +8,8 @@ import java.util.List;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.geom.Offsets;
+import crazypants.enderio.conduit.geom.Offsets.Axis;
 import crazypants.render.BoundingBox;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.Vector2f;
@@ -173,10 +175,13 @@ public class RoundedSegmentRenderer {
   private static Vector3d calcOffset(ForgeDirection dir, BoundingBox bounds) {
     Vector3d res = new Vector3d();
     Vector3d center = bounds.getCenter();
-    if(dir != ForgeDirection.UP && dir != ForgeDirection.DOWN) {
-      res.set(0, center.y - REF_TRANS.y, 0);
-    } else {
-      res.set(center.x - REF_TRANS.x, 0, 0);
+    Axis axis = Offsets.getAxisForDir(dir);
+    if(axis == Axis.X) {
+      res.set(0, center.y - REF_TRANS.y, center.z - REF_TRANS.z);
+    } else if(axis == Axis.Y) {
+      res.set(center.x - REF_TRANS.x, 0, center.z - REF_TRANS.z);
+    } else if(axis == Axis.Z) {
+      res.set(center.x - REF_TRANS.x, center.y - REF_TRANS.y, 0);
     }
     return res;
   }

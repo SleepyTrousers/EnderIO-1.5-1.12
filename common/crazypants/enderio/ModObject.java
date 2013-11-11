@@ -62,7 +62,9 @@ public enum ModObject {
   itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader"),
   itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials"),
 
-  blockPowerMonitor(++Config.BID, CATEGORY_BLOCK, "Power Monitor");
+  blockPowerMonitor(++Config.BID, CATEGORY_BLOCK, "Power Monitor"),
+
+  itemItemConduit(++Config.IID, CATEGORY_ITEM, "Item Conduit");
 
   public final String unlocalisedName;
   public final String name;

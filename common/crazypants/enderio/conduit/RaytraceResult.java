@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -25,12 +28,31 @@ public class RaytraceResult {
     return closest;
   }
 
+  public static void sort(final Vec3 origin, List<RaytraceResult> toSort) {
+    if(origin == null || toSort == null) {
+      Collections.sort(toSort, new Comparator<RaytraceResult>() {
+
+        @Override
+        public int compare(RaytraceResult o1, RaytraceResult o2) {
+          return Double.compare(o1.getDistanceTo(origin), o1.getDistanceTo(origin));
+        }
+      });
+    }
+  }
+
   public final CollidableComponent component;
   public final MovingObjectPosition movingObjectPosition;
 
   public RaytraceResult(CollidableComponent component, MovingObjectPosition movingObjectPosition) {
     this.component = component;
     this.movingObjectPosition = movingObjectPosition;
+  }
+
+  public double getDistanceTo(Vec3 origin) {
+    if(movingObjectPosition == null || origin == null) {
+      return Double.MAX_VALUE;
+    }
+    return movingObjectPosition.hitVec.squareDistanceTo(origin);
   }
 
 }

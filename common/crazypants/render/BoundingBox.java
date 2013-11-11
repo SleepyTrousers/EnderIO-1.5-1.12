@@ -57,6 +57,15 @@ public final class BoundingBox {
         Math.max(maxX, other.maxX), Math.max(maxY, other.maxY), Math.max(maxZ, other.maxZ));
   }
 
+  public boolean contains(BoundingBox other) {
+    return minX >= other.minX && minY <= other.minY && minZ <= other.minZ && maxX >= other.maxX && maxY <= other.maxY && maxZ <= other.maxZ;
+  }
+
+  public boolean intersects(BoundingBox other) {
+    return other.maxX > this.minX && other.minX < this.maxX ? (other.maxY > this.minY && other.minY < this.maxY ? other.maxZ > this.minZ
+        && other.minZ < this.maxZ : false) : false;
+  }
+
   public boolean isValid() {
     return minX < maxX && minY < maxY && minZ < maxZ;
   }
@@ -81,6 +90,10 @@ public final class BoundingBox {
 
   public BoundingBox translate(Vector3d translation) {
     return translate((float) translation.x, (float) translation.y, (float) translation.z);
+  }
+
+  public BoundingBox translate(Vector3f vec) {
+    return translate(vec.x, vec.y, vec.z);
   }
 
   public BoundingBox transform(VertexTransform iTransformation) {

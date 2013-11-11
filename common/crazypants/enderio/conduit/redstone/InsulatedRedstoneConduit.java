@@ -83,7 +83,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
         return true;
       } else if(ConduitUtil.isToolEquipped(player)) {
 
-        if(res.component != null) {
+        if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 
@@ -167,7 +167,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public Class<? extends IConduit> getCollidableType() {
-    return InsulatedRedstoneConduit.class;
+    return IInsulatedRedstoneConduit.class;
   }
 
   @Override

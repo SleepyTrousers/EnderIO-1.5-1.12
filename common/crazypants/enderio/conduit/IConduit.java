@@ -43,6 +43,13 @@ public interface IConduit {
 
   BlockCoord getLocation();
 
+  // Conections
+  boolean hasConnections();
+
+  boolean hasExternalConnections();
+
+  boolean hasConduitConnections();
+
   // Conduit Connections
 
   boolean canConnectToConduit(ForgeDirection direction, IConduit conduit);
@@ -66,8 +73,6 @@ public interface IConduit {
   Set<ForgeDirection> getExternalConnections();
 
   boolean containsExternalConnection(ForgeDirection dir);
-
-  boolean hasExternalConnections();
 
   void externalConnectionAdded(ForgeDirection fromDirection);
 

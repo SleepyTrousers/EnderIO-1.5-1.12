@@ -1,4 +1,4 @@
-package crazypants.enderio.material;
+package crazypants.enderio.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -10,14 +10,22 @@ import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.ConduitDisplayMode;
 
 public class ItemYetaWrench extends Item implements IToolWrench {
 
   public static ItemYetaWrench create() {
+    if(Config.useSneakMouseWheelYetaWrench) {
+      PacketHandler.instance.addPacketProcessor(new YetaWrenchPacketProcessor());
+      TickRegistry.registerTickHandler(new YetaWrenchTickHandler(), Side.CLIENT);
+    }
     ItemYetaWrench result = new ItemYetaWrench();
     result.init();
     return result;
@@ -33,6 +41,7 @@ public class ItemYetaWrench extends Item implements IToolWrench {
   protected void init() {
     LanguageRegistry.addName(this, ModObject.itemYetaWrench.name);
     GameRegistry.registerItem(this, ModObject.itemYetaWrench.unlocalisedName);
+    new YetaWrenchOverlayRenderer(this);
   }
 
   @Override
@@ -50,6 +59,23 @@ public class ItemYetaWrench extends Item implements IToolWrench {
       return !world.isRemote;
     }
     return false;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+    if(!Config.useSneakRightClickYetaWrench) {
+      return equipped;
+    }
+    if(!player.isSneaking()) {
+      return equipped;
+    }
+    ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
+    if(curMode == null) {
+      curMode = ConduitDisplayMode.ALL;
+    }
+    ConduitDisplayMode newMode = curMode.next();
+    ConduitDisplayMode.setDisplayMode(equipped, newMode);
+    return equipped;
   }
 
   @Override
