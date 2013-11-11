@@ -271,17 +271,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       return ICONS.get(ICON_CORE_ADVANCED_KEY);
     }
 
-    if(getExternalConnections().contains(component.dir)) {
-      if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
-        return ICONS.get(ICON_KEY_INPUT);
-      }
-      if(getConectionMode(component.dir) == ConnectionMode.INPUT) {
-        return ICONS.get(ICON_KEY_OUTPUT);
-      }
-      if(getConectionMode(component.dir) == ConnectionMode.IN_OUT) {
-        return ICONS.get(ICON_KEY_IN_OUT);
-      }
-    }
+    //    if(getExternalConnections().contains(component.dir)) {
+    //      if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
+    //        return ICONS.get(ICON_KEY_INPUT);
+    //      }
+    //      if(getConectionMode(component.dir) == ConnectionMode.INPUT) {
+    //        return ICONS.get(ICON_KEY_OUTPUT);
+    //      }
+    //      if(getConectionMode(component.dir) == ConnectionMode.IN_OUT) {
+    //        return ICONS.get(ICON_KEY_IN_OUT);
+    //      }
+    //    }
     return ICONS.get(ICON_KEY);
   }
 
