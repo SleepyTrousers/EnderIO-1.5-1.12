@@ -183,6 +183,34 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected float getPowerUsePerTick() {
     return capacitorType.capacitor.getMaxEnergyExtracted();
   }
+  
+  // RF Power
+  
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);    
+  }
+
+  @Override
+  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    return 0;
+  }
+
+  @Override
+  public boolean canInterface(ForgeDirection from) {
+    return true;
+  }
+
+  @Override
+  public int getEnergyStored(ForgeDirection from) {
+    return (int)(powerHandler.getEnergyStored() * 10);
+  }
+
+  @Override
+  public int getMaxEnergyStored(ForgeDirection from) {
+    return (int)(powerHandler.getMaxEnergyStored() * 10);
+  }
+
 
   // --- Process Loop
   // --------------------------------------------------------------------------

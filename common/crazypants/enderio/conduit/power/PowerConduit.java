@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cofh.api.energy.IEnergyHandler;
+
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +31,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.power.PowerInterface;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -213,6 +216,34 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {  
+    if(getMaxEnergyRecieved(from) == 0) {
+      return 0;
+    }
+    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+  }
+
+  @Override
+  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+   return 0;
+  }
+
+  @Override
+  public boolean canInterface(ForgeDirection from) {
+    return true;
+  }
+
+  @Override
+  public int getEnergyStored(ForgeDirection from) {
+    return (int)(powerHandler.getEnergyStored() * 10);
+  }
+
+  @Override
+  public int getMaxEnergyStored(ForgeDirection from) {
+    return (int)(powerHandler.getMaxEnergyStored() * 10);
+  }
+
+  @Override
   public AbstractConduitNetwork<?> getNetwork() {
     return network;
   }
@@ -225,11 +256,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction) {
-    IPowerReceptor rec = getExternalPowerReceptor(direction);
-    if(rec instanceof IPowerEmitter) {
-      return ((IPowerEmitter) rec).canEmitPowerFrom(direction.getOpposite());
-    }
-    return rec != null && PowerHandlerUtil.canConnectRecievePower(rec);
+    PowerInterface rec = getExternalPowerReceptor(direction);
+    return rec != null && rec.canConduitConnect(direction);
   }
 
   @Override
@@ -252,20 +280,20 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public IPowerReceptor getExternalPowerReceptor(ForgeDirection direction) {
+  public PowerInterface getExternalPowerReceptor(ForgeDirection direction) {
     TileEntity te = bundle.getEntity();
     World world = te.worldObj;
     if(world == null) {
       return null;
     }
     TileEntity test = world.getBlockTileEntity(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
+    if(test == null) {
+      return null;      
+    }   
     if(test instanceof IConduitBundle) {
       return null;
-    }
-    if(test instanceof IPowerReceptor) {
-      return (IPowerReceptor) test;
-    }
-    return null;
+    }    
+    return PowerInterface.create(test);
   }
 
   @Override

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import cofh.api.energy.IEnergyHandler;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -18,6 +20,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
 
 public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor, IPowerEmitter {
@@ -68,9 +71,36 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     return powerHandler;
   }
 
+  // RF Power
+
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+  }
+
+  @Override
+  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    return 0;
+  }
+
+  @Override
+  public boolean canInterface(ForgeDirection from) {
+    return true;
+  }
+
+  @Override
+  public int getEnergyStored(ForgeDirection from) {
+    return (int) (powerHandler.getEnergyStored() * 10);
+  }
+
+  @Override
+  public int getMaxEnergyStored(ForgeDirection from) {
+    return (int) (powerHandler.getMaxEnergyStored() * 10);
+  }
+
   @Override
   public void updateEntity() {
-    if(worldObj == null || worldObj.isRemote) {
+    if (worldObj == null || worldObj.isRemote) {
       return;
     }
     collectEnergy();
@@ -78,7 +108,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void collectEnergy() {
-    if(!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
+    if (!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
       return;
     }
     float fromSun = calculateLightRatio();
@@ -91,7 +121,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     int lightValue = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted;
     float sunAngle = worldObj.getCelestialAngleRadians(1.0F);
 
-    if(sunAngle < (float) Math.PI) {
+    if (sunAngle < (float) Math.PI) {
       sunAngle += (0.0F - sunAngle) * 0.2F;
     } else {
       sunAngle += (((float) Math.PI * 2F) - sunAngle) * 0.2F;
@@ -105,7 +135,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   private boolean transmitEnergy() {
 
-    if(powerHandler.getEnergyStored() <= 0) {
+    if (powerHandler.getEnergyStored() <= 0) {
       powerHandler.update();
       return false;
     }
@@ -120,7 +150,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
     checkReceptors();
 
-    if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
+    if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
     }
 
@@ -129,22 +159,18 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
 
       Receptor receptor = receptorIterator.next();
-      PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir.getOpposite());
-      if(pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
-        float used;
-        if(receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir.getOpposite());
-        } else {
-          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir.getOpposite());
-        }
+      PowerInterface pp = receptor.receptor;
+      if (pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
+        float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
         canTransmit -= used;
       }
-      if(canTransmit <= 0) {
+
+      if (canTransmit <= 0) {
         break;
       }
 
-      if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
+      if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = receptors.listIterator();
       }
       appliedCount++;
@@ -157,46 +183,28 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void checkReceptors() {
-    if(!receptorsDirty) {
+    if (!receptorsDirty) {
       return;
     }
     receptors.clear();
-
     BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
     ForgeDirection dir = ForgeDirection.DOWN;
     BlockCoord checkLoc = bc.getLocation(dir);
     TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-    if(te instanceof IPowerReceptor) {
-      IPowerReceptor rec = (IPowerReceptor) te;
-      PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-      if(reciever != null) {
-        receptors.add(new Receptor((IPowerReceptor) te, dir));
-      }
-    }
-
-    // NB: This is to supports connections from any direction
-    // BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
-    // for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-    // BlockCoord checkLoc = bc.getLocation(dir);
-    // TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y,
-    // checkLoc.z);
-    // if (te instanceof IPowerReceptor) {
-    // IPowerReceptor rec = (IPowerReceptor) te;
-    // PowerReceiver reciever = rec.getPowerReceiver(dir.getOpposite());
-    // receptors.add(new Receptor((IPowerReceptor) te, dir.getOpposite()));
-    // }
-    // }
+    PowerInterface pi = PowerInterface.create(te);
+    if(pi != null) {
+      receptors.add(new Receptor(pi, dir));
+    }   
     receptorIterator = receptors.listIterator();
     receptorsDirty = false;
 
   }
 
   static class Receptor {
-    IPowerReceptor receptor;
+    PowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(IPowerReceptor rec, ForgeDirection fromDir) {
-      super();
+    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }

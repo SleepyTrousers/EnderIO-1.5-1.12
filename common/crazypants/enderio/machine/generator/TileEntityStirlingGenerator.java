@@ -12,15 +12,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
 
 public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory, IPowerEmitter {
@@ -171,19 +168,13 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     int appliedCount = 0;
     int numReceptors = receptors.size();
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
-
       Receptor receptor = receptorIterator.next();
-      PowerReceiver pp = receptor.receptor.getPowerReceiver(receptor.fromDir.getOpposite());
-      if(pp != null && pp.getMinEnergyReceived() <= canTransmit && pp.getType() != Type.ENGINE) {
-        float used;
-        if(receptor.receptor instanceof IInternalPowerReceptor) {
-          used = PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) receptor.receptor, pp, canTransmit, Type.ENGINE, receptor.fromDir.getOpposite());
-        } else {
-          used = pp.receiveEnergy(Type.ENGINE, canTransmit, receptor.fromDir.getOpposite());
-        }
+      PowerInterface pp = receptor.receptor;
+      if (pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
+        float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
         canTransmit -= used;
-      }
+      }      
       if(canTransmit <= 0) {
         break;
       }
@@ -210,10 +201,10 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = bc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      if(te instanceof IPowerReceptor) {
-        IPowerReceptor rec = (IPowerReceptor) te;
-        receptors.add(new Receptor((IPowerReceptor) te, dir));
-      }
+      PowerInterface pi = PowerInterface.create(te);
+      if(pi != null) {
+        receptors.add(new Receptor(pi, dir));
+      }      
     }
     receptorIterator = receptors.listIterator();
     receptorsDirty = false;
@@ -221,11 +212,10 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   static class Receptor {
-    IPowerReceptor receptor;
+    PowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(IPowerReceptor rec, ForgeDirection fromDir) {
-      super();
+    private Receptor(PowerInterface rec, ForgeDirection fromDir) {      
       this.receptor = rec;
       this.fromDir = fromDir;
     }
