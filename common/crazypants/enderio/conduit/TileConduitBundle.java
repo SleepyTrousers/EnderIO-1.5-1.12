@@ -543,6 +543,51 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public World getWorld() {
     return worldObj;
   }
+  
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.receiveEnergy(from, maxReceive, simulate);
+    }
+    return 0;
+  }
+
+  @Override
+  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.extractEnergy(from, maxExtract, simulate);
+    }
+    return 0;
+  }
+
+  @Override
+  public boolean canInterface(ForgeDirection from) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.canInterface(from);
+    }
+    return false;
+  }
+
+  @Override
+  public int getEnergyStored(ForgeDirection from) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getEnergyStored(from);
+    }
+    return 0;
+  }
+
+  @Override
+  public int getMaxEnergyStored(ForgeDirection from) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getMaxEnergyStored(from);
+    }
+    return 0;
+  }
 
   // ------- Liquids -----------------------------
 

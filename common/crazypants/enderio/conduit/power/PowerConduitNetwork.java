@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cofh.api.energy.IEnergyHandler;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -14,6 +16,8 @@ import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.power.TileCapacitorBank;
+import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
@@ -54,7 +58,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     super.addConduit(con);
     Set<ForgeDirection> externalDirs = con.getExternalConnections();
     for (ForgeDirection dir : externalDirs) {
-      IPowerReceptor pr = con.getExternalPowerReceptor(dir);
+      PowerInterface pr = con.getExternalPowerReceptor(dir);
       if(pr != null) {
         TileEntity te = con.getBundle().getEntity();
         powerReceptorAdded(con, dir, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, pr);
@@ -70,7 +74,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     return IPowerConduit.class;
   }
 
-  public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, IPowerReceptor powerReceptor) {
+  public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, PowerInterface powerReceptor) {
     if(powerReceptor == null) {
       return;
     }
@@ -123,12 +127,13 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   public static class ReceptorEntry {
 
     IPowerConduit emmiter;
-    IPowerReceptor powerReceptor;
     BlockCoord coord;
     ForgeDirection direction;
+    
+    PowerInterface powerInterface;
 
-    public ReceptorEntry(IPowerReceptor powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
-      this.powerReceptor = powerReceptor;
+    public ReceptorEntry(PowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
+      powerInterface =powerReceptor;
       this.coord = coord;
       this.emmiter = emmiter;
       this.direction = direction;
