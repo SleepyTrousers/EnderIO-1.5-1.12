@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -157,34 +157,47 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     boolean chargedItem = false;
     float available = Math.min(maxIO, stored);
     for (ItemStack item : inventory) {
-      if (item != null && item.getItem() instanceof IChargeableItem && available > 0) {
-        IChargeableItem chargable = (IChargeableItem) item.getItem();
-        float max = chargable.getMaxEnergyStored(item);
-        float cur = chargable.getEnergyStored(item);
-        float canUse = Math.min(available, max - cur);
+      if (item != null && available > 0) {
+        float used = 0;
+        if (item.getItem() instanceof IEnergyContainerItem) {
+          IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
 
-        if (cur < max) {
+          float max = chargable.getMaxEnergyStored(item);
+          float cur = chargable.getEnergyStored(item);
+          float canUse = Math.min(available * 10, max - cur);
+          if (cur < max) {
+            used = chargable.receiveEnergy(item, (int) canUse, false) / 10;
+            //TODO: I should be able to use 'used' but it is always returning 0 ATM.
+            used = (chargable.getEnergyStored(item) - cur)/10;
+          }
 
-          float used = 0;
-          if (chargable.getClass().getName().startsWith("appeng") || "appeng.common.base.AppEngMultiChargeable".equals(chargable.getClass().getName())) {
-            // 256 max limit
-            canUse = Math.min(canUse, 256);
-            NBTTagCompound tc = item.getTagCompound();
-            if (tc == null) {
-              item.setTagCompound(tc = new NBTTagCompound());
+        } else if (item.getItem() instanceof IChargeableItem) {
+          IChargeableItem chargable = (IChargeableItem) item.getItem();
+          float max = chargable.getMaxEnergyStored(item);
+          float cur = chargable.getEnergyStored(item);
+          float canUse = Math.min(available, max - cur);
+
+          if (cur < max) {
+            if (chargable.getClass().getName().startsWith("appeng") || "appeng.common.base.AppEngMultiChargeable".equals(chargable.getClass().getName())) {
+              // 256 max limit
+              canUse = Math.min(canUse, 256);
+              NBTTagCompound tc = item.getTagCompound();
+              if (tc == null) {
+                item.setTagCompound(tc = new NBTTagCompound());
+              }
+              double newVal = (cur + canUse) * 5.0;
+              tc.setDouble("powerLevel", newVal);
+              used = canUse;
+
+            } else {
+              used = chargable.receiveEnergy(item, canUse, true);
             }
-            double newVal = (cur + canUse) * 5.0;
-            tc.setDouble("powerLevel", newVal);
-            used = canUse;
-
-          } else {
-            used = chargable.receiveEnergy(item, canUse, true);
-          }
-          if (used > 0) {
-            powerHandler.setEnergy(stored - used);
-            chargedItem = true;
-            available -= used;
-          }
+          }          
+        }
+        if (used > 0) {
+          powerHandler.setEnergy(stored - used);
+          chargedItem = true;
+          available -= used;
         }
       }
     }
@@ -219,8 +232,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
       Receptor receptor = receptorIterator.next();
       PowerInterface powerInterface = receptor.receptor;
-      if (powerInterface != null && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit && !powerHandler.isPowerSource(receptor.fromDir)) {
-
+      if (powerInterface != null && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit
+          && !powerHandler.isPowerSource(receptor.fromDir)) {
         float used;
         if (receptor.receptor.getDelegate() instanceof IInternalPowerReceptor) {
           IInternalPowerReceptor internalRec = (IInternalPowerReceptor) receptor.receptor.getDelegate();
@@ -784,7 +797,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if (itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof IChargeableItem;
+    return itemstack.getItem() instanceof IChargeableItem || itemstack.getItem() instanceof IEnergyContainerItem;
   }
 
   @Override
