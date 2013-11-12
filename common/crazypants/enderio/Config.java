@@ -112,7 +112,7 @@ public final class Config {
     transceiverUpkeepCost = config.get("Settings", "transceiverUpkeepCost", transceiverUpkeepCost,
         "Number of MJ/t required to keep a Dimensional Transceiver connection open").getDouble(transceiverUpkeepCost);
     transceiverMaxIO = config.get("Settings", "transceiverMaxIO", transceiverMaxIO,
-        "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limites are no cumulative").getInt(transceiverMaxIO);
+        "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limites are not cumulative").getInt(transceiverMaxIO);
     transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
         "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
 
