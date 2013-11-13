@@ -23,9 +23,8 @@ public class ItemYetaWrench extends Item implements IToolWrench {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
-      PacketHandler.instance.addPacketProcessor(new YetaWrenchPacketProcessor());
-      TickRegistry.registerTickHandler(new YetaWrenchTickHandler(), Side.CLIENT);
-    }
+      PacketHandler.instance.addPacketProcessor(new YetaWrenchPacketProcessor());     
+    }       
     ItemYetaWrench result = new ItemYetaWrench();
     result.init();
     return result;
@@ -40,8 +39,7 @@ public class ItemYetaWrench extends Item implements IToolWrench {
 
   protected void init() {
     LanguageRegistry.addName(this, ModObject.itemYetaWrench.name);
-    GameRegistry.registerItem(this, ModObject.itemYetaWrench.unlocalisedName);
-    new YetaWrenchOverlayRenderer(this);
+    GameRegistry.registerItem(this, ModObject.itemYetaWrench.unlocalisedName);    
   }
 
   @Override
