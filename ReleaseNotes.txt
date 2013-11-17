@@ -1,3 +1,7 @@
+0.4.3
+- Added support for Redstone Flux Power
+- Simple item conduits added. These should be considered a work in progress.
+
 0.4.2
 - Fixed DimensionalTransceiver transferring fluids without power.
 - #232 Fixed transceiver crashes 
