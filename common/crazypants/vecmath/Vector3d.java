@@ -44,11 +44,24 @@ public class Vector3d {
     z += vec.z;
     return this;
   }
+  
+  public Vector3d add(Vector3f vec) {
+    x += vec.x;
+    y += vec.y;
+    z += vec.z;
+    return this;
+  }
 
   public void sub(Vector3d vec) {
     x -= vec.x;
     y -= vec.y;
     z -= vec.z;
+  }
+  
+  public void sub(Vector3f vec) {
+    x -= vec.x;
+    y -= vec.y;
+    z -= vec.z;    
   }
 
   public Vector3d negate() {
@@ -109,5 +122,7 @@ public class Vector3d {
     y = Math.abs(y);
     z = Math.abs(z);
   }
+
+  
 
 }

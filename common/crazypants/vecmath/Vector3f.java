@@ -49,11 +49,23 @@ public class Vector3f {
     y += vec.y;
     z += vec.z;
   }
+  
+  public void add(Vector3d vec) {
+    x += vec.x;
+    y += vec.y;
+    z += vec.z;
+  }
 
   public void sub(Vector3f vec) {
     x -= vec.x;
     y -= vec.y;
     z -= vec.z;
+  }
+  
+  public void sub(Vector3d vec) {
+    x -= vec.x;
+    y -= vec.y;
+    z -= vec.z;    
   }
 
   public void negate() {
@@ -91,4 +103,6 @@ public class Vector3f {
   public String toString() {
     return "Vector3f(" + x + ", " + y + ", " + z + ")";
   }
+
+  
 }
