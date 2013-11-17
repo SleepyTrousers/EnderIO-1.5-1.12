@@ -9,8 +9,7 @@ import crazypants.enderio.conduit.ItemConduitSubtype;
 public class ItemItemConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemItemConduit.unlocalisedName, ModObject.itemItemConduit.name, "enderio:itemItemConduit"),
-      new ItemConduitSubtype(ModObject.itemItemConduit.unlocalisedName + "Advanced", "Advanced Item Conduit", "enderio:itemItemConduitAdvanced"),
+      new ItemConduitSubtype(ModObject.itemItemConduit.unlocalisedName, ModObject.itemItemConduit.name, "enderio:itemItemConduit")
   };
 
   public static ItemItemConduit create() {
@@ -29,10 +28,7 @@ public class ItemItemConduit extends AbstractItemConduit {
   }
 
   @Override
-  public IConduit createConduit(ItemStack item) {
-    if(item.getItemDamage() == 1) {
-      return new ItemConduit(true);
-    }
+  public IConduit createConduit(ItemStack item) {   
     return new ItemConduit();
   }
 

@@ -161,7 +161,6 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockHyperCube.blockID, hcr);
     
     new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
-
     // Tick handler
     if (Config.useSneakMouseWheelYetaWrench) {
       TickRegistry.registerTickHandler(new YetaWrenchTickHandler(), Side.CLIENT);

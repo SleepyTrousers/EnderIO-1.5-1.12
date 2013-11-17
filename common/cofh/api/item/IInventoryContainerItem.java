@@ -15,6 +15,6 @@ public interface IInventoryContainerItem {
 	/**
 	 * Get the size of this inventory.
 	 */
-	int getSizeInventory(ItemStack stack);
+	int getSizeInventory(ItemStack container);
 
 }

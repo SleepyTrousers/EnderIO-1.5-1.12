@@ -36,11 +36,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
   public static final String ICON_KEY = "enderio:itemConduit";
-  //public static final String ICON_KEY = "enderio:tesseractPortal";
 
   public static final String ICON_CORE_KEY = "enderio:itemConduitCore";
-
-  public static final String ICON_CORE_ADVANCED_KEY = "enderio:itemConduitCoreAdvanced";
 
   public static final String ICON_KEY_INPUT = "enderio:itemConduitInput";
 
@@ -59,7 +56,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       public void registerIcons(IconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-        ICONS.put(ICON_CORE_ADVANCED_KEY, register.registerIcon(ICON_CORE_ADVANCED_KEY));
         ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
         ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
         ICONS.put(ICON_KEY_IN_OUT, register.registerIcon(ICON_KEY_IN_OUT));
@@ -78,27 +74,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   int maxExtractedOnTick = 2;
   float extractRatePerTick = maxExtractedOnTick / 20f;
-  long extractedAtLastTick = -1;
+  long extractedAtLastTick = -1;  
 
-  boolean isAdvanced = false;
-
-  public ItemConduit() {
-    this(false);
-  }
-
-  public ItemConduit(boolean isAdvanced) {
-    setAdvanced(isAdvanced);
-  }
-
-  public void setAdvanced(boolean advanced) {
-    this.isAdvanced = advanced;
-    if(isAdvanced) {
-      maxExtractedOnTick = 2;
-      extractRatePerTick = maxExtractedOnTick / 20f;
-    } else {
-      maxExtractedOnTick = 64;
-      extractRatePerTick = maxExtractedOnTick / 20f;
-    }
+  public ItemConduit() {    
   }
 
   @Override
@@ -264,24 +242,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public Icon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
-      return isAdvanced ? ICONS.get(ICON_CORE_ADVANCED_KEY) : ICONS.get(ICON_CORE_KEY);
+      return ICONS.get(ICON_CORE_KEY);
     }
-
     if(EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
-      return ICONS.get(ICON_CORE_ADVANCED_KEY);
+      return ICONS.get(ICON_CORE_KEY);
     }
-
-    //    if(getExternalConnections().contains(component.dir)) {
-    //      if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
-    //        return ICONS.get(ICON_KEY_INPUT);
-    //      }
-    //      if(getConectionMode(component.dir) == ConnectionMode.INPUT) {
-    //        return ICONS.get(ICON_KEY_OUTPUT);
-    //      }
-    //      if(getConectionMode(component.dir) == ConnectionMode.IN_OUT) {
-    //        return ICONS.get(ICON_KEY_IN_OUT);
-    //      }
-    //    }
     return ICONS.get(ICON_KEY);
   }
 
@@ -290,53 +255,64 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return null;
   }
 
-  @Override
-  public List<CollidableComponent> getCollidableComponents() {
-    if(!isAdvanced) {
-      return super.getCollidableComponents();
-    }
-
-    if(collidables != null && !collidablesDirty) {
-      return collidables;
-    }
-    List<CollidableComponent> result = super.getCollidableComponents();
-
-    for (ForgeDirection dir : getExternalConnections()) {
-      if(getConectionMode(dir) != ConnectionMode.DISABLED && getConectionMode(dir) != ConnectionMode.NOT_SET) { //
-        float scale = 0.1f;
-        BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
-
-        Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
-        offset.scale(0.5);
-        offset.scale(scale);
-
-        BoundingBox conectorBounds = ((ClientProxy) EnderIO.proxy).getConduitBundleRenderer().getExternalConnectorBoundsForDirection(dir);
-        List<Vector3f> corners = conectorBounds.getCornersForFace(dir);
-
-        for (Vector3f vec : corners) {
-          vec.sub(new Vector3f(0.5f, 0.5f, 0.5f));
-          vec.sub(new Vector3f(offset));
-
-          BoundingBox bbb = bb.translate(vec);
-          result.add(new CollidableComponent(IItemConduit.class, bbb, dir, EXTERNAL_INTERFACE_GEOM));
-        }
-
-      }
-    }
-
-    return result;
-  }
+//  @Override
+//  public List<CollidableComponent> getCollidableComponents() {    
+//    if(collidables != null && !collidablesDirty) {
+//      return collidables;
+//    }
+//    List<CollidableComponent> result = super.getCollidableComponents();
+//
+//    for (ForgeDirection dir : getExternalConnections()) {
+//      if(getConectionMode(dir) != ConnectionMode.DISABLED && getConectionMode(dir) != ConnectionMode.NOT_SET) { 
+//        float scale = 0.1f;
+//        BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
+//
+//        Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
+//        offset.scale(scale/2);
+//
+//        BoundingBox conectorBounds = ((ClientProxy) EnderIO.proxy).getConduitBundleRenderer().getExternalConnectorBoundsForDirection(dir);
+//        List<Vector3f> corners = conectorBounds.getCornersForFace(dir);
+//        
+//        Vector3d center = new Vector3d();
+//        for (Vector3f vec : corners) {
+//          center.add(vec);
+//        }
+//        center.scale(0.25);
+//        Vector3d toCenter = new Vector3d();
+//
+//        for (Vector3f vec : corners) {
+//          
+//          
+//          
+//          
+//          
+//          toCenter.set(center);
+//          toCenter.sub(vec);
+//          toCenter.normalize();
+//          toCenter.scale(scale/2);
+//          
+//          vec.sub(new Vector3f(0.5f, 0.5f, 0.5f)); //center
+//          vec.sub(new Vector3f(offset)); //move them flush with block space
+//          vec.add(toCenter); //
+//
+//          BoundingBox bbb = bb.translate(vec);
+//          result.add(new CollidableComponent(IItemConduit.class, bbb, dir, EXTERNAL_INTERFACE_GEOM));
+//        }
+//
+//      }
+//    }
+//
+//    return result;
+//  }
 
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
-    nbtRoot.setBoolean("isAdvanced", isAdvanced);
+    super.writeToNBT(nbtRoot);    
   }
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
-    isAdvanced = nbtRoot.getBoolean("isAdvanced");
   }
 
 }

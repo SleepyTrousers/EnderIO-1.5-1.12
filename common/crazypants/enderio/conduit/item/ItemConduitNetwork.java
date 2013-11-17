@@ -36,10 +36,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     super.addConduit(con);
 
     TileEntity te = con.getBundle().getEntity();
-    if(te != null) {
+    if (te != null) {
       for (ForgeDirection direction : con.getExternalConnections()) {
         IInventory extCon = con.getExternalInventory(direction);
-        if(extCon != null) {
+        if (extCon != null) {
           inventoryAdded(con, direction, te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ, extCon);
         }
       }
@@ -57,7 +57,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   public void inventoryRemoved(ItemConduit itemConduit, int x, int y, int z) {
     BlockCoord bc = new BlockCoord(x, y, z);
     NetworkedInventory inv = invMap.remove(bc);
-    if(inv != null) {
+    if (inv != null) {
       inventories.remove(inv);
     }
     requiresSort = true;
@@ -69,7 +69,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
   private boolean isRemote(ItemConduit itemConduit) {
     World world = itemConduit.getBundle().getEntity().worldObj;
-    if(world != null && world.isRemote) {
+    if (world != null && world.isRemote) {
       return true;
     }
     return false;
@@ -78,14 +78,14 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   @Override
   public void onUpdateEntity(IConduit conduit) {
     World world = conduit.getBundle().getEntity().worldObj;
-    if(world == null) {
+    if (world == null) {
       return;
     }
-    if(world.isRemote) {
+    if (world.isRemote) {
       return;
     }
     long curTime = world.getTotalWorldTime();
-    if(curTime != timeAtLastApply) {
+    if (curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
       doTick();
     }
@@ -93,7 +93,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
   private void doTick() {
     for (NetworkedInventory ni : inventories) {
-      if(requiresSort) {
+      if (requiresSort) {
         ni.updateInsertOrder();
       }
       ni.onTick();
@@ -113,12 +113,14 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     ForgeDirection conDir;
     BlockCoord location;
     int inventorySide;
+    
+    boolean allowSelfFeed = false;
 
     List<Target> sendPriority = new ArrayList<Target>();
 
     NetworkedInventory(IInventory inv, IItemConduit con, ForgeDirection conDir, BlockCoord location) {
       this.inv = inv;
-      if(inv instanceof ISidedInventory) {
+      if (inv instanceof ISidedInventory) {
         sidedInv = (ISidedInventory) inv;
       }
       this.con = con;
@@ -138,11 +140,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     }
 
     void onTick() {
-      if(!canExtract()) {
+      if (!canExtract()) {
         return;
       }
-      if(sidedInv != null) {
-        trasnferItemsSided();
+      if (sidedInv != null) {
+        transferItemsSided();
       } else {
         tranfserItems();
       }
@@ -155,63 +157,75 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       ItemStack extractItem = null;
 
       int slot = -1;
-      for (int i = 0; i < numSlots && extractItem == null; i++) {
+      for (int i = 0; i < numSlots; i++) {
         ItemStack item = inv.getStackInSlot(i);
-        if(item != null) {
+        if (item != null) {
           extractItem = item.copy();
           slot = i;
+          int maxExtracted = con.getMaximumExtracted(slot);
+          if (maxExtracted > 0) {
+            if (doTranfser(extractItem, slot, maxExtracted)) {
+              return;
+            }
+
+          }
         }
       }
 
-      int maxExtracted = con.getMaximumExtracted(slot);
-      if(maxExtracted > 0) {
-        doTranfser(extractItem, slot, maxExtracted);
-      }
     }
 
-    private void trasnferItemsSided() {
+    private void transferItemsSided() {
 
       int size = sidedInv.getSizeInventory();
       int[] slotIndices = sidedInv.getAccessibleSlotsFromSide(inventorySide);
       ItemStack extractItem = null;
 
       int slot = -1;
-      for (int i = 0; i < slotIndices.length && extractItem == null; i++) {
+      for (int i = 0; i < slotIndices.length; i++) {
         ItemStack item = sidedInv.getStackInSlot(i);
-        if(item != null) {
+        if (item != null) {
           extractItem = item.copy();
           slot = i;
-          if(!sidedInv.canExtractItem(i, extractItem, inventorySide)) {
-            extractItem = null;
+          if (sidedInv.canExtractItem(i, extractItem, inventorySide)) {
+            int maxExtracted = con.getMaximumExtracted(slot);
+            if (maxExtracted > 0) {
+              if (doTranfser(extractItem, slot, maxExtracted)) {
+                return;
+              }
+            }
           }
         }
       }
-
-      int maxExtracted = con.getMaximumExtracted(slot);
-      if(maxExtracted > 0) {
-        doTranfser(extractItem, slot, maxExtracted);
-      }
-
     }
 
-    private void doTranfser(ItemStack extractedItem, int slot, int maxExtract) {
-      if(extractedItem != null) {
-        ItemStack toExtract = extractedItem.copy();
-        toExtract.stackSize = Math.min(maxExtract, toExtract.stackSize);
-        int numInserted = insertIntoTargets(toExtract, slot);
+    private boolean doTranfser(ItemStack extractedItem, int slot, int maxExtract) {
+      if (extractedItem == null) {
+        return false;
+      }
+      ItemStack toExtract = extractedItem.copy();
+      toExtract.stackSize = Math.min(maxExtract, toExtract.stackSize);
+      int numInserted = insertIntoTargets(toExtract, slot);
+      if (numInserted <= 0) {
+        return false;
+      }
 
-        toExtract.stackSize = extractedItem.stackSize - numInserted;
-        if(toExtract.stackSize > 0) {
-          inv.setInventorySlotContents(slot, toExtract);
+      ItemStack curStack = inv.getStackInSlot(slot);
+      if(curStack != null) {
+        curStack = curStack.copy();
+        curStack.stackSize -= numInserted;
+        if(curStack.stackSize > 0) {
+          inv.setInventorySlotContents(slot, curStack);
         } else {
           inv.setInventorySlotContents(slot, null);
         }
-        con.itemsExtracted(numInserted, slot);
       }
+      con.itemsExtracted(numInserted, slot);
+      return true;
+
     }
 
     private int insertIntoTargets(ItemStack toExtract, int slot) {
-      if(toExtract == null) {
+      if (toExtract == null) {
         return 0;
       }
 
@@ -219,16 +233,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int leftToInsert = totalToInsert;
       for (Target target : sendPriority) {
         int inserted = target.inv.insertItem(toExtract);
-        if(inserted > 0) {
+        if (inserted > 0) {
           toExtract.stackSize -= inserted;
-          if(toExtract.stackSize > 0) {
-            inv.setInventorySlotContents(slot, toExtract);
-          } else {
-            inv.setInventorySlotContents(slot, null);
-          }
           leftToInsert -= inserted;
         }
-        if(leftToInsert <= 0) {
+        if (leftToInsert <= 0) {
           return totalToInsert;
         }
       }
@@ -236,14 +245,14 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     }
 
     private int insertItem(ItemStack item) {
-      if(sidedInv != null) {
+      if (sidedInv != null) {
         return doInsertItemSided(item);
       }
       return doInsertItem(item);
     }
 
     private int doInsertItem(ItemStack item) {
-      if(!canInsert() || item == null) {
+      if (!canInsert() || item == null) {
         return 0;
 
       }
@@ -255,10 +264,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         toInsert.stackSize = Math.min(toInsert.stackSize, inv.getInventoryStackLimit());
         toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
         int inserted = 0;
-        if(contents == null) {
+        if (contents == null) {
           inserted = toInsert.stackSize;
         } else {
-          if(contents.isItemEqual(item)) {
+          if (contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
             int space = inv.getInventoryStackLimit() - contents.stackSize;
             space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
             inserted += Math.min(space, toInsert.stackSize);
@@ -268,7 +277,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           }
         }
 
-        if(inserted > 0) {
+        if (inserted > 0) {
           numInserted += inserted;
           numToInsert -= inserted;
           inv.setInventorySlotContents(slot, toInsert);
@@ -283,16 +292,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int numInserted = 0;
       int numToInsert = item.stackSize;
       for (int slot = 0; slot < inv.getSizeInventory() && numToInsert > 0; slot++) {
-        if(sidedInv.canInsertItem(slot, item, inventorySide)) {
+        if (sidedInv.canInsertItem(slot, item, inventorySide)) {
           ItemStack contents = inv.getStackInSlot(slot);
           ItemStack toInsert = item.copy();
           toInsert.stackSize = Math.min(toInsert.stackSize, inv.getInventoryStackLimit());
           toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
           int inserted = 0;
-          if(contents == null) {
+          if (contents == null) {
             inserted = toInsert.stackSize;
           } else {
-            if(contents.isItemEqual(item)) {
+            if (contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
               int space = inv.getInventoryStackLimit() - contents.stackSize;
               space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
               inserted += Math.min(space, toInsert.stackSize);
@@ -302,7 +311,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
             }
           }
 
-          if(inserted > 0) {
+          if (inserted > 0) {
             numInserted += inserted;
             numToInsert -= inserted;
             inv.setInventorySlotContents(slot, toInsert);
@@ -314,11 +323,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
     void updateInsertOrder() {
       sendPriority.clear();
-      if(!canExtract()) {
+      if (!canExtract()) {
         return;
       }
       for (NetworkedInventory other : inventories) {
-        if(other != this && other.canInsert()) {
+        if ((allowSelfFeed || (other != this)) && other.canInsert()) {
           sendPriority.add(new Target(other, location.distanceSquared(other.location)));
         }
       }

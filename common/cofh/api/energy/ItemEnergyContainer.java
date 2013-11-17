@@ -3,7 +3,6 @@ package cofh.api.energy;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import cofh.util.MathHelper;
 
 /**
  * Reference implementation of {@link IEnergyContainerItem}. Use/extend this or implement your own.
@@ -70,7 +69,7 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 			container.stackTagCompound = new NBTTagCompound();
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
-		int energyReceived = MathHelper.minI(capacity - energy, MathHelper.minI(this.maxReceive, maxReceive));
+		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
 
 		if (!simulate) {
 			energy += energyReceived;
@@ -86,7 +85,7 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
-		int energyExtracted = MathHelper.minI(energy, MathHelper.minI(this.maxExtract, maxExtract));
+		int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 
 		if (!simulate) {
 			energy -= energyExtracted;
