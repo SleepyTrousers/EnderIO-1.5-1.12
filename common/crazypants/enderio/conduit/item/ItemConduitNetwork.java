@@ -113,6 +113,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     ForgeDirection conDir;
     BlockCoord location;
     int inventorySide;
+    
+    boolean allowSelfFeed = false;
 
     List<Target> sendPriority = new ArrayList<Target>();
 
@@ -325,7 +327,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         return;
       }
       for (NetworkedInventory other : inventories) {
-        if (other.canInsert()) {
+        if ((allowSelfFeed || (other != this)) && other.canInsert()) {
           sendPriority.add(new Target(other, location.distanceSquared(other.location)));
         }
       }
