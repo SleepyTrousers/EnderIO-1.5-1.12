@@ -207,11 +207,15 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         return false;
       }
 
-      toExtract.stackSize = extractedItem.stackSize - numInserted;
-      if (toExtract.stackSize > 0) {
-        inv.setInventorySlotContents(slot, toExtract);
-      } else {
-        inv.setInventorySlotContents(slot, null);
+      ItemStack curStack = inv.getStackInSlot(slot);
+      if(curStack != null) {
+        curStack = curStack.copy();
+        curStack.stackSize -= numInserted;
+        if(curStack.stackSize > 0) {
+          inv.setInventorySlotContents(slot, curStack);
+        } else {
+          inv.setInventorySlotContents(slot, null);
+        }
       }
       con.itemsExtracted(numInserted, slot);
       return true;
@@ -229,11 +233,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         int inserted = target.inv.insertItem(toExtract);
         if (inserted > 0) {
           toExtract.stackSize -= inserted;
-          if (toExtract.stackSize > 0) {
-            inv.setInventorySlotContents(slot, toExtract);
-          } else {
-            inv.setInventorySlotContents(slot, null);
-          }
           leftToInsert -= inserted;
         }
         if (leftToInsert <= 0) {
@@ -266,7 +265,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         if (contents == null) {
           inserted = toInsert.stackSize;
         } else {
-          if (contents.isItemEqual(item)) {
+          if (contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
             int space = inv.getInventoryStackLimit() - contents.stackSize;
             space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
             inserted += Math.min(space, toInsert.stackSize);
@@ -300,7 +299,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           if (contents == null) {
             inserted = toInsert.stackSize;
           } else {
-            if (ItemStack.areItemStacksEqual(contents, item)) {
+            if (contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
               int space = inv.getInventoryStackLimit() - contents.stackSize;
               space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
               inserted += Math.min(space, toInsert.stackSize);
