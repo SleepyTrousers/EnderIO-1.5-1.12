@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,8 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -42,8 +38,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-      new BasicCapacitor(250, 1500, 128),
-      new BasicCapacitor(350, 3000, 512),
+      new BasicCapacitor(350, 1500, 128),
+      new BasicCapacitor(500, 3000, 512),
       new BasicCapacitor(500, 5000, 2048)
   };
 
@@ -216,7 +212,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {  
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     if(getMaxEnergyRecieved(from) == 0) {
       return 0;
     }
@@ -225,7 +221,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-   return 0;
+    return 0;
   }
 
   @Override
@@ -235,12 +231,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int)(powerHandler.getEnergyStored() * 10);
+    return (int) (powerHandler.getEnergyStored() * 10);
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return (int)(powerHandler.getMaxEnergyStored() * 10);
+    return (int) (powerHandler.getMaxEnergyStored() * 10);
   }
 
   @Override
@@ -288,11 +284,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     }
     TileEntity test = world.getBlockTileEntity(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
     if(test == null) {
-      return null;      
-    }   
+      return null;
+    }
     if(test instanceof IConduitBundle) {
       return null;
-    }    
+    }
     return PowerInterface.create(test);
   }
 
