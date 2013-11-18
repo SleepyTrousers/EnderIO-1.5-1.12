@@ -38,7 +38,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-      new BasicCapacitor(350, 1500, 128),
+      new BasicCapacitor(500, 1500, 128),
       new BasicCapacitor(500, 3000, 512),
       new BasicCapacitor(500, 5000, 2048)
   };
