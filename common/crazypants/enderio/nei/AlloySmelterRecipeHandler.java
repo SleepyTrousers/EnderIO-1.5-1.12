@@ -3,6 +3,7 @@ package crazypants.enderio.nei;
 import static codechicken.core.gui.GuiDraw.changeTexture;
 import static codechicken.core.gui.GuiDraw.drawTexturedModalRect;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void loadTransferRects() {
     //Set this up later to show all alloy recipes
-    //transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(77, 7, 22, 12), "EnderIOAlloySmelter", new Object[0]));
+    transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(77-5, 26-3, 19, 25), "EnderIOAlloySmelter", new Object[0]));
   }
 
   @Override
@@ -58,14 +59,42 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.ALLOY_SMELTER_ID, result);
 
     for (IEnderIoRecipe recipe : recipes) {
-      List<IRecipeInput> ri = recipe.getInputs();
-      ItemStack[] ingredients = new ItemStack[ri.size()];
-      for (int i = 0; i < ingredients.length; i++) {
-        ingredients[i] = ri.get(i).getItem();
-      }
       for (IRecipeOutput output : recipe.getOutputs()) {
-        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), ingredients, output.getItem());
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
         arecipes.add(res);
+      }
+    }
+  }
+
+  @Override
+  public void loadCraftingRecipes(String outputId, Object... results)
+  {
+    if(outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class)
+    {
+      List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
+      for (IEnderIoRecipe recipe : recipes) {
+        for (IRecipeOutput output : recipe.getOutputs()) {
+          AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
+          arecipes.add(res);
+        }
+      }
+    } else {
+      super.loadCraftingRecipes(outputId, results);
+    }
+  }
+
+  @Override
+  public void loadUsageRecipes(ItemStack ingredient) {
+
+    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
+
+    for (IEnderIoRecipe recipe : recipes) {
+      if (recipe.isInput(ingredient)) {
+        for (IRecipeOutput output : recipe.getOutputs()) {
+          AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
+          res.setIngredientPermutation(res.input, ingredient);
+          arecipes.add(res);
+        }
       }
     }
   }
@@ -87,6 +116,13 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     GuiDraw.drawString(energyString, 100, 57, 0xFFFFFFFF);
   }
 
+  public List<ItemStack> getInputs(IRecipeInput input) {
+    List<ItemStack> result = new ArrayList<ItemStack>();
+    result.add(input.getItem());
+    result.addAll(input.getEquivelentInputs());
+    return result;
+  }
+
   public class AlloySmelterRecipe extends TemplateRecipeHandler.CachedRecipe {
 
     private ArrayList<PositionedStack> input;
@@ -100,7 +136,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public List<PositionedStack> getIngredients() {
-      return input;
+        return getCycledIngredients(cycleticks / 20, input);
     }
 
     @Override
@@ -108,27 +144,20 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       return output;
     }
 
-    public AlloySmelterRecipe(float energy, ItemStack ingredients[], ItemStack result) {
-      int recipeSize = ingredients.length;
+    public AlloySmelterRecipe(float energy, List<IRecipeInput> ingredients, ItemStack result) {
+      int recipeSize = ingredients.size();
       this.input = new ArrayList<PositionedStack>();
       if(recipeSize > 0) {
-        this.input.add(new PositionedStack(ingredients[0], 49, 14));
+        this.input.add(new PositionedStack(getInputs(ingredients.get(0)), 49, 14));
       }
       if(recipeSize > 1) {
-        this.input.add(new PositionedStack(ingredients[1], 73, 4));
+        this.input.add(new PositionedStack(getInputs(ingredients.get(1)), 73, 4));
       }
       if(recipeSize > 2) {
-        this.input.add(new PositionedStack(ingredients[2], 98, 14));
+        this.input.add(new PositionedStack(getInputs(ingredients.get(2)), 98, 14));
       }
       this.output = new PositionedStack(result, 74, 54);
       this.energy = energy; //If we wanted to do an energy cost
-    }
-
-    public AlloySmelterRecipe(float energy, ItemStack ingredient, ItemStack result) {
-      this.input = new ArrayList<PositionedStack>();
-      this.input.add(new PositionedStack(ingredient, 49, 14));
-      this.output = new PositionedStack(result, 74, 54);
-      this.energy = energy;
     }
   }
 }
