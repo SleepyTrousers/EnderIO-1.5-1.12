@@ -103,7 +103,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(res.component.data != null && res.component.data.equals(SWITCH_TAG)) {
+    if(res != null && res.component != null && res.component.data != null && res.component.data.equals(SWITCH_TAG)) {
       toggleSwitch();
       return true;
     }
