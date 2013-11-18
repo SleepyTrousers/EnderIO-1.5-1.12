@@ -152,11 +152,11 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    if(blockId <= 0) {
+    if(blockId < 0) {
       return res;
     }
 
-    if(blockId > 0 && Block.blocksList[blockId].canProvidePower() && network != null) {
+    if((blockId == 0 || blockId > 0 && Block.blocksList[blockId].canProvidePower()) && network != null) {
       // TODO: Just recalculate the signals, no need for a full rebuild
       network.destroyNetwork();
       updateNetwork(world);
