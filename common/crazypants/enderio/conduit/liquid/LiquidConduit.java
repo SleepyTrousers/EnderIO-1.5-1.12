@@ -126,6 +126,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
             if(neighbour != null) {
               neighbour.conduitConnectionRemoved(connDir.getOpposite());
             }
+            FluidStack curFluidType = null;
+            if(network != null) {
+              curFluidType = network.getFluidType();
+            }
+            network.destroyNetwork();
+            setFluidType(curFluidType);
+
           }
         }
       }
