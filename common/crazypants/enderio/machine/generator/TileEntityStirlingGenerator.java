@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -133,8 +132,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
         burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
         if(burnTime > 0) {
           totalBurnTime = burnTime;
-          if(inventory[0].itemID == Item.bucketLava.itemID) {
-            inventory[0] = new ItemStack(Item.bucketEmpty);
+          ItemStack containedItem = inventory[0].getItem().getContainerItemStack(inventory[0]);
+          if(containedItem != null) {
+            inventory[0] = containedItem;
           } else {
             decrStackSize(0, 1);
           }
@@ -170,11 +170,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
       Receptor receptor = receptorIterator.next();
       PowerInterface pp = receptor.receptor;
-      if (pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
+      if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
         canTransmit -= used;
-      }      
+      }
       if(canTransmit <= 0) {
         break;
       }
@@ -204,7 +204,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       PowerInterface pi = PowerInterface.create(te);
       if(pi != null) {
         receptors.add(new Receptor(pi, dir));
-      }      
+      }
     }
     receptorIterator = receptors.listIterator();
     receptorsDirty = false;
@@ -215,7 +215,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     PowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(PowerInterface rec, ForgeDirection fromDir) {      
+    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }

@@ -76,10 +76,12 @@ public class ConduitUtil {
     if(network == null) {
       return false;
     }
-    con.setNetwork(network);
-    network.addConduit(con);
-    network.notifyNetworkOfUpdate();
-    return true;
+    if(con.setNetwork(network)) {
+      network.addConduit(con);
+      network.notifyNetworkOfUpdate();
+      return true;
+    }
+    return false;
   }
 
   @SideOnly(Side.CLIENT)

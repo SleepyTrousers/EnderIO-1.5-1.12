@@ -30,14 +30,14 @@ public class RaytraceResult {
 
   public static void sort(final Vec3 origin, List<RaytraceResult> toSort) {
     if(origin == null || toSort == null) {
-      Collections.sort(toSort, new Comparator<RaytraceResult>() {
-
-        @Override
-        public int compare(RaytraceResult o1, RaytraceResult o2) {
-          return Double.compare(o1.getDistanceTo(origin), o1.getDistanceTo(origin));
-        }
-      });
+      return;
     }
+    Collections.sort(toSort, new Comparator<RaytraceResult>() {
+      @Override
+      public int compare(RaytraceResult o1, RaytraceResult o2) {
+        return Double.compare(o1.getDistanceTo(origin), o2.getDistanceTo(origin));
+      }
+    });
   }
 
   public final CollidableComponent component;
