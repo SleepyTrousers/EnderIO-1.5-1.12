@@ -28,7 +28,7 @@ public enum ConduitDisplayMode {
 
   public static ConduitDisplayMode getDisplayMode(ItemStack equipped) {
     int index = equipped.getItemDamage();
-    index = MathHelper.clamp_int(index, 0, ConduitDisplayMode.values().length);
+    index = MathHelper.clamp_int(index, 0, ConduitDisplayMode.values().length - 1);
     return ConduitDisplayMode.values()[index];
   }
 
@@ -36,9 +36,7 @@ public enum ConduitDisplayMode {
     if(mode == null || equipped == null) {
       return;
     }
-    int index = mode.ordinal();
-    index = MathHelper.clamp_int(index, 0, ConduitDisplayMode.values().length);
-    equipped.setItemDamage(index);
+    equipped.setItemDamage(mode.ordinal());
   }
 
   public ConduitDisplayMode next() {

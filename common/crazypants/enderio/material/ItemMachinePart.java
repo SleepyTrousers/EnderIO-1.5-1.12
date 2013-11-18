@@ -44,7 +44,7 @@ public class ItemMachinePart extends Item {
 
   @Override
   public Icon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, MachinePart.values().length);
+    damage = MathHelper.clamp_int(damage, 0, MachinePart.values().length - 1);
     return icons[damage];
   }
 
@@ -58,7 +58,7 @@ public class ItemMachinePart extends Item {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, MachinePart.values().length);
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, MachinePart.values().length - 1);
     return super.getUnlocalizedName() + "." + MachinePart.values()[i].unlocalisedName;
   }
 

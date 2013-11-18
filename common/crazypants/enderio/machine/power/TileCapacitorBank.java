@@ -36,7 +36,7 @@ import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor, IInventory {
-
+  
   static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 250000);
 
   BlockCoord[] multiblock = null;
@@ -306,7 +306,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       }
     }
     receptorIterator = receptors.listIterator();
-    receptorsDirty = false;
+    receptorsDirty = false;    
   }
 
   // ------------ Multiblock overrides

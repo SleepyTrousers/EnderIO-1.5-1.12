@@ -50,7 +50,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   private boolean collidablesDirty = true;
   private boolean connectorsDirty = true;
 
-  private int lightOpacity = 0;
+  private int lightOpacity = -1;
 
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
@@ -149,6 +149,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   @Override
   public int getLightOpacity() {
+    if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
+      return hasFacade() ? 255 : 0;
+    }
     return lightOpacity;
   }
 
@@ -181,6 +184,17 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
 
     if(worldObj != null && facadeChanged) {
+      int height = worldObj.getHeightValue(xCoord, zCoord);
+      if(height <= yCoord) {
+        //We need to force the re-lighting of the column due to a change
+        //in the light reaching bellow the block from the sky. To avoid 
+        //modifying core classes to expose this functionality I am just placing then breaking
+        //a block above this one to force the check
+        worldObj.setBlock(xCoord, yCoord + 1, zCoord, 1, 0, 3);
+        worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
+      }
+
+      worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
       worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
       facadeChanged = false;
     }
@@ -543,7 +557,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public World getWorld() {
     return worldObj;
   }
-  
+    
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
@@ -588,6 +602,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     return 0;
   }
+
 
   // ------- Liquids -----------------------------
 

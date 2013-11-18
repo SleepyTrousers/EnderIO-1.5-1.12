@@ -85,20 +85,27 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
     List<GaugeBounds> gaugeBounds = calculateGaugeBounds(myBC, mb);
 
-    float brightness;
+    float[] brightness;
+    float maxBrightness = 0;
     if(te != null) {
-      brightness = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+      brightness = new float[6];
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        brightness[dir.ordinal()] = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord
+            + dir.offsetZ);
+        maxBrightness = Math.max(brightness[dir.ordinal()], maxBrightness);
+      }
     } else {
-      brightness = 1;
+      brightness = new float[] { 1, 1, 1, 1, 1, 1 };
+      maxBrightness = 1;
     }
 
     tes.startDrawingQuads();
-    tes.setColorRGBA_F(brightness, brightness, brightness, 1);
+    //tes.setColorRGBA_F(brightness, brightness, brightness, 1);
     //    tes.setColorRGBA_F(1, 1, 1, 1);
     //    if(te != null) {      
     //      RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
     //    }
-    CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockCapacitorBank.getIcon(0, 0));
+    CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockCapacitorBank.getIcon(0, 0), null, brightness, true);
     tes.draw();
 
     GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -106,7 +113,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
     tes.startDrawingQuads();
     //tes.setColorRGBA_F(1, 1, 1, 1);
-    tes.setColorRGBA_F(brightness, brightness, brightness, 1);
+    tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
     if(te != null) {
       //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
       renderBorder(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
@@ -121,7 +128,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glPolygonOffset(-3.0F, -3.0F);
     tes.startDrawingQuads();
     //tes.setColorRGBA_F(1, 1, 1, 1);
-    tes.setColorRGBA_F(brightness, brightness, brightness, 1);
+    tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
     //if (te != null) {      
     //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
     //} 
