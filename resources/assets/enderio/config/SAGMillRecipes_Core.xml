@@ -332,7 +332,10 @@
         <itemStack itemID="35" itemMeta="*" />
       </input>
       <output>
-        <itemStack itemID="287" number="4" />
+        <itemStack itemID="287" number="2" />
+      </output>
+      <output>
+        <itemStack itemID="287" number="1" chance="0.15" />
       </output>
     </recipe>
 
