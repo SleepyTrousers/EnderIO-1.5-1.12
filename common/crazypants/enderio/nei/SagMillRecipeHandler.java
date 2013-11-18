@@ -1,6 +1,7 @@
 package crazypants.enderio.nei;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +19,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.crafting.IRecipeOutput;
 import crazypants.enderio.crafting.RecipeReigistry;
 import crazypants.enderio.machine.crusher.GuiCrusher;
@@ -54,7 +56,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void loadTransferRects() {
     //Set this up later to show all alloy recipes
-    //transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(77, 7, 22, 12), "EnderIOAlloySmelter", new Object[0]));
+    transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(81-5, 32-11, 15, 23), "EnderIOSagMill", new Object[0]));
   }
 
   @Override
@@ -66,13 +68,44 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
     for (IEnderIoRecipe recipe : recipes) {
       List<IRecipeOutput> ro = recipe.getOutputs();
-      MillRecipe res = new MillRecipe(result, recipe.getRequiredEnergy(), recipe.getInputs().get(0).getItem(), ro);
+      MillRecipe res = new MillRecipe(result, recipe.getRequiredEnergy(), recipe.getInputs().get(0), ro);
       toAdd.add(res);
     }
 
     Collections.sort(toAdd, comparator);
 
     arecipes.addAll(toAdd);
+  }
+
+  @Override
+  public void loadCraftingRecipes(String outputId, Object... results)
+  {
+    if(outputId.equals("EnderIOSagMill") && getClass() == SagMillRecipeHandler.class)
+    {
+      List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.SAG_MILL_ID);
+
+      for (IEnderIoRecipe recipe : recipes) {
+        for (IRecipeOutput output : recipe.getOutputs()) {
+          MillRecipe res = new MillRecipe(recipe.getRequiredEnergy(), recipe.getInputs().get(0), recipe.getOutputs());
+          arecipes.add(res);
+        }
+      }
+    } else {
+      super.loadCraftingRecipes(outputId, results);
+    }
+  }
+
+  @Override
+  public void loadUsageRecipes(ItemStack ingredient) {
+
+    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.SAG_MILL_ID);
+
+    for (IEnderIoRecipe recipe : recipes) {
+      if (recipe.isInput(ingredient)) {
+        MillRecipe res = new MillRecipe(recipe.getRequiredEnergy(), recipe.getInputs().get(0), recipe.getOutputs());
+        arecipes.add(res);
+      }
+    }
   }
 
   @Override
@@ -125,6 +158,13 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     super.drawProgressBar(87 - 13, 37 - 16, 200, 0, 17, 24, completion, 1);
   }
 
+  public List<ItemStack> getInputs(IRecipeInput input) {
+    List<ItemStack> result = new ArrayList<ItemStack>();
+    result.add(input.getItem());
+    result.addAll(input.getEquivelentInputs());
+    return result;
+  }
+
   private static Point offset = new Point(5, 11);
 
   public class MillRecipe extends TemplateRecipeHandler.CachedRecipe {
@@ -156,6 +196,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public PositionedStack getIngredient() {
+      randomRenderPermutation(input, cycleticks / 20);
       return input;
     }
 
@@ -169,9 +210,13 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
       return otherOutputs;
     }
 
-    public MillRecipe(ItemStack targetedResult, float energy, ItemStack ingredient, List<IRecipeOutput> outputs) {
+    public MillRecipe(float energy, IRecipeInput ingredient, List<IRecipeOutput> outputs) {
+      this(null, energy, ingredient, outputs);
+    }
+
+    public MillRecipe(ItemStack targetedResult, float energy, IRecipeInput ingredient, List<IRecipeOutput> outputs) {
       this.energy = energy;
-      input = new PositionedStack(ingredient, 80 - offset.x, 12 - offset.y);
+      input = new PositionedStack(getInputs(ingredient), 80 - offset.x, 12 - offset.y);
       output = new PositionedStack(outputs.get(0).getItem(), 49 - offset.x, 59 - offset.y);
       otherOutputs = new ArrayList<PositionedStack>();
       if(outputs.size() > 1) {
@@ -189,7 +234,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
       numTargetOuput = 1;
       for (int i = 0; i < outputChance.length; i++) {
         outputChance[i] = outputs.get(i).getChance();
-        if(outputs.get(i).isEquivalent(targetedResult)) {
+        if(targetedResult != null && outputs.get(i).isEquivalent(targetedResult)) {
           indexOfTargetOutput = i;
           numTargetOuput = outputs.get(i).getQuantity();
         }
