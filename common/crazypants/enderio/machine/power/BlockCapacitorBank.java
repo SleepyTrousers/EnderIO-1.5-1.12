@@ -66,6 +66,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName);
     GameRegistry.registerTileEntity(TileCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
+    lightOpacity[ModObject.blockCapacitorBank.actualId] = 255;
   }
 
   @Override

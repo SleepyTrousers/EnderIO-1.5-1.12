@@ -73,6 +73,16 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     }
     if(curRS != rs) {
       te.worldObj.markBlockForRenderUpdate(te.xCoord, te.yCoord, te.zCoord);
+
+      int height = te.worldObj.getHeightValue(te.xCoord, te.zCoord);
+      if(height <= te.yCoord) {
+        //We need to force the re-lighting of the column due to a change
+        //in the light reaching bellow the block from the sky. To avoid 
+        //modifying core classes to expose this functionality I am just placing then breaking
+        //a block above this one to force the check
+        te.worldObj.setBlock(te.xCoord, te.yCoord + 1, te.zCoord, 1, 0, 3);
+        te.worldObj.setBlockToAir(te.xCoord, te.yCoord + 1, te.zCoord);
+      }
     }
 
     if(curRS == FacadeRenderState.FULL) {
