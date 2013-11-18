@@ -115,13 +115,13 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   @Override
   public Icon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, subtypes.length);
+    damage = MathHelper.clamp_int(damage, 0, subtypes.length - 1);
     return icons[damage];
   }
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, subtypes.length);
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, subtypes.length - 1);
     return super.getUnlocalizedName() + "." + subtypes[i].unlocalisedName;
 
   }

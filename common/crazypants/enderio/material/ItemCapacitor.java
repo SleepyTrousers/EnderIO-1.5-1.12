@@ -51,7 +51,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
 
   @Override
   public Icon getIconFromDamage(int damage) {
-    damage = MathHelper.clamp_int(damage, 0, Capacitors.values().length);
+    damage = MathHelper.clamp_int(damage, 0, Capacitors.values().length - 1);
     return icons[damage];
   }
 
@@ -64,7 +64,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
 
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
-    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length);
+    int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length - 1);
     return super.getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName;
   }
 
@@ -78,7 +78,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
 
   @Override
   public ICapacitor getCapacitor(ItemStack stack) {
-    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, Capacitors.values().length);
+    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, Capacitors.values().length - 1);
     return Capacitors.values()[damage].capacitor;
   }
 
