@@ -129,7 +129,7 @@
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="1" chance="0.05" />
       </output>
       <output>
-        <itemStack oreDictionary="dustNickel" number="1" chance="0.2" />
+        <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />
       </output>
       <output>
         <itemStack itemID="4" chance="0.15" />
@@ -549,6 +549,28 @@
         <itemStack oreDictionary="dustBronze" />
       </output>
     </recipe>
+    
+    <recipe name="NickelIngot" energyCost="240">
+      <input>
+        <itemStack oreDictionary="ingotNickel" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustNickel" />
+      </output>
+    </recipe>
+    
+    <recipe name="NickelOre" energyCost="360">
+      <input>
+        <itemStack oreDictionary="oreNickel" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustNickel" number="2" />
+      </output>
+      <output>
+        <itemStack oreDictionary="dustPlatinum" chance="0.1" />
+      </output>
+    </recipe>
+    
   </recipeGroup>
 
   <recipeGroup name="Forestry">
