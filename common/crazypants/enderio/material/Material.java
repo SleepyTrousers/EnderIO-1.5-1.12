@@ -4,7 +4,8 @@ public enum Material {
 
   SILICON("silicon", "Silicon", "silicon"),
   CONDUIT_BINDER("conduitBinder", "Conduit Binder", "conduitBinder"),
-  BINDER_COMPOSITE("binderComposite", "Binder Composite", "binderComposite");
+  BINDER_COMPOSITE("binderComposite", "Binder Composite", "binderComposite"),
+  PHASED_IRON_NUGGET("phasedIronNugget", "Phased Iron Nugget", "phasedIronNugget");
 
   public final String unlocalisedName;
   public final String uiName;

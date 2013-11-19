@@ -84,7 +84,7 @@
         <itemStack itemID="12" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" chance="0.25" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="1" itemMeta="0" chance="0.5" />
       </output>
     </recipe>
 
@@ -182,7 +182,7 @@
         <itemStack itemID="368" />
       </input>      
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="5" number="9" />
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="5" number="1" />
       </output>
     </recipe>
 
