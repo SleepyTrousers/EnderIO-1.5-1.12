@@ -1,24 +1,23 @@
 package crazypants.enderio.power;
 
 import net.minecraftforge.common.ForgeDirection;
-import cofh.api.energy.IEnergyHandler;
-import crazypants.enderio.machine.power.TileCapacitorBank;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cofh.api.energy.IEnergyHandler;
 
 public class PowerInterface {
 
   public static PowerInterface create(Object o) {
     if(o instanceof IEnergyHandler) {
-      return new PowerInterface((IEnergyHandler)o);
+      return new PowerInterface((IEnergyHandler) o);
     } else if(o instanceof IPowerReceptor) {
-      return new PowerInterface((IPowerReceptor)o);
+      return new PowerInterface((IPowerReceptor) o);
     }
     return null;
   }
-  
+
   private IPowerReceptor bcPower;
 
   private IEnergyHandler rfPower;
@@ -32,20 +31,20 @@ public class PowerInterface {
   }
 
   public Object getDelegate() {
-    if (bcPower != null) {
+    if(bcPower != null) {
       return bcPower;
     }
     return rfPower;
   }
 
   public boolean canConduitConnect(ForgeDirection direction) {
-    if (rfPower != null) {
+    if(rfPower != null) {
       return rfPower.canInterface(direction.getOpposite());
     }
 
     // bc
-    if (bcPower != null) {
-      if (bcPower instanceof IPowerEmitter) {
+    if(bcPower != null) {
+      if(bcPower instanceof IPowerEmitter) {
         return ((IPowerEmitter) bcPower).canEmitPowerFrom(direction.getOpposite());
       }
       return PowerHandlerUtil.canConnectRecievePower(bcPower);
@@ -54,17 +53,17 @@ public class PowerInterface {
   }
 
   public float getEnergyStored(ForgeDirection dir) {
-    if (rfPower != null) {
+    if(rfPower != null) {
       return rfPower.getEnergyStored(dir);
     }
 
     // bc
     float result = 0;
-    if (bcPower instanceof IInternalPowerReceptor) {
+    if(bcPower instanceof IInternalPowerReceptor) {
       result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getEnergyStored();
-    } else if (bcPower != null && !(bcPower instanceof IPowerEmitter)) {
+    } else if(bcPower != null && !(bcPower instanceof IPowerEmitter)) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
-      if (pr != null) {
+      if(pr != null) {
         result += pr.getEnergyStored();
       }
     }
@@ -72,17 +71,17 @@ public class PowerInterface {
   }
 
   public float getMaxEnergyStored(ForgeDirection dir) {
-    if (rfPower != null) {
+    if(rfPower != null) {
       return rfPower.getMaxEnergyStored(dir);
     }
 
     // bc
     float result = 0;
-    if (bcPower instanceof IInternalPowerReceptor) {
+    if(bcPower instanceof IInternalPowerReceptor) {
       result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getMaxEnergyStored();
-    } else if (bcPower != null && !(bcPower instanceof IPowerEmitter)) {
+    } else if(bcPower != null && !(bcPower instanceof IPowerEmitter)) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
-      if (pr != null) {
+      if(pr != null) {
         result += pr.getMaxEnergyStored();
       }
     }
@@ -90,45 +89,45 @@ public class PowerInterface {
   }
 
   public float getPowerRequest(ForgeDirection dir) {
-    if (rfPower != null) {
-      if (rfPower.canInterface(dir)) {
-        return rfPower.extractEnergy(dir, rfPower.getMaxEnergyStored(dir), true);
+    if(rfPower != null) {
+      if(rfPower.canInterface(dir)) {
+        return rfPower.receiveEnergy(dir, rfPower.getMaxEnergyStored(dir), true);
       }
       return 0;
     }
 
     // bc
-    if (bcPower != null) {
+    if(bcPower != null) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
-      if (pr == null || pr.getType() == Type.ENGINE) {
+      if(pr == null || pr.getType() == Type.ENGINE) {
         return 0;
-      }      
+      }
       return pr.powerRequest();
     }
-    
+
     return 0;
   }
 
   public float getMinEnergyReceived(ForgeDirection dir) {
-    if (rfPower != null) {
+    if(rfPower != null) {
       return 0;
     }
-    
+
     if(bcPower != null) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
-      if (pr == null) {
+      if(pr == null) {
         return 0;
-      }      
+      }
       return pr.getMinEnergyReceived();
     }
     return 0;
   }
 
   public float recieveEnergy(ForgeDirection opposite, float canOffer) {
-    if(rfPower != null) {     
-      return rfPower.receiveEnergy(opposite, (int)(canOffer * 10), false) / 10;
+    if(rfPower != null) {
+      return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10;
     }
-    
+
     if(bcPower != null) {
       if(bcPower instanceof IInternalPowerReceptor) {
         return PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) bcPower, bcPower.getPowerReceiver(opposite), canOffer, Type.PIPE, opposite);
