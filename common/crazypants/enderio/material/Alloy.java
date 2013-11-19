@@ -30,7 +30,7 @@ public enum Alloy {
 
   PHASED_IRON("Phased Iron", "phasedIron",
       new ItemStack(Item.ingotIron),
-      new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_ENDER.ordinal()));
+      new ItemStack(Item.enderPearl));
 
   public final String unlocalisedName;
   public final String uiName;
