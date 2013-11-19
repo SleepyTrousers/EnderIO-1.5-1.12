@@ -1,3 +1,21 @@
+0.4.4
+- #146 from TehSomeLuigi Update build.xml to reobfuscate with Searge names
+- #196 Bug with adjacent liquid conduits
+- #244 from Unrepentant-Atheist SAG Mill recipe for clay blocks produces clay balls instead of clay dust.
+- #252 from WayofTime Updated the StirlingGenerator to accept custom contained item stacks.
+- #273 "Transparent" capacitor bank and facade
+- #274 Redstone Conduits don't take signal from Redstone Torches
+- #277 from mistaqur Registred NEI usage recipe handlers
+- #281 from MomoNasty Corrected spelling of "not" and "limits"
+- #286 NPE with Redstone Switch
+- #289 Crash with EnderIO 4.3.63 and Recipear
+- #290 Energy conduit max input is too low for BC combustion engines
+- #292 NPE by removing facade-mod
+- #293 Incorrect action taking when trying to disconnect / reconnect conduits with wrench.
+- #294 fixed balance issue with ender pearl powder.
+- #297 Engines overheating
+- #298 Added missing TE recipes to SAG Mill.
+
 0.4.3
 - Added support for Redstone Flux Power
 - Simple item conduits added. These should be considered a work in progress.
