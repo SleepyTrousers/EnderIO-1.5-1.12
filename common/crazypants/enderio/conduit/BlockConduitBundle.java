@@ -78,7 +78,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     TileConduitBundle cb = (TileConduitBundle)
         world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
     if(ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
-      if(cb.getFacadeId() > 0) {
+      if(cb.getFacadeId() > 0 && Block.blocksList[cb.getFacadeId()] != null) {
         tex = Block.blocksList[cb.getFacadeId()].getIcon(target.sideHit,
             cb.getFacadeMetadata());
       }
