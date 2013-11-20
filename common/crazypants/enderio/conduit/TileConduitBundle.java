@@ -184,15 +184,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
 
     if(worldObj != null && facadeChanged) {
-      int height = worldObj.getHeightValue(xCoord, zCoord);
-      if(height <= yCoord) {
-        //We need to force the re-lighting of the column due to a change
-        //in the light reaching bellow the block from the sky. To avoid 
-        //modifying core classes to expose this functionality I am just placing then breaking
-        //a block above this one to force the check
-        worldObj.setBlock(xCoord, yCoord + 1, zCoord, 1, 0, 3);
-        worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
-      }
+      ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord);
 
       worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
       worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);

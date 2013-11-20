@@ -13,8 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -24,12 +22,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -74,9 +68,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   int maxExtractedOnTick = 2;
   float extractRatePerTick = maxExtractedOnTick / 20f;
-  long extractedAtLastTick = -1;  
+  long extractedAtLastTick = -1;
 
-  public ItemConduit() {    
+  public ItemConduit() {
   }
 
   @Override
@@ -86,31 +80,14 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
-
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networks
-            BlockCoord loc = getLocation().getLocation(faceHit);
-            IItemConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IItemConduit.class);
-            if(neighbour != null) {
-              if(network != null) {
-                network.destroyNetwork();
-              }
-              onAddedToBundle();
-              return true;
-            }
+            return ConduitUtil.joinConduits(this, faceHit);
           } else if(externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
           } else if(containsConduitConnection(connDir)) {
-            conduitConnectionRemoved(connDir);
-            BlockCoord loc = getLocation().getLocation(connDir);
-            IItemConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IItemConduit.class);
-            if(neighbour != null) {
-              neighbour.conduitConnectionRemoved(connDir.getOpposite());
-            }
-            if(network != null) {
-              network.destroyNetwork();
-            }
+            ConduitUtil.disconectConduits(this, connDir);
             return true;
           }
         }
@@ -255,59 +232,59 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return null;
   }
 
-//  @Override
-//  public List<CollidableComponent> getCollidableComponents() {    
-//    if(collidables != null && !collidablesDirty) {
-//      return collidables;
-//    }
-//    List<CollidableComponent> result = super.getCollidableComponents();
-//
-//    for (ForgeDirection dir : getExternalConnections()) {
-//      if(getConectionMode(dir) != ConnectionMode.DISABLED && getConectionMode(dir) != ConnectionMode.NOT_SET) { 
-//        float scale = 0.1f;
-//        BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
-//
-//        Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
-//        offset.scale(scale/2);
-//
-//        BoundingBox conectorBounds = ((ClientProxy) EnderIO.proxy).getConduitBundleRenderer().getExternalConnectorBoundsForDirection(dir);
-//        List<Vector3f> corners = conectorBounds.getCornersForFace(dir);
-//        
-//        Vector3d center = new Vector3d();
-//        for (Vector3f vec : corners) {
-//          center.add(vec);
-//        }
-//        center.scale(0.25);
-//        Vector3d toCenter = new Vector3d();
-//
-//        for (Vector3f vec : corners) {
-//          
-//          
-//          
-//          
-//          
-//          toCenter.set(center);
-//          toCenter.sub(vec);
-//          toCenter.normalize();
-//          toCenter.scale(scale/2);
-//          
-//          vec.sub(new Vector3f(0.5f, 0.5f, 0.5f)); //center
-//          vec.sub(new Vector3f(offset)); //move them flush with block space
-//          vec.add(toCenter); //
-//
-//          BoundingBox bbb = bb.translate(vec);
-//          result.add(new CollidableComponent(IItemConduit.class, bbb, dir, EXTERNAL_INTERFACE_GEOM));
-//        }
-//
-//      }
-//    }
-//
-//    return result;
-//  }
+  //  @Override
+  //  public List<CollidableComponent> getCollidableComponents() {    
+  //    if(collidables != null && !collidablesDirty) {
+  //      return collidables;
+  //    }
+  //    List<CollidableComponent> result = super.getCollidableComponents();
+  //
+  //    for (ForgeDirection dir : getExternalConnections()) {
+  //      if(getConectionMode(dir) != ConnectionMode.DISABLED && getConectionMode(dir) != ConnectionMode.NOT_SET) { 
+  //        float scale = 0.1f;
+  //        BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
+  //
+  //        Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
+  //        offset.scale(scale/2);
+  //
+  //        BoundingBox conectorBounds = ((ClientProxy) EnderIO.proxy).getConduitBundleRenderer().getExternalConnectorBoundsForDirection(dir);
+  //        List<Vector3f> corners = conectorBounds.getCornersForFace(dir);
+  //        
+  //        Vector3d center = new Vector3d();
+  //        for (Vector3f vec : corners) {
+  //          center.add(vec);
+  //        }
+  //        center.scale(0.25);
+  //        Vector3d toCenter = new Vector3d();
+  //
+  //        for (Vector3f vec : corners) {
+  //          
+  //          
+  //          
+  //          
+  //          
+  //          toCenter.set(center);
+  //          toCenter.sub(vec);
+  //          toCenter.normalize();
+  //          toCenter.scale(scale/2);
+  //          
+  //          vec.sub(new Vector3f(0.5f, 0.5f, 0.5f)); //center
+  //          vec.sub(new Vector3f(offset)); //move them flush with block space
+  //          vec.add(toCenter); //
+  //
+  //          BoundingBox bbb = bb.translate(vec);
+  //          result.add(new CollidableComponent(IItemConduit.class, bbb, dir, EXTERNAL_INTERFACE_GEOM));
+  //        }
+  //
+  //      }
+  //    }
+  //
+  //    return result;
+  //  }
 
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);    
+    super.writeToNBT(nbtRoot);
   }
 
   @Override

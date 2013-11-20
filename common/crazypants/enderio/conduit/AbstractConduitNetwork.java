@@ -49,7 +49,9 @@ public abstract class AbstractConduitNetwork<T extends IConduit> {
   }
 
   public void addConduit(T con) {
-    conduits.add(con);
+    if(!conduits.contains(con)) {
+      conduits.add(con);
+    }
   }
 
   public void destroyNetwork() {
