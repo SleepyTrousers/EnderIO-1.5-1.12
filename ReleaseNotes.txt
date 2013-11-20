@@ -1,3 +1,7 @@
+0.4.5
+- #303 Blocks getting destroyed when adding a facade.
+- #304 Disconnecting / reconnecting conduits not always working
+
 0.4.4
 - #146 from TehSomeLuigi Update build.xml to reobfuscate with Searge names
 - #196 Bug with adjacent liquid conduits
