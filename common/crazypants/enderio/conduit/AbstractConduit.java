@@ -157,7 +157,10 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
-    return true;
+    if(conduit == null) {
+      return false;
+    }
+    return getConectionMode(direction) != ConnectionMode.DISABLED && conduit.getConectionMode(direction.getOpposite()) != ConnectionMode.DISABLED;
   }
 
   @Override

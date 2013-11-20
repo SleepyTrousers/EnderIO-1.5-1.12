@@ -30,7 +30,6 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.power.PowerInterface;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
-import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
@@ -103,31 +102,14 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
-
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             // Attempt to join networks
-            BlockCoord loc = getLocation().getLocation(faceHit);
-            IPowerConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IPowerConduit.class);
-            if(neighbour != null) {
-              if(network != null) {
-                network.destroyNetwork();
-              }
-              onAddedToBundle();
-              return true;
-            }
+            return ConduitUtil.joinConduits(this, faceHit);
           } else if(externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
           } else if(containsConduitConnection(connDir)) {
-            conduitConnectionRemoved(connDir);
-            BlockCoord loc = getLocation().getLocation(connDir);
-            IPowerConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IPowerConduit.class);
-            if(neighbour != null) {
-              neighbour.conduitConnectionRemoved(connDir.getOpposite());
-            }
-            if(network != null) {
-              network.destroyNetwork();
-            }
+            ConduitUtil.disconectConduits(this, connDir);
             return true;
           }
         }

@@ -29,6 +29,7 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
+import crazypants.util.BlockCoord;
 
 public class ConduitUtil {
 
@@ -82,6 +83,54 @@ public class ConduitUtil {
       return true;
     }
     return false;
+  }
+
+  public static <T extends IConduit> void disconectConduits(T con, ForgeDirection connDir) {
+    con.conduitConnectionRemoved(connDir);
+    BlockCoord loc = con.getLocation().getLocation(connDir);
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, con.getBaseConduitType());
+    if(neighbour != null) {
+      neighbour.conduitConnectionRemoved(connDir.getOpposite());
+      if(neighbour.getNetwork() != null) {
+        neighbour.getNetwork().destroyNetwork();
+      }
+    }
+    if(con.getNetwork() != null) { //this should have been destroyed when destroying the neighbours network but lets just make sure
+      con.getNetwork().destroyNetwork();
+    }
+  }
+
+  public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
+    BlockCoord loc = con.getLocation().getLocation(faceHit);
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, con.getBaseConduitType());
+    if(neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
+      con.conduitConnectionAdded(faceHit);
+      neighbour.conduitConnectionAdded(faceHit.getOpposite());
+      if(con.getNetwork() != null) {
+        con.getNetwork().destroyNetwork();
+      }
+      if(neighbour.getNetwork() != null) {
+        neighbour.getNetwork().destroyNetwork();
+      }
+      return true;
+    }
+    return false;
+  }
+
+  public static void forceSkylightRecalculation(World worldObj, int xCoord, int yCoord, int zCoord) {
+    int height = worldObj.getHeightValue(xCoord, zCoord);
+    if(height <= yCoord) {
+      for (int i = 1; i < 12; i++) {
+        if(worldObj.isAirBlock(xCoord, yCoord + i, zCoord)) {
+          //We need to force the re-lighting of the column due to a change
+          //in the light reaching bellow the block from the sky. To avoid 
+          //modifying core classes to expose this functionality I am just placing then breaking
+          //a block above this one to force the check
+          worldObj.setBlock(xCoord, yCoord + i, zCoord, 1, 0, 3);
+          worldObj.setBlockToAir(xCoord, yCoord + i, zCoord);
+        }
+      }
+    }
   }
 
   @SideOnly(Side.CLIENT)
@@ -202,10 +251,14 @@ public class ConduitUtil {
     }
     List<T> result = new ArrayList<T>();
     IConduitBundle root = (IConduitBundle) te;
-    for (ForgeDirection dir : root.getAllConnections()) {
-      T con = getConduit(world, root.getEntity(), dir, type);
-      if(con != null) {
-        result.add(con);
+    T con = root.getConduit(type);
+    if(con != null) {
+      for (ForgeDirection dir : con.getConduitConnections()) {
+        T connected = getConduit(world, root.getEntity(), dir, type);
+        if(connected != null) {
+          result.add(connected);
+        }
+
       }
     }
     return result;

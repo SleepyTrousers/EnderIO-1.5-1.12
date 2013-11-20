@@ -98,39 +98,21 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       if(!getBundle().getEntity().worldObj.isRemote) {
 
         if(res != null && res.component != null) {
+
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
-            // Attempt to join networks
-            ILiquidConduit neighbour = getFluidConduit(faceHit);
-            if(neighbour != null && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), neighbour.getFluidType())) {
-              // kill the networks so a new one is formed combining then
-              if(neighbour.getNetwork() != null) {
-                neighbour.getNetwork().destroyNetwork();
-              }
-              if(getNetwork() != null) {
-                getNetwork().destroyNetwork();
-              }
-              // and join'm'up
-              neighbour.conduitConnectionAdded(faceHit.getOpposite());
-              conduitConnectionAdded(faceHit);
-            }
+            return ConduitUtil.joinConduits(this, faceHit);
           } else if(containsExternalConnection(connDir)) {
             // Toggle extraction mode
             setConnectionMode(connDir, getNextConnectionMode(connDir));
           } else if(containsConduitConnection(connDir)) {
-            conduitConnectionRemoved(connDir);
-            BlockCoord loc = getLocation().getLocation(connDir);
-            ILiquidConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
-            if(neighbour != null) {
-              neighbour.conduitConnectionRemoved(connDir.getOpposite());
-            }
             FluidStack curFluidType = null;
             if(network != null) {
               curFluidType = network.getFluidType();
             }
-            network.destroyNetwork();
+            ConduitUtil.disconectConduits(this, connDir);
             setFluidType(curFluidType);
 
           }
@@ -546,6 +528,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public boolean canConnectToConduit(ForgeDirection direction, IConduit con) {
+    if(!super.canConnectToConduit(direction, con)) {
+      return false;
+    }
     if(!(con instanceof ILiquidConduit)) {
       return false;
     }
