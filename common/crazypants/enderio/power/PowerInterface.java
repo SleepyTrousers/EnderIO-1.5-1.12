@@ -54,7 +54,7 @@ public class PowerInterface {
 
   public float getEnergyStored(ForgeDirection dir) {
     if(rfPower != null) {
-      return rfPower.getEnergyStored(dir);
+      return rfPower.getEnergyStored(dir) / 10;      
     }
 
     // bc
@@ -72,7 +72,7 @@ public class PowerInterface {
 
   public float getMaxEnergyStored(ForgeDirection dir) {
     if(rfPower != null) {
-      return rfPower.getMaxEnergyStored(dir);
+      return rfPower.getMaxEnergyStored(dir) / 10;      
     }
 
     // bc
@@ -91,7 +91,7 @@ public class PowerInterface {
   public float getPowerRequest(ForgeDirection dir) {
     if(rfPower != null) {
       if(rfPower.canInterface(dir)) {
-        return rfPower.receiveEnergy(dir, rfPower.getMaxEnergyStored(dir), true);
+        return rfPower.receiveEnergy(dir, rfPower.getMaxEnergyStored(dir), true) / 10;        
       }
       return 0;
     }
