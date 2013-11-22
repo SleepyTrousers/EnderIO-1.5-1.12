@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
@@ -30,8 +31,25 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustTin", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_TIN.ordinal()));
     OreDictionary.registerOre("dustEnderPearl", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_ENDER.ordinal()));
     OreDictionary.registerOre("itemSilicon", new ItemStack(ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal()));
-    OreDictionary.registerOre("itemSilicon", Materials.matSilicon.copy() );
     OreDictionary.registerOre("gearStone", new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal()));
+    
+    /**
+     * Register AE1's Silicon, remove after AE2 is out.
+     */
+    if ( Loader.isModLoaded( "AppliedEnergistics" ) )
+    {
+            try
+            {
+                    Class materialsAE = Class.forName( "appeng.api.Materials" );
+                    Object matSilicon = materialsAE.getField( "matSilicon" ).get( materialsAE );
+                    if ( matSilicon instanceof ItemStack )
+                            OreDictionary.registerOre( "itemSilicon", ((ItemStack) matSilicon).copy() );
+            }
+            catch (Throwable t)
+            {
+                    /** just ignore any issues. **/
+            }
+    }
   }  
   
 
