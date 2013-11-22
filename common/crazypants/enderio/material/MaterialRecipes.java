@@ -4,6 +4,7 @@ import static crazypants.enderio.ModObject.itemBasicCapacitor;
 
 import java.util.ArrayList;
 
+import appeng.api.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,11 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustCopper", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COPPER.ordinal()));
     OreDictionary.registerOre("dustTin", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_TIN.ordinal()));
     OreDictionary.registerOre("dustEnderPearl", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_ENDER.ordinal()));
-  }
+    OreDictionary.registerOre("itemSilicon", new ItemStack(ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal()));
+    OreDictionary.registerOre("itemSilicon", Materials.matSilicon.copy() );
+    OreDictionary.registerOre("gearStone", new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal()));
+  }  
+  
 
   public static void addRecipes() {
 
@@ -44,6 +49,7 @@ public class MaterialRecipes {
     ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
     ItemStack phasedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+
 
     //Conduit Binder
     ItemStack cbc = binderComposite.copy();
