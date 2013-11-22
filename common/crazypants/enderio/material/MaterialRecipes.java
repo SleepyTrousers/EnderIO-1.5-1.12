@@ -4,7 +4,6 @@ import static crazypants.enderio.ModObject.itemBasicCapacitor;
 
 import java.util.ArrayList;
 
-import appeng.api.Materials;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
