@@ -219,7 +219,10 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionState) {
+    if(ignoreConnectionState) { //you can always force an external connection
+      return true;
+    }
     if(forcedConnections.get(direction) == ConnectionMode.DISABLED) {
       return false;
     } else if(forcedConnections.get(direction) == ConnectionMode.IN_OUT) {

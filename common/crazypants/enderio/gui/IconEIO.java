@@ -20,12 +20,15 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(32, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148);
-  public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(16, 148);
-  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(0, 164);
-  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(16, 164);
+  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 64, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(64, 148, 64, 64);
+  public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(32, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(0, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(32, 180, 32, 32);
+
+  public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
+  public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;

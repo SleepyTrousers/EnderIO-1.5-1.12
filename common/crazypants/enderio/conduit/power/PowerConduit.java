@@ -233,7 +233,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     PowerInterface rec = getExternalPowerReceptor(direction);
     return rec != null && rec.canConduitConnect(direction);
   }

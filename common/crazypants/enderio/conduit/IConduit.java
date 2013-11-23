@@ -68,7 +68,7 @@ public interface IConduit {
 
   // External Connections
 
-  boolean canConnectToExternal(ForgeDirection direction);
+  boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode);
 
   Set<ForgeDirection> getExternalConnections();
 

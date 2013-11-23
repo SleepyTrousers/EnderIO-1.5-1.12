@@ -165,7 +165,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     return getExternalInventory(direction) != null;
   }
 

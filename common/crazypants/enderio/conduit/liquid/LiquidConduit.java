@@ -527,7 +527,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     return getExternalHandler(direction) != null;
   }
 

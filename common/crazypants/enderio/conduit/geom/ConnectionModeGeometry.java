@@ -9,7 +9,6 @@ import java.util.List;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.VertexRotation;
 import crazypants.render.VertexTransform;
@@ -29,7 +28,7 @@ public class ConnectionModeGeometry {
     refBB = refBB.scale(scale, scale, scale);
     refBB = refBB.scale(scale, 1, 1);
 
-    double offset = (ConduitGeometryUtil.HWIDTH * scale * scale) + ConduitBundleRenderer.CONNECTOR_DEPTH;
+    double offset = (ConduitGeometryUtil.HWIDTH * scale * scale) + ConduitGeometryUtil.CONNECTOR_DEPTH;
 
     ForgeDirection dir;
     Vector3d trans;

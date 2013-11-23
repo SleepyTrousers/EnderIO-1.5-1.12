@@ -24,6 +24,7 @@ import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
@@ -419,10 +420,29 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       if(bb != null) {
         bb = bb.scale(1.05, 1.05, 1.05);
         CollidableComponent cc = new CollidableComponent(null, bb, ForgeDirection.UNKNOWN,
-            ConduitConnectorType.BOTH);
+            ConduitConnectorType.INTERNAL);
         result.add(cc);
         cachedConnectors.add(cc);
       }
+    }
+
+    //External Connectors
+    Set<ForgeDirection> externalDirs = new HashSet<ForgeDirection>();
+    for (IConduit con : conduits) {
+      Set<ForgeDirection> extCons = con.getExternalConnections();
+      if(extCons != null) {
+        for (ForgeDirection dir : extCons) {
+          if(con.getConectionMode(dir) != ConnectionMode.DISABLED) {
+            externalDirs.addAll(extCons);
+          }
+        }
+      }
+    }
+    for (ForgeDirection dir : externalDirs) {
+      BoundingBox bb = ConduitGeometryUtil.instance.getExternalConnectorBoundingBox(dir);
+      CollidableComponent cc = new CollidableComponent(null, bb, dir, ConduitConnectorType.EXTERNAL);
+      result.add(cc);
+      cachedConnectors.add(cc);
     }
 
     connectorsDirty = false;
