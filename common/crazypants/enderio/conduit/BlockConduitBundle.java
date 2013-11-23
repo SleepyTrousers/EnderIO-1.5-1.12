@@ -397,36 +397,11 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     }
 
     if(breakBlock) {
-      RaytraceResult rt = doRayTrace(world, x, y, z, player);
-      if(rt != null && rt.component != null) {
-        Class<? extends IConduit> type = rt.component.conduitType;
-        if(type == null) {
-          // broke a conector so drop any conduits with no connections as there
-          // is no other way to remove these
-          List<IConduit> cons = new ArrayList<IConduit>(te.getConduits());
-          boolean droppedUnconected = false;
-          for (IConduit con : cons) {
-            if(con.getConduitConnections().isEmpty() &&
-                con.getExternalConnections().isEmpty()) {
-              te.removeConduit(con);
-              drop.add(con.createItem());
-              droppedUnconected = true;
-            }
-          }
-          // If there isn't, then drop em all
-          if(!droppedUnconected) {
-            for (IConduit con : cons) {
-              te.removeConduit(con);
-              drop.add(con.createItem());
-            }
-          }
-        } else {
-          IConduit con = te.getConduit(type);
-          if(con != null) {
-            te.removeConduit(con);
-            drop.add(con.createItem());
-          }
-
+      List<RaytraceResult> results = doRayTraceAll(world, x, y, z, player);
+      RaytraceResult.sort(getEyePosition(world, player), results);
+      for (RaytraceResult rt : results) {
+        if(breakConduit(te, drop, rt, player)) {
+          break;
         }
       }
     }
@@ -444,6 +419,48 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       return false;
     }
     world.setBlockToAir(x, y, z);
+    return true;
+  }
+
+  private boolean breakConduit(IConduitBundle te, List<ItemStack> drop, RaytraceResult rt, EntityPlayer player) {
+    if(rt == null || rt.component == null) {
+      return false;
+    }
+    Class<? extends IConduit> type = rt.component.conduitType;
+    if(!ConduitUtil.renderConduit(player, type)) {
+      return false;
+    }
+
+    if(type == null) {
+      // broke a conector so drop any conduits with no connections as there
+      // is no other way to remove these
+      List<IConduit> cons = new ArrayList<IConduit>(te.getConduits());
+      boolean droppedUnconected = false;
+      for (IConduit con : cons) {
+        if(con.getConduitConnections().isEmpty() &&
+            con.getExternalConnections().isEmpty() && ConduitUtil.renderConduit(player, con)) {
+          te.removeConduit(con);
+          drop.add(con.createItem());
+          droppedUnconected = true;
+        }
+      }
+      // If there isn't, then drop em all
+      if(!droppedUnconected) {
+        for (IConduit con : cons) {
+          if(ConduitUtil.renderConduit(player, con)) {
+            te.removeConduit(con);
+            drop.add(con.createItem());
+          }
+        }
+      }
+    } else {
+      IConduit con = te.getConduit(type);
+      if(con != null) {
+        te.removeConduit(con);
+        drop.add(con.createItem());
+      }
+    }
+
     return true;
   }
 
