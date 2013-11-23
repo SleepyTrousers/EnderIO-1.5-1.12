@@ -144,11 +144,16 @@ public class MachineRecipes {
       GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', metal, 'c', activatedCapacitor, 'r', Block.blockRedstone));
     }
 
-    
     //light
     ItemStack poweredLamp = new ItemStack(blockElectricLight.actualId, 1, 0);
     ItemStack glowstone = new ItemStack(Item.glowstone);
-    ArrayList<ItemStack> silicon = OreDictionary.getOres("itemSilicon");
+    ArrayList<ItemStack> siliconEntries = OreDictionary.getOres("itemSilicon");
+    Object silicon;
+    if(siliconEntries == null || siliconEntries.isEmpty()) {
+      silicon = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal());
+    } else {
+      silicon = "itemSilicon";
+    }
     if(Config.useHardRecipes) {
       GameRegistry.addShapedRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor);
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor));
@@ -157,14 +162,15 @@ public class MachineRecipes {
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', Block.glass, 'd', glowstone, 's', silicon, 'c', capacitor));
 
     }
-    
+
     //MJ Reader    
     ItemStack mJReader = new ItemStack(ModObject.itemMJReader.actualId, 1, 0);
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack powerConduit = new ItemStack(itemPowerConduit.actualId, 1, 0);
     ItemStack redstoneConduit = new ItemStack(itemRedstoneConduit.actualId, 1, 2);
 
-    GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Item.comparator, 'g', Block.thinGlass, 's', silicon, 'e',
-            electricalSteel));
+    GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Item.comparator, 'g',
+        Block.thinGlass, 's', silicon, 'e',
+        electricalSteel));
   }
 }
