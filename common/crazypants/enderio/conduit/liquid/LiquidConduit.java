@@ -103,6 +103,17 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+            BlockCoord loc = getLocation().getLocation(faceHit);
+            ILiquidConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
+            if(neighbour == null) {
+              return false;
+            }
+            if(neighbour.getFluidType() == null || getFluidType() == null) {
+              FluidStack type = getFluidType();
+              type = type != null ? type : neighbour.getFluidType();
+              neighbour.setFluidType(type);
+              setFluidType(type);
+            }
             return ConduitUtil.joinConduits(this, faceHit);
           } else if(containsExternalConnection(connDir)) {
             // Toggle extraction mode
