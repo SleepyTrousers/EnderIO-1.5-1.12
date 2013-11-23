@@ -195,6 +195,8 @@ public class EnderIO {
 
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
+    
+    //Register Custom Dungeon Loot here
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemYetaWrench.actualId, 1, 0), 1 ,1, 15));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemMJReader.actualId, 1, 0), 1, 1, 1));
