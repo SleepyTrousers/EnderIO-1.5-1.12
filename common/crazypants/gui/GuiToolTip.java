@@ -53,6 +53,7 @@ public class GuiToolTip {
     }
 
     if(bounds.contains(mouseX, mouseY)) {
+
       if(mouseOverStart == 0) {
         mouseOverStart = System.currentTimeMillis();
       }

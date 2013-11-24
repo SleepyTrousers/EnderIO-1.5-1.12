@@ -92,13 +92,24 @@ public abstract class AbstractConduit implements IConduit {
     return false;
   }
 
-  protected ConnectionMode getNextConnectionMode(ForgeDirection dir) {
+  @Override
+  public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
     ConnectionMode curMode = getConectionMode(dir);
     ConnectionMode next = ConnectionMode.getNext(curMode);
     if(next == ConnectionMode.NOT_SET) {
       next = ConnectionMode.IN_OUT;
     }
     return next;
+  }
+
+  @Override
+  public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
+    ConnectionMode curMode = getConectionMode(dir);
+    ConnectionMode prev = ConnectionMode.getPrevious(curMode);
+    if(prev == ConnectionMode.NOT_SET) {
+      prev = ConnectionMode.DISABLED;
+    }
+    return prev;
   }
 
   @Override

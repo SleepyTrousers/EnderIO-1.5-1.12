@@ -36,6 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
@@ -51,6 +52,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
 
   public static BlockConduitBundle create() {
+
+    PacketHandler.instance.addPacketProcessor(new ConduitPacketHandler());
+
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
     return result;

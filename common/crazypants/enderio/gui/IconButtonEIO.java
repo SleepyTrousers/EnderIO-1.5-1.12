@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiToolTip;
+import crazypants.gui.IGuiScreen;
 import crazypants.render.RenderUtil;
 
 public class IconButtonEIO extends GuiButton {
@@ -23,11 +23,11 @@ public class IconButtonEIO extends GuiButton {
   private int xOrigin;
   private int yOrigin;
 
-  protected GuiScreenBase gui;
+  protected IGuiScreen gui;
 
   protected GuiToolTip toolTip;
 
-  public IconButtonEIO(GuiScreenBase gui, int id, int x, int y, IconEIO icon) {
+  public IconButtonEIO(IGuiScreen gui, int id, int x, int y, IconEIO icon) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
     this.gui = gui;
     this.icon = icon;
@@ -58,6 +58,14 @@ public class IconButtonEIO extends GuiButton {
     if(toolTip != null) {
       toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
     }
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
   }
 
   public IconEIO getIcon() {

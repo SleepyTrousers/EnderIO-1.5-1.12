@@ -7,13 +7,13 @@ import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.gui.GuiScreenBase;
+import crazypants.gui.IGuiScreen;
 
 public class ColorButton extends IconButtonEIO {
 
   private int colorIndex = 0;
 
-  public ColorButton(GuiScreenBase gui, int id, int x, int y) {
+  public ColorButton(IGuiScreen gui, int id, int x, int y) {
     super(gui, id, x, y, null);
   }
 

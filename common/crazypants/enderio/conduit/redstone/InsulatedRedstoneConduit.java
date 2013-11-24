@@ -115,24 +115,13 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
             } else {
 
-              setConnectionMode(faceHit, ConnectionMode.IN_OUT);
-              forcedConnections.put(faceHit, ConnectionMode.IN_OUT);
-              onAddedToBundle();
-              Set<Signal> newSignals = getNetworkInputs(faceHit);
-              network.addSignals(newSignals);
-              network.notifyNeigborsOfSignals();
+              forceConnectionMode(faceHit, ConnectionMode.IN_OUT);
 
             }
             return true;
 
           } else if(externalConnections.contains(connDir)) {
-
-            Set<Signal> signals = getNetworkInputs(connDir);
-            setConnectionMode(connDir, ConnectionMode.DISABLED);
-            forcedConnections.put(connDir, ConnectionMode.DISABLED);
-            onAddedToBundle();
-            network.removeSignals(signals);
-            network.notifyNeigborsOfSignals();
+            forceConnectionMode(faceHit, ConnectionMode.DISABLED);
             return true;
 
           } else if(containsConduitConnection(connDir)) {
@@ -158,6 +147,49 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       }
     }
     return false;
+  }
+
+  @Override
+  public void forceConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+    if(mode == ConnectionMode.IN_OUT) {
+
+      setConnectionMode(dir, mode);
+      forcedConnections.put(dir, mode);
+      onAddedToBundle();
+      Set<Signal> newSignals = getNetworkInputs(dir);
+      if(network != null) {
+        network.addSignals(newSignals);
+        network.notifyNeigborsOfSignals();
+      }
+
+    } else {
+
+      Set<Signal> signals = getNetworkInputs(dir);
+      setConnectionMode(dir, mode);
+      forcedConnections.put(dir, mode);
+      onAddedToBundle();
+      if(network != null) {
+        network.removeSignals(signals);
+        network.notifyNeigborsOfSignals();
+      }
+
+    }
+  }
+
+  @Override
+  public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
+    if(getConectionMode(dir) == ConnectionMode.IN_OUT) {
+      return ConnectionMode.DISABLED;
+    }
+    return ConnectionMode.IN_OUT;
+  }
+
+  @Override
+  public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
+    if(getConectionMode(dir) == ConnectionMode.IN_OUT) {
+      return ConnectionMode.DISABLED;
+    }
+    return ConnectionMode.IN_OUT;
   }
 
   @Override
@@ -206,6 +238,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     return res;
   }
 
+  @Override
   public void setSignalColor(ForgeDirection dir, SignalColor col) {
     Set<Signal> toRemove = getNetworkInputs(dir);
     signalColors.put(dir, col);

@@ -30,6 +30,9 @@ public final class IconEIO {
   public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);
 
+  public static final IconEIO LEFT_ARROW = new IconEIO(217, 0, 16, 32);
+  public static final IconEIO RIGHT_ARROW = new IconEIO(201, 0, 16, 32);
+
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 

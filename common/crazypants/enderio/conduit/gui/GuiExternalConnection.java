@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.common.ForgeDirection;
@@ -46,6 +47,20 @@ public class GuiExternalConnection extends GuiContainerBase {
   }
 
   @Override
+  public void initGui() {
+    super.initGui();
+    buttonList.clear();
+    for (int i = 0; i < tabs.size(); i++) {
+      if(i == activeTab) {
+        tabs.get(i).onGuiInit(guiLeft + 10, guiTop + 10, xSize - 20, ySize - 20);
+      } else {
+        tabs.get(i).deactivate();
+      }
+    }
+
+  }
+
+  @Override
   public boolean doesGuiPauseGame() {
     return false;
   }
@@ -66,9 +81,17 @@ public class GuiExternalConnection extends GuiContainerBase {
     if(x > tabLeftX && x < tabRightX + 24) {
       if(y > minY && y < maxY) {
         activeTab = (y - minY) / 24;
+        initGui();
+        return;
       }
     }
 
+  }
+
+  @Override
+  protected void actionPerformed(GuiButton guiButton) {
+    super.actionPerformed(guiButton);
+    tabs.get(activeTab).actionPerformed(guiButton);
   }
 
   @Override
@@ -103,7 +126,7 @@ public class GuiExternalConnection extends GuiContainerBase {
     icon.renderIcon(tabX + 4, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 7, 10, 10, 0, false);
     tes.draw();
 
-    tabs.get(activeTab).render(sx + 10, sy + 10, xSize - 20, ySize - 20);
+    tabs.get(activeTab).render(par1, par2, par3);
   }
 
 }

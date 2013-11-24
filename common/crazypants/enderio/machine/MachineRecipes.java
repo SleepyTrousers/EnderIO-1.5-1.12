@@ -155,7 +155,6 @@ public class MachineRecipes {
       silicon = "itemSilicon";
     }
     if(Config.useHardRecipes) {
-      GameRegistry.addShapedRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor);
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor));
 
     } else {

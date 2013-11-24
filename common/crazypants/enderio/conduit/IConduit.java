@@ -86,6 +86,10 @@ public interface IConduit {
 
   boolean hasConnectionMode(ConnectionMode mode);
 
+  ConnectionMode getNextConnectionMode(ForgeDirection dir);
+
+  ConnectionMode getPreviousConnectionMode(ForgeDirection dir);
+
   // rendering, only needed us default rendering is used
 
   Icon getTextureForState(CollidableComponent component);
