@@ -14,4 +14,6 @@ public interface IGuiScreen {
 
   public void addButton(GuiButton button);
 
+  void removeToolTip(GuiToolTip toolTip);
+
 }

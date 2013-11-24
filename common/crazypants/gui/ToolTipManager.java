@@ -26,6 +26,10 @@ public class ToolTipManager {
     toolTips.add(toolTip);
   }
 
+  public void removeToolTip(GuiToolTip toolTip) {
+    toolTips.remove(toolTip);
+  }
+
   protected final void drawTooltips(ToolTipRenderer renderer, int mouseX, int mouseY) {
     for (GuiToolTip toolTip : toolTips) {
       toolTip.onTick(mouseX - renderer.getGuiLeft(), mouseY - renderer.getGuiTop());

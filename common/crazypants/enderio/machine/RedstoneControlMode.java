@@ -33,4 +33,14 @@ public enum RedstoneControlMode {
     return redstoneCheckPassed;
   }
 
+  public RedstoneControlMode next() {
+    int ord = ordinal();
+    if(ord == values().length - 1) {
+      ord = 0;
+    } else {
+      ord++;
+    }
+    return values()[ord];
+  }
+
 }

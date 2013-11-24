@@ -21,7 +21,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
+public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
 
   public short facing;
 
@@ -106,10 +106,12 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     this(slotDefinition, Type.MACHINE);
   }
 
+  @Override
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
 
+  @Override
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
   }

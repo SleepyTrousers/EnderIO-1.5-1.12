@@ -74,6 +74,8 @@ public class BaseSettingsPanel implements ISettingsPanel {
     rightArrow.onGuiInit();
 
     FontRenderer fr = gui.getFontRenderer();
+    connectionModeChanged(con.getConectionMode(gui.dir));
+
     initCustomOptions();
   }
 
@@ -92,15 +94,21 @@ public class BaseSettingsPanel implements ISettingsPanel {
   @Override
   public void actionPerformed(GuiButton guiButton) {
     if(guiButton.id == PREV_MODE_B) {
+      System.out.println("BaseSettingsPanel.actionPerformed: ");
       con.setConnectionMode(gui.dir, con.getPreviousConnectionMode(gui.dir));
       Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
       PacketDispatcher.sendPacketToServer(pkt);
+      connectionModeChanged(con.getConectionMode(gui.dir));
 
     } else if(guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.dir, con.getNextConnectionMode(gui.dir));
       Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
       PacketDispatcher.sendPacketToServer(pkt);
+      connectionModeChanged(con.getConectionMode(gui.dir));
     }
+  }
+
+  protected void connectionModeChanged(ConnectionMode conectionMode) {
   }
 
   @Override
@@ -108,7 +116,6 @@ public class BaseSettingsPanel implements ISettingsPanel {
     FontRenderer fr = gui.getFontRenderer();
 
     int rgb = ColorUtil.getRGB(Color.darkGray);
-    //gui.getFontRenderer().drawString(gui.dir + ": " + getTypeName(), left, top, rgb);
     int x = left + (width - fr.getStringWidth(getTypeName())) / 2;
 
     fr.drawString(getTypeName(), x, top, rgb);

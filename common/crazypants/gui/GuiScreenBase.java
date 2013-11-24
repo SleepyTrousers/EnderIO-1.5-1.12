@@ -46,6 +46,11 @@ public abstract class GuiScreenBase extends GuiScreen implements ToolTipRenderer
   }
 
   @Override
+  public void removeToolTip(GuiToolTip toolTip) {
+    ttMan.removeToolTip(toolTip);
+  }
+
+  @Override
   public void initGui() {
     super.initGui();
     guiLeft = (this.width - this.xSize) / 2;

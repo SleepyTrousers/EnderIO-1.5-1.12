@@ -37,6 +37,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   public void actionPerformed(GuiButton guiButton) {
+    super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
       Packet pkt = ConduitPacketHandler.createSignalColorPacket(gui.bundle, gui.dir, SignalColor.values()[cb.getColorIndex()]);
       PacketDispatcher.sendPacketToServer(pkt);
@@ -46,9 +47,15 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Override
   protected void initCustomOptions() {
     if(insCon != null) {
+      cb.setColorIndex(cb.getColorIndex());
       cb.onGuiInit();
     }
+  }
 
+  @Override
+  public void deactivate() {
+    super.deactivate();
+    cb.setToolTip((String[]) null);
   }
 
   @Override
