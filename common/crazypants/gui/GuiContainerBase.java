@@ -146,6 +146,10 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     return xSize;
   }
 
+  public int getYSize() {
+    return ySize;
+  }
+
   @Override
   public FontRenderer getFontRenderer() {
     if(fontRenderer == null) {

@@ -21,4 +21,12 @@ public interface IItemConduit extends IConduit {
 
   void itemsExtracted(int numInserted, int slot);
 
+  void setInputFilter(ForgeDirection dir, ItemFilter filter);
+
+  void setOutputFilter(ForgeDirection dir, ItemFilter filter);
+
+  ItemFilter getInputFilter(ForgeDirection dir);
+
+  ItemFilter getOutputFilter(ForgeDirection dir);
+
 }

@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,6 +72,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   float extractRatePerTick = maxExtractedOnTick / 20f;
   long extractedAtLastTick = -1;
 
+  protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+
+  protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+
   public ItemConduit() {
   }
 
@@ -94,6 +100,34 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
     return false;
+  }
+
+  @Override
+  public void setInputFilter(ForgeDirection dir, ItemFilter filter) {
+    inputFilters.put(dir, filter);
+  }
+
+  @Override
+  public void setOutputFilter(ForgeDirection dir, ItemFilter filter) {
+    outputFilters.put(dir, filter);
+  }
+
+  @Override
+  public ItemFilter getInputFilter(ForgeDirection dir) {
+    ItemFilter res = inputFilters.get(dir);
+    if(res == null) {
+      res = new ItemFilter(10);
+    }
+    return res;
+  }
+
+  @Override
+  public ItemFilter getOutputFilter(ForgeDirection dir) {
+    ItemFilter res = outputFilters.get(dir);
+    if(res == null) {
+      res = new ItemFilter(10);
+    }
+    return res;
   }
 
   @Override
@@ -232,64 +266,54 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return null;
   }
 
-  //  @Override
-  //  public List<CollidableComponent> getCollidableComponents() {    
-  //    if(collidables != null && !collidablesDirty) {
-  //      return collidables;
-  //    }
-  //    List<CollidableComponent> result = super.getCollidableComponents();
-  //
-  //    for (ForgeDirection dir : getExternalConnections()) {
-  //      if(getConectionMode(dir) != ConnectionMode.DISABLED && getConectionMode(dir) != ConnectionMode.NOT_SET) { 
-  //        float scale = 0.1f;
-  //        BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
-  //
-  //        Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
-  //        offset.scale(scale/2);
-  //
-  //        BoundingBox conectorBounds = ((ClientProxy) EnderIO.proxy).getConduitBundleRenderer().getExternalConnectorBoundsForDirection(dir);
-  //        List<Vector3f> corners = conectorBounds.getCornersForFace(dir);
-  //        
-  //        Vector3d center = new Vector3d();
-  //        for (Vector3f vec : corners) {
-  //          center.add(vec);
-  //        }
-  //        center.scale(0.25);
-  //        Vector3d toCenter = new Vector3d();
-  //
-  //        for (Vector3f vec : corners) {
-  //          
-  //          
-  //          
-  //          
-  //          
-  //          toCenter.set(center);
-  //          toCenter.sub(vec);
-  //          toCenter.normalize();
-  //          toCenter.scale(scale/2);
-  //          
-  //          vec.sub(new Vector3f(0.5f, 0.5f, 0.5f)); //center
-  //          vec.sub(new Vector3f(offset)); //move them flush with block space
-  //          vec.add(toCenter); //
-  //
-  //          BoundingBox bbb = bb.translate(vec);
-  //          result.add(new CollidableComponent(IItemConduit.class, bbb, dir, EXTERNAL_INTERFACE_GEOM));
-  //        }
-  //
-  //      }
-  //    }
-  //
-  //    return result;
-  //  }
-
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
+
+    for (Entry<ForgeDirection, ItemFilter> entry : inputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemFilter f = entry.getValue();
+        if(f.isValid()) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          f.writeToNBT(itemRoot);
+          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
+    for (Entry<ForgeDirection, ItemFilter> entry : outputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemFilter f = entry.getValue();
+        if(f.isValid()) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          f.writeToNBT(itemRoot);
+          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
   }
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      String key = "inFilts." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemFilter filter = new ItemFilter();
+        filter.readFromNBT(filterTag);
+        inputFilters.put(dir, filter);
+      }
+      key = "outFilts." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemFilter filter = new ItemFilter();
+        filter.readFromNBT(filterTag);
+        outputFilters.put(dir, filter);
+      }
+    }
   }
 
 }

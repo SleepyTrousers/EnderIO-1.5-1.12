@@ -94,7 +94,6 @@ public class BaseSettingsPanel implements ISettingsPanel {
   @Override
   public void actionPerformed(GuiButton guiButton) {
     if(guiButton.id == PREV_MODE_B) {
-      System.out.println("BaseSettingsPanel.actionPerformed: ");
       con.setConnectionMode(gui.dir, con.getPreviousConnectionMode(gui.dir));
       Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
       PacketDispatcher.sendPacketToServer(pkt);

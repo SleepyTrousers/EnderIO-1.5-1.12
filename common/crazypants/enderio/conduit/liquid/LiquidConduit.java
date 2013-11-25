@@ -518,23 +518,20 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       nbtRoot.setTag("tank", ft.writeToNBT(new NBTTagCompound()));
     }
 
-    if(extractionModes.size() > 0) {
-      for (Entry<ForgeDirection, RedstoneControlMode> entry : extractionModes.entrySet()) {
-        if(entry.getValue() != null) {
-          short ord = (short) entry.getValue().ordinal();
-          nbtRoot.setShort("extRM." + entry.getKey().name(), ord);
-        }
+    for (Entry<ForgeDirection, RedstoneControlMode> entry : extractionModes.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("extRM." + entry.getKey().name(), ord);
       }
     }
 
-    if(extractionColors.size() > 0) {
-      for (Entry<ForgeDirection, SignalColor> entry : extractionColors.entrySet()) {
-        if(entry.getValue() != null) {
-          short ord = (short) entry.getValue().ordinal();
-          nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
-        }
+    for (Entry<ForgeDirection, SignalColor> entry : extractionColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
       }
     }
+
   }
 
   @Override

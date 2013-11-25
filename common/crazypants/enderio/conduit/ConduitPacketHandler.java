@@ -221,9 +221,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
 
     IConduit con = conBun.getConduit(conType.getBaseType());
     if(con != null) {
-      System.out.println("ConduitPacketHandler.processConnectionModePacket: " + con.getClass());
       if(con instanceof IInsulatedRedstoneConduit) { //yeah, I know
-        System.out.println("ConduitPacketHandler.processConnectionModePacket: Done did a force");
         ((IInsulatedRedstoneConduit) con).forceConnectionMode(dir, conMode);
       } else {
         con.setConnectionMode(dir, conMode);

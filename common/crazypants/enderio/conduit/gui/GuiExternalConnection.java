@@ -30,8 +30,11 @@ public class GuiExternalConnection extends GuiContainerBase {
 
   private int tabYOffset = 4;
 
+  ExternalConnectionContainer container;
+
   public GuiExternalConnection(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
     super(new ExternalConnectionContainer(playerInv, bundle, dir));
+    container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;
     this.dir = dir;
@@ -44,6 +47,8 @@ public class GuiExternalConnection extends GuiContainerBase {
         }
       }
     }
+
+    ySize = 166 + 29;
   }
 
   @Override
@@ -86,6 +91,11 @@ public class GuiExternalConnection extends GuiContainerBase {
       }
     }
 
+  }
+
+  public void setSize(int x, int y) {
+    xSize = x;
+    ySize = y;
   }
 
   @Override
