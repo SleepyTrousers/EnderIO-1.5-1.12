@@ -22,6 +22,7 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.enderio.machine.RedstoneControlMode;
 
 public class ConduitPacketHandler implements IPacketProcessor {
 
@@ -85,11 +86,12 @@ public class ConduitPacketHandler implements IPacketProcessor {
     return pkt;
   }
 
-  public static Packet createSignalColorPacket(IConduitBundle bundle, ForgeDirection dir, SignalColor color) {
+  public static Packet createSignalColorPacket(IConduit conduit, ForgeDirection dir, SignalColor color) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
     try {
       dos.writeInt(PacketHandler.ID_CONDUIT_SIGNAL_COL);
+      IConduitBundle bundle = conduit.getBundle();
       dos.writeInt(bundle.getEntity().xCoord);
       dos.writeInt(bundle.getEntity().yCoord);
       dos.writeInt(bundle.getEntity().zCoord);
@@ -97,6 +99,32 @@ public class ConduitPacketHandler implements IPacketProcessor {
       dos.writeShort(dir.ordinal());
 
       dos.writeShort(color.ordinal());
+
+      dos.writeShort(ConTypeEnum.get(conduit).ordinal());
+
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+  }
+
+  public static Packet createExtractionModePacket(ILiquidConduit conduit, ForgeDirection dir, RedstoneControlMode mode) {
+
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    IConduitBundle bundle = conduit.getBundle();
+    try {
+      dos.writeInt(PacketHandler.ID_CONDUIT_EXTRACT_MODE);
+      dos.writeInt(bundle.getEntity().xCoord);
+      dos.writeInt(bundle.getEntity().yCoord);
+      dos.writeInt(bundle.getEntity().zCoord);
+      dos.writeShort(dir.ordinal());
+      dos.writeShort(mode.ordinal());
 
     } catch (IOException e) {
       // never thrown
@@ -111,7 +139,8 @@ public class ConduitPacketHandler implements IPacketProcessor {
 
   @Override
   public boolean canProcessPacket(int packetID) {
-    return PacketHandler.ID_CONDUIT_CON_MODE == packetID || packetID == PacketHandler.ID_CONDUIT_SIGNAL_COL;
+    return PacketHandler.ID_CONDUIT_CON_MODE == packetID || packetID == PacketHandler.ID_CONDUIT_SIGNAL_COL
+        || packetID == PacketHandler.ID_CONDUIT_EXTRACT_MODE;
   }
 
   @Override
@@ -120,7 +149,28 @@ public class ConduitPacketHandler implements IPacketProcessor {
       processConnectionModePacket(data, player);
     } else if(packetID == PacketHandler.ID_CONDUIT_SIGNAL_COL) {
       processSignalColorPacket(data, player);
+    } else if(packetID == PacketHandler.ID_CONDUIT_EXTRACT_MODE) {
+      processExtractionModePacket(data, player);
     }
+  }
+
+  private void processExtractionModePacket(DataInputStream data, Player player) throws IOException {
+    World world = getWorld(player);
+    if(world == null) {
+      return;
+    }
+    IConduitBundle conBun = getConduitBundle(data, world);
+    if(conBun == null) {
+      return;
+    }
+    ForgeDirection dir = ForgeDirection.values()[data.readShort()];
+    RedstoneControlMode mode = RedstoneControlMode.values()[data.readShort()];
+    ILiquidConduit con = conBun.getConduit(ILiquidConduit.class);
+    if(con != null) {
+      con.setExtractionRedstoneMode(mode, dir);
+      world.markBlockForUpdate(conBun.getEntity().xCoord, conBun.getEntity().yCoord, conBun.getEntity().zCoord);
+    }
+
   }
 
   private void processSignalColorPacket(DataInputStream data, Player player) throws IOException {
@@ -134,9 +184,13 @@ public class ConduitPacketHandler implements IPacketProcessor {
     }
     ForgeDirection dir = ForgeDirection.values()[data.readShort()];
     SignalColor col = SignalColor.values()[data.readShort()];
-    IConduit con = conBun.getConduit(IRedstoneConduit.class);
+
+    ConTypeEnum type = ConTypeEnum.values()[data.readShort()];
+    IConduit con = conBun.getConduit(type.baseType);
     if(con instanceof IInsulatedRedstoneConduit) { //yeah, I know
       ((IInsulatedRedstoneConduit) con).setSignalColor(dir, col);
+    } else if(con instanceof ILiquidConduit) {
+      ((ILiquidConduit) con).setExtractionSignalColor(dir, col);
     } else {
       Log.warn("processSignalColorPacket: Could not handle as conduit not found in bundle.");
       return;

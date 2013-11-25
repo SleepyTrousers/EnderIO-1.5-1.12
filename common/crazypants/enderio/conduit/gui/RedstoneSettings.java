@@ -39,7 +39,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(gui.bundle, gui.dir, SignalColor.values()[cb.getColorIndex()]);
+      Packet pkt = ConduitPacketHandler.createSignalColorPacket(insCon, gui.dir, SignalColor.values()[cb.getColorIndex()]);
       PacketDispatcher.sendPacketToServer(pkt);
     }
   }

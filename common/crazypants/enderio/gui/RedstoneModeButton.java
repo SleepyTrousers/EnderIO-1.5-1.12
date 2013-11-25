@@ -17,7 +17,9 @@ public class RedstoneModeButton extends IconButtonEIO {
     super(gui, id, x, y, ICONS[model.getRedstoneControlMode().ordinal()]);
     this.model = model;
     curMode = model.getRedstoneControlMode();
+    System.out.println("RedstoneModeButton.RedstoneModeButton: model says: " + curMode);
     setToolTip(curMode.tooltip);
+    setIcon(ICONS[curMode.ordinal()]);
   }
 
   @Override
@@ -31,12 +33,15 @@ public class RedstoneModeButton extends IconButtonEIO {
 
   private void nextMode() {
     if(curMode == null) {
-      curMode = RedstoneControlMode.NEVER;
+      curMode = RedstoneControlMode.ON;
     }
     setMode(curMode.next());
   }
 
   public void setMode(RedstoneControlMode mode) {
+    if(mode == curMode) {
+      return;
+    }
     curMode = mode;
     setToolTip(mode.tooltip);
     setIcon(ICONS[mode.ordinal()]);

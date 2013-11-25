@@ -5,6 +5,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.enderio.machine.RedstoneControlMode;
 
 public interface ILiquidConduit extends IConduit, IFluidHandler {
 
@@ -29,6 +31,14 @@ public interface ILiquidConduit extends IConduit, IFluidHandler {
   boolean canOutputToDir(ForgeDirection dir);
 
   boolean isExtractingFromDir(ForgeDirection dir);
+
+  void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir);
+
+  RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir);
+
+  void setExtractionSignalColor(ForgeDirection dir, SignalColor col);
+
+  SignalColor getExtractionSignalColor(ForgeDirection dir);
 
   int fill(ForgeDirection from, FluidStack resource, boolean doFill, boolean doPush, int pushToken);
 

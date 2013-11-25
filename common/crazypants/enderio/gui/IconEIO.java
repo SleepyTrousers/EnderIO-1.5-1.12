@@ -36,7 +36,7 @@ public final class IconEIO {
   public static final IconEIO REDSTONE_MODE_ALWAYS = new IconEIO(200, 60, 20, 20);
   public static final IconEIO REDSTONE_MODE_WITH_SIGNAL = new IconEIO(220, 60, 20, 20);
   public static final IconEIO REDSTONE_MODE_WITHOUT_SIGNAL = new IconEIO(200, 80, 20, 20);
-  public static final IconEIO REDSTONE_MODE_NEVER = new IconEIO(200, 80, 40, 20);
+  public static final IconEIO REDSTONE_MODE_NEVER = new IconEIO(220, 80, 20, 20);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;

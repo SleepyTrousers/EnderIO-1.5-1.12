@@ -340,6 +340,10 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public Set<Signal> getNetworkOutputs(ForgeDirection side) {
+    if(side == null || side == ForgeDirection.UNKNOWN) {
+      return super.getNetworkOutputs(side);
+    }
+
     ConnectionMode mode = getConectionMode(side);
     if(network == null || mode != ConnectionMode.IN_OUT) {
       return Collections.emptySet();
