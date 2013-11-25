@@ -159,13 +159,7 @@ public class ItemFilter implements IInventory {
 
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
-    //ItemStack i = items[fromSlot];
     items[fromSlot] = null;
-    //    if(i != null) {
-    //      i = i.copy();
-    //      i.stackSize = 0;
-    //      return i;
-    //    }
     return null;
   }
 
