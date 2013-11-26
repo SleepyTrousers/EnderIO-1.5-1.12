@@ -200,7 +200,6 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
     return null;
-
   }
 
   @Override
