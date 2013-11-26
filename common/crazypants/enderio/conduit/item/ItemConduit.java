@@ -313,7 +313,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
-    return null;
+    return getEnderIcon();
   }
 
   @Override

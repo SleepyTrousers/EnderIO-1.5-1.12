@@ -47,7 +47,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     for (CollidableComponent component : components) {
       if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if(active && isNSEWUP(component.dir) &&
+        if(isNSEWUP(component.dir) &&
             conduit.getTransmitionTextureForState(component) != null) {
           tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f,
               selfIllum + 0.1f, 0.75f);
@@ -66,12 +66,19 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   }
 
-  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
+  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float brightness) {
+
     if(isNSEWUP(component.dir)) {
-      RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
-          conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
-    } else {
-      drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+
+      float scaleFactor = 0.75f;
+      float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
+      float yLen = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
+      float zLen = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+
+      BoundingBox cube = component.bound;
+      BoundingBox bb = cube.scale(xLen, yLen, zLen);
+      drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
+
       if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon();
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
@@ -80,13 +87,26 @@ public class DefaultConduitRenderer implements ConduitRenderer {
           addVecWithUV(c.xyz, c.uv.x, c.uv.y);
         }
       }
+
+    } else {
+      drawSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
     }
 
   }
 
   protected void renderTransmission(IConduit conduit, Icon tex, CollidableComponent component, float selfIllum) {
-    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
-        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
+    //    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
+    //        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
+
+    float scaleFactor = 0.6f;
+    float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
+    float yLen = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
+    float zLen = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+
+    BoundingBox cube = component.bound;
+    BoundingBox bb = cube.scale(xLen, yLen, zLen);
+    drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
+
   }
 
   protected boolean renderComponent(CollidableComponent component) {
