@@ -206,7 +206,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       if(filter == null) {
         return true;
       }
-      return filter.isAccepted(itemStack);
+      return filter.doesItemPassFilter(itemStack);
     }
 
     private boolean doTranfser(ItemStack extractedItem, int slot, int maxExtract) {
@@ -261,7 +261,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       }
       ItemFilter filter = con.getOutputFilter(conDir);
       if(filter != null) {
-        if(!filter.isAccepted(item)) {
+        if(!filter.doesItemPassFilter(item)) {
           return 0;
         }
       }

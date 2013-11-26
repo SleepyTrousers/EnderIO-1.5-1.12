@@ -1,10 +1,13 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemFilter implements IInventory {
 
@@ -16,26 +19,45 @@ public class ItemFilter implements IInventory {
 
   ItemStack[] items;
 
+  int[] oreIds;
+
   public ItemFilter() {
     this(0);
   }
 
   public ItemFilter(int numItems) {
     items = new ItemStack[numItems];
+    oreIds = new int[numItems];
+    Arrays.fill(oreIds, -99);
   }
 
-  public boolean isAccepted(ItemStack item) {
+  public boolean doesFilterCaptureStack(ItemStack item) {
+    return isSticky() && itemMatched(item);
+  }
 
-    if(item == null) {
-      return false;
-    }
+  public boolean doesItemPassFilter(ItemStack item) {
     if(!isValid()) {
       return true;
     }
+    boolean matched = itemMatched(item);
+    return isBlacklist ? !matched : matched;
+  }
 
+  private boolean itemMatched(ItemStack item) {
+    if(item == null) {
+      return false;
+    }
+
+    int oreId = OreDictionary.getOreID(item);
     boolean matched = false;
+    int i = 0;
     for (ItemStack it : items) {
-      if(it != null && item.itemID == it.itemID) {
+      if(useOreDict && oreId > 0) {
+        if(getOreIdForStack(i) == oreId) {
+          matched = true;
+        }
+      }
+      if(!matched && it != null && item.itemID == it.itemID) {
         matched = true;
         if(matchMeta && item.getItemDamage() != it.getItemDamage()) {
           matched = false;
@@ -46,9 +68,22 @@ public class ItemFilter implements IInventory {
       if(matched) {
         break;
       }
+      i++;
     }
+    return matched;
+  }
 
-    return isBlacklist ? !matched : matched;
+  private int getOreIdForStack(int i) {
+    ItemStack item = items[i];
+    if(item == null) {
+      return -1;
+    }
+    int res = oreIds[i];
+    if(res == -99) {
+      res = OreDictionary.getOreID(item);
+      oreIds[i] = res;
+    }
+    return res;
   }
 
   public boolean isValid() {
@@ -130,7 +165,9 @@ public class ItemFilter implements IInventory {
 
     int numItems = nbtRoot.getShort("numItems");
     items = new ItemStack[numItems];
+    oreIds = new int[numItems];
     for (int i = 0; i < numItems; i++) {
+      oreIds[i] = -99;
       NBTBase tag = nbtRoot.getTag("item" + i);
       if(tag instanceof NBTTagCompound) {
         items[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
@@ -152,6 +189,7 @@ public class ItemFilter implements IInventory {
 
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
+    oreIds[fromSlot] = -99;
     ItemStack item = items[fromSlot];
     items[fromSlot] = null;
     if(item == null) {
@@ -174,6 +212,7 @@ public class ItemFilter implements IInventory {
     } else {
       items[i] = null;
     }
+    oreIds[i] = -99;
   }
 
   @Override

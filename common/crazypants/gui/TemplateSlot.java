@@ -19,12 +19,10 @@ public class TemplateSlot extends Slot {
     return true;
   }
 
-  //  @Override
-  //  public ItemStack decrStackSize(int par1) {
-  //    //    //inventory.getStackInSlot(slotIndex);
-  //    //return super.decrStackSize(par1);
-  //    return null;
-  //  }
+  @Override
+  public ItemStack decrStackSize(int par1) {
+    return null;
+  }
 
   @Override
   public boolean isItemValid(ItemStack stack) {
