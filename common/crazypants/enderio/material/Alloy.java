@@ -16,7 +16,7 @@ public enum Alloy {
       new ItemStack(Item.ingotGold),
       new ItemStack(Item.glowstone)),
 
-  PHASED_GOLD("Phased Alloy", "phasedGold",
+  PHASED_GOLD("Vibrant Alloy", "phasedGold",
       new ItemStack(ModObject.itemAlloy.actualId, 1, ENERGETIC_ALLOY.ordinal()),
       new ItemStack(Item.enderPearl)),
 
@@ -28,7 +28,7 @@ public enum Alloy {
       new ItemStack(Item.redstone, 2),
       new ItemStack(Item.ingotIron)),
 
-  PHASED_IRON("Phased Iron", "phasedIron",
+  PHASED_IRON("Pulsating Iron", "phasedIron",
       new ItemStack(Item.ingotIron),
       new ItemStack(Item.enderPearl));
 

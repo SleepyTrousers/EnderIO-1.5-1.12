@@ -1,5 +1,9 @@
 package crazypants.enderio;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.ITrigger;
@@ -51,6 +55,7 @@ import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
@@ -190,7 +195,20 @@ public class EnderIO {
 
     NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
-
+    
+    //Register Custom Dungeon Loot here
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemYetaWrench.actualId, 1, 0), 1 ,1, 15));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemMJReader.actualId, 1, 0), 1, 1, 1));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemEnderface.actualId, 1, 0), 1, 1, 1));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Item.netherQuartz), 3, 16, 40));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Item.netherStalkSeeds), 1, 4, 30));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Item.enderPearl), 1, 2, 15));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 5, 20, 50));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 14, 35));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal()), 2, 6, 20));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal()), 2, 6, 10));
+    
     PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
 
     EnderfaceRecipes.addRecipes();

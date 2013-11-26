@@ -2,10 +2,8 @@ package crazypants.enderio.conduit.render;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -34,27 +32,14 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
-  private Map<ForgeDirection, BoundingBox[]> connectorBounds = new HashMap<ForgeDirection, BoundingBox[]>();
-
-  public static final float CONNECTOR_DEPTH = 0.05f;
-
   public ConduitBundleRenderer(float conduitScale) {
-    float connectorWidth = 0.25f + (conduitScale * 0.5f);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      connectorBounds.put(dir, createConnector(dir, CONNECTOR_DEPTH, connectorWidth));
-    }
-  }
-
-  public BoundingBox getExternalConnectorBoundsForDirection(ForgeDirection dir) {
-    BoundingBox[] bbs = connectorBounds.get(dir);
-    BoundingBox result = bbs[0];
-    return result;
   }
 
   @Override
@@ -174,57 +159,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
   private void renderExternalConnection(ForgeDirection dir) {
     Icon tex = EnderIO.blockConduitBundle.getConnectorIcon();
-    BoundingBox[] bbs = connectorBounds.get(dir);
+    BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
       CubeRenderer.render(bb, tex);
     }
-  }
-
-  private BoundingBox[] createConnector(ForgeDirection dir, float connectorDepth, float connectorWidth) {
-
-    BoundingBox[] res = new BoundingBox[2];
-
-    float cMin = 0.5f - connectorWidth / 2;
-    float cMax = 0.5f + connectorWidth / 2;
-    float dMin = 1 - connectorDepth / 2;
-    float dMax = 1;
-
-    res[0] = createConnectorComponent(dir, cMin, cMax, dMin, dMax);
-
-    cMin = 0.5f - connectorWidth / 3;
-    cMax = 0.5f + connectorWidth / 3;
-    dMin = 1 - connectorDepth;
-    dMax = 1 - connectorDepth / 2;
-
-    res[1] = createConnectorComponent(dir, cMin, cMax, dMin, dMax);
-
-    return res;
-  }
-
-  private static BoundingBox createConnectorComponent(ForgeDirection dir, float cornerMin, float cornerMax, float depthMin, float depthMax) {
-    float minX = (1 - Math.abs(dir.offsetX)) * cornerMin + dir.offsetX * depthMin;
-    float minY = (1 - Math.abs(dir.offsetY)) * cornerMin + dir.offsetY * depthMin;
-    float minZ = (1 - Math.abs(dir.offsetZ)) * cornerMin + dir.offsetZ * depthMin;
-
-    float maxX = (1 - Math.abs(dir.offsetX)) * cornerMax + (dir.offsetX * depthMax);
-    float maxY = (1 - Math.abs(dir.offsetY)) * cornerMax + (dir.offsetY * depthMax);
-    float maxZ = (1 - Math.abs(dir.offsetZ)) * cornerMax + (dir.offsetZ * depthMax);
-
-    minX = fix(minX);
-    minY = fix(minY);
-    minZ = fix(minZ);
-    maxX = fix(maxX);
-    maxY = fix(maxY);
-    maxZ = fix(maxZ);
-
-    BoundingBox bb = new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
-    bb = bb.fixMinMax();
-
-    return bb;
-  }
-
-  private static float fix(float val) {
-    return val < 0 ? 1 + val : val;
   }
 
   @Override

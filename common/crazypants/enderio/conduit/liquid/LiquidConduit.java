@@ -1,9 +1,11 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -34,8 +36,9 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.RedstoneSwitch;
 import crazypants.enderio.conduit.redstone.Signal;
+import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -87,6 +90,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private ForgeDirection startPushDir = ForgeDirection.DOWN;
 
   private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
+
+  protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, SignalColor> extractionColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -187,6 +193,34 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
   }
 
+  @Override
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+    extractionModes.put(dir, mode);
+  }
+
+  @Override
+  public RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir) {
+    RedstoneControlMode res = extractionModes.get(dir);
+    if(res == null) {
+      res = RedstoneControlMode.ON;
+    }
+    return res;
+  }
+
+  @Override
+  public void setExtractionSignalColor(ForgeDirection dir, SignalColor col) {
+    extractionColors.put(dir, col);
+  }
+
+  @Override
+  public SignalColor getExtractionSignalColor(ForgeDirection dir) {
+    SignalColor result = extractionColors.get(dir);
+    if(result == null) {
+      return SignalColor.RED;
+    }
+    return result;
+  }
+
   private void doExtract() {
 
     BlockCoord loc = getLocation();
@@ -198,7 +232,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
-      if(isExtractingFromDir(dir) && isPowered(dir)) {
+      if(isExtractingFromDir(dir) && isRedstoneControlModeMet(dir)) {
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
 
         if(extTank != null) {
@@ -237,22 +271,34 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   }
 
-  private boolean isPowered(ForgeDirection side) {
-    BlockCoord loc = getLocation();
-    IRedstoneConduit rsCon = getBundle().getConduit(IRedstoneConduit.class);
-    if(rsCon instanceof RedstoneSwitch && ((RedstoneSwitch) rsCon).isActive()) {
-      // Need to check for this manually as if we ask the tile if it is being
-      // powered it dies not check if it is providing power itself.
+  private boolean isRedstoneControlModeMet(ForgeDirection side) {
+
+    RedstoneControlMode mode = getExtractioRedstoneMode(side);
+    SignalColor col = getExtractionSignalColor(side);
+
+    if(mode == RedstoneControlMode.IGNORE) {
       return true;
+    } else if(mode == RedstoneControlMode.NEVER) {
+      return false;
     }
-    if(rsCon instanceof IRedstoneConduit) {
-      IRedstoneConduit con = rsCon;
-      Set<Signal> signals = con.getNetworkOutputs(side);
-      if(signals != null && !signals.isEmpty()) {
-        return true;
+
+    int signalStrength = 0;
+    IRedstoneConduit rsCon = getBundle().getConduit(IRedstoneConduit.class);
+    if(rsCon != null) {
+      Set<Signal> signals = rsCon.getNetworkOutputs(ForgeDirection.UNKNOWN);
+      for (Signal sig : signals) {
+        if(sig.color == col) {
+          if(sig.strength > signalStrength) {
+            signalStrength = sig.strength;
+          }
+        }
       }
     }
-    return getBundle().getEntity().worldObj.isBlockIndirectlyGettingPowered(loc.x, loc.y, loc.z);
+    if(signalStrength < 15 && SignalColor.RED == col && getBundle() != null && getBundle().getEntity() != null) {
+      TileEntity te = getBundle().getEntity();
+      signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+    }
+    return mode.isConditionMet(mode, signalStrength);
   }
 
   @Override
@@ -471,6 +517,21 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       ft.amount = 0;
       nbtRoot.setTag("tank", ft.writeToNBT(new NBTTagCompound()));
     }
+
+    for (Entry<ForgeDirection, RedstoneControlMode> entry : extractionModes.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("extRM." + entry.getKey().name(), ord);
+      }
+    }
+
+    for (Entry<ForgeDirection, SignalColor> entry : extractionColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
+      }
+    }
+
   }
 
   @Override
@@ -479,6 +540,23 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     updateTanksCapacity();
     FluidStack liquid = FluidStack.loadFluidStackFromNBT(nbtRoot.getCompoundTag("tank"));
     tank.setLiquid(liquid);
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      String key = "extRM." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < RedstoneControlMode.values().length) {
+          extractionModes.put(dir, RedstoneControlMode.values()[ord]);
+        }
+      }
+      key = "extSC." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < SignalColor.values().length) {
+          extractionColors.put(dir, SignalColor.values()[ord]);
+        }
+      }
+    }
   }
 
   @Override
@@ -527,7 +605,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     return getExternalHandler(direction) != null;
   }
 

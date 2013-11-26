@@ -21,7 +21,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine {
+public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
 
   public short facing;
 
@@ -106,10 +106,12 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     this(slotDefinition, Type.MACHINE);
   }
 
+  @Override
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
 
+  @Override
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
   }
@@ -183,12 +185,12 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected float getPowerUsePerTick() {
     return capacitorType.capacitor.getMaxEnergyExtracted();
   }
-  
+
   // RF Power
-  
+
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);    
+    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
   }
 
   @Override
@@ -203,14 +205,13 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int)(powerHandler.getEnergyStored() * 10);
+    return (int) (powerHandler.getEnergyStored() * 10);
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return (int)(powerHandler.getMaxEnergyStored() * 10);
+    return (int) (powerHandler.getMaxEnergyStored() * 10);
   }
-
 
   // --- Process Loop
   // --------------------------------------------------------------------------
@@ -250,7 +251,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    requiresClientSync |= lastSyncPowerStored != powerHandler.getEnergyStored() && worldObj.getTotalWorldTime() % 16 == 0;
+    requiresClientSync |= lastSyncPowerStored != powerHandler.getEnergyStored() && worldObj.getTotalWorldTime() % 9 == 0;
 
     if(requiresClientSync) {
       lastSyncPowerStored = powerHandler.getEnergyStored();

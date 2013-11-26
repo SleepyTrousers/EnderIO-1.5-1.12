@@ -17,7 +17,7 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 
 public class YetaWrenchPacketProcessor implements IPacketProcessor {
 
-  public static Packet getSmeltingModePacket(int slot, ConduitDisplayMode mode) {
+  public static Packet getWrenchModePacket(int slot, ConduitDisplayMode mode) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
     try {

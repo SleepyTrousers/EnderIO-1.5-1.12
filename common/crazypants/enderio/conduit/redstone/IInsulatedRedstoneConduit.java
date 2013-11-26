@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.redstone;
 
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.conduit.ConnectionMode;
 
 public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 
@@ -15,4 +16,9 @@ public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
   public void onInputsChanged(ForgeDirection side, int[] inputValues);
 
   public void onInputChanged(ForgeDirection side, int inputValue);
+
+  public void forceConnectionMode(ForgeDirection dir, ConnectionMode mode);
+
+  void setSignalColor(ForgeDirection dir, SignalColor col);
+
 }

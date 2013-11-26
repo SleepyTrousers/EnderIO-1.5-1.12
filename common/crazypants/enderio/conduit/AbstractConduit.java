@@ -92,13 +92,24 @@ public abstract class AbstractConduit implements IConduit {
     return false;
   }
 
-  protected ConnectionMode getNextConnectionMode(ForgeDirection dir) {
+  @Override
+  public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
     ConnectionMode curMode = getConectionMode(dir);
     ConnectionMode next = ConnectionMode.getNext(curMode);
     if(next == ConnectionMode.NOT_SET) {
       next = ConnectionMode.IN_OUT;
     }
     return next;
+  }
+
+  @Override
+  public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
+    ConnectionMode curMode = getConectionMode(dir);
+    ConnectionMode prev = ConnectionMode.getPrevious(curMode);
+    if(prev == ConnectionMode.NOT_SET) {
+      prev = ConnectionMode.DISABLED;
+    }
+    return prev;
   }
 
   @Override
@@ -164,9 +175,13 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
     return false;
   }
+
+  //  public boolean canConnectToExternal(ForgeDirection direction) {
+  //    return canConnectToExternal(direction, false);
+  //  }
 
   @Override
   public Set<ForgeDirection> getExternalConnections() {
@@ -355,7 +370,7 @@ public abstract class AbstractConduit implements IConduit {
 
     externalConnections.clear();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      if(!containsConduitConnection(dir) && canConnectToExternal(dir)) {
+      if(!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
         externalConnectionAdded(dir);
       }
     }
@@ -404,7 +419,7 @@ public abstract class AbstractConduit implements IConduit {
     List<ForgeDirection> copy = new ArrayList<ForgeDirection>(externalConnections);
     // remove any no longer valid connections
     for (ForgeDirection dir : copy) {
-      if(!canConnectToExternal(dir)) {
+      if(!canConnectToExternal(dir, false)) {
         externalConnectionRemoved(dir);
         externalConnectionsChanged = true;
       }
@@ -413,7 +428,7 @@ public abstract class AbstractConduit implements IConduit {
     // then check for new ones
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if(!conduitConnections.contains(dir) && !externalConnections.contains(dir)) {
-        if(canConnectToExternal(dir)) {
+        if(canConnectToExternal(dir, false)) {
           externalConnectionAdded(dir);
           externalConnectionsChanged = true;
         }

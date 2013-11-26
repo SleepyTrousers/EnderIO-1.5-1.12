@@ -53,6 +53,7 @@ public class GuiToolTip {
     }
 
     if(bounds.contains(mouseX, mouseY)) {
+
       if(mouseOverStart == 0) {
         mouseOverStart = System.currentTimeMillis();
       }
@@ -77,8 +78,10 @@ public class GuiToolTip {
 
   public void setToolTipText(String... txt) {
     text.clear();
-    for (String line : txt) {
-      text.add(line);
+    if(txt != null) {
+      for (String line : txt) {
+        text.add(line);
+      }
     }
   }
 

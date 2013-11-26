@@ -28,25 +28,33 @@ import net.minecraftforge.common.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
+import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
 
-public class BlockConduitBundle extends Block implements ITileEntityProvider, IConnectableRedNet {
+public class BlockConduitBundle extends Block implements ITileEntityProvider, IConnectableRedNet, IGuiHandler {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
 
   public static BlockConduitBundle create() {
+
+    PacketHandler.instance.addPacketProcessor(new ConduitPacketHandler());
+
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
     return result;
@@ -157,6 +165,10 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     LanguageRegistry.addName(this, ModObject.blockConduitBundle.name);
     GameRegistry.registerBlock(this, ModObject.blockConduitBundle.unlocalisedName);
     GameRegistry.registerTileEntity(TileConduitBundle.class, ModObject.blockConduitBundle.unlocalisedName + "TileEntity");
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
+    }
   }
 
   @Override
@@ -548,16 +560,24 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     if(closest != null && closest.component != null && closest.component.data instanceof
         ConduitConnectorType) {
-      boolean result = false;
-      // if its a connector pass the event on to all conduits
-      for (IConduit con : bundle.getConduits()) {
-        if(ConduitUtil.renderConduit(player, con.getCollidableType()) && con.onBlockActivated(player, getHitForConduitType(all, con.getCollidableType()), all)) {
-          bundle.getEntity().onInventoryChanged();
-          result = true;
-        }
 
-      }
-      if(result) {
+      ConduitConnectorType conType = (ConduitConnectorType) closest.component.data;
+      if(conType == ConduitConnectorType.INTERNAL) {
+        boolean result = false;
+        // if its a connector pass the event on to all conduits
+        for (IConduit con : bundle.getConduits()) {
+          if(ConduitUtil.renderConduit(player, con.getCollidableType())
+              && con.onBlockActivated(player, getHitForConduitType(all, con.getCollidableType()), all)) {
+            bundle.getEntity().onInventoryChanged();
+            result = true;
+          }
+
+        }
+        if(result) {
+          return true;
+        }
+      } else {
+        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
         return true;
       }
     }
@@ -593,6 +613,26 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     }
     return false;
 
+  }
+
+  @Override
+  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    // The server needs the container as it manages the adding and removing of
+    // items, which are then sent to the client for display
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof IConduitBundle) {
+      return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, ForgeDirection.values()[ID - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
+    }
+    return null;
+  }
+
+  @Override
+  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof IConduitBundle) {
+      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, ForgeDirection.values()[ID - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
+    }
+    return null;
   }
 
   private RaytraceResult getHitForConduitType(List<RaytraceResult> all, Class<? extends IConduit> collidableType) {

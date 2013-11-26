@@ -46,15 +46,15 @@ public class YetaWrenchTickHandler implements ITickHandler {
 
         int dif = dWheel - Mouse.getDWheel();
         ConduitDisplayMode newMode = null;
-        if(dif > 0) {
+        if(dif < 0) {
           newMode = curMode.next();
           ConduitDisplayMode.setDisplayMode(stack, newMode);
-        } else if(dif < 0) {
+        } else if(dif > 0) {
           newMode = curMode.previous();
           ConduitDisplayMode.setDisplayMode(stack, newMode);
         }
         if(newMode != null) {
-          player.sendQueue.addToSendQueue(YetaWrenchPacketProcessor.getSmeltingModePacket(slotSelected, newMode));
+          player.sendQueue.addToSendQueue(YetaWrenchPacketProcessor.getWrenchModePacket(slotSelected, newMode));
         }
       }
       slotSelected = -1;

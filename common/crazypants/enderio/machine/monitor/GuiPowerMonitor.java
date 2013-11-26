@@ -11,9 +11,7 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.gui.CheckBoxEIO;
-import crazypants.enderio.gui.ColorButton;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
@@ -50,8 +48,6 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
   private CheckBoxEIO enabledB;
 
-  private ColorButton colorB;
-
   private GuiTextField startTF;
 
   private GuiTextField endTF;
@@ -87,10 +83,6 @@ public class GuiPowerMonitor extends GuiScreenBase {
     enabledB.setSelected(te.engineControlEnabled);
 
     x = MARGIN + fontRenderer.getStringWidth(emmitStr) + SPACING;
-    int y = MARGIN + 26;
-    colorB = new ColorButton(this, 22, x, y);
-    colorB.setColorIndex(te.signalColor.ordinal());
-    colorB.setSize(12, 12);
 
   }
 
@@ -100,7 +92,6 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
     buttonList.clear();
     enabledB.onGuiInit();
-    colorB.onGuiInit();
 
     int x = guiLeft + MARGIN + fontRenderer.getStringWidth("than") + 4;
     int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + fontRenderer.FONT_HEIGHT;
@@ -183,13 +174,11 @@ public class GuiPowerMonitor extends GuiScreenBase {
   private void checkForModifications() {
     if(enabledB.isSelected() != te.engineControlEnabled ||
         getInt(startTF) != te.asPercentInt(te.startLevel) ||
-        getInt(endTF) != te.asPercentInt(te.stopLevel) ||
-        te.signalColor != SignalColor.fromIndex(colorB.getColorIndex())) {
+        getInt(endTF) != te.asPercentInt(te.stopLevel)) {
 
       te.engineControlEnabled = enabledB.isSelected();
       te.startLevel = te.asPercentFloat(getInt(startTF));
       te.stopLevel = te.asPercentFloat(getInt(endTF));
-      te.signalColor = SignalColor.fromIndex(colorB.getColorIndex());
 
       Packet pkt = PowerMonitorPacketHandler.createPowerMonitotPacket(te);
       PacketDispatcher.sendPacketToServer(pkt);

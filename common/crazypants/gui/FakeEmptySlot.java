@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.render.RenderUtil;
 
-class EmptySlot {
+class FakeEmptySlot {
 
   private static final int WIDTH = ItemButton.DEFAULT_WIDTH;
   private static final int HWIDTH = ItemButton.HWIDTH;
@@ -17,7 +17,7 @@ class EmptySlot {
   private int yPosition;
   private GuiScreen g;
 
-  public EmptySlot(GuiScreen g, int x, int y) {
+  public FakeEmptySlot(GuiScreen g, int x, int y) {
     xPosition = x;
     yPosition = y;
     this.g = g;

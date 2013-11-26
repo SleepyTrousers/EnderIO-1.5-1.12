@@ -15,22 +15,34 @@ public enum RedstoneControlMode {
     this.tooltip = tooltip;
   }
 
-  public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
+  public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {
     boolean redstoneCheckPassed = true;
     if(redstoneControlMode == RedstoneControlMode.NEVER) {
       redstoneCheckPassed = false;
     } else if(redstoneControlMode == RedstoneControlMode.ON) {
-      int powerLevel = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
       if(powerLevel < 1) {
         redstoneCheckPassed = false;
       }
     } else if(redstoneControlMode == RedstoneControlMode.OFF) {
-      int powerLevel = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
       if(powerLevel > 0) {
         redstoneCheckPassed = false;
       }
     }
     return redstoneCheckPassed;
+  }
+
+  public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
+    return isConditionMet(redstoneControlMode, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+  }
+
+  public RedstoneControlMode next() {
+    int ord = ordinal();
+    if(ord == values().length - 1) {
+      ord = 0;
+    } else {
+      ord++;
+    }
+    return values()[ord];
   }
 
 }

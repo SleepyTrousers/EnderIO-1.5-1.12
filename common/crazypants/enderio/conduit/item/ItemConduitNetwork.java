@@ -159,7 +159,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int slot = -1;
       for (int i = 0; i < numSlots; i++) {
         ItemStack item = inv.getStackInSlot(i);
-        if(item != null) {
+        if(canExtractItem(item)) {
           extractItem = item.copy();
           slot = i;
           int maxExtracted = con.getMaximumExtracted(slot);
@@ -183,7 +183,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int slot = -1;
       for (int i = 0; i < slotIndices.length; i++) {
         ItemStack item = sidedInv.getStackInSlot(i);
-        if(item != null) {
+        if(canExtractItem(item)) {
           extractItem = item.copy();
           slot = i;
           if(sidedInv.canExtractItem(i, extractItem, inventorySide)) {
@@ -196,6 +196,17 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           }
         }
       }
+    }
+
+    private boolean canExtractItem(ItemStack itemStack) {
+      if(itemStack == null) {
+        return false;
+      }
+      ItemFilter filter = con.getInputFilter(conDir);
+      if(filter == null) {
+        return true;
+      }
+      return filter.doesItemPassFilter(itemStack);
     }
 
     private boolean doTranfser(ItemStack extractedItem, int slot, int maxExtract) {
@@ -245,6 +256,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     }
 
     private int insertItem(ItemStack item) {
+      if(!canInsert() || item == null) {
+        return 0;
+      }
+      ItemFilter filter = con.getOutputFilter(conDir);
+      if(filter != null) {
+        if(!filter.doesItemPassFilter(item)) {
+          return 0;
+        }
+      }
+
       if(sidedInv != null) {
         return doInsertItemSided(item);
       }
@@ -252,10 +273,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     }
 
     private int doInsertItem(ItemStack item) {
-      if(!canInsert() || item == null) {
-        return 0;
-
-      }
       int numInserted = 0;
       int numToInsert = item.stackSize;
       for (int slot = 0; slot < inv.getSizeInventory() && numToInsert > 0; slot++) {

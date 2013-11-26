@@ -27,6 +27,7 @@ public class ConduitRecipes {
     ItemStack conductiveIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.CONDUCTIVE_IRON.ordinal());
     ItemStack energeticGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENERGETIC_ALLOY.ordinal());
     ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
+    ItemStack phasedIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal());
     ItemStack phasedIronNugget = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.PHASED_IRON_NUGGET.ordinal());
     ItemStack redstoneAlloy = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.REDSTONE_ALLOY.ordinal());
     ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
@@ -46,6 +47,9 @@ public class ConduitRecipes {
 
     ItemStack itemConduit = new ItemStack(itemItemConduit.actualId, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);
+
+    ItemStack itemConduitAdvanced = new ItemStack(itemItemConduit.actualId, numConduits, 1);
+    GameRegistry.addShapedRecipe(itemConduitAdvanced, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
 
     MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
 

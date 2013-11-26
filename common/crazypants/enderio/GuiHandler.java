@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
@@ -17,6 +18,14 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_CRUSHER = 6;
   public static final int GUI_ID_HYPER_CUBE = 7;
   public static final int GUI_ID_POWER_MONITOR = 8;
+
+  public static final int GUI_ID_EXTERNAL_CONNECTION_BASE = 9;
+  public static final int GUI_ID_EXTERNAL_CONNECTION_UP = 9 + ForgeDirection.UP.ordinal();
+  public static final int GUI_ID_EXTERNAL_CONNECTION_DOWN = 9 + ForgeDirection.DOWN.ordinal();
+  public static final int GUI_ID_EXTERNAL_CONNECTION_NORTH = 9 + ForgeDirection.NORTH.ordinal();
+  public static final int GUI_ID_EXTERNAL_CONNECTION_SOUTH = 9 + ForgeDirection.SOUTH.ordinal();
+  public static final int GUI_ID_EXTERNAL_CONNECTION_EAST = 9 + ForgeDirection.EAST.ordinal();
+  public static final int GUI_ID_EXTERNAL_CONNECTION_WEST = 9 + ForgeDirection.WEST.ordinal();
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

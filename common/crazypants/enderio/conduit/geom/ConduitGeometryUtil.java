@@ -29,6 +29,10 @@ public class ConduitGeometryUtil {
   public static Vector3d CORE_MAX;
   public static BoundingBox CORE_BOUNDS;
 
+  public static final float CONNECTOR_DEPTH = 0.05f;
+
+  private static Map<ForgeDirection, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<ForgeDirection, BoundingBox[]>();
+
   static {
     setupBounds(0.5f);
   }
@@ -45,6 +49,57 @@ public class ConduitGeometryUtil {
     CORE_MAX = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
     CORE_BOUNDS = new BoundingBox(CORE_MIN, CORE_MAX);
 
+    float connectorWidth = 0.25f + (scale * 0.5f);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
+    }
+  }
+
+  private static BoundingBox[] createExternalConnector(ForgeDirection dir, float connectorDepth, float connectorWidth) {
+
+    BoundingBox[] res = new BoundingBox[2];
+
+    float cMin = 0.5f - connectorWidth / 2;
+    float cMax = 0.5f + connectorWidth / 2;
+    float dMin = 1 - connectorDepth / 2;
+    float dMax = 1;
+
+    res[0] = createConnectorComponent(dir, cMin, cMax, dMin, dMax);
+
+    cMin = 0.5f - connectorWidth / 3;
+    cMax = 0.5f + connectorWidth / 3;
+    dMin = 1 - connectorDepth;
+    dMax = 1 - connectorDepth / 2;
+
+    res[1] = createConnectorComponent(dir, cMin, cMax, dMin, dMax);
+
+    return res;
+  }
+
+  private static BoundingBox createConnectorComponent(ForgeDirection dir, float cornerMin, float cornerMax, float depthMin, float depthMax) {
+    float minX = (1 - Math.abs(dir.offsetX)) * cornerMin + dir.offsetX * depthMin;
+    float minY = (1 - Math.abs(dir.offsetY)) * cornerMin + dir.offsetY * depthMin;
+    float minZ = (1 - Math.abs(dir.offsetZ)) * cornerMin + dir.offsetZ * depthMin;
+
+    float maxX = (1 - Math.abs(dir.offsetX)) * cornerMax + (dir.offsetX * depthMax);
+    float maxY = (1 - Math.abs(dir.offsetY)) * cornerMax + (dir.offsetY * depthMax);
+    float maxZ = (1 - Math.abs(dir.offsetZ)) * cornerMax + (dir.offsetZ * depthMax);
+
+    minX = fix(minX);
+    minY = fix(minY);
+    minZ = fix(minZ);
+    maxX = fix(maxX);
+    maxY = fix(maxY);
+    maxZ = fix(maxZ);
+
+    BoundingBox bb = new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+    bb = bb.fixMinMax();
+
+    return bb;
+  }
+
+  private static float fix(float val) {
+    return val < 0 ? 1 + val : val;
   }
 
   private Map<GeometryKey, BoundingBox> boundsCache = new HashMap<GeometryKey, BoundingBox>();
@@ -52,33 +107,40 @@ public class ConduitGeometryUtil {
   private EnumMap<ConduitConnectorType, BoundingBox> connectorBounds = new EnumMap<ConduitConnectorType, BoundingBox>(ConduitConnectorType.class);
 
   private ConduitGeometryUtil() {
-
   }
 
-  public BoundingBox getBoundingBox(ConduitConnectorType type) {
-    BoundingBox result = connectorBounds.get(type);
-    if(result == null) {
-      result = createConnector(type);
-      result = result.scale(1.2f, 1.2f, 1.2f);
-      connectorBounds.put(type, result);
-    }
-    return result;
+  public BoundingBox getExternalConnectorBoundingBox(ForgeDirection dir) {
+    return getExternalConnectorBoundingBoxes(dir)[0];
   }
 
-  private BoundingBox createConnector(ConduitConnectorType type) {
-    float distance = WIDTH + HWIDTH;
-    switch (type) {
-    case VERTICAL:
-      return new BoundingBox(0.5 - HWIDTH, 0.5 - distance, 0.5 - HWIDTH, 0.5 + HWIDTH, 0.5 + distance, 0.5 + HWIDTH);
-    case HORIZONTAL:
-      return new BoundingBox(0.5 - distance, 0.5 - HWIDTH, 0.5 - HWIDTH, 0.5 + distance, 0.5 + HWIDTH, 0.5 + HWIDTH);
-    case BOTH:
-      return createConnector(ConduitConnectorType.VERTICAL).expandBy(createConnector(ConduitConnectorType.HORIZONTAL));
-    default:
-      return CORE_BOUNDS;
-    }
-
+  public BoundingBox[] getExternalConnectorBoundingBoxes(ForgeDirection dir) {
+    return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
+
+  //  public BoundingBox getBoundingBox(ConduitConnectorType type) {
+  //    BoundingBox result = connectorBounds.get(type);
+  //    if(result == null) {
+  //      result = createConnector(type);
+  //      result = result.scale(1.2f, 1.2f, 1.2f);
+  //      connectorBounds.put(type, result);
+  //    }
+  //    return result;
+  //  }
+  //
+  //  private BoundingBox createConnector(ConduitConnectorType type) {
+  //    float distance = WIDTH + HWIDTH;
+  //    switch (type) {
+  //    case VERTICAL:
+  //      return new BoundingBox(0.5 - HWIDTH, 0.5 - distance, 0.5 - HWIDTH, 0.5 + HWIDTH, 0.5 + distance, 0.5 + HWIDTH);
+  //    case HORIZONTAL:
+  //      return new BoundingBox(0.5 - distance, 0.5 - HWIDTH, 0.5 - HWIDTH, 0.5 + distance, 0.5 + HWIDTH, 0.5 + HWIDTH);
+  //    case BOTH:
+  //      return createConnector(ConduitConnectorType.VERTICAL).expandBy(createConnector(ConduitConnectorType.HORIZONTAL));
+  //    default:
+  //      return CORE_BOUNDS;
+  //    }
+  //
+  //  }
 
   public BoundingBox getBoundingBox(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);

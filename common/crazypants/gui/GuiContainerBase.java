@@ -3,6 +3,7 @@ package crazypants.gui;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,6 +26,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   @Override
   public void addToolTip(GuiToolTip toolTip) {
     ttMan.addToolTip(toolTip);
+  }
+
+  @Override
+  public void removeToolTip(GuiToolTip toolTip) {
+    ttMan.removeToolTip(toolTip);
   }
 
   @Override
@@ -140,14 +146,28 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     return xSize;
   }
 
+  public int getYSize() {
+    return ySize;
+  }
+
   @Override
   public FontRenderer getFontRenderer() {
+    if(fontRenderer == null) {
+      return Minecraft.getMinecraft().fontRenderer;
+    }
     return fontRenderer;
   }
 
   @Override
   public void addButton(GuiButton button) {
-    buttonList.add(button);
+    if(!buttonList.contains(button)) {
+      buttonList.add(button);
+    }
+  }
+
+  @Override
+  public void removeButton(GuiButton button) {
+    buttonList.remove(button);
   }
 
 }

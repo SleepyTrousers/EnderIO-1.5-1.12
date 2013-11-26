@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,13 +33,21 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public static final String ICON_KEY = "enderio:itemConduit";
 
-  public static final String ICON_CORE_KEY = "enderio:itemConduitCore";
+  public static final String ICON_KEY_CORE = "enderio:itemConduitCore";
+
+  public static final String ICON_KEY_CORE_ADV = "enderio:itemConduitCoreAdvanced";
 
   public static final String ICON_KEY_INPUT = "enderio:itemConduitInput";
 
   public static final String ICON_KEY_OUTPUT = "enderio:itemConduitOutput";
 
   public static final String ICON_KEY_IN_OUT = "enderio:itemConduitInOut";
+
+  private static final String ICON_KEY_INPUT_ADV = "enderio:itemConduitInputAdvanced";
+
+  private static final String ICON_KEY_OUTPUT_ADV = "enderio:itemConduitOutputAdvanced";
+
+  private static final String ICON_KEY_IN_OUT_ADV = "enderio:itemConduitInOutAdvanced";
 
   public static final String ICON_KEY_ENDER = "enderio:ender_still";
 
@@ -49,10 +59,16 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       @Override
       public void registerIcons(IconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
+        ICONS.put(ICON_KEY_CORE, register.registerIcon(ICON_KEY_CORE));
+        ICONS.put(ICON_KEY_CORE_ADV, register.registerIcon(ICON_KEY_CORE_ADV));
         ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
         ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
         ICONS.put(ICON_KEY_IN_OUT, register.registerIcon(ICON_KEY_IN_OUT));
+
+        ICONS.put(ICON_KEY_INPUT_ADV, register.registerIcon(ICON_KEY_INPUT_ADV));
+        ICONS.put(ICON_KEY_OUTPUT_ADV, register.registerIcon(ICON_KEY_OUTPUT_ADV));
+        ICONS.put(ICON_KEY_IN_OUT_ADV, register.registerIcon(ICON_KEY_IN_OUT_ADV));
+
         ICONS.put(ICON_KEY_ENDER, register.registerIcon(ICON_KEY_ENDER));
       }
 
@@ -70,7 +86,30 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   float extractRatePerTick = maxExtractedOnTick / 20f;
   long extractedAtLastTick = -1;
 
+  protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+
+  protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+
+  private int metaData;
+
   public ItemConduit() {
+    this(0);
+  }
+
+  public ItemConduit(int itemDamage) {
+    this.metaData = itemDamage;
+    updateFromMetadata();
+  }
+
+  private void updateFromMetadata() {
+    if(metaData == 1) {
+      maxExtractedOnTick = 64;
+      extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
+    } else {
+      maxExtractedOnTick = 1;
+      extractRatePerTick = 0.25f; //four items a second
+    }
+
   }
 
   @Override
@@ -94,6 +133,47 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
     return false;
+  }
+
+  @Override
+  public void setInputFilter(ForgeDirection dir, ItemFilter filter) {
+    inputFilters.put(dir, filter);
+  }
+
+  @Override
+  public void setOutputFilter(ForgeDirection dir, ItemFilter filter) {
+    outputFilters.put(dir, filter);
+  }
+
+  @Override
+  public ItemFilter getInputFilter(ForgeDirection dir) {
+    ItemFilter res = inputFilters.get(dir);
+    if(res == null) {
+      if(metaData == 1) {
+        res = new ItemFilter(10);
+      } else {
+        res = new ItemFilter(10);
+      }
+    }
+    return res;
+  }
+
+  @Override
+  public int getMetaData() {
+    return metaData;
+  }
+
+  @Override
+  public ItemFilter getOutputFilter(ForgeDirection dir) {
+    ItemFilter res = outputFilters.get(dir);
+    if(res == null) {
+      if(metaData == 1) {
+        res = new ItemFilter(10);
+      } else {
+        res = new ItemFilter(10);
+      }
+    }
+    return res;
   }
 
   @Override
@@ -165,13 +245,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction) {
+  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     return getExternalInventory(direction) != null;
   }
 
   @Override
   protected ConnectionMode getDefaultConnectionMode() {
-    return ConnectionMode.INPUT;
+    return ConnectionMode.OUTPUT;
   }
 
   @Override
@@ -198,17 +278,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public Icon getTextureForInputMode() {
-    return ICONS.get(ICON_KEY_INPUT);
+    return metaData == 1 ? ICONS.get(ICON_KEY_INPUT_ADV) : ICONS.get(ICON_KEY_INPUT);
   }
 
   @Override
   public Icon getTextureForOutputMode() {
-    return ICONS.get(ICON_KEY_OUTPUT);
+    return metaData == 1 ? ICONS.get(ICON_KEY_OUTPUT_ADV) : ICONS.get(ICON_KEY_OUTPUT);
   }
 
   @Override
   public Icon getTextureForInOutMode() {
-    return ICONS.get(ICON_KEY_IN_OUT);
+    return metaData == 1 ? ICONS.get(ICON_KEY_IN_OUT_ADV) : ICONS.get(ICON_KEY_IN_OUT);
   }
 
   @Override
@@ -216,13 +296,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return ICONS.get(ICON_KEY_ENDER);
   }
 
+  public Icon getCoreIcon() {
+    return metaData == 1 ? ICONS.get(ICON_KEY_CORE_ADV) : ICONS.get(ICON_KEY_CORE);
+  }
+
   @Override
   public Icon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
-      return ICONS.get(ICON_CORE_KEY);
+      return getCoreIcon();
     }
     if(EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
-      return ICONS.get(ICON_CORE_KEY);
+      return getCoreIcon();
     }
     return ICONS.get(ICON_KEY);
   }
@@ -232,64 +316,60 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return null;
   }
 
-  //  @Override
-  //  public List<CollidableComponent> getCollidableComponents() {    
-  //    if(collidables != null && !collidablesDirty) {
-  //      return collidables;
-  //    }
-  //    List<CollidableComponent> result = super.getCollidableComponents();
-  //
-  //    for (ForgeDirection dir : getExternalConnections()) {
-  //      if(getConectionMode(dir) != ConnectionMode.DISABLED && getConectionMode(dir) != ConnectionMode.NOT_SET) { 
-  //        float scale = 0.1f;
-  //        BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, scale, scale);
-  //
-  //        Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
-  //        offset.scale(scale/2);
-  //
-  //        BoundingBox conectorBounds = ((ClientProxy) EnderIO.proxy).getConduitBundleRenderer().getExternalConnectorBoundsForDirection(dir);
-  //        List<Vector3f> corners = conectorBounds.getCornersForFace(dir);
-  //        
-  //        Vector3d center = new Vector3d();
-  //        for (Vector3f vec : corners) {
-  //          center.add(vec);
-  //        }
-  //        center.scale(0.25);
-  //        Vector3d toCenter = new Vector3d();
-  //
-  //        for (Vector3f vec : corners) {
-  //          
-  //          
-  //          
-  //          
-  //          
-  //          toCenter.set(center);
-  //          toCenter.sub(vec);
-  //          toCenter.normalize();
-  //          toCenter.scale(scale/2);
-  //          
-  //          vec.sub(new Vector3f(0.5f, 0.5f, 0.5f)); //center
-  //          vec.sub(new Vector3f(offset)); //move them flush with block space
-  //          vec.add(toCenter); //
-  //
-  //          BoundingBox bbb = bb.translate(vec);
-  //          result.add(new CollidableComponent(IItemConduit.class, bbb, dir, EXTERNAL_INTERFACE_GEOM));
-  //        }
-  //
-  //      }
-  //    }
-  //
-  //    return result;
-  //  }
-
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
+
+    nbtRoot.setShort("metaData", (short) metaData);
+
+    for (Entry<ForgeDirection, ItemFilter> entry : inputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemFilter f = entry.getValue();
+        if(f.isValid()) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          f.writeToNBT(itemRoot);
+          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
+    for (Entry<ForgeDirection, ItemFilter> entry : outputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemFilter f = entry.getValue();
+        if(f.isValid()) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          f.writeToNBT(itemRoot);
+          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
   }
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
+
+    metaData = nbtRoot.getShort("metaData");
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      String key = "inFilts." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemFilter filter = new ItemFilter();
+        filter.readFromNBT(filterTag);
+        inputFilters.put(dir, filter);
+      }
+      key = "outFilts." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemFilter filter = new ItemFilter();
+        filter.readFromNBT(filterTag);
+        outputFilters.put(dir, filter);
+      }
+    }
+
+    updateFromMetadata();
   }
 
 }
