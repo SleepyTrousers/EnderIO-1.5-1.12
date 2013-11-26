@@ -98,19 +98,30 @@ public class ExternalConnectionContainer extends Container {
   }
 
   public void setInputSlotsVisible(boolean visible) {
+    if(inputFilter == null) {
+      return;
+    }
     int startIndex = 0;
     int endIndex = inputFilter.getSizeInventory();
     setSlotsVisible(visible, startIndex, endIndex);
   }
 
   public void setOutputSlotsVisible(boolean visible) {
+    if(outputFilter == null) {
+      return;
+    }
     int startIndex = inputFilter.getSizeInventory();
     int endIndex = startIndex + outputFilter.getSizeInventory();
     setSlotsVisible(visible, startIndex, endIndex);
   }
 
   public void setInventorySlotsVisible(boolean visible) {
-    int startIndex = inputFilter.getSizeInventory() + outputFilter.getSizeInventory();
+    int startIndex;
+    if(inputFilter == null || outputFilter == null) {
+      startIndex = 0;
+    } else {
+      startIndex = inputFilter.getSizeInventory() + outputFilter.getSizeInventory();
+    }
     int endIndex = inventorySlots.size();
     setSlotsVisible(visible, startIndex, endIndex);
   }
