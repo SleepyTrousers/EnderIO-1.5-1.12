@@ -19,6 +19,13 @@ public class TemplateSlot extends Slot {
     return true;
   }
 
+  //  @Override
+  //  public ItemStack decrStackSize(int par1) {
+  //    //    //inventory.getStackInSlot(slotIndex);
+  //    //return super.decrStackSize(par1);
+  //    return null;
+  //  }
+
   @Override
   public boolean isItemValid(ItemStack stack) {
     return true;
@@ -27,8 +34,7 @@ public class TemplateSlot extends Slot {
   @Override
   public void putStack(ItemStack par1ItemStack) {
     if(par1ItemStack != null) {
-      par1ItemStack = par1ItemStack.copy();
-      par1ItemStack.stackSize = 22;
+      par1ItemStack.stackSize = 0;
     }
     inventory.setInventorySlotContents(slotIndex, par1ItemStack);
     onSlotChanged();

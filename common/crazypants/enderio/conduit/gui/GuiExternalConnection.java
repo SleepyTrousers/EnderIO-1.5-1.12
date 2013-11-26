@@ -38,6 +38,9 @@ public class GuiExternalConnection extends GuiContainerBase {
     this.playerInv = playerInv;
     this.bundle = bundle;
     this.dir = dir;
+    container.setInputSlotsVisible(false);
+    container.setOutputSlotsVisible(false);
+    container.setInventorySlotsVisible(false);
     for (IConduit con : bundle.getConduits()) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
         ISettingsPanel tab = TabFactory.instance.createPanelForConduit(this, con);

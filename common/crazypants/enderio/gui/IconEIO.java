@@ -38,6 +38,13 @@ public final class IconEIO {
   public static final IconEIO REDSTONE_MODE_WITHOUT_SIGNAL = new IconEIO(200, 80, 20, 20);
   public static final IconEIO REDSTONE_MODE_NEVER = new IconEIO(220, 80, 20, 20);
 
+  public static final IconEIO FILTER_META = new IconEIO(0, 212, 22, 22);
+  public static final IconEIO FILTER_NBT = new IconEIO(22, 212, 22, 22);
+  public static final IconEIO FILTER_ORE_DICT = new IconEIO(44, 212, 22, 22);
+  public static final IconEIO FILTER_WHITELIST = new IconEIO(0, 234, 22, 22);
+  public static final IconEIO FILTER_BLACKLIST = new IconEIO(22, 234, 22, 22);
+  public static final IconEIO FILTER_STICKY = new IconEIO(44, 234, 22, 22);
+
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 

@@ -12,8 +12,7 @@ public class ItemFilter implements IInventory {
   boolean matchMeta = true;
   boolean matchNBT = true;
   boolean useOreDict = false;
-
-  boolean dirty = false;
+  boolean sticky = true;
 
   ItemStack[] items;
 
@@ -66,9 +65,6 @@ public class ItemFilter implements IInventory {
   }
 
   public void setBlacklist(boolean isBlacklist) {
-    if(this.isBlacklist != isBlacklist) {
-      dirty = true;
-    }
     this.isBlacklist = isBlacklist;
   }
 
@@ -77,23 +73,15 @@ public class ItemFilter implements IInventory {
   }
 
   public void setMatchMeta(boolean matchMeta) {
-    if(this.matchMeta != matchMeta) {
-      dirty = true;
-    }
     this.matchMeta = matchMeta;
-
   }
 
   public boolean isMatchNBT() {
     return matchNBT;
   }
 
-  public void setMatchNBT(boolean matchMeta) {
-    if(this.matchMeta != matchMeta) {
-      dirty = true;
-    }
-    this.matchMeta = matchMeta;
-
+  public void setMatchNBT(boolean matchNbt) {
+    this.matchNBT = matchNbt;
   }
 
   public boolean isUseOreDict() {
@@ -101,11 +89,15 @@ public class ItemFilter implements IInventory {
   }
 
   public void setUseOreDict(boolean useOreDict) {
-    if(this.useOreDict != useOreDict) {
-      dirty = true;
-    }
     this.useOreDict = useOreDict;
+  }
 
+  public boolean isSticky() {
+    return sticky;
+  }
+
+  public void setSticky(boolean sticky) {
+    this.sticky = sticky;
   }
 
   public void writeToNBT(NBTTagCompound nbtRoot) {
@@ -113,6 +105,7 @@ public class ItemFilter implements IInventory {
     nbtRoot.setBoolean("matchMeta", matchMeta);
     nbtRoot.setBoolean("matchNBT", matchNBT);
     nbtRoot.setBoolean("useOreDict", useOreDict);
+    nbtRoot.setBoolean("sticky", sticky);
 
     nbtRoot.setShort("numItems", (short) items.length);
     int i = 0;
@@ -133,6 +126,7 @@ public class ItemFilter implements IInventory {
     matchMeta = nbtRoot.getBoolean("matchMeta");
     matchNBT = nbtRoot.getBoolean("matchNBT");
     useOreDict = nbtRoot.getBoolean("useOreDict");
+    sticky = nbtRoot.getBoolean("sticky");
 
     int numItems = nbtRoot.getShort("numItems");
     items = new ItemStack[numItems];
@@ -144,7 +138,6 @@ public class ItemFilter implements IInventory {
         items[i] = null;
       }
     }
-    dirty = false;
   }
 
   @Override
@@ -159,8 +152,13 @@ public class ItemFilter implements IInventory {
 
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
+    ItemStack item = items[fromSlot];
     items[fromSlot] = null;
-    return null;
+    if(item == null) {
+      return null;
+    }
+    item.stackSize = 0;
+    return item;
   }
 
   @Override
@@ -172,11 +170,10 @@ public class ItemFilter implements IInventory {
   public void setInventorySlotContents(int i, ItemStack itemstack) {
     if(itemstack != null) {
       items[i] = itemstack.copy();
-      items[i].stackSize = 1;
+      items[i].stackSize = 0;
     } else {
       items[i] = null;
     }
-    dirty = true;
   }
 
   @Override
@@ -196,7 +193,6 @@ public class ItemFilter implements IInventory {
 
   @Override
   public void onInventoryChanged() {
-    dirty = true;
   }
 
   @Override

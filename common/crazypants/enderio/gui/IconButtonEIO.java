@@ -48,8 +48,16 @@ public class IconButtonEIO extends GuiButton {
 
   public void onGuiInit() {
     gui.addButton(this);
+    if(toolTip != null) {
+      gui.addToolTip(toolTip);
+    }
     xPosition = xOrigin + gui.getGuiLeft();
     yPosition = yOrigin + gui.getGuiTop();
+  }
+
+  public void detach() {
+    gui.removeToolTip(toolTip);
+    gui.removeButton(this);
   }
 
   public void setSize(int width, int height) {

@@ -60,6 +60,7 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_CONDUIT_CON_MODE = 15;
   public static final int ID_CONDUIT_SIGNAL_COL = 16;
   public static final int ID_CONDUIT_EXTRACT_MODE = 17;
+  public static final int ID_CONDUIT_ITEM_FILTER = 18;
 
   public static final String CHANNEL = "EnderIO";
 

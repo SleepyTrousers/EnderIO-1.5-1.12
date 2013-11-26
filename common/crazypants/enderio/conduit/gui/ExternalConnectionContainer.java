@@ -33,7 +33,7 @@ public class ExternalConnectionContainer extends Container {
 
     itemConduit = bundle.getConduit(IItemConduit.class);
 
-    int topY = 62;
+    int topY = 67;
     if(itemConduit != null) {
       inputFilter = itemConduit.getInputFilter(dir);
       int leftX = 16;
@@ -122,7 +122,6 @@ public class ExternalConnectionContainer extends Container {
   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
     if(par4EntityPlayer.worldObj != null) {
       if(par1 < 20) {
-        System.out.println("ExternalConnectionContainer.slotClick: Setting filters");
         itemConduit.setInputFilter(dir, inputFilter);
         itemConduit.setOutputFilter(dir, outputFilter);
       }
@@ -131,7 +130,13 @@ public class ExternalConnectionContainer extends Container {
       }
 
     }
-    return super.slotClick(par1, par2, par3, par4EntityPlayer);
+    try {
+      return super.slotClick(par1, par2, par3, par4EntityPlayer);
+    } catch (Exception e) {
+      //Horrible work around for a bug when double clicking on a stack in inventory which matches a filter item
+      //This does does double clicking to fill a stack from working with this GUI open.
+      return null;
+    }
   }
 
   @Override

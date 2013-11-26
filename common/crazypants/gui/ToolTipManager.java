@@ -23,7 +23,9 @@ public class ToolTipManager {
   private List<GuiToolTip> toolTips = new ArrayList<GuiToolTip>();
 
   public void addToolTip(GuiToolTip toolTip) {
-    toolTips.add(toolTip);
+    if(!toolTips.contains(toolTip)) {
+      toolTips.add(toolTip);
+    }
   }
 
   public void removeToolTip(GuiToolTip toolTip) {
