@@ -109,8 +109,8 @@ public class ItemSettings extends BaseSettingsPanel {
       useNbtB.onGuiInit();
       useOreDictB.onGuiInit();
     }
-    //TODOO: Sticky mode not implemented
-    //stickyB.onGuiInit();
+    // TODOO: Sticky mode not implemented
+    // stickyB.onGuiInit();
     useMetaB.onGuiInit();
     whiteListB.onGuiInit();
 
@@ -173,8 +173,8 @@ public class ItemSettings extends BaseSettingsPanel {
     ConnectionMode mode = con.getConectionMode(gui.dir);
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
-      //TODO: Sticky mode not implemented
-      //stickyB.onGuiInit();
+      // TODO: Sticky mode not implemented
+      // stickyB.onGuiInit();
     }
 
     if(isAdvanced) {
@@ -271,11 +271,13 @@ public class ItemSettings extends BaseSettingsPanel {
     gui.container.setInventorySlotsVisible(false);
     gui.container.setInputSlotsVisible(false);
     gui.container.setOutputSlotsVisible(false);
-    useNbtB.detach();
-    useMetaB.detach();
-    useOreDictB.detach();
-    whiteListB.detach();
-    stickyB.detach();
+    if(useNbtB != null) {
+      useNbtB.detach();
+      useMetaB.detach();
+      useOreDictB.detach();
+      whiteListB.detach();
+      stickyB.detach();
+    }
   }
 
 }
