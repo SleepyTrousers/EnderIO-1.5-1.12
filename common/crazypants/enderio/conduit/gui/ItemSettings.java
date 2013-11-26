@@ -34,7 +34,6 @@ public class ItemSettings extends BaseSettingsPanel {
   private String outputHeading = "Insertion Filter";
 
   private IconButtonEIO nextFilterB;
-  //private IconButtonEIO prevFilterB;
 
   private ToggleButtonEIO useMetaB;
   private ToggleButtonEIO useNbtB;
@@ -44,12 +43,14 @@ public class ItemSettings extends BaseSettingsPanel {
 
   boolean inOutShowIn = false;
 
+  boolean isAdvanced;
+
   private ItemFilter activeFilter;
 
   protected ItemSettings(GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, ModObject.itemItemConduit.name, gui, con);
     itemConduit = (IItemConduit) con;
-
+    isAdvanced = itemConduit.getMetaData() == 1;
   }
 
   private String getHeading() {
@@ -104,9 +105,12 @@ public class ItemSettings extends BaseSettingsPanel {
     useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setToolTip("Use Ore Dictionary");
 
-    stickyB.onGuiInit();
-    useNbtB.onGuiInit();
-    useOreDictB.onGuiInit();
+    if(isAdvanced) {
+      useNbtB.onGuiInit();
+      useOreDictB.onGuiInit();
+    }
+    //TODOO: Sticky mode not implemented
+    //stickyB.onGuiInit();
     useMetaB.onGuiInit();
     whiteListB.onGuiInit();
 
@@ -116,7 +120,6 @@ public class ItemSettings extends BaseSettingsPanel {
   private void updateGuiVisibility() {
     gui.removeButton(nextFilterB);
     gui.removeButton(stickyB);
-    //gui.removeButton(prevFilterB);
 
     boolean showInput = false;
     boolean showOutput = false;
@@ -136,7 +139,6 @@ public class ItemSettings extends BaseSettingsPanel {
 
       if(nextFilterB != null) {
         nextFilterB.onGuiInit();
-        //prevFilterB.onGuiInit();
       }
       showInput = inOutShowIn;
       showOutput = !inOutShowIn;
@@ -171,11 +173,14 @@ public class ItemSettings extends BaseSettingsPanel {
     ConnectionMode mode = con.getConectionMode(gui.dir);
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
-      stickyB.onGuiInit();
+      //TODO: Sticky mode not implemented
+      //stickyB.onGuiInit();
     }
 
-    useNbtB.onGuiInit();
-    useOreDictB.onGuiInit();
+    if(isAdvanced) {
+      useNbtB.onGuiInit();
+      useOreDictB.onGuiInit();
+    }
     useMetaB.onGuiInit();
     whiteListB.onGuiInit();
 
@@ -244,19 +249,18 @@ public class ItemSettings extends BaseSettingsPanel {
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     ConnectionMode mode = con.getConectionMode(gui.dir);
     if(mode != ConnectionMode.DISABLED) {
-      RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+      if(itemConduit.getMetaData() == 0) {
+        RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+      } else {
+        RenderUtil.bindTexture("enderio:textures/gui/itemFilterAdvanced.png");
+      }
       gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
 
       FontRenderer fr = gui.getFontRenderer();
       String heading = getHeading();
       int headingWidth = fr.getStringWidth(heading);
       int x = (width - headingWidth) / 2;
-
       int rgb = ColorUtil.getRGB(Color.darkGray);
-      if(mode == ConnectionMode.IN_OUT) {
-        //x += 2;
-      }
-
       fr.drawString(heading, left + x, top, rgb);
     }
 

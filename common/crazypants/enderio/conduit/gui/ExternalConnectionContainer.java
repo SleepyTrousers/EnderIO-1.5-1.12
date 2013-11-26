@@ -32,33 +32,48 @@ public class ExternalConnectionContainer extends Container {
     this.dir = dir;
 
     itemConduit = bundle.getConduit(IItemConduit.class);
+    if(itemConduit == null) {
+      return;
+    }
+
+    boolean isAdvanced = itemConduit.getMetaData() == 1;
+    inputFilter = itemConduit.getInputFilter(dir);
 
     int topY = 67;
-    if(itemConduit != null) {
-      inputFilter = itemConduit.getInputFilter(dir);
-      int leftX = 16;
-      int index = 0;
-      for (int row = 0; row < 2; ++row) {
-        for (int col = 0; col < 5; ++col) {
-          int x = leftX + col * 18;
-          int y = topY + row * 18;
-          addSlotToContainer(new TemplateSlot(inputFilter, index, x, y));
-          slotLocations.add(new Point(x, y));
-          index++;
-        }
-      }
+    int leftX = 16;
+    int index = 0;
 
-      outputFilter = itemConduit.getOutputFilter(dir);
-      leftX = 16;
-      index = 0;
-      for (int row = 0; row < 2; ++row) {
-        for (int col = 0; col < 5; ++col) {
-          int x = leftX + col * 18;
-          int y = topY + row * 18;
-          addSlotToContainer(new TemplateSlot(outputFilter, index, x, y));
-          slotLocations.add(new Point(x, y));
-          index++;
+    for (int row = 0; row < 2; ++row) {
+
+      for (int col = 0; col < 5; ++col) {
+        int x = leftX + col * 18;
+        int y = topY + row * 18;
+        if(!isAdvanced && row == 1) {
+          x = -30000;
+          y = -30000;
         }
+        addSlotToContainer(new TemplateSlot(inputFilter, index, x, y));
+        slotLocations.add(new Point(x, y));
+        index++;
+      }
+    }
+
+    outputFilter = itemConduit.getOutputFilter(dir);
+
+    leftX = 16;
+    index = 0;
+    for (int row = 0; row < 2; ++row) {
+
+      for (int col = 0; col < 5; ++col) {
+        int x = leftX + col * 18;
+        int y = topY + row * 18;
+        if(!isAdvanced && row == 1) {
+          x = -30000;
+          y = -30000;
+        }
+        addSlotToContainer(new TemplateSlot(outputFilter, index, x, y));
+        slotLocations.add(new Point(x, y));
+        index++;
       }
     }
 
@@ -84,18 +99,18 @@ public class ExternalConnectionContainer extends Container {
 
   public void setInputSlotsVisible(boolean visible) {
     int startIndex = 0;
-    int endIndex = 10;
+    int endIndex = inputFilter.getSizeInventory();
     setSlotsVisible(visible, startIndex, endIndex);
   }
 
   public void setOutputSlotsVisible(boolean visible) {
-    int startIndex = 10;
-    int endIndex = 20;
+    int startIndex = inputFilter.getSizeInventory();
+    int endIndex = startIndex + outputFilter.getSizeInventory();
     setSlotsVisible(visible, startIndex, endIndex);
   }
 
   public void setInventorySlotsVisible(boolean visible) {
-    int startIndex = 20;
+    int startIndex = inputFilter.getSizeInventory() + outputFilter.getSizeInventory();
     int endIndex = inventorySlots.size();
     setSlotsVisible(visible, startIndex, endIndex);
   }

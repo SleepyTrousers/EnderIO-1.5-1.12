@@ -184,6 +184,9 @@ public class ItemFilter implements IInventory {
 
   @Override
   public ItemStack getStackInSlot(int i) {
+    if(i < 0 || i >= items.length) {
+      return null;
+    }
     return items[i];
   }
 

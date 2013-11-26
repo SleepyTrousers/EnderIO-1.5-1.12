@@ -29,4 +29,6 @@ public interface IItemConduit extends IConduit {
 
   ItemFilter getOutputFilter(ForgeDirection dir);
 
+  int getMetaData();
+
 }
