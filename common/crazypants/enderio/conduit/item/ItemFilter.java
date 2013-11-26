@@ -25,7 +25,7 @@ public class ItemFilter implements IInventory {
     this(10);
   }
 
-  public ItemFilter(int numItems) {
+  private ItemFilter(int numItems) {
     items = new ItemStack[numItems];
     oreIds = new int[numItems];
     Arrays.fill(oreIds, -99);
@@ -142,7 +142,6 @@ public class ItemFilter implements IInventory {
     nbtRoot.setBoolean("useOreDict", useOreDict);
     nbtRoot.setBoolean("sticky", sticky);
 
-    nbtRoot.setShort("numItems", (short) items.length);
     int i = 0;
     for (ItemStack item : items) {
       NBTTagCompound itemTag = new NBTTagCompound();
@@ -150,7 +149,6 @@ public class ItemFilter implements IInventory {
         item.writeToNBT(itemTag);
         nbtRoot.setTag("item" + i, itemTag);
       }
-
       i++;
     }
 
@@ -163,10 +161,7 @@ public class ItemFilter implements IInventory {
     useOreDict = nbtRoot.getBoolean("useOreDict");
     sticky = nbtRoot.getBoolean("sticky");
 
-    int numItems = nbtRoot.getShort("numItems");
-    if(numItems <= 0) { //Legacy support
-      numItems = 10;
-    }
+    int numItems = 10;
     items = new ItemStack[numItems];
     oreIds = new int[numItems];
     for (int i = 0; i < numItems; i++) {
