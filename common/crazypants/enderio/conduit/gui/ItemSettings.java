@@ -42,7 +42,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private ToggleButtonEIO useOreDictB;
   private ToggleButtonEIO stickyB;
 
-  boolean inOutShowIn = true;
+  boolean inOutShowIn = false;
 
   private ItemFilter activeFilter;
 
@@ -71,15 +71,12 @@ public class ItemSettings extends BaseSettingsPanel {
     if(nextFilterB != null) {
       gui.removeButton(nextFilterB);
     }
-    int headingWidth = gui.getFontRenderer().getStringWidth(getHeading());
 
     int y = customTop;
+    int x;
 
-    int x = 40;//((width - headingWidth) / 2) + 3;
-    //    prevFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.LEFT_ARROW);
-    //    prevFilterB.setSize(8, 16);
-
-    x = ((width - headingWidth) / 2) + headingWidth + 13;
+    int headingWidth = gui.getFontRenderer().getStringWidth(getHeading());
+    x = ((width - headingWidth) / 2) + headingWidth + 16;
     nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
     nextFilterB.setSize(8, 16);
 
@@ -98,7 +95,7 @@ public class ItemSettings extends BaseSettingsPanel {
     stickyB.setToolTip("Sticky Mode", "Reserve Matched Items");
 
     y += 20;
-    x = 122;
+    x = 112;
 
     useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT, IconEIO.FILTER_NBT);
     useNbtB.setToolTip("Match NBT Data");
@@ -118,6 +115,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private void updateGuiVisibility() {
     gui.removeButton(nextFilterB);
+    gui.removeButton(stickyB);
     //gui.removeButton(prevFilterB);
 
     boolean showInput = false;
@@ -170,7 +168,12 @@ public class ItemSettings extends BaseSettingsPanel {
       return;
     }
 
-    stickyB.onGuiInit();
+    ConnectionMode mode = con.getConectionMode(gui.dir);
+    boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
+    if(outputActive) {
+      stickyB.onGuiInit();
+    }
+
     useNbtB.onGuiInit();
     useOreDictB.onGuiInit();
     useMetaB.onGuiInit();

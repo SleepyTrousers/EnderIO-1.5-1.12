@@ -33,13 +33,21 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public static final String ICON_KEY = "enderio:itemConduit";
 
-  public static final String ICON_CORE_KEY = "enderio:itemConduitCore";
+  public static final String ICON_KEY_CORE = "enderio:itemConduitCore";
+
+  public static final String ICON_KEY_CORE_ADV = "enderio:itemConduitCoreAdvanced";
 
   public static final String ICON_KEY_INPUT = "enderio:itemConduitInput";
 
   public static final String ICON_KEY_OUTPUT = "enderio:itemConduitOutput";
 
   public static final String ICON_KEY_IN_OUT = "enderio:itemConduitInOut";
+
+  private static final String ICON_KEY_INPUT_ADV = "enderio:itemConduitInputAdvanced";
+
+  private static final String ICON_KEY_OUTPUT_ADV = "enderio:itemConduitOutputAdvanced";
+
+  private static final String ICON_KEY_IN_OUT_ADV = "enderio:itemConduitInOutAdvanced";
 
   public static final String ICON_KEY_ENDER = "enderio:ender_still";
 
@@ -51,10 +59,16 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       @Override
       public void registerIcons(IconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
-        ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
+        ICONS.put(ICON_KEY_CORE, register.registerIcon(ICON_KEY_CORE));
+        ICONS.put(ICON_KEY_CORE_ADV, register.registerIcon(ICON_KEY_CORE_ADV));
         ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
         ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
         ICONS.put(ICON_KEY_IN_OUT, register.registerIcon(ICON_KEY_IN_OUT));
+
+        ICONS.put(ICON_KEY_INPUT_ADV, register.registerIcon(ICON_KEY_INPUT_ADV));
+        ICONS.put(ICON_KEY_OUTPUT_ADV, register.registerIcon(ICON_KEY_OUTPUT_ADV));
+        ICONS.put(ICON_KEY_IN_OUT_ADV, register.registerIcon(ICON_KEY_IN_OUT_ADV));
+
         ICONS.put(ICON_KEY_ENDER, register.registerIcon(ICON_KEY_ENDER));
       }
 
@@ -76,7 +90,26 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
 
+  private int metaData;
+
   public ItemConduit() {
+    this(0);
+  }
+
+  public ItemConduit(int itemDamage) {
+    this.metaData = itemDamage;
+    updateFromMetadata();
+  }
+
+  private void updateFromMetadata() {
+    if(metaData == 1) {
+      maxExtractedOnTick = 64;
+      extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
+    } else {
+      maxExtractedOnTick = 1;
+      extractRatePerTick = 0.25f; //four items a second
+    }
+
   }
 
   @Override
@@ -205,7 +238,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   protected ConnectionMode getDefaultConnectionMode() {
-    return ConnectionMode.INPUT;
+    return ConnectionMode.OUTPUT;
   }
 
   @Override
@@ -232,17 +265,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public Icon getTextureForInputMode() {
-    return ICONS.get(ICON_KEY_INPUT);
+    return metaData == 1 ? ICONS.get(ICON_KEY_INPUT_ADV) : ICONS.get(ICON_KEY_INPUT);
   }
 
   @Override
   public Icon getTextureForOutputMode() {
-    return ICONS.get(ICON_KEY_OUTPUT);
+    return metaData == 1 ? ICONS.get(ICON_KEY_OUTPUT_ADV) : ICONS.get(ICON_KEY_OUTPUT);
   }
 
   @Override
   public Icon getTextureForInOutMode() {
-    return ICONS.get(ICON_KEY_IN_OUT);
+    return metaData == 1 ? ICONS.get(ICON_KEY_IN_OUT_ADV) : ICONS.get(ICON_KEY_IN_OUT);
   }
 
   @Override
@@ -250,13 +283,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     return ICONS.get(ICON_KEY_ENDER);
   }
 
+  public Icon getCoreIcon() {
+    return metaData == 1 ? ICONS.get(ICON_KEY_CORE_ADV) : ICONS.get(ICON_KEY_CORE);
+  }
+
   @Override
   public Icon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
-      return ICONS.get(ICON_CORE_KEY);
+      return getCoreIcon();
     }
     if(EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
-      return ICONS.get(ICON_CORE_KEY);
+      return getCoreIcon();
     }
     return ICONS.get(ICON_KEY);
   }
@@ -269,6 +306,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
+
+    nbtRoot.setShort("metaData", (short) metaData);
 
     for (Entry<ForgeDirection, ItemFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
@@ -298,6 +337,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
 
+    metaData = nbtRoot.getShort("metaData");
+
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
@@ -314,6 +355,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         outputFilters.put(dir, filter);
       }
     }
+
+    updateFromMetadata();
   }
 
 }
