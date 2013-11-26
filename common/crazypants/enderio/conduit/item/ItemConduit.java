@@ -149,7 +149,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public ItemFilter getInputFilter(ForgeDirection dir) {
     ItemFilter res = inputFilters.get(dir);
     if(res == null) {
-      res = new ItemFilter(10);
+      res = new ItemFilter();
       inputFilters.put(dir, res);
     }
     return res;
@@ -164,7 +164,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public ItemFilter getOutputFilter(ForgeDirection dir) {
     ItemFilter res = outputFilters.get(dir);
     if(res == null) {
-      res = new ItemFilter(10);
+      res = new ItemFilter();
       outputFilters.put(dir, res);
     }
     return res;
