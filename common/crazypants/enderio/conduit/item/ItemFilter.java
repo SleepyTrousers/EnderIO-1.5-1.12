@@ -22,7 +22,7 @@ public class ItemFilter implements IInventory {
   int[] oreIds;
 
   public ItemFilter() {
-    this(0);
+    this(10);
   }
 
   public ItemFilter(int numItems) {
@@ -164,6 +164,9 @@ public class ItemFilter implements IInventory {
     sticky = nbtRoot.getBoolean("sticky");
 
     int numItems = nbtRoot.getShort("numItems");
+    if(numItems <= 0) { //Legacy support
+      numItems = 10;
+    }
     items = new ItemStack[numItems];
     oreIds = new int[numItems];
     for (int i = 0; i < numItems; i++) {
