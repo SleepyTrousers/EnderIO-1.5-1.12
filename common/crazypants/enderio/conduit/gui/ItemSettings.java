@@ -271,11 +271,13 @@ public class ItemSettings extends BaseSettingsPanel {
     gui.container.setInventorySlotsVisible(false);
     gui.container.setInputSlotsVisible(false);
     gui.container.setOutputSlotsVisible(false);
-    useNbtB.detach();
-    useMetaB.detach();
-    useOreDictB.detach();
-    whiteListB.detach();
-    stickyB.detach();
+    if(useNbtB != null) {
+      useNbtB.detach();
+      useMetaB.detach();
+      useOreDictB.detach();
+      whiteListB.detach();
+      stickyB.detach();
+    }
   }
 
 }
