@@ -308,7 +308,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
       int numInserted = 0;
       int numToInsert = item.stackSize;
-      for (int slot = 0; slot < inv.getSizeInventory() && numToInsert > 0; slot++) {
+      int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide);
+      for(int i=0;i<slots.length && numToInsert > 0;i++) {
+        int slot = slots[i];
         if(sidedInv.canInsertItem(slot, item, inventorySide)) {
           ItemStack contents = inv.getStackInSlot(slot);
           ItemStack toInsert = item.copy();
