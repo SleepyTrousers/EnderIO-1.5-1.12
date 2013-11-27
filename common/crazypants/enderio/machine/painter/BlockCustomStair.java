@@ -154,7 +154,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
+      if(tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length && blocksList[tef.getSourceBlockId()] != null) {
         return blocksList[tef.getSourceBlockId()].getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
