@@ -149,14 +149,13 @@ public class ExternalConnectionContainer extends Container {
   @Override
   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
     if(par4EntityPlayer.worldObj != null) {
-      if(par1 < 20) {
+      if(itemConduit != null && par1 < 20) {
         itemConduit.setInputFilter(dir, inputFilter);
         itemConduit.setOutputFilter(dir, outputFilter);
-      }
-      if(par4EntityPlayer.worldObj.isRemote) {
-        par4EntityPlayer.worldObj.markBlockForUpdate(bundle.getEntity().xCoord, bundle.getEntity().xCoord, bundle.getEntity().xCoord);
-      }
-
+        if(par4EntityPlayer.worldObj.isRemote) {
+          par4EntityPlayer.worldObj.markBlockForUpdate(bundle.getEntity().xCoord, bundle.getEntity().xCoord, bundle.getEntity().xCoord);
+        }       
+      }      
     }
     try {
       return super.slotClick(par1, par2, par3, par4EntityPlayer);
