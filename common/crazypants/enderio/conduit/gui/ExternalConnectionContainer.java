@@ -32,10 +32,31 @@ public class ExternalConnectionContainer extends Container {
     this.dir = dir;
 
     itemConduit = bundle.getConduit(IItemConduit.class);
-    if(itemConduit == null) {
-      return;
+    if(itemConduit != null) {
+      addFilterSlots(dir);
     }
 
+    int topY = 113;
+    // add players inventory
+    for (int i = 0; i < 3; ++i) {
+      for (int j = 0; j < 9; ++j) {
+        int x = 8 + j * 18;
+        int y = topY + i * 18;
+        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x, y));
+        slotLocations.add(new Point(x, y));
+      }
+    }
+
+    int y = 171;
+    for (int i = 0; i < 9; ++i) {
+      int x = 8 + i * 18;
+      addSlotToContainer(new Slot(playerInv, i, x, y));
+      slotLocations.add(new Point(x, y));
+    }
+
+  }
+
+  private void addFilterSlots(ForgeDirection dir) {
     boolean isAdvanced = itemConduit.getMetaData() == 1;
     inputFilter = itemConduit.getInputFilter(dir);
 
@@ -76,25 +97,6 @@ public class ExternalConnectionContainer extends Container {
         index++;
       }
     }
-
-    topY = 113;
-    // add players inventory
-    for (int i = 0; i < 3; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        int x = 8 + j * 18;
-        int y = topY + i * 18;
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x, y));
-        slotLocations.add(new Point(x, y));
-      }
-    }
-
-    int y = 171;
-    for (int i = 0; i < 9; ++i) {
-      int x = 8 + i * 18;
-      addSlotToContainer(new Slot(playerInv, i, x, y));
-      slotLocations.add(new Point(x, y));
-    }
-
   }
 
   public void setInputSlotsVisible(boolean visible) {
