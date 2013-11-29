@@ -307,21 +307,39 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   @Override
   public int fill(ForgeDirection from, LiquidStack resource, boolean doFill) {
 
+    if(network == null) {
+      return 0;
+    }
+    if(!canFill(from, resource)) {
+      return 0;
+    }
+    
     // Note: This is just a guard against mekansims pipes that will continuously
     // call
     // fill on us if we push liquid to them.
     if(filledFromThisTick.contains(getLocation().getLocation(from))) {
       return 0;
     }
-    if(doFill) {
-      filledFromThisTick.add(getLocation().getLocation(from));
-    }
+    
+    
+    if(network.lockNetworkForFill()) {
+      if(doFill) {
+        filledFromThisTick.add(getLocation().getLocation(from));
+      }
+      try {
+        int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
+        if(doFill && externalConnections.contains(from) && network != null) {
+          network.addedFromExternal(res);
+        }
+        return res;
+      } finally {
+        network.unlockNetworkFromFill();
 
-    int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
-    if(doFill && externalConnections.contains(from) && network != null) {
-      network.addedFromExternal(res);
+      }
+    } else {
+      return 0;
     }
-    return res;
+       
   }
 
   @Override
