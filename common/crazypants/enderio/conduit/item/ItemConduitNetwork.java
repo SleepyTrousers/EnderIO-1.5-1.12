@@ -182,10 +182,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
       int slot = -1;
       for (int i = 0; i < slotIndices.length; i++) {
-        ItemStack item = sidedInv.getStackInSlot(i);
+        slot = slotIndices[i];
+        ItemStack item = sidedInv.getStackInSlot(slot);
         if(canExtractItem(item)) {
-          extractItem = item.copy();
-          slot = i;
+          extractItem = item.copy();          
           if(sidedInv.canExtractItem(i, extractItem, inventorySide)) {
             int maxExtracted = con.getMaximumExtracted(slot);
             if(maxExtracted > 0) {
