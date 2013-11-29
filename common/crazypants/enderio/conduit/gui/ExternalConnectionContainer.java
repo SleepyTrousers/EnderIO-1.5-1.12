@@ -154,8 +154,8 @@ public class ExternalConnectionContainer extends Container {
         itemConduit.setOutputFilter(dir, outputFilter);
         if(par4EntityPlayer.worldObj.isRemote) {
           par4EntityPlayer.worldObj.markBlockForUpdate(bundle.getEntity().xCoord, bundle.getEntity().xCoord, bundle.getEntity().xCoord);
-        }       
-      }      
+        }
+      }
     }
     try {
       return super.slotClick(par1, par2, par3, par4EntityPlayer);

@@ -185,7 +185,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         slot = slotIndices[i];
         ItemStack item = sidedInv.getStackInSlot(slot);
         if(canExtractItem(item)) {
-          extractItem = item.copy();          
+          extractItem = item.copy();
           if(sidedInv.canExtractItem(i, extractItem, inventorySide)) {
             int maxExtracted = con.getMaximumExtracted(slot);
             if(maxExtracted > 0) {
@@ -309,7 +309,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int numInserted = 0;
       int numToInsert = item.stackSize;
       int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide);
-      for(int i=0;i<slots.length && numToInsert > 0;i++) {
+      for (int i = 0; i < slots.length && numToInsert > 0; i++) {
         int slot = slots[i];
         if(sidedInv.canInsertItem(slot, item, inventorySide)) {
           ItemStack contents = inv.getStackInSlot(slot);

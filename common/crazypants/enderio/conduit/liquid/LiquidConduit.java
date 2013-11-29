@@ -341,6 +341,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
+    if(network == null) {
+      return 0;
+    }
     if(!canFill(from, resource.getFluid())) {
       return 0;
     }
@@ -355,11 +358,21 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       filledFromThisTick.add(getLocation().getLocation(from));
     }
 
-    int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
-    if(doFill && externalConnections.contains(from) && network != null) {
-      network.addedFromExternal(res);
+    if(network.lockNetworkForFill()) {
+      try {
+        int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
+        if(doFill && externalConnections.contains(from) && network != null) {
+          network.addedFromExternal(res);
+        }
+        return res;
+      } finally {
+        network.unlockNetworkFromFill();
+
+      }
+    } else {
+      return 0;
     }
-    return res;
+
   }
 
   @Override

@@ -30,6 +30,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
   private int outputVolume;
 
+  private boolean inputLocked = false;
+
   @Override
   public Class<? extends ILiquidConduit> getBaseConduitType() {
     return ILiquidConduit.class;
@@ -37,6 +39,18 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
   public FluidStack getFluidType() {
     return liquidType;
+  }
+
+  public boolean lockNetworkForFill() {
+    if(inputLocked) {
+      return false;
+    }
+    inputLocked = true;
+    return true;
+  }
+
+  public void unlockNetworkFromFill() {
+    inputLocked = false;
   }
 
   @Override
