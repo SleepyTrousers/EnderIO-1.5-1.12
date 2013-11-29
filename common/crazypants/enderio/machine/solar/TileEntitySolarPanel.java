@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -32,9 +29,14 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
-  private float energyPerTick = (float) Config.maxPhotovoltaicOutput;;
+  private float energyPerTick = (float) Config.maxPhotovoltaicOutput;
+
+  private float lastCollectionValue = -1;
+  private int checkOffset;
+  private static final int CHECK_INTERVAL = 100;
 
   public TileEntitySolarPanel() {
+    checkOffset = (int) (Math.random() * 20);
     capacitor = new BasicCapacitor(0, 10000, 10);
     powerHandler = PowerHandlerUtil.createHandler(capacitor, this, Type.ENGINE);
   }
@@ -100,7 +102,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   @Override
   public void updateEntity() {
-    if (worldObj == null || worldObj.isRemote) {
+    if(worldObj == null || worldObj.isRemote) {
       return;
     }
     collectEnergy();
@@ -108,20 +110,23 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void collectEnergy() {
-    if (!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
+    if(!worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
       return;
     }
-    float fromSun = calculateLightRatio();
-    float collected = energyPerTick * fromSun;
-    powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), powerHandler.getEnergyStored() + collected));
 
+    if(lastCollectionValue == -1 || (worldObj.getWorldTime() + checkOffset) % CHECK_INTERVAL == 0) {
+      float fromSun = calculateLightRatio();
+      lastCollectionValue = energyPerTick * fromSun;
+    }
+    float collected = lastCollectionValue;
+    powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), powerHandler.getEnergyStored() + collected));
   }
 
   private float calculateLightRatio() {
     int lightValue = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted;
     float sunAngle = worldObj.getCelestialAngleRadians(1.0F);
 
-    if (sunAngle < (float) Math.PI) {
+    if(sunAngle < (float) Math.PI) {
       sunAngle += (0.0F - sunAngle) * 0.2F;
     } else {
       sunAngle += (((float) Math.PI * 2F) - sunAngle) * 0.2F;
@@ -135,7 +140,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   private boolean transmitEnergy() {
 
-    if (powerHandler.getEnergyStored() <= 0) {
+    if(powerHandler.getEnergyStored() <= 0) {
       powerHandler.update();
       return false;
     }
@@ -150,7 +155,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
     checkReceptors();
 
-    if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
+    if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
     }
 
@@ -160,17 +165,17 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
       Receptor receptor = receptorIterator.next();
       PowerInterface pp = receptor.receptor;
-      if (pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
+      if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
         canTransmit -= used;
       }
 
-      if (canTransmit <= 0) {
+      if(canTransmit <= 0) {
         break;
       }
 
-      if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
+      if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = receptors.listIterator();
       }
       appliedCount++;
@@ -183,7 +188,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   private void checkReceptors() {
-    if (!receptorsDirty) {
+    if(!receptorsDirty) {
       return;
     }
     receptors.clear();
@@ -194,7 +199,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     PowerInterface pi = PowerInterface.create(te);
     if(pi != null) {
       receptors.add(new Receptor(pi, dir));
-    }   
+    }
     receptorIterator = receptors.listIterator();
     receptorsDirty = false;
 
