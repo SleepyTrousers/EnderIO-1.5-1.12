@@ -354,11 +354,11 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if(filledFromThisTick.contains(getLocation().getLocation(from))) {
       return 0;
     }
-    if(doFill) {
-      filledFromThisTick.add(getLocation().getLocation(from));
-    }
 
     if(network.lockNetworkForFill()) {
+      if(doFill) {
+        filledFromThisTick.add(getLocation().getLocation(from));
+      }
       try {
         int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
         if(doFill && externalConnections.contains(from) && network != null) {
