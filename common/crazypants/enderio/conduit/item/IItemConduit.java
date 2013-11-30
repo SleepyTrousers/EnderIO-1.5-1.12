@@ -41,4 +41,6 @@ public interface IItemConduit extends IConduit {
 
   SignalColor getExtractionSignalColor(ForgeDirection dir);
 
+  boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
+
 }

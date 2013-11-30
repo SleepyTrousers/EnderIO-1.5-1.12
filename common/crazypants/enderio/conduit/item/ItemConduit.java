@@ -208,6 +208,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public boolean isExtractionRedstoneConditionMet(ForgeDirection dir) {
+    RedstoneControlMode mode = getExtractioRedstoneMode(dir);
+    if(mode == null) {
+      return true;
+    }
+    return ConduitUtil.isRedstoneControlModeMet(getBundle(), mode, getExtractionSignalColor(dir));
+  }
+
+  @Override
   public int getMaximumExtracted(int slot) {
     World world = getBundle().getEntity().worldObj;
     if(world == null) {

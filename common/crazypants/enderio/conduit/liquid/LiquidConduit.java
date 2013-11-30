@@ -35,8 +35,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
@@ -232,7 +230,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
-      if(isExtractingFromDir(dir) && isRedstoneControlModeMet(dir)) {
+      if(isExtractingFromDir(dir) && ConduitUtil.isRedstoneControlModeMet(getBundle(), getExtractioRedstoneMode(dir), getExtractionSignalColor(dir))) {
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
 
         if(extTank != null) {
@@ -269,36 +267,6 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       }
     }
 
-  }
-
-  private boolean isRedstoneControlModeMet(ForgeDirection side) {
-
-    RedstoneControlMode mode = getExtractioRedstoneMode(side);
-    SignalColor col = getExtractionSignalColor(side);
-
-    if(mode == RedstoneControlMode.IGNORE) {
-      return true;
-    } else if(mode == RedstoneControlMode.NEVER) {
-      return false;
-    }
-
-    int signalStrength = 0;
-    IRedstoneConduit rsCon = getBundle().getConduit(IRedstoneConduit.class);
-    if(rsCon != null) {
-      Set<Signal> signals = rsCon.getNetworkOutputs(ForgeDirection.UNKNOWN);
-      for (Signal sig : signals) {
-        if(sig.color == col) {
-          if(sig.strength > signalStrength) {
-            signalStrength = sig.strength;
-          }
-        }
-      }
-    }
-    if(signalStrength < 15 && SignalColor.RED == col && getBundle() != null && getBundle().getEntity() != null) {
-      TileEntity te = getBundle().getEntity();
-      signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
-    }
-    return mode.isConditionMet(mode, signalStrength);
   }
 
   @Override
