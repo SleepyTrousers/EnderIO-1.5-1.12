@@ -36,7 +36,7 @@ import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor, IInventory {
 
-  static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 250000);
+  static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 500000);
 
   BlockCoord[] multiblock = null;
 
