@@ -136,12 +136,20 @@ public class ConduitPacketHandler implements IPacketProcessor {
     itemFilter.setMatchNBT(data.readBoolean());
     itemFilter.setUseOreDict(data.readBoolean());
     itemFilter.setSticky(data.readBoolean());
+
+    //Set it back so the conduit knows its changed
+    if(isInput) {
+      con.setInputFilter(dir, itemFilter);
+    } else {
+      con.setOutputFilter(dir, itemFilter);
+    }
+
     conBun.getEntity().onInventoryChanged();
     world.markBlockForUpdate(conBun.getEntity().xCoord, conBun.getEntity().yCoord, conBun.getEntity().zCoord);
 
   }
 
-  public static Packet createExtractionModePacket(ILiquidConduit conduit, ForgeDirection dir, RedstoneControlMode mode) {
+  public static Packet createExtractionModePacket(IConduit conduit, ForgeDirection dir, RedstoneControlMode mode) {
 
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
@@ -151,6 +159,14 @@ public class ConduitPacketHandler implements IPacketProcessor {
       dos.writeInt(bundle.getEntity().xCoord);
       dos.writeInt(bundle.getEntity().yCoord);
       dos.writeInt(bundle.getEntity().zCoord);
+
+      ConTypeEnum type = ConTypeEnum.get(conduit);
+      if(type == null) {
+        dos.writeShort(-1);
+      } else {
+        dos.writeShort(type.ordinal());
+      }
+
       dos.writeShort(dir.ordinal());
       dos.writeShort(mode.ordinal());
 
@@ -176,11 +192,27 @@ public class ConduitPacketHandler implements IPacketProcessor {
     }
     ForgeDirection dir = ForgeDirection.values()[data.readShort()];
     RedstoneControlMode mode = RedstoneControlMode.values()[data.readShort()];
-    ILiquidConduit con = conBun.getConduit(ILiquidConduit.class);
-    if(con != null) {
-      con.setExtractionRedstoneMode(mode, dir);
-      world.markBlockForUpdate(conBun.getEntity().xCoord, conBun.getEntity().yCoord, conBun.getEntity().zCoord);
+
+    int typeOrdinal = data.readShort();
+    if(typeOrdinal < 0) {
+      Log.warn("processConnectionModePacket: Could not handle due to unknow conduit type.");
+      return;
     }
+    ConTypeEnum conType = ConTypeEnum.values()[typeOrdinal];
+
+    IConduit con = conBun.getConduit(conType.getBaseType());
+    if(con == null) {
+      Log.warn("processConnectionModePacket: Could not handle as conduit not found in bundle.");
+      return;
+    }
+
+    if(con instanceof ILiquidConduit) { //TODO: yeah, I know
+      ((ILiquidConduit) con).setExtractionRedstoneMode(mode, dir);
+    } else if(con instanceof IItemConduit) {
+      ((IItemConduit) con).setExtractionRedstoneMode(mode, dir);
+    }
+
+    world.markBlockForUpdate(conBun.getEntity().xCoord, conBun.getEntity().yCoord, conBun.getEntity().zCoord);
 
   }
 
@@ -229,6 +261,8 @@ public class ConduitPacketHandler implements IPacketProcessor {
       ((IInsulatedRedstoneConduit) con).setSignalColor(dir, col);
     } else if(con instanceof ILiquidConduit) {
       ((ILiquidConduit) con).setExtractionSignalColor(dir, col);
+    } else if(con instanceof IItemConduit) {
+      ((IItemConduit) con).setExtractionSignalColor(dir, col);
     } else {
       Log.warn("processSignalColorPacket: Could not handle as conduit not found in bundle.");
       return;

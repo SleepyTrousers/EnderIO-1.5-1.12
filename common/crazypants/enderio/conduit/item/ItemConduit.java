@@ -24,6 +24,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -87,6 +89,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   long extractedAtLastTick = -1;
 
   protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, SignalColor> extractionColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
 
   protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
 
@@ -102,6 +106,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   private void updateFromMetadata() {
+    //TODO: Change calcs so not so many transfers
     if(metaData == 1) {
       maxExtractedOnTick = 64;
       extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
@@ -143,6 +148,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public void setOutputFilter(ForgeDirection dir, ItemFilter filter) {
     outputFilters.put(dir, filter);
+    if(network != null) {
+      network.routesChanged();
+    }
+
   }
 
   @Override
@@ -168,6 +177,34 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       outputFilters.put(dir, res);
     }
     return res;
+  }
+
+  @Override
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+    extractionModes.put(dir, mode);
+  }
+
+  @Override
+  public RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir) {
+    RedstoneControlMode res = extractionModes.get(dir);
+    if(res == null) {
+      res = RedstoneControlMode.ON;
+    }
+    return res;
+  }
+
+  @Override
+  public void setExtractionSignalColor(ForgeDirection dir, SignalColor col) {
+    extractionColors.put(dir, col);
+  }
+
+  @Override
+  public SignalColor getExtractionSignalColor(ForgeDirection dir) {
+    SignalColor result = extractionColors.get(dir);
+    if(result == null) {
+      return SignalColor.RED;
+    }
+    return result;
   }
 
   @Override
@@ -234,7 +271,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     }
     super.setConnectionMode(dir, mode);
     if(network != null) {
-      network.connectionModeChanged(this, mode);
+      network.routesChanged();
     }
   }
 
@@ -338,6 +375,20 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
+    for (Entry<ForgeDirection, RedstoneControlMode> entry : extractionModes.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("extRM." + entry.getKey().name(), ord);
+      }
+    }
+
+    for (Entry<ForgeDirection, SignalColor> entry : extractionColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
+      }
+    }
+
   }
 
   @Override
@@ -361,6 +412,22 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         filter.readFromNBT(filterTag);
         outputFilters.put(dir, filter);
       }
+
+      key = "extRM." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < RedstoneControlMode.values().length) {
+          extractionModes.put(dir, RedstoneControlMode.values()[ord]);
+        }
+      }
+      key = "extSC." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < SignalColor.values().length) {
+          extractionColors.put(dir, SignalColor.values()[ord]);
+        }
+      }
+
     }
 
     updateFromMetadata();

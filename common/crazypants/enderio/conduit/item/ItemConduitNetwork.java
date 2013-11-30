@@ -63,7 +63,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     requiresSort = true;
   }
 
-  public void connectionModeChanged(ItemConduit itemConduit, ConnectionMode mode) {
+  public void routesChanged() {
     requiresSort = true;
   }
 
@@ -137,6 +137,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     boolean canInsert() {
       ConnectionMode mode = con.getConectionMode(conDir);
       return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
+    }
+
+    boolean isSticky() {
+      return con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
     }
 
     void onTick() {
@@ -242,14 +246,22 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
       int totalToInsert = toExtract.stackSize;
       int leftToInsert = totalToInsert;
+      boolean matchedStickyInput = false;
+
       for (Target target : sendPriority) {
-        int inserted = target.inv.insertItem(toExtract);
-        if(inserted > 0) {
-          toExtract.stackSize -= inserted;
-          leftToInsert -= inserted;
+        if(target.stickyInput && !matchedStickyInput) {
+          ItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
+          matchedStickyInput = of.isValid() && of.doesItemPassFilter(toExtract);
         }
-        if(leftToInsert <= 0) {
-          return totalToInsert;
+        if(target.stickyInput || !matchedStickyInput) {
+          int inserted = target.inv.insertItem(toExtract);
+          if(inserted > 0) {
+            toExtract.stackSize -= inserted;
+            leftToInsert -= inserted;
+          }
+          if(leftToInsert <= 0) {
+            return totalToInsert;
+          }
         }
       }
       return totalToInsert - leftToInsert;
@@ -347,7 +359,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       }
       for (NetworkedInventory other : inventories) {
         if((allowSelfFeed || (other != this)) && other.canInsert()) {
-          sendPriority.add(new Target(other, location.distanceSquared(other.location)));
+          sendPriority.add(new Target(other, location.distanceSquared(other.location), other.isSticky()));
         }
       }
       Collections.sort(sendPriority);
@@ -358,14 +370,22 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   class Target implements Comparable<Target> {
     NetworkedInventory inv;
     int distance;
+    boolean stickyInput;
 
-    Target(NetworkedInventory inv, int distance) {
+    Target(NetworkedInventory inv, int distance, boolean stickyInput) {
       this.inv = inv;
       this.distance = distance;
+      this.stickyInput = stickyInput;
     }
 
     @Override
     public int compareTo(Target o) {
+      if(stickyInput && !o.stickyInput) {
+        return -1;
+      }
+      if(!stickyInput && o.stickyInput) {
+        return 1;
+      }
       return compare(distance, o.distance);
     }
 
