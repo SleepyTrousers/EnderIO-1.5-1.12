@@ -12,15 +12,24 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemFilter;
+import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
+import crazypants.enderio.machine.IRedstoneModeControlable;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
 public class ItemSettings extends BaseSettingsPanel {
 
   private static final int NEXT_FILTER_ID = 98932;
+
+  private static final int ID_REDSTONE_BUTTON = 12614;
+
+  private static final int ID_COLOR_BUTTON = 179816;
 
   private static final int ID_WHITELIST = 17;
   private static final int ID_NBT = 18;
@@ -41,16 +50,46 @@ public class ItemSettings extends BaseSettingsPanel {
   private ToggleButtonEIO useOreDictB;
   private ToggleButtonEIO stickyB;
 
+  private RedstoneModeButton rsB;
+  private ColorButton colorB;
+  private String autoExtractStr = "Auto Extract";
+
   boolean inOutShowIn = false;
 
   boolean isAdvanced;
 
   private ItemFilter activeFilter;
 
-  protected ItemSettings(GuiExternalConnection gui, IConduit con) {
+  protected ItemSettings(final GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, ModObject.itemItemConduit.name, gui, con);
     itemConduit = (IItemConduit) con;
     isAdvanced = itemConduit.getMetaData() == 1;
+
+    int x = 112;
+    int y = customTop;
+
+    rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
+
+      @Override
+      public void setRedstoneControlMode(RedstoneControlMode mode) {
+        RedstoneControlMode curMode = getRedstoneControlMode();
+        itemConduit.setExtractionRedstoneMode(mode, gui.dir);
+        if(curMode != mode) {
+          Packet pkt = ConduitPacketHandler.createExtractionModePacket(itemConduit, gui.dir, mode);
+          PacketDispatcher.sendPacketToServer(pkt);
+        }
+
+      }
+
+      @Override
+      public RedstoneControlMode getRedstoneControlMode() {
+        return itemConduit.getExtractioRedstoneMode(gui.dir);
+      }
+    });
+
+    x += rsB.getWidth() + gap;
+    colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+    colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
   }
 
   private String getHeading() {
@@ -77,7 +116,7 @@ public class ItemSettings extends BaseSettingsPanel {
     int x;
 
     int headingWidth = gui.getFontRenderer().getStringWidth(getHeading());
-    x = ((width - headingWidth) / 2) + headingWidth + 16;
+    x = 98;
     nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
     nextFilterB.setSize(8, 16);
 
@@ -109,8 +148,6 @@ public class ItemSettings extends BaseSettingsPanel {
       useNbtB.onGuiInit();
       useOreDictB.onGuiInit();
     }
-    //TODOO: Sticky mode not implemented
-    //stickyB.onGuiInit();
     useMetaB.onGuiInit();
     whiteListB.onGuiInit();
 
@@ -120,6 +157,8 @@ public class ItemSettings extends BaseSettingsPanel {
   private void updateGuiVisibility() {
     gui.removeButton(nextFilterB);
     gui.removeButton(stickyB);
+    gui.removeButton(rsB);
+    gui.removeButton(colorB);
 
     boolean showInput = false;
     boolean showOutput = false;
@@ -171,10 +210,18 @@ public class ItemSettings extends BaseSettingsPanel {
     }
 
     ConnectionMode mode = con.getConectionMode(gui.dir);
+    if(mode == ConnectionMode.DISABLED) {
+      return;
+    }
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
     if(outputActive) {
-      //TODO: Sticky mode not implemented
-      //stickyB.onGuiInit();
+      stickyB.onGuiInit();
+      stickyB.setSelected(itemConduit.getOutputFilter(gui.dir).isSticky());
+    } else {
+      rsB.onGuiInit();
+      rsB.setMode(itemConduit.getExtractioRedstoneMode(gui.dir));
+      colorB.onGuiInit();
+      colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
     }
 
     if(isAdvanced) {
@@ -225,6 +272,9 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if(guiButton.id == ID_WHITELIST) {
       activeFilter.setBlacklist(!activeFilter.isBlacklist());
       sendFilterChange();
+    } else if(guiButton.id == ID_COLOR_BUTTON) {
+      Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, SignalColor.values()[colorB.getColorIndex()]);
+      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 
@@ -259,7 +309,7 @@ public class ItemSettings extends BaseSettingsPanel {
       FontRenderer fr = gui.getFontRenderer();
       String heading = getHeading();
       int headingWidth = fr.getStringWidth(heading);
-      int x = (width - headingWidth) / 2;
+      int x = 0;
       int rgb = ColorUtil.getRGB(Color.darkGray);
       fr.drawString(heading, left + x, top, rgb);
     }
@@ -271,6 +321,9 @@ public class ItemSettings extends BaseSettingsPanel {
     gui.container.setInventorySlotsVisible(false);
     gui.container.setInputSlotsVisible(false);
     gui.container.setOutputSlotsVisible(false);
+    rsB.setToolTip((String[]) null);
+    colorB.setToolTip((String[]) null);
+
     if(useNbtB != null) {
       useNbtB.detach();
       useMetaB.detach();

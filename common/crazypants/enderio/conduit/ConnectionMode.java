@@ -3,8 +3,8 @@ package crazypants.enderio.conduit;
 public enum ConnectionMode {
 
   IN_OUT("In / Out"),
-  INPUT("Input"),
-  OUTPUT("Output"),
+  INPUT("Extract"),
+  OUTPUT("Insert"),
   DISABLED("Disabled"),
   NOT_SET("Default");
 
