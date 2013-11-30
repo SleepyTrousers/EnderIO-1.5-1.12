@@ -206,6 +206,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       if(itemStack == null) {
         return false;
       }
+
+      if(!con.isExtractionRedstoneConditionMet(conDir)) {
+        return false;
+      }
       ItemFilter filter = con.getInputFilter(conDir);
       if(filter == null) {
         return true;

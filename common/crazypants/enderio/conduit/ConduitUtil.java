@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,9 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
+import crazypants.enderio.conduit.redstone.Signal;
+import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.util.BlockCoord;
 
 public class ConduitUtil {
@@ -291,6 +295,33 @@ public class ConduitUtil {
     result.readFromNBT(conduitBody);
     return result;
 
+  }
+
+  public static boolean isRedstoneControlModeMet(IConduitBundle bundle, RedstoneControlMode mode, SignalColor col) {
+
+    if(mode == RedstoneControlMode.IGNORE) {
+      return true;
+    } else if(mode == RedstoneControlMode.NEVER) {
+      return false;
+    }
+
+    int signalStrength = 0;
+    IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);
+    if(rsCon != null) {
+      Set<Signal> signals = rsCon.getNetworkOutputs(ForgeDirection.UNKNOWN);
+      for (Signal sig : signals) {
+        if(sig.color == col) {
+          if(sig.strength > signalStrength) {
+            signalStrength = sig.strength;
+          }
+        }
+      }
+    }
+    if(signalStrength < 15 && SignalColor.RED == col && bundle != null && bundle.getEntity() != null) {
+      TileEntity te = bundle.getEntity();
+      signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+    }
+    return mode.isConditionMet(mode, signalStrength);
   }
 
 }

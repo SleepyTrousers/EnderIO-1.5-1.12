@@ -190,8 +190,6 @@ public class ConduitPacketHandler implements IPacketProcessor {
     if(conBun == null) {
       return;
     }
-    ForgeDirection dir = ForgeDirection.values()[data.readShort()];
-    RedstoneControlMode mode = RedstoneControlMode.values()[data.readShort()];
 
     int typeOrdinal = data.readShort();
     if(typeOrdinal < 0) {
@@ -199,6 +197,9 @@ public class ConduitPacketHandler implements IPacketProcessor {
       return;
     }
     ConTypeEnum conType = ConTypeEnum.values()[typeOrdinal];
+
+    ForgeDirection dir = ForgeDirection.values()[data.readShort()];
+    RedstoneControlMode mode = RedstoneControlMode.values()[data.readShort()];
 
     IConduit con = conBun.getConduit(conType.getBaseType());
     if(con == null) {
