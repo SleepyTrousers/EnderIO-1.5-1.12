@@ -166,7 +166,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         if(canExtractItem(item)) {
           extractItem = item.copy();
           slot = i;
-          int maxExtracted = con.getMaximumExtracted(slot);
+          int maxExtracted = con.getMaximumExtracted();
           if(maxExtracted > 0) {
             if(doTranfser(extractItem, slot, maxExtracted)) {
               return;
@@ -191,7 +191,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         if(canExtractItem(item)) {
           extractItem = item.copy();
           if(sidedInv.canExtractItem(i, extractItem, inventorySide)) {
-            int maxExtracted = con.getMaximumExtracted(slot);
+            int maxExtracted = con.getMaximumExtracted();
             if(maxExtracted > 0) {
               if(doTranfser(extractItem, slot, maxExtracted)) {
                 return;

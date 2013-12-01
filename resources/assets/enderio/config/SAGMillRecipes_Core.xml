@@ -320,7 +320,7 @@
         <itemStack itemID="337" number="2" />
       </output>
       <output>
-        <itemStack itemID="337" number="2" chance="0.1" />
+        <itemStack itemID="337" number="1" chance="0.1" />
       </output>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="4" itemMeta="0" chance="0.4" />
@@ -332,7 +332,10 @@
         <itemStack itemID="35" itemMeta="*" />
       </input>
       <output>
-        <itemStack itemID="287" number="4" />
+        <itemStack itemID="287" number="3" />
+      </output>
+          <output>
+        <itemStack itemID="287" number="1" chance="0.1" />
       </output>
     </recipe>
 

@@ -87,6 +87,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   int maxExtractedOnTick = 2;
   float extractRatePerTick = maxExtractedOnTick / 20f;
   long extractedAtLastTick = -1;
+  int deficitTicks = 0;
 
   protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
@@ -217,24 +218,28 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public int getMaximumExtracted(int slot) {
+  public int getMaximumExtracted() {
     World world = getBundle().getEntity().worldObj;
     if(world == null) {
       return 0;
     }
-    long curTick = world.getTotalWorldTime();
-    int numTicksSinceExtract = (int) (curTick - extractedAtLastTick);
-    int result = (int) (numTicksSinceExtract * extractRatePerTick);
-    result = Math.min(result, maxExtractedOnTick);
-    return result;
+    long time = world.getTotalWorldTime();
+    if(time - extractedAtLastTick >= deficitTicks) {
+      deficitTicks = 0;
+      return maxExtractedOnTick;
+    }
+    return 0;
   }
 
   @Override
-  public void itemsExtracted(int numInserted, int slot) {
+  public void itemsExtracted(int numExtracted, int slot) {
     World world = getBundle().getEntity().worldObj;
     if(world != null) {
+      float ticksPerItem = 1 / extractRatePerTick;
       extractedAtLastTick = world.getTotalWorldTime();
+      deficitTicks = Math.round(numExtracted * ticksPerItem);
     } else {
+      deficitTicks = 0;
       extractedAtLastTick = -1;
     }
   }

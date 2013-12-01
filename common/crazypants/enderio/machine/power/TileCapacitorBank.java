@@ -6,7 +6,6 @@ import java.util.ListIterator;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -36,8 +35,8 @@ import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor, IInventory {
-  
-  static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 250000);
+
+  static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 500000);
 
   BlockCoord[] multiblock = null;
 
@@ -158,7 +157,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     boolean chargedItem = false;
     float available = Math.min(maxIO, stored);
     for (ItemStack item : inventory) {
-
       if (item != null && available > 0) {
         float used = 0;
         if (item.getItem() instanceof IEnergyContainerItem) {
@@ -236,7 +234,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       PowerInterface powerInterface = receptor.receptor;
       if (powerInterface != null && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit
           && !powerHandler.isPowerSource(receptor.fromDir)) {
-
         float used;
         if (receptor.receptor.getDelegate() instanceof IInternalPowerReceptor) {
           IInternalPowerReceptor internalRec = (IInternalPowerReceptor) receptor.receptor.getDelegate();
@@ -299,14 +296,14 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
           IPowerReceptor rec = (IPowerReceptor) te;
           if (!(te instanceof TileCapacitorBank) && PowerHandlerUtil.canConnectRecievePower(rec)) {
             receptors.add(new Receptor(new PowerInterface((IPowerReceptor) te), dir));
-          }
+          } 
         } else if (te instanceof IEnergyHandler) {
           receptors.add(new Receptor(new PowerInterface((IEnergyHandler) te), dir));
         }
       }
     }
     receptorIterator = receptors.listIterator();
-    receptorsDirty = false;    
+    receptorsDirty = false;
   }
 
   // ------------ Multiblock overrides
