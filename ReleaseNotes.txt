@@ -1,3 +1,24 @@
+0.5.0
+Chnages
+- Added filtering to item conduits.
+- Added a second tier item conduit
+- Added new 'external connection' configuration UI
+- Improved the 'conduit mode' behaviour of YetaWrench 
+- Added redstone controls for liquid and item extraction.
+- Conduit and machine textures updated (Alchemist)
+- Silicon now registered in the ore dictionary and recipes use ore dictionary silicon (Alchemist)
+- Capacitor bank storage increased (Alchemist)
+- Tweaks to wool and clay block SAG Mill recipes (Unrepentant-Atheist)
+- EIO items added as dungeon loot (Alchemist)
+- Phased Alloy renamed to Vibrant Alloy, Phased Iron renamed to Pulsating Iron (Alchemist)
+- Significantly improved performance of Photovoltaic Cells.
+
+Bugs
+- #311 Cannot connect an empty fluid conduit to a full one.
+- #317 #321 Item conduits inserting / extracting incorrectly from TE machines.
+- #313 #261 Stack overflow when loops created with liquid conduits and tessseracts or transceivers.
+- #319 Conduits don't send power to tesseracts.
+
 0.4.6
   #306 In some cases infinite energy could be produced when combing MJ generation and RF consumption.
 
