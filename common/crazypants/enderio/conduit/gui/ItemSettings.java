@@ -127,22 +127,30 @@ public class ItemSettings extends BaseSettingsPanel {
     whiteListB.setToolTip("Whitelist");
 
     x += 20;
-    useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META, IconEIO.FILTER_META);
-    useMetaB.setToolTip("Match Meta Data");
+    useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
+    useMetaB.setSelectedToolTip("Match Meta Data");
+    useMetaB.setUnselectedToolTip("Ignore Meta Data");
+    useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
-    stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY, IconEIO.FILTER_STICKY);
-    stickyB.setToolTip("Sticky Mode", "Reserve Matched Items");
+    stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+    stickyB.setSelectedToolTip("Sticky Mode Enabled", "Selected items will only", "be sent to this or other", "Sticky outputs.");
+    stickyB.setUnselectedToolTip("Sticky Mode Disabled");
+    stickyB.setPaintSelectedBorder(false);
 
     y += 20;
     x = 112;
 
-    useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT, IconEIO.FILTER_NBT);
-    useNbtB.setToolTip("Match NBT Data");
+    useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
+    useNbtB.setSelectedToolTip("Match NBT Data");
+    useNbtB.setUnselectedToolTip("Ignore MBT Data.");
+    useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
-    useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setToolTip("Use Ore Dictionary");
+    useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
+    useOreDictB.setSelectedToolTip("Ore Dictionary Enabled.");
+    useOreDictB.setUnselectedToolTip("Ore Dictionary Disabled.");
+    useOreDictB.setPaintSelectedBorder(false);
 
     if(isAdvanced) {
       useNbtB.onGuiInit();
