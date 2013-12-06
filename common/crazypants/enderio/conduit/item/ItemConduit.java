@@ -370,7 +370,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     for (Entry<ForgeDirection, ItemFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
         ItemFilter f = entry.getValue();
-        if(f.isValid()) {
+        if(!f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
@@ -381,7 +381,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     for (Entry<ForgeDirection, ItemFilter> entry : outputFilters.entrySet()) {
       if(entry.getValue() != null) {
         ItemFilter f = entry.getValue();
-        if(f.isValid()) {
+        if(!f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);

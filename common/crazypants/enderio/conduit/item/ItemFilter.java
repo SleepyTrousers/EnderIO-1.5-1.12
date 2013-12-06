@@ -11,11 +11,21 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemFilter implements IInventory {
 
-  boolean isBlacklist = false;
+  private static final boolean DEFAULT_BLACKLIST = false;
+
+  private static final boolean DEFAULT_META = true;
+
+  private static final boolean DEFAULT_MBT = true;
+
+  private static final boolean DEFAULT_ORE_DICT = false;
+
+  private static final boolean DEFAULT_STICKY = false;
+
+  boolean isBlacklist = DEFAULT_BLACKLIST;
   boolean matchMeta = true;
   boolean matchNBT = true;
   boolean useOreDict = false;
-  boolean sticky = true;
+  boolean sticky = false;
 
   ItemStack[] items;
 
@@ -253,4 +263,11 @@ public class ItemFilter implements IInventory {
     return true;
   }
 
+  public boolean isDefault() {
+    return !isValid() && isBlacklist == DEFAULT_BLACKLIST &&
+        matchMeta == DEFAULT_META &&
+        matchNBT == DEFAULT_MBT &&
+        useOreDict == DEFAULT_ORE_DICT &&
+        sticky == DEFAULT_STICKY;
+  }
 }

@@ -44,6 +44,11 @@ public final class IconEIO {
   public static final IconEIO FILTER_WHITELIST = new IconEIO(0, 234, 22, 22);
   public static final IconEIO FILTER_BLACKLIST = new IconEIO(22, 234, 22, 22);
   public static final IconEIO FILTER_STICKY = new IconEIO(44, 234, 22, 22);
+  public static final IconEIO FILTER_STICKY_OFF = new IconEIO(64, 234, 22, 22);
+
+  public static final IconEIO FILTER_META_OFF = new IconEIO(64, 212, 22, 22);
+  public static final IconEIO FILTER_NBT_OFF = new IconEIO(64 + 22, 212, 22, 22);
+  public static final IconEIO FILTER_ORE_DICT_OFF = new IconEIO(64 + 44, 212, 22, 22);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
