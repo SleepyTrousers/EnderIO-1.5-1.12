@@ -413,25 +413,27 @@ public class NetworkPowerManager {
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
 
-        if(!capBanks.contains(cb)) {
+        boolean processed = capBanks.contains(cb);
+
+        if(!processed) {
           stored += cb.getEnergyStored();
           maxCap += cb.getMaxEnergyStored();
           capBanks.add(cb);
-        }
 
-        float canGet = 0;
-        if(cb.isOutputEnabled()) {
-          canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
-          canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
-          canExtract += canGet;
+          float canGet = 0;
+          if(cb.isOutputEnabled()) {
+            canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
+            canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
+            canExtract += canGet;
+          }
+          float canFill = 0;
+          if(cb.isInputEnabled()) {
+            canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
+            canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
+            this.canFill += canFill;
+          }
+          enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter));
         }
-        float canFill = 0;
-        if(cb.isInputEnabled()) {
-          canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
-          canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
-          this.canFill += canFill;
-        }
-        enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter));
 
       }
 
