@@ -306,7 +306,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public ItemStack createItem() {
-    ItemStack result = new ItemStack(ModObject.itemItemConduit.actualId, 1, 0);
+    ItemStack result = new ItemStack(ModObject.itemItemConduit.actualId, 1, metaData);
     return result;
   }
 
