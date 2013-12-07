@@ -100,24 +100,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             return true;
 
           } else if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
-            // Attempt to join networks
-            BlockCoord loc = getLocation().getLocation(faceHit);
-            IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IRedstoneConduit.class);
-            if(neighbour != null) {
-              if(network != null) {
-                network.destroyNetwork();
-              }
-              if(neighbour.getNetwork() != null) {
-                neighbour.getNetwork().destroyNetwork();
-              }
-              onAddedToBundle();
 
-            } else {
-
-              forceConnectionMode(faceHit, ConnectionMode.IN_OUT);
-
-            }
-            return true;
+            return ConduitUtil.joinConduits(this, faceHit);
 
           } else if(externalConnections.contains(connDir)) {
             forceConnectionMode(faceHit, ConnectionMode.DISABLED);
