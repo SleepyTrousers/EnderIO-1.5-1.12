@@ -177,9 +177,14 @@ public class GuiPowerMonitor extends GuiScreenBase {
         getInt(endTF) != te.asPercentInt(te.stopLevel)) {
 
       te.engineControlEnabled = enabledB.isSelected();
-      te.startLevel = te.asPercentFloat(getInt(startTF));
-      te.stopLevel = te.asPercentFloat(getInt(endTF));
-
+      int i = getInt(startTF);
+      if(i >= 0) {
+        te.startLevel = te.asPercentFloat(i);
+      }
+      i = getInt(endTF);
+      if(i >= 0) {
+        te.stopLevel = te.asPercentFloat(i);
+      }
       Packet pkt = PowerMonitorPacketHandler.createPowerMonitotPacket(te);
       PacketDispatcher.sendPacketToServer(pkt);
     }
