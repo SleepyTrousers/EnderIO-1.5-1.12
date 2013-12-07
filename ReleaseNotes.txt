@@ -1,5 +1,13 @@
+0.5.1
+- #326 Advanced item conduits dropping 1st tier conduits.
+- #331 Fixed message when EnderIO is out of range.
+- #329 Updated item filter UI.
+- #258 Fixed input/output limits on capacitor banks with multiple connections.
+- #259 #268 #280 #310 Conduits not handling chunk loading / unloading correctly.
+- #328 Item conduits now accept input from TE tesseracts and can have items ejected into them from TE and MFR machines.
+
 0.5.0
-Chnages
+Changes
 - Added filtering to item conduits.
 - Added a second tier item conduit
 - Added new 'external connection' configuration UI
