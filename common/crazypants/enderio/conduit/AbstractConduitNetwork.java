@@ -43,6 +43,9 @@ public abstract class AbstractConduitNetwork<T extends IConduit> {
       for (T con : connections) {
         if(con.getNetwork() == null) {
           setNetwork(world, con.getBundle());
+        } else if(con.getNetwork() != this) {
+          con.getNetwork().destroyNetwork();
+          setNetwork(world, con.getBundle());
         }
       }
     }
