@@ -142,6 +142,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public ItemStack sendItems(ItemStack item, ForgeDirection side) {
+    if(!externalConnections.contains(side)) {
+      return item;
+    } else if(!getConectionMode(side).acceptsInput()) {
+      return item;
+    } else if(network == null) {
+      return item;
+    }
+    return network.sendItems(this, item, side);
+  }
+
+  @Override
   public void setInputFilter(ForgeDirection dir, ItemFilter filter) {
     inputFilters.put(dir, filter);
   }

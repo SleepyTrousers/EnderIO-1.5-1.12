@@ -33,4 +33,8 @@ public enum ConnectionMode {
     }
     return ConnectionMode.values()[ord];
   }
+
+  public boolean acceptsInput() {
+    return this == IN_OUT || this == INPUT;
+  }
 }

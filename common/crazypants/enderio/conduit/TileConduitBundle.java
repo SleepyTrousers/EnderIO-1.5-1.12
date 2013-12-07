@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
@@ -28,6 +29,7 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
+import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -569,7 +571,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public World getWorld() {
     return worldObj;
   }
-
+    
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
@@ -614,6 +616,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     return 0;
   }
+
 
   // ------- Liquids -----------------------------
 
@@ -671,4 +674,15 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     return null;
   }
 
+  //---- TE Item Conduits
+
+  @Override
+  public ItemStack sendItems(ItemStack item, ForgeDirection side) {
+    IItemConduit ic = getConduit(IItemConduit.class);
+    if(ic != null) {
+      return ic.sendItems(item, side);
+    }
+    return item;
+  }
+  
 }

@@ -7,7 +7,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
 
-public interface IItemConduit extends IConduit {
+public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit {
 
   Icon getTextureForInputMode();
 
