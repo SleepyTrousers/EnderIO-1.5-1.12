@@ -100,7 +100,7 @@ public class ItemEnderface extends Item implements IGuiHandler {
 
       Chunk c = world.getChunkFromBlockCoords(x, z);
       if (c == null || !c.isChunkLoaded) {
-        ChatMessageComponent cm = ChatMessageComponent.createFromText"EnderIO block is too distant.");
+        ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block is too distant.");
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
