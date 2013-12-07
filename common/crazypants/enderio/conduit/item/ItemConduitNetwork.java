@@ -66,6 +66,22 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   public void routesChanged() {
     requiresSort = true;
   }
+  
+  public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
+    BlockCoord loc = itemConduit.getLocation().getLocation(side);
+    NetworkedInventory inv = invMap.get(loc);
+    if(inv == null) {
+      return item;
+    }
+    int numInserted = inv.insertIntoTargets(item);
+    if(numInserted >= item.stackSize) {
+      return null;
+    }
+    ItemStack result = item.copy();
+    result.stackSize -= numInserted;
+    return result;
+  }
+
 
   private boolean isRemote(ItemConduit itemConduit) {
     World world = itemConduit.getBundle().getEntity().worldObj;
@@ -223,7 +239,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       }
       ItemStack toExtract = extractedItem.copy();
       toExtract.stackSize = Math.min(maxExtract, toExtract.stackSize);
-      int numInserted = insertIntoTargets(toExtract, slot);
+      int numInserted = insertIntoTargets(toExtract);
       if(numInserted <= 0) {
         return false;
       }
@@ -243,7 +259,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
     }
 
-    private int insertIntoTargets(ItemStack toExtract, int slot) {
+    private int insertIntoTargets(ItemStack toExtract) {
       if(toExtract == null) {
         return 0;
       }
@@ -395,4 +411,5 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
   }
 
+  
 }

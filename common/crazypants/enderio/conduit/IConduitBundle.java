@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import cofh.api.transport.IItemConduit;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -13,7 +15,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
 
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler {
+public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemConduit {
 
   TileEntity getEntity();
 
