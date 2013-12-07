@@ -7,7 +7,7 @@
 - #328 Item conduits now accept input from TE tesseracts and can have items ejected into them from TE and MFR machines.
 
 0.5.0
-Chnages
+Changes
 - Added filtering to item conduits.
 - Added a second tier item conduit
 - Added new 'external connection' configuration UI
