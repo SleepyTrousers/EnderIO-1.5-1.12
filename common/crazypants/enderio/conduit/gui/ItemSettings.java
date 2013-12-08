@@ -143,7 +143,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
     useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip("Match NBT Data");
-    useNbtB.setUnselectedToolTip("Ignore MBT Data.");
+    useNbtB.setUnselectedToolTip("Ignore NBT Data.");
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
