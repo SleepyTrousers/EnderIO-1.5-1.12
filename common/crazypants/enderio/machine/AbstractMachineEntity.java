@@ -46,6 +46,8 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   protected boolean redstoneCheckPassed;
 
+  private boolean redstoneStateDirty = true;
+
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition; // plus one for capacitor
     facing = 3;
@@ -114,6 +116,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   @Override
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
+    redstoneStateDirty = true;
   }
 
   @Override
@@ -246,7 +249,12 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     }
 
     boolean prevRedCheck = redstoneCheckPassed;
-    redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
+    
+    if(redstoneStateDirty) {
+      redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
+      redstoneStateDirty = false;
+    }    
+    
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
@@ -426,6 +434,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   }
 
   public void onNeighborBlockChange(int blockId) {
+    redstoneStateDirty = true;
   }
 
 }

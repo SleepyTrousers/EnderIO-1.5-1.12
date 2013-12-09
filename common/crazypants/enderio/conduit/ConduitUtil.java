@@ -305,6 +305,16 @@ public class ConduitUtil {
       return false;
     }
 
+    int signalStrength = getInternalSignalForColor(bundle, col);    
+    if(signalStrength < 15 && SignalColor.RED == col && bundle != null && bundle.getEntity() != null) {
+      TileEntity te = bundle.getEntity();
+      signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+    }
+    return mode.isConditionMet(mode, signalStrength);
+  }
+
+  
+  public static int getInternalSignalForColor(IConduitBundle bundle, SignalColor col) {
     int signalStrength = 0;
     IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);
     if(rsCon != null) {
@@ -317,11 +327,7 @@ public class ConduitUtil {
         }
       }
     }
-    if(signalStrength < 15 && SignalColor.RED == col && bundle != null && bundle.getEntity() != null) {
-      TileEntity te = bundle.getEntity();
-      signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
-    }
-    return mode.isConditionMet(mode, signalStrength);
+    return signalStrength;
   }
 
 }
