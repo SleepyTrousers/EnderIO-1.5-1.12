@@ -64,6 +64,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private boolean inputEnabled;
 
+  private boolean isRecievingRedstoneSignal;
+
+  private boolean redstoneStateDirty = true;
+
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
@@ -166,7 +170,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
           float canUse = Math.min(available * 10, max - cur);
           if(cur < max) {
             used = chargable.receiveEnergy(item, (int) canUse, false) / 10;
-            //TODO: I should be able to use 'used' but it is always returning 0 ATM.
+            // TODO: I should be able to use 'used' but it is always returning 0
+            // ATM.
             used = (chargable.getEnergyStored(item) - cur) / 10;
           }
 
@@ -399,15 +404,26 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   private boolean isRecievingRedstoneSignal() {
-    if(!isMultiblock()) {
-      return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+    if(!redstoneStateDirty) {
+      return isRecievingRedstoneSignal;
     }
-    for (BlockCoord bc : multiblock) {
-      if(worldObj.getStrongestIndirectPower(bc.x, bc.y, bc.z) > 0) {
-        return true;
+
+    isRecievingRedstoneSignal = false;
+    redstoneStateDirty = false;
+
+    if(!isMultiblock()) {
+      isRecievingRedstoneSignal =  worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+    } else {
+      for (BlockCoord bc : multiblock) {
+        if(worldObj.getStrongestIndirectPower(bc.x, bc.y, bc.z) > 0) {
+          isRecievingRedstoneSignal = true;
+          break;
+        }
       }
     }
-    return false;
+
+    return isRecievingRedstoneSignal;
+
   }
 
   public RedstoneControlMode getInputControlMode() {
@@ -549,6 +565,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(blockId != ModObject.blockCapacitorBank.actualId) {
       getController().receptorsDirty = true;
     }
+    redstoneStateDirty = true;
   }
 
   public void onBreakBlock() {
@@ -568,6 +585,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       }
     }
     multiblock = null;
+    redstoneStateDirty = true;
   }
 
   private void formMultiblock() {
@@ -590,7 +608,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     for (TileCapacitorBank cb : blocks) {
       cb.setMultiblock(mb);
     }
-
   }
 
   private void findNighbouringBanks(TileCapacitorBank tileCapacitorBank, List<TileCapacitorBank> blocks) {
@@ -663,6 +680,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       updatePowerHandler();
     }
     receptorsDirty = true;
+    redstoneStateDirty = true;
 
     // Forces an update
     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
