@@ -165,7 +165,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
         if(!getBundle().getEntity().worldObj.isRemote) {
           if(network != null && (network.getFluidType() == null || network.getTotalVolume() < 500)) {
             network.setFluidType(fluid);
-            ChatMessageComponent c = ChatMessageComponent.createFromText("Fluid type set to " + FluidRegistry.getFluidName(fluid));
+            ChatMessageComponent c = ChatMessageComponent.func_111066_d("Fluid type set to " + FluidRegistry.getFluidName(fluid));
             player.sendChatToPlayer(c);
           }
         }
@@ -279,7 +279,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   }
 
-  private boolean autoExtractForDir(ForgeDirection dir) {    
+  private boolean autoExtractForDir(ForgeDirection dir) {
     if(!isExtractingFromDir(dir)) {
       return false;
     }
@@ -300,13 +300,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if(mode.isConditionMet(mode, signal)) {
       return true;
     }
-    
-    int externalSignal = 0;    
+
+    int externalSignal = 0;
     if(col == SignalColor.RED) {
       Integer val = externalRedstoneSignals.get(dir);
       if(val == null) {
         TileEntity te = getBundle().getEntity();
-        externalSignal = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);        
+        externalSignal = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
         externalRedstoneSignals.put(dir, externalSignal);
       } else {
         externalSignal = val;
