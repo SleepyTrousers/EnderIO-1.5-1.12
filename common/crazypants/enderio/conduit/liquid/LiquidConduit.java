@@ -92,6 +92,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, SignalColor> extractionColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
 
+  private final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
+  private boolean redstoneStateDirty = true;
+
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(player.getCurrentEquippedItem() == null) {
@@ -192,8 +195,15 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
+  public boolean onNeighborBlockChange(int blockId) {
+    redstoneStateDirty = true;
+    return super.onNeighborBlockChange(blockId);
+  }
+
+  @Override
   public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
     extractionModes.put(dir, mode);
+    redstoneStateDirty = true;
   }
 
   @Override
@@ -230,9 +240,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
-      if(isExtractingFromDir(dir) && ConduitUtil.isRedstoneControlModeMet(getBundle(), getExtractioRedstoneMode(dir), getExtractionSignalColor(dir))) {
-        IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
+      if(autoExtractForDir(dir)) {
 
+        IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
         if(extTank != null) {
 
           FluidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
@@ -267,6 +277,43 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       }
     }
 
+  }
+
+  private boolean autoExtractForDir(ForgeDirection dir) {    
+    if(!isExtractingFromDir(dir)) {
+      return false;
+    }
+    RedstoneControlMode mode = getExtractioRedstoneMode(dir);
+    if(mode == RedstoneControlMode.IGNORE) {
+      return true;
+    }
+    if(mode == RedstoneControlMode.NEVER) {
+      return false;
+    }
+    if(redstoneStateDirty) {
+      externalRedstoneSignals.clear();
+      redstoneStateDirty = false;
+    }
+
+    SignalColor col = getExtractionSignalColor(dir);
+    int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
+    if(mode.isConditionMet(mode, signal)) {
+      return true;
+    }
+    
+    int externalSignal = 0;    
+    if(col == SignalColor.RED) {
+      Integer val = externalRedstoneSignals.get(dir);
+      if(val == null) {
+        TileEntity te = getBundle().getEntity();
+        externalSignal = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);        
+        externalRedstoneSignals.put(dir, externalSignal);
+      } else {
+        externalSignal = val;
+      }
+    }
+
+    return mode.isConditionMet(mode, externalSignal);
   }
 
   @Override
