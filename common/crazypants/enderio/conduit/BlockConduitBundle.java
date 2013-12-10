@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
@@ -69,7 +70,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   private Random rand = new Random();
 
   protected BlockConduitBundle() {
-    super(ModObject.blockConduitBundle.id, Material.ground);
+    super(ModObject.blockConduitBundle.id, new Material(MapColor.stoneColor));
     setHardness(0.5F);
     setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
     setStepSound(Block.soundMetalFootstep);
