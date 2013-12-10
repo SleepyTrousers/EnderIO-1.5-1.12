@@ -43,4 +43,6 @@ public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit 
 
   boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
 
+  float getTickTimePerItem();
+
 }
