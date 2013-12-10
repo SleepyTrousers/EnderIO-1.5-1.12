@@ -199,7 +199,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
     private int nextSlot() {
       ++extractFromSlot;
-      if(extractFromSlot >= numSlots - 1 || extractFromSlot < 0) {
+      if(extractFromSlot >= numSlots || extractFromSlot < 0) {
         extractFromSlot = 0;
       }
       return extractFromSlot;
