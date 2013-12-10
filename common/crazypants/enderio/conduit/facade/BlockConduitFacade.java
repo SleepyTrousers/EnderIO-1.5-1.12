@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.facade;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -25,12 +26,11 @@ public class BlockConduitFacade extends Block {
   private Block blockOverride;
 
   private BlockConduitFacade() {
-    super(ModObject.blockConduitFacade.id, Material.grass);
+    super(ModObject.blockConduitFacade.id, new Material(MapColor.stoneColor));
     setHardness(0.5F);
     setStepSound(Block.soundStoneFootstep);
     setUnlocalizedName(ModObject.blockConduitFacade.unlocalisedName);
     setCreativeTab(null);
-
   }
 
   private void init() {

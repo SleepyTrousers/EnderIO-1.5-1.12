@@ -111,7 +111,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private boolean isConnected() {
-    if (channel == null || HyperCubeRegister.instance == null) {
+    if(channel == null || HyperCubeRegister.instance == null) {
       return false;
     }
     List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
@@ -121,7 +121,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   private void balanceCubeNetworkEnergy() {
 
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
-    if (cubes == null || cubes.isEmpty()) {
+    if(cubes == null || cubes.isEmpty()) {
       return;
     }
     float totalEnergy = 0;
@@ -132,7 +132,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     float energyPerNode = totalEnergy / cubes.size();
     float totalToTranfer = 0;
     for (TileHyperCube cube : cubes) {
-      if (cube.powerHandler.getEnergyStored() < energyPerNode) {
+      if(cube.powerHandler.getEnergyStored() < energyPerNode) {
         totalToTranfer += (energyPerNode - cube.powerHandler.getEnergyStored());
       }
     }
@@ -145,7 +145,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (TileHyperCube cube : cubes) {
       boolean wasConnected = cube.isConnected();
       cube.powerHandler.setEnergy(energyPerNode);
-      if (wasConnected != cube.isConnected()) {
+      if(wasConnected != cube.isConnected()) {
         cube.fluidHandlersDirty = true;
       }
     }
@@ -154,9 +154,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public void onChunkUnload() {
-    if (HyperCubeRegister.instance != null) {
+    if(HyperCubeRegister.instance != null) {
       HyperCubeRegister.instance.deregister(this);
     }
+    fluidHandlersDirty = true;
+    receptorsDirty = true;
   }
 
   public void onNeighborBlockChange() {
@@ -166,10 +168,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public void updateEntity() {
-    if (worldObj == null) { // sanity check
+    if(worldObj == null) { // sanity check
       return;
     }
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       return;
     } // else is server, do all logic only on the server
 
@@ -197,7 +199,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     powerInputEnabled = RedstoneControlMode.isConditionMet(inputControlMode, this);
     powerOutputEnabled = RedstoneControlMode.isConditionMet(outputControlMode, this);
 
-    if (powerOutputEnabled) {
+    if(powerOutputEnabled) {
       transmitEnergy();
     }
 
@@ -206,13 +208,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     // check we are still connected (i.e. we haven't run out of power or started
     // receiving power)
     boolean stillConnected = isConnected();
-    if (wasConnected != stillConnected) {
+    if(wasConnected != stillConnected) {
       fluidHandlersDirty = true;
     }
     updateFluidHandlers();
 
-    if (registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {
-      if (registeredChannel != null) {
+    if(registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {
+      if(registeredChannel != null) {
         HyperCubeRegister.instance.deregister(this, registeredChannel);
       }
       HyperCubeRegister.instance.register(this);
@@ -225,7 +227,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     // Update if our power has changed by more than 0.5%
     requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
 
-    if (requiresClientSync) {
+    if(requiresClientSync) {
       lastSyncPowerStored = storedEnergy;
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
@@ -239,7 +241,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private boolean transmitEnergy() {
 
-    if (powerHandler.getEnergyStored() <= 0) {
+    if(powerHandler.getEnergyStored() <= 0) {
       return false;
     }
     float canTransmit = Math.min(powerHandler.getEnergyStored(), internalCapacitor.getMaxEnergyExtracted());
@@ -247,7 +249,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
     checkReceptors();
 
-    if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
+    if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
     }
 
@@ -256,16 +258,16 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
       Receptor receptor = receptorIterator.next();
       PowerInterface pp = receptor.receptor;
-      if (pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
+      if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
         canTransmit -= used;
       }
-      if (canTransmit <= 0) {
+      if(canTransmit <= 0) {
         break;
       }
 
-      if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
+      if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = receptors.listIterator();
       }
       appliedCount++;
@@ -288,7 +290,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public PowerHandler getPowerHandler() {
-    if (powerInputEnabled) {
+    if(powerInputEnabled) {
       return powerHandler;
     }
     return getDisabledPowerHandler();
@@ -299,7 +301,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private PowerHandler getDisabledPowerHandler() {
-    if (disabledPowerHandler == null) {
+    if(disabledPowerHandler == null) {
       disabledPowerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.STORAGE);
     }
     return disabledPowerHandler;
@@ -344,7 +346,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private void checkReceptors() {
-    if (!receptorsDirty) {
+    if(!receptorsDirty) {
       return;
     }
     receptors.clear();
@@ -354,7 +356,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       PowerInterface pi = PowerInterface.create(te);
       if(pi != null) {
-        receptors.add(new Receptor(pi, dir));      
+        receptors.add(new Receptor(pi, dir));
       }
     }
 
@@ -364,19 +366,19 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if (!powerInputEnabled) {
+    if(!powerInputEnabled) {
       return 0;
     }
     FluidStack in = resource.copy();
     int result = 0;
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if (h.node.powerOutputEnabled && h.handler.canFill(h.dirOp, in.getFluid())) {
+      if(h.node.powerOutputEnabled && h.handler.canFill(h.dirOp, in.getFluid())) {
         int filled = h.handler.fill(h.dirOp, in, doFill);
         in.amount -= filled;
         result += filled;
       }
     }
-    if (doFill) {
+    if(doFill) {
       milliBucketsTransfered += result;
     }
     return result;
@@ -384,25 +386,25 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if (!powerOutputEnabled || resource == null) {
+    if(!powerOutputEnabled || resource == null) {
       return null;
     }
 
     FluidStack in = resource.copy();
     FluidStack result = null;
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if (h.node.powerInputEnabled && h.handler.canDrain(h.dirOp, in.getFluid())) {
+      if(h.node.powerInputEnabled && h.handler.canDrain(h.dirOp, in.getFluid())) {
         FluidStack res = h.handler.drain(h.dirOp, in, false);
-        if (res != null) {
-          if (result == null) {
+        if(res != null) {
+          if(result == null) {
             result = res.copy();
-            if (doDrain) {
+            if(doDrain) {
               h.handler.drain(h.dirOp, in, true);
             }
 
-          } else if (result.isFluidEqual(res)) {
+          } else if(result.isFluidEqual(res)) {
             result.amount += res.amount;
-            if (doDrain) {
+            if(doDrain) {
               h.handler.drain(h.dirOp, in, true);
             }
             in.amount -= res.amount;
@@ -415,24 +417,24 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrainIn, boolean doDrain) {
-    if (!powerOutputEnabled) {
+    if(!powerOutputEnabled) {
       return null;
     }
     int maxDrain = maxDrainIn;
     FluidStack result = null;
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if (h.node.powerInputEnabled) {
+      if(h.node.powerInputEnabled) {
         FluidStack res = h.handler.drain(h.dirOp, maxDrain, false);
-        if (res != null) {
-          if (result == null) {
+        if(res != null) {
+          if(result == null) {
             result = res.copy();
-            if (doDrain) {
+            if(doDrain) {
               h.handler.drain(h.dirOp, maxDrain, true);
             }
             maxDrain -= res.amount;
-          } else if (result.isFluidEqual(res)) {
+          } else if(result.isFluidEqual(res)) {
             result.amount += res.amount;
-            if (doDrain) {
+            if(doDrain) {
               h.handler.drain(h.dirOp, maxDrain, true);
             }
             maxDrain -= res.amount;
@@ -445,12 +447,12 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if (!powerInputEnabled) {
+    if(!powerInputEnabled) {
       return false;
     }
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if (h.node.powerOutputEnabled) {
-        if (h.handler.canFill(h.dirOp, fluid)) {
+      if(h.node.powerOutputEnabled) {
+        if(h.handler.canFill(h.dirOp, fluid)) {
           return true;
         }
       }
@@ -460,12 +462,12 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if (!powerOutputEnabled) {
+    if(!powerOutputEnabled) {
       return false;
     }
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if (h.node.powerInputEnabled) {
-        if (h.handler.canDrain(h.dirOp, fluid)) {
+      if(h.node.powerInputEnabled) {
+        if(h.handler.canDrain(h.dirOp, fluid)) {
           return true;
         }
       }
@@ -478,9 +480,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     List<FluidTankInfo> res = new ArrayList<FluidTankInfo>();
     for (NetworkFluidHandler h : getNetworkHandlers()) {
       FluidTankInfo[] ti = h.handler.getTankInfo(h.dirOp);
-      if (ti != null) {
+      if(ti != null) {
         for (FluidTankInfo t : ti) {
-          if (t != null) {
+          if(t != null) {
             res.add(t);
           }
         }
@@ -490,18 +492,18 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private List<NetworkFluidHandler> getNetworkHandlers() {
-    if (HyperCubeRegister.instance == null) {
+    if(HyperCubeRegister.instance == null) {
       return Collections.emptyList();
     }
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
-    if (cubes == null || cubes.isEmpty()) {
+    if(cubes == null || cubes.isEmpty()) {
       return Collections.emptyList();
     }
     List<NetworkFluidHandler> result = new ArrayList<NetworkFluidHandler>();
     for (TileHyperCube cube : cubes) {
-      if (cube != this && cube != null) {
+      if(cube != this && cube != null) {
         List<NetworkFluidHandler> handlers = cube.fluidHandlers;
-        if (handlers != null && !handlers.isEmpty()) {
+        if(handlers != null && !handlers.isEmpty()) {
           result.addAll(handlers);
         }
       }
@@ -511,22 +513,22 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private void updateFluidHandlers() {
-    if (!fluidHandlersDirty) {
+    if(!fluidHandlersDirty) {
       return;
     }
     fluidHandlers.clear();
-    if (isConnected()) {
+    if(isConnected()) {
       BlockCoord myLoc = new BlockCoord(this);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord checkLoc = myLoc.getLocation(dir);
         TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-        if (te instanceof IFluidHandler) {
+        if(te instanceof IFluidHandler) {
           IFluidHandler fh = (IFluidHandler) te;
           fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
         }
       }
+      fluidHandlersDirty = false;
     }
-    fluidHandlersDirty = false;
   }
 
   @Override
@@ -538,7 +540,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
-    if (channelName != null && !channelName.isEmpty()) {
+    if(channelName != null && !channelName.isEmpty()) {
       channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
     } else {
       channel = null;
@@ -553,13 +555,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
     nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
     nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
-    if (channel != null) {
+    if(channel != null) {
       nbtRoot.setString("channelName", channel.name);
-      if (channel.user != null) {
+      if(channel.user != null) {
         nbtRoot.setString("channelUser", channel.user);
       }
     }
-    if (owner != null && !(owner.isEmpty())) {
+    if(owner != null && !(owner.isEmpty())) {
       nbtRoot.setString("owner", owner);
     }
   }
