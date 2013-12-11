@@ -2,6 +2,7 @@ package crazypants.enderio.machine.hypercube;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -19,7 +20,6 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -35,13 +35,56 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private static final float MILLIBUCKET_TRANSMISSION_COST = (float) Config.transceiverBucketTransmissionCost / 1000F;
 
-  private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
+  public static enum IoMode {
 
-  private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
+    SEND("Send"),
+    RECIEVE("Recieve"),
+    BOTH("Send & Recieve"),
+    NEITHER("Disabled");
 
-  private boolean powerOutputEnabled = true;
+    public static IoMode next(IoMode mode) {
+      int index = mode.ordinal() + 1;
+      if(index >= values().length) {
+        index = 0;
+      }
+      return values()[index];
+    }
 
-  private boolean powerInputEnabled = true;
+    public static boolean isRecieveEnabled(IoMode mode) {
+      return mode == RECIEVE || mode == BOTH;
+    }
+
+    public static boolean isSendEnabled(IoMode mode) {
+      return mode == SEND || mode == BOTH;
+    }
+
+    private final String unlocalisedName;
+
+    private IoMode(String unlocalisedName) {
+      this.unlocalisedName = unlocalisedName;
+    }
+
+    public boolean isRecieveEnabled() {
+      return isRecieveEnabled(this);
+    }
+
+    public boolean isSendEnabled() {
+      return isSendEnabled(this);
+    }
+
+    public IoMode next() {
+      return next(this);
+    }
+
+    public String getUnlocalisedName() {
+      return unlocalisedName;
+    }
+  }
+
+  public static enum SubChannel {
+    POWER,
+    FLUID
+  }
 
   private final BasicCapacitor internalCapacitor = new BasicCapacitor(Config.transceiverMaxIO, 25000);
 
@@ -66,24 +109,22 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private float milliBucketsTransfered = 0;
 
+  private EnumMap<SubChannel, IoMode> ioModes = new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(SubChannel.class);
+
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
   }
 
-  public RedstoneControlMode getInputControlMode() {
-    return inputControlMode;
+  public IoMode getModeForChannel(SubChannel channel) {
+    IoMode mode = ioModes.get(channel);
+    if(mode == null) {
+      return IoMode.NEITHER;
+    }
+    return mode;
   }
 
-  public void setInputControlMode(RedstoneControlMode powerInputControlMode) {
-    this.inputControlMode = powerInputControlMode;
-  }
-
-  public RedstoneControlMode getOutputControlMode() {
-    return outputControlMode;
-  }
-
-  public void setOutputControlMode(RedstoneControlMode powerOutputControlMode) {
-    this.outputControlMode = powerOutputControlMode;
+  public void setModeForChannel(SubChannel channel, IoMode mode) {
+    ioModes.put(channel, mode);
   }
 
   public Channel getChannel() {
@@ -196,12 +237,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
     milliBucketsTransfered = 0;
 
-    powerInputEnabled = RedstoneControlMode.isConditionMet(inputControlMode, this);
-    powerOutputEnabled = RedstoneControlMode.isConditionMet(outputControlMode, this);
-
-    if(powerOutputEnabled) {
-      transmitEnergy();
-    }
+    transmitEnergy();
 
     balanceCubeNetworkEnergy();
 
@@ -240,6 +276,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private boolean transmitEnergy() {
+
+    if(!getModeForChannel(SubChannel.POWER).isRecieveEnabled()) {
+      return false;
+    }
 
     if(powerHandler.getEnergyStored() <= 0) {
       return false;
@@ -290,7 +330,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public PowerHandler getPowerHandler() {
-    if(powerInputEnabled) {
+    if(getModeForChannel(SubChannel.POWER).isSendEnabled()) {
       return powerHandler;
     }
     return getDisabledPowerHandler();
@@ -311,7 +351,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    if(powerInputEnabled) {
+    if(getModeForChannel(SubChannel.POWER).isSendEnabled()) {
       return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
     }
     return 0;
@@ -366,13 +406,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(!powerInputEnabled) {
+    if(!canSendFluid()) {
       return 0;
     }
     FluidStack in = resource.copy();
     int result = 0;
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if(h.node.powerOutputEnabled && h.handler.canFill(h.dirOp, in.getFluid())) {
+      if(h.node.canRecieveFluid() && h.handler.canFill(h.dirOp, in.getFluid())) {
         int filled = h.handler.fill(h.dirOp, in, doFill);
         in.amount -= filled;
         result += filled;
@@ -384,16 +424,32 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     return result;
   }
 
+  private boolean canSendFluid() {
+    return getModeForChannel(SubChannel.FLUID).isSendEnabled();
+  }
+
+  private boolean canSendPower() {
+    return getModeForChannel(SubChannel.POWER).isSendEnabled();
+  }
+
+  private boolean canRecieveFluid() {
+    return getModeForChannel(SubChannel.FLUID).isRecieveEnabled();
+  }
+
+  private boolean canRecievePower() {
+    return getModeForChannel(SubChannel.POWER).isRecieveEnabled();
+  }
+
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(!powerOutputEnabled || resource == null) {
+    if(!canRecieveFluid() || resource == null) {
       return null;
     }
 
     FluidStack in = resource.copy();
     FluidStack result = null;
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if(h.node.powerInputEnabled && h.handler.canDrain(h.dirOp, in.getFluid())) {
+      if(h.node.canSendFluid() && h.handler.canDrain(h.dirOp, in.getFluid())) {
         FluidStack res = h.handler.drain(h.dirOp, in, false);
         if(res != null) {
           if(result == null) {
@@ -417,13 +473,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrainIn, boolean doDrain) {
-    if(!powerOutputEnabled) {
+    if(!canRecieveFluid()) {
       return null;
     }
     int maxDrain = maxDrainIn;
     FluidStack result = null;
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if(h.node.powerInputEnabled) {
+      if(h.node.canSendFluid()) {
         FluidStack res = h.handler.drain(h.dirOp, maxDrain, false);
         if(res != null) {
           if(result == null) {
@@ -447,11 +503,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(!powerInputEnabled) {
+    if(!canSendFluid()) {
       return false;
     }
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if(h.node.powerOutputEnabled) {
+      if(h.node.canRecieveFluid()) {
         if(h.handler.canFill(h.dirOp, fluid)) {
           return true;
         }
@@ -462,11 +518,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(!powerOutputEnabled) {
+    if(!canRecieveFluid()) {
       return false;
     }
     for (NetworkFluidHandler h : getNetworkHandlers()) {
-      if(h.node.powerInputEnabled) {
+      if(h.node.canSendFluid()) {
         if(h.handler.canDrain(h.dirOp, fluid)) {
           return true;
         }
@@ -535,9 +591,6 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
-    inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
-    outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
-
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
@@ -547,14 +600,19 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
 
     owner = nbtRoot.getString("owner");
+
+    for (SubChannel subChannel : SubChannel.values()) {
+      String key = "subChannel" + subChannel.ordinal();
+      if(nbtRoot.hasKey(key)) {
+        setModeForChannel(subChannel, IoMode.values()[nbtRoot.getShort(key)]);
+      }
+    }
   }
 
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
-    nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
-    nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
     if(channel != null) {
       nbtRoot.setString("channelName", channel.name);
       if(channel.user != null) {
@@ -563,6 +621,11 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
     if(owner != null && !(owner.isEmpty())) {
       nbtRoot.setString("owner", owner);
+    }
+
+    for (SubChannel subChannel : SubChannel.values()) {
+      IoMode mode = getModeForChannel(subChannel);
+      nbtRoot.setShort("subChannel" + subChannel.ordinal(), (short) mode.ordinal());
     }
   }
 

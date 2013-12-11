@@ -46,11 +46,11 @@ public class PacketHandler implements IPacketHandler {
 
   public static final int ID_ALLOY_SMELTING_MODE_PACKET = 6;
 
-  public static final int ID_HYPER_CUBE_REDSTONE_PACKET = 7;
-  public static final int ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST = 8;
-  public static final int ID_HYPER_CUBE_ADD_REMOVE_CHANNEL = 9;
-  public static final int ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST = 10;
-  public static final int ID_HYPER_CUBE_CHANNEL_SELECTED = 11;
+  public static final int ID_TRANSCEIVER_IO_MODE = 7;
+  public static final int ID_TRANSCEIVER_PUBLIC_CHANNEL_LIST = 8;
+  public static final int ID_TRANSCEIVER_ADD_REMOVE_CHANNEL = 9;
+  public static final int ID_TRANSCEIVER_PRIVATE_CHANNEL_LIST = 10;
+  public static final int ID_TRANSCEIVER_CHANNEL_SELECTED = 11;
 
   public static final int ID_MJ_READER_INFO_REQUEST = 12;
   public static final int ID_POWER_MONITOR_PACKET = 13;

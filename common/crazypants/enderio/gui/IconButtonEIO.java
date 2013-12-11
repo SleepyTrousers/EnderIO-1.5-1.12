@@ -26,6 +26,8 @@ public class IconButtonEIO extends GuiButton {
   protected IGuiScreen gui;
 
   protected GuiToolTip toolTip;
+  private int marginY = 0;
+  private int marginX = 0;
 
   public IconButtonEIO(IGuiScreen gui, int id, int x, int y, IconEIO icon) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
@@ -66,6 +68,11 @@ public class IconButtonEIO extends GuiButton {
     if(toolTip != null) {
       toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
     }
+  }
+
+  public void setIconMargin(int x, int y) {
+    marginX = x;
+    marginY = y;
   }
 
   public int getWidth() {
@@ -115,7 +122,7 @@ public class IconButtonEIO extends GuiButton {
 
       background.renderIcon(x, y, width, height, 0, false);
       if(icon != null) {
-        icon.renderIcon(x, y, width, height, 0, false);
+        icon.renderIcon(x + marginX, y + marginY, width - (2 * marginX), height - (2 * marginY), 0, false);
       }
 
       tes.draw();
