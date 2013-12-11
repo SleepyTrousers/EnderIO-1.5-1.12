@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.hypercube;
 
-import static crazypants.enderio.machine.GuiMachineBase.BUTTON_SIZE;
-
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.List;
@@ -18,13 +16,11 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
+import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.GuiToolTip;
-import crazypants.gui.IconButton;
 import crazypants.gui.ListSelectionListener;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -42,6 +38,9 @@ public class GuiHyperCube extends GuiScreenBase {
   protected static final int DELETE_PRIVATE_BUTTON_ID = 7;
   protected static final int DELETE_PUBLIC_BUTTON_ID = 8;
 
+  protected static final int POWER_MODE_BUTTON_ID = 9;
+  protected static final int FLUID_MODE_BUTTON_ID = 10;
+
   private static final int POWER_X = 227;
   private static final int POWER_Y = 46;
   private static final int POWER_WIDTH = 10;
@@ -49,9 +48,6 @@ public class GuiHyperCube extends GuiScreenBase {
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
   private final TileHyperCube cube;
-
-  private IconButton powerInputRedstoneButton;
-  private IconButton powerOutputRedstoneButton;
 
   private IconButtonEIO addButton;
   private ToggleButtonEIO privateButton;
@@ -68,6 +64,12 @@ public class GuiHyperCube extends GuiScreenBase {
   private IconButtonEIO selectPrivateB;
   private IconButtonEIO deletePrivateB;
 
+  private IconButtonEIO powerB;
+  private IconButtonEIO fluidB;
+
+  //  private IconEIO inputIcon;  
+  //  private IconEIO outputIcon;
+
   public GuiHyperCube(TileHyperCube te) {
     super(245, 145);
     this.cube = te;
@@ -78,27 +80,6 @@ public class GuiHyperCube extends GuiScreenBase {
       protected void updateText() {
         text.clear();
         text.add(BlockHyperCube.NF.format(Math.round(cube.powerHandler.getEnergyStored())) + " MJ");
-      }
-
-    });
-
-    addToolTip(new GuiToolTip(new Rectangle(198, 12, BUTTON_SIZE, BUTTON_SIZE), "") {
-
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add("Input Redstone Mode");
-        text.add(cube.getInputControlMode().tooltip);
-      }
-
-    });
-    addToolTip(new GuiToolTip(new Rectangle(219, 12, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE), "") {
-
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add("Output Redstone Mode");
-        text.add(cube.getOutputControlMode().tooltip);
       }
 
     });
@@ -120,6 +101,14 @@ public class GuiHyperCube extends GuiScreenBase {
     deletePrivateB.setToolTip("Delete Channel");
     selectPrivateB = new IconButtonEIO(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
     selectPrivateB.setToolTip("Activate Channel");
+
+    powerB = new IconButtonEIO(this, POWER_MODE_BUTTON_ID, 203, 12, IconEIO.WRENCH_OVERLAY_POWER);
+    powerB.setIconMargin(3, 3);
+
+    fluidB = new IconButtonEIO(this, FLUID_MODE_BUTTON_ID, 222, 12, IconEIO.WRENCH_OVERLAY_FLUID);
+    fluidB.setIconMargin(3, 3);
+
+    updateIoButtons();
 
     int w = 104;
     int h = 68;
@@ -158,6 +147,24 @@ public class GuiHyperCube extends GuiScreenBase {
 
   }
 
+  private void updateIoButtons() {
+    IoMode mode = cube.getModeForChannel(SubChannel.POWER);
+    if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
+      powerB.setIcon(IconEIO.WRENCH_OVERLAY_POWER);
+    } else {
+      powerB.setIcon(IconEIO.WRENCH_OVERLAY_POWER_OFF);
+    }
+    powerB.setToolTip("Power Mode", mode.getUnlocalisedName());
+
+    mode = cube.getModeForChannel(SubChannel.FLUID);
+    if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
+      fluidB.setIcon(IconEIO.WRENCH_OVERLAY_FLUID);
+    } else {
+      fluidB.setIcon(IconEIO.WRENCH_OVERLAY_FLUID_OFF);
+    }
+    fluidB.setToolTip("Fluid Mode", mode.getUnlocalisedName());
+  }
+
   private boolean isPublic(Channel chan) {
     if(chan == null) {
       return false;
@@ -181,19 +188,6 @@ public class GuiHyperCube extends GuiScreenBase {
     int x = guiLeft + 203;
     int y = guiTop + 12;
 
-    powerInputRedstoneButton = new IconButton(fontRenderer, POWER_INPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(cube
-        .getInputControlMode()),
-        RenderUtil.BLOCK_TEX);
-    powerInputRedstoneButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    buttonList.add(powerInputRedstoneButton);
-
-    x = x + 5 + BUTTON_SIZE;
-    powerOutputRedstoneButton = new IconButton(fontRenderer, POWER_OUTPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(cube
-        .getOutputControlMode()),
-        RenderUtil.BLOCK_TEX);
-    powerOutputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
-    buttonList.add(powerOutputRedstoneButton);
-
     y = guiTop + 12;
     x = guiLeft + 8;
     newChannelTF = new GuiTextField(fontRenderer, x, y, 103, 16);
@@ -208,6 +202,9 @@ public class GuiHyperCube extends GuiScreenBase {
     deletePrivateB.onGuiInit();
     deletePublicB.onGuiInit();
 
+    powerB.onGuiInit();
+    fluidB.onGuiInit();
+
     publicChannelList.onGuiInit(this);
     privateChannelList.onGuiInit(this);
 
@@ -215,26 +212,29 @@ public class GuiHyperCube extends GuiScreenBase {
 
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
-    if(par1GuiButton.id == POWER_INPUT_BUTTON_ID) {
-      int ordinal = cube.getInputControlMode().ordinal();
-      ordinal++;
-      if(ordinal >= RedstoneControlMode.values().length) {
-        ordinal = 0;
-      }
-      cube.setInputControlMode(RedstoneControlMode.values()[ordinal]);
-      powerInputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getInputControlMode()));
-      Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
+
+    if(par1GuiButton.id == FLUID_MODE_BUTTON_ID) {
+
+      IoMode curMode = cube.getModeForChannel(SubChannel.FLUID);
+      IoMode nextMode = curMode.next();
+      cube.setModeForChannel(SubChannel.FLUID, nextMode);
+
+      updateIoButtons();
+
+      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
-    } else if(par1GuiButton.id == POWER_OUTPUT_BUTTON_ID) {
-      int ordinal = cube.getOutputControlMode().ordinal();
-      ordinal++;
-      if(ordinal >= RedstoneControlMode.values().length) {
-        ordinal = 0;
-      }
-      cube.setOutputControlMode(RedstoneControlMode.values()[ordinal]);
-      powerOutputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(cube.getOutputControlMode()));
-      Packet pkt = HyperCubePacketHandler.createRedstoneControlPacket(cube);
+
+    } else if(par1GuiButton.id == POWER_MODE_BUTTON_ID) {
+
+      IoMode curMode = cube.getModeForChannel(SubChannel.POWER);
+      IoMode nextMode = curMode.next();
+      cube.setModeForChannel(SubChannel.POWER, nextMode);
+
+      updateIoButtons();
+
+      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
       PacketDispatcher.sendPacketToServer(pkt);
+
     } else if(par1GuiButton.id == ADD_BUTTON_ID) {
 
       Channel c;
@@ -246,6 +246,8 @@ public class GuiHyperCube extends GuiScreenBase {
       ClientChannelRegister.instance.addChannel(c);
       Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, true);
       PacketDispatcher.sendPacketToServer(pkt);
+
+      setActiveChannel(c);
 
       if(privateButton.isSelected()) {
         privateChannelList.setSelection(c);
@@ -341,6 +343,22 @@ public class GuiHyperCube extends GuiScreenBase {
 
     x += 109;
     drawString(fontRenderer, "Private", x, y, rgb);
+
+    IoMode fluidMode = cube.getModeForChannel(SubChannel.FLUID);
+    IoMode powerMode = cube.getModeForChannel(SubChannel.POWER);
+    if(fluidMode.isRecieveEnabled()) {
+      IconEIO.INPUT.renderIcon(guiLeft + 222 + 15, guiTop + 4 + 7, -15, -7, 0, true);
+    }
+    if(powerMode.isRecieveEnabled()) {
+      IconEIO.INPUT.renderIcon(guiLeft + 203 + 15, guiTop + 4 + 7, -15, -7, 0, true);
+    }
+
+    if(fluidMode.isSendEnabled()) {
+      IconEIO.OUTPUT.renderIcon(guiLeft + 223, guiTop + 29, 15, 7, 0, true);
+    }
+    if(powerMode.isSendEnabled()) {
+      IconEIO.OUTPUT.renderIcon(guiLeft + 204, guiTop + 29, 15, 7, 0, true);
+    }
 
   }
 

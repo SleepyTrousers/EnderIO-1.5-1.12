@@ -26,28 +26,29 @@ import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
+import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 
 public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHandler {
 
   @Override
   public boolean canProcessPacket(int packetID) {
-    return PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET == packetID || PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST == packetID
-        || PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL == packetID || PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST == packetID
-        || PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED == packetID;
+    return PacketHandler.ID_TRANSCEIVER_IO_MODE == packetID || PacketHandler.ID_TRANSCEIVER_PUBLIC_CHANNEL_LIST == packetID
+        || PacketHandler.ID_TRANSCEIVER_ADD_REMOVE_CHANNEL == packetID || PacketHandler.ID_TRANSCEIVER_PRIVATE_CHANNEL_LIST == packetID
+        || PacketHandler.ID_TRANSCEIVER_CHANNEL_SELECTED == packetID;
   }
 
   @Override
   public void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException {
-    if(packetID == PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET) {
-      handleHyperCubeRedstoneControlPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST) {
+    if(packetID == PacketHandler.ID_TRANSCEIVER_IO_MODE) {
+      handleIoModePacket(data, manager, player);
+    } else if(packetID == PacketHandler.ID_TRANSCEIVER_PUBLIC_CHANNEL_LIST) {
       handlePublicChannelListPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL) {
+    } else if(packetID == PacketHandler.ID_TRANSCEIVER_ADD_REMOVE_CHANNEL) {
       handleAddRemoveChannelPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST) {
+    } else if(packetID == PacketHandler.ID_TRANSCEIVER_PRIVATE_CHANNEL_LIST) {
       handlePrivateChannelPacket(data, manager, player);
-    } else if(packetID == PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED) {
+    } else if(packetID == PacketHandler.ID_TRANSCEIVER_CHANNEL_SELECTED) {
       handleChannelSelectedPacket(data, manager, player);
     }
   }
@@ -56,7 +57,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
     try {
-      dos.writeInt(PacketHandler.ID_HYPER_CUBE_CHANNEL_SELECTED);
+      dos.writeInt(PacketHandler.ID_TRANSCEIVER_CHANNEL_SELECTED);
       dos.writeInt(cube.xCoord);
       dos.writeInt(cube.yCoord);
       dos.writeInt(cube.zCoord);
@@ -122,7 +123,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
     try {
-      dos.writeInt(PacketHandler.ID_HYPER_CUBE_PRIVATE_CHANNEL_LIST);
+      dos.writeInt(PacketHandler.ID_TRANSCEIVER_PRIVATE_CHANNEL_LIST);
       dos.writeUTF(username);
       dos.writeInt(channels.size());
       for (Channel channel : channels) {
@@ -156,7 +157,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
     try {
-      dos.writeInt(PacketHandler.ID_HYPER_CUBE_ADD_REMOVE_CHANNEL);
+      dos.writeInt(PacketHandler.ID_TRANSCEIVER_ADD_REMOVE_CHANNEL);
       dos.writeBoolean(isAdd);
       dos.writeBoolean(channel.isPublic());
       dos.writeUTF(channel.name);
@@ -206,7 +207,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     DataOutputStream dos = new DataOutputStream(bos);
     List<Channel> channels = HyperCubeRegister.instance.getPublicChannels();
     try {
-      dos.writeInt(PacketHandler.ID_HYPER_CUBE_PUBLIC_CHANNEL_LIST);
+      dos.writeInt(PacketHandler.ID_TRANSCEIVER_PUBLIC_CHANNEL_LIST);
       dos.writeInt(channels.size());
       for (Channel channel : channels) {
         dos.writeUTF(channel.name);
@@ -232,16 +233,16 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     ClientChannelRegister.instance.setPublicChannels(channels);
   }
 
-  public static Packet createRedstoneControlPacket(TileHyperCube te) {
+  public static Packet createIoModePacket(TileHyperCube te) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
     DataOutputStream dos = new DataOutputStream(bos);
     try {
-      dos.writeInt(PacketHandler.ID_HYPER_CUBE_REDSTONE_PACKET);
+      dos.writeInt(PacketHandler.ID_TRANSCEIVER_IO_MODE);
       dos.writeInt(te.xCoord);
       dos.writeInt(te.yCoord);
       dos.writeInt(te.zCoord);
-      dos.writeShort((short) te.getInputControlMode().ordinal());
-      dos.writeShort((short) te.getOutputControlMode().ordinal());
+      dos.writeShort((short) te.getModeForChannel(SubChannel.POWER).ordinal());
+      dos.writeShort((short) te.getModeForChannel(SubChannel.FLUID).ordinal());
     } catch (IOException e) {
       // never thrown
     }
@@ -254,18 +255,18 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     return pkt;
   }
 
-  private void handleHyperCubeRedstoneControlPacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
+  private void handleIoModePacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    short powerInputOrdinal = data.readShort();
-    short powerOutputOrdinal = data.readShort();
+    short powerModeOrdinal = data.readShort();
+    short fluidModeOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
-      cb.setInputControlMode(RedstoneControlMode.values()[powerInputOrdinal]);
-      cb.setOutputControlMode(RedstoneControlMode.values()[powerOutputOrdinal]);
+      cb.setModeForChannel(SubChannel.POWER, IoMode.values()[powerModeOrdinal]);
+      cb.setModeForChannel(SubChannel.FLUID, IoMode.values()[fluidModeOrdinal]);
       p.worldObj.markBlockForUpdate(x, y, z);
     }
 

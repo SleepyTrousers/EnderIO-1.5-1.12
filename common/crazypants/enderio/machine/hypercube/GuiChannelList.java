@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import crazypants.gui.GuiScrollableList;
 import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 
@@ -78,11 +77,10 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
     }
     int col = ColorUtil.getRGB(Color.white);
     if(c.equals(activeChannel)) {
-      col = ColorUtil.getRGB(Color.cyan);
       if(isActiveChannelListed()) {
-        RenderUtil.renderQuad2D(xPosition - 1, yPosition, 0, width, rowHeight + 2, ColorUtil.getRGB(Color.darkGray));
+        col = ColorUtil.getRGB(Color.cyan);
       } else {
-        RenderUtil.renderQuad2D(xPosition - 1, yPosition, 0, width, rowHeight + 2, ColorUtil.getRGB(Color.red.darker()));
+        col = ColorUtil.getRGB(Color.red);
       }
     }
     parent.drawString(parent.getFontRenderer(), c.name, xPosition + margin, yPosition + margin / 2, col);
