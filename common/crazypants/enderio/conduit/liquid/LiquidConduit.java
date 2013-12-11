@@ -95,6 +95,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   private boolean redstoneStateDirty = true;
 
+  private long ticksSinceFailedExtract = 0;
+
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(player.getCurrentEquippedItem() == null) {
@@ -236,8 +238,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       return;
     }
 
-    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
+    // assume failure, reset to 0 if we do extract
+    ticksSinceFailedExtract++;
+    if(ticksSinceFailedExtract > 9 && ticksSinceFailedExtract % 10 != 0) {
+      // after 10 ticks of failing, only check every 10 ticks
+      return;
+    }
 
+    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
       if(autoExtractForDir(dir)) {
@@ -250,6 +258,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
             extTank.drain(dir.getOpposite(), used, true);
             if(used > 0 && network != null && network.getFluidType() == null) {
               network.setFluidType(couldDrain);
+            }
+            if(used > 0) {
+              ticksSinceFailedExtract = 0;
             }
           }
         }
