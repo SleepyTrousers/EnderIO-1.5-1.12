@@ -132,6 +132,9 @@ public class PowerInterface {
       if(bcPower instanceof IInternalPowerReceptor) {
         return PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) bcPower, bcPower.getPowerReceiver(opposite), canOffer, Type.PIPE, opposite);
       }
+      if(bcPower instanceof IPowerEmitter) {
+        return 0;
+      }
       PowerReceiver pr = bcPower.getPowerReceiver(opposite);
       if(pr == null) {
         return 0;
