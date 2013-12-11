@@ -34,14 +34,15 @@ public class PaintedItemRenderer implements IItemRenderer {
 
   public void renderEquipped(ItemStack item, RenderBlocks renderBlocks) {
     Block block = PainterUtil.getSourceBlock(item);
+
     if(block != null) {
-      renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, item.getItemDamage()));
+      int meta = PainterUtil.getSourceBlockMetadata(item);
+      renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, meta));
     }
 
     GL11.glPushMatrix();
     GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-    renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID],
-        item.getItemDamage(), 1.0f);
+    renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID], item.getItemDamage(), 1.0f);
     GL11.glPopMatrix();
     renderBlocks.clearOverrideBlockTexture();
   }
@@ -49,7 +50,8 @@ public class PaintedItemRenderer implements IItemRenderer {
   public void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
     Block block = PainterUtil.getSourceBlock(item);
     if(block != null) {
-      renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, item.getItemDamage()));
+      int meta = PainterUtil.getSourceBlockMetadata(item);
+      renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, meta));
     }
     renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID], item.getItemDamage(), 1.0f);
     renderBlocks.clearOverrideBlockTexture();

@@ -70,7 +70,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   }
 
   public static ItemStack createItemStackForSourceBlock(int id, int damage) {
-    ItemStack result = new ItemStack(ModObject.blockCustomSlab.id, 1, damage);
+    ItemStack result = new ItemStack(ModObject.blockCustomSlab.id, 1, 0);
     PainterUtil.setSourceBlock(result, id, damage);
     return result;
   }
