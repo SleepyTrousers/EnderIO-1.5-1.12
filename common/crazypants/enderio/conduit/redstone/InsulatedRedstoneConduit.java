@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -23,6 +24,7 @@ import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.power.IPowerEmitter;
+import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Log;
@@ -299,7 +301,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       }
     }
 
-    if(world.getBlockTileEntity(loc.x, loc.y, loc.z) instanceof IPowerEmitter) {
+    TileEntity te = world.getBlockTileEntity(loc.x, loc.y, loc.z);
+    if(te instanceof IPowerEmitter || te instanceof IRedstoneControl) {
       return true;
     }
 
