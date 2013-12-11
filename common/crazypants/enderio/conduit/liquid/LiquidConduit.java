@@ -95,6 +95,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   private boolean redstoneStateDirty = true;
 
+  private long ticksSinceFailedExtract = 0;
+
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(player.getCurrentEquippedItem() == null) {
@@ -236,8 +238,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       return;
     }
 
-    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
+    // assume failure, reset to 0 if we do extract
+    ticksSinceFailedExtract++;
+    if(ticksSinceFailedExtract > 9 && ticksSinceFailedExtract % 10 != 0) {
+      // after 10 ticks of failing, only check every 10 ticks
+      return;
+    }
 
+    Fluid f = tank.getFluid() == null ? null : tank.getFluid().getFluid();
     int token = network == null ? -1 : network.getNextPushToken();
     for (ForgeDirection dir : externalConnections) {
       if(autoExtractForDir(dir)) {
@@ -251,6 +259,9 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
             if(used > 0 && network != null && network.getFluidType() == null) {
               network.setFluidType(couldDrain);
             }
+            if(used > 0) {
+              ticksSinceFailedExtract = 0;
+            }
           }
         }
       }
@@ -258,7 +269,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   }
 
-  private boolean autoExtractForDir(ForgeDirection dir) {    
+  private boolean autoExtractForDir(ForgeDirection dir) {
     if(!isExtractingFromDir(dir)) {
       return false;
     }
@@ -279,13 +290,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     if(mode.isConditionMet(mode, signal)) {
       return true;
     }
-    
-    int externalSignal = 0;    
+
+    int externalSignal = 0;
     if(col == SignalColor.RED) {
       Integer val = externalRedstoneSignals.get(dir);
       if(val == null) {
         TileEntity te = getBundle().getEntity();
-        externalSignal = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);        
+        externalSignal = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
         externalRedstoneSignals.put(dir, externalSignal);
       } else {
         externalSignal = val;
