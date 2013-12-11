@@ -83,7 +83,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   private boolean stateDirty = false;
 
-  private int maxDrainPerTick = 50;
+  private int maxDrainPerTick = 100;
 
   private ForgeDirection startPushDir = ForgeDirection.DOWN;
 
@@ -244,34 +244,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
         if(extTank != null) {
-
           FluidStack couldDrain = extTank.drain(dir.getOpposite(), maxDrainPerTick, false);
           if(couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
-
-            // if we drained all this, how much overflow do we need to push out
-            int requiredPush = (tank.getFluidAmount() + couldDrain.amount) - tank.getCapacity();
-            if(requiredPush <= 0) {
-              FluidStack drained = extTank.drain(dir.getOpposite(), maxDrainPerTick, true);
-              if(drained != null) {
-                tank.fill(drained, true);
-                if(network != null && network.getFluidType() == null) {
-                  network.setFluidType(drained);
-                }
-              }
-
-            } else {
-
-              // push as much as we can, to out target max
-              int pushed = pushLiquid(dir, requiredPush, true, token);
-              tank.addAmount(-pushed);
-              if(tank.getAvailableSpace() > 0) {
-                FluidStack drained = extTank.drain(dir.getOpposite(), Math.min(tank.getAvailableSpace(), maxDrainPerTick), true);
-                if(drained != null) {
-                  tank.addAmount(drained.amount);
-                }
-              }
+            int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
+            extTank.drain(dir.getOpposite(), used, true);
+            if(used > 0 && network != null && network.getFluidType() == null) {
+              network.setFluidType(couldDrain);
             }
-
           }
         }
       }
@@ -410,21 +389,10 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     }
     int recieveAmount = resource.amount;
 
-    int pushedVolume = 0;
     if(doPush) {
-      int maxPush = Math.max(0, recieveAmount + tank.getFluidAmount() - tank.getCapacity());
-      pushedVolume = pushLiquid(from, maxPush, doFill, pushToken);
-    }
-
-    if(doFill) {
-      tank.drain(pushedVolume, doFill);
-      return tank.fill(resource, doFill);
+      return pushLiquid(from, resource, doFill, pushToken);
     } else {
-      int amount = tank.getFluidAmount();
-      tank.drain(pushedVolume, true);
-      int res = tank.fill(resource, false);
-      tank.setAmount(amount);
-      return res;
+      return tank.fill(resource, doFill);
     }
   }
 
@@ -446,23 +414,27 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     return ForgeDirection.VALID_DIRECTIONS[dir.ordinal() + 1];
   }
 
-  private int pushLiquid(ForgeDirection from, int amount, boolean doPush, int token) {
-    if(token == currentPushToken || amount <= 0 || tank.getFluid() == null || tank.getFluid().getFluid() == null) {
+  private int pushLiquid(ForgeDirection from, FluidStack pushStack, boolean doPush, int token) {
+    if(token == currentPushToken || pushStack == null || pushStack.amount <= 0) {
       return 0;
     }
     currentPushToken = token;
     int pushed = 0;
+    int total = pushStack.amount;
 
     ForgeDirection dir = startPushDir;
-    FluidStack toPush = tank.getFluid().copy();
-    toPush.amount = amount;
+    FluidStack toPush = pushStack.copy();
+
+    int filledLocal = tank.fill(toPush, doPush);
+    toPush.amount -= filledLocal;
+    pushed += filledLocal;
 
     do {
       if(dir != from && canOutputToDir(dir)) {
         if(getConduitConnections().contains(dir)) {
           ILiquidConduit conduitCon = getFluidConduit(dir);
-          if(conduitCon != null && conduitCon.getTank().getFilledRatio() <= tank.getFilledRatio()) {
-            int toCon = conduitCon.fill(dir.getOpposite(), toPush, doPush, true, token);
+          if(conduitCon != null) {
+            int toCon = ((LiquidConduit) conduitCon).pushLiquid(dir.getOpposite(), toPush, doPush, token);
             toPush.amount -= toCon;
             pushed += toCon;
           }
@@ -479,7 +451,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
         }
       }
       dir = getNextDir(dir);
-    } while (dir != startPushDir && pushed < amount);
+    } while (dir != startPushDir && pushed < total);
 
     return pushed;
   }
