@@ -6,6 +6,10 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -19,6 +23,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
+import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -27,7 +32,7 @@ import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileHyperCube extends TileEntity implements IInternalPowerReceptor, IFluidHandler {
+public class TileHyperCube extends TileEntity implements IInternalPowerReceptor, IFluidHandler, ISidedInventory {
 
   private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
 
@@ -83,7 +88,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   public static enum SubChannel {
     POWER,
-    FLUID
+    FLUID,
+    ITEM
   }
 
   private final BasicCapacitor internalCapacitor = new BasicCapacitor(Config.transceiverMaxIO, 25000);
@@ -98,6 +104,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private final List<NetworkFluidHandler> fluidHandlers = new ArrayList<NetworkFluidHandler>();
   private boolean fluidHandlersDirty = true;
+
+  private CompositeInventory localInventory = new CompositeInventory();
+  private boolean inventoriesDirty = true;
 
   private PowerHandler disabledPowerHandler;
 
@@ -200,11 +209,13 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
     fluidHandlersDirty = true;
     receptorsDirty = true;
+    inventoriesDirty = true;
   }
 
   public void onNeighborBlockChange() {
     receptorsDirty = true;
     fluidHandlersDirty = true;
+    inventoriesDirty = true;
   }
 
   @Override
@@ -238,8 +249,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     milliBucketsTransfered = 0;
 
     transmitEnergy();
-
     balanceCubeNetworkEnergy();
+
+    updateInventories();
 
     // check we are still connected (i.e. we haven't run out of power or started
     // receiving power)
@@ -287,7 +299,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     float canTransmit = Math.min(powerHandler.getEnergyStored(), internalCapacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
-    checkReceptors();
+    updatePowersReceptors();
 
     if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
@@ -385,25 +397,6 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   public void applyPerdition() {
   }
 
-  private void checkReceptors() {
-    if(!receptorsDirty) {
-      return;
-    }
-    receptors.clear();
-    BlockCoord myLoc = new BlockCoord(this);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      PowerInterface pi = PowerInterface.create(te);
-      if(pi != null) {
-        receptors.add(new Receptor(pi, dir));
-      }
-    }
-
-    receptorIterator = receptors.listIterator();
-    receptorsDirty = false;
-  }
-
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     if(!canSendFluid()) {
@@ -432,12 +425,20 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     return getModeForChannel(SubChannel.POWER).isSendEnabled();
   }
 
+  private boolean canSendItems() {
+    return getModeForChannel(SubChannel.ITEM).isSendEnabled();
+  }
+
   private boolean canRecieveFluid() {
     return getModeForChannel(SubChannel.FLUID).isRecieveEnabled();
   }
 
   private boolean canRecievePower() {
     return getModeForChannel(SubChannel.POWER).isRecieveEnabled();
+  }
+
+  private boolean canRecieveItems() {
+    return getModeForChannel(SubChannel.ITEM).isRecieveEnabled();
   }
 
   @Override
@@ -587,6 +588,24 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
   }
 
+  private void updatePowersReceptors() {
+    if(!receptorsDirty) {
+      return;
+    }
+    receptors.clear();
+    BlockCoord myLoc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord checkLoc = myLoc.getLocation(dir);
+      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      PowerInterface pi = PowerInterface.create(te);
+      if(pi != null) {
+        receptors.add(new Receptor(pi, dir));
+      }
+    }
+    receptorIterator = receptors.listIterator();
+    receptorsDirty = false;
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
@@ -657,6 +676,123 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       dirOp = dir.getOpposite();
     }
 
+  }
+
+  private void updateInventories() {
+    if(!inventoriesDirty) {
+      return;
+    }
+
+    localInventory = new CompositeInventory();
+
+    BlockCoord myLoc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord checkLoc = myLoc.getLocation(dir);
+      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      if(te instanceof IInventory) {
+        localInventory.addInventory((IInventory) te);
+      }
+    }
+    inventoriesDirty = false;
+
+  }
+
+  private ISidedInventory getRemoteInventory() {
+
+    CompositeInventory res = new CompositeInventory();
+    if(!canRecieveItems()) {
+      return res;
+    }
+
+    if(HyperCubeRegister.instance == null) {
+      return res;
+    }
+    List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
+    if(cubes == null || cubes.isEmpty()) {
+      return res;
+    }
+    for (TileHyperCube cube : cubes) {
+      if(cube != this && cube != null && cube.canRecieveItems()) {
+        res.addInventory(cube.localInventory);
+      }
+    }
+    return res;
+  }
+
+  @Override
+  public int getSizeInventory() {
+    return getRemoteInventory().getSizeInventory();
+  }
+
+  @Override
+  public ItemStack getStackInSlot(int i) {
+    return getRemoteInventory().getStackInSlot(i);
+  }
+
+  @Override
+  public ItemStack decrStackSize(int i, int j) {
+    return getRemoteInventory().decrStackSize(i, j);
+  }
+
+  @Override
+  public void setInventorySlotContents(int i, ItemStack itemstack) {
+    getRemoteInventory().setInventorySlotContents(i, itemstack);
+
+  }
+
+  @Override
+  public int[] getAccessibleSlotsFromSide(int var1) {
+    return getRemoteInventory().getAccessibleSlotsFromSide(var1);
+  }
+
+  @Override
+  public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+    return getRemoteInventory().canInsertItem(i, itemstack, j);
+  }
+
+  @Override
+  public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+    return getRemoteInventory().canExtractItem(i, itemstack, j);
+  }
+
+  @Override
+  public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+    return getRemoteInventory().isItemValidForSlot(i, itemstack);
+  }
+
+  //---------------- Inventory
+
+  @Override
+  public String getInvName() {
+    return ModObject.blockHyperCube.name;
+  }
+
+  @Override
+  public boolean isInvNameLocalized() {
+    return false;
+  }
+
+  @Override
+  public int getInventoryStackLimit() {
+    return 64;
+  }
+
+  @Override
+  public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+    return false;
+  }
+
+  @Override
+  public void openChest() {
+  }
+
+  @Override
+  public void closeChest() {
+  }
+
+  @Override
+  public ItemStack getStackInSlotOnClosing(int i) {
+    return null;
   }
 
 }

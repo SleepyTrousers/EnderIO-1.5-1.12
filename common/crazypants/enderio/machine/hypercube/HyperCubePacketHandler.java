@@ -241,6 +241,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
       dos.writeInt(te.xCoord);
       dos.writeInt(te.yCoord);
       dos.writeInt(te.zCoord);
+      dos.writeShort((short) te.getModeForChannel(SubChannel.ITEM).ordinal());
       dos.writeShort((short) te.getModeForChannel(SubChannel.POWER).ordinal());
       dos.writeShort((short) te.getModeForChannel(SubChannel.FLUID).ordinal());
     } catch (IOException e) {
@@ -259,12 +260,14 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
+    short itemModeOrdinal = data.readShort();
     short powerModeOrdinal = data.readShort();
     short fluidModeOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
     TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
+      cb.setModeForChannel(SubChannel.ITEM, IoMode.values()[itemModeOrdinal]);
       cb.setModeForChannel(SubChannel.POWER, IoMode.values()[powerModeOrdinal]);
       cb.setModeForChannel(SubChannel.FLUID, IoMode.values()[fluidModeOrdinal]);
       p.worldObj.markBlockForUpdate(x, y, z);
