@@ -27,7 +27,9 @@ public final class IconEIO {
   public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(64, 148, 32, 32);
 
   public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(32, 148, 32, 32);
+
   public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(0, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(64, 180, 32, 32);
 
   public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(32, 180, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(32 + 64, 180, 32, 32);

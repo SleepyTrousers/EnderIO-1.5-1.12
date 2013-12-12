@@ -136,8 +136,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     List<Target> sendPriority = new ArrayList<Target>();
 
     private int extractFromSlot = -1;
-    private int numSlots;
-    private int slotChecksPerTick;
+    private int numSlots;  
 
     int tickDeficit;
 
@@ -155,7 +154,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         sidedInv = (ISidedInventory) inv;
         numSlots = sidedInv.getAccessibleSlotsFromSide(inventorySide).length;
       }
-      slotChecksPerTick = Math.min(numSlots, MAX_SLOT_CHECK_PER_TICK);
 
     }
 
@@ -212,6 +210,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
       int maxExtracted = con.getMaximumExtracted();
       int slot = -1;
+      int slotChecksPerTick = Math.min(numSlots, MAX_SLOT_CHECK_PER_TICK);
       for (int i = 0; i < slotChecksPerTick; i++) {
         int index = nextSlot();
         ItemStack item = inv.getStackInSlot(index);
@@ -240,6 +239,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int maxExtracted = con.getMaximumExtracted();
 
       int slot = -1;
+      int slotChecksPerTick = Math.min(numSlots, MAX_SLOT_CHECK_PER_TICK);
       for (int i = 0; i < slotChecksPerTick; i++) {
         int index = nextSlot();
         slot = slotIndices[index];

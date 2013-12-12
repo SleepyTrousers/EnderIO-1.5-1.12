@@ -40,6 +40,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
   protected static final int POWER_MODE_BUTTON_ID = 9;
   protected static final int FLUID_MODE_BUTTON_ID = 10;
+  private static final int ITEM_MODE_BUTTON_ID = 11;
 
   private static final int POWER_X = 227;
   private static final int POWER_Y = 46;
@@ -66,6 +67,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
   private IconButtonEIO powerB;
   private IconButtonEIO fluidB;
+  private IconButtonEIO itemB;
 
   //  private IconEIO inputIcon;  
   //  private IconEIO outputIcon;
@@ -101,6 +103,9 @@ public class GuiHyperCube extends GuiScreenBase {
     deletePrivateB.setToolTip("Delete Channel");
     selectPrivateB = new IconButtonEIO(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
     selectPrivateB.setToolTip("Activate Channel");
+
+    itemB = new IconButtonEIO(this, ITEM_MODE_BUTTON_ID, 183, 12, IconEIO.WRENCH_OVERLAY_ITEM);
+    itemB.setIconMargin(3, 3);
 
     powerB = new IconButtonEIO(this, POWER_MODE_BUTTON_ID, 203, 12, IconEIO.WRENCH_OVERLAY_POWER);
     powerB.setIconMargin(3, 3);
@@ -163,6 +168,14 @@ public class GuiHyperCube extends GuiScreenBase {
       fluidB.setIcon(IconEIO.WRENCH_OVERLAY_FLUID_OFF);
     }
     fluidB.setToolTip("Fluid Mode", mode.getUnlocalisedName());
+
+    mode = cube.getModeForChannel(SubChannel.ITEM);
+    if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
+      itemB.setIcon(IconEIO.WRENCH_OVERLAY_ITEM);
+    } else {
+      itemB.setIcon(IconEIO.WRENCH_OVERLAY_ITEM_OFF);
+    }
+    itemB.setToolTip("Item Mode", mode.getUnlocalisedName());
   }
 
   private boolean isPublic(Channel chan) {
@@ -204,6 +217,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
     powerB.onGuiInit();
     fluidB.onGuiInit();
+    itemB.onGuiInit();
 
     publicChannelList.onGuiInit(this);
     privateChannelList.onGuiInit(this);
@@ -229,6 +243,17 @@ public class GuiHyperCube extends GuiScreenBase {
       IoMode curMode = cube.getModeForChannel(SubChannel.POWER);
       IoMode nextMode = curMode.next();
       cube.setModeForChannel(SubChannel.POWER, nextMode);
+
+      updateIoButtons();
+
+      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
+      PacketDispatcher.sendPacketToServer(pkt);
+
+    } else if(par1GuiButton.id == ITEM_MODE_BUTTON_ID) {
+
+      IoMode curMode = cube.getModeForChannel(SubChannel.ITEM);
+      IoMode nextMode = curMode.next();
+      cube.setModeForChannel(SubChannel.ITEM, nextMode);
 
       updateIoButtons();
 
@@ -346,6 +371,10 @@ public class GuiHyperCube extends GuiScreenBase {
 
     IoMode fluidMode = cube.getModeForChannel(SubChannel.FLUID);
     IoMode powerMode = cube.getModeForChannel(SubChannel.POWER);
+    IoMode itemMode = cube.getModeForChannel(SubChannel.ITEM);
+    if(itemMode.isRecieveEnabled()) {
+      IconEIO.INPUT.renderIcon(guiLeft + 183 + 15, guiTop + 4 + 7, -15, -7, 0, true);
+    }
     if(fluidMode.isRecieveEnabled()) {
       IconEIO.INPUT.renderIcon(guiLeft + 222 + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
@@ -353,8 +382,11 @@ public class GuiHyperCube extends GuiScreenBase {
       IconEIO.INPUT.renderIcon(guiLeft + 203 + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
 
+    if(itemMode.isSendEnabled()) {
+      IconEIO.OUTPUT.renderIcon(guiLeft + 183, guiTop + 29, 15, 7, 0, true);
+    }
     if(fluidMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + 223, guiTop + 29, 15, 7, 0, true);
+      IconEIO.OUTPUT.renderIcon(guiLeft + 222, guiTop + 29, 15, 7, 0, true);
     }
     if(powerMode.isSendEnabled()) {
       IconEIO.OUTPUT.renderIcon(guiLeft + 204, guiTop + 29, 15, 7, 0, true);
