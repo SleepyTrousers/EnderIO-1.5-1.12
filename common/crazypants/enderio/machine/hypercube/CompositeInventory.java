@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.util.InventoryWrapper;
 
@@ -15,11 +16,17 @@ public class CompositeInventory implements ISidedInventory {
   private final List<InvEntry> inventories = new ArrayList<InvEntry>();
   private int size = 0;
 
-  public void addInventory(IInventory inv) {
+  public void addInventory(CompositeInventory inv) {
+    for (InvEntry ie : inv.inventories) {
+      addInventory(ie.inv, ie.side);
+    }
+  }
+
+  public void addInventory(IInventory inv, ForgeDirection side) {
     if(inv == null) {
       return;
     }
-    inventories.add(new InvEntry(InventoryWrapper.asSidedInventory(inv), size));
+    inventories.add(new InvEntry(inv, size, side));
     size += inv.getSizeInventory();
   }
 
@@ -27,8 +34,17 @@ public class CompositeInventory implements ISidedInventory {
     if(inv == null) {
       return;
     }
-    inventories.remove(inv);
-    updateSize();
+    InvEntry remove = null;
+    for (InvEntry ie : inventories) {
+      if(ie.inv == inv || ie.origInv == inv) {
+        remove = ie;
+        break;
+      }
+    }
+    if(remove != null) {
+      inventories.remove(remove);
+      updateSize();
+    }
   }
 
   private void updateSize() {
@@ -82,7 +98,7 @@ public class CompositeInventory implements ISidedInventory {
   public int[] getAccessibleSlotsFromSide(int var1) {
     List<Integer> resList = new ArrayList<Integer>();
     for (InvEntry inv : inventories) {
-      int[] slots = inv.inv.getAccessibleSlotsFromSide(var1);
+      int[] slots = inv.inv.getAccessibleSlotsFromSide(inv.side.ordinal());
       if(slots != null) {
         for (int i = 0; i < slots.length; i++) {
           resList.add(slots[i]);
@@ -172,13 +188,17 @@ public class CompositeInventory implements ISidedInventory {
   }
 
   private static class InvEntry {
+    IInventory origInv;
     ISidedInventory inv;
     int startIndex;
     int endIndex;
+    ForgeDirection side;
 
-    InvEntry(ISidedInventory inv, int startIndex) {
-      this.inv = inv;
+    InvEntry(IInventory inventory, int startIndex, ForgeDirection side) {
+      this.origInv = inventory;
+      inv = InventoryWrapper.asSidedInventory(inventory);
       this.endIndex = startIndex + inv.getSizeInventory() - 1;
+      this.side = side;
     }
 
     boolean containsSlot(int index) {

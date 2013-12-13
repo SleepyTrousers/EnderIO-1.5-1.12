@@ -334,16 +334,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           return 0;
         }
       }
-      int res = 0;
-      if(sidedInv != null) {
-        res = ItemUtil.doInsertItem(sidedInv, item, inventorySide);
-      } else {
-        res = ItemUtil.doInsertItem(inv, item);
-      }
-      if(res > 0) {
-        inv.onInventoryChanged();
-      }
-      return res;
+      return ItemUtil.doInsertItem(inv, item, ForgeDirection.values()[inventorySide]);
     }
 
     void updateInsertOrder() {
