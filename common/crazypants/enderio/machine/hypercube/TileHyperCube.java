@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cofh.api.transport.IItemConduit;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
@@ -30,6 +31,7 @@ import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
+import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor, IFluidHandler, ISidedInventory {
@@ -119,6 +121,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   private float milliBucketsTransfered = 0;
 
   private EnumMap<SubChannel, IoMode> ioModes = new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(SubChannel.class);
+
+  //private ItemStack[] recieveBuffer = new ItemStack[6];
+  private ItemRecieveBuffer recieveBuffer = new ItemRecieveBuffer();
 
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
@@ -252,6 +257,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     balanceCubeNetworkEnergy();
 
     updateInventories();
+    pushRecieveBuffer();
 
     // check we are still connected (i.e. we haven't run out of power or started
     // receiving power)
@@ -286,6 +292,32 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
 
   }
+
+  private boolean canSendFluid() {
+    return getModeForChannel(SubChannel.FLUID).isSendEnabled();
+  }
+
+  private boolean canSendPower() {
+    return getModeForChannel(SubChannel.POWER).isSendEnabled();
+  }
+
+  private boolean canSendItems() {
+    return getModeForChannel(SubChannel.ITEM).isSendEnabled();
+  }
+
+  private boolean canRecieveFluid() {
+    return getModeForChannel(SubChannel.FLUID).isRecieveEnabled();
+  }
+
+  private boolean canRecievePower() {
+    return getModeForChannel(SubChannel.POWER).isRecieveEnabled();
+  }
+
+  private boolean canRecieveItems() {
+    return getModeForChannel(SubChannel.ITEM).isRecieveEnabled();
+  }
+
+  //-------------------------- Power -----------------------------------------------
 
   private boolean transmitEnergy() {
 
@@ -417,29 +449,25 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     return result;
   }
 
-  private boolean canSendFluid() {
-    return getModeForChannel(SubChannel.FLUID).isSendEnabled();
+  private void updatePowersReceptors() {
+    if(!receptorsDirty) {
+      return;
+    }
+    receptors.clear();
+    BlockCoord myLoc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord checkLoc = myLoc.getLocation(dir);
+      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      PowerInterface pi = PowerInterface.create(te);
+      if(pi != null) {
+        receptors.add(new Receptor(pi, dir));
+      }
+    }
+    receptorIterator = receptors.listIterator();
+    receptorsDirty = false;
   }
 
-  private boolean canSendPower() {
-    return getModeForChannel(SubChannel.POWER).isSendEnabled();
-  }
-
-  private boolean canSendItems() {
-    return getModeForChannel(SubChannel.ITEM).isSendEnabled();
-  }
-
-  private boolean canRecieveFluid() {
-    return getModeForChannel(SubChannel.FLUID).isRecieveEnabled();
-  }
-
-  private boolean canRecievePower() {
-    return getModeForChannel(SubChannel.POWER).isRecieveEnabled();
-  }
-
-  private boolean canRecieveItems() {
-    return getModeForChannel(SubChannel.ITEM).isRecieveEnabled();
-  }
+  //----------------------- Fluids -----------------------------------------------
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
@@ -588,94 +616,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
   }
 
-  private void updatePowersReceptors() {
-    if(!receptorsDirty) {
-      return;
-    }
-    receptors.clear();
-    BlockCoord myLoc = new BlockCoord(this);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      PowerInterface pi = PowerInterface.create(te);
-      if(pi != null) {
-        receptors.add(new Receptor(pi, dir));
-      }
-    }
-    receptorIterator = receptors.listIterator();
-    receptorsDirty = false;
-  }
+  //------- Item / Inventory ---------------------------------------------------------------------
 
-  @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
-    powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
-    String channelName = nbtRoot.getString("channelName");
-    String channelUser = nbtRoot.getString("channelUser");
-    if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
-    } else {
-      channel = null;
-    }
-
-    owner = nbtRoot.getString("owner");
-
-    for (SubChannel subChannel : SubChannel.values()) {
-      String key = "subChannel" + subChannel.ordinal();
-      if(nbtRoot.hasKey(key)) {
-        setModeForChannel(subChannel, IoMode.values()[nbtRoot.getShort(key)]);
-      }
-    }
-  }
-
-  @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
-    nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
-    if(channel != null) {
-      nbtRoot.setString("channelName", channel.name);
-      if(channel.user != null) {
-        nbtRoot.setString("channelUser", channel.user);
-      }
-    }
-    if(owner != null && !(owner.isEmpty())) {
-      nbtRoot.setString("owner", owner);
-    }
-
-    for (SubChannel subChannel : SubChannel.values()) {
-      IoMode mode = getModeForChannel(subChannel);
-      nbtRoot.setShort("subChannel" + subChannel.ordinal(), (short) mode.ordinal());
-    }
-  }
-
-  @Override
-  public Packet getDescriptionPacket() {
-    return PacketHandler.getPacket(this);
-  }
-
-  static class Receptor {
-    PowerInterface receptor;
-    ForgeDirection fromDir;
-
-    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
-      this.receptor = rec;
-      this.fromDir = fromDir;
-    }
-  }
-
-  static class NetworkFluidHandler {
-    final TileHyperCube node;
-    final IFluidHandler handler;
-    final ForgeDirection dir;
-    final ForgeDirection dirOp;
-
-    private NetworkFluidHandler(TileHyperCube node, IFluidHandler handler, ForgeDirection dir) {
-      this.node = node;
-      this.handler = handler;
-      this.dir = dir;
-      dirOp = dir.getOpposite();
-    }
-
+  public ItemRecieveBuffer getRecieveBuffer() {
+    return recieveBuffer;
   }
 
   private void updateInventories() {
@@ -697,10 +641,73 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   }
 
+  private void pushRecieveBuffer() {
+
+    if(recieveBuffer.isEmpty()) {
+      return;
+    }
+    List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
+    if(cubes == null || cubes.isEmpty()) {
+      return;
+    }
+
+    for (int i = 0; i < recieveBuffer.getSizeInventory(); i++) {
+      ItemStack toPush = recieveBuffer.getStackInSlot(i);
+      if(toPush != null) {
+        for (TileHyperCube cube : cubes) {
+          if(toPush != null && cube != this && cube != null && cube.canRecieveItems()) {
+            toPush = cube.recieveItems(toPush);
+            recieveBuffer.setInventorySlotContents(i, toPush);
+          }
+        }
+      }
+    }
+
+  }
+
+  private ItemStack recieveItems(ItemStack toPush) {
+    if(toPush == null) {
+      return null;
+    }
+    ItemStack result = toPush.copy();
+    //TODO: need to cache this
+    BlockCoord myLoc = new BlockCoord(this);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      BlockCoord checkLoc = myLoc.getLocation(dir);
+      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+
+      if(te instanceof ISidedInventory) {
+
+        int inserted = ItemUtil.doInsertItem((ISidedInventory) te, result, dir.getOpposite().ordinal());
+        if(inserted > 0) {
+          ((ISidedInventory) te).onInventoryChanged();
+        }
+        result.stackSize -= inserted;
+
+      } else if(te instanceof IInventory) {
+
+        int inserted = ItemUtil.doInsertItem((IInventory) te, result);
+        if(inserted > 0) {
+          ((ISidedInventory) te).onInventoryChanged();
+        }
+        result.stackSize -= inserted;
+
+      } else if(te instanceof IItemConduit) {
+        result = ((IItemConduit) te).sendItems(result, dir.getOpposite());
+      }
+
+      if(result == null || result.stackSize <= 0) {
+        return null;
+      }
+    }
+    return result;
+
+  }
+
   private ISidedInventory getRemoteInventory() {
 
     CompositeInventory res = new CompositeInventory();
-    if(!canRecieveItems()) {
+    if(!canSendItems()) {
       return res;
     }
 
@@ -716,6 +723,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
         res.addInventory(cube.localInventory);
       }
     }
+    res.addInventory(recieveBuffer);
     return res;
   }
 
@@ -760,8 +768,6 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     return getRemoteInventory().isItemValidForSlot(i, itemstack);
   }
 
-  //---------------- Inventory
-
   @Override
   public String getInvName() {
     return ModObject.blockHyperCube.name;
@@ -793,6 +799,83 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   @Override
   public ItemStack getStackInSlotOnClosing(int i) {
     return null;
+  }
+
+  //---- Serialisation ---------------------------------------------------------
+
+  @Override
+  public void readFromNBT(NBTTagCompound nbtRoot) {
+    super.readFromNBT(nbtRoot);
+    powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
+    String channelName = nbtRoot.getString("channelName");
+    String channelUser = nbtRoot.getString("channelUser");
+    if(channelName != null && !channelName.isEmpty()) {
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
+    } else {
+      channel = null;
+    }
+
+    owner = nbtRoot.getString("owner");
+
+    for (SubChannel subChannel : SubChannel.values()) {
+      String key = "subChannel" + subChannel.ordinal();
+      if(nbtRoot.hasKey(key)) {
+        setModeForChannel(subChannel, IoMode.values()[nbtRoot.getShort(key)]);
+      }
+    }
+
+    recieveBuffer.readFromNBT(nbtRoot);
+  }
+
+  @Override
+  public void writeToNBT(NBTTagCompound nbtRoot) {
+    super.writeToNBT(nbtRoot);
+    nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
+    if(channel != null) {
+      nbtRoot.setString("channelName", channel.name);
+      if(channel.user != null) {
+        nbtRoot.setString("channelUser", channel.user);
+      }
+    }
+    if(owner != null && !(owner.isEmpty())) {
+      nbtRoot.setString("owner", owner);
+    }
+
+    for (SubChannel subChannel : SubChannel.values()) {
+      IoMode mode = getModeForChannel(subChannel);
+      nbtRoot.setShort("subChannel" + subChannel.ordinal(), (short) mode.ordinal());
+    }
+    recieveBuffer.writeToNBT(nbtRoot);
+  }
+
+  @Override
+  public Packet getDescriptionPacket() {
+    return PacketHandler.getPacket(this);
+  }
+
+  static class Receptor {
+    PowerInterface receptor;
+    ForgeDirection fromDir;
+
+    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
+      this.receptor = rec;
+      this.fromDir = fromDir;
+    }
+  }
+
+  static class NetworkFluidHandler {
+    final TileHyperCube node;
+    final IFluidHandler handler;
+    final ForgeDirection dir;
+    final ForgeDirection dirOp;
+
+    private NetworkFluidHandler(TileHyperCube node, IFluidHandler handler, ForgeDirection dir) {
+      this.node = node;
+      this.handler = handler;
+      this.dir = dir;
+      dirOp = dir.getOpposite();
+    }
+
   }
 
 }
