@@ -16,6 +16,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
+import crazypants.util.ItemUtil;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
@@ -136,7 +137,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     List<Target> sendPriority = new ArrayList<Target>();
 
     private int extractFromSlot = -1;
-    private int numSlots;  
+    private int numSlots;
 
     int tickDeficit;
 
@@ -333,90 +334,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           return 0;
         }
       }
-
+      int res = 0;
       if(sidedInv != null) {
-        return doInsertItemSided(item);
+        res = ItemUtil.doInsertItem(sidedInv, item, inventorySide);
+      } else {
+        res = ItemUtil.doInsertItem(inv, item);
       }
-      return doInsertItem(item);
-    }
-
-    private int doInsertItem(ItemStack item) {
-      int numInserted = 0;
-      int numToInsert = item.stackSize;
-      for (int slot = 0; slot < inv.getSizeInventory() && numToInsert > 0; slot++) {
-        ItemStack contents = inv.getStackInSlot(slot);
-        if(!isStackFull(contents)) {
-          ItemStack toInsert = item.copy();
-          toInsert.stackSize = Math.min(toInsert.stackSize, inv.getInventoryStackLimit());
-          toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
-          int inserted = 0;
-          if(contents == null) {
-            inserted = toInsert.stackSize;
-          } else {
-            if(contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
-              int space = inv.getInventoryStackLimit() - contents.stackSize;
-              space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
-              inserted += Math.min(space, toInsert.stackSize);
-              toInsert.stackSize = contents.stackSize + inserted;
-            } else {
-              toInsert.stackSize = 0;
-            }
-          }
-
-          if(inserted > 0) {
-            numInserted += inserted;
-            numToInsert -= inserted;
-            inv.setInventorySlotContents(slot, toInsert);
-          }
-        }
+      if(res > 0) {
+        inv.onInventoryChanged();
       }
-      return numInserted;
-
-    }
-
-    private boolean isStackFull(ItemStack contents) {
-      if(contents == null) {
-        return false;
-      }
-      return contents.stackSize >= contents.getMaxStackSize();
-    }
-
-    private int doInsertItemSided(ItemStack item) {
-
-      int numInserted = 0;
-      int numToInsert = item.stackSize;
-      int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide);
-      for (int i = 0; i < slots.length && numToInsert > 0; i++) {
-        int slot = slots[i];
-        if(!isStackFull(sidedInv.getStackInSlot(slot))) {
-          if(sidedInv.canInsertItem(slot, item, inventorySide)) {
-            ItemStack contents = inv.getStackInSlot(slot);
-            ItemStack toInsert = item.copy();
-            toInsert.stackSize = Math.min(toInsert.stackSize, inv.getInventoryStackLimit());
-            toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
-            int inserted = 0;
-            if(contents == null) {
-              inserted = toInsert.stackSize;
-            } else {
-              if(contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
-                int space = inv.getInventoryStackLimit() - contents.stackSize;
-                space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
-                inserted += Math.min(space, toInsert.stackSize);
-                toInsert.stackSize = contents.stackSize + inserted;
-              } else {
-                toInsert.stackSize = 0;
-              }
-            }
-
-            if(inserted > 0) {
-              numInserted += inserted;
-              numToInsert -= inserted;
-              inv.setInventorySlotContents(slot, toInsert);
-            }
-          }
-        }
-      }
-      return numInserted;
+      return res;
     }
 
     void updateInsertOrder() {

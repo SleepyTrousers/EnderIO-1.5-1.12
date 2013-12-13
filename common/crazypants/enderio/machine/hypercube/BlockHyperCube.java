@@ -31,6 +31,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.Util;
 
 public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHandler {
 
@@ -136,6 +137,14 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getInternalPowerHandler().getEnergyStored());
         setChannelOnItem(hc, itemStack);
         ret.add(itemStack);
+
+        ItemRecieveBuffer rb = hc.getRecieveBuffer();
+        for (int i = 0; i < rb.getSizeInventory(); i++) {
+          ItemStack stack = rb.getStackInSlot(i);
+          if(stack != null) {
+            ret.add(stack);
+          }
+        }
       }
     }
     return ret;
@@ -193,6 +202,10 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
+
+        ItemRecieveBuffer rb = hc.getRecieveBuffer();
+        Util.dropItems(world, rb, x, y, z, true);
+
       }
     }
     return super.removeBlockByPlayer(world, player, x, y, z);

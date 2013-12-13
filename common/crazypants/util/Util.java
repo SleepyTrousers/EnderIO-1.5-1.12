@@ -200,4 +200,23 @@ public class Util {
     }
   }
 
+  public static ItemStack decrStackSize(IInventory inventory, int slot, int size) {
+    ItemStack item = inventory.getStackInSlot(slot);
+    if(item != null) {
+      if(item.stackSize <= size) {
+        ItemStack result = item;
+        inventory.setInventorySlotContents(slot, null);
+        inventory.onInventoryChanged();
+        return result;
+      }
+      ItemStack split = item.splitStack(size);
+      if(item.stackSize == 0) {
+        inventory.setInventorySlotContents(slot, null);
+      }
+      inventory.onInventoryChanged();
+      return split;
+    }
+    return null;
+  }
+
 }
