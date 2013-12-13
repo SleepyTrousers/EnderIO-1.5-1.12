@@ -1,3 +1,15 @@
+0.5.2
+- Transceivers now handle items
+- Changed Transceivers to a straight 'send/receive' model
+- Server side performance optimisations made across the board
+- Insulated RS Conduit now connects to TE machines by default.
+- #198 Conduit Nodes reconnect in 'all directions' after disconnect.
+- #217 Same painted half slabs not placing correctly.
+- #301 Power Monitor engine control settings reseting
+- #335 Capacitor banks outputting energy to BC engines.
+- #342 Forcing connections with Insulated Redstone Conduits not working.
+- #346 Changed colors on power monitor
+
 0.5.1
 - #326 Advanced item conduits dropping 1st tier conduits.
 - #331 Fixed message when EnderIO is out of range.
