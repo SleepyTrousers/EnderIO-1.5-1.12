@@ -171,36 +171,38 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     return cons != null && cons.size() > 1 && powerHandler.getEnergyStored() > 0;
   }
 
-  private void balanceCubeNetworkEnergy() {
-
+  private void sendEnergyToOtherNodes() {
+    
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
     if(cubes == null || cubes.isEmpty()) {
       return;
     }
-    float totalEnergy = 0;
-    for (TileHyperCube cube : cubes) {
-      totalEnergy += cube.powerHandler.getEnergyStored();
-    }
-
-    float energyPerNode = totalEnergy / cubes.size();
-    float totalToTranfer = 0;
-    for (TileHyperCube cube : cubes) {
-      if(cube.powerHandler.getEnergyStored() < energyPerNode) {
-        totalToTranfer += (energyPerNode - cube.powerHandler.getEnergyStored());
+    
+    if(canSendPower()) {
+      
+      boolean iWasConnected = isConnected();
+      
+      for (TileHyperCube cube : cubes) {
+        float stored = powerHandler.getEnergyStored();
+        if(stored > 0 && cube != null && cube != this && cube.canRecievePower()) {
+          boolean wasConnected = cube.isConnected();
+          
+          float curPower = cube.powerHandler.getEnergyStored();
+          float requires = cube.powerHandler.getMaxEnergyStored() - curPower;
+          float transfer = Math.min(requires, stored); 
+          transfer = Math.min(transfer, Config.transceiverMaxIO);
+          cube.powerHandler.setEnergy(curPower + ((1 - ENERGY_LOSS) * transfer));
+          powerHandler.setEnergy(powerHandler.getEnergyStored() - transfer);
+          if(wasConnected != cube.isConnected()) {
+            cube.fluidHandlersDirty = true;
+          }          
+        }
       }
-    }
-
-    float totalLoss = totalToTranfer * ENERGY_LOSS;
-    totalEnergy -= totalLoss;
-    totalEnergy = Math.max(0, totalEnergy);
-    energyPerNode = totalEnergy / cubes.size();
-
-    for (TileHyperCube cube : cubes) {
-      boolean wasConnected = cube.isConnected();
-      cube.powerHandler.setEnergy(energyPerNode);
-      if(wasConnected != cube.isConnected()) {
-        cube.fluidHandlersDirty = true;
+      
+      if(iWasConnected != isConnected()) {
+        fluidHandlersDirty = true;
       }
+      
     }
 
   }
@@ -252,7 +254,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     milliBucketsTransfered = 0;
 
     transmitEnergy();
-    balanceCubeNetworkEnergy();
+    sendEnergyToOtherNodes();
 
     updateInventories();
     pushRecieveBuffer();
@@ -372,10 +374,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   @Override
   public PowerHandler getPowerHandler() {
-    if(getModeForChannel(SubChannel.POWER).isSendEnabled()) {
-      return powerHandler;
+    if(getModeForChannel(SubChannel.POWER) == IoMode.RECIEVE) {
+      return getDisabledPowerHandler();
     }
-    return getDisabledPowerHandler();
+    return powerHandler;
   }
 
   public PowerHandler getInternalPowerHandler() {
