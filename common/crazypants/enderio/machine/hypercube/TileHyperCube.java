@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import cofh.api.transport.IItemConduit;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
@@ -122,7 +121,6 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private EnumMap<SubChannel, IoMode> ioModes = new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(SubChannel.class);
 
-  //private ItemStack[] recieveBuffer = new ItemStack[6];
   private ItemRecieveBuffer recieveBuffer = new ItemRecieveBuffer();
 
   public TileHyperCube() {
@@ -623,6 +621,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private void updateInventories() {
+
+    recieveBuffer.setRecieveEnabled(canSendItems());
+
     if(!inventoriesDirty) {
       return;
     }
@@ -634,7 +635,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       BlockCoord checkLoc = myLoc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if(te instanceof IInventory) {
-        localInventory.addInventory((IInventory) te);
+        localInventory.addInventory((IInventory) te, dir);
       }
     }
     inventoriesDirty = false;
@@ -675,28 +676,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-
-      if(te instanceof ISidedInventory) {
-
-        int inserted = ItemUtil.doInsertItem((ISidedInventory) te, result, dir.getOpposite().ordinal());
-        if(inserted > 0) {
-          ((ISidedInventory) te).onInventoryChanged();
-        }
-        result.stackSize -= inserted;
-
-      } else if(te instanceof IInventory) {
-
-        int inserted = ItemUtil.doInsertItem((IInventory) te, result);
-        if(inserted > 0) {
-          ((ISidedInventory) te).onInventoryChanged();
-        }
-        result.stackSize -= inserted;
-
-      } else if(te instanceof IItemConduit) {
-        result = ((IItemConduit) te).sendItems(result, dir.getOpposite());
-      }
-
-      if(result == null || result.stackSize <= 0) {
+      result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite());
+      if(result.stackSize <= 0) {
         return null;
       }
     }
@@ -707,6 +688,8 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   private ISidedInventory getRemoteInventory() {
 
     CompositeInventory res = new CompositeInventory();
+    res.addInventory(recieveBuffer, ForgeDirection.UNKNOWN);
+
     if(!canSendItems()) {
       return res;
     }
@@ -723,7 +706,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
         res.addInventory(cube.localInventory);
       }
     }
-    res.addInventory(recieveBuffer);
+
     return res;
   }
 

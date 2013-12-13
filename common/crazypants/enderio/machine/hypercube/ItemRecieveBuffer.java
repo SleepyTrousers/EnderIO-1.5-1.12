@@ -7,6 +7,9 @@ import crazypants.util.ArrayInventory;
 
 public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory {
 
+  private static final int[] ALL_SLOTS = new int[] { 0, 1, 2, 3, 4, 5 };
+  private boolean recieveEnabled;
+
   public ItemRecieveBuffer() {
     super(6);
   }
@@ -20,24 +23,22 @@ public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory
     return true;
   }
 
+  public void setRecieveEnabled(boolean canRecieveItems) {
+    recieveEnabled = canRecieveItems;
+  }
+
   @Override
   public int[] getAccessibleSlotsFromSide(int side) {
-    if(side < 0 || side >= items.length) {
-      return new int[0];
-    }
-    return new int[] { side };
+    return ALL_SLOTS;
   }
 
   @Override
   public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
-    if(side < 0 || side >= items.length || slot != side || itemStack == null) {
+    if(!recieveEnabled || side < 0 || side >= items.length || slot != side || itemStack == null) {
       return false;
     }
     ItemStack item = items[slot];
     if(item == null) {
-      return true;
-    }
-    if(item.isItemEqual(itemStack) && ItemStack.areItemStackTagsEqual(item, itemStack) && item.stackSize < item.getMaxStackSize()) {
       return true;
     }
     return false;
@@ -45,9 +46,6 @@ public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory
 
   @Override
   public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
-    if(slot != side) {
-      return false;
-    }
     return true;
   }
 
