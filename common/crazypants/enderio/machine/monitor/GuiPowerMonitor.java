@@ -214,9 +214,9 @@ public class GuiPowerMonitor extends GuiScreenBase {
     int x = left;
     int y = guiTop + MARGIN + SPACING;
     if(!enabledB.isSelected()) {
-      rgb = ColorUtil.getRGB(Color.black);
+      rgb = ColorUtil.getRGB(Color.darkGray);
     } else {
-      rgb = ColorUtil.getRGB(Color.blue);
+      rgb = ColorUtil.getRGB(Color.black);
     }
     fontRenderer.drawString(titleStr, x, y, rgb, false);
 
@@ -226,23 +226,18 @@ public class GuiPowerMonitor extends GuiScreenBase {
       rgb = ColorUtil.getRGB(Color.darkGray);
       enabledB.drawButton(mc, guiLeft, guiTop);
     } else {
-      rgb = ColorUtil.getRGB(Color.blue);
-      rgb = ColorUtil.getRGB(0, 18, 127);
+      //      rgb = ColorUtil.getRGB(Color.blue);
+      //      rgb = ColorUtil.getRGB(0, 18, 127);
+      rgb = ColorUtil.getRGB(Color.black);
     }
 
     enabledB.drawButton(mc, guiLeft, guiTop);
-    //colorB.drawButton(mc, guiLeft, guiTop);
 
     y += SPACING + ICON_SIZE;
     x = left;
 
     String txt = emmitStr + " signal when storage less";
     fontRenderer.drawString(txt, x, y, rgb, false);
-    //x += fontRenderer.getStringWidth(txt);
-    //    x += 4 + ICON_SIZE + 4;
-    //
-    //    txt = "when storage less than";
-    //    fontRenderer.drawString(txt, x, y, rgb, false);
 
     y += SPACING + fontRenderer.FONT_HEIGHT;
 
@@ -277,8 +272,10 @@ public class GuiPowerMonitor extends GuiScreenBase {
   private void renderInfoTab(int sx, int sy) {
     drawTexturedModalRect(sx + 200, sy + SPACING, 225, 53, 20, 48);
 
-    int headingCol = ColorUtil.getRGB(Color.blue);
-    int valuesCol = ColorUtil.getRGB(Color.white);
+    //    int headingCol = ColorUtil.getRGB(Color.black);
+    //    int valuesCol = ColorUtil.getRGB(Color.white);
+    int headingCol = ColorUtil.getRGB(Color.white);
+    int valuesCol = ColorUtil.getRGB(Color.black);
     int rgb;
     int x = guiLeft + MARGIN;
     int y = guiTop + MARGIN;
@@ -288,7 +285,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = headingCol;
     StringBuilder sb = new StringBuilder();
     sb.append("Conduit Storage");
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
@@ -297,13 +294,13 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(" of ");
     sb.append(INT_NF.format(te.maxPowerInCoduits));
     sb.append(" MJ");
-    drawString(fontRenderer, sb.toString(), x, y, rgb);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
     sb.append("Capacitor Bank Storage");
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
@@ -312,13 +309,13 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(" of ");
     sb.append(INT_NF.format(te.maxPowerInCapBanks));
     sb.append(" MJ");
-    drawString(fontRenderer, sb.toString(), x, y, rgb);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
     sb.append("Machine Buffers");
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
@@ -327,31 +324,31 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(" of ");
     sb.append(INT_NF.format(te.maxPowerInMachines));
     sb.append(" MJ");
-    drawString(fontRenderer, sb.toString(), x, y, rgb);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
     sb.append("Average output over 5 seconds");
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
     sb.append(FLOAT_NF.format(te.aveMjSent));
-    drawString(fontRenderer, sb.toString(), x, y, rgb);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
     sb.append("Average input over 5 seconds");
-    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
     sb.append(FLOAT_NF.format(te.aveMjRecieved));
-    drawString(fontRenderer, sb.toString(), x, y, rgb);
+    fontRenderer.drawString(sb.toString(), x, y, rgb, false);
   }
 
 }
