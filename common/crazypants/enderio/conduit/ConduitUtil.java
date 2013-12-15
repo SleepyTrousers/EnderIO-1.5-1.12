@@ -14,6 +14,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -305,7 +307,7 @@ public class ConduitUtil {
       return false;
     }
 
-    int signalStrength = getInternalSignalForColor(bundle, col);    
+    int signalStrength = getInternalSignalForColor(bundle, col);
     if(signalStrength < 15 && SignalColor.RED == col && bundle != null && bundle.getEntity() != null) {
       TileEntity te = bundle.getEntity();
       signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
@@ -328,6 +330,16 @@ public class ConduitUtil {
       }
     }
     return signalStrength;
+  }
+
+  public static boolean isFluidValid(FluidStack fluidStack) {
+    if(fluidStack != null) {
+      String name = FluidRegistry.getFluidName(fluidStack);
+      if(name != null && !name.trim().isEmpty()) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

@@ -5,6 +5,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
+import crazypants.enderio.conduit.ConduitUtil;
 
 public class ConduitTank implements IFluidTank {
 
@@ -151,20 +152,14 @@ public class ConduitTank implements IFluidTank {
   }
 
   public boolean containsValidLiquid() {
-    if(fluid != null) {
-      String name = FluidRegistry.getFluidName(fluid);
-      if(name != null && !name.isEmpty()) {
-        return true;
-      }
-    }
-    return false;
+    return ConduitUtil.isFluidValid(fluid);
   }
 
   public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
     if(containsValidLiquid()) {
       fluid.writeToNBT(nbt);
     } else {
-      nbt.setString("emptyTank", "");
+      nbt.setBoolean("emptyTank", true);
     }
     return nbt;
   }
