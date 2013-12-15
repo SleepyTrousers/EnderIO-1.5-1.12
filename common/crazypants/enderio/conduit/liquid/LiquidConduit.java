@@ -426,7 +426,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   private int pushLiquid(ForgeDirection from, FluidStack pushStack, boolean doPush, int token) {
-    if(token == currentPushToken || pushStack == null || pushStack.amount <= 0) {
+    if(token == currentPushToken || pushStack == null || pushStack.amount <= 0 || network == null) {
       return 0;
     }
     currentPushToken = token;
