@@ -1,4 +1,4 @@
-Release 0.5.2
+0.5.2
 - Transceivers now handle items
 - Changed Transceivers to a straight 'send/receive' model
 - Server side performance optimisations made across the board

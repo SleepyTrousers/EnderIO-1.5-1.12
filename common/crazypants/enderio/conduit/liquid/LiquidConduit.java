@@ -523,10 +523,13 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     super.writeToNBT(nbtRoot);
     if(tank.containsValidLiquid()) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
-    } else if(getFluidType() != null) {
-      FluidStack ft = getFluidType().copy();
-      ft.amount = 0;
-      nbtRoot.setTag("tank", ft.writeToNBT(new NBTTagCompound()));
+    } else {
+      FluidStack ft = getFluidType();
+      if(ConduitUtil.isFluidValid(ft)) {
+        ft = getFluidType().copy();
+        ft.amount = 0;
+        nbtRoot.setTag("tank", ft.writeToNBT(new NBTTagCompound()));
+      }
     }
 
     for (Entry<ForgeDirection, RedstoneControlMode> entry : extractionModes.entrySet()) {
