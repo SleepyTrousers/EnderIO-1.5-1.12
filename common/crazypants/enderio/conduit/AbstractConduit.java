@@ -51,6 +51,8 @@ public abstract class AbstractConduit implements IConduit {
 
   private int lastNumConections = -1;
 
+  private boolean updateConnections = true;
+
   protected AbstractConduit() {
   }
 
@@ -178,10 +180,6 @@ public abstract class AbstractConduit implements IConduit {
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
     return false;
   }
-
-  //  public boolean canConnectToExternal(ForgeDirection direction) {
-  //    return canConnectToExternal(direction, false);
-  //  }
 
   @Override
   public Set<ForgeDirection> getExternalConnections() {
@@ -327,11 +325,42 @@ public abstract class AbstractConduit implements IConduit {
       return;
     }
     updateNetwork(world);
-
+    updateConnections();
     if(clientStateDirty) {
       getBundle().dirty();
       clientStateDirty = false;
     }
+  }
+
+  private void updateConnections() {
+    if(!updateConnections) {
+      return;
+    }
+
+    boolean externalConnectionsChanged = false;
+    List<ForgeDirection> copy = new ArrayList<ForgeDirection>(externalConnections);
+    // remove any no longer valid connections
+    for (ForgeDirection dir : copy) {
+      if(!canConnectToExternal(dir, false)) {
+        externalConnectionRemoved(dir);
+        externalConnectionsChanged = true;
+      }
+    }
+
+    // then check for new ones
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      if(!conduitConnections.contains(dir) && !externalConnections.contains(dir)) {
+        if(canConnectToExternal(dir, false)) {
+          externalConnectionAdded(dir);
+          externalConnectionsChanged = true;
+        }
+      }
+    }
+    if(externalConnectionsChanged) {
+      connectionsChanged();
+    }
+
+    updateConnections = false;
   }
 
   protected void connectionsChanged() {
@@ -415,29 +444,9 @@ public abstract class AbstractConduit implements IConduit {
       return false;
     }
 
-    boolean externalConnectionsChanged = false;
-    List<ForgeDirection> copy = new ArrayList<ForgeDirection>(externalConnections);
-    // remove any no longer valid connections
-    for (ForgeDirection dir : copy) {
-      if(!canConnectToExternal(dir, false)) {
-        externalConnectionRemoved(dir);
-        externalConnectionsChanged = true;
-      }
-    }
+    updateConnections = true;
 
-    // then check for new ones
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      if(!conduitConnections.contains(dir) && !externalConnections.contains(dir)) {
-        if(canConnectToExternal(dir, false)) {
-          externalConnectionAdded(dir);
-          externalConnectionsChanged = true;
-        }
-      }
-    }
-    if(externalConnectionsChanged) {
-      connectionsChanged();
-    }
-    return externalConnectionsChanged;
+    return true;
   }
 
   @Override

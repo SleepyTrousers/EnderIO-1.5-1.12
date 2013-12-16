@@ -24,6 +24,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import buildcraft.api.transport.IPipeTile;
+import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
@@ -692,6 +694,11 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private IFluidHandler getTankContainer(int x, int y, int z) {
     TileEntity te = getBundle().getEntity().worldObj.getBlockTileEntity(x, y, z);
     if(te instanceof IFluidHandler) {
+      if(te instanceof IPipeTile) {
+        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
+          return null;
+        }
+      }
       return (IFluidHandler) te;
     }
     return null;
