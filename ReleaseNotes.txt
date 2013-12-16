@@ -1,3 +1,7 @@
+0.5.3
+- #348 Fixed liquid conduit crash (fix from Baughn)
+- #349 Improved checking of fluids before writing to NBT. 
+
 0.5.2
 - Transceivers now handle items
 - Changed Transceivers to a straight 'send/receive' model
