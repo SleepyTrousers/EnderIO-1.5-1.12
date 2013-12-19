@@ -137,7 +137,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     List<Target> sendPriority = new ArrayList<Target>();
 
     private int extractFromSlot = -1;
-    private int numSlots;
 
     int tickDeficit;
 
@@ -145,7 +144,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       this.inv = inv;
 
       inventorySide = conDir.getOpposite().ordinal();
-      numSlots = inv.getSizeInventory();
 
       this.con = con;
       this.conDir = conDir;
@@ -153,7 +151,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
       if(inv instanceof ISidedInventory) {
         sidedInv = (ISidedInventory) inv;
-        numSlots = sidedInv.getAccessibleSlotsFromSide(inventorySide).length;
       }
 
     }
@@ -179,7 +176,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       } else if(sidedInv != null) {
         transferItemsSided();
       } else {
-        tranfserItems();
+        transferItems();
       }
 
       tickDeficit--;
@@ -196,7 +193,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       return true;
     }
 
-    private int nextSlot() {
+    private int nextSlot(int numSlots) {
       ++extractFromSlot;
       if(extractFromSlot >= numSlots || extractFromSlot < 0) {
         extractFromSlot = 0;
@@ -204,8 +201,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       return extractFromSlot;
     }
 
-    private boolean tranfserItems() {
-      int size = inv.getSizeInventory();
+    private boolean transferItems() {
       int numSlots = inv.getSizeInventory();
       ItemStack extractItem = null;
 
@@ -213,12 +209,12 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       int slot = -1;
       int slotChecksPerTick = Math.min(numSlots, MAX_SLOT_CHECK_PER_TICK);
       for (int i = 0; i < slotChecksPerTick; i++) {
-        int index = nextSlot();
+        int index = nextSlot(numSlots);
         ItemStack item = inv.getStackInSlot(index);
         if(canExtractItem(item)) {
           extractItem = item.copy();
           slot = index;
-          if(doTranfser(extractItem, slot, maxExtracted)) {
+          if(doTransfer(extractItem, slot, maxExtracted)) {
             setNextStartingSlot(slot - 1);
             return true;
           }
@@ -234,21 +230,21 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
     private boolean transferItemsSided() {
 
-      int size = sidedInv.getSizeInventory();
       int[] slotIndices = sidedInv.getAccessibleSlotsFromSide(inventorySide);
+      int numSlots = slotIndices.length;
       ItemStack extractItem = null;
       int maxExtracted = con.getMaximumExtracted();
 
       int slot = -1;
       int slotChecksPerTick = Math.min(numSlots, MAX_SLOT_CHECK_PER_TICK);
       for (int i = 0; i < slotChecksPerTick; i++) {
-        int index = nextSlot();
+        int index = nextSlot(numSlots);
         slot = slotIndices[index];
         ItemStack item = sidedInv.getStackInSlot(slot);
         if(canExtractItem(item)) {
           extractItem = item.copy();
           if(sidedInv.canExtractItem(index, extractItem, inventorySide)) {
-            if(doTranfser(extractItem, slot, maxExtracted)) {
+            if(doTransfer(extractItem, slot, maxExtracted)) {
               setNextStartingSlot(slot);
               return true;
             }
@@ -269,7 +265,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       return filter.doesItemPassFilter(itemStack);
     }
 
-    private boolean doTranfser(ItemStack extractedItem, int slot, int maxExtract) {
+    private boolean doTransfer(ItemStack extractedItem, int slot, int maxExtract) {
       if(extractedItem == null) {
         return false;
       }
