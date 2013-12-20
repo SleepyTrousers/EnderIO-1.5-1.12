@@ -16,6 +16,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
+import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
@@ -125,8 +126,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
   class NetworkedInventory {
 
-    IInventory inv;
-    ISidedInventory sidedInv;
+    ISidedInventory inv;
     IItemConduit con;
     ForgeDirection conDir;
     BlockCoord location;
@@ -141,7 +141,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     int tickDeficit;
 
     NetworkedInventory(IInventory inv, IItemConduit con, ForgeDirection conDir, BlockCoord location) {
-      this.inv = inv;
 
       inventorySide = conDir.getOpposite().ordinal();
 
@@ -150,7 +149,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       this.location = location;
 
       if(inv instanceof ISidedInventory) {
-        sidedInv = (ISidedInventory) inv;
+        this.inv = (ISidedInventory) inv;
+      } else {
+        inv = new InventoryWrapper(inv);
       }
 
     }
@@ -172,9 +173,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     public void onTick(long tick) {
       int transfered;
       if(tickDeficit > 0 || !canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
-        //do nothing
-      } else if(sidedInv != null) {
-        transferItemsSided();
+        //do nothing     
       } else {
         transferItems();
       }
@@ -201,36 +200,17 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       return extractFromSlot;
     }
 
-    private boolean transferItems() {
-      int numSlots = inv.getSizeInventory();
-      ItemStack extractItem = null;
-
-      int maxExtracted = con.getMaximumExtracted();
-      int slot = -1;
-      int slotChecksPerTick = Math.min(numSlots, MAX_SLOT_CHECK_PER_TICK);
-      for (int i = 0; i < slotChecksPerTick; i++) {
-        int index = nextSlot(numSlots);
-        ItemStack item = inv.getStackInSlot(index);
-        if(canExtractItem(item)) {
-          extractItem = item.copy();
-          slot = index;
-          if(doTransfer(extractItem, slot, maxExtracted)) {
-            setNextStartingSlot(slot - 1);
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-
     private void setNextStartingSlot(int slot) {
       extractFromSlot = slot;
       extractFromSlot--;
     }
 
-    private boolean transferItemsSided() {
+    private boolean transferItems() {
 
-      int[] slotIndices = sidedInv.getAccessibleSlotsFromSide(inventorySide);
+      int[] slotIndices = inv.getAccessibleSlotsFromSide(inventorySide);
+      if(slotIndices == null) {
+        return false;
+      }
       int numSlots = slotIndices.length;
       ItemStack extractItem = null;
       int maxExtracted = con.getMaximumExtracted();
@@ -240,10 +220,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       for (int i = 0; i < slotChecksPerTick; i++) {
         int index = nextSlot(numSlots);
         slot = slotIndices[index];
-        ItemStack item = sidedInv.getStackInSlot(slot);
+        ItemStack item = inv.getStackInSlot(slot);
         if(canExtractItem(item)) {
           extractItem = item.copy();
-          if(sidedInv.canExtractItem(index, extractItem, inventorySide)) {
+          if(inv.canExtractItem(index, extractItem, inventorySide)) {
             if(doTransfer(extractItem, slot, maxExtracted)) {
               setNextStartingSlot(slot);
               return true;
@@ -282,8 +262,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         curStack.stackSize -= numInserted;
         if(curStack.stackSize > 0) {
           inv.setInventorySlotContents(slot, curStack);
+          inv.onInventoryChanged();
         } else {
           inv.setInventorySlotContents(slot, null);
+          inv.onInventoryChanged();
         }
       }
       con.itemsExtracted(numInserted, slot);
