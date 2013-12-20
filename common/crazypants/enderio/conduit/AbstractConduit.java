@@ -326,7 +326,7 @@ public abstract class AbstractConduit implements IConduit {
     }
     updateNetwork(world);
     updateConnections();
-    if(clientStateDirty) {
+    if(clientStateDirty && getBundle() != null) {
       getBundle().dirty();
       clientStateDirty = false;
     }
