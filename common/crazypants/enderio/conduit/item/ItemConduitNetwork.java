@@ -151,7 +151,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       if(inv instanceof ISidedInventory) {
         this.inv = (ISidedInventory) inv;
       } else {
-        inv = new InventoryWrapper(inv);
+        this.inv = new InventoryWrapper(inv);
       }
 
     }
