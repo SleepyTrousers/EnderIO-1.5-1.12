@@ -1,3 +1,10 @@
+0.5.4
+- #262 Machines not getting power if placed after conduits (MCPC).
+- #350 Item conduits connecting to BC fluid pipes.
+- #355 ItemConduit crash when modifying TE machine outputs.
+- #362 NPE in AbstractConduit.
+- #363 Factorization Barrels no updating display when items removed.
+
 0.5.3
 - #348 Fixed liquid conduit crash (fix from Baughn)
 - #349 Improved checking of fluids before writing to NBT. 
