@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -14,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -51,6 +49,8 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   protected RedstoneConduitNetwork network;
 
   protected final Set<Signal> externalSignals = new HashSet<Signal>();
+
+  protected boolean neighbourDirty = true;
 
   public RedstoneConduit() {
   }
@@ -144,25 +144,23 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(world.isRemote) {
       return false;
     }
-    if(blockId == EnderIO.blockConduitBundle.blockID) {
-      return false;
-    }
     boolean res = super.onNeighborBlockChange(blockId);
-
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    if(blockId < 0) {
-      return res;
-    }
+    neighbourDirty = true;
+    return res;
+  }
 
-    if((blockId == 0 || blockId > 0 && Block.blocksList[blockId].canProvidePower()) && network != null) {
-      // TODO: Just recalculate the signals, no need for a full rebuild
+  @Override
+  public void updateEntity(World world) {
+    // TODO Auto-generated method stub
+    super.updateEntity(world);
+    if(!world.isRemote && neighbourDirty) {
       network.destroyNetwork();
       updateNetwork(world);
-      return false;
+      neighbourDirty = false;
     }
-    return res;
   }
 
   protected int getExternalPowerLevel(ForgeDirection dir) {
