@@ -310,16 +310,6 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
-  public boolean onNeighborBlockChange(int blockId) {
-    if(super.onNeighborBlockChange(blockId)) {
-      BlockCoord loc = getLocation();
-      getBundle().getEntity().worldObj.notifyBlocksOfNeighborChange(loc.x, loc.y, loc.z, 2);
-      return true;
-    }
-    return false;
-  }
-
-  @Override
   public int isProvidingWeakPower(ForgeDirection toDirection) {
     if(getConectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
       return 0;
