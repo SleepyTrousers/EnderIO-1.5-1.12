@@ -1,3 +1,8 @@
+0.5.5
+- SAG Mill recipes added for Metallurgy, Mekanism, Engineer's Toolbox, BigReactors (KirinDave)
+- #370 Crash when redstone conduits receive block updates
+- #367 Redstone conduits not responding to changes in AE level emitter 
+
 0.5.4
 - #262 Machines not getting power if placed after conduits (MCPC).
 - #350 Item conduits connecting to BC fluid pipes.
