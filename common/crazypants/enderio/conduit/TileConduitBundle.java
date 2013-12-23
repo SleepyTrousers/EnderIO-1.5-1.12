@@ -177,16 +177,25 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   @Override
   public void updateEntity() {
+
+    if(worldObj == null) {
+      return;
+    }
+
     for (IConduit conduit : conduits) {
       conduit.updateEntity(worldObj);
     }
 
-    if(worldObj != null && !worldObj.isRemote && conduitsDirty) {
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    if(conduitsDirty) {
+      if(!worldObj.isRemote) {
+        //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        //TODO: WTF?? Why do I need to do this to get the dam client to update
+        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, blockMetadata == 1 ? 0 : 1, 2);
+      }
       conduitsDirty = false;
     }
 
-    if(worldObj != null && facadeChanged) {
+    if(facadeChanged) {
       ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord);
 
       worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
@@ -428,7 +437,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       }
     }
 
-    //External Connectors
+    // External Connectors
     Set<ForgeDirection> externalDirs = new HashSet<ForgeDirection>();
     for (IConduit con : conduits) {
       Set<ForgeDirection> extCons = con.getExternalConnections();
@@ -571,7 +580,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   public World getWorld() {
     return worldObj;
   }
-    
+
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
@@ -616,7 +625,6 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     return 0;
   }
-
 
   // ------- Liquids -----------------------------
 
@@ -674,7 +682,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     return null;
   }
 
-  //---- TE Item Conduits
+  // ---- TE Item Conduits
 
   @Override
   public ItemStack sendItems(ItemStack item, ForgeDirection side) {
@@ -684,5 +692,5 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     return item;
   }
-  
+
 }

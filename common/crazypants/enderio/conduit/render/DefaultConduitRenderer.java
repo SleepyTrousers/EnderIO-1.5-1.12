@@ -49,15 +49,17 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
         if(isNSEWUP(component.dir) &&
             conduit.getTransmitionTextureForState(component) != null) {
-          tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f,
-              selfIllum + 0.1f, 0.75f);
+          //          tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f,
+          //              selfIllum + 0.1f, 0.75f);
+          tessellator.setBrightness((int) (worldLight));
           tex = conduit.getTransmitionTextureForState(component);
           renderTransmission(conduit, tex, component, selfIllum);
         }
 
         tex = conduit.getTextureForState(component);
         if(tex != null) {
-          tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
+          //tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
+          tessellator.setBrightness((int) (worldLight));
           renderConduit(tex, conduit, component, selfIllum);
         }
       }
