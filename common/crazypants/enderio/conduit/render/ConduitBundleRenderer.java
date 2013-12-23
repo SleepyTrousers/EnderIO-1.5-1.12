@@ -11,15 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -37,13 +32,13 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 
-public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
+public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
 
   public ConduitBundleRenderer(float conduitScale) {
   }
 
-  @Override
-  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
+
+  private void doRenderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
@@ -59,34 +54,24 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     if(curRS != rs) {
       te.worldObj.markBlockForRenderUpdate(te.xCoord, te.yCoord, te.zCoord);
       ConduitUtil.forceSkylightRecalculation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+      bundle.setFacadeRenderAs(rs);
     }
 
-    if(curRS == FacadeRenderState.FULL) {
+    if(curRS == FacadeRenderState.FULL) {      
       return;
     }
-
-    // Lighting calcuations to allow for self illumination
-    float val = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+    
+    // Lighting calcuations to allow for self illumination    
+    float val = te.worldObj.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
     renderTileEntityAt(bundle, x, y, z, partialTick, val);
   }
 
   public void renderTileEntityAt(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
 
-    RenderUtil.bindBlockTexture();
-    Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
-
-    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-    GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    GL11.glShadeModel(GL11.GL_SMOOTH);
-
-    GL11.glPushMatrix();
-    GL11.glTranslated(x, y, z);
-
-    Tessellator tessellator = Tessellator.instance;
-    tessellator.startDrawingQuads();
+    
+    Tessellator tessellator = Tessellator.instance;  
+    tessellator.setColorOpaque_F(1, 1, 1);
+    tessellator.addTranslation((float)x, (float)y, (float)z);
 
     // Conduits
     Set<ForgeDirection> externals = new HashSet<ForgeDirection>();
@@ -121,8 +106,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         IConduit conduit = bundle.getConduit(component.conduitType);
         if(conduit != null) {
           if(ConduitUtil.renderConduit(player, component.conduitType)) {
-            float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
-            tessellator.setColorRGBA_F(selfIllum, selfIllum, selfIllum, 1);
+//            float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
+//            tessellator.setColorRGBA_F(selfIllum, selfIllum, selfIllum, 1);
+            tessellator.setBrightness((int)(brightness));
             CubeRenderer.render(component.bound, conduit.getTextureForState(component));
           } else {
             wireBounds.add(component.bound);
@@ -147,13 +133,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       renderExternalConnection(dir);
     }
 
-    tessellator.draw();
-
-    GL11.glShadeModel(GL11.GL_FLAT);
-    GL11.glPopMatrix();
-    GL11.glPopAttrib();
-    GL11.glPopAttrib();
-    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
+    
+    tessellator.addTranslation(-(float)x, -(float)y, -(float)z);
 
   }
 
@@ -171,6 +152,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(x, y, z);
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
+    boolean renderConduit = true;
     if(bundle.hasFacade()) {
 
       int facadeId = bundle.getFacadeId();
@@ -179,6 +161,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
       } else {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
+        renderConduit = false;
       }
 
       BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
@@ -193,6 +176,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     } else {
       bundle.setFacadeRenderAs(FacadeRenderState.NONE);
     }
+    
+    if(renderConduit) {
+      doRenderTileEntityAt(bundle.getEntity(), x, y, z, 0);
+    }
+    
     return true;
   }
 
