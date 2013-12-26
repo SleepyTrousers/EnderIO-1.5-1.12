@@ -272,9 +272,9 @@ public class NetworkPowerManager {
     boolean doRender = active != lastActiveValue && (active || (!active && ticksWithNoPower > updateRenderTicks));
     if(doRender) {
       lastActiveValue = active;
-      for (IPowerConduit con : network.getConduits()) {
-        con.setActive(active);
-      }
+      //for (IPowerConduit con : network.getConduits()) {
+        //con.setActive(active);
+      //}
     }
   }
 

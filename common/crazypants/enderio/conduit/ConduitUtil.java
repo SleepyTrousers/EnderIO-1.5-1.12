@@ -123,7 +123,7 @@ public class ConduitUtil {
     return false;
   }
 
-  public static void forceSkylightRecalculation(World worldObj, int xCoord, int yCoord, int zCoord) {
+  public static boolean forceSkylightRecalculation(World worldObj, int xCoord, int yCoord, int zCoord) {
     int height = worldObj.getHeightValue(xCoord, zCoord);
     if(height <= yCoord) {
       for (int i = 1; i < 12; i++) {
@@ -134,9 +134,11 @@ public class ConduitUtil {
           //a block above this one to force the check
           worldObj.setBlock(xCoord, yCoord + i, zCoord, 1, 0, 3);
           worldObj.setBlockToAir(xCoord, yCoord + i, zCoord);
+          return true;
         }
       }
     }
+    return false;
   }
 
   @SideOnly(Side.CLIENT)

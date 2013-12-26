@@ -20,8 +20,10 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.CommonProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -185,25 +187,44 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     for (IConduit conduit : conduits) {
       conduit.updateEntity(worldObj);
     }
-
+    
     if(conduitsDirty) {
-      if(!worldObj.isRemote) {
+      if(!worldObj.isRemote) {        
         //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         //TODO: WTF?? Why do I need to do this to get the dam client to update
-        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, blockMetadata == 1 ? 0 : 1, 2);
-      }
-      conduitsDirty = false;
+        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, blockMetadata == 1 ? 0 : 1, 2);                        
+      } 
+      conduitsDirty = false;            
     }
 
     if(facadeChanged) {
+      //force re-calc of lighting for both client and server
       ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord);
-
       worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
       worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
       facadeChanged = false;
     }
+    
+    if(worldObj.isRemote) {
+      
+      FacadeRenderState curRS = getFacadeRenderedAs();            
+      FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
+      int curLO = getLightOpacity();
+      int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
+      if(curLO != shouldBeLO) {
+        setLightOpacity(shouldBeLO);
+        worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+      }
+      if(curRS != rs) {
+        setFacadeRenderAs(rs);
+        if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
+          worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        }        
+      }      
+    }
   }
 
+  @Override
   public BlockCoord getLocation() {
     return new BlockCoord(xCoord, yCoord, zCoord);
   }

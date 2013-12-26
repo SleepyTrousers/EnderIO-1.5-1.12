@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.util.BlockCoord;
 
 public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemConduit {
 
@@ -86,5 +87,7 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
   void setFacadeMetadata(int meta);
 
   int getFacadeMetadata();
+
+  BlockCoord getLocation();
 
 }
