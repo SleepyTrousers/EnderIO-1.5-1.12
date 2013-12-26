@@ -41,25 +41,6 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
   private void doRenderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-
-    FacadeRenderState curRS = bundle.getFacadeRenderedAs();
-    FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(bundle, player);
-
-    int curLO = bundle.getLightOpacity();
-    int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
-    if(curLO != shouldBeLO) {
-      bundle.setLightOpacity(shouldBeLO);
-      te.worldObj.updateAllLightTypes(te.xCoord, te.yCoord, te.zCoord);
-    }
-    if(curRS != rs) {
-      te.worldObj.markBlockForRenderUpdate(te.xCoord, te.yCoord, te.zCoord);
-      ConduitUtil.forceSkylightRecalculation(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-      bundle.setFacadeRenderAs(rs);
-    }
-
-    if(curRS == FacadeRenderState.FULL) {      
-      return;
-    }
     
     // Lighting calcuations to allow for self illumination    
     float val = te.worldObj.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
@@ -176,7 +157,7 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
     } else {
       bundle.setFacadeRenderAs(FacadeRenderState.NONE);
     }
-    
+
     if(renderConduit) {
       doRenderTileEntityAt(bundle.getEntity(), x, y, z, 0);
     }
