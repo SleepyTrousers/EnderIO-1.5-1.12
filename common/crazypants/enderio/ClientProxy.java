@@ -15,7 +15,6 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
@@ -142,7 +141,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart.itemID, new MachinePartRenderer());
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
-    
+
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new LiquidConduitRenderer());
     conduitRenderers.add(new PowerConduitRenderer());
@@ -158,10 +157,10 @@ public class ClientProxy extends CommonProxy {
     HyperCubeRenderer hcr = new HyperCubeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockHyperCube.blockID, hcr);
-    
+
     new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
     // Tick handler
-    if (Config.useSneakMouseWheelYetaWrench) {
+    if(Config.useSneakMouseWheelYetaWrench) {
       TickRegistry.registerTickHandler(new YetaWrenchTickHandler(), Side.CLIENT);
     }
 
@@ -170,7 +169,7 @@ public class ClientProxy extends CommonProxy {
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {
     for (ConduitRenderer renderer : conduitRenderers) {
-      if (renderer.isRendererForConduit(conduit)) {
+      if(renderer.isRendererForConduit(conduit)) {
         return renderer;
       }
     }
@@ -179,7 +178,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    if (entityPlayer instanceof EntityPlayerMP) {
+    if(entityPlayer instanceof EntityPlayerMP) {
       return ((EntityPlayerMP) entityPlayer).theItemInWorldManager.getBlockReachDistance();
     }
     return super.getReachDistanceForPlayer(entityPlayer);
