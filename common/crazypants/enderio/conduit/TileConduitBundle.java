@@ -20,10 +20,8 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.CommonProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -187,14 +185,14 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     for (IConduit conduit : conduits) {
       conduit.updateEntity(worldObj);
     }
-    
+
     if(conduitsDirty) {
-      if(!worldObj.isRemote) {        
+      if(!worldObj.isRemote) {
         //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         //TODO: WTF?? Why do I need to do this to get the dam client to update
-        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, blockMetadata == 1 ? 0 : 1, 2);                        
-      } 
-      conduitsDirty = false;            
+        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, blockMetadata == 1 ? 0 : 1, 2);
+      }
+      conduitsDirty = false;
     }
 
     if(facadeChanged) {
@@ -204,10 +202,10 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
       facadeChanged = false;
     }
-    
+
     if(worldObj.isRemote) {
-      
-      FacadeRenderState curRS = getFacadeRenderedAs();            
+
+      FacadeRenderState curRS = getFacadeRenderedAs();
       FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
       int curLO = getLightOpacity();
       int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
@@ -219,8 +217,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
         setFacadeRenderAs(rs);
         if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
           worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-        }        
-      }      
+        }
+      }
     }
   }
 
@@ -710,6 +708,15 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     IItemConduit ic = getConduit(IItemConduit.class);
     if(ic != null) {
       return ic.sendItems(item, side);
+    }
+    return item;
+  }
+
+  @Override
+  public ItemStack insertItem(ForgeDirection from, ItemStack item, boolean simulate) {
+    IItemConduit ic = getConduit(IItemConduit.class);
+    if(ic != null) {
+      return ic.insertItem(from, item, simulate);
     }
     return item;
   }
