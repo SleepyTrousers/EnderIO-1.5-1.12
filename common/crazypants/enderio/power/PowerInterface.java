@@ -90,7 +90,7 @@ public class PowerInterface {
 
   public float getPowerRequest(ForgeDirection dir) {
     if(rfPower != null) {
-      if(rfPower.canInterface(dir)) {
+      if(dir != null && rfPower.canInterface(dir)) {
         return rfPower.receiveEnergy(dir, 99999999, true) / 10f;
       }
       return 0;
