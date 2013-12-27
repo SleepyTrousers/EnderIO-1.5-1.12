@@ -117,4 +117,9 @@ public class TriggerEnderIO implements ITrigger {
   public ITriggerParameter createParameter() {
     return null;
   }
+
+  @Override
+  public boolean requiresParameter() {
+    return false;
+  }
 }
