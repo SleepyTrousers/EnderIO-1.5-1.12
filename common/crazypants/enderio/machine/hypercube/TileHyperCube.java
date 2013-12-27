@@ -172,37 +172,37 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private void sendEnergyToOtherNodes() {
-    
+
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
     if(cubes == null || cubes.isEmpty()) {
       return;
     }
-    
+
     if(canSendPower()) {
-      
+
       boolean iWasConnected = isConnected();
-      
+
       for (TileHyperCube cube : cubes) {
         float stored = powerHandler.getEnergyStored();
         if(stored > 0 && cube != null && cube != this && cube.canRecievePower()) {
           boolean wasConnected = cube.isConnected();
-          
+
           float curPower = cube.powerHandler.getEnergyStored();
           float requires = cube.powerHandler.getMaxEnergyStored() - curPower;
-          float transfer = Math.min(requires, stored); 
+          float transfer = Math.min(requires, stored);
           transfer = Math.min(transfer, Config.transceiverMaxIO);
           cube.powerHandler.setEnergy(curPower + ((1 - ENERGY_LOSS) * transfer));
           powerHandler.setEnergy(powerHandler.getEnergyStored() - transfer);
           if(wasConnected != cube.isConnected()) {
             cube.fluidHandlersDirty = true;
-          }          
+          }
         }
       }
-      
+
       if(iWasConnected != isConnected()) {
         fluidHandlersDirty = true;
       }
-      
+
     }
 
   }
@@ -678,7 +678,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite());
+      result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite(), false);
       if(result.stackSize <= 0) {
         return null;
       }
