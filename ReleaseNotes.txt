@@ -1,3 +1,8 @@
+0.5.6
+- #340 Improved performance of conduit rendering
+- #371 Fixed BC triggers and updated BC API
+- #378 Updated TE API to resolve crashes with TE 3.0
+
 0.5.5
 - SAG Mill recipes added for Metallurgy, Mekanism, Engineer's Toolbox, BigReactors (KirinDave)
 - #370 Crash when redstone conduits receive block updates
