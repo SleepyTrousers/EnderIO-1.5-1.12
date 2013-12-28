@@ -721,4 +721,13 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     return item;
   }
 
+  @Override
+  public ItemStack insertItem(ForgeDirection from, ItemStack item) {
+    IItemConduit ic = getConduit(IItemConduit.class);
+    if(ic != null) {
+      return ic.insertItem(from, item);
+    }
+    return item;
+  }
+
 }

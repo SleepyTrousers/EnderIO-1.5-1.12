@@ -155,6 +155,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public ItemStack insertItem(ForgeDirection from, ItemStack item) {
+    return insertItem(from, item, false);
+  }
+
+  @Override
   public void setInputFilter(ForgeDirection dir, ItemFilter filter) {
     inputFilters.put(dir, filter);
   }
