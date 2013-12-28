@@ -18,4 +18,10 @@ public interface IRedstoneControl {
 
 	public boolean setRedstoneConfig(boolean disable, boolean state);
 
+	public boolean isPowered();
+
+	public void handlePowerUpdate(boolean powered);
+
+	public void handleConfigUpdate(boolean disable, boolean state);
+
 }

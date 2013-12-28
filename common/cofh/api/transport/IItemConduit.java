@@ -19,13 +19,14 @@ public interface IItemConduit {
 	 *            Orientation the item is inserted from.
 	 * @param item
 	 *            ItemStack to be inserted. The size of this stack corresponds to the maximum amount to insert.
-	 * @param simulate
-	 *            If TRUE, the insertion will only be simulated.
 	 * @return An ItemStack representing how much is remaining after the item was inserted (or would have been, if simulated) into the Conduit.
 	 */
+	public ItemStack insertItem(ForgeDirection from, ItemStack item);
+
+	/* THE FOLLOWING WILL BE REMOVED IN 3.0.1.X */
+	@Deprecated
 	public ItemStack insertItem(ForgeDirection from, ItemStack item, boolean simulate);
 
 	@Deprecated
 	public ItemStack sendItems(ItemStack item, ForgeDirection from);
-
 }
