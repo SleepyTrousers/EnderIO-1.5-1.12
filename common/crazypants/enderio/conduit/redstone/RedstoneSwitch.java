@@ -18,6 +18,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 import crazypants.vecmath.Vector3d;
 
 public class RedstoneSwitch extends RedstoneConduit {
@@ -116,7 +117,7 @@ public class RedstoneSwitch extends RedstoneConduit {
       return;
     }
     TileEntity te = bundle.getEntity();
-    Signal signal = new Signal(te.xCoord, te.yCoord, te.zCoord, ForgeDirection.UNKNOWN, 15, SignalColor.RED);
+    Signal signal = new Signal(te.xCoord, te.yCoord, te.zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
     if(isOn) {
       network.addSignal(signal);
     } else {
@@ -129,7 +130,7 @@ public class RedstoneSwitch extends RedstoneConduit {
     Set<Signal> res = super.getNetworkInputs();
     if(isOn) {
       BlockCoord loc = getLocation();
-      Signal signal = new Signal(loc.x, loc.y, loc.z, ForgeDirection.UNKNOWN, 15, SignalColor.RED);
+      Signal signal = new Signal(loc.x, loc.y, loc.z, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
       res.add(signal);
     }
     return res;

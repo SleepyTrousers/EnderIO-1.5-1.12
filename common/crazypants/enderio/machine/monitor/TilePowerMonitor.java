@@ -13,11 +13,11 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.conduit.redstone.Signal;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 import crazypants.util.Util;
 
 public class TilePowerMonitor extends AbstractMachineEntity implements IInternalPowerReceptor {
@@ -36,7 +36,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   boolean engineControlEnabled = false;
   float startLevel = 0.75f;
   float stopLevel = 0.99f;
-  SignalColor signalColor = SignalColor.RED;
+  DyeColor signalColor = DyeColor.RED;
 
   Signal currentlyEmmittedSignal;
 
@@ -48,8 +48,8 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     if(currentlyEmmittedSignal == null) {
       return new int[16];
     }
-    int[] res = new int[SignalColor.values().length];
-    for (SignalColor col : SignalColor.values()) {
+    int[] res = new int[DyeColor.values().length];
+    for (DyeColor col : DyeColor.values()) {
       res[col.ordinal()] = currentlyEmmittedSignal.color == col ? 15 : 0;
     }
     return res;
@@ -229,7 +229,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     engineControlEnabled = nbtRoot.getBoolean("engineControlEnabled");
     startLevel = nbtRoot.getFloat("startLevel");
     stopLevel = nbtRoot.getFloat("stopLevel");
-    signalColor = SignalColor.fromIndex(nbtRoot.getShort("signalColor"));
+    signalColor = DyeColor.fromIndex(nbtRoot.getShort("signalColor"));
   }
 
   @Override

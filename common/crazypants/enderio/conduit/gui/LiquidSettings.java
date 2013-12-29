@@ -10,13 +10,13 @@ import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.ColorUtil;
+import crazypants.util.DyeColor;
 
 public class LiquidSettings extends BaseSettingsPanel {
 
@@ -68,7 +68,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(conduit, gui.dir, SignalColor.values()[colorB.getColorIndex()]);
+      Packet pkt = ConduitPacketHandler.createSignalColorPacket(conduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
       PacketDispatcher.sendPacketToServer(pkt);
     }
   }

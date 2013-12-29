@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
+import crazypants.util.DyeColor;
 import net.minecraftforge.common.ForgeDirection;
 
 public class Signal {
@@ -9,9 +10,9 @@ public class Signal {
   public final int z;
   public final ForgeDirection dir;
   public final int strength;
-  public final SignalColor color;
+  public final DyeColor color;
 
-  public Signal(int x, int y, int z, ForgeDirection dir, int strength, SignalColor color) {
+  public Signal(int x, int y, int z, ForgeDirection dir, int strength, DyeColor color) {
     this.x = x;
     this.y = y;
     this.z = z;

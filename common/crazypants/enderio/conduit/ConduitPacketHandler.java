@@ -22,8 +22,8 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.util.DyeColor;
 
 public class ConduitPacketHandler implements IPacketProcessor {
 
@@ -80,7 +80,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
     }
   }
 
-  public static Packet createItemChannelPacket(IItemConduit itemConduit, ForgeDirection dir, SignalColor col, boolean input) {
+  public static Packet createItemChannelPacket(IItemConduit itemConduit, ForgeDirection dir, DyeColor col, boolean input) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
     IConduitBundle bundle = itemConduit.getBundle();
@@ -121,7 +121,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
       return;
     }
 
-    SignalColor col = SignalColor.values()[data.readShort()];
+    DyeColor col = DyeColor.values()[data.readShort()];
     boolean isInput = data.readBoolean();
     if(isInput) {
       con.setInputColor(dir, col);
@@ -319,7 +319,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
 
   }
 
-  public static Packet createSignalColorPacket(IConduit conduit, ForgeDirection dir, SignalColor color) {
+  public static Packet createSignalColorPacket(IConduit conduit, ForgeDirection dir, DyeColor color) {
     ByteArrayOutputStream bos = new ByteArrayOutputStream();
     DataOutputStream dos = new DataOutputStream(bos);
     try {
@@ -356,7 +356,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
       return;
     }
     ForgeDirection dir = ForgeDirection.values()[data.readShort()];
-    SignalColor col = SignalColor.values()[data.readShort()];
+    DyeColor col = DyeColor.values()[data.readShort()];
 
     ConTypeEnum type = ConTypeEnum.values()[data.readShort()];
     IConduit con = conBun.getConduit(type.baseType);

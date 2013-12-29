@@ -33,9 +33,9 @@ import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 
 public class ConduitUtil {
 
@@ -301,7 +301,7 @@ public class ConduitUtil {
 
   }
 
-  public static boolean isRedstoneControlModeMet(IConduitBundle bundle, RedstoneControlMode mode, SignalColor col) {
+  public static boolean isRedstoneControlModeMet(IConduitBundle bundle, RedstoneControlMode mode, DyeColor col) {
 
     if(mode == RedstoneControlMode.IGNORE) {
       return true;
@@ -310,7 +310,7 @@ public class ConduitUtil {
     }
 
     int signalStrength = getInternalSignalForColor(bundle, col);
-    if(signalStrength < 15 && SignalColor.RED == col && bundle != null && bundle.getEntity() != null) {
+    if(signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
       TileEntity te = bundle.getEntity();
       signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
     }
@@ -318,7 +318,7 @@ public class ConduitUtil {
   }
 
   
-  public static int getInternalSignalForColor(IConduitBundle bundle, SignalColor col) {
+  public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {
     int signalStrength = 0;
     IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);
     if(rsCon != null) {

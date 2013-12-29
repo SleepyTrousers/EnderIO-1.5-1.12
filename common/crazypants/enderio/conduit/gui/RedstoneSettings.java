@@ -9,10 +9,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.render.ColorUtil;
+import crazypants.util.DyeColor;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
@@ -28,9 +28,10 @@ public class RedstoneSettings extends BaseSettingsPanel {
     int x = gap + gui.getFontRenderer().getStringWidth(signalColorStr) + gap + 2;
     int y = customTop;
     cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+    cb.setToolTipHeading("Signal Color");
     if(con instanceof IInsulatedRedstoneConduit) {
       insCon = (IInsulatedRedstoneConduit) con;
-      SignalColor sigCol = insCon.getSignalColor(gui.dir);
+      DyeColor sigCol = insCon.getSignalColor(gui.dir);
       cb.setColorIndex(sigCol.ordinal());
     }
   }
@@ -39,7 +40,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(insCon, gui.dir, SignalColor.values()[cb.getColorIndex()]);
+      Packet pkt = ConduitPacketHandler.createSignalColorPacket(insCon, gui.dir, DyeColor.values()[cb.getColorIndex()]);
       PacketDispatcher.sendPacketToServer(pkt);
     }
   }

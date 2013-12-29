@@ -19,7 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
@@ -39,6 +38,7 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 
 public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsulatedRedstoneConduit {
 
@@ -70,7 +70,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
-  private Map<ForgeDirection, SignalColor> signalColors = new HashMap<ForgeDirection, SignalColor>();
+  private Map<ForgeDirection, DyeColor> signalColors = new HashMap<ForgeDirection, DyeColor>();
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -78,7 +78,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().worldObj;
     if(!world.isRemote) {
 
-      SignalColor col = getSignalColorFromEquippedItem(player.getCurrentEquippedItem());
+      DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
       if(col != null && res.component != null) {
         setSignalColor(res.component.dir, col);
         return true;
@@ -98,7 +98,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
           }
 
           if(colorHit) {
-            setSignalColor(connDir, SignalColor.getNext(getSignalColor(connDir)));
+            setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
             return true;
 
           } else if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
@@ -212,34 +212,17 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     //System.out.println("InsulatedRedstoneConduit.onInputChanged: ");
   }
 
-  private SignalColor getSignalColorFromEquippedItem(ItemStack currentEquippedItem) {
-    if(currentEquippedItem == null) {
-      return null;
-    }
-    int oreId = OreDictionary.getOreID(currentEquippedItem);
-    if(oreId < 0) {
-      return null;
-    }
-    for (int i = 0; i < DYE_ORE_NAMES.length; i++) {
-      String dyeName = DYE_ORE_NAMES[i];
-      if(OreDictionary.getOreID(dyeName) == oreId) {
-        return SignalColor.values()[i];
-      }
-    }
-    return null;
-  }
-
   @Override
-  public SignalColor getSignalColor(ForgeDirection dir) {
-    SignalColor res = signalColors.get(dir);
+  public DyeColor getSignalColor(ForgeDirection dir) {
+    DyeColor res = signalColors.get(dir);
     if(res == null) {
-      return SignalColor.RED;
+      return DyeColor.RED;
     }
     return res;
   }
 
   @Override
-  public void setSignalColor(ForgeDirection dir, SignalColor col) {
+  public void setSignalColor(ForgeDirection dir, DyeColor col) {
     Set<Signal> toRemove = getNetworkInputs(dir);
     signalColors.put(dir, col);
     Set<Signal> toAdd = getNetworkInputs(dir);
@@ -344,7 +327,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return allSigs;
     }
 
-    SignalColor col = getSignalColor(side);
+    DyeColor col = getSignalColor(side);
     Set<Signal> result = new HashSet<Signal>();
     for (Signal signal : allSigs) {
       if(signal.color == col) {
@@ -430,7 +413,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       byte[] modes = new byte[6];
       int i = 0;
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        SignalColor col = signalColors.get(dir);
+        DyeColor col = signalColors.get(dir);
         if(col != null) {
           modes[i] = (byte) col.ordinal();
         } else {
@@ -464,7 +447,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       int i = 0;
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(cols[i] >= 0) {
-          signalColors.put(dir, SignalColor.values()[cols[i]]);
+          signalColors.put(dir, DyeColor.values()[cols[i]]);
         }
         i++;
       }

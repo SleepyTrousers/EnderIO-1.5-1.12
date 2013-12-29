@@ -37,11 +37,11 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 
 public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -92,7 +92,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
 
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-  protected final EnumMap<ForgeDirection, SignalColor> extractionColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
   private final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
   private boolean redstoneStateDirty = true;
@@ -220,15 +220,15 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   }
 
   @Override
-  public void setExtractionSignalColor(ForgeDirection dir, SignalColor col) {
+  public void setExtractionSignalColor(ForgeDirection dir, DyeColor col) {
     extractionColors.put(dir, col);
   }
 
   @Override
-  public SignalColor getExtractionSignalColor(ForgeDirection dir) {
-    SignalColor result = extractionColors.get(dir);
+  public DyeColor getExtractionSignalColor(ForgeDirection dir) {
+    DyeColor result = extractionColors.get(dir);
     if(result == null) {
-      return SignalColor.RED;
+      return DyeColor.RED;
     }
     return result;
   }
@@ -287,14 +287,14 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       redstoneStateDirty = false;
     }
 
-    SignalColor col = getExtractionSignalColor(dir);
+    DyeColor col = getExtractionSignalColor(dir);
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
     if(mode.isConditionMet(mode, signal)) {
       return true;
     }
 
     int externalSignal = 0;
-    if(col == SignalColor.RED) {
+    if(col == DyeColor.RED) {
       Integer val = externalRedstoneSignals.get(dir);
       if(val == null) {
         TileEntity te = getBundle().getEntity();
@@ -541,7 +541,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       }
     }
 
-    for (Entry<ForgeDirection, SignalColor> entry : extractionColors.entrySet()) {
+    for (Entry<ForgeDirection, DyeColor> entry : extractionColors.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
@@ -568,8 +568,8 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
       key = "extSC." + dir.name();
       if(nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < SignalColor.values().length) {
-          extractionColors.put(dir, SignalColor.values()[ord]);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          extractionColors.put(dir, DyeColor.values()[ord]);
         }
       }
     }
