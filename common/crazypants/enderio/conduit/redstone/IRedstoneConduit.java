@@ -5,6 +5,7 @@ import java.util.Set;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.util.DyeColor;
 
 public interface IRedstoneConduit extends IConduit {
 
@@ -12,25 +13,6 @@ public interface IRedstoneConduit extends IConduit {
   public static final String KEY_TRANSMISSION_ICON = "enderio:redstoneConduitTransmission";
   public static final String KEY_CORE_OFF_ICON = "enderio:redstoneConduitCoreOff";
   public static final String KEY_CORE_ON_ICON = "enderio:redstoneConduitCoreOn";
-
-  public static final String[] DYE_ORE_NAMES = {
-      "dyeBlack",
-      "dyeRed",
-      "dyeGreen",
-      "dyeBrown",
-      "dyeBlue",
-      "dyePurple",
-      "dyeCyan",
-      "dyeLightGray",
-      "dyeGray",
-      "dyePink",
-      "dyeLime",
-      "dyeYellow",
-      "dyeLightBlue",
-      "dyeMagenta",
-      "dyeOrange",
-      "dyeWhite"
-  };
 
   // External redstone interface
 
@@ -44,7 +26,7 @@ public interface IRedstoneConduit extends IConduit {
 
   Set<Signal> getNetworkOutputs(ForgeDirection side);
 
-  SignalColor getSignalColor(ForgeDirection dir);
+  DyeColor getSignalColor(ForgeDirection dir);
 
   void updateNetwork();
 

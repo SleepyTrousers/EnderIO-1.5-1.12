@@ -15,7 +15,7 @@ import cpw.mods.fml.common.network.Player;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.redstone.SignalColor;
+import crazypants.util.DyeColor;
 
 public class PowerMonitorPacketHandler implements IPacketProcessor {
 
@@ -79,7 +79,7 @@ public class PowerMonitorPacketHandler implements IPacketProcessor {
     pm.engineControlEnabled = data.readBoolean();
     pm.startLevel = data.readFloat();
     pm.stopLevel = data.readFloat();
-    pm.signalColor = SignalColor.fromIndex(data.readShort());
+    pm.signalColor = DyeColor.fromIndex(data.readShort());
 
   }
 

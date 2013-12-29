@@ -10,8 +10,8 @@ import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.util.DyeColor;
 
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements ITileEntityProvider {
 
@@ -63,7 +63,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof TilePowerMonitor) {
 
-      return ((TilePowerMonitor) te).getRednetOutputValue(ForgeDirection.values()[side], SignalColor.RED.ordinal());
+      return ((TilePowerMonitor) te).getRednetOutputValue(ForgeDirection.values()[side], DyeColor.RED.ordinal());
     }
     return 0;
   }

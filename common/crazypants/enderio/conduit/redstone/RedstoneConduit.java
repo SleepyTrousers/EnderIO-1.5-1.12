@@ -21,6 +21,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
@@ -126,8 +127,8 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public SignalColor getSignalColor(ForgeDirection dir) {
-    return SignalColor.RED;
+  public DyeColor getSignalColor(ForgeDirection dir) {
+    return DyeColor.RED;
   }
 
   @Override

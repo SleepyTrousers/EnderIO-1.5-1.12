@@ -4,8 +4,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.util.DyeColor;
 
 public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit {
 
@@ -41,9 +41,9 @@ public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit 
 
   RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir);
 
-  void setExtractionSignalColor(ForgeDirection dir, SignalColor col);
+  void setExtractionSignalColor(ForgeDirection dir, DyeColor col);
 
-  SignalColor getExtractionSignalColor(ForgeDirection dir);
+  DyeColor getExtractionSignalColor(ForgeDirection dir);
 
   boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
 
@@ -51,12 +51,12 @@ public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit 
 
   void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
 
-  SignalColor getInputColor(ForgeDirection dir);
+  DyeColor getInputColor(ForgeDirection dir);
 
-  SignalColor getOutputColor(ForgeDirection dir);
+  DyeColor getOutputColor(ForgeDirection dir);
 
-  void setInputColor(ForgeDirection dir, SignalColor col);
+  void setInputColor(ForgeDirection dir, DyeColor col);
 
-  void setOutputColor(ForgeDirection dir, SignalColor col);
+  void setOutputColor(ForgeDirection dir, DyeColor col);
 
 }

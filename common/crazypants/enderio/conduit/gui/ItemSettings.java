@@ -12,7 +12,6 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemFilter;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -22,6 +21,7 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.DyeColor;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -99,7 +99,7 @@ public class ItemSettings extends BaseSettingsPanel {
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
-    colorB.setToolTipPrefix("Signal Color");
+    colorB.setToolTipHeading("Signal Color");
 
     x = 112;
     y = 66;
@@ -123,7 +123,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
-    channelB.setToolTipPrefix("Channel");
+    channelB.setToolTipHeading("Channel");
 
     x += 20;
     useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
@@ -296,7 +296,7 @@ public class ItemSettings extends BaseSettingsPanel {
       activeFilter.setBlacklist(!activeFilter.isBlacklist());
       sendFilterChange();
     } else if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, SignalColor.values()[colorB.getColorIndex()]);
+      Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
       PacketDispatcher.sendPacketToServer(pkt);
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
@@ -309,14 +309,14 @@ public class ItemSettings extends BaseSettingsPanel {
         mode = inOutShowIn ? ConnectionMode.INPUT : ConnectionMode.OUTPUT;
       }
 
-      SignalColor col = SignalColor.values()[channelB.getColorIndex()];
+      DyeColor col = DyeColor.values()[channelB.getColorIndex()];
       boolean input;
       if(mode == ConnectionMode.INPUT) {
-        col = SignalColor.values()[channelB.getColorIndex()];
+        col = DyeColor.values()[channelB.getColorIndex()];
         itemConduit.setInputColor(gui.dir, col);
         input = true;
       } else if(mode == ConnectionMode.OUTPUT) {
-        itemConduit.setOutputColor(gui.dir, SignalColor.values()[channelB.getColorIndex()]);
+        itemConduit.setOutputColor(gui.dir, DyeColor.values()[channelB.getColorIndex()]);
         input = false;
       } else {
         return;

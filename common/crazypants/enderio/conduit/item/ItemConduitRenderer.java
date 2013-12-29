@@ -8,9 +8,9 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.util.DyeColor;
 
 public class ItemConduitRenderer extends DefaultConduitRenderer {
 
@@ -29,8 +29,8 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
 
     IItemConduit pc = (IItemConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
-      SignalColor inChannel = null;
-      SignalColor outChannel = null;
+      DyeColor inChannel = null;
+      DyeColor outChannel = null;
       Icon inTex = null;
       Icon outTex = null;
       boolean render = true;

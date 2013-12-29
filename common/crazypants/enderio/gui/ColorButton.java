@@ -32,7 +32,7 @@ public class ColorButton extends IconButtonEIO {
     return tooltipPrefix;
   }
 
-  public void setToolTipPrefix(String tooltipPrefix) {
+  public void setToolTipHeading(String tooltipPrefix) {
     if(tooltipPrefix == null) {
       this.tooltipPrefix = "";
     } else {
@@ -56,7 +56,11 @@ public class ColorButton extends IconButtonEIO {
     this.colorIndex = MathHelper.clamp_int(colorIndex, 0, ItemDye.dyeColors.length - 1);
     String colStr = ItemDye.dyeColorNames[colorIndex];
     colStr = colStr.substring(0, 1).toUpperCase() + colStr.substring(1);
-    setToolTip(tooltipPrefix, colStr);
+    if(tooltipPrefix != null && tooltipPrefix.length() > 0) {
+      setToolTip(tooltipPrefix, colStr);
+    } else {
+      setToolTip(colStr);
+    }
   }
 
   @Override

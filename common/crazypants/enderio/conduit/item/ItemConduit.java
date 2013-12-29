@@ -24,10 +24,10 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.redstone.SignalColor;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -83,15 +83,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   float extractRatePerTick = maxExtractedOnTick / 20f;
 
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-  protected final EnumMap<ForgeDirection, SignalColor> extractionColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
   protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
 
   protected final EnumMap<ForgeDirection, Boolean> selfFeed = new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
 
-  protected final EnumMap<ForgeDirection, SignalColor> outputColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
-  protected final EnumMap<ForgeDirection, SignalColor> inputColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, DyeColor> outputColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, DyeColor> inputColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
   private int metaData;
 
@@ -213,15 +213,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public void setExtractionSignalColor(ForgeDirection dir, SignalColor col) {
+  public void setExtractionSignalColor(ForgeDirection dir, DyeColor col) {
     extractionColors.put(dir, col);
   }
 
   @Override
-  public SignalColor getExtractionSignalColor(ForgeDirection dir) {
-    SignalColor result = extractionColors.get(dir);
+  public DyeColor getExtractionSignalColor(ForgeDirection dir) {
+    DyeColor result = extractionColors.get(dir);
     if(result == null) {
-      return SignalColor.RED;
+      return DyeColor.RED;
     }
     return result;
   }
@@ -236,25 +236,25 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public SignalColor getInputColor(ForgeDirection dir) {
-    SignalColor result = inputColors.get(dir);
+  public DyeColor getInputColor(ForgeDirection dir) {
+    DyeColor result = inputColors.get(dir);
     if(result == null) {
-      return SignalColor.GREEN;
+      return DyeColor.GREEN;
     }
     return result;
   }
 
   @Override
-  public SignalColor getOutputColor(ForgeDirection dir) {
-    SignalColor result = outputColors.get(dir);
+  public DyeColor getOutputColor(ForgeDirection dir) {
+    DyeColor result = outputColors.get(dir);
     if(result == null) {
-      return SignalColor.GREEN;
+      return DyeColor.GREEN;
     }
     return result;
   }
 
   @Override
-  public void setInputColor(ForgeDirection dir, SignalColor col) {
+  public void setInputColor(ForgeDirection dir, DyeColor col) {
     inputColors.put(dir, col);
     if(network != null) {
       network.routesChanged();
@@ -264,7 +264,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public void setOutputColor(ForgeDirection dir, SignalColor col) {
+  public void setOutputColor(ForgeDirection dir, DyeColor col) {
     outputColors.put(dir, col);
     if(network != null) {
       network.routesChanged();
@@ -461,7 +461,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
-    for (Entry<ForgeDirection, SignalColor> entry : extractionColors.entrySet()) {
+    for (Entry<ForgeDirection, DyeColor> entry : extractionColors.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("extSC." + entry.getKey().name(), ord);
@@ -474,14 +474,14 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
-    for (Entry<ForgeDirection, SignalColor> entry : inputColors.entrySet()) {
+    for (Entry<ForgeDirection, DyeColor> entry : inputColors.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("inSC." + entry.getKey().name(), ord);
       }
     }
 
-    for (Entry<ForgeDirection, SignalColor> entry : outputColors.entrySet()) {
+    for (Entry<ForgeDirection, DyeColor> entry : outputColors.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
         nbtRoot.setShort("outSC." + entry.getKey().name(), ord);
@@ -522,8 +522,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       key = "extSC." + dir.name();
       if(nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < SignalColor.values().length) {
-          extractionColors.put(dir, SignalColor.values()[ord]);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          extractionColors.put(dir, DyeColor.values()[ord]);
         }
       }
       key = "selfFeed." + dir.name();
@@ -535,16 +535,16 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       key = "inSC." + dir.name();
       if(nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < SignalColor.values().length) {
-          inputColors.put(dir, SignalColor.values()[ord]);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          inputColors.put(dir, DyeColor.values()[ord]);
         }
       }
 
       key = "outSC." + dir.name();
       if(nbtRoot.hasKey(key)) {
         short ord = nbtRoot.getShort(key);
-        if(ord >= 0 && ord < SignalColor.values().length) {
-          outputColors.put(dir, SignalColor.values()[ord]);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          outputColors.put(dir, DyeColor.values()[ord]);
         }
       }
     }
