@@ -117,31 +117,6 @@ public class ConduitGeometryUtil {
     return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
 
-  //  public BoundingBox getBoundingBox(ConduitConnectorType type) {
-  //    BoundingBox result = connectorBounds.get(type);
-  //    if(result == null) {
-  //      result = createConnector(type);
-  //      result = result.scale(1.2f, 1.2f, 1.2f);
-  //      connectorBounds.put(type, result);
-  //    }
-  //    return result;
-  //  }
-  //
-  //  private BoundingBox createConnector(ConduitConnectorType type) {
-  //    float distance = WIDTH + HWIDTH;
-  //    switch (type) {
-  //    case VERTICAL:
-  //      return new BoundingBox(0.5 - HWIDTH, 0.5 - distance, 0.5 - HWIDTH, 0.5 + HWIDTH, 0.5 + distance, 0.5 + HWIDTH);
-  //    case HORIZONTAL:
-  //      return new BoundingBox(0.5 - distance, 0.5 - HWIDTH, 0.5 - HWIDTH, 0.5 + distance, 0.5 + HWIDTH, 0.5 + HWIDTH);
-  //    case BOTH:
-  //      return createConnector(ConduitConnectorType.VERTICAL).expandBy(createConnector(ConduitConnectorType.HORIZONTAL));
-  //    default:
-  //      return CORE_BOUNDS;
-  //    }
-  //
-  //  }
-
   public BoundingBox getBoundingBox(Class<? extends IConduit> type, ForgeDirection dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);
     BoundingBox result = boundsCache.get(key);

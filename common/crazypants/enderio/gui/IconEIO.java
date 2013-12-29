@@ -65,6 +65,9 @@ public final class IconEIO {
   public static final IconEIO OUTPUT_OFF = new IconEIO(188, 197, 30, 14);
   public static final IconEIO INPUT_OUTPUT_OFF = new IconEIO(218, 180, 30, 8);
 
+  public static final IconEIO LOOP = new IconEIO(86, 236, 20, 20);
+  public static final IconEIO LOOP_OFF = new IconEIO(106, 236, 20, 20);
+
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 

@@ -36,6 +36,8 @@ public class ItemSettings extends BaseSettingsPanel {
   private static final int ID_META = 19;
   private static final int ID_ORE_DICT = 20;
   private static final int ID_STICKY = 21;
+  private static final int ID_LOOP = 22;
+  private static final int ID_CHANNEL = 23;
 
   private IItemConduit itemConduit;
 
@@ -49,6 +51,9 @@ public class ItemSettings extends BaseSettingsPanel {
   private IconButtonEIO whiteListB;
   private ToggleButtonEIO useOreDictB;
   private ToggleButtonEIO stickyB;
+  private ColorButton channelB;
+
+  private ToggleButtonEIO loopB;
 
   private RedstoneModeButton rsB;
   private ColorButton colorB;
@@ -65,9 +70,13 @@ public class ItemSettings extends BaseSettingsPanel {
     itemConduit = (IItemConduit) con;
     isAdvanced = itemConduit.getMetaData() == 1;
 
-    int x = 112;
+    int x = 98;
     int y = customTop;
 
+    nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
+    nextFilterB.setSize(8, 16);
+
+    x = 112;
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
 
       @Override
@@ -90,39 +99,10 @@ public class ItemSettings extends BaseSettingsPanel {
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
-  }
-
-  private String getHeading() {
-    ConnectionMode mode = con.getConectionMode(gui.dir);
-    if(mode == ConnectionMode.DISABLED) {
-      return "";
-    }
-    if(mode == ConnectionMode.OUTPUT) {
-      return outputHeading;
-    }
-    if(mode == ConnectionMode.INPUT || inOutShowIn) {
-      return inputHeading;
-    }
-    return outputHeading;
-  }
-
-  @Override
-  protected void initCustomOptions() {
-    if(nextFilterB != null) {
-      gui.removeButton(nextFilterB);
-    }
-
-    int y = customTop;
-    int x;
-
-    int headingWidth = gui.getFontRenderer().getStringWidth(getHeading());
-    x = 98;
-    nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
-    nextFilterB.setSize(8, 16);
+    colorB.setToolTipPrefix("Signal Color");
 
     x = 112;
     y = 66;
-
     whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip("Whitelist");
 
@@ -141,6 +121,11 @@ public class ItemSettings extends BaseSettingsPanel {
     y += 20;
     x = 112;
 
+    channelB = new ColorButton(gui, ID_CHANNEL, x, y);
+    channelB.setColorIndex(0);
+    channelB.setToolTipPrefix("Channel");
+
+    x += 20;
     useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip("Match NBT Data");
     useNbtB.setUnselectedToolTip("Ignore NBT Data.");
@@ -152,21 +137,37 @@ public class ItemSettings extends BaseSettingsPanel {
     useOreDictB.setUnselectedToolTip("Ore Dictionary Disabled.");
     useOreDictB.setPaintSelectedBorder(false);
 
-    if(isAdvanced) {
-      useNbtB.onGuiInit();
-      useOreDictB.onGuiInit();
-    }
-    useMetaB.onGuiInit();
-    whiteListB.onGuiInit();
+    x += 20;
+    y = customTop;
+    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    loopB.setSelectedToolTip("Self Feed Enabled");
+    loopB.setUnselectedToolTip("Self Feed Disabled.");
+    loopB.setPaintSelectedBorder(false);
 
+  }
+
+  private String getHeading() {
+    ConnectionMode mode = con.getConectionMode(gui.dir);
+    if(mode == ConnectionMode.DISABLED) {
+      return "";
+    }
+    if(mode == ConnectionMode.OUTPUT) {
+      return outputHeading;
+    }
+    if(mode == ConnectionMode.INPUT || inOutShowIn) {
+      return inputHeading;
+    }
+    return outputHeading;
+  }
+
+  @Override
+  protected void initCustomOptions() {
     updateGuiVisibility();
   }
 
   private void updateGuiVisibility() {
-    gui.removeButton(nextFilterB);
-    gui.removeButton(stickyB);
-    gui.removeButton(rsB);
-    gui.removeButton(colorB);
+
+    deactivate();
 
     boolean showInput = false;
     boolean showOutput = false;
@@ -193,7 +194,6 @@ public class ItemSettings extends BaseSettingsPanel {
     }
 
     if(!showInput && !showOutput) {
-      deactivate();
       activeFilter = null;
     } else {
       gui.container.setInventorySlotsVisible(true);
@@ -222,34 +222,49 @@ public class ItemSettings extends BaseSettingsPanel {
       return;
     }
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
+    int chanCol;
     if(outputActive) {
       stickyB.onGuiInit();
-      stickyB.setSelected(itemConduit.getOutputFilter(gui.dir).isSticky());
+      stickyB.setSelected(activeFilter.isSticky());
+
+      chanCol = itemConduit.getOutputColor(gui.dir).ordinal();
     } else {
+
       rsB.onGuiInit();
       rsB.setMode(itemConduit.getExtractioRedstoneMode(gui.dir));
+
       colorB.onGuiInit();
       colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
+
+      chanCol = itemConduit.getInputColor(gui.dir).ordinal();
     }
+
+    channelB.onGuiInit();
+    channelB.setColorIndex(chanCol);
 
     if(isAdvanced) {
       useNbtB.onGuiInit();
+      useNbtB.setSelected(activeFilter.isMatchNBT());
+
       useOreDictB.onGuiInit();
+      useOreDictB.setSelected(activeFilter.isUseOreDict());
     }
+
     useMetaB.onGuiInit();
-    whiteListB.onGuiInit();
-
-    useNbtB.setSelected(activeFilter.isMatchNBT());
     useMetaB.setSelected(activeFilter.isMatchMeta());
-    stickyB.setSelected(activeFilter.isSticky());
-    useOreDictB.setSelected(activeFilter.isUseOreDict());
 
+    whiteListB.onGuiInit();
     if(activeFilter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
       whiteListB.setToolTip("Blacklist");
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
       whiteListB.setToolTip("Whitelist");
+    }
+
+    if(mode == ConnectionMode.IN_OUT) {
+      loopB.onGuiInit();
+      loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.dir));
     }
 
   }
@@ -282,6 +297,31 @@ public class ItemSettings extends BaseSettingsPanel {
       sendFilterChange();
     } else if(guiButton.id == ID_COLOR_BUTTON) {
       Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, SignalColor.values()[colorB.getColorIndex()]);
+      PacketDispatcher.sendPacketToServer(pkt);
+    } else if(guiButton.id == ID_LOOP) {
+      itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
+      Packet pkt = ConduitPacketHandler.createItemLoopPacket(itemConduit, gui.dir);
+      PacketDispatcher.sendPacketToServer(pkt);
+    } else if(guiButton.id == ID_CHANNEL) {
+
+      ConnectionMode mode = con.getConectionMode(gui.dir);
+      if(mode == ConnectionMode.IN_OUT) {
+        mode = inOutShowIn ? ConnectionMode.INPUT : ConnectionMode.OUTPUT;
+      }
+
+      SignalColor col = SignalColor.values()[channelB.getColorIndex()];
+      boolean input;
+      if(mode == ConnectionMode.INPUT) {
+        col = SignalColor.values()[channelB.getColorIndex()];
+        itemConduit.setInputColor(gui.dir, col);
+        input = true;
+      } else if(mode == ConnectionMode.OUTPUT) {
+        itemConduit.setOutputColor(gui.dir, SignalColor.values()[channelB.getColorIndex()]);
+        input = false;
+      } else {
+        return;
+      }
+      Packet pkt = ConduitPacketHandler.createItemChannelPacket(itemConduit, gui.dir, col, input);
       PacketDispatcher.sendPacketToServer(pkt);
     }
   }
@@ -329,16 +369,16 @@ public class ItemSettings extends BaseSettingsPanel {
     gui.container.setInventorySlotsVisible(false);
     gui.container.setInputSlotsVisible(false);
     gui.container.setOutputSlotsVisible(false);
-    rsB.setToolTip((String[]) null);
-    colorB.setToolTip((String[]) null);
-
-    if(useNbtB != null) {
-      useNbtB.detach();
-      useMetaB.detach();
-      useOreDictB.detach();
-      whiteListB.detach();
-      stickyB.detach();
-    }
+    rsB.detach();
+    colorB.detach();
+    channelB.detach();
+    useNbtB.detach();
+    useMetaB.detach();
+    useOreDictB.detach();
+    whiteListB.detach();
+    stickyB.detach();
+    loopB.detach();
+    nextFilterB.detach();
   }
 
 }

@@ -13,6 +13,8 @@ public class ColorButton extends IconButtonEIO {
 
   private int colorIndex = 0;
 
+  private String tooltipPrefix = "";
+
   public ColorButton(IGuiScreen gui, int id, int x, int y) {
     super(gui, id, x, y, null);
   }
@@ -24,6 +26,18 @@ public class ColorButton extends IconButtonEIO {
       nextColor();
     }
     return result;
+  }
+
+  public String getTooltipPrefix() {
+    return tooltipPrefix;
+  }
+
+  public void setToolTipPrefix(String tooltipPrefix) {
+    if(tooltipPrefix == null) {
+      this.tooltipPrefix = "";
+    } else {
+      this.tooltipPrefix = tooltipPrefix;
+    }
   }
 
   private void nextColor() {
@@ -40,7 +54,9 @@ public class ColorButton extends IconButtonEIO {
 
   public void setColorIndex(int colorIndex) {
     this.colorIndex = MathHelper.clamp_int(colorIndex, 0, ItemDye.dyeColors.length - 1);
-    setToolTip(ItemDye.dyeColorNames[colorIndex]);
+    String colStr = ItemDye.dyeColorNames[colorIndex];
+    colStr = colStr.substring(0, 1).toUpperCase() + colStr.substring(1);
+    setToolTip(tooltipPrefix, colStr);
   }
 
   @Override

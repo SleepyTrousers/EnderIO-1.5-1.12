@@ -35,7 +35,7 @@ public enum SignalColor {
   private SignalColor() {
   }
 
-  int getColor() {
+  public int getColor() {
     return ItemDye.dyeColors[ordinal()];
   }
 
