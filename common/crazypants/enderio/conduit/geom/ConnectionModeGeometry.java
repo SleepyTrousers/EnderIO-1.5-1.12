@@ -23,7 +23,7 @@ public class ConnectionModeGeometry {
 
   static {
 
-    float scale = 0.8f;
+    float scale = 0.9f;
     BoundingBox refBB = ConduitGeometryUtil.CORE_BOUNDS;
     refBB = refBB.scale(scale, scale, scale);
     refBB = refBB.scale(scale, 1, 1);
@@ -89,7 +89,6 @@ public class ConnectionModeGeometry {
     }
     for (Vertex v : result) {
       xform.apply(v.xyz);
-      //v.xyz.set(v.x(), v.y() + 1, v.z());
       xform.applyToNormal(v.normal);
 
     }

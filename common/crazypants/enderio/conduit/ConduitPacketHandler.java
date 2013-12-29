@@ -59,7 +59,8 @@ public class ConduitPacketHandler implements IPacketProcessor {
   @Override
   public boolean canProcessPacket(int packetID) {
     return PacketHandler.ID_CONDUIT_CON_MODE == packetID || packetID == PacketHandler.ID_CONDUIT_SIGNAL_COL
-        || packetID == PacketHandler.ID_CONDUIT_EXTRACT_MODE || packetID == PacketHandler.ID_CONDUIT_ITEM_FILTER;
+        || packetID == PacketHandler.ID_CONDUIT_EXTRACT_MODE || packetID == PacketHandler.ID_CONDUIT_ITEM_FILTER
+        || packetID == PacketHandler.ID_CONDUIT_ITEM_LOOP || packetID == PacketHandler.ID_CONDUIT_ITEM_CHANNEL;
   }
 
   @Override
@@ -72,7 +73,108 @@ public class ConduitPacketHandler implements IPacketProcessor {
       processExtractionModePacket(data, player);
     } else if(packetID == PacketHandler.ID_CONDUIT_ITEM_FILTER) {
       processItemFilterPacket(data, player);
+    } else if(packetID == PacketHandler.ID_CONDUIT_ITEM_LOOP) {
+      processItemLoopPacket(data, player);
+    } else if(packetID == PacketHandler.ID_CONDUIT_ITEM_CHANNEL) {
+      processItemChannelPacket(data, player);
     }
+  }
+
+  public static Packet createItemChannelPacket(IItemConduit itemConduit, ForgeDirection dir, SignalColor col, boolean input) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    IConduitBundle bundle = itemConduit.getBundle();
+    try {
+      dos.writeInt(PacketHandler.ID_CONDUIT_ITEM_CHANNEL);
+      dos.writeInt(bundle.getEntity().xCoord);
+      dos.writeInt(bundle.getEntity().yCoord);
+      dos.writeInt(bundle.getEntity().zCoord);
+      dos.writeShort(dir.ordinal());
+      dos.writeShort(col.ordinal());
+      dos.writeBoolean(input);
+
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+  }
+
+  private void processItemChannelPacket(DataInputStream data, Player player) throws IOException {
+    World world = getWorld(player);
+    if(world == null) {
+      return;
+    }
+    IConduitBundle conBun = getConduitBundle(data, world);
+    if(conBun == null) {
+      return;
+    }
+    ForgeDirection dir = ForgeDirection.values()[data.readShort()];
+
+    IItemConduit con = conBun.getConduit(IItemConduit.class);
+    if(con == null) {
+      Log.warn("processItemChannelPacket.processItemLoopPacket: no item conduit exists in bundle when recieving packet.");
+      return;
+    }
+
+    SignalColor col = SignalColor.values()[data.readShort()];
+    boolean isInput = data.readBoolean();
+    if(isInput) {
+      con.setInputColor(dir, col);
+    } else {
+      con.setOutputColor(dir, col);
+    }
+
+  }
+
+  private void processItemLoopPacket(DataInputStream data, Player player) throws IOException {
+    World world = getWorld(player);
+    if(world == null) {
+      return;
+    }
+    IConduitBundle conBun = getConduitBundle(data, world);
+    if(conBun == null) {
+      return;
+    }
+    ForgeDirection dir = ForgeDirection.values()[data.readShort()];
+
+    IItemConduit con = conBun.getConduit(IItemConduit.class);
+    if(con == null) {
+      Log.warn("ConduitPacketHandler.processItemLoopPacket: no item conduit exists in bundle when recieving packet.");
+      return;
+    }
+
+    boolean loopEnabled = data.readBoolean();
+    con.setSelfFeedEnabled(dir, loopEnabled);
+    conBun.getEntity().onInventoryChanged();
+    world.markBlockForUpdate(conBun.getEntity().xCoord, conBun.getEntity().yCoord, conBun.getEntity().zCoord);
+  }
+
+  public static Packet createItemLoopPacket(IItemConduit itemConduit, ForgeDirection dir) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    IConduitBundle bundle = itemConduit.getBundle();
+    try {
+      dos.writeInt(PacketHandler.ID_CONDUIT_ITEM_LOOP);
+      dos.writeInt(bundle.getEntity().xCoord);
+      dos.writeInt(bundle.getEntity().yCoord);
+      dos.writeInt(bundle.getEntity().zCoord);
+      dos.writeShort(dir.ordinal());
+      dos.writeBoolean(itemConduit.isSelfFeedEnabled(dir));
+
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
   }
 
   public static Packet createItemFilterPacket(IItemConduit conduit, ForgeDirection dir, boolean isInput, ItemFilter filter) {

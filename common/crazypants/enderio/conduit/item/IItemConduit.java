@@ -13,13 +13,17 @@ public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit 
 
   Icon getTextureForOutputMode();
 
-  Icon getTextureForInOutMode();
+  Icon getTextureForInOutMode(boolean inputComponent);
+
+  Icon getTextureForInOutBackground();
 
   Icon getEnderIcon();
 
   IInventory getExternalInventory(ForgeDirection direction);
 
   int getMaximumExtracted();
+
+  float getTickTimePerItem();
 
   void itemsExtracted(int numInserted, int slot);
 
@@ -43,6 +47,16 @@ public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit 
 
   boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
 
-  float getTickTimePerItem();
+  boolean isSelfFeedEnabled(ForgeDirection dir);
+
+  void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
+
+  SignalColor getInputColor(ForgeDirection dir);
+
+  SignalColor getOutputColor(ForgeDirection dir);
+
+  void setInputColor(ForgeDirection dir, SignalColor col);
+
+  void setOutputColor(ForgeDirection dir, SignalColor col);
 
 }

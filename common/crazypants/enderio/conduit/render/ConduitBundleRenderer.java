@@ -30,18 +30,16 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 
 public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
 
   public ConduitBundleRenderer(float conduitScale) {
   }
 
-
   private void doRenderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    
+
     // Lighting calcuations to allow for self illumination    
     float val = te.worldObj.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
     renderTileEntityAt(bundle, x, y, z, partialTick, val);
@@ -49,10 +47,9 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
 
   public void renderTileEntityAt(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
 
-    
-    Tessellator tessellator = Tessellator.instance;  
+    Tessellator tessellator = Tessellator.instance;
     tessellator.setColorOpaque_F(1, 1, 1);
-    tessellator.addTranslation((float)x, (float)y, (float)z);
+    tessellator.addTranslation((float) x, (float) y, (float) z);
 
     // Conduits
     Set<ForgeDirection> externals = new HashSet<ForgeDirection>();
@@ -87,9 +84,7 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
         IConduit conduit = bundle.getConduit(component.conduitType);
         if(conduit != null) {
           if(ConduitUtil.renderConduit(player, component.conduitType)) {
-//            float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
-//            tessellator.setColorRGBA_F(selfIllum, selfIllum, selfIllum, 1);
-            tessellator.setBrightness((int)(brightness));
+            tessellator.setBrightness((int) (brightness));
             CubeRenderer.render(component.bound, conduit.getTextureForState(component));
           } else {
             wireBounds.add(component.bound);
@@ -114,8 +109,7 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
       renderExternalConnection(dir);
     }
 
-    
-    tessellator.addTranslation(-(float)x, -(float)y, -(float)z);
+    tessellator.addTranslation(-(float) x, -(float) y, -(float) z);
 
   }
 
@@ -161,7 +155,7 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
     if(renderConduit) {
       doRenderTileEntityAt(bundle.getEntity(), x, y, z, 0);
     }
-    
+
     return true;
   }
 

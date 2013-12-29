@@ -27,6 +27,9 @@ public enum ConduitDisplayMode {
   }
 
   public static ConduitDisplayMode getDisplayMode(ItemStack equipped) {
+    if(equipped == null) {
+      return ALL;
+    }
     int index = equipped.getItemDamage();
     index = MathHelper.clamp_int(index, 0, ConduitDisplayMode.values().length - 1);
     return ConduitDisplayMode.values()[index];

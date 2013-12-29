@@ -58,6 +58,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   @SideOnly(Side.CLIENT)
   private FacadeRenderState facadeRenderAs;
 
+  private ConduitDisplayMode lastMode = ConduitDisplayMode.ALL;
+
   public TileConduitBundle() {
     blockType = EnderIO.blockConduitBundle;
   }
@@ -203,7 +205,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       facadeChanged = false;
     }
 
-    if(worldObj.isRemote) {
+    if(worldObj.isRemote) { //client side only, check for changes in rendering of the bundle
 
       FacadeRenderState curRS = getFacadeRenderedAs();
       FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
@@ -218,7 +220,14 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
         if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
           worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
         }
+      } else { //can do the else as only need to update once
+        ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
+        if(curMode != lastMode) {
+          worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+          lastMode = curMode;
+        }
       }
+
     }
   }
 

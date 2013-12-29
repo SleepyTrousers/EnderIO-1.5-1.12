@@ -43,13 +43,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public static final String ICON_KEY_OUTPUT = "enderio:itemConduitOutput";
 
-  public static final String ICON_KEY_IN_OUT = "enderio:itemConduitInOut";
+  public static final String ICON_KEY_IN_OUT_OUT = "enderio:itemConduitInOut_Out";
 
-  private static final String ICON_KEY_INPUT_ADV = "enderio:itemConduitInputAdvanced";
+  public static final String ICON_KEY_IN_OUT_IN = "enderio:itemConduitInOut_In";
 
-  private static final String ICON_KEY_OUTPUT_ADV = "enderio:itemConduitOutputAdvanced";
-
-  private static final String ICON_KEY_IN_OUT_ADV = "enderio:itemConduitInOutAdvanced";
+  public static final String ICON_KEY_IN_OUT_BG = "enderio:itemConduitIoConnector";
 
   public static final String ICON_KEY_ENDER = "enderio:ender_still";
 
@@ -65,12 +63,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         ICONS.put(ICON_KEY_CORE_ADV, register.registerIcon(ICON_KEY_CORE_ADV));
         ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
         ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
-        ICONS.put(ICON_KEY_IN_OUT, register.registerIcon(ICON_KEY_IN_OUT));
-
-        ICONS.put(ICON_KEY_INPUT_ADV, register.registerIcon(ICON_KEY_INPUT_ADV));
-        ICONS.put(ICON_KEY_OUTPUT_ADV, register.registerIcon(ICON_KEY_OUTPUT_ADV));
-        ICONS.put(ICON_KEY_IN_OUT_ADV, register.registerIcon(ICON_KEY_IN_OUT_ADV));
-
+        ICONS.put(ICON_KEY_IN_OUT_OUT, register.registerIcon(ICON_KEY_IN_OUT_OUT));
+        ICONS.put(ICON_KEY_IN_OUT_IN, register.registerIcon(ICON_KEY_IN_OUT_IN));
+        ICONS.put(ICON_KEY_IN_OUT_BG, register.registerIcon(ICON_KEY_IN_OUT_BG));
         ICONS.put(ICON_KEY_ENDER, register.registerIcon(ICON_KEY_ENDER));
       }
 
@@ -87,11 +82,16 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   int maxExtractedOnTick = 2;
   float extractRatePerTick = maxExtractedOnTick / 20f;
 
-  protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, SignalColor> extractionColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
 
   protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+
+  protected final EnumMap<ForgeDirection, Boolean> selfFeed = new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
+
+  protected final EnumMap<ForgeDirection, SignalColor> outputColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, SignalColor> inputColors = new EnumMap<ForgeDirection, SignalColor>(ForgeDirection.class);
 
   private int metaData;
 
@@ -236,6 +236,44 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public SignalColor getInputColor(ForgeDirection dir) {
+    SignalColor result = inputColors.get(dir);
+    if(result == null) {
+      return SignalColor.GREEN;
+    }
+    return result;
+  }
+
+  @Override
+  public SignalColor getOutputColor(ForgeDirection dir) {
+    SignalColor result = outputColors.get(dir);
+    if(result == null) {
+      return SignalColor.GREEN;
+    }
+    return result;
+  }
+
+  @Override
+  public void setInputColor(ForgeDirection dir, SignalColor col) {
+    inputColors.put(dir, col);
+    if(network != null) {
+      network.routesChanged();
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
+  }
+
+  @Override
+  public void setOutputColor(ForgeDirection dir, SignalColor col) {
+    outputColors.put(dir, col);
+    if(network != null) {
+      network.routesChanged();
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
+  }
+
+  @Override
   public int getMaximumExtracted() {
     return maxExtractedOnTick;
   }
@@ -295,6 +333,23 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public boolean isSelfFeedEnabled(ForgeDirection dir) {
+    Boolean val = selfFeed.get(dir);
+    if(val == null) {
+      return false;
+    }
+    return val;
+  }
+
+  @Override
+  public void setSelfFeedEnabled(ForgeDirection dir, boolean enabled) {
+    selfFeed.put(dir, enabled);
+    if(network != null) {
+      network.routesChanged();
+    }
+  }
+
+  @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     return getExternalInventory(direction) != null;
   }
@@ -328,17 +383,22 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public Icon getTextureForInputMode() {
-    return metaData == 1 ? ICONS.get(ICON_KEY_INPUT_ADV) : ICONS.get(ICON_KEY_INPUT);
+    return ICONS.get(ICON_KEY_INPUT);
   }
 
   @Override
   public Icon getTextureForOutputMode() {
-    return metaData == 1 ? ICONS.get(ICON_KEY_OUTPUT_ADV) : ICONS.get(ICON_KEY_OUTPUT);
+    return ICONS.get(ICON_KEY_OUTPUT);
   }
 
   @Override
-  public Icon getTextureForInOutMode() {
-    return metaData == 1 ? ICONS.get(ICON_KEY_IN_OUT_ADV) : ICONS.get(ICON_KEY_IN_OUT);
+  public Icon getTextureForInOutMode(boolean input) {
+    return input ? ICONS.get(ICON_KEY_IN_OUT_IN) : ICONS.get(ICON_KEY_IN_OUT_OUT);
+  }
+
+  @Override
+  public Icon getTextureForInOutBackground() {
+    return ICONS.get(ICON_KEY_IN_OUT_BG);
   }
 
   @Override
@@ -408,6 +468,26 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
+    for (Entry<ForgeDirection, Boolean> entry : selfFeed.entrySet()) {
+      if(entry.getValue() != null) {
+        nbtRoot.setBoolean("selfFeed." + entry.getKey().name(), entry.getValue());
+      }
+    }
+
+    for (Entry<ForgeDirection, SignalColor> entry : inputColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("inSC." + entry.getKey().name(), ord);
+      }
+    }
+
+    for (Entry<ForgeDirection, SignalColor> entry : outputColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("outSC." + entry.getKey().name(), ord);
+      }
+    }
+
   }
 
   @Override
@@ -446,9 +526,28 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
           extractionColors.put(dir, SignalColor.values()[ord]);
         }
       }
+      key = "selfFeed." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        boolean val = nbtRoot.getBoolean(key);
+        selfFeed.put(dir, val);
+      }
 
+      key = "inSC." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < SignalColor.values().length) {
+          inputColors.put(dir, SignalColor.values()[ord]);
+        }
+      }
+
+      key = "outSC." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < SignalColor.values().length) {
+          outputColors.put(dir, SignalColor.values()[ord]);
+        }
+      }
     }
-
     updateFromMetadata();
   }
 

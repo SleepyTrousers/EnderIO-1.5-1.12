@@ -132,8 +132,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     BlockCoord location;
     int inventorySide;
 
-    boolean allowSelfFeed = false;
-
     List<Target> sendPriority = new ArrayList<Target>();
 
     private int extractFromSlot = -1;
@@ -321,7 +319,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         return;
       }
       for (NetworkedInventory other : inventories) {
-        if((allowSelfFeed || (other != this)) && other.canInsert()) {
+        if((con.isSelfFeedEnabled(conDir) || (other != this))
+            && other.canInsert()
+            && con.getInputColor(conDir) == other.con.getOutputColor(other.conDir)) {
           sendPriority.add(new Target(other, location.distanceSquared(other.location), other.isSticky()));
         }
       }
