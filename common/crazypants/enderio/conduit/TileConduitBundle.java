@@ -53,6 +53,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   private boolean collidablesDirty = true;
   private boolean connectorsDirty = true;
 
+  private boolean clientUpdated = false;
+
   private int lightOpacity = -1;
 
   @SideOnly(Side.CLIENT)
@@ -101,6 +103,10 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     }
     facadeId = nbtRoot.getInteger("facadeId");
     facadeMeta = nbtRoot.getInteger("facadeMeta");
+
+    if(worldObj != null && worldObj.isRemote) {
+      clientUpdated = true;
+    }
 
   }
 
@@ -190,9 +196,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
     if(conduitsDirty) {
       if(!worldObj.isRemote) {
-        //worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        //TODO: WTF?? Why do I need to do this to get the dam client to update
-        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, blockMetadata == 1 ? 0 : 1, 2);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       }
       conduitsDirty = false;
     }
@@ -205,7 +209,16 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       facadeChanged = false;
     }
 
-    if(worldObj.isRemote) { //client side only, check for changes in rendering of the bundle
+    //client side only, check for changes in rendering of the bundle
+    if(worldObj.isRemote) {
+
+      boolean markForUpdate = false;
+      if(clientUpdated) {
+        //TODO: This is not the correct solution here but just marking the block for a render update server side
+        //seems to get out of sync with the client sometimes so connections are not rendered correctly
+        markForUpdate = true;
+        clientUpdated = false;
+      }
 
       FacadeRenderState curRS = getFacadeRenderedAs();
       FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
@@ -218,16 +231,19 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       if(curRS != rs) {
         setFacadeRenderAs(rs);
         if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
-          worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+          markForUpdate = true;
         }
-      } else { //can do the else as only need to update once
+      } else { //can do the else as only need to update once      
         ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
         if(curMode != lastMode) {
-          worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+          markForUpdate = true;
           lastMode = curMode;
         }
-      }
 
+      }
+      if(markForUpdate) {
+        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+      }
     }
   }
 
