@@ -5,44 +5,22 @@ import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import cofh.api.energy.IEnergyHandler;
 
-public class PowerInterface {
-
-  public static PowerInterface create(Object o) {
-    if(o instanceof IEnergyHandler) {
-      return new PowerInterface((IEnergyHandler) o);
-    } else if(o instanceof IPowerReceptor) {
-      return new PowerInterface((IPowerReceptor) o);
-    }
-    return null;
-  }
+public class PowerInterfaceBC implements IPowerInterface {
 
   private IPowerReceptor bcPower;
 
-  private IEnergyHandler rfPower;
-
-  public PowerInterface(IPowerReceptor powerReceptor) {
+  public PowerInterfaceBC(IPowerReceptor powerReceptor) {
     bcPower = powerReceptor;
   }
 
-  public PowerInterface(IEnergyHandler powerReceptor) {
-    rfPower = powerReceptor;
-  }
-
+  @Override
   public Object getDelegate() {
-    if(bcPower != null) {
-      return bcPower;
-    }
-    return rfPower;
+    return bcPower;
   }
 
+  @Override
   public boolean canConduitConnect(ForgeDirection direction) {
-    if(rfPower != null) {
-      return rfPower.canInterface(direction.getOpposite());
-    }
-
-    // bc
     if(bcPower != null) {
       if(bcPower instanceof IPowerEmitter) {
         return ((IPowerEmitter) bcPower).canEmitPowerFrom(direction.getOpposite());
@@ -52,12 +30,8 @@ public class PowerInterface {
     return false;
   }
 
+  @Override
   public float getEnergyStored(ForgeDirection dir) {
-    if(rfPower != null) {
-      return rfPower.getEnergyStored(dir) / 10f;
-    }
-
-    // bc
     float result = 0;
     if(bcPower instanceof IInternalPowerReceptor) {
       result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getEnergyStored();
@@ -70,12 +44,8 @@ public class PowerInterface {
     return result;
   }
 
+  @Override
   public float getMaxEnergyStored(ForgeDirection dir) {
-    if(rfPower != null) {
-      return rfPower.getMaxEnergyStored(dir) / 10f;
-    }
-
-    // bc
     float result = 0;
     if(bcPower instanceof IInternalPowerReceptor) {
       result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getMaxEnergyStored();
@@ -88,15 +58,8 @@ public class PowerInterface {
     return result;
   }
 
+  @Override
   public float getPowerRequest(ForgeDirection dir) {
-    if(rfPower != null) {
-      if(dir != null && rfPower.canInterface(dir)) {
-        return rfPower.receiveEnergy(dir, 99999999, true) / 10f;
-      }
-      return 0;
-    }
-
-    // bc
     if(bcPower != null) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
       if(pr == null || pr.getType() == Type.ENGINE) {
@@ -108,11 +71,8 @@ public class PowerInterface {
     return 0;
   }
 
+  @Override
   public float getMinEnergyReceived(ForgeDirection dir) {
-    if(rfPower != null) {
-      return 0;
-    }
-
     if(bcPower != null) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
       if(pr == null) {
@@ -123,11 +83,8 @@ public class PowerInterface {
     return 0;
   }
 
+  @Override
   public float recieveEnergy(ForgeDirection opposite, float canOffer) {
-    if(rfPower != null) {
-      return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10f;
-    }
-
     if(bcPower != null) {
       if(bcPower instanceof IInternalPowerReceptor) {
         return PowerHandlerUtil.transmitInternal((IInternalPowerReceptor) bcPower, bcPower.getPowerReceiver(opposite), canOffer, Type.PIPE, opposite);
@@ -144,4 +101,5 @@ public class PowerInterface {
     }
     return 0;
   }
+
 }

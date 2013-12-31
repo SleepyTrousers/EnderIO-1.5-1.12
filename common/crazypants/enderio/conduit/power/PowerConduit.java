@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,8 +26,8 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.power.PowerInterface;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.vecmath.Vector3d;
@@ -196,7 +194,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {  
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     if(getMaxEnergyRecieved(from) == 0) {
       return 0;
     }
@@ -236,7 +234,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
-    PowerInterface rec = getExternalPowerReceptor(direction);
+    IPowerInterface rec = getExternalPowerReceptor(direction);
     return rec != null && rec.canConduitConnect(direction);
   }
 
@@ -260,7 +258,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public PowerInterface getExternalPowerReceptor(ForgeDirection direction) {
+  public IPowerInterface getExternalPowerReceptor(ForgeDirection direction) {
     TileEntity te = bundle.getEntity();
     World world = te.worldObj;
     if(world == null) {
@@ -273,7 +271,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(test instanceof IConduitBundle) {
       return null;
     }
-    return PowerInterface.create(test);
+    return PowerHandlerUtil.create(test);
   }
 
   @Override

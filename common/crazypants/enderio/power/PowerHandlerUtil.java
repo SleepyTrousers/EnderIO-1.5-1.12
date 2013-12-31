@@ -10,14 +10,24 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
+import cofh.api.energy.IEnergyHandler;
 
 public class PowerHandlerUtil {
 
+  public static IPowerInterface create(Object o) {
+    if(o instanceof IEnergyHandler) {
+      return new PowerInterfaceRF((IEnergyHandler) o);
+    } else if(o instanceof IPowerReceptor) {
+      return new PowerInterfaceBC((IPowerReceptor) o);
+    }
+    return null;
+  }
+
   public static boolean canConnectRecievePower(IPowerReceptor rec) {
-    if (rec == null) {
+    if(rec == null) {
       return false;
     }
-    if (rec instanceof IPipeTile) {
+    if(rec instanceof IPipeTile) {
       IPipeTile pipeTile = (IPipeTile) rec;
       return pipeTile.getPipeType() == PipeType.POWER;
     }
@@ -27,7 +37,7 @@ public class PowerHandlerUtil {
 
   public static float getStoredEnergyForItem(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
-    if (tag == null) {
+    if(tag == null) {
       return 0;
     }
     return tag.getFloat("storedEnergy");
@@ -35,7 +45,7 @@ public class PowerHandlerUtil {
 
   public static void setStoredEnergyForItem(ItemStack item, float storedEnergy) {
     NBTTagCompound tag = item.getTagCompound();
-    if (tag == null) {
+    if(tag == null) {
       tag = new NBTTagCompound();
     }
     tag.setFloat("storedEnergy", storedEnergy);
@@ -52,7 +62,7 @@ public class PowerHandlerUtil {
 
   public static void configure(PowerHandler ph, ICapacitor capacitor) {
     ph.configure(capacitor.getMinEnergyReceived(), capacitor.getMaxEnergyReceived(), capacitor.getMinActivationEnergy(), capacitor.getMaxEnergyStored());
-    if (ph.getEnergyStored() > ph.getMaxEnergyStored()) {
+    if(ph.getEnergyStored() > ph.getMaxEnergyStored()) {
       ph.setEnergy(ph.getMaxEnergyStored());
     }
     ph.configurePowerPerdition(0, 0);
@@ -62,7 +72,7 @@ public class PowerHandlerUtil {
   public static float transmitInternal(IInternalPowerReceptor receptor, PowerReceiver pp, float quantity, Type type, ForgeDirection from) {
 
     PowerHandler ph = receptor.getPowerHandler();
-    if (ph == null) {
+    if(ph == null) {
       return 0;
     }
 
@@ -71,7 +81,7 @@ public class PowerHandlerUtil {
     canUse = Math.min(canUse, pp.getMaxEnergyReceived());
     // Don't overflow it
     canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);
-    if (canUse <= pp.getMinEnergyReceived()) {
+    if(canUse <= pp.getMinEnergyReceived()) {
       pp.receiveEnergy(type, 0, null);
       ph.setEnergy(energyStored);
       return 0;
@@ -91,33 +101,33 @@ public class PowerHandlerUtil {
   }
 
   public static int recieveRedstoneFlux(ForgeDirection from, PowerHandler powerHandler, int maxReceive, boolean simulate) {
-    int canRecieve = (int)getMaxEnergyRecievedMj(powerHandler, maxReceive/10, from);
-    if (!simulate) {
+    int canRecieve = (int) getMaxEnergyRecievedMj(powerHandler, maxReceive / 10, from);
+    if(!simulate) {
       doBuildCraftEnergyTick(powerHandler, from);
       powerHandler.setEnergy(powerHandler.getEnergyStored() + canRecieve);
     }
     return canRecieve * 10;
   }
-  
-  public static float getMaxEnergyRecievedMj(PowerHandler ph, float max, ForgeDirection from) {    
-    if (ph == null) {
+
+  public static float getMaxEnergyRecievedMj(PowerHandler ph, float max, ForgeDirection from) {
+    if(ph == null) {
       return 0;
     }
     float canRecieve = max;
     canRecieve = Math.min(canRecieve, ph.getMaxEnergyReceived());
     canRecieve = Math.min(canRecieve, ph.getMaxEnergyStored() - ph.getEnergyStored());
-    if (canRecieve <= ph.getMinEnergyReceived()) {
+    if(canRecieve <= ph.getMinEnergyReceived()) {
       return 0;
     }
     return canRecieve;
   }
 
-  public static void doBuildCraftEnergyTick(PowerHandler ph, ForgeDirection from) {   
-    if (ph == null) {
+  public static void doBuildCraftEnergyTick(PowerHandler ph, ForgeDirection from) {
+    if(ph == null) {
       return;
     }
     PowerReceiver pp = ph.getPowerReceiver();
-    if (pp == null) {
+    if(pp == null) {
       return;
     }
     float stored = ph.getEnergyStored();
@@ -129,7 +139,7 @@ public class PowerHandlerUtil {
 
     @Override
     public float applyPerdition(PowerHandler powerHandler, float current, long ticksPassed) {
-      if (current <= 0) {
+      if(current <= 0) {
         return 0;
       }
       float decAmount = 0.001f;

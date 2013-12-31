@@ -17,7 +17,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.PowerInterface;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.util.BlockCoord;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
@@ -58,7 +58,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     super.addConduit(con);
     Set<ForgeDirection> externalDirs = con.getExternalConnections();
     for (ForgeDirection dir : externalDirs) {
-      PowerInterface pr = con.getExternalPowerReceptor(dir);
+      IPowerInterface pr = con.getExternalPowerReceptor(dir);
       if(pr != null) {
         TileEntity te = con.getBundle().getEntity();
         powerReceptorAdded(con, dir, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, pr);
@@ -74,7 +74,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     return IPowerConduit.class;
   }
 
-  public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, PowerInterface powerReceptor) {
+  public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, IPowerInterface powerReceptor) {
     if(powerReceptor == null) {
       return;
     }
@@ -130,9 +130,9 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     BlockCoord coord;
     ForgeDirection direction;
     
-    PowerInterface powerInterface;
+    IPowerInterface powerInterface;
 
-    public ReceptorEntry(PowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
+    public ReceptorEntry(IPowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
       powerInterface =powerReceptor;
       this.coord = coord;
       this.emmiter = emmiter;
