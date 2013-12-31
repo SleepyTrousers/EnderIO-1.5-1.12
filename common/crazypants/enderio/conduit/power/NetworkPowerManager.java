@@ -14,7 +14,7 @@ import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.PowerInterface;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.util.BlockCoord;
 
 public class NetworkPowerManager {
@@ -81,9 +81,9 @@ public class NetworkPowerManager {
 
   public float getPowerInReceptors() {
     float result = 0;
-    Set<PowerInterface> done = new HashSet<PowerInterface>();
+    Set<IPowerInterface> done = new HashSet<IPowerInterface>();
     for (ReceptorEntry re : receptors) {
-      PowerInterface powerReceptor = re.powerInterface;
+      IPowerInterface powerReceptor = re.powerInterface;
       if(!done.contains(powerReceptor)) {
         done.add(powerReceptor);
         result += powerReceptor.getEnergyStored(re.direction);
@@ -94,9 +94,9 @@ public class NetworkPowerManager {
 
   public float getMaxPowerInReceptors() {
     float result = 0;
-    Set<PowerInterface> done = new HashSet<PowerInterface>();
+    Set<IPowerInterface> done = new HashSet<IPowerInterface>();
     for (ReceptorEntry re : receptors) {
-      PowerInterface powerReceptor = re.powerInterface;
+      IPowerInterface powerReceptor = re.powerInterface;
       if(!done.contains(powerReceptor)) {
         done.add(powerReceptor);
         result += powerReceptor.getMaxEnergyStored(re.direction);
@@ -144,7 +144,7 @@ public class NetworkPowerManager {
 
       } else {
 
-        PowerInterface pp = r.powerInterface;
+        IPowerInterface pp = r.powerInterface;
         if(pp != null) {
 
           float used = 0;

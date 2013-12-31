@@ -16,7 +16,8 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.PowerInterface;
+import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
 public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory, IPowerEmitter {
@@ -169,7 +170,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     int numReceptors = receptors.size();
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
       Receptor receptor = receptorIterator.next();
-      PowerInterface pp = receptor.receptor;
+      IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
@@ -201,7 +202,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = bc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      PowerInterface pi = PowerInterface.create(te);
+      IPowerInterface pi = PowerHandlerUtil.create(te);
       if(pi != null) {
         receptors.add(new Receptor(pi, dir));
       }
@@ -212,10 +213,10 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   static class Receptor {
-    PowerInterface receptor;
+    IPowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }

@@ -6,7 +6,7 @@ import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerInterface;
+import crazypants.enderio.power.IPowerInterface;
 
 public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
 
@@ -16,7 +16,7 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
   public static final String ICON_CORE_KEY = "enderio:powerConduitCore";
   public static final String ICON_TRANSMISSION_KEY = "enderio:powerConduitTransmission";
 
-  PowerInterface getExternalPowerReceptor(ForgeDirection direction);
+  IPowerInterface getExternalPowerReceptor(ForgeDirection direction);
 
   ICapacitor getCapacitor();
 

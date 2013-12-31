@@ -16,8 +16,8 @@ import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
 
 public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor, IPowerEmitter {
@@ -164,7 +164,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
 
       Receptor receptor = receptorIterator.next();
-      PowerInterface pp = receptor.receptor;
+      IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
@@ -196,7 +196,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     ForgeDirection dir = ForgeDirection.DOWN;
     BlockCoord checkLoc = bc.getLocation(dir);
     TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-    PowerInterface pi = PowerInterface.create(te);
+    IPowerInterface pi = PowerHandlerUtil.create(te);
     if(pi != null) {
       receptors.add(new Receptor(pi, dir));
     }
@@ -206,10 +206,10 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   static class Receptor {
-    PowerInterface receptor;
+    IPowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }

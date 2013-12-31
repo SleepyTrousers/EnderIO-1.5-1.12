@@ -28,8 +28,10 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.power.PowerInterface;
+import crazypants.enderio.power.PowerInterfaceBC;
+import crazypants.enderio.power.PowerInterfaceRF;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
@@ -235,7 +237,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
 
       Receptor receptor = receptorIterator.next();
-      PowerInterface powerInterface = receptor.receptor;
+      IPowerInterface powerInterface = receptor.receptor;
       if(powerInterface != null && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit
           && !powerHandler.isPowerSource(receptor.fromDir)) {
         float used;
@@ -299,10 +301,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if(te instanceof IPowerReceptor) {
           IPowerReceptor rec = (IPowerReceptor) te;
           if(!(te instanceof TileCapacitorBank) && PowerHandlerUtil.canConnectRecievePower(rec)) {
-            receptors.add(new Receptor(new PowerInterface((IPowerReceptor) te), dir));
+            receptors.add(new Receptor(new PowerInterfaceBC((IPowerReceptor) te), dir));
           }
         } else if(te instanceof IEnergyHandler) {
-          receptors.add(new Receptor(new PowerInterface((IEnergyHandler) te), dir));
+          receptors.add(new Receptor(new PowerInterfaceRF((IEnergyHandler) te), dir));
         }
       }
     }
@@ -412,7 +414,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     redstoneStateDirty = false;
 
     if(!isMultiblock()) {
-      isRecievingRedstoneSignal =  worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+      isRecievingRedstoneSignal = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
     } else {
       for (BlockCoord bc : multiblock) {
         if(worldObj.getStrongestIndirectPower(bc.x, bc.y, bc.z) > 0) {
@@ -907,10 +909,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   static class Receptor {
-    PowerInterface receptor;
+    IPowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }

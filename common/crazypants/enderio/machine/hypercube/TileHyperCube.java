@@ -27,8 +27,8 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.power.PowerInterface;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
@@ -341,7 +341,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     int numReceptors = receptors.size();
     while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
       Receptor receptor = receptorIterator.next();
-      PowerInterface pp = receptor.receptor;
+      IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
@@ -458,7 +458,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      PowerInterface pi = PowerInterface.create(te);
+      IPowerInterface pi = PowerHandlerUtil.create(te);
       if(pi != null) {
         receptors.add(new Receptor(pi, dir));
       }
@@ -839,10 +839,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   static class Receptor {
-    PowerInterface receptor;
+    IPowerInterface receptor;
     ForgeDirection fromDir;
 
-    private Receptor(PowerInterface rec, ForgeDirection fromDir) {
+    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
       this.receptor = rec;
       this.fromDir = fromDir;
     }
