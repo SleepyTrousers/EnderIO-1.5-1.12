@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,12 +26,14 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
+import crazypants.util.DyeColor;
 import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
@@ -87,6 +91,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   private int subtype;
 
+  protected final EnumMap<ForgeDirection, RedstoneControlMode> rsModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, DyeColor> rsColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+
+  private final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
+
+  private boolean redstoneStateDirty = true;
+
   public PowerConduit() {
   }
 
@@ -128,10 +139,52 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public void setRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+    rsModes.put(dir, mode);
+  }
+
+  @Override
+  public RedstoneControlMode getRedstoneMode(ForgeDirection dir) {
+    RedstoneControlMode res = rsModes.get(dir);
+    if(res == null) {
+      res = RedstoneControlMode.IGNORE;
+    }
+    return res;
+  }
+
+  @Override
+  public void setSignalColor(ForgeDirection dir, DyeColor col) {
+    rsColors.put(dir, col);
+  }
+
+  @Override
+  public DyeColor getSignalColor(ForgeDirection dir) {
+    DyeColor res = rsColors.get(dir);
+    if(res == null) {
+      res = DyeColor.RED;
+    }
+    return res;
+  }
+
+  @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     nbtRoot.setShort("subtype", (short) subtype);
     nbtRoot.setFloat("energyStored", powerHandler.getEnergyStored());
+
+    for (Entry<ForgeDirection, RedstoneControlMode> entry : rsModes.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("pRsMode." + entry.getKey().name(), ord);
+      }
+    }
+
+    for (Entry<ForgeDirection, DyeColor> entry : rsColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("pRsCol." + entry.getKey().name(), ord);
+      }
+    }
   }
 
   @Override
@@ -142,12 +195,29 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       powerHandler = createPowerHandlerForType();
     }
     powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), nbtRoot.getFloat("energyStored")));
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      String key = "pRsMode." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < RedstoneControlMode.values().length) {
+          rsModes.put(dir, RedstoneControlMode.values()[ord]);
+        }
+      }
+      key = "pRsCol." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          rsColors.put(dir, DyeColor.values()[ord]);
+        }
+      }
+    }
   }
 
   @Override
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
     ConnectionMode mode = getConectionMode(side);
-    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED) {
+    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(side)) {
       if(noInputPH == null) {
         noInputPH = new PowerHandler(this, Type.PIPE);
         noInputPH.configure(0, 0, 0, powerHandler.getMaxEnergyStored());
@@ -160,16 +230,59 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public float getMaxEnergyExtracted(ForgeDirection dir) {
     ConnectionMode mode = getConectionMode(dir);
-    if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED) {
+    if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
     }
     return getCapacitor().getMaxEnergyExtracted();
   }
 
+  private boolean isRedstoneEnabled(ForgeDirection dir) {
+    boolean result;
+    RedstoneControlMode mode = getRedstoneMode(dir);
+    if(mode == RedstoneControlMode.NEVER) {
+      return false;
+    }
+    if(mode == RedstoneControlMode.IGNORE) {
+      return true;
+    }
+
+    DyeColor col = getSignalColor(dir);
+    // internal signal
+    int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
+    if(mode.isConditionMet(mode, signal)) {
+      return true;
+    }
+
+    // external signal
+    if(col != DyeColor.RED) {
+      //can't get a non-red signal externally at this stage so no go
+      return false;
+    }
+    int val = getExternalRedstoneSignalForDir(dir);
+    return mode.isConditionMet(mode, val);
+  }
+
+  private int getExternalRedstoneSignalForDir(ForgeDirection dir) {
+    if(redstoneStateDirty) {
+      externalRedstoneSignals.clear();
+      redstoneStateDirty = false;
+    }
+    Integer cached = externalRedstoneSignals.get(dir);
+    int result;
+    if(cached == null) {
+      TileEntity te = getBundle().getEntity();
+      result = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
+      externalRedstoneSignals.put(dir, result);
+    } else {
+      result = cached;
+    }
+    return result;
+  }
+
   @Override
   public float getMaxEnergyRecieved(ForgeDirection dir) {
     ConnectionMode mode = getConectionMode(dir);
-    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED) {
+    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
     }
     return getCapacitor().getMaxEnergyReceived();
@@ -191,6 +304,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public World getWorld() {
     return getBundle().getEntity().worldObj;
+  }
+
+  @Override
+  public boolean onNeighborBlockChange(int blockId) {
+    redstoneStateDirty = true;
+    return super.onNeighborBlockChange(blockId);
   }
 
   @Override

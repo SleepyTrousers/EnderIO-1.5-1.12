@@ -2,11 +2,12 @@ package crazypants.enderio.conduit.power;
 
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.util.DyeColor;
 
 public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
 
@@ -23,6 +24,14 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
   float getMaxEnergyExtracted(ForgeDirection dir);
 
   float getMaxEnergyRecieved(ForgeDirection dir);
+
+  void setRedstoneMode(RedstoneControlMode mode, ForgeDirection dir);
+
+  RedstoneControlMode getRedstoneMode(ForgeDirection dir);
+
+  void setSignalColor(ForgeDirection dir, DyeColor col);
+
+  DyeColor getSignalColor(ForgeDirection dir);
 
   Icon getTextureForInputMode();
 

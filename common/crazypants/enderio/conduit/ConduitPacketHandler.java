@@ -309,10 +309,13 @@ public class ConduitPacketHandler implements IPacketProcessor {
       return;
     }
 
-    if(con instanceof ILiquidConduit) { //TODO: yeah, I know
+    //TODO: yeah, I know
+    if(con instanceof ILiquidConduit) {
       ((ILiquidConduit) con).setExtractionRedstoneMode(mode, dir);
     } else if(con instanceof IItemConduit) {
       ((IItemConduit) con).setExtractionRedstoneMode(mode, dir);
+    } else if(con instanceof IPowerConduit) {
+      ((IPowerConduit) con).setRedstoneMode(mode, dir);
     }
 
     world.markBlockForUpdate(conBun.getEntity().xCoord, conBun.getEntity().yCoord, conBun.getEntity().zCoord);
@@ -360,12 +363,15 @@ public class ConduitPacketHandler implements IPacketProcessor {
 
     ConTypeEnum type = ConTypeEnum.values()[data.readShort()];
     IConduit con = conBun.getConduit(type.baseType);
-    if(con instanceof IInsulatedRedstoneConduit) { //yeah, I know
+    //TODO: yeah, I know
+    if(con instanceof IInsulatedRedstoneConduit) {
       ((IInsulatedRedstoneConduit) con).setSignalColor(dir, col);
     } else if(con instanceof ILiquidConduit) {
       ((ILiquidConduit) con).setExtractionSignalColor(dir, col);
     } else if(con instanceof IItemConduit) {
       ((IItemConduit) con).setExtractionSignalColor(dir, col);
+    } else if(con instanceof IPowerConduit) {
+      ((IPowerConduit) con).setSignalColor(dir, col);
     } else {
       Log.warn("processSignalColorPacket: Could not handle as conduit not found in bundle.");
       return;

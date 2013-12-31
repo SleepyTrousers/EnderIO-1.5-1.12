@@ -61,6 +61,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+    colorB.setToolTipHeading("Signal Color");
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.dir).ordinal());
   }
 
