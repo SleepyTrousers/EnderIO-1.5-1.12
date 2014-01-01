@@ -7,7 +7,6 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
@@ -43,7 +42,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
       }
       if(tex != null) {
         Offset offset = te.getOffset(IPowerConduit.class, dir);
-        ConnectionModeGeometry.renderModeConnector(dir, offset, tex);
+        ConnectionModeGeometry.renderModeConnector(dir, offset, tex, true);
       }
     }
 
@@ -61,10 +60,9 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
         tessellator.setColorOpaque_I(c);
 
         Offset offset = conduit.getBundle().getOffset(IPowerConduit.class, component.dir);
-        Vector3d trans = ConduitGeometryUtil.instance.getTranslation(component.dir, offset);
-        BoundingBox bound = component.bound.translate(trans);
+        BoundingBox bound = component.bound;
         if(conMode != ConnectionMode.IN_OUT) {
-          trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);
+          Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);
           bound = bound.translate(trans);
         }
         CubeRenderer.render(bound, tex);

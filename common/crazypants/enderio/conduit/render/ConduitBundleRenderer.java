@@ -117,7 +117,7 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
     Icon tex = EnderIO.blockConduitBundle.getConnectorIcon();
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
-      CubeRenderer.render(bb, tex);
+      CubeRenderer.render(bb, tex, true);
     }
   }
 
