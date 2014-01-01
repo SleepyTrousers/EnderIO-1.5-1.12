@@ -26,6 +26,7 @@ import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 
@@ -35,7 +36,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
   public boolean canProcessPacket(int packetID) {
     return PacketHandler.ID_TRANSCEIVER_IO_MODE == packetID || PacketHandler.ID_TRANSCEIVER_PUBLIC_CHANNEL_LIST == packetID
         || PacketHandler.ID_TRANSCEIVER_ADD_REMOVE_CHANNEL == packetID || PacketHandler.ID_TRANSCEIVER_PRIVATE_CHANNEL_LIST == packetID
-        || PacketHandler.ID_TRANSCEIVER_CHANNEL_SELECTED == packetID;
+        || PacketHandler.ID_TRANSCEIVER_CHANNEL_SELECTED == packetID || PacketHandler.ID_TRANSCEIVER_REDSTONE_MODE == packetID;
   }
 
   @Override
@@ -50,7 +51,53 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
       handlePrivateChannelPacket(data, manager, player);
     } else if(packetID == PacketHandler.ID_TRANSCEIVER_CHANNEL_SELECTED) {
       handleChannelSelectedPacket(data, manager, player);
+    } else if(packetID == PacketHandler.ID_TRANSCEIVER_REDSTONE_MODE) {
+      handleChannelRedstonePacket(data, manager, player);
     }
+  }
+
+  public static Packet createRedstonePacket(TileHyperCube cube) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    try {
+      dos.writeInt(PacketHandler.ID_TRANSCEIVER_REDSTONE_MODE);
+      dos.writeInt(cube.xCoord);
+      dos.writeInt(cube.yCoord);
+      dos.writeInt(cube.zCoord);
+      dos.writeShort(cube.getRedstoneControlMode().ordinal());
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+  }
+
+  private void handleChannelRedstonePacket(DataInputStream data, INetworkManager manager, Player player) throws IOException {
+    if(!(player instanceof EntityPlayer)) {
+      Log.warn("handleChannelRedstonePacket: Could not handle packet as player not an entity player.");
+      return;
+    }
+    World world = ((EntityPlayer) player).worldObj;
+    if(world == null) {
+      Log.warn("handleChannelRedstonePacket: Could not handle packet as player world was null.");
+      return;
+    }
+
+    int x = data.readInt();
+    int y = data.readInt();
+    int z = data.readInt();
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(!(te instanceof TileHyperCube)) {
+      Log.warn("handleChannelRedstonePacket: Could not handle packet as TileEntity was not a HyperCube.");
+      return;
+    }
+    TileHyperCube hc = (TileHyperCube) te;
+    short ord = data.readShort();
+    hc.setRedstoneControlMode(RedstoneControlMode.values()[ord]);
   }
 
   public static Packet createChannelSelectedPacket(TileHyperCube cube, Channel channel) {
