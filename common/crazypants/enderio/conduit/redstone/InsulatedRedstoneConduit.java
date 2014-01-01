@@ -53,7 +53,6 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
         ICONS.put(KEY_INS_CORE_OFF_ICON, register.registerIcon(KEY_INS_CORE_OFF_ICON));
         ICONS.put(KEY_INS_CORE_ON_ICON, register.registerIcon(KEY_INS_CORE_ON_ICON));
         ICONS.put(KEY_INS_CONDUIT_ICON, register.registerIcon(KEY_INS_CONDUIT_ICON));
-        ICONS.put(KEY_COLOR_CONTROLLER, register.registerIcon(KEY_COLOR_CONTROLLER));
       }
 
       @Override
@@ -375,7 +374,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
     }
     if(COLOR_CONTROLLER_ID.equals(component.data)) {
-      return ICONS.get(KEY_COLOR_CONTROLLER);
+      return IconUtil.whiteTexture;
     }
     return ICONS.get(KEY_INS_CONDUIT_ICON);
   }

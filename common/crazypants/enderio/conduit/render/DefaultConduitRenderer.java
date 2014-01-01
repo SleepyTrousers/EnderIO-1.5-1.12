@@ -22,6 +22,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.BoundingBox;
+import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vertex;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
@@ -49,17 +50,14 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
         if(isNSEWUP(component.dir) &&
             conduit.getTransmitionTextureForState(component) != null) {
-//          tessellator.setColorRGBA_F(selfIllum + 0.1f, selfIllum + 0.1f,
-//              selfIllum + 0.1f, 0.75f);
-          tessellator.setBrightness((int)(worldLight));
+          tessellator.setBrightness((int) (worldLight));
           tex = conduit.getTransmitionTextureForState(component);
           renderTransmission(conduit, tex, component, selfIllum);
         }
 
         tex = conduit.getTextureForState(component);
         if(tex != null) {
-          //tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
-          tessellator.setBrightness((int)(worldLight));
+          tessellator.setBrightness((int) (worldLight));
           renderConduit(tex, conduit, component, selfIllum);
         }
       }
@@ -108,7 +106,6 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
     drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
-
   }
 
   protected boolean renderComponent(CollidableComponent component) {
@@ -121,12 +118,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir, boolean isTransmission) {
 
-    setupVertices(bound);
-
     Tessellator tessellator = Tessellator.instance;
 
     if(isTransmission) {
       setVerticesForTransmission(bound, dir);
+    } else {
+      setupVertices(bound);
     }
 
     if(dir == NORTH || dir == UP || dir == EAST) { // maintain consistent
@@ -140,9 +137,11 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     boolean rotateSides = dir == UP || dir == DOWN;
     boolean rotateTopBottom = dir == NORTH || dir == SOUTH;
-
+    float cm;
     if(dir != NORTH && dir != SOUTH) {
       tessellator.setNormal(0, 0, -1);
+      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
+      tessellator.setColorOpaque_F(cm, cm, cm);
       if(rotateSides) {
         addVecWithUV(verts[1], maxU, maxV);
         addVecWithUV(verts[0], maxU, minV);
@@ -160,6 +159,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         maxU = tmp;
       }
       tessellator.setNormal(0, 0, 1);
+      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
+      tessellator.setColorOpaque_F(cm, cm, cm);
       if(rotateSides) {
         addVecWithUV(verts[4], maxU, maxV);
         addVecWithUV(verts[5], maxU, minV);
@@ -181,6 +182,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     if(dir != UP && dir != DOWN) {
 
       tessellator.setNormal(0, 1, 0);
+      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
+      tessellator.setColorOpaque_F(cm, cm, cm);
       if(rotateTopBottom) {
         addVecWithUV(verts[6], maxU, maxV);
         addVecWithUV(verts[2], minU, maxV);
@@ -194,6 +197,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
       tessellator.setNormal(0, -1, 0);
+      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
+      tessellator.setColorOpaque_F(cm, cm, cm);
       if(rotateTopBottom) {
         addVecWithUV(verts[0], minU, minV);
         addVecWithUV(verts[1], minU, maxV);
@@ -209,13 +214,9 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     if(dir != EAST && dir != WEST) {
 
-      // if(id == NORTH) {
-      // float tmp = minU;
-      // minU = maxU;
-      // maxU = tmp;
-      // }
-
       tessellator.setNormal(1, 0, 0);
+      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
+      tessellator.setColorOpaque_F(cm, cm, cm);
       if(rotateSides) {
         addVecWithUV(verts[2], minU, maxV);
         addVecWithUV(verts[6], minU, minV);
@@ -229,6 +230,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
       tessellator.setNormal(-1, 0, 0);
+      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
+      tessellator.setColorOpaque_F(cm, cm, cm);
       if(rotateSides) {
         addVecWithUV(verts[0], maxU, maxV);
         addVecWithUV(verts[4], maxU, minV);
@@ -241,6 +244,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         addVecWithUV(verts[3], minU, maxV);
       }
     }
+    tessellator.setColorOpaque_F(1, 1, 1);
   }
 
   protected void setVerticesForTransmission(BoundingBox bound, ForgeDirection dir) {

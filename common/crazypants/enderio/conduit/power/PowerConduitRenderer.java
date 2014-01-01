@@ -1,14 +1,22 @@
 package crazypants.enderio.conduit.power;
 
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.render.BoundingBox;
+import crazypants.render.CubeRenderer;
+import crazypants.util.ForgeDirectionOffsets;
+import crazypants.vecmath.Vector3d;
 
 public class PowerConduitRenderer extends DefaultConduitRenderer {
 
@@ -41,4 +49,29 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
 
   }
 
+  @Override
+  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
+    if(IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
+      IPowerConduit pc = (IPowerConduit) conduit;
+      ConnectionMode conMode = pc.getConectionMode(component.dir);
+      if(conduit.containsExternalConnection(component.dir) && pc.getRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
+          && conMode != ConnectionMode.DISABLED) {
+        int c = ((IPowerConduit) conduit).getSignalColor(component.dir).getColor();
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.setColorOpaque_I(c);
+
+        Offset offset = conduit.getBundle().getOffset(IPowerConduit.class, component.dir);
+        Vector3d trans = ConduitGeometryUtil.instance.getTranslation(component.dir, offset);
+        BoundingBox bound = component.bound.translate(trans);
+        if(conMode != ConnectionMode.IN_OUT) {
+          trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.075);
+          bound = bound.translate(trans);
+        }
+        CubeRenderer.render(bound, tex);
+        tessellator.setColorOpaque(255, 255, 255);
+      }
+    } else {
+      super.renderConduit(tex, conduit, component, selfIllum);
+    }
+  }
 }
