@@ -30,6 +30,8 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
+import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Util;
 
@@ -136,6 +138,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         ItemStack itemStack = new ItemStack(this);
         PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getInternalPowerHandler().getEnergyStored());
         setChannelOnItem(hc, itemStack);
+        setIoOnItem(hc, itemStack);
         ret.add(itemStack);
 
         ItemRecieveBuffer rb = hc.getRecieveBuffer();
@@ -162,6 +165,32 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
       tag.setBoolean("channelIsPublic", chan.isPublic());
       if(!chan.isPublic()) {
         tag.setString("channelUser", chan.user);
+      }
+    }
+  }
+
+  private void setIoOnItem(TileHyperCube hc, ItemStack itemStack) {
+    System.out.println("BlockHyperCube.setIoOnItem: ");
+    NBTTagCompound tag = itemStack.getTagCompound();
+    if(tag == null) {
+      tag = new NBTTagCompound();
+      itemStack.setTagCompound(tag);
+    }
+    for (SubChannel sc : SubChannel.values()) {
+      tag.setShort("sendRecieve" + sc.ordinal(), (short) hc.getModeForChannel(sc).ordinal());
+      System.out.println("BlockHyperCube.setIoOnItem: sendRecieve" + sc.ordinal());
+    }
+  }
+
+  private void setIoOnTransciever(TileHyperCube hc, ItemStack itemStack) {
+    System.out.println("BlockHyperCube.setIoOnTransciever: ");
+    NBTTagCompound tag = itemStack.getTagCompound();
+    if(tag == null) {
+      return;
+    }
+    for (SubChannel sc : SubChannel.values()) {
+      if(tag.hasKey("sendRecieve" + sc.ordinal())) {
+        hc.setModeForChannel(sc, IoMode.values()[tag.getShort("sendRecieve" + sc.ordinal())]);
       }
     }
   }
@@ -195,6 +224,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         ItemStack itemStack = new ItemStack(this);
         PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getInternalPowerHandler().getEnergyStored());
         setChannelOnItem(hc, itemStack);
+        setIoOnItem(hc, itemStack);
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -224,6 +254,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         cb.setOwner(((EntityPlayerMP) player).username);
       }
       cb.setChannel(getChannelFromItem(stack));
+      setIoOnTransciever(cb, stack);
     }
     world.markBlockForUpdate(x, y, z);
   }
