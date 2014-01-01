@@ -51,15 +51,15 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
 
       if(render) {
         Offset offset = te.getOffset(IItemConduit.class, dir);
-        ConnectionModeGeometry.renderModeConnector(dir, offset, pc.getTextureForInOutBackground());
+        ConnectionModeGeometry.renderModeConnector(dir, offset, pc.getTextureForInOutBackground(), true);
 
         if(inChannel != null) {
           Tessellator.instance.setColorOpaque_I(inChannel.getColor());
-          ConnectionModeGeometry.renderModeConnector(dir, offset, inTex);
+          ConnectionModeGeometry.renderModeConnector(dir, offset, inTex, false);
         }
         if(outChannel != null) {
           Tessellator.instance.setColorOpaque_I(outChannel.getColor());
-          ConnectionModeGeometry.renderModeConnector(dir, offset, outTex);
+          ConnectionModeGeometry.renderModeConnector(dir, offset, outTex, false);
         }
         Tessellator.instance.setColorOpaque_F(1f, 1f, 1f);
       }

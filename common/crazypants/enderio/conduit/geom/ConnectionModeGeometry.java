@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.render.BoundingBox;
+import crazypants.render.RenderUtil;
 import crazypants.render.VertexRotation;
 import crazypants.render.VertexTransform;
 import crazypants.render.VertexTransformComposite;
@@ -95,7 +96,7 @@ public class ConnectionModeGeometry {
     return result;
   }
 
-  public static void renderModeConnector(ForgeDirection dir, Offset offset, Icon tex) {
+  public static void renderModeConnector(ForgeDirection dir, Offset offset, Icon tex, boolean tintSides) {
     List<Vertex> verts = VERTS.get(dir);
     if(verts == null) {
       return;
@@ -110,6 +111,24 @@ public class ConnectionModeGeometry {
 
     Tessellator tes = Tessellator.instance;
     for (Vertex v : verts) {
+      if(tintSides) {
+        float cm = 1;
+        if(v.ny() > 0.1) {
+          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
+        } else if(v.ny() < -0.1) {
+          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
+        } else if(v.nx() > 0.1) {
+          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
+        } else if(v.nx() < -0.1) {
+          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
+        } else if(v.nz() > 0.1) {
+          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
+        } else if(v.nz() < -0.1) {
+          cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
+        }
+        tes.setColorOpaque_F(cm, cm, cm);
+      }
+
       tes.setNormal(v.nx(), v.ny(), v.nz());
       tes.addVertexWithUV(v.x() + trans.x, v.y() + trans.y, v.z() + trans.z, minU + (v.u() * uScale), tex.getMinV() + (v.v() * vScale));
     }
