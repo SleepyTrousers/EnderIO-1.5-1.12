@@ -85,7 +85,7 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
         if(conduit != null) {
           if(ConduitUtil.renderConduit(player, component.conduitType)) {
             tessellator.setBrightness((int) (brightness));
-            CubeRenderer.render(component.bound, conduit.getTextureForState(component));
+            CubeRenderer.render(component.bound, conduit.getTextureForState(component), true);
           } else {
             wireBounds.add(component.bound);
           }
@@ -101,9 +101,9 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
     for (BoundingBox wireBound : wireBounds) {
       Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.25f);
       CubeRenderer.render(wireBound, EnderIO.blockConduitFacade.getIcon(0, 0));
-      Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
     }
 
+    Tessellator.instance.setColorRGBA_F(1, 1, 1, 1f);
     // External connection terminations
     for (ForgeDirection dir : externals) {
       renderExternalConnection(dir);

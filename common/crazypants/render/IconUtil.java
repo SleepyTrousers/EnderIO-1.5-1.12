@@ -19,11 +19,25 @@ public class IconUtil {
     public int getTextureType();
   }
 
+  private static ArrayList<IIconProvider> iconProviders = new ArrayList<IIconProvider>();
+
+  public static Icon whiteTexture;
+
   static {
     MinecraftForge.EVENT_BUS.register(new IconUtil());
-  }
+    addIconProvider(new IIconProvider() {
 
-  private static ArrayList<IIconProvider> iconProviders = new ArrayList<IIconProvider>();
+      @Override
+      public void registerIcons(IconRegister register) {
+        whiteTexture = register.registerIcon("enderio:white");
+      }
+
+      @Override
+      public int getTextureType() {
+        return 0;
+      }
+    });
+  }
 
   public static void addIconProvider(IIconProvider registrar) {
     iconProviders.add(registrar);

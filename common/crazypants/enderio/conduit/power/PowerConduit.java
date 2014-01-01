@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +27,9 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
@@ -51,7 +55,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static ItemStack createItemStackForSubtype(int subtype) {
     ItemStack result = new ItemStack(ModObject.itemPowerConduit.actualId, 1, subtype);
     return result;
-
   }
 
   public static void initIcons() {
@@ -108,7 +111,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(ConduitUtil.isToolEquipped(player)) {
+    DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
+    if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {
+      setSignalColor(res.component.dir, col);
+      return true;
+    } else if(ConduitUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().worldObj.isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
@@ -129,6 +136,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return false;
   }
 
+  private boolean isColorBandRendered(ForgeDirection dir) {
+    return getConectionMode(dir) != ConnectionMode.DISABLED && getRedstoneMode(dir) != RedstoneControlMode.IGNORE;
+  }
+
   @Override
   public ICapacitor getCapacitor() {
     return CAPACITORS[subtype];
@@ -141,6 +152,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public void setRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
     rsModes.put(dir, mode);
+    setClientStateDirty();
   }
 
   @Override
@@ -155,6 +167,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public void setSignalColor(ForgeDirection dir, DyeColor col) {
     rsColors.put(dir, col);
+    setClientStateDirty();
   }
 
   @Override
@@ -409,6 +422,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY + POSTFIX[subtype]);
     }
+    if(COLOR_CONTROLLER_ID.equals(component.data)) {
+      return IconUtil.whiteTexture;
+    }
     return ICONS.get(ICON_KEY + POSTFIX[subtype]);
   }
 
@@ -425,6 +441,23 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
     return null;
+  }
+
+  @Override
+  public Collection<CollidableComponent> createCollidables(CacheKey key) {
+    Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
+    if(key.dir == ForgeDirection.UNKNOWN) {
+      return baseCollidables;
+    }
+
+    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(key.dir, key.offset);
+    CollidableComponent cc = new CollidableComponent(IPowerConduit.class, bb, key.dir, COLOR_CONTROLLER_ID);
+
+    List<CollidableComponent> result = new ArrayList<CollidableComponent>();
+    result.addAll(baseCollidables);
+    result.add(cc);
+
+    return result;
   }
 
 }
