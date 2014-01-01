@@ -51,18 +51,19 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_TRANSCEIVER_ADD_REMOVE_CHANNEL = 9;
   public static final int ID_TRANSCEIVER_PRIVATE_CHANNEL_LIST = 10;
   public static final int ID_TRANSCEIVER_CHANNEL_SELECTED = 11;
+  public static final int ID_TRANSCEIVER_REDSTONE_MODE = 12;
 
-  public static final int ID_MJ_READER_INFO_REQUEST = 12;
-  public static final int ID_POWER_MONITOR_PACKET = 13;
+  public static final int ID_MJ_READER_INFO_REQUEST = 13;
+  public static final int ID_POWER_MONITOR_PACKET = 14;
 
-  public static final int ID_YETA_WRENCH_MODE_PACKET = 14;
+  public static final int ID_YETA_WRENCH_MODE_PACKET = 15;
 
-  public static final int ID_CONDUIT_CON_MODE = 15;
-  public static final int ID_CONDUIT_SIGNAL_COL = 16;
-  public static final int ID_CONDUIT_EXTRACT_MODE = 17;
-  public static final int ID_CONDUIT_ITEM_FILTER = 18;
-  public static final int ID_CONDUIT_ITEM_LOOP = 19;
-  public static final int ID_CONDUIT_ITEM_CHANNEL = 20;
+  public static final int ID_CONDUIT_CON_MODE = 16;
+  public static final int ID_CONDUIT_SIGNAL_COL = 17;
+  public static final int ID_CONDUIT_EXTRACT_MODE = 18;
+  public static final int ID_CONDUIT_ITEM_FILTER = 19;
+  public static final int ID_CONDUIT_ITEM_LOOP = 20;
+  public static final int ID_CONDUIT_ITEM_CHANNEL = 21;
 
   public static final String CHANNEL = "EnderIO";
 

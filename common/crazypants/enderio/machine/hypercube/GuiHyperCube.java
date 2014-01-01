@@ -15,7 +15,10 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
+import crazypants.enderio.machine.IRedstoneModeControlable;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.gui.GuiScreenBase;
@@ -69,8 +72,7 @@ public class GuiHyperCube extends GuiScreenBase {
   private IconButtonEIO fluidB;
   private IconButtonEIO itemB;
 
-  //  private IconEIO inputIcon;  
-  //  private IconEIO outputIcon;
+  private RedstoneModeButton rsB;
 
   public GuiHyperCube(TileHyperCube te) {
     super(245, 145);
@@ -104,21 +106,45 @@ public class GuiHyperCube extends GuiScreenBase {
     selectPrivateB = new IconButtonEIO(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
     selectPrivateB.setToolTip("Activate Channel");
 
-    itemB = new IconButtonEIO(this, ITEM_MODE_BUTTON_ID, 183, 12, IconEIO.WRENCH_OVERLAY_ITEM);
+    int x = 163;
+    int y = 12;
+    itemB = new IconButtonEIO(this, ITEM_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_ITEM);
     itemB.setIconMargin(3, 3);
 
-    powerB = new IconButtonEIO(this, POWER_MODE_BUTTON_ID, 203, 12, IconEIO.WRENCH_OVERLAY_POWER);
+    x += 18;
+    powerB = new IconButtonEIO(this, POWER_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_POWER);
     powerB.setIconMargin(3, 3);
 
-    fluidB = new IconButtonEIO(this, FLUID_MODE_BUTTON_ID, 222, 12, IconEIO.WRENCH_OVERLAY_FLUID);
+    x += 18;
+    fluidB = new IconButtonEIO(this, FLUID_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_FLUID);
     fluidB.setIconMargin(3, 3);
+
+    x += 24;
+    rsB = new RedstoneModeButton(this, 99, x, y, new IRedstoneModeControlable() {
+
+      @Override
+      public void setRedstoneControlMode(RedstoneControlMode mode) {
+        RedstoneControlMode curMode = getRedstoneControlMode();
+        cube.setRedstoneControlMode(mode);
+        if(curMode != mode) {
+          Packet pkt = HyperCubePacketHandler.createRedstonePacket(cube);
+          PacketDispatcher.sendPacketToServer(pkt);
+        }
+
+      }
+
+      @Override
+      public RedstoneControlMode getRedstoneControlMode() {
+        return cube.getRedstoneControlMode();
+      }
+    });
 
     updateIoButtons();
 
     int w = 104;
     int h = 68;
-    int x = 7;
-    int y = 45;
+    x = 7;
+    y = 45;
 
     Channel activeChannel = cube.getChannel();
     publicChannelList = new GuiChannelList(this, w, h, x, y);
@@ -221,6 +247,8 @@ public class GuiHyperCube extends GuiScreenBase {
 
     publicChannelList.onGuiInit(this);
     privateChannelList.onGuiInit(this);
+
+    rsB.onGuiInit();
 
   }
 
@@ -372,24 +400,31 @@ public class GuiHyperCube extends GuiScreenBase {
     IoMode fluidMode = cube.getModeForChannel(SubChannel.FLUID);
     IoMode powerMode = cube.getModeForChannel(SubChannel.POWER);
     IoMode itemMode = cube.getModeForChannel(SubChannel.ITEM);
+
+    x = 163;
     if(itemMode.isRecieveEnabled()) {
-      IconEIO.INPUT.renderIcon(guiLeft + 183 + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.INPUT.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
-    if(fluidMode.isRecieveEnabled()) {
-      IconEIO.INPUT.renderIcon(guiLeft + 222 + 15, guiTop + 4 + 7, -15, -7, 0, true);
-    }
+    x += 18;
     if(powerMode.isRecieveEnabled()) {
-      IconEIO.INPUT.renderIcon(guiLeft + 203 + 15, guiTop + 4 + 7, -15, -7, 0, true);
+      IconEIO.INPUT.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
+    }
+    x += 18;
+    if(fluidMode.isRecieveEnabled()) {
+      IconEIO.INPUT.renderIcon(guiLeft + x + 15, guiTop + 4 + 7, -15, -7, 0, true);
     }
 
+    x = 163;
     if(itemMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + 183, guiTop + 29, 15, 7, 0, true);
+      IconEIO.OUTPUT.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
-    if(fluidMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + 222, guiTop + 29, 15, 7, 0, true);
-    }
+    x += 18;
     if(powerMode.isSendEnabled()) {
-      IconEIO.OUTPUT.renderIcon(guiLeft + 204, guiTop + 29, 15, 7, 0, true);
+      IconEIO.OUTPUT.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
+    }
+    x += 18;
+    if(fluidMode.isSendEnabled()) {
+      IconEIO.OUTPUT.renderIcon(guiLeft + x, guiTop + 29, 15, 7, 0, true);
     }
 
   }

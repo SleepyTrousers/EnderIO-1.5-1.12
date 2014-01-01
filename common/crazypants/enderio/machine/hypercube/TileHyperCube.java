@@ -25,6 +25,7 @@ import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
@@ -123,8 +124,22 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private ItemRecieveBuffer recieveBuffer = new ItemRecieveBuffer();
 
+  protected RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
+  protected boolean redstoneCheckPassed;
+  private boolean redstoneStateDirty = true;
+
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
+    redstoneControlMode = RedstoneControlMode.IGNORE;
+  }
+
+  public RedstoneControlMode getRedstoneControlMode() {
+    return redstoneControlMode;
+  }
+
+  public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
+    this.redstoneControlMode = redstoneControlMode;
+    redstoneStateDirty = true;
   }
 
   public IoMode getModeForChannel(SubChannel channel) {
@@ -164,7 +179,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private boolean isConnected() {
-    if(channel == null || HyperCubeRegister.instance == null) {
+    if(channel == null || HyperCubeRegister.instance == null || !redstoneCheckPassed) {
       return false;
     }
     List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
@@ -221,6 +236,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     receptorsDirty = true;
     fluidHandlersDirty = true;
     inventoriesDirty = true;
+    redstoneStateDirty = true;
   }
 
   @Override
@@ -253,6 +269,20 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
     milliBucketsTransfered = 0;
 
+    boolean prevRedCheck = redstoneCheckPassed;
+    if(redstoneStateDirty) {
+      redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
+      redstoneStateDirty = false;
+    }
+
+    if(!redstoneCheckPassed) {
+      if(registeredChannel != null) {
+        HyperCubeRegister.instance.deregister(this, registeredChannel);
+        registeredChannel = null;
+      }
+
+    }
+
     transmitEnergy();
     sendEnergyToOtherNodes();
 
@@ -267,7 +297,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
     updateFluidHandlers();
 
-    if(registeredChannel == null ? channel != null : !registeredChannel.equals(channel)) {
+    if(redstoneCheckPassed && (registeredChannel == null ? channel != null : !registeredChannel.equals(channel))) {
       if(registeredChannel != null) {
         HyperCubeRegister.instance.deregister(this, registeredChannel);
       }
@@ -276,6 +306,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
 
     boolean requiresClientSync = wasConnected != stillConnected;
+    requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     float storedEnergy = powerHandler.getEnergyStored();
     // Update if our power has changed by more than 0.5%
@@ -302,7 +333,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private boolean canSendItems() {
-    return getModeForChannel(SubChannel.ITEM).isSendEnabled();
+    return getModeForChannel(SubChannel.ITEM).isSendEnabled() && redstoneCheckPassed;
   }
 
   private boolean canRecieveFluid() {
@@ -321,13 +352,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private boolean transmitEnergy() {
 
-    if(!getModeForChannel(SubChannel.POWER).isRecieveEnabled()) {
+    if(!getModeForChannel(SubChannel.POWER).isRecieveEnabled() || !redstoneCheckPassed || powerHandler.getEnergyStored() <= 0) {
       return false;
     }
 
-    if(powerHandler.getEnergyStored() <= 0) {
-      return false;
-    }
     float canTransmit = Math.min(powerHandler.getEnergyStored(), internalCapacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
@@ -577,7 +605,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   }
 
   private List<NetworkFluidHandler> getNetworkHandlers() {
-    if(HyperCubeRegister.instance == null) {
+    if(HyperCubeRegister.instance == null || !redstoneCheckPassed) {
       return Collections.emptyList();
     }
     List<TileHyperCube> cubes = HyperCubeRegister.instance.getCubesForChannel(channel);
@@ -810,6 +838,12 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     }
 
     recieveBuffer.readFromNBT(nbtRoot);
+
+    if(nbtRoot.hasKey("rsMode")) {
+      redstoneControlMode = RedstoneControlMode.values()[nbtRoot.getShort("rsMode")];
+    } else {
+      redstoneControlMode = RedstoneControlMode.IGNORE;
+    }
   }
 
   @Override
@@ -829,6 +863,9 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (SubChannel subChannel : SubChannel.values()) {
       IoMode mode = getModeForChannel(subChannel);
       nbtRoot.setShort("subChannel" + subChannel.ordinal(), (short) mode.ordinal());
+    }
+    if(redstoneControlMode != null) {
+      nbtRoot.setShort("rsMode", (short) redstoneControlMode.ordinal());
     }
     recieveBuffer.writeToNBT(nbtRoot);
   }
