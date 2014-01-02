@@ -65,6 +65,8 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_CONDUIT_ITEM_LOOP = 20;
   public static final int ID_CONDUIT_ITEM_CHANNEL = 21;
 
+  public static final int ID_CONDUIT_FLUID_LEVEL = 22;
+
   public static final String CHANNEL = "EnderIO";
 
   public static PacketHandler instance;

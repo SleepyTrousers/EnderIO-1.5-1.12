@@ -10,4 +10,9 @@ public interface ConduitRenderer {
   void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick,
       float worldLight);
 
+  boolean isDynamic();
+
+  void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z, float partialTick,
+      float worldLight);
+
 }

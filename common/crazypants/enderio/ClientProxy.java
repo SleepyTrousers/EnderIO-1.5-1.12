@@ -15,6 +15,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
@@ -104,10 +105,6 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
-    BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(cbr);
-
     BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
     BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(bcfgr);
@@ -141,6 +138,11 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart.itemID, new MachinePartRenderer());
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade.itemID, new FacadeRenderer());
+
+    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
+    BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(cbr);
+    ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new LiquidConduitRenderer());

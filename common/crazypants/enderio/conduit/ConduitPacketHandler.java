@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -24,6 +25,7 @@ import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.util.DyeColor;
+import crazypants.util.PacketUtil;
 
 public class ConduitPacketHandler implements IPacketProcessor {
 
@@ -60,7 +62,8 @@ public class ConduitPacketHandler implements IPacketProcessor {
   public boolean canProcessPacket(int packetID) {
     return PacketHandler.ID_CONDUIT_CON_MODE == packetID || packetID == PacketHandler.ID_CONDUIT_SIGNAL_COL
         || packetID == PacketHandler.ID_CONDUIT_EXTRACT_MODE || packetID == PacketHandler.ID_CONDUIT_ITEM_FILTER
-        || packetID == PacketHandler.ID_CONDUIT_ITEM_LOOP || packetID == PacketHandler.ID_CONDUIT_ITEM_CHANNEL;
+        || packetID == PacketHandler.ID_CONDUIT_ITEM_LOOP || packetID == PacketHandler.ID_CONDUIT_ITEM_CHANNEL
+        || packetID == PacketHandler.ID_CONDUIT_FLUID_LEVEL;
   }
 
   @Override
@@ -77,7 +80,51 @@ public class ConduitPacketHandler implements IPacketProcessor {
       processItemLoopPacket(data, player);
     } else if(packetID == PacketHandler.ID_CONDUIT_ITEM_CHANNEL) {
       processItemChannelPacket(data, player);
+    } else if(packetID == PacketHandler.ID_CONDUIT_FLUID_LEVEL) {
+      processFluidConduitLevelPacket(data, player);
     }
+  }
+
+  public static Packet createFluidConduitLevelPacket(ILiquidConduit liquidConduit) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    IConduitBundle bundle = liquidConduit.getBundle();
+    try {
+      dos.writeInt(PacketHandler.ID_CONDUIT_FLUID_LEVEL);
+      dos.writeInt(bundle.getEntity().xCoord);
+      dos.writeInt(bundle.getEntity().yCoord);
+      dos.writeInt(bundle.getEntity().zCoord);
+      NBTTagCompound tc = new NBTTagCompound();
+      liquidConduit.writeToNBT(tc);
+      PacketUtil.writeNBTTagCompound(tc, dos);
+
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+  }
+
+  private void processFluidConduitLevelPacket(DataInputStream data, Player player) throws IOException {
+    World world = getWorld(player);
+    if(world == null) {
+      return;
+    }
+    IConduitBundle conBun = getConduitBundle(data, world);
+    if(conBun == null) {
+      return;
+    }
+    ILiquidConduit con = conBun.getConduit(ILiquidConduit.class);
+    if(con == null) {
+      Log.warn("processFluidConduitLevelPacket: no fluid conduit exists in bundle when recieving packet.");
+      return;
+    }
+    NBTTagCompound tc = PacketUtil.readNBTTagCompound(data);
+    con.readFromNBT(tc);
   }
 
   public static Packet createItemChannelPacket(IItemConduit itemConduit, ForgeDirection dir, DyeColor col, boolean input) {

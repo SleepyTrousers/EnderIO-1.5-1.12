@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.liquid;
 import static crazypants.render.CubeRenderer.addVecWithUV;
 import static crazypants.render.CubeRenderer.setupVertices;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
@@ -126,9 +127,44 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
   protected void renderTransmission(IConduit con, Icon tex, CollidableComponent component, float brightness) {
-    BoundingBox[] cubes = toCubes(component.bound);
-    for (BoundingBox cube : cubes) {
-      drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+    //done in the dynamic section
+  }
+
+  @Override
+  public boolean isDynamic() {
+    return true;
+  }
+
+  @Override
+  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
+      float partialTick, float worldLight) {
+
+    if(((ILiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
+      return;
+    }
+
+    Collection<CollidableComponent> components = conduit.getCollidableComponents();
+    Tessellator tessellator = Tessellator.instance;
+
+    calculateRatios((ILiquidConduit) conduit);
+    transmissionScaleFactor = conduit.getTransmitionGeometryScale();
+
+    Icon tex;
+    for (CollidableComponent component : components) {
+      if(renderComponent(component)) {
+        float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
+        if(isNSEWUP(component.dir) &&
+            conduit.getTransmitionTextureForState(component) != null) {
+
+          tessellator.setColorOpaque_F(1, 1, 1);
+          tex = conduit.getTransmitionTextureForState(component);
+
+          BoundingBox[] cubes = toCubes(component.bound);
+          for (BoundingBox cube : cubes) {
+            drawSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+          }
+        }
+      }
     }
   }
 
