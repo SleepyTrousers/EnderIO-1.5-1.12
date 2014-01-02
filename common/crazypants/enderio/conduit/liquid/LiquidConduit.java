@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
@@ -26,11 +27,13 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -189,12 +192,21 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
     filledFromThisTick.clear();
     updateStartPushDir();
     doExtract();
-    // Limit these updates to prevent spamming during flow
-    if(stateDirty || (lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
-      lastSyncRatio = tank.getFilledRatio();
-      setActive(lastSyncRatio > 0);
+
+    if(stateDirty) {
       getBundle().dirty();
       stateDirty = false;
+      lastSyncRatio = tank.getFilledRatio();
+
+    } else if((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
+
+      //need to send a custom packet as we don't want want to trigger a full chunk update, just
+      //need to get the required  values to the entity renderer        
+      BlockCoord loc = getLocation();
+      Packet packet = ConduitPacketHandler.createFluidConduitLevelPacket(this);
+      PacketDispatcher.sendPacketToAllAround(loc.x, loc.y, loc.z, 64, world.provider.dimensionId, packet);
+
+      lastSyncRatio = tank.getFilledRatio();
     }
   }
 
@@ -676,7 +688,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
 
   @Override
   public Icon getTransmitionTextureForState(CollidableComponent component) {
-    if(active && tank.getFluid() != null) {
+    if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       return tank.getFluid().getFluid().getStillIcon();
     }
     return null;

@@ -11,10 +11,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -30,22 +35,103 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 
-public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
+public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
   public ConduitBundleRenderer(float conduitScale) {
   }
 
-  private void doRenderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
+  @Override
+  public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    if(bundle.hasFacade() && !ConduitUtil.isFacadeHidden(bundle, player)) {
+      return;
+    }
 
-    // Lighting calcuations to allow for self illumination    
-    float val = te.worldObj.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
-    renderTileEntityAt(bundle, x, y, z, partialTick, val);
+    float brightness = -1;
+    for (IConduit con : bundle.getConduits()) {
+      if(ConduitUtil.renderConduit(player, con)) {
+        ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
+        if(renderer.isDynamic()) {
+          if(brightness == -1) {
+            BlockCoord loc = bundle.getLocation();
+            brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
+
+            RenderUtil.bindBlockTexture();
+
+            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+            GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glShadeModel(GL11.GL_SMOOTH);
+
+            GL11.glPushMatrix();
+            GL11.glTranslated(x, y, z);
+
+            Tessellator.instance.startDrawingQuads();
+          }
+          renderer.renderDynamicEntity(this, bundle, con, x, y, z, partialTick, brightness);
+
+        }
+      }
+    }
+
+    if(brightness != -1) {
+      Tessellator.instance.draw();
+
+      GL11.glShadeModel(GL11.GL_FLAT);
+      GL11.glPopMatrix();
+      GL11.glPopAttrib();
+      GL11.glPopAttrib();
+    }
+
   }
 
-  public void renderTileEntityAt(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
+  @Override
+  public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks rb) {
+
+    IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(x, y, z);
+    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+
+    boolean renderConduit = true;
+    if(bundle.hasFacade()) {
+
+      int facadeId = bundle.getFacadeId();
+      if(ConduitUtil.isFacadeHidden(bundle, player)) {
+        bundle.setFacadeId(0, false);
+        bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
+      } else {
+        bundle.setFacadeRenderAs(FacadeRenderState.FULL);
+        renderConduit = false;
+      }
+
+      BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
+      facb.setBlockOverride(bundle);
+      facb.setBlockBounds(0, 0, 0, 1, 1, 1);
+      rb.setRenderBoundsFromBlock(facb);
+      rb.renderStandardBlock(facb, x, y, z);
+      facb.setBlockOverride(null);
+
+      bundle.setFacadeId(facadeId, false);
+
+    } else {
+      bundle.setFacadeRenderAs(FacadeRenderState.NONE);
+    }
+
+    if(renderConduit) {
+      renderConduits(bundle, x, y, z, 0);
+    }
+
+    return true;
+  }
+
+  public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick) {
+    BlockCoord loc = bundle.getLocation();
+    float brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
 
     Tessellator tessellator = Tessellator.instance;
     tessellator.setColorOpaque_F(1, 1, 1);
@@ -119,44 +205,6 @@ public class ConduitBundleRenderer implements ISimpleBlockRenderingHandler {
     for (BoundingBox bb : bbs) {
       CubeRenderer.render(bb, tex, true);
     }
-  }
-
-  @Override
-  public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks rb) {
-
-    IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(x, y, z);
-    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-
-    boolean renderConduit = true;
-    if(bundle.hasFacade()) {
-
-      int facadeId = bundle.getFacadeId();
-      if(ConduitUtil.isFacadeHidden(bundle, player)) {
-        bundle.setFacadeId(0, false);
-        bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
-      } else {
-        bundle.setFacadeRenderAs(FacadeRenderState.FULL);
-        renderConduit = false;
-      }
-
-      BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
-      facb.setBlockOverride(bundle);
-      facb.setBlockBounds(0, 0, 0, 1, 1, 1);
-      rb.setRenderBoundsFromBlock(facb);
-      rb.renderStandardBlock(facb, x, y, z);
-      facb.setBlockOverride(null);
-
-      bundle.setFacadeId(facadeId, false);
-
-    } else {
-      bundle.setFacadeRenderAs(FacadeRenderState.NONE);
-    }
-
-    if(renderConduit) {
-      doRenderTileEntityAt(bundle.getEntity(), x, y, z, 0);
-    }
-
-    return true;
   }
 
   @Override

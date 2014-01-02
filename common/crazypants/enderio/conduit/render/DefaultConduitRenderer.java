@@ -44,7 +44,6 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
 
     Icon tex;
-    boolean active = conduit.isActive();
     for (CollidableComponent component : components) {
       if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
@@ -63,6 +62,12 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
     }
+
+  }
+
+  @Override
+  public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con, double x, double y, double z,
+      float partialTick, float worldLight) {
 
   }
 
@@ -140,8 +145,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     float cm;
     if(dir != NORTH && dir != SOUTH) {
       tessellator.setNormal(0, 0, -1);
-      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
-      tessellator.setColorOpaque_F(cm, cm, cm);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.NORTH);
+        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
       if(rotateSides) {
         addVecWithUV(verts[1], maxU, maxV);
         addVecWithUV(verts[0], maxU, minV);
@@ -159,8 +166,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         maxU = tmp;
       }
       tessellator.setNormal(0, 0, 1);
-      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
-      tessellator.setColorOpaque_F(cm, cm, cm);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.SOUTH);
+        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
       if(rotateSides) {
         addVecWithUV(verts[4], maxU, maxV);
         addVecWithUV(verts[5], maxU, minV);
@@ -182,8 +191,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     if(dir != UP && dir != DOWN) {
 
       tessellator.setNormal(0, 1, 0);
-      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
-      tessellator.setColorOpaque_F(cm, cm, cm);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.UP);
+        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
       if(rotateTopBottom) {
         addVecWithUV(verts[6], maxU, maxV);
         addVecWithUV(verts[2], minU, maxV);
@@ -197,8 +208,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
       tessellator.setNormal(0, -1, 0);
-      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
-      tessellator.setColorOpaque_F(cm, cm, cm);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.DOWN);
+        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
       if(rotateTopBottom) {
         addVecWithUV(verts[0], minU, minV);
         addVecWithUV(verts[1], minU, maxV);
@@ -215,8 +228,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     if(dir != EAST && dir != WEST) {
 
       tessellator.setNormal(1, 0, 0);
-      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
-      tessellator.setColorOpaque_F(cm, cm, cm);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.EAST);
+        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
       if(rotateSides) {
         addVecWithUV(verts[2], minU, maxV);
         addVecWithUV(verts[6], minU, minV);
@@ -230,8 +245,10 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       }
 
       tessellator.setNormal(-1, 0, 0);
-      cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
-      tessellator.setColorOpaque_F(cm, cm, cm);
+      if(!isTransmission) {
+        cm = RenderUtil.getColorMultiplierForFace(ForgeDirection.WEST);
+        tessellator.setColorOpaque_F(cm, cm, cm);
+      }
       if(rotateSides) {
         addVecWithUV(verts[0], maxU, maxV);
         addVecWithUV(verts[4], maxU, minV);
@@ -310,6 +327,11 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     }
 
     return new BoundingBox[] { bb };
+  }
+
+  @Override
+  public boolean isDynamic() {
+    return false;
   }
 
 }
