@@ -84,7 +84,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public boolean isActive() {
-    return burnTime > 0;
+    return burnTime > 0 && redstoneCheckPassed;
   }
 
   @Override
@@ -111,6 +111,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public void onNeighborBlockChange(int blockId) {
+    super.onNeighborBlockChange(blockId);
     receptorsDirty = true;
   }
 
@@ -118,29 +119,30 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
 
-    if(burnTime > 0) {
-      // powerProvider.getPowerReceiver().receiveEnergy(Type.ENGINE,
-      // ENERGY_PER_TICK, ForgeDirection.DOWN);
-      powerHandler.setEnergy(powerHandler.getEnergyStored() + ENERGY_PER_TICK);
+    if(burnTime > 0 && redstoneCheckPassed) {
+      powerHandler.setEnergy(powerHandler.getEnergyStored() + ENERGY_PER_TICK + 500);
       burnTime--;
       needsUpdate = true;
     }
 
     needsUpdate |= transmitEnergy();
 
-    if(burnTime <= 0 && powerHandler.getEnergyStored() < powerHandler.getMaxEnergyStored() && redstoneCheckPassed) {
-      if(inventory[0] != null && inventory[0].stackSize > 0) {
-        burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
-        if(burnTime > 0) {
-          totalBurnTime = burnTime;
-          ItemStack containedItem = inventory[0].getItem().getContainerItemStack(inventory[0]);
-          if(containedItem != null) {
-            inventory[0] = containedItem;
-          } else {
-            decrStackSize(0, 1);
+    if(redstoneCheckPassed) {
+
+      if(burnTime <= 0 && powerHandler.getEnergyStored() < powerHandler.getMaxEnergyStored()) {
+        if(inventory[0] != null && inventory[0].stackSize > 0) {
+          burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
+          if(burnTime > 0) {
+            totalBurnTime = burnTime;
+            ItemStack containedItem = inventory[0].getItem().getContainerItemStack(inventory[0]);
+            if(containedItem != null) {
+              inventory[0] = containedItem;
+            } else {
+              decrStackSize(0, 1);
+            }
           }
+          needsUpdate = true;
         }
-        needsUpdate = true;
       }
     }
 
