@@ -1,3 +1,14 @@
+0.6.0
+- Significant improvements to conduit rendering performance
+- Added ability to create separate 'colored' channels with item conduits
+- Added toggle to allow items to be re-inserted into the same block using item conduits
+- #20 Added redstone controls to power conduits
+- #353 Added back redstone controls to transceivers 
+- #375 NPE when power conduits interfacing with TE machines
+- #381 Send/Recieve settings not saved when transceiver broken
+- #383 Improved client side performance of fluid conduits
+- #385 Stirling Generator not responding to redstone signals 
+
 0.5.6
 - #340 Improved performance of conduit rendering
 - #371 Fixed BC triggers and updated BC API
