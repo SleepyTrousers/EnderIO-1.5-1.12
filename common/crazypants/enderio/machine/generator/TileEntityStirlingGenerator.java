@@ -120,7 +120,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     boolean needsUpdate = false;
 
     if(burnTime > 0 && redstoneCheckPassed) {
-      powerHandler.setEnergy(powerHandler.getEnergyStored() + ENERGY_PER_TICK + 500);
+      powerHandler.setEnergy(powerHandler.getEnergyStored() + ENERGY_PER_TICK);
       burnTime--;
       needsUpdate = true;
     }
