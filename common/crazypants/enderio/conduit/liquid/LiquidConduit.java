@@ -360,7 +360,7 @@ public class LiquidConduit extends AbstractConduit implements ILiquidConduit {
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-    if(network == null) {
+    if(network == null || resource == null) {
       return 0;
     }
     if(!canFill(from, resource.getFluid())) {
