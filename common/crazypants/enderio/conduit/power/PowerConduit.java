@@ -46,8 +46,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
       new BasicCapacitor(500, 1500, 128),
-      new BasicCapacitor(500, 3000, 512),
-      new BasicCapacitor(500, 5000, 2048)
+      new BasicCapacitor(512, 3000, 512),
+      new BasicCapacitor(2048, 5000, 2048)
   };
 
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
