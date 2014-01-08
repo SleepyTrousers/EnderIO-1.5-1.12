@@ -669,6 +669,14 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       maxIO = totalIO;
       maxInput = maxIO;
       maxOutput = maxIO;
+      for (BlockCoord bc : multiblock) {
+        TileCapacitorBank cb = getCapBank(bc);
+        if(cb != null) {
+          cb.maxIO = totalIO;
+          cb.maxInput = maxIO;
+          cb.maxOutput = maxIO;
+        }
+      }
 
       if(invItems.size() > inventory.length) {
         for (int i = inventory.length; i < invItems.size(); i++) {
