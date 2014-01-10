@@ -1,0 +1,126 @@
+<!-- 
+
+Please refer to the documentation in SAGMillRecipes_Core/_User for details on the format used.
+Recipes for the alloy smelter have multiple inputs (up to three) and a single output. Multiple output tags
+can be used as long as they are for the same item. This allows 'chance' outputs, for example, if you wanted to 
+output some 4 bronze ingots with a 50% chance of a fith, you would use:
+
+<recipe name="Smelted Bronze" energyCost="750">
+   <input>
+      <itemStack oreDictionary="ingotCopper" number="1"/> 
+   </input>
+   <input>
+      <itemStack oreDictionary="ingotTon" number="3"/> 
+   </input>      
+   <output>
+     <itemStack oreDictionary="ingotBronze" number="4" exp="0.5"/>
+     <itemStack oreDictionary="ingotBronze" number="1" exp="0.5" chance="0.5"/>
+   </output>
+</recipe>   
+
+
+The 'exp' value ranges from 0-1. Some exmaple values from a vanilla furnace are:
+gold=1
+iron=0.7
+food=0.35
+sand/cobble/wood=0.1
+
+-->
+
+<AlloySmelterRecipes>
+  
+  <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
+    
+    <recipe name="Electrical Steel" energyCost="1000">
+      <input>
+        <itemStack itemID="265" /> <!-- Iron -->
+      </input>
+      <input>
+        <itemStack itemID="263" /> <!-- Coal -->
+      </input>      
+      <input>
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" /> <!-- Silicon -->
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="0" exp="0.5"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Energetic Alloy" energyCost="1000">
+      <input>
+        <itemStack itemID="331" /> <!-- Red stone -->
+      </input>            
+      <input>
+        <itemStack itemID="266" /> <!-- Gold -->
+      </input>
+      <input>
+        <itemStack itemID="348" /> <!-- Glow stone -->
+      </input>                  
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="1" exp="0.7"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Vibrant Alloy" energyCost="1000">
+      <input>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="1"/> <!-- Energetic Alloy -->
+      </input>            
+      <input>
+        <itemStack itemID="368" /> <!-- Ender Pearl -->
+      </input>                       
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="2" exp="1"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Redstone Alloy" energyCost="1000">
+      <input>
+        <itemStack itemID="331" /> <!-- Redstone -->
+      </input>      
+      <input>
+        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" /> <!-- Silicon -->
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="3" exp="0.5"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Conductive Iron" energyCost="1000">
+      <input>
+        <itemStack itemID="331" number="2"/> <!-- Redstone -->
+      </input>      
+      <input>
+        <itemStack itemID="265" /> <!-- Iron Ingot -->
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="4" exp="0.5"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Pulsating Iron" energyCost="1000">
+      <input>
+        <itemStack itemID="265" /> <!-- Iron Ingot -->
+      </input>      
+      <input>
+        <itemStack itemID="368" /> <!-- Ender Pearl -->
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="5" exp="0.7"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Fused Quartz" energyCost="750">
+      <input>
+        <itemStack itemID="406" number="4" /> <!-- Nether Quartz-->
+      </input>            
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="0" exp="0.5"/> 
+      </output>
+    </recipe>
+    
+  </recipeGroup>
+  
+  <vanillaFurnaceRecipes enabled="true"/>       
+
+  
+</AlloySmelterRecipes>  

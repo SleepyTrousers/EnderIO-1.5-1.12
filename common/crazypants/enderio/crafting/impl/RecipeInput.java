@@ -13,7 +13,7 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
 
   private final List<ItemStack> equivelents;
 
-  public RecipeInput(ItemStack itemPrototype, int slot, boolean checkNBT, ItemStack... equivs) {
+  public RecipeInput(ItemStack itemPrototype, int slot, ItemStack... equivs) {
     super(itemPrototype, slot);
     if(equivs == null) {
       equivelents = Collections.emptyList();

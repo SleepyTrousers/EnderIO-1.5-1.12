@@ -32,12 +32,11 @@ import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemYetaWrench;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.RedstoneModePacketProcessor;
+import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
-import crazypants.enderio.machine.crusher.CrusherMachineRecipe;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
@@ -238,7 +237,7 @@ public class EnderIO {
   public void postInit(FMLPostInitializationEvent event) {
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockCrusher.unlocalisedName, new CrusherMachineRecipe());
+    AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();
   }
