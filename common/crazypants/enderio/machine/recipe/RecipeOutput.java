@@ -1,41 +1,51 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.recipe;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class CrusherOutput {
+public class RecipeOutput {
 
   private final ItemStack output;
   private final float chance;
+  private float exp;
 
-  public CrusherOutput(Block output) {
+  public RecipeOutput(Block output) {
     this(new ItemStack(output), 1);
   }
 
-  public CrusherOutput(Block output, float chance) {
+  public RecipeOutput(Block output, float chance) {
     this(new ItemStack(output), chance);
   }
 
-  public CrusherOutput(Item output, float chance) {
+  public RecipeOutput(Item output, float chance) {
     this(new ItemStack(output), chance);
   }
 
-  public CrusherOutput(Item output) {
+  public RecipeOutput(Item output) {
     this(new ItemStack(output), 1);
   }
 
-  public CrusherOutput(ItemStack output) {
+  public RecipeOutput(ItemStack output) {
     this(output, 1);
   }
 
-  public CrusherOutput(ItemStack output, float chance) {
+  public RecipeOutput(ItemStack output, float chance) {
+    this(output, chance, 0);
+  }
+
+  public RecipeOutput(ItemStack output, float chance, float exp) {
     this.output = output.copy();
     this.chance = chance;
+    this.exp = exp;
   }
 
   public float getChance() {
     return chance;
+  }
+
+  public float getExperiance() {
+    return exp;
   }
 
   public ItemStack getOutput() {

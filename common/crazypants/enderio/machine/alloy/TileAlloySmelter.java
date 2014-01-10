@@ -109,7 +109,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     for (IMachineRecipe recipe : recipes) {
       if(!(recipe instanceof VanillaSmeltingRecipe)) {
 
-        if(recipe instanceof IAlloyRecipe) {
+        if(recipe instanceof AlloyMachineRecipe) {
           ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
           for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
             if(i >= 0 && i < inventory.length) {
@@ -120,7 +120,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
               }
             }
           }
-          if(((IAlloyRecipe) recipe).isValidRecipeComponents(resultInv)) {
+          if(((AlloyMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
             return true;
           }
 

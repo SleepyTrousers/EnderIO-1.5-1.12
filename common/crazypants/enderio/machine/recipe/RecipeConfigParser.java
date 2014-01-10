@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.crusher;
+package crazypants.enderio.machine.recipe;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -24,13 +24,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.crusher.RecipeConfig.Recipe;
-import crazypants.enderio.machine.crusher.RecipeConfig.RecipeGroup;
-import crazypants.enderio.machine.crusher.RecipeConfig.RecipeInput;
+import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
+import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
 
 public class RecipeConfigParser extends DefaultHandler {
 
-  public static final String ELEMENT_ROOT = "SAGMillRecipes";
+  //public static final String ELEMENT_ROOT = "SAGMillRecipes";
   public static final String ELEMENT_RECIPE_GROUP = "recipeGroup";
   public static final String ELEMENT_RECIPE = "recipe";
   public static final String ELEMENT_INPUT = "input";
@@ -49,33 +49,34 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_MOD_ID = "modID";
   public static final String AT_NUMBER = "number";
   public static final String AT_CHANCE = "chance";
+  public static final String AT_EXP = "exp";
 
   // Log prefix
-  private static final String LP = "SAGMillRecipeParser: ";
+  private static final String LP = "RecipeParser: ";
 
-  public static RecipeConfig parse(String str) throws Exception {
+  public static RecipeConfig parse(String str, CustomTagHandler customHandler) throws Exception {
     StringReader reader = new StringReader(str);
     InputSource is = new InputSource(reader);
     try {
-      return parse(is);
+      return parse(is, customHandler);
     } finally {
       reader.close();
     }
   }
 
-  public static RecipeConfig parse(File file) throws Exception {
+  public static RecipeConfig parse(File file, CustomTagHandler customHandler) throws Exception {
     BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
     InputSource is = new InputSource(bis);
     try {
-      return parse(is);
+      return parse(is, customHandler);
     } finally {
       IOUtils.closeQuietly(bis);
     }
   }
 
-  public static RecipeConfig parse(InputSource is) throws Exception {
+  public static RecipeConfig parse(InputSource is, CustomTagHandler customHandler) throws Exception {
 
-    RecipeConfigParser parser = new RecipeConfigParser();
+    RecipeConfigParser parser = new RecipeConfigParser(customHandler);
 
     SAXParserFactory spf = SAXParserFactory.newInstance();
     spf.setNamespaceAware(true);
@@ -90,15 +91,17 @@ public class RecipeConfigParser extends DefaultHandler {
   private RecipeConfig result = null;
   private RecipeConfig root = null;
   private RecipeGroup recipeGroup = null;
-  private Recipe recipe = null;
+  private RecipeElement recipe = null;
 
   private boolean outputTagOpen = false;
   private boolean inputTagOpen = false;
 
   private boolean debug = false;
 
-  RecipeConfigParser() {
+  private CustomTagHandler customHandler = null;
 
+  RecipeConfigParser(CustomTagHandler customHandler) {
+    this.customHandler = customHandler;
   }
 
   RecipeConfig getResult() {
@@ -124,7 +127,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   @Override
   public void endElement(String uri, String localName, String qName) throws SAXException {
-    if(ELEMENT_ROOT.equals(localName)) {
+    if(isElementRoot(localName)) {
       result = root;
       root = null;
       if(debug) {
@@ -170,6 +173,12 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       return;
     }
+    // Custom tag handling    
+    if(customHandler != null) {
+      if(customHandler.endElement(uri, localName, qName)) {
+        return;
+      }
+    }
   }
 
   @Override
@@ -183,9 +192,9 @@ public class RecipeConfigParser extends DefaultHandler {
       Log.debug(LP + "RecipeConfigParser.startElement: localName:" + localName + " attrs:" + sb);
     }
 
-    if(ELEMENT_ROOT.equals(localName)) {
+    if(isElementRoot(localName)) {
       if(root != null) {
-        Log.warn(LP + "Multiple " + ELEMENT_ROOT + " elements found.");
+        Log.warn(LP + "Multiple root elements found.");
       } else {
         root = new RecipeConfig();
       }
@@ -193,7 +202,7 @@ public class RecipeConfigParser extends DefaultHandler {
     }
 
     if(root == null) {
-      Log.warn(LP + "<" + ELEMENT_ROOT + "> not specified before element " + localName + ".");
+      Log.warn(LP + " Root element not specified before element " + localName + ".");
       root = new RecipeConfig();
     }
 
@@ -232,6 +241,13 @@ public class RecipeConfigParser extends DefaultHandler {
       recipe = recipeGroup.createRecipe(name);
       recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
       return;
+    }
+
+    // Custom tag handling    
+    if(customHandler != null) {
+      if(customHandler.startElement(uri, localName, qName, attributes)) {
+        return;
+      }
     }
 
     if(recipe == null) {
@@ -281,50 +297,29 @@ public class RecipeConfigParser extends DefaultHandler {
 
   }
 
+  //TODO: What a hack!
+  private boolean isElementRoot(String str) {
+    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str);
+  }
+
   private void addOutputStack(Attributes attributes) {
-    RecipeConfig.RecipeInput stack = getItemStack(attributes);
+    RecipeInput stack = getItemStack(attributes);
     if(stack == null) {
       return;
     }
-    recipe.addOutput(new CrusherOutput(stack.input, getFloatValue(AT_CHANCE, attributes, 1f)));
+    float exp = getFloatValue(AT_EXP, attributes, 0f);
+    recipe.addOutput(new RecipeOutput(stack.getInput(), getFloatValue(AT_CHANCE, attributes, 1f), exp));
   }
 
   private void addInputStack(Attributes attributes) {
-
-    String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
-    if(oreDict != null) {
-      ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
-      if(ores == null) {
-        return;
-      }
-      int stackSize = getIntValue(AT_NUMBER, attributes, 1);
-      for (ItemStack st : ores) {
-        if(st != null) {
-          ItemStack stack = st.copy();
-          stack.stackSize = stackSize;
-          if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-            for (int i = 0; i < 16; i++) {
-              stack = stack.copy();
-              stack.setItemDamage(i);
-              recipe.addInput(stack, true);
-            }
-          } else {
-            recipe.addInput(stack, true);
-          }
-        }
-      }
-
-    } else {
-      RecipeConfig.RecipeInput stack = getItemStack(attributes);
-      if(stack == null) {
-        return;
-      }
-      stack.input.stackSize = 1;
-      recipe.addInput(stack);
+    RecipeInput stack = getItemStack(attributes);
+    if(stack == null) {
+      return;
     }
+    recipe.addInput(stack);
   }
 
-  private RecipeConfig.RecipeInput getItemStack(Attributes attributes) {
+  public static RecipeInput getItemStack(Attributes attributes) {
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
     if(oreDict != null) {
       ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
@@ -338,7 +333,7 @@ public class RecipeConfigParser extends DefaultHandler {
       if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
         useMeta = false;
       }
-      return new RecipeInput(stack, useMeta);
+      return new OreDictionaryRecipeInput(ores.get(0), OreDictionary.getOreID(oreDict));
     }
 
     int itemID = getIntValue(AT_ITEM_ID, attributes, -1);
@@ -377,7 +372,7 @@ public class RecipeConfigParser extends DefaultHandler {
     return new RecipeInput(new ItemStack(itemID, stackSize, itemMeta), useMeta);
   }
 
-  private boolean getBooleanValue(String qName, Attributes attributes, boolean def) {
+  public static boolean getBooleanValue(String qName, Attributes attributes, boolean def) {
     String val = attributes.getValue(qName);
     if(val == null) {
       return def;
@@ -386,7 +381,7 @@ public class RecipeConfigParser extends DefaultHandler {
     return val.equals("false") ? false : val.equals("true") ? true : def;
   }
 
-  private int getIntValue(String qName, Attributes attributes, int def) {
+  public static int getIntValue(String qName, Attributes attributes, int def) {
     try {
       return Integer.parseInt(getStringValue(qName, attributes, def + ""));
     } catch (Exception e) {
@@ -395,7 +390,7 @@ public class RecipeConfigParser extends DefaultHandler {
     }
   }
 
-  private float getFloatValue(String qName, Attributes attributes, float def) {
+  public static float getFloatValue(String qName, Attributes attributes, float def) {
     try {
       return Float.parseFloat(getStringValue(qName, attributes, def + ""));
     } catch (Exception e) {
@@ -404,7 +399,7 @@ public class RecipeConfigParser extends DefaultHandler {
     }
   }
 
-  private String getStringValue(String qName, Attributes attributes, String def) {
+  public static String getStringValue(String qName, Attributes attributes, String def) {
     String val = attributes.getValue(qName);
     if(val == null) {
       return def;
@@ -416,7 +411,11 @@ public class RecipeConfigParser extends DefaultHandler {
     return val;
   }
 
-  private String toString(Attributes attributes) {
+  public static boolean hasAttribute(String att, Attributes attributes) {
+    return attributes.getValue(att) != null;
+  }
+
+  public static String toString(Attributes attributes) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < attributes.getLength(); i++) {
       sb.append("[" + attributes.getQName(i) + "=" + attributes.getValue(i) + "]");

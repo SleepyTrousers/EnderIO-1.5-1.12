@@ -11,16 +11,14 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.crafting.IRecipeComponent;
 import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInput;
-import crazypants.enderio.crafting.impl.RecipeOutput;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.Recipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.recipe.RecipeOutput;
 
-public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
+public class BasicAlloyRecipe implements IAlloyRecipe {
 
-  public static final int DEFAULT_ENERGY_USE = 1400;
-
-  private final String uid;
+  public static final int DEFAULT_ENERGY_USE = 1200;
 
   private float energyRequired = DEFAULT_ENERGY_USE;
 
@@ -32,9 +30,17 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
 
   private final List<IEnderIoRecipe> recipe;
 
-  public BasicAlloyRecipe(ItemStack output, String uid, ItemStack... recipeInputs) {
-    this.output = output.copy();
-    this.uid = uid;
+  private float expPerItem;
+
+  private RecipeOutput[] outputs;
+
+  public BasicAlloyRecipe(Recipe recipe) {
+    this.output = recipe.getOutputs()[0].getOutput().copy();
+    expPerItem = recipe.getOutputs()[0].getExperiance();
+    outputs = new crazypants.enderio.machine.recipe.RecipeOutput[] { new crazypants.enderio.machine.recipe.RecipeOutput(output, 1, expPerItem) };
+
+    ItemStack[] recipeInputs = recipe.getInputStacks();
+
     inputs = new ItemStack[recipeInputs.length];
     inputKeys = new HashSet<InputKey>();
 
@@ -43,15 +49,17 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
       if(recipeInputs[i] != null) {
         inputs[i] = recipeInputs[i].copy();
         inputKeys.add(new InputKey(inputs[i].itemID, inputs[i].getItemDamage()));
-        reipceComps.add(new RecipeInput(inputs[i], false));
+        reipceComps.add(new crazypants.enderio.crafting.impl.RecipeInput(inputs[i], false));
       } else {
         inputs[i] = null;
       }
     }
 
-    reipceComps.add(new RecipeOutput(output));
+    energyRequired = recipe.getEnergyRequired();
+
+    reipceComps.add(new crazypants.enderio.crafting.impl.RecipeOutput(output));
     IEnderIoRecipe rec = new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, energyRequired, reipceComps);
-    recipe = Collections.singletonList(rec);
+    this.recipe = Collections.singletonList(rec);
 
   }
 
@@ -70,40 +78,22 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
     return true;
   }
 
-  public ItemStack[] getInputs() {
-    return inputs;
-  }
-
+  @Override
   public ItemStack getOutput() {
     return output;
   }
 
-  @Override
-  public String getUid() {
-    return uid;
-  }
-
-  @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
-    return energyRequired;
-  }
-
-  @Override
-  public boolean isRecipe(MachineRecipeInput... checking) {
-    checking = getNonNullInputs(checking);
-    if(inputs.length != checking.length) {
-      return false;
+  private ItemStack[] getNonNullInputStacks(ItemStack[] checking) {
+    if(checking == null) {
+      return new ItemStack[0];
     }
-
-    Set<InputKey> keys = new HashSet<BasicAlloyRecipe.InputKey>(inputKeys);
-    for (MachineRecipeInput input : checking) {
-      ItemStack ing = getRecipeComponentFromInput(input.item);
-      if(ing == null || ing.stackSize > input.item.stackSize) {
-        return false;
+    List<ItemStack> result = new ArrayList<ItemStack>(checking.length);
+    for (ItemStack st : checking) {
+      if(st != null) {
+        result.add(st);
       }
-      keys.remove(new InputKey(ing.itemID, ing.getItemDamage()));
     }
-    return keys.isEmpty();
+    return result.toArray(new ItemStack[result.size()]);
   }
 
   private MachineRecipeInput[] getNonNullInputs(MachineRecipeInput[] checking) {
@@ -124,11 +114,12 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
     return result;
   }
 
-  @Override
+  //@Override
   public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     return new ItemStack[] { output.copy() };
   }
 
+  //@Override
   @Override
   public boolean isValidInput(MachineRecipeInput input) {
     if(input == null) {
@@ -137,7 +128,7 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
     return getRecipeComponentFromInput(input.item) != null;
   }
 
-  @Override
+  //@Override
   public String getMachineName() {
     return ModObject.blockAlloySmelter.unlocalisedName;
   }
@@ -159,7 +150,7 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
     return null;
   }
 
-  @Override
+  //@Override
   public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput input : inputs) {
@@ -176,7 +167,7 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
     return result.toArray(new MachineRecipeInput[result.size()]);
   }
 
-  @Override
+  //@Override
   public List<IEnderIoRecipe> getAllRecipes() {
     return recipe;
   }
@@ -224,8 +215,53 @@ public class BasicAlloyRecipe implements IMachineRecipe, IAlloyRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
-    return 0;
+  public boolean isValid() {
+    return inputs != null && inputs.length > 0 && output != null;
   }
 
+  @Override
+  public float getEnergyRequired() {
+    return energyRequired;
+  }
+
+  @Override
+  public crazypants.enderio.machine.recipe.RecipeOutput[] getOutputs() {
+    return outputs;
+  }
+
+  @Override
+  public ItemStack[] getInputStacks() {
+    return inputs;
+  }
+
+  @Override
+  public boolean isInputForRecipe(ItemStack[] test) {
+    if(test == null) {
+      return false;
+    }
+    test = getNonNullInputStacks(test);
+    if(inputs.length != test.length) {
+      return false;
+    }
+
+    Set<InputKey> keys = new HashSet<BasicAlloyRecipe.InputKey>(inputKeys);
+    for (ItemStack input : test) {
+      ItemStack ing = getRecipeComponentFromInput(input);
+      if(ing == null || ing.stackSize > input.stackSize) {
+        return false;
+      }
+      keys.remove(new InputKey(ing.itemID, ing.getItemDamage()));
+    }
+    return keys.isEmpty();
+  }
+
+  @Override
+  public RecipeInput[] getInputs() {
+    ItemStack[] inStacks = getNonNullInputStacks(inputs);
+    RecipeInput[] result = new RecipeInput[inStacks.length];
+    for (int i = 0; i < result.length; i++) {
+      result[i] = new RecipeInput(inStacks[i], true);
+    }
+    return result;
+  }
 }
