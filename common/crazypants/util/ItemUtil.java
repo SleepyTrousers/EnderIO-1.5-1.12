@@ -67,14 +67,14 @@ public class ItemUtil {
 
           if(inserted > 0) {
             numInserted += inserted;
-            numToInsert -= inserted;            
-            sidedInv.setInventorySlotContents(slot, toInsert);            
+            numToInsert -= inserted;
+            sidedInv.setInventorySlotContents(slot, toInsert);
           }
         }
       }
     }
-    if(numInserted > 0) {      
-      sidedInv.onInventoryChanged();      
+    if(numInserted > 0) {
+      sidedInv.onInventoryChanged();
     }
     return numInserted;
   }
@@ -104,13 +104,13 @@ public class ItemUtil {
 
         if(inserted > 0) {
           numInserted += inserted;
-          numToInsert -= inserted;          
-          inv.setInventorySlotContents(slot, toInsert);          
+          numToInsert -= inserted;
+          inv.setInventorySlotContents(slot, toInsert);
         }
       }
     }
-    if(numInserted > 0) {      
-      inv.onInventoryChanged();      
+    if(numInserted > 0) {
+      inv.onInventoryChanged();
     }
     return numInserted;
   }
