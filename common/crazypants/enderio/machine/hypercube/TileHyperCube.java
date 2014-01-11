@@ -706,7 +706,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
       TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite(), false);
+      result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite());
       if(result.stackSize <= 0) {
         return null;
       }

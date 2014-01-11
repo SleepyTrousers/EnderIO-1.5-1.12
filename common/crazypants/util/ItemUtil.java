@@ -9,32 +9,32 @@ import cofh.api.transport.IItemConduit;
 
 public class ItemUtil {
 
-  public static int doInsertItem(Object into, ItemStack item, ForgeDirection side, boolean simulate) {
+  public static int doInsertItem(Object into, ItemStack item, ForgeDirection side) {
     if(into == null || item == null) {
       return 0;
     }
     if(into instanceof ISidedInventory) {
-      return ItemUtil.doInsertItem((ISidedInventory) into, item, side, simulate);
+      return ItemUtil.doInsertItem((ISidedInventory) into, item, side);
     } else if(into instanceof IInventory) {
-      return ItemUtil.doInsertItem((IInventory) into, item, simulate);
+      return ItemUtil.doInsertItem((IInventory) into, item);
     } else if(into instanceof IItemConduit) {
-      return ItemUtil.doInsertItem((IItemConduit) into, item, side, simulate);
+      return ItemUtil.doInsertItem((IItemConduit) into, item, side);
     } else if(into instanceof IPipeTile) {
-      return ((IPipeTile) into).injectItem(item, !simulate, side);
+      return ((IPipeTile) into).injectItem(item, true, side);
     }
     return 0;
   }
 
-  public static int doInsertItem(IItemConduit con, ItemStack item, ForgeDirection inventorySide, boolean simulate) {
+  public static int doInsertItem(IItemConduit con, ItemStack item, ForgeDirection inventorySide) {
     int startedWith = item.stackSize;
-    ItemStack remaining = con.insertItem(inventorySide, item, simulate);
+    ItemStack remaining = con.insertItem(inventorySide, item);
     if(remaining == null) {
       return startedWith;
     }
     return startedWith - remaining.stackSize;
   }
 
-  public static int doInsertItem(ISidedInventory sidedInv, ItemStack item, ForgeDirection inventorySide, boolean simulate) {
+  public static int doInsertItem(ISidedInventory sidedInv, ItemStack item, ForgeDirection inventorySide) {
 
     if(inventorySide == null) {
       inventorySide = ForgeDirection.UNKNOWN;
@@ -68,22 +68,18 @@ public class ItemUtil {
           if(inserted > 0) {
             numInserted += inserted;
             numToInsert -= inserted;
-            if(!simulate) {
-              sidedInv.setInventorySlotContents(slot, toInsert);
-            }
+            sidedInv.setInventorySlotContents(slot, toInsert);
           }
         }
       }
     }
     if(numInserted > 0) {
-      if(!simulate) {
-        sidedInv.onInventoryChanged();
-      }
+      sidedInv.onInventoryChanged();
     }
     return numInserted;
   }
 
-  public static int doInsertItem(IInventory inv, ItemStack item, boolean simulate) {
+  public static int doInsertItem(IInventory inv, ItemStack item) {
     int numInserted = 0;
     int numToInsert = item.stackSize;
     for (int slot = 0; slot < inv.getSizeInventory() && numToInsert > 0; slot++) {
@@ -109,16 +105,12 @@ public class ItemUtil {
         if(inserted > 0) {
           numInserted += inserted;
           numToInsert -= inserted;
-          if(!simulate) {
-            inv.setInventorySlotContents(slot, toInsert);
-          }
+          inv.setInventorySlotContents(slot, toInsert);
         }
       }
     }
     if(numInserted > 0) {
-      if(!simulate) {
-        inv.onInventoryChanged();
-      }
+      inv.onInventoryChanged();
     }
     return numInserted;
   }

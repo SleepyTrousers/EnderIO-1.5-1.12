@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -151,7 +152,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     } else if(network == null) {
       return item;
     }
-    return network.sendItems(this, item, from, simulate);
+    if(simulate) {
+      Log.error("Unsupported, deprecated method called. No item will transfer.");
+      return item;
+    }
+    return network.sendItems(this, item, from);
   }
 
   @Override
