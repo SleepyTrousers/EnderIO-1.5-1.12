@@ -93,15 +93,9 @@
         <itemStack itemID="16" />
       </input>
       <output>
-        <itemStack itemID="263" number="3" />
-      </output>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="1" chance="0.6" />
-      </output>
-      <output>
-        <itemStack itemID="4" chance="0.15" />
-      </output>
-      <output>
+        <itemStack itemID="263" number="3" />      
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" number="1" chance="0.6" />      
+        <itemStack itemID="4" chance="0.15" />      
         <itemStack itemID="264" chance="0.001" />
       </output>
     </recipe>
@@ -111,9 +105,7 @@
         <itemStack itemID="263" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" />
-      </output>
-      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" />      
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="0" chance="0.25" />
       </output>
     </recipe>
@@ -123,24 +115,16 @@
         <itemStack oreDictionary="oreIron" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />
-      </output>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="1" chance="0.05" />
-      </output>
-      <output>
-        <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />
-      </output>
-      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="1" number="2" />      
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="1" chance="0.05" />      
+        <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />      
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
 
     <recipe name="IronIngot" energyCost="240">
       <input>
-        <itemStack itemID="265" />
-      </input>
-      <input>
+        <itemStack itemID="265" />      
         <itemStack oreDictionary="ingotIron" />
       </input>
       <output>
@@ -148,28 +132,20 @@
       </output>
     </recipe>
 
-
     <recipe name="GoldOre" energyCost="360">
       <input>
         <itemStack oreDictionary="oreGold" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="2" />
-      </output>
-      <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" number="1" chance="0.2" />
-      </output>
-      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" number="2" />      
+        <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" number="1" chance="0.2" />      
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
 
-
     <recipe name="GoldIngot" energyCost="240">
       <input>
         <itemStack itemID="266" />
-      </input>
-      <input>
         <itemStack oreDictionary="ingotGold" />
       </input>
       <output>
@@ -198,6 +174,7 @@
         <itemStack itemID="4" number="4" />
       </output>
     </recipe>
+    
     <recipe name="CrackedBricks" energyCost="120">
       <input>
         <itemStack itemID="98" itemMeta="2" />
@@ -206,6 +183,7 @@
         <itemStack itemID="4" number="2" />
       </output>
     </recipe>
+    
     <recipe name="ChisledBricks" energyCost="360">
       <input>
         <itemStack itemID="98" itemMeta="3" />
@@ -238,9 +216,7 @@
         <itemStack itemID="24" />
       </input>
       <output>
-        <itemStack itemID="12" number="2" />
-      </output>
-      <output>
+        <itemStack itemID="12" number="2" />      
         <itemStack itemID="12" number="2" chance="0.4" />
       </output>
     </recipe>
@@ -261,8 +237,6 @@
       </input>
       <output>
         <itemStack itemID="318" />
-      </output>
-      <output>
         <itemStack itemID="318" chance="0.1" />
       </output>
     </recipe>
@@ -282,8 +256,6 @@
       </input>
       <output>
         <itemStack itemID="377" number="4" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustSulfur" chance="0.25" />
       </output>
     </recipe>
@@ -294,8 +266,6 @@
       </input>
       <output>
         <itemStack itemID="348" number="3" />
-      </output>
-      <output>
         <itemStack itemID="348" number="1" chance="0.8" />
       </output>
     </recipe>
@@ -306,8 +276,6 @@
       </input>
       <output>
         <itemStack itemID="351" itemMeta="15" number="6" />
-      </output>
-      <output>
         <itemStack itemID="351" itemMeta="15" number="2" chance="0.1" />
       </output>
     </recipe>
@@ -318,11 +286,7 @@
       </input>
       <output>
         <itemStack itemID="337" number="2" />
-      </output>
-      <output>
         <itemStack itemID="337" number="1" chance="0.1" />
-      </output>
-      <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" number="4" itemMeta="0" chance="0.4" />
       </output>
     </recipe>
@@ -333,8 +297,6 @@
       </input>
       <output>
         <itemStack itemID="287" number="3" />
-      </output>
-      <output>
         <itemStack itemID="287" number="1" chance="0.1" />
       </output>
     </recipe>
@@ -354,14 +316,8 @@
       </input>
       <output>
         <itemStack itemID="331" number="8" />
-      </output>
-      <output>
         <itemStack itemID="331" number="1" chance="0.2" />
-      </output>
-      <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" chance="0.8" />
-      </output>
-      <output>
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
@@ -372,11 +328,7 @@
       </input>
       <output>
         <itemStack itemID="351" itemMeta="4" number="8" />
-      </output>
-      <output>
         <itemStack itemID="351" itemMeta="4" number="1" chance="0.2" />
-      </output>
-      <output>
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
@@ -396,8 +348,6 @@
       </input>
       <output>
         <itemStack itemID="406" number="2" />
-      </output>
-      <output>
         <itemStack itemID="406" number="2" chance="0.25" />
       </output>
     </recipe>
@@ -408,8 +358,6 @@
       </input>
       <output>
         <itemStack itemID="406" number="2" />
-      </output>
-      <output>
         <itemStack itemID="406" number="2" chance="0.25" />
       </output>
     </recipe>
@@ -420,8 +368,6 @@
       </input>
       <output>
         <itemStack itemID="406" number="2" />
-      </output>
-      <output>
         <itemStack itemID="406" number="2" chance="0.25" />
       </output>
     </recipe>
@@ -432,8 +378,6 @@
       </input>
       <output>
         <itemStack itemID="406" number="1" />
-      </output>
-      <output>
         <itemStack itemID="406" number="1" chance="0.25" />
       </output>
     </recipe>
@@ -444,8 +388,6 @@
       </input>
       <output>
         <itemStack itemID="406" number="1" />
-      </output>
-      <output>
         <itemStack itemID="406" number="1" chance="0.25" />
       </output>
     </recipe>
@@ -460,11 +402,7 @@
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="3" number="2" />
-      </output>
-      <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="2" chance="0.125" />
-      </output>
-      <output>
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
@@ -484,8 +422,6 @@
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemPowderIngot" itemMeta="4" number="2" />
-      </output>
-      <output>
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
@@ -505,11 +441,7 @@
       </input>
       <output>
         <itemStack oreDictionary="dustLead" number="2" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustSilver" chance="0.1" />
-      </output>
-      <output>
         <itemStack itemID="4" chance="0.15" />
       </output>
     </recipe>
@@ -529,8 +461,6 @@
       </input>
       <output>
         <itemStack oreDictionary="dustSilver" number="2" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustLead" chance="0.1" />
       </output>
     </recipe>
@@ -568,8 +498,6 @@
       </input>
       <output>
         <itemStack oreDictionary="dustNickel" number="2" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustPlatinum" chance="0.1" />
       </output>
     </recipe>
@@ -583,10 +511,7 @@
         <itemStack itemID="49" />
       </input>      
       <output>
-        <itemStack oreDictionary="dustObsidian" number="4"/>
-      </output>
-      <output>
-        <itemStack oreDictionary="dustObsidian" number="1" chance="0.025" />
+        <itemStack oreDictionary="dustObsidian" number="4"/>        
       </output>
     </recipe>
     
@@ -600,14 +525,8 @@
       </input>
       <output>
         <itemStack oreDictionary="pulpWood" number="1" />
-      </output>
-      <output>
         <itemStack oreDictionary="pulpWood" number="1" chance="0.9" />
-      </output>
-      <output>
         <itemStack oreDictionary="pulpWood" number="1" chance="0.5" />
-      </output>
-      <output>
         <itemStack oreDictionary="pulpWood" number="1" chance="0.1" />
       </output>
     </recipe>
@@ -668,8 +587,6 @@
       </input>
       <output>
         <itemStack oreDictionary="crystalCertusQuartz" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>
@@ -689,11 +606,7 @@
       </input>
       <output>
         <itemStack itemID="406" number="2" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustNetherQuartz" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />
       </output>
     </recipe>
@@ -725,8 +638,6 @@
       </input>
       <output>
         <itemStack oreDictionary="dustObsidian" number="1" />
-      </output>
-      <output>
         <itemStack oreDictionary="dustObsidian" number="1" chance="0.01" />
       </output>
     </recipe>
@@ -769,11 +680,11 @@
     <recipe name="ManganeseOre" energyCost="360">
       <input>
         <itemStack oreDictionary="oreManganese" />
-      </input>
+      </input>      
       <output>
         <itemStack oreDictionary="dustManganese" number="2" />
       </output>
-    </recipe>
+    </recipe>    
     <recipe name="ZincOre" energyCost="360">
       <input>
         <itemStack oreDictionary="oreZinc" />
