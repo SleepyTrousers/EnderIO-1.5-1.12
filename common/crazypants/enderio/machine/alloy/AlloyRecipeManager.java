@@ -41,9 +41,9 @@ public class AlloyRecipeManager {
   }
 
   public void loadRecipesFromConfig() {
+    
     VanillaFurnaceTagHandler tagHandler = new VanillaFurnaceTagHandler();
-    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, tagHandler);
-
+    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, tagHandler);    
     if(config != null) {
       processConfig(config, tagHandler);
     } else {
@@ -86,12 +86,12 @@ public class AlloyRecipeManager {
     }
 
     List<Recipe> newRecipes = config.getRecipes(false);
-    Log.info("Added " + newRecipes.size() + " Alloy Smelter recipes from config.");
+    Log.info("Found " + newRecipes.size() + " valid Alloy Smelter recipes in config.");
     for (Recipe rec : newRecipes) {
       addRecipe(new BasicAlloyRecipe(rec));
     }
-
-    tagHandler.apply();
+    tagHandler.apply();    
+    Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
 
   }
 

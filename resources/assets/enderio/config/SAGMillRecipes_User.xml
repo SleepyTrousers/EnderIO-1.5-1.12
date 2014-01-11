@@ -26,6 +26,27 @@ found in the core file.
 <recipeGroup name="Vanilla" enabled="false"/> 
 -->
 
+<!-- Uncomment this block to change the default TE obsidian -> dust recipe to the railcraft recipe.  
+  <recipeGroup name="Thermal Expansion">
+  
+    <recipe name="Obsidian" energyCost="400">
+      <input>
+        <itemStack itemID="49" />
+      </input>      
+      <output>
+        <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" number="1" />
+      </output>
+      <output>
+        <itemStack oreDictionary="dustObsidian" number="1" chance="0.15" />
+      </output>
+      <output>
+        <itemStack oreDictionary="dustObsidian" number="1" chance="0.025" />
+      </output>
+    </recipe>
+    
+</recipeGroup> 
+-->
+
 <!-- Disables the glass recipes in the group 'Vanilla' 
 <recipeGroup name="Vanilla"> 
   <recipe name="Glass"/> 

@@ -575,6 +575,22 @@
     </recipe>
 
   </recipeGroup>
+  
+  <recipeGroup name="Thermal Expansion">
+  
+    <recipe name="Obsidian" energyCost="400">
+      <input>
+        <itemStack itemID="49" />
+      </input>      
+      <output>
+        <itemStack oreDictionary="dustObsidian" number="4"/>
+      </output>
+      <output>
+        <itemStack oreDictionary="dustObsidian" number="1" chance="0.025" />
+      </output>
+    </recipe>
+    
+</recipeGroup>    
 
   <recipeGroup name="Forestry">
 
@@ -692,23 +708,17 @@
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Railcraft">
+  <recipeGroup name="Railcraft">    
 
-    <recipe name="Obsidian" energyCost="480">
+    <recipe name="Charcoal" energyCost="240">
       <input>
-        <itemStack itemID="49" />
+        <itemStack itemID="263" itemMeta="1" />
       </input>
       <output>
-        <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" number="1" />
-      </output>
-      <output>
-        <itemStack oreDictionary="dustObsidian" number="1" chance="0.15" />
-      </output>
-      <output>
-        <itemStack oreDictionary="dustObsidian" number="1" chance="0.025" />
+        <itemStack oreDictionary="dustCharcoal" number="1" />
       </output>
     </recipe>
-
+    
     <recipe name="CrushedObsidian" energyCost="240">
       <input>
         <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" />
@@ -720,15 +730,7 @@
         <itemStack oreDictionary="dustObsidian" number="1" chance="0.01" />
       </output>
     </recipe>
-
-    <recipe name="Charcoal" energyCost="240">
-      <input>
-        <itemStack itemID="263" itemMeta="1" />
-      </input>
-      <output>
-        <itemStack oreDictionary="dustCharcoal" number="1" />
-      </output>
-    </recipe>
+        
   </recipeGroup>
 
   <recipeGroup name="Biomes O' Plenty">
