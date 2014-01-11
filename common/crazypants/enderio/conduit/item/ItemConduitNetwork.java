@@ -69,13 +69,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     requiresSort = true;
   }
 
-  public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side, boolean simulate) {
+  public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
     BlockCoord loc = itemConduit.getLocation().getLocation(side);
     NetworkedInventory inv = invMap.get(loc);
     if(inv == null) {
       return item;
     }
-    int numInserted = inv.insertIntoTargets(item, simulate);
+    int numInserted = inv.insertIntoTargets(item);
     if(numInserted >= item.stackSize) {
       return null;
     }
@@ -249,7 +249,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       }
       ItemStack toExtract = extractedItem.copy();
       toExtract.stackSize = Math.min(maxExtract, toExtract.stackSize);
-      int numInserted = insertIntoTargets(toExtract, false);
+      int numInserted = insertIntoTargets(toExtract);
       if(numInserted <= 0) {
         return false;
       }
@@ -272,7 +272,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
     }
 
-    private int insertIntoTargets(ItemStack toExtract, boolean simulate) {
+    private int insertIntoTargets(ItemStack toExtract) {
       if(toExtract == null) {
         return 0;
       }
@@ -287,7 +287,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           matchedStickyInput = of.isValid() && of.doesItemPassFilter(toExtract);
         }
         if(target.stickyInput || !matchedStickyInput) {
-          int inserted = target.inv.insertItem(toExtract, simulate);
+          int inserted = target.inv.insertItem(toExtract);
           if(inserted > 0) {
             toExtract.stackSize -= inserted;
             leftToInsert -= inserted;
@@ -300,7 +300,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       return totalToInsert - leftToInsert;
     }
 
-    private int insertItem(ItemStack item, boolean simulate) {
+    private int insertItem(ItemStack item) {
       if(!canInsert() || item == null) {
         return 0;
       }
@@ -310,7 +310,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
           return 0;
         }
       }
-      return ItemUtil.doInsertItem(inv, item, ForgeDirection.values()[inventorySide], simulate);
+      return ItemUtil.doInsertItem(inv, item, ForgeDirection.values()[inventorySide]);
     }
 
     void updateInsertOrder() {
