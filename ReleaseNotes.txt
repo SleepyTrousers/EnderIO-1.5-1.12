@@ -1,3 +1,13 @@
+0.7.0
+- Default SAG Mill recipe for obsidian changed to match TE rather than Railcraft. To change this base see SAGMillRecipes_User.xml.
+- #133 Alloy Smelter recipes now set via the AlloySmelterRecipes_Core.xml and AlloySmelterRecipes_User.xml files. (to disable the few basic TE recipes see the _User.xml file)
+- #373 Vanilla smelting recipes in the Alloy Smelter can be controlled via AlloySmelterRecipes_User.xml 
+- #388 Console Spam with GT and EnderIO
+- #393 Capacitor Banks not displayed correctly in WAILA
+- #394 Ender energy conduits limited to 500 MJ/t per input
+- #397 Yeta Wrench on Hardened Redstone Conduit 
+- #399 NPE Conduit Crash
+
 0.6.0
 - Significant improvements to conduit rendering performance
 - Added ability to create separate 'colored' channels with item conduits
