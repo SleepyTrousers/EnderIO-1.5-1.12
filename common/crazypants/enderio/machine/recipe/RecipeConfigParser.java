@@ -333,7 +333,7 @@ public class RecipeConfigParser extends DefaultHandler {
       if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
         useMeta = false;
       }
-      return new OreDictionaryRecipeInput(ores.get(0), OreDictionary.getOreID(oreDict));
+      return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict));
     }
 
     int itemID = getIntValue(AT_ITEM_ID, attributes, -1);

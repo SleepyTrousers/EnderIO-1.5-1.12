@@ -34,11 +34,7 @@ sand/cobble/wood=0.1
     <recipe name="Electrical Steel" energyCost="1000">
       <input>
         <itemStack itemID="265" /> <!-- Iron -->
-      </input>
-      <input>
         <itemStack itemID="263" /> <!-- Coal -->
-      </input>      
-      <input>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" /> <!-- Silicon -->
       </input>
       <output>
@@ -49,11 +45,7 @@ sand/cobble/wood=0.1
     <recipe name="Energetic Alloy" energyCost="1000">
       <input>
         <itemStack itemID="331" /> <!-- Red stone -->
-      </input>            
-      <input>
         <itemStack itemID="266" /> <!-- Gold -->
-      </input>
-      <input>
         <itemStack itemID="348" /> <!-- Glow stone -->
       </input>                  
       <output>
@@ -64,8 +56,6 @@ sand/cobble/wood=0.1
     <recipe name="Vibrant Alloy" energyCost="1000">
       <input>
         <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="1"/> <!-- Energetic Alloy -->
-      </input>            
-      <input>
         <itemStack itemID="368" /> <!-- Ender Pearl -->
       </input>                       
       <output>
@@ -76,8 +66,6 @@ sand/cobble/wood=0.1
     <recipe name="Redstone Alloy" energyCost="1000">
       <input>
         <itemStack itemID="331" /> <!-- Redstone -->
-      </input>      
-      <input>
         <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" /> <!-- Silicon -->
       </input>
       <output>
@@ -88,8 +76,6 @@ sand/cobble/wood=0.1
     <recipe name="Conductive Iron" energyCost="1000">
       <input>
         <itemStack itemID="331" number="2"/> <!-- Redstone -->
-      </input>      
-      <input>
         <itemStack itemID="265" /> <!-- Iron Ingot -->
       </input>
       <output>
@@ -100,8 +86,6 @@ sand/cobble/wood=0.1
     <recipe name="Pulsating Iron" energyCost="1000">
       <input>
         <itemStack itemID="265" /> <!-- Iron Ingot -->
-      </input>      
-      <input>
         <itemStack itemID="368" /> <!-- Ender Pearl -->
       </input>
       <output>
@@ -115,6 +99,42 @@ sand/cobble/wood=0.1
       </input>            
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="0" exp="0.5"/> 
+      </output>
+    </recipe>
+  
+   
+  </recipeGroup>
+  
+  
+  <recipeGroup name="Thermal Expansion">  
+  
+    <recipe name="Electrum Ingot" energyCost="500">
+      <input>
+        <itemStack oreDictionary="ingotGold"/>
+        <itemStack oreDictionary="ingotSilver"/>
+      </input>            
+      <output>
+       <itemStack oreDictionary="ingotElectrum" number="2" exp="0.25"/>        
+      </output>
+    </recipe>
+    
+    <recipe name="Invar Ingot" energyCost="750">      
+      <input>
+        <itemStack oreDictionary="ingotNickel" />     
+        <itemStack oreDictionary="ingotIron" number="2"/>
+      </input>
+      <output>
+       <itemStack oreDictionary="ingotInvar" number="3" exp="0.25"/>        
+      </output>
+    </recipe>
+    
+    <recipe name="Hardened Glass" energyCost="400">                      
+      <input>       
+        <itemStack oreDictionary="dustObsidian" number="8"/>
+        <itemStack oreDictionary="ingotLead" />
+      </input>
+      <output>                          
+       <itemStack modID="ThermalExpansion" itemName="Glass" number="2"/>        
       </output>
     </recipe>
     

@@ -84,11 +84,11 @@ public class CrusherRecipeManager {
     }
 
     List<Recipe> newRecipes = config.getRecipes(true);
-    Log.info("Added " + newRecipes.size() + " SAG Mill recipes from config.");
+    Log.info("Found " + newRecipes.size() + " valid SAG Mill recipes in config.");    
     for (Recipe rec : newRecipes) {
       addRecipe(rec);
-    }
-
+    }    
+    Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
   }
 
   public void addRecipe(ItemStack input, float energyCost, ItemStack output) {
