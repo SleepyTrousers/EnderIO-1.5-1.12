@@ -6,19 +6,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.ICapacitor;
 
 public class ItemPowerConduit extends AbstractItemConduit {
 
+  private static String PREFIX;
+  private static String POSTFIX;
+
   static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName, ModObject.itemPowerConduit.name, "enderio:itemPowerConduit"),
-      new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName + "Enhanced", "Enhanced " + ModObject.itemPowerConduit.name,
-          "enderio:itemPowerConduitEnhanced"),
-      new ItemConduitSubtype(ModObject.itemPowerConduit.unlocalisedName + "Ender", "Ender " + ModObject.itemPowerConduit.name, "enderio:itemPowerConduitEnder")
+      new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
+      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
+      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder")
   };
 
   public static ItemPowerConduit create() {
@@ -44,9 +48,13 @@ public class ItemPowerConduit extends AbstractItemConduit {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    if(PREFIX == null) {
+      POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
+      PREFIX = EnderIO.localize("power.maxOutput") + " ";
+    }
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     ICapacitor cap = PowerConduit.CAPACITORS[itemStack.getItemDamage()];
-    list.add(String.format("Max Ouput %d MJ/t", cap.getMaxEnergyExtracted()));
+    list.add(PREFIX + PowerDisplayUtil.formatPower(cap.getMaxEnergyExtracted()) + POSTFIX);
   }
 
 }

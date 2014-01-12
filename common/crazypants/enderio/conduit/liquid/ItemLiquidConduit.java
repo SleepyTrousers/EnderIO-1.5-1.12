@@ -9,7 +9,7 @@ import crazypants.enderio.conduit.ItemConduitSubtype;
 public class ItemLiquidConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemLiquidConduit.unlocalisedName, ModObject.itemLiquidConduit.name, "enderio:itemLiquidConduit"),
+      new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
   };
 
   public static ItemLiquidConduit create() {
