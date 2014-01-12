@@ -1,21 +1,23 @@
 package crazypants.enderio.material;
 
+import crazypants.enderio.EnderIO;
+
 public enum Alloy {
 
-  ELECTRICAL_STEEL("Electrical Steel", "electricalSteel"),
-  ENERGETIC_ALLOY("Energetic Alloy", "energeticAlloy"),
-  PHASED_GOLD("Vibrant Alloy", "phasedGold"),
-  REDSTONE_ALLOY("Redstone Alloy", "redstoneAlloy"),
-  CONDUCTIVE_IRON("Conductive Iron", "conductiveIron"),
-  PHASED_IRON("Pulsating Iron", "phasedIron");
+  ELECTRICAL_STEEL("electricalSteel"),
+  ENERGETIC_ALLOY("energeticAlloy"),
+  PHASED_GOLD("phasedGold"),
+  REDSTONE_ALLOY("redstoneAlloy"),
+  CONDUCTIVE_IRON("conductiveIron"),
+  PHASED_IRON("phasedIron");
 
   public final String unlocalisedName;
   public final String uiName;
   public final String iconKey;
 
-  private Alloy(String uiName, String iconKey) {
+  private Alloy(String iconKey) {
     this.unlocalisedName = name();
-    this.uiName = uiName;
+    this.uiName = EnderIO.localize(iconKey);
     this.iconKey = "enderio:" + iconKey;
   }
 

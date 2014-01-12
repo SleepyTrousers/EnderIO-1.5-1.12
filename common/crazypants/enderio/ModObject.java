@@ -6,65 +6,65 @@ import net.minecraftforge.common.Configuration;
 
 public enum ModObject {
   // Enderface
-  blockEnderIo(++Config.BID, CATEGORY_BLOCK, "Ender IO"),
-  itemEnderface(++Config.IID, CATEGORY_ITEM, "Enderface"),
+  blockEnderIo(++Config.BID, CATEGORY_BLOCK),
+  itemEnderface(++Config.IID, CATEGORY_ITEM),
 
   // Conduits
-  blockConduitBundle(++Config.BID, CATEGORY_BLOCK, "Conduit Bundle"),
-  blockConduitFacade(++Config.BID, CATEGORY_BLOCK, "Conduit Facade"),
-  itemConduitFacade(++Config.IID, CATEGORY_ITEM, "Conduit Facade"),
-  itemRedstoneConduit(++Config.IID, CATEGORY_ITEM, "Redstone Conduit"),
+  blockConduitBundle(++Config.BID, CATEGORY_BLOCK),
+  blockConduitFacade(++Config.BID, CATEGORY_BLOCK),
+  itemConduitFacade(++Config.IID, CATEGORY_ITEM),
+  itemRedstoneConduit(++Config.IID, CATEGORY_ITEM),
 
   // Power
-  itemPowerConduit(++Config.IID, CATEGORY_ITEM, "Energy Conduit"),
+  itemPowerConduit(++Config.IID, CATEGORY_ITEM),
 
   // Liquid
-  itemLiquidConduit(++Config.IID, CATEGORY_ITEM, "Fluid Conduit"),
+  itemLiquidConduit(++Config.IID, CATEGORY_ITEM),
 
   // Materials
-  itemBasicCapacitor(++Config.IID, CATEGORY_ITEM, "Basic Capacitor"),
-  itemAlloy(++Config.IID, CATEGORY_ITEM, "Alloy"),
-  blockFusedQuartz(++Config.BID, CATEGORY_BLOCK, "Fused Quartz"),
+  itemBasicCapacitor(++Config.IID, CATEGORY_ITEM),
+  itemAlloy(++Config.IID, CATEGORY_ITEM),
+  blockFusedQuartz(++Config.BID, CATEGORY_BLOCK),
 
   // Stirling Gen
-  blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK, "Stirling Generator"),
-  blockReservoir(++Config.BID, CATEGORY_BLOCK, "Reservoir"),
-  blockAlloySmelter(++Config.BID, CATEGORY_BLOCK, "Alloy Smelter"),
+  blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK),
+  blockReservoir(++Config.BID, CATEGORY_BLOCK),
+  blockAlloySmelter(++Config.BID, CATEGORY_BLOCK),
 
   // Painter
-  blockPainter(++Config.BID, CATEGORY_BLOCK, "Painting Machine"),
-  blockCustomFence(++Config.BID, CATEGORY_BLOCK, "Painted Fence"),
-  blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK, "Painted Gate"),
-  blockCustomWall(++Config.BID, CATEGORY_BLOCK, "Painted Wall"),
-  blockCustomStair(++Config.BID, CATEGORY_BLOCK, "Painted Stairs"),
-  itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM, "Fused Quartz Frame"),
+  blockPainter(++Config.BID, CATEGORY_BLOCK),
+  blockCustomFence(++Config.BID, CATEGORY_BLOCK),
+  blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK),
+  blockCustomWall(++Config.BID, CATEGORY_BLOCK),
+  blockCustomStair(++Config.BID, CATEGORY_BLOCK),
+  itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM),
 
   // Solar Panel
-  blockSolarPanel(++Config.BID, CATEGORY_BLOCK, "Photovoltaic Cell"),
+  blockSolarPanel(++Config.BID, CATEGORY_BLOCK),
 
-  blockElectricLight(++Config.BID, CATEGORY_BLOCK, "Powered Light"),
-  blockLightNode(++Config.BID, CATEGORY_BLOCK, "Light Node (Internal Only)"),
+  blockElectricLight(++Config.BID, CATEGORY_BLOCK),
+  blockLightNode(++Config.BID, CATEGORY_BLOCK),
 
-  blockCapacitorBank(++Config.BID, CATEGORY_BLOCK, "Capacitor Bank"),
+  blockCapacitorBank(++Config.BID, CATEGORY_BLOCK),
 
-  itemYetaWrench(++Config.IID, CATEGORY_ITEM, "Yeta Wrench"),
+  itemYetaWrench(++Config.IID, CATEGORY_ITEM),
 
-  blockCustomSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
-  blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK, "Painted Slab"),
+  blockCustomSlab(++Config.BID, CATEGORY_BLOCK),
+  blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK),
 
-  blockCrusher(++Config.BID, CATEGORY_BLOCK, "SAG Mill"),
+  blockCrusher(++Config.BID, CATEGORY_BLOCK),
 
-  blockHyperCube(++Config.BID, CATEGORY_BLOCK, "Dimensional Transceiver"),
+  blockHyperCube(++Config.BID, CATEGORY_BLOCK),
 
-  itemMachinePart(++Config.IID, CATEGORY_ITEM, "Machine Parts"),
-  itemPowderIngot(++Config.IID, CATEGORY_ITEM, "Powders & Ingots"),
+  itemMachinePart(++Config.IID, CATEGORY_ITEM),
+  itemPowderIngot(++Config.IID, CATEGORY_ITEM),
 
-  itemMJReader(++Config.IID, CATEGORY_ITEM, "MJ Reader"),
-  itemMaterial(++Config.IID, CATEGORY_ITEM, "Materials"),
+  itemMJReader(++Config.IID, CATEGORY_ITEM),
+  itemMaterial(++Config.IID, CATEGORY_ITEM),
 
-  blockPowerMonitor(++Config.BID, CATEGORY_BLOCK, "Power Monitor"),
+  blockPowerMonitor(++Config.BID, CATEGORY_BLOCK),
 
-  itemItemConduit(++Config.IID, CATEGORY_ITEM, "Item Conduit");
+  itemItemConduit(++Config.IID, CATEGORY_ITEM);
 
   public final String unlocalisedName;
   public final String name;
@@ -73,10 +73,10 @@ public enum ModObject {
   public int id;
   public int actualId;
 
-  private ModObject(int defaultId, String category, String name) {
+  private ModObject(int defaultId, String category) {
     this.unlocalisedName = "enderIO:" + toString();
     this.defaultId = defaultId;
-    this.name = name;
+    this.name = EnderIO.localize(name());
     this.category = category;
     id = -1;
     actualId = -1;

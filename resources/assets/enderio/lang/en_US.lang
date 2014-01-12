@@ -1,0 +1,110 @@
+
+//***  Ender IO *****//
+
+//Power
+enderio.power.mj=MJ
+enderio.power.rf=RF
+enderio.power.tick=/t
+enderio.power.maxOutput=Max Output
+
+//Ender IO / Enderface
+enderio.blockEnderIo=Ender IO
+enderio.itemEnderface=Enderface
+
+//Conduits
+enderio.blockConduitBundle=Conduit Bundle
+enderio.blockConduitFacade=Conduit Facade
+enderio.itemConduitFacade=Conduit Facade
+enderio.itemPowerConduit=Energy Conduit
+enderio.itemPowerConduitEnhanced=Enhanced Energy Conduit
+enderio.itemPowerConduitEnder=Ender Energy Conduit
+enderio.itemRedstoneConduit=Redstone Conduit
+enderio.itemRedstoneConduitSwitch=Conduit Switch
+enderio.itemRedstoneConduitInsulated=Insulated Redstone Conduit
+enderio.itemLiquidConduit=Fluid Conduit
+enderio.itemItemConduit=Item Conduit
+enderio.itemItemConduitEmpowered=Empowered Item Conduit
+
+//Materials
+enderio.itemMaterial=Materials
+enderio.silicon=Silicon
+enderio.conduitBinder=Conduit Binder
+enderio.binderComposite=Binder Composite
+enderio.phasedIronNugget=Pulsating Iron Nugget
+
+enderio.itemMachinePart=Machine Parts
+enderio.blockFusedQuartz=Fused Quartz
+enderio.itemFusedQuartzFrame=Fused Quartz Frame
+enderio.itemPowderIngot=Powders & Ingots
+
+//Alloys
+enderio.itemAlloy=Alloy
+enderio.electricalSteel=Electrical Steel
+enderio.energeticAlloy=Energetic Alloy
+enderio.phasedGold=Vibrant Alloy
+enderio.redstoneAlloy=Redstone Alloy
+enderio.conductiveIron=Conductive Iron
+enderio.phasedIron=Pulsating Iron
+
+//Capacitors
+enderio.itemBasicCapacitor=Capacitor
+enderio.basicCapacitor=Basic Capacitor
+enderio.activatedCapacitor=Double-Layer Capacitor
+enderio.enderCapacitor=Octadic Capacitor
+
+
+enderio.=
+
+//Machines
+enderio.blockStirlingGenerator=Stirling Generator
+enderio.blockReservoir=Reservoir
+enderio.blockAlloySmelter=Alloy Smelter
+enderio.blockSolarPanel=Photovoltaic Cell
+enderio.blockElectricLight=Powered Light
+enderio.blockCapacitorBank=Capacitor Bank
+enderio.blockCrusher=SAG Mill
+enderio.blockHyperCube=Dimensional Transceiver
+enderio.blockPowerMonitor=Power Monitor
+
+//Painter
+enderio.blockPainter=Painting Machine
+enderio.blockCustomFence=Painted Fence
+enderio.blockCustomFenceGate=Painted Gate
+enderio.blockCustomWall=Painted Wall
+enderio.blockCustomStair=Painted Stairs
+enderio.blockCustomSlab=Painted Slab
+enderio.blockCustomDoubleSlab=Painted Slab
+
+//Items
+enderio.itemYetaWrench=Yeta Wrench
+enderio.itemMJReader=MJ Reader
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

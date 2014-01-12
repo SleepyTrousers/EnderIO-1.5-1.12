@@ -9,10 +9,9 @@ import crazypants.enderio.conduit.ItemConduitSubtype;
 public class ItemRedstoneConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName, ModObject.itemRedstoneConduit.name, "enderio:itemRedstoneConduit"),
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName + "switch", "Conduit Switch", "enderio:itemRedstoneSwitch"),
-      new ItemConduitSubtype(ModObject.itemRedstoneConduit.unlocalisedName + "Insulated", "Insulated " + ModObject.itemRedstoneConduit.name,
-          "enderio:itemRedstoneInsulatedConduit")
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name(), "enderio:itemRedstoneConduit"),
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Switch", "enderio:itemRedstoneSwitch"),
+      new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit")
 
   };
 
