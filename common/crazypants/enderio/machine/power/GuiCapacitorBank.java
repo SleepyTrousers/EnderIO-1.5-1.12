@@ -12,6 +12,7 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -57,8 +58,8 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(BlockCapacitorBank.NF.format(Math.round(capBank.getEnergyStored())) + " of");
-        text.add(BlockCapacitorBank.NF.format(capBank.getMaxEnergyStored()) + " MJ");
+        text.add(PowerDisplayUtil.formatPower(capBank.getEnergyStored()) + " " + PowerDisplayUtil.OF);
+        text.add(PowerDisplayUtil.formatPower(capBank.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
       }
 
     });
@@ -68,7 +69,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add("Input Redstone Mode");
+        text.add(EnderIO.localize("gui.capBank.inputRs"));
         text.add(capBank.getInputControlMode().tooltip);
       }
 
@@ -85,7 +86,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add("Output Redstone Mode");
+        text.add(EnderIO.localize("gui.capBank.outputRs"));
         text.add(capBank.getOutputControlMode().tooltip);
       }
 
@@ -154,7 +155,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setFocused(false);
-    maxInputTF.setText(capBank.getMaxInput() + "");
+    maxInputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxInput()));
 
     x = guiLeft + outputX;
     y = guiTop + outputY;
@@ -162,7 +163,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setFocused(true);
-    maxOutputTF.setText(capBank.getMaxOutput() + "");
+    maxOutputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxOutput()));
   }
 
   @Override
@@ -177,20 +178,23 @@ public class GuiCapacitorBank extends GuiContainerBase {
   }
 
   private void updateInputOutput() {
-    int input = parseInt(maxInputTF);
+
+    int input = parsePower(maxInputTF);
     if(input >= 0 && capBank.getMaxInput() != input) {
       setMaxInput(input);
     }
-    int output = parseInt(maxOutputTF);
+
+    int output = parsePower(maxOutputTF);
     if(output >= 0 && capBank.getMaxOutput() != output) {
       setMaxOutput(output);
     }
+
   }
 
   private void setMaxOutput(int output) {
     capBank.setMaxOutput(output);
     if(output != capBank.getMaxOutput()) {
-      maxOutputTF.setText(capBank.getMaxOutput() + "");
+      maxOutputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxOutput()));
     }
     Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
     PacketDispatcher.sendPacketToServer(pkt);
@@ -199,16 +203,20 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private void setMaxInput(int input) {
     capBank.setMaxInput(input);
     if(input != capBank.getMaxInput()) {
-      maxInputTF.setText(capBank.getMaxInput() + "");
+      maxInputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxInput()));
     }
     Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
     PacketDispatcher.sendPacketToServer(pkt);
   }
 
-  private int parseInt(GuiTextField tf) {
+  private int parsePower(GuiTextField tf) {
     String txt = tf.getText();
     try {
-      return Integer.parseInt(txt);
+      Float power = PowerDisplayUtil.parsePower(txt);
+      if(power == null) {
+        return -1;
+      }
+      return power.intValue();
     } catch (Exception e) {
       return -1;
     }
@@ -250,20 +258,21 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     int midX = sx + xSize / 2;
 
-    String str = "Max I/O " + BlockCapacitorBank.NF.format(capBank.getMaxIO()) + " MJ/t";
+    String str = EnderIO.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
+        " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
     int swid = fontRenderer.getStringWidth(str);
     int x = midX - swid / 2;
     int y = guiTop + 5;
 
     drawString(fontRenderer, str, x, y, -1);
 
-    str = "Max Input:";
+    str = EnderIO.localize("gui.capBank.maxInput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + inputX - swid - 3;
     y = guiTop + inputY + 2;
     drawString(fontRenderer, str, x, y, -1);
 
-    str = "Max Ouput:";
+    str = EnderIO.localize("gui.capBank.maxOutput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;

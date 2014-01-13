@@ -27,7 +27,7 @@ public class BlockItemCapacitorBank extends ItemBlock {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-    list.add("Contains " + BlockCapacitorBank.NF.format(PowerHandlerUtil.getStoredEnergyForItem(itemStack)) + " MJ");
+    list.add("Contains " + PowerDisplayUtil.formatPower(PowerHandlerUtil.getStoredEnergyForItem(itemStack)) + " " + PowerDisplayUtil.abrevation());
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
   }
 

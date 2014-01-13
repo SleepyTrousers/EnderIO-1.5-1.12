@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.power;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -38,7 +37,7 @@ import crazypants.vecmath.Vector3d;
 
 public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
 
-  static final NumberFormat NF = NumberFormat.getIntegerInstance();
+  //static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
   public static BlockCapacitorBank create() {
     BlockCapacitorBank res = new BlockCapacitorBank();
