@@ -1,4 +1,3 @@
-
 //***  Ender IO *****//
 
 //Power
@@ -8,7 +7,7 @@ enderio.power.tick=/t
 enderio.power.maxOutput=Max. Output
 
 //Ender IO / Enderface
-enderio.blockEnderIo=Ender IO
+enderio.blockEnderIo=Ender-IO
 enderio.itemEnderface=Endergesicht
 
 //Conduits
@@ -68,7 +67,7 @@ enderio.blockAlloySmelter=Legierungsschmelze
 enderio.blockSolarPanel=Photovoltaikzelle
 enderio.blockElectricLight=Energiebetriebenes Licht
 enderio.blockCapacitorBank=Kondensatorbank
-enderio.blockCrusher=SAG-Mühle
+enderio.blockCrusher=SAG-Mahlwerk
 enderio.blockHyperCube=Dimensional-Transceiver
 enderio.blockPowerMonitor=Energiemonitor
 
