@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.text.NumberFormat;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +18,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.network.Player;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
@@ -27,17 +27,24 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPowerReceptor;
 
 public class MJReaderPacketHandler implements IPacketProcessor {
 
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
+  private static final String OF = " " + EnderIO.localize("gui.powerMonitor.of") + " ";
+  private static final String CON_STORAGE = " " + EnderIO.localize("gui.powerMonitor.monHeading1") + ": ";
+  private static final String CAP_BANK_STOR = " " + EnderIO.localize("gui.powerMonitor.monHeading2") + ": ";
+  private static final String MACH_BUF_STOR = " " + EnderIO.localize("gui.powerMonitor.monHeading3") + ": ";
+  private static final String AVE_OUT = " " + EnderIO.localize("gui.powerMonitor.monHeading4") + ": ";
+  private static final String AVE_IN = " " + EnderIO.localize("gui.powerMonitor.monHeading5") + ": ";
 
-  private static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
-  static {
-    FLOAT_NF.setMinimumFractionDigits(1);
-    FLOAT_NF.setMaximumFractionDigits(1);
-  }
+  private static final String NET_HEADING = EnderIO.localize("gui.mjReader.networkHeading");
+  private static final String CON_BUF = " " + EnderIO.localize("gui.mjReader.conduitBuffer") + ": ";
+
+  private static final String ENERGY_CONDUIT = EnderIO.localize("itemPowerConduit");
+  private static final String REQUEST_RANGE = " " + EnderIO.localize("gui.mjReader.requestRange") + ": ";;
+  private static final String CUR_REQUEST = " " + EnderIO.localize("gui.mjReader.currentRequest") + ": ";;
 
   public static boolean canCreatePacket(World world, int x, int y, int z) {
     int id = world.getBlockId(x, y, z);
@@ -172,35 +179,38 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();
     sb.append(color);
-    sb.append("Power Network");
+    sb.append(NET_HEADING);
     player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
 
     color = "\u00A79 ";
     sb = new StringBuilder();
     sb.append(color);
-    sb.append(" Conduit Storage: ");
-    sb.append(INT_NF.format(pm.getPowerInConduits()));
-    sb.append(" of ");
-    sb.append(INT_NF.format(pm.getMaxPowerInConduits()));
-    sb.append(" MJ");
+    sb.append(CON_STORAGE);
+    sb.append(PowerDisplayUtil.formatPower(pm.getPowerInConduits()));
+    sb.append(OF);
+    sb.append(PowerDisplayUtil.formatPower(pm.getMaxPowerInConduits()));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
-    sb.append(" Capacitor Bank Storage: ");
-    sb.append(INT_NF.format(pm.getPowerInCapacitorBanks()));
-    sb.append(" of ");
-    sb.append(INT_NF.format(pm.getMaxPowerInCapacitorBanks()));
-    sb.append(" MJ");
+    sb.append(CAP_BANK_STOR);
+    sb.append(PowerDisplayUtil.formatPower(pm.getPowerInCapacitorBanks()));
+    sb.append(OF);
+    sb.append(PowerDisplayUtil.formatPower(pm.getMaxPowerInCapacitorBanks()));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
-    sb.append(" Machine Buffers: ");
-    sb.append(INT_NF.format(pm.getPowerInReceptors()));
-    sb.append(" of ");
-    sb.append(INT_NF.format(pm.getMaxPowerInReceptors()));
-    sb.append(" MJ");
+    sb.append(MACH_BUF_STOR);
+    sb.append(PowerDisplayUtil.formatPower(pm.getPowerInReceptors()));
+    sb.append(OF);
+    sb.append(PowerDisplayUtil.formatPower(pm.getMaxPowerInReceptors()));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
-    sb.append(" Average output over 5 seconds: ");
-    sb.append(FLOAT_NF.format(tracker.getAverageMjTickSent()));
+    sb.append(AVE_OUT);
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickSent()));
     sb.append("\n");
-    sb.append(" Average input over 5 seconds: ");
-    sb.append(FLOAT_NF.format(tracker.getAverageMjTickRecieved()));
+    sb.append(AVE_IN);
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickRecieved()));
     player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
   }
 
@@ -208,23 +218,24 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();
     sb.append(color);
-    sb.append("Power Conduit");
+    sb.append(ENERGY_CONDUIT);
     player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
 
     color = "\u00A79 ";
     sb = new StringBuilder();
     sb.append(color);
-    sb.append(" Internal Buffer: ");
-    sb.append(INT_NF.format(con.getPowerHandler().getEnergyStored()));
-    sb.append(" of ");
-    sb.append(INT_NF.format(con.getPowerHandler().getMaxEnergyStored()));
-    sb.append(" MJ");
+    sb.append(CON_BUF);
+    sb.append(PowerDisplayUtil.formatPower(con.getPowerHandler().getEnergyStored()));
+    sb.append(OF);
+    sb.append(PowerDisplayUtil.formatPower(con.getPowerHandler().getMaxEnergyStored()));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
-    sb.append(" Average output over 5 seconds: ");
-    sb.append(FLOAT_NF.format(tracker.getAverageMjTickSent()));
+    sb.append(AVE_OUT);
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickSent()));
     sb.append("\n");
-    sb.append(" Average input over 5 seconds: ");
-    sb.append(FLOAT_NF.format(tracker.getAverageMjTickRecieved()));
+    sb.append(AVE_IN);
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickRecieved()));
     player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
 
   }
@@ -239,22 +250,26 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     color = "\u00A79 ";
     sb = new StringBuilder();
     sb.append(color);
-    sb.append(" Internal Buffer: ");
-    sb.append(INT_NF.format(stored));
-    sb.append(" of ");
-    sb.append(INT_NF.format(maxStored));
-    sb.append(" MJ");
+    sb.append(CON_BUF);
+    sb.append(PowerDisplayUtil.formatPower(stored));
+    sb.append(OF);
+    sb.append(PowerDisplayUtil.formatPower(maxStored));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
 
-    sb.append(" Per tick request range: ");
-    sb.append(INT_NF.format(minRec));
+    sb.append(REQUEST_RANGE);
+    sb.append(PowerDisplayUtil.formatPower(minRec));
     sb.append(" - ");
-    sb.append(INT_NF.format(maxRec));
+    sb.append(PowerDisplayUtil.formatPower(maxRec));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
 
-    sb.append(" Current request: ");
-    sb.append(INT_NF.format(request));
-    sb.append(" MJ.");
+    sb.append(CUR_REQUEST);
+    sb.append(PowerDisplayUtil.formatPower(request));
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.abrevation());
 
     player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
   }

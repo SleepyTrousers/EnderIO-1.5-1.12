@@ -47,6 +47,8 @@ public final class Config {
 
   public static boolean useSneakRightClickYetaWrench = false;
 
+  public static boolean useRfAsDefault = true;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -82,6 +84,9 @@ public final class Config {
     for (ModObject e : ModObject.values()) {
       e.load(config);
     }
+
+    useRfAsDefault = config.get("Settings", "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
+        .getBoolean(useRfAsDefault);
 
     useHardRecipes = config.get("Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);

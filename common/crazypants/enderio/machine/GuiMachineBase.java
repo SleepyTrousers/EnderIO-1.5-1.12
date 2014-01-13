@@ -9,6 +9,8 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
@@ -37,7 +39,8 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(Math.round(tileEntity.getEnergyStored()) + "/" + tileEntity.getCapacitor().getMaxEnergyStored() + " MJ");
+        text.add(PowerDisplayUtil.formatPower(tileEntity.getEnergyStored()) + "/"
+            + PowerDisplayUtil.formatPower(tileEntity.getCapacitor().getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
       }
 
     });
@@ -46,7 +49,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add("Redstone Mode");
+        text.add(EnderIO.localize("gui.tooltip.redstoneControlMode"));
         text.add(tileEntity.getRedstoneControlMode().tooltip);
       }
 

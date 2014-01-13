@@ -5,6 +5,7 @@ import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.text.NumberFormat;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiTextField;
@@ -13,6 +14,7 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiScreenBase;
@@ -21,6 +23,8 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
 public class GuiPowerMonitor extends GuiScreenBase {
+
+  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
 
   private static final int ICON_SIZE = 16;
 
@@ -49,15 +53,25 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
   private String titleStr;
 
-  private String emmitStr;
+  private String engineTxt1 = EnderIO.localize("gui.powerMonitor.engineSection1");
+  private String engineTxt2 = EnderIO.localize("gui.powerMonitor.engineSection2");
+  private String engineTxt3 = EnderIO.localize("gui.powerMonitor.engineSection3");
+  private String engineTxt4 = EnderIO.localize("gui.powerMonitor.engineSection4");
+  private String engineTxt5 = EnderIO.localize("gui.powerMonitor.engineSection5");
+  private String engineTxt6 = EnderIO.localize("gui.powerMonitor.engineSection6");
+
+  private String monHeading1 = EnderIO.localize("gui.powerMonitor.monHeading1");
+  private String monHeading2 = EnderIO.localize("gui.powerMonitor.monHeading2");
+  private String monHeading3 = EnderIO.localize("gui.powerMonitor.monHeading3");
+  private String monHeading4 = EnderIO.localize("gui.powerMonitor.monHeading4");
+  private String monHeading5 = EnderIO.localize("gui.powerMonitor.monHeading5");
 
   public GuiPowerMonitor(final TilePowerMonitor te) {
     super(WIDTH, HEIGHT);
     this.te = te;
     drawButtons = false;
 
-    titleStr = "Engine Control";
-    emmitStr = "  Emmit";
+    titleStr = EnderIO.localize("gui.powerMonitor.engineControl");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
@@ -74,11 +88,9 @@ public class GuiPowerMonitor extends GuiScreenBase {
     int x = MARGIN + fontRenderer.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBoxEIO(this, 21267, x, 8);
-    enabledB.setSelectedToolTip("Enabled");
-    enabledB.setUnselectedToolTip("Disabled");
+    enabledB.setSelectedToolTip(EnderIO.localize("enderio.gui.tooltip.enabled"));
+    enabledB.setUnselectedToolTip(EnderIO.localize("enderio.gui.tooltip.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
-
-    x = MARGIN + fontRenderer.getStringWidth(emmitStr) + SPACING;
 
   }
 
@@ -95,7 +107,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     startTF.setCanLoseFocus(true);
     startTF.setMaxStringLength(3);
     startTF.setFocused(true);
-    startTF.setText(formatPower(te.asPercentInt(te.startLevel)));
+    startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
 
     y = y + fontRenderer.FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
     x = guiLeft + MARGIN + fontRenderer.getStringWidth("or equal to ");
@@ -103,7 +115,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
     endTF.setFocused(false);
-    endTF.setText(formatPower(te.asPercentInt(te.stopLevel)));
+    endTF.setText(INT_NF.format(te.asPercentInt(te.stopLevel)));
 
   }
 
@@ -232,31 +244,31 @@ public class GuiPowerMonitor extends GuiScreenBase {
     y += SPACING + ICON_SIZE;
     x = left;
 
-    String txt = emmitStr + " signal when storage less";
+    String txt = engineTxt1;
     fontRenderer.drawString(txt, x, y, rgb, false);
 
     y += SPACING + fontRenderer.FONT_HEIGHT;
 
     x = left;
-    txt = "than";
+    txt = engineTxt2;
     fontRenderer.drawString(txt, x, y, rgb, false);
 
     x = left + fontRenderer.getStringWidth(txt) + SPACING + startTF.getWidth() + 12;
-    txt = "% full.";
+    txt = engineTxt3;
     fontRenderer.drawString(txt, x, y, rgb, false);
 
     x = left;
     y += ICON_SIZE + fontRenderer.FONT_HEIGHT + SPACING;
-    txt = "  Stop when storage greater than";
+    txt = engineTxt4;
     fontRenderer.drawString(txt, x, y, rgb, false);
 
     x = left;
     y += SPACING + fontRenderer.FONT_HEIGHT;
-    txt = "or equal to";
+    txt = engineTxt5;
     fontRenderer.drawString(txt, x, y, rgb, false);
     x += fontRenderer.getStringWidth(txt);
 
-    txt = "% full.";
+    txt = engineTxt3;
     x += MARGIN + endTF.getWidth() + 10;
     fontRenderer.drawString(txt, x, y, rgb, false);
 
@@ -280,14 +292,16 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
     rgb = headingCol;
     StringBuilder sb = new StringBuilder();
-    sb.append("Conduit Storage");
+    sb.append(monHeading1);
     fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
     sb.append(formatPower(te.powerInConduits));
-    sb.append(" of ");
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.OF);
+    sb.append(" ");
     sb.append(formatPower(te.maxPowerInCoduits));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
@@ -296,14 +310,16 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
-    sb.append("Capacitor Bank Storage");
+    sb.append(monHeading2);
     fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
     sb.append(formatPower(te.powerInCapBanks));
-    sb.append(" of ");
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.OF);
+    sb.append(" ");
     sb.append(formatPower(te.maxPowerInCapBanks));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
@@ -312,14 +328,16 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
-    sb.append("Machine Buffers");
+    sb.append(monHeading3);
     fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
     sb.append(formatPower(te.powerInMachines));
-    sb.append(" of ");
+    sb.append(" ");
+    sb.append(PowerDisplayUtil.OF);
+    sb.append(" ");
     sb.append(formatPower(te.maxPowerInMachines));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
@@ -328,7 +346,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
-    sb.append("Average output over 5 seconds");
+    sb.append(monHeading4);
     fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;
@@ -343,7 +361,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = headingCol;
     y += fontRenderer.FONT_HEIGHT + sectionGap;
     sb = new StringBuilder();
-    sb.append("Average input over 5 seconds");
+    sb.append(monHeading5);
     fontRenderer.drawString(sb.toString(), x, y, rgb, true);
 
     rgb = valuesCol;

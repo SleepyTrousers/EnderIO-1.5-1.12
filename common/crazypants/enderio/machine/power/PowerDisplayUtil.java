@@ -2,6 +2,7 @@ package crazypants.enderio.machine.power;
 
 import java.text.NumberFormat;
 
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 
 public class PowerDisplayUtil {
@@ -22,8 +23,12 @@ public class PowerDisplayUtil {
       return abr;
     }
 
-    double displayString(double powerMJ) {
+    double toDisplayValue(double powerMJ) {
       return powerMJ * ratio;
+    }
+
+    double fromDisplayValue(double powerDisplayed) {
+      return powerDisplayed / ratio;
     }
   }
 
@@ -31,9 +36,11 @@ public class PowerDisplayUtil {
 
   private static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
 
-  private static PowerType currentPowerType = PowerType.MJ;
+  private static PowerType currentPowerType = Config.useRfAsDefault ? PowerType.RF : PowerType.MJ;
 
   private static final String PER_TICK = EnderIO.localize("power.tick");
+
+  public static final String OF = EnderIO.localize("gui.powerMonitor.of");
 
   static {
     FLOAT_NF.setMinimumFractionDigits(1);
@@ -41,11 +48,29 @@ public class PowerDisplayUtil {
   }
 
   public static String formatPower(double powerMJ) {
-    return INT_NF.format(currentPowerType.displayString(powerMJ));
+    return INT_NF.format(currentPowerType.toDisplayValue(powerMJ));
+  }
+
+  public static Float parsePower(String power) {
+    if(power == null) {
+      return null;
+    }
+    try {
+      Number d = FLOAT_NF.parse(power);
+      if(d == null) {
+        return null;
+      }
+      return (float) currentPowerType.fromDisplayValue(d.doubleValue());
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   public static String formatPowerFloat(double powerMJ) {
-    return FLOAT_NF.format(currentPowerType.displayString(powerMJ));
+    if(currentPowerType == PowerType.RF) {
+      return formatPower(powerMJ);
+    }
+    return FLOAT_NF.format(currentPowerType.toDisplayValue(powerMJ));
   }
 
   public static String abrevation() {
@@ -54,6 +79,10 @@ public class PowerDisplayUtil {
 
   public static String perTick() {
     return PER_TICK;
+  }
+
+  public static int fromDisplay(int input) {
+    return (int) currentPowerType.fromDisplayValue(input);
   }
 
 }

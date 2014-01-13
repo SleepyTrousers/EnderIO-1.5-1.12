@@ -1,18 +1,19 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.tileentity.TileEntity;
+import crazypants.enderio.EnderIO;
 
 public enum RedstoneControlMode {
 
-  IGNORE("Always active."),
-  ON("Active with signal."),
-  OFF("Active without signal."),
-  NEVER("Never active.");
+  IGNORE,
+  ON,
+  OFF,
+  NEVER;
 
   public final String tooltip;
 
-  RedstoneControlMode(String tooltip) {
-    this.tooltip = tooltip;
+  RedstoneControlMode() {
+    this.tooltip = EnderIO.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {
