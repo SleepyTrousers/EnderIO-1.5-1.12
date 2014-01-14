@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit;
 
-import crazypants.enderio.EnderIO;
+import crazypants.util.Lang;
 
 public class ItemConduitSubtype {
 
@@ -12,7 +12,7 @@ public class ItemConduitSubtype {
 
   public ItemConduitSubtype(String unlocalisedName, String iconKey) {
     this.unlocalisedName = unlocalisedName;
-    this.uiName = EnderIO.localize(unlocalisedName);
+    this.uiName = Lang.localize(unlocalisedName);
     this.iconKey = iconKey;
   }
 

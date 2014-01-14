@@ -1,6 +1,6 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
+import crazypants.util.Lang;
 
 public enum Material {
 
@@ -15,7 +15,7 @@ public enum Material {
 
   private Material(String unlocalisedName) {
     this.unlocalisedName = unlocalisedName;
-    this.uiName = EnderIO.localize(unlocalisedName);
+    this.uiName = Lang.localize(unlocalisedName);
     this.iconKey = "enderio:" + unlocalisedName;
   }
 

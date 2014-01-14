@@ -42,6 +42,25 @@ public enum DyeColor {
       "dyeWhite"
   };
 
+  public static final String[] DYE_ORE_LOCAL_NAMES = {
+      Lang.localize("color.black"),
+      Lang.localize("color.red"),
+      Lang.localize("color.green"),
+      Lang.localize("color.brown"),
+      Lang.localize("color.blue"),
+      Lang.localize("color.purple"),
+      Lang.localize("color.cyan"),
+      Lang.localize("color.lightGray"),
+      Lang.localize("color.gray"),
+      Lang.localize("color.pink"),
+      Lang.localize("color.lime"),
+      Lang.localize("color.yellow"),
+      Lang.localize("color.lightBlue"),
+      Lang.localize("color.magenta"),
+      Lang.localize("color.orange"),
+      Lang.localize("color.white")
+  };
+
   public static DyeColor getNext(DyeColor col) {
     int ord = col.ordinal() + 1;
     if(ord >= DyeColor.values().length) {
@@ -80,6 +99,10 @@ public enum DyeColor {
 
   public String getName() {
     return ItemDye.dyeColorNames[ordinal()];
+  }
+
+  public String getLocalisedName() {
+    return DYE_ORE_LOCAL_NAMES[ordinal()];
   }
 
   @Override

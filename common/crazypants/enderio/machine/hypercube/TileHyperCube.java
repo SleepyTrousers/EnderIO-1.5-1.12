@@ -32,6 +32,7 @@ import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntity implements IInternalPowerReceptor, IFluidHandler, ISidedInventory {
@@ -44,10 +45,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   public static enum IoMode {
 
-    SEND("Send"),
-    RECIEVE("Recieve"),
-    BOTH("Send & Recieve"),
-    NEITHER("Disabled");
+    SEND("gui.send"),
+    RECIEVE("gui.recieve"),
+    BOTH("gui.sendRecieve"),
+    NEITHER("gui.disabled");
 
     public static IoMode next(IoMode mode) {
       int index = mode.ordinal() + 1;
@@ -85,6 +86,10 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
     public String getUnlocalisedName() {
       return unlocalisedName;
+    }
+
+    public String getLocalisedName() {
+      return Lang.localize(unlocalisedName);
     }
   }
 

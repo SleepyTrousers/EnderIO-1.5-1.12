@@ -6,13 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.util.Lang;
 
 public class ItemPowerConduit extends AbstractItemConduit {
 
@@ -50,7 +50,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     if(PREFIX == null) {
       POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
-      PREFIX = EnderIO.localize("power.maxOutput") + " ";
+      PREFIX = Lang.localize("power.maxOutput") + " ";
     }
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     ICapacitor cap = PowerConduit.CAPACITORS[itemStack.getItemDamage()];

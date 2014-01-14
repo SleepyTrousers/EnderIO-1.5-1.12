@@ -18,7 +18,6 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.network.Player;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
@@ -29,22 +28,23 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.util.Lang;
 
 public class MJReaderPacketHandler implements IPacketProcessor {
 
-  private static final String OF = " " + EnderIO.localize("gui.powerMonitor.of") + " ";
-  private static final String CON_STORAGE = " " + EnderIO.localize("gui.powerMonitor.monHeading1") + ": ";
-  private static final String CAP_BANK_STOR = " " + EnderIO.localize("gui.powerMonitor.monHeading2") + ": ";
-  private static final String MACH_BUF_STOR = " " + EnderIO.localize("gui.powerMonitor.monHeading3") + ": ";
-  private static final String AVE_OUT = " " + EnderIO.localize("gui.powerMonitor.monHeading4") + ": ";
-  private static final String AVE_IN = " " + EnderIO.localize("gui.powerMonitor.monHeading5") + ": ";
+  private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
+  private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";
+  private static final String CAP_BANK_STOR = " " + Lang.localize("gui.powerMonitor.monHeading2") + ": ";
+  private static final String MACH_BUF_STOR = " " + Lang.localize("gui.powerMonitor.monHeading3") + ": ";
+  private static final String AVE_OUT = " " + Lang.localize("gui.powerMonitor.monHeading4") + ": ";
+  private static final String AVE_IN = " " + Lang.localize("gui.powerMonitor.monHeading5") + ": ";
 
-  private static final String NET_HEADING = EnderIO.localize("gui.mjReader.networkHeading");
-  private static final String CON_BUF = " " + EnderIO.localize("gui.mjReader.conduitBuffer") + ": ";
+  private static final String NET_HEADING = Lang.localize("gui.mjReader.networkHeading");
+  private static final String CON_BUF = " " + Lang.localize("gui.mjReader.conduitBuffer") + ": ";
 
-  private static final String ENERGY_CONDUIT = EnderIO.localize("itemPowerConduit");
-  private static final String REQUEST_RANGE = " " + EnderIO.localize("gui.mjReader.requestRange") + ": ";;
-  private static final String CUR_REQUEST = " " + EnderIO.localize("gui.mjReader.currentRequest") + ": ";;
+  private static final String ENERGY_CONDUIT = Lang.localize("itemPowerConduit");
+  private static final String REQUEST_RANGE = " " + Lang.localize("gui.mjReader.requestRange") + ": ";;
+  private static final String CUR_REQUEST = " " + Lang.localize("gui.mjReader.currentRequest") + ": ";;
 
   public static boolean canCreatePacket(World world, int x, int y, int z) {
     int id = world.getBlockId(x, y, z);

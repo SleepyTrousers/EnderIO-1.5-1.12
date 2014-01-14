@@ -1,8 +1,8 @@
 package crazypants.enderio.power;
 
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.util.Lang;
 
 public enum Capacitors {
 
@@ -25,7 +25,7 @@ public enum Capacitors {
 
   private Capacitors(ICapacitor capacitor, String iconKey) {
     this.capacitor = capacitor;
-    this.uiName = EnderIO.localize(iconKey);
+    this.uiName = Lang.localize(iconKey);
     this.iconKey = "enderio:" + iconKey;
     this.unlocalisedName = name();
   }

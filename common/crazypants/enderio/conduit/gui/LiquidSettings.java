@@ -17,6 +17,7 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.ColorUtil;
 import crazypants.util.DyeColor;
+import crazypants.util.Lang;
 
 public class LiquidSettings extends BaseSettingsPanel {
 
@@ -28,7 +29,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private ColorButton colorB;
 
-  private String autoExtractStr = "Auto Extract";
+  private String autoExtractStr = Lang.localize("gui.conduit.fluid.autoExtract");
 
   private ILiquidConduit conduit;
 
@@ -61,7 +62,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading("Signal Color");
+    colorB.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.dir).ordinal());
   }
 

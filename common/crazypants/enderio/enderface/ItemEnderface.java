@@ -15,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.util.Lang;
 
 public class ItemEnderface extends Item implements IGuiHandler {
 
@@ -93,27 +94,27 @@ public class ItemEnderface extends Item implements IGuiHandler {
       int dimension = tag.getInteger(KEY_DIMENSION);
 
       if(world.provider.dimensionId != dimension) {
-        ChatMessageComponent c = ChatMessageComponent.func_111066_d("EnderIO block is in a different dimension.");
+        ChatMessageComponent c = ChatMessageComponent.func_111066_d(Lang.localize("itemEnderface.wrongDimension"));
         entityPlayer.sendChatToPlayer(c);
         return itemStack;
       }
 
       Chunk c = world.getChunkFromBlockCoords(x, z);
       if(c == null || !c.isChunkLoaded) {
-        ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block is too distant.");
+        ChatMessageComponent cm = ChatMessageComponent.func_111066_d(Lang.localize("itemEnderface.tooFar"));
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
       if(blockId != EnderIO.blockEnderIo.blockID) {
-        ChatMessageComponent cm = ChatMessageComponent.func_111066_d("EnderIO block has been destroyed.");
+        ChatMessageComponent cm = ChatMessageComponent.func_111066_d(Lang.localize("itemEnderface.destroyed"));
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
       return itemStack;
     }
-    ChatMessageComponent cm = ChatMessageComponent.func_111066_d(" Enderface not synchronized with EnderIO.");
+    ChatMessageComponent cm = ChatMessageComponent.func_111066_d(Lang.localize("itemEnderface.noSync"));
     entityPlayer.sendChatToPlayer(cm);
     return itemStack;
   }
