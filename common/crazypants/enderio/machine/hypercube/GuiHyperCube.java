@@ -204,7 +204,7 @@ public class GuiHyperCube extends GuiScreenBase {
     } else {
       itemB.setIcon(IconEIO.WRENCH_OVERLAY_ITEM_OFF);
     }
-    itemB.setToolTip(Lang.localize("gui.trans.fluidMode"), mode.getLocalisedName());
+    itemB.setToolTip(Lang.localize("gui.trans.itemMode"), mode.getLocalisedName());
   }
 
   private boolean isPublic(Channel chan) {
