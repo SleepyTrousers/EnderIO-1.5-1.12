@@ -21,7 +21,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     if(block == null) {
       return false;
     }
-    return Block.isNormalCube(block.blockID) || block.blockID == Block.glass.blockID;
+    return block.isOpaqueCube() || (block.blockMaterial.isOpaque() && block.renderAsNormalBlock()) || block.blockID == Block.glass.blockID;
   }
 
   protected final int[] validIds;
