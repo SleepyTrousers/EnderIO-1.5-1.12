@@ -97,7 +97,7 @@ enderio.itemEnderface.noSync=Enderface not synchronized with EnderIO.
 
 //------GUI
 
-//General 
+//General
 enderio.color.black=Black
 enderio.color.red=Red
 enderio.color.green=Green

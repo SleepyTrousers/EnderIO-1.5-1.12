@@ -640,7 +640,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord checkLoc = myLoc.getLocation(dir);
         TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-        if(te instanceof IFluidHandler) {
+        if(te instanceof IFluidHandler && !(te instanceof TileHyperCube)) {
           IFluidHandler fh = (IFluidHandler) te;
           fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
         }
