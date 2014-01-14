@@ -1,3 +1,4 @@
+
 //***  Ender IO *****//
 
 //Power
@@ -14,13 +15,17 @@ enderio.itemEnderface=Endergesicht
 enderio.blockConduitBundle=Leitungsbündel
 enderio.blockConduitFacade=Leitungsfassade
 enderio.itemConduitFacade=Leitungsfassade
+
 enderio.itemPowerConduit=Energieleitung
 enderio.itemPowerConduitEnhanced=Verbesserte Energieleitung
 enderio.itemPowerConduitEnder=Ender-Energieleitung
+
 enderio.itemRedstoneConduit=Redstone-Leitung
 enderio.itemRedstoneConduitSwitch=Leitungsschalter
 enderio.itemRedstoneConduitInsulated=Isolierte Redstone-Leitung
+
 enderio.itemLiquidConduit=Flüssigkeitsleitung
+
 enderio.itemItemConduit=Item-Leitung
 enderio.itemItemConduitEmpowered=Verstärkte Item-Leitung
 
@@ -84,11 +89,37 @@ enderio.blockCustomDoubleSlab=Bemalte Stufe
 enderio.itemYetaWrench=Yeta-Schraubenschlüssel
 enderio.itemMJReader=Energiesonde
 
+enderio.itemEnderface.wrongDimension=EnderIO-Block ist in einer anderen Dimension.
+enderio.itemEnderface.tooFar=EnderIO-Block ist zu weit entfernt.
+enderio.itemEnderface.destroyed=EnderIO-Block wurde zerstört.
+enderio.itemEnderface.noSync=Endergesicht ist mit keinem EnderIO synchronisiert.
+
+
 //------GUI
 
-//General Tooltips
-enderio.gui.tooltip.enabled=Aktiviert
-enderio.gui.tooltip.disabled=Deaktiviert
+//General
+enderio.color.black=Schwarz
+enderio.color.red=Rot
+enderio.color.green=Grün
+enderio.color.brown=Braun
+enderio.color.blue=Blau
+enderio.color.purple=Violett
+enderio.color.cyan=Türkis
+enderio.color.lightGray=Hellgrau
+enderio.color.gray=Grau
+enderio.color.pink=Pink
+enderio.color.lime=Hellgrün
+enderio.color.yellow=Gelb
+enderio.color.lightBlue=Hellblau
+enderio.color.magenta=Magentafarben
+enderio.color.orange=Orange
+enderio.color.white=Weiß
+
+enderio.gui.enabled=Aktiviert
+enderio.gui.disabled=Deaktiviert
+enderio.gui.send=Senden
+enderio.gui.recieve=Empfangen
+enderio.gui.sendRecieve=Senden & Empfangen
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Redstone-Modus
@@ -125,14 +156,44 @@ enderio.gui.capBank.maxIo=Max. I/O
 enderio.gui.capBank.maxInput=Max. Input
 enderio.gui.capBank.maxOutput=Max. Ouput
 
+//Transceiver
+enderio.gui.trans.publicChannel=Öffentl. Kanal
+enderio.gui.trans.privateChannel=Privater Kanal
+enderio.gui.trans.deleteChannel=Lösche Kanal
+enderio.gui.trans.activateChannel=Aktiviere Kanal
+enderio.gui.trans.powerMode=Energiemodus
+enderio.gui.trans.fluidMode=Flüssigk.-Modus
+enderio.gui.trans.itemMode=Item-Modus
+enderio.gui.trans.publicHeading=Öffentl.
+enderio.gui.trans.privateHeading=Privat
 
+//conduits
+enderio.gui.conduit.ioMode=Modus
+enderio.gui.conduit.ioMode.inOut=Ein / Aus
+enderio.gui.conduit.ioMode.input=Extrahieren
+enderio.gui.conduit.ioMode.output=Insertieren
+enderio.gui.conduit.ioMode.disabled=Deaktiviert
+enderio.gui.conduit.ioMode.notSet=Standard
 
+enderio.gui.conduit.item.sigCol=Signalfarbe
+enderio.gui.conduit.item.channel=Kanal
+enderio.gui.conduit.item.ignoreMetaData=Ignoriere Metadaten
+enderio.gui.conduit.item.matchMetaData=Stimme Metadaten ab
+enderio.gui.conduit.item.whitelist=Whitelist
+enderio.gui.conduit.item.blacklist=Blacklist
+enderio.gui.conduit.item.stickyEnabled=Sticky Mode Aktiviert|Ausgewählte Items werden nur|zu diesem oder anderen|Outputs mit Sticky Mode transportiert.
+enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Deaktiviert
+enderio.gui.conduit.item.ignoreNBT=Ignoriere NBT-Daten
+enderio.gui.conduit.item.matchNBT=Stimme NBT-Daten ab
+enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Aktiviert
+enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Deaktiviert
+enderio.gui.conduit.item.selfFeedEnabled=Selbstfüttern Aktiviert
+enderio.gui.conduit.item.selfFeedDisabled=Selbstfüttern Deaktiviert
 
+enderio.gui.conduit.redstone.signalColor=Signalfarbe
+enderio.gui.conduit.redstone.color=Farbe
 
-
-
-
-
+enderio.gui.conduit.fluid.autoExtract=Auto-Extrahieren
 
 
 
