@@ -13,6 +13,7 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.util.DyeColor;
+import crazypants.util.Lang;
 
 public class PowerSettings extends BaseSettingsPanel {
 
@@ -52,7 +53,7 @@ public class PowerSettings extends BaseSettingsPanel {
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    colorB.setToolTipHeading("Signal Color");
+    colorB.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
     colorB.setColorIndex(conduit.getSignalColor(gui.dir).ordinal());
 
   }

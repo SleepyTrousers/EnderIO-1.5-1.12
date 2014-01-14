@@ -12,7 +12,6 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -21,6 +20,7 @@ import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiCapacitorBank extends GuiContainerBase {
 
@@ -69,7 +69,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(EnderIO.localize("gui.capBank.inputRs"));
+        text.add(Lang.localize("gui.capBank.inputRs"));
         text.add(capBank.getInputControlMode().tooltip);
       }
 
@@ -86,7 +86,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(EnderIO.localize("gui.capBank.outputRs"));
+        text.add(Lang.localize("gui.capBank.outputRs"));
         text.add(capBank.getOutputControlMode().tooltip);
       }
 
@@ -258,7 +258,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     int midX = sx + xSize / 2;
 
-    String str = EnderIO.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
+    String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
         " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
     int swid = fontRenderer.getStringWidth(str);
     int x = midX - swid / 2;
@@ -266,13 +266,13 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     drawString(fontRenderer, str, x, y, -1);
 
-    str = EnderIO.localize("gui.capBank.maxInput") + ":";
+    str = Lang.localize("gui.capBank.maxInput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + inputX - swid - 3;
     y = guiTop + inputY + 2;
     drawString(fontRenderer, str, x, y, -1);
 
-    str = EnderIO.localize("gui.capBank.maxOutput") + ":";
+    str = Lang.localize("gui.capBank.maxOutput") + ":";
     swid = fontRenderer.getStringWidth(str);
     x = guiLeft + outputX - swid - 3;
     y = guiTop + outputY + 2;

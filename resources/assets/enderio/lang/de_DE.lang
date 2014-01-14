@@ -1,0 +1,150 @@
+//***  Ender IO *****//
+
+//Power
+enderio.power.mj=MJ
+enderio.power.rf=RF
+enderio.power.tick=/t
+enderio.power.maxOutput=Max. Output
+
+//Ender IO / Enderface
+enderio.blockEnderIo=Ender-IO
+enderio.itemEnderface=Endergesicht
+
+//Conduits
+enderio.blockConduitBundle=Leitungsbündel
+enderio.blockConduitFacade=Leitungsfassade
+enderio.itemConduitFacade=Leitungsfassade
+enderio.itemPowerConduit=Energieleitung
+enderio.itemPowerConduitEnhanced=Verbesserte Energieleitung
+enderio.itemPowerConduitEnder=Ender-Energieleitung
+enderio.itemRedstoneConduit=Redstone-Leitung
+enderio.itemRedstoneConduitSwitch=Leitungsschalter
+enderio.itemRedstoneConduitInsulated=Isolierte Redstone-Leitung
+enderio.itemLiquidConduit=Flüssigkeitsleitung
+enderio.itemItemConduit=Item-Leitung
+enderio.itemItemConduitEmpowered=Verstärkte Item-Leitung
+
+//Materials
+enderio.itemMaterial=Materialien
+enderio.silicon=Silicium
+enderio.conduitBinder=Leitungsbinder
+enderio.binderComposite=Bindegemisch
+enderio.phasedIronNugget=Pulsierender Eisennugget
+
+enderio.itemMachinePart=Maschinenteile
+enderio.blockFusedQuartz=Fusionsquarz
+enderio.itemFusedQuartzFrame=Fusionsquarzrahmen
+enderio.itemPowderIngot=Pulver & Barren
+
+//Alloys
+enderio.itemAlloy=Legierung
+enderio.electricalSteel=Elektrischer Stahl
+enderio.energeticAlloy=Energetisierte Legierung
+enderio.phasedGold=Dynamische Legierung
+enderio.redstoneAlloy=Redstone-Legierung
+enderio.conductiveIron=Leitendes Eisen
+enderio.phasedIron=Pulsierendes Eisen
+
+//Powder / Ingot
+enderio.powderCoal=Kohlepulver
+enderio.powderIron=Eisenpulver
+enderio.powderGold=Goldpulver
+enderio.powderCopper=Kupferpulver
+enderio.powderTin=Zinnpulver
+enderio.powderEnder=Enderperlenpulver
+
+//Capacitors
+enderio.itemBasicCapacitor=Kondensator
+enderio.basicCapacitor=Basiskondensator
+enderio.activatedCapacitor=Doppelschichtkondensator
+enderio.enderCapacitor=Octadischer Kondensator
+
+
+//Machines
+enderio.blockStirlingGenerator=Stirling-Generator
+enderio.blockReservoir=Reservoir
+enderio.blockAlloySmelter=Legierungsschmelze
+enderio.blockSolarPanel=Photovoltaikzelle
+enderio.blockElectricLight=Energiebetriebenes Licht
+enderio.blockCapacitorBank=Kondensatorbank
+enderio.blockCrusher=SAG-Mahlwerk
+enderio.blockHyperCube=Dimensional-Transceiver
+enderio.blockPowerMonitor=Energiemonitor
+
+//Painter
+enderio.blockPainter=Färbemaschine
+enderio.blockCustomFence=Bemalter Zaun
+enderio.blockCustomFenceGate=Bemaltes Tor
+enderio.blockCustomWall=Bemalte Wand
+enderio.blockCustomStair=Bemalte Treppe
+enderio.blockCustomSlab=Bemalte Stufe
+enderio.blockCustomDoubleSlab=Bemalte Stufe
+
+//Items
+enderio.itemYetaWrench=Yeta-Schraubenschlüssel
+enderio.itemMJReader=Energiesonde
+
+//------GUI
+
+//General Tooltips
+enderio.gui.tooltip.enabled=Aktiviert
+enderio.gui.tooltip.disabled=Deaktiviert
+
+//Redstone controls
+enderio.gui.tooltip.redstoneControlMode=Redstone-Modus
+enderio.gui.tooltip.redstoneControlMode.ignore=Immer aktiv.
+enderio.gui.tooltip.redstoneControlMode.on=Aktiv mit Signal.
+enderio.gui.tooltip.redstoneControlMode.off=Aktiv ohne Signal.
+enderio.gui.tooltip.redstoneControlMode.never=Niemals aktiv.
+
+//Power Monitor
+enderio.gui.powerMonitor.engineControl=Motorkontrolle
+enderio.gui.powerMonitor.emit=Entsenden
+enderio.gui.powerMonitor.engineSection1=Entsende Signal, wenn Speicher weniger
+enderio.gui.powerMonitor.engineSection2=als
+enderio.gui.powerMonitor.engineSection3=% voll ist.
+enderio.gui.powerMonitor.engineSection4= Stoppe, wenn Speicher mehr
+enderio.gui.powerMonitor.engineSection5=oder gleich
+enderio.gui.powerMonitor.of=von
+enderio.gui.powerMonitor.monHeading1=Leitungsspeicher
+enderio.gui.powerMonitor.monHeading2=Kondensatorbankspeicher
+enderio.gui.powerMonitor.monHeading3=Maschinenpuffer
+enderio.gui.powerMonitor.monHeading4=Durchschnitts-Output über 5 Sekunden
+enderio.gui.powerMonitor.monHeading5=Durchschnitts-Input über 5 Sekunden
+
+//MJ Reader
+enderio.gui.mjReader.networkHeading=Energienetzwerk
+enderio.gui.mjReader.conduitBuffer=Interner Puffer
+enderio.gui.mjReader.requestRange=Pro-Tick-Forderungsreichweite
+enderio.gui.mjReader.currentRequest=Aktuelle Forderung
+
+//CapactorBank
+enderio.gui.capBank.inputRs=Input-Redstone-Modus
+enderio.gui.capBank.outputRs=Output-Redstone-Modus
+enderio.gui.capBank.maxIo=Max. I/O
+enderio.gui.capBank.maxInput=Max. Input
+enderio.gui.capBank.maxOutput=Max. Ouput
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

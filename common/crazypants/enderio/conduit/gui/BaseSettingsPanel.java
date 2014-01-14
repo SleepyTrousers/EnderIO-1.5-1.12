@@ -16,6 +16,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.render.ColorUtil;
+import crazypants.util.Lang;
 
 public class BaseSettingsPanel implements ISettingsPanel {
 
@@ -46,7 +47,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     this.gui = gui;
     this.con = con;
 
-    modeLabel = "Mode";
+    modeLabel = Lang.localize("gui.conduit.ioMode");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);
@@ -123,7 +124,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     int y = top + gap + fr.FONT_HEIGHT + gap;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
-    String modeString = con.getConectionMode(gui.dir).getUnlocalisedName();
+    String modeString = con.getConectionMode(gui.dir).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);
@@ -145,16 +146,12 @@ public class BaseSettingsPanel implements ISettingsPanel {
   private int getLongestModeStringWidth() {
     int maxWidth = 0;
     for (ConnectionMode mode : ConnectionMode.values()) {
-      int width = gui.getFontRenderer().getStringWidth(mode.getUnlocalisedName());
+      int width = gui.getFontRenderer().getStringWidth(mode.getLocalisedName());
       if(width > maxWidth) {
         maxWidth = width;
       }
     }
     return maxWidth;
-  }
-
-  private String getModeString() {
-    return con.getConectionMode(gui.dir).getUnlocalisedName();
   }
 
   protected String getTypeName() {

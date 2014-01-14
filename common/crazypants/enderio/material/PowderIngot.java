@@ -1,6 +1,6 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
+import crazypants.util.Lang;
 
 public enum PowderIngot {
 
@@ -26,7 +26,7 @@ public enum PowderIngot {
 
   private PowderIngot(String unlocalisedName, String iconKey) {
     this.unlocalisedName = unlocalisedName;
-    this.uiName = EnderIO.localize(unlocalisedName);
+    this.uiName = Lang.localize(unlocalisedName);
     this.iconKey = "enderio:" + iconKey;
   }
 

@@ -2,6 +2,7 @@ package crazypants.enderio;
 
 import static net.minecraftforge.common.Configuration.CATEGORY_BLOCK;
 import static net.minecraftforge.common.Configuration.CATEGORY_ITEM;
+import crazypants.util.Lang;
 import net.minecraftforge.common.Configuration;
 
 public enum ModObject {
@@ -76,7 +77,7 @@ public enum ModObject {
   private ModObject(int defaultId, String category) {
     this.unlocalisedName = "enderIO:" + toString();
     this.defaultId = defaultId;
-    this.name = EnderIO.localize(name());
+    this.name = Lang.localize(name());
     this.category = category;
     id = -1;
     actualId = -1;

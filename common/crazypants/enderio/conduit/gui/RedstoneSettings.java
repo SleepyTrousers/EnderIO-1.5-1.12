@@ -13,13 +13,14 @@ import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.render.ColorUtil;
 import crazypants.util.DyeColor;
+import crazypants.util.Lang;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
   private static final int ID_COLOR_BUTTON = 163;
   private ColorButton cb;
 
-  private String signalColorStr = "Color";
+  private String signalColorStr = Lang.localize("gui.conduit.redstone.color");
   private IInsulatedRedstoneConduit insCon;
 
   public RedstoneSettings(GuiExternalConnection gui, IConduit con) {
@@ -28,7 +29,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
     int x = gap + gui.getFontRenderer().getStringWidth(signalColorStr) + gap + 2;
     int y = customTop;
     cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    cb.setToolTipHeading("Signal Color");
+    cb.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
     if(con instanceof IInsulatedRedstoneConduit) {
       insCon = (IInsulatedRedstoneConduit) con;
       DyeColor sigCol = insCon.getSignalColor(gui.dir);

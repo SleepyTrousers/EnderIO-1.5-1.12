@@ -1,6 +1,6 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
+import crazypants.util.Lang;
 
 public enum Alloy {
 
@@ -17,7 +17,7 @@ public enum Alloy {
 
   private Alloy(String iconKey) {
     this.unlocalisedName = name();
-    this.uiName = EnderIO.localize(iconKey);
+    this.uiName = Lang.localize(iconKey);
     this.iconKey = "enderio:" + iconKey;
   }
 

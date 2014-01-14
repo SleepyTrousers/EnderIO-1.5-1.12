@@ -3,13 +3,13 @@ package crazypants.enderio.machine.power;
 import java.text.NumberFormat;
 
 import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
+import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
 
   public static enum PowerType {
-    MJ(1, EnderIO.localize("power.mj")),
-    RF(10, EnderIO.localize("power.rf"));
+    MJ(1, Lang.localize("power.mj")),
+    RF(10, Lang.localize("power.rf"));
 
     private final double ratio;
     private final String abr;
@@ -38,9 +38,9 @@ public class PowerDisplayUtil {
 
   private static PowerType currentPowerType = Config.useRfAsDefault ? PowerType.RF : PowerType.MJ;
 
-  private static final String PER_TICK = EnderIO.localize("power.tick");
+  private static final String PER_TICK = Lang.localize("power.tick");
 
-  public static final String OF = EnderIO.localize("gui.powerMonitor.of");
+  public static final String OF = Lang.localize("gui.powerMonitor.of");
 
   static {
     FLOAT_NF.setMinimumFractionDigits(1);

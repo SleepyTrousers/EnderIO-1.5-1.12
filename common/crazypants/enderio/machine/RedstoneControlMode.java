@@ -1,7 +1,7 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.tileentity.TileEntity;
-import crazypants.enderio.EnderIO;
+import crazypants.util.Lang;
 
 public enum RedstoneControlMode {
 
@@ -13,7 +13,7 @@ public enum RedstoneControlMode {
   public final String tooltip;
 
   RedstoneControlMode() {
-    this.tooltip = EnderIO.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
+    this.tooltip = Lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {

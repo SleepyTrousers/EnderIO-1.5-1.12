@@ -21,12 +21,14 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.ListSelectionListener;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiHyperCube extends GuiScreenBase {
 
@@ -83,7 +85,8 @@ public class GuiHyperCube extends GuiScreenBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(BlockHyperCube.NF.format(Math.round(cube.powerHandler.getEnergyStored())) + " MJ");
+        text.add(PowerDisplayUtil.formatPower(cube.powerHandler.getEnergyStored()) + " / "
+            + PowerDisplayUtil.formatPower(cube.powerHandler.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
       }
 
     });
@@ -93,18 +96,18 @@ public class GuiHyperCube extends GuiScreenBase {
     addButton.enabled = false;
 
     privateButton = new ToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.PUBLIC, IconEIO.PRIVATE);
-    privateButton.setSelectedToolTip("Private Channel");
-    privateButton.setUnselectedToolTip("Public Channel");
+    privateButton.setSelectedToolTip(Lang.localize("gui.trans.privateChannel"));
+    privateButton.setUnselectedToolTip(Lang.localize("gui.trans.publicChannel"));
 
     deletePublicB = new IconButtonEIO(this, DELETE_PUBLIC_BUTTON_ID, 74, 117, IconEIO.MINUS);
-    deletePublicB.setToolTip("Delete Channel");
+    deletePublicB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
     selectPublicB = new IconButtonEIO(this, SELECT_PUBLIC_BUTTON_ID, 95, 117, IconEIO.TICK);
-    selectPublicB.setToolTip("Activate Channel");
+    selectPublicB.setToolTip(Lang.localize("gui.trans.activateChannel"));
 
     deletePrivateB = new IconButtonEIO(this, DELETE_PRIVATE_BUTTON_ID, 183, 117, IconEIO.MINUS);
-    deletePrivateB.setToolTip("Delete Channel");
+    deletePrivateB.setToolTip(Lang.localize("gui.trans.deleteChannel"));
     selectPrivateB = new IconButtonEIO(this, SELECT_PRIVATE_BUTTON_ID, 204, 117, IconEIO.TICK);
-    selectPrivateB.setToolTip("Activate Channel");
+    selectPrivateB.setToolTip(Lang.localize("gui.trans.activateChannel"));
 
     int x = 163;
     int y = 12;
@@ -185,7 +188,7 @@ public class GuiHyperCube extends GuiScreenBase {
     } else {
       powerB.setIcon(IconEIO.WRENCH_OVERLAY_POWER_OFF);
     }
-    powerB.setToolTip("Power Mode", mode.getUnlocalisedName());
+    powerB.setToolTip(Lang.localize("gui.trans.powerMode"), mode.getLocalisedName());
 
     mode = cube.getModeForChannel(SubChannel.FLUID);
     if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
@@ -193,7 +196,7 @@ public class GuiHyperCube extends GuiScreenBase {
     } else {
       fluidB.setIcon(IconEIO.WRENCH_OVERLAY_FLUID_OFF);
     }
-    fluidB.setToolTip("Fluid Mode", mode.getUnlocalisedName());
+    fluidB.setToolTip(Lang.localize("gui.trans.fluidMode"), mode.getLocalisedName());
 
     mode = cube.getModeForChannel(SubChannel.ITEM);
     if(mode.isRecieveEnabled() || mode.isSendEnabled()) {
@@ -201,7 +204,7 @@ public class GuiHyperCube extends GuiScreenBase {
     } else {
       itemB.setIcon(IconEIO.WRENCH_OVERLAY_ITEM_OFF);
     }
-    itemB.setToolTip("Item Mode", mode.getUnlocalisedName());
+    itemB.setToolTip(Lang.localize("gui.trans.fluidMode"), mode.getLocalisedName());
   }
 
   private boolean isPublic(Channel chan) {
@@ -392,10 +395,10 @@ public class GuiHyperCube extends GuiScreenBase {
     int x = guiLeft + 12;
     int y = guiTop + 35;
     int rgb = ColorUtil.getRGB(Color.white);
-    drawString(fontRenderer, "Public", x, y, rgb);
+    drawString(fontRenderer, Lang.localize("gui.trans.publicHeading"), x, y, rgb);
 
     x += 109;
-    drawString(fontRenderer, "Private", x, y, rgb);
+    drawString(fontRenderer, Lang.localize("gui.trans.privateHeading"), x, y, rgb);
 
     IoMode fluidMode = cube.getModeForChannel(SubChannel.FLUID);
     IoMode powerMode = cube.getModeForChannel(SubChannel.POWER);

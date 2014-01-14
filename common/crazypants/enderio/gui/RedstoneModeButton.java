@@ -4,11 +4,14 @@ import net.minecraft.client.Minecraft;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.gui.IGuiScreen;
+import crazypants.util.Lang;
 
 public class RedstoneModeButton extends IconButtonEIO {
 
   private static IconEIO[] ICONS = new IconEIO[] { IconEIO.REDSTONE_MODE_ALWAYS, IconEIO.REDSTONE_MODE_WITH_SIGNAL, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL,
       IconEIO.REDSTONE_MODE_NEVER };
+
+  private static final String TOOLTIP_HEADING = Lang.localize("gui.tooltip.redstoneControlMode");
 
   IRedstoneModeControlable model;
   RedstoneControlMode curMode;
@@ -17,7 +20,7 @@ public class RedstoneModeButton extends IconButtonEIO {
     super(gui, id, x, y, ICONS[model.getRedstoneControlMode().ordinal()]);
     this.model = model;
     curMode = model.getRedstoneControlMode();
-    setToolTip(curMode.tooltip);
+    setToolTip(TOOLTIP_HEADING, curMode.tooltip);
     setIcon(ICONS[curMode.ordinal()]);
   }
 
@@ -42,7 +45,7 @@ public class RedstoneModeButton extends IconButtonEIO {
       return;
     }
     curMode = mode;
-    setToolTip(mode.tooltip);
+    setToolTip(TOOLTIP_HEADING, mode.tooltip);
     setIcon(ICONS[mode.ordinal()]);
     model.setRedstoneControlMode(mode);
   }

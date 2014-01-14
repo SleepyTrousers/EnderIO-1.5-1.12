@@ -14,13 +14,13 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiPowerMonitor extends GuiScreenBase {
 
@@ -53,25 +53,25 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
   private String titleStr;
 
-  private String engineTxt1 = EnderIO.localize("gui.powerMonitor.engineSection1");
-  private String engineTxt2 = EnderIO.localize("gui.powerMonitor.engineSection2");
-  private String engineTxt3 = EnderIO.localize("gui.powerMonitor.engineSection3");
-  private String engineTxt4 = EnderIO.localize("gui.powerMonitor.engineSection4");
-  private String engineTxt5 = EnderIO.localize("gui.powerMonitor.engineSection5");
-  private String engineTxt6 = EnderIO.localize("gui.powerMonitor.engineSection6");
+  private String engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
+  private String engineTxt2 = Lang.localize("gui.powerMonitor.engineSection2");
+  private String engineTxt3 = Lang.localize("gui.powerMonitor.engineSection3");
+  private String engineTxt4 = Lang.localize("gui.powerMonitor.engineSection4");
+  private String engineTxt5 = Lang.localize("gui.powerMonitor.engineSection5");
+  private String engineTxt6 = Lang.localize("gui.powerMonitor.engineSection6");
 
-  private String monHeading1 = EnderIO.localize("gui.powerMonitor.monHeading1");
-  private String monHeading2 = EnderIO.localize("gui.powerMonitor.monHeading2");
-  private String monHeading3 = EnderIO.localize("gui.powerMonitor.monHeading3");
-  private String monHeading4 = EnderIO.localize("gui.powerMonitor.monHeading4");
-  private String monHeading5 = EnderIO.localize("gui.powerMonitor.monHeading5");
+  private String monHeading1 = Lang.localize("gui.powerMonitor.monHeading1");
+  private String monHeading2 = Lang.localize("gui.powerMonitor.monHeading2");
+  private String monHeading3 = Lang.localize("gui.powerMonitor.monHeading3");
+  private String monHeading4 = Lang.localize("gui.powerMonitor.monHeading4");
+  private String monHeading5 = Lang.localize("gui.powerMonitor.monHeading5");
 
   public GuiPowerMonitor(final TilePowerMonitor te) {
     super(WIDTH, HEIGHT);
     this.te = te;
     drawButtons = false;
 
-    titleStr = EnderIO.localize("gui.powerMonitor.engineControl");
+    titleStr = Lang.localize("gui.powerMonitor.engineControl");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
@@ -88,8 +88,8 @@ public class GuiPowerMonitor extends GuiScreenBase {
     int x = MARGIN + fontRenderer.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBoxEIO(this, 21267, x, 8);
-    enabledB.setSelectedToolTip(EnderIO.localize("enderio.gui.tooltip.enabled"));
-    enabledB.setUnselectedToolTip(EnderIO.localize("enderio.gui.tooltip.disabled"));
+    enabledB.setSelectedToolTip(Lang.localize("enderio.gui.enabled"));
+    enabledB.setUnselectedToolTip(Lang.localize("enderio.gui.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
 
   }

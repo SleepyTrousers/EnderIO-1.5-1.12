@@ -1,12 +1,14 @@
 package crazypants.enderio.conduit;
 
+import crazypants.util.Lang;
+
 public enum ConnectionMode {
 
-  IN_OUT("In / Out"),
-  INPUT("Extract"),
-  OUTPUT("Insert"),
-  DISABLED("Disabled"),
-  NOT_SET("Default");
+  IN_OUT("gui.conduit.ioMode.inOut"),
+  INPUT("gui.conduit.ioMode.input"),
+  OUTPUT("gui.conduit.ioMode.output"),
+  DISABLED("gui.conduit.ioMode.disabled"),
+  NOT_SET("gui.conduit.ioMode.notSet");
 
   private final String unlocalisedName;
 
@@ -27,6 +29,7 @@ public enum ConnectionMode {
   }
 
   public static ConnectionMode getPrevious(ConnectionMode mode) {
+
     int ord = mode.ordinal() - 1;
     if(ord < 0) {
       ord = ConnectionMode.values().length - 1;
@@ -36,5 +39,9 @@ public enum ConnectionMode {
 
   public boolean acceptsInput() {
     return this == IN_OUT || this == INPUT;
+  }
+
+  public String getLocalisedName() {
+    return Lang.localize(unlocalisedName);
   }
 }

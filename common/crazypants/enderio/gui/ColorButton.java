@@ -8,6 +8,7 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.gui.IGuiScreen;
+import crazypants.util.DyeColor;
 
 public class ColorButton extends IconButtonEIO {
 
@@ -54,8 +55,7 @@ public class ColorButton extends IconButtonEIO {
 
   public void setColorIndex(int colorIndex) {
     this.colorIndex = MathHelper.clamp_int(colorIndex, 0, ItemDye.dyeColors.length - 1);
-    String colStr = ItemDye.dyeColorNames[colorIndex];
-    colStr = colStr.substring(0, 1).toUpperCase() + colStr.substring(1);
+    String colStr = DyeColor.DYE_ORE_LOCAL_NAMES[colorIndex];
     if(tooltipPrefix != null && tooltipPrefix.length() > 0) {
       setToolTip(tooltipPrefix, colStr);
     } else {

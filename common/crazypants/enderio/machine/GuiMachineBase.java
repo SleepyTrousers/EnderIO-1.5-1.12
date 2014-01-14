@@ -9,12 +9,12 @@ import net.minecraft.network.packet.Packet;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public abstract class GuiMachineBase extends GuiContainerBase {
 
@@ -49,7 +49,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(EnderIO.localize("gui.tooltip.redstoneControlMode"));
+        text.add(Lang.localize("gui.tooltip.redstoneControlMode"));
         text.add(tileEntity.getRedstoneControlMode().tooltip);
       }
 

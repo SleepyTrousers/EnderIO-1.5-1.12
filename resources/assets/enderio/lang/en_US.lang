@@ -15,13 +15,17 @@ enderio.itemEnderface=Enderface
 enderio.blockConduitBundle=Conduit Bundle
 enderio.blockConduitFacade=Conduit Facade
 enderio.itemConduitFacade=Conduit Facade
+
 enderio.itemPowerConduit=Energy Conduit
 enderio.itemPowerConduitEnhanced=Enhanced Energy Conduit
 enderio.itemPowerConduitEnder=Ender Energy Conduit
+
 enderio.itemRedstoneConduit=Redstone Conduit
 enderio.itemRedstoneConduitSwitch=Conduit Switch
 enderio.itemRedstoneConduitInsulated=Insulated Redstone Conduit
+
 enderio.itemLiquidConduit=Fluid Conduit
+
 enderio.itemItemConduit=Item Conduit
 enderio.itemItemConduitEmpowered=Empowered Item Conduit
 
@@ -85,18 +89,44 @@ enderio.blockCustomDoubleSlab=Painted Slab
 enderio.itemYetaWrench=Yeta Wrench
 enderio.itemMJReader=Power Probe
 
+enderio.itemEnderface.wrongDimension=EnderIO block is in a different dimension.
+enderio.itemEnderface.tooFar=EnderIO block is too distant.
+enderio.itemEnderface.destroyed=EnderIO block has been destroyed.
+enderio.itemEnderface.noSync=Enderface not synchronized with EnderIO.
+
+
 //------GUI
 
-//General Tooltips
-enderio.gui.tooltip.enabled=Enabled
-enderio.gui.tooltip.disabled=Disabled
+//General 
+enderio.color.black=Black
+enderio.color.red=Red
+enderio.color.green=Green
+enderio.color.brown=Brown
+enderio.color.blue=Blue
+enderio.color.purple=Purple
+enderio.color.cyan=Cyan
+enderio.color.lightGray=LightGray
+enderio.color.gray=Gray
+enderio.color.pink=Pink
+enderio.color.lime=Lime
+enderio.color.yellow=Yellow
+enderio.color.lightBlue=LightBlue
+enderio.color.magenta=Magenta
+enderio.color.orange=Orange
+enderio.color.white=White
+
+enderio.gui.enabled=Enabled
+enderio.gui.disabled=Disabled
+enderio.gui.send=Send
+enderio.gui.recieve=Receive
+enderio.gui.sendRecieve=Send & Receive
 
 //Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Redstone Mode
-enderio.gui.tooltip.redstoneControlMode.ignore=Always active.
-enderio.gui.tooltip.redstoneControlMode.on=Active with signal.
-enderio.gui.tooltip.redstoneControlMode.off=Active without signal.
-enderio.gui.tooltip.redstoneControlMode.never=Never active.
+enderio.gui.tooltip.redstoneControlMode.ignore=Always active
+enderio.gui.tooltip.redstoneControlMode.on=Active with signal
+enderio.gui.tooltip.redstoneControlMode.off=Active without signal
+enderio.gui.tooltip.redstoneControlMode.never=Never active
 
 //Power Monitor
 enderio.gui.powerMonitor.engineControl=Engine Control
@@ -126,14 +156,44 @@ enderio.gui.capBank.maxIo=Max I/O
 enderio.gui.capBank.maxInput=Max Input
 enderio.gui.capBank.maxOutput=Max Ouput
 
+//Transceiver
+enderio.gui.trans.publicChannel=Public Channel
+enderio.gui.trans.privateChannel=Private Channel
+enderio.gui.trans.deleteChannel=Delete Channel
+enderio.gui.trans.activateChannel=Activate Channel
+enderio.gui.trans.powerMode=Power Mode
+enderio.gui.trans.fluidMode=Fluid Mode
+enderio.gui.trans.itemMode=Item Mode
+enderio.gui.trans.publicHeading=Public
+enderio.gui.trans.privateHeading=Private
 
+//conduits
+enderio.gui.conduit.ioMode=Mode
+enderio.gui.conduit.ioMode.inOut=In / Out
+enderio.gui.conduit.ioMode.input=Extract
+enderio.gui.conduit.ioMode.output=Insert
+enderio.gui.conduit.ioMode.disabled=Disabled
+enderio.gui.conduit.ioMode.notSet=Default
 
+enderio.gui.conduit.item.sigCol=Signal Color
+enderio.gui.conduit.item.channel=Channel
+enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data
+enderio.gui.conduit.item.matchMetaData=Match Meta Data
+enderio.gui.conduit.item.whitelist=Whitelist
+enderio.gui.conduit.item.blacklist=Blacklist
+enderio.gui.conduit.item.stickyEnabled=Sticky Mode Enabled|Selected items will only|be sent to this or other|Sticky outputs.
+enderio.gui.conduit.item.stickyDisbaled=Sticky Mode Disabled
+enderio.gui.conduit.item.ignoreNBT=Ignore NBT Data
+enderio.gui.conduit.item.matchNBT=Match NBT Data
+enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Enabled
+enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Disabled
+enderio.gui.conduit.item.selfFeedEnabled=Self Feed Enabled
+enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
 
+enderio.gui.conduit.redstone.signalColor=Signal Color
+enderio.gui.conduit.redstone.color=Color
 
-
-
-
-
+enderio.gui.conduit.fluid.autoExtract=Auto Extract
 
 
 

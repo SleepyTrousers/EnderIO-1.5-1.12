@@ -2,7 +2,6 @@ package crazypants.enderio;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -247,10 +246,4 @@ public class EnderIO {
   public void serverStopped(FMLServerStoppedEvent event) {
     HyperCubeRegister.unload();
   }
-
-  public static String localize(String s) {
-    s = "enderio." + s;
-    return StatCollector.translateToLocal(s);
-  }
-
 }

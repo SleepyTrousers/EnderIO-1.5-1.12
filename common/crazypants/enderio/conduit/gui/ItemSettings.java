@@ -22,6 +22,7 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.DyeColor;
+import crazypants.util.Lang;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -57,7 +58,6 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private RedstoneModeButton rsB;
   private ColorButton colorB;
-  private String autoExtractStr = "Auto Extract";
 
   boolean inOutShowIn = false;
 
@@ -99,23 +99,24 @@ public class ItemSettings extends BaseSettingsPanel {
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
-    colorB.setToolTipHeading("Signal Color");
+    colorB.setToolTipHeading(Lang.localize("gui.conduit.item.sigCol"));
 
     x = 112;
     y = 66;
     whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip("Whitelist");
+    whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
 
     x += 20;
     useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip("Match Meta Data");
-    useMetaB.setUnselectedToolTip("Ignore Meta Data");
+    useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
+    useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
     x += 20;
     stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    stickyB.setSelectedToolTip("Sticky Mode Enabled", "Selected items will only", "be sent to this or other", "Sticky outputs.");
-    stickyB.setUnselectedToolTip("Sticky Mode Disabled");
+    String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
+    stickyB.setSelectedToolTip(lines);
+    stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
@@ -123,25 +124,25 @@ public class ItemSettings extends BaseSettingsPanel {
 
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
-    channelB.setToolTipHeading("Channel");
+    channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
 
     x += 20;
     useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
-    useNbtB.setSelectedToolTip("Match NBT Data");
-    useNbtB.setUnselectedToolTip("Ignore NBT Data.");
+    useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
+    useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
     x += 20;
     useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip("Ore Dictionary Enabled.");
-    useOreDictB.setUnselectedToolTip("Ore Dictionary Disabled.");
+    useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
+    useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
 
-    x += 20;
+    //x += 20;
     y = customTop;
     loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
-    loopB.setSelectedToolTip("Self Feed Enabled");
-    loopB.setUnselectedToolTip("Self Feed Disabled.");
+    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
+    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
 
   }
@@ -256,10 +257,10 @@ public class ItemSettings extends BaseSettingsPanel {
     whiteListB.onGuiInit();
     if(activeFilter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip("Blacklist");
+      whiteListB.setToolTip(Lang.localize("gui.conduit.item.blacklist"));
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip("Whitelist");
+      whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
     }
 
     if(mode == ConnectionMode.IN_OUT) {

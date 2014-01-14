@@ -15,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.util.Lang;
 
 public class ItemEnderface extends Item implements IGuiHandler {
 
@@ -92,29 +93,28 @@ public class ItemEnderface extends Item implements IGuiHandler {
       int z = tag.getInteger(KEY_IO_Z);
       int dimension = tag.getInteger(KEY_DIMENSION);
 
-      if (world.provider.dimensionId != dimension) {
-        ChatMessageComponent c = ChatMessageComponent.createFromText("EnderIO block is in a different dimension.");
+      if(world.provider.dimensionId != dimension) {
+        ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.wrongDimension"));
         entityPlayer.sendChatToPlayer(c);
         return itemStack;
       }
 
       Chunk c = world.getChunkFromBlockCoords(x, z);
-      if (c == null || !c.isChunkLoaded) {
-        ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block is too distant.");
+      if(c == null || !c.isChunkLoaded) {
+        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.tooFar"));
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       int blockId = world.getBlockId(x, y, z);
-
-      if (blockId != EnderIO.blockEnderIo.blockID) {
-        ChatMessageComponent cm = ChatMessageComponent.createFromText("EnderIO block has been destroyed.");
+      if(blockId != EnderIO.blockEnderIo.blockID) {
+        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.destroyed"));
         entityPlayer.sendChatToPlayer(cm);
         return itemStack;
       }
       entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
       return itemStack;
     }
-    ChatMessageComponent cm = ChatMessageComponent.createFromText(" Enderface not synchronized with EnderIO.");
+    ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.noSync"));
     entityPlayer.sendChatToPlayer(cm);
     return itemStack;
   }
