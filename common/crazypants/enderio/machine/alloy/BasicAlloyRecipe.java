@@ -3,9 +3,7 @@ package crazypants.enderio.machine.alloy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
@@ -29,16 +27,16 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   private float expPerItem;
 
   private final Recipe recipe;
-  
+
   public BasicAlloyRecipe(Recipe recipe) {
     this.recipe = recipe;
     this.output = recipe.getOutputs()[0].getOutput().copy();
     expPerItem = recipe.getOutputs()[0].getExperiance();
     energyRequired = recipe.getEnergyRequired();
-    
+
     List<IRecipeComponent> reipceComps = new ArrayList<IRecipeComponent>(recipe.getInputs().length);
-    for(RecipeInput input : recipe.getInputs()) {
-     crazypants.enderio.crafting.impl.RecipeInput ri = new crazypants.enderio.crafting.impl.RecipeInput(input.getInput(), -1, input.getEquivelentInputs());
+    for (RecipeInput input : recipe.getInputs()) {
+      crazypants.enderio.crafting.impl.RecipeInput ri = new crazypants.enderio.crafting.impl.RecipeInput(input.getInput(), -1, input.getEquivelentInputs());
       reipceComps.add(ri);
     }
     reipceComps.add(new crazypants.enderio.crafting.impl.RecipeOutput(output));
@@ -48,12 +46,12 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
 
   @Override
   public boolean isValidRecipeComponents(ItemStack... items) {
-    
+
     List<RecipeInput> inputs = new ArrayList<RecipeInput>(Arrays.asList(recipe.getInputs()));
-    for(ItemStack is : items) {
+    for (ItemStack is : items) {
       if(is != null) {
         RecipeInput remove = null;
-        for(RecipeInput ri : inputs) {
+        for (RecipeInput ri : inputs) {
           if(ri.isInput(is)) {
             remove = ri;
             break;
@@ -133,7 +131,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
     if(input == null) {
       return null;
     }
-    for(RecipeInput ri : recipe.getInputs()) {
+    for (RecipeInput ri : recipe.getInputs()) {
       if(ri.isInput(input)) {
         return ri.getInput();
       }
@@ -205,7 +203,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   }
 
   @Override
-  public boolean isValid() {    
+  public boolean isValid() {
     return recipe != null && recipe.isValid();
   }
 

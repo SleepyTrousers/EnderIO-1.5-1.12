@@ -747,7 +747,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   // ------------- Inventory
 
   @Override
-  public int getSizeInventory() {    
+  public int getSizeInventory() {
     return getController().doGetSizeInventory();
   }
 
@@ -763,7 +763,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   @Override
   public void setInventorySlotContents(int i, ItemStack itemstack) {
-    getController().doSetInventorySlotContents(i, itemstack);    
+    getController().doSetInventorySlotContents(i, itemstack);
   }
 
   public ItemStack doGetStackInSlot(int i) {
@@ -776,7 +776,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   public int doGetSizeInventory() {
     return inventory.length;
   }
-  
+
   public ItemStack doDecrStackSize(int fromSlot, int amount) {
     if(fromSlot < 0 || fromSlot >= inventory.length) {
       return null;
@@ -793,8 +793,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     item.stackSize -= amount;
     return item.copy();
   }
-  
-  
+
   public void doSetInventorySlotContents(int i, ItemStack itemstack) {
     if(i < 0 || i >= inventory.length) {
       return;
