@@ -51,6 +51,8 @@ public final class Config {
   
   public static boolean itemConduitUsePhyscialDistance = false;
 
+  public static boolean itemConduitUsePhyscialDistance = false;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -138,6 +140,10 @@ public final class Config {
              
     itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
     		"'line of sight' distance rather than conduit path distance is used to calculate priorities.")
+        .getBoolean(itemConduitUsePhyscialDistance);
+
+    itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
+        "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
 
     if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {

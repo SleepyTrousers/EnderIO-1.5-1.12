@@ -11,12 +11,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
@@ -116,7 +114,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   }
 
   private void doTick(long tick) {
-//    long start = System.nanoTime();
+    //    long start = System.nanoTime();
     for (NetworkedInventory ni : inventories) {
       if(requiresSort) {
         ni.updateInsertOrder();
@@ -124,11 +122,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       ni.onTick(tick);
     }
 
-//    if(requiresSort) {
-//      long took = System.nanoTime() - start;
-//      double secs = took / 1000000000.0;
-//      System.out.println("Sortinging item network: took " + took + " nano " + secs + " secs, " + (secs * 1000) + " millis");
-//    }
+    //    if(requiresSort) {
+    //      long took = System.nanoTime() - start;
+    //      double secs = took / 1000000000.0;
+    //      System.out.println("Sortinging item network: took " + took + " nano " + secs + " secs, " + (secs * 1000) + " millis");
+    //    }
 
     requiresSort = false;
 
@@ -350,7 +348,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       sendPriority.clear();
       if(!canExtract()) {
         return;
-      }            
+      }
 
       Map<BlockCoord, Target> result = new HashMap<BlockCoord, Target>();
 
@@ -367,8 +365,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
         }
       }
 
-      if(Config.itemConduitUsePhyscialDistance) {        
-        Collections.sort(sendPriority);        
+      if(Config.itemConduitUsePhyscialDistance) {
+        Collections.sort(sendPriority);
       } else {
         if(!result.isEmpty()) {
           Map<BlockCoord, Integer> visited = new HashMap<BlockCoord, Integer>();
