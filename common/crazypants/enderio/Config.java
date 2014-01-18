@@ -48,6 +48,8 @@ public final class Config {
   public static boolean useSneakRightClickYetaWrench = false;
 
   public static boolean useRfAsDefault = true;
+  
+  public static boolean itemConduitUsePhyscialDistance = false;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -132,6 +134,11 @@ public final class Config {
     useSneakRightClickYetaWrench = config.get("Settings", "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
         "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
         .getBoolean(useSneakRightClickYetaWrench);
+    
+             
+    itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
+    		"'line of sight' distance rather than conduit path distance is used to calculate priorities.")
+        .getBoolean(itemConduitUsePhyscialDistance);
 
     if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
