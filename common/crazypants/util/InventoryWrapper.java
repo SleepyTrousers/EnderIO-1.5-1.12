@@ -21,11 +21,15 @@ public class InventoryWrapper implements ISidedInventory {
   private int[] slots;
 
   public InventoryWrapper(IInventory inventory) {
-    this.inv = inventory;
-    slots = new int[inventory.getSizeInventory()];
+    this.inv = ItemUtil.getInventory(inventory);
+    slots = new int[inv.getSizeInventory()];
     for (int i = 0; i < slots.length; i++) {
       slots[i] = i;
     }
+  }
+
+  public IInventory getWrappedInv() {
+    return inv;
   }
 
   @Override

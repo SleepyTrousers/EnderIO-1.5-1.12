@@ -2,7 +2,9 @@ package crazypants.util;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.transport.IPipeTile;
 import cofh.api.transport.IItemConduit;
@@ -16,7 +18,7 @@ public class ItemUtil {
     if(into instanceof ISidedInventory) {
       return ItemUtil.doInsertItem((ISidedInventory) into, item, side);
     } else if(into instanceof IInventory) {
-      return ItemUtil.doInsertItem((IInventory) into, item);
+      return ItemUtil.doInsertItem(getInventory((IInventory) into), item);
     } else if(into instanceof IItemConduit) {
       return ItemUtil.doInsertItem((IItemConduit) into, item, side);
     } else if(into instanceof IPipeTile) {
@@ -120,6 +122,27 @@ public class ItemUtil {
       return false;
     }
     return contents.stackSize >= contents.getMaxStackSize();
+  }
+
+  public static IInventory getInventory(IInventory inv) {
+    if(inv instanceof TileEntityChest) {
+      TileEntityChest chest = (TileEntityChest) inv;
+      TileEntityChest neigbour = null;
+      if(chest.adjacentChestXNeg != null) {
+        neigbour = chest.adjacentChestXNeg;
+      } else if(chest.adjacentChestXPos != null) {
+        neigbour = chest.adjacentChestXPos;
+      } else if(chest.adjacentChestZNeg != null) {
+        neigbour = chest.adjacentChestZNeg;
+      } else if(chest.adjacentChestZPosition != null) {
+        neigbour = chest.adjacentChestZPosition;
+      }
+      if(neigbour != null) {
+        return new InventoryLargeChest("", inv, neigbour);
+      }
+      return inv;
+    }
+    return inv;
   }
 
 }
