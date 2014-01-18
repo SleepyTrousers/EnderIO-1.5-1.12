@@ -294,7 +294,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
 
     for (BlockCoord bc : coords) {
-      // BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord checkLoc = bc.getLocation(dir);
         TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
@@ -748,20 +747,37 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   // ------------- Inventory
 
   @Override
-  public int getSizeInventory() {
-    return inventory.length;
+  public int getSizeInventory() {    
+    return getController().doGetSizeInventory();
   }
 
   @Override
   public ItemStack getStackInSlot(int i) {
+    return getController().doGetStackInSlot(i);
+  }
+
+  @Override
+  public ItemStack decrStackSize(int i, int j) {
+    return getController().doDecrStackSize(i, j);
+  }
+
+  @Override
+  public void setInventorySlotContents(int i, ItemStack itemstack) {
+    getController().doSetInventorySlotContents(i, itemstack);    
+  }
+
+  public ItemStack doGetStackInSlot(int i) {
     if(i < 0 || i >= inventory.length) {
       return null;
     }
     return inventory[i];
   }
 
-  @Override
-  public ItemStack decrStackSize(int fromSlot, int amount) {
+  public int doGetSizeInventory() {
+    return inventory.length;
+  }
+  
+  public ItemStack doDecrStackSize(int fromSlot, int amount) {
     if(fromSlot < 0 || fromSlot >= inventory.length) {
       return null;
     }
@@ -777,18 +793,18 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     item.stackSize -= amount;
     return item.copy();
   }
-
-  @Override
-  public ItemStack getStackInSlotOnClosing(int i) {
-    return null;
-  }
-
-  @Override
-  public void setInventorySlotContents(int i, ItemStack itemstack) {
+  
+  
+  public void doSetInventorySlotContents(int i, ItemStack itemstack) {
     if(i < 0 || i >= inventory.length) {
       return;
     }
     inventory[i] = itemstack;
+  }
+
+  @Override
+  public ItemStack getStackInSlotOnClosing(int i) {
+    return null;
   }
 
   @Override
