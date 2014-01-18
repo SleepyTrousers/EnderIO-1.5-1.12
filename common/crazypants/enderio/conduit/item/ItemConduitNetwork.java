@@ -10,6 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -138,6 +139,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
     int tickDeficit;
 
+    //work around for a vanilla chest changing into a double chest without doing unnedded checks all the time 
+    boolean recheckInv = false;
+    private int delay = 0;
+    IInventory origInv;
+
     NetworkedInventory(IInventory inv, IItemConduit con, ForgeDirection conDir, BlockCoord location) {
 
       inventorySide = conDir.getOpposite().ordinal();
@@ -149,6 +155,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       if(inv instanceof ISidedInventory) {
         this.inv = (ISidedInventory) inv;
       } else {
+        if(inv instanceof TileEntityChest) {
+          recheckInv = true;
+        }
         this.inv = new InventoryWrapper(inv);
       }
 
@@ -204,6 +213,15 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
     }
 
     private boolean transferItems() {
+
+      if(recheckInv) {
+        //Re-check vanilla chests twice a second to make sure they haven't become double chests 
+        delay++;
+        if(delay % 10 == 0) {
+          inv = new InventoryWrapper(((InventoryWrapper) inv).getWrappedInv());
+          delay = 0;
+        }
+      }
 
       int[] slotIndices = inv.getAccessibleSlotsFromSide(inventorySide);
       if(slotIndices == null) {
