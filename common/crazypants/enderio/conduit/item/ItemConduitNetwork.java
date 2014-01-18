@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import crazypants.enderio.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -27,6 +28,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   private final List<NetworkedInventory> inventories = new ArrayList<ItemConduitNetwork.NetworkedInventory>();
   private final Map<BlockCoord, NetworkedInventory> invMap = new HashMap<BlockCoord, ItemConduitNetwork.NetworkedInventory>();
 
+  private final Map<BlockCoord, IItemConduit> conMap = new HashMap<BlockCoord, IItemConduit>();
+
   private boolean requiresSort = true;
 
   @Override
@@ -37,6 +40,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   @Override
   public void addConduit(IItemConduit con) {
     super.addConduit(con);
+    conMap.put(con.getLocation(), con);
 
     TileEntity te = con.getBundle().getEntity();
     if(te != null) {
@@ -110,13 +114,22 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
   }
 
   private void doTick(long tick) {
+    //    long start = System.nanoTime();
     for (NetworkedInventory ni : inventories) {
       if(requiresSort) {
         ni.updateInsertOrder();
       }
       ni.onTick(tick);
     }
+
+    //    if(requiresSort) {
+    //      long took = System.nanoTime() - start;
+    //      double secs = took / 1000000000.0;
+    //      System.out.println("Sortinging item network: took " + took + " nano " + secs + " secs, " + (secs * 1000) + " millis");
+    //    }
+
     requiresSort = false;
+
   }
 
   static int compare(int x, int y) {
@@ -336,40 +349,100 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
       if(!canExtract()) {
         return;
       }
+
+      Map<BlockCoord, Target> result = new HashMap<BlockCoord, Target>();
+
       for (NetworkedInventory other : inventories) {
         if((con.isSelfFeedEnabled(conDir) || (other != this))
             && other.canInsert()
             && con.getInputColor(conDir) == other.con.getOutputColor(other.conDir)) {
-          sendPriority.add(new Target(other, location.distanceSquared(other.location), other.isSticky()));
+
+          if(Config.itemConduitUsePhyscialDistance) {
+            sendPriority.add(new Target(other, distanceTo(other), other.isSticky()));
+          } else {
+            result.put(other.location, new Target(other, 9999999, other.isSticky()));
+          }
         }
       }
-      Collections.sort(sendPriority);
-    }
 
-  }
+      if(Config.itemConduitUsePhyscialDistance) {
+        Collections.sort(sendPriority);
+      } else {
+        if(!result.isEmpty()) {
+          Map<BlockCoord, Integer> visited = new HashMap<BlockCoord, Integer>();
+          List<BlockCoord> steps = new ArrayList<BlockCoord>();
+          steps.add(con.getLocation());
+          calculateDistances(result, visited, steps, 0);
 
-  class Target implements Comparable<Target> {
-    NetworkedInventory inv;
-    int distance;
-    boolean stickyInput;
+          sendPriority.addAll(result.values());
 
-    Target(NetworkedInventory inv, int distance, boolean stickyInput) {
-      this.inv = inv;
-      this.distance = distance;
-      this.stickyInput = stickyInput;
-    }
-
-    @Override
-    public int compareTo(Target o) {
-      if(stickyInput && !o.stickyInput) {
-        return -1;
+          Collections.sort(sendPriority);
+        }
       }
-      if(!stickyInput && o.stickyInput) {
-        return 1;
-      }
-      return compare(distance, o.distance);
+
     }
 
+    private void calculateDistances(Map<BlockCoord, Target> result, Map<BlockCoord, Integer> visited, List<BlockCoord> steps, int distance) {
+      if(steps == null || steps.isEmpty()) {
+        return;
+      }
+
+      ArrayList<BlockCoord> nextSteps = new ArrayList<BlockCoord>();
+      for (BlockCoord bc : steps) {
+        IItemConduit con = conMap.get(bc);
+        if(con != null) {
+          for (ForgeDirection dir : con.getExternalConnections()) {
+            Target target = result.get(bc.getLocation(dir));
+            if(target != null && target.distance > distance) {
+              target.distance = distance;
+            }
+          }
+
+          if(!visited.containsKey(bc)) {
+            visited.put(bc, distance);
+          } else {
+            int prevDist = visited.get(bc);
+            if(prevDist <= distance) {
+              continue;
+            }
+            visited.put(bc, distance);
+          }
+
+          for (ForgeDirection dir : con.getConduitConnections()) {
+            nextSteps.add(bc.getLocation(dir));
+          }
+        }
+      }
+      calculateDistances(result, visited, nextSteps, distance + 1);
+    }
+
+    private int distanceTo(NetworkedInventory other) {
+      return con.getLocation().distanceSquared(other.con.getLocation());
+    }
+
+    class Target implements Comparable<Target> {
+      NetworkedInventory inv;
+      int distance;
+      boolean stickyInput;
+
+      Target(NetworkedInventory inv, int distance, boolean stickyInput) {
+        this.inv = inv;
+        this.distance = distance;
+        this.stickyInput = stickyInput;
+      }
+
+      @Override
+      public int compareTo(Target o) {
+        if(stickyInput && !o.stickyInput) {
+          return -1;
+        }
+        if(!stickyInput && o.stickyInput) {
+          return 1;
+        }
+        return compare(distance, o.distance);
+      }
+
+    }
   }
 
 }
