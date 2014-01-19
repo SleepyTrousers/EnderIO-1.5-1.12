@@ -1,3 +1,17 @@
+0.7.1
+- Redstone Flux (RF) now the default display unit for power. This can be changed back to MJ in the config.
+- Allowed more blocks to be used as paint sources in the Painter
+- #1 Localisation support added. Submissions for new languages very welcome.
+  - #407 de_DE.lang added [Vexatos]
+  - #407 zn_CH.lang added [crafteverywhere]
+- #392 Stack overflow with adjacent looping transceivers
+- #395 Item conduits routing incorrect in some cases.
+- #402 Item conduits not working correctly with double chests.
+- #405 Connection plate still rendered when it shouldn't be
+- #408 Items hidden when inserted into multi-block capacitor bank.
+- #410 Ore dictionary recipes not working in Allot Smelter
+
+
 0.7.0
 - Default SAG Mill recipe for obsidian changed to match TE rather than Railcraft. To change this base see SAGMillRecipes_User.xml.
 - #133 Alloy Smelter recipes now set via the AlloySmelterRecipes_Core.xml and AlloySmelterRecipes_User.xml files. (to disable the few basic TE recipes see the _User.xml file)
