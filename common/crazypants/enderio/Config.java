@@ -51,8 +51,6 @@ public final class Config {
   
   public static boolean itemConduitUsePhyscialDistance = false;
 
-  public static boolean itemConduitUsePhyscialDistance = false;
-
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
