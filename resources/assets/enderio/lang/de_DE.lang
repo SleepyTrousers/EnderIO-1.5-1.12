@@ -1,4 +1,3 @@
-
 //***  Ender IO *****//
 
 //Power
@@ -62,7 +61,7 @@ enderio.powderEnder=Enderperlenpulver
 enderio.itemBasicCapacitor=Kondensator
 enderio.basicCapacitor=Basiskondensator
 enderio.activatedCapacitor=Doppelschichtkondensator
-enderio.enderCapacitor=Octadischer Kondensator
+enderio.enderCapacitor=Oktadischer Kondensator
 
 
 //Machines
