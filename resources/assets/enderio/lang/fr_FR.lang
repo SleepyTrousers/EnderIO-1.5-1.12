@@ -1,0 +1,195 @@
+﻿//***  Ender IO *****//
+
+//Power
+enderio.power.mj=MJ
+enderio.power.rf=RF
+enderio.power.tick=/t
+enderio.power.maxOutput=Sortie Max
+
+//Ender IO / Enderface
+enderio.blockEnderIo=Ender IO
+enderio.itemEnderface=Masque d'Ender
+
+//Conduits
+enderio.blockConduitBundle=Faisceau de Conduits
+enderio.blockConduitFacade=Façade
+enderio.itemConduitFacade=Façade
+
+enderio.itemPowerConduit=Conduit d'énergie
+enderio.itemPowerConduitEnhanced=Conduit d'énergie Amélioré
+enderio.itemPowerConduitEnder=Conduit d'énergie de l'Ender
+
+enderio.itemRedstoneConduit=Conduit de Redstone
+enderio.itemRedstoneConduitSwitch=Interrupteur Redstone
+enderio.itemRedstoneConduitInsulated=Conduit de Redstone isolé
+
+enderio.itemLiquidConduit=Conduit pour fluides
+
+enderio.itemItemConduit=Tuyau pour objet
+enderio.itemItemConduitEmpowered=Tuyau pour objet Avancé
+
+//Materials
+enderio.itemMaterial=Matériaux
+enderio.silicon=Silicium
+enderio.conduitBinder=Jonction
+enderio.binderComposite=Jonction Composite
+enderio.phasedIronNugget=Pépite de fer Palpitante
+
+enderio.itemMachinePart=Pièces Détachées
+enderio.blockFusedQuartz=Quartz uni
+enderio.itemFusedQuartzFrame=Cadre de Quartz uni
+enderio.itemPowderIngot=Poudre & Lingots
+
+//Alloys
+enderio.itemAlloy=Alliage
+enderio.electricalSteel=Acier Électrique
+enderio.energeticAlloy=Alliage Énergetique
+enderio.phasedGold=Alliage Étincelant
+enderio.redstoneAlloy=Alliage de Redstone
+enderio.conductiveIron=Fer conducteur
+enderio.phasedIron=Fer Étincelant
+
+//Powder / Ingot
+enderio.powderCoal=Poudre de charbon
+enderio.powderIron=Poudre de Fer
+enderio.powderGold=Poudre d'Or
+enderio.powderCopper=Poudre de Cuivre
+enderio.powderTin=Poudre d'Étain
+enderio.powderEnder=Poudre de Perle du Néant
+
+//Capacitors
+enderio.itemBasicCapacitor=Condensateur
+enderio.basicCapacitor=Condensateur de base
+enderio.activatedCapacitor=Condensateur Double-Couche
+enderio.enderCapacitor=Condensateur Octadique
+
+
+//Machines
+enderio.blockStirlingGenerator=Générateur Stirling
+enderio.blockReservoir=Réservoir
+enderio.blockAlloySmelter=Fonderie
+enderio.blockSolarPanel=Cellule Photovoltaïque
+enderio.blockElectricLight=Lampe électrique
+enderio.blockCapacitorBank=Batterie de condensateurs
+enderio.blockCrusher=Broyeur SAG
+enderio.blockHyperCube=Émetteur-Récepteur Dimensionnel
+enderio.blockPowerMonitor=Moniteur d'énergie
+
+//Painter
+enderio.blockPainter=Machine à Enduction
+enderio.blockCustomFence=Barrière peinte
+enderio.blockCustomFenceGate=porte peinte
+enderio.blockCustomWall=Mur Peint
+enderio.blockCustomStair=Escaliers peints
+enderio.blockCustomSlab=Dalle peinte
+enderio.blockCustomDoubleSlab=Dalle peinte
+
+//Items
+enderio.itemYetaWrench=Clé Yeta
+enderio.itemMJReader=Lecteur MJ
+
+enderio.itemEnderface.wrongDimension=Le bloc EnderIO est dans une autre dimension.
+enderio.itemEnderface.tooFar=Le bloc EnderIO est trop loin.
+enderio.itemEnderface.destroyed=Le bloc EnderIO a été détruit.
+enderio.itemEnderface.noSync=Le Masque d'Ender n'est pas synchronisé avec l'EnderIO.
+
+
+//------GUI
+
+//General
+enderio.color.black=Noir
+enderio.color.red=Rouge
+enderio.color.green=Vert
+enderio.color.brown=Marron
+enderio.color.blue=Bleu
+enderio.color.purple=Violet
+enderio.color.cyan=Cyan
+enderio.color.lightGray=Gris Clair
+enderio.color.gray=Gris
+enderio.color.pink=Rose
+enderio.color.lime=Citron Vert
+enderio.color.yellow=Jaune
+enderio.color.lightBlue=Bleu Clair
+enderio.color.magenta=Magenta
+enderio.color.orange=Orange
+enderio.color.white=Blanc
+
+enderio.gui.enabled=Activé
+enderio.gui.disabled=Désactivé
+enderio.gui.send=Envoyer
+enderio.gui.recieve=Recevoir
+enderio.gui.sendRecieve=Envoyer & Recevoir
+
+//Redstone controls
+enderio.gui.tooltip.redstoneControlMode=Mode Redstone
+enderio.gui.tooltip.redstoneControlMode.ignore=Toujours Actif
+enderio.gui.tooltip.redstoneControlMode.on=Actif avec signal
+enderio.gui.tooltip.redstoneControlMode.off=Actif sans signal
+enderio.gui.tooltip.redstoneControlMode.never=Jamais Actif
+
+//Power Monitor
+enderio.gui.powerMonitor.engineControl=Contrôle du Moteur
+enderio.gui.powerMonitor.emit=Émettre
+enderio.gui.powerMonitor.engineSection1=Émettre un signal si stockage moins
+enderio.gui.powerMonitor.engineSection2=que
+enderio.gui.powerMonitor.engineSection3=% plein.
+enderio.gui.powerMonitor.engineSection4= Stop si stockage plus grand que
+enderio.gui.powerMonitor.engineSection5=ou égal à
+enderio.gui.powerMonitor.of=de
+enderio.gui.powerMonitor.monHeading1=Stockage Tuyau
+enderio.gui.powerMonitor.monHeading2=Stockage Batterie de condensateurs
+enderio.gui.powerMonitor.monHeading3=Stockage des Machines
+enderio.gui.powerMonitor.monHeading4=Sortie moyenne sur 5 secondes
+enderio.gui.powerMonitor.monHeading5=Entrée moyenne sur 5 secondes
+
+//MJ Reader
+enderio.gui.mjReader.networkHeading=Réseau Électrique
+enderio.gui.mjReader.conduitBuffer=Stockage Interne
+enderio.gui.mjReader.requestRange=Demande par tick
+enderio.gui.mjReader.currentRequest=Demande Actuelle
+
+//CapacitorBank
+enderio.gui.capBank.inputRs=Mode Redstone Entrée
+enderio.gui.capBank.outputRs=Mode Redstone Sortie
+enderio.gui.capBank.maxIo=Max E/S
+enderio.gui.capBank.maxInput=Entrée Max
+enderio.gui.capBank.maxOutput=Sortie Max
+
+//Transceiver
+enderio.gui.trans.publicChannel=Canal Public
+enderio.gui.trans.privateChannel=Canal Privé
+enderio.gui.trans.deleteChannel=Suppr. Canal
+enderio.gui.trans.activateChannel=Activer Canal
+enderio.gui.trans.powerMode=Mode Énergie
+enderio.gui.trans.fluidMode=Mode Fluides
+enderio.gui.trans.itemMode=Mode Objets
+enderio.gui.trans.publicHeading=Public
+enderio.gui.trans.privateHeading=Privé
+
+//conduits
+enderio.gui.conduit.ioMode=Mode
+enderio.gui.conduit.ioMode.inOut=Entrée / Sortie
+enderio.gui.conduit.ioMode.input=Extraire
+enderio.gui.conduit.ioMode.output=Insérer
+enderio.gui.conduit.ioMode.disabled=Désactivé
+enderio.gui.conduit.ioMode.notSet=Par Défaut
+
+enderio.gui.conduit.item.sigCol=Couleur du signal
+enderio.gui.conduit.item.channel=Canal
+enderio.gui.conduit.item.ignoreMetaData=Meta Data Ignorées
+enderio.gui.conduit.item.matchMetaData=Meta Data Égales
+enderio.gui.conduit.item.whitelist=Liste Blanche
+enderio.gui.conduit.item.blacklist=Liste Noire
+enderio.gui.conduit.item.stickyEnabled=Mode Collant activé|les objets sélectionnés|ne seront envoyés qu'ici ou| aux autres Sorties Collantes.
+enderio.gui.conduit.item.stickyDisbaled=Mode Collant désactivé
+enderio.gui.conduit.item.ignoreNBT=Données NBT Ignorées
+enderio.gui.conduit.item.matchNBT=Données NBT Égales
+enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Activé
+enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Désactivé
+enderio.gui.conduit.item.selfFeedEnabled=Auto Alimentation Activée
+enderio.gui.conduit.item.selfFeedDisabled=Auto Alimentation Désactivée
+
+enderio.gui.conduit.redstone.signalColor=Couleur du Signal
+enderio.gui.conduit.redstone.color=Couleur
+
+enderio.gui.conduit.fluid.autoExtract=Extract. Auto
