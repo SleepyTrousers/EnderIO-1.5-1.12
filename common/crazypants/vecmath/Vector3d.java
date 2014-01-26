@@ -32,6 +32,10 @@ public class Vector3d {
     this.z = z;
   }
 
+  public void set(Vector3f v) {
+    set(v.x, v.y, v.z);
+  }
+
   public void set(Vector3d vec) {
     x = vec.x;
     y = vec.y;
@@ -44,7 +48,7 @@ public class Vector3d {
     z += vec.z;
     return this;
   }
-  
+
   public Vector3d add(Vector3f vec) {
     x += vec.x;
     y += vec.y;
@@ -57,11 +61,11 @@ public class Vector3d {
     y -= vec.y;
     z -= vec.z;
   }
-  
+
   public void sub(Vector3f vec) {
     x -= vec.x;
     y -= vec.y;
-    z -= vec.z;    
+    z -= vec.z;
   }
 
   public Vector3d negate() {
@@ -122,7 +126,5 @@ public class Vector3d {
     y = Math.abs(y);
     z = Math.abs(z);
   }
-
-  
 
 }

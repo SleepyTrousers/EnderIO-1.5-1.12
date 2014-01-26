@@ -49,7 +49,7 @@ public class Vector3f {
     y += vec.y;
     z += vec.z;
   }
-  
+
   public void add(Vector3d vec) {
     x += vec.x;
     y += vec.y;
@@ -61,11 +61,11 @@ public class Vector3f {
     y -= vec.y;
     z -= vec.z;
   }
-  
+
   public void sub(Vector3d vec) {
     x -= vec.x;
     y -= vec.y;
-    z -= vec.z;    
+    z -= vec.z;
   }
 
   public void negate() {
@@ -104,5 +104,8 @@ public class Vector3f {
     return "Vector3f(" + x + ", " + y + ", " + z + ")";
   }
 
-  
+  public Vector3d asVector3d() {
+    return new Vector3d(x, y, z);
+  }
+
 }

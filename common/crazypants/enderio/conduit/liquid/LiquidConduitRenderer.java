@@ -19,7 +19,7 @@ import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vector2d;
+import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
@@ -96,7 +96,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
         tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
 
         float scaleFactor = 13f / 16f;
-        Vector2d uv = new Vector2d();
+        Vector2f uv = new Vector2f();
         List<ForgeDirection> edges = RenderUtil.getEdgesForFace(face);
         for (ForgeDirection edge : edges) {
           if(edge != component.dir && edge != component.dir.getOpposite()) {

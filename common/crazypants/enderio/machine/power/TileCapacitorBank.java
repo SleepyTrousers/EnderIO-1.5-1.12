@@ -78,6 +78,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private final ItemStack[] inventory;
 
+  private List<GaugeBounds> gaugeBounds;
+
   public TileCapacitorBank() {
     inventory = new ItemStack[4];
     storedEnergy = 0;
@@ -156,6 +158,13 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       onInventoryChanged();
     }
 
+  }
+
+  public List<GaugeBounds> getGaugeBounds() {
+    if(gaugeBounds == null) {
+      gaugeBounds = GaugeBounds.calculateGaugeBounds(new BlockCoord(this), multiblock);
+    }
+    return gaugeBounds;
   }
 
   private boolean chargeItems(float stored) {
@@ -887,6 +896,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
       }
     }
+
+    gaugeBounds = null;
   }
 
   @Override

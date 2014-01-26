@@ -52,7 +52,6 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
-
     if(!(te instanceof TileCapacitorBank)) {
       return;
     }
@@ -168,7 +167,11 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     List<Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
     for (Vertex coord : corners) {
       tes.setNormal(coord.nx(), coord.ny(), coord.nz());
-      tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), coord.u(), coord.v());
+      if(coord.uv != null) {
+        tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), coord.u(), coord.v());
+      } else {
+        tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), 0, 0);
+      }
     }
   }
 
@@ -207,7 +210,11 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     Vector2f u = gb.getMinMaxU(icon);
     List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
     for (Vertex coord : corners) {
-      tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());
+      if(coord.uv != null) {
+        tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());
+      } else {
+        tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), 0, 0);
+      }
     }
   }
 
