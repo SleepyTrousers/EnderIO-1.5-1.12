@@ -1,4 +1,3 @@
-
 //***  Ender IO *****//
 
 //Power
@@ -194,19 +193,3 @@ enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color
 
 enderio.gui.conduit.fluid.autoExtract=Auto Extract
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

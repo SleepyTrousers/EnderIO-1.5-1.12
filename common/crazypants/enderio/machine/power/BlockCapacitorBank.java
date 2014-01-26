@@ -37,7 +37,7 @@ import crazypants.vecmath.Vector3d;
 
 public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
 
-  //static final NumberFormat NF = NumberFormat.getIntegerInstance();
+  public static int renderId = -1;
 
   public static BlockCapacitorBank create() {
     BlockCapacitorBank res = new BlockCapacitorBank();
@@ -123,7 +123,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public int getRenderType() {
-    return -1;
+    return renderId;
   }
 
   @Override

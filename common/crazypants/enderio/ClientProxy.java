@@ -43,8 +43,9 @@ import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockCustomFenceGate;
 import crazypants.enderio.machine.painter.BlockCustomFenceGateRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
+import crazypants.enderio.machine.power.BlockCapacitorBank;
+import crazypants.enderio.machine.power.CapBankRenderer2;
 import crazypants.enderio.machine.power.CapacitorBankRenderer;
-import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -116,8 +117,11 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
 
     CapacitorBankRenderer capr = new CapacitorBankRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileCapacitorBank.class, capr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCapacitorBank.blockID, capr);
+
+    BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
+    CapBankRenderer2 cbr2 = new CapBankRenderer2();
+    RenderingRegistry.registerBlockHandler(cbr2);
 
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame.itemID, fqfr);
