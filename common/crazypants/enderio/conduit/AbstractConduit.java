@@ -376,6 +376,9 @@ public abstract class AbstractConduit implements IConduit {
   protected void updateNetwork(World world) {
     if(getNetwork() == null) {
       ConduitUtil.ensureValidNetwork(this);
+      if(getNetwork() != null && !world.isRemote && bundle != null) {
+        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord, 2);
+      }
     }
     if(getNetwork() != null) {
       getNetwork().onUpdateEntity(this);
