@@ -396,7 +396,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   public int doReceiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate, true);
   }
 
   public int doGetEnergyStored(ForgeDirection from) {
