@@ -79,15 +79,16 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return false;
     }
 
-    if(inventory[0] != null) {
-      int i = 1;
-    }
-
     boolean requiresClientSync = false;
     // Process any current items
-    requiresClientSync |= checkProgress();
+    requiresClientSync |= checkProgress();    
 
-    float chance = random.nextFloat();
+    if(currentTask != null || !hasPower() || !hasInputStacks()) {      
+      return requiresClientSync;
+    }    
+    
+    
+    float chance = random.nextFloat();       
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
@@ -100,13 +101,18 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if(currentTask == null || !hasPower()) {
       return false;
     }
-    float used = powerHandler.useEnergy(0, getPowerUsePerTick(), true);
+
+    float used = Math.min(powerHandler.getEnergyStored(), getPowerUsePerTick());
+    powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
     currentTask.update(used);
+    
+    
     // then check if we are done
     if(currentTask.isComplete()) {
       taskComplete();
+      return true;
     }
-    return true;
+    return false;
   }
 
   protected void taskComplete() {
@@ -154,14 +160,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected IMachineRecipe canStartNextTask(float chance) {
-    if(currentTask != null) {
-      return null; // already cooking something
-    }
-    if(!hasPower()) {
-      return null; // no heat to cook
-    }
-
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
+          
+    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());    
     if(nextRecipe == null) {
       return null; // no template
     }
@@ -197,6 +197,17 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     }
 
     return nextRecipe;
+  }
+
+  protected boolean hasInputStacks() {
+    int fromSlot = slotDefinition.minInputSlot;
+    for (int i = 0; i < slotDefinition.getNumInputSlots(); i++) {
+      if(inventory[fromSlot] != null) {
+        return true;
+      }
+      fromSlot++;
+    }
+    return false;
   }
 
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {

@@ -39,7 +39,7 @@ public final class Config {
 
   public static boolean useHardRecipes = false;
 
-  public static boolean detailedPowerTrackingEnabled = true;
+  public static boolean detailedPowerTrackingEnabled = false;
 
   public static double maxPhotovoltaicOutput = 1.0;
 
@@ -48,7 +48,7 @@ public final class Config {
   public static boolean useSneakRightClickYetaWrench = false;
 
   public static boolean useRfAsDefault = true;
-
+  
   public static boolean itemConduitUsePhyscialDistance = false;
 
   public static void load(FMLPreInitializationEvent event) {
@@ -123,8 +123,8 @@ public final class Config {
     transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
         "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
 
-    detailedPowerTrackingEnabled = config.get("Settings", "detailedPowerTrackingEnabled", detailedPowerTrackingEnabled,
-        "Enable per tick sampling on individual power inputs and outputs")
+    detailedPowerTrackingEnabled = config.get("Settings", "perInterfacePowerTrackingEnabled", detailedPowerTrackingEnabled,
+        "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the MJ Reader but has a negative impact on server performance.")
         .getBoolean(detailedPowerTrackingEnabled);
 
     useSneakMouseWheelYetaWrench = config.get("Settings", "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
@@ -134,9 +134,9 @@ public final class Config {
     useSneakRightClickYetaWrench = config.get("Settings", "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
         "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
         .getBoolean(useSneakRightClickYetaWrench);
-
+    
     itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
-        "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
+    		"'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
 
     if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {

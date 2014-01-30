@@ -79,6 +79,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   private final ItemStack[] inventory;
 
   private List<GaugeBounds> gaugeBounds;
+  
+  private boolean render = false;
 
   public TileCapacitorBank() {
     inventory = new ItemStack[4];
@@ -100,6 +102,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
 
     if(worldObj.isRemote) {
+      if(render) {
+        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        render = false;
+      }
       return;
     } // else is server, do all logic only on the server
 
@@ -396,7 +402,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   public int doReceiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate, true);
   }
 
   public int doGetEnergyStored(ForgeDirection from) {
@@ -854,8 +860,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
-
-    storedEnergy = nbtRoot.getFloat("storedEnergy");
+    
+    float oldEnergy = getEnergyStoredRatio();
+    
+    storedEnergy = nbtRoot.getFloat("storedEnergy");    
     maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergy");
     maxIO = nbtRoot.getInteger("maxIO");
     if(nbtRoot.hasKey("maxInput")) {
@@ -896,8 +904,13 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
       }
     }
+    
+    float newEnergy = getEnergyStoredRatio();
+    if(Math.abs(oldEnergy - newEnergy) > 0.05) {
+      render = true;
+    }
 
-    gaugeBounds = null;
+    gaugeBounds = null;       
   }
 
   @Override

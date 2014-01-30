@@ -221,7 +221,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public void updateEntity() {
-
+ 
     if(worldObj == null) { // sanity check
       return;
     }
@@ -235,34 +235,29 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       return;
 
     } // else is server, do all logic only on the server
+    
+    storedEnergy = powerHandler.getEnergyStored();
 
-    float stored = powerHandler.getEnergyStored();
-    powerHandler.update();
-    powerHandler.setEnergy(stored);
-    storedEnergy = stored;
-
-    boolean requiresClientSync = false;
+    boolean requiresClientSync = forceClientUpdate;
     if(forceClientUpdate) {
       // First update, send state to client
-      forceClientUpdate = false;
-      requiresClientSync = true;
+      forceClientUpdate = false;      
     }
 
     boolean prevRedCheck = redstoneCheckPassed;
-    
     if(redstoneStateDirty) {
       redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
       redstoneStateDirty = false;
-    }    
-    
+    }
+
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    requiresClientSync |= lastSyncPowerStored != powerHandler.getEnergyStored() && worldObj.getTotalWorldTime() % 9 == 0;
+    requiresClientSync |= (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0);
 
     if(requiresClientSync) {
-      lastSyncPowerStored = powerHandler.getEnergyStored();
+      lastSyncPowerStored = storedEnergy;
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection

@@ -149,13 +149,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    neighbourDirty = true;
+    neighbourDirty = res;
     return res;
   }
 
   @Override
-  public void updateEntity(World world) {
-    // TODO Auto-generated method stub
+  public void updateEntity(World world) {    
     super.updateEntity(world);
     if(!world.isRemote && neighbourDirty) {
       network.destroyNetwork();
