@@ -15,6 +15,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerInterfaceRF;
 import crazypants.util.BlockCoord;
 
 public class NetworkPowerManager {
@@ -42,7 +43,7 @@ public class NetworkPowerManager {
 
   private PowerTracker networkPowerTracker = new PowerTracker();
 
-  private CapBankSupply capSupply;
+  private final CapBankSupply capSupply = new CapBankSupply();
 
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
     this.network = netowrk;
@@ -106,7 +107,7 @@ public class NetworkPowerManager {
   }
 
   public void applyRecievedPower() {
-
+    
     trackerStartTick();
 
     // Update our energy stored based on what's in our conduits
@@ -115,7 +116,8 @@ public class NetworkPowerManager {
 
     checkReserves();
     updateActiveState();
-    capSupply = new CapBankSupply();
+
+    capSupply.init();
 
     int appliedCount = 0;
     int numReceptors = receptors.size();
@@ -125,8 +127,8 @@ public class NetworkPowerManager {
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
       trackerEndTick();
       return;
-    }
-
+    }    
+    
     while (available > 0 && appliedCount < numReceptors) {
 
       if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
@@ -145,27 +147,35 @@ public class NetworkPowerManager {
       } else {
 
         IPowerInterface pp = r.powerInterface;
+
         if(pp != null) {
 
           float used = 0;
-          float reservedForEntry = removeReservedEnergy(r);
-          available += reservedForEntry;
-          float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-          float requested = pp.getPowerRequest(r.direction.getOpposite());
 
-          // If it is possible to supply the minimum amount of energy
-          if(pp.getMinEnergyReceived(r.direction) <= r.emmiter.getMaxEnergyExtracted(r.direction) && requested > 0) {
-            // Buffer energy if we can't meet it now
-            if(pp.getMinEnergyReceived(r.direction) > canOffer) {
-              reserveEnergy(r, canOffer);
-              used += canOffer;
-            } else {
-              used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
-              trackerSend(r.emmiter, used, false);
+          if(pp.getClass() == PowerInterfaceRF.class) {
+            
+            used = pp.recieveEnergy(r.direction.getOpposite(), available);
+            
+          } else {
+                              
+            float reservedForEntry = removeReservedEnergy(r);
+            available += reservedForEntry;
+            float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+            float requested = pp.getPowerRequest(r.direction.getOpposite());
+
+            // If it is possible to supply the minimum amount of energy
+            if(pp.getMinEnergyReceived(r.direction) <= r.emmiter.getMaxEnergyExtracted(r.direction) && requested > 0) {
+              // Buffer energy if we can't meet it now
+              if(pp.getMinEnergyReceived(r.direction) > canOffer) {
+                reserveEnergy(r, canOffer);
+                used += canOffer;
+              } else {
+                used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+                trackerSend(r.emmiter, used, false);
+              }
             }
-            available -= used;
           }
-
+          available -= used;
           if(available <= 0) {
             break;
           }
@@ -179,24 +189,26 @@ public class NetworkPowerManager {
     // use all the capacator storage first
     energyStored -= used;
 
-    float capBankChange = 0;
-    if(energyStored < 0) {
-      // not enough so get the rest from the capacitor bank
-      capBankChange = energyStored;
-      energyStored = 0;
-    } else if(energyStored > 0) {
-      // push as much as we can back to the cap banks
-      capBankChange = Math.min(energyStored, capSupply.canFill);
-      energyStored -= capBankChange;
-    }
+    if(!capSupply.capBanks.isEmpty()) {
+      float capBankChange = 0;
+      if(energyStored < 0) {
+        // not enough so get the rest from the capacitor bank
+        capBankChange = energyStored;
+        energyStored = 0;
+      } else if(energyStored > 0) {
+        // push as much as we can back to the cap banks
+        capBankChange = Math.min(energyStored, capSupply.canFill);
+        energyStored -= capBankChange;
+      }
 
-    if(capBankChange < 0) {
-      capSupply.remove(Math.abs(capBankChange));
-    } else if(capBankChange > 0) {
-      capSupply.add(capBankChange);
-    }
+      if(capBankChange < 0) {
+        capSupply.remove(Math.abs(capBankChange));
+      } else if(capBankChange > 0) {
+        capSupply.add(capBankChange);
+      }
 
-    capSupply.balance();
+      capSupply.balance();
+    }
 
     distributeStorageToConduits();
 
@@ -273,7 +285,7 @@ public class NetworkPowerManager {
     if(doRender) {
       lastActiveValue = active;
       //for (IPowerConduit con : network.getConduits()) {
-        //con.setActive(active);
+      //con.setActive(active);
       //}
     }
   }
@@ -397,19 +409,18 @@ public class NetworkPowerManager {
     float stored = 0;
     float maxCap = 0;
 
-    List<CapBankSupplyEntry> enteries;
+    List<CapBankSupplyEntry> enteries = new ArrayList<NetworkPowerManager.CapBankSupplyEntry>();
 
-    CapBankSupply() {
-      init();
+    CapBankSupply() {     
     }
 
-    void init() {
+    void init() {      
       capBanks.clear();
+      enteries.clear();
       canExtract = 0;
       canFill = 0;
       stored = 0;
-      maxCap = 0;
-      enteries = new ArrayList<NetworkPowerManager.CapBankSupplyEntry>();
+      maxCap = 0;      
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
 
