@@ -38,9 +38,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if(inventory[i] == null) {
       return true;
     }
-    if(inventory[i].stackSize + itemstack.stackSize > inventory[i].getMaxStackSize()) {
-      return false;
-    }
     return inventory[i].isItemEqual(itemstack);
   }
 
@@ -81,14 +78,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
     boolean requiresClientSync = false;
     // Process any current items
-    requiresClientSync |= checkProgress();    
+    requiresClientSync |= checkProgress();
 
-    if(currentTask != null || !hasPower() || !hasInputStacks()) {      
+    if(currentTask != null || !hasPower() || !hasInputStacks()) {
       return requiresClientSync;
-    }    
+    }
+
     
-    
-    float chance = random.nextFloat();       
+    float chance = random.nextFloat();
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
@@ -105,14 +102,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     float used = Math.min(powerHandler.getEnergyStored(), getPowerUsePerTick());
     powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
     currentTask.update(used);
-    
+
     
     // then check if we are done
     if(currentTask.isComplete()) {
       taskComplete();
       return true;
     }
-    return false;
+    return worldObj.getWorldTime() % 10 == 0;
   }
 
   protected void taskComplete() {
@@ -160,8 +157,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected IMachineRecipe canStartNextTask(float chance) {
-          
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());    
+
+    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
     if(nextRecipe == null) {
       return null; // no template
     }
