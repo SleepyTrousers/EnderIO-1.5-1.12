@@ -1,3 +1,14 @@
+0.7.2
+- Massive client side performance improvement for large capacitor banks
+- Fixed capacitor bank lighting
+- Improved connected textures for fused quartz
+- Significant performance improvements to all machines 
+- French localisations added [WLCD]
+- Resolved block update related issues with EIO conduits and TE conduits/blocks.
+- #426 Conduit Bundles low performance 
+- #428 Crash when breaking TE redstone conduit connected to Ender IO conduit              
+- #430 Red stone conduit update times grow with network size 
+
 0.7.1
 - Redstone Flux (RF) now the default display unit for power. This can be changed back to MJ in the config.
 - Allowed more blocks to be used as paint sources in the Painter
