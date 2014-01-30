@@ -79,7 +79,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   private final ItemStack[] inventory;
 
   private List<GaugeBounds> gaugeBounds;
-  
+
   private boolean render = false;
 
   public TileCapacitorBank() {
@@ -860,11 +860,15 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
-    
-    float oldEnergy = getEnergyStoredRatio();
-    
-    storedEnergy = nbtRoot.getFloat("storedEnergy");    
+
+    float oldEnergy = storedEnergy;
+    storedEnergy = nbtRoot.getFloat("storedEnergy");
     maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergy");
+
+    float newEnergy = storedEnergy;
+    if(maxStoredEnergy != 0 && Math.abs(oldEnergy - newEnergy) / maxStoredEnergy > 0.05) {
+      render = true;
+    }
     maxIO = nbtRoot.getInteger("maxIO");
     if(nbtRoot.hasKey("maxInput")) {
       maxInput = nbtRoot.getInteger("maxInput");
@@ -904,13 +908,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
       }
     }
-    
-    float newEnergy = getEnergyStoredRatio();
-    if(Math.abs(oldEnergy - newEnergy) > 0.05) {
-      render = true;
-    }
 
-    gaugeBounds = null;       
+    gaugeBounds = null;
   }
 
   @Override
