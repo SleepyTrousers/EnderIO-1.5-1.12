@@ -12,13 +12,16 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityCustomBlock;
+import crazypants.render.ConnectedTextureRenderer;
+import crazypants.render.ConnectedTextureRenderer.DefaultTextureCallback;
 import crazypants.render.CustomCubeRenderer;
-import crazypants.render.CustomCubeRenderer.DefaultTextureCallback;
 import crazypants.render.RenderUtil;
 
 public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   static int renderPass;
+
+  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer();
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
@@ -39,10 +42,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    if(renderPass == 0) {
-
-    } else {
-
+    if(renderPass != 0) {
       TileEntityCustomBlock tecb = null;
       TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
       if(te instanceof TileEntityCustomBlock) {
@@ -80,13 +80,14 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     CustomCubeRenderer.instance.setOverrideTexture(EnderIO.blockFusedQuartz.realBlockIcon);
 
     if(tecb != null && tecb.getSourceBlock() != null) {
+      connectedTextureRenderer.setEdgeTexureCallback(new DefaultTextureCallback(tecb.getSourceBlock(), tecb.getSourceBlockMetadata()));
       CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z,
-          new DefaultTextureCallback(tecb.getSourceBlock(), tecb.getSourceBlockMetadata()), false);
+          connectedTextureRenderer);
     } else {
-      CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z, EnderIO.blockAlloySmelter.getBlockTextureFromSide(3), false);
+      connectedTextureRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+      CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z, connectedTextureRenderer);
     }
 
     CustomCubeRenderer.instance.setOverrideTexture(null);
   }
-
 }
