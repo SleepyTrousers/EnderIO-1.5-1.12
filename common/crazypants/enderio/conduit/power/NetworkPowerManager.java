@@ -107,7 +107,7 @@ public class NetworkPowerManager {
   }
 
   public void applyRecievedPower() {
-    
+
     trackerStartTick();
 
     // Update our energy stored based on what's in our conduits
@@ -127,8 +127,8 @@ public class NetworkPowerManager {
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
       trackerEndTick();
       return;
-    }    
-    
+    }
+
     while (available > 0 && appliedCount < numReceptors) {
 
       if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
@@ -153,11 +153,12 @@ public class NetworkPowerManager {
           float used = 0;
 
           if(pp.getClass() == PowerInterfaceRF.class) {
-            
+
             used = pp.recieveEnergy(r.direction.getOpposite(), available);
-            
+            trackerSend(r.emmiter, used, false);
+
           } else {
-                              
+
             float reservedForEntry = removeReservedEnergy(r);
             available += reservedForEntry;
             float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
@@ -411,16 +412,16 @@ public class NetworkPowerManager {
 
     List<CapBankSupplyEntry> enteries = new ArrayList<NetworkPowerManager.CapBankSupplyEntry>();
 
-    CapBankSupply() {     
+    CapBankSupply() {
     }
 
-    void init() {      
+    void init() {
       capBanks.clear();
       enteries.clear();
       canExtract = 0;
       canFill = 0;
       stored = 0;
-      maxCap = 0;      
+      maxCap = 0;
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
 
