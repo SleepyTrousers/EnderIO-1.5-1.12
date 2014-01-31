@@ -34,9 +34,11 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
   private final List<IRenderFace> renderers = new ArrayList<IRenderFace>(2);
 
+  private ConnectedTextureRenderer connectedTexRenderer;
+
   public CapBankRenderer2() {
-    ConnectedTextureRenderer connectedTexRenderer = new ConnectedTextureRenderer();
-    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+    connectedTexRenderer = new ConnectedTextureRenderer();
+
     GaugueRenderer gaugeRenderer = new GaugueRenderer();
     renderers.add(connectedTexRenderer);
     renderers.add(gaugeRenderer);
@@ -48,6 +50,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
     return true;
   }
