@@ -30,6 +30,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.machine.power.TileCapacitorBank.FaceConnectionMode;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -52,6 +53,10 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   Icon overlayIcon;
   Icon fillBarIcon;
 
+  private Icon blockIconInput;
+  private Icon blockIconOutput;
+  private Icon blockIconLocked;
+
   protected BlockCapacitorBank() {
     super(ModObject.blockCapacitorBank.actualId, new Material(MapColor.ironColor));
     setHardness(2.0F);
@@ -69,7 +74,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
     if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
       if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
@@ -91,6 +96,22 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(!(te instanceof TileCapacitorBank)) {
       return false;
     }
+    if(ConduitUtil.isToolEquipped(entityPlayer)) {
+      //if(!world.isRemote) {
+      ForgeDirection faceHit = ForgeDirection.getOrientation(side);
+      TileCapacitorBank tcb = (TileCapacitorBank) te;
+      tcb.toggleModeForFace(faceHit);
+      if(world.isRemote) {
+        world.markBlockForRenderUpdate(x, y, z);
+      } else {
+        world.notifyBlocksOfNeighborChange(x, y, z, ModObject.blockCapacitorBank.actualId);
+        world.markBlockForUpdate(x, y, z);
+      }
+      //}
+
+      return true;
+    }
+
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
     return true;
   }
@@ -117,6 +138,9 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   @Override
   public void registerIcons(IconRegister iconRegister) {
     blockIcon = iconRegister.registerIcon("enderio:capacitorBank");
+    blockIconInput = iconRegister.registerIcon("enderio:capacitorBankInput");
+    blockIconOutput = iconRegister.registerIcon("enderio:capacitorBankOutput");
+    blockIconLocked = iconRegister.registerIcon("enderio:capacitorBankLocked");
     overlayIcon = iconRegister.registerIcon("enderio:capacitorBankOverlays");
     fillBarIcon = iconRegister.registerIcon("enderio:capacitorBankFillBar");
   }
@@ -155,6 +179,27 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
     int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
     return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public Icon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
+    TileEntity te = ba.getBlockTileEntity(x, y, z);
+    if(!(te instanceof TileCapacitorBank)) {
+      return blockIcon;
+    }
+    TileCapacitorBank cb = (TileCapacitorBank) te;
+    FaceConnectionMode mode = cb.getFaceModeForFace(ForgeDirection.values()[side]);
+    if(mode == null || mode == FaceConnectionMode.NONE) {
+      return blockIcon;
+    }
+    if(mode == FaceConnectionMode.INPUT) {
+      return blockIconInput;
+    }
+    if(mode == FaceConnectionMode.OUTPUT) {
+      return blockIconOutput;
+    }
+    return blockIconLocked;
   }
 
   @Override

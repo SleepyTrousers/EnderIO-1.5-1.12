@@ -433,13 +433,14 @@ public class NetworkPowerManager {
           capBanks.add(cb);
 
           float canGet = 0;
-          if(cb.isOutputEnabled()) {
+
+          if(cb.isOutputEnabled(rec.direction.getOpposite())) {
             canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
             canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
             canExtract += canGet;
           }
           float canFill = 0;
-          if(cb.isInputEnabled()) {
+          if(cb.isInputEnabled(rec.direction.getOpposite())) {
             canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
             canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
             this.canFill += canFill;
