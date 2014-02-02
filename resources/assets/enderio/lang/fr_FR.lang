@@ -33,12 +33,12 @@ enderio.itemMaterial=Matériaux
 enderio.silicon=Silicium
 enderio.conduitBinder=Jonction
 enderio.binderComposite=Jonction Composite
-enderio.phasedIronNugget=Pépite de fer Palpitante
+enderio.phasedIronNugget=Pépite de fer Palpitant
 
 enderio.itemMachinePart=Pièces Détachées
 enderio.blockFusedQuartz=Quartz uni
 enderio.itemFusedQuartzFrame=Cadre de Quartz uni
-enderio.itemPowderIngot=Poudre & Lingots
+enderio.itemPowderIngot=Poudres & Lingots
 
 //Alloys
 enderio.itemAlloy=Alliage
