@@ -362,7 +362,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(masterReceptors == null) {
       masterReceptors = new ArrayList<Receptor>();
     }
-    System.out.println("TileCapacitorBank.updateMasterReceptors: ");
     masterReceptors.clear();
 
     if(multiblock == null) {
@@ -411,7 +410,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
             }
             Receptor r = new Receptor(ph, dir, mode);
             localReceptors.add(r);
-            System.out.println("TileCapacitorBank.updateReceptors: Found receptor: " + r);
             if(mode == FaceConnectionMode.NONE && !(ph.getDelegate() instanceof IInternalPowerReceptor)) {
               setFaceMode(dir, FaceConnectionMode.INPUT, false);
               worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
