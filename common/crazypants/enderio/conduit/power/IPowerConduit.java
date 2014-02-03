@@ -39,4 +39,12 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
 
   Icon getTextureForOutputMode();
 
+  //called from NetworkPowerManager 
+  void onTick();
+
+  //mj
+  float getEnergyStored();
+
+  void setEnergyStored(float give);
+
 }

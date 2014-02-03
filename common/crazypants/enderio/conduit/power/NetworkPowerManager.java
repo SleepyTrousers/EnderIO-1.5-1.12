@@ -136,7 +136,7 @@ public class NetworkPowerManager {
       }
 
       ReceptorEntry r = receptorIterator.next();
-      if(r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
+      if(r.emmiter.getPowerHandler() != null && r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
 
         // do a summy recieve or recieve energy counter will never tick down
         float es = r.emmiter.getPowerHandler().getEnergyStored();
@@ -315,8 +315,8 @@ public class NetworkPowerManager {
 
   private void distributeStorageToConduits() {
     if(maxEnergyStored <= 0 || energyStored <= 0) {
-      for (IPowerConduit con : network.getConduits()) {
-        con.getPowerHandler().setEnergy(0);
+      for (IPowerConduit con : network.getConduits()) {        
+        con.setEnergyStored(0);
       }
       return;
     }
@@ -335,11 +335,11 @@ public class NetworkPowerManager {
         float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
         give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
         give = Math.min(give, energyLeft);
-        con.getPowerHandler().setEnergy(give);
+        con.setEnergyStored(give);
         given += give;
         energyLeft -= give;
       } else {
-        con.getPowerHandler().setEnergy(0);
+        con.setEnergyStored(0);
       }
     }
   }
@@ -353,7 +353,8 @@ public class NetworkPowerManager {
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
       maxEnergyStored += con.getCapacitor().getMaxEnergyStored();
-      energyStored += con.getPowerHandler().getEnergyStored();
+      con.onTick();
+      energyStored += con.getEnergyStored();
     }
 
     if(energyStored > maxEnergyStored) {
