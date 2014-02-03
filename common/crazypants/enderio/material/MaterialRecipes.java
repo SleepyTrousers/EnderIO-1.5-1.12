@@ -28,6 +28,14 @@ public class MaterialRecipes {
     OreDictionary.registerOre("itemSilicon", new ItemStack(ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal()));
     OreDictionary.registerOre("gearStone", new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal()));
 
+    int oreId = OreDictionary.getOreID("glass");
+    ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
+    if(ingots.isEmpty()) {
+      OreDictionary.registerOre("glass", Block.glass);
+    }
+    OreDictionary.registerOre("glass", new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.GLASS.ordinal()));
+    OreDictionary.registerOre("glassHardened", new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
+
     /**
      * Register AE1's Silicon, remove after AE2 is out.
      */

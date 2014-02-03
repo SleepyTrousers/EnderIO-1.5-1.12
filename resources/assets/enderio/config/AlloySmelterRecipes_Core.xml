@@ -93,12 +93,30 @@ sand/cobble/wood=0.1
       </output>
     </recipe>
     
-    <recipe name="Fused Quartz" energyCost="750">
+    <recipe name="Fused Quartz" energyCost="500">
       <input>
         <itemStack itemID="406" number="4" /> <!-- Nether Quartz-->
       </input>            
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="0" exp="0.5"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Fused Glass" energyCost="250">
+      <input>
+        <itemStack itemID="12" />
+      </input>            
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="1" exp="0.2"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Fused Glass (Ore Dict)" energyCost="250">
+      <input>
+        <itemStack oreDictionary="sand" />
+      </input>            
+      <output>
+        <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="1" exp="0.2"/> 
       </output>
     </recipe>
   

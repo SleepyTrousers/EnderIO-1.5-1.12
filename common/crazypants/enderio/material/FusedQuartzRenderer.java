@@ -25,7 +25,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-    renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getIcon(0, 0));
+    renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getItemIcon(metadata));
     renderer.renderBlockAsItem(Block.glass, 0, 1);
     renderer.clearOverrideBlockTexture();
   }
@@ -48,7 +48,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
       if(te instanceof TileEntityCustomBlock) {
         tecb = (TileEntityCustomBlock) te;
       }
-      renderFrame(blockAccess, x, y, z, tecb, false);
+      renderFrame(blockAccess, x, y, z, tecb, false, blockAccess.getBlockMetadata(x, y, z));
     }
     return true;
   }
@@ -59,15 +59,15 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     TileEntityCustomBlock tecb = new TileEntityCustomBlock();
     tecb.setSourceBlockId(PainterUtil.getSourceBlockId(stack));
     tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
-    renderFrame(null, 0, 0, 0, tecb, true);
+    renderFrame(null, 0, 0, 0, tecb, true, stack.getItemDamage());
     Tessellator.instance.draw();
   }
 
-  private void renderFrame(IBlockAccess blockAccess, int x, int y, int z, TileEntityCustomBlock tecb, boolean forceAllEdges) {
+  private void renderFrame(IBlockAccess blockAccess, int x, int y, int z, TileEntityCustomBlock tecb, boolean forceAllEdges, int meta) {
 
     if(blockAccess == null) {
       //No lighting
-      Icon texture = EnderIO.blockFusedQuartz.getIcon(0, 0);
+      Icon texture = EnderIO.blockFusedQuartz.getItemIcon(meta);
       for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
         if(tecb != null && tecb.getSourceBlockId() > 0) {
           texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
@@ -77,14 +77,19 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
       return;
     }
 
-    CustomCubeRenderer.instance.setOverrideTexture(EnderIO.blockFusedQuartz.realBlockIcon);
+    CustomCubeRenderer.instance.setOverrideTexture(EnderIO.blockFusedQuartz.getIcon(0, meta));
 
     if(tecb != null && tecb.getSourceBlock() != null) {
       connectedTextureRenderer.setEdgeTexureCallback(new DefaultTextureCallback(tecb.getSourceBlock(), tecb.getSourceBlockMetadata()));
       CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z,
           connectedTextureRenderer);
     } else {
-      connectedTextureRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+      //      if(meta == 1) {
+      //        connectedTextureRenderer.setEdgeTexture(IconUtil.whiteTexture);
+      //      } else {
+      //        connectedTextureRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+      //      }
+      connectedTextureRenderer.setEdgeTexture(EnderIO.blockFusedQuartz.getDefaultFrameIcon(meta));
       CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z, connectedTextureRenderer);
     }
 

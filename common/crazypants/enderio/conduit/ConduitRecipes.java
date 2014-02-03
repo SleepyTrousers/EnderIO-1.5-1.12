@@ -14,6 +14,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.Material;
 
 public class ConduitRecipes {
@@ -23,7 +24,10 @@ public class ConduitRecipes {
     //Crafting Components
     ItemStack redstoneConduit = new ItemStack(itemRedstoneConduit.actualId, 1, 0);
     ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.CONDUIT_BINDER.ordinal());
-    ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
+
+    //ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
+    ItemStack fusedGlass = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.GLASS.ordinal());
+
     ItemStack conductiveIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.CONDUCTIVE_IRON.ordinal());
     ItemStack energeticGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENERGETIC_ALLOY.ordinal());
     ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
@@ -36,7 +40,7 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(new ItemStack(itemConduitFacade.actualId, 1, 0), "bbb", "b b", "bbb", 'b', conduitBinder);
 
     int numConduits = Config.numConduitsPerRecipe;
-    GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedQuartz);
+    GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedGlass);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', energeticGold);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedGold);

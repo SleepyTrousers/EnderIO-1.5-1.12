@@ -37,6 +37,9 @@ enderio.phasedIronNugget=Pulsating Iron Nugget
 
 enderio.itemMachinePart=Machine Parts
 enderio.blockFusedQuartz=Fused Quartz
+enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
+enderio.blockFusedQuartz.fusedGlass.name=Fused Glass
+
 enderio.itemFusedQuartzFrame=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
 
