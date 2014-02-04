@@ -42,13 +42,14 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    if(renderPass != 0) {
+    int meta = blockAccess.getBlockMetadata(x, y, z);
+    if((meta == 0 && renderPass != 0) || (meta == 1 && renderPass == 0)) {
       TileEntityCustomBlock tecb = null;
       TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
       if(te instanceof TileEntityCustomBlock) {
         tecb = (TileEntityCustomBlock) te;
       }
-      renderFrame(blockAccess, x, y, z, tecb, false, blockAccess.getBlockMetadata(x, y, z));
+      renderFrame(blockAccess, x, y, z, tecb, false, meta);
     }
     return true;
   }
@@ -84,11 +85,6 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
       CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z,
           connectedTextureRenderer);
     } else {
-      //      if(meta == 1) {
-      //        connectedTextureRenderer.setEdgeTexture(IconUtil.whiteTexture);
-      //      } else {
-      //        connectedTextureRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
-      //      }
       connectedTextureRenderer.setEdgeTexture(EnderIO.blockFusedQuartz.getDefaultFrameIcon(meta));
       CustomCubeRenderer.instance.renderBlock(blockAccess, EnderIO.blockFusedQuartz, x, y, z, connectedTextureRenderer);
     }
