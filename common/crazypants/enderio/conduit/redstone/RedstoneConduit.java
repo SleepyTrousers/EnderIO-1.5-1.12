@@ -67,12 +67,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public AbstractConduitNetwork<IRedstoneConduit> getNetwork() {
+  public AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> getNetwork() {
     return network;
   }
 
   @Override
-  public boolean setNetwork(AbstractConduitNetwork<?> network) {
+  public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     this.network = (RedstoneConduitNetwork) network;
     return true;
   }
@@ -154,7 +154,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public void updateEntity(World world) {    
+  public void updateEntity(World world) {
     super.updateEntity(world);
     if(!world.isRemote && neighbourDirty) {
       network.destroyNetwork();

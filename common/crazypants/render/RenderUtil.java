@@ -373,6 +373,43 @@ public class RenderUtil {
     return null;
   }
 
+  public static ForgeDirection getVDirForFace(ForgeDirection face) {
+    switch (face) {
+    case DOWN:
+    case UP:
+      return ForgeDirection.SOUTH;
+    case EAST:
+    case WEST:
+    case NORTH:
+    case SOUTH:
+      return ForgeDirection.UP;
+    case UNKNOWN:
+    default:
+      break;
+    }
+    return null;
+  }
+
+  public static ForgeDirection getUDirForFace(ForgeDirection face) {
+    switch (face) {
+    case DOWN:
+    case UP:
+      return ForgeDirection.EAST;
+    case EAST:
+      return ForgeDirection.NORTH;
+    case WEST:
+      return ForgeDirection.SOUTH;
+    case NORTH:
+      return ForgeDirection.WEST;
+    case SOUTH:
+      return ForgeDirection.EAST;
+    case UNKNOWN:
+    default:
+      break;
+    }
+    return null;
+  }
+
   private static class EdgeNeighbour {
     final ForgeDirection dir;
     final BlockCoord bc;

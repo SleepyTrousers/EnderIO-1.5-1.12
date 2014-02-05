@@ -41,6 +41,10 @@ public enum ConnectionMode {
     return this == IN_OUT || this == INPUT;
   }
 
+  public boolean acceptsOutput() {
+    return this == IN_OUT || this == OUTPUT;
+  }
+
   public String getLocalisedName() {
     return Lang.localize(unlocalisedName);
   }

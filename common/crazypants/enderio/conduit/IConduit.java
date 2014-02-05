@@ -62,9 +62,9 @@ public interface IConduit {
 
   void conduitConnectionRemoved(ForgeDirection fromDirection);
 
-  AbstractConduitNetwork<?> getNetwork();
+  AbstractConduitNetwork<?, ?> getNetwork();
 
-  boolean setNetwork(AbstractConduitNetwork<?> network);
+  boolean setNetwork(AbstractConduitNetwork<?, ?> network);
 
   // External Connections
 

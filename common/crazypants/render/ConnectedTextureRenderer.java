@@ -108,7 +108,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
       for (ForgeDirection edge : edges) {
 
         //We need to move the 'centre' of the face so it doesn't overlap with the border
-        moveCorners(refVertices, edge, 1 - scaleFactor, face);
+        moveCorners(refVertices, edge, 1 - scaleFactor);
 
         //Now create the geometry for this edge of the border
         float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
@@ -260,18 +260,8 @@ public class ConnectedTextureRenderer implements IRenderFace {
     return false;
   }
 
-  private void moveCornerVec(List<Vector3d> corners, Vector3d edge, float scaleFactor, ForgeDirection face) {
-    int[] indices = getClosestVec(edge, corners, face);
-    corners.get(indices[0]).x -= scaleFactor * edge.x;
-    corners.get(indices[1]).x -= scaleFactor * edge.x;
-    corners.get(indices[0]).y -= scaleFactor * edge.y;
-    corners.get(indices[1]).y -= scaleFactor * edge.y;
-    corners.get(indices[0]).z -= scaleFactor * edge.z;
-    corners.get(indices[1]).z -= scaleFactor * edge.z;
-  }
-
-  private void moveCorners(List<Vertex> vertices, ForgeDirection edge, float scaleFactor, ForgeDirection face) {
-    int[] indices = getClosest(edge, vertices, face);
+  private void moveCorners(List<Vertex> vertices, ForgeDirection edge, float scaleFactor) {
+    int[] indices = getClosest(edge, vertices);
     vertices.get(indices[0]).xyz.x -= scaleFactor * edge.offsetX;
     vertices.get(indices[1]).xyz.x -= scaleFactor * edge.offsetX;
     vertices.get(indices[0]).xyz.y -= scaleFactor * edge.offsetY;
@@ -280,33 +270,13 @@ public class ConnectedTextureRenderer implements IRenderFace {
     vertices.get(indices[1]).xyz.z -= scaleFactor * edge.offsetZ;
   }
 
-  private int[] getClosest(ForgeDirection edge, List<Vertex> vertices, ForgeDirection face) {
+  private int[] getClosest(ForgeDirection edge, List<Vertex> vertices) {
     int[] res = new int[] { -1, -1 };
     boolean highest = edge.offsetX > 0 || edge.offsetY > 0 || edge.offsetZ > 0;
     double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
     int index = 0;
     for (Vertex v : vertices) {
       double val = get(v.xyz, edge);
-      if(highest ? val >= minMax : val <= minMax) {
-        if(val != minMax) {
-          res[0] = index;
-        } else {
-          res[1] = index;
-        }
-        minMax = val;
-      }
-      index++;
-    }
-    return res;
-  }
-
-  private int[] getClosestVec(Vector3d edge, List<Vector3d> corners, ForgeDirection face) {
-    int[] res = new int[] { -1, -1 };
-    boolean highest = edge.x > 0 || edge.y > 0 || edge.z > 0;
-    double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
-    int index = 0;
-    for (Vector3d v : corners) {
-      double val = get(v, edge);
       if(highest ? val >= minMax : val <= minMax) {
         if(val != minMax) {
           res[0] = index;
@@ -330,14 +300,44 @@ public class ConnectedTextureRenderer implements IRenderFace {
     return xyz.z;
   }
 
-  private double get(Vector3d xyz, Vector3d edge) {
-    if(Math.abs(edge.x) > 0.5) {
-      return xyz.x;
-    }
-    if(Math.abs(edge.y) > 0.5) {
-      return xyz.y;
-    }
-    return xyz.z;
-  }
+  //  private void moveCornerVec(List<Vector3d> corners, Vector3d edge, float scaleFactor) {
+  //    int[] indices = getClosestVec(edge, corners);
+  //    corners.get(indices[0]).x -= scaleFactor * edge.x;
+  //    corners.get(indices[1]).x -= scaleFactor * edge.x;
+  //    corners.get(indices[0]).y -= scaleFactor * edge.y;
+  //    corners.get(indices[1]).y -= scaleFactor * edge.y;
+  //    corners.get(indices[0]).z -= scaleFactor * edge.z;
+  //    corners.get(indices[1]).z -= scaleFactor * edge.z;
+  //  }
+  //  
+  //  private int[] getClosestVec(Vector3d edge, List<Vector3d> corners) {
+  //    int[] res = new int[] { -1, -1 };
+  //    boolean highest = edge.x > 0 || edge.y > 0 || edge.z > 0;
+  //    double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
+  //    int index = 0;
+  //    for (Vector3d v : corners) {
+  //      double val = get(v, edge);
+  //      if(highest ? val >= minMax : val <= minMax) {
+  //        if(val != minMax) {
+  //          res[0] = index;
+  //        } else {
+  //          res[1] = index;
+  //        }
+  //        minMax = val;
+  //      }
+  //      index++;
+  //    }
+  //    return res;
+  //  }
+  //
+  //  private double get(Vector3d xyz, Vector3d edge) {
+  //    if(Math.abs(edge.x) > 0.5) {
+  //      return xyz.x;
+  //    }
+  //    if(Math.abs(edge.y) > 0.5) {
+  //      return xyz.y;
+  //    }
+  //    return xyz.z;
+  //  }
 
 }

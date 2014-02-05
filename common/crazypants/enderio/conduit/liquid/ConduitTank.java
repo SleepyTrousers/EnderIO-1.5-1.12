@@ -11,7 +11,6 @@ public class ConduitTank implements IFluidTank {
 
   private FluidStack fluid;
   private int capacity;
-  private int tankPressure = 0;
 
   ConduitTank(int capacity) {
     this.capacity = capacity;
@@ -144,7 +143,6 @@ public class ConduitTank implements IFluidTank {
   }
 
   public void setTankPressure(int pressure) {
-    this.tankPressure = pressure;
   }
 
   public String getLiquidName() {
@@ -172,6 +170,10 @@ public class ConduitTank implements IFluidTank {
       }
     }
     return this;
+  }
+
+  public boolean isEmpty() {
+    return fluid == null || fluid.amount == 0;
   }
 
 }

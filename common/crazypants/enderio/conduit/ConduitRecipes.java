@@ -25,7 +25,7 @@ public class ConduitRecipes {
     ItemStack redstoneConduit = new ItemStack(itemRedstoneConduit.actualId, 1, 0);
     ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.CONDUIT_BINDER.ordinal());
 
-    //ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
+    ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
     ItemStack fusedGlass = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.GLASS.ordinal());
 
     ItemStack conductiveIron = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.CONDUCTIVE_IRON.ordinal());
@@ -41,6 +41,7 @@ public class ConduitRecipes {
 
     int numConduits = Config.numConduitsPerRecipe;
     GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedGlass);
+    GameRegistry.addShapedRecipe(new ItemStack(itemLiquidConduit.actualId, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedQuartz);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', energeticGold);
     GameRegistry.addShapedRecipe(new ItemStack(itemPowerConduit.actualId, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedGold);

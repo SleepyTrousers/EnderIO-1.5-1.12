@@ -120,7 +120,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
     }
     ILiquidConduit con = conBun.getConduit(ILiquidConduit.class);
     if(con == null) {
-      Log.warn("processFluidConduitLevelPacket: no fluid conduit exists in bundle when recieving packet.");
+      //Log.warn("processFluidConduitLevelPacket: no fluid conduit exists in bundle when recieving packet.");
       return;
     }
     NBTTagCompound tc = PacketUtil.readNBTTagCompound(data);

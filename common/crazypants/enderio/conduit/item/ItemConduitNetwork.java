@@ -21,7 +21,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 
-public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
+public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
   private long timeAtLastApply;
 
@@ -32,8 +32,12 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit> {
 
   private boolean requiresSort = true;
 
+  public ItemConduitNetwork() {
+    super(IItemConduit.class);
+  }
+
   @Override
-  public Class<? extends IItemConduit> getBaseConduitType() {
+  public Class<IItemConduit> getBaseConduitType() {
     return IItemConduit.class;
   }
 

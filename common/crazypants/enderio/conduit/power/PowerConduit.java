@@ -380,12 +380,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public AbstractConduitNetwork<?> getNetwork() {
+  public AbstractConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
   @Override
-  public boolean setNetwork(AbstractConduitNetwork<?> network) {
+  public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     this.network = (PowerConduitNetwork) network;
     return true;
   }

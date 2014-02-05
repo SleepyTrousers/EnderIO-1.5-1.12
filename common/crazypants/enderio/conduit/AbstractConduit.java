@@ -313,7 +313,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public void onChunkUnload(World worldObj) {
-    AbstractConduitNetwork<?> network = getNetwork();
+    AbstractConduitNetwork<?, ?> network = getNetwork();
     if(network != null) {
       network.destroyNetwork();
     }
@@ -377,7 +377,8 @@ public abstract class AbstractConduit implements IConduit {
     if(getNetwork() == null) {
       ConduitUtil.ensureValidNetwork(this);
       if(getNetwork() != null && !world.isRemote && bundle != null) {
-        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord, bundle.getEntity().getBlockType().blockID);
+        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord,
+            bundle.getEntity().getBlockType().blockID);
       }
     }
     if(getNetwork() != null) {
@@ -428,7 +429,7 @@ public abstract class AbstractConduit implements IConduit {
     }
     externalConnections.clear();
 
-    AbstractConduitNetwork<?> network = getNetwork();
+    AbstractConduitNetwork<?, ?> network = getNetwork();
     if(network != null) {
       network.destroyNetwork();
     }

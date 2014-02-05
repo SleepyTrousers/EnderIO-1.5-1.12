@@ -7,22 +7,26 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public abstract class AbstractConduitNetwork<T extends IConduit> {
+//I=base type, I is the base class of the implementations accepted by the network 
+public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
 
-  protected final List<T> conduits = new ArrayList<T>();
+  protected final List<I> conduits = new ArrayList<I>();
 
-  protected AbstractConduitNetwork() {
+  protected Class<I> implClass;
+
+  protected AbstractConduitNetwork(Class<I> implClass) {
+    this.implClass = implClass;
   }
 
-  public void init(IConduitBundle tile, Collection<T> connections, World world) {
+  public void init(IConduitBundle tile, Collection<I> connections, World world) {
 
     if(world.isRemote) {
       throw new UnsupportedOperationException();
     }
 
     // Destroy all existing redstone networks around this block
-    for (T con : connections) {
-      AbstractConduitNetwork<?> network = con.getNetwork();
+    for (I con : connections) {
+      AbstractConduitNetwork<?, ?> network = con.getNetwork();
       if(network != null) {
         network.destroyNetwork();
       }
@@ -31,15 +35,16 @@ public abstract class AbstractConduitNetwork<T extends IConduit> {
     notifyNetworkOfUpdate();
   }
 
-  public abstract Class<? extends T> getBaseConduitType();
+  public abstract Class<T> getBaseConduitType();
 
   protected void setNetwork(World world, IConduitBundle tile) {
 
     T conduit = tile.getConduit(getBaseConduitType());
-    if(conduit.setNetwork(this)) {
-      addConduit(conduit);
+
+    if(conduit != null && implClass.isAssignableFrom(conduit.getClass()) && conduit.setNetwork(this)) {
+      addConduit(implClass.cast(conduit));
       TileEntity te = tile.getEntity();
-      Collection<? extends T> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, getBaseConduitType());
+      Collection<T> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, getBaseConduitType());
       for (T con : connections) {
         if(con.getNetwork() == null) {
           setNetwork(world, con.getBundle());
@@ -51,25 +56,25 @@ public abstract class AbstractConduitNetwork<T extends IConduit> {
     }
   }
 
-  public void addConduit(T con) {
+  public void addConduit(I con) {
     if(!conduits.contains(con)) {
       conduits.add(con);
     }
   }
 
   public void destroyNetwork() {
-    for (T con : conduits) {
+    for (I con : conduits) {
       con.setNetwork(null);
     }
     conduits.clear();
   }
 
-  public List<T> getConduits() {
+  public List<I> getConduits() {
     return conduits;
   }
 
   public void notifyNetworkOfUpdate() {
-    for (T con : conduits) {
+    for (I con : conduits) {
       TileEntity te = con.getBundle().getEntity();
       te.worldObj.markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
     }

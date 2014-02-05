@@ -38,6 +38,8 @@ import crazypants.util.BlockCoord;
 
 public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
+  private static final short NBT_VERSION = 1;
+
   private final List<IConduit> conduits = new ArrayList<IConduit>();
 
   private int facadeId = -1;
@@ -85,17 +87,20 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     nbtRoot.setTag("conduits", conduitTags);
     nbtRoot.setInteger("facadeId", facadeId);
     nbtRoot.setInteger("facadeMeta", facadeMeta);
+    nbtRoot.setShort("nbtVersion", NBT_VERSION);
   }
 
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
 
+    short nbtVersion = nbtRoot.getShort("nbtVersion");
+
     conduits.clear();
     NBTTagList conduitTags = nbtRoot.getTagList("conduits");
     for (int i = 0; i < conduitTags.tagCount(); i++) {
       NBTTagCompound conduitTag = (NBTTagCompound) conduitTags.tagAt(i);
-      IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag);
+      IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
       if(conduit != null) {
         conduit.setBundle(this);
         conduits.add(conduit);

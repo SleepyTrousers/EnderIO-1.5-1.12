@@ -361,7 +361,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   protected ConnectionMode getDefaultConnectionMode() {
-    return ConnectionMode.OUTPUT;
+    return ConnectionMode.INPUT;
   }
 
   @Override
@@ -376,12 +376,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public AbstractConduitNetwork<?> getNetwork() {
+  public AbstractConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
   @Override
-  public boolean setNetwork(AbstractConduitNetwork<?> network) {
+  public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     this.network = (ItemConduitNetwork) network;
     return true;
   }
