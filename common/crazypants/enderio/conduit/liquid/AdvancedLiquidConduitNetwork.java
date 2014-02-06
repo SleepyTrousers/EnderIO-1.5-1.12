@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -11,6 +12,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
+import cpw.mods.fml.common.TickType;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
 
@@ -27,6 +31,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   private boolean lastSyncedActive = false;
 
   private int lastSyncedVolume = -1;
+
+  private long timeAtLastApply;
+
+  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public AdvancedLiquidConduitNetwork() {
     super(AdvancedLiquidConduit.class);
@@ -108,6 +116,15 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       return;
     }
 
+    long curTime = world.getTotalWorldTime();
+    if(curTime > 0 && curTime != timeAtLastApply) {
+      timeAtLastApply = curTime;
+      ConduitNetworkTickHandler.instance.addListener(tickHandler);
+    }
+
+  }
+
+  private void doTick() {
     if(liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
       updateActiveState();
       return;
@@ -217,8 +234,8 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         if(drained == null || drained.amount <= 0) {
           return false;
         }
-        tank.setLiquid(drained.copy());
         setFluidType(drained);
+        tank.setLiquid(drained.copy());
         return true;
       }
 
@@ -279,6 +296,17 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     }
     setConduitVolumes();
     lastSyncedVolume = tank.getFluidAmount();
+  }
+
+  private class InnerTickHandler implements TickListener {
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    }
+
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+      doTick();
+    }
   }
 
 }

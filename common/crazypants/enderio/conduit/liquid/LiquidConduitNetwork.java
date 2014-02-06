@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.common.TickType;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
@@ -33,6 +37,8 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   private int outputVolume;
 
   private boolean inputLocked = false;
+
+  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public boolean lockNetworkForFill() {
     if(inputLocked) {
@@ -59,23 +65,27 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     long curTime = world.getTotalWorldTime();
     if(curTime > 0 && curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
-      // 1000 water, 6000 lava
-      if(liquidType != null && liquidType.getFluid() != null) {
-        int visc = Math.max(1000, liquidType.getFluid().getViscosity());
-        if(curTime % (visc / 500) == 0) {
-          long start = System.nanoTime();
-          if(doFlow() && printFlowTiming) {
-            long took = System.nanoTime() - start;
-            double secs = took / 1000000000.0;
-            System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
-          }
+      ConduitNetworkTickHandler.instance.addListener(tickHandler);
+      //doTick(curTime);
+    }
+  }
+
+  private void doTick(long curTime) {
+    // 1000 water, 6000 lava
+    if(liquidType != null && liquidType.getFluid() != null) {
+      int visc = Math.max(1000, liquidType.getFluid().getViscosity());
+      if(curTime % (visc / 500) == 0) {
+        long start = System.nanoTime();
+        if(doFlow() && printFlowTiming) {
+          long took = System.nanoTime() - start;
+          double secs = took / 1000000000.0;
+          System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
         }
       }
     }
     if(!fluidTypeLocked && isEmpty()) {
       setFluidType(null);
     }
-
   }
 
   void addedFromExternal(int res) {
@@ -360,6 +370,20 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
       this.dir = dir;
     }
 
+  }
+
+  private class InnerTickHandler implements TickListener {
+
+    long tick;
+
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    }
+
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+      doTick(tick);
+    }
   }
 
 }
