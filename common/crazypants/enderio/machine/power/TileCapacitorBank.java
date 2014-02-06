@@ -106,7 +106,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   public FaceConnectionMode toggleModeForFace(ForgeDirection faceHit) {
-    Object rec = getReceptorForFace(faceHit);
+    IPowerInterface rec = getReceptorForFace(faceHit);
     FaceConnectionMode curMode = getFaceModeForFace(faceHit);
     if(curMode == FaceConnectionMode.INPUT) {
       setFaceMode(faceHit, FaceConnectionMode.OUTPUT, true);
@@ -117,7 +117,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       return FaceConnectionMode.LOCKED;
     }
     if(curMode == FaceConnectionMode.LOCKED) {
-      if(rec == null || rec instanceof IInternalPowerReceptor) {
+      if(rec == null || rec.getDelegate() instanceof IConduitBundle) {
         setFaceMode(faceHit, FaceConnectionMode.NONE, true);
         return FaceConnectionMode.NONE;
       }
@@ -140,7 +140,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
   }
 
-  private Object getReceptorForFace(ForgeDirection faceHit) {
+  private IPowerInterface getReceptorForFace(ForgeDirection faceHit) {
     BlockCoord checkLoc = new BlockCoord(this).getLocation(faceHit);
     TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
     if(!(te instanceof TileCapacitorBank)) {
