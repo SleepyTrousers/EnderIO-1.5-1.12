@@ -38,7 +38,7 @@ import crazypants.util.BlockCoord;
 
 public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
-  private static final short NBT_VERSION = 1;
+  static final short NBT_VERSION = 1;
 
   private final List<IConduit> conduits = new ArrayList<IConduit>();
 

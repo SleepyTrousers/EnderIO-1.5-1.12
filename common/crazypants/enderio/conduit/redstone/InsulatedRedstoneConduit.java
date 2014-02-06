@@ -425,8 +425,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
 
     forcedConnections.clear();
     byte[] modes = nbtRoot.getByteArray("forcedConnections");

@@ -266,7 +266,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
     conduitConnections.clear();
     int[] dirs = nbtRoot.getIntArray("connections");
     for (int i = 0; i < dirs.length; i++) {

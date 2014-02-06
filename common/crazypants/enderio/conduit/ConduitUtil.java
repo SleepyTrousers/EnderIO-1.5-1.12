@@ -305,7 +305,7 @@ public class ConduitUtil {
     } catch (Exception e) {
       throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
     }
-    result.readFromNBT(conduitBody);
+    result.readFromNBT(conduitBody, nbtVersion);
     return result;
 
   }

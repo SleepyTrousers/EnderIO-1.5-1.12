@@ -496,8 +496,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
 
     metaData = nbtRoot.getShort("metaData");
 

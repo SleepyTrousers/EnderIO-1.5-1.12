@@ -179,8 +179,8 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "extRM." + dir.name();

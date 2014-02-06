@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.power;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,10 @@ import java.util.Set;
 import net.minecraft.world.World;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cpw.mods.fml.common.TickType;
 import crazypants.enderio.Config;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IPowerInterface;
@@ -44,6 +48,8 @@ public class NetworkPowerManager {
   private PowerTracker networkPowerTracker = new PowerTracker();
 
   private final CapBankSupply capSupply = new CapBankSupply();
+
+  private InnerTickHandler applyPowerCallback = new InnerTickHandler();
 
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
     this.network = netowrk;
@@ -107,6 +113,11 @@ public class NetworkPowerManager {
   }
 
   public void applyRecievedPower() {
+    //want to do this after all conduits have updated so all connections have been checked etc
+    ConduitNetworkTickHandler.instance.addListener(applyPowerCallback);
+  }
+
+  public void doApplyRecievedPower() {
 
     trackerStartTick();
 
@@ -315,7 +326,7 @@ public class NetworkPowerManager {
 
   private void distributeStorageToConduits() {
     if(maxEnergyStored <= 0 || energyStored <= 0) {
-      for (IPowerConduit con : network.getConduits()) {        
+      for (IPowerConduit con : network.getConduits()) {
         con.setEnergyStored(0);
       }
       return;
@@ -561,6 +572,18 @@ public class NetworkPowerManager {
 
     }
 
+  }
+
+  private class InnerTickHandler implements TickListener {
+
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    }
+
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+      doApplyRecievedPower();
+    }
   }
 
 }

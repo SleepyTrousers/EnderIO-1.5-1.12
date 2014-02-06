@@ -203,8 +203,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
     subtype = nbtRoot.getShort("subtype");
 
     energyStored = Math.min(getCapacitor().getMaxEnergyStored(), nbtRoot.getFloat("energyStored"));
@@ -343,6 +343,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean onNeighborBlockChange(int blockId) {
     redstoneStateDirty = true;
+    if(network != null) {
+      network.powerManager.receptorsChanged();
+    }
     return super.onNeighborBlockChange(blockId);
   }
 

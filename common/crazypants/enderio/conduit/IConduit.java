@@ -29,7 +29,7 @@ public interface IConduit {
 
   void writeToNBT(NBTTagCompound conduitBody);
 
-  void readFromNBT(NBTTagCompound conduitBody);
+  void readFromNBT(NBTTagCompound conduitBody, short nbtVersion);
 
   // Container
 

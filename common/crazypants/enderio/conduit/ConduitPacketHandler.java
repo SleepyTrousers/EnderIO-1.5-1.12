@@ -124,7 +124,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
       return;
     }
     NBTTagCompound tc = PacketUtil.readNBTTagCompound(data);
-    con.readFromNBT(tc);
+    con.readFromNBT(tc, TileConduitBundle.NBT_VERSION);
   }
 
   public static Packet createItemChannelPacket(IItemConduit itemConduit, ForgeDirection dir, DyeColor col, boolean input) {
