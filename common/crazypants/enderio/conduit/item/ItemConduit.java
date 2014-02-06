@@ -554,6 +554,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
     updateFromMetadata();
+
+    if(nbtVersion == 0 && !nbtRoot.hasKey("conModes")) {
+      //all externals where on default so need to switch them to the old default
+      for (ForgeDirection dir : externalConnections) {
+        conectionModes.put(dir, ConnectionMode.OUTPUT);
+      }
+    }
   }
 
 }

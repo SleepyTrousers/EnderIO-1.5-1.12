@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.item;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +14,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.TickType;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
@@ -31,6 +35,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   private final Map<BlockCoord, IItemConduit> conMap = new HashMap<BlockCoord, IItemConduit>();
 
   private boolean requiresSort = true;
+
+  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public ItemConduitNetwork() {
     super(IItemConduit.class);
@@ -113,7 +119,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     long curTime = world.getTotalWorldTime();
     if(curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
-      doTick(world.getTotalWorldTime());
+      tickHandler.tick = world.getTotalWorldTime();
+      ConduitNetworkTickHandler.instance.addListener(tickHandler);
     }
   }
 
@@ -446,6 +453,20 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         return compare(distance, o.distance);
       }
 
+    }
+  }
+
+  private class InnerTickHandler implements TickListener {
+
+    long tick;
+
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    }
+
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+      doTick(tick);
     }
   }
 
