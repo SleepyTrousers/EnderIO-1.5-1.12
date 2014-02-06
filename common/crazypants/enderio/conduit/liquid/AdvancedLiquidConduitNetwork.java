@@ -130,7 +130,10 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         if(cont != null) {
           FluidStack offer = tank.getFluid().copy();
           int filled = cont.fill(output.dir, offer, true);
-          tank.addAmount(-filled);
+          if(filled > 0) {
+            tank.addAmount(-filled);
+
+          }
         }
       }
       numVisited++;
@@ -165,7 +168,9 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     boolean liquidWasValid = !tank.containsValidLiquid();
     int res = tank.fill(resource, doFill);
     if(doFill && res > 0 && !liquidWasValid) {
+      int vol = tank.getFluidAmount();
       setFluidType(resource);
+      tank.setAmount(vol);
     }
     return res;
   }
