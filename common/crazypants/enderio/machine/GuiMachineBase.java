@@ -50,7 +50,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       protected void updateText() {
         text.clear();
         text.add(Lang.localize("gui.tooltip.redstoneControlMode"));
-        text.add(tileEntity.getRedstoneControlMode().tooltip);
+        text.add(tileEntity.getRedstoneControlMode().getTooltip());
       }
 
       @Override

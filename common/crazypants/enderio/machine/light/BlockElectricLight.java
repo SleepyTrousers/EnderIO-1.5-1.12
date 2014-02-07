@@ -11,7 +11,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
@@ -41,7 +40,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
     super(ModObject.blockElectricLight.id, Material.rock);
     setHardness(2.0F);
     setStepSound(soundGlassFootstep);
-    setUnlocalizedName(ModObject.blockElectricLight.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.blockElectricLight.name());
     setCreativeTab(EnderIOTab.tabEnderIO);
     setLightOpacity(0);
     setLightValue(0);
@@ -49,7 +48,6 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.blockElectricLight.name);
     GameRegistry.registerBlock(this, ModObject.blockElectricLight.unlocalisedName);
     GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
   }

@@ -21,7 +21,6 @@ import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -61,12 +60,11 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     super(ModObject.blockCapacitorBank.actualId, new Material(MapColor.ironColor));
     setHardness(2.0F);
     setStepSound(soundMetalFootstep);
-    setUnlocalizedName(ModObject.blockCapacitorBank.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.blockCapacitorBank.name());
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.blockCapacitorBank.name);
     GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName);
     GameRegistry.registerTileEntity(TileCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
@@ -97,7 +95,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       return false;
     }
     if(ConduitUtil.isToolEquipped(entityPlayer)) {
-      //if(!world.isRemote) {
+
       ForgeDirection faceHit = ForgeDirection.getOrientation(side);
       TileCapacitorBank tcb = (TileCapacitorBank) te;
       tcb.toggleModeForFace(faceHit);
@@ -107,7 +105,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         world.notifyBlocksOfNeighborChange(x, y, z, ModObject.blockCapacitorBank.actualId);
         world.markBlockForUpdate(x, y, z);
       }
-      //}
 
       return true;
     }
@@ -239,7 +236,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if(!world.isRemote) {
+    if(!world.isRemote && (!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop")))) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if(te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;

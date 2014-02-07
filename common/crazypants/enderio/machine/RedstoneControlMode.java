@@ -10,10 +10,11 @@ public enum RedstoneControlMode {
   OFF,
   NEVER;
 
-  public final String tooltip;
-
   RedstoneControlMode() {
-    this.tooltip = Lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
+  }
+
+  public String getTooltip() {
+    return Lang.localize("gui.tooltip.redstoneControlMode." + name().toLowerCase());
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, int powerLevel) {

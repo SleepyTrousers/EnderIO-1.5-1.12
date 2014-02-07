@@ -55,7 +55,7 @@ public class ColorButton extends IconButtonEIO {
 
   public void setColorIndex(int colorIndex) {
     this.colorIndex = MathHelper.clamp_int(colorIndex, 0, ItemDye.dyeColors.length - 1);
-    String colStr = DyeColor.DYE_ORE_LOCAL_NAMES[colorIndex];
+    String colStr = DyeColor.values()[colorIndex].getLocalisedName();
     if(tooltipPrefix != null && tooltipPrefix.length() > 0) {
       setToolTip(tooltipPrefix, colStr);
     } else {

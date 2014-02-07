@@ -53,18 +53,18 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
   private String titleStr;
 
-  private String engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
-  private String engineTxt2 = Lang.localize("gui.powerMonitor.engineSection2");
-  private String engineTxt3 = Lang.localize("gui.powerMonitor.engineSection3");
-  private String engineTxt4 = Lang.localize("gui.powerMonitor.engineSection4");
-  private String engineTxt5 = Lang.localize("gui.powerMonitor.engineSection5");
-  private String engineTxt6 = Lang.localize("gui.powerMonitor.engineSection6");
+  private String engineTxt1;
+  private String engineTxt2;
+  private String engineTxt3;
+  private String engineTxt4;
+  private String engineTxt5;
+  private String engineTxt6;
 
-  private String monHeading1 = Lang.localize("gui.powerMonitor.monHeading1");
-  private String monHeading2 = Lang.localize("gui.powerMonitor.monHeading2");
-  private String monHeading3 = Lang.localize("gui.powerMonitor.monHeading3");
-  private String monHeading4 = Lang.localize("gui.powerMonitor.monHeading4");
-  private String monHeading5 = Lang.localize("gui.powerMonitor.monHeading5");
+  private String monHeading1;
+  private String monHeading2;
+  private String monHeading3;
+  private String monHeading4;
+  private String monHeading5;
 
   public GuiPowerMonitor(final TilePowerMonitor te) {
     super(WIDTH, HEIGHT);
@@ -72,6 +72,18 @@ public class GuiPowerMonitor extends GuiScreenBase {
     drawButtons = false;
 
     titleStr = Lang.localize("gui.powerMonitor.engineControl");
+    engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
+    engineTxt2 = Lang.localize("gui.powerMonitor.engineSection2");
+    engineTxt3 = Lang.localize("gui.powerMonitor.engineSection3");
+    engineTxt4 = Lang.localize("gui.powerMonitor.engineSection4");
+    engineTxt5 = Lang.localize("gui.powerMonitor.engineSection5");
+    engineTxt6 = Lang.localize("gui.powerMonitor.engineSection6");
+
+    monHeading1 = Lang.localize("gui.powerMonitor.monHeading1");
+    monHeading2 = Lang.localize("gui.powerMonitor.monHeading2");
+    monHeading3 = Lang.localize("gui.powerMonitor.monHeading3");
+    monHeading4 = Lang.localize("gui.powerMonitor.monHeading4");
+    monHeading5 = Lang.localize("gui.powerMonitor.monHeading5");
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
@@ -101,7 +113,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     buttonList.clear();
     enabledB.onGuiInit();
 
-    int x = guiLeft + MARGIN + fontRenderer.getStringWidth("than") + 4;
+    int x = guiLeft + MARGIN + fontRenderer.getStringWidth(engineTxt2) + 4;
     int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + fontRenderer.FONT_HEIGHT;
     startTF = new GuiTextField(fontRenderer, x, y, 28, 14);
     startTF.setCanLoseFocus(true);
@@ -110,7 +122,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
 
     y = y + fontRenderer.FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
-    x = guiLeft + MARGIN + fontRenderer.getStringWidth("or equal to ");
+    x = guiLeft + MARGIN + fontRenderer.getStringWidth(engineTxt5);
     endTF = new GuiTextField(fontRenderer, x, y, 28, 14);
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
@@ -300,7 +312,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb = new StringBuilder();
     sb.append(formatPower(te.powerInConduits));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.OF);
+    sb.append(PowerDisplayUtil.ofStr());
     sb.append(" ");
     sb.append(formatPower(te.maxPowerInCoduits));
     sb.append(" ");
@@ -318,7 +330,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb = new StringBuilder();
     sb.append(formatPower(te.powerInCapBanks));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.OF);
+    sb.append(PowerDisplayUtil.ofStr());
     sb.append(" ");
     sb.append(formatPower(te.maxPowerInCapBanks));
     sb.append(" ");
@@ -336,7 +348,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb = new StringBuilder();
     sb.append(formatPower(te.powerInMachines));
     sb.append(" ");
-    sb.append(PowerDisplayUtil.OF);
+    sb.append(PowerDisplayUtil.ofStr());
     sb.append(" ");
     sb.append(formatPower(te.maxPowerInMachines));
     sb.append(" ");
@@ -355,7 +367,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(formatPowerFloat(te.aveMjSent));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.perTick());
+    sb.append(PowerDisplayUtil.ofStr());
     fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
     rgb = headingCol;
@@ -370,7 +382,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(formatPowerFloat(te.aveMjRecieved));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.perTick());
+    sb.append(PowerDisplayUtil.perTickStr());
     fontRenderer.drawString(sb.toString(), x, y, rgb, false);
   }
 

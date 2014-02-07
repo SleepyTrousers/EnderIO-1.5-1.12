@@ -92,7 +92,7 @@ public class GuiHyperCube extends GuiScreenBase {
     });
 
     addButton = new IconButtonEIO(this, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
-    addButton.setToolTip("Add Channel");
+    addButton.setToolTip(Lang.localize("gui.trans.addChannel"));
     addButton.enabled = false;
 
     privateButton = new ToggleButtonEIO(this, PRIVATE_BUTTON_ID, 118, 12, IconEIO.PUBLIC, IconEIO.PRIVATE);

@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
@@ -41,17 +40,7 @@ public class ItemAlloy extends Item {
   }
 
   private void init() {
-    LanguageRegistry.addName(this, ModObject.itemAlloy.name);
     GameRegistry.registerItem(this, ModObject.itemAlloy.unlocalisedName);
-    for (int i = 0; i < Alloy.values().length; i++) {
-      LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName + ".name", Alloy.values()[i].uiName);
-    }
-    if(useNuggets) {
-      for (int i = 0; i < Alloy.values().length; i++) {
-        LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName + "Nugget" + ".name",
-            Alloy.values()[i].uiName + " Nugget");
-      }
-    }
   }
 
   @Override
@@ -77,9 +66,9 @@ public class ItemAlloy extends Item {
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, numItems - 1);
     if(i < Alloy.values().length) {
-      return super.getUnlocalizedName() + "." + Alloy.values()[i].unlocalisedName;
+      return Alloy.values()[i].unlocalisedName;
     } else {
-      return super.getUnlocalizedName() + "." + Alloy.values()[i - Alloy.values().length].unlocalisedName + "Nugget";
+      return Alloy.values()[i - Alloy.values().length].unlocalisedName + "Nugget";
     }
   }
 

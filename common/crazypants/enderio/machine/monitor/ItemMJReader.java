@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
@@ -32,7 +31,7 @@ public class ItemMJReader extends Item {
   protected ItemMJReader() {
     super(ModObject.itemMJReader.id);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemMJReader.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.itemMJReader.name());
     setMaxStackSize(64);
   }
 
@@ -51,7 +50,6 @@ public class ItemMJReader extends Item {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemMJReader.name);
     GameRegistry.registerItem(this, ModObject.itemMJReader.unlocalisedName);
   }
 

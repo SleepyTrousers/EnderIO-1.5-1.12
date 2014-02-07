@@ -68,7 +68,6 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   private void init() {
 
     GameRegistry.registerBlock(this, ItemFusedQuartz.class, ModObject.blockFusedQuartz.unlocalisedName);
-
     LanguageRegistry.addName(this, ModObject.blockFusedQuartz.unlocalisedName);
     for (Type subtype : Type.values()) {
       String unlocalisedName = "blockFusedQuartz." + subtype.unlocalisedName;

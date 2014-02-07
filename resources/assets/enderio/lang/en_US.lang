@@ -8,81 +8,86 @@ enderio.power.maxOutput=Max Output
 
 //Ender IO / Enderface
 enderio.blockEnderIo=Ender IO
-enderio.itemEnderface=Enderface
+item.enderio.itemEnderface.name=Enderface
 
 //Conduits
 enderio.blockConduitBundle=Conduit Bundle
 enderio.blockConduitFacade=Conduit Facade
-enderio.itemConduitFacade=Conduit Facade
+item.enderio.itemConduitFacade.name=Conduit Facade
 
-enderio.itemPowerConduit=Energy Conduit
-enderio.itemPowerConduitEnhanced=Enhanced Energy Conduit
-enderio.itemPowerConduitEnder=Ender Energy Conduit
+enderio.itemPowerConduit.name=Energy Conduit
+enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
+enderio.itemPowerConduitEnder.name=Ender Energy Conduit
 
-enderio.itemRedstoneConduit=Redstone Conduit
-enderio.itemRedstoneConduitSwitch=Conduit Switch
-enderio.itemRedstoneConduitInsulated=Insulated Redstone Conduit
+enderio.itemRedstoneConduit.name=Redstone Conduit
+enderio.itemRedstoneConduitSwitch.name=Conduit Switch
+enderio.itemRedstoneConduitInsulated.name=Insulated Redstone Conduit
 
-enderio.itemLiquidConduit=Fluid Conduit
-enderio.itemLiquidConduitAdvanced=Pressurized Fluid Conduit
+enderio.itemLiquidConduit.name=Fluid Conduit
+enderio.itemLiquidConduitAdvanced.name=Pressurized Fluid Conduit
 enderio.itemLiquidConduit.lockedType=Fluid type locked to
 enderio.itemLiquidConduit.unlockedType=Fluid type unlocked 
 
-enderio.itemItemConduit=Item Conduit
-enderio.itemItemConduitEmpowered=Empowered Item Conduit
+enderio.itemItemConduit.name=Item Conduit
+enderio.itemItemConduitEmpowered.name=Empowered Item Conduit
 
 //Materials
-enderio.itemMaterial=Materials
-enderio.silicon=Silicon
-enderio.conduitBinder=Conduit Binder
-enderio.binderComposite=Binder Composite
-enderio.phasedIronNugget=Pulsating Iron Nugget
+enderio.itemMaterial.name=Materials
+enderio.silicon.name=Silicon
+enderio.conduitBinder.name=Conduit Binder
+enderio.binderComposite.name=Binder Composite
+enderio.phasedIronNugget.name=Pulsating Iron Nugget
 
-enderio.itemMachinePart=Machine Parts
+//Crafting components
+enderio.itemMachinePart.name=Machine Parts
+enderio.machineChassi.name=Machine Chassi
+enderio.basicGear.name=Basic Gear
+
 enderio.blockFusedQuartz=Fused Quartz
 enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Fused Glass
 
-enderio.itemFusedQuartzFrame=Fused Quartz Frame
+item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
 
 //Alloys
-enderio.itemAlloy=Alloy
-enderio.electricalSteel=Electrical Steel
-enderio.energeticAlloy=Energetic Alloy
-enderio.phasedGold=Vibrant Alloy
-enderio.redstoneAlloy=Redstone Alloy
-enderio.conductiveIron=Conductive Iron
-enderio.phasedIron=Pulsating Iron
+enderio.itemAlloy.name=Alloy
+enderio.electricalSteel.name=Electrical Steel
+enderio.energeticAlloy.name=Energetic Alloy
+enderio.phasedGold.name=Vibrant Alloy
+enderio.redstoneAlloy.name=Redstone Alloy
+enderio.conductiveIron.name=Conductive Iron
+enderio.phasedIron.name=Pulsating Iron
 
 //Powder / Ingot
-enderio.powderCoal=Coal Powder
-enderio.powderIron=Iron Powder
-enderio.powderGold=Gold Powder
-enderio.powderCopper=Copper Powder
-enderio.powderTin=Tin Powder
-enderio.powderEnder=Ender Pearl Powder
+enderio.powderCoal.name=Coal Powder
+enderio.powderIron.name=Iron Powder
+enderio.powderGold.name=Gold Powder
+enderio.powderCopper.name=Copper Powder
+enderio.powderTin.name=Tin Powder
+enderio.powderEnder.name=Ender Pearl Powder
 
 //Capacitors
-enderio.itemBasicCapacitor=Capacitor
-enderio.basicCapacitor=Basic Capacitor
-enderio.activatedCapacitor=Double-Layer Capacitor
-enderio.enderCapacitor=Octadic Capacitor
-
+enderio.itemBasicCapacitor.name=Capacitor
+enderio.basicCapacitor.name=Basic Capacitor
+enderio.activatedCapacitor.name=Double-Layer Capacitor
+enderio.enderCapacitor.name=Octadic Capacitor
 
 //Machines
-enderio.blockStirlingGenerator=Stirling Generator
-enderio.blockReservoir=Reservoir
-enderio.blockAlloySmelter=Alloy Smelter
-enderio.blockSolarPanel=Photovoltaic Cell
-enderio.blockElectricLight=Powered Light
-enderio.blockCapacitorBank=Capacitor Bank
-enderio.blockCrusher=SAG Mill
-enderio.blockHyperCube=Dimensional Transceiver
-enderio.blockPowerMonitor=Power Monitor
+tile.enderio.blockStirlingGenerator.name=Stirling Generator
+tile.enderio.blockReservoir.name=Reservoir
+tile.enderio.blockAlloySmelter.name=Alloy Smelter
+tile.enderio.blockSolarPanel.name=Photovoltaic Cell
+tile.enderio.blockElectricLight.name=Powered Light
+tile.enderio.blockCapacitorBank.name=Capacitor Bank
+tile.enderio.blockCapacitorBank.tooltipPrefix=Contains
+tile.enderio.blockCrusher.name=SAG Mill
+tile.enderio.blockHyperCube.name=Dimensional Transceiver
+tile.enderio.blockPowerMonitor.name=Power Monitor
 
 //Painter
-enderio.blockPainter=Painting Machine
+tile.enderio.blockPainter.name=Painting Machine
+enderio.blockPainter.paintedWith=Painted with:
 enderio.blockCustomFence=Painted Fence
 enderio.blockCustomFenceGate=Painted Gate
 enderio.blockCustomWall=Painted Wall
@@ -91,8 +96,8 @@ enderio.blockCustomSlab=Painted Slab
 enderio.blockCustomDoubleSlab=Painted Slab
 
 //Items
-enderio.itemYetaWrench=Yeta Wrench
-enderio.itemMJReader=Power Probe
+item.enderio.itemYetaWrench.name=Yeta Wrench
+item.enderio.itemMJReader.name=Power Probe
 
 enderio.itemEnderface.wrongDimension=EnderIO block is in a different dimension.
 enderio.itemEnderface.tooFar=EnderIO block is too distant.
@@ -101,24 +106,6 @@ enderio.itemEnderface.noSync=Enderface not synchronized with EnderIO.
 
 
 //------GUI
-
-//General
-enderio.color.black=Black
-enderio.color.red=Red
-enderio.color.green=Green
-enderio.color.brown=Brown
-enderio.color.blue=Blue
-enderio.color.purple=Purple
-enderio.color.cyan=Cyan
-enderio.color.lightGray=LightGray
-enderio.color.gray=Gray
-enderio.color.pink=Pink
-enderio.color.lime=Lime
-enderio.color.yellow=Yellow
-enderio.color.lightBlue=LightBlue
-enderio.color.magenta=Magenta
-enderio.color.orange=Orange
-enderio.color.white=White
 
 enderio.gui.enabled=Enabled
 enderio.gui.disabled=Disabled
@@ -164,6 +151,7 @@ enderio.gui.capBank.maxOutput=Max Ouput
 //Transceiver
 enderio.gui.trans.publicChannel=Public Channel
 enderio.gui.trans.privateChannel=Private Channel
+enderio.gui.trans.addChannel=Add Channel
 enderio.gui.trans.deleteChannel=Delete Channel
 enderio.gui.trans.activateChannel=Activate Channel
 enderio.gui.trans.powerMode=Power Mode
@@ -171,6 +159,12 @@ enderio.gui.trans.fluidMode=Fluid Mode
 enderio.gui.trans.itemMode=Item Mode
 enderio.gui.trans.publicHeading=Public
 enderio.gui.trans.privateHeading=Private
+
+//Alloy Smelter
+enderio.gui.alloy.mode.heading=Furnace Mode
+enderio.gui.alloy.mode.all=All Smelting
+enderio.gui.alloy.mode.alloy=Alloys Only
+enderio.gui.alloy.mode.furnace=Furnace Only
 
 //conduits
 enderio.gui.conduit.ioMode=Mode
@@ -180,6 +174,8 @@ enderio.gui.conduit.ioMode.output=Insert
 enderio.gui.conduit.ioMode.disabled=Disabled
 enderio.gui.conduit.ioMode.notSet=Default
 
+enderio.gui.conduit.item.insertionFilter=Insertion Filter
+enderio.gui.conduit.item.extractionFilter=Extraction Filter
 enderio.gui.conduit.item.sigCol=Signal Color
 enderio.gui.conduit.item.channel=Channel
 enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data

@@ -16,6 +16,7 @@ import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiAlloySmelter extends GuiMachineBase {
 
@@ -34,12 +35,12 @@ public class GuiAlloySmelter extends GuiMachineBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add("Furnace Mode");
-        String txt = "All Smelting";
+        text.add(Lang.localize("enderio.gui.alloy.mode.heading"));
+        String txt = Lang.localize("enderio.gui.alloy.mode.all");
         if(tileEntity.getMode() == Mode.ALLOY) {
-          txt = "Alloys Only";
+          txt = Lang.localize("enderio.gui.alloy.mode.alloy");
         } else if(tileEntity.getMode() == Mode.FURNACE) {
-          txt = "Furnace Only";
+          txt = Lang.localize("enderio.gui.alloy.mode.furnace");
         }
         text.add(txt);
       }

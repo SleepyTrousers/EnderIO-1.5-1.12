@@ -58,7 +58,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(PowerDisplayUtil.formatPower(capBank.getEnergyStored()) + " " + PowerDisplayUtil.OF);
+        text.add(PowerDisplayUtil.formatPower(capBank.getEnergyStored()) + " " + PowerDisplayUtil.ofStr());
         text.add(PowerDisplayUtil.formatPower(capBank.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
       }
 
@@ -70,7 +70,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       protected void updateText() {
         text.clear();
         text.add(Lang.localize("gui.capBank.inputRs"));
-        text.add(capBank.getInputControlMode().tooltip);
+        text.add(capBank.getInputControlMode().getTooltip());
       }
 
       @Override
@@ -87,7 +87,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       protected void updateText() {
         text.clear();
         text.add(Lang.localize("gui.capBank.outputRs"));
-        text.add(capBank.getOutputControlMode().tooltip);
+        text.add(capBank.getOutputControlMode().getTooltip());
       }
 
       @Override
@@ -259,7 +259,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     int midX = sx + xSize / 2;
 
     String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
-        " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
+        " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     int swid = fontRenderer.getStringWidth(str);
     int x = midX - swid / 2;
     int y = guiTop + 5;

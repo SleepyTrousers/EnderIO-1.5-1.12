@@ -21,7 +21,6 @@ import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ClientProxy;
@@ -77,14 +76,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     this.teClass = teClass;
     setHardness(2.0F);
     setStepSound(soundMetalFootstep);
-    setUnlocalizedName(mo.unlocalisedName);
+    setUnlocalizedName("enderio." + mo.name());
     setCreativeTab(EnderIOTab.tabEnderIO);
     random = new Random();
 
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, modObject.name);
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);

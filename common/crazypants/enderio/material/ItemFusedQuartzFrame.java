@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
@@ -32,19 +31,17 @@ public class ItemFusedQuartzFrame extends Item {
   protected ItemFusedQuartzFrame() {
     super(ModObject.itemFusedQuartzFrame.id);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemFusedQuartzFrame.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.itemFusedQuartzFrame.name());
     setMaxStackSize(64);
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemFusedQuartzFrame.name);
     GameRegistry.registerItem(this, ModObject.itemFusedQuartzFrame.unlocalisedName);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe());
   }
 
   @Override
   public void registerIcons(IconRegister iconRegister) {
-    //itemIcon = iconRegister.registerIcon("enderio:fusedQuartzFrame");
   }
 
   @Override
@@ -56,12 +53,10 @@ public class ItemFusedQuartzFrame extends Item {
       if(tecb == null) {
         return false;
       }
-      // if(!world.isRemote) {
       tecb.setSourceBlockId(PainterUtil.getSourceBlockId(itemStack));
       tecb.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
       world.markBlockForUpdate(x, y, z);
       world.markBlockForRenderUpdate(x, y, z);
-      // }
       if(!world.isRemote) {
         if(!player.capabilities.isCreativeMode) {
           itemStack.stackSize--;
