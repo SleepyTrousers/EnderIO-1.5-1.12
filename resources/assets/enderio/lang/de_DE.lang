@@ -24,6 +24,9 @@ enderio.itemRedstoneConduitSwitch=Leitungsschalter
 enderio.itemRedstoneConduitInsulated=Isolierte Redstone-Leitung
 
 enderio.itemLiquidConduit=Flüssigkeitsleitung
+enderio.itemLiquidConduitAdvanced=Flüssigkeitsdruckleitung
+enderio.itemLiquidConduit.lockedType=Flüssigkeitstyp gebunden an
+enderio.itemLiquidConduit.unlockedType=Flüssigkeitstyp nicht mehr gebunden
 
 enderio.itemItemConduit=Item-Leitung
 enderio.itemItemConduitEmpowered=Verstärkte Item-Leitung
@@ -37,6 +40,9 @@ enderio.phasedIronNugget=Pulsierender Eisennugget
 
 enderio.itemMachinePart=Maschinenteile
 enderio.blockFusedQuartz=Fusionsquarz
+enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
+enderio.blockFusedQuartz.fusedGlass.name=Fusionsglas
+
 enderio.itemFusedQuartzFrame=Fusionsquarzrahmen
 enderio.itemPowderIngot=Pulver & Barren
 
