@@ -21,10 +21,13 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -41,11 +44,13 @@ public class ConduitUtil {
 
   public static final Random RANDOM = new Random();
 
-  public static AbstractConduitNetwork<?> createNetworkForType(Class<? extends IConduit> type) {
+  public static AbstractConduitNetwork<?, ?> createNetworkForType(Class<? extends IConduit> type) {
     if(IRedstoneConduit.class.isAssignableFrom(type)) {
       return new RedstoneConduitNetwork();
     } else if(IPowerConduit.class.isAssignableFrom(type)) {
       return new PowerConduitNetwork();
+    } else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
+      return new AdvancedLiquidConduitNetwork();
     } else if(ILiquidConduit.class.isAssignableFrom(type)) {
       return new LiquidConduitNetwork();
     } else if(IItemConduit.class.isAssignableFrom(type)) {
@@ -65,7 +70,7 @@ public class ConduitUtil {
       return;
     }
 
-    AbstractConduitNetwork res = createNetworkForType(conduit.getBaseConduitType());
+    AbstractConduitNetwork res = createNetworkForType(conduit.getClass());
     res.init(conduit.getBundle(), connections, world);
     return;
   }
@@ -284,11 +289,15 @@ public class ConduitUtil {
     conduitRoot.setCompoundTag("conduit", conduitBody);
   }
 
-  public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot) {
+  public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot, short nbtVersion) {
     String typeName = conduitRoot.getString("conduitType");
     NBTTagCompound conduitBody = conduitRoot.getCompoundTag("conduit");
     if(typeName == null || conduitBody == null) {
       return null;
+    }
+    if(nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
+      Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
+      typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
     }
     IConduit result;
     try {
@@ -296,7 +305,7 @@ public class ConduitUtil {
     } catch (Exception e) {
       throw new RuntimeException("Could not create an instance of the conduit with name: " + typeName, e);
     }
-    result.readFromNBT(conduitBody);
+    result.readFromNBT(conduitBody, nbtVersion);
     return result;
 
   }
@@ -317,7 +326,6 @@ public class ConduitUtil {
     return mode.isConditionMet(mode, signalStrength);
   }
 
-  
   public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {
     int signalStrength = 0;
     IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);

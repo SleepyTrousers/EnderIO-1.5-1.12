@@ -7,20 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import buildcraft.api.power.IPowerReceptor;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.util.BlockCoord;
 
-public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
+public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
 
   // ----------------------------------------------------------------------
 
@@ -31,6 +27,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   private long timeAtLastApply = -1;
 
   public PowerConduitNetwork() {
+    super(IPowerConduit.class);
   }
 
   @Override
@@ -70,7 +67,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
   }
 
   @Override
-  public Class<? extends IPowerConduit> getBaseConduitType() {
+  public Class<IPowerConduit> getBaseConduitType() {
     return IPowerConduit.class;
   }
 
@@ -129,11 +126,11 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit> {
     IPowerConduit emmiter;
     BlockCoord coord;
     ForgeDirection direction;
-    
+
     IPowerInterface powerInterface;
 
     public ReceptorEntry(IPowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
-      powerInterface =powerReceptor;
+      powerInterface = powerReceptor;
       this.coord = coord;
       this.emmiter = emmiter;
       this.direction = direction;

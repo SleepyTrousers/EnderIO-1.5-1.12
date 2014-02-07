@@ -19,6 +19,7 @@ import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
+import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
@@ -34,7 +35,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
   public boolean isRendererForConduit(IConduit conduit) {
-    if(conduit instanceof ILiquidConduit) {
+    if(conduit instanceof LiquidConduit) {
       return true;
     }
     return false;
@@ -43,14 +44,14 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
       float worldLight) {
-    calculateRatios((ILiquidConduit) conduit);
+    calculateRatios((LiquidConduit) conduit);
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
   }
 
   @Override
   protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float brightness) {
-    if(isNSEWUP(component.dir)) {
-      ILiquidConduit lc = (ILiquidConduit) conduit;
+    if(isNSEWUD(component.dir)) {
+      LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       if(fluid != null) {
         renderFluidOutline(component, fluid);
@@ -79,7 +80,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     }
   }
 
-  private void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
+  public static void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
+    renderFluidOutline(component, fluid, 1, 13f / 16f);
+  }
+
+  public static void renderFluidOutline(CollidableComponent component, FluidStack fluid, double scaleFactor, float outlineWidth) {
     //TODO: Should cache these vertices as relatively heavy weight to calc each frame
     Icon texture = fluid.getFluid().getStillIcon();
     if(texture == null) {
@@ -88,31 +93,44 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
         return;
       }
     }
-    BoundingBox bbb = component.bound;
+
+    BoundingBox bbb;
+    if(scaleFactor == 1) {
+      bbb = component.bound;
+    } else {
+      double xScale = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
+      double yScale = Math.abs(component.dir.offsetY) == 1 ? 1 : scaleFactor;
+      double zScale = Math.abs(component.dir.offsetZ) == 1 ? 1 : scaleFactor;
+      bbb = component.bound.scale(xScale, yScale, zScale);
+    }
+
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       if(face != component.dir && face != component.dir.getOpposite()) {
 
         Tessellator tes = Tessellator.instance;
         tes.setNormal(face.offsetX, face.offsetY, face.offsetZ);
+        Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, -0.005);
 
-        float scaleFactor = 13f / 16f;
         Vector2f uv = new Vector2f();
         List<ForgeDirection> edges = RenderUtil.getEdgesForFace(face);
         for (ForgeDirection edge : edges) {
           if(edge != component.dir && edge != component.dir.getOpposite()) {
-            float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
-            float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
-            float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
+            float xLen = 1 - Math.abs(edge.offsetX) * outlineWidth;
+            float yLen = 1 - Math.abs(edge.offsetY) * outlineWidth;
+            float zLen = 1 - Math.abs(edge.offsetZ) * outlineWidth;
             BoundingBox bb = bbb.scale(xLen, yLen, zLen);
 
             List<Vector3f> corners = bb.getCornersForFace(face);
 
             for (Vector3f unitCorn : corners) {
               Vector3d corner = new Vector3d(unitCorn);
+              corner.add(offset);
 
               corner.x += (float) (edge.offsetX * 0.5 * bbb.sizeX()) - (Math.signum(edge.offsetX) * xLen / 2f * bbb.sizeX()) * 2f;
               corner.y += (float) (edge.offsetY * 0.5 * bbb.sizeY()) - (Math.signum(edge.offsetY) * yLen / 2f * bbb.sizeY()) * 2f;
               corner.z += (float) (edge.offsetZ * 0.5 * bbb.sizeZ()) - (Math.signum(edge.offsetZ) * zLen / 2f * bbb.sizeZ()) * 2f;
+
+              //polyOffset
 
               RenderUtil.getUvForCorner(uv, corner, 0, 0, 0, face, texture);
 
@@ -139,21 +157,21 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z,
       float partialTick, float worldLight) {
 
-    if(((ILiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
+    if(((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
       return;
     }
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     Tessellator tessellator = Tessellator.instance;
 
-    calculateRatios((ILiquidConduit) conduit);
+    calculateRatios((LiquidConduit) conduit);
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
 
     Icon tex;
     for (CollidableComponent component : components) {
       if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if(isNSEWUP(component.dir) &&
+        if(isNSEWUD(component.dir) &&
             conduit.getTransmitionTextureForState(component) != null) {
 
           tessellator.setColorOpaque_F(1, 1, 1);
@@ -185,17 +203,17 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     setupVertices(bound.translate(translation));
   }
 
-  private void calculateRatios(ILiquidConduit conduit) {
+  private void calculateRatios(LiquidConduit conduit) {
     ConduitTank tank = conduit.getTank();
     int totalAmount = tank.getFluidAmount();
 
     int upCapacity = 0;
     if(conduit.containsConduitConnection(ForgeDirection.UP) || conduit.containsExternalConnection(ForgeDirection.UP)) {
-      upCapacity = ILiquidConduit.VOLUME_PER_CONNECTION;
+      upCapacity = LiquidConduit.VOLUME_PER_CONNECTION;
     }
     int downCapacity = 0;
     if(conduit.containsConduitConnection(ForgeDirection.DOWN) || conduit.containsExternalConnection(ForgeDirection.DOWN)) {
-      downCapacity = ILiquidConduit.VOLUME_PER_CONNECTION;
+      downCapacity = LiquidConduit.VOLUME_PER_CONNECTION;
     }
 
     int flatCapacity = tank.getCapacity() - upCapacity - downCapacity;

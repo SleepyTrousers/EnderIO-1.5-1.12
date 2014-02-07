@@ -35,10 +35,10 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
   private final List<IRenderFace> renderers = new ArrayList<IRenderFace>(2);
 
   private ConnectedTextureRenderer connectedTexRenderer;
-
+  
   public CapBankRenderer2() {
     connectedTexRenderer = new ConnectedTextureRenderer();
-
+    
     GaugueRenderer gaugeRenderer = new GaugueRenderer();
     renderers.add(connectedTexRenderer);
     renderers.add(gaugeRenderer);

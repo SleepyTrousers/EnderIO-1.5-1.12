@@ -56,7 +56,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   public int getRednetOutputValue(ForgeDirection side, int subnet) {
-    //if(currentlyEmmittedSignal != null && subnet == signalColor.ordinal()) {
     if(currentlyEmmittedSignal != null) {
       return 15;
     }
@@ -201,7 +200,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
       if(con != null) {
-        AbstractConduitNetwork<?> n = con.getNetwork();
+        AbstractConduitNetwork<?, ?> n = con.getNetwork();
         if(n instanceof PowerConduitNetwork) {
           NetworkPowerManager pm = ((PowerConduitNetwork) n).getPowerManager();
           if(pm != null) {

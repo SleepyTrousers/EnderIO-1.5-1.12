@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.power;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,10 @@ import java.util.Set;
 import net.minecraft.world.World;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cpw.mods.fml.common.TickType;
 import crazypants.enderio.Config;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IPowerInterface;
@@ -44,6 +48,8 @@ public class NetworkPowerManager {
   private PowerTracker networkPowerTracker = new PowerTracker();
 
   private final CapBankSupply capSupply = new CapBankSupply();
+
+  private InnerTickHandler applyPowerCallback = new InnerTickHandler();
 
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
     this.network = netowrk;
@@ -107,6 +113,11 @@ public class NetworkPowerManager {
   }
 
   public void applyRecievedPower() {
+    //want to do this after all conduits have updated so all connections have been checked etc
+    ConduitNetworkTickHandler.instance.addListener(applyPowerCallback);
+  }
+
+  public void doApplyRecievedPower() {
 
     trackerStartTick();
 
@@ -136,7 +147,7 @@ public class NetworkPowerManager {
       }
 
       ReceptorEntry r = receptorIterator.next();
-      if(r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
+      if(r.emmiter.getPowerHandler() != null && r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
 
         // do a summy recieve or recieve energy counter will never tick down
         float es = r.emmiter.getPowerHandler().getEnergyStored();
@@ -316,7 +327,7 @@ public class NetworkPowerManager {
   private void distributeStorageToConduits() {
     if(maxEnergyStored <= 0 || energyStored <= 0) {
       for (IPowerConduit con : network.getConduits()) {
-        con.getPowerHandler().setEnergy(0);
+        con.setEnergyStored(0);
       }
       return;
     }
@@ -335,11 +346,11 @@ public class NetworkPowerManager {
         float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
         give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
         give = Math.min(give, energyLeft);
-        con.getPowerHandler().setEnergy(give);
+        con.setEnergyStored(give);
         given += give;
         energyLeft -= give;
       } else {
-        con.getPowerHandler().setEnergy(0);
+        con.setEnergyStored(0);
       }
     }
   }
@@ -353,7 +364,8 @@ public class NetworkPowerManager {
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
       maxEnergyStored += con.getCapacitor().getMaxEnergyStored();
-      energyStored += con.getPowerHandler().getEnergyStored();
+      con.onTick();
+      energyStored += con.getEnergyStored();
     }
 
     if(energyStored > maxEnergyStored) {
@@ -433,13 +445,14 @@ public class NetworkPowerManager {
           capBanks.add(cb);
 
           float canGet = 0;
-          if(cb.isOutputEnabled()) {
+
+          if(cb.isOutputEnabled(rec.direction.getOpposite())) {
             canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
             canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
             canExtract += canGet;
           }
           float canFill = 0;
-          if(cb.isInputEnabled()) {
+          if(cb.isInputEnabled(rec.direction.getOpposite())) {
             canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
             canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
             this.canFill += canFill;
@@ -559,6 +572,18 @@ public class NetworkPowerManager {
 
     }
 
+  }
+
+  private class InnerTickHandler implements TickListener {
+
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    }
+
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+      doApplyRecievedPower();
+    }
   }
 
 }

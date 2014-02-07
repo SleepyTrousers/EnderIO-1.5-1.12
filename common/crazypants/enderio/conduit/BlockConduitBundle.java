@@ -32,6 +32,7 @@ import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -55,6 +56,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   public static BlockConduitBundle create() {
 
     PacketHandler.instance.addPacketProcessor(new ConduitPacketHandler());
+    TickRegistry.registerTickHandler(ConduitNetworkTickHandler.instance, Side.SERVER);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();

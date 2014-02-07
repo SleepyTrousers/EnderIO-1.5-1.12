@@ -17,7 +17,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 
-public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit> {
+public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
   private final Set<Signal> signals = new HashSet<Signal>();
 
@@ -26,10 +26,11 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   private boolean networkEnabled = true;
 
   public RedstoneConduitNetwork() {
+    super(IRedstoneConduit.class);
   }
 
   @Override
-  public Class<? extends IRedstoneConduit> getBaseConduitType() {
+  public Class<IRedstoneConduit> getBaseConduitType() {
     return IRedstoneConduit.class;
   }
 

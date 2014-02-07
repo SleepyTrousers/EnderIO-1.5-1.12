@@ -66,8 +66,8 @@ public class RedstoneSwitch extends RedstoneConduit {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
     isOn = nbtRoot.getBoolean("switchOn");
   }
 

@@ -88,9 +88,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public static final BoundingBox BOUNDS = new BoundingBox(MIN, MAX);
 
   protected PowerConduitNetwork network;
-  private PowerHandler powerHandler;
 
+  private PowerHandler powerHandler;
   private PowerHandler noInputPH;
+
+  private float energyStored;
 
   private int subtype;
 
@@ -106,7 +108,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   public PowerConduit(int meta) {
     this.subtype = meta;
-    powerHandler = createPowerHandlerForType();
+    //powerHandler = createPowerHandlerForType();
   }
 
   @Override
@@ -183,7 +185,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     nbtRoot.setShort("subtype", (short) subtype);
-    nbtRoot.setFloat("energyStored", powerHandler.getEnergyStored());
+    nbtRoot.setFloat("energyStored", energyStored);
 
     for (Entry<ForgeDirection, RedstoneControlMode> entry : rsModes.entrySet()) {
       if(entry.getValue() != null) {
@@ -201,13 +203,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
     subtype = nbtRoot.getShort("subtype");
-    if(powerHandler == null) {
-      powerHandler = createPowerHandlerForType();
-    }
-    powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), nbtRoot.getFloat("energyStored")));
+
+    energyStored = Math.min(getCapacitor().getMaxEnergyStored(), nbtRoot.getFloat("energyStored"));
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "pRsMode." + dir.name();
@@ -228,6 +228,24 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public void onTick() {
+    if(powerHandler != null && powerHandler.getEnergyStored() > 0) {
+      energyStored = Math.min(energyStored + powerHandler.getEnergyStored(), getCapacitor().getMaxEnergyStored());
+      powerHandler.setEnergy(0);
+    }
+  }
+
+  @Override
+  public float getEnergyStored() {
+    return energyStored;
+  }
+
+  @Override
+  public void setEnergyStored(float energyStored) {
+    this.energyStored = energyStored;
+  }
+
+  @Override
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
     ConnectionMode mode = getConectionMode(side);
     if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(side)) {
@@ -236,6 +254,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
         noInputPH.configure(0, 0, 0, powerHandler.getMaxEnergyStored());
       }
       return noInputPH.getPowerReceiver();
+    }
+    if(powerHandler == null) {
+      powerHandler = createPowerHandlerForType();
     }
     return powerHandler.getPowerReceiver();
   }
@@ -322,6 +343,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean onNeighborBlockChange(int blockId) {
     redstoneStateDirty = true;
+    if(network != null) {
+      network.powerManager.receptorsChanged();
+    }
     return super.onNeighborBlockChange(blockId);
   }
 
@@ -330,7 +354,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(getMaxEnergyRecieved(from) == 0) {
       return 0;
     }
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+    float freeSpace = getCapacitor().getMaxEnergyStored() - energyStored;
+    int result = (int) Math.min(maxReceive / 10, freeSpace);
+    if(!simulate) {
+      energyStored += result;
+    }
+    return result * 10;
   }
 
   @Override
@@ -345,21 +374,21 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getEnergyStored() * 10);
+    return (int) (energyStored * 10);
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getMaxEnergyStored() * 10);
+    return getCapacitor().getMaxEnergyStored();
   }
 
   @Override
-  public AbstractConduitNetwork<?> getNetwork() {
+  public AbstractConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
   @Override
-  public boolean setNetwork(AbstractConduitNetwork<?> network) {
+  public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     this.network = (PowerConduitNetwork) network;
     return true;
   }

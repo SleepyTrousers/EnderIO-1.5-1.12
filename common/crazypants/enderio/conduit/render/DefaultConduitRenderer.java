@@ -47,7 +47,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     for (CollidableComponent component : components) {
       if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
-        if(isNSEWUP(component.dir) &&
+        if(isNSEWUD(component.dir) &&
             conduit.getTransmitionTextureForState(component) != null) {
           tessellator.setBrightness((int) (worldLight));
           tex = conduit.getTransmitionTextureForState(component);
@@ -73,7 +73,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float brightness) {
 
-    if(isNSEWUP(component.dir)) {
+    if(isNSEWUD(component.dir)) {
 
       float scaleFactor = 0.75f;
       float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
@@ -117,7 +117,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     return true;
   }
 
-  protected boolean isNSEWUP(ForgeDirection dir) {
+  protected boolean isNSEWUD(ForgeDirection dir) {
     return dir == NORTH || dir == SOUTH || dir == EAST || dir == WEST || dir == UP || dir == DOWN;
   }
 

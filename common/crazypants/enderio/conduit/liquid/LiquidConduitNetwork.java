@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,14 +10,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
+import cpw.mods.fml.common.TickType;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
 
-public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit> {
+public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidConduit> {
 
-  private FluidStack liquidType;
+  public LiquidConduitNetwork() {
+    super(LiquidConduit.class);
+  }
+
   private long timeAtLastApply;
 
   private int maxFlowsPerTick = 10;
@@ -32,14 +38,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
   private boolean inputLocked = false;
 
-  @Override
-  public Class<? extends ILiquidConduit> getBaseConduitType() {
-    return ILiquidConduit.class;
-  }
-
-  public FluidStack getFluidType() {
-    return liquidType;
-  }
+  private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public boolean lockNetworkForFill() {
     if(inputLocked) {
@@ -51,46 +50,6 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
   public void unlockNetworkFromFill() {
     inputLocked = false;
-  }
-
-  @Override
-  public void addConduit(ILiquidConduit con) {
-    super.addConduit(con);
-    con.setFluidType(liquidType);
-  }
-
-  public void setFluidType(FluidStack newType) {
-    if(liquidType != null && liquidType.isFluidEqual(newType)) {
-      return;
-    }
-    if(newType != null) {
-      liquidType = newType.copy();
-      liquidType.amount = 0;
-    } else {
-      liquidType = null;
-    }
-    for (ILiquidConduit conduit : conduits) {
-      conduit.setFluidType(liquidType);
-    }
-  }
-
-  public boolean canAcceptLiquid(FluidStack acceptable) {
-    return areFluidsCompatable(liquidType, acceptable);
-  }
-
-  public static boolean areFluidsCompatable(FluidStack a, FluidStack b) {
-    if(a == null || b == null) {
-      return true;
-    }
-    return a.isFluidEqual(b);
-  }
-
-  public int getTotalVolume() {
-    int totalVolume = 0;
-    for (ILiquidConduit con : conduits) {
-      totalVolume += con.getTank().getFluidAmount();
-    }
-    return totalVolume;
   }
 
   @Override
@@ -106,20 +65,27 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     long curTime = world.getTotalWorldTime();
     if(curTime > 0 && curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
-      // 1000 water, 6000 lava
-      if(liquidType != null && liquidType.getFluid() != null) {
-        int visc = Math.max(1000, liquidType.getFluid().getViscosity());
-        if(curTime % (visc / 500) == 0) {
-          long start = System.nanoTime();
-          if(doFlow() && printFlowTiming) {
-            long took = System.nanoTime() - start;
-            double secs = took / 1000000000.0;
-            System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
-          }
+      ConduitNetworkTickHandler.instance.addListener(tickHandler);
+      //doTick(curTime);
+    }
+  }
+
+  private void doTick(long curTime) {
+    // 1000 water, 6000 lava
+    if(liquidType != null && liquidType.getFluid() != null) {
+      int visc = Math.max(1000, liquidType.getFluid().getViscosity());
+      if(curTime % (visc / 500) == 0) {
+        long start = System.nanoTime();
+        if(doFlow() && printFlowTiming) {
+          long took = System.nanoTime() - start;
+          double secs = took / 1000000000.0;
+          System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
         }
       }
     }
-
+    if(!fluidTypeLocked && isEmpty()) {
+      setFluidType(null);
+    }
   }
 
   void addedFromExternal(int res) {
@@ -154,8 +120,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     boolean result = !actions.isEmpty();
 
     // Flush any tanks with a tiny bit left
-    List<ILiquidConduit> toEmpty = new ArrayList<ILiquidConduit>();
-    for (ILiquidConduit con : conduits) {
+    List<LiquidConduit> toEmpty = new ArrayList<LiquidConduit>();
+    for (LiquidConduit con : conduits) {
       if(con != null && con.getTank().getFluidAmount() < 10) {
         toEmpty.add(con);
       } else {
@@ -169,7 +135,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     }
 
     List<LocatedFluidHandler> externals = new ArrayList<LocatedFluidHandler>();
-    for (ILiquidConduit con : conduits) {
+    for (AbstractTankConduit con : conduits) {
       Set<ForgeDirection> extCons = con.getExternalConnections();
 
       for (ForgeDirection dir : extCons) {
@@ -185,14 +151,31 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       return result;
     }
 
-    for (ILiquidConduit con : toEmpty) {
+    for (LiquidConduit con : toEmpty) {
       drainConduitToNearestExternal(con, externals);
     }
 
     return result;
   }
 
-  private void drainConduitToNearestExternal(ILiquidConduit con, List<LocatedFluidHandler> externals) {
+  @Override
+  public void setFluidTypeLocked(boolean fluidTypeLocked) {
+    super.setFluidTypeLocked(fluidTypeLocked);
+    if(!fluidTypeLocked && isEmpty()) {
+      setFluidType(null);
+    }
+  }
+
+  private boolean isEmpty() {
+    for (LiquidConduit con : conduits) {
+      if(con.tank.getFluidAmount() > 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private void drainConduitToNearestExternal(LiquidConduit con, List<LocatedFluidHandler> externals) {
     BlockCoord conLoc = con.getLocation();
     FluidStack toDrain = con.getTank().getFluid();
     if(toDrain == null) {
@@ -218,7 +201,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
   }
 
-  private void flowFrom(ILiquidConduit con, List<FlowAction> actions, int pushPoken) {
+  private void flowFrom(LiquidConduit con, List<FlowAction> actions, int pushPoken) {
 
     ConduitTank tank = con.getTank();
     int totalAmount = tank.getFluidAmount();
@@ -231,9 +214,10 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
     // First flow all we can down, then balance the rest
     if(con.getConduitConnections().contains(ForgeDirection.DOWN)) {
       BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
-      ILiquidConduit downCon = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
-      if(downCon != null) {
-        int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
+      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
+      if(dc instanceof LiquidConduit) {
+        LiquidConduit downCon = (LiquidConduit) dc;
+        int filled = ((LiquidConduit) downCon).fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
         int actual = filled;
         actual = Math.min(actual, tank.getFluidAmount());
         actual = Math.min(actual, downCon.getTank().getAvailableSpace());
@@ -294,7 +278,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
         ConduitUtil.getConnectedConduits(con.getBundle().getEntity().worldObj,
             loc.x, loc.y, loc.z, ILiquidConduit.class);
     int numTargets = 0;
-    for (ILiquidConduit neighbour : connections) {
+    for (ILiquidConduit n : connections) {
+      LiquidConduit neighbour = (LiquidConduit) n;
       if(canFlowTo(con, neighbour)) { // can only flow within same network
         totalAmount += neighbour.getTank().getFluidAmount();
         totalCapacity += neighbour.getTank().getCapacity();
@@ -310,7 +295,8 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       return; // dont bother with transfers of less than a thousands of a bucket
     }
 
-    for (ILiquidConduit neigbour : connections) {
+    for (ILiquidConduit n : connections) {
+      LiquidConduit neigbour = (LiquidConduit) n;
       if(canFlowTo(con, neigbour)) { // can only flow within same network
         flowVolume = (int) Math.floor((targetRatio - neigbour.getTank().getFilledRatio()) * neigbour.getTank().getCapacity());
         if(flowVolume != 0) {
@@ -321,7 +307,7 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
 
   }
 
-  private boolean canFlowTo(ILiquidConduit con, ILiquidConduit neighbour) {
+  private boolean canFlowTo(LiquidConduit con, LiquidConduit neighbour) {
     if(con == null || neighbour == null) {
       return false;
     }
@@ -339,11 +325,11 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
   }
 
   static class FlowAction {
-    final ILiquidConduit from;
-    final ILiquidConduit to;
+    final LiquidConduit from;
+    final LiquidConduit to;
     final int amount;
 
-    FlowAction(ILiquidConduit fromIn, ILiquidConduit toIn, int amountIn) {
+    FlowAction(LiquidConduit fromIn, LiquidConduit toIn, int amountIn) {
       if(amountIn < 0) {
         to = fromIn;
         from = toIn;
@@ -384,6 +370,20 @@ public class LiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit>
       this.dir = dir;
     }
 
+  }
+
+  private class InnerTickHandler implements TickListener {
+
+    long tick;
+
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    }
+
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+      doTick(tick);
+    }
   }
 
 }

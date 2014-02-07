@@ -18,6 +18,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
 import crazypants.enderio.conduit.item.ItemConduit;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
+import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.power.PowerConduit;
@@ -73,6 +75,7 @@ public class ClientProxy extends CommonProxy {
     RedstoneSwitch.initIcons();
     PowerConduit.initIcons();
     LiquidConduit.initIcons();
+    AdvancedLiquidConduit.initIcons();
     ItemConduit.initIcons();
   }
 
@@ -149,6 +152,7 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
+    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
     conduitRenderers.add(new LiquidConduitRenderer());
     conduitRenderers.add(new PowerConduitRenderer());
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());

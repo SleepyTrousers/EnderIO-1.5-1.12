@@ -361,7 +361,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   protected ConnectionMode getDefaultConnectionMode() {
-    return ConnectionMode.OUTPUT;
+    return ConnectionMode.INPUT;
   }
 
   @Override
@@ -376,12 +376,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public AbstractConduitNetwork<?> getNetwork() {
+  public AbstractConduitNetwork<?, ?> getNetwork() {
     return network;
   }
 
   @Override
-  public boolean setNetwork(AbstractConduitNetwork<?> network) {
+  public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     this.network = (ItemConduitNetwork) network;
     return true;
   }
@@ -496,8 +496,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
 
     metaData = nbtRoot.getShort("metaData");
 
@@ -554,6 +554,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
     updateFromMetadata();
+
+    if(nbtVersion == 0 && !nbtRoot.hasKey("conModes")) {
+      //all externals where on default so need to switch them to the old default
+      for (ForgeDirection dir : externalConnections) {
+        conectionModes.put(dir, ConnectionMode.OUTPUT);
+      }
+    }
   }
 
 }

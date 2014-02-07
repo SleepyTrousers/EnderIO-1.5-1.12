@@ -55,8 +55,8 @@ public class PowerInterfaceRF implements IPowerInterface {
   @Override
   public float recieveEnergy(ForgeDirection opposite, float canOffer) {
     if(rfPower != null && opposite != null) {
-      return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10f;
-    }
+        return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10f;
+      }
     return 0;
   }
 }
