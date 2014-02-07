@@ -13,7 +13,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
@@ -40,13 +39,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   protected void init(ItemConduitSubtype[] subtypes) {
     this.subtypes = subtypes;
     icons = new Icon[subtypes.length];
-
-    LanguageRegistry.addName(this, modObj.name);
     GameRegistry.registerItem(this, modObj.unlocalisedName);
-    for (ItemConduitSubtype subtype : subtypes) {
-      LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + subtype.unlocalisedName + ".name", subtype.uiName);
-    }
-
   }
 
   @Override
@@ -122,7 +115,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, subtypes.length - 1);
-    return super.getUnlocalizedName() + "." + subtypes[i].unlocalisedName;
+    return subtypes[i].unlocalisedName;
 
   }
 

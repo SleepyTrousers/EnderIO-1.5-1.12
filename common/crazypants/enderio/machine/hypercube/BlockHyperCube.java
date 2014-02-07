@@ -23,7 +23,6 @@ import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
@@ -53,13 +52,12 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     super(ModObject.blockHyperCube.id, Material.ground);
     setHardness(0.5F);
     setStepSound(Block.soundMetalFootstep);
-    setUnlocalizedName(ModObject.blockHyperCube.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.blockHyperCube.name());
     setCreativeTab(EnderIOTab.tabEnderIO);
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
   }
 
   private void init() {
-    LanguageRegistry.addName(this, ModObject.blockHyperCube.name);
     GameRegistry.registerBlock(this, ModObject.blockHyperCube.unlocalisedName);
     GameRegistry.registerTileEntity(TileHyperCube.class, ModObject.blockHyperCube.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);

@@ -8,8 +8,8 @@ import crazypants.util.Lang;
 public class PowerDisplayUtil {
 
   public static enum PowerType {
-    MJ(1, Lang.localize("power.mj")),
-    RF(10, Lang.localize("power.rf"));
+    MJ(1, "power.mj"),
+    RF(10, "power.rf");
 
     private final double ratio;
     private final String abr;
@@ -20,7 +20,7 @@ public class PowerDisplayUtil {
     }
 
     String abr() {
-      return abr;
+      return Lang.localize(abr);
     }
 
     double toDisplayValue(double powerMJ) {
@@ -38,9 +38,13 @@ public class PowerDisplayUtil {
 
   private static PowerType currentPowerType = Config.useRfAsDefault ? PowerType.RF : PowerType.MJ;
 
-  private static final String PER_TICK = Lang.localize("power.tick");
+  public static String perTickStr() {
+    return Lang.localize("power.tick");
+  }
 
-  public static final String OF = Lang.localize("gui.powerMonitor.of");
+  public static String ofStr() {
+    return Lang.localize("gui.powerMonitor.of");
+  }
 
   static {
     FLOAT_NF.setMinimumFractionDigits(1);
@@ -75,10 +79,6 @@ public class PowerDisplayUtil {
 
   public static String abrevation() {
     return currentPowerType.abr();
-  }
-
-  public static String perTick() {
-    return PER_TICK;
   }
 
   public static int fromDisplay(int input) {

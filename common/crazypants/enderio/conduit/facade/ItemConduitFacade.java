@@ -11,7 +11,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -36,12 +35,11 @@ public class ItemConduitFacade extends Item {
   protected ItemConduitFacade() {
     super(ModObject.itemConduitFacade.id);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemConduitFacade.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.itemConduitFacade.name());
     setMaxStackSize(64);
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemConduitFacade.name);
     GameRegistry.registerItem(this, ModObject.itemConduitFacade.unlocalisedName);
   }
 

@@ -42,8 +42,8 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private IItemConduit itemConduit;
 
-  private String inputHeading = "Extraction Filter";
-  private String outputHeading = "Insertion Filter";
+  private String inputHeading;
+  private String outputHeading;
 
   private IconButtonEIO nextFilterB;
 
@@ -69,6 +69,9 @@ public class ItemSettings extends BaseSettingsPanel {
     super(IconEIO.WRENCH_OVERLAY_ITEM, ModObject.itemItemConduit.name, gui, con);
     itemConduit = (IItemConduit) con;
     isAdvanced = itemConduit.getMetaData() == 1;
+
+    inputHeading = Lang.localize("gui.conduit.item.extractionFilter");
+    outputHeading = Lang.localize("gui.conduit.item.insertionFilter");
 
     int x = 98;
     int y = customTop;

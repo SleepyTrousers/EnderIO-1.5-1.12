@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.util.Lang;
 
 public class BlockItemCapacitorBank extends ItemBlock {
 
@@ -27,7 +28,8 @@ public class BlockItemCapacitorBank extends ItemBlock {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-    list.add("Contains " + PowerDisplayUtil.formatPower(PowerHandlerUtil.getStoredEnergyForItem(itemStack)) + " " + PowerDisplayUtil.abrevation());
+    list.add(Lang.localize("tile.enderio.blockCapacitorBank.tooltipPrefix", false) + " "
+        + PowerDisplayUtil.formatPower(PowerHandlerUtil.getStoredEnergyForItem(itemStack)) + " " + PowerDisplayUtil.abrevation());
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
   }
 

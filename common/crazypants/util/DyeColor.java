@@ -42,23 +42,25 @@ public enum DyeColor {
       "dyeWhite"
   };
 
-  public static final String[] DYE_ORE_LOCAL_NAMES = {
-      Lang.localize("color.black"),
-      Lang.localize("color.red"),
-      Lang.localize("color.green"),
-      Lang.localize("color.brown"),
-      Lang.localize("color.blue"),
-      Lang.localize("color.purple"),
-      Lang.localize("color.cyan"),
-      Lang.localize("color.lightGray"),
-      Lang.localize("color.gray"),
-      Lang.localize("color.pink"),
-      Lang.localize("color.lime"),
-      Lang.localize("color.yellow"),
-      Lang.localize("color.lightBlue"),
-      Lang.localize("color.magenta"),
-      Lang.localize("color.orange"),
-      Lang.localize("color.white")
+  public static final String[] DYE_ORE_UNLOCAL_NAMES = {
+
+      "item.fireworksCharge.black",
+      "item.fireworksCharge.red",
+      "item.fireworksCharge.green",
+      "item.fireworksCharge.brown",
+      "item.fireworksCharge.blue",
+      "item.fireworksCharge.purple",
+      "item.fireworksCharge.cyan",
+      "item.fireworksCharge.silver",
+      "item.fireworksCharge.gray",
+      "item.fireworksCharge.pink",
+      "item.fireworksCharge.lime",
+      "item.fireworksCharge.yellow",
+      "item.fireworksCharge.lightBlue",
+      "item.fireworksCharge.magenta",
+      "item.fireworksCharge.orange",
+      "item.fireworksCharge.white"
+
   };
 
   public static DyeColor getNext(DyeColor col) {
@@ -102,7 +104,7 @@ public enum DyeColor {
   }
 
   public String getLocalisedName() {
-    return DYE_ORE_LOCAL_NAMES[ordinal()];
+    return Lang.localize(DYE_ORE_UNLOCAL_NAMES[ordinal()], false);
   }
 
   @Override

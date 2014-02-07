@@ -8,81 +8,82 @@ enderio.power.maxOutput=Max. Output
 
 //Ender IO / Enderface
 enderio.blockEnderIo=Ender-IO
-enderio.itemEnderface=Endergesicht
+item.enderio.itemEnderface.name=Endergesicht
 
 //Conduits
 enderio.blockConduitBundle=Leitungsbündel
 enderio.blockConduitFacade=Leitungsfassade
-enderio.itemConduitFacade=Leitungsfassade
+item.enderio.itemConduitFacade.name=Leitungsfassade
 
-enderio.itemPowerConduit=Energieleitung
-enderio.itemPowerConduitEnhanced=Verbesserte Energieleitung
-enderio.itemPowerConduitEnder=Ender-Energieleitung
+enderio.itemPowerConduit.name=Energieleitung
+enderio.itemPowerConduitEnhanced.name=Verbesserte Energieleitung
+enderio.itemPowerConduitEnder.name=Ender-Energieleitung
 
-enderio.itemRedstoneConduit=Redstone-Leitung
-enderio.itemRedstoneConduitSwitch=Leitungsschalter
-enderio.itemRedstoneConduitInsulated=Isolierte Redstone-Leitung
+enderio.itemRedstoneConduit.name=Redstone-Leitung
+enderio.itemRedstoneConduitSwitch.name=Leitungsschalter
+enderio.itemRedstoneConduitInsulated.name=Isolierte Redstone-Leitung
 
-enderio.itemLiquidConduit=Flüssigkeitsleitung
-enderio.itemLiquidConduitAdvanced=Flüssigkeitsdruckleitung
-enderio.itemLiquidConduit.lockedType=Flüssigkeitstyp gebunden an
-enderio.itemLiquidConduit.unlockedType=Flüssigkeitstyp nicht mehr gebunden
+enderio.itemLiquidConduit.name=Flüssigkeitsleitung
+enderio.itemLiquidConduitAdvanced.name=Flüssigkeitsdruckleitung
+enderio.itemLiquidConduit.lockedType.name=Flüssigkeitstyp gebunden an
+enderio.itemLiquidConduit.unlockedType.name=Flüssigkeitstyp nicht mehr gebunden
 
-enderio.itemItemConduit=Item-Leitung
-enderio.itemItemConduitEmpowered=Verstärkte Item-Leitung
+enderio.itemItemConduit.name=Item-Leitung
+enderio.itemItemConduitEmpowered.name=Verstärkte Item-Leitung
 
 //Materials
-enderio.itemMaterial=Materialien
-enderio.silicon=Silicium
-enderio.conduitBinder=Leitungsbinder
-enderio.binderComposite=Bindegemisch
-enderio.phasedIronNugget=Pulsierender Eisennugget
+enderio.itemMaterial.name=Materialien
+enderio.silicon.name=Silicium
+enderio.conduitBinder.name=Leitungsbinder
+enderio.binderComposite.name=Bindegemisch
+enderio.phasedIronNugget.name=Pulsierender Eisennugget
 
-enderio.itemMachinePart=Maschinenteile
+//Crafting components
+enderio.itemMachinePart.name=Maschinenteile
+
 enderio.blockFusedQuartz=Fusionsquarz
 enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
 enderio.blockFusedQuartz.fusedGlass.name=Fusionsglas
 
-enderio.itemFusedQuartzFrame=Fusionsquarzrahmen
+item.enderio.itemFusedQuartzFrame.name=Fusionsquarzrahmen
 enderio.itemPowderIngot=Pulver & Barren
 
 //Alloys
-enderio.itemAlloy=Legierung
-enderio.electricalSteel=Elektrischer Stahl
-enderio.energeticAlloy=Energetisierte Legierung
-enderio.phasedGold=Dynamische Legierung
-enderio.redstoneAlloy=Redstone-Legierung
-enderio.conductiveIron=Leitendes Eisen
-enderio.phasedIron=Pulsierendes Eisen
+enderio.itemAlloy.name=Legierung
+enderio.electricalSteel.name=Elektrischer Stahl
+enderio.energeticAlloy.name=Energetisierte Legierung
+enderio.phasedGold.name=Dynamische Legierung
+enderio.redstoneAlloy.name=Redstone-Legierung
+enderio.conductiveIron.name=Leitendes Eisen
+enderio.phasedIron.name=Pulsierendes Eisen
 
 //Powder / Ingot
-enderio.powderCoal=Kohlepulver
-enderio.powderIron=Eisenpulver
-enderio.powderGold=Goldpulver
-enderio.powderCopper=Kupferpulver
-enderio.powderTin=Zinnpulver
-enderio.powderEnder=Enderperlenpulver
+enderio.powderCoal.name=Kohlepulver
+enderio.powderIron.name=Eisenpulver
+enderio.powderGold.name=Goldpulver
+enderio.powderCopper.name=Kupferpulver
+enderio.powderTin.name=Zinnpulver
+enderio.powderEnder.name=Enderperlenpulver
 
 //Capacitors
-enderio.itemBasicCapacitor=Kondensator
-enderio.basicCapacitor=Basiskondensator
-enderio.activatedCapacitor=Doppelschichtkondensator
-enderio.enderCapacitor=Oktadischer Kondensator
-
+enderio.itemBasicCapacitor.name=Kondensator
+enderio.basicCapacitor.name=Basiskondensator
+enderio.activatedCapacitor.name=Doppelschichtkondensator
+enderio.enderCapacitor.name=Oktadischer Kondensator
 
 //Machines
-enderio.blockStirlingGenerator=Stirling-Generator
-enderio.blockReservoir=Reservoir
-enderio.blockAlloySmelter=Legierungsschmelze
-enderio.blockSolarPanel=Photovoltaikzelle
-enderio.blockElectricLight=Energiebetriebenes Licht
-enderio.blockCapacitorBank=Kondensatorbank
-enderio.blockCrusher=SAG-Mahlwerk
-enderio.blockHyperCube=Dimensional-Transceiver
-enderio.blockPowerMonitor=Energiemonitor
+tile.enderio.blockStirlingGenerator.name=Stirling-Generator
+tile.enderio.blockReservoir.name=Reservoir
+tile.enderio.blockAlloySmelter.name=Legierungsschmelze
+tile.enderio.blockSolarPanel.name=Photovoltaikzelle
+tile.enderio.blockElectricLight.name=Energiebetriebenes Licht
+tile.enderio.blockCapacitorBank.name=Kondensatorbank
+tile.enderio.blockCrusher.name=SAG-Mahlwerk
+tile.enderio.blockHyperCube.name=Dimensional-Transceiver
+tile.enderio.blockPowerMonitor.name=Energiemonitor
 
 //Painter
-enderio.blockPainter=Färbemaschine
+tile.enderio.blockPainter.name=Färbemaschine
 enderio.blockCustomFence=Bemalter Zaun
 enderio.blockCustomFenceGate=Bemaltes Tor
 enderio.blockCustomWall=Bemalte Wand
@@ -91,8 +92,8 @@ enderio.blockCustomSlab=Bemalte Stufe
 enderio.blockCustomDoubleSlab=Bemalte Stufe
 
 //Items
-enderio.itemYetaWrench=Yeta-Schraubenschlüssel
-enderio.itemMJReader=Energiesonde
+item.enderio.itemYetaWrench.name=Yeta-Schraubenschlüssel
+item.enderio.itemMJReader.name=Energiesonde
 
 enderio.itemEnderface.wrongDimension=EnderIO-Block ist in einer anderen Dimension.
 enderio.itemEnderface.tooFar=EnderIO-Block ist zu weit entfernt.

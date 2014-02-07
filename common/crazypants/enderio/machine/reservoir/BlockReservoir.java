@@ -15,7 +15,6 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
@@ -59,12 +58,11 @@ public class BlockReservoir extends BlockContainer {
     super(ModObject.blockReservoir.id, Material.rock);
     setHardness(0.5F);
     setStepSound(Block.soundStoneFootstep);
-    setUnlocalizedName(ModObject.blockReservoir.unlocalisedName);
+    setUnlocalizedName("enderio." + ModObject.blockReservoir.name());
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   private void init() {
-    LanguageRegistry.addName(this, ModObject.blockReservoir.name);
     GameRegistry.registerBlock(this, ModObject.blockReservoir.unlocalisedName);
     GameRegistry.registerTileEntity(TileReservoir.class, ModObject.blockReservoir.unlocalisedName + "TileEntity");
   }
@@ -77,8 +75,6 @@ public class BlockReservoir extends BlockContainer {
 
       TileReservoir tank = (TileReservoir) world.getBlockTileEntity(x, y, z);
 
-      // LiquidStack liquid =
-      // LiquidContainerRegistry.getLiquidForFilledItem(current);
       FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
 
       if(liquid != null) {

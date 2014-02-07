@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.power.BasicCapacitor;
@@ -41,12 +40,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   }
 
   protected void init() {
-    LanguageRegistry.addName(this, ModObject.itemBasicCapacitor.name);
     GameRegistry.registerItem(this, ModObject.itemBasicCapacitor.unlocalisedName);
-    for (int i = 0; i < Capacitors.values().length; i++) {
-      LanguageRegistry.instance().addStringLocalization(getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName + ".name",
-          Capacitors.values()[i].uiName);
-    }
   }
 
   @Override
@@ -65,7 +59,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int i = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Capacitors.values().length - 1);
-    return super.getUnlocalizedName() + "." + Capacitors.values()[i].unlocalisedName;
+    return Capacitors.values()[i].unlocalisedName;
   }
 
   @Override

@@ -1,15 +1,14 @@
 package crazypants.enderio.material;
 
-import crazypants.util.Lang;
 
 public enum PowderIngot {
 
-  POWDER_COAL("powderCoal", "powderCoal"),
-  POWDER_IRON("powderIron", "powderIron"),
-  POWDER_GOLD("powderGold", "powderGold"),
-  POWDER_COPPER("powderCopper", "powderCopper"),
-  POWDER_TIN("powderTin", "powderTin"),
-  POWDER_ENDER("powderEnder", "powderEnder");
+  POWDER_COAL("powderCoal"),
+  POWDER_IRON("powderIron"),
+  POWDER_GOLD("powderGold"),
+  POWDER_COPPER("powderCopper"),
+  POWDER_TIN("powderTin"),
+  POWDER_ENDER("powderEnder");
   // POWDER_LEAD("powderLead", "Lead Powder", "powderLead"),
   // POWDER_SILVER("powderSilver", "Silver Powder", "powderSilver"),
   // POWDER_BRONZE("powderBronze", "Bronze Powder", "powderBronze"),
@@ -21,13 +20,11 @@ public enum PowderIngot {
   // INGOT_ELECTRUM("ingotElectrum", "Electrum Ingot", "ingotElectrum");
 
   public final String unlocalisedName;
-  public final String uiName;
   public final String iconKey;
 
-  private PowderIngot(String unlocalisedName, String iconKey) {
-    this.unlocalisedName = unlocalisedName;
-    this.uiName = Lang.localize(unlocalisedName);
-    this.iconKey = "enderio:" + iconKey;
+  private PowderIngot(String unlocalisedName) {
+    this.unlocalisedName = "enderio." + unlocalisedName;
+    this.iconKey = "enderio:" + unlocalisedName;
   }
 
 }

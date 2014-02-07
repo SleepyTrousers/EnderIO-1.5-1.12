@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import crazypants.util.Lang;
 
 public final class PainterUtil {
 
@@ -60,7 +61,7 @@ public final class PainterUtil {
         sourceName = StatCollector.translateToLocal(sourceName + ".name");
       }
     }
-    return "Painted with: " + sourceName;
+    return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
   }
 
   public static void setSourceBlock(ItemStack item, int sourceId, int meta) {

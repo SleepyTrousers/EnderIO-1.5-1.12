@@ -49,7 +49,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     if(PREFIX == null) {
-      POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
+      POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
       PREFIX = Lang.localize("power.maxOutput") + " ";
     }
     super.addInformation(itemStack, par2EntityPlayer, list, par4);

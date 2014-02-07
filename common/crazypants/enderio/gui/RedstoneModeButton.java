@@ -11,8 +11,6 @@ public class RedstoneModeButton extends IconButtonEIO {
   private static IconEIO[] ICONS = new IconEIO[] { IconEIO.REDSTONE_MODE_ALWAYS, IconEIO.REDSTONE_MODE_WITH_SIGNAL, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL,
       IconEIO.REDSTONE_MODE_NEVER };
 
-  private static final String TOOLTIP_HEADING = Lang.localize("gui.tooltip.redstoneControlMode");
-
   IRedstoneModeControlable model;
   RedstoneControlMode curMode;
 
@@ -20,7 +18,7 @@ public class RedstoneModeButton extends IconButtonEIO {
     super(gui, id, x, y, ICONS[model.getRedstoneControlMode().ordinal()]);
     this.model = model;
     curMode = model.getRedstoneControlMode();
-    setToolTip(TOOLTIP_HEADING, curMode.tooltip);
+    setToolTip(Lang.localize("gui.tooltip.redstoneControlMode"), curMode.getTooltip());
     setIcon(ICONS[curMode.ordinal()]);
   }
 
@@ -45,7 +43,7 @@ public class RedstoneModeButton extends IconButtonEIO {
       return;
     }
     curMode = mode;
-    setToolTip(TOOLTIP_HEADING, mode.tooltip);
+    setToolTip(Lang.localize("gui.tooltip.redstoneControlMode"), mode.getTooltip());
     setIcon(ICONS[mode.ordinal()]);
     model.setRedstoneControlMode(mode);
   }
