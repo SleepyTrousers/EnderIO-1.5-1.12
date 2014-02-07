@@ -40,6 +40,8 @@ enderio.phasedIronNugget.name=Pulsierender Eisennugget
 
 //Crafting components
 enderio.itemMachinePart.name=Maschinenteile
+enderio.machineChassi.name=Maschinenhülle
+enderio.basicGear.name=Basiszahnrad
 
 enderio.blockFusedQuartz=Fusionsquarz
 enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
@@ -78,12 +80,14 @@ tile.enderio.blockAlloySmelter.name=Legierungsschmelze
 tile.enderio.blockSolarPanel.name=Photovoltaikzelle
 tile.enderio.blockElectricLight.name=Energiebetriebenes Licht
 tile.enderio.blockCapacitorBank.name=Kondensatorbank
+tile.enderio.blockCapacitorBank.tooltipPrefix=Enthält
 tile.enderio.blockCrusher.name=SAG-Mahlwerk
 tile.enderio.blockHyperCube.name=Dimensional-Transceiver
 tile.enderio.blockPowerMonitor.name=Energiemonitor
 
 //Painter
 tile.enderio.blockPainter.name=Färbemaschine
+enderio.blockPainter.paintedWith=Bemalt mit:
 enderio.blockCustomFence=Bemalter Zaun
 enderio.blockCustomFenceGate=Bemaltes Tor
 enderio.blockCustomWall=Bemalte Wand
@@ -102,24 +106,6 @@ enderio.itemEnderface.noSync=Endergesicht ist mit keinem EnderIO synchronisiert.
 
 
 //------GUI
-
-//General
-enderio.color.black=Schwarz
-enderio.color.red=Rot
-enderio.color.green=Grün
-enderio.color.brown=Braun
-enderio.color.blue=Blau
-enderio.color.purple=Violett
-enderio.color.cyan=Türkis
-enderio.color.lightGray=Hellgrau
-enderio.color.gray=Grau
-enderio.color.pink=Pink
-enderio.color.lime=Hellgrün
-enderio.color.yellow=Gelb
-enderio.color.lightBlue=Hellblau
-enderio.color.magenta=Magentafarben
-enderio.color.orange=Orange
-enderio.color.white=Weiß
 
 enderio.gui.enabled=Aktiviert
 enderio.gui.disabled=Deaktiviert
@@ -165,13 +151,20 @@ enderio.gui.capBank.maxOutput=Max. Ouput
 //Transceiver
 enderio.gui.trans.publicChannel=Öffentl. Kanal
 enderio.gui.trans.privateChannel=Privater Kanal
-enderio.gui.trans.deleteChannel=Lösche Kanal
-enderio.gui.trans.activateChannel=Aktiviere Kanal
+enderio.gui.trans.addChannel=Kanal hinzufügen
+enderio.gui.trans.deleteChannel=Kanal löschen
+enderio.gui.trans.activateChannel=Kanal aktivieren
 enderio.gui.trans.powerMode=Energiemodus
 enderio.gui.trans.fluidMode=Flüssigk.-Modus
 enderio.gui.trans.itemMode=Item-Modus
 enderio.gui.trans.publicHeading=Öffentl.
 enderio.gui.trans.privateHeading=Privat
+
+//Alloy Smelter
+enderio.gui.alloy.mode.heading=Schmelz-Modus
+enderio.gui.alloy.mode.all=Schmelze alles
+enderio.gui.alloy.mode.alloy=Nur Legierungen
+enderio.gui.alloy.mode.furnace=Nur Ofen
 
 //conduits
 enderio.gui.conduit.ioMode=Modus
@@ -181,6 +174,8 @@ enderio.gui.conduit.ioMode.output=Insertieren
 enderio.gui.conduit.ioMode.disabled=Deaktiviert
 enderio.gui.conduit.ioMode.notSet=Standard
 
+enderio.gui.conduit.item.insertionFilter=Insertionsfilter
+enderio.gui.conduit.item.extractionFilter=Extraktionsfilter
 enderio.gui.conduit.item.sigCol=Signalfarbe
 enderio.gui.conduit.item.channel=Kanal
 enderio.gui.conduit.item.ignoreMetaData=Ignoriere Metadaten
