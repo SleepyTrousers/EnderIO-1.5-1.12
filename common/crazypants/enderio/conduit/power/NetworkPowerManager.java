@@ -165,7 +165,8 @@ public class NetworkPowerManager {
 
           if(pp.getClass() == PowerInterfaceRF.class) {
 
-            used = pp.recieveEnergy(r.direction.getOpposite(), available);
+            float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+            used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
             trackerSend(r.emmiter, used, false);
 
           } else {
