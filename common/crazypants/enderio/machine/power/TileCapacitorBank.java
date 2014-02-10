@@ -412,9 +412,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
             localReceptors.add(r);
             if(mode == FaceConnectionMode.NONE && !(ph.getDelegate() instanceof IInternalPowerReceptor)) {
               setFaceMode(dir, FaceConnectionMode.INPUT, false);
+              r.mode = FaceConnectionMode.INPUT;
               worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
               render = true;
-              //worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, ModObject.blockCapacitorBank.actualId);
             }
           }
         }
