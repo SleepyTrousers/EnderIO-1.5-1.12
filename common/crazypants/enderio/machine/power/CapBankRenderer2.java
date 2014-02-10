@@ -50,6 +50,11 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof TileCapacitorBank) {
+      TileCapacitorBank cb = ((TileCapacitorBank) te);
+      cb.energyAtLastRender = cb.getEnergyStored();
+    }
     connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
     return true;
