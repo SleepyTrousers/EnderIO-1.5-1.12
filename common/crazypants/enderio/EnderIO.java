@@ -66,7 +66,7 @@ import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "0.7.2", dependencies = "required-after:Forge@[9.11.0.883,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "0.8.0", dependencies = "required-after:Forge@[9.11.0.883,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
@@ -196,17 +196,23 @@ public class EnderIO {
     MinecraftForge.EVENT_BUS.register(this);
 
     //Register Custom Dungeon Loot here
-    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
-    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemYetaWrench.actualId, 1, 0), 1 ,1, 15));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
+        new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
+        .addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemYetaWrench.actualId, 1, 0), 1, 1, 15));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemMJReader.actualId, 1, 0), 1, 1, 1));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemEnderface.actualId, 1, 0), 1, 1, 1));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Item.netherQuartz), 3, 16, 40));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Item.netherStalkSeeds), 1, 4, 30));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Item.enderPearl), 1, 2, 15));
-    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 5, 20, 50));
-    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 14, 35));
-    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal()), 2, 6, 20));
-    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal()), 2, 6, 10));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 5, 20, 50));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 14, 35));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal()), 2, 6, 20));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal()), 2, 6, 10));
 
     PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
 
