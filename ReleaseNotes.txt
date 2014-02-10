@@ -1,3 +1,27 @@
+0.8.0
+Liquid Conduit Changes:
+  - New 'Pressurized Fluid Conduit' (tier 2)
+    - 'Round Robin' output, regardless of conduit network topology 
+    - uses existing fluid conduit recipe
+    - lower performance overhead than existing fluid conduits
+  - Current fluid conduits made cheaper and slower
+  - #314 By default, the fluid type is now cleared when a fluid conduit empties. The fluid type is locked by right clicking a conduit with a container of that fluid, and is unlocked by right clicking with an empty bucket.
+  - Auto extraction and flow rates now changeable in the config
+  - Existing fluid conduits will be upgraded in-place to pressurized conduits.
+
+- New 'Fused Glass', cheap connected texture glass. Can use fused quartz frames to change the border.
+- Further significant performance improvements made to the conduits.
+- Capacitor Bank's IO mode can be set per face by right clicking with a wrench 
+- #357 No output into TE Energy Conduits from the Capacitor Bank
+- #420 Added missing localizations 
+- #436 Crash with binnies mods
+- #438 Dupe bug with Quarry Plus
+- #439 Crash when breaking TE redstone conduit connected to Ender IO conduit
+- #440 Energy Conduit sending power to tesseract when not connected
+- #449 Power level on the side of capacitor banks doesn't seem to update properly
+- #450 Cap Bank outputting to TE conduit when first attached.
+- #453 #447 Cap Bank causes other blocks not to render 
+
 0.7.2
 - Massive client side performance improvement for large capacitor banks
 - Fixed capacitor bank lighting
