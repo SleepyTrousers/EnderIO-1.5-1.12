@@ -86,10 +86,13 @@ public class CustomRenderBlocks extends RenderBlocks {
   }
 
   public void doDefaultRenderFaceToBuffer(ForgeDirection face, Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
-    setDefaultTesselatorEnabled(false);
-    BUF_TES.reset();
-    doDefaultRenderFace(face, par1Block, par2, par4, par6, par8Icon);
-    setDefaultTesselatorEnabled(true);
+    try {
+      setDefaultTesselatorEnabled(false);
+      BUF_TES.reset();
+      doDefaultRenderFace(face, par1Block, par2, par4, par6, par8Icon);
+    } finally {
+      setDefaultTesselatorEnabled(true);
+    }
   }
 
   public void doDefaultRenderFace(ForgeDirection face, Block par1Block, double par2, double par4, double par6, Icon par8Icon) {

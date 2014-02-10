@@ -87,12 +87,17 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
     BlockCoord loc = itemConduit.getLocation().getLocation(side);
     NetworkedInventory inv = invMap.get(loc);
-    if(inv == null) {
+    if(inv == null || item == null) {
       return item;
     }
-    int numInserted = inv.insertIntoTargets(item);
+
+    int numInserted = inv.insertIntoTargets(item.copy());
     if(numInserted >= item.stackSize) {
-      return null;
+      //TODO: I was returning null here as per the API but quarries plus
+      //was interpreting this as nothing being taken
+      ItemStack result = item.copy();
+      result.stackSize = 0;
+      return result;
     }
     ItemStack result = item.copy();
     result.stackSize -= numInserted;

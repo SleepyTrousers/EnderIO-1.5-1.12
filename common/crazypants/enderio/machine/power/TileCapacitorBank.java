@@ -93,6 +93,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private boolean masterReceptorsDirty;
 
+  float energyAtLastRender = -1;
+
   public TileCapacitorBank() {
     inventory = new ItemStack[4];
     storedEnergy = 0;
@@ -412,9 +414,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
             localReceptors.add(r);
             if(mode == FaceConnectionMode.NONE && !(ph.getDelegate() instanceof IInternalPowerReceptor)) {
               setFaceMode(dir, FaceConnectionMode.INPUT, false);
+              r.mode = FaceConnectionMode.INPUT;
               worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
               render = true;
-              //worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, ModObject.blockCapacitorBank.actualId);
             }
           }
         }
@@ -987,6 +989,13 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(maxStoredEnergy != 0 && Math.abs(oldEnergy - newEnergy) / maxStoredEnergy > 0.05 || nbtRoot.hasKey("render")) {
       render = true;
     }
+    if(energyAtLastRender != -1 && maxStoredEnergy != 0) {
+      float change = Math.abs(energyAtLastRender - storedEnergy) / maxStoredEnergy;
+      if(change > 0.05) {
+        render = true;
+      }
+    }
+
     maxIO = nbtRoot.getInteger("maxIO");
     if(nbtRoot.hasKey("maxInput")) {
       maxInput = nbtRoot.getInteger("maxInput");
@@ -1034,7 +1043,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         }
       }
     }
-
     gaugeBounds = null;
   }
 

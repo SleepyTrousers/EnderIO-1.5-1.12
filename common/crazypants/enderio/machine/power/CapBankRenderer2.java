@@ -35,10 +35,10 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
   private final List<IRenderFace> renderers = new ArrayList<IRenderFace>(2);
 
   private ConnectedTextureRenderer connectedTexRenderer;
-  
+
   public CapBankRenderer2() {
     connectedTexRenderer = new ConnectedTextureRenderer();
-    
+
     GaugueRenderer gaugeRenderer = new GaugueRenderer();
     renderers.add(connectedTexRenderer);
     renderers.add(gaugeRenderer);
@@ -50,6 +50,11 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof TileCapacitorBank) {
+      TileCapacitorBank cb = ((TileCapacitorBank) te);
+      cb.energyAtLastRender = cb.getEnergyStored();
+    }
     connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
     return true;
@@ -125,7 +130,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
     private void renderGaugeOnFace(GaugeBounds gb, Icon icon, List<Vertex> vertices, double x, double y, double z) {
       Tessellator tes = Tessellator.instance;
-      tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
+      //tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
       Vector2f u = gb.getMinMaxU(icon);
       List<Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
       for (Vertex coord : corners) {
@@ -178,7 +183,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       float maxV = icon.getMinV() + ((float) maxY * vWidth);
 
       Tessellator tes = Tessellator.instance;
-      tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
+      //tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
       Vector2f u = gb.getMinMaxU(icon);
       List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
       for (Vertex coord : corners) {
