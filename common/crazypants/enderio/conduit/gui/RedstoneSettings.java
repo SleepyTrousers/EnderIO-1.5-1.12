@@ -5,7 +5,6 @@ import java.awt.Color;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -24,7 +23,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   private IInsulatedRedstoneConduit insCon;
 
   public RedstoneSettings(GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_REDSTONE, ModObject.itemRedstoneConduit.name, gui, con);
+    super(IconEIO.WRENCH_OVERLAY_REDSTONE, Lang.localize("itemRedstoneConduitInsulated.name"), gui, con);
 
     int x = gap + gui.getFontRenderer().getStringWidth(signalColorStr) + gap + 2;
     int y = customTop;

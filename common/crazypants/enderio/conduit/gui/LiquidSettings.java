@@ -5,7 +5,6 @@ import java.awt.Color;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -34,7 +33,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private ILiquidConduit conduit;
 
   protected LiquidSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_FLUID, ModObject.itemLiquidConduit.name, gui, con);
+    super(IconEIO.WRENCH_OVERLAY_FLUID, Lang.localize("itemLiquidConduit.name"), gui, con);
 
     conduit = (ILiquidConduit) con;
 
