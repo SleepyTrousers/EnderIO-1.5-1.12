@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
@@ -40,6 +41,12 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+
+            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+              setConnectionMode(faceHit, getNextConnectionMode(faceHit));
+              return true;
+            }
+
             BlockCoord loc = getLocation().getLocation(faceHit);
             ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
             if(n == null) {

@@ -436,6 +436,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
     cachedConnectors.clear();
 
+    //TODO: What an unholly mess!
     List<CollidableComponent> coreBounds = new ArrayList<CollidableComponent>();
     for (IConduit con : conduits) {
       addConduitCores(coreBounds, con);
@@ -443,6 +444,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     cachedConnectors.addAll(coreBounds);
     result.addAll(coreBounds);
 
+    // 1st algorithm
     List<CollidableComponent> conduitsBounds = new ArrayList<CollidableComponent>();
     for (IConduit con : conduits) {
       conduitsBounds.addAll(con.getCollidableComponents());
@@ -483,6 +485,29 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
             ConduitConnectorType.INTERNAL);
         result.add(cc);
         cachedConnectors.add(cc);
+      }
+    }
+
+    //2nd algorithm
+    for (IConduit con : conduits) {
+
+      if(con.hasConnections()) {
+        List<CollidableComponent> cores = new ArrayList<CollidableComponent>();
+        addConduitCores(cores, con);
+        if(cores.size() > 1) {
+          BoundingBox bb = cores.get(0).bound;
+          float area = bb.getArea();
+          for (CollidableComponent cc : cores) {
+            bb = bb.expandBy(cc.bound);
+          }
+          if(bb.getArea() > area * 1.5f) {
+            bb = bb.scale(1.05, 1.05, 1.05);
+            CollidableComponent cc = new CollidableComponent(null, bb, ForgeDirection.UNKNOWN,
+                ConduitConnectorType.INTERNAL);
+            result.add(cc);
+            cachedConnectors.add(cc);
+          }
+        }
       }
     }
 

@@ -123,6 +123,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
+            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+              setConnectionMode(faceHit, getNextConnectionMode(faceHit));
+              return true;
+            }
             // Attempt to join networks
             return ConduitUtil.joinConduits(this, faceHit);
           } else if(externalConnections.contains(connDir)) {
