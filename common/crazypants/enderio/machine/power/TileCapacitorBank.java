@@ -183,7 +183,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(!isContoller()) {
       return;
     }
-    ;
+
     boolean requiresClientSync = false;
     requiresClientSync = chargeItems();
 
@@ -203,6 +203,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       outputEnabled = (outputControlMode == RedstoneControlMode.ON && hasSignal) || (outputControlMode == RedstoneControlMode.OFF && !hasSignal);
     }
 
+    updateMasterReceptors();
     if(outputEnabled) {
       transmitEnergy();
     }
@@ -306,8 +307,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
     float canTransmit = Math.min(storedEnergy, maxOutput);
     float transmitted = 0;
-
-    updateMasterReceptors();
 
     if(!masterReceptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = masterReceptors.listIterator();
