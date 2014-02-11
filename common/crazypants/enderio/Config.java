@@ -59,6 +59,12 @@ public final class Config {
 
   public static int fluidConduitMaxIoRate = 200;
 
+  public static boolean renderCapBankGauge = true;
+
+  public static boolean renderCapBankGaugeBackground = true;
+
+  public static boolean renderCapBankGaugeLevel = true;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -172,6 +178,16 @@ public final class Config {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
       useSneakMouseWheelYetaWrench = true;
     }
+
+    //TODO: Debug
+    renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")
+        .getBoolean(renderCapBankGauge);
+    renderCapBankGaugeBackground = config.get("Debug", "renderCapBankGaugeBackground", renderCapBankGaugeBackground,
+        "If not true capacitor banks will not render the level gauge background.")
+        .getBoolean(renderCapBankGaugeBackground);
+    renderCapBankGaugeLevel = config.get("Debug", "renderCapBankGaugeLevel", renderCapBankGaugeLevel,
+        "If not true capacitor banks will not render the level on the gauge.")
+        .getBoolean(renderCapBankGaugeLevel);
 
   }
 
