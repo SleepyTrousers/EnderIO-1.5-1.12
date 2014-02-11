@@ -383,7 +383,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return getCapacitor().getMaxEnergyStored();
+    return getCapacitor().getMaxEnergyStored() * 10;
   }
 
   @Override

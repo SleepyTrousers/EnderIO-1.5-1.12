@@ -501,12 +501,12 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return getController().doGetEnergyStored(from);
+    return (int) (getController().doGetEnergyStored(from) * 10);
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return getController().doGetMaxEnergyStored();
+    return getController().doGetMaxEnergyStored() * 10;
   }
 
   public int doReceiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
@@ -518,12 +518,12 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     return result * 10;
   }
 
-  public int doGetEnergyStored(ForgeDirection from) {
-    return (int) (storedEnergy * 10);
+  public float doGetEnergyStored(ForgeDirection from) {
+    return storedEnergy;
   }
 
   public int doGetMaxEnergyStored(ForgeDirection from) {
-    return maxStoredEnergy * 10;
+    return maxStoredEnergy;
   }
 
   // end rf power
@@ -677,7 +677,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   private void updatePowerHandler() {
-    //powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxInput, maxStoredEnergy, maxOutput), this, Type.STORAGE);
     if(storedEnergy > maxStoredEnergy) {
       storedEnergy = maxStoredEnergy;
     }
