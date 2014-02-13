@@ -6,7 +6,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -66,7 +65,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private ItemFilter activeFilter;
 
   protected ItemSettings(final GuiExternalConnection gui, IConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_ITEM, ModObject.itemItemConduit.name, gui, con);
+    super(IconEIO.WRENCH_OVERLAY_ITEM, Lang.localize("itemItemConduit.name"), gui, con);
     itemConduit = (IItemConduit) con;
     isAdvanced = itemConduit.getMetaData() == 1;
 

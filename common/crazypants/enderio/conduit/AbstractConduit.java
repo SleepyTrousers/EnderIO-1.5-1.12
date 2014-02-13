@@ -488,13 +488,14 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   protected boolean renderStub(ForgeDirection dir) {
-    return getConectionMode(dir) == ConnectionMode.DISABLED;
+    //return getConectionMode(dir) == ConnectionMode.DISABLED;
+    return false;
   }
 
   private Collection<CollidableComponent> getCollidables(ForgeDirection dir) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getCollidableType();
-    if(isConnectedTo(dir)) {
+    if(isConnectedTo(dir) && getConectionMode(dir) != ConnectionMode.DISABLED) {
       return cc.getCollidables(cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)), this);
     }
     return null;

@@ -135,11 +135,15 @@ public class GuiExternalConnection extends GuiContainerBase {
     tes.startDrawingQuads();
     IconEIO.ACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));
 
-    IconEIO icon = tabs.get(activeTab).getIcon();
-    icon.renderIcon(tabX + 4, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 7, 10, 10, 0, false);
-    tes.draw();
+    if(tabs.size() > 0) {
+      IconEIO icon = tabs.get(activeTab).getIcon();
+      icon.renderIcon(tabX + 4, sy + tabYOffset + (activeTab * TAB_HEIGHT) + 7, 10, 10, 0, false);
+      tes.draw();
+      tabs.get(activeTab).render(par1, par2, par3);
+    } else {
+      tes.draw();
+    }
 
-    tabs.get(activeTab).render(par1, par2, par3);
   }
 
 }

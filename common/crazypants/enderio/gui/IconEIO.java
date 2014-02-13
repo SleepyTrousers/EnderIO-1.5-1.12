@@ -20,19 +20,21 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 64, 64);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(64, 148, 64, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 96, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, 96, 64);
 
   public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(64, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(96, 148, 32, 32);
 
   public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(32, 148, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(0, 180, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(64, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(64, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(64 + 96, 148, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(32, 180, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(32 + 64, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(16, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(112, 180, 32, 32);
+
+  public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(48, 180, 32, 32);
 
   public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);
@@ -57,13 +59,13 @@ public final class IconEIO {
   public static final IconEIO FILTER_NBT_OFF = new IconEIO(64 + 22, 212, 22, 22);
   public static final IconEIO FILTER_ORE_DICT_OFF = new IconEIO(64 + 44, 212, 22, 22);
 
-  public static final IconEIO INPUT = new IconEIO(128, 197, 30, 14);
-  public static final IconEIO OUTPUT = new IconEIO(128, 180, 30, 14);
-  public static final IconEIO INPUT_OUTPUT = new IconEIO(158, 180, 30, 8);
+  public static final IconEIO INPUT = new IconEIO(128, 197 + 32, 30, 14);
+  public static final IconEIO OUTPUT = new IconEIO(128, 180 + 32, 30, 14);
+  public static final IconEIO INPUT_OUTPUT = new IconEIO(158, 180 + 32, 30, 8);
 
-  public static final IconEIO INPUT_OFF = new IconEIO(188, 180, 30, 14);
-  public static final IconEIO OUTPUT_OFF = new IconEIO(188, 197, 30, 14);
-  public static final IconEIO INPUT_OUTPUT_OFF = new IconEIO(218, 180, 30, 8);
+  public static final IconEIO INPUT_OFF = new IconEIO(188, 180 + 32, 30, 14);
+  public static final IconEIO OUTPUT_OFF = new IconEIO(188, 197 + 32, 30, 14);
+  public static final IconEIO INPUT_OUTPUT_OFF = new IconEIO(218 + 32, 180, 30, 8);
 
   public static final IconEIO LOOP = new IconEIO(86, 236, 20, 20);
   public static final IconEIO LOOP_OFF = new IconEIO(106, 236, 20, 20);

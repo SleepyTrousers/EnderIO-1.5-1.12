@@ -25,6 +25,7 @@ import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
+import crazypants.enderio.conduit.me.ItemMeConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
@@ -108,6 +109,7 @@ public class EnderIO {
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
+  public static ItemMeConduit itemMeConduit;
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
@@ -177,6 +179,7 @@ public class EnderIO {
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
+    itemMeConduit = ItemMeConduit.create();
 
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
@@ -235,6 +238,7 @@ public class EnderIO {
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();
+    ConduitRecipes.addOreDictionaryRecipes();
   }
 
   @EventHandler

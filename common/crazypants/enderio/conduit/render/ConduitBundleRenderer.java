@@ -57,7 +57,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
         if(renderer.isDynamic()) {
           if(brightness == -1) {
-            BlockCoord loc = bundle.getLocation();
+            BlockCoord loc = bundle.getBlockCoord();
             brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
 
             RenderUtil.bindBlockTexture();
@@ -130,7 +130,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   }
 
   public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick) {
-    BlockCoord loc = bundle.getLocation();
+    BlockCoord loc = bundle.getBlockCoord();
     float brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
 
     Tessellator tessellator = Tessellator.instance;

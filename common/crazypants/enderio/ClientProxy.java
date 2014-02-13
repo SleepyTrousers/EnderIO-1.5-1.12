@@ -22,6 +22,7 @@ import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
+import crazypants.enderio.conduit.me.MeConduit;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -77,6 +78,7 @@ public class ClientProxy extends CommonProxy {
     LiquidConduit.initIcons();
     AdvancedLiquidConduit.initIcons();
     ItemConduit.initIcons();
+    MeConduit.initIcons();
   }
 
   private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
@@ -134,6 +136,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit.itemID, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit.itemID, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit.itemID, itemConRenderer);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMeConduit.itemID, itemConRenderer);
 
     PaintedItemRenderer pir = new PaintedItemRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.blockCustomFence.blockID, pir);

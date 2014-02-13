@@ -293,6 +293,10 @@ public final class BoundingBox {
     return new Vector3d(maxX, maxY, maxZ);
   }
 
+  public float getArea() {
+    return sizeX() * sizeY() * sizeZ();
+  }
+
   @Override
   public String toString() {
     return "BoundingBox [minX=" + minX + ", minY=" + minY + ", minZ=" + minZ + ", maxX=" + maxX + ", maxY=" + maxY + ", maxZ=" + maxZ + "]";
