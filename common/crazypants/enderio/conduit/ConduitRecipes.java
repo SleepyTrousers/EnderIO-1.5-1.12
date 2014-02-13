@@ -4,9 +4,11 @@ import static crazypants.enderio.ModObject.blockPainter;
 import static crazypants.enderio.ModObject.itemConduitFacade;
 import static crazypants.enderio.ModObject.itemItemConduit;
 import static crazypants.enderio.ModObject.itemLiquidConduit;
+import static crazypants.enderio.ModObject.itemMeConduit;
 import static crazypants.enderio.ModObject.itemPowerConduit;
 import static crazypants.enderio.ModObject.itemRedstoneConduit;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
@@ -58,6 +60,15 @@ public class ConduitRecipes {
 
     MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
 
+  }
+
+  public static void addOreDictionaryRecipes() {
+    Item i = GameRegistry.findItem("AppliedEnergistics", "AppEngMaterials");
+    if(i != null) {
+      ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.CONDUIT_BINDER.ordinal());
+      ItemStack flux = new ItemStack(4362, 1, 14);
+      GameRegistry.addShapedRecipe(new ItemStack(itemMeConduit.actualId, 3, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', flux);
+    }
   }
 
 }

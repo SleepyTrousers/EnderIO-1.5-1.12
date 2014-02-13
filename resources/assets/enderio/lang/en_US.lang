@@ -31,6 +31,8 @@ enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
 enderio.itemItemConduit.name=Item Conduit
 enderio.itemItemConduitEmpowered.name=Empowered Item Conduit
 
+enderio.itemMeConduit.name=ME Conduit
+
 //Materials
 enderio.itemMaterial.name=Materials
 enderio.silicon.name=Silicon

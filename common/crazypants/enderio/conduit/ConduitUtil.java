@@ -30,6 +30,7 @@ import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.me.IMeConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -208,6 +209,8 @@ public class ConduitUtil {
       return conduitType == IPowerConduit.class;
     case REDSTONE:
       return conduitType == IRedstoneConduit.class || conduitType == IInsulatedRedstoneConduit.class;
+    case ME:
+      return conduitType == IMeConduit.class;
     default:
       break;
     }

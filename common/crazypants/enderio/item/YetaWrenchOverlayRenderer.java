@@ -48,22 +48,24 @@ public class YetaWrenchOverlayRenderer {
 
     if(mode == ConduitDisplayMode.ALL) {
       GL11.glColor4f(1, 1, 1, 0.75f);
-      IconEIO.WRENCH_OVERLAY_ALL_ON.renderIcon(offsetX, offsetY - 32, 32, 32, 0, true);
+      IconEIO.WRENCH_OVERLAY_ALL_ON.renderIcon(offsetX, offsetY - 32, 48, 32, 0, true);
       return;
     }
 
     float c = 0.6f;
     GL11.glColor4f(c, c, c, 0.33f);
-    IconEIO.WRENCH_OVERLAY_ALL_OFF.renderIcon(offsetX, offsetY - 32, 32, 32, 0, true);
+    IconEIO.WRENCH_OVERLAY_ALL_OFF.renderIcon(offsetX, offsetY - 32, 48, 32, 0, true);
     GL11.glColor4f(1, 1, 1, 0.75f);
     if(mode == ConduitDisplayMode.POWER) {
       IconEIO.WRENCH_OVERLAY_POWER.renderIcon(offsetX, offsetY - 32, 16, 16, 0, true);
     } else if(mode == ConduitDisplayMode.FLUID) {
-      IconEIO.WRENCH_OVERLAY_FLUID.renderIcon(offsetX + 16, offsetY - 16, 16, 16, 0, true);
+      IconEIO.WRENCH_OVERLAY_FLUID.renderIcon(offsetX + 8, offsetY - 16, 16, 16, 0, true);
     } else if(mode == ConduitDisplayMode.ITEM) {
-      IconEIO.WRENCH_OVERLAY_ITEM.renderIcon(offsetX, offsetY - 16, 16, 16, 0, true);
+      IconEIO.WRENCH_OVERLAY_ITEM.renderIcon(offsetX + 32, offsetY - 32, 16, 16, 0, true);
     } else if(mode == ConduitDisplayMode.REDSTONE) {
       IconEIO.WRENCH_OVERLAY_REDSTONE.renderIcon(offsetX + 16, offsetY - 32, 16, 16, 0, true);
+    } else if(mode == ConduitDisplayMode.ME) {
+      IconEIO.WRENCH_OVERLAY_ME.renderIcon(offsetX + 24, offsetY - 16, 16, 16, 0, true);
     }
 
   }

@@ -2,8 +2,8 @@ package crazypants.enderio;
 
 import static net.minecraftforge.common.Configuration.CATEGORY_BLOCK;
 import static net.minecraftforge.common.Configuration.CATEGORY_ITEM;
-import crazypants.util.Lang;
 import net.minecraftforge.common.Configuration;
+import crazypants.util.Lang;
 
 public enum ModObject {
   // Enderface
@@ -65,7 +65,8 @@ public enum ModObject {
 
   blockPowerMonitor(++Config.BID, CATEGORY_BLOCK),
 
-  itemItemConduit(++Config.IID, CATEGORY_ITEM);
+  itemItemConduit(++Config.IID, CATEGORY_ITEM),
+  itemMeConduit(++Config.IID, CATEGORY_ITEM);
 
   public final String unlocalisedName;
   public final String name;

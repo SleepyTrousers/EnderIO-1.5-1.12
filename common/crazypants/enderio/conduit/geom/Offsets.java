@@ -7,6 +7,7 @@ import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMeConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 
@@ -34,6 +35,11 @@ public class Offsets {
     OFFSETS.put(key(IItemConduit.class, Axis.X), Offset.SOUTH);
     OFFSETS.put(key(IItemConduit.class, Axis.Y), Offset.EAST);
     OFFSETS.put(key(IItemConduit.class, Axis.Z), Offset.EAST);
+
+    OFFSETS.put(key(IMeConduit.class, Axis.NONE), Offset.NONE);
+    OFFSETS.put(key(IMeConduit.class, Axis.X), Offset.NONE);
+    OFFSETS.put(key(IMeConduit.class, Axis.Y), Offset.NONE);
+    OFFSETS.put(key(IMeConduit.class, Axis.Z), Offset.NONE);
   }
 
   public static Offset get(Class<? extends IConduit> type, ForgeDirection dir) {
