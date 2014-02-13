@@ -35,12 +35,12 @@ public class GuiAlloySmelter extends GuiMachineBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(Lang.localize("enderio.gui.alloy.mode.heading"));
-        String txt = Lang.localize("enderio.gui.alloy.mode.all");
+        text.add(Lang.localize("gui.alloy.mode.heading"));
+        String txt = Lang.localize("gui.alloy.mode.all");
         if(tileEntity.getMode() == Mode.ALLOY) {
-          txt = Lang.localize("enderio.gui.alloy.mode.alloy");
+          txt = Lang.localize("gui.alloy.mode.alloy");
         } else if(tileEntity.getMode() == Mode.FURNACE) {
-          txt = Lang.localize("enderio.gui.alloy.mode.furnace");
+          txt = Lang.localize("gui.alloy.mode.furnace");
         }
         text.add(txt);
       }
