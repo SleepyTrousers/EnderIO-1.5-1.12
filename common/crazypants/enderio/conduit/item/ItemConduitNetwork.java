@@ -268,7 +268,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         ItemStack item = inv.getStackInSlot(slot);
         if(canExtractItem(item)) {
           extractItem = item.copy();
-          if(inv.canExtractItem(index, extractItem, inventorySide)) {
+          if(inv.canExtractItem(slot, extractItem, inventorySide)) {
             if(doTransfer(extractItem, slot, maxExtracted)) {
               setNextStartingSlot(slot);
               return true;
