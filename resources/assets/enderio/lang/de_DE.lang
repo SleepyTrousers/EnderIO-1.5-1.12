@@ -31,6 +31,8 @@ enderio.itemLiquidConduit.unlockedType.name=Flüssigkeitstyp nicht mehr gebunden
 enderio.itemItemConduit.name=Item-Leitung
 enderio.itemItemConduitEmpowered.name=Verstärkte Item-Leitung
 
+enderio.itemMeConduit.name=ME-Leitung
+
 //Materials
 enderio.itemMaterial.name=Materialien
 enderio.silicon.name=Silicium
@@ -84,6 +86,11 @@ tile.enderio.blockCapacitorBank.tooltipPrefix=Enthält
 tile.enderio.blockCrusher.name=SAG-Mahlwerk
 tile.enderio.blockHyperCube.name=Dimensional-Transceiver
 tile.enderio.blockPowerMonitor.name=Energiemonitor
+
+//Travel
+tile.enderio.blockTravelPlatform.name=Reiseplattform
+enderio.blockTravelPlatform.invalidTarget=Ziel ist ungültig
+item.enderio.itemTravelStaff.name=Stab des Reisens
 
 //Painter
 tile.enderio.blockPainter.name=Färbemaschine
