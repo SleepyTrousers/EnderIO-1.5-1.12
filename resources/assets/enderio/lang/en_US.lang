@@ -87,6 +87,11 @@ tile.enderio.blockCrusher.name=SAG Mill
 tile.enderio.blockHyperCube.name=Dimensional Transceiver
 tile.enderio.blockPowerMonitor.name=Power Monitor
 
+//Travel
+tile.enderio.blockTravelPlatform.name=Travel Platform
+enderio.blockTravelPlatform.invalidTarget=Destination is Obscured
+item.enderio.itemTravelStaff.name=Staff of Traveling
+
 //Painter
 tile.enderio.blockPainter.name=Painting Machine
 enderio.blockPainter.paintedWith=Painted with:

@@ -64,6 +64,8 @@ import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
+import crazypants.enderio.teleport.BlockTravelPlatform;
+import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
@@ -91,6 +93,10 @@ public class EnderIO {
   // Enderface
   public static BlockEnderIO blockEnderIo;
   public static ItemEnderface itemEnderface;
+
+  //Teleporting
+  public static BlockTravelPlatform blockTravelPlatform;
+  public static ItemTravelStaff itemTravelStaff;
 
   // Painter
   public static BlockPainter blockPainter;
@@ -150,6 +156,9 @@ public class EnderIO {
 
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
+
+    blockTravelPlatform = BlockTravelPlatform.create();
+    itemTravelStaff = ItemTravelStaff.create();
 
     blockHyperCube = BlockHyperCube.create();
 

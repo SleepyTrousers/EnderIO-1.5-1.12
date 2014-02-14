@@ -55,6 +55,9 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.enderio.material.MachinePartRenderer;
+import crazypants.enderio.teleport.TileTravelPlatform;
+import crazypants.enderio.teleport.TravelPlatformController;
+import crazypants.enderio.teleport.TravelPlatformSpecialRenderer;
 
 public class ClientProxy extends CommonProxy {
 
@@ -154,6 +157,8 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(cbr);
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTravelPlatform.class, new TravelPlatformSpecialRenderer());
+
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
     conduitRenderers.add(new LiquidConduitRenderer());
@@ -176,6 +181,7 @@ public class ClientProxy extends CommonProxy {
     if(Config.useSneakMouseWheelYetaWrench) {
       TickRegistry.registerTickHandler(new YetaWrenchTickHandler(), Side.CLIENT);
     }
+    TickRegistry.registerTickHandler(TravelPlatformController.instance, Side.CLIENT);
 
   }
 

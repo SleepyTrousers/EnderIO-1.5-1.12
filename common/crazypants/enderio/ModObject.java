@@ -66,7 +66,10 @@ public enum ModObject {
   blockPowerMonitor(++Config.BID, CATEGORY_BLOCK),
 
   itemItemConduit(++Config.IID, CATEGORY_ITEM),
-  itemMeConduit(++Config.IID, CATEGORY_ITEM);
+  itemMeConduit(++Config.IID, CATEGORY_ITEM),
+
+  blockTravelPlatform(++Config.BID, CATEGORY_BLOCK),
+  itemTravelStaff(++Config.IID, CATEGORY_ITEM);
 
   public final String unlocalisedName;
   public final String name;

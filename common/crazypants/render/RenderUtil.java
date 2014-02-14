@@ -427,6 +427,20 @@ public class RenderUtil {
     return v;
   }
 
+  public static Vector3d getEyePositionEio(EntityPlayer player) {
+    Vector3d res = new Vector3d(player.posX, player.posY, player.posZ);
+    if(player.worldObj.isRemote) {
+      //take into account any eye changes done by mods.
+      res.y += player.getEyeHeight() - player.getDefaultEyeHeight();
+    } else {
+      res.y += player.getEyeHeight();
+      if(player instanceof EntityPlayerMP && player.isSneaking()) {
+        res.y -= 0.08;
+      }
+    }
+    return res;
+  }
+
   private static class EdgeNeighbour {
     final ForgeDirection dir;
     final BlockCoord bc;
