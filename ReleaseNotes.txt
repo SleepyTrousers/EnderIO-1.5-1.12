@@ -1,3 +1,15 @@
+0.9.0
+- #30  Added ME conduits, allowing 5 conduits in a block. Acts identically to a colorless ME cable, with a very similar recipe
+- #291 Improved rendering of internal conduit connections
+- #325 Item conduits not extract from Mekanism machines
+- #432 Resolved incompatibilities between EIO and Mekanism power systems.
+- #455 Resolved incompatibilities between EIO and Mekanism universal cables.
+- #456 Cap Bank not displaying side mode when placed next to TE conduit.
+- #457 Titles in conduit settings GUI not localised correctly
+- #458 Alloy Smelter modi change didn't show the modi name 
+- #460 Crash when rapidly opening a conduit GUI after placing the conduit
+- Added polish language localisation (kostek00)
+
 0.8.0
 Liquid Conduit Changes:
   - New 'Pressurized Fluid Conduit' (tier 2)
