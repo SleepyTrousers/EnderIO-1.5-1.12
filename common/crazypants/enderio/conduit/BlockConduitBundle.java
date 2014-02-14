@@ -47,6 +47,7 @@ import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
+import crazypants.render.RenderUtil;
 import crazypants.util.Util;
 
 public class BlockConduitBundle extends Block implements ITileEntityProvider, IConnectableRedNet, IGuiHandler {
@@ -413,7 +414,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     if(breakBlock) {
       List<RaytraceResult> results = doRayTraceAll(world, x, y, z, player);
-      RaytraceResult.sort(getEyePosition(world, player), results);
+      RaytraceResult.sort(RenderUtil.getEyePosition(player), results);
       for (RaytraceResult rt : results) {
         if(breakConduit(te, drop, rt, player)) {
           break;
@@ -593,7 +594,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     // Conduit specific actions
     if(all != null) {
-      RaytraceResult.sort(getEyePosition(world, player), all);
+      RaytraceResult.sort(RenderUtil.getEyePosition(player), all);
       for (RaytraceResult rr : all) {
         if(ConduitUtil.renderConduit(player, rr.component.conduitType) && !(rr.component.data instanceof
             ConduitConnectorType)) {
@@ -744,18 +745,8 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     if(allHits == null) {
       return null;
     }
-    Vec3 origin = getEyePosition(world, entityPlayer);
+    Vec3 origin = RenderUtil.getEyePosition(entityPlayer);
     return RaytraceResult.getClosestHit(origin, allHits);
-  }
-
-  private Vec3 getEyePosition(World world, EntityPlayer entityPlayer) {
-    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
-    if(!world.isRemote && entityPlayer.isSneaking()) {
-      posY -= 0.08;
-    }
-    Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
-        entityPlayer.posZ);
-    return origin;
   }
 
   public List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z,
@@ -769,7 +760,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     double reachDistance = EnderIO.proxy.getReachDistanceForPlayer(entityPlayer);
 
-    Vec3 origin = getEyePosition(world, entityPlayer);
+    Vec3 origin = RenderUtil.getEyePosition(entityPlayer);
     Vec3 direction = origin.addVector(dirX * reachDistance, dirY *
         reachDistance, dirZ * reachDistance);
     return doRayTraceAll(world, x, y, z, origin, direction,
