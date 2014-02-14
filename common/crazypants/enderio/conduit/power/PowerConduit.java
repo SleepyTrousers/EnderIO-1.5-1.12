@@ -252,17 +252,21 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
     ConnectionMode mode = getConectionMode(side);
-    if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(side)) {
+    if(side == null || mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(side)) {
       if(noInputPH == null) {
         noInputPH = new PowerHandler(this, Type.PIPE);
-        noInputPH.configure(0, 0, 0, powerHandler.getMaxEnergyStored());
+        noInputPH.configure(0, 0, 0, getOrCreatePowerHandler().getMaxEnergyStored());
       }
       return noInputPH.getPowerReceiver();
     }
+    return getOrCreatePowerHandler().getPowerReceiver();
+  }
+
+  private PowerHandler getOrCreatePowerHandler() {
     if(powerHandler == null) {
       powerHandler = createPowerHandlerForType();
     }
-    return powerHandler.getPowerReceiver();
+    return powerHandler;
   }
 
   @Override
