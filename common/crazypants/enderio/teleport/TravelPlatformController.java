@@ -2,6 +2,7 @@ package crazypants.enderio.teleport;
 
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -33,6 +34,8 @@ import crazypants.vecmath.Vector4d;
 public class TravelPlatformController implements ITickHandler {
 
   public static final TravelPlatformController instance = new TravelPlatformController();
+
+  private Random rand = new Random();
 
   private boolean wasJumping = false;
 
@@ -120,6 +123,11 @@ public class TravelPlatformController implements ITickHandler {
       return false;
     }
     sendTravelEvent(coord, source, requiredPower, conserveMotion);
+    for (int i = 0; i < 6; ++i) {
+      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * (double) player.height - 0.25D,
+          player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
+          (rand.nextDouble() - 0.5D) * 2.0D);
+    }
     return true;
 
   }

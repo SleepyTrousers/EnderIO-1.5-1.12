@@ -70,7 +70,14 @@ public class TravelPlatformPacketHandler implements IPacketProcessor {
     boolean conserveMotion = data.readBoolean();
 
     EntityPlayer ep = (EntityPlayer) player;
+
+    ep.worldObj.playSoundEffect(ep.posX, ep.posY, ep.posZ, "mob.endermen.portal", 1.0F, 1.0F);
+
+    ep.playSound("mob.endermen.portal", 1.0F, 1.0F);
+
     ep.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
+
+    ep.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);
 
     if(conserveMotion) {
       Vector3d velocityVex = RenderUtil.getLookVecEio(ep);
