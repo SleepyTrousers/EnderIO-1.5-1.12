@@ -5,19 +5,48 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.PacketHandler;
+import crazypants.enderio.enderface.te.MeProxy;
 
 public class BlockEnderIO extends Block implements ITileEntityProvider {
 
   public static BlockEnderIO create() {
+
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ME_ACCESS_TERMINAL, new IGuiHandler() {
+
+      @Override
+      public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        try {
+          return MeProxy.createMeTerminalContainer(player, x, y, z, false);
+        } catch (Exception e) {
+          Log.warn("BlockEnderIO: Error occured creating the server gui element for an ME Terminal " + e);
+        }
+        return null;
+      }
+
+      @Override
+      public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return MeProxy.instance.createTerminalGui(player, x, y, z);
+      }
+
+    });
+
+    PacketHandler.instance.addPacketProcessor(new EnderfacePacketProcessor());
+
     BlockEnderIO result = new BlockEnderIO();
     result.init();
     return result;

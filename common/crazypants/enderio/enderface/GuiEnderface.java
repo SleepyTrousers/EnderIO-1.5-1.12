@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
+import crazypants.enderio.enderface.te.MeProxy;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
@@ -522,9 +522,15 @@ public class GuiEnderface extends GuiScreen {
 
   }
 
-  void openInterface(int targetX, int targetY, int targetZ) {
-    Packet250CustomPayload pkt = PacketHandler.getPacketEnderface(targetX, targetY, targetZ);
-    PacketDispatcher.sendPacketToServer(pkt);
+  void openInterface(int x, int y, int z) {
+
+    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
+      Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
+      PacketDispatcher.sendPacketToServer(pkt);
+    } else {
+      Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
+      PacketDispatcher.sendPacketToServer(pkt);
+    }
   }
 
   static class ViewableBlocks {
