@@ -11,7 +11,6 @@ import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.util.Lang;
@@ -32,7 +31,8 @@ public class ItemEnderface extends Item implements IGuiHandler {
 
   protected ItemEnderface() {
     super(ModObject.itemEnderface.id);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    //setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(null);
     setUnlocalizedName("enderio." + ModObject.itemEnderface.name());
     setMaxStackSize(1);
   }

@@ -16,6 +16,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     API.registerUsageHandler(new SagMillRecipeHandler());
     API.setGuiOffset(GuiAlloySmelter.class, 5, 3);
     API.hideItem(EnderIO.blockConduitFacade.blockID);
+    API.hideItem(EnderIO.itemEnderface.itemID);
     if(!Config.photovoltaicCellEnabled) {
       API.hideItem(EnderIO.blockSolarPanel.blockID);
     }

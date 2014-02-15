@@ -21,13 +21,16 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
+import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Camera;
@@ -86,7 +89,15 @@ public class GuiEnderface extends GuiScreen {
     this.ioY = ioY;
     this.ioZ = ioZ;
 
+    range = Config.enderIoRange;
     distance = 10 + (range * 2);
+
+    TileEntity te = world.getBlockTileEntity(ioX, ioY, ioZ);
+    if(te instanceof TileEnderIO) {
+      pitch = ((TileEnderIO) te).lastUiPitch;
+      yaw = ((TileEnderIO) te).lastUiYaw;
+      distance = ((TileEnderIO) te).lastUiDistance;
+    }
 
     origin.set(ioX + 0.5, ioY + 0.5, ioZ + 0.5);
     pitchRot.setIdentity();
@@ -97,7 +108,7 @@ public class GuiEnderface extends GuiScreen {
     RB.blockAccess = world;
 
     blocks.add(new ViewableBlocks(ioX, ioY, ioZ, ModObject.blockEnderIo.id));
-    range = 3;
+
     for (int x = ioX - range; x <= ioX + range; x++) {
       for (int y = ioY - range; y <= ioY + range; y++) {
         for (int z = ioZ - range; z <= ioZ + range; z++) {
@@ -107,6 +118,16 @@ public class GuiEnderface extends GuiScreen {
           }
         }
       }
+    }
+  }
+
+  @Override
+  public void onGuiClosed() {
+    TileEntity te = world.getBlockTileEntity(ioX, ioY, ioZ);
+    if(te instanceof TileEnderIO) {
+      ((TileEnderIO) te).lastUiPitch = pitch;
+      ((TileEnderIO) te).lastUiYaw = yaw;
+      ((TileEnderIO) te).lastUiDistance = distance;
     }
   }
 
@@ -147,9 +168,16 @@ public class GuiEnderface extends GuiScreen {
     }
 
     if(dragging) {
-      yaw -= (Mouse.getEventDX() / (double) mc.displayWidth) * 180;
-      pitch += (Mouse.getEventDY() / (double) mc.displayHeight) * 180;
-      pitch = (float) VecmathUtil.clamp(pitch, -80, 80);
+
+      double dx = (Mouse.getEventDX() / (double) mc.displayWidth);
+      double dy = (Mouse.getEventDY() / (double) mc.displayHeight);
+      if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        distance -= dy * 15;
+      } else {
+        yaw -= dx * 180;
+        pitch += dy * 180;
+        pitch = (float) VecmathUtil.clamp(pitch, -80, 80);
+      }
     }
 
     distance -= Mouse.getDWheel() * 0.01;
@@ -236,6 +264,8 @@ public class GuiEnderface extends GuiScreen {
 
       if(chunkLoaded) {
 
+        TravelController.instance.setSelectionEnabled(false);
+
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
@@ -267,7 +297,8 @@ public class GuiEnderface extends GuiScreen {
           }
         }
 
-        // mc.entityRenderer.disableLightmap(0);
+        TravelController.instance.setSelectionEnabled(true);
+
       } else {
         drawCenteredString(fontRenderer, "EnderIO chunk not loaded.", width / 2, height / 2 - 32, 0xFFFFFFFF);
       }

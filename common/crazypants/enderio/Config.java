@@ -74,6 +74,8 @@ public final class Config {
   public static double travelStaffMaxBlinkDistance = 8;
   public static int travelStaffBlinkPauseTicks = 10;
 
+  public static int enderIoRange = 5;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -209,6 +211,9 @@ public final class Config {
 
     travelStaffBlinkPauseTicks = config.get("Settings", "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
+
+    enderIoRange = config.get("Settings", "enderIoRange", enderIoRange,
+        "Range in blocks of when using the Ender IO.").getInt(enderIoRange);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

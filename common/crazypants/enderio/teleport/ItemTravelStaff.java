@@ -10,11 +10,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.render.RenderUtil;
@@ -22,6 +25,13 @@ import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
+
+  public static boolean isEquipped(EntityPlayer ep) {
+    if(ep == null || ep.getCurrentEquippedItem() == null) {
+      return false;
+    }
+    return ep.getCurrentEquippedItem().itemID == ModObject.itemTravelStaff.actualId;
+  }
 
   private long lastBlickTick = 0;
 
@@ -69,7 +79,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
           sample.scale(i);
           sample.add(eye);
           BlockCoord coord = new BlockCoord((int) sample.x, (int) sample.y, (int) sample.z);
-          if(TravelPlatformController.instance.travelToLocation(player, TravelSource.STAFF, coord, true)) {
+          if(TravelController.instance.travelToLocation(player, TravelSource.STAFF, coord, true)) {
             player.swingItem();
             lastBlickTick = player.worldObj.getTotalWorldTime();
             return equipped;
@@ -80,8 +90,18 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     }
 
     if(world.isRemote) {
-      if(TravelPlatformController.instance.hasTarget()) {
-        TravelPlatformController.instance.travelToSelectedTarget(player, TravelSource.STAFF, false);
+      if(TravelController.instance.hasTarget()) {
+        if(TravelController.instance.isTargetEnderIO()) {
+          BlockCoord target = TravelController.instance.selectedCoord;
+          int requiredPower = TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
+          if(requiredPower >= 0 && requiredPower <= getEnergyStored(equipped)) {
+            PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+            player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
+                TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
+          }
+        } else {
+          TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF, false);
+        }
       }
     }
     player.swingItem();

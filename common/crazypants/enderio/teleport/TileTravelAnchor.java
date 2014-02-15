@@ -4,7 +4,7 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileTravelPlatform extends TileEntity {
+public class TileTravelAnchor extends TileEntity {
 
   private static final int REND_DIST_SQ = TravelSource.getMaxDistanceSq();
 

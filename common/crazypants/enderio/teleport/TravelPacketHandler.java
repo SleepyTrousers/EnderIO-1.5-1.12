@@ -21,11 +21,28 @@ import crazypants.enderio.PacketHandler;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector3d;
 
-public class TravelPlatformPacketHandler implements IPacketProcessor {
+public class TravelPacketHandler implements IPacketProcessor {
 
   @Override
   public boolean canProcessPacket(int packetID) {
-    return packetID == PacketHandler.ID_TRAVEL_PLATFORM;
+    return packetID == PacketHandler.ID_TRAVEL_PLATFORM || packetID == PacketHandler.ID_TRAVEL_STAFF_DRAIN;
+  }
+
+  public static Packet createDrainPowerPacket(int powerUse) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    try {
+      dos.writeInt(PacketHandler.ID_TRAVEL_STAFF_DRAIN);
+      dos.writeInt(powerUse);
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
   }
 
   public static Packet createMovePacket(int x, int y, int z, int powerUse, boolean conserveMotion) {
@@ -53,10 +70,23 @@ public class TravelPlatformPacketHandler implements IPacketProcessor {
   public void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException {
     if(packetID == PacketHandler.ID_TRAVEL_PLATFORM) {
       processMovePacket(data, player);
+    } else if(packetID == PacketHandler.ID_TRAVEL_STAFF_DRAIN) {
+      processDrainPacket(data, player);
     } else {
       Log.warn("Recieved unkown packet with ID " + packetID);
     }
 
+  }
+
+  private void processDrainPacket(DataInputStream data, Player player) throws IOException {
+    if(!(player instanceof EntityPlayer)) {
+      return;
+    }
+    int powerUse = data.readInt();
+    EntityPlayer ep = (EntityPlayer) player;
+    if(ItemTravelStaff.isEquipped(ep)) {
+      EnderIO.itemTravelStaff.extractInternal(ep.getCurrentEquippedItem(), powerUse);
+    }
   }
 
   private void processMovePacket(DataInputStream data, Player player) throws IOException {

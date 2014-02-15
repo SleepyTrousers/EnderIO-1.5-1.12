@@ -68,6 +68,7 @@ public class PacketHandler implements IPacketHandler {
   public static final int ID_CONDUIT_FLUID_LEVEL = 22;
 
   public static final int ID_TRAVEL_PLATFORM = 23;
+  public static final int ID_TRAVEL_STAFF_DRAIN = 24;
 
   public static final String CHANNEL = "EnderIO";
 
@@ -151,6 +152,7 @@ public class PacketHandler implements IPacketHandler {
       System.out.println("kitchenbench.PacketHandler.handleEnderfacePacket: <ERROR> Not an EntityPlayerMP");
       return;
     }
+
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();

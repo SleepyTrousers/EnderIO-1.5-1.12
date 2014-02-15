@@ -31,9 +31,9 @@ import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4d;
 
-public class TravelPlatformController implements ITickHandler {
+public class TravelController implements ITickHandler {
 
-  public static final TravelPlatformController instance = new TravelPlatformController();
+  public static final TravelController instance = new TravelController();
 
   private Random rand = new Random();
 
@@ -41,17 +41,26 @@ public class TravelPlatformController implements ITickHandler {
 
   private boolean showTargets = false;
 
-  private BlockCoord onBlockCoord;
+  BlockCoord onBlockCoord;
 
-  private BlockCoord selectedCoord;
+  BlockCoord selectedCoord;
 
   private final Set<BlockCoord> candidates = new HashSet<BlockCoord>();
 
-  private TravelPlatformController() {
+  private boolean selectionEnabled = true;
+
+  private TravelController() {
   }
 
   public boolean showTargets() {
-    return showTargets;
+    return showTargets && selectionEnabled;
+  }
+
+  public void setSelectionEnabled(boolean b) {
+    selectionEnabled = b;
+    if(!selectionEnabled) {
+      candidates.clear();
+    }
   }
 
   public boolean isBlockSelected(BlockCoord coord) {
@@ -69,6 +78,13 @@ public class TravelPlatformController implements ITickHandler {
     return TravelSource.getMaxDistanceSq();
   }
 
+  public boolean isTargetEnderIO() {
+    if(selectedCoord == null) {
+      return false;
+    }
+    return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlockId(selectedCoord.x, selectedCoord.y, selectedCoord.z) == ModObject.blockEnderIo.actualId;
+  }
+
   @Override
   public void tickStart(EnumSet<TickType> type, Object... tickData) {
     if(type.contains(TickType.CLIENT)) {
@@ -78,7 +94,7 @@ public class TravelPlatformController implements ITickHandler {
       }
       onBlockCoord = getActiveTravelBlock(player);
       boolean onBlock = onBlockCoord != null;
-      showTargets = onBlock || isStaffEquipped(player);
+      showTargets = onBlock || ItemTravelStaff.isEquipped(player);
       if(showTargets) {
         updateSelectedTarget(player);
       } else {
@@ -106,11 +122,8 @@ public class TravelPlatformController implements ITickHandler {
   public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMotion) {
     int requiredPower = 0;
     if(source == TravelSource.STAFF) {
-      ItemStack staff = player.getCurrentEquippedItem();
-      requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
-      int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
-      if(requiredPower > canUsePower) {
-        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("itemTravelStaff.notEnoughPower")));
+      requiredPower = getRequiredPower(player, source, coord);
+      if(requiredPower < 0) {
         return false;
       }
     }
@@ -132,11 +145,16 @@ public class TravelPlatformController implements ITickHandler {
 
   }
 
-  public boolean isStaffEquipped(EntityPlayer player) {
-    if(player == null || player.getCurrentEquippedItem() == null) {
-      return false;
+  public int getRequiredPower(EntityPlayer player, TravelSource source, BlockCoord coord) {
+    int requiredPower;
+    ItemStack staff = player.getCurrentEquippedItem();
+    requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
+    int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
+    if(requiredPower > canUsePower) {
+      player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("itemTravelStaff.notEnoughPower")));
+      return -1;
     }
-    return ModObject.itemTravelStaff.actualId == player.getCurrentEquippedItem().itemID;
+    return requiredPower;
   }
 
   private boolean isInRangeTarget(EntityPlayer player, BlockCoord bc, float maxSq) {
@@ -221,14 +239,14 @@ public class TravelPlatformController implements ITickHandler {
   }
 
   private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
-    if(isStaffEquipped(player)) {
+    if(ItemTravelStaff.isEquipped(player)) {
       return TravelSource.STAFF.maxDistanceTravelledSq;
     }
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
   private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse, boolean conserveMotion) {
-    Packet p = TravelPlatformPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, conserveMotion);
+    Packet p = TravelPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, conserveMotion);
     PacketDispatcher.sendPacketToServer(p);
   }
 
