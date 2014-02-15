@@ -2,14 +2,12 @@ package crazypants.enderio.teleport;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,8 +17,13 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
+import crazypants.vecmath.Vector3d;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
+
+  private long lastBlickTick = 0;
 
   public static ItemTravelStaff create() {
     ItemTravelStaff result = new ItemTravelStaff();
@@ -53,21 +56,32 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   @Override
-  public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-    int blockId = world.getBlockId(x, y, z);
-    Block block = Block.blocksList[blockId];
-    if(block != null && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
-      player.swingItem();
-      return !world.isRemote;
-    }
-    return false;
-  }
-
-  @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+    if(player.isSneaking()) {
+      if(world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= 10) {//Config.travelStaffBlinkPauseTicks) {
+        Vector3d eye = RenderUtil.getEyePositionEio(player);
+        Vector3d look = RenderUtil.getLookVecEio(player);
+
+        Vector3d sample = new Vector3d();
+
+        for (int i = (int) Math.round(Config.travelStaffMaxBlinkDistance); i > 0; i--) {
+          sample.set(look);
+          sample.scale(i);
+          sample.add(eye);
+          BlockCoord coord = new BlockCoord((int) sample.x, (int) sample.y, (int) sample.z);
+          if(TravelPlatformController.instance.travelToLocation(player, TravelSource.STAFF, coord, true)) {
+            player.swingItem();
+            lastBlickTick = player.worldObj.getTotalWorldTime();
+            return equipped;
+          }
+        }
+      }
+      return equipped;
+    }
+
     if(world.isRemote) {
       if(TravelPlatformController.instance.hasTarget()) {
-        TravelPlatformController.instance.travelToSelectedTarget(player, TravelSource.STAFF);
+        TravelPlatformController.instance.travelToSelectedTarget(player, TravelSource.STAFF, false);
       }
     }
     player.swingItem();

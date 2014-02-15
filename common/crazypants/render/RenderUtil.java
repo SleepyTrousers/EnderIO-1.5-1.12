@@ -441,6 +441,11 @@ public class RenderUtil {
     return res;
   }
 
+  public static Vector3d getLookVecEio(EntityPlayer player) {
+    Vec3 lv = player.getLookVec();
+    return new Vector3d(lv.xCoord, lv.yCoord, lv.zCoord);
+  }
+
   private static class EdgeNeighbour {
     final ForgeDirection dir;
     final BlockCoord bc;

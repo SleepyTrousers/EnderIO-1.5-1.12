@@ -71,6 +71,8 @@ public final class Config {
   public static int travelStaffMaxStoredPower = 50000;
   public static int travelStaffMaxPowerIo = 500;
   public static boolean travelAnchorEnabled = true;
+  public static double travelStaffMaxBlinkDistance = 8;
+  public static int travelStaffBlinkPauseTicks = 10;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -201,6 +203,12 @@ public final class Config {
 
     travelStaffMaxPowerIo = config.get("Settings", "travelStaffMaxPowerIo", travelStaffMaxPowerIo,
         "Maximum number of MJ that the Staff of the Traveling can be charged per tick.").getInt(travelStaffMaxPowerIo);
+
+    travelStaffMaxBlinkDistance = (float) config.get("Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
+        "Max number of blocks teleported when shift clicking the staff.").getDouble(travelStaffMaxBlinkDistance);
+
+    travelStaffBlinkPauseTicks = config.get("Settings", "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
+        "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

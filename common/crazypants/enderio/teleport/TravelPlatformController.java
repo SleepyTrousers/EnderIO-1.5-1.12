@@ -83,7 +83,7 @@ public class TravelPlatformController implements ITickHandler {
       }
       MovementInput input = player.movementInput;
       if(input.jump && !wasJumping && onBlock && selectedCoord != null) {
-        if(travelToSelectedTarget(player, TravelSource.BLOCK)) {
+        if(travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
           input.jump = false;
         }
       }
@@ -96,27 +96,30 @@ public class TravelPlatformController implements ITickHandler {
     return selectedCoord != null;
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
+  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source, boolean conserveMotion) {
+    return travelToLocation(player, source, selectedCoord, conserveMotion);
+  }
 
+  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMotion) {
     int requiredPower = 0;
     if(source == TravelSource.STAFF) {
       ItemStack staff = player.getCurrentEquippedItem();
-      requiredPower = (int) (getDistance(player, selectedCoord) * source.powerCostPerBlockTraveledRF);
+      requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
       int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
       if(requiredPower > canUsePower) {
         player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("itemTravelStaff.notEnoughPower")));
         return false;
       }
     }
-    if(!isInRangeTarget(player, selectedCoord, source.maxDistanceTravelledSq)) {
+    if(!isInRangeTarget(player, coord, source.maxDistanceTravelledSq)) {
       player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.outOfRange")));
       return false;
     }
-    if(!isValidTarget(player, selectedCoord, source)) {
+    if(!isValidTarget(player, coord, source)) {
       player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.invalidTarget")));
       return false;
     }
-    sendTravelEvent(selectedCoord, source, requiredPower);
+    sendTravelEvent(coord, source, requiredPower, conserveMotion);
     return true;
 
   }
@@ -216,8 +219,8 @@ public class TravelPlatformController implements ITickHandler {
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse) {
-    Packet p = TravelPlatformPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse);
+  private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse, boolean conserveMotion) {
+    Packet p = TravelPlatformPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, conserveMotion);
     PacketDispatcher.sendPacketToServer(p);
   }
 
