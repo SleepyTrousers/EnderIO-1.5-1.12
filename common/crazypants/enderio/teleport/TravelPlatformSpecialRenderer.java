@@ -49,16 +49,19 @@ public class TravelPlatformSpecialRenderer extends TileEntitySpecialRenderer {
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
-    GL11.glColor4f(1, 1, 1, 0.5f);
-
     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
     Tessellator.instance.startDrawingQuads();
 
+    Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.75f);
+    CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockTravelPlatform.getIcon(0, 0));
+
+    Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.25f);
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(1.05, 1.05, 1.05), IconUtil.whiteTexture);
+
     if(TravelPlatformController.instance.isBlockSelected(bc)) {
-      CubeRenderer.render(BoundingBox.UNIT_CUBE, IconUtil.whiteTexture);
-    } else {
-      CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockTravelPlatform.getIcon(0, 0));
+      Tessellator.instance.setColorRGBA_F(1, 0.25f, 0, 0.5f);
+      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(1.2, 1.2, 1.2), IconUtil.whiteTexture);
     }
 
     Tessellator.instance.draw();
