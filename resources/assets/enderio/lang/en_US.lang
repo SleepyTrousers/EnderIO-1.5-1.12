@@ -88,9 +88,11 @@ tile.enderio.blockHyperCube.name=Dimensional Transceiver
 tile.enderio.blockPowerMonitor.name=Power Monitor
 
 //Travel
-tile.enderio.blockTravelPlatform.name=Travel Platform
-enderio.blockTravelPlatform.invalidTarget=Destination is Obscured
+tile.enderio.blockTravelPlatform.name=Travel Anchor
+enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
+enderio.blockTravelPlatform.outOfRange=Destination out of range
 item.enderio.itemTravelStaff.name=Staff of Traveling
+enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 //Painter
 tile.enderio.blockPainter.name=Painting Machine

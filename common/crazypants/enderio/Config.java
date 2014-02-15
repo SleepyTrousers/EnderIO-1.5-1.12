@@ -65,6 +65,13 @@ public final class Config {
 
   public static boolean renderCapBankGaugeLevel = true;
 
+  public static int travelAnchorMaxDistance = 48;
+  public static int travelStaffMaxDistance = 96;
+  public static float travelStaffPowerPerBlock = 100;
+  public static int travelStaffMaxStoredPower = 50000;
+  public static int travelStaffMaxPowerIo = 500;
+  public static boolean travelAnchorEnabled = true;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -165,7 +172,6 @@ public final class Config {
         "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
         .getBoolean(useSneakRightClickYetaWrench);
 
-             
     itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
@@ -178,6 +184,23 @@ public final class Config {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
       useSneakMouseWheelYetaWrench = true;
     }
+
+    travelAnchorEnabled = config.get("Settings", "travelAnchorEnabled", travelAnchorEnabled,
+        "Maximum number of blocks that can be traveled from one travel anchor to another.").getBoolean(travelAnchorEnabled);
+
+    travelAnchorMaxDistance = config.get("Settings", "travelAnchorMaxDistance", travelAnchorMaxDistance,
+        "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaxDistance);
+
+    travelStaffMaxDistance = config.get("Settings", "travelStaffMaxDistance", travelStaffMaxDistance,
+        "Maximum number of blocks that can be traveled using the Staff of the Traveling.").getInt(travelStaffMaxDistance);
+    travelStaffPowerPerBlock = (float) config.get("Settings", "travelStaffPowerPerBlock", travelStaffPowerPerBlock,
+        "Number of MJ required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlock);
+
+    travelStaffMaxStoredPower = config.get("Settings", "travelStaffMaxStoredPower", travelStaffMaxStoredPower,
+        "Maximum number of MJ that can be stored using in the Staff of the Traveling.").getInt(travelStaffMaxStoredPower);
+
+    travelStaffMaxPowerIo = config.get("Settings", "travelStaffMaxPowerIo", travelStaffMaxPowerIo,
+        "Maximum number of MJ that the Staff of the Traveling can be charged per tick.").getInt(travelStaffMaxPowerIo);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

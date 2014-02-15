@@ -19,6 +19,9 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     if(!Config.photovoltaicCellEnabled) {
       API.hideItem(EnderIO.blockSolarPanel.blockID);
     }
+    if(!Config.travelAnchorEnabled) {
+      API.hideItem(EnderIO.itemTravelStaff.itemID);
+    }
   }
 
   @Override

@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
@@ -30,7 +31,11 @@ public class BlockTravelPlatform extends Block implements ITileEntityProvider {
     setHardness(0.5F);
     setStepSound(Block.soundStoneFootstep);
     setUnlocalizedName("enderio." + ModObject.blockTravelPlatform);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    if(Config.travelAnchorEnabled) {
+      setCreativeTab(EnderIOTab.tabEnderIO);
+    } else {
+      setCreativeTab(null);
+    }
   }
 
   private void init() {

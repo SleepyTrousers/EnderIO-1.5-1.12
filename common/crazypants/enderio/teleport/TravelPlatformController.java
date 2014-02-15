@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
@@ -19,6 +20,7 @@ import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
@@ -36,11 +38,11 @@ public class TravelPlatformController implements ITickHandler {
 
   private boolean showTargets = false;
 
+  private BlockCoord onBlockCoord;
+
   private BlockCoord selectedCoord;
 
   private final Set<BlockCoord> candidates = new HashSet<BlockCoord>();
-
-  private int maxTravelDistanceSq = 32 * 32;
 
   private TravelPlatformController() {
   }
@@ -61,7 +63,7 @@ public class TravelPlatformController implements ITickHandler {
   }
 
   public int getMaxTravelDistanceSq() {
-    return maxTravelDistanceSq;
+    return TravelSource.getMaxDistanceSq();
   }
 
   @Override
@@ -71,15 +73,17 @@ public class TravelPlatformController implements ITickHandler {
       if(player == null) {
         return;
       }
-      showTargets = isStaffEquipped(player) || isOnTravelBlock(player);
+      onBlockCoord = getActiveTravelBlock(player);
+      boolean onBlock = onBlockCoord != null;
+      showTargets = onBlock || isStaffEquipped(player);
       if(showTargets) {
         updateSelectedTarget(player);
       } else {
         selectedCoord = null;
       }
       MovementInput input = player.movementInput;
-      if(input.jump && !wasJumping && showTargets && selectedCoord != null) {
-        if(travelToSelectedTarget(player)) {
+      if(input.jump && !wasJumping && onBlock && selectedCoord != null) {
+        if(travelToSelectedTarget(player, TravelSource.BLOCK)) {
           input.jump = false;
         }
       }
@@ -88,23 +92,60 @@ public class TravelPlatformController implements ITickHandler {
     }
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player) {
-    if(isValidTarget(player, selectedCoord)) {
-      sendTravelEvent(selectedCoord);
-      return true;
-    }
-    player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.invalidTarget")));
-    return false;
+  public boolean hasTarget() {
+    return selectedCoord != null;
   }
 
-  private boolean isStaffEquipped(EntityClientPlayerMP player) {
-    if(player.getCurrentEquippedItem() == null) {
+  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
+
+    int requiredPower = 0;
+    if(source == TravelSource.STAFF) {
+      ItemStack staff = player.getCurrentEquippedItem();
+      requiredPower = (int) (getDistance(player, selectedCoord) * source.powerCostPerBlockTraveledRF);
+      int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
+      if(requiredPower > canUsePower) {
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("itemTravelStaff.notEnoughPower")));
+        return false;
+      }
+    }
+    if(!isInRangeTarget(player, selectedCoord, source.maxDistanceTravelledSq)) {
+      player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.outOfRange")));
+      return false;
+    }
+    if(!isValidTarget(player, selectedCoord, source)) {
+      player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.invalidTarget")));
+      return false;
+    }
+    sendTravelEvent(selectedCoord, source, requiredPower);
+    return true;
+
+  }
+
+  public boolean isStaffEquipped(EntityPlayer player) {
+    if(player == null || player.getCurrentEquippedItem() == null) {
       return false;
     }
     return ModObject.itemTravelStaff.actualId == player.getCurrentEquippedItem().itemID;
   }
 
-  private boolean isValidTarget(EntityPlayer player, BlockCoord bc) {
+  private boolean isInRangeTarget(EntityPlayer player, BlockCoord bc, float maxSq) {
+    return getDistanceSquared(player, bc) <= maxSq;
+  }
+
+  private double getDistanceSquared(EntityPlayer player, BlockCoord bc) {
+    if(player == null || bc == null) {
+      return 0;
+    }
+    Vector3d eye = RenderUtil.getEyePositionEio(player);
+    Vector3d target = new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
+    return eye.distanceSquared(target);
+  }
+
+  private double getDistance(EntityPlayer player, BlockCoord coord) {
+    return Math.sqrt(getDistanceSquared(player, coord));
+  }
+
+  private boolean isValidTarget(EntityPlayer player, BlockCoord bc, TravelSource source) {
     if(bc == null) {
       return false;
     }
@@ -149,37 +190,48 @@ public class TravelPlatformController implements ITickHandler {
     double closestDistance = Double.MAX_VALUE;
     Vector3d point = new Vector3d();
     for (BlockCoord bc : candidates) {
-      point.set(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
-      double dl = VecmathUtil.distanceFromPointToPlane(leftPlane, point);
-      double du = VecmathUtil.distanceFromPointToPlane(upPlane, point);
-      double dSq = (dl * dl) + (du * du);
-      if(dSq < closestDistance) {
-        selectedCoord = bc;
-        closestDistance = dSq;
+      if(!bc.equals(onBlockCoord)) {
+        point.set(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
+        double dl = VecmathUtil.distanceFromPointToPlane(leftPlane, point);
+        double du = VecmathUtil.distanceFromPointToPlane(upPlane, point);
+        double dSq = (dl * dl) + (du * du);
+        if(dSq < closestDistance) {
+          selectedCoord = bc;
+          closestDistance = dSq;
+        }
       }
     }
 
     if(selectedCoord != null) {
-      if(selectedCoord.distanceSquared(new BlockCoord((int) eye.x, (int) eye.y, (int) eye.z)) > maxTravelDistanceSq) {
+      if(selectedCoord.distanceSquared(new BlockCoord((int) eye.x, (int) eye.y, (int) eye.z)) > getMaxTravelDistanceSqForPlayer(player)) {
         selectedCoord = null;
       }
     }
   }
 
-  private void sendTravelEvent(BlockCoord coord) {
-    Packet p = TravelPlatformPacketHandler.createMovePacket(coord.x, coord.y, coord.z);
+  private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
+    if(isStaffEquipped(player)) {
+      return TravelSource.STAFF.maxDistanceTravelledSq;
+    }
+    return TravelSource.BLOCK.maxDistanceTravelledSq;
+  }
+
+  private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse) {
+    Packet p = TravelPlatformPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse);
     PacketDispatcher.sendPacketToServer(p);
   }
 
-  private boolean isOnTravelBlock(EntityClientPlayerMP player) {
+  private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {
     World world = Minecraft.getMinecraft().theWorld;
     if(world != null && player != null) {
       int x = MathHelper.floor_double(player.posX);
       int y = MathHelper.floor_double(player.boundingBox.minY) - 1;
       int z = MathHelper.floor_double(player.posZ);
-      return world.getBlockId(x, y, z) == ModObject.blockTravelPlatform.actualId;
+      if(world.getBlockId(x, y, z) == ModObject.blockTravelPlatform.actualId) {
+        return new BlockCoord(x, y, z);
+      }
     }
-    return false;
+    return null;
   }
 
   @Override
@@ -195,4 +247,5 @@ public class TravelPlatformController implements ITickHandler {
   public String getLabel() {
     return "TravelClientTickHandler";
   }
+
 }
