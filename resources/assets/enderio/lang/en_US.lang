@@ -44,7 +44,11 @@ enderio.phasedIronNugget.name=Pulsating Iron Nugget
 enderio.itemMachinePart.name=Machine Parts
 enderio.machineChassi.name=Machine Chassi
 enderio.basicGear.name=Basic Gear
+enderio.pulsatingCrystal.name=Pulsating Crystal
+enderio.vibrantCrystal.name=Vibrant Crystal
 
+
+//Quartz / Glass
 enderio.blockFusedQuartz=Fused Quartz
 enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Fused Glass
@@ -60,6 +64,7 @@ enderio.phasedGold.name=Vibrant Alloy
 enderio.redstoneAlloy.name=Redstone Alloy
 enderio.conductiveIron.name=Conductive Iron
 enderio.phasedIron.name=Pulsating Iron
+enderio.vibrantNugget.name=Vibrant Nugget
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder

@@ -87,6 +87,19 @@ public class MaterialRecipes {
     phasedIronNugget.stackSize = 1;
     GameRegistry.addShapedRecipe(phasedIron, "eee", "eee", "eee", 'e', phasedIronNugget);
 
+    ItemStack vibrantNugget = new ItemStack(ModObject.itemMaterial.actualId, 9, Material.VIBRANT_NUGGET.ordinal());
+    GameRegistry.addShapelessRecipe(vibrantNugget, phasedGold);
+    vibrantNugget = vibrantNugget.copy();
+    vibrantNugget.stackSize = 1;
+    GameRegistry.addShapedRecipe(phasedGold, "eee", "eee", "eee", 'e', vibrantNugget);
+
+    //Crystals
+    ItemStack pulsCry = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.PULSATING_CYSTAL.ordinal());
+    GameRegistry.addShapedRecipe(pulsCry, "nnn", "ngn", "nnn", 'n', phasedIronNugget, 'g', Item.diamond);
+
+    ItemStack vibCry = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.VIBRANT_CYSTAL.ordinal());
+    GameRegistry.addShapedRecipe(vibCry, "nnn", "ngn", "nnn", 'n', vibrantNugget, 'g', Item.emerald);
+
     //Smelting
     FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_IRON.ordinal(), new ItemStack(Item.ingotIron), 0);
     FurnaceRecipes.smelting().addSmelting(ModObject.itemPowderIngot.actualId, PowderIngot.POWDER_GOLD.ordinal(), new ItemStack(Item.ingotGold), 0);
