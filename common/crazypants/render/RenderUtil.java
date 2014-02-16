@@ -19,12 +19,9 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -411,39 +408,6 @@ public class RenderUtil {
       break;
     }
     return null;
-  }
-
-  public static Vec3 getEyePosition(EntityPlayer player) {
-    Vec3 v = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
-    if(player.worldObj.isRemote) {
-      //take into account any eye changes done by mods.
-      v.yCoord += player.getEyeHeight() - player.getDefaultEyeHeight();
-    } else {
-      v.yCoord += player.getEyeHeight();
-      if(player instanceof EntityPlayerMP && player.isSneaking()) {
-        v.yCoord -= 0.08;
-      }
-    }
-    return v;
-  }
-
-  public static Vector3d getEyePositionEio(EntityPlayer player) {
-    Vector3d res = new Vector3d(player.posX, player.posY, player.posZ);
-    if(player.worldObj.isRemote) {
-      //take into account any eye changes done by mods.
-      res.y += player.getEyeHeight() - player.getDefaultEyeHeight();
-    } else {
-      res.y += player.getEyeHeight();
-      if(player instanceof EntityPlayerMP && player.isSneaking()) {
-        res.y -= 0.08;
-      }
-    }
-    return res;
-  }
-
-  public static Vector3d getLookVecEio(EntityPlayer player) {
-    Vec3 lv = player.getLookVec();
-    return new Vector3d(lv.xCoord, lv.yCoord, lv.zCoord);
   }
 
   private static class EdgeNeighbour {
