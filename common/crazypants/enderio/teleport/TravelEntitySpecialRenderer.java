@@ -14,6 +14,7 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4f;
 
@@ -38,7 +39,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
       return;
     }
 
-    Vector3d eye = RenderUtil.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
+    Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
     Vector3d loc = new Vector3d(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
     if(eye.distanceSquared(loc) > TravelController.instance.getMaxTravelDistanceSq()) {
       return;
