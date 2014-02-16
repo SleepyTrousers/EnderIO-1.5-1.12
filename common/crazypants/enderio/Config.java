@@ -75,6 +75,7 @@ public final class Config {
   public static int travelStaffBlinkPauseTicks = 10;
 
   public static int enderIoRange = 5;
+  public static boolean enderIoMeAccessEnabled = true;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -213,7 +214,10 @@ public final class Config {
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
 
     enderIoRange = config.get("Settings", "enderIoRange", enderIoRange,
-        "Range in blocks of when using the Ender IO.").getInt(enderIoRange);
+        "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);
+
+    enderIoMeAccessEnabled = config.get("Settings", "enderIoMeAccessEnabled", enderIoMeAccessEnabled,
+        "If fasle, you will not be able to access a ME acess or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

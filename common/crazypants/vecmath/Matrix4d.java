@@ -1,5 +1,7 @@
 package crazypants.vecmath;
 
+import java.nio.FloatBuffer;
+
 public class Matrix4d {
 
   public double m00 = 0;
@@ -20,6 +22,50 @@ public class Matrix4d {
   public double m33 = 0;
 
   public Matrix4d() {
+  }
+
+  public Matrix4d(float[] arr) {
+    m00 = arr[0];
+    m01 = arr[1];
+    m02 = arr[2];
+    m03 = arr[3];
+
+    m10 = arr[4];
+    m11 = arr[5];
+    m12 = arr[6];
+    m13 = arr[7];
+
+    m20 = arr[8];
+    m21 = arr[9];
+    m22 = arr[10];
+    m23 = arr[11];
+
+    m30 = arr[12];
+    m31 = arr[13];
+    m32 = arr[14];
+    m33 = arr[15];
+  }
+
+  public Matrix4d(double[] arr) {
+    m00 = arr[0];
+    m01 = arr[1];
+    m02 = arr[2];
+    m03 = arr[3];
+
+    m10 = arr[4];
+    m11 = arr[5];
+    m12 = arr[6];
+    m13 = arr[7];
+
+    m20 = arr[8];
+    m21 = arr[9];
+    m22 = arr[10];
+    m23 = arr[11];
+
+    m30 = arr[12];
+    m31 = arr[13];
+    m32 = arr[14];
+    m33 = arr[15];
   }
 
   public Matrix4d(Matrix4d other) {
@@ -69,6 +115,28 @@ public class Matrix4d {
     this.m32 = m32;
     this.m33 = m33;
 
+  }
+
+  public Matrix4d(FloatBuffer modelview) {
+    m00 = modelview.get(0);
+    m01 = modelview.get(1);
+    m02 = modelview.get(2);
+    m03 = modelview.get(3);
+
+    m10 = modelview.get(4);
+    m11 = modelview.get(5);
+    m12 = modelview.get(6);
+    m13 = modelview.get(7);
+
+    m20 = modelview.get(8);
+    m21 = modelview.get(9);
+    m22 = modelview.get(10);
+    m23 = modelview.get(11);
+
+    m30 = modelview.get(12);
+    m31 = modelview.get(13);
+    m32 = modelview.get(14);
+    m33 = modelview.get(15);
   }
 
   public final void setIdentity() {

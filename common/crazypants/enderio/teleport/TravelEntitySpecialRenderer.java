@@ -40,10 +40,12 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     }
 
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
-    Vector3d loc = new Vector3d(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+    Vector3d loc = new Vector3d(tileentity.xCoord + 0.5, tileentity.yCoord + 0.5, tileentity.zCoord + 0.5);
     if(eye.distanceSquared(loc) > TravelController.instance.getMaxTravelDistanceSq()) {
       return;
     }
+
+    double sf = TravelController.instance.getScaleForCandidate(loc);
 
     BlockCoord bc = new BlockCoord(tileentity);
     TravelController.instance.addCandidate(bc);
@@ -70,17 +72,17 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
     Tessellator.instance.startDrawingQuads();
-    renderBlock();
+    renderBlock(sf);
     Tessellator.instance.draw();
 
     Tessellator.instance.startDrawingQuads();
     if(TravelController.instance.isBlockSelected(bc)) {
 
       Tessellator.instance.setColorRGBA_F(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
-      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(1.05, 1.05, 1.05), getSelectedIcon());
+      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getSelectedIcon());
     } else {
       Tessellator.instance.setColorRGBA_F(highlightColor.x, highlightColor.y, highlightColor.z, highlightColor.w);
-      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(1.05, 1.05, 1.05), getHighlightIcon());
+      CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf + 0.05, sf + 0.05, sf + 0.05), getHighlightIcon());
     }
     Tessellator.instance.draw();
 
@@ -93,9 +95,9 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
   }
 
-  protected void renderBlock() {
+  protected void renderBlock(double sf) {
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 0.75f);
-    CubeRenderer.render(BoundingBox.UNIT_CUBE, EnderIO.blockTravelPlatform.getIcon(0, 0));
+    CubeRenderer.render(BoundingBox.UNIT_CUBE.scale(sf, sf, sf), EnderIO.blockTravelPlatform.getIcon(0, 0));
   }
 
   public Vector4f getSelectedColor() {

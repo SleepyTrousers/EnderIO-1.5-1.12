@@ -525,8 +525,10 @@ public class GuiEnderface extends GuiScreen {
   void openInterface(int x, int y, int z) {
 
     if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
-      Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
-      PacketDispatcher.sendPacketToServer(pkt);
+      if(Config.enderIoMeAccessEnabled) {
+        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
+        PacketDispatcher.sendPacketToServer(pkt);
+      }
     } else {
       Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
       PacketDispatcher.sendPacketToServer(pkt);

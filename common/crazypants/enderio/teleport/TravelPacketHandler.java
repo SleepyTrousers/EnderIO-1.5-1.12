@@ -108,6 +108,7 @@ public class TravelPacketHandler implements IPacketProcessor {
     ep.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
 
     ep.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);
+    ep.fallDistance = 0;
 
     if(conserveMotion) {
       Vector3d velocityVex = Util.getLookVecEio(ep);
