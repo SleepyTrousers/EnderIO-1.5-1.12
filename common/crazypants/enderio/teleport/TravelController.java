@@ -1,9 +1,8 @@
 package crazypants.enderio.teleport;
 
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Random;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -26,7 +25,10 @@ import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
+import crazypants.vecmath.Camera;
+import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4d;
 
@@ -44,9 +46,15 @@ public class TravelController implements ITickHandler {
 
   BlockCoord selectedCoord;
 
-  private final Set<BlockCoord> candidates = new HashSet<BlockCoord>();
+  Camera currentView = new Camera();
+
+  private final HashMap<BlockCoord, Float> candidates = new HashMap<BlockCoord, Float>();
 
   private boolean selectionEnabled = true;
+
+  private double referenceScalingDistance;
+
+  private double fovRad;
 
   private TravelController() {
   }
@@ -70,7 +78,9 @@ public class TravelController implements ITickHandler {
   }
 
   public void addCandidate(BlockCoord coord) {
-    candidates.add(coord);
+    if(!candidates.containsKey(coord)) {
+      candidates.put(coord, -1f);
+    }
   }
 
   public int getMaxTravelDistanceSq() {
@@ -86,8 +96,28 @@ public class TravelController implements ITickHandler {
 
   @Override
   public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    Minecraft mc = Minecraft.getMinecraft();
+
+    if(type.contains(TickType.RENDER) && mc.thePlayer != null) {
+
+      Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
+      Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
+      lookAt.add(eye);
+      Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
+
+      float fov = 70 + Minecraft.getMinecraft().gameSettings.fovSetting * 40.0F;
+      Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, (float) (256 >> mc.gameSettings.renderDistance), mc.displayWidth,
+          mc.displayHeight);
+      currentView.setProjectionMatrix(pr);
+      currentView.setViewMatrix(mv);
+      currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
+
+      fovRad = Math.toRadians(fov);
+      referenceScalingDistance = 1d / Math.tan(fovRad);
+    }
+
     if(type.contains(TickType.CLIENT)) {
-      EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+      EntityClientPlayerMP player = mc.thePlayer;
       if(player == null) {
         return;
       }
@@ -217,24 +247,69 @@ public class TravelController implements ITickHandler {
 
     double closestDistance = Double.MAX_VALUE;
     Vector3d point = new Vector3d();
-    for (BlockCoord bc : candidates) {
+    for (BlockCoord bc : candidates.keySet()) {
       if(!bc.equals(onBlockCoord)) {
         point.set(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
-        double dl = VecmathUtil.distanceFromPointToPlane(leftPlane, point);
-        double du = VecmathUtil.distanceFromPointToPlane(upPlane, point);
-        double dSq = (dl * dl) + (du * du);
-        if(dSq < closestDistance) {
+
+        Vector2d sp = currentView.getScreenPoint(new Vector3d(point.x, point.y, point.z));
+        Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+        mid.scale(0.5);
+
+        double d = sp.distance(mid);
+        float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
+        candidates.put(bc, ratio);
+        if(d < closestDistance) {
           selectedCoord = bc;
-          closestDistance = dSq;
+          closestDistance = d;
         }
       }
     }
 
     if(selectedCoord != null) {
-      if(selectedCoord.distanceSquared(new BlockCoord((int) eye.x, (int) eye.y, (int) eye.z)) > getMaxTravelDistanceSqForPlayer(player)) {
+      Vector2d sp = currentView.getScreenPoint(new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5));
+      Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+      mid.scale(0.5);
+      double ratio = sp.distance(mid) / Minecraft.getMinecraft().displayWidth;
+      if(ratio > 0.05) {
         selectedCoord = null;
       }
+
     }
+  }
+
+  public double getScaleForCandidate(Vector3d loc) {
+
+    BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
+    float ratio = -1;
+    Float r = candidates.get(bc);
+    if(r != null) {
+      ratio = r;
+    }
+    if(ratio < 0) {
+      //no cached value
+      Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x, bc.y, bc.z));
+      Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+      mid.scale(0.5);
+      double d = sp.distance(mid);
+      ratio = (float) d / Minecraft.getMinecraft().displayWidth;
+      candidates.put(bc, ratio);
+    }
+
+    float start = 0.2f;
+    float end = 0.01f;
+    double mix = MathHelper.clamp_float((start - ratio) / (start - end), 0, 1);
+    double scale = 1;
+    if(mix > 0) {
+      double d = Math.tan(fovRad) * currentView.getEyePoint().distance(loc) * 0.01;
+      scale = d / referenceScalingDistance;
+      scale = (scale * mix) + (1 - mix);
+      scale = Math.max(1, scale);
+    }
+
+    if(bc.equals(selectedCoord)) {
+      return scale;
+    }
+    return scale;
   }
 
   private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
@@ -268,7 +343,7 @@ public class TravelController implements ITickHandler {
 
   @Override
   public EnumSet<TickType> ticks() {
-    return EnumSet.of(TickType.CLIENT);
+    return EnumSet.of(TickType.CLIENT, TickType.RENDER);
   }
 
   @Override
