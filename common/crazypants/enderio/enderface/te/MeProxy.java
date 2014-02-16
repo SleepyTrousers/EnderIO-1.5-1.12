@@ -138,7 +138,7 @@ public class MeProxy {
 
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-      if("canInteractWith".equals(method.getName())) {
+      if("func_75145_c".equals(method.getName()) || "canInteractWith".equals(method.getName())) {
         return true;
       }
       return methodProxy.invokeSuper(o, objects);
