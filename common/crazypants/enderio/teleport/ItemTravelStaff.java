@@ -148,7 +148,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     updateDamage(container);
   }
 
-  void setFull(ItemStack container) {
+  public void setFull(ItemStack container) {
     setEnergy(container, getMaxEnergyStored(container));
   }
 
