@@ -18,7 +18,7 @@ import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
-import crazypants.render.RenderUtil;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class TravelPacketHandler implements IPacketProcessor {
@@ -110,7 +110,7 @@ public class TravelPacketHandler implements IPacketProcessor {
     ep.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);
 
     if(conserveMotion) {
-      Vector3d velocityVex = RenderUtil.getLookVecEio(ep);
+      Vector3d velocityVex = Util.getLookVecEio(ep);
       Packet28EntityVelocity p = new Packet28EntityVelocity(ep.entityId, velocityVex.x, velocityVex.y, velocityVex.z);
       PacketDispatcher.sendPacketToPlayer(p, player);
     }

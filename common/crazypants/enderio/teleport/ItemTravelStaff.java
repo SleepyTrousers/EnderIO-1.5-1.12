@@ -20,8 +20,8 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
@@ -69,8 +69,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
     if(player.isSneaking()) {
       if(world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= 10) {//Config.travelStaffBlinkPauseTicks) {
-        Vector3d eye = RenderUtil.getEyePositionEio(player);
-        Vector3d look = RenderUtil.getLookVecEio(player);
+        Vector3d eye = Util.getEyePositionEio(player);
+        Vector3d look = Util.getLookVecEio(player);
 
         Vector3d sample = new Vector3d();
 

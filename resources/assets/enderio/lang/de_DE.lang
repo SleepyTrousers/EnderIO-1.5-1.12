@@ -44,7 +44,10 @@ enderio.phasedIronNugget.name=Pulsierender Eisennugget
 enderio.itemMachinePart.name=Maschinenteile
 enderio.machineChassi.name=Maschinenhülle
 enderio.basicGear.name=Basiszahnrad
+enderio.pulsatingCrystal.name=Pulsierender Kristall
+enderio.vibrantCrystal.name=Dynamischer Kristall
 
+//Quartz / Glass
 enderio.blockFusedQuartz=Fusionsquarz
 enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
 enderio.blockFusedQuartz.fusedGlass.name=Fusionsglas
@@ -60,6 +63,7 @@ enderio.phasedGold.name=Dynamische Legierung
 enderio.redstoneAlloy.name=Redstone-Legierung
 enderio.conductiveIron.name=Leitendes Eisen
 enderio.phasedIron.name=Pulsierendes Eisen
+enderio.vibrantNugget.name=Dynamischer Nugget
 
 //Powder / Ingot
 enderio.powderCoal.name=Kohlepulver
@@ -88,9 +92,11 @@ tile.enderio.blockHyperCube.name=Dimensional-Transceiver
 tile.enderio.blockPowerMonitor.name=Energiemonitor
 
 //Travel
-tile.enderio.blockTravelPlatform.name=Reiseplattform
-enderio.blockTravelPlatform.invalidTarget=Ziel ist ungültig
+tile.enderio.blockTravelPlatform.name=Reiseanker
+enderio.blockTravelPlatform.invalidTarget=Ziel ist blockiert
+enderio.blockTravelPlatform.outOfRange=Ziel ist außer Reichweite
 item.enderio.itemTravelStaff.name=Stab des Reisens
+enderio.itemTravelStaff.notEnoughPower=Nicht genügend Energie
 
 //Painter
 tile.enderio.blockPainter.name=Färbemaschine

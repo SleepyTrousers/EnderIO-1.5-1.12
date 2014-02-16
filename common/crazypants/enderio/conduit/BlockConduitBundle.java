@@ -47,7 +47,6 @@ import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
-import crazypants.render.RenderUtil;
 import crazypants.util.Util;
 
 public class BlockConduitBundle extends Block implements ITileEntityProvider, IConnectableRedNet, IGuiHandler {
@@ -414,7 +413,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     if(breakBlock) {
       List<RaytraceResult> results = doRayTraceAll(world, x, y, z, player);
-      RaytraceResult.sort(RenderUtil.getEyePosition(player), results);
+      RaytraceResult.sort(Util.getEyePosition(player), results);
       for (RaytraceResult rt : results) {
         if(breakConduit(te, drop, rt, player)) {
           break;
@@ -594,7 +593,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     // Conduit specific actions
     if(all != null) {
-      RaytraceResult.sort(RenderUtil.getEyePosition(player), all);
+      RaytraceResult.sort(Util.getEyePosition(player), all);
       for (RaytraceResult rr : all) {
         if(ConduitUtil.renderConduit(player, rr.component.conduitType) && !(rr.component.data instanceof
             ConduitConnectorType)) {
@@ -745,7 +744,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     if(allHits == null) {
       return null;
     }
-    Vec3 origin = RenderUtil.getEyePosition(entityPlayer);
+    Vec3 origin = Util.getEyePosition(entityPlayer);
     return RaytraceResult.getClosestHit(origin, allHits);
   }
 
@@ -760,7 +759,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
     double reachDistance = EnderIO.proxy.getReachDistanceForPlayer(entityPlayer);
 
-    Vec3 origin = RenderUtil.getEyePosition(entityPlayer);
+    Vec3 origin = Util.getEyePosition(entityPlayer);
     Vec3 direction = origin.addVector(dirX * reachDistance, dirY *
         reachDistance, dirZ * reachDistance);
     return doRayTraceAll(world, x, y, z, origin, direction,

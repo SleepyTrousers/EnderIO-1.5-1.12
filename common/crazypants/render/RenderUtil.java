@@ -19,11 +19,9 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -410,30 +408,6 @@ public class RenderUtil {
       break;
     }
     return null;
-  }
-
-  public static Vec3 getEyePosition(EntityPlayer entityPlayer) {
-    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
-    if(!entityPlayer.worldObj.isRemote && entityPlayer.isSneaking()) {
-      posY -= 0.08;
-    }
-    Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
-        entityPlayer.posZ);
-    return origin;
-  }
-
-  public static Vector3d getEyePositionEio(EntityPlayer entityPlayer) {
-    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
-    if(!entityPlayer.worldObj.isRemote && entityPlayer.isSneaking()) {
-      posY -= 0.08;
-    }
-    return new Vector3d(entityPlayer.posX, posY,
-        entityPlayer.posZ);
-  }
-
-  public static Vector3d getLookVecEio(EntityPlayer player) {
-    Vec3 lv = player.getLookVec();
-    return new Vector3d(lv.xCoord, lv.yCoord, lv.zCoord);
   }
 
   private static class EdgeNeighbour {

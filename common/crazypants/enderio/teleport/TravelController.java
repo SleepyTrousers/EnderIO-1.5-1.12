@@ -23,7 +23,6 @@ import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
@@ -165,7 +164,7 @@ public class TravelController implements ITickHandler {
     if(player == null || bc == null) {
       return 0;
     }
-    Vector3d eye = RenderUtil.getEyePositionEio(player);
+    Vector3d eye = Util.getEyePositionEio(player);
     Vector3d target = new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
     return eye.distanceSquared(target);
   }
@@ -198,7 +197,7 @@ public class TravelController implements ITickHandler {
       return;
     }
 
-    Vector3d eye = RenderUtil.getEyePositionEio(player);
+    Vector3d eye = Util.getEyePositionEio(player);
     Vec3 look = player.getLookVec();
 
     Vector3d b = new Vector3d(eye);
