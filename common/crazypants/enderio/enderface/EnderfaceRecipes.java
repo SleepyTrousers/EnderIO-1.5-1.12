@@ -1,6 +1,5 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,10 +11,10 @@ public class EnderfaceRecipes {
 
   public static void addRecipes() {
     ItemStack phasedGold = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal());
-    GameRegistry.addRecipe(new ItemStack(EnderIO.itemEnderface), "nxn", "xyx", "nxn", 'x', new ItemStack(Item.diamond), 'y', new ItemStack(Item.eyeOfEnder),
-        'n', phasedGold);
-    GameRegistry.addRecipe(new ItemStack(EnderIO.blockEnderIo), "zxz", "xyx", "zxz", 'x', phasedGold, 'y', new ItemStack(Block.enderChest), 'z', new ItemStack(
-        Item.diamond));
+    ItemStack fusedQuartz = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, 0);
+    ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    GameRegistry.addRecipe(new ItemStack(EnderIO.blockEnderIo), "sqs", "qeq", "sqs", 's', electricalSteel, 'q', fusedQuartz, 'e', new ItemStack(
+        Item.eyeOfEnder));
   }
 
 }

@@ -21,6 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
@@ -91,6 +92,20 @@ public class MachineRecipes {
     GameRegistry
         .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Block.stoneBrick, 'e', Item.eyeOfEnder, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
             'r', redstoneConduit, 'c', capacitor);
+
+    //travel blocks
+    ItemStack travelBlock = new ItemStack(EnderIO.blockTravelPlatform);
+    ItemStack pulsCry = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.PULSATING_CYSTAL.ordinal());
+    GameRegistry
+        .addShapedRecipe(travelBlock, "ibi", "bcb", "ibi", 'i', Item.ingotIron, 'b', conduitBinder, 'c', pulsCry);
+
+    ItemStack travelStaff = new ItemStack(EnderIO.itemTravelStaff);
+    ItemStack vibCry = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.VIBRANT_CYSTAL.ordinal());
+    ItemStack electricalSteel = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    GameRegistry
+        .addShapedRecipe(travelStaff, "  g", " s ", "c  ", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
+    GameRegistry
+        .addShapedRecipe(travelStaff, "g  ", " s ", "  c", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
 
   }
 

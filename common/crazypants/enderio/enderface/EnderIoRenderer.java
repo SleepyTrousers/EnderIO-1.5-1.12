@@ -13,6 +13,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
@@ -21,6 +22,22 @@ import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
 
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
+
+  private TravelEntitySpecialRenderer selectionRenderer = new TravelEntitySpecialRenderer() {
+    protected void renderBlock() {
+    }
+
+    @Override
+    public Icon getSelectedIcon() {
+      return EnderIO.blockEnderIo.selectedOverlayIcon;
+    }
+
+    @Override
+    public Icon getHighlightIcon() {
+      return EnderIO.blockEnderIo.highlightOverlayIcon;
+    }
+
+  };
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
@@ -34,6 +51,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
     int brightness = RenderUtil.setTesselatorBrightness(tileEntityRenderer.worldObj, te.xCoord, te.yCoord, te.zCoord);
     render(x, y, z, lookMat, brightness);
+
+    selectionRenderer.renderTileEntityAt(te, x, y, z, f);
   }
 
   public void render(double x, double y, double z, Matrix4d lookMat, int brightness) {

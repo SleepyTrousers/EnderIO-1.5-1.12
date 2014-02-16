@@ -66,7 +66,7 @@ public class ConduitRecipes {
     Item i = GameRegistry.findItem("AppliedEnergistics", "AppEngMaterials");
     if(i != null) {
       ItemStack conduitBinder = new ItemStack(ModObject.itemMaterial.actualId, 1, Material.CONDUIT_BINDER.ordinal());
-      ItemStack flux = new ItemStack(4362, 1, 14);
+      ItemStack flux = new ItemStack(i.itemID, 1, 14);
       GameRegistry.addShapedRecipe(new ItemStack(itemMeConduit.actualId, 3, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', flux);
     }
   }

@@ -56,6 +56,13 @@ public class Vector3d {
     return this;
   }
 
+  public Vector3d add(double x2, double y2, double z2) {
+    x += x2;
+    y += y2;
+    z += z2;
+    return this;
+  }
+
   public void sub(Vector3d vec) {
     x -= vec.x;
     y -= vec.y;

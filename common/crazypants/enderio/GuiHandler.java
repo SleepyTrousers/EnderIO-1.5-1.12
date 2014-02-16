@@ -27,6 +27,8 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_EXTERNAL_CONNECTION_EAST = 9 + ForgeDirection.EAST.ordinal();
   public static final int GUI_ID_EXTERNAL_CONNECTION_WEST = 9 + ForgeDirection.WEST.ordinal();
 
+  public static final int GUI_ID_ME_ACCESS_TERMINAL = 16;
+
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 
   public void registerGuiHandler(int id, IGuiHandler handler) {
