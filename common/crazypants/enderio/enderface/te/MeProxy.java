@@ -1,6 +1,7 @@
 package crazypants.enderio.enderface.te;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -87,8 +88,7 @@ public class MeProxy {
 
     Container proxifiedObj = (Container) e.create(argTypes, args);
     if(!isClient) {
-      Method m = Class.forName("appeng.me.container.ContainerTerminal").getDeclaredMethod("setPlayerIsPresent", EntityPlayer.class, boolean.class);
-      m.invoke(proxifiedObj, player, true);
+      callSetPlayerPresent(player, proxifiedObj);
     }
     return proxifiedObj;
   }
@@ -112,10 +112,24 @@ public class MeProxy {
 
     Container proxifiedObj = (Container) e.create(argTypes, args);
     if(!isClient) {
-      Method m = baseClass.getDeclaredMethod("setPlayerIsPresent", EntityPlayer.class, boolean.class);
-      m.invoke(proxifiedObj, player, true);
+      callSetPlayerPresent(player, proxifiedObj);
     }
     return proxifiedObj;
+  }
+
+  private static void callSetPlayerPresent(EntityPlayer player, Container proxifiedObj) throws ClassNotFoundException, NoSuchMethodException,
+      IllegalAccessException, InvocationTargetException {
+    Class<?> baseClass = Class.forName("appeng.me.container.ContainerTerminal");
+    Method m = null;
+    try {
+      m = baseClass.getDeclaredMethod("func_75128_a", EntityPlayer.class, boolean.class);
+    } catch (Exception ex) {
+      //ignore, probaly de-obf environemnt
+    }
+    if(m == null) {
+      m = baseClass.getDeclaredMethod("setPlayerIsPresent", EntityPlayer.class, boolean.class);
+    }
+    m.invoke(proxifiedObj, player, true);
   }
 
   public static class ContainerTerminalProxy implements MethodInterceptor {
