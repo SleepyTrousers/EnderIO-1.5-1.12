@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -222,32 +221,23 @@ public class Util {
     return null;
   }
 
-  public static Vec3 getEyePosition(EntityPlayer player) {
-    Vec3 v = Vec3.createVectorHelper(player.posX, player.posY, player.posZ);
-    if(player.worldObj.isRemote) {
-      //take into account any eye changes done by mods.
-      v.yCoord += player.getEyeHeight() - player.getDefaultEyeHeight();
-    } else {
-      v.yCoord += player.getEyeHeight();
-      if(player instanceof EntityPlayerMP && player.isSneaking()) {
-        v.yCoord -= 0.08;
-      }
+  public static Vec3 getEyePosition(EntityPlayer entityPlayer) {
+    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
+    if(!entityPlayer.worldObj.isRemote && entityPlayer.isSneaking()) {
+      posY -= 0.08;
     }
-    return v;
+    Vec3 origin = Vec3.fakePool.getVecFromPool(entityPlayer.posX, posY,
+        entityPlayer.posZ);
+    return origin;
   }
 
-  public static Vector3d getEyePositionEio(EntityPlayer player) {
-    Vector3d res = new Vector3d(player.posX, player.posY, player.posZ);
-    if(player.worldObj.isRemote) {
-      //take into account any eye changes done by mods.
-      res.y += player.getEyeHeight() - player.getDefaultEyeHeight();
-    } else {
-      res.y += player.getEyeHeight();
-      if(player instanceof EntityPlayerMP && player.isSneaking()) {
-        res.y -= 0.08;
-      }
+  public static Vector3d getEyePositionEio(EntityPlayer entityPlayer) {
+    double posY = entityPlayer.posY + 1.62 - entityPlayer.yOffset;
+    if(!entityPlayer.worldObj.isRemote && entityPlayer.isSneaking()) {
+      posY -= 0.08;
     }
-    return res;
+    return new Vector3d(entityPlayer.posX, posY,
+        entityPlayer.posZ);
   }
 
   public static Vector3d getLookVecEio(EntityPlayer player) {
