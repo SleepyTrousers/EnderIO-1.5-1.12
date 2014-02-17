@@ -1,3 +1,18 @@
+0.10.0
+Major changes to EnderIO block and new teleporting features
+- Added new 'Travel Anchor' block and 'Staff of Traveling' item (textures are temporary. Warning, made by a coder)
+- EnderIO block now much cheaper, range configurable in config
+- Enderface deprecated and no longer works. Functionality now provided by 'Staff of Traveling'
+- #448 EnderIO block now allows access to ME Access and Crafting terminals (can be disabled in config)
+ 
+ Bugs
+ - #419 Conduits can now be manipulated when morphed 
+ - #464 Fixed ME conduit recipe not working if default ID not used.
+ - #464 Pressurized fluid conduit dropping normal fluid conduit
+ - #470 Allow recipes alloying incomplete inputs in some cases
+ - #463 Packet storm created when using item conduits to insert into JABBA barrels.
+ 
+
 0.9.0
 - #30  Added ME conduits, allowing 5 conduits in a block. Acts identically to a colorless ME cable, with a very similar recipe
 - #291 Improved rendering of internal conduit connections
