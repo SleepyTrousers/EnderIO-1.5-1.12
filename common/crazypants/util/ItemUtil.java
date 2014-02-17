@@ -47,31 +47,29 @@ public class ItemUtil {
     int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal());
     for (int i = 0; i < slots.length && numToInsert > 0; i++) {
       int slot = slots[i];
-      if(!isStackFull(sidedInv.getStackInSlot(slot))) {
-        if(sidedInv.canInsertItem(slot, item, inventorySide.ordinal())) {
-          ItemStack contents = sidedInv.getStackInSlot(slot);
-          ItemStack toInsert = item.copy();
-          toInsert.stackSize = Math.min(toInsert.stackSize, sidedInv.getInventoryStackLimit());
-          toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
-          int inserted = 0;
-          if(contents == null) {
-            inserted = toInsert.stackSize;
+      if(sidedInv.canInsertItem(slot, item, inventorySide.ordinal())) {
+        ItemStack contents = sidedInv.getStackInSlot(slot);
+        ItemStack toInsert = item.copy();
+        toInsert.stackSize = Math.min(toInsert.stackSize, sidedInv.getInventoryStackLimit());
+        toInsert.stackSize = Math.min(toInsert.stackSize, numToInsert);
+        int inserted = 0;
+        if(contents == null) {
+          inserted = toInsert.stackSize;
+        } else {
+          if(contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
+            int space = sidedInv.getInventoryStackLimit() - contents.stackSize;
+            space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
+            inserted += Math.min(space, toInsert.stackSize);
+            toInsert.stackSize = contents.stackSize + inserted;
           } else {
-            if(contents.isItemEqual(item) && ItemStack.areItemStackTagsEqual(contents, item)) {
-              int space = sidedInv.getInventoryStackLimit() - contents.stackSize;
-              space = Math.min(space, contents.getMaxStackSize() - contents.stackSize);
-              inserted += Math.min(space, toInsert.stackSize);
-              toInsert.stackSize = contents.stackSize + inserted;
-            } else {
-              toInsert.stackSize = 0;
-            }
+            toInsert.stackSize = 0;
           }
+        }
 
-          if(inserted > 0) {
-            numInserted += inserted;
-            numToInsert -= inserted;
-            sidedInv.setInventorySlotContents(slot, toInsert);
-          }
+        if(inserted > 0) {
+          numInserted += inserted;
+          numToInsert -= inserted;
+          sidedInv.setInventorySlotContents(slot, toInsert);
         }
       }
     }
