@@ -67,8 +67,8 @@ public final class Config {
 
   public static int travelAnchorMaxDistance = 48;
   public static int travelStaffMaxDistance = 96;
-  public static float travelStaffPowerPerBlock = 100;
-  public static int travelStaffMaxStoredPower = 50000;
+  public static float travelStaffPowerPerBlock = 10;
+  public static int travelStaffMaxStoredPower = 25000;
   public static int travelStaffMaxPowerIo = 500;
   public static boolean travelAnchorEnabled = true;
   public static double travelStaffMaxBlinkDistance = 8;
