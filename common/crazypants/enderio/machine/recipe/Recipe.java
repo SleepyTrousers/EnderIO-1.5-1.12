@@ -38,7 +38,10 @@ public class Recipe implements IRecipe {
     for (ItemStack input : test) {
       if(input != null) {
         RecipeInput ri = getInputForStack(input);
-        if(ri == null) {
+        if(ri == null || ri.getInput() == null) {
+          return false;
+        }
+        if(input.stackSize < ri.getInput().stackSize) {
           return false;
         }
         recIns.remove(ri);
