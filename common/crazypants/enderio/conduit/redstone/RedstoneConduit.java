@@ -163,11 +163,18 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
   }
 
+  //returns 16 for string power inputs
   protected int getExternalPowerLevel(ForgeDirection dir) {
     World world = getBundle().getEntity().worldObj;
     BlockCoord loc = getLocation();
     loc = loc.getLocation(dir);
-    return world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
+    int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
+
+    int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
+    if(strong > 0) {
+      return 16;
+    }
+    return res;
   }
 
   @Override
