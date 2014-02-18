@@ -822,8 +822,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
     // Forces an update
     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    //TODO: WTF?
-    worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isMultiblock() ? 1 : 0, 2);
+    render = true;
   }
 
   TileCapacitorBank getController() {

@@ -10,8 +10,11 @@ public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory
   private static final int[] ALL_SLOTS = new int[] { 0, 1, 2, 3, 4, 5 };
   private boolean recieveEnabled;
 
-  public ItemRecieveBuffer() {
+  TileHyperCube hc;
+
+  public ItemRecieveBuffer(TileHyperCube hc) {
     super(6);
+    this.hc = hc;
   }
 
   public boolean isEmpty() {
@@ -42,6 +45,12 @@ public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory
       return true;
     }
     return false;
+  }
+
+  @Override
+  public void setInventorySlotContents(int slot, ItemStack stack) {
+    super.setInventorySlotContents(slot, stack);
+    hc.pushRecieveBuffer();
   }
 
   @Override

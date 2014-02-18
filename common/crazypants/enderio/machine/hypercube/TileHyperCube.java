@@ -127,7 +127,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   private EnumMap<SubChannel, IoMode> ioModes = new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(SubChannel.class);
 
-  private ItemRecieveBuffer recieveBuffer = new ItemRecieveBuffer();
+  private ItemRecieveBuffer recieveBuffer;
 
   protected RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
   protected boolean redstoneCheckPassed;
@@ -136,6 +136,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
     redstoneControlMode = RedstoneControlMode.IGNORE;
+    recieveBuffer = new ItemRecieveBuffer(this);
   }
 
   public RedstoneControlMode getRedstoneControlMode() {
@@ -677,7 +678,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
 
   }
 
-  private void pushRecieveBuffer() {
+  void pushRecieveBuffer() {
 
     if(recieveBuffer.isEmpty()) {
       return;
