@@ -172,6 +172,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
     }
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, this);
   }
 
   @Override
@@ -536,6 +537,10 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
         return true;
       }
 
+    } else if(ConduitUtil.isProbeEquipped(player)) {
+      if(player.isSneaking()) {
+        return false;
+      }
     }
 
     // Break conduit with tool
@@ -619,21 +624,27 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   }
 
   @Override
-  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+    if(id == GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR) {
+      return null;
+    }
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof IConduitBundle) {
-      return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, ForgeDirection.values()[ID - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
+      return new ExternalConnectionContainer(player.inventory, (IConduitBundle) te, ForgeDirection.values()[id - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
     }
     return null;
   }
 
   @Override
-  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+  public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof IConduitBundle) {
-      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, ForgeDirection.values()[ID - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
+      if(id == GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR) {
+        return new GuiExternalConnectionSelector((IConduitBundle) te);
+      }
+      return new GuiExternalConnection(player.inventory, (IConduitBundle) te, ForgeDirection.values()[id - GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE]);
     }
     return null;
   }

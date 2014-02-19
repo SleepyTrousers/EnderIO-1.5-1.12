@@ -4,9 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
@@ -21,7 +23,10 @@ import cpw.mods.fml.common.network.Player;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
@@ -32,6 +37,12 @@ import crazypants.util.Lang;
 
 public class MJReaderPacketHandler implements IPacketProcessor {
 
+  static final MJReaderPacketHandler instance = new MJReaderPacketHandler();
+
+  public static MJReaderPacketHandler getInstance() {
+    return instance;
+  }
+
   private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
   private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";
   private static final String CAP_BANK_STOR = " " + Lang.localize("gui.powerMonitor.monHeading2") + ": ";
@@ -41,6 +52,9 @@ public class MJReaderPacketHandler implements IPacketProcessor {
 
   private static final String NET_HEADING = Lang.localize("gui.mjReader.networkHeading");
   private static final String CON_BUF = " " + Lang.localize("gui.mjReader.conduitBuffer") + ": ";
+
+  private static final String ITEM_HEADING = Lang.localize("gui.mjReader.itemHeading");
+  private static final String ITEM_NO_CONNECTIONS = Lang.localize("gui.mjReader.itemNoConnections");
 
   private static final String ENERGY_CONDUIT = Lang.localize("itemPowerConduit");
   private static final String REQUEST_RANGE = " " + Lang.localize("gui.mjReader.requestRange") + ": ";;
@@ -58,11 +72,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     }
     if(te instanceof TileConduitBundle) {
       TileConduitBundle tcb = (TileConduitBundle) te;
-      IPowerConduit conduit = tcb.getConduit(IPowerConduit.class);
-      if(conduit == null) {
-        return false;
-      }
-      return true;
+      return tcb.getConduit(IPowerConduit.class) != null || tcb.getConduit(IItemConduit.class) != null;
     }
     if(te instanceof IInternalPowerReceptor) {
       return true;
@@ -134,26 +144,14 @@ public class MJReaderPacketHandler implements IPacketProcessor {
 
     if(te instanceof TileConduitBundle) {
 
-      TileConduitBundle tcb = (TileConduitBundle) te;
-      IPowerConduit conduit = tcb.getConduit(IPowerConduit.class);
-      if(conduit == null) {
-        return;
-      }
-      PowerConduitNetwork pcn = (PowerConduitNetwork) conduit.getNetwork();
-      NetworkPowerManager pm = pcn.getPowerManager();
-      PowerTracker tracker = pm.getTracker(conduit);
-      if(tracker != null) {
-        sendPowerConduitInfo(player, conduit, tracker);
-      } else {
-        sendNetworkInfo(player, pm);
-      }
+      sendInfoMessage(player, (TileConduitBundle) te);
 
     } else if(te instanceof IInternalPowerReceptor) {
 
       IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
       PowerHandler ph = pr.getPowerHandler();
       if(ph == null) {
-        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(block.getLocalizedName() + " cannot recieve power from this side."));
+        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
       }
 
       sendPowerReciptorInfo(player, block, ph.getEnergyStored(), ph.getMaxEnergyStored(), ph.getMinEnergyReceived(), ph.getMaxEnergyReceived(), ph
@@ -164,7 +162,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
       IPowerReceptor pr = (IPowerReceptor) te;
       PowerReceiver rec = pr.getPowerReceiver(ForgeDirection.values()[side]);
       if(rec == null) {
-        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(block.getLocalizedName() + " cannot recieve power from this side."));
+        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
       } else {
         sendPowerReciptorInfo(player, block, rec.getEnergyStored(), rec.getMaxEnergyStored(), rec.getMinEnergyReceived(), rec.getMaxEnergyReceived(),
             rec.powerRequest());
@@ -174,7 +172,118 @@ public class MJReaderPacketHandler implements IPacketProcessor {
 
   }
 
-  private void sendNetworkInfo(EntityPlayer player, NetworkPowerManager pm) {
+  public void sendInfoMessage(EntityPlayer player, TileConduitBundle tcb) {
+
+    if(tcb.getConduit(IItemConduit.class) != null) {
+      sendInfoMessage(player, tcb.getConduit(IItemConduit.class), null);
+    }
+    IPowerConduit conduit = tcb.getConduit(IPowerConduit.class);
+    if(conduit != null) {
+      sendInfoMessage(player, conduit);
+    }
+  }
+
+  public void sendInfoMessage(EntityPlayer player, IPowerConduit conduit) {
+    PowerConduitNetwork pcn = (PowerConduitNetwork) conduit.getNetwork();
+    NetworkPowerManager pm = pcn.getPowerManager();
+    PowerTracker tracker = pm.getTracker(conduit);
+    if(tracker != null) {
+      sendPowerConduitInfo(player, conduit, tracker);
+    } else {
+      sendInfoMessage(player, pm);
+    }
+  }
+
+  public void sendInfoMessage(EntityPlayer player, IItemConduit conduit, ItemStack input) {
+    String color = "\u00A7a ";
+    StringBuilder sb = new StringBuilder();
+    sb.append(color);
+
+    if(conduit.getExternalConnections().isEmpty()) {
+      sb.append(ITEM_HEADING);
+      sb.append(" ");
+      sb.append(ITEM_NO_CONNECTIONS);
+      sb.append("\n");
+      player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+      return;
+    }
+    for (ForgeDirection dir : conduit.getExternalConnections()) {
+      ConnectionMode mode = conduit.getConectionMode(dir);
+
+      sb.append(ITEM_HEADING);
+      sb.append(" ");
+      sb.append(Lang.localize("gui.mjReader.connectionDir"));
+      sb.append(" ");
+      sb.append(dir);
+      sb.append("\n");
+
+      ItemConduitNetwork icn = (ItemConduitNetwork) conduit.getNetwork();
+      if(mode.acceptsInput()) {
+        color = "\u00A79 ";
+        sb.append(color);
+
+        if(input == null) {
+          sb.append(Lang.localize("gui.mjReader.extractedItems"));
+        } else {
+          sb.append(Lang.localize("gui.mjReader.extractedItem"));
+          sb.append(" ");
+          sb.append(input.getDisplayName());
+        }
+        sb.append(" ");
+        List<String> targets = icn.getTargetsForExtraction(conduit.getLocation().getLocation(dir), input);
+        if(targets.isEmpty()) {
+          sb.append(" ");
+          sb.append(Lang.localize("gui.mjReader.noOutputs"));
+          sb.append(".\n");
+        } else {
+          sb.append(" ");
+          sb.append(Lang.localize("gui.mjReader.insertedInto"));
+          sb.append("\n");
+          for (String str : targets) {
+            sb.append("  - ");
+            sb.append(str);
+            sb.append("\n");
+          }
+        }
+      }
+      if(mode.acceptsOutput()) {
+        color = "\u00A79 ";
+        sb.append(color);
+
+        List<String> targets = icn.getInputSourcesFor(conduit, dir, input);
+        if(targets.isEmpty()) {
+          if(input == null) {
+            sb.append(Lang.localize("gui.mjReader.noItems"));
+          } else {
+            sb.append(Lang.localize("gui.mjReader.noItem"));
+            sb.append(" ");
+            sb.append(input.getDisplayName());
+          }
+        } else {
+          if(input == null) {
+            sb.append(Lang.localize("gui.mjReader.receiveItems"));
+          } else {
+            sb.append(Lang.localize("enderio.gui.mjReader.receiveItem1"));
+            sb.append(" ");
+            sb.append(input.getDisplayName());
+            sb.append(" ");
+            sb.append(Lang.localize("enderio.gui.mjReader.receiveItem2"));
+          }
+          sb.append("\n");
+          for (String str : targets) {
+            sb.append("  - ");
+            sb.append(str);
+            sb.append("\n");
+          }
+        }
+
+      }
+    }
+    player.sendChatToPlayer(ChatMessageComponent.func_111066_d(sb.toString()));
+
+  }
+
+  public void sendInfoMessage(EntityPlayer player, NetworkPowerManager pm) {
     PowerTracker tracker = pm.getNetworkPowerTracker();
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();

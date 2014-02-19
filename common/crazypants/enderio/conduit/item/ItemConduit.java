@@ -26,6 +26,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.monitor.MJReaderPacketHandler;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
@@ -117,7 +118,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ConduitUtil.isProbeEquipped(player)) {
+      if(!player.worldObj.isRemote) {
+        MJReaderPacketHandler.getInstance().sendInfoMessage(player, this, null);
+      }
+      return true;
+    } else if(ConduitUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().worldObj.isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
@@ -138,6 +144,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
           }
         }
       }
+    } else {
+      if(!player.worldObj.isRemote) {
+        MJReaderPacketHandler.getInstance().sendInfoMessage(player, this, player.getCurrentEquippedItem());
+      }
+      return true;
     }
     return false;
   }

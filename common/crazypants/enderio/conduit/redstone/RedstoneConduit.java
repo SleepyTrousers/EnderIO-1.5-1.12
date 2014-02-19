@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -163,11 +164,23 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
   }
 
+  //returns 16 for string power inputs
   protected int getExternalPowerLevel(ForgeDirection dir) {
     World world = getBundle().getEntity().worldObj;
     BlockCoord loc = getLocation();
     loc = loc.getLocation(dir);
-    return world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
+
+    int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
+    if(strong > 0) {
+      return 16;
+    }
+
+    int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
+    if(res < 15 && world.getBlockId(loc.x, loc.y, loc.z) == Block.redstoneWire.blockID) {
+      int wireIn = world.getBlockMetadata(loc.x, loc.y, loc.z);
+      res = Math.max(res, wireIn);
+    }
+    return res;
   }
 
   @Override

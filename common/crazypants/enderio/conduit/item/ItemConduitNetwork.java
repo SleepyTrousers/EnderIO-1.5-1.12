@@ -21,9 +21,11 @@ import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.item.ItemConduitNetwork.NetworkedInventory.Target;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
@@ -101,6 +103,40 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     }
     ItemStack result = item.copy();
     result.stackSize -= numInserted;
+    return result;
+  }
+
+  public List<String> getTargetsForExtraction(BlockCoord extractFrom, ItemStack input) {
+    List<String> result = new ArrayList<String>();
+    NetworkedInventory source = invMap.get(extractFrom);
+    if(source == null) {
+      return result;
+    }
+
+    if(source.sendPriority == null) {
+      return result;
+    }
+
+    for (Target t : source.sendPriority) {
+      ItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
+      if(input == null || f == null || f.doesItemPassFilter(input)) {
+        String s = "[" + t.distance + "] " + Lang.localize(t.inv.inv.getInvName(), false);
+        result.add(s);
+      }
+    }
+    return result;
+  }
+
+  public List<String> getInputSourcesFor(IItemConduit con, ForgeDirection dir, ItemStack input) {
+    List<String> result = new ArrayList<String>();
+    for (NetworkedInventory inv : inventories) {
+      if(inv.hasTarget(con, dir)) {
+        ItemFilter f = inv.con.getInputFilter(inv.conDir);
+        if(input == null || f == null || f.doesItemPassFilter(input)) {
+          result.add(Lang.localize(inv.inv.getInvName(), false));
+        }
+      }
+    }
     return result;
   }
 
@@ -190,6 +226,15 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         this.inv = new InventoryWrapper(inv);
       }
 
+    }
+
+    public boolean hasTarget(IItemConduit conduit, ForgeDirection dir) {
+      for (Target t : sendPriority) {
+        if(t.inv.con == conduit && t.inv.conDir == dir) {
+          return true;
+        }
+      }
+      return false;
     }
 
     boolean canExtract() {
