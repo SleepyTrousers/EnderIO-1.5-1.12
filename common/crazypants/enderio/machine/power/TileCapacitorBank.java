@@ -21,6 +21,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -940,7 +941,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   @Override
   public String getInvName() {
-    return ModObject.blockCapacitorBank.name();
+    return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
   }
 
   @Override

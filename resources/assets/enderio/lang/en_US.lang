@@ -111,7 +111,7 @@ enderio.blockCustomDoubleSlab=Painted Slab
 
 //Items
 item.enderio.itemYetaWrench.name=Yeta Wrench
-item.enderio.itemMJReader.name=Power Probe
+item.enderio.itemMJReader.name=Conduit Probe
 
 enderio.itemEnderface.wrongDimension=EnderIO block is in a different dimension.
 enderio.itemEnderface.tooFar=EnderIO block is too distant.
@@ -154,6 +154,19 @@ enderio.gui.mjReader.networkHeading=Power Network
 enderio.gui.mjReader.conduitBuffer=Internal Buffer
 enderio.gui.mjReader.requestRange=Per tick request range
 enderio.gui.mjReader.currentRequest=Current request
+enderio.gui.mjReader.itemHeading=Item Conduit
+enderio.gui.mjReader.itemNoConnections=has no external connections
+enderio.gui.mjReader.noPowerFromSide=cannot recieve power from this side
+enderio.gui.mjReader.connectionDir=connection to the
+enderio.gui.mjReader.extractedItems=Extracted items
+enderio.gui.mjReader.extractedItem=Item
+enderio.gui.mjReader.noOutputs=have no valid outputs
+enderio.gui.mjReader.insertedInto=will be inserted into:
+enderio.gui.mjReader.noItems=Receives no items.
+enderio.gui.mjReader.noItem=Can not receive
+enderio.gui.mjReader.receiveItems=Can receive items from:
+enderio.gui.mjReader.receiveItem1=Can receive
+enderio.gui.mjReader.receiveItem2=from:
 
 //CapactorBank
 enderio.gui.capBank.inputRs=Input Redstone Mode

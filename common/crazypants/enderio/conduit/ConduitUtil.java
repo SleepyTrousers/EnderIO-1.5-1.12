@@ -163,8 +163,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    //ModuleManager.itemHasActiveModule(player.getCurrentEquippedItem, OmniWrenchModule.MODULE_OMNI_WRENCH)
-    return bundle.getFacadeId() > 0 && (isToolEquipped(player) || isConduitEquipped(player));
+    return bundle.getFacadeId() > 0 && (isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -242,6 +241,14 @@ public class ConduitUtil {
       return MpsUtil.instance.isOmniToolActive(equipped);
     }
     return equipped.getItem() instanceof IToolWrench;
+  }
+
+  public static boolean isProbeEquipped(EntityPlayer player) {
+    ItemStack equipped = player.getCurrentEquippedItem();
+    if(equipped == null) {
+      return false;
+    }
+    return equipped.itemID == ModObject.itemMJReader.actualId;
   }
 
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
