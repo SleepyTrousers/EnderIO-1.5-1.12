@@ -33,8 +33,12 @@ public class MaterialRecipes {
     if(ingots.isEmpty()) {
       OreDictionary.registerOre("glass", Block.glass);
     }
-    OreDictionary.registerOre("glass", new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.GLASS.ordinal()));
+    ItemStack pureGlass = new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.GLASS.ordinal());
+    OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("glassHardened", new ItemStack(ModObject.blockFusedQuartz.actualId, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
+
+    //Glass panes for compatability
+    GameRegistry.addShapedRecipe(new ItemStack(Block.thinGlass), "   ", "eee", "eee", 'e', pureGlass);
 
     /**
      * Register AE1's Silicon, remove after AE2 is out.

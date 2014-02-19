@@ -51,7 +51,7 @@ enderio.vibrantCrystal.name=Vibrant Crystal
 //Quartz / Glass
 enderio.blockFusedQuartz=Fused Quartz
 enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
-enderio.blockFusedQuartz.fusedGlass.name=Fused Glass
+enderio.blockFusedQuartz.fusedGlass.name=Purified Glass
 
 item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots
