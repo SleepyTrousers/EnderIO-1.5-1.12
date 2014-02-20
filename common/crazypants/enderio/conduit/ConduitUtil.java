@@ -244,6 +244,10 @@ public class ConduitUtil {
   }
 
   public static boolean isProbeEquipped(EntityPlayer player) {
+    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
+    if(player == null) {
+      return false;
+    }
     ItemStack equipped = player.getCurrentEquippedItem();
     if(equipped == null) {
       return false;
