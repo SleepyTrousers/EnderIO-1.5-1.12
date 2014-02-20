@@ -145,15 +145,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         }
       }
     } else {
-      if(!player.worldObj.isRemote) {
-        if(res != null && res.component != null) {
-          ForgeDirection connDir = res.component.dir;
-          if(connDir != null && connDir != ForgeDirection.UNKNOWN && containsExternalConnection(connDir)) {
+
+      if(res != null && res.component != null) {
+        ForgeDirection connDir = res.component.dir;
+        if(connDir != null && connDir != ForgeDirection.UNKNOWN && containsExternalConnection(connDir)) {
+          if(!player.worldObj.isRemote) {
             MJReaderPacketHandler.getInstance().sendInfoMessage(player, this, player.getCurrentEquippedItem());
           }
+          return true;
         }
       }
-      return true;
+
     }
     return false;
   }
