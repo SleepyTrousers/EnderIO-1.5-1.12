@@ -21,6 +21,7 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
@@ -131,7 +132,9 @@ public class TravelController implements ITickHandler {
       }
       MovementInput input = player.movementInput;
       if(input.jump && !wasJumping && onBlock && selectedCoord != null) {
-        if(travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
+        if(isTargetEnderIO()) {
+          openEnderIO(null, player.worldObj, player);
+        } else if(travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
           input.jump = false;
         }
       }
@@ -142,6 +145,18 @@ public class TravelController implements ITickHandler {
 
   public boolean hasTarget() {
     return selectedCoord != null;
+  }
+
+  public void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
+    BlockCoord target = TravelController.instance.selectedCoord;
+    int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
+    if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+      if(requiredPower > 0) {
+        PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+      }
+      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
+          TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
+    }
   }
 
   public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source, boolean conserveMotion) {

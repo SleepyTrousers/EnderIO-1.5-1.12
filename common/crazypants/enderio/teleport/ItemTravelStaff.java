@@ -10,14 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BlockCoord;
@@ -92,13 +89,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     if(world.isRemote) {
       if(TravelController.instance.hasTarget()) {
         if(TravelController.instance.isTargetEnderIO()) {
-          BlockCoord target = TravelController.instance.selectedCoord;
-          int requiredPower = TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
-          if(requiredPower >= 0 && requiredPower <= getEnergyStored(equipped)) {
-            PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
-            player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
-                TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
-          }
+          TravelController.instance.openEnderIO(equipped, world, player);
         } else {
           TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF, false);
         }
