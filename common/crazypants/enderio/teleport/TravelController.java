@@ -302,6 +302,11 @@ public class TravelController implements ITickHandler {
     if(mix > 0) {
       double d = Math.tan(fovRad) * currentView.getEyePoint().distance(loc) * 0.01;
       scale = d / referenceScalingDistance;
+
+      //only apply 70% of the scaling so more distance targets are still smaller than closer targets
+      float nf = 1 - MathHelper.clamp_float((float) currentView.getEyePoint().distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
+      scale = scale * (0.3 + 0.7 * nf);
+
       scale = (scale * mix) + (1 - mix);
       scale = Math.max(1, scale);
     }
