@@ -47,10 +47,11 @@ enderio.basicGear.name=Basiszahnrad
 enderio.pulsatingCrystal.name=Pulsierender Kristall
 enderio.vibrantCrystal.name=Dynamischer Kristall
 
+
 //Quartz / Glass
 enderio.blockFusedQuartz=Fusionsquarz
 enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
-enderio.blockFusedQuartz.fusedGlass.name=Fusionsglas
+enderio.blockFusedQuartz.fusedGlass.name=Ziemlich Klares Glas
 
 item.enderio.itemFusedQuartzFrame.name=Fusionsquarzrahmen
 enderio.itemPowderIngot=Pulver & Barren
@@ -110,7 +111,7 @@ enderio.blockCustomDoubleSlab=Bemalte Stufe
 
 //Items
 item.enderio.itemYetaWrench.name=Yeta-Schraubenschlüssel
-item.enderio.itemMJReader.name=Energiesonde
+item.enderio.itemMJReader.name=Leitungssonde
 
 enderio.itemEnderface.wrongDimension=EnderIO-Block ist in einer anderen Dimension.
 enderio.itemEnderface.tooFar=EnderIO-Block ist zu weit entfernt.
@@ -153,6 +154,19 @@ enderio.gui.mjReader.networkHeading=Energienetzwerk
 enderio.gui.mjReader.conduitBuffer=Interner Puffer
 enderio.gui.mjReader.requestRange=Pro-Tick-Forderungsreichweite
 enderio.gui.mjReader.currentRequest=Aktuelle Forderung
+enderio.gui.mjReader.itemHeading=Item-Leitung
+enderio.gui.mjReader.itemNoConnections=hat keine externen Verbindungen
+enderio.gui.mjReader.noPowerFromSide=kann keine Energie von dieser Seite empfangen
+enderio.gui.mjReader.connectionDir=Verbindung mit der
+enderio.gui.mjReader.extractedItems=Extrahierte Items
+enderio.gui.mjReader.extractedItem=Item
+enderio.gui.mjReader.noOutputs=hat keine gültigen Outputs
+enderio.gui.mjReader.insertedInto=wird insertiert nach:
+enderio.gui.mjReader.noItems=Empfängt keine Items.
+enderio.gui.mjReader.noItem=Kann nicht empfangen
+enderio.gui.mjReader.receiveItems=Kann Items empfangen von:
+enderio.gui.mjReader.receiveItem1=Kann
+enderio.gui.mjReader.receiveItem2=empfangen von:
 
 //CapactorBank
 enderio.gui.capBank.inputRs=Input-Redstone-Modus
