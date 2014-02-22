@@ -22,6 +22,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.geom.CollidableCache;
@@ -230,12 +231,16 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
       FacadeRenderState curRS = getFacadeRenderedAs();
       FacadeRenderState rs = ConduitUtil.getRequiredFacadeRenderState(this, EnderIO.proxy.getClientPlayer());
-      int curLO = getLightOpacity();
-      int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
-      if(curLO != shouldBeLO) {
-        setLightOpacity(shouldBeLO);
-        worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+
+      if(Config.updateLightingWhenHidingFacades) {
+        int curLO = getLightOpacity();
+        int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
+        if(curLO != shouldBeLO) {
+          setLightOpacity(shouldBeLO);
+          worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+        }
       }
+
       if(curRS != rs) {
         setFacadeRenderAs(rs);
         if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {

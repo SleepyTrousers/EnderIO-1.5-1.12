@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -123,15 +124,20 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     }
 
     if(renderConduit) {
-      renderConduits(bundle, x, y, z, 0);
+      BlockCoord loc = bundle.getBlockCoord();
+      float brightness;
+      if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
+        brightness = 15 << 20 | 15 << 4;
+      } else {
+        brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
+      }
+      renderConduits(bundle, x, y, z, 0, brightness);
     }
 
     return true;
   }
 
-  public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick) {
-    BlockCoord loc = bundle.getBlockCoord();
-    float brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
+  public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
 
     Tessellator tessellator = Tessellator.instance;
     tessellator.setColorOpaque_F(1, 1, 1);

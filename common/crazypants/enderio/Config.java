@@ -65,6 +65,8 @@ public final class Config {
 
   public static boolean renderCapBankGaugeLevel = true;
 
+  public static boolean updateLightingWhenHidingFacades = false;
+
   public static int travelAnchorMaxDistance = 48;
   public static int travelStaffMaxDistance = 96;
   public static float travelStaffPowerPerBlock = 10;
@@ -74,7 +76,7 @@ public final class Config {
   public static double travelStaffMaxBlinkDistance = 8;
   public static int travelStaffBlinkPauseTicks = 10;
 
-  public static int enderIoRange = 5;
+  public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
   public static void load(FMLPreInitializationEvent event) {
@@ -218,6 +220,12 @@ public final class Config {
 
     enderIoMeAccessEnabled = config.get("Settings", "enderIoMeAccessEnabled", enderIoMeAccessEnabled,
         "If fasle, you will not be able to access a ME acess or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
+
+    updateLightingWhenHidingFacades = config.get("Settings", "updateLightingWhenHidingFacades", updateLightingWhenHidingFacades,
+        "When true, correct lighting is recalculated (client side) for conduit bundles when transitioning to"
+            + " from being hidden behind a facade. This produces "
+            + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
+        .getBoolean(updateLightingWhenHidingFacades);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")
