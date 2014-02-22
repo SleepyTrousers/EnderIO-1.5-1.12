@@ -35,15 +35,15 @@ public class AlloyRecipeManager {
 
   private final List<IAlloyRecipe> recipes = new ArrayList<IAlloyRecipe>();
 
-  private VanillaSmeltingRecipe vanillaRecipe = new VanillaSmeltingRecipe();
+  VanillaSmeltingRecipe vanillaRecipe = new VanillaSmeltingRecipe();
 
   public AlloyRecipeManager() {
   }
 
   public void loadRecipesFromConfig() {
-    
+
     VanillaFurnaceTagHandler tagHandler = new VanillaFurnaceTagHandler();
-    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, tagHandler);    
+    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, tagHandler);
     if(config != null) {
       processConfig(config, tagHandler);
     } else {
@@ -90,7 +90,7 @@ public class AlloyRecipeManager {
     for (Recipe rec : newRecipes) {
       addRecipe(new BasicAlloyRecipe(rec));
     }
-    tagHandler.apply();    
+    tagHandler.apply();
     Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
 
   }

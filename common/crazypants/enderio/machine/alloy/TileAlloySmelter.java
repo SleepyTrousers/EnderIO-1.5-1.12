@@ -57,14 +57,24 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
-    IMachineRecipe result = super.canStartNextTask(chance);
-    if(mode == Mode.ALLOY && result instanceof VanillaSmeltingRecipe) {
-      result = null;
+    if(mode == Mode.FURNACE) {
+      VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().vanillaRecipe;
+      if(vr.isRecipe(getInputs())) {
+        ItemStack[] res = vr.getCompletedResult(chance, getInputs());
+        if(res == null || res.length == 0) {
+          return null;
+        }
+        return canInsertResult(chance, vr) ? vr : null;
+      }
+      return null;
     }
-    if(mode == Mode.FURNACE && !(result instanceof VanillaSmeltingRecipe)) {
-      result = null;
+
+    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
+    if(nextRecipe == null) {
+      return null; // no template
     }
-    return result;
+    // make sure we have room for the next output
+    return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
   }
 
   @Override
