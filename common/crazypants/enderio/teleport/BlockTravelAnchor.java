@@ -53,6 +53,7 @@ public class BlockTravelAnchor extends Block implements ITileEntityProvider, IGu
     GameRegistry.registerBlock(this, ModObject.blockTravelPlatform.unlocalisedName);
     GameRegistry.registerTileEntity(TileTravelAnchor.class, ModObject.blockTravelPlatform.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
   }
 
   @Override
@@ -104,7 +105,12 @@ public class BlockTravelAnchor extends Block implements ITileEntityProvider, IGu
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
-      return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te);
+      if(ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
+        return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
+      } else {
+        System.out.println("BlockTravelAnchor.getServerGuiElement: ");
+        return new ContainerTravelAuth(player.inventory);
+      }
     }
     return null;
   }
@@ -113,7 +119,12 @@ public class BlockTravelAnchor extends Block implements ITileEntityProvider, IGu
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getBlockTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
-      return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te);
+      if(ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
+        return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);
+      } else {
+        System.out.println("BlockTravelAnchor.getClientGuiElement: ");
+        return new GuiTravelAuth(player, (ITravelAccessable) te, world);
+      }
     }
     return null;
   }

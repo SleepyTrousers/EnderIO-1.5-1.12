@@ -200,6 +200,8 @@ enderio.gui.travelAccessable.public=Public
 enderio.gui.travelAccessable.private=Private
 enderio.gui.travelAccessable.protected=Protected
 enderio.gui.travelAccessable.unauthorised=You are not allowed to access this block.
+enderio.gui.travelAccessable.enterCode=Access Code Required
+enderio.gui.travelAccessable.ok=Authorise
 
 //conduits
 enderio.gui.conduit.ioMode=Mode

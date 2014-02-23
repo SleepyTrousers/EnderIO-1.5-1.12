@@ -1,5 +1,8 @@
 package crazypants.enderio.teleport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
@@ -25,7 +28,9 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
 
   private String placedBy;
 
-  public boolean canBlockBeAccessed(String playerName, ItemStack[] pwd) {
+  private List<String> authorisedUsers = new ArrayList<String>();
+
+  public boolean canBlockBeAccessed(String playerName) {
     if(accessMode == AccessMode.PUBLIC) {
       return true;
     }
@@ -35,6 +40,15 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
     if(placedBy != null && placedBy.equals(playerName)) {
       return true;
     }
+    return authorisedUsers.contains(playerName);
+  }
+
+  @Override
+  public void clearAuthorisedUsers() {
+    authorisedUsers.clear();
+  }
+
+  private boolean checkPassword(ItemStack[] pwd) {
     if(pwd == null || pwd.length != password.length) {
       return false;
     }
@@ -51,6 +65,20 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
       }
     }
     return true;
+  }
+
+  @Override
+  public boolean getRequiresPassword(String username) {
+    return !canUiBeAccessed(username) && !authorisedUsers.contains(username);
+  }
+
+  @Override
+  public boolean authoriseUser(String username, ItemStack[] password) {
+    if(checkPassword(password)) {
+      authorisedUsers.add(username);
+      return true;
+    }
+    return false;
   }
 
   public boolean canUiBeAccessed(String playerName) {
@@ -122,6 +150,20 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
         password[i] = null;
       }
     }
+    authorisedUsers.clear();
+    String userStr = root.getString("authorisedUsers");
+    if(userStr != null && userStr.length() > 0) {
+      String[] users = userStr.split(",");
+      for (String user : users) {
+        if(user != null) {
+          user = user.trim();
+          if(user.length() > 0) {
+            authorisedUsers.add(user);
+          }
+        }
+      }
+    }
+
   }
 
   @Override
@@ -137,6 +179,12 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
         root.setTag("password" + i, stackRoot);
       }
     }
+    StringBuffer userStr = new StringBuffer();
+    for (String user : authorisedUsers) {
+      userStr.append(user);
+      userStr.append(",");
+    }
+    root.setString("authorisedUsers", userStr.toString());
   }
 
   @Override

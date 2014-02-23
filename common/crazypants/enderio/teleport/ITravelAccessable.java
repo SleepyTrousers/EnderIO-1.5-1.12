@@ -5,9 +5,15 @@ import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 
 public interface ITravelAccessable {
 
-  public boolean canBlockBeAccessed(String playerName, ItemStack[] pwd);
+  public boolean canBlockBeAccessed(String playerName);
 
   public boolean canSeeBlock(String playerName);
+
+  public boolean canUiBeAccessed(String username);
+
+  public boolean getRequiresPassword(String username);
+
+  public boolean authoriseUser(String username, ItemStack[] password);
 
   public AccessMode getAccessMode();
 
@@ -21,6 +27,6 @@ public interface ITravelAccessable {
 
   public void setPlacedBy(String placedBy);
 
-  public boolean canUiBeAccessed(String username);
+  public void clearAuthorisedUsers();
 
 }

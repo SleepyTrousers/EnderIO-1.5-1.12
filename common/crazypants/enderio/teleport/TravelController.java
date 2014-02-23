@@ -158,7 +158,7 @@ public class TravelController implements ITickHandler {
       return;
     }
     TileEnderIO eio = (TileEnderIO) te;
-    if(eio.canBlockBeAccessed(player.username, null)) {
+    if(eio.canBlockBeAccessed(player.username)) {
 
       int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
       if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
@@ -183,7 +183,7 @@ public class TravelController implements ITickHandler {
       TileEntity te = player.worldObj.getBlockTileEntity(coord.x, coord.y, coord.z);
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
-        if(!ta.canBlockBeAccessed(player.username, null)) {
+        if(!ta.canBlockBeAccessed(player.username)) {
           player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
           return false;
         }

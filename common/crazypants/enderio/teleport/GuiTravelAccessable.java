@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
@@ -38,8 +39,8 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private int col1x;
   private int col2x;
 
-  public GuiTravelAccessable(InventoryPlayer playerInv, ITravelAccessable te) {
-    super(new ContainerTravelAccessable(playerInv, te));
+  public GuiTravelAccessable(InventoryPlayer playerInv, ITravelAccessable te, World world) {
+    super(new ContainerTravelAccessable(playerInv, te, world));
     this.te = te;
 
     publicStr = Lang.localize("gui.travelAccessable.public");
@@ -118,14 +119,21 @@ public class GuiTravelAccessable extends GuiContainerBase {
     x = sx + col2x - fontRenderer.getStringWidth(publicStr) / 2;
     fontRenderer.drawStringWithShadow(publicStr, x, y, col);
 
+  }
+
+  @Override
+  protected void drawForegroundImpl(int mouseX, int mouseY) {
+    super.drawForegroundImpl(mouseX, mouseY);
     if(te.getAccessMode() != AccessMode.PROTECTED) {
+      int sx = (width - xSize) / 2;
+      int sy = (height - ySize) / 2;
       RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
-      drawTexturedModalRect(sx + 43, sy + 37, 5, 5, 90, 23);
+      drawTexturedModalRect(43, 37, 5, 5, 90, 23);
       GL11.glDisable(GL11.GL_BLEND);
       GL11.glColor4f(1, 1, 1, 1);
     }
-
   }
+
 }
