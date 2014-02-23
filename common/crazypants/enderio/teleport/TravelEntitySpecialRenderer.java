@@ -39,9 +39,16 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
       return;
     }
 
+    ITravelAccessable ta = (ITravelAccessable) tileentity;
+    if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer.username)) {
+      return;
+    }
+
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
     Vector3d loc = new Vector3d(tileentity.xCoord + 0.5, tileentity.yCoord + 0.5, tileentity.zCoord + 0.5);
-    if(eye.distanceSquared(loc) > TravelController.instance.getMaxTravelDistanceSq()) {
+    double maxDistance = TravelController.instance.isStaffEquipped(Minecraft.getMinecraft().thePlayer) ? TravelSource.STAFF.maxDistanceTravelledSq
+        : TravelSource.BLOCK.maxDistanceTravelledSq;
+    if(eye.distanceSquared(loc) > maxDistance) {
       return;
     }
 
@@ -57,7 +64,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
     GL11.glDisable(GL11.GL_DEPTH_TEST);
-    //GL11.glDepthMask(false);
     GL11.glDisable(GL11.GL_LIGHTING);
 
     GL11.glEnable(GL11.GL_BLEND);
@@ -88,7 +94,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
     Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
 
-    //GL11.glDepthMask(true);
     GL11.glPopMatrix();
     GL11.glPopAttrib();
     GL11.glPopAttrib();

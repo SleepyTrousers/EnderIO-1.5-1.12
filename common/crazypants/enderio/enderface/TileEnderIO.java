@@ -2,10 +2,13 @@ package crazypants.enderio.enderface;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.PacketHandler;
+import crazypants.enderio.teleport.TileTravelAnchor;
+import crazypants.enderio.teleport.TravelController;
 
-public class TileEnderIO extends TileEntity {
+public class TileEnderIO extends TileTravelAnchor {
 
   float lastUiPitch = -45;
   float lastUiYaw = 45;
@@ -13,6 +16,12 @@ public class TileEnderIO extends TileEntity {
 
   float initUiPitch = -45;
   float initUiYaw = 45;
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public double getMaxRenderDistanceSquared() {
+    return TravelController.instance.getMaxTravelDistanceSq();
+  }
 
   @Override
   public boolean shouldRenderInPass(int passNo) {

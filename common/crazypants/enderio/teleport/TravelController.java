@@ -10,6 +10,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.MathHelper;
@@ -25,6 +26,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
@@ -151,13 +153,23 @@ public class TravelController implements ITickHandler {
 
   public void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
     BlockCoord target = TravelController.instance.selectedCoord;
-    int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
-    if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
-      if(requiredPower > 0) {
-        PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+    TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+    if(!(te instanceof TileEnderIO)) {
+      return;
+    }
+    TileEnderIO eio = (TileEnderIO) te;
+    if(eio.canBlockBeAccessed(player.username, null)) {
+
+      int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
+      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+        if(requiredPower > 0) {
+          PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+        }
+        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
+            TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
+      } else {
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
       }
-      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
-          TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
     }
   }
 
@@ -166,6 +178,18 @@ public class TravelController implements ITickHandler {
   }
 
   public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord) {
+
+    if(source != TravelSource.STAFF_BLINK) {
+      TileEntity te = player.worldObj.getBlockTileEntity(coord.x, coord.y, coord.z);
+      if(te instanceof ITravelAccessable) {
+        ITravelAccessable ta = (ITravelAccessable) te;
+        if(!ta.canBlockBeAccessed(player.username, null)) {
+          player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
+          return false;
+        }
+      }
+    }
+
     int requiredPower = 0;
     if(source == TravelSource.STAFF) {
       requiredPower = getRequiredPower(player, source, coord);
@@ -424,6 +448,11 @@ public class TravelController implements ITickHandler {
   @Override
   public String getLabel() {
     return "TravelClientTickHandler";
+  }
+
+  public boolean isStaffEquipped(EntityClientPlayerMP thePlayer) {
+    ItemStack item = thePlayer.getCurrentEquippedItem();
+    return item == null ? false : item.itemID == ModObject.blockTravelPlatform.actualId;
   }
 
 }

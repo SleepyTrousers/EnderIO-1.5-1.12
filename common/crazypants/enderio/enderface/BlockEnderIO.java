@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -21,6 +22,8 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.enderface.te.MeProxy;
+import crazypants.enderio.teleport.ITravelAccessable;
+import crazypants.util.Lang;
 
 public class BlockEnderIO extends Block implements ITileEntityProvider {
 
@@ -81,10 +84,32 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
       eio.initUiYaw = -player.rotationYaw + 180;
       eio.lastUiPitch = eio.initUiPitch;
       eio.lastUiYaw = eio.initUiYaw;
-
+      if(player instanceof EntityPlayer) {
+        eio.setPlacedBy(((EntityPlayer) player).username);
+      }
       world.markBlockForUpdate(x, y, z);
     }
+  }
 
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    if(entityPlayer.isSneaking()) {
+      return false;
+    }
+    TileEntity te = world.getBlockTileEntity(x, y, z);
+    if(te instanceof ITravelAccessable) {
+      ITravelAccessable ta = (ITravelAccessable) te;
+      if(ta.canUiBeAccessed(entityPlayer.username)) {
+        entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
+      } else {
+        if(world.isRemote) {
+          entityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
+              + Lang.localize("gui.travelAccessable.privateBlock2")));
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   @Override
