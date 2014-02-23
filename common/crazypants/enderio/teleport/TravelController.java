@@ -136,11 +136,24 @@ public class TravelController implements ITickHandler {
       }
       MovementInput input = player.movementInput;
       if(input.jump && !wasJumping && onBlock && selectedCoord != null) {
+
+        BlockCoord target = TravelController.instance.selectedCoord;
+        TileEntity te = player.worldObj.getBlockTileEntity(target.x, target.y, target.z);
+        if(te instanceof ITravelAccessable) {
+          ITravelAccessable ta = (ITravelAccessable) te;
+          if(ta.getRequiresPassword(player.username)) {
+            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+            PacketDispatcher.sendPacketToServer(packet);
+            return;
+          }
+        }
+
         if(isTargetEnderIO()) {
           openEnderIO(null, player.worldObj, player);
         } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK)) {
           input.jump = false;
         }
+
       }
       wasJumping = input.jump;
       candidates.clear();

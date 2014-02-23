@@ -5,7 +5,6 @@ import java.awt.Color;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -53,17 +52,17 @@ public class GuiTravelAuth extends GuiContainerBase {
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();
     } else {
-      System.out.print("GuiTravelAuth.actionPerformed: Password is: ");
-      for (ItemStack is : ta.getPassword()) {
-        System.out.print((is == null ? is : is.getDisplayName()) + ",");
-      }
-      System.out.println();
-      System.out.print("GuiTravelAuth.actionPerformed: I offered: ");
-      for (ItemStack is : poo.enteredPassword) {
-        System.out.print((is == null ? is : is.getDisplayName()) + ",");
-      }
-      System.out.println();
-      System.out.println();
+      //      System.out.print("GuiTravelAuth.actionPerformed: Password is: ");
+      //      for (ItemStack is : ta.getPassword()) {
+      //        System.out.print((is == null ? is : is.getDisplayName()) + ",");
+      //      }
+      //      System.out.println();
+      //      System.out.print("GuiTravelAuth.actionPerformed: I offered: ");
+      //      for (ItemStack is : poo.enteredPassword) {
+      //        System.out.print((is == null ? is : is.getDisplayName()) + ",");
+      //      }
+      //      System.out.println();
+      //      System.out.println();
       failed = true;
       poo.dirty = false;
     }

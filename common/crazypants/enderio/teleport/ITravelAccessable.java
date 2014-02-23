@@ -2,6 +2,7 @@ package crazypants.enderio.teleport;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
+import crazypants.util.BlockCoord;
 
 public interface ITravelAccessable {
 
@@ -28,5 +29,7 @@ public interface ITravelAccessable {
   public void setPlacedBy(String placedBy);
 
   public void clearAuthorisedUsers();
+
+  public BlockCoord getLocation();
 
 }

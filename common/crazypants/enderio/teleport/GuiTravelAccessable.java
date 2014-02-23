@@ -7,7 +7,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -18,6 +17,7 @@ import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
 public class GuiTravelAccessable extends GuiContainerBase {
@@ -39,9 +39,12 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private int col1x;
   private int col2x;
 
+  private World world;
+
   public GuiTravelAccessable(InventoryPlayer playerInv, ITravelAccessable te, World world) {
     super(new ContainerTravelAccessable(playerInv, te, world));
     this.te = te;
+    this.world = world;
 
     publicStr = Lang.localize("gui.travelAccessable.public");
     privateStr = Lang.localize("gui.travelAccessable.private");
@@ -80,10 +83,10 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
     te.setAccessMode(curMode);
-    //TODO: send message
-    Packet packet = ((TileEntity) te).getDescriptionPacket();
-    PacketDispatcher.sendPacketToServer(packet);
 
+    BlockCoord bc = te.getLocation();
+    Packet packet = TravelPacketHandler.createAccessModePacket(bc.x, bc.y, bc.z, curMode);
+    PacketDispatcher.sendPacketToServer(packet);
   }
 
   @Override
@@ -124,16 +127,24 @@ public class GuiTravelAccessable extends GuiContainerBase {
   @Override
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
+
     if(te.getAccessMode() != AccessMode.PROTECTED) {
       int sx = (width - xSize) / 2;
       int sy = (height - ySize) / 2;
       RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
-      drawTexturedModalRect(43, 37, 5, 5, 90, 23);
+      GL11.glDisable(GL11.GL_DEPTH_TEST);
+      drawTexturedModalRect(43, 42, 5, 5, 90, 18);
       GL11.glDisable(GL11.GL_BLEND);
+      GL11.glEnable(GL11.GL_DEPTH_TEST);
       GL11.glColor4f(1, 1, 1, 1);
     }
+  }
+
+  @Override
+  public void drawScreen(int par1, int par2, float par3) {
+    super.drawScreen(par1, par2, par3);
   }
 
 }

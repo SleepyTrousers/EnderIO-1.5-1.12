@@ -108,7 +108,6 @@ public class BlockTravelAnchor extends Block implements ITileEntityProvider, IGu
       if(ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
         return new ContainerTravelAccessable(player.inventory, (ITravelAccessable) te, world);
       } else {
-        System.out.println("BlockTravelAnchor.getServerGuiElement: ");
         return new ContainerTravelAuth(player.inventory);
       }
     }
@@ -122,7 +121,6 @@ public class BlockTravelAnchor extends Block implements ITileEntityProvider, IGu
       if(ID == GuiHandler.GUI_ID_TRAVEL_ACCESSABLE) {
         return new GuiTravelAccessable(player.inventory, (ITravelAccessable) te, world);
       } else {
-        System.out.println("BlockTravelAnchor.getClientGuiElement: ");
         return new GuiTravelAuth(player, (ITravelAccessable) te, world);
       }
     }

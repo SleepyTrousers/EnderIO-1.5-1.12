@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.PacketHandler;
+import crazypants.util.BlockCoord;
 import crazypants.util.PacketUtil;
 
 public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
@@ -46,6 +47,10 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
   @Override
   public void clearAuthorisedUsers() {
     authorisedUsers.clear();
+  }
+
+  public BlockCoord getLocation() {
+    return new BlockCoord(this);
   }
 
   private boolean checkPassword(ItemStack[] pwd) {
