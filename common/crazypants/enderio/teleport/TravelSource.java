@@ -5,7 +5,16 @@ import crazypants.enderio.Config;
 public enum TravelSource {
 
   BLOCK(0, Config.travelAnchorMaxDistance),
-  STAFF(Config.travelStaffPowerPerBlock * 10, Config.travelStaffMaxDistance);
+  STAFF(Config.travelStaffPowerPerBlock * 10, Config.travelStaffMaxDistance),
+  STAFF_BLINK(Config.travelStaffPowerPerBlock * 10, Config.travelStaffMaxBlinkDistance);
+
+  public static int getMaxDistance() {
+    return STAFF.maxDistanceTravelledSq;
+  }
+
+  public static int getMaxDistanceSq() {
+    return STAFF.maxDistanceTravelledSq;
+  }
 
   public final float powerCostPerBlockTraveledRF;
   public final int maxDistanceTravelled;
@@ -17,26 +26,8 @@ public enum TravelSource {
     maxDistanceTravelledSq = maxDistanceTravelled * maxDistanceTravelled;
   }
 
-  public static int getMaxDistance() {
-    //    int max = 0;
-    //    for (TravelSource source : TravelSource.values()) {
-    //      if(source.maxDistanceTravelled > max) {
-    //        max = source.maxDistanceTravelled;
-    //      }
-    //    }
-    //    return max;
-    return STAFF.maxDistanceTravelledSq;
-  }
-
-  public static int getMaxDistanceSq() {
-    //    int max = 0;
-    //    for (TravelSource source : TravelSource.values()) {
-    //      if(source.maxDistanceTravelledSq > max) {
-    //        max = source.maxDistanceTravelledSq;
-    //      }
-    //    }
-    //    return max;
-    return STAFF.maxDistanceTravelledSq;
+  public boolean getConserveMomentum() {
+    return this == STAFF_BLINK;
   }
 
 }

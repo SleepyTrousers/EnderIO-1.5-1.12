@@ -66,6 +66,7 @@ import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
+import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
@@ -238,6 +239,7 @@ public class EnderIO {
     ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
     ItemRecipes.addRecipes();
+    TeleportRecipes.addRecipes();
 
     triggerNoEnergy = new TriggerEnderIO("enderIO.trigger.noEnergy", 0);
     triggerHasEnergy = new TriggerEnderIO("enderIO.trigger.hasEnergy", 1);

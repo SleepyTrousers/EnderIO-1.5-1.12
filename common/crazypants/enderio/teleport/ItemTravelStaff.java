@@ -65,7 +65,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
     if(player.isSneaking()) {
-      if(world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= 10) {//Config.travelStaffBlinkPauseTicks) {
+      if(Config.travelStaffBlinkEnabled && world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= Config.travelStaffBlinkPauseTicks) {
         Vector3d eye = Util.getEyePositionEio(player);
         Vector3d look = Util.getLookVecEio(player);
 
@@ -76,11 +76,11 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
           sample.scale(i);
           sample.add(eye);
           BlockCoord coord = new BlockCoord((int) sample.x, (int) sample.y, (int) sample.z);
-          if(TravelController.instance.travelToLocation(player, TravelSource.STAFF, coord, true)) {
+          if(TravelController.instance.travelToLocation(player, TravelSource.STAFF_BLINK, coord)) {
             player.swingItem();
             lastBlickTick = player.worldObj.getTotalWorldTime();
             return equipped;
-          }
+          } 
         }
       }
       return equipped;
@@ -90,8 +90,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
       if(TravelController.instance.hasTarget()) {
         if(TravelController.instance.isTargetEnderIO()) {
           TravelController.instance.openEnderIO(equipped, world, player);
-        } else {
-          TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF, false);
+        } else if(Config.travelAnchorEnabled) {
+          TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF);
         }
       }
     }

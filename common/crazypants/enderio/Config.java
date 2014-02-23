@@ -67,14 +67,20 @@ public final class Config {
 
   public static boolean updateLightingWhenHidingFacades = false;
 
+  public static boolean travelAnchorEnabled = true;
   public static int travelAnchorMaxDistance = 48;
+
   public static int travelStaffMaxDistance = 96;
   public static float travelStaffPowerPerBlock = 10;
   public static int travelStaffMaxStoredPower = 25000;
   public static int travelStaffMaxPowerIo = 500;
-  public static boolean travelAnchorEnabled = true;
-  public static double travelStaffMaxBlinkDistance = 8;
+  public static int travelStaffMaxBlinkDistance = 8;
   public static int travelStaffBlinkPauseTicks = 10;
+
+  public static boolean travelStaffEnabled = true;
+  public static boolean travelStaffBlinkEnabled = true;
+  public static boolean travelStaffBlinkThroughSolidBlocksEnabled = true;
+  public static boolean travelStaffBlinkThroughClearBlocksEnabled = true;
 
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
@@ -193,7 +199,7 @@ public final class Config {
     }
 
     travelAnchorEnabled = config.get("Settings", "travelAnchorEnabled", travelAnchorEnabled,
-        "Maximum number of blocks that can be traveled from one travel anchor to another.").getBoolean(travelAnchorEnabled);
+        "When set to false the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
 
     travelAnchorMaxDistance = config.get("Settings", "travelAnchorMaxDistance", travelAnchorMaxDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaxDistance);
@@ -209,11 +215,24 @@ public final class Config {
     travelStaffMaxPowerIo = config.get("Settings", "travelStaffMaxPowerIo", travelStaffMaxPowerIo,
         "Maximum number of MJ that the Staff of the Traveling can be charged per tick.").getInt(travelStaffMaxPowerIo);
 
-    travelStaffMaxBlinkDistance = (float) config.get("Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
-        "Max number of blocks teleported when shift clicking the staff.").getDouble(travelStaffMaxBlinkDistance);
+    travelStaffMaxBlinkDistance = config.get("Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
+        "Max number of blocks teleported when shift clicking the staff.").getInt(travelStaffMaxBlinkDistance);
 
     travelStaffBlinkPauseTicks = config.get("Settings", "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
+
+    travelStaffEnabled = config.get("Settings", "travelStaffEnabled", travelAnchorEnabled,
+        "If set to false the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
+    travelStaffBlinkEnabled = config.get("Settings", "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
+        "If set to false the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
+    travelStaffBlinkThroughSolidBlocksEnabled = config.get("Settings", "travelStaffBlinkThroughSolidBlocksEnabled", travelStaffBlinkThroughSolidBlocksEnabled,
+        "If set to false the travel staff can be used to blink through any block.").getBoolean(travelStaffBlinkThroughSolidBlocksEnabled);
+    travelStaffBlinkThroughClearBlocksEnabled = config
+        .get("Settings", "travelStaffBlinkThroughClearBlocksEnabled", travelStaffBlinkThroughClearBlocksEnabled,
+            "If travelStaffBlinkThroughSolidBlocksEnabled is set to false and this is true, the travel " +
+                "staff can only be used to blink through transparent or partial blocks (e.g. torches). " +
+                "If both are false, only air blocks may be teleported through.")
+        .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
 
     enderIoRange = config.get("Settings", "enderIoRange", enderIoRange,
         "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);

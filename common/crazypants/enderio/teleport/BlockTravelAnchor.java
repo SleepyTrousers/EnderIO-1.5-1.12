@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIOTab;
@@ -18,6 +19,7 @@ public class BlockTravelAnchor extends Block implements ITileEntityProvider {
   public static BlockTravelAnchor create() {
     TravelPacketHandler pp = new TravelPacketHandler();
     PacketHandler.instance.addPacketProcessor(pp);
+    NetworkRegistry.instance().registerConnectionHandler(pp);
 
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();

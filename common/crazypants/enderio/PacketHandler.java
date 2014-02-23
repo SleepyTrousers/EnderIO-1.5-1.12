@@ -51,7 +51,9 @@ public class PacketHandler implements IPacketHandler {
 
   public static final int ID_TRAVEL_PLATFORM = 23;
   public static final int ID_TRAVEL_STAFF_DRAIN = 24;
-  public static final int ID_ME_TERMINAL = 25;
+  public static final int ID_TRAVEL_SETTINGS = 25;
+
+  public static final int ID_ME_TERMINAL = 26;
 
   public static final String CHANNEL = "EnderIO";
 
