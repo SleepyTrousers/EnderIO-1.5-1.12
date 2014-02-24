@@ -1,3 +1,18 @@
+0.11.0
+Features
+- #473 New config options for Staff of Travelling to allow teleporting to limited in various ways
+- #473 Added access control for EnderIO and Travel Anchor blocks.
+Bugs
+- #421 Redstone conduit reducing by one when it should not. bug Code Complete
+- #425 Redstone conduits do not recognize vanilla redstone corners.
+- #445 Dimensional Transceiver experiences item bounceback under heavy load.
+- #447 Capacitor Bank causing invisible rendering 
+- #481 Can't make normal glass in furnace mode unless two stacks in furnace
+- #484 ArrayIndexOutOfBoundsException with BC quarry 
+- #487 Teleport anchor and Ender IO acting wierd bug Code Complete
+- #493  Crash with Mekanism Digital Miner bug Code Complete
+
+
 0.10.0
 Major changes to EnderIO block and new teleporting features
 - Added new 'Travel Anchor' block and 'Staff of Traveling' item (textures are temporary. Warning, made by a coder)
