@@ -26,6 +26,10 @@ public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory
     return true;
   }
 
+  public ItemStack[] getItems() {
+    return items;
+  }
+
   public void setRecieveEnabled(boolean canRecieveItems) {
     recieveEnabled = canRecieveItems;
   }

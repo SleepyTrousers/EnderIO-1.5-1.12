@@ -694,7 +694,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
         for (TileHyperCube cube : cubes) {
           if(toPush != null && cube != this && cube != null && cube.canRecieveItems()) {
             toPush = cube.recieveItems(toPush);
-            recieveBuffer.setInventorySlotContents(i, toPush);
+            recieveBuffer.getItems()[i] = toPush;
           }
         }
       }
