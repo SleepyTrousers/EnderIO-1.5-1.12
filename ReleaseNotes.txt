@@ -11,6 +11,7 @@ Bugs
 - #484 ArrayIndexOutOfBoundsException with BC quarry 
 - #487 Teleport anchor and Ender IO acting wierd bug Code Complete
 - #493  Crash with Mekanism Digital Miner bug Code Complete
+- Reduced FPS hit when hiding / showing facades.
 
 
 0.10.0

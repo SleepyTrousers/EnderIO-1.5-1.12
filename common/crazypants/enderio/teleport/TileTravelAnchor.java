@@ -74,7 +74,7 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
 
   @Override
   public boolean getRequiresPassword(String username) {
-    return !canUiBeAccessed(username) && !authorisedUsers.contains(username);
+    return getAccessMode() != AccessMode.PUBLIC && !canUiBeAccessed(username) && !authorisedUsers.contains(username);
   }
 
   @Override
