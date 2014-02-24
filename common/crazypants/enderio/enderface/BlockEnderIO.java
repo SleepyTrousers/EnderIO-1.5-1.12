@@ -103,7 +103,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         if(world.isRemote) {
-          entityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
+          entityPlayer.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
               + Lang.localize("gui.travelAccessable.privateBlock2")));
         }
       }

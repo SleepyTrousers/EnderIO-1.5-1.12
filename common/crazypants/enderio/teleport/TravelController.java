@@ -111,7 +111,7 @@ public class TravelController implements ITickHandler {
       Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
       float fov = 70 + Minecraft.getMinecraft().gameSettings.fovSetting * 40.0F;
-      Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, (float) (256 >> mc.gameSettings.renderDistance), mc.displayWidth,
+      Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, 256 >> mc.gameSettings.renderDistance, mc.displayWidth,
           mc.displayHeight);
       currentView.setProjectionMatrix(pr);
       currentView.setViewMatrix(mv);
@@ -181,7 +181,7 @@ public class TravelController implements ITickHandler {
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
             TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
       } else {
-        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
+        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("gui.travelAccessable.unauthorised")));
       }
     }
   }
@@ -197,7 +197,7 @@ public class TravelController implements ITickHandler {
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
         if(!ta.canBlockBeAccessed(player.username)) {
-          player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
+          player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("gui.travelAccessable.unauthorised")));
           return false;
         }
       }
@@ -212,19 +212,19 @@ public class TravelController implements ITickHandler {
     }
     if(!isInRangeTarget(player, coord, source.maxDistanceTravelledSq)) {
       if(source != TravelSource.STAFF_BLINK) {
-        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.outOfRange")));
+        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("blockTravelPlatform.outOfRange")));
       }
       return false;
     }
     if(!isValidTarget(player, coord, source)) {
       if(source != TravelSource.STAFF_BLINK) {
-        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.invalidTarget")));
+        player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("blockTravelPlatform.invalidTarget")));
       }
       return false;
     }
     sendTravelEvent(coord, source, requiredPower);
     for (int i = 0; i < 6; ++i) {
-      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * (double) player.height - 0.25D,
+      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
           player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
           (rand.nextDouble() - 0.5D) * 2.0D);
     }
@@ -238,7 +238,7 @@ public class TravelController implements ITickHandler {
     requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
     int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
     if(requiredPower > canUsePower) {
-      player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("itemTravelStaff.notEnoughPower")));
+      player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("itemTravelStaff.notEnoughPower")));
       return -1;
     }
     return requiredPower;
