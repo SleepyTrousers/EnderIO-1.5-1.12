@@ -7,10 +7,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -68,7 +68,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
     if(player.isSneaking()) {
-      if(world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= 10) {//Config.travelStaffBlinkPauseTicks) {
+      if(Config.travelStaffBlinkEnabled && world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= Config.travelStaffBlinkPauseTicks) {
         Vector3d eye = Util.getEyePositionEio(player);
         Vector3d look = Util.getLookVecEio(player);
 
@@ -79,7 +79,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
           sample.scale(i);
           sample.add(eye);
           BlockCoord coord = new BlockCoord((int) sample.x, (int) sample.y, (int) sample.z);
-          if(TravelController.instance.travelToLocation(player, TravelSource.STAFF, coord, true)) {
+          if(TravelController.instance.travelToLocation(player, TravelSource.STAFF_BLINK, coord)) {
             player.swingItem();
             lastBlickTick = player.worldObj.getTotalWorldTime();
             return equipped;
@@ -89,20 +89,26 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
       return equipped;
     }
 
-    if(world.isRemote) {
-      if(TravelController.instance.hasTarget()) {
-        if(TravelController.instance.isTargetEnderIO()) {
-          BlockCoord target = TravelController.instance.selectedCoord;
-          int requiredPower = TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
-          if(requiredPower >= 0 && requiredPower <= getEnergyStored(equipped)) {
-            PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
-            player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
-                TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
-          }
-        } else {
-          TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF, false);
+    if(TravelController.instance.hasTarget()) {
+
+      BlockCoord target = TravelController.instance.selectedCoord;
+      TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+      if(te instanceof ITravelAccessable) {
+        ITravelAccessable ta = (ITravelAccessable) te;
+        if(ta.getRequiresPassword(player.username)) {
+          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, world, target.x, target.y, target.z);
+          return equipped;
         }
       }
+
+      if(world.isRemote) {
+        if(TravelController.instance.isTargetEnderIO()) {
+          TravelController.instance.openEnderIO(equipped, world, player);
+        } else if(Config.travelAnchorEnabled) {
+          TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF);
+        }
+      }
+
     }
     player.swingItem();
     return equipped;

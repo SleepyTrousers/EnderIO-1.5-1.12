@@ -58,7 +58,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       TileCapacitorBank cb = ((TileCapacitorBank) te);
       cb.energyAtLastRender = cb.getEnergyStored();
     }
-    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3)); //can't do in constructor as texture not loaded yet          
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
     return true;
   }
@@ -104,12 +104,19 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
               col.add(v.color);
             }
           }
-          b /= 4;
-          tes.setBrightness(b);
+          if(b > 0) {
+            b /= 4;
+            tes.setBrightness(b);
+          } else {
+            tes.setBrightness(15 << 20 | 0 << 4);
+          }
           if(colCount > 0) {
             col.scale(0.25);
             tes.setColorRGBA_F(col.x, col.y, col.z, col.w);
+          } else {
+            tes.setColorOpaque_F(1, 1, 1);
           }
+
           if(Config.renderCapBankGaugeBackground) {
             renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
           }
@@ -137,7 +144,6 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
     private void renderGaugeOnFace(GaugeBounds gb, Icon icon, List<Vertex> vertices, double x, double y, double z) {
       Tessellator tes = Tessellator.instance;
-      //tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
       Vector2f u = gb.getMinMaxU(icon);
       List<Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
       for (Vertex coord : corners) {
@@ -147,9 +153,13 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
         xyz.y += y;
         xyz.z += z;
         Vertex v = getClosestVertex(vertices, xyz);
-        if(v != null && v.color != null) {
-          tes.setColorRGBA_F(v.color.x, v.color.y, v.color.z, v.color.w);
-          tes.setBrightness(v.brightness);
+        if(v != null) {
+          if(v.color != null) {
+            tes.setColorRGBA_F(v.color.x, v.color.y, v.color.z, v.color.w);
+          }
+          if(v.brightness > 0) {
+            tes.setBrightness(v.brightness);
+          }
         }
         if(coord.uv != null) {
           tes.addVertexWithUV(coord.x(), coord.y(), coord.z(), coord.u(), coord.v());
@@ -190,7 +200,6 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       float maxV = icon.getMinV() + ((float) maxY * vWidth);
 
       Tessellator tes = Tessellator.instance;
-      //tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
       Vector2f u = gb.getMinMaxU(icon);
       List<crazypants.vecmath.Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
       for (Vertex coord : corners) {
@@ -201,9 +210,13 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
         xyz.y += y;
         xyz.z += z;
         Vertex v = getClosestVertex(vertices, xyz);
-        if(v != null && v.color != null) {
-          tes.setColorRGBA_F(v.color.x, v.color.y, v.color.z, v.color.w);
-          tes.setBrightness(v.brightness);
+        if(v != null) {
+          if(v.color != null) {
+            tes.setColorRGBA_F(v.color.x, v.color.y, v.color.z, v.color.w);
+          }
+          if(v.brightness > 0) {
+            tes.setBrightness(v.brightness);
+          }
         }
 
         if(coord.uv != null) {

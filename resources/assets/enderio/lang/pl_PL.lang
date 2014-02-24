@@ -4,7 +4,7 @@
 enderio.power.mj=MJ
 enderio.power.rf=RF
 enderio.power.tick=/t
-enderio.power.maxOutput=Maksymalny napięcie
+enderio.power.maxOutput=Maksymalny przepływ
 
 //Ender IO / Enderface
 enderio.blockEnderIo=Ender IO
@@ -31,6 +31,8 @@ enderio.itemLiquidConduit.unlockedType=Odblokowana ciecz:
 enderio.itemItemConduit.name=Przwód przedmiotów
 enderio.itemItemConduitEmpowered.name=Ulepszony przewód przedmiotów
 
+enderio.itemMeConduit.name=Przewód ME
+
 //Materials
 enderio.itemMaterial.name=Materiały
 enderio.silicon.name=Silikon
@@ -42,7 +44,11 @@ enderio.phasedIronNugget.name=Bryłka pulsacyjnego żelaza
 enderio.itemMachinePart.name=Części maszyny
 enderio.machineChassi.name=Szkielet maszyny
 enderio.basicGear.name=Zębatka
+enderio.pulsatingCrystal.name=Kryształ pulsacyjny
+enderio.vibrantCrystal.name=Kryształ wibracyjny
 
+
+//Quartz / Glass
 enderio.blockFusedQuartz=Skondensowany kwarc
 enderio.blockFusedQuartz.fusedQuartz.name=Skondensowany kwarc
 enderio.blockFusedQuartz.fusedGlass.name=Skondensowane szkło
@@ -54,10 +60,11 @@ enderio.itemPowderIngot=Proszki i sztabki
 enderio.itemAlloy.name=Stop
 enderio.electricalSteel.name=Stal elektryczna
 enderio.energeticAlloy.name=Stop energetyczny
-enderio.phasedGold.name=Stop pulsacyjny
+enderio.phasedGold.name=Stop wibracyjny
 enderio.redstoneAlloy.name=Stop z czerwonego kamienia
 enderio.conductiveIron.name=Przewodzące żelazo
 enderio.phasedIron.name=Żelazo pulsacyjne 
+enderio.vibrantNugget.name=Bryłka wibracyjnego stopu
 
 //Powder / Ingot
 enderio.powderCoal.name=Sproszkowany węgiel
@@ -84,6 +91,13 @@ tile.enderio.blockCapacitorBank.tooltipPrefix=Zawiera
 tile.enderio.blockCrusher.name=Rozdrabniarka
 tile.enderio.blockHyperCube.name=Międzywymiarowy odbiornik
 tile.enderio.blockPowerMonitor.name=Ekran energetyczny
+
+//Travel
+tile.enderio.blockTravelPlatform.name=Blok podróży
+enderio.blockTravelPlatform.invalidTarget=Cel zablokowany
+enderio.blockTravelPlatform.outOfRange=Cel poza zasięgiem
+item.enderio.itemTravelStaff.name=Berło podróży
+enderio.itemTravelStaff.notEnoughPower=Za mało energii
 
 //Painter
 tile.enderio.blockPainter.name=Maszyna do malowania
@@ -156,6 +170,19 @@ enderio.gui.mjReader.networkHeading=Sieć energetyczna
 enderio.gui.mjReader.conduitBuffer=Bufor wewnętrzny
 enderio.gui.mjReader.requestRange=Szacowany pobór na tick
 enderio.gui.mjReader.currentRequest=Obecny pobór
+enderio.gui.mjReader.itemHeading=Przewód przedmiotów
+enderio.gui.mjReader.itemNoConnections=nie ma zewnętrznego połączenia
+enderio.gui.mjReader.noPowerFromSide=nie można przesyłać prądu z tej strony
+enderio.gui.mjReader.connectionDir=połączenie z
+enderio.gui.mjReader.extractedItems=Wyjętymi rzeczami
+enderio.gui.mjReader.extractedItem=Przedmiot
+enderio.gui.mjReader.noOutputs=nie ma prawidłowego wyjścia
+enderio.gui.mjReader.insertedInto=zostanie wysłany do:
+enderio.gui.mjReader.noItems=Nie otrzymuje rzeczy.
+enderio.gui.mjReader.noItem=Nie można przesłać
+enderio.gui.mjReader.receiveItems=Może otrzymać rzeczy z:
+enderio.gui.mjReader.receiveItem1=Przyjmie
+enderio.gui.mjReader.receiveItem2=z:
 
 //CapactorBank
 enderio.gui.capBank.inputRs=Włącznik przyrostu energii

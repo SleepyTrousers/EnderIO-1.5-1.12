@@ -263,11 +263,11 @@ public class MJReaderPacketHandler implements IPacketProcessor {
           if(input == null) {
             sb.append(Lang.localize("gui.mjReader.receiveItems"));
           } else {
-            sb.append(Lang.localize("enderio.gui.mjReader.receiveItem1"));
+            sb.append(Lang.localize("gui.mjReader.receiveItem1"));
             sb.append(" ");
             sb.append(input.getDisplayName());
             sb.append(" ");
-            sb.append(Lang.localize("enderio.gui.mjReader.receiveItem2"));
+            sb.append(Lang.localize("gui.mjReader.receiveItem2"));
           }
           sb.append("\n");
           for (String str : targets) {

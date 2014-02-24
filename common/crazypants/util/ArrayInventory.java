@@ -8,6 +8,10 @@ public class ArrayInventory implements IInventory {
 
   protected ItemStack[] items;
 
+  public ArrayInventory(ItemStack[] items) {
+    this.items = items;
+  }
+
   public ArrayInventory(int size) {
     items = new ItemStack[size];
   }

@@ -193,6 +193,16 @@ enderio.gui.alloy.mode.all=Schmelze alles
 enderio.gui.alloy.mode.alloy=Nur Legierungen
 enderio.gui.alloy.mode.furnace=Nur Ofen
 
+//Travel Blocks
+enderio.gui.travelAccessable.privateBlock1=Nur
+enderio.gui.travelAccessable.privateBlock2=darf die Einstellungen dieses Blocks ändern.
+enderio.gui.travelAccessable.public=Öffentlich
+enderio.gui.travelAccessable.private=Privat
+enderio.gui.travelAccessable.protected=Geschützt
+enderio.gui.travelAccessable.unauthorised=Dir ist es nicht erlaubt, auf diesen Block zuzugreifen.
+enderio.gui.travelAccessable.enterCode=Zugriffscode benötigt
+enderio.gui.travelAccessable.ok=Autorisieren
+
 //conduits
 enderio.gui.conduit.ioMode=Modus
 enderio.gui.conduit.ioMode.inOut=Ein / Aus

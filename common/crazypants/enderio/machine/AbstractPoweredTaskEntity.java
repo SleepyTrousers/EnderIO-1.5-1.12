@@ -84,7 +84,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return requiresClientSync;
     }
 
-    
     float chance = random.nextFloat();
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(chance);
@@ -103,7 +102,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
     currentTask.update(used);
 
-    
     // then check if we are done
     if(currentTask.isComplete()) {
       taskComplete();
@@ -157,18 +155,20 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected IMachineRecipe canStartNextTask(float chance) {
-
     IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
     if(nextRecipe == null) {
       return null; // no template
     }
-
     // make sure we have room for the next output
+    return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
+  }
+
+  protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
 
     // if we have an empty output, all good
     for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
       if(inventory[i] == null) {
-        return nextRecipe;
+        return true;
       }
     }
 
@@ -189,11 +189,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
         canMerge += getNumCanMerge(outStack, result);
       }
       if(canMerge < result.stackSize) {
-        return null;
+        return false;
       }
     }
 
-    return nextRecipe;
+    return true;
   }
 
   protected boolean hasInputStacks() {

@@ -18,14 +18,9 @@ public class InventoryWrapper implements ISidedInventory {
   }
 
   private IInventory inv;
-  private int[] slots;
 
   public InventoryWrapper(IInventory inventory) {
     this.inv = ItemUtil.getInventory(inventory);
-    slots = new int[inv.getSizeInventory()];
-    for (int i = 0; i < slots.length; i++) {
-      slots[i] = i;
-    }
   }
 
   public IInventory getWrappedInv() {
@@ -39,6 +34,9 @@ public class InventoryWrapper implements ISidedInventory {
 
   @Override
   public ItemStack getStackInSlot(int slot) {
+    if(slot < 0 || slot >= inv.getSizeInventory()) {
+      return null;
+    }
     return inv.getStackInSlot(slot);
   }
 
@@ -99,6 +97,10 @@ public class InventoryWrapper implements ISidedInventory {
 
   @Override
   public int[] getAccessibleSlotsFromSide(int var1) {
+    int[] slots = new int[inv.getSizeInventory()];
+    for (int i = 0; i < slots.length; i++) {
+      slots[i] = i;
+    }
     return slots;
   }
 

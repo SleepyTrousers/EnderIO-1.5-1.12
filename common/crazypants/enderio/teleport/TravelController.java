@@ -10,18 +10,23 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
@@ -112,7 +117,7 @@ public class TravelController implements ITickHandler {
       currentView.setViewMatrix(mv);
       currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
 
-      fovRad = Math.toRadians(fov);
+      fovRad = Math.toRadians(fov) / 2;
       referenceScalingDistance = 1d / Math.tan(fovRad);
     }
 
@@ -131,9 +136,24 @@ public class TravelController implements ITickHandler {
       }
       MovementInput input = player.movementInput;
       if(input.jump && !wasJumping && onBlock && selectedCoord != null) {
-        if(travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
+
+        BlockCoord target = TravelController.instance.selectedCoord;
+        TileEntity te = player.worldObj.getBlockTileEntity(target.x, target.y, target.z);
+        if(te instanceof ITravelAccessable) {
+          ITravelAccessable ta = (ITravelAccessable) te;
+          if(ta.getRequiresPassword(player.username)) {
+            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+            PacketDispatcher.sendPacketToServer(packet);
+            return;
+          }
+        }
+
+        if(isTargetEnderIO()) {
+          openEnderIO(null, player.worldObj, player);
+        } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK)) {
           input.jump = false;
         }
+
       }
       wasJumping = input.jump;
       candidates.clear();
@@ -144,11 +164,45 @@ public class TravelController implements ITickHandler {
     return selectedCoord != null;
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source, boolean conserveMotion) {
-    return travelToLocation(player, source, selectedCoord, conserveMotion);
+  public void openEnderIO(ItemStack equipped, World world, EntityPlayer player) {
+    BlockCoord target = TravelController.instance.selectedCoord;
+    TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+    if(!(te instanceof TileEnderIO)) {
+      return;
+    }
+    TileEnderIO eio = (TileEnderIO) te;
+    if(eio.canBlockBeAccessed(player.username)) {
+
+      int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
+      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+        if(requiredPower > 0) {
+          PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+        }
+        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
+            TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
+      } else {
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
+      }
+    }
   }
 
-  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMotion) {
+  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
+    return travelToLocation(player, source, selectedCoord);
+  }
+
+  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord) {
+
+    if(source != TravelSource.STAFF_BLINK) {
+      TileEntity te = player.worldObj.getBlockTileEntity(coord.x, coord.y, coord.z);
+      if(te instanceof ITravelAccessable) {
+        ITravelAccessable ta = (ITravelAccessable) te;
+        if(!ta.canBlockBeAccessed(player.username)) {
+          player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
+          return false;
+        }
+      }
+    }
+
     int requiredPower = 0;
     if(source == TravelSource.STAFF) {
       requiredPower = getRequiredPower(player, source, coord);
@@ -157,16 +211,20 @@ public class TravelController implements ITickHandler {
       }
     }
     if(!isInRangeTarget(player, coord, source.maxDistanceTravelledSq)) {
-      player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("blockTravelPlatform.outOfRange")));
+      if(source != TravelSource.STAFF_BLINK) {
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.outOfRange")));
+      }
       return false;
     }
     if(!isValidTarget(player, coord, source)) {
-      player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("blockTravelPlatform.invalidTarget")));
+      if(source != TravelSource.STAFF_BLINK) {
+        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.invalidTarget")));
+      }
       return false;
     }
-    sendTravelEvent(coord, source, requiredPower, conserveMotion);
+    sendTravelEvent(coord, source, requiredPower);
     for (int i = 0; i < 6; ++i) {
-      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
+      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * (double) player.height - 0.25D,
           player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
           (rand.nextDouble() - 0.5D) * 2.0D);
     }
@@ -180,7 +238,7 @@ public class TravelController implements ITickHandler {
     requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
     int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
     if(requiredPower > canUsePower) {
-      player.sendChatToPlayer(ChatMessageComponent.func_111066_d(Lang.localize("itemTravelStaff.notEnoughPower")));
+      player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("itemTravelStaff.notEnoughPower")));
       return -1;
     }
     return requiredPower;
@@ -208,10 +266,19 @@ public class TravelController implements ITickHandler {
       return false;
     }
     World w = player.worldObj;
-    return canTeleportTo(bc.getLocation(ForgeDirection.UP), w) && canTeleportTo(bc.getLocation(ForgeDirection.UP).getLocation(ForgeDirection.UP), w);
+    return canTeleportTo(player, source, bc.getLocation(ForgeDirection.UP), w)
+        && canTeleportTo(player, source, bc.getLocation(ForgeDirection.UP).getLocation(ForgeDirection.UP), w);
   }
 
-  private boolean canTeleportTo(BlockCoord bc, World w) {
+  private boolean canTeleportTo(EntityPlayer player, TravelSource source, BlockCoord bc, World w) {
+    if(source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
+      Vec3 start = Util.getEyePosition(player);
+      Vec3 target = Vec3.createVectorHelper(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
+      if(!canBlinkTo(bc, w, start, target)) {
+        return false;
+      }
+    }
+
     int blockId = w.getBlockId(bc.x, bc.y, bc.z);
     Block block = Util.getBlock(blockId);
     if(block == null || block.isAirBlock(w, bc.x, bc.y, bc.z)) {
@@ -219,6 +286,46 @@ public class TravelController implements ITickHandler {
     }
     final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, bc.x, bc.y, bc.z);
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
+  }
+
+  private boolean canBlinkTo(BlockCoord bc, World w, Vec3 start, Vec3 target) {
+    MovingObjectPosition p = w.clip(start, target, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    if(p != null) {
+      if(!Config.travelStaffBlinkThroughClearBlocksEnabled) {
+        return false;
+      }
+      int id = w.getBlockId(p.blockX, p.blockY, p.blockZ);
+      Block block = Util.getBlock(id);
+      if(isClear(w, block, p.blockX, p.blockY, p.blockZ)) {
+        if(new BlockCoord(p.blockX, p.blockY, p.blockZ).equals(bc)) {
+          return true;
+        }
+        //need to step
+        Vector3d sv = new Vector3d(start.xCoord, start.yCoord, start.zCoord);
+        Vector3d rayDir = new Vector3d(target.xCoord, target.yCoord, target.zCoord);
+        rayDir.sub(sv);
+        rayDir.normalize();
+        rayDir.add(sv);
+        return canBlinkTo(bc, w, Vec3.createVectorHelper(rayDir.x, rayDir.y, rayDir.z), target);
+
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private boolean isClear(World w, Block block, int x, int y, int z) {
+    int blockId = w.getBlockId(x, y, z);
+    if(block == null || block.isAirBlock(w, x, y, z)) {
+      return true;
+    }
+    final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, x, y, z);
+    if(aabb == null || aabb.getAverageEdgeLength() < 0.7) {
+      return true;
+    }
+
+    return block.getLightOpacity(w, x, y, z) < 2;
   }
 
   private void updateSelectedTarget(EntityClientPlayerMP player) {
@@ -302,6 +409,11 @@ public class TravelController implements ITickHandler {
     if(mix > 0) {
       double d = Math.tan(fovRad) * currentView.getEyePoint().distance(loc) * 0.01;
       scale = d / referenceScalingDistance;
+
+      //only apply 70% of the scaling so more distance targets are still smaller than closer targets
+      float nf = 1 - MathHelper.clamp_float((float) currentView.getEyePoint().distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
+      scale = scale * (0.3 + 0.7 * nf);
+
       scale = (scale * mix) + (1 - mix);
       scale = Math.max(1, scale);
     }
@@ -319,8 +431,8 @@ public class TravelController implements ITickHandler {
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse, boolean conserveMotion) {
-    Packet p = TravelPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, conserveMotion);
+  private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse) {
+    Packet p = TravelPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, source.getConserveMomentum());
     PacketDispatcher.sendPacketToServer(p);
   }
 
@@ -349,6 +461,11 @@ public class TravelController implements ITickHandler {
   @Override
   public String getLabel() {
     return "TravelClientTickHandler";
+  }
+
+  public boolean isStaffEquipped(EntityClientPlayerMP thePlayer) {
+    ItemStack item = thePlayer.getCurrentEquippedItem();
+    return item == null ? false : item.itemID == ModObject.blockTravelPlatform.actualId;
   }
 
 }
