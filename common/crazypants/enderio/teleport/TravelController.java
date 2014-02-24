@@ -117,7 +117,7 @@ public class TravelController implements ITickHandler {
       currentView.setViewMatrix(mv);
       currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
 
-      fovRad = Math.toRadians(fov);
+      fovRad = Math.toRadians(fov) / 2;
       referenceScalingDistance = 1d / Math.tan(fovRad);
     }
 
