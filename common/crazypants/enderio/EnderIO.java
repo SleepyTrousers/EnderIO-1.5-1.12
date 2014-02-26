@@ -249,7 +249,7 @@ public class EnderIO {
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
-
+    MaterialRecipes.registerExternalOresInDictionary();
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     MaterialRecipes.addOreDictionaryRecipes();
