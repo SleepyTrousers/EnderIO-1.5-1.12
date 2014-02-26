@@ -44,20 +44,21 @@ public class MaterialRecipes {
 
     OreDictionary.registerOre("glass", Block.glass);
 
+  }
+
+  public static void registerExternalOresInDictionary() {
     /**
      * Register AE1's Silicon, remove after AE2 is out.
      */
-    if(Loader.isModLoaded("AppliedEnergistics"))
-    {
-      try
-      {
+    if(Loader.isModLoaded("AppliedEnergistics")) {
+      try {
         Class materialsAE = Class.forName("appeng.api.Materials");
+        GameRegistry.findItem("AppliedEnergistics", "matSilicon");
         Object matSilicon = materialsAE.getField("matSilicon").get(materialsAE);
         if(matSilicon instanceof ItemStack) {
           OreDictionary.registerOre("itemSilicon", ((ItemStack) matSilicon).copy());
         }
-      } catch (Throwable t)
-      {
+      } catch (Throwable t) {
         /** just ignore any issues. **/
       }
     }

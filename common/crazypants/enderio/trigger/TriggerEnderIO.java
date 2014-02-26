@@ -46,7 +46,7 @@ public class TriggerEnderIO implements ITrigger {
         return capacitorBank.getEnergyStored() != 0;
       }
       if(triggerID == 2) {
-        return capacitorBank.getEnergyStored() == capacitorBank.getMaxEnergyStored();
+        return capacitorBank.getMaxEnergyStored() - capacitorBank.getEnergyStored() < 5;
       }
       if(triggerID == 3 || triggerID == 4) {
         ItemStack[] items = new ItemStack[capacitorBank.getSizeInventory()];
