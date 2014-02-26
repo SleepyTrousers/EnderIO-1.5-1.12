@@ -1,3 +1,10 @@
+0.11.1
+#497 Alloy only mode broken 
+#500 Server crash with TravelStaff 
+#502 Fixed ore dictionary integration of EIO silicon
+#503 Capacitor full gate condition does not trigger 
+#506 Added zh_TW localisation (mymagadsl) 
+
 0.11.0
 Features
 - #473 New config options for Staff of Travelling to allow teleporting to limited in various ways
