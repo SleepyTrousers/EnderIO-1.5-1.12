@@ -34,8 +34,8 @@ sand/cobble/wood=0.1
     <recipe name="Electrical Steel" energyCost="1000">
       <input>
         <itemStack itemID="265" /> <!-- Iron -->
-        <itemStack itemID="263" /> <!-- Coal -->
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" /> <!-- Silicon -->
+        <itemStack itemID="263" /> <!-- Coal -->        
+        <itemStack oreDictionary="itemSilicon"/>
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="0" exp="0.5"/> 
