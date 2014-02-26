@@ -7,17 +7,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BlockCoord;
@@ -89,26 +89,25 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
       return equipped;
     }
 
-    if(TravelController.instance.hasTarget()) {
-
-      BlockCoord target = TravelController.instance.selectedCoord;
-      TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
-      if(te instanceof ITravelAccessable) {
-        ITravelAccessable ta = (ITravelAccessable) te;
-        if(ta.getRequiresPassword(player.username)) {
-          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, world, target.x, target.y, target.z);
-          return equipped;
+    if(world.isRemote) {
+      if(TravelController.instance.hasTarget()) {
+        BlockCoord target = TravelController.instance.selectedCoord;
+        TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+        if(te instanceof ITravelAccessable) {
+          ITravelAccessable ta = (ITravelAccessable) te;
+          if(ta.getRequiresPassword(player.username)) {
+            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+            PacketDispatcher.sendPacketToServer(packet);
+            return equipped;
+          }
         }
-      }
 
-      if(world.isRemote) {
         if(TravelController.instance.isTargetEnderIO()) {
           TravelController.instance.openEnderIO(equipped, world, player);
         } else if(Config.travelAnchorEnabled) {
           TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF);
         }
       }
-
     }
     player.swingItem();
     return equipped;
