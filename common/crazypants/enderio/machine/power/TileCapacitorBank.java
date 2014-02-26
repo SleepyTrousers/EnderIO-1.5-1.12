@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thermalexpansion.api.item.IChargeableItem;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -145,7 +145,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private IPowerInterface getReceptorForFace(ForgeDirection faceHit) {
     BlockCoord checkLoc = new BlockCoord(this).getLocation(faceHit);
-    TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+    TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
     if(!(te instanceof TileCapacitorBank)) {
       return PowerHandlerUtil.create(te);
     }
@@ -374,7 +374,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     } else {
       //TODO: Performance warning??
       for (BlockCoord bc : multiblock) {
-        TileEntity te = worldObj.getBlockTileEntity(bc.x, bc.y, bc.z);
+        TileEntity te = worldObj.getTileEntity(bc.x, bc.y, bc.z);
         if(te instanceof TileCapacitorBank) {
           TileCapacitorBank cb = ((TileCapacitorBank) te);
           cb.updateReceptors();
@@ -403,7 +403,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       FaceConnectionMode mode = getFaceModeForFace(dir);
       if(mode != FaceConnectionMode.LOCKED) {
         BlockCoord checkLoc = bc.getLocation(dir);
-        TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+        TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
         if(!(te instanceof TileCapacitorBank)) {
           IPowerInterface ph = PowerHandlerUtil.create(te);
           if(ph != null && ph.canConduitConnect(dir)) {
@@ -870,7 +870,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(worldObj == null) {
       return null;
     }
-    TileEntity te = worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = worldObj.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
       return (TileCapacitorBank) te;
     }

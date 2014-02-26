@@ -11,14 +11,14 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
@@ -42,14 +42,14 @@ import crazypants.util.DyeColor;
 
 public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsulatedRedstoneConduit {
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(KEY_INS_CORE_OFF_ICON, register.registerIcon(KEY_INS_CORE_OFF_ICON));
         ICONS.put(KEY_INS_CORE_ON_ICON, register.registerIcon(KEY_INS_CORE_ON_ICON));
         ICONS.put(KEY_INS_CONDUIT_ICON, register.registerIcon(KEY_INS_CONDUIT_ICON));
@@ -283,7 +283,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       }
     }
 
-    TileEntity te = world.getBlockTileEntity(loc.x, loc.y, loc.z);
+    TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
     if(te instanceof IPowerEmitter || te instanceof IRedstoneControl) {
       return true;
     }
@@ -369,7 +369,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON) : ICONS.get(KEY_INS_CORE_OFF_ICON);
     }
@@ -380,7 +380,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return isActive() ? RedstoneConduit.ICONS.get(KEY_TRANSMISSION_ICON) : RedstoneConduit.ICONS.get(KEY_CONDUIT_ICON);
   }
 

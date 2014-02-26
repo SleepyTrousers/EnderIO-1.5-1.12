@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,7 +20,7 @@ import crazypants.vecmath.Vector3f;
 public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
   private ResourceLocation texName = null;
-  private Icon tex = null;
+  private IIcon tex = null;
   private float switchSize = 0.25f;
   private float switchHSize = switchSize / 2f;
   private BoundingBox switchBB = new BoundingBox(0.5 - switchHSize, 0.5 - switchHSize, 0.5 - switchHSize, 0.5 + switchHSize, 0.5 + switchHSize,
@@ -80,7 +80,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
 
       float margin = 0.01f;
 
-      Icon tex = getLiquidTexture();
+      IIcon tex = getLiquidTexture();
       float maxV = tex.getMinV() + ((tex.getMaxV() - tex.getMinV()) * fullness);
 
       Tessellator.instance.startDrawingQuads();
@@ -145,7 +145,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     left.scale(0.125);
     up.scale(0.125);
 
-    Icon icon = block.switchIcon;
+    IIcon icon = block.switchIcon;
 
     tes.addVertexWithUV(offset.x + left.x - up.x, offset.y + left.y - up.y,
         offset.z + left.z - up.z, icon.getMinU(), icon.getMaxV());
@@ -165,7 +165,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
     return texName;
   }
 
-  private Icon getLiquidTexture() {
+  private IIcon getLiquidTexture() {
     if(tex == null) {
       tex = ReservoirTank.WATER.getFluid().getStillIcon();
     }

@@ -96,11 +96,11 @@ public enum DyeColor {
   }
 
   public int getColor() {
-    return ItemDye.dyeColors[ordinal()];
+    return ItemDye.field_150922_c[ordinal()];
   }
 
   public String getName() {
-    return ItemDye.dyeColorNames[ordinal()];
+    return ItemDye.field_150921_b[ordinal()];
   }
 
   public String getLocalisedName() {

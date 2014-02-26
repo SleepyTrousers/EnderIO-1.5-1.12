@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.geom;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Offset vectors are based on Y up.

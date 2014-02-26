@@ -5,15 +5,15 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
@@ -31,7 +31,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
   private static final float BLOCK_HEIGHT = 0.15f;
 
-  Icon sideIcon;
+  IIcon sideIcon;
 
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.id, Material.ground);
@@ -87,7 +87,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public Icon getIcon(int side, int meta) {
+  public IIcon getIcon(int side, int meta) {
     if(side == ForgeDirection.UP.ordinal()) {
       return blockIcon;
     }
@@ -96,16 +96,16 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntitySolarPanel) {
       ((TileEntitySolarPanel) te).onNeighborBlockChange();
     }
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:solarPanelTop");
-    sideIcon = iconRegister.registerIcon("enderio:solarPanelSide");
+  public void registerIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:solarPanelTop");
+    sideIcon = IIconRegister.registerIcon("enderio:solarPanelSide");
   }
 
   @Override

@@ -3,7 +3,7 @@ package crazypants.enderio.machine.light;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -64,7 +64,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-    TileLightNode te = (TileLightNode) world.getBlockTileEntity(x, y, z);
+    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
     if(te != null) {
       te.onBlockRemoved();
     }
@@ -78,7 +78,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
       return block.getLightValue(world, x, y, z);
     }
     int onVal = 15;
-    // TileEntity te = world.getBlockTileEntity(x, y, z);
+    // TileEntity te = world.getTileEntity(x, y, z);
     // if(te instanceof TileLightNode && ((TileLightNode)te).isDiagnal) {
     // System.out.println("BlockLightNode.getLightValue: ");
     // onVal = 5;
@@ -88,7 +88,7 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
 
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
-    TileLightNode te = (TileLightNode) world.getBlockTileEntity(x, y, z);
+    TileLightNode te = (TileLightNode) world.getTileEntity(x, y, z);
     if(te != null) {
       te.onNeighbourChanged();
     }
@@ -101,8 +101,8 @@ public class BlockLightNode extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:blockElectricLightFace");
+  public void registerIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:blockElectricLightFace");
   }
 
   @Override

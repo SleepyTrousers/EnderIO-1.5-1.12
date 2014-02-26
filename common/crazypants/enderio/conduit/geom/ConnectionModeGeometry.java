@@ -7,8 +7,8 @@ import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
 import crazypants.render.VertexRotation;
@@ -96,7 +96,7 @@ public class ConnectionModeGeometry {
     return result;
   }
 
-  public static void renderModeConnector(ForgeDirection dir, Offset offset, Icon tex, boolean tintSides) {
+  public static void renderModeConnector(ForgeDirection dir, Offset offset, IIcon tex, boolean tintSides) {
     List<Vertex> verts = VERTS.get(dir);
     if(verts == null) {
       return;

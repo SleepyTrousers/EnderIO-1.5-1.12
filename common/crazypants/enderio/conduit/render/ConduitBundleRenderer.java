@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -95,7 +95,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks rb) {
 
-    IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(x, y, z);
+    IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
     boolean renderConduit = true;
@@ -184,7 +184,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         }
 
       } else if(ConduitUtil.getDisplayMode(player) == ConduitDisplayMode.ALL) {
-        Icon tex = EnderIO.blockConduitBundle.getConnectorIcon();
+        IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon();
         CubeRenderer.render(component.bound, tex);
       }
     }
@@ -206,7 +206,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   }
 
   private void renderExternalConnection(ForgeDirection dir) {
-    Icon tex = EnderIO.blockConduitBundle.getConnectorIcon();
+    IIcon tex = EnderIO.blockConduitBundle.getConnectorIcon();
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
       CubeRenderer.render(bb, tex, true);

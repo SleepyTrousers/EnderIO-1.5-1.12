@@ -1,20 +1,17 @@
 package crazypants.enderio.teleport;
 
-import java.awt.Color;
-
+import crazypants.gui.GuiContainerBase;
+import crazypants.render.ColorUtil;
+import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+import java.awt.*;
 
 public class GuiTravelAuth extends GuiContainerBase {
 
@@ -27,7 +24,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     super(new ContainerTravelAuth(player.inventory));
     this.ta = te;
     title = Lang.localize("gui.travelAccessable.enterCode");
-    username = player.username;
+    username = player.getUniqueID().toString();
   }
 
   @Override
@@ -36,7 +33,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     String str = Lang.localize("gui.travelAccessable.ok");
-    int strLen = fontRenderer.getStringWidth(str);
+    int strLen = getFontRenderer().getStringWidth(str);
     GuiButton okB = new GuiButton(0, width / 2 - (strLen / 2) - 5, sy + 50, strLen + 10, 20, str);
     buttonList.clear();
     buttonList.add(okB);
@@ -47,7 +44,8 @@ public class GuiTravelAuth extends GuiContainerBase {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
     if(ta.authoriseUser(username, poo.enteredPassword)) {
       TileEntity te = ((TileEntity) ta);
-      PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+      //TODO: 1.7
+      //PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
 
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();
@@ -76,8 +74,8 @@ public class GuiTravelAuth extends GuiContainerBase {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    int sw = fontRenderer.getStringWidth(title);
-    fontRenderer.drawString(title, width / 2 - sw / 2, sy + 12, ColorUtil.getRGB(Color.red));
+    int sw = getFontRenderer().getStringWidth(title);
+    getFontRenderer().drawString(title, width / 2 - sw / 2, sy + 12, ColorUtil.getRGB(Color.red));
 
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
     if(poo.dirty) {

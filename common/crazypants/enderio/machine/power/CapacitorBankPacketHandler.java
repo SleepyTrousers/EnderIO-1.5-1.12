@@ -62,7 +62,7 @@ public class CapacitorBankPacketHandler implements IPacketProcessor {
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileCapacitorBank)) {
       Log.warn("CapacitorBankPacketHandler:handleChannelSelectedPacket: Could not handle packet as TileEntity was not a CapacitorBank.");
       return;

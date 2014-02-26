@@ -3,21 +3,22 @@ package crazypants.enderio.conduit;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
@@ -25,10 +26,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   protected ItemConduitSubtype[] subtypes;
 
-  protected Icon[] icons;
+  protected IIcon[] icons;
 
   protected AbstractItemConduit(ModObject modObj) {
-    super(modObj.id);
     this.modObj = modObj;
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(modObj.unlocalisedName);
@@ -38,15 +38,15 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   protected void init(ItemConduitSubtype[] subtypes) {
     this.subtypes = subtypes;
-    icons = new Icon[subtypes.length];
+    icons = new IIcon[subtypes.length];
     GameRegistry.registerItem(this, modObj.unlocalisedName);
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
     int index = 0;
     for (ItemConduitSubtype subtype : subtypes) {
-      icons[index] = iconRegister.registerIcon(subtype.iconKey);
+      icons[index] = IIconRegister.registerIcon(subtype.iconKey);
       index++;
     }
   }
@@ -57,12 +57,12 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     BlockCoord placeAt = Util.canPlaceItem(stack, ModObject.blockConduitBundle.actualId, player, world, x, y, z, side);
     if(placeAt != null) {
       if(!world.isRemote) {
-        if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, ModObject.blockConduitBundle.actualId, 0, 1)) {
-          IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeAt.x, placeAt.y, placeAt.z);
+        if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, EnderIO.blockConduitBundle, 0, 1)) {
+          IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeAt.x, placeAt.y, placeAt.z);
           if(bundle != null) {
             bundle.addConduit(createConduit(stack));
             Block b = EnderIO.blockConduitBundle;
-            world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getPlaceSound(),
+            world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, b.stepSound.getStepResourcePath(),
                 (b.stepSound.getVolume() + 1.0F) / 2.0F, b.stepSound.getPitch() * 0.8F);
           }
         }
@@ -79,9 +79,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
       int placeY = y + dir.offsetY;
       int placeZ = z + dir.offsetZ;
 
-      if(world.getBlockId(placeX, placeY, placeZ) == ModObject.blockConduitBundle.actualId) {
+      if(world.getBlock(placeX, placeY, placeZ) == EnderIO.blockConduitBundle) {
 
-        IConduitBundle bundle = (TileConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
+        IConduitBundle bundle = (TileConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
         if(bundle == null) {
           System.out.println("AbstractItemConduit.onItemUse: Bundle null");
           return false;
@@ -107,7 +107,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   }
 
   @Override
-  public Icon getIconFromDamage(int damage) {
+  public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, subtypes.length - 1);
     return icons[damage];
   }
@@ -119,11 +119,14 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   }
 
+
+
+
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < subtypes.length; ++j) {
-      par3List.add(new ItemStack(par1, 1, j));
+      par3List.add(new ItemStack(this, 1, j));
     }
   }
 

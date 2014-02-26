@@ -1,14 +1,13 @@
 package crazypants.gui;
 
+import crazypants.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-
-import crazypants.render.RenderUtil;
 
 public class ItemButton extends GuiButton {
 
@@ -26,10 +25,10 @@ public class ItemButton extends GuiButton {
   protected int hwidth;
   protected int hheight;
 
-  public ItemButton(FontRenderer fr, int id, int x, int y, int itemId) {
+  public ItemButton(FontRenderer fr, int id, int x, int y, Item item) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
     this.fr = fr;
-    item = new ItemStack(itemId, 1, 0);
+    this.item = new ItemStack(item, 1, 0);
     hwidth = HWIDTH;
     hheight = HHEIGHT;
   }
@@ -47,13 +46,13 @@ public class ItemButton extends GuiButton {
   @SuppressWarnings("synthetic-access")
   @Override
   public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
-    if(drawButton) {
+    if(visible) {
 
       RenderUtil.bindTexture("textures/gui/widgets.png");
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-      this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
+      this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
           && par3 < this.yPosition + height;
-      int hoverState = this.getHoverState(this.field_82253_i);
+      int hoverState = this.getHoverState(this.field_146123_n);
 
       // x, y, u, v, width, height
 
@@ -71,7 +70,7 @@ public class ItemButton extends GuiButton {
 
       if(!this.enabled) {
         l = -6250336;
-      } else if(this.field_82253_i) {
+      } else if(this.field_146123_n) {
         l = 16777120;
       }
 

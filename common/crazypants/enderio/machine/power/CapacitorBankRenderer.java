@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -140,7 +140,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
   }
 
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z) {
-    Icon texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
+    IIcon texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
           blockAccess == null, false, false);
@@ -160,7 +160,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     return res;
   }
 
-  private void renderGaugeOnFace(GaugeBounds gb, Icon icon) {
+  private void renderGaugeOnFace(GaugeBounds gb, IIcon icon) {
     Tessellator tes = Tessellator.instance;
     tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
     Vector2f u = gb.getMinMaxU(icon);
@@ -175,7 +175,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
   }
 
-  private void renderFillBarOnFace(GaugeBounds gb, Icon icon, float filledRatio) {
+  private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, float filledRatio) {
 
     int totalPixels;
     if(gb.vInfo.verticalHeight == 1) {
@@ -283,7 +283,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       bb = BoundingBox.UNIT_CUBE.scale(scaleX, scaleY, scaleZ);
     }
 
-    Vector2f getMinMaxU(Icon icon) {
+    Vector2f getMinMaxU(IIcon icon) {
       VPos yPos = vInfo.pos;
       float uWidth = icon.getMaxU() - icon.getMinU();
       float uOffset = yPos.uOffset * uWidth;

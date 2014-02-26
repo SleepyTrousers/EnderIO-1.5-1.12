@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import buildcraft.api.tools.IToolWrench;
@@ -259,7 +259,7 @@ public class ConduitUtil {
     if(world == null) {
       return null;
     }
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof IConduitBundle) {
       IConduitBundle con = (IConduitBundle) te;
       return con.getConduit(type);
@@ -272,7 +272,7 @@ public class ConduitUtil {
   }
 
   public static <T extends IConduit> Collection<T> getConnectedConduits(IBlockAccess world, int x, int y, int z, Class<T> type) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return Collections.emptyList();
     }

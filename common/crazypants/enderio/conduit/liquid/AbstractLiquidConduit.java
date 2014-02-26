@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
@@ -39,7 +39,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   public IFluidHandler getTankContainer(int x, int y, int z) {
-    TileEntity te = getBundle().getEntity().worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = getBundle().getEntity().worldObj.getTileEntity(x, y, z);
     if(te instanceof IFluidHandler) {
       if(te instanceof IPipeTile) {
         if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {

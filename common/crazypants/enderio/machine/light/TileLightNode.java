@@ -13,7 +13,7 @@ public class TileLightNode extends TileEntity {
   boolean isDiagnal = false;
 
   public TileElectricLight getParent() {
-    TileEntity te = worldObj.getBlockTileEntity(parentX, parentY, parentZ);
+    TileEntity te = worldObj.getTileEntity(parentX, parentY, parentZ);
     if(te instanceof TileElectricLight) {
       return (TileElectricLight) te;
     }

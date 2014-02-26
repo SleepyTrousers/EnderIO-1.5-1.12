@@ -5,8 +5,8 @@ import static crazypants.render.CubeRenderer.addVecWithUV;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -39,7 +39,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     }
     AdvancedLiquidConduit pc = (AdvancedLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
-      Icon tex = null;
+      IIcon tex = null;
       if(conduit.getConectionMode(dir) == ConnectionMode.INPUT) {
         tex = pc.getTextureForInputMode();
       } else if(conduit.getConectionMode(dir) == ConnectionMode.OUTPUT) {
@@ -53,14 +53,14 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
     super.renderConduit(tex, conduit, component, brightness);
 
     if(isNSEWUD(component.dir)) {
       AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
 
       FluidStack fluid = lc.getFluidType();
-      Icon texture = null;
+      IIcon texture = null;
       if(fluid != null) {
         texture = fluid.getFluid().getStillIcon();
         if(texture == null) {
@@ -135,7 +135,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderTransmission(IConduit conduit, Icon tex, CollidableComponent component, float selfIllum) {
+  protected void renderTransmission(IConduit conduit, IIcon tex, CollidableComponent component, float selfIllum) {
     super.renderTransmission(conduit, tex, component, selfIllum);
   }
 

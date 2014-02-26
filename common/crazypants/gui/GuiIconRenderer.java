@@ -1,7 +1,7 @@
 package crazypants.gui;
 
 import net.minecraft.client.gui.Gui;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -21,7 +21,7 @@ public class GuiIconRenderer extends Gui {
   protected int width = DEFAULT_WIDTH;
   protected int height = DEFAULT_HEIGHT;
 
-  protected Icon icon;
+  protected IIcon icon;
   protected ResourceLocation texture;
 
   private int yPosition;
@@ -36,7 +36,7 @@ public class GuiIconRenderer extends Gui {
     texture = RenderUtil.ITEM_TEX;
   }
 
-  public GuiIconRenderer(int x, int y, Icon icon, ResourceLocation texture) {
+  public GuiIconRenderer(int x, int y, IIcon icon, ResourceLocation texture) {
     xPosition = x;
     yPosition = y;
     this.icon = icon;
@@ -58,7 +58,7 @@ public class GuiIconRenderer extends Gui {
     return height;
   }
 
-  public Icon getIcon() {
+  public IIcon getIcon() {
     return icon;
   }
 
@@ -70,7 +70,7 @@ public class GuiIconRenderer extends Gui {
     this.alpha = alpha;
   }
 
-  public void setIcon(Icon icon) {
+  public void setIcon(IIcon icon) {
     this.icon = icon;
   }
 

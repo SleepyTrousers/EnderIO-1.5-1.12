@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -40,7 +40,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     }
 
     ITravelAccessable ta = (ITravelAccessable) tileentity;
-    if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer.username)) {
+    if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer.getUniqueID().toString())) {
       return;
     }
 
@@ -109,7 +109,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     return selectedColor;
   }
 
-  public Icon getSelectedIcon() {
+  public IIcon getSelectedIcon() {
     return EnderIO.blockTravelPlatform.selectedOverlayIcon;
   }
 
@@ -117,7 +117,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     return highlightColor;
   }
 
-  public Icon getHighlightIcon() {
+  public IIcon getHighlightIcon() {
     return EnderIO.blockTravelPlatform.highlightOverlayIcon;
   }
 

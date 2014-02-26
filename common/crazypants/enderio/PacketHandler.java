@@ -1,22 +1,10 @@
 package crazypants.enderio;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.Player;
-import crazypants.util.PacketUtil;
-
-public class PacketHandler implements IPacketHandler {
+//TODO:1.7
+public class PacketHandler /*implements IPacketHandler*/ {
 
   public static int ID_ENDERFACE = 1;
 
@@ -75,39 +63,39 @@ public class PacketHandler implements IPacketHandler {
     instance = this;
   }
 
-  @Override
-  public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
-    if(packet.data != null && packet.data.length <= 0) {
-      return;
-    }
-
-    DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
-    try {
-      int id = data.readInt();
-      if(id == ID_TILE_ENTITY && player instanceof EntityPlayer) {
-        PacketUtil.handleTileEntityPacket(((EntityPlayer) player).worldObj, false, data);
-      } else {
-        for (IPacketProcessor proc : processors) {
-          if(proc.canProcessPacket(id)) {
-            proc.processPacket(id, manager, data, player);
-            return;
-          }
-        }
-        Log.warn("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
-      }
-    } catch (IOException ex) {
-      FMLCommonHandler.instance().raiseException(ex, "PacketHandler.onPacketData", false);
-    } finally {
-      try {
-        data.close();
-      } catch (IOException e) {
-        Log.debug("Error closing data input stream: " + e.getMessage());
-      }
-    }
-  }
-
-  public static Packet getPacket(TileEntity te) {
-    return PacketUtil.createTileEntityPacket(CHANNEL, ID_TILE_ENTITY, te);
-  }
+//  @Override
+//  public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
+//    if(packet.data != null && packet.data.length <= 0) {
+//      return;
+//    }
+//
+//    DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
+//    try {
+//      int id = data.readInt();
+//      if(id == ID_TILE_ENTITY && player instanceof EntityPlayer) {
+//        PacketUtil.handleTileEntityPacket(((EntityPlayer) player).worldObj, false, data);
+//      } else {
+//        for (IPacketProcessor proc : processors) {
+//          if(proc.canProcessPacket(id)) {
+//            proc.processPacket(id, manager, data, player);
+//            return;
+//          }
+//        }
+//        Log.warn("PacketHandler.onPacketData: Recieved packet of unknown type: " + id);
+//      }
+//    } catch (IOException ex) {
+//      FMLCommonHandler.instance().raiseException(ex, "PacketHandler.onPacketData", false);
+//    } finally {
+//      try {
+//        data.close();
+//      } catch (IOException e) {
+//        Log.debug("Error closing data input stream: " + e.getMessage());
+//      }
+//    }
+//  }
+//
+//  public static Packet getPacket(TileEntity te) {
+//    return PacketUtil.createTileEntityPacket(CHANNEL, ID_TILE_ENTITY, te);
+//  }
 
 }

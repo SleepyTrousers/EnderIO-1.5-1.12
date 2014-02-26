@@ -32,7 +32,7 @@ public class AlloySmelterPacketProcessor implements IPacketProcessor {
     int z = data.readInt();
     short val = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
-    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = p.worldObj.getTileEntity(x, y, z);
     if(te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
       me.setMode(TileAlloySmelter.Mode.values()[val]);

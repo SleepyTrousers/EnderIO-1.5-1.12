@@ -56,13 +56,8 @@ public class InventoryWrapper implements ISidedInventory {
   }
 
   @Override
-  public String getInvName() {
-    return inv.getInvName();
-  }
-
-  @Override
-  public boolean isInvNameLocalized() {
-    return inv.isInvNameLocalized();
+  public String getInventoryName() {
+    return inv.getInventoryName();
   }
 
   @Override
@@ -71,8 +66,8 @@ public class InventoryWrapper implements ISidedInventory {
   }
 
   @Override
-  public void onInventoryChanged() {
-    inv.onInventoryChanged();
+  public void markDirty() {
+    inv.markDirty();
   }
 
   @Override
@@ -81,13 +76,13 @@ public class InventoryWrapper implements ISidedInventory {
   }
 
   @Override
-  public void openChest() {
-    inv.openChest();
+  public void openInventory() {
+    inv.openInventory();
   }
 
   @Override
-  public void closeChest() {
-    inv.closeChest();
+  public void closeInventory() {
+    inv.closeInventory();
   }
 
   @Override
@@ -112,5 +107,10 @@ public class InventoryWrapper implements ISidedInventory {
   @Override
   public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
     return true;
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
   }
 }

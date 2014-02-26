@@ -1,35 +1,7 @@
 package crazypants.enderio.enderface;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.Config;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.enderface.te.MeProxy;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
@@ -37,6 +9,31 @@ import crazypants.vecmath.Camera;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class GuiEnderface extends GuiScreen {
 
@@ -92,7 +89,7 @@ public class GuiEnderface extends GuiScreen {
     range = Config.enderIoRange;
     distance = 10 + (range * 2);
 
-    TileEntity te = world.getBlockTileEntity(ioX, ioY, ioZ);
+    TileEntity te = world.getTileEntity(ioX, ioY, ioZ);
     if(te instanceof TileEnderIO) {
       pitch = ((TileEnderIO) te).lastUiPitch;
       yaw = ((TileEnderIO) te).lastUiYaw;
@@ -107,15 +104,13 @@ public class GuiEnderface extends GuiScreen {
     chunkLoaded = c != null && c.isChunkLoaded;
     RB.blockAccess = world;
 
-    blocks.add(new ViewableBlocks(ioX, ioY, ioZ, ModObject.blockEnderIo.id));
+    blocks.add(new ViewableBlocks(ioX, ioY, ioZ, EnderIO.blockEnderIo));
 
     for (int x = ioX - range; x <= ioX + range; x++) {
       for (int y = ioY - range; y <= ioY + range; y++) {
         for (int z = ioZ - range; z <= ioZ + range; z++) {
-          int blockId = world.getBlockId(x, y, z);
-          if(blockId > 0 && blockId < Block.blocksList.length) {
-            blocks.add(new ViewableBlocks(x, y, z, blockId));
-          }
+          Block block = world.getBlock(x, y, z);
+          blocks.add(new ViewableBlocks(x, y, z, block));
         }
       }
     }
@@ -123,7 +118,7 @@ public class GuiEnderface extends GuiScreen {
 
   @Override
   public void onGuiClosed() {
-    TileEntity te = world.getBlockTileEntity(ioX, ioY, ioZ);
+    TileEntity te = world.getTileEntity(ioX, ioY, ioZ);
     if(te instanceof TileEnderIO) {
       ((TileEnderIO) te).lastUiPitch = pitch;
       ((TileEnderIO) te).lastUiYaw = yaw;
@@ -207,7 +202,7 @@ public class GuiEnderface extends GuiScreen {
     List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
     for (ViewableBlocks ug : blocks) {
       if(!ug.bc.equals(new BlockCoord(ioX, ioY, ioZ))) {
-        MovingObjectPosition res = Block.blocksList[ug.blockId].collisionRayTrace(world, ug.bc.x, ug.bc.y, ug.bc.z,
+        MovingObjectPosition res = ug.block.collisionRayTrace(world, ug.bc.x, ug.bc.y, ug.bc.z,
             Vec3.createVectorHelper(start.x, start.y, start.z), Vec3.createVectorHelper(end.x, end.y, end.z));
         if(res != null) {
           hits.add(res);
@@ -216,12 +211,13 @@ public class GuiEnderface extends GuiScreen {
     }
     MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
     if(hit != null) {
-      int id = world.getBlockId(hit.blockX, hit.blockY, hit.blockZ);
-      if(id == ModObject.blockHyperCube.actualId || id == ModObject.blockCapacitorBank.actualId) {
-        Block.blocksList[id].onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
-      } else {
+      Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
+      //TODO:1.7
+//      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
+//        block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
+//      } else {
         openInterface(hit.blockX, hit.blockY, hit.blockZ);
-      }
+//      }
     }
 
   }
@@ -278,29 +274,36 @@ public class GuiEnderface extends GuiScreen {
         Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
         for (ViewableBlocks ug : blocks) {
           RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-          RB.renderBlockByRenderType(Block.blocksList[ug.blockId], ug.bc.x, ug.bc.y, ug.bc.z);
+          RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
         }
         Tessellator.instance.draw();
         Tessellator.instance.setTranslation(0, 0, 0);
 
         RenderHelper.enableStandardItemLighting();
-        TileEntityRenderer.instance.playerX = origin.x - eye.x;
-        TileEntityRenderer.instance.playerY = origin.y - eye.y;
-        TileEntityRenderer.instance.playerZ = origin.z - eye.z;
-        TileEntityRenderer.staticPlayerX = origin.x - eye.x;
-        TileEntityRenderer.staticPlayerY = origin.y - eye.y;
-        TileEntityRenderer.staticPlayerZ = origin.z - eye.z;
+
+
+//TODO:1.7 check this
+//        TileEntityRenderer.instance.playerX = origin.x - eye.x;
+//        TileEntityRenderer.instance.playerY = origin.y - eye.y;
+//        TileEntityRenderer.instance.playerZ = origin.z - eye.z;
+        TileEntityRendererDispatcher.instance.field_147558_l = origin.x - eye.x;
+        TileEntityRendererDispatcher.instance.field_147560_j = origin.y - eye.y;
+        TileEntityRendererDispatcher.instance.field_147561_k = origin.z - eye.z;
+
+        TileEntityRendererDispatcher.staticPlayerX = origin.x - eye.x;
+        TileEntityRendererDispatcher.staticPlayerY = origin.y - eye.y;
+        TileEntityRendererDispatcher.staticPlayerZ = origin.z - eye.z;
         for (ViewableBlocks ug : blocks) {
-          TileEntity tile = world.getBlockTileEntity(ug.bc.x, ug.bc.y, ug.bc.z);
+          TileEntity tile = world.getTileEntity(ug.bc.x, ug.bc.y, ug.bc.z);
           if(tile != null) {
-            TileEntityRenderer.instance.renderTileEntity(tile, partialTick);
+            TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTick);
           }
         }
 
         TravelController.instance.setSelectionEnabled(true);
 
       } else {
-        drawCenteredString(fontRenderer, "EnderIO chunk not loaded.", width / 2, height / 2 - 32, 0xFFFFFFFF);
+        drawCenteredString(Minecraft.getMinecraft().fontRenderer, "EnderIO chunk not loaded.", width / 2, height / 2 - 32, 0xFFFFFFFF);
       }
     }
     drawEffectOverlay(partialTick);
@@ -398,7 +401,7 @@ public class GuiEnderface extends GuiScreen {
     }
     GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
     RenderUtil.bindBlockTexture();
-    Icon icon = Block.portal.getBlockTextureFromSide(1);
+    IIcon icon = Blocks.portal.getBlockTextureFromSide(1);
     float f1 = icon.getMinU();
     float f2 = icon.getMinV();
     float f3 = icon.getMaxU();
@@ -524,25 +527,26 @@ public class GuiEnderface extends GuiScreen {
 
   void openInterface(int x, int y, int z) {
 
-    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
-      if(Config.enderIoMeAccessEnabled) {
-        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
-        PacketDispatcher.sendPacketToServer(pkt);
-      }
-    } else {
-      Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
-      PacketDispatcher.sendPacketToServer(pkt);
-    }
+    ///TODO:1.7
+//    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
+//      if(Config.enderIoMeAccessEnabled) {
+//        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
+//        PacketDispatcher.sendPacketToServer(pkt);
+//      }
+//    } else {
+//      Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
+//      PacketDispatcher.sendPacketToServer(pkt);
+//    }
   }
 
   static class ViewableBlocks {
     BlockCoord bc;
-    int blockId;
+    Block block;
 
-    private ViewableBlocks(int x, int y, int z, int blockId) {
+    private ViewableBlocks(int x, int y, int z, Block block) {
       super();
       this.bc = new BlockCoord(x, y, z);
-      this.blockId = blockId;
+      this.block = block;
     }
 
   }

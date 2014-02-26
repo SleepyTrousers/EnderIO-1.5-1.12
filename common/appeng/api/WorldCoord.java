@@ -1,6 +1,6 @@
 package appeng.api;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * This is used internally to return a location, in a few places, just use as is...

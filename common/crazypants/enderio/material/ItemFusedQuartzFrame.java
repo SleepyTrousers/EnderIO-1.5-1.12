@@ -3,7 +3,7 @@ package crazypants.enderio.material;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,7 +41,7 @@ public class ItemFusedQuartzFrame extends Item {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
   }
 
   @Override
@@ -49,7 +49,7 @@ public class ItemFusedQuartzFrame extends Item {
       float par9, float par10) {
 
     if(world.getBlockId(x, y, z) == ModObject.blockFusedQuartz.actualId) {
-      TileEntityCustomBlock tecb = (TileEntityCustomBlock) world.getBlockTileEntity(x, y, z);
+      TileEntityCustomBlock tecb = (TileEntityCustomBlock) world.getTileEntity(x, y, z);
       if(tecb == null) {
         return false;
       }

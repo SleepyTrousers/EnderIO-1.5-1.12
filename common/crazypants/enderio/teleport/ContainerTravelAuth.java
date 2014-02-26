@@ -19,8 +19,8 @@ public class ContainerTravelAuth extends Container {
     ArrayInventory arrInv = new ArrayInventory(enteredPassword) {
 
       @Override
-      public void onInventoryChanged() {
-        super.onInventoryChanged();
+      public void markDirty() {
+        super.markDirty();
         dirty = true;
       }
 
@@ -64,13 +64,8 @@ public class ContainerTravelAuth extends Container {
       }
 
       @Override
-      public String getInvName() {
+      public String getInventoryName() {
         return "Password";
-      }
-
-      @Override
-      public boolean isInvNameLocalized() {
-        return true;
       }
 
       @Override

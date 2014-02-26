@@ -7,7 +7,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +15,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -63,7 +63,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
   }
 
-  public Icon getPortalIcon() {
+  public IIcon getPortalIcon() {
     return blockIcon;
   }
 
@@ -73,8 +73,8 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:tesseractPortal");
+  public void registerIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:tesseractPortal");
   }
 
   @Override
@@ -112,7 +112,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if(world.isRemote) {
       return;
     }
-    TileHyperCube tr = (TileHyperCube) world.getBlockTileEntity(x, y, z);
+    TileHyperCube tr = (TileHyperCube) world.getTileEntity(x, y, z);
     tr.onBlockAdded();
   }
 
@@ -121,7 +121,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if(world.isRemote) {
       return;
     }
-    TileHyperCube te = (TileHyperCube) world.getBlockTileEntity(x, y, z);
+    TileHyperCube te = (TileHyperCube) world.getTileEntity(x, y, z);
     te.onNeighborBlockChange();
   }
 
@@ -129,7 +129,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
     ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
     if(!world.isRemote) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileHyperCube) {
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
@@ -215,7 +215,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileHyperCube) {
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
@@ -244,7 +244,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.getInternalPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
@@ -285,7 +285,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileHyperCube)) {
       return false;
     }
@@ -300,7 +300,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube hc = (TileHyperCube) te;
       return new GuiHyperCube(hc);

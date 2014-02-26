@@ -1,65 +1,32 @@
 package crazypants.util;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.google.common.io.Files;
+import crazypants.enderio.Log;
+import crazypants.vecmath.Vector3d;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Joiner;
-import com.google.common.io.Files;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import crazypants.enderio.Log;
-import crazypants.vecmath.Vector3d;
+import java.io.File;
+import java.io.IOException;
 
 public class Util {
-
-  public static Block getBlock(int blockId) {
-    if(blockId <= 0) {
-      return null;
-    }
-    if(blockId > Block.blocksList.length) {
-      return null;
-    }
-    return Block.blocksList[blockId];
-  }
-
-  public static Item getItem(int itemId) {
-    if(itemId <= 0) {
-      return null;
-    }
-    if(itemId > Item.itemsList.length) {
-      return null;
-    }
-    return Item.itemsList[itemId];
-  }
-
-  public static Block getBlockFromItemId(int itemId) {
-    Item item = getItem(itemId);
-    if(item instanceof ItemBlock) {
-      return getBlock(((ItemBlock) item).getBlockID());
-    }
-    return null;
-  }
 
   public static ItemStack consumeItem(ItemStack stack) {
     if(stack.stackSize == 1) {
       if(stack.getItem().hasContainerItem()) {
-        return stack.getItem().getContainerItemStack(stack);
+        return stack.getItem().getContainerItem(stack);
       } else {
         return null;
       }
@@ -87,12 +54,12 @@ public class Util {
 
   // derived from ItemBlock.onItemUse
   public static BlockCoord canPlaceItem(ItemStack itemUsed, int blockIdToBePlaced, EntityPlayer player, World world, int x, int y, int z, int side) {
-    int i1 = world.getBlockId(x, y, z);
+    Block block = world.getBlock(x, y, z);
 
-    if(i1 == Block.snow.blockID && (world.getBlockMetadata(x, y, z) & 7) < 1) {
+    if(block == Blocks.snow_layer &&  (world.getBlockMetadata(x, y, z) & 7) < 1) {
       side = 1;
-    } else if(i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID
-        && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(world, x, y, z))) {
+    } else if(block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush
+        && (block == null || !block.isReplaceable(world, x, y, z))) {
 
       if(side == 0) {
         --y;
@@ -113,12 +80,13 @@ public class Util {
       return null;
     } else if(!player.canPlayerEdit(x, y, z, side, itemUsed)) {
       return null;
-    } else if(y == 255 && Block.blocksList[blockIdToBePlaced].blockMaterial.isSolid()) {
+    } else if(y == 255 && Block.getBlockById(blockIdToBePlaced).getMaterial().isSolid()) {
       return null;
-    } else if(world.canPlaceEntityOnSide(blockIdToBePlaced, x, y, z, false, side, player, itemUsed)) {
+    } else if(world.canPlaceEntityOnSide(Block.getBlockById(blockIdToBePlaced), x, y, z, false, side, player, itemUsed)) {
       return new BlockCoord(x, y, z);
     }
     return null;
+
   }
 
   public static void dropItems(World world, ItemStack stack, int x, int y, int z, boolean doRandomSpread) {
@@ -156,38 +124,41 @@ public class Util {
   }
 
   public static boolean dumpModObjects(File file) {
-    StringBuilder sb = new StringBuilder();
-    for (Block block : Block.blocksList) {
-      if(block != null) {
-        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(block);
-        if(uid != null) {
-          sb.append(uid.modId);
-          sb.append(" ");
-          sb.append(uid.name);
-          sb.append("\n");
-        }
-      }
-    }
-    for (Item item : Item.itemsList) {
-      if(item != null && !(item instanceof ItemBlock)) {
-        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(item);
-        if(uid != null) {
-          sb.append(uid.modId);
-          sb.append(" ");
-          sb.append(uid.name);
-          sb.append("\n");
-        }
-      }
-    }
+//    StringBuilder sb = new StringBuilder();
+//    for (Block block : Block.blocksList) {
+//      if(block != null) {
+//        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(block);
+//        if(uid != null) {
+//          sb.append(uid.modId);
+//          sb.append(" ");
+//          sb.append(uid.name);
+//          sb.append("\n");
+//        }
+//      }
+//    }
+//    for (Item item : Item.itemsList) {
+//      if(item != null && !(item instanceof ItemBlock)) {
+//        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(item);
+//        if(uid != null) {
+//          sb.append(uid.modId);
+//          sb.append(" ");
+//          sb.append(uid.name);
+//          sb.append("\n");
+//        }
+//      }
+//    }
+//
+//    try {
+//      Files.write(sb, file, Charsets.UTF_8);
+//      return true;
+//    } catch (IOException e) {
+//      Log.warn("Error dumping ore dictionary entries: " + e.getMessage());
+//      e.printStackTrace();
+//      return false;
+//    }
 
-    try {
-      Files.write(sb, file, Charsets.UTF_8);
-      return true;
-    } catch (IOException e) {
-      Log.warn("Error dumping ore dictionary entries: " + e.getMessage());
-      e.printStackTrace();
-      return false;
-    }
+    //TODO:1.7
+    return false;
   }
 
   public static boolean dumpOreNames(File file) {
@@ -209,14 +180,14 @@ public class Util {
       if(item.stackSize <= size) {
         ItemStack result = item;
         inventory.setInventorySlotContents(slot, null);
-        inventory.onInventoryChanged();
+        inventory.markDirty();
         return result;
       }
       ItemStack split = item.splitStack(size);
       if(item.stackSize == 0) {
         inventory.setInventorySlotContents(slot, null);
       }
-      inventory.onInventoryChanged();
+      inventory.markDirty();
       return split;
     }
     return null;

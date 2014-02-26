@@ -1,17 +1,7 @@
 package crazypants.render;
 
-import static net.minecraftforge.common.ForgeDirection.DOWN;
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
-
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import crazypants.util.BlockCoord;
+import crazypants.vecmath.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -20,22 +10,19 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector2f;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vector4d;
-import crazypants.vecmath.Vertex;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 public class RenderUtil {
 
@@ -139,7 +126,7 @@ public class RenderUtil {
   }
 
   public static int setTesselatorBrightness(IBlockAccess world, int x, int y, int z) {
-    Block block = Block.blocksList[world.getBlockId(x, y, z)];
+    Block block = world.getBlock(x, y, z);
     int res = block == null ? world.getLightBrightnessForSkyBlocks(x, y, z, 0) : block.getMixedBrightnessForBlock(world, x, y, z);
     Tessellator.instance.setBrightness(res);
     Tessellator.instance.setColorRGBA_F(1, 1, 1, 1);
@@ -210,11 +197,11 @@ public class RenderUtil {
     }
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges) {
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges) {
     renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges, true, true);
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, Icon texture, boolean forceAllEdges,
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
 
     if((blockAccess == null && !forceAllEdges) || face == null || texture == null) {
@@ -222,11 +209,11 @@ public class RenderUtil {
     }
 
     if(!forceAllEdges) {
-      int blockID = blockAccess.getBlockId(x, y, z);
-      if(blockID <= 0 || Block.blocksList[blockID] == null) {
+      Block block = blockAccess.getBlock(x, y, z);
+      if(block == null) {
         return;
       }
-      if(!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+      if(!block.shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
         return;
       }
     }
@@ -283,11 +270,11 @@ public class RenderUtil {
   }
 
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
-    int blockID = blockAccess.getBlockId(x, y, z);
-    if(blockID <= 0 || Block.blocksList[blockID] == null) {
+    Block block = blockAccess.getBlock(x, y, z);
+    if(block == null) {
       return Collections.emptyList();
     }
-    if(!Block.blocksList[blockID].shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+    if(!block.shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
       return Collections.emptyList();
     }
     BlockCoord bc = new BlockCoord(x, y, z);
@@ -298,7 +285,7 @@ public class RenderUtil {
     }
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     for (EdgeNeighbour edge : edges) {
-      if(blockAccess.getBlockId(edge.bc.x, edge.bc.y, edge.bc.z) != blockID) {
+      if(blockAccess.getBlock(edge.bc.x, edge.bc.y, edge.bc.z) != block) {
         result.add(edge.dir);
       }
       // else if(blockAccess.getBlockId(edge.bc.x + face.offsetX, edge.bc.y +
@@ -309,7 +296,7 @@ public class RenderUtil {
     return result;
   }
 
-  public static void getUvForCorner(Vector2f uv, Vector3d corner, int x, int y, int z, ForgeDirection face, Icon icon) {
+  public static void getUvForCorner(Vector2f uv, Vector3d corner, int x, int y, int z, ForgeDirection face, IIcon icon) {
     if(icon == null) {
       return;
     }
@@ -377,7 +364,7 @@ public class RenderUtil {
     switch (face) {
     case DOWN:
     case UP:
-      return ForgeDirection.SOUTH;
+      return SOUTH;
     case EAST:
     case WEST:
     case NORTH:
@@ -396,11 +383,11 @@ public class RenderUtil {
     case UP:
       return ForgeDirection.EAST;
     case EAST:
-      return ForgeDirection.NORTH;
+      return NORTH;
     case WEST:
-      return ForgeDirection.SOUTH;
+      return SOUTH;
     case NORTH:
-      return ForgeDirection.WEST;
+      return WEST;
     case SOUTH:
       return ForgeDirection.EAST;
     case UNKNOWN:

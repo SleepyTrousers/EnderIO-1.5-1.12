@@ -1,17 +1,15 @@
 package crazypants.enderio.gui;
 
-import java.awt.Rectangle;
-
+import crazypants.gui.GuiToolTip;
+import crazypants.gui.IGuiScreen;
+import crazypants.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
-import crazypants.gui.GuiToolTip;
-import crazypants.gui.IGuiScreen;
-import crazypants.render.RenderUtil;
+import java.awt.*;
 
 public class IconButtonEIO extends GuiButton {
 
@@ -97,12 +95,12 @@ public class IconButtonEIO extends GuiButton {
   @SuppressWarnings("synthetic-access")
   @Override
   public void drawButton(Minecraft mc, int mouseX, int mouseY) {
-    if(drawButton) {
+    if(visible) {
 
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-      this.field_82253_i = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + width
+      this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + width
           && mouseY < this.yPosition + height;
-      int hoverState = getHoverState(this.field_82253_i);
+      int hoverState = getHoverState(this.field_146123_n);
       mouseDragged(mc, mouseX, mouseY);
 
       IconEIO background = getIconForHoverState(hoverState);

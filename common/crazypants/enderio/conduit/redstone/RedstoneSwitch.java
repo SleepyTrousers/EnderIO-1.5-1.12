@@ -3,13 +3,13 @@ package crazypants.enderio.conduit.redstone;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -33,7 +33,7 @@ public class RedstoneSwitch extends RedstoneConduit {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(RedstoneSwitch.SWITHC_ICON_OFF_KEY, register.registerIcon(SWITHC_ICON_OFF_KEY));
         ICONS.put(RedstoneSwitch.SWITCH_ICON_ON_KEY, register.registerIcon(SWITCH_ICON_ON_KEY));
       }
@@ -71,12 +71,12 @@ public class RedstoneSwitch extends RedstoneConduit {
     isOn = nbtRoot.getBoolean("switchOn");
   }
 
-  Icon getSwitchIcon() {
+  IIcon getSwitchIcon() {
     return isOn ? ICONS.get(SWITCH_ICON_ON_KEY) : ICONS.get(SWITHC_ICON_OFF_KEY);
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(SWITCH_TAG.equals(component.data)) {
       return isOn ? ICONS.get(SWITCH_ICON_ON_KEY) : ICONS.get(SWITHC_ICON_OFF_KEY);
     }

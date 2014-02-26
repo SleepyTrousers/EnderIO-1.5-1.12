@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.alloy;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -19,27 +19,27 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
     return ppainter;
   }
 
-  Icon vanillaSmeltingOn;
-  Icon vanillaSmeltingOff;
-  Icon vanillaSmeltingOnly;
+  IIcon vanillaSmeltingOn;
+  IIcon vanillaSmeltingOff;
+  IIcon vanillaSmeltingOnly;
 
   private BlockAlloySmelter() {
     super(ModObject.blockAlloySmelter, TileAlloySmelter.class);
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    super.registerIcons(iconRegister);
-    vanillaSmeltingOn = iconRegister.registerIcon("enderio:furnaceSmeltingOn");
-    vanillaSmeltingOff = iconRegister.registerIcon("enderio:furnaceSmeltingOff");
-    vanillaSmeltingOnly = iconRegister.registerIcon("enderio:furnaceSmeltingOnly");
+  public void registerIcons(IIconRegister IIconRegister) {
+    super.registerIcons(IIconRegister);
+    vanillaSmeltingOn = IIconRegister.registerIcon("enderio:furnaceSmeltingOn");
+    vanillaSmeltingOff = IIconRegister.registerIcon("enderio:furnaceSmeltingOff");
+    vanillaSmeltingOnly = IIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileAlloySmelter) {
       return new ContainerAlloySmelter(player.inventory, (TileAlloySmelter) te);
     }
@@ -48,7 +48,7 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     return new GuiAlloySmelter(player.inventory, (TileAlloySmelter) te);
   }
 

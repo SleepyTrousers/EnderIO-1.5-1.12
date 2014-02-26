@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.TickType;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;

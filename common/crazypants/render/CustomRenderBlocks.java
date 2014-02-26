@@ -1,19 +1,19 @@
 package crazypants.render;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class CustomRenderBlocks extends RenderBlocks {
 
@@ -24,7 +24,7 @@ public class CustomRenderBlocks extends RenderBlocks {
   boolean translateToXYZ = true;
 
   private final List<IRenderFace> renderFaceCallbacks = new ArrayList<IRenderFace>();
-  private Icon overrideTexture;
+  private IIcon overrideTexture;
 
   public CustomRenderBlocks(IBlockAccess par1iBlockAccess) {
     super(par1iBlockAccess);
@@ -46,11 +46,12 @@ public class CustomRenderBlocks extends RenderBlocks {
   }
 
   public void setDefaultTesselatorEnabled(boolean enabled) {
-    if(enabled) {
-      Tessellator.instance = DEFAULT_TES;
-    } else {
-      Tessellator.instance = BUF_TES;
-    }
+    //TODO:1.7
+//    if(enabled) {
+//      Tessellator.instance = DEFAULT_TES;
+//    } else {
+//      Tessellator.instance = BUF_TES;
+//    }
   }
 
   public boolean isTranslateToXYZ() {
@@ -61,11 +62,11 @@ public class CustomRenderBlocks extends RenderBlocks {
     this.translateToXYZ = translateToXYZ;
   }
 
-  public Icon getOverrideTexture() {
+  public IIcon getOverrideTexture() {
     return overrideTexture;
   }
 
-  public void setOverrideTexture(Icon overrideTexture) {
+  public void setOverrideTexture(IIcon overrideTexture) {
     this.overrideTexture = overrideTexture;
   }
 
@@ -73,7 +74,7 @@ public class CustomRenderBlocks extends RenderBlocks {
     BUF_TES.reset();
   }
 
-  private void renderFace(ForgeDirection face, Block par1Block, double x, double y, double z, Icon texture) {
+  private void renderFace(ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture) {
     if(renderFaceCallbacks.isEmpty()) {
       setDefaultTesselatorEnabled(true);
       doDefaultRenderFace(face, par1Block, x, y, z, overrideTexture == null ? texture : overrideTexture);
@@ -85,7 +86,7 @@ public class CustomRenderBlocks extends RenderBlocks {
     }
   }
 
-  public void doDefaultRenderFaceToBuffer(ForgeDirection face, Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void doDefaultRenderFaceToBuffer(ForgeDirection face, Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     try {
       setDefaultTesselatorEnabled(false);
       BUF_TES.reset();
@@ -95,7 +96,7 @@ public class CustomRenderBlocks extends RenderBlocks {
     }
   }
 
-  public void doDefaultRenderFace(ForgeDirection face, Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void doDefaultRenderFace(ForgeDirection face, Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     switch (face) {
     case DOWN:
       super.renderFaceYNeg(par1Block, par2, par4, par6, par8Icon);
@@ -122,32 +123,32 @@ public class CustomRenderBlocks extends RenderBlocks {
   }
 
   @Override
-  public void renderFaceYNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void renderFaceYNeg(Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     renderFace(ForgeDirection.DOWN, par1Block, par2, par4, par6, par8Icon);
   }
 
   @Override
-  public void renderFaceYPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void renderFaceYPos(Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     renderFace(ForgeDirection.UP, par1Block, par2, par4, par6, par8Icon);
   }
 
   @Override
-  public void renderFaceZNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void renderFaceZNeg(Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     renderFace(ForgeDirection.NORTH, par1Block, par2, par4, par6, par8Icon);
   }
 
   @Override
-  public void renderFaceZPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void renderFaceZPos(Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     renderFace(ForgeDirection.SOUTH, par1Block, par2, par4, par6, par8Icon);
   }
 
   @Override
-  public void renderFaceXNeg(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void renderFaceXNeg(Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     renderFace(ForgeDirection.WEST, par1Block, par2, par4, par6, par8Icon);
   }
 
   @Override
-  public void renderFaceXPos(Block par1Block, double par2, double par4, double par6, Icon par8Icon) {
+  public void renderFaceXPos(Block par1Block, double par2, double par4, double par6, IIcon par8Icon) {
     renderFace(ForgeDirection.EAST, par1Block, par2, par4, par6, par8Icon);
   }
 

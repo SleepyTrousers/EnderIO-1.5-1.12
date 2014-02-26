@@ -3,9 +3,9 @@ package crazypants.enderio.machine.light;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
@@ -22,7 +22,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
       doDraw = true;
       Tessellator.instance.startDrawingQuads();
     }
-    Icon[] textures = new Icon[6];
+    IIcon[] textures = new IIcon[6];
     textures[0] = block.getBlockTextureFromSide(ForgeDirection.NORTH.ordinal());
     textures[1] = block.getBlockTextureFromSide(ForgeDirection.SOUTH.ordinal());
     textures[2] = block.getBlockTextureFromSide(ForgeDirection.DOWN.ordinal());
@@ -46,7 +46,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     bb = bb.translate(x, y, z);
     RenderUtil.setTesselatorBrightness(world, x, y, z);
 
-    Icon[] textures = new Icon[6];
+    IIcon[] textures = new IIcon[6];
     textures[0] = block.getBlockTexture(world, x, y, z, ForgeDirection.NORTH.ordinal());
     textures[1] = block.getBlockTexture(world, x, y, z, ForgeDirection.SOUTH.ordinal());
     textures[2] = block.getBlockTexture(world, x, y, z, ForgeDirection.UP.ordinal());

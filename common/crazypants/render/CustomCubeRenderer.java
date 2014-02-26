@@ -3,7 +3,7 @@ package crazypants.render;
 import java.util.Collection;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class CustomCubeRenderer {
@@ -12,7 +12,7 @@ public class CustomCubeRenderer {
 
   private CustomRenderBlocks rb = null;
 
-  private Icon overrideTexture;
+  private IIcon overrideTexture;
 
   public void renderBlock(IBlockAccess ba, Block par1Block, int par2, int par3, int par4) {
     renderBlock(ba, par1Block, par2, par3, par4, (IRenderFace) null);
@@ -52,11 +52,11 @@ public class CustomCubeRenderer {
 
   }
 
-  public Icon getOverrideTexture() {
+  public IIcon getOverrideTexture() {
     return overrideTexture;
   }
 
-  public void setOverrideTexture(Icon overrideTexture) {
+  public void setOverrideTexture(IIcon overrideTexture) {
     this.overrideTexture = overrideTexture;
   }
 

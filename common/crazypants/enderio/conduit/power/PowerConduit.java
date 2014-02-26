@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -43,7 +43,7 @@ import crazypants.vecmath.Vector3d;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
       new BasicCapacitor(500, 1500, 128),
@@ -62,7 +62,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         for (String pf : POSTFIX) {
           ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
           ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT + pf));
@@ -439,7 +439,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(world == null) {
       return null;
     }
-    TileEntity test = world.getBlockTileEntity(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
+    TileEntity test = world.getTileEntity(te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
     if(test == null) {
       return null;
     }
@@ -461,7 +461,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   // Rendering
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY + POSTFIX[subtype]);
     }
@@ -472,17 +472,17 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public Icon getTextureForInputMode() {
+  public IIcon getTextureForInputMode() {
     return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]);
   }
 
   @Override
-  public Icon getTextureForOutputMode() {
+  public IIcon getTextureForOutputMode() {
     return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]);
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return null;
   }
 

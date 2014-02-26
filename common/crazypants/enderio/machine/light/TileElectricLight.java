@@ -9,7 +9,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -126,7 +126,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
         // just loaded
         lightNodes = new ArrayList<TileLightNode>();
         for (int i = 0; i < lightNodeCoords.length; i += 3) {
-          TileEntity te = worldObj.getBlockTileEntity(lightNodeCoords[i], lightNodeCoords[i + 1], lightNodeCoords[i + 2]);
+          TileEntity te = worldObj.getTileEntity(lightNodeCoords[i], lightNodeCoords[i + 1], lightNodeCoords[i + 2]);
           if (te instanceof TileLightNode) {
             lightNodes.add((TileLightNode) te);
           }
@@ -170,7 +170,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
 
         for (NodeEntry entry : after) {
           worldObj.setBlock(entry.coord.x, entry.coord.y, entry.coord.z, ModObject.blockLightNode.actualId);
-          TileEntity te = worldObj.getBlockTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
+          TileEntity te = worldObj.getTileEntity(entry.coord.x, entry.coord.y, entry.coord.z);
           if (te instanceof TileLightNode) {
             TileLightNode ln = (TileLightNode) te;
             ln.parentX = xCoord;
@@ -262,7 +262,7 @@ public class TileElectricLight extends TileEntity implements IInternalPowerRecep
     int z = zCoord + (int) offset.z;
 
     if (isLightNode(offset)) {
-      TileLightNode te = (TileLightNode) worldObj.getBlockTileEntity(x, y, z);
+      TileLightNode te = (TileLightNode) worldObj.getTileEntity(x, y, z);
       if (te.parentX != xCoord || te.parentY != yCoord || te.parentZ != zCoord) {
         // its somebody else's so leave it alone
         return;

@@ -3,11 +3,11 @@ package crazypants.enderio.conduit.liquid;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,14 +34,14 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
   public static final String ICON_EMPTY_EDGE = "enderio:liquidConduitAdvancedEdge";
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
@@ -195,27 +195,27 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY);
     }
     return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
   }
 
-  public Icon getTextureForInputMode() {
+  public IIcon getTextureForInputMode() {
     return ICONS.get(ICON_EXTRACT_KEY);
   }
 
-  public Icon getTextureForOutputMode() {
+  public IIcon getTextureForOutputMode() {
     return ICONS.get(ICON_INSERT_KEY);
   }
 
-  public Icon getNotSetEdgeTexture() {
+  public IIcon getNotSetEdgeTexture() {
     return ICONS.get(ICON_EMPTY_EDGE);
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     if(isActive() && tank.containsValidLiquid()) {
       return tank.getFluid().getFluid().getStillIcon();
     }

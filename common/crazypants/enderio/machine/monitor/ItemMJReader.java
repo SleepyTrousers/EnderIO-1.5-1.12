@@ -4,13 +4,13 @@ import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -48,7 +48,7 @@ public class ItemMJReader extends Item {
       float par9, float par10) {
 
     if(player.isSneaking()) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof IConduitBundle) {
         IConduitBundle cb = (IConduitBundle) te;
         Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
@@ -69,7 +69,7 @@ public class ItemMJReader extends Item {
       return false;
     }
 
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle) && MJReaderPacketHandler.canCreatePacket(world, x, y, z)) {
       if(world.isRemote) {
         PacketDispatcher.sendPacketToServer(MJReaderPacketHandler.createInfoRequestPacket(x, y, z, side));
@@ -86,8 +86,8 @@ public class ItemMJReader extends Item {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerIcons(IconRegister iconRegister) {
-    itemIcon = iconRegister.registerIcon("enderio:mJReader");
+  public void registerIcons(IIconRegister IIconRegister) {
+    itemIcon = IIconRegister.registerIcon("enderio:mJReader");
   }
 
 }

@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -349,7 +349,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     if(worldObj == null) {
       return true;
     }
-    if(worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
+    if(worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) {
       return false;
     }
     return player.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;

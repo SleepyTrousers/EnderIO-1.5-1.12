@@ -1,25 +1,19 @@
 package crazypants.enderio.conduit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.util.BlockCoord;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.*;
 
 public abstract class AbstractConduit implements IConduit {
 
@@ -378,7 +372,7 @@ public abstract class AbstractConduit implements IConduit {
       ConduitUtil.ensureValidNetwork(this);
       if(getNetwork() != null && !world.isRemote && bundle != null) {
         world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord,
-            bundle.getEntity().getBlockType().blockID);
+            bundle.getEntity().getBlockType());
       }
     }
     if(getNetwork() != null) {
@@ -390,7 +384,7 @@ public abstract class AbstractConduit implements IConduit {
   public void onAddedToBundle() {
 
     TileEntity te = bundle.getEntity();
-    World world = te.worldObj;
+    World world = te.getWorldObj();
 
     conduitConnections.clear();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -414,7 +408,7 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void onRemovedFromBundle() {
     TileEntity te = bundle.getEntity();
-    World world = te.worldObj;
+    World world = te.getWorldObj();
 
     for (ForgeDirection dir : conduitConnections) {
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
@@ -425,7 +419,7 @@ public abstract class AbstractConduit implements IConduit {
     conduitConnections.clear();
 
     if(!externalConnections.isEmpty()) {
-      world.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle.blockID);
+      world.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
     }
     externalConnections.clear();
 
@@ -444,7 +438,7 @@ public abstract class AbstractConduit implements IConduit {
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
-    if(blockId == EnderIO.blockConduitBundle.blockID) {
+    if(blockId == Block.getIdFromBlock(EnderIO.blockConduitBundle)) {
       return false;
     }
 

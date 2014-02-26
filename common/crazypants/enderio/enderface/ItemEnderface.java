@@ -1,19 +1,16 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.util.Lang;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public class ItemEnderface extends Item implements IGuiHandler {
 
@@ -30,8 +27,6 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   protected ItemEnderface() {
-    super(ModObject.itemEnderface.id);
-    //setCreativeTab(EnderIOTab.tabEnderIO);
     setCreativeTab(null);
     setUnlocalizedName("enderio." + ModObject.itemEnderface.name());
     setMaxStackSize(1);
@@ -43,8 +38,8 @@ public class ItemEnderface extends Item implements IGuiHandler {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    itemIcon = iconRegister.registerIcon("enderio:enderface");
+  public void registerIcons(IIconRegister IIconRegister) {
+    itemIcon = IIconRegister.registerIcon("enderio:enderface");
   }
 
   @Override
@@ -77,44 +72,46 @@ public class ItemEnderface extends Item implements IGuiHandler {
   @Override
   public ItemStack onItemRightClick(ItemStack itemStack, World world, final EntityPlayer entityPlayer) {
 
-    if(!world.isRemote) {
-      return itemStack;
-    }
-
-    NBTTagCompound tag = itemStack.getTagCompound();
-    boolean tagsSet = tag != null && tag.getBoolean(KEY_IO_SET);
-
-    if(tag != null && tag.getBoolean(KEY_IO_SET)) {
-
-      int x = tag.getInteger(KEY_IO_X);
-      int y = tag.getInteger(KEY_IO_Y);
-      int z = tag.getInteger(KEY_IO_Z);
-      int dimension = tag.getInteger(KEY_DIMENSION);
-
-      if(world.provider.dimensionId != dimension) {
-        ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.wrongDimension"));
-        entityPlayer.sendChatToPlayer(c);
-        return itemStack;
-      }
-
-      Chunk c = world.getChunkFromBlockCoords(x, z);
-      if(c == null || !c.isChunkLoaded) {
-        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.tooFar"));
-        entityPlayer.sendChatToPlayer(cm);
-        return itemStack;
-      }
-      int blockId = world.getBlockId(x, y, z);
-      if(blockId != EnderIO.blockEnderIo.blockID) {
-        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.destroyed"));
-        entityPlayer.sendChatToPlayer(cm);
-        return itemStack;
-      }
-      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
-      return itemStack;
-    }
-    ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.noSync"));
-    entityPlayer.sendChatToPlayer(cm);
+//    if(!world.isRemote) {
+//      return itemStack;
+//    }
+//
+//    NBTTagCompound tag = itemStack.getTagCompound();
+//    boolean tagsSet = tag != null && tag.getBoolean(KEY_IO_SET);
+//
+//    if(tag != null && tag.getBoolean(KEY_IO_SET)) {
+//
+//      int x = tag.getInteger(KEY_IO_X);
+//      int y = tag.getInteger(KEY_IO_Y);
+//      int z = tag.getInteger(KEY_IO_Z);
+//      int dimension = tag.getInteger(KEY_DIMENSION);
+//
+//      if(world.provider.dimensionId != dimension) {
+//        ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.wrongDimension"));
+//        entityPlayer.sendChatToPlayer(c);
+//        return itemStack;
+//      }
+//
+//      Chunk c = world.getChunkFromBlockCoords(x, z);
+//      if(c == null || !c.isChunkLoaded) {
+//        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.tooFar"));
+//        entityPlayer.sendChatToPlayer(cm);
+//        return itemStack;
+//      }
+//      int blockId = world.getBlockId(x, y, z);
+//      if(blockId != EnderIO.blockEnderIo.blockID) {
+//        ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.destroyed"));
+//        entityPlayer.sendChatToPlayer(cm);
+//        return itemStack;
+//      }
+//      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, x, y, z);
+//      return itemStack;
+//    }
+//    ChatMessageComponent cm = ChatMessageComponent.createFromText(Lang.localize("itemEnderface.noSync"));
+//    entityPlayer.sendChatToPlayer(cm);
     return itemStack;
   }
+
+
 
 }

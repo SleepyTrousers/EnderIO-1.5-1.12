@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -45,7 +45,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     int meta = blockAccess.getBlockMetadata(x, y, z);
     if((meta == 0 && renderPass != 0) || (meta == 1 && renderPass == 0)) {
       TileEntityCustomBlock tecb = null;
-      TileEntity te = blockAccess.getBlockTileEntity(x, y, z);
+      TileEntity te = blockAccess.getTileEntity(x, y, z);
       if(te instanceof TileEntityCustomBlock) {
         tecb = (TileEntityCustomBlock) te;
       }
@@ -68,7 +68,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
     if(blockAccess == null) {
       //No lighting
-      Icon texture = EnderIO.blockFusedQuartz.getItemIcon(meta);
+      IIcon texture = EnderIO.blockFusedQuartz.getItemIcon(meta);
       for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
         if(tecb != null && tecb.getSourceBlockId() > 0) {
           texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());

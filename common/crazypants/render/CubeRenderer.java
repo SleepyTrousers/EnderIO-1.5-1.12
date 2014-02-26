@@ -1,8 +1,8 @@
 package crazypants.render;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.vecmath.Vector3d;
 
 public final class CubeRenderer {
@@ -14,19 +14,19 @@ public final class CubeRenderer {
     }
   }
 
-  public static void render(BoundingBox bb, Icon tex) {
+  public static void render(BoundingBox bb, IIcon tex) {
     render(bb, tex, null, false);
   }
 
-  public static void render(BoundingBox bb, Icon tex, boolean tintSides) {
+  public static void render(BoundingBox bb, IIcon tex, boolean tintSides) {
     render(bb, tex, null, tintSides);
   }
 
-  public static void render(BoundingBox bb, Icon tex, VertexTransform xForm) {
+  public static void render(BoundingBox bb, IIcon tex, VertexTransform xForm) {
     render(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), xForm, false);
   }
 
-  public static void render(BoundingBox bb, Icon tex, VertexTransform xForm, float[] brightnessPerSide, boolean tintSides) {
+  public static void render(BoundingBox bb, IIcon tex, VertexTransform xForm, float[] brightnessPerSide, boolean tintSides) {
     float minU = 0;
     float minV = 0;
     float maxU = 1;
@@ -40,7 +40,7 @@ public final class CubeRenderer {
     render(bb, minU, maxU, minV, maxV, xForm, brightnessPerSide, tintSides);
   }
 
-  public static void render(BoundingBox bb, Icon tex, VertexTransform xForm, boolean tintSides) {
+  public static void render(BoundingBox bb, IIcon tex, VertexTransform xForm, boolean tintSides) {
     float minU = 0;
     float minV = 0;
     float maxU = 1;
@@ -166,13 +166,13 @@ public final class CubeRenderer {
     addVecWithUV(verts[3], minU, maxV);
   }
 
-  public static void render(BoundingBox bb, Icon[] faceTextures, VertexTransform xForm) {
+  public static void render(BoundingBox bb, IIcon[] faceTextures, VertexTransform xForm) {
     setupVertices(bb, xForm);
     float minU;
     float maxU;
     float minV;
     float maxV;
-    Icon tex;
+    IIcon tex;
 
     Tessellator tessellator = Tessellator.instance;
 

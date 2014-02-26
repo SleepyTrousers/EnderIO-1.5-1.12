@@ -10,7 +10,7 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
@@ -133,7 +133,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     return currenttip;
   }
 
-  public void renderIcon(Icon icon, double x, double y, double width, double height, double zLevel) {
+  public void renderIcon(IIcon icon, double x, double y, double width, double height, double zLevel) {
 
     Tessellator tessellator = Tessellator.instance;
 

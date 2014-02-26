@@ -1,29 +1,23 @@
 package crazypants.enderio.enderface;
 
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.*;
+import crazypants.enderio.enderface.te.MeProxy;
+import crazypants.enderio.teleport.ITravelAccessable;
+import crazypants.util.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.Icon;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.enderio.enderface.te.MeProxy;
-import crazypants.enderio.teleport.ITravelAccessable;
-import crazypants.util.Lang;
 
 public class BlockEnderIO extends Block implements ITileEntityProvider {
 
@@ -48,36 +42,36 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
 
     });
 
-    PacketHandler.instance.addPacketProcessor(new EnderfacePacketProcessor());
+    //TODO:1.7
+    //PacketHandler.instance.addPacketProcessor(new EnderfacePacketProcessor());
 
     BlockEnderIO result = new BlockEnderIO();
     result.init();
     return result;
   }
 
-  Icon frameIcon;
-  Icon selectedOverlayIcon;
-  Icon highlightOverlayIcon;
+  IIcon frameIcon;
+  IIcon selectedOverlayIcon;
+  IIcon highlightOverlayIcon;
 
   static int pass;
 
   private BlockEnderIO() {
-    super(ModObject.blockEnderIo.id, Material.rock);
+    super(Material.rock);
     setHardness(0.5F);
-    setStepSound(Block.soundStoneFootstep);
-    setUnlocalizedName(ModObject.blockEnderIo.unlocalisedName);
+    setStepSound(Block.soundTypeStone);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   private void init() {
-    LanguageRegistry.addName(this, ModObject.blockEnderIo.name);
+    //LanguageRegistry.addName(this, ModObject.blockEnderIo.name);
     GameRegistry.registerBlock(this, ModObject.blockEnderIo.unlocalisedName);
     GameRegistry.registerTileEntity(TileEnderIO.class, ModObject.blockEnderIo.unlocalisedName + "TileEntity");
   }
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack item) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEnderIO) {
       TileEnderIO eio = (TileEnderIO) te;
       eio.initUiPitch = -player.rotationPitch;
@@ -85,7 +79,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
       eio.lastUiPitch = eio.initUiPitch;
       eio.lastUiYaw = eio.initUiYaw;
       if(player instanceof EntityPlayer) {
-        eio.setPlacedBy(((EntityPlayer) player).username);
+        eio.setPlacedBy(((EntityPlayer) player).getUniqueID().toString());
       }
       world.markBlockForUpdate(x, y, z);
     }
@@ -96,14 +90,15 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
-      if(ta.canUiBeAccessed(entityPlayer.username)) {
+        System.out.println("crazypants.enderio.enderface.BlockEnderIO.onBlockActivated:  Using as UI: " + entityPlayer.getUniqueID().toString());
+      if(ta.canUiBeAccessed(entityPlayer.getUniqueID().toString())) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         if(world.isRemote) {
-          entityPlayer.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
+          entityPlayer.addChatComponentMessage(new ChatComponentText(Lang.localize("gui.travelAccessable.privateBlock1") + " " + ta.getPlacedBy() + " "
               + Lang.localize("gui.travelAccessable.privateBlock2")));
         }
       }
@@ -133,21 +128,21 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public int getLightOpacity(World world, int x, int y, int z) {
+  public int getLightOpacity() {
     return 100;
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:enderIO");
-    frameIcon = iconRegister.registerIcon("enderio:enderIOFrame");
-    highlightOverlayIcon = iconRegister.registerIcon("enderio:enderIOHighlight");
-    selectedOverlayIcon = iconRegister.registerIcon("enderio:enderIOSelected");
+  public void registerBlockIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:enderIO");
+    frameIcon = IIconRegister.registerIcon("enderio:enderIOFrame");
+    highlightOverlayIcon = IIconRegister.registerIcon("enderio:enderIOHighlight");
+    selectedOverlayIcon = IIconRegister.registerIcon("enderio:enderIOSelected");
   }
+
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
+  public TileEntity createNewTileEntity(World var1, int var2) {
     return new TileEnderIO();
   }
-
 }

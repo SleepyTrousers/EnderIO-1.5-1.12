@@ -14,8 +14,8 @@ import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -43,7 +43,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
 
-    Icon tex;
+    IIcon tex;
     for (CollidableComponent component : components) {
       if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
@@ -71,7 +71,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   }
 
-  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
 
     if(isNSEWUD(component.dir)) {
 
@@ -99,7 +99,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   }
 
-  protected void renderTransmission(IConduit conduit, Icon tex, CollidableComponent component, float selfIllum) {
+  protected void renderTransmission(IConduit conduit, IIcon tex, CollidableComponent component, float selfIllum) {
     //    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(),
     //        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
 

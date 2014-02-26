@@ -1,24 +1,28 @@
 package crazypants.enderio.item;
 
-import java.util.EnumSet;
-
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import crazypants.enderio.conduit.ConduitDisplayMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.input.Mouse;
 
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-
-public class YetaWrenchTickHandler implements ITickHandler {
+public class YetaWrenchTickHandler {
   protected int slotSelected = -1;
   public static int dWheel;
 
-  @Override
-  public void tickStart(EnumSet<TickType> type, Object... tickData) {
 
+  @SubscribeEvent
+  public void onClientTick(TickEvent.ClientTickEvent event) {
+    if(event.phase == TickEvent.Phase.START) {
+      tickStart();
+    } else {
+      tickEnd();
+    }
+  }
+
+  public void tickStart() {
     dWheel = Mouse.getDWheel() / 120;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     if(player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemYetaWrench
@@ -30,8 +34,7 @@ public class YetaWrenchTickHandler implements ITickHandler {
 
   }
 
-  @Override
-  public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+  public void tickEnd() {
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     if(player != null) {
       if(slotSelected > -1 && dWheel != Mouse.getDWheel()) {
@@ -54,7 +57,8 @@ public class YetaWrenchTickHandler implements ITickHandler {
           ConduitDisplayMode.setDisplayMode(stack, newMode);
         }
         if(newMode != null) {
-          player.sendQueue.addToSendQueue(YetaWrenchPacketProcessor.getWrenchModePacket(slotSelected, newMode));
+          //TODO:1.7
+          //player.sendQueue.addToSendQueue(YetaWrenchPacketProcessor.getWrenchModePacket(slotSelected, newMode));
         }
       }
       slotSelected = -1;
@@ -62,14 +66,14 @@ public class YetaWrenchTickHandler implements ITickHandler {
     }
   }
 
-  @Override
-  public EnumSet<TickType> ticks() {
-    return EnumSet.of(TickType.CLIENT);
-  }
-
-  @Override
-  public String getLabel() {
-    return "YetaWrenchTickHandler: Client Tick";
-  }
+//  @Override
+//  public EnumSet<TickType> ticks() {
+//    return EnumSet.of(TickType.CLIENT);
+//  }
+//
+//  @Override
+//  public String getLabel() {
+//    return "YetaWrenchTickHandler: Client Tick";
+//  }
 
 }

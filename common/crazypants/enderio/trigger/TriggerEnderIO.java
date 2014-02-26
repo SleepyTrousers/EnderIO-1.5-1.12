@@ -1,21 +1,21 @@
 package crazypants.enderio.trigger;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
-import thermalexpansion.api.item.IChargeableItem;
 import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.power.TileCapacitorBank;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+import thermalexpansion.api.item.IChargeableItem;
 
 public class TriggerEnderIO implements ITrigger {
 
-  public static Icon[] triggerIcons = new Icon[5];
+  public static IIcon[] triggerIcons = new IIcon[5];
   public static String[] descriptions = new String[] { "Capacitor Bank has no energy stored", "Capacitor Bank has energy stored",
       "Capacitor Bank is full with energy", "Capacitor Bank is charging items", "Capacitor Bank finished charging items" };
 
@@ -34,7 +34,7 @@ public class TriggerEnderIO implements ITrigger {
     return descriptions[triggerID];
   }
 
-  @Override
+  //@Override
   public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter) {
     if(tile instanceof TileCapacitorBank) {
       TileCapacitorBank capacitorBank = (TileCapacitorBank) tile;
@@ -84,13 +84,13 @@ public class TriggerEnderIO implements ITrigger {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Icon getIcon() {
+  public IIcon getIcon() {
     return triggerIcons[triggerID];
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerIcons(IconRegister iconRegistry) {
+  public void registerIcons(IIconRegister iconRegistry) {
     triggerIcons[0] = iconRegistry.registerIcon("enderio:triggers/noEnergy");
     triggerIcons[1] = iconRegistry.registerIcon("enderio:triggers/hasEnergy");
     triggerIcons[2] = iconRegistry.registerIcon("enderio:triggers/fullEnergy");
@@ -98,10 +98,10 @@ public class TriggerEnderIO implements ITrigger {
     triggerIcons[4] = iconRegistry.registerIcon("enderio:triggers/chargingDone");
   }
 
-  @Override
-  public int getLegacyId() {
-    return 0;
-  }
+//  @Override
+//  public int getLegacyId() {
+//    return 0;
+//  }
 
   @Override
   public String getUniqueTag() {

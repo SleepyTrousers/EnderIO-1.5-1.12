@@ -90,7 +90,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileHyperCube)) {
       Log.warn("handleChannelRedstonePacket: Could not handle packet as TileEntity was not a HyperCube.");
       return;
@@ -141,7 +141,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileHyperCube)) {
       Log.warn("handleChannelSelectedPacket: Could not handle packet as TileEntity was not a HyperCube.");
       return;
@@ -311,7 +311,7 @@ public class HyperCubePacketHandler implements IPacketProcessor, IConnectionHand
     short powerModeOrdinal = data.readShort();
     short fluidModeOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
-    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = p.worldObj.getTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
       cb.setModeForChannel(SubChannel.ITEM, IoMode.values()[itemModeOrdinal]);

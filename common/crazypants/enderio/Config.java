@@ -1,14 +1,12 @@
 package crazypants.enderio;
 
-import java.io.File;
-import java.io.IOException;
-
-import net.minecraftforge.common.Configuration;
-
-import org.apache.commons.io.FileUtils;
-
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import crazypants.vecmath.VecmathUtil;
+import net.minecraftforge.common.config.Configuration;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 public final class Config {
 
@@ -116,11 +114,6 @@ public final class Config {
   }
 
   public static void processConfig(Configuration config) {
-
-    for (ModObject e : ModObject.values()) {
-      e.load(config);
-    }
-
     useRfAsDefault = config.get("Settings", "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
         .getBoolean(useRfAsDefault);
 

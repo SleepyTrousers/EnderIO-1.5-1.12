@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
@@ -26,14 +26,14 @@ import crazypants.util.DyeColor;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(KEY_CORE_OFF_ICON, register.registerIcon(KEY_CORE_OFF_ICON));
         ICONS.put(KEY_CORE_ON_ICON, register.registerIcon(KEY_CORE_ON_ICON));
         ICONS.put(KEY_CONDUIT_ICON, register.registerIcon(KEY_CONDUIT_ICON));
@@ -201,7 +201,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return isActive() ? ICONS.get(KEY_CORE_ON_ICON) : ICONS.get(KEY_CORE_OFF_ICON);
     }
@@ -209,7 +209,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return null;
   }
 

@@ -24,8 +24,8 @@ public class ContainerTravelAccessable extends Container {
     ArrayInventory arrInv = new ArrayInventory(ta.getPassword()) {
 
       @Override
-      public void onInventoryChanged() {
-        super.onInventoryChanged();
+      public void markDirty() {
+        super.markDirty();
         if(!world.isRemote && te != null) {
           ta.clearAuthorisedUsers();
           world.markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
@@ -72,13 +72,8 @@ public class ContainerTravelAccessable extends Container {
       }
 
       @Override
-      public String getInvName() {
+      public String getInventoryName() {
         return "Password";
-      }
-
-      @Override
-      public boolean isInvNameLocalized() {
-        return true;
       }
 
       @Override
@@ -108,7 +103,7 @@ public class ContainerTravelAccessable extends Container {
 
   @Override
   public boolean canInteractWith(EntityPlayer entityplayer) {
-    return entityplayer != null && entityplayer.username != null && entityplayer.username.equals(ta.getPlacedBy());
+    return entityplayer != null && entityplayer.getUniqueID() != null && entityplayer.getUniqueID().toString().equals(ta.getPlacedBy());
   }
 
   @Override

@@ -2,11 +2,11 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
@@ -14,7 +14,7 @@ import crazypants.enderio.ModObject;
 
 public class ItemMaterial extends Item {
 
-  private final Icon[] icons;
+  private final IIcon[] icons;
 
   public static ItemMaterial create() {
     ItemMaterial mp = new ItemMaterial();
@@ -29,7 +29,7 @@ public class ItemMaterial extends Item {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemMaterial.unlocalisedName);
 
-    icons = new Icon[Material.values().length];
+    icons = new IIcon[Material.values().length];
   }
 
   private void init() {
@@ -37,16 +37,16 @@ public class ItemMaterial extends Item {
   }
 
   @Override
-  public Icon getIconFromDamage(int damage) {
+  public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, Material.values().length - 1);
     return icons[damage];
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
     int numParts = Material.values().length;
     for (int i = 0; i < numParts; i++) {
-      icons[i] = iconRegister.registerIcon(Material.values()[i].iconKey);
+      icons[i] = IIconRegister.registerIcon(Material.values()[i].iconKey);
     }
   }
 

@@ -20,7 +20,7 @@ public class MeProxy {
   }
 
   public boolean isMeAccessTerminal(EntityPlayer player, int x, int y, int z) {
-    TileEntity te = player.worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = player.worldObj.getTileEntity(x, y, z);
     if(te != null && (te.getClass().getName().equals("appeng.me.tile.TileTerminal") || te.getClass().getName().equals("appeng.me.tile.TileCraftingTerminal"))) {
       return true;
     }
@@ -28,7 +28,7 @@ public class MeProxy {
   }
 
   private static boolean isCraftingTerminal(EntityPlayer player, int x, int y, int z) {
-    TileEntity te = player.worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = player.worldObj.getTileEntity(x, y, z);
     if(te != null && te.getClass().getName().equals("appeng.me.tile.TileCraftingTerminal")) {
       return true;
     }
@@ -81,7 +81,7 @@ public class MeProxy {
     e.setSuperclass(baseClass);
     Class<?> gteClass = Class.forName("appeng.api.me.tiles.IGridTileEntity");
     Class<?>[] argTypes = new Class[] { InventoryPlayer.class, gteClass };
-    Object[] args = new Object[] { player.inventory, player.worldObj.getBlockTileEntity(x, y, z) };
+    Object[] args = new Object[] { player.inventory, player.worldObj.getTileEntity(x, y, z) };
 
     e.setInterceptDuringConstruction(false);
 
@@ -105,7 +105,7 @@ public class MeProxy {
     e.setSuperclass(baseClass);
     Class<?> gteClass = Class.forName("appeng.api.me.tiles.IGridTileEntity");
     Class<?>[] argTypes = new Class[] { InventoryPlayer.class, gteClass, boolean.class };
-    Object[] args = new Object[] { player.inventory, isClient ? null : player.worldObj.getBlockTileEntity(x, y, z), false };
+    Object[] args = new Object[] { player.inventory, isClient ? null : player.worldObj.getTileEntity(x, y, z), false };
 
     e.setInterceptDuringConstruction(false);
 

@@ -3,13 +3,13 @@ package crazypants.enderio.conduit.facade;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,7 +30,7 @@ public class ItemConduitFacade extends Item {
     return result;
   }
 
-  protected Icon overlayIcon;
+  protected IIcon overlayIcon;
 
   protected ItemConduitFacade() {
     super(ModObject.itemConduitFacade.id);
@@ -44,12 +44,12 @@ public class ItemConduitFacade extends Item {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    itemIcon = iconRegister.registerIcon("enderio:conduitFacade");
-    overlayIcon = iconRegister.registerIcon("enderio:conduitFacadeOverlay");
+  public void registerIcons(IIconRegister IIconRegister) {
+    itemIcon = IIconRegister.registerIcon("enderio:conduitFacade");
+    overlayIcon = IIconRegister.registerIcon("enderio:conduitFacadeOverlay");
   }
 
-  public Icon getOverlayIcon() {
+  public IIcon getOverlayIcon() {
     return overlayIcon;
   }
 
@@ -70,7 +70,7 @@ public class ItemConduitFacade extends Item {
         && PainterUtil.getSourceBlockId(itemStack) > 0) {
 
       world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle.blockID);
-      IConduitBundle bundle = (IConduitBundle) world.getBlockTileEntity(placeX, placeY, placeZ);
+      IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
       bundle.setFacadeId(PainterUtil.getSourceBlockId(itemStack));
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
       if(!player.capabilities.isCreativeMode) {

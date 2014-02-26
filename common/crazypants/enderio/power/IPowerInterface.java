@@ -1,6 +1,6 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IPowerInterface {
 

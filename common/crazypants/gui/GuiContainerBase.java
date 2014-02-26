@@ -1,19 +1,17 @@
 package crazypants.gui;
 
-import java.util.Iterator;
-import java.util.List;
-
+import crazypants.gui.ToolTipManager.ToolTipRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import crazypants.gui.ToolTipManager.ToolTipRenderer;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen {
 
@@ -95,7 +93,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       }
 
       this.zLevel = 300.0F;
-      itemRenderer.zLevel = 300.0F;
+      //itemRenderer.zLevel = 300.0F;
       int l1 = -267386864;
       this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
       this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
@@ -123,7 +121,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       }
 
       this.zLevel = 0.0F;
-      itemRenderer.zLevel = 0.0F;
+      //itemRenderer.zLevel = 0.0F;
       GL11.glEnable(GL11.GL_LIGHTING);
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       RenderHelper.enableStandardItemLighting();
@@ -152,10 +150,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   @Override
   public FontRenderer getFontRenderer() {
-    if(fontRenderer == null) {
-      return Minecraft.getMinecraft().fontRenderer;
-    }
-    return fontRenderer;
+    return Minecraft.getMinecraft().fontRenderer;
   }
 
   @Override

@@ -39,12 +39,7 @@ public class ArrayInventory implements IInventory {
   @Override
   public void setInventorySlotContents(int slot, ItemStack stack) {
     items[slot] = stack;
-    onInventoryChanged();
-  }
-
-  @Override
-  public String getInvName() {
-    return "ArrayInventory";
+    markDirty();
   }
 
   @Override
@@ -53,20 +48,8 @@ public class ArrayInventory implements IInventory {
   }
 
   @Override
-  public void onInventoryChanged() {
-  }
-
-  @Override
   public boolean isUseableByPlayer(EntityPlayer var1) {
     return true;
-  }
-
-  @Override
-  public void openChest() {
-  }
-
-  @Override
-  public void closeChest() {
   }
 
   @Override
@@ -75,7 +58,27 @@ public class ArrayInventory implements IInventory {
   }
 
   @Override
-  public boolean isInvNameLocalized() {
-    return true;
+  public String getInventoryName() {
+    return "ArrayInventory";
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
+  }
+
+  @Override
+  public void markDirty() {
+
+  }
+
+  @Override
+  public void openInventory() {
+
+  }
+
+  @Override
+  public void closeInventory() {
+
   }
 }

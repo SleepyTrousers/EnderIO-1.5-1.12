@@ -3,7 +3,7 @@ package crazypants.enderio.conduit.geom;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;

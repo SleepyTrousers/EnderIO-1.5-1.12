@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.item;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -31,8 +31,8 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       DyeColor inChannel = null;
       DyeColor outChannel = null;
-      Icon inTex = null;
-      Icon outTex = null;
+      IIcon inTex = null;
+      IIcon outTex = null;
       boolean render = true;
       if(conduit.getConectionMode(dir) == ConnectionMode.INPUT) {
         inTex = pc.getTextureForInputMode();

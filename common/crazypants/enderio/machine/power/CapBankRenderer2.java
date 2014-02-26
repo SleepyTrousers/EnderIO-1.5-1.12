@@ -7,9 +7,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
@@ -53,7 +53,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = ((TileCapacitorBank) te);
       cb.energyAtLastRender = cb.getEnergyStored();
@@ -76,10 +76,10 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
   private class GaugueRenderer implements IRenderFace {
 
     @Override
-    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, Icon texture, List<Vertex> refVertices,
+    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
         boolean translateToXyz) {
       //Gauge
-      TileEntity te = rb.blockAccess.getBlockTileEntity((int) x, (int) y, (int) z);
+      TileEntity te = rb.blockAccess.getTileEntity((int) x, (int) y, (int) z);
       if(!(te instanceof TileCapacitorBank)) {
         return;
       }
@@ -142,7 +142,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       return res;
     }
 
-    private void renderGaugeOnFace(GaugeBounds gb, Icon icon, List<Vertex> vertices, double x, double y, double z) {
+    private void renderGaugeOnFace(GaugeBounds gb, IIcon icon, List<Vertex> vertices, double x, double y, double z) {
       Tessellator tes = Tessellator.instance;
       Vector2f u = gb.getMinMaxU(icon);
       List<Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
@@ -169,7 +169,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       }
     }
 
-    private void renderFillBarOnFace(GaugeBounds gb, Icon icon, float filledRatio, List<Vertex> vertices, double x, double y, double z) {
+    private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, float filledRatio, List<Vertex> vertices, double x, double y, double z) {
 
       int totalPixels;
       if(gb.vInfo.verticalHeight == 1) {

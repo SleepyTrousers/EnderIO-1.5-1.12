@@ -6,7 +6,7 @@ import static net.minecraftforge.common.ForgeDirection.SOUTH;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;

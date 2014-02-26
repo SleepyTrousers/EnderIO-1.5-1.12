@@ -3,15 +3,15 @@ package crazypants.enderio.machine.reservoir;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -51,8 +51,8 @@ public class BlockReservoir extends BlockContainer {
 
   }
 
-  private Icon[] mbIcons = new Icon[8];
-  Icon switchIcon;
+  private IIcon[] mbIcons = new IIcon[8];
+  IIcon switchIcon;
 
   private BlockReservoir() {
     super(ModObject.blockReservoir.id, Material.rock);
@@ -73,7 +73,7 @@ public class BlockReservoir extends BlockContainer {
     ItemStack current = entityPlayer.inventory.getCurrentItem();
     if(current != null) {
 
-      TileReservoir tank = (TileReservoir) world.getBlockTileEntity(x, y, z);
+      TileReservoir tank = (TileReservoir) world.getTileEntity(x, y, z);
 
       FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
 
@@ -130,7 +130,7 @@ public class BlockReservoir extends BlockContainer {
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileReservoir)) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
@@ -178,7 +178,7 @@ public class BlockReservoir extends BlockContainer {
     if(world.isRemote) {
       return;
     }
-    TileReservoir tr = (TileReservoir) world.getBlockTileEntity(x, y, z);
+    TileReservoir tr = (TileReservoir) world.getTileEntity(x, y, z);
     boolean res = tr.onBlockAdded();
 
   }
@@ -188,23 +188,23 @@ public class BlockReservoir extends BlockContainer {
     if(world.isRemote) {
       return;
     }
-    TileReservoir te = (TileReservoir) world.getBlockTileEntity(x, y, z);
+    TileReservoir te = (TileReservoir) world.getTileEntity(x, y, z);
     te.onNeighborBlockChange(blockId);
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:reservoir");
+  public void registerIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:reservoir");
     for (MbFace face : MbFace.values()) {
-      mbIcons[face.ordinal()] = iconRegister.registerIcon("enderio:" + face.iconName);
+      mbIcons[face.ordinal()] = IIconRegister.registerIcon("enderio:" + face.iconName);
     }
-    switchIcon = iconRegister.registerIcon("enderio:reservoirSwitch");
+    switchIcon = IIconRegister.registerIcon("enderio:reservoirSwitch");
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileReservoir)) {
       return true;
     }
@@ -216,9 +216,9 @@ public class BlockReservoir extends BlockContainer {
   }
 
   @Override
-  public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
+  public IIcon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
     // used to render the block in the world
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
 
     if(!(te instanceof TileReservoir)) {
       return blockIcon;

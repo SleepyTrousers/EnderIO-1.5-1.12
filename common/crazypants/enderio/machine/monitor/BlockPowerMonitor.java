@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -34,7 +34,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePowerMonitor) {
       return new GuiPowerMonitor((TilePowerMonitor) te);
     }
@@ -60,7 +60,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   @Override
   public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z,
       int side) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePowerMonitor) {
 
       return ((TilePowerMonitor) te).getRednetOutputValue(ForgeDirection.values()[side], DyeColor.RED.ordinal());
@@ -70,7 +70,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
-    //    TileEntity te = world.getBlockTileEntity(x, y, z);
+    //    TileEntity te = world.getTileEntity(x, y, z);
     //    if(te instanceof TilePowerMonitor) {
     //      return ((TilePowerMonitor) te).getRednetOutputValues(side);
     //    }
@@ -79,7 +79,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
-    //    TileEntity te = world.getBlockTileEntity(x, y, z);
+    //    TileEntity te = world.getTileEntity(x, y, z);
     //    if(te instanceof TilePowerMonitor) {
     //      return ((TilePowerMonitor) te).getRednetOutputValue(side, subnet);
     //    }

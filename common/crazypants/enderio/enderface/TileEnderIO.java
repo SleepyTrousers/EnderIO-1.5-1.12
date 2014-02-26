@@ -1,12 +1,10 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.teleport.TileTravelAnchor;
 import crazypants.enderio.teleport.TravelController;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEnderIO extends TileTravelAnchor {
 
@@ -33,10 +31,11 @@ public class TileEnderIO extends TileTravelAnchor {
     return false;
   }
 
-  @Override
-  public Packet getDescriptionPacket() {
-    return PacketHandler.getPacket(this);
-  }
+  //TODO:1.7
+//  @Override
+//  public Packet getDescriptionPacket() {
+//    return PacketHandler.getPacket(this);
+//  }
 
   @Override
   public void readFromNBT(NBTTagCompound par1nbtTagCompound) {

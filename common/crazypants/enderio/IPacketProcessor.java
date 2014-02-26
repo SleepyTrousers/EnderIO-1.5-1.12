@@ -1,16 +1,11 @@
 package crazypants.enderio;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-
-import net.minecraft.network.INetworkManager;
-import cpw.mods.fml.common.network.Player;
-
 public interface IPacketProcessor {
 
   boolean canProcessPacket(int packetID);
 
+  //TODO:1.7
   //NB: Id already read
-  void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException;
+  //void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException;
 
 }

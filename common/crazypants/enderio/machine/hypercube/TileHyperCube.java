@@ -11,10 +11,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -491,7 +490,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     BlockCoord myLoc = new BlockCoord(this);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       IPowerInterface pi = PowerHandlerUtil.create(te);
       if(pi != null) {
         receptors.add(new Receptor(pi, dir));
@@ -640,7 +639,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
       BlockCoord myLoc = new BlockCoord(this);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord checkLoc = myLoc.getLocation(dir);
-        TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+        TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
         if(te instanceof IFluidHandler && !(te instanceof TileHyperCube)) {
           IFluidHandler fh = (IFluidHandler) te;
           fluidHandlers.add(new NetworkFluidHandler(this, fh, dir));
@@ -669,7 +668,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     BlockCoord myLoc = new BlockCoord(this);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       if(te instanceof IInventory) {
         localInventory.addInventory((IInventory) te, dir);
       }
@@ -711,7 +710,7 @@ public class TileHyperCube extends TileEntity implements IInternalPowerReceptor,
     BlockCoord myLoc = new BlockCoord(this);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = myLoc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       result.stackSize -= ItemUtil.doInsertItem(te, result, dir.getOpposite());
       if(result.stackSize <= 0) {
         return null;

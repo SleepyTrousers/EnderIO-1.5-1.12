@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import appeng.api.me.tiles.IGridMachine;
 import cofh.api.transport.IItemConduit;

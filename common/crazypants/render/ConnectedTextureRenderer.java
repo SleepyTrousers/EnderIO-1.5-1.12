@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector2f;
@@ -17,17 +17,17 @@ import crazypants.vecmath.Vertex;
 public class ConnectedTextureRenderer implements IRenderFace {
 
   public static interface TextureCallback {
-    public Icon getTextureForFace(ForgeDirection dir);
+    public IIcon getTextureForFace(ForgeDirection dir);
   }
 
   public static class DefaultTextureCallback implements TextureCallback {
 
-    private final Icon tex;
+    private final IIcon tex;
 
     private final Block block;
     private final int meta;
 
-    public DefaultTextureCallback(Icon borderTex) {
+    public DefaultTextureCallback(IIcon borderTex) {
       this.tex = borderTex;
       block = null;
       meta = 0;
@@ -40,7 +40,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
     }
 
     @Override
-    public Icon getTextureForFace(ForgeDirection dir) {
+    public IIcon getTextureForFace(ForgeDirection dir) {
       if(tex != null) {
         return tex;
       }
@@ -72,7 +72,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
     this.edgeTexureCallback = edgeTexureCallback;
   }
 
-  public void setEdgeTexture(Icon texture) {
+  public void setEdgeTexture(IIcon texture) {
     if(texture == null) {
       edgeTexureCallback = null;
       return;
@@ -81,13 +81,13 @@ public class ConnectedTextureRenderer implements IRenderFace {
   }
 
   @Override
-  public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, Icon texture, List<Vertex> refVertices,
+  public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
       boolean translateToXYZ) {
 
     List<Vertex> finalVerts = new ArrayList<Vertex>();
     finalVerts.addAll(refVertices);
 
-    Icon borderTex = edgeTexureCallback == null ? null : edgeTexureCallback.getTextureForFace(face);
+    IIcon borderTex = edgeTexureCallback == null ? null : edgeTexureCallback.getTextureForFace(face);
     if(borderTex != null) {
 
       texture = borderTex;
@@ -206,7 +206,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
     return result;
   }
 
-  private void addVertexForCorner(ForgeDirection face, double x, double y, double z, Icon texture, boolean translateToXYZ, List<Vertex> vertices,
+  private void addVertexForCorner(ForgeDirection face, double x, double y, double z, IIcon texture, boolean translateToXYZ, List<Vertex> vertices,
       ForgeDirection dir, ForgeDirection dir2, Vector3d corner) {
     float scale = 1 / 16f;
     Vertex vert = new Vertex();

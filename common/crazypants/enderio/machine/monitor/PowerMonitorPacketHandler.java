@@ -70,7 +70,7 @@ public class PowerMonitorPacketHandler implements IPacketProcessor {
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TilePowerMonitor)) {
       Log.warn("createPowerMonitotPacket: Could not handle packet as TileEntity was not a TilePowerMonitor.");
       return;

@@ -2,11 +2,11 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
@@ -14,7 +14,7 @@ import crazypants.enderio.ModObject;
 
 public class ItemPowderIngot extends Item {
 
-  private final Icon[] icons;
+  private final IIcon[] icons;
 
   public static ItemPowderIngot create() {
     ItemPowderIngot mp = new ItemPowderIngot();
@@ -29,7 +29,7 @@ public class ItemPowderIngot extends Item {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemPowderIngot.unlocalisedName);
 
-    icons = new Icon[PowderIngot.values().length];
+    icons = new IIcon[PowderIngot.values().length];
   }
 
   private void init() {
@@ -37,16 +37,16 @@ public class ItemPowderIngot extends Item {
   }
 
   @Override
-  public Icon getIconFromDamage(int damage) {
+  public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, PowderIngot.values().length - 1);
     return icons[damage];
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
     int numParts = PowderIngot.values().length;
     for (int i = 0; i < numParts; i++) {
-      icons[i] = iconRegister.registerIcon(PowderIngot.values()[i].iconKey);
+      icons[i] = IIconRegister.registerIcon(PowderIngot.values()[i].iconKey);
     }
   }
 

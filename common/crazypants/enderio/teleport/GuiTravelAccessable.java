@@ -1,17 +1,5 @@
 package crazypants.enderio.teleport;
 
-import java.awt.Color;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.world.World;
-
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.gui.GuiContainerBase;
@@ -19,6 +7,14 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class GuiTravelAccessable extends GuiContainerBase {
 
@@ -51,11 +47,12 @@ public class GuiTravelAccessable extends GuiContainerBase {
     protectedStr = Lang.localize("gui.travelAccessable.protected");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-    fontRenderer = fr;
+
+
 
     col1x = 88;
-    col0x = (col1x - fontRenderer.getStringWidth(protectedStr) / 2) / 2;
-    col2x = (col1x + fontRenderer.getStringWidth(protectedStr) / 2);
+    col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
+    col2x = (col1x + fr.getStringWidth(protectedStr) / 2);
     col2x += (176 - col2x) / 2;
 
     int x = 0;
@@ -85,8 +82,9 @@ public class GuiTravelAccessable extends GuiContainerBase {
     te.setAccessMode(curMode);
 
     BlockCoord bc = te.getLocation();
-    Packet packet = TravelPacketHandler.createAccessModePacket(bc.x, bc.y, bc.z, curMode);
-    PacketDispatcher.sendPacketToServer(packet);
+    //TODO: 1.7
+//    Packet packet = TravelPacketHandler.createAccessModePacket(bc.x, bc.y, bc.z, curMode);
+//    PacketDispatcher.sendPacketToServer(packet);
   }
 
   @Override
@@ -113,6 +111,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
     int x = sx;
     int y = sy + 8;
 
+    FontRenderer fontRenderer = getFontRenderer();
     x = sx + col0x - fontRenderer.getStringWidth(privateStr) / 2;
     fontRenderer.drawStringWithShadow(privateStr, x, y, col);
 

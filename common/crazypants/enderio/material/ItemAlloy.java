@@ -2,11 +2,11 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
@@ -16,7 +16,7 @@ public class ItemAlloy extends Item {
 
   static final boolean useNuggets = false;
 
-  private final Icon[] icons;
+  private final IIcon[] icons;
   private final int numItems;
 
   public static ItemAlloy create() {
@@ -36,7 +36,7 @@ public class ItemAlloy extends Item {
     if(useNuggets) {
       numItems = numItems * 2;
     }
-    icons = new Icon[numItems];
+    icons = new IIcon[numItems];
   }
 
   private void init() {
@@ -44,20 +44,20 @@ public class ItemAlloy extends Item {
   }
 
   @Override
-  public Icon getIconFromDamage(int damage) {
+  public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, numItems - 1);
     return icons[damage];
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
     int numAlloys = Alloy.values().length;
     for (int i = 0; i < numAlloys; i++) {
-      icons[i] = iconRegister.registerIcon(Alloy.values()[i].iconKey);
+      icons[i] = IIconRegister.registerIcon(Alloy.values()[i].iconKey);
     }
     if(useNuggets) {
       for (int i = 0; i < numAlloys; i++) {
-        icons[i + numAlloys] = iconRegister.registerIcon(Alloy.values()[i].iconKey + "Nugget");
+        icons[i + numAlloys] = IIconRegister.registerIcon(Alloy.values()[i].iconKey + "Nugget");
       }
     }
   }

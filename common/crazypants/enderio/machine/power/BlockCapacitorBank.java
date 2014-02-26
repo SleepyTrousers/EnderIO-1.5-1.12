@@ -7,17 +7,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -49,12 +49,12 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     return res;
   }
 
-  Icon overlayIcon;
-  Icon fillBarIcon;
+  IIcon overlayIcon;
+  IIcon fillBarIcon;
 
-  private Icon blockIconInput;
-  private Icon blockIconOutput;
-  private Icon blockIconLocked;
+  private IIcon blockIconInput;
+  private IIcon blockIconOutput;
+  private IIcon blockIconLocked;
 
   protected BlockCapacitorBank() {
     super(ModObject.blockCapacitorBank.actualId, new Material(MapColor.ironColor));
@@ -90,7 +90,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileCapacitorBank)) {
       return false;
     }
@@ -115,7 +115,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
       return new ContainerCapacitorBank(player.inventory, ((TileCapacitorBank) te).getController());
     }
@@ -124,7 +124,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
       return new GuiCapacitorBank(player.inventory, ((TileCapacitorBank) te).getController());
     }
@@ -133,13 +133,13 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:capacitorBank");
-    blockIconInput = iconRegister.registerIcon("enderio:capacitorBankInput");
-    blockIconOutput = iconRegister.registerIcon("enderio:capacitorBankOutput");
-    blockIconLocked = iconRegister.registerIcon("enderio:capacitorBankLocked");
-    overlayIcon = iconRegister.registerIcon("enderio:capacitorBankOverlays");
-    fillBarIcon = iconRegister.registerIcon("enderio:capacitorBankFillBar");
+  public void registerIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
+    blockIconInput = IIconRegister.registerIcon("enderio:capacitorBankInput");
+    blockIconOutput = IIconRegister.registerIcon("enderio:capacitorBankOutput");
+    blockIconLocked = IIconRegister.registerIcon("enderio:capacitorBankLocked");
+    overlayIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
+    fillBarIcon = IIconRegister.registerIcon("enderio:capacitorBankFillBar");
   }
 
   @Override
@@ -180,8 +180,8 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Icon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
-    TileEntity te = ba.getBlockTileEntity(x, y, z);
+  public IIcon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
+    TileEntity te = ba.getTileEntity(x, y, z);
     if(!(te instanceof TileCapacitorBank)) {
       return blockIcon;
     }
@@ -204,7 +204,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(world.isRemote) {
       return;
     }
-    TileCapacitorBank tr = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
+    TileCapacitorBank tr = (TileCapacitorBank) world.getTileEntity(x, y, z);
     tr.onBlockAdded();
   }
 
@@ -213,7 +213,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(world.isRemote) {
       return;
     }
-    TileCapacitorBank te = (TileCapacitorBank) world.getBlockTileEntity(x, y, z);
+    TileCapacitorBank te = (TileCapacitorBank) world.getTileEntity(x, y, z);
     te.onNeighborBlockChange(blockId);
   }
 
@@ -221,7 +221,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
     ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
     if(!world.isRemote) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
@@ -237,7 +237,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop")))) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
@@ -261,7 +261,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
@@ -282,7 +282,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(!(te instanceof TileCapacitorBank)) {
         super.breakBlock(world, x, y, z, par5, par6);
         return;
@@ -296,7 +296,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileCapacitorBank)) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }

@@ -1,6 +1,6 @@
 package cofh.api.tileentity;
 
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 /**
  * Implement this interface on Tile Entities which can change their block's texture based on the current render pass. The block must defer the call to its Tile
@@ -11,6 +11,6 @@ import net.minecraft.util.Icon;
  */
 public interface ISidedBlockTexture {
 
-	public Icon getBlockTexture(int side, int pass);
+	public IIcon getBlockTexture(int side, int pass);
 
 }

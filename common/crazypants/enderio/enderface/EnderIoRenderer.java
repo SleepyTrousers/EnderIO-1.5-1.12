@@ -1,17 +1,5 @@
 package crazypants.enderio.enderface;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraftforge.client.IItemRenderer;
-
-import org.lwjgl.opengl.GL11;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
 import crazypants.render.BoundingBox;
@@ -20,6 +8,16 @@ import crazypants.render.RenderUtil;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.client.IItemRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
@@ -28,12 +26,12 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     }
 
     @Override
-    public Icon getSelectedIcon() {
+    public IIcon getSelectedIcon() {
       return EnderIO.blockEnderIo.selectedOverlayIcon;
     }
 
     @Override
-    public Icon getHighlightIcon() {
+    public IIcon getHighlightIcon() {
       return EnderIO.blockEnderIo.highlightOverlayIcon;
     }
 
@@ -41,7 +39,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
-    EntityLivingBase entityPlayer = tileEntityRenderer.entityLivingPlayer;
+
+    EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
 
     Vector3d playerEye = new Vector3d(entityPlayer.posX, entityPlayer.posY + 1.62 - entityPlayer.yOffset, entityPlayer.posZ);
     Vector3d blockOrigin = new Vector3d(te.xCoord + 0.5, te.yCoord + 0.5, te.zCoord + 0.5);
@@ -49,7 +48,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     lookMat.setTranslation(new Vector3d());
     lookMat.invert();
 
-    int brightness = RenderUtil.setTesselatorBrightness(tileEntityRenderer.worldObj, te.xCoord, te.yCoord, te.zCoord);
+    int brightness = RenderUtil.setTesselatorBrightness(entityPlayer.worldObj, te.xCoord, te.yCoord, te.zCoord);
     render(x, y, z, lookMat, brightness);
 
     selectionRenderer.renderTileEntityAt(te, x, y, z, f);
@@ -60,7 +59,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     GL11.glPushMatrix();
     GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
 
-    Icon tex = Item.eyeOfEnder.getIconFromDamage(0);
+    IIcon tex = Items.ender_eye.getIconFromDamage(0);
     RenderUtil.bindItemTexture();
     float minU = tex.getMinU();
     float maxU = tex.getMaxU();

@@ -1,23 +1,23 @@
 package crazypants.enderio.conduit.item;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.util.DyeColor;
 
 public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit {
 
-  Icon getTextureForInputMode();
+  IIcon getTextureForInputMode();
 
-  Icon getTextureForOutputMode();
+  IIcon getTextureForOutputMode();
 
-  Icon getTextureForInOutMode(boolean inputComponent);
+  IIcon getTextureForInOutMode(boolean inputComponent);
 
-  Icon getTextureForInOutBackground();
+  IIcon getTextureForInOutBackground();
 
-  Icon getEnderIcon();
+  IIcon getEnderIcon();
 
   IInventory getExternalInventory(ForgeDirection direction);
 

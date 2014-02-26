@@ -56,14 +56,14 @@ public class BlockItemCustomSlab extends ItemSlab {
 
         if(world.checkNoEntityCollision(EnderIO.blockCustomDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))) {
 
-          TileEntity te = world.getBlockTileEntity(x, y, z);
+          TileEntity te = world.getTileEntity(x, y, z);
           if(te instanceof TileEntityCustomSlab) {
             ((TileEntityCustomSlab) te).isConvertingToFullBlock = true;
           }
 
           if(world.setBlock(x, y, z, EnderIO.blockCustomDoubleSlab.blockID, k1, 3)) {
 
-            te = world.getBlockTileEntity(x, y, z);
+            te = world.getTileEntity(x, y, z);
             if(te instanceof TileEntityCustomBlock) {
               int id = -1;
               Block b = PainterUtil.getSourceBlock(par1ItemStack);
@@ -119,7 +119,7 @@ public class BlockItemCustomSlab extends ItemSlab {
 
     if(i1 == EnderIO.blockCustomSlab.blockID && k1 == par1ItemStack.getItemDamage()) {
 
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileEntityCustomSlab) {
         ((TileEntityCustomSlab) te).isConvertingToFullBlock = true;
       }
@@ -127,7 +127,7 @@ public class BlockItemCustomSlab extends ItemSlab {
       if(world.checkNoEntityCollision(EnderIO.blockCustomDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
           && world.setBlock(x, y, z, EnderIO.blockCustomDoubleSlab.blockID, k1, 3)) {
 
-        te = world.getBlockTileEntity(x, y, z);
+        te = world.getTileEntity(x, y, z);
         if(te instanceof TileEntityCustomBlock) {
           int id = -1;
           Block b = PainterUtil.getSourceBlock(par1ItemStack);

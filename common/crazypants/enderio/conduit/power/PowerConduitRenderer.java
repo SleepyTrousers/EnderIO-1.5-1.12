@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.power;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -34,7 +34,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     }
     IPowerConduit pc = (IPowerConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
-      Icon tex = null;
+      IIcon tex = null;
       if(conduit.getConectionMode(dir) == ConnectionMode.INPUT) {
         tex = pc.getTextureForInputMode();
       } else if(conduit.getConectionMode(dir) == ConnectionMode.OUTPUT) {
@@ -49,7 +49,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
+  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float selfIllum) {
     if(IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       IPowerConduit pc = (IPowerConduit) conduit;
       ConnectionMode conMode = pc.getConectionMode(component.dir);

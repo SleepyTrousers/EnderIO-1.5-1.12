@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -591,7 +591,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     if(worldObj == null) {
       return null;
     }
-    TileEntity te = worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = worldObj.getTileEntity(x, y, z);
     if(te instanceof IFluidHandler) {
       return (IFluidHandler) te;
     }
@@ -603,7 +603,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   private TileReservoir getReservoir(int x, int y, int z) {
-    TileEntity te = worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = worldObj.getTileEntity(x, y, z);
     if(te instanceof TileReservoir) {
       return (TileReservoir) te;
     }

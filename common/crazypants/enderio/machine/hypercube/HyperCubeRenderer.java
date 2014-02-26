@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -93,7 +93,7 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
     GL11.glTranslatef((float) x, (float) y, (float) z);
 
     RenderUtil.bindBlockTexture();
-    Icon icon = EnderIO.blockHyperCube.getPortalIcon();
+    IIcon icon = EnderIO.blockHyperCube.getPortalIcon();
 
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();

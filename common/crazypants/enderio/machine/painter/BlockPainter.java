@@ -27,7 +27,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityPainter) {
       return new PainterContainer(player.inventory, (AbstractMachineEntity) te);
     }
@@ -36,7 +36,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     return new GuiPainter(player.inventory, (AbstractMachineEntity) te);
   }
 

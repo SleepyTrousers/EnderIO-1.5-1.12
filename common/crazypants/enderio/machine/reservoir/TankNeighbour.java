@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.reservoir;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
 class TankNeighbour {

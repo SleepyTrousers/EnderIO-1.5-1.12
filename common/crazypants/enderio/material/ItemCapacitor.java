@@ -2,11 +2,11 @@ package crazypants.enderio.material;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
@@ -26,7 +26,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
     return result;
   }
 
-  private final Icon[] icons;
+  private final IIcon[] icons;
 
   protected ItemCapacitor() {
     super(ModObject.itemBasicCapacitor.id);
@@ -36,7 +36,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
     setMaxDamage(0);
     setMaxStackSize(64);
 
-    icons = new Icon[Capacitors.values().length];
+    icons = new IIcon[Capacitors.values().length];
   }
 
   protected void init() {
@@ -44,15 +44,15 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   }
 
   @Override
-  public Icon getIconFromDamage(int damage) {
+  public IIcon getIconFromDamage(int damage) {
     damage = MathHelper.clamp_int(damage, 0, Capacitors.values().length - 1);
     return icons[damage];
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
     for (int i = 0; i < Capacitors.values().length; i++) {
-      icons[i] = iconRegister.registerIcon(Capacitors.values()[i].iconKey);
+      icons[i] = IIconRegister.registerIcon(Capacitors.values()[i].iconKey);
     }
   }
 

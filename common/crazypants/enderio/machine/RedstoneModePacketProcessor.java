@@ -86,7 +86,7 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
     int z = data.readInt();
     short ordinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
-    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = p.worldObj.getTileEntity(x, y, z);
     if(te instanceof AbstractMachineEntity) {
       AbstractMachineEntity me = (AbstractMachineEntity) te;
       me.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
@@ -102,7 +102,7 @@ public class RedstoneModePacketProcessor implements IPacketProcessor {
     short inputOrdinal = data.readShort();
     short outputOrdinal = data.readShort();
     EntityPlayerMP p = (EntityPlayerMP) player;
-    TileEntity te = p.worldObj.getBlockTileEntity(x, y, z);
+    TileEntity te = p.worldObj.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.setInputControlMode(RedstoneControlMode.values()[inputOrdinal]);

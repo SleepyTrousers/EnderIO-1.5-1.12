@@ -3,7 +3,7 @@ package crazypants.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -20,10 +20,10 @@ public class IconButton extends GuiButton {
   protected int hwidth;
   protected int hheight;
 
-  protected Icon icon;
+  protected IIcon icon;
   protected ResourceLocation texture;
 
-  public IconButton(FontRenderer fr, int id, int x, int y, Icon icon, ResourceLocation texture) {
+  public IconButton(FontRenderer fr, int id, int x, int y, IIcon icon, ResourceLocation texture) {
     super(id, x, y, DEFAULT_WIDTH, DEFAULT_HEIGHT, "");
     hwidth = HWIDTH;
     hheight = HHEIGHT;
@@ -38,11 +38,11 @@ public class IconButton extends GuiButton {
     hheight = height / 2;
   }
 
-  public Icon getIcon() {
+  public IIcon getIcon() {
     return icon;
   }
 
-  public void setIcon(Icon icon) {
+  public void setIcon(IIcon icon) {
     this.icon = icon;
   }
 
@@ -60,13 +60,13 @@ public class IconButton extends GuiButton {
   @SuppressWarnings("synthetic-access")
   @Override
   public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
-    if(drawButton) {
+    if(visible) {
 
       RenderUtil.bindTexture("textures/gui/widgets.png");
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-      this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
+      this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + width
           && par3 < this.yPosition + height;
-      int hoverState = getHoverState(this.field_82253_i);
+      int hoverState = getHoverState(this.field_146123_n);
 
       // x, y, u, v, width, height
 

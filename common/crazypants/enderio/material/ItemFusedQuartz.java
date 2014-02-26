@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
@@ -20,7 +20,7 @@ public class ItemFusedQuartz extends ItemBlock {
   }
 
   @Override
-  public Icon getIconFromDamage(int par1) {
+  public IIcon getIconFromDamage(int par1) {
     return EnderIO.blockFusedQuartz.getItemIcon(par1);
   }
 

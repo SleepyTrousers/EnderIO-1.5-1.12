@@ -1,12 +1,10 @@
 package crazypants.enderio;
 
-import java.text.DecimalFormat;
-
+import crazypants.util.DebugGuiTPS;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.render.ConduitRenderer;
-import crazypants.util.DebugGuiTPS;
+
+import java.text.DecimalFormat;
 
 public class CommonProxy {
 
@@ -33,9 +31,10 @@ public class CommonProxy {
     }
   }
 
-  public ConduitRenderer getRendererForConduit(IConduit conduit) {
-    return null;
-  }
+  //TODO:1.7
+//  public ConduitRenderer getRendererForConduit(IConduit conduit) {
+//    return null;
+//  }
 
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
     return 5;

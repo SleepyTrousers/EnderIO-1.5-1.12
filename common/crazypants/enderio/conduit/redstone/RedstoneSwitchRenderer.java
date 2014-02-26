@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.redstone;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -51,7 +51,7 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
     float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(null));
     tessellator.setColorOpaque_F(selfIllum, selfIllum, selfIllum);
 
-    Icon[] icons = new Icon[6];
+    IIcon[] icons = new IIcon[6];
     for (int i = 0; i < icons.length; i++) {
       icons[i] = EnderIO.blockConduitBundle.getConnectorIcon();
     }

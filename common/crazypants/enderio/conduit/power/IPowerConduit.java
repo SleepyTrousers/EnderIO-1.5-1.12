@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.power;
 
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.ICapacitor;
@@ -35,9 +35,9 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
 
   DyeColor getSignalColor(ForgeDirection dir);
 
-  Icon getTextureForInputMode();
+  IIcon getTextureForInputMode();
 
-  Icon getTextureForOutputMode();
+  IIcon getTextureForOutputMode();
 
   //called from NetworkPowerManager 
   void onTick();

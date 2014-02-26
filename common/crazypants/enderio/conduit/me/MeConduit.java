@@ -3,12 +3,12 @@ package crazypants.enderio.conduit.me;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import appeng.api.events.GridTileLoadEvent;
 import appeng.api.events.GridTileUnloadEvent;
@@ -27,7 +27,7 @@ import crazypants.util.BlockCoord;
 
 public class MeConduit extends AbstractConduit implements IMeConduit {
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   private static final String KEY_CORE_ICON = "enderio:meConduitCore";
   private static final String KEY_CONDUIT_ICON = "enderio:meConduit";
@@ -37,7 +37,7 @@ public class MeConduit extends AbstractConduit implements IMeConduit {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(KEY_CORE_ICON, register.registerIcon(KEY_CORE_ICON));
         ICONS.put(KEY_CONDUIT_ICON, register.registerIcon(KEY_CONDUIT_ICON));
       }
@@ -128,7 +128,7 @@ public class MeConduit extends AbstractConduit implements IMeConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
     BlockCoord bc = getLocation().getLocation(direction);
-    TileEntity te = getBundle().getWorld().getBlockTileEntity(bc.x, bc.y, bc.z);
+    TileEntity te = getBundle().getWorld().getTileEntity(bc.x, bc.y, bc.z);
     return te instanceof IGridTileEntity && !(te instanceof IConduitBundle);
   }
 
@@ -158,7 +158,7 @@ public class MeConduit extends AbstractConduit implements IMeConduit {
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(KEY_CORE_ICON);
     }
@@ -166,7 +166,7 @@ public class MeConduit extends AbstractConduit implements IMeConduit {
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return null;
   }
 

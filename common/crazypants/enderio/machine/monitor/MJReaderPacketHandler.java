@@ -15,7 +15,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -62,7 +62,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
 
   public static boolean canCreatePacket(World world, int x, int y, int z) {
     int id = world.getBlockId(x, y, z);
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(id <= 0) {
       return false;
     }
@@ -131,7 +131,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
     }
 
     int id = world.getBlockId(x, y, z);
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(id <= 0) {
       Log.warn("MJReaderPacketHandler.sendInfoMessage: Invalid block id " + id);
       return;

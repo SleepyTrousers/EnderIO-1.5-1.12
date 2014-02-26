@@ -3,9 +3,9 @@ package crazypants.enderio.conduit.facade;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -39,14 +39,14 @@ public class BlockConduitFacade extends Block {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
-    blockIcon = iconRegister.registerIcon("enderio:conduitFacade");
+  public void registerIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:conduitFacade");
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Icon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
-    TileEntity te = ba.getBlockTileEntity(x, y, z);
+  public IIcon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
+    TileEntity te = ba.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return blockIcon;
     }
@@ -65,7 +65,7 @@ public class BlockConduitFacade extends Block {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Icon getIcon(int par1, int par2) {
+  public IIcon getIcon(int par1, int par2) {
     if(blockOverride != null) {
       return blockOverride.getIcon(par1, par2);
     }
@@ -130,7 +130,7 @@ public class BlockConduitFacade extends Block {
   }
 
   private Mimic getMimic(IBlockAccess ba, int x, int y, int z) {
-    TileEntity te = ba.getBlockTileEntity(x, y, z);
+    TileEntity te = ba.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       // System.out.println("BlockConduitFacade.getMimic: Not a conduit bundle");
       return null;

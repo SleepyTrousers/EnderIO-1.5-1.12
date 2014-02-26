@@ -10,7 +10,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.WorldCoord;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;

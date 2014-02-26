@@ -12,7 +12,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.Player;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
@@ -497,7 +497,7 @@ public class ConduitPacketHandler implements IPacketProcessor {
     int x = data.readInt();
     int y = data.readInt();
     int z = data.readInt();
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       Log.warn("processConnectionModePacket: Could not handle packet as TileEntity was not a Conduit Bundle.");
       return null;

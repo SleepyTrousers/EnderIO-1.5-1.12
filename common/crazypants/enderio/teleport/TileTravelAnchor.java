@@ -1,17 +1,14 @@
 package crazypants.enderio.teleport;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.PacketHandler;
 import crazypants.util.BlockCoord;
-import crazypants.util.PacketUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
 
@@ -192,9 +189,10 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
     root.setString("authorisedUsers", userStr.toString());
   }
 
-  @Override
-  public Packet getDescriptionPacket() {
-    return PacketUtil.createTileEntityPacket(PacketHandler.CHANNEL, PacketHandler.ID_TILE_ENTITY, this);
-  }
+  //TODO:1.7
+//  @Override
+//  public Packet getDescriptionPacket() {
+//    return PacketUtil.createTileEntityPacket(PacketHandler.CHANNEL, PacketHandler.ID_TILE_ENTITY, this);
+//  }
 
 }

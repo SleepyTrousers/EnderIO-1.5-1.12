@@ -5,12 +5,12 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -53,9 +53,9 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
     return result;
   }
 
-  Icon[] blockIcon;
-  Icon[] itemsIcons;
-  Icon[] frameIcons;
+  IIcon[] blockIcon;
+  IIcon[] itemsIcons;
+  IIcon[] frameIcons;
 
   private BlockFusedQuartz() {
     super(ModObject.blockFusedQuartz.id, Material.glass);
@@ -126,34 +126,34 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void registerIcons(IconRegister iconRegister) {
+  public void registerIcons(IIconRegister IIconRegister) {
     //This little oddity is so the standard rendering used for items and breaking effects
     //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
     Type[] ts = Type.values();
-    blockIcon = new Icon[ts.length];
-    itemsIcons = new Icon[ts.length];
-    frameIcons = new Icon[ts.length];
+    blockIcon = new IIcon[ts.length];
+    itemsIcons = new IIcon[ts.length];
+    frameIcons = new IIcon[ts.length];
 
     for (int i = 0; i < ts.length; i++) {
-      blockIcon[i] = iconRegister.registerIcon(ts[i].blockIcon);
-      itemsIcons[i] = iconRegister.registerIcon(ts[i].itemIcon);
-      frameIcons[i] = iconRegister.registerIcon(ts[i].frameIcon);
+      blockIcon[i] = IIconRegister.registerIcon(ts[i].blockIcon);
+      itemsIcons[i] = IIconRegister.registerIcon(ts[i].itemIcon);
+      frameIcons[i] = IIconRegister.registerIcon(ts[i].frameIcon);
     }
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Icon getIcon(int par1, int meta) {
+  public IIcon getIcon(int par1, int meta) {
     meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
     return blockIcon[meta];
   }
 
-  public Icon getItemIcon(int meta) {
+  public IIcon getItemIcon(int meta) {
     meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
     return itemsIcons[meta];
   }
 
-  public Icon getDefaultFrameIcon(int meta) {
+  public IIcon getDefaultFrameIcon(int meta) {
     meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
     return frameIcons[meta];
   }
@@ -175,7 +175,7 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
 
       if(te instanceof TileEntityCustomBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;

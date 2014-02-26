@@ -5,7 +5,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.transport.IPipeTile;
 import cofh.api.transport.IItemConduit;
 
@@ -74,7 +74,7 @@ public class ItemUtil {
       }
     }
     if(numInserted > 0) {
-      sidedInv.onInventoryChanged();
+      sidedInv.markDirty();
     }
     return numInserted;
   }
@@ -110,7 +110,7 @@ public class ItemUtil {
       }
     }
     if(numInserted > 0) {
-      inv.onInventoryChanged();
+      inv.markDirty();
     }
     return numInserted;
   }
@@ -132,8 +132,6 @@ public class ItemUtil {
         neigbour = chest.adjacentChestXPos;
       } else if(chest.adjacentChestZNeg != null) {
         neigbour = chest.adjacentChestZNeg;
-      } else if(chest.adjacentChestZPosition != null) {
-        neigbour = chest.adjacentChestZPosition;
       }
       if(neigbour != null) {
         return new InventoryLargeChest("", inv, neigbour);

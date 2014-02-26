@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 
 public class LiquidOutput {

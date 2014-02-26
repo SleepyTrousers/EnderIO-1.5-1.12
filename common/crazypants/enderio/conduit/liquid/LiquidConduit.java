@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,14 +43,14 @@ public class LiquidConduit extends AbstractTankConduit {
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitInsert";
   public static final String ICON_EMPTY_INSERT_KEY = "enderio:emptyLiquidConduitInsert";
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
@@ -382,7 +382,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return ICONS.get(ICON_CORE_KEY);
     }
@@ -399,7 +399,7 @@ public class LiquidConduit extends AbstractTankConduit {
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     if(tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       return tank.getFluid().getFluid().getStillIcon();
     }

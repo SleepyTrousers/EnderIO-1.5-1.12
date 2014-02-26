@@ -1,16 +1,15 @@
 package crazypants.enderio.trigger;
 
-import java.util.LinkedList;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.power.TileCapacitorBank;
-
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
-import buildcraft.api.transport.IPipe;
+import buildcraft.api.transport.IPipeTile;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.power.TileCapacitorBank;
+import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+
+import java.util.LinkedList;
 
 public class TriggerProviderEIO implements ITriggerProvider {
 	
@@ -33,8 +32,8 @@ public class TriggerProviderEIO implements ITriggerProvider {
 		return triggers;
 	}
 
-	@Override
-	public LinkedList<ITrigger> getPipeTriggers(IPipe pipe) {
-		return null;
-	}
+  @Override
+  public LinkedList<ITrigger> getPipeTriggers(IPipeTile pipe) {
+    return null;
+  }
 }

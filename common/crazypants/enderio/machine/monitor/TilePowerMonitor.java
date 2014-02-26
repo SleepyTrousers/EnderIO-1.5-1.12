@@ -3,7 +3,7 @@ package crazypants.enderio.machine.monitor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduitNetwork;

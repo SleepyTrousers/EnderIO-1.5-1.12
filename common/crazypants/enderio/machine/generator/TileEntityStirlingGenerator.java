@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.ModObject;
@@ -203,7 +203,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = bc.getLocation(dir);
-      TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       IPowerInterface pi = PowerHandlerUtil.create(te);
       if(pi != null) {
         receptors.add(new Receptor(pi, dir));

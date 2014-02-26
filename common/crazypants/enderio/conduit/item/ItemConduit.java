@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -53,13 +53,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public static final String ICON_KEY_ENDER = "enderio:ender_still";
 
-  static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
+  static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
         ICONS.put(ICON_KEY_CORE, register.registerIcon(ICON_KEY_CORE));
         ICONS.put(ICON_KEY_CORE_ADV, register.registerIcon(ICON_KEY_CORE_ADV));
@@ -331,7 +331,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       return null;
     }
     BlockCoord loc = getLocation().getLocation(direction);
-    TileEntity te = world.getBlockTileEntity(loc.x, loc.y, loc.z);
+    TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
     if(te instanceof IInventory && !(te instanceof IConduitBundle)) {
       return (IInventory) te;
     }
@@ -409,36 +409,36 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public Icon getTextureForInputMode() {
+  public IIcon getTextureForInputMode() {
     return ICONS.get(ICON_KEY_INPUT);
   }
 
   @Override
-  public Icon getTextureForOutputMode() {
+  public IIcon getTextureForOutputMode() {
     return ICONS.get(ICON_KEY_OUTPUT);
   }
 
   @Override
-  public Icon getTextureForInOutMode(boolean input) {
+  public IIcon getTextureForInOutMode(boolean input) {
     return input ? ICONS.get(ICON_KEY_IN_OUT_IN) : ICONS.get(ICON_KEY_IN_OUT_OUT);
   }
 
   @Override
-  public Icon getTextureForInOutBackground() {
+  public IIcon getTextureForInOutBackground() {
     return ICONS.get(ICON_KEY_IN_OUT_BG);
   }
 
   @Override
-  public Icon getEnderIcon() {
+  public IIcon getEnderIcon() {
     return ICONS.get(ICON_KEY_ENDER);
   }
 
-  public Icon getCoreIcon() {
+  public IIcon getCoreIcon() {
     return metaData == 1 ? ICONS.get(ICON_KEY_CORE_ADV) : ICONS.get(ICON_KEY_CORE);
   }
 
   @Override
-  public Icon getTextureForState(CollidableComponent component) {
+  public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
       return getCoreIcon();
     }
@@ -449,7 +449,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public Icon getTransmitionTextureForState(CollidableComponent component) {
+  public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return getEnderIcon();
   }
 

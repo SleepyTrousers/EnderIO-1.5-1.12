@@ -1,19 +1,19 @@
 package crazypants.render;
 
-import java.util.ArrayList;
-
-import net.minecraft.client.renderer.texture.IconRegister;
+import cpw.mods.fml.common.Mod;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
+
+import java.util.ArrayList;
 
 public class IconUtil {
 
   public static interface IIconProvider {
 
-    public void registerIcons(IconRegister register);
+    public void registerIcons(IIconRegister register);
 
     /** 0 = terrain.png, 1 = items.png */
     public int getTextureType();
@@ -21,14 +21,14 @@ public class IconUtil {
 
   private static ArrayList<IIconProvider> iconProviders = new ArrayList<IIconProvider>();
 
-  public static Icon whiteTexture;
+  public static IIcon whiteTexture;
 
   static {
     MinecraftForge.EVENT_BUS.register(new IconUtil());
     addIconProvider(new IIconProvider() {
 
       @Override
-      public void registerIcons(IconRegister register) {
+      public void registerIcons(IIconRegister register) {
         whiteTexture = register.registerIcon("enderio:white");
       }
 
@@ -43,20 +43,17 @@ public class IconUtil {
     iconProviders.add(registrar);
   }
 
-  @ForgeSubscribe
+  @Mod.EventHandler
   public void onIconLoad(TextureStitchEvent.Pre event) {
     for (IIconProvider reg : iconProviders) {
-      if(reg.getTextureType() == event.map.textureType) {
+      if(reg.getTextureType() == event.map.getTextureType()) {
         reg.registerIcons(event.map);
       }
     }
   }
 
-  public static Icon getIconForItem(int itemId, int meta) {
-    if(itemId < 0 || itemId >= Item.itemsList.length) {
-      return null;
-    }
-    Item item = Item.itemsList[itemId];
+  public static IIcon getIconForItem(int itemId, int meta) {
+    Item item = Item.getItemById(itemId);
     if(item == null) {
       return null;
     }

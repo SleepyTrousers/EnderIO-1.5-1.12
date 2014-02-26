@@ -13,11 +13,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -36,7 +36,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
     return result;
   }
 
-  private Icon lastRemovedComponetIcon = null;
+  private IIcon lastRemovedComponetIcon = null;
 
   private Random rand = new Random();
 
@@ -63,10 +63,10 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
   @Override
   public boolean addBlockHitEffects(World world, MovingObjectPosition target,
       EffectRenderer effectRenderer) {
-    Icon tex = null;
+    IIcon tex = null;
 
     TileEntityCustomBlock cb = (TileEntityCustomBlock)
-        world.getBlockTileEntity(target.blockX, target.blockY, target.blockZ);
+        world.getTileEntity(target.blockX, target.blockY, target.blockZ);
     Block b = cb.getSourceBlock();
     if(b != null) {
       tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
@@ -84,7 +84,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
   @SideOnly(Side.CLIENT)
   public boolean addBlockDestroyEffects(World world, int x, int y, int z, int
       meta, EffectRenderer effectRenderer) {
-    Icon tex = lastRemovedComponetIcon;
+    IIcon tex = lastRemovedComponetIcon;
     byte b0 = 4;
     for (int j1 = 0; j1 < b0; ++j1) {
       for (int k1 = 0; k1 < b0; ++k1) {
@@ -106,7 +106,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
 
   @SideOnly(Side.CLIENT)
   private void addBlockHitEffects(World world, EffectRenderer effectRenderer,
-      int x, int y, int z, int side, Icon tex) {
+      int x, int y, int z, int side, IIcon tex) {
     float f = 0.1F;
     double d0 = x + rand.nextDouble() * (getBlockBoundsMaxX() -
         getBlockBoundsMinX() - f * 2.0F) + f + getBlockBoundsMinX();
@@ -137,7 +137,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
 
   @Override
   public int getLightOpacity(World world, int x, int y, int z) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
       if(tef.getSourceBlockId() > 0) {
@@ -166,8 +166,8 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
   }
 
   @Override
-  public Icon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+  public IIcon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
       if(tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length && blocksList[tef.getSourceBlockId()] != null) {
@@ -195,7 +195,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
       id = b.blockID;
     }
 
-    TileEntity te = world.getBlockTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
       tef.setSourceBlockId(id);
@@ -211,7 +211,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
 
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity te = world.getBlockTileEntity(x, y, z);
+      TileEntity te = world.getTileEntity(x, y, z);
 
       if(te instanceof TileEntityCustomBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;

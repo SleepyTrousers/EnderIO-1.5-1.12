@@ -3,8 +3,8 @@ package crazypants.enderio.machine.power;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
@@ -89,7 +89,7 @@ class GaugeBounds {
     bb = BoundingBox.UNIT_CUBE.scale(scaleX, scaleY, scaleZ);
   }
 
-  Vector2f getMinMaxU(Icon icon) {
+  Vector2f getMinMaxU(IIcon icon) {
     VPos yPos = vInfo.pos;
     float uWidth = icon.getMaxU() - icon.getMinU();
     float uOffset = yPos.uOffset * uWidth;

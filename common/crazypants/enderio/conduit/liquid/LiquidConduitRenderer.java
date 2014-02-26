@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -49,7 +49,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderConduit(Icon tex, IConduit conduit, CollidableComponent component, float brightness) {
+  protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
     if(isNSEWUD(component.dir)) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
@@ -86,7 +86,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
 
   public static void renderFluidOutline(CollidableComponent component, FluidStack fluid, double scaleFactor, float outlineWidth) {
     //TODO: Should cache these vertices as relatively heavy weight to calc each frame
-    Icon texture = fluid.getFluid().getStillIcon();
+    IIcon texture = fluid.getFluid().getStillIcon();
     if(texture == null) {
       texture = fluid.getFluid().getIcon();
       if(texture == null) {
@@ -144,7 +144,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void renderTransmission(IConduit con, Icon tex, CollidableComponent component, float brightness) {
+  protected void renderTransmission(IConduit con, IIcon tex, CollidableComponent component, float brightness) {
     //done in the dynamic section
   }
 
@@ -167,7 +167,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer {
     calculateRatios((LiquidConduit) conduit);
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
 
-    Icon tex;
+    IIcon tex;
     for (CollidableComponent component : components) {
       if(renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));

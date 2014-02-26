@@ -1,14 +1,14 @@
 package crazypants.gui;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class IconToggleButton extends IconButton {
 
   private boolean selected = false;
 
-  public IconToggleButton(FontRenderer fr, int id, int x, int y, Icon icon, ResourceLocation texture) {
+  public IconToggleButton(FontRenderer fr, int id, int x, int y, IIcon icon, ResourceLocation texture) {
     super(fr, id, x, y, icon, texture);
   }
 

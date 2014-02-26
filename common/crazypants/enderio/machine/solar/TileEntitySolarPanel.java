@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -195,7 +195,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
     ForgeDirection dir = ForgeDirection.DOWN;
     BlockCoord checkLoc = bc.getLocation(dir);
-    TileEntity te = worldObj.getBlockTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+    TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
     IPowerInterface pi = PowerHandlerUtil.create(te);
     if(pi != null) {
       receptors.add(new Receptor(pi, dir));

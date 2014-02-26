@@ -43,7 +43,7 @@ public class ColorButton extends IconButtonEIO {
 
   private void nextColor() {
     colorIndex++;
-    if(colorIndex >= ItemDye.dyeColors.length) {
+    if(colorIndex >= ItemDye.field_150923_a.length) {
       colorIndex = 0;
     }
     setColorIndex(colorIndex);
@@ -54,7 +54,7 @@ public class ColorButton extends IconButtonEIO {
   }
 
   public void setColorIndex(int colorIndex) {
-    this.colorIndex = MathHelper.clamp_int(colorIndex, 0, ItemDye.dyeColors.length - 1);
+    this.colorIndex = MathHelper.clamp_int(colorIndex, 0, ItemDye.field_150923_a.length - 1);
     String colStr = DyeColor.values()[colorIndex].getLocalisedName();
     if(tooltipPrefix != null && tooltipPrefix.length() > 0) {
       setToolTip(tooltipPrefix, colStr);
@@ -66,7 +66,7 @@ public class ColorButton extends IconButtonEIO {
   @Override
   public void drawButton(Minecraft mc, int mouseX, int mouseY) {
     super.drawButton(mc, mouseX, mouseY);
-    if(drawButton) {
+    if(visible) {
       Tessellator tes = Tessellator.instance;
       tes.startDrawingQuads();
 
@@ -75,7 +75,7 @@ public class ColorButton extends IconButtonEIO {
 
       GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-      int col = ItemDye.dyeColors[colorIndex];
+      int col = ItemDye.field_150922_c[colorIndex];
       tes.setColorOpaque_I(col);
       tes.addVertex(x, y + height - 4, zLevel);
       tes.addVertex(x + width - 4, y + height - 4, zLevel);

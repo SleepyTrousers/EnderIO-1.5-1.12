@@ -7,7 +7,7 @@ import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
@@ -256,7 +256,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if(w == null) {
       return null;
     }
-    TileEntity te = w.getBlockTileEntity(bc.x, bc.y, bc.z);
+    TileEntity te = w.getTileEntity(bc.x, bc.y, bc.z);
     if(te instanceof IFluidHandler) {
       if(te instanceof IPipeTile) {
         if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {

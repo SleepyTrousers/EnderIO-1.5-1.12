@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
@@ -79,8 +79,8 @@ public class GuiAlloySmelter extends GuiMachineBase {
     }
   }
 
-  private Icon getIconForMode() {
-    Icon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
+  private IIcon getIconForMode() {
+    IIcon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
     if(tileEntity.getMode() == Mode.ALLOY) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
     } else if(tileEntity.getMode() == Mode.FURNACE) {

@@ -7,9 +7,9 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.util.BlockCoord;
@@ -92,9 +92,9 @@ public interface IConduit {
 
   // rendering, only needed us default rendering is used
 
-  Icon getTextureForState(CollidableComponent component);
+  IIcon getTextureForState(CollidableComponent component);
 
-  Icon getTransmitionTextureForState(CollidableComponent component);
+  IIcon getTransmitionTextureForState(CollidableComponent component);
 
   float getTransmitionGeometryScale();
 

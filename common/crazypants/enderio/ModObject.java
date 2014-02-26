@@ -1,104 +1,80 @@
 package crazypants.enderio;
 
-import static net.minecraftforge.common.Configuration.CATEGORY_BLOCK;
-import static net.minecraftforge.common.Configuration.CATEGORY_ITEM;
-import net.minecraftforge.common.Configuration;
-import crazypants.util.Lang;
-
 public enum ModObject {
   // Enderface
-  blockEnderIo(++Config.BID, CATEGORY_BLOCK),
-  itemEnderface(++Config.IID, CATEGORY_ITEM),
+  blockEnderIo,
+  itemEnderface,
 
   // Conduits
-  blockConduitBundle(++Config.BID, CATEGORY_BLOCK),
-  blockConduitFacade(++Config.BID, CATEGORY_BLOCK),
-  itemConduitFacade(++Config.IID, CATEGORY_ITEM),
-  itemRedstoneConduit(++Config.IID, CATEGORY_ITEM),
+  blockConduitBundle,
+  blockConduitFacade,
+  itemConduitFacade,
+  itemRedstoneConduit,
 
   // Power
-  itemPowerConduit(++Config.IID, CATEGORY_ITEM),
+  itemPowerConduit,
 
   // Liquid
-  itemLiquidConduit(++Config.IID, CATEGORY_ITEM),
+  itemLiquidConduit,
 
   // Materials
-  itemBasicCapacitor(++Config.IID, CATEGORY_ITEM),
-  itemAlloy(++Config.IID, CATEGORY_ITEM),
-  blockFusedQuartz(++Config.BID, CATEGORY_BLOCK),
+  itemBasicCapacitor,
+  itemAlloy,
+  blockFusedQuartz,
 
   // Stirling Gen
-  blockStirlingGenerator(++Config.BID, CATEGORY_BLOCK),
-  blockReservoir(++Config.BID, CATEGORY_BLOCK),
-  blockAlloySmelter(++Config.BID, CATEGORY_BLOCK),
+  blockStirlingGenerator,
+  blockReservoir,
+  blockAlloySmelter,
 
   // Painter
-  blockPainter(++Config.BID, CATEGORY_BLOCK),
-  blockCustomFence(++Config.BID, CATEGORY_BLOCK),
-  blockCustomFenceGate(++Config.BID, CATEGORY_BLOCK),
-  blockCustomWall(++Config.BID, CATEGORY_BLOCK),
-  blockCustomStair(++Config.BID, CATEGORY_BLOCK),
-  itemFusedQuartzFrame(++Config.IID, CATEGORY_ITEM),
+  blockPainter,
+  blockCustomFence,
+  blockCustomFenceGate,
+  blockCustomWall,
+  blockCustomStair,
+  itemFusedQuartzFrame,
 
   // Solar Panel
-  blockSolarPanel(++Config.BID, CATEGORY_BLOCK),
+  blockSolarPanel,
 
-  blockElectricLight(++Config.BID, CATEGORY_BLOCK),
-  blockLightNode(++Config.BID, CATEGORY_BLOCK),
+  blockElectricLight,
+  blockLightNode,
 
-  blockCapacitorBank(++Config.BID, CATEGORY_BLOCK),
+  blockCapacitorBank,
 
-  itemYetaWrench(++Config.IID, CATEGORY_ITEM),
+  itemYetaWrench,
 
-  blockCustomSlab(++Config.BID, CATEGORY_BLOCK),
-  blockCustomDoubleSlab(++Config.BID, CATEGORY_BLOCK),
+  blockCustomSlab,
+  blockCustomDoubleSlab,
 
-  blockCrusher(++Config.BID, CATEGORY_BLOCK),
+  blockCrusher,
 
-  blockHyperCube(++Config.BID, CATEGORY_BLOCK),
+  blockHyperCube,
 
-  itemMachinePart(++Config.IID, CATEGORY_ITEM),
-  itemPowderIngot(++Config.IID, CATEGORY_ITEM),
+  itemMachinePart,
+  itemPowderIngot,
 
-  itemMJReader(++Config.IID, CATEGORY_ITEM),
-  itemMaterial(++Config.IID, CATEGORY_ITEM),
+  itemMJReader,
+  itemMaterial,
 
-  blockPowerMonitor(++Config.BID, CATEGORY_BLOCK),
+  blockPowerMonitor,
 
-  itemItemConduit(++Config.IID, CATEGORY_ITEM),
-  itemMeConduit(++Config.IID, CATEGORY_ITEM),
+  itemItemConduit,
+  itemMeConduit,
 
-  blockTravelPlatform(++Config.BID, CATEGORY_BLOCK),
-  itemTravelStaff(++Config.IID, CATEGORY_ITEM);
+  blockTravelPlatform,
+  itemTravelStaff;
 
   public final String unlocalisedName;
-  public final String name;
-  public final int defaultId;
-  public final String category;
-  public int id;
+  //public final String name;
+
   public int actualId;
 
-  private ModObject(int defaultId, String category) {
-    this.unlocalisedName = "enderIO:" + toString();
-    this.defaultId = defaultId;
-    this.name = Lang.localize(name());
-    this.category = category;
-    id = -1;
+  private ModObject() {
+    this.unlocalisedName = name();
+    //this.name = Lang.localize(name());
     actualId = -1;
-  }
-
-  void load(Configuration config) {
-    if(CATEGORY_ITEM.equals(category)) {
-      id = config.getItem(unlocalisedName, defaultId).getInt();
-    } else if(CATEGORY_BLOCK.equals(category)) {
-      id = config.getBlock(unlocalisedName, defaultId).getInt();
-    } else {
-      throw new RuntimeException("Unknown category " + category);
-    }
-    actualId = id;
-    if(CATEGORY_ITEM.equals(category)) {
-      actualId += 256;
-    }
   }
 
 }

@@ -2,7 +2,7 @@ package cofh.api.block;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implement this interface on blocks which have some debug method which can be activated via a tool or other means.

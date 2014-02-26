@@ -1,28 +1,23 @@
 package crazypants.enderio.teleport;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IconRegister;
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.energy.ItemEnergyContainer;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.*;
+import crazypants.util.BlockCoord;
+import crazypants.util.Util;
+import crazypants.vecmath.Vector3d;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.ItemEnergyContainer;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.util.BlockCoord;
-import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
+
+import java.util.List;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
 
@@ -30,7 +25,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     if(ep == null || ep.getCurrentEquippedItem() == null) {
       return false;
     }
-    return ep.getCurrentEquippedItem().itemID == ModObject.itemTravelStaff.actualId;
+    return ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff;
   }
 
   private long lastBlickTick = 0;
@@ -42,7 +37,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   protected ItemTravelStaff() {
-    super(ModObject.itemTravelStaff.id, Config.travelStaffMaxStoredPower * 10, Config.travelStaffMaxPowerIo * 10, 0);
+    super(Config.travelStaffMaxStoredPower * 10, Config.travelStaffMaxPowerIo * 10, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName("enderio." + ModObject.itemTravelStaff.name());
     setMaxDamage(16);
@@ -61,8 +56,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void registerIcons(IconRegister iconRegister) {
-    itemIcon = iconRegister.registerIcon("enderio:itemTravelStaff");
+  public void registerIcons(IIconRegister IIconRegister) {
+    itemIcon = IIconRegister.registerIcon("enderio:itemTravelStaff");
   }
 
   @Override
@@ -92,10 +87,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     if(TravelController.instance.hasTarget()) {
 
       BlockCoord target = TravelController.instance.selectedCoord;
-      TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+      TileEntity te = world.getTileEntity(target.x, target.y, target.z);
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
-        if(ta.getRequiresPassword(player.username)) {
+        if(ta.getRequiresPassword(player.getUniqueID().toString())) {
           player.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, world, target.x, target.y, target.z);
           return equipped;
         }
@@ -118,9 +113,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
-    list.add(str);
+    //TODO:1.7
+//    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
+//        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+//    list.add(str);
   }
 
   @Override
@@ -164,7 +160,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     stack.setItemDamage(res);
   }
 
-  @Override
+  //TODO:1.7
+  //@Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
     ItemStack is = new ItemStack(this);
