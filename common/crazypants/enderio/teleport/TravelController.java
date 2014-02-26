@@ -57,9 +57,9 @@ public class TravelController implements ITickHandler {
 
   private boolean selectionEnabled = true;
 
-  private double referenceScalingDistance;
-
   private double fovRad;
+
+  private double tanFovRad;
 
   private TravelController() {
   }
@@ -118,7 +118,7 @@ public class TravelController implements ITickHandler {
       currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
 
       fovRad = Math.toRadians(fov) / 2;
-      referenceScalingDistance = 1d / Math.tan(fovRad);
+      tanFovRad = Math.tanh(fovRad);
     }
 
     if(type.contains(TickType.CLIENT)) {
@@ -402,13 +402,16 @@ public class TravelController implements ITickHandler {
       candidates.put(bc, ratio);
     }
 
+    //smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
     float start = 0.2f;
     float end = 0.01f;
     double mix = MathHelper.clamp_float((start - ratio) / (start - end), 0, 1);
     double scale = 1;
     if(mix > 0) {
-      double d = Math.tan(fovRad) * currentView.getEyePoint().distance(loc) * 0.01;
-      scale = d / referenceScalingDistance;
+      double d = tanFovRad * currentView.getEyePoint().distance(loc);
+      scale = d / tanFovRad;
+
+      scale = scale * 0.1;// why I need this is completely beyond me.
 
       //only apply 70% of the scaling so more distance targets are still smaller than closer targets
       float nf = 1 - MathHelper.clamp_float((float) currentView.getEyePoint().distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
@@ -416,10 +419,6 @@ public class TravelController implements ITickHandler {
 
       scale = (scale * mix) + (1 - mix);
       scale = Math.max(1, scale);
-    }
-
-    if(bc.equals(selectedCoord)) {
-      return scale;
     }
     return scale;
   }
