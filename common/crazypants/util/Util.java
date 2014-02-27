@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -25,7 +26,7 @@ public class Util {
 
   public static ItemStack consumeItem(ItemStack stack) {
     if(stack.stackSize == 1) {
-      if(stack.getItem().hasContainerItem()) {
+      if(stack.getItem().hasContainerItem(stack)) {
         return stack.getItem().getContainerItem(stack);
       } else {
         return null;
@@ -56,7 +57,7 @@ public class Util {
   public static BlockCoord canPlaceItem(ItemStack itemUsed, int blockIdToBePlaced, EntityPlayer player, World world, int x, int y, int z, int side) {
     Block block = world.getBlock(x, y, z);
 
-    if(block == Blocks.snow_layer &&  (world.getBlockMetadata(x, y, z) & 7) < 1) {
+    if(block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
       side = 1;
     } else if(block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush
         && (block == null || !block.isReplaceable(world, x, y, z))) {
@@ -124,41 +125,29 @@ public class Util {
   }
 
   public static boolean dumpModObjects(File file) {
-//    StringBuilder sb = new StringBuilder();
-//    for (Block block : Block.blocksList) {
-//      if(block != null) {
-//        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(block);
-//        if(uid != null) {
-//          sb.append(uid.modId);
-//          sb.append(" ");
-//          sb.append(uid.name);
-//          sb.append("\n");
-//        }
-//      }
-//    }
-//    for (Item item : Item.itemsList) {
-//      if(item != null && !(item instanceof ItemBlock)) {
-//        UniqueIdentifier uid = GameRegistry.findUniqueIdentifierFor(item);
-//        if(uid != null) {
-//          sb.append(uid.modId);
-//          sb.append(" ");
-//          sb.append(uid.name);
-//          sb.append("\n");
-//        }
-//      }
-//    }
-//
-//    try {
-//      Files.write(sb, file, Charsets.UTF_8);
-//      return true;
-//    } catch (IOException e) {
-//      Log.warn("Error dumping ore dictionary entries: " + e.getMessage());
-//      e.printStackTrace();
-//      return false;
-//    }
 
-    //TODO:1.7
-    return false;
+    StringBuilder sb = new StringBuilder();
+    for (Object key : Block.blockRegistry.getKeys()) {
+      if(key != null) {
+        sb.append(key.toString());
+        sb.append("\n");
+      }
+    }
+    for (Object key : Item.itemRegistry.getKeys()) {
+      if(key != null) {
+        sb.append(key.toString());
+        sb.append("\n");
+      }
+    }
+
+    try {
+      Files.write(sb, file, Charsets.UTF_8);
+      return true;
+    } catch (IOException e) {
+      Log.warn("Error dumping ore dictionary entries: " + e.getMessage());
+      e.printStackTrace();
+      return false;
+    }
   }
 
   public static boolean dumpOreNames(File file) {

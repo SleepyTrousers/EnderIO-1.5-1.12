@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.gui.GuiContainerBase;
@@ -82,6 +83,10 @@ public class GuiTravelAccessable extends GuiContainerBase {
     te.setAccessMode(curMode);
 
     BlockCoord bc = te.getLocation();
+
+    PacketAccessMode p = new PacketAccessMode(bc.x,bc.y,bc.z,curMode);
+    EnderIO.packetPipeline.sendToServer(p);
+
     //TODO: 1.7
 //    Packet packet = TravelPacketHandler.createAccessModePacket(bc.x, bc.y, bc.z, curMode);
 //    PacketDispatcher.sendPacketToServer(packet);

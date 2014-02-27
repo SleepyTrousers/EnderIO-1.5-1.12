@@ -27,19 +27,8 @@ public class TileEnderIO extends TileTravelAnchor {
   }
 
   @Override
-  public boolean canUpdate() {
-    return false;
-  }
-
-  //TODO:1.7
-//  @Override
-//  public Packet getDescriptionPacket() {
-//    return PacketHandler.getPacket(this);
-//  }
-
-  @Override
-  public void readFromNBT(NBTTagCompound par1nbtTagCompound) {
-    super.readFromNBT(par1nbtTagCompound);
+  public void readCustomNBT(NBTTagCompound par1nbtTagCompound) {
+    super.readCustomNBT(par1nbtTagCompound);
     initUiPitch = par1nbtTagCompound.getFloat("defaultUiPitch");
     initUiYaw = par1nbtTagCompound.getFloat("defaultUiYaw");
     lastUiPitch = initUiPitch;
@@ -47,8 +36,8 @@ public class TileEnderIO extends TileTravelAnchor {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound par1nbtTagCompound) {
-    super.writeToNBT(par1nbtTagCompound);
+  public void writeCustomNBT(NBTTagCompound par1nbtTagCompound) {
+    super.writeCustomNBT(par1nbtTagCompound);
     par1nbtTagCompound.setFloat("defaultUiPitch", initUiPitch);
     par1nbtTagCompound.setFloat("defaultUiYaw", initUiYaw);
   }

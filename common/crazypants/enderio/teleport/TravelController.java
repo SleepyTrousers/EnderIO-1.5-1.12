@@ -3,6 +3,8 @@ package crazypants.enderio.teleport;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -91,14 +93,14 @@ public class TravelController {
 
   @SubscribeEvent
   public void onRender(RenderWorldLastEvent event) {
+
     Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
     lookAt.add(eye);
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
     float fov = 70 + Minecraft.getMinecraft().gameSettings.fovSetting * 40.0F;
-    //TODO:1.7 mc.gameSettings.renderDistance is probably not the same as renderDistanceChunks
-    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, (float) (256 >> mc.gameSettings.renderDistanceChunks), mc.displayWidth,
+    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, (float) (mc.gameSettings.renderDistanceChunks * 16), mc.displayWidth,
         mc.displayHeight);
     currentView.setProjectionMatrix(pr);
     currentView.setViewMatrix(mv);
@@ -108,6 +110,7 @@ public class TravelController {
     referenceScalingDistance = 1d / Math.tan(fovRad);
   }
 
+  @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     if(event.phase == TickEvent.Phase.END) {
@@ -130,7 +133,7 @@ public class TravelController {
         TileEntity te = player.worldObj.getTileEntity(target.x, target.y, target.z);
         if(te instanceof ITravelAccessable) {
           ITravelAccessable ta = (ITravelAccessable) te;
-          if(ta.getRequiresPassword(player.getUniqueID().toString())) {
+          if(ta.getRequiresPassword(player)) {
             //TODO:1.7
 //            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
 //            PacketDispatcher.sendPacketToServer(packet);
@@ -161,7 +164,7 @@ public class TravelController {
       return;
     }
     TileEnderIO eio = (TileEnderIO) te;
-    if(eio.canBlockBeAccessed(player.getUniqueID().toString())) {
+    if(eio.canBlockBeAccessed(player)) {
 
       int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
       if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
@@ -187,7 +190,7 @@ public class TravelController {
       TileEntity te = player.worldObj.getTileEntity(coord.x, coord.y, coord.z);
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
-        if(!ta.canBlockBeAccessed(player.getUniqueID().toString())) {
+        if(!ta.canBlockBeAccessed(player)) {
           player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
           return false;
         }
@@ -373,6 +376,14 @@ public class TravelController {
   }
 
   public double getScaleForCandidate(Vector3d loc) {
+//    try{
+//      currentView.getEyePoint();
+//    }catch(Exception e) {
+//      //e.printStackTrace();
+//      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getProjectionMatrix());
+//      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getViewMatrix());
+//      return 1;
+//    }
 
     BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
     float ratio = -1;

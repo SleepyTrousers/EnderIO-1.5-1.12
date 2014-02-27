@@ -1,32 +1,35 @@
 package crazypants.enderio.teleport;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.util.BlockCoord;
 
 public interface ITravelAccessable {
 
-  public boolean canBlockBeAccessed(String playerName);
+  boolean canBlockBeAccessed(EntityPlayer playerName);
 
-  public boolean canSeeBlock(String playerName);
+  boolean canSeeBlock(EntityPlayer playerName);
 
-  public boolean canUiBeAccessed(String username);
+  boolean canUiBeAccessed(EntityPlayer username);
 
-  public boolean getRequiresPassword(String username);
+  boolean getRequiresPassword(EntityPlayer username);
 
-  public boolean authoriseUser(String username, ItemStack[] password);
+  boolean authoriseUser(EntityPlayer username, ItemStack[] password);
 
-  public AccessMode getAccessMode();
+  AccessMode getAccessMode();
 
-  public void setAccessMode(AccessMode accessMode);
+  void setAccessMode(AccessMode accessMode);
 
-  public ItemStack[] getPassword();
+  ItemStack[] getPassword();
 
-  public void setPassword(ItemStack[] password);
+  void setPassword(ItemStack[] password);
 
-  public String getPlacedBy();
+  String getPlacedBy();
 
-  public void setPlacedBy(String placedBy);
+//  void setPlacedBy(String placedBy);
+
+  void setPlacedBy(EntityPlayer player);
 
   public void clearAuthorisedUsers();
 

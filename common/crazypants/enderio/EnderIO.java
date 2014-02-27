@@ -8,6 +8,8 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.network.PacketPipeline;
+import crazypants.enderio.network.PacketTileEntity;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
@@ -21,6 +23,8 @@ public class EnderIO {
 
   @SidedProxy(clientSide = "crazypants.enderio.ClientProxy", serverSide = "crazypants.enderio.CommonProxy")
   public static CommonProxy proxy;
+
+  public static final PacketPipeline packetPipeline = new PacketPipeline();
 
   public static GuiHandler guiHandler = new GuiHandler();
 
@@ -97,6 +101,7 @@ public class EnderIO {
 //    itemPowderIngot = ItemPowderIngot.create();
 //    itemMaterial = ItemMaterial.create();
 
+
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
 
@@ -146,6 +151,9 @@ public class EnderIO {
   public void load(FMLInitializationEvent event) {
 
     instance = this;
+
+    packetPipeline.initalise();
+    packetPipeline.registerPacket(PacketTileEntity.class);
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
@@ -197,6 +205,8 @@ public class EnderIO {
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
+
+    packetPipeline.postInitialise();
 
 //    CrusherRecipeManager.getInstance().loadRecipesFromConfig();
 //    AlloyRecipeManager.getInstance().loadRecipesFromConfig();

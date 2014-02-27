@@ -17,14 +17,16 @@ public class GuiTravelAuth extends GuiContainerBase {
 
   private final String title;
   private final ITravelAccessable ta;
-  private final String username;
+  //private final String username;
   private boolean failed = false;
+  private final EntityPlayer player;
 
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
     super(new ContainerTravelAuth(player.inventory));
     this.ta = te;
     title = Lang.localize("gui.travelAccessable.enterCode");
-    username = player.getUniqueID().toString();
+    //username = player.getUniqueID().toString();
+    this.player = player;
   }
 
   @Override
@@ -42,7 +44,7 @@ public class GuiTravelAuth extends GuiContainerBase {
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
-    if(ta.authoriseUser(username, poo.enteredPassword)) {
+    if(ta.authoriseUser(player, poo.enteredPassword)) {
       TileEntity te = ((TileEntity) ta);
       //TODO: 1.7
       //PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());

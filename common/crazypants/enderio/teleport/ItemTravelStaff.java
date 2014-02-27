@@ -39,7 +39,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   protected ItemTravelStaff() {
     super(Config.travelStaffMaxStoredPower * 10, Config.travelStaffMaxPowerIo * 10, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName("enderio." + ModObject.itemTravelStaff.name());
+    setUnlocalizedName(ModObject.itemTravelStaff.name());
     setMaxDamage(16);
     setMaxStackSize(1);
     setHasSubtypes(true);
@@ -90,7 +90,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
       TileEntity te = world.getTileEntity(target.x, target.y, target.z);
       if(te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
-        if(ta.getRequiresPassword(player.getUniqueID().toString())) {
+        if(ta.getRequiresPassword(player)) {
           player.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, world, target.x, target.y, target.z);
           return equipped;
         }

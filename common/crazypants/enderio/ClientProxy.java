@@ -2,6 +2,7 @@ package crazypants.enderio;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.teleport.TileTravelAnchor;
@@ -139,6 +140,7 @@ public class ClientProxy extends CommonProxy {
 //      MinecraftForge.EVENT_BUS.register(new YetaWrenchTickHandler());
 //    }
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
+    FMLCommonHandler.instance().bus().register(TravelController.instance);
 
   }
 

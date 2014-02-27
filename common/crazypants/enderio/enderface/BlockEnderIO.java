@@ -59,12 +59,12 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
   private BlockEnderIO() {
     super(Material.rock);
     setHardness(0.5F);
+    setBlockName(ModObject.blockEnderIo.unlocalisedName);
     setStepSound(Block.soundTypeStone);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
   private void init() {
-    //LanguageRegistry.addName(this, ModObject.blockEnderIo.name);
     GameRegistry.registerBlock(this, ModObject.blockEnderIo.unlocalisedName);
     GameRegistry.registerTileEntity(TileEnderIO.class, ModObject.blockEnderIo.unlocalisedName + "TileEntity");
   }
@@ -79,7 +79,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
       eio.lastUiPitch = eio.initUiPitch;
       eio.lastUiYaw = eio.initUiYaw;
       if(player instanceof EntityPlayer) {
-        eio.setPlacedBy(((EntityPlayer) player).getUniqueID().toString());
+        eio.setPlacedBy((EntityPlayer) player);
       }
       world.markBlockForUpdate(x, y, z);
     }
@@ -94,7 +94,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
         System.out.println("crazypants.enderio.enderface.BlockEnderIO.onBlockActivated:  Using as UI: " + entityPlayer.getUniqueID().toString());
-      if(ta.canUiBeAccessed(entityPlayer.getUniqueID().toString())) {
+      if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         if(world.isRemote) {

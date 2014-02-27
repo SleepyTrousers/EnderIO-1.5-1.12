@@ -7,7 +7,7 @@ enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
 
 //Ender IO / Enderface
-enderio.blockEnderIo=Ender IO
+tile.blockEnderIo.name=Ender IO
 item.enderio.itemEnderface.name=Enderface
 
 //Conduits
@@ -81,22 +81,22 @@ enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
 
 //Machines
-tile.enderio.blockStirlingGenerator.name=Stirling Generator
-tile.enderio.blockReservoir.name=Reservoir
-tile.enderio.blockAlloySmelter.name=Alloy Smelter
-tile.enderio.blockSolarPanel.name=Photovoltaic Cell
-tile.enderio.blockElectricLight.name=Powered Light
-tile.enderio.blockCapacitorBank.name=Capacitor Bank
-tile.enderio.blockCapacitorBank.tooltipPrefix=Contains
-tile.enderio.blockCrusher.name=SAG Mill
-tile.enderio.blockHyperCube.name=Dimensional Transceiver
-tile.enderio.blockPowerMonitor.name=Power Monitor
+tile.blockStirlingGenerator.name=Stirling Generator
+tile.blockReservoir.name=Reservoir
+tile.blockAlloySmelter.name=Alloy Smelter
+tile.blockSolarPanel.name=Photovoltaic Cell
+tile.blockElectricLight.name=Powered Light
+tile.blockCapacitorBank.name=Capacitor Bank
+tile.blockCapacitorBank.tooltipPrefix=Contains
+tile.blockCrusher.name=SAG Mill
+tile.blockHyperCube.name=Dimensional Transceiver
+tile.blockPowerMonitor.name=Power Monitor
 
 //Travel
-tile.enderio.blockTravelPlatform.name=Travel Anchor
+tile.blockTravelPlatform.name=Travel Anchor
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
-item.enderio.itemTravelStaff.name=Staff of Traveling
+item.itemTravelStaff.name=Staff of Traveling
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 //Painter

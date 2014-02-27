@@ -35,12 +35,13 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
   @Override
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
 
+
     if(!TravelController.instance.showTargets()) {
       return;
     }
 
     ITravelAccessable ta = (ITravelAccessable) tileentity;
-    if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer.getUniqueID().toString())) {
+    if(!ta.canSeeBlock(Minecraft.getMinecraft().thePlayer)) {
       return;
     }
 

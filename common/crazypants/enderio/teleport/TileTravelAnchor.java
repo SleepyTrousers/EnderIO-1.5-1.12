@@ -2,17 +2,19 @@ package crazypants.enderio.teleport;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.TileEntityEio;
 import crazypants.util.BlockCoord;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
-
-  private static final int REND_DIST_SQ = TravelSource.getMaxDistanceSq();
+public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable {
 
   enum AccessMode {
     PUBLIC,
@@ -28,17 +30,17 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
 
   private List<String> authorisedUsers = new ArrayList<String>();
 
-  public boolean canBlockBeAccessed(String playerName) {
+  public boolean canBlockBeAccessed(EntityPlayer playerName) {
     if(accessMode == AccessMode.PUBLIC) {
       return true;
     }
     if(accessMode == AccessMode.PRIVATE) {
-      return placedBy != null && placedBy.equals(playerName);
+      return placedBy != null && placedBy.equals(playerName.getGameProfile().getId());
     }
-    if(placedBy != null && placedBy.equals(playerName)) {
+    if(placedBy != null && placedBy.equals(playerName.getGameProfile().getId())) {
       return true;
     }
-    return authorisedUsers.contains(playerName);
+    return authorisedUsers.contains(playerName.getGameProfile().getId());
   }
 
   @Override
@@ -46,6 +48,7 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
     authorisedUsers.clear();
   }
 
+  @Override
   public BlockCoord getLocation() {
     return new BlockCoord(this);
   }
@@ -70,52 +73,65 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
   }
 
   @Override
-  public boolean getRequiresPassword(String username) {
-    return getAccessMode() != AccessMode.PUBLIC && !canUiBeAccessed(username) && !authorisedUsers.contains(username);
+  public boolean getRequiresPassword(EntityPlayer username) {
+    return getAccessMode() != AccessMode.PUBLIC && !canUiBeAccessed(username) && !authorisedUsers.contains(username.getGameProfile().getId());
   }
 
   @Override
-  public boolean authoriseUser(String username, ItemStack[] password) {
+  public boolean authoriseUser(EntityPlayer username, ItemStack[] password) {
     if(checkPassword(password)) {
-      authorisedUsers.add(username);
+      authorisedUsers.add(username.getGameProfile().getId());
       return true;
     }
     return false;
   }
 
-  public boolean canUiBeAccessed(String playerName) {
-    return placedBy != null && placedBy.equals(playerName);
+  @Override
+  public boolean canUiBeAccessed(EntityPlayer playerName) {
+    return placedBy != null && placedBy.equals(playerName.getGameProfile().getId());
   }
 
-  public boolean canSeeBlock(String playerName) {
+  @Override
+  public boolean canSeeBlock(EntityPlayer playerName) {
     if(accessMode != AccessMode.PRIVATE) {
       return true;
     }
-    return placedBy != null && placedBy.equals(playerName);
+    return placedBy != null && placedBy.equals(playerName.getGameProfile().getId());
   }
 
+  @Override
   public AccessMode getAccessMode() {
     return accessMode;
   }
 
+  @Override
   public void setAccessMode(AccessMode accessMode) {
     this.accessMode = accessMode;
   }
 
+  @Override
   public ItemStack[] getPassword() {
     return password;
   }
 
+  @Override
   public void setPassword(ItemStack[] password) {
     this.password = password;
   }
 
+  @Override
   public String getPlacedBy() {
     return placedBy;
   }
 
-  public void setPlacedBy(String placedBy) {
-    this.placedBy = placedBy;
+
+  @Override
+  public void setPlacedBy(EntityPlayer player) {
+    if(player == null || player.getGameProfile() == null) {
+      this.placedBy = null;
+    } else {
+      placedBy = player.getGameProfile().getId();
+    }
   }
 
   @Override
@@ -135,8 +151,7 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound root) {
-    super.readFromNBT(root);
+  protected void readCustomNBT(NBTTagCompound root) {
     if(root.hasKey("accessMode")) {
       accessMode = AccessMode.values()[root.getShort("accessMode")];
     } else {
@@ -165,12 +180,23 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
         }
       }
     }
+  }
 
+
+  @Override
+  public Packet getDescriptionPacket() {
+    NBTTagCompound tag = new NBTTagCompound();
+    writeCustomNBT(tag);
+    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound root) {
-    super.writeToNBT(root);
+  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    readCustomNBT(pkt.func_148857_g());
+  }
+
+  @Override
+  protected void writeCustomNBT(NBTTagCompound root) {
     root.setShort("accessMode", (short) accessMode.ordinal());
     root.setString("placedBy", placedBy);
     for (int i = 0; i < password.length; i++) {
@@ -188,11 +214,4 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
     }
     root.setString("authorisedUsers", userStr.toString());
   }
-
-  //TODO:1.7
-//  @Override
-//  public Packet getDescriptionPacket() {
-//    return PacketUtil.createTileEntityPacket(PacketHandler.CHANNEL, PacketHandler.ID_TILE_ENTITY, this);
-//  }
-
 }

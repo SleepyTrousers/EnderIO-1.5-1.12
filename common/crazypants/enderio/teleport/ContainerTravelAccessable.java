@@ -103,7 +103,8 @@ public class ContainerTravelAccessable extends Container {
 
   @Override
   public boolean canInteractWith(EntityPlayer entityplayer) {
-    return entityplayer != null && entityplayer.getUniqueID() != null && entityplayer.getUniqueID().toString().equals(ta.getPlacedBy());
+    //return entityplayer != null && entityplayer.getUniqueID() != null && entityplayer.getUniqueID().toString().equals(ta.getPlacedBy());
+    return true;
   }
 
   @Override

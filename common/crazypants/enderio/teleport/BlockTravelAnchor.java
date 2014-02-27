@@ -25,6 +25,9 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     //PacketHandler.instance.addPacketProcessor(pp);
     //NetworkRegistry.instance().registerConnectionHandler(pp);
 
+    //FMLCommonHandler.instance().bus().register(new TClientTickHandler());
+
+    EnderIO.packetPipeline.registerPacket(PacketAccessMode.class);
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();
     return result;
@@ -37,6 +40,7 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     super(Material.rock);
     setHardness(0.5F);
     setStepSound(Block.soundTypeStone);
+    setBlockName(ModObject.blockTravelPlatform.unlocalisedName);
     if(Config.travelAnchorEnabled) {
       setCreativeTab(EnderIOTab.tabEnderIO);
     } else {
@@ -67,10 +71,9 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
     if(entity instanceof EntityPlayer) {
-      String name = ((EntityPlayer) entity).getUniqueID().toString();
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileTravelAnchor) {
-        ((TileTravelAnchor) te).setPlacedBy(name);
+        ((TileTravelAnchor) te).setPlacedBy((EntityPlayer)entity);
         world.markBlockForUpdate(x, y, z);
       }
     }
@@ -84,7 +87,7 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
-      if(ta.canUiBeAccessed(entityPlayer.getUniqueID().toString())) {
+      if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
         if(world.isRemote) {
