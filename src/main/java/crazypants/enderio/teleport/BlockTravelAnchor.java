@@ -29,10 +29,9 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     //PacketHandler.instance.addPacketProcessor(pp);
     //NetworkRegistry.instance().registerConnectionHandler(pp);
 
-    //FMLCommonHandler.instance().bus().register(new TClientTickHandler());
-
     EnderIO.packetPipeline.registerPacket(PacketAccessMode.class);
     EnderIO.packetPipeline.registerPacket(PacketTravelEvent.class);
+    EnderIO.packetPipeline.registerPacket(PacketDrainStaff.class);
 
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();

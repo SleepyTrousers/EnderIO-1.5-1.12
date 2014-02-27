@@ -179,6 +179,8 @@ public class TravelController {
         if(requiredPower > 0) {
           //TODO:1.7
           //          PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+          PacketDrainStaff p = new PacketDrainStaff(requiredPower);
+          EnderIO.packetPipeline.sendToServer(p);
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
             TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
@@ -384,14 +386,6 @@ public class TravelController {
   }
 
   public double getScaleForCandidate(Vector3d loc) {
-    //    try{
-    //      currentView.getEyePoint();
-    //    }catch(Exception e) {
-    //      //e.printStackTrace();
-    //      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getProjectionMatrix());
-    //      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getViewMatrix());
-    //      return 1;
-    //    }
 
     BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
     float ratio = -1;
@@ -440,10 +434,6 @@ public class TravelController {
   private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse) {
     PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, source.getConserveMomentum());
     EnderIO.packetPipeline.sendToServer(p);
-
-    //TODO:1.7
-    //    Packet p = TravelPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, source.getConserveMomentum());
-    //    PacketDispatcher.sendPacketToServer(p);
   }
 
   private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {

@@ -118,9 +118,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     //TODO:1.7
+    String str = getEnergyStored(itemStack) + "";
     //    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
     //        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
-    //    list.add(str);
+    list.add(str);
   }
 
   @Override
