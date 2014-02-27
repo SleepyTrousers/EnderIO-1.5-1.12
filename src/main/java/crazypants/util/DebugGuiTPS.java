@@ -64,7 +64,6 @@ public class DebugGuiTPS extends JFrame {
         contentPane.add(l);
       }
     }
-    revalidate();
     repaint();
 
   }
