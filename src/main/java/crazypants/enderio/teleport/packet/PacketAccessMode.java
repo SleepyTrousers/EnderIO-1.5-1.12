@@ -1,6 +1,8 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.teleport.packet;
 
 import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.teleport.TileTravelAnchor;
+import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;

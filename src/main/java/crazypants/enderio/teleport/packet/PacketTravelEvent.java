@@ -1,4 +1,4 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.teleport.packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

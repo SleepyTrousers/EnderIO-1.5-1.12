@@ -1,10 +1,11 @@
-package crazypants.enderio.teleport;
+package crazypants.enderio.teleport.packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.teleport.ItemTravelStaff;
 
 public class PacketDrainStaff implements IPacketEio {
 

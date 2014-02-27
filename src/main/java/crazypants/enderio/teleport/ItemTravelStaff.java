@@ -19,6 +19,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
@@ -95,8 +96,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
         if(te instanceof ITravelAccessable) {
           ITravelAccessable ta = (ITravelAccessable) te;
           if(ta.getRequiresPassword(player)) {
-            //            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
-            //            PacketDispatcher.sendPacketToServer(packet);
+            PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
+            EnderIO.packetPipeline.sendToServer(p);
             return equipped;
           }
         }
@@ -142,7 +143,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     return res;
   }
 
-  void extractInternal(ItemStack item, int powerUse) {
+  public void extractInternal(ItemStack item, int powerUse) {
     int res = Math.max(0, getEnergyStored(item) - powerUse);
     setEnergy(item, res);
   }

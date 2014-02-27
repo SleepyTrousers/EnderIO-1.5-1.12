@@ -18,6 +18,10 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.teleport.packet.PacketAccessMode;
+import crazypants.enderio.teleport.packet.PacketDrainStaff;
+import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
+import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.Lang;
 
 public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntityProvider {
@@ -32,6 +36,7 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     EnderIO.packetPipeline.registerPacket(PacketAccessMode.class);
     EnderIO.packetPipeline.registerPacket(PacketTravelEvent.class);
     EnderIO.packetPipeline.registerPacket(PacketDrainStaff.class);
+    EnderIO.packetPipeline.registerPacket(PacketOpenAuthGui.class);
 
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();

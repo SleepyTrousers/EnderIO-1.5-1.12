@@ -3,6 +3,7 @@ package crazypants.enderio.teleport;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
+import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
