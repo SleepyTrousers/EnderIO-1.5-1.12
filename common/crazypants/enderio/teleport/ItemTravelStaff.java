@@ -1,23 +1,15 @@
 package crazypants.enderio.teleport;
 
+
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.*;
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
-import crazypants.vecmath.Vector3d;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
-import java.util.List;
+import net.minecraft.entity.player.*;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
 
@@ -51,7 +43,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setFull(itemStack);
+    setEnergy(itemStack, 0);
   }
 
   @Override
@@ -84,19 +76,20 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
       return equipped;
     }
 
-    if(TravelController.instance.hasTarget()) {
 
-      BlockCoord target = TravelController.instance.selectedCoord;
-      TileEntity te = world.getTileEntity(target.x, target.y, target.z);
-      if(te instanceof ITravelAccessable) {
-        ITravelAccessable ta = (ITravelAccessable) te;
-        if(ta.getRequiresPassword(player)) {
-          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, world, target.x, target.y, target.z);
-          return equipped;
+    if(world.isRemote) {
+      if(TravelController.instance.hasTarget()) {
+        BlockCoord target = TravelController.instance.selectedCoord;
+        TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+        if(te instanceof ITravelAccessable) {
+          ITravelAccessable ta = (ITravelAccessable) te;
+          if(ta.getRequiresPassword(player.username)) {
+            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+            PacketDispatcher.sendPacketToServer(packet);
+            return equipped;
+          }
         }
-      }
 
-      if(world.isRemote) {
         if(TravelController.instance.isTargetEnderIO()) {
           TravelController.instance.openEnderIO(equipped, world, player);
         } else if(Config.travelAnchorEnabled) {
