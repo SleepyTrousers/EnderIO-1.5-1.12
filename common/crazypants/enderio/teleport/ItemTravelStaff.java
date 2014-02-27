@@ -56,7 +56,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
 
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer entityPlayer) {
-    setFull(itemStack);
+    setEnergy(itemStack, 0);
   }
 
   @Override

@@ -204,7 +204,7 @@ public class TravelController implements ITickHandler {
     }
 
     int requiredPower = 0;
-    if(source == TravelSource.STAFF) {
+    if(source == TravelSource.STAFF_BLINK) {
       requiredPower = getRequiredPower(player, source, coord);
       if(requiredPower < 0) {
         return false;

@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
@@ -24,7 +23,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.util.Util;
@@ -246,11 +244,8 @@ public class TravelPacketHandler implements IPacketProcessor, IConnectionHandler
       PacketDispatcher.sendPacketToPlayer(p, player);
     }
 
-    if(powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().itemID == ModObject.itemTravelStaff.actualId) {
-      ItemStack item = ep.getCurrentEquippedItem().copy();
-      EnderIO.itemTravelStaff.extractInternal(item, powerUse);
-      ep.setCurrentItemOrArmor(0, item);
-
+    if(ItemTravelStaff.isEquipped(ep)) {
+      EnderIO.itemTravelStaff.extractInternal(ep.getCurrentEquippedItem(), powerUse);
     }
 
   }
