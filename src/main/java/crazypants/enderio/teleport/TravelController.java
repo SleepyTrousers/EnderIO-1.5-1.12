@@ -1,6 +1,23 @@
 package crazypants.enderio.teleport;
 
+import java.util.HashMap;
+import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovementInput;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -11,20 +28,12 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
-import crazypants.vecmath.*;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.HashMap;
-import java.util.Random;
+import crazypants.vecmath.Camera;
+import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector2d;
+import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector4d;
 
 public class TravelController {
 
@@ -48,11 +57,9 @@ public class TravelController {
 
   private double fovRad;
 
-
   private double tanFovRad;
 
   private Minecraft mc = Minecraft.getMinecraft();
-
 
   private TravelController() {
   }
@@ -92,26 +99,24 @@ public class TravelController {
     return EnderIO.instance.proxy.getClientPlayer().worldObj.getBlock(selectedCoord.x, selectedCoord.y, selectedCoord.z) == EnderIO.blockEnderIo;
   }
 
-
   @SubscribeEvent
   public void onRender(RenderWorldLastEvent event) {
-	  
+
     Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
     lookAt.add(eye);
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
     float fov = 70 + Minecraft.getMinecraft().gameSettings.fovSetting * 40.0F;
-    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, (float) (mc.gameSettings.renderDistanceChunks * 16), mc.displayWidth,
+    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth,
         mc.displayHeight);
     currentView.setProjectionMatrix(pr);
     currentView.setViewMatrix(mv);
     currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
 
-
-      fovRad = Math.toRadians(fov) / 2;
-      tanFovRad = Math.tanh(fovRad);
-    }
+    fovRad = Math.toRadians(fov) / 2;
+    tanFovRad = Math.tanh(fovRad);
+  }
 
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
@@ -138,8 +143,8 @@ public class TravelController {
           ITravelAccessable ta = (ITravelAccessable) te;
           if(ta.getRequiresPassword(player)) {
             //TODO:1.7
-//            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
-//            PacketDispatcher.sendPacketToServer(packet);
+            //            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+            //            PacketDispatcher.sendPacketToServer(packet);
             return;
           }
         }
@@ -173,7 +178,7 @@ public class TravelController {
       if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
         if(requiredPower > 0) {
           //TODO:1.7
-//          PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
+          //          PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
             TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
@@ -221,7 +226,7 @@ public class TravelController {
     }
     sendTravelEvent(coord, source, requiredPower);
     for (int i = 0; i < 6; ++i) {
-      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * (double) player.height - 0.25D,
+      player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
           player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
           (rand.nextDouble() - 0.5D) * 2.0D);
     }
@@ -379,14 +384,14 @@ public class TravelController {
   }
 
   public double getScaleForCandidate(Vector3d loc) {
-//    try{
-//      currentView.getEyePoint();
-//    }catch(Exception e) {
-//      //e.printStackTrace();
-//      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getProjectionMatrix());
-//      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getViewMatrix());
-//      return 1;
-//    }
+    //    try{
+    //      currentView.getEyePoint();
+    //    }catch(Exception e) {
+    //      //e.printStackTrace();
+    //      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getProjectionMatrix());
+    //      //System.out.println("crazypants.enderio.teleport.TravelController.getScaleForCandidate: " + currentView.getViewMatrix());
+    //      return 1;
+    //    }
 
     BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
     float ratio = -1;
@@ -432,10 +437,13 @@ public class TravelController {
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private void sendTravelEvent(BlockCoord coord, TravelSource source, int powerUse) {
+  private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse) {
+    PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, source.getConserveMomentum());
+    EnderIO.packetPipeline.sendToServer(p);
+
     //TODO:1.7
-//    Packet p = TravelPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, source.getConserveMomentum());
-//    PacketDispatcher.sendPacketToServer(p);
+    //    Packet p = TravelPacketHandler.createMovePacket(coord.x, coord.y, coord.z, powerUse, source.getConserveMomentum());
+    //    PacketDispatcher.sendPacketToServer(p);
   }
 
   private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {

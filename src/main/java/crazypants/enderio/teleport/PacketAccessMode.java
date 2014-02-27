@@ -52,8 +52,7 @@ public class PacketAccessMode implements IPacketEio {
     if(te instanceof TileTravelAnchor) {
       ((TileTravelAnchor) te).setAccessMode(mode);
       player.worldObj.markBlockForUpdate(x, y, z);
-      player.worldObj.markTileEntityChunkModified(x,y,z,te);
-      System.out.println("crazypants.enderio.teleport.PacketAccessMode.handleServerSide");
+      player.worldObj.markTileEntityChunkModified(x,y,z,te);      
     }
   }
 }

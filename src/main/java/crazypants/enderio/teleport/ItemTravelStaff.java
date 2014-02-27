@@ -1,8 +1,15 @@
 package crazypants.enderio.teleport;
 
-
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,13 +22,6 @@ import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
 
@@ -73,7 +73,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
 
         Vector3d sample = new Vector3d();
 
-        for (int i = (int) Math.round(Config.travelStaffMaxBlinkDistance); i > 0; i--) {
+        for (int i = Math.round(Config.travelStaffMaxBlinkDistance); i > 0; i--) {
           sample.set(look);
           sample.scale(i);
           sample.add(eye);
@@ -88,7 +88,6 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
       return equipped;
     }
 
-
     if(world.isRemote) {
       if(TravelController.instance.hasTarget()) {
         BlockCoord target = TravelController.instance.selectedCoord;
@@ -96,8 +95,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
         if(te instanceof ITravelAccessable) {
           ITravelAccessable ta = (ITravelAccessable) te;
           if(ta.getRequiresPassword(player)) {
-//            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
-//            PacketDispatcher.sendPacketToServer(packet);
+            //            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+            //            PacketDispatcher.sendPacketToServer(packet);
             return equipped;
           }
         }
@@ -119,9 +118,9 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
     //TODO:1.7
-//    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-//        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
-//    list.add(str);
+    //    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
+    //        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+    //    list.add(str);
   }
 
   @Override
@@ -165,10 +164,9 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     stack.setItemDamage(res);
   }
 
-  //TODO:1.7
-  //@Override
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
     ItemStack is = new ItemStack(this);
     setFull(is);
     par3List.add(is);
@@ -176,7 +174,6 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     is = new ItemStack(this);
     setEnergy(is, 0);
     par3List.add(is);
-
   }
 
 }

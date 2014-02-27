@@ -1,9 +1,5 @@
 package crazypants.enderio.teleport;
 
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.*;
-import crazypants.util.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -15,8 +11,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.util.Lang;
 
-public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntityProvider  {
+public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntityProvider {
 
   public static BlockTravelAnchor create() {
 
@@ -28,6 +32,8 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     //FMLCommonHandler.instance().bus().register(new TClientTickHandler());
 
     EnderIO.packetPipeline.registerPacket(PacketAccessMode.class);
+    EnderIO.packetPipeline.registerPacket(PacketTravelEvent.class);
+
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();
     return result;
@@ -73,7 +79,7 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
     if(entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileTravelAnchor) {
-        ((TileTravelAnchor) te).setPlacedBy((EntityPlayer)entity);
+        ((TileTravelAnchor) te).setPlacedBy((EntityPlayer) entity);
         world.markBlockForUpdate(x, y, z);
       }
     }
