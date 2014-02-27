@@ -2,7 +2,6 @@
 /build
 /download
 /.settings/org.eclipse.jdt.core.prefs
-
+/.gradle
+/eclipse
 /eclipseBin
-
-/New folder

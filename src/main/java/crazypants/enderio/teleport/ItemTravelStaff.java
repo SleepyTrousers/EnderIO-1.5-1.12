@@ -1,15 +1,27 @@
 package crazypants.enderio.teleport;
 
 
+import java.util.List;
+
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
+import crazypants.vecmath.Vector3d;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
 
@@ -80,12 +92,12 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     if(world.isRemote) {
       if(TravelController.instance.hasTarget()) {
         BlockCoord target = TravelController.instance.selectedCoord;
-        TileEntity te = world.getBlockTileEntity(target.x, target.y, target.z);
+        TileEntity te = world.getTileEntity(target.x, target.y, target.z);
         if(te instanceof ITravelAccessable) {
           ITravelAccessable ta = (ITravelAccessable) te;
-          if(ta.getRequiresPassword(player.username)) {
-            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
-            PacketDispatcher.sendPacketToServer(packet);
+          if(ta.getRequiresPassword(player)) {
+//            Packet packet = TravelPacketHandler.createOpenAuthGuiPacket(target.x, target.y, target.z);
+//            PacketDispatcher.sendPacketToServer(packet);
             return equipped;
           }
         }

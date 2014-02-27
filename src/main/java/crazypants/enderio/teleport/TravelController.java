@@ -51,6 +51,8 @@ public class TravelController {
 
   private double tanFovRad;
 
+  private Minecraft mc = Minecraft.getMinecraft();
+
 
   private TravelController() {
   }
@@ -93,7 +95,7 @@ public class TravelController {
 
   @SubscribeEvent
   public void onRender(RenderWorldLastEvent event) {
-
+	  
     Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
     lookAt.add(eye);
@@ -449,8 +451,8 @@ public class TravelController {
     return null;
   }
 
-  public boolean isStaffEquipped(EntityClientPlayerMP thePlayer) {
-    return item != null && item.getItem() == EnderIO.itemTravelStaff;
+  public boolean isStaffEquipped(EntityPlayer player) {
+    return player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff;
   }
 
 }

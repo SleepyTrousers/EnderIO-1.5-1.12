@@ -15,28 +15,100 @@ buildscript {
     }
 }
 
-apply plugin: 'forge'
+apply plugin: 'forge' // adds the forge dependency
 
-version = "1.0"
-group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+// grab buildNumber
+ext.buildnumber = 0 // this will be referenced as simply project.buildnumber from now on.
+
+if (System.getenv().BUILD_NUMBER)
+    project.buildnumber = System.getenv().BUILD_NUMBER
+else
+    logger.lifecycle "SETTING BUILDNUMBER TO 0"
+
+version = "1.1.0_alpha"
+group= "com.enderio"
+archivesBaseName = "enderio" // the name that all artifacts will use as a base. artifacts names follow this pattern: [baseName]-[appendix]-[version]-[classifier].[extension]
 
 minecraft {
-    version = "1.7.2-10.12.0.1034"
-    assetDir = "eclipse/assets"
+    version = "1.7.2-10.12.0.1034"    
+
+    //assetDir = "run/assets" // the place for ForgeGradle to download the assets. The assets that the launcher gets and stuff
+
+    // replacing stuff in the source
+    //replace '@VERSION@', project.version
+    //replace '@MC_VERSION@', version
+    //replace '@BUILD_NUMBER@', project.buildnumber
 }
+
+
+dependencies {
+    compile files('lib/cglib-nodep-2.2.3.jar')
+}
+
+// configure  the source folders
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+	    exclude '**/enderio/conduit/**' 
+	    exclude '**/enderio/crafting/**' 
+	    exclude '**/enderio/item/**' 
+	    exclude '**/enderio/machine/**' 
+	    exclude '**/enderio/material/**' 
+	    exclude '**/enderio/nei/**' 
+	    exclude '**/enderio/power/**' 
+	    exclude '**/enderio/trigger/**' 	    
+	    exclude '**/powercrystals/**' 
+            // exclude 'some exclusion'
+            // include 'some inclusion'
+        }
+        resources {
+            srcDir 'resources'            
+            // exclude 'some exclusion'
+            // include 'some inclusion'
+        }
+    }
+}
+
 processResources
 {
+    processResources{
+       from(zipTree("lib/cglib-nodep-2.2.3.jar"))
+    }
+
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        // ${version}   and    ${mcversion}    are the exact strings being replaced
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'buildnumber':project.buildnumber
     }
         
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, that's not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
 }
+
+// --------------------
+// extra jar section
+// -------------------
+
+// for the benefit of the jars, we will now now add the buildnumber to the jars
+project.version += '.' + project.buildnumber
+
+// add a source jar
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+// because the normal output has been made to be obfuscated
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+// make sure all of these happen when we run build
+build.dependsOn sourceJar, deobfJar
