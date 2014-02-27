@@ -464,7 +464,7 @@ public class TravelController implements ITickHandler {
 
   public boolean isStaffEquipped(EntityClientPlayerMP thePlayer) {
     ItemStack item = thePlayer.getCurrentEquippedItem();
-    return item == null ? false : item.itemID == ModObject.blockTravelPlatform.actualId;
+    return item == null ? false : item.itemID == ModObject.itemTravelStaff.actualId;
   }
 
 }
