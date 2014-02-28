@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -20,8 +21,8 @@ public class BlockItemCapacitorBank extends ItemBlock {
     return res;
   }
 
-  public BlockItemCapacitorBank(int id) {
-    super(id);
+  public BlockItemCapacitorBank() {
+    super(EnderIO.blockCapacitorBank);
     setHasSubtypes(true);
   }
 
@@ -40,7 +41,7 @@ public class BlockItemCapacitorBank extends ItemBlock {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     ItemStack stack = createItemStackWithPower(0);
     stack.setItemDamage(0);
     par3List.add(stack);

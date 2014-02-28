@@ -15,6 +15,9 @@ import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
+import crazypants.enderio.machine.power.BlockCapacitorBank;
+import crazypants.enderio.machine.power.CapBankRenderer2;
+import crazypants.enderio.machine.power.CapacitorBankRenderer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -89,13 +92,13 @@ public class ClientProxy extends CommonProxy {
 
     BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
-    //
-    //    CapacitorBankRenderer capr = new CapacitorBankRenderer();
-    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);
-    //
-    //    BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
-    //    CapBankRenderer2 cbr2 = new CapBankRenderer2();
-    //    RenderingRegistry.registerBlockHandler(cbr2);
+
+    CapacitorBankRenderer capr = new CapacitorBankRenderer();
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);
+
+    BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
+    CapBankRenderer2 cbr2 = new CapBankRenderer2();
+    RenderingRegistry.registerBlockHandler(cbr2);
     //
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);

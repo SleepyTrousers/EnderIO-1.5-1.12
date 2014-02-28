@@ -1,16 +1,16 @@
 package crazypants.enderio.machine.power;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -18,24 +18,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.machine.power.TileCapacitorBank.FaceConnectionMode;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapacitorBank extends Block implements ITileEntityProvider, IGuiHandler {
+public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
 
   public static int renderId = -1;
 
@@ -43,8 +39,9 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
 
-    CapacitorBankPacketHandler pp = new CapacitorBankPacketHandler();
-    PacketHandler.instance.addPacketProcessor(pp);
+    //TODO:1.7
+    //CapacitorBankPacketHandler pp = new CapacitorBankPacketHandler();
+    //PacketHandler.instance.addPacketProcessor(pp);
 
     return res;
   }
@@ -57,35 +54,43 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   private IIcon blockIconLocked;
 
   protected BlockCapacitorBank() {
-    super(ModObject.blockCapacitorBank.actualId, new Material(MapColor.ironColor));
+    super(ModObject.blockCapacitorBank.unlocalisedName, TileCapacitorBank.class);
     setHardness(2.0F);
-    setStepSound(soundMetalFootstep);
-    setUnlocalizedName("enderio." + ModObject.blockCapacitorBank.name());
-    setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
+  @Override
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName);
-    GameRegistry.registerTileEntity(TileCapacitorBank.class, ModObject.blockCapacitorBank.unlocalisedName + "TileEntity");
+    super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
-    lightOpacity[ModObject.blockCapacitorBank.actualId] = 255;
+    setLightOpacity(255);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list) {
+
+    ItemStack is = BlockItemCapacitorBank.createItemStackWithPower(0);
+    list.add(is);
+    is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
+    list.add(is);
+
   }
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
-
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removeBlockByPlayer(world, entityPlayer, x, y, z);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      }
-    }
+    //TODO:1.7
+    //    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+    //      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+    //        if(wrench.canWrench(entityPlayer, x, y, z)) {
+    //          removeBlockByPlayer(world, entityPlayer, x, y, z);
+    //          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+    //          }
+    //          return true;
+    //        }
+    //      }
+    //    }
 
     if(entityPlayer.isSneaking()) {
       return false;
@@ -94,20 +99,21 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
     if(!(te instanceof TileCapacitorBank)) {
       return false;
     }
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
-
-      ForgeDirection faceHit = ForgeDirection.getOrientation(side);
-      TileCapacitorBank tcb = (TileCapacitorBank) te;
-      tcb.toggleModeForFace(faceHit);
-      if(world.isRemote) {
-        world.markBlockForRenderUpdate(x, y, z);
-      } else {
-        world.notifyBlocksOfNeighborChange(x, y, z, ModObject.blockCapacitorBank.actualId);
-        world.markBlockForUpdate(x, y, z);
-      }
-
-      return true;
-    }
+    //TODO:1.7
+    //    if(ConduitUtil.isToolEquipped(entityPlayer)) {
+    //
+    //      ForgeDirection faceHit = ForgeDirection.getOrientation(side);
+    //      TileCapacitorBank tcb = (TileCapacitorBank) te;
+    //      tcb.toggleModeForFace(faceHit);
+    //      if(world.isRemote) {
+    //        world.markBlockForRenderUpdate(x, y, z);
+    //      } else {
+    //        world.notifyBlocksOfNeighborChange(x, y, z, ModObject.blockCapacitorBank.actualId);
+    //        world.markBlockForUpdate(x, y, z);
+    //      }
+    //
+    //      return true;
+    //    }
 
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
     return true;
@@ -133,7 +139,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
     blockIconInput = IIconRegister.registerIcon("enderio:capacitorBankInput");
     blockIconOutput = IIconRegister.registerIcon("enderio:capacitorBankOutput");
@@ -148,7 +154,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return true;
   }
 
@@ -163,24 +169,14 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    return new TileCapacitorBank();
-  }
-
-  @Override
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-    int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
-    return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+    Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
+    return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IIcon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
+  public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
     TileEntity te = ba.getTileEntity(x, y, z);
     if(!(te instanceof TileCapacitorBank)) {
       return blockIcon;
@@ -209,7 +205,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
     if(world.isRemote) {
       return;
     }
@@ -218,7 +214,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
     ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -235,7 +231,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop")))) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileCapacitorBank) {
@@ -253,7 +249,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
         world.spawnEntityInWorld(entityitem);
       }
     }
-    return super.removeBlockByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z);
   }
 
   @Override
@@ -270,17 +266,12 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
   }
 
   @Override
-  public int idDropped(int par1, Random par2Random, int par3) {
-    return 0;
-  }
-
-  @Override
   public int quantityDropped(Random r) {
     return 0;
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(!(te instanceof TileCapacitorBank)) {
@@ -290,7 +281,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       TileCapacitorBank cb = (TileCapacitorBank) te;
       Util.dropItems(world, cb, x, y, z, true);
     }
-    world.removeBlockTileEntity(x, y, z);
+    world.removeTileEntity(x, y, z);
   }
 
   @Override

@@ -7,12 +7,12 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,11 +22,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -36,7 +32,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileCapacitorBank extends TileEntity implements IInternalPowerReceptor, IInventory {
+public class TileCapacitorBank extends TileEntityEio implements IInternalPowerReceptor, IInventory {
 
   static enum FaceConnectionMode {
     INPUT,
@@ -120,10 +116,11 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       return FaceConnectionMode.LOCKED;
     }
     if(curMode == FaceConnectionMode.LOCKED) {
-      if(rec == null || rec.getDelegate() instanceof IConduitBundle) {
-        setFaceMode(faceHit, FaceConnectionMode.NONE, true);
-        return FaceConnectionMode.NONE;
-      }
+      //TODO:1.7
+      //      if(rec == null || rec.getDelegate() instanceof IConduitBundle) {
+      //        setFaceMode(faceHit, FaceConnectionMode.NONE, true);
+      //        return FaceConnectionMode.NONE;
+      //      }
     }
     setFaceMode(faceHit, FaceConnectionMode.INPUT, true);
     return FaceConnectionMode.INPUT;
@@ -170,7 +167,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
     if(worldObj.isRemote) {
       if(render) {
-        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         render = false;
       }
       return;
@@ -219,7 +216,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(requiresClientSync) {
       lastSyncPowerStored = storedEnergy;
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      onInventoryChanged();
+      markDirty();
     }
 
   }
@@ -324,18 +321,19 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
           && mode != FaceConnectionMode.INPUT && mode != FaceConnectionMode.LOCKED
           && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used;
-        if(receptor.receptor.getDelegate() instanceof IConduitBundle) {
-          //All other power transfer is handled by the conduit network
-          IConduitBundle bundle = (IConduitBundle) receptor.receptor.getDelegate();
-          IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
-          if(conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
-            used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
-          } else {
-            used = 0;
-          }
-        } else {
-          used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
-        }
+        //TODO:1.7
+        //        if(receptor.receptor.getDelegate() instanceof IConduitBundle) {
+        //          //All other power transfer is handled by the conduit network
+        //          IConduitBundle bundle = (IConduitBundle) receptor.receptor.getDelegate();
+        //          IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
+        //          if(conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
+        //            used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
+        //          } else {
+        //            used = 0;
+        //          }
+        //        } else {
+        used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
+        //        }
 
         transmitted += used;
         canTransmit -= used;
@@ -690,8 +688,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     multiblockDirty = true;
   }
 
-  public void onNeighborBlockChange(int blockId) {
-    if(blockId != ModObject.blockCapacitorBank.actualId) {
+  public void onNeighborBlockChange(Block block) {
+    if(block != EnderIO.blockCapacitorBank) {
       receptorsDirty = true;
       getController().masterReceptorsDirty = true;
     }
@@ -940,13 +938,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   @Override
-  public String getInvName() {
+  public String getInventoryName() {
     return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
-  }
-
-  @Override
-  public boolean isInvNameLocalized() {
-    return false;
   }
 
   @Override
@@ -960,11 +953,11 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   @Override
-  public void openChest() {
+  public void openInventory() {
   }
 
   @Override
-  public void closeChest() {
+  public void closeInventory() {
   }
 
   @Override
@@ -976,8 +969,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
 
     float oldEnergy = storedEnergy;
     storedEnergy = nbtRoot.getFloat("storedEnergy");
@@ -1025,9 +1017,9 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       inventory[i] = null;
     }
 
-    NBTTagList itemList = nbtRoot.getTagList("Items");
+    NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
     for (int i = 0; i < itemList.tagCount(); i++) {
-      NBTTagCompound itemStack = (NBTTagCompound) itemList.tagAt(i);
+      NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
       byte slot = itemStack.getByte("Slot");
       if(slot >= 0 && slot < inventory.length) {
         inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
@@ -1045,8 +1037,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
 
     nbtRoot.setFloat("storedEnergy", storedEnergy);
     nbtRoot.setInteger("maxStoredEnergy", maxStoredEnergy);
@@ -1094,11 +1085,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     }
   }
 
-  @Override
-  public Packet getDescriptionPacket() {
-    return PacketHandler.getPacket(this);
-  }
-
   static class Receptor {
     IPowerInterface receptor;
     ForgeDirection fromDir;
@@ -1115,6 +1101,12 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       return "Receptor [receptor=" + receptor + ", fromDir=" + fromDir + ", mode=" + mode + "]";
     }
 
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    // TODO Auto-generated method stub
+    return false;
   }
 
 }

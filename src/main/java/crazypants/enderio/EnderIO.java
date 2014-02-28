@@ -26,6 +26,7 @@ import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.monitor.ItemMJReader;
+import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.material.Alloy;
@@ -97,7 +98,7 @@ public class EnderIO {
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
-  //  public static BlockCapacitorBank blockCapacitorBank;
+  public static BlockCapacitorBank blockCapacitorBank;
   public static BlockCrusher blockCrusher;
   //  public static BlockHyperCube blockHyperCube;
   public static BlockPowerMonitor blockPowerMonitor;
@@ -153,7 +154,7 @@ public class EnderIO {
     blockSolarPanel = BlockSolarPanel.create();
     blockReservoir = BlockReservoir.create();
     blockAlloySmelter = BlockAlloySmelter.create();
-    //    blockCapacitorBank = BlockCapacitorBank.create();
+    blockCapacitorBank = BlockCapacitorBank.create();
     blockCrusher = BlockCrusher.create();
     blockPowerMonitor = BlockPowerMonitor.create();
     //

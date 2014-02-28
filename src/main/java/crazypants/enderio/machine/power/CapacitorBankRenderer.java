@@ -89,7 +89,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     if(te != null) {
       brightness = new float[6];
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        brightness[dir.ordinal()] = RenderUtil.claculateTotalBrightnessForLocation(te.worldObj, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord
+        brightness[dir.ordinal()] = RenderUtil.claculateTotalBrightnessForLocation(te.getWorld(), te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord
             + dir.offsetZ);
         maxBrightness = Math.max(brightness[dir.ordinal()], maxBrightness);
       }
@@ -115,7 +115,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
     if(te != null) {
       //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-      renderBorder(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+      renderBorder(te.getWorld(), te.xCoord, te.yCoord, te.zCoord);
     } else {
       renderBorder(null, 0, 0, 0);
     }

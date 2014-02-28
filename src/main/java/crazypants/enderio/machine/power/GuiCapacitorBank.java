@@ -3,19 +3,17 @@ package crazypants.enderio.machine.power;
 import java.awt.Rectangle;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.RedstoneModePacketProcessor;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
@@ -110,8 +108,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
       }
       capBank.setInputControlMode(RedstoneControlMode.values()[ordinal]);
       inputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getInputControlMode()));
-      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     } else if(par1GuiButton.id == OUTPUT_BUTTON_ID) {
       int ordinal = capBank.getOutputControlMode().ordinal();
       ordinal++;
@@ -120,8 +119,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
       }
       capBank.setOutputControlMode(RedstoneControlMode.values()[ordinal]);
       outputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getOutputControlMode()));
-      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 
@@ -137,6 +137,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     //int y = guiTop + 5;
     int y = guiTop + inputY;
 
+    FontRenderer fontRenderer = getFontRenderer();
     inputRedstoneButton = new IconButton(fontRenderer, INPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(capBank.getInputControlMode()),
         RenderUtil.BLOCK_TEX);
     inputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
@@ -196,8 +197,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
     if(output != capBank.getMaxOutput()) {
       maxOutputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxOutput()));
     }
-    Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
-    PacketDispatcher.sendPacketToServer(pkt);
+    //TODO:1.7
+    //    Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
+    //    PacketDispatcher.sendPacketToServer(pkt);
   }
 
   private void setMaxInput(int input) {
@@ -205,8 +207,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
     if(input != capBank.getMaxInput()) {
       maxInputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxInput()));
     }
-    Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
-    PacketDispatcher.sendPacketToServer(pkt);
+    //TODO:1.7
+    //    Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
+    //    PacketDispatcher.sendPacketToServer(pkt);
   }
 
   private int parsePower(GuiTextField tf) {
@@ -260,6 +263,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO()) +
         " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+    FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
     int x = midX - swid / 2;
     int y = guiTop + 5;
@@ -306,7 +310,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   @Override
   public FontRenderer getFontRenderer() {
-    return fontRenderer;
+    return Minecraft.getMinecraft().fontRenderer;
   }
 
 }
