@@ -546,24 +546,17 @@ public class GuiEnderface extends GuiScreen {
       botH = 0xFFFFFFFF;
     }
 
-    // drawRect(left, top, left + w, top + 1, topH);
-    // drawRect(left, top, left + 1, top + h, leftH);
-    // drawRect(left + w - 1, top + 1, left + w, top + h, rightH);
-    // drawRect(left + 1, top + h - 1, left + w, top + h, botH);
-
     left += 1;
     top += 1;
     w -= 2;
     h -= 2;
-    // green background
-    // drawRect(left, top, left + w, top + h, 0xFF004C2A);
     drawRect(left, top, left + w, top + h, 0xFF00331C);
 
   }
 
   void openInterface(int x, int y, int z) {
 
-    ///TODO:1.7
+    ///TODO: Applied Energistics
     //    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
     //      if(Config.enderIoMeAccessEnabled) {
     //        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);

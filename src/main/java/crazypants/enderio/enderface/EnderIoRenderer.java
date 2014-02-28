@@ -70,7 +70,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     float minV = tex.getMinV();
     float maxV = tex.getMaxV();
 
-    GL11.glDisable(GL11.GL_CULL_FACE);
+    //GL11.glDisable(GL11.GL_CULL_FACE);
+    GL11.glDepthMask(false);
     GL11.glColor3f(1, 1, 1);
     renderBillboard(lookMat, minU, maxU, minV, maxV, 0.8, brightness);
 
@@ -129,6 +130,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
     GL11.glDisable(GL11.GL_BLEND);
+
+    GL11.glDepthMask(true);
 
   }
 
