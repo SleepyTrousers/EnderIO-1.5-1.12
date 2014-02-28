@@ -146,11 +146,11 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     }
 
     // Mandatory power handler update
-    float stored = powerHandler.getEnergyStored();
+    double stored = powerHandler.getEnergyStored();
     powerHandler.update();
     powerHandler.setEnergy(stored);
 
-    float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
+    double canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
     checkReceptors();
@@ -166,7 +166,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       Receptor receptor = receptorIterator.next();
       IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
-        float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
+        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), (float) canTransmit);
         transmitted += used;
         canTransmit -= used;
       }

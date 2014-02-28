@@ -5,6 +5,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -13,13 +14,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -55,11 +56,16 @@ public class BlockReservoir extends BlockContainer {
   IIcon switchIcon;
 
   private BlockReservoir() {
-    super(ModObject.blockReservoir.id, Material.rock);
+    super(Material.rock);
     setHardness(0.5F);
-    setStepSound(Block.soundStoneFootstep);
-    setUnlocalizedName("enderio." + ModObject.blockReservoir.name());
+    setStepSound(Block.soundTypeStone);
+    setBlockName(ModObject.blockReservoir.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
+  }
+
+  @Override
+  public TileEntity createNewTileEntity(World var1, int var2) {
+    return new TileReservoir();
   }
 
   private void init() {
@@ -76,6 +82,13 @@ public class BlockReservoir extends BlockContainer {
       TileReservoir tank = (TileReservoir) world.getTileEntity(x, y, z);
 
       FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
+      if(liquid == null) {
+        if(current.getItem() == Items.water_bucket) {
+          liquid = new FluidStack(FluidRegistry.WATER, 1000);
+        } else if(current.getItem() == Items.lava_bucket) {
+          liquid = new FluidStack(FluidRegistry.LAVA, 1000);
+        }
+      }
 
       if(liquid != null) {
         // Handle filled containers
@@ -98,9 +111,9 @@ public class BlockReservoir extends BlockContainer {
           if(liquid != null) {
             if(!entityPlayer.capabilities.isCreativeMode) {
               if(current.stackSize > 1) {
-                if(!entityPlayer.inventory.addItemStackToInventory(filled))
+                if(!entityPlayer.inventory.addItemStackToInventory(filled)) {
                   return false;
-                else {
+                } else {
                   entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(current));
                 }
               } else {
@@ -111,13 +124,15 @@ public class BlockReservoir extends BlockContainer {
             tank.drain(ForgeDirection.UNKNOWN, liquid.amount, true);
             return true;
 
-          } else if(ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
-            tank.setAutoEject(!tank.isAutoEject());
-            for (BlockCoord bc : tank.multiblock) {
-              world.markBlockForUpdate(bc.x, bc.y, bc.z);
-            }
-
           }
+          //TODO:1.7
+          //          else if(ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
+          //            tank.setAutoEject(!tank.isAutoEject());
+          //            for (BlockCoord bc : tank.multiblock) {
+          //              world.markBlockForUpdate(bc.x, bc.y, bc.z);
+          //            }
+          //
+          //          }
 
         }
       }
@@ -164,11 +179,6 @@ public class BlockReservoir extends BlockContainer {
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
-  }
-
-  @Override
   public TileEntity createTileEntity(World world, int metadata) {
     return new TileReservoir();
   }
@@ -184,7 +194,7 @@ public class BlockReservoir extends BlockContainer {
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
     if(world.isRemote) {
       return;
     }
@@ -193,7 +203,7 @@ public class BlockReservoir extends BlockContainer {
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:reservoir");
     for (MbFace face : MbFace.values()) {
       mbIcons[face.ordinal()] = IIconRegister.registerIcon("enderio:" + face.iconName);
@@ -216,7 +226,7 @@ public class BlockReservoir extends BlockContainer {
   }
 
   @Override
-  public IIcon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     // used to render the block in the world
     TileEntity te = world.getTileEntity(x, y, z);
 
@@ -236,7 +246,7 @@ public class BlockReservoir extends BlockContainer {
       boolean isRight;
       if(tr.isVertical()) { // to to flip right and left for back faces of
                             // vertical multiblocks
-        isRight = (pos.isRight && tr.front != side.getOpposite()) || (!pos.isRight && tr.front == side.getOpposite());
+        isRight = !pos.isRight;
       } else {
         isRight = pos.isRight;
       }
@@ -247,7 +257,7 @@ public class BlockReservoir extends BlockContainer {
       }
 
     }
-    if(tr.up == side || tr.up == side.getOpposite()) { // up or down face
+    if(tr.up == side || tr.up == side.getOpposite()) { // up or down face      
       if(tr.isVertical()) {
         if(tr.right.offsetX != 0) {
           return pos.isRight ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
@@ -266,7 +276,7 @@ public class BlockReservoir extends BlockContainer {
       if(tr.isVertical()) {
         return pos.isTop ? mbIcons[MbFace.T.ordinal()] : mbIcons[MbFace.B.ordinal()];
       } else {
-        if(tr.right != side) {
+        if(tr.right == side || tr.right.getOpposite() == side) {
           return pos.isTop ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
         } else {
           return pos.isTop ? mbIcons[MbFace.R.ordinal()] : mbIcons[MbFace.L.ordinal()];

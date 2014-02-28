@@ -320,6 +320,8 @@ public class RecipeConfigParser extends DefaultHandler {
   }
 
   public static RecipeInput getItemStack(Attributes attributes) {
+
+    int stackSize = getIntValue(AT_NUMBER, attributes, 1);
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
     if(oreDict != null) {
       ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
@@ -328,37 +330,8 @@ public class RecipeConfigParser extends DefaultHandler {
         return null;
       }
       ItemStack stack = ores.get(0).copy();
-      stack.stackSize = getIntValue(AT_NUMBER, attributes, 1);
-      boolean useMeta = true;
-      if(stack.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
-        useMeta = false;
-      }
+      stack.stackSize = stackSize;
       return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict));
-    }
-
-    int itemID = getIntValue(AT_ITEM_ID, attributes, -1);
-    if(itemID <= 0) {
-
-      String modId = getStringValue(AT_MOD_ID, attributes, null);
-      String name = getStringValue(AT_ITEM_NAME, attributes, null);
-
-      if(modId != null && name != null) {
-
-        Item i = GameRegistry.findItem(modId, name);
-        if(i != null) {
-          itemID = i.itemID;
-        } else {
-          Block b = GameRegistry.findBlock(modId, name);
-          if(b != null) {
-            itemID = b.blockID;
-          }
-        }
-      }
-    }
-
-    if(itemID <= 0) {
-      Log.debug("Could not create an item stack from the attributes " + toString(attributes));
-      return null;
     }
 
     boolean useMeta = true;
@@ -367,9 +340,37 @@ public class RecipeConfigParser extends DefaultHandler {
       useMeta = false;
     }
     int itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
-    int stackSize = getIntValue(AT_NUMBER, attributes, 1);
 
-    return new RecipeInput(new ItemStack(itemID, stackSize, itemMeta), useMeta);
+    int itemID = getIntValue(AT_ITEM_ID, attributes, -1);
+    if(itemID > 0) {
+
+      //TODO:1.7 do I want to support ID still?
+      //return new RecipeInput(new ItemStack(itemID, stackSize, itemMeta), useMeta);
+      return null;
+    }
+    ItemStack res = null;
+
+    String modId = getStringValue(AT_MOD_ID, attributes, null);
+    String name = getStringValue(AT_ITEM_NAME, attributes, null);
+
+    if(modId != null && name != null) {
+
+      Item i = GameRegistry.findItem(modId, name);
+      if(i != null) {
+        res = new ItemStack(i, 1, useMeta ? itemMeta : 0);
+      } else {
+        Block b = GameRegistry.findBlock(modId, name);
+        if(b != null) {
+          res = new ItemStack(b, 1, useMeta ? itemMeta : 0);
+        }
+      }
+    }
+
+    if(res == null) {
+      Log.debug("Could not create an item stack from the attributes " + toString(attributes));
+      return null;
+    }
+    return new RecipeInput(res, useMeta);
   }
 
   public static boolean getBooleanValue(String qName, Attributes attributes, boolean def) {

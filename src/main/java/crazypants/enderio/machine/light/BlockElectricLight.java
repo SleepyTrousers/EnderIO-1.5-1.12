@@ -1,8 +1,6 @@
 package crazypants.enderio.machine.light;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -13,11 +11,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.enderface.BlockEio;
 import crazypants.vecmath.Vector3f;
 
-public class BlockElectricLight extends Block implements ITileEntityProvider {
+public class BlockElectricLight extends BlockEio {
 
   private static final float BLOCK_HEIGHT = 0.05f;
   private static final float BLOCK_WIDTH = 0.3f;
@@ -37,16 +35,14 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   private IIcon blockIconSide;
 
   public BlockElectricLight() {
-    super(ModObject.blockElectricLight.id, Material.rock);
-    setHardness(2.0F);
-    setStepSound(soundGlassFootstep);
-    setUnlocalizedName("enderio." + ModObject.blockElectricLight.name());
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class);
+
     setLightOpacity(0);
-    setLightValue(0);
+    //setLightValue(0);
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
+  @Override
   protected void init() {
     GameRegistry.registerBlock(this, ModObject.blockElectricLight.unlocalisedName);
     GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
@@ -58,15 +54,15 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
-    blockIcon = IIconRegister.registerIcon("enderio:blockElectricLightFace");
-    blockIconOff = IIconRegister.registerIcon("enderio:blockElectricLightFaceOff");
-    blockIconSide = IIconRegister.registerIcon("enderio:conduitConnector");
+  public void registerBlockIcons(IIconRegister iIconRegister) {
+    blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
+    blockIconOff = iIconRegister.registerIcon("enderio:blockElectricLightFaceOff");
+    blockIconSide = iIconRegister.registerIcon("enderio:conduitConnector");
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IIcon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
+  public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
 
     TileEntity te = blockAccess.getTileEntity(x, y, z);
     if(te instanceof TileElectricLight) {
@@ -101,7 +97,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
 
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    Block block = blocksList[world.getBlockId(x, y, z)];
+    Block block = world.getBlock(x, y, z);
     if(block != null && block != this) {
       return block.getLightValue(world, x, y, z);
     }
@@ -179,7 +175,7 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int blockID) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockID) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileElectricLight) {
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
@@ -187,17 +183,12 @@ public class BlockElectricLight extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
     TileElectricLight te = (TileElectricLight) world.getTileEntity(x, y, z);
     if(te != null) {
       te.onBlockRemoved();
     }
-    world.removeBlockTileEntity(x, y, z);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World world) {
-    return new TileElectricLight();
+    world.removeTileEntity(x, y, z);
   }
 
 }

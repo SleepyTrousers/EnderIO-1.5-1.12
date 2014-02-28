@@ -1,7 +1,6 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
@@ -105,15 +104,15 @@ public class PoweredTask {
     if(inputSlots == null || inputSlots.length <= 0) {
       return null;
     }
-    NBTTagList inputItems = nbtRoot.getTagList(KEY_INPUTS_STACKS);
+    NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUTS_STACKS);
     if(inputItems == null || inputItems.tagCount() != inputSlots.length) {
       return null;
     }
 
     MachineRecipeInput[] inputs = new MachineRecipeInput[inputSlots.length];
     for (int i = 0; i < inputSlots.length; i++) {
-      NBTBase stackTag = inputItems.tagAt(i);
-      ItemStack item = ItemStack.loadItemStackFromNBT((NBTTagCompound) stackTag);
+      NBTTagCompound stackTag = inputItems.getCompoundTagAt(i);
+      ItemStack item = ItemStack.loadItemStackFromNBT(stackTag);
       inputs[i] = new MachineRecipeInput(inputSlots[i], item);
     }
 

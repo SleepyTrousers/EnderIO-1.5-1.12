@@ -2,22 +2,20 @@ package crazypants.enderio.machine;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
-import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -27,11 +25,10 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.Util;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IConnectableRedNet {
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
 
   public static final IIcon[] REDSTONE_CONTROL_ICONS = new IIcon[RedstoneControlMode.values().length];
 
@@ -71,12 +68,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected final Class<T> teClass;
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
-    super(mo.id, new Material(MapColor.ironColor));
+    super(new Material(MapColor.ironColor));
     modObject = mo;
     this.teClass = teClass;
     setHardness(2.0F);
-    setStepSound(soundMetalFootstep);
-    setUnlocalizedName("enderio." + mo.name());
+    setStepSound(soundTypeMetal);
+    setBlockName(mo.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
     random = new Random();
 
@@ -86,11 +83,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     GameRegistry.registerBlock(this, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
   }
 
   @Override
@@ -106,18 +98,19 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removeBlockByPlayer(world, entityPlayer, x, y, z);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      }
-    }
+    //TODO:1.7
+    //    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+    //      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+    //        if(wrench.canWrench(entityPlayer, x, y, z)) {
+    //          removeBlockByPlayer(world, entityPlayer, x, y, z);
+    //          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+    //          }
+    //          return true;
+    //        }
+    //      }
+    //    }
 
     if(entityPlayer.isSneaking()) {
       return false;
@@ -127,30 +120,30 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister iIconRegister) {
 
     iconBuffer = new IIcon[1][12];
     String side = getSideIconKey(false);
     // first the 6 sides in OFF state
-    iconBuffer[0][0] = IIconRegister.registerIcon(side);
-    iconBuffer[0][1] = IIconRegister.registerIcon(getTopIconKey(false));
-    iconBuffer[0][2] = IIconRegister.registerIcon(getBackIconKey(false));
-    iconBuffer[0][3] = IIconRegister.registerIcon(getMachineFrontIconKey(false));
-    iconBuffer[0][4] = IIconRegister.registerIcon(side);
-    iconBuffer[0][5] = IIconRegister.registerIcon(side);
+    iconBuffer[0][0] = iIconRegister.registerIcon(side);
+    iconBuffer[0][1] = iIconRegister.registerIcon(getTopIconKey(false));
+    iconBuffer[0][2] = iIconRegister.registerIcon(getBackIconKey(false));
+    iconBuffer[0][3] = iIconRegister.registerIcon(getMachineFrontIconKey(false));
+    iconBuffer[0][4] = iIconRegister.registerIcon(side);
+    iconBuffer[0][5] = iIconRegister.registerIcon(side);
 
     side = getSideIconKey(true);
-    iconBuffer[0][6] = IIconRegister.registerIcon(side);
-    iconBuffer[0][7] = IIconRegister.registerIcon(getTopIconKey(true));
-    iconBuffer[0][8] = IIconRegister.registerIcon(getBackIconKey(true));
-    iconBuffer[0][9] = IIconRegister.registerIcon(getMachineFrontIconKey(true));
-    iconBuffer[0][10] = IIconRegister.registerIcon(side);
-    iconBuffer[0][11] = IIconRegister.registerIcon(side);
+    iconBuffer[0][6] = iIconRegister.registerIcon(side);
+    iconBuffer[0][7] = iIconRegister.registerIcon(getTopIconKey(true));
+    iconBuffer[0][8] = iIconRegister.registerIcon(getBackIconKey(true));
+    iconBuffer[0][9] = iIconRegister.registerIcon(getMachineFrontIconKey(true));
+    iconBuffer[0][10] = iIconRegister.registerIcon(side);
+    iconBuffer[0][11] = iIconRegister.registerIcon(side);
 
   }
 
   @Override
-  public IIcon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     // used to render the block in the world
     TileEntity te = world.getTileEntity(x, y, z);
     int facing = 0;
@@ -172,7 +165,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity ent = world.getTileEntity(x, y, z);
       if(ent != null) {
@@ -183,13 +176,21 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         }
       }
     }
-    world.removeBlockTileEntity(x, y, z);
+    world.removeTileEntity(x, y, z);
+
   }
 
+  //TODO:1.7 is this the correct mapping?
   @Override
-  public int idDropped(int par1, Random par2Random, int par3) {
-    return 0;
+  public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
+    //return Item.getItemFromBlock(this);
+    return null;
   }
+
+  //  @Override
+  //  public int idDropped(int par1, Random par2Random, int par3) {
+  //    return 0;
+  //  }
 
   @Override
   public int quantityDropped(Random r) {
@@ -197,12 +198,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote && !player.capabilities.isCreativeMode) {
       ItemStack st = new ItemStack(this);
       Util.dropItems(world, st, x, y, z, false);
     }
-    return super.removeBlockByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z);
   }
 
   @Override
@@ -236,7 +237,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
     TileEntity ent = world.getTileEntity(x, y, z);
     if(ent instanceof AbstractMachineEntity) {
       AbstractMachineEntity te = (AbstractMachineEntity) ent;
@@ -258,29 +259,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         world.spawnParticle("smoke", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
       }
     }
-  }
-
-  @Override
-  public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
-    return RedNetConnectionType.PlateSingle;
-  }
-
-  @Override
-  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
-    return new int[16];
-  }
-
-  @Override
-  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
-    return 0;
-  }
-
-  @Override
-  public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
-  }
-
-  @Override
-  public void onInputChanged(World world, int x, int y, int z, ForgeDirection side, int inputValue) {
   }
 
   protected abstract int getGuiId();

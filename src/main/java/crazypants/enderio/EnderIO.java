@@ -13,6 +13,10 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.machine.light.BlockElectricLight;
+import crazypants.enderio.machine.light.BlockLightNode;
+import crazypants.enderio.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
@@ -78,16 +82,18 @@ public class EnderIO {
   //
   //  // Machines
   //  public static BlockStirlingGenerator blockStirlingGenerator;
-  //  public static BlockSolarPanel blockSolarPanel;
-  //  public static BlockReservoir blockReservoir;
+  public static BlockSolarPanel blockSolarPanel;
+  public static BlockReservoir blockReservoir;
+
   //  public static BlockAlloySmelter blockAlloySmelter;
   //  public static BlockCapacitorBank blockCapacitorBank;
   //  public static BlockCrusher blockCrusher;
   //  public static BlockHyperCube blockHyperCube;
   //  public static BlockPowerMonitor blockPowerMonitor;
   //
-  //  public static BlockElectricLight blockElectricLight;
-  //  public static BlockLightNode blockLightNode;
+  public static BlockElectricLight blockElectricLight;
+  public static BlockLightNode blockLightNode;
+
   //
   //  public static ItemYetaWrench itemYetaWench;
   //  public static ItemMJReader itemMJReader;
@@ -132,8 +138,8 @@ public class EnderIO {
     //    blockCustomDoubleSlab.init();
     //
     //    blockStirlingGenerator = BlockStirlingGenerator.create();
-    //    blockSolarPanel = BlockSolarPanel.create();
-    //    blockReservoir = BlockReservoir.create();
+    blockSolarPanel = BlockSolarPanel.create();
+    blockReservoir = BlockReservoir.create();
     //    blockAlloySmelter = BlockAlloySmelter.create();
     //    blockCapacitorBank = BlockCapacitorBank.create();
     //    blockCrusher = BlockCrusher.create();
@@ -149,8 +155,8 @@ public class EnderIO {
     //    itemItemConduit = ItemItemConduit.create();
     //    itemMeConduit = ItemMeConduit.create();
     //
-    //    blockElectricLight = BlockElectricLight.create();
-    //    blockLightNode = BlockLightNode.create();
+    blockElectricLight = BlockElectricLight.create();
+    blockLightNode = BlockLightNode.create();
     //
     //    itemYetaWench = ItemYetaWrench.create();
     //    itemMJReader = ItemMJReader.create();

@@ -3,8 +3,6 @@ package crazypants.enderio.machine.solar;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,14 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.enderface.BlockEio;
 
-public class BlockSolarPanel extends Block implements ITileEntityProvider {
+public class BlockSolarPanel extends BlockEio {
 
   public static BlockSolarPanel create() {
     BlockSolarPanel result = new BlockSolarPanel();
@@ -34,21 +29,11 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   IIcon sideIcon;
 
   private BlockSolarPanel() {
-    super(ModObject.blockSolarPanel.id, Material.ground);
-    setHardness(0.5F);
-    setStepSound(Block.soundStoneFootstep);
-    setUnlocalizedName("enderio." + ModObject.blockSolarPanel.name());
-    if(Config.photovoltaicCellEnabled) {
-      setCreativeTab(EnderIOTab.tabEnderIO);
-    } else {
+    super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class);
+    if(!Config.photovoltaicCellEnabled) {
       setCreativeTab(null);
     }
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
-  }
-
-  private void init() {
-    GameRegistry.registerBlock(this, ModObject.blockSolarPanel.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntitySolarPanel.class, ModObject.blockSolarPanel.unlocalisedName + "TileEntity");
   }
 
   @Override
@@ -62,27 +47,23 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
-    return new TileEntitySolarPanel();
-  }
-
-  @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removeBlockByPlayer(world, entityPlayer, x, y, z);
-          if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
-            dropBlockAsItem(world, x, y, z, 0, 0);
-          }
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      }
-    }
+    //TODO:1.7
+    //    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+    //      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+    //        if(wrench.canWrench(entityPlayer, x, y, z)) {
+    //          removedByPlayer(world, entityPlayer, x, y, z);
+    //          if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
+    //            dropBlockAsItem(world, x, y, z, 0, 0);
+    //          }
+    //          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+    //          }
+    //          return true;
+    //        }
+    //      }
+    //    }
     return false;
   }
 
@@ -95,7 +76,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int par5) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntitySolarPanel) {
       ((TileEntitySolarPanel) te).onNeighborBlockChange();
@@ -103,7 +84,7 @@ public class BlockSolarPanel extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:solarPanelTop");
     sideIcon = IIconRegister.registerIcon("enderio:solarPanelSide");
   }

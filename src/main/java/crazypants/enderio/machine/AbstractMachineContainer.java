@@ -130,7 +130,7 @@ public abstract class AbstractMachineContainer extends Container {
         slot = (Slot) this.inventorySlots.get(checkIndex);
         itemstack1 = slot.getStack();
 
-        if(itemstack1 != null && itemstack1.itemID == par1ItemStack.itemID
+        if(itemstack1 != null && itemstack1.getItem() == par1ItemStack.getItem()
             && (!par1ItemStack.getHasSubtypes() || par1ItemStack.getItemDamage() == itemstack1.getItemDamage())
             && ItemStack.areItemStackTagsEqual(par1ItemStack, itemstack1)
             && slot.isItemValid(par1ItemStack)) {

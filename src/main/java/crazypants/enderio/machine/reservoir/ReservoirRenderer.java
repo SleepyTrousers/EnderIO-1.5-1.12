@@ -36,7 +36,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) {
 
     TileReservoir res = (TileReservoir) tileentity;
-    if(res.haveRendered(tileentity.worldObj.getTotalWorldTime(), f)) {
+    if(res.haveRendered(tileentity.getWorldObj().getTotalWorldTime(), f)) {
       return;
     }
 
@@ -45,7 +45,7 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer {
       return;
     }
 
-    float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.worldObj, tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+    float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.getWorldObj(), tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
     GL11.glPushMatrix();

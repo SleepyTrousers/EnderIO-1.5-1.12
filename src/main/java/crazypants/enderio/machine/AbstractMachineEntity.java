@@ -1,19 +1,18 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -21,7 +20,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntity implements IInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements IInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
 
   public short facing;
 
@@ -97,7 +96,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   @Override
   public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
     if(slotDefinition.isUpgradeSlot(i)) {
-      return itemstack.itemID == ModObject.itemBasicCapacitor.actualId && itemstack.getItemDamage() > 0;
+      return itemstack != null && itemstack.getItem() == EnderIO.itemBasicCapacitor && itemstack.getItemDamage() > 0;
     }
     return isMachineItemValidForSlot(i, itemstack);
   }
@@ -221,7 +220,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public void updateEntity() {
- 
+
     if(worldObj == null) { // sanity check
       return;
     }
@@ -229,19 +228,21 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     if(worldObj.isRemote) {
       // check if the block on the client needs to update its texture
       if(isActive() != lastActive) {
-        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        //TODO:1.7 is this ok?
+        //worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       }
       lastActive = isActive();
       return;
 
     } // else is server, do all logic only on the server
-    
-    storedEnergy = powerHandler.getEnergyStored();
+
+    storedEnergy = (float) powerHandler.getEnergyStored();
 
     boolean requiresClientSync = forceClientUpdate;
     if(forceClientUpdate) {
       // First update, send state to client
-      forceClientUpdate = false;      
+      forceClientUpdate = false;
     }
 
     boolean prevRedCheck = redstoneCheckPassed;
@@ -263,7 +264,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       // client/server connection
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
-      onInventoryChanged();
+      markDirty();
     }
 
   }
@@ -274,13 +275,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   // ------------------------------------------------------------------------------
 
   @Override
-  public Packet getDescriptionPacket() {
-    return PacketHandler.getPacket(this);
-  }
-
-  @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
 
     facing = nbtRoot.getShort("facing");
 
@@ -295,10 +290,13 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
     // read in the inventories contents
     inventory = new ItemStack[slotDefinition.getNumSlots()];
-    NBTTagList itemList = nbtRoot.getTagList("Items");
+
+    //TODO:1.7
+    //NBTTagList itemList = nbtRoot.getTagList("Items");
+    NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
 
     for (int i = 0; i < itemList.tagCount(); i++) {
-      NBTTagCompound itemStack = (NBTTagCompound) itemList.tagAt(i);
+      NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
       byte slot = itemStack.getByte("Slot");
       if(slot >= 0 && slot < inventory.length) {
         inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
@@ -314,10 +312,10 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+
     nbtRoot.setShort("facing", facing);
-    nbtRoot.setFloat("storedEnergy", powerHandler.getEnergyStored());
+    nbtRoot.setFloat("storedEnergy", (float) powerHandler.getEnergyStored());
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
     nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
 
@@ -338,11 +336,6 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   // ---- Inventory
   // ------------------------------------------------------------------------------
-
-  @Override
-  public boolean isInvNameLocalized() {
-    return false;
-  }
 
   @Override
   public boolean isUseableByPlayer(EntityPlayer player) {
@@ -381,7 +374,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
       updateCapacitorFromSlot();
       return fromStack;
     }
-    ItemStack result = new ItemStack(fromStack.itemID, amount, fromStack.getItemDamage());
+    ItemStack result = new ItemStack(fromStack.getItem(), amount, fromStack.getItemDamage());
     if(fromStack.stackTagCompound != null) {
       result.stackTagCompound = (NBTTagCompound) fromStack.stackTagCompound.copy();
     }
@@ -408,7 +401,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   private void updateCapacitorFromSlot() {
     ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-    if(contents == null || contents.itemID != ModObject.itemBasicCapacitor.actualId) {
+    if(contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);
@@ -421,14 +414,14 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   }
 
   @Override
-  public void openChest() {
+  public void openInventory() {
   }
 
   @Override
-  public void closeChest() {
+  public void closeInventory() {
   }
 
-  public void onNeighborBlockChange(int blockId) {
+  public void onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
   }
 

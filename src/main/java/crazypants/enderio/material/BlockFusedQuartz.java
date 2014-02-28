@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,13 +15,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.enderface.BlockEio;
-import crazypants.util.Lang;
+import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.TileEntityCustomBlock;
 
 public class BlockFusedQuartz extends BlockEio {
 
@@ -56,21 +57,19 @@ public class BlockFusedQuartz extends BlockEio {
   IIcon[] frameIcons;
 
   private BlockFusedQuartz() {
-    //TODO:1.7 no custom block class
-    //super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityCustomBlock.class, Material.glass);
-    super(ModObject.blockFusedQuartz.unlocalisedName, null, Material.glass);
+    super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityCustomBlock.class, Material.glass);
     setStepSound(Block.soundTypeGlass);
   }
 
   @Override
   protected void init() {
     super.init();
-
-    for (Type subtype : Type.values()) {
-      String unlocalisedName = "blockFusedQuartz." + subtype.unlocalisedName;
-      LanguageRegistry.instance().addStringLocalization(unlocalisedName, Lang.localize(unlocalisedName));
-
-    }
+    //TODO:1.7
+    //    for (Type subtype : Type.values()) {
+    //      String unlocalisedName = "blockFusedQuartz." + subtype.unlocalisedName;
+    //      LanguageRegistry.instance().addStringLocalization(unlocalisedName, Lang.localize(unlocalisedName));
+    //
+    //    }
   }
 
   @Override
@@ -175,34 +174,32 @@ public class BlockFusedQuartz extends BlockEio {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
-      //TODO:1.7
-      //      if(te instanceof TileEntityCustomBlock) {
-      //        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      //
-      //        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlockId(), tef.getSourceBlockMetadata());
-      //        if(itemStack != null) {
-      //          float f = 0.7F;
-      //          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      //          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      //          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      //          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-      //          entityitem.delayBeforeCanPickup = 10;
-      //          world.spawnEntityInWorld(entityitem);
-      //        }
-      //      }
+      if(te instanceof TileEntityCustomBlock) {
+        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+
+        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlockId(), tef.getSourceBlockMetadata());
+        if(itemStack != null) {
+          float f = 0.7F;
+          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+          entityitem.delayBeforeCanPickup = 10;
+          world.spawnEntityInWorld(entityitem);
+        }
+      }
 
     }
 
     super.breakBlock(world, x, y, z, par5, par6);
   }
 
-  private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, int sourceBlockId, int sourceBlockMetadata) {
-    if(sourceBlockId <= 0) {
+  private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, String sourceBlockId, int sourceBlockMetadata) {
+    if(sourceBlockId == null) {
       return null;
     }
     ItemStack result = new ItemStack(EnderIO.instance.itemFusedQuartzFrame, 1, quartzBlockMeta);
-    //TODO:1.7
-    //PainterUtil.setSourceBlock(result, sourceBlockId, sourceBlockMetadata);
+    PainterUtil.setSourceBlock(result, sourceBlockId, sourceBlockMetadata);
     return result;
   }
 

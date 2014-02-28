@@ -13,6 +13,10 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.machine.light.BlockElectricLight;
+import crazypants.enderio.machine.light.ElectricLightRenderer;
+import crazypants.enderio.machine.reservoir.ReservoirRenderer;
+import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
@@ -81,9 +85,9 @@ public class ClientProxy extends CommonProxy {
     //
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
-    //
-    //    BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
-    //    RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
+
+    BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
     //
     //    CapacitorBankRenderer capr = new CapacitorBankRenderer();
     //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);
@@ -132,7 +136,7 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), eior);
 
-    //    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
     //
     //    HyperCubeRenderer hcr = new HyperCubeRenderer();
     //    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);

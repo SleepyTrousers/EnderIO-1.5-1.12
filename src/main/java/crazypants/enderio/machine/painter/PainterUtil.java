@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.painter;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import cpw.mods.fml.common.registry.GameData;
 import crazypants.util.Lang;
 
 public final class PainterUtil {
@@ -16,30 +16,18 @@ public final class PainterUtil {
     if(one == null || two == null) {
       return false;
     }
-    return PainterUtil.getSourceBlockId(one) == PainterUtil.getSourceBlockId(two)
+    return PainterUtil.getSourceBlock(one) == PainterUtil.getSourceBlock(two)
         && PainterUtil.getSourceBlockMetadata(one) == PainterUtil.getSourceBlockMetadata(two);
   }
 
-  public static Block getSourceBlock(ItemStack item) {
+  public static Item getSourceBlock(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
     if(tag != null) {
-      int blockId = tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      if(blockId >= 0 && blockId < Block.blocksList.length) {
-        return Block.blocksList[blockId];
-      }
+      String blockId = tag.getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
+      Item res = GameData.itemRegistry.get(blockId);
+      return res;
     }
     return null;
-  }
-
-  public static int getSourceBlockId(ItemStack item) {
-    NBTTagCompound tag = item.getTagCompound();
-    if(tag != null) {
-      int blockId = tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      if(blockId >= 0 && blockId < Block.blocksList.length) {
-        return blockId;
-      }
-    }
-    return -1;
   }
 
   public static int getSourceBlockMetadata(ItemStack item) {
@@ -52,25 +40,24 @@ public final class PainterUtil {
 
   public static String getTooltTipText(ItemStack item) {
     String sourceName = "";
-    int sourceId = PainterUtil.getSourceBlockId(item);
+    Item sourceId = PainterUtil.getSourceBlock(item);
     int meta = PainterUtil.getSourceBlockMetadata(item);
-    if(sourceId > 0) {
-      Item i = Item.itemsList[sourceId];
-      if(i != null) {
-        sourceName = i.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
+    if(sourceId != null) {
+      if(sourceId != null) {
+        sourceName = sourceId.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
         sourceName = StatCollector.translateToLocal(sourceName + ".name");
       }
     }
     return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
   }
 
-  public static void setSourceBlock(ItemStack item, int sourceId, int meta) {
+  public static void setSourceBlock(ItemStack item, String sourceId, int meta) {
     NBTTagCompound tag = item.getTagCompound();
     if(tag == null) {
       tag = new NBTTagCompound();
       item.setTagCompound(tag);
     }
-    tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_ID, sourceId);
+    tag.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, sourceId);
     tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
   }
 

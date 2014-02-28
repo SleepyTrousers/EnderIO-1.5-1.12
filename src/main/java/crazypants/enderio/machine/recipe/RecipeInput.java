@@ -22,9 +22,9 @@ public class RecipeInput {
 
   public boolean isInput(ItemStack test) {
     if(useMeta) {
-      return test.itemID == input.itemID && test.getItemDamage() == input.getItemDamage();
+      return test.getItem() == input.getItem() && test.getItemDamage() == input.getItemDamage();
     }
-    return test.itemID == input.itemID;
+    return test.getItem() == input.getItem();
   }
 
   public ItemStack[] getEquivelentInputs() {

@@ -4,11 +4,9 @@ import java.awt.Rectangle;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
@@ -73,8 +71,9 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       }
       tileEntity.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
       redstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(tileEntity.getRedstoneControlMode()));
-      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(tileEntity);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(tileEntity);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 
@@ -84,7 +83,8 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     int x = guiLeft + xSize - 5 - BUTTON_SIZE;
     int y = guiTop + 5;
 
-    redstoneButton = new IconButton(fontRenderer, REDSTONE_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(tileEntity.getRedstoneControlMode()),
+    redstoneButton = new IconButton(getFontRenderer(), REDSTONE_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(tileEntity
+        .getRedstoneControlMode()),
         RenderUtil.BLOCK_TEX);
     redstoneButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 

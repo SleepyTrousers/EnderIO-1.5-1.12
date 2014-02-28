@@ -49,7 +49,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if(inventory[i] == null || inventory[i].stackSize < itemstack.stackSize) {
       return false;
     }
-    return itemstack.itemID == inventory[i].itemID;
+    return itemstack.getItem() == inventory[i].getItem();
   }
 
   @Override
@@ -98,9 +98,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return false;
     }
 
-    float used = Math.min(powerHandler.getEnergyStored(), getPowerUsePerTick());
+    double used = Math.min(powerHandler.getEnergyStored(), getPowerUsePerTick());
     powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
-    currentTask.update(used);
+    currentTask.update((float) used);
 
     // then check if we are done
     if(currentTask.isComplete()) {
@@ -231,7 +231,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);
     currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
     String uid = nbtRoot.getString("lastCompletedRecipe");
@@ -239,12 +239,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     if(currentTask != null) {
       NBTTagCompound currentTaskNBT = new NBTTagCompound();
       currentTask.writeToNBT(currentTaskNBT);
-      nbtRoot.setCompoundTag("currentTask", currentTaskNBT);
+      nbtRoot.setTag("currentTask", currentTaskNBT);
     }
     if(lastCompletedRecipe != null) {
       nbtRoot.setString("lastCompletedRecipe", lastCompletedRecipe.getUid());

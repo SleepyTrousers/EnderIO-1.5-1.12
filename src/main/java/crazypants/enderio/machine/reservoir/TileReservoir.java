@@ -1,16 +1,11 @@
 package crazypants.enderio.machine.reservoir;
 
-import static net.minecraftforge.common.ForgeDirection.EAST;
-import static net.minecraftforge.common.ForgeDirection.NORTH;
-import static net.minecraftforge.common.ForgeDirection.UNKNOWN;
-import static net.minecraftforge.common.ForgeDirection.UP;
-import static net.minecraftforge.common.ForgeDirection.WEST;
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -18,13 +13,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3f;
 
-public class TileReservoir extends TileEntity implements IFluidHandler {
+public class TileReservoir extends TileEntityEio implements IFluidHandler {
 
   enum Pos {
     TL(true, false),
@@ -47,9 +42,9 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   BlockCoord[] multiblock = null;
 
   // Orientation of multibock
-  ForgeDirection front = UNKNOWN;
-  ForgeDirection up = UNKNOWN;
-  ForgeDirection right = UNKNOWN;
+  ForgeDirection front = ForgeDirection.UNKNOWN;
+  ForgeDirection up = ForgeDirection.UNKNOWN;
+  ForgeDirection right = ForgeDirection.UNKNOWN;
 
   // Position within multiblock
   Pos pos = Pos.UNKNOWN;
@@ -161,11 +156,6 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     return new FluidTankInfo[] { tank.getInfo() };
   }
 
-  @Override
-  public Packet getDescriptionPacket() {
-    return PacketHandler.getPacket(this);
-  }
-
   public void setAutoEject(boolean autoEject) {
     TileReservoir c = getController();
     if(c != null) {
@@ -231,8 +221,8 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
+
     front = ForgeDirection.getOrientation(nbtRoot.getShort("front"));
     up = ForgeDirection.getOrientation(nbtRoot.getShort("up"));
     right = ForgeDirection.getOrientation(nbtRoot.getShort("right"));
@@ -281,8 +271,8 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+
     nbtRoot.setShort("front", (short) front.ordinal());
     nbtRoot.setShort("up", (short) up.ordinal());
     nbtRoot.setShort("right", (short) right.ordinal());
@@ -315,8 +305,8 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
     return res;
   }
 
-  public boolean onNeighborBlockChange(int blockId) {
-    if(blockId == ModObject.blockReservoir.actualId) {
+  public boolean onNeighborBlockChange(Block blockId) {
+    if(blockId == EnderIO.blockReservoir) {
 
       if(!isCurrentMultiblockValid()) {
         // if its not, try and form a new one
@@ -337,7 +327,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
   }
 
   boolean isVertical() {
-    return up == UP;
+    return up == ForgeDirection.UP;
   }
 
   boolean isMaster() {
@@ -450,9 +440,9 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
   private void updatePosition() {
     if(multiblock == null) {
-      front = UNKNOWN;
-      up = UNKNOWN;
-      right = UNKNOWN;
+      front = ForgeDirection.UNKNOWN;
+      up = ForgeDirection.UNKNOWN;
+      right = ForgeDirection.UNKNOWN;
       return;
     }
 
@@ -472,12 +462,12 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
           break;
         }
       }
-      front = isWestEast ? NORTH : EAST;
-      right = isWestEast ? WEST : NORTH;
+      front = isWestEast ? ForgeDirection.NORTH : ForgeDirection.EAST;
+      right = isWestEast ? ForgeDirection.WEST : ForgeDirection.NORTH;
     } else {
-      front = UP;
-      right = EAST;
-      up = NORTH;
+      front = ForgeDirection.UP;
+      right = ForgeDirection.EAST;
+      up = ForgeDirection.NORTH;
     }
 
     boolean isRight = false;

@@ -18,10 +18,11 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
     BoundingBox bb = new BoundingBox(0, 0, 0, 1, 0.2, 1);
     boolean doDraw = false;
-    if(!Tessellator.instance.isDrawing) {
-      doDraw = true;
-      Tessellator.instance.startDrawingQuads();
-    }
+    //TODO:1.7    
+    //    if(!Tessellator.instance.isDrawing) {
+    //      doDraw = true;
+    //      Tessellator.instance.startDrawingQuads();
+    //    }
     IIcon[] textures = new IIcon[6];
     textures[0] = block.getBlockTextureFromSide(ForgeDirection.NORTH.ordinal());
     textures[1] = block.getBlockTextureFromSide(ForgeDirection.SOUTH.ordinal());
@@ -47,12 +48,12 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     RenderUtil.setTesselatorBrightness(world, x, y, z);
 
     IIcon[] textures = new IIcon[6];
-    textures[0] = block.getBlockTexture(world, x, y, z, ForgeDirection.NORTH.ordinal());
-    textures[1] = block.getBlockTexture(world, x, y, z, ForgeDirection.SOUTH.ordinal());
-    textures[2] = block.getBlockTexture(world, x, y, z, ForgeDirection.UP.ordinal());
-    textures[3] = block.getBlockTexture(world, x, y, z, ForgeDirection.DOWN.ordinal());
-    textures[4] = block.getBlockTexture(world, x, y, z, ForgeDirection.WEST.ordinal());
-    textures[5] = block.getBlockTexture(world, x, y, z, ForgeDirection.EAST.ordinal());
+    textures[0] = block.getIcon(world, x, y, z, ForgeDirection.NORTH.ordinal());
+    textures[1] = block.getIcon(world, x, y, z, ForgeDirection.SOUTH.ordinal());
+    textures[2] = block.getIcon(world, x, y, z, ForgeDirection.UP.ordinal());
+    textures[3] = block.getIcon(world, x, y, z, ForgeDirection.DOWN.ordinal());
+    textures[4] = block.getIcon(world, x, y, z, ForgeDirection.WEST.ordinal());
+    textures[5] = block.getIcon(world, x, y, z, ForgeDirection.EAST.ordinal());
 
     CubeRenderer.render(bb, textures, null);
 
@@ -60,13 +61,13 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
   }
 
   @Override
-  public boolean shouldRender3DInInventory() {
-    return true;
+  public int getRenderId() {
+    return BlockElectricLight.renderId;
   }
 
   @Override
-  public int getRenderId() {
-    return BlockElectricLight.renderId;
+  public boolean shouldRender3DInInventory(int modelId) {
+    return true;
   }
 
 }

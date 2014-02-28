@@ -1,6 +1,7 @@
 package crazypants.enderio.enderface;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +16,7 @@ public abstract class BlockEio extends Block {
   protected final String name;
 
   protected BlockEio(String name, Class<? extends TileEntity> teClass) {
-    this(name, teClass, Material.rock);
+    this(name, teClass, new Material(MapColor.ironColor));
   }
 
   protected BlockEio(String name, Class<? extends TileEntity> teClass, Material mat) {

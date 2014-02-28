@@ -2,9 +2,10 @@ package crazypants.enderio.machine.light;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
 
-public class TileLightNode extends TileEntity {
+public class TileLightNode extends TileEntityEio {
 
   int parentX;
   int parentY;
@@ -26,7 +27,7 @@ public class TileLightNode extends TileEntity {
       return;
     }
     if(worldObj.getWorldTime() % 42 == 0) {
-      if(worldObj.getBlockId(parentX, parentY, parentZ) != ModObject.blockElectricLight.actualId) {
+      if(worldObj.getBlock(parentX, parentY, parentZ) != EnderIO.blockElectricLight) {
         System.out.println("TileLightNode.updateEntity: ");
         worldObj.setBlockToAir(xCoord, yCoord, zCoord);
       }
@@ -48,8 +49,7 @@ public class TileLightNode extends TileEntity {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound root) {
-    super.readFromNBT(root);
+  public void readCustomNBT(NBTTagCompound root) {
     parentX = root.getInteger("parentX");
     parentY = root.getInteger("parentY");
     parentZ = root.getInteger("parentZ");
@@ -57,8 +57,7 @@ public class TileLightNode extends TileEntity {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound root) {
-    super.writeToNBT(root);
+  public void writeCustomNBT(NBTTagCompound root) {
     root.setInteger("parentX", parentX);
     root.setInteger("parentY", parentY);
     root.setInteger("parentZ", parentZ);
