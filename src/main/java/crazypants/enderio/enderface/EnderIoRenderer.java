@@ -1,13 +1,5 @@
 package crazypants.enderio.enderface;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -17,7 +9,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
+import crazypants.render.BoundingBox;
+import crazypants.render.CubeRenderer;
+import crazypants.render.RenderUtil;
+import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector3d;
 
 public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
@@ -39,6 +41,8 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
+
+    //System.out.println("EnderIoRenderer.renderTileEntityAt: " + x + "," + y + "," + z);
 
     EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
 

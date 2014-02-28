@@ -1,14 +1,10 @@
 package crazypants.enderio.enderface;
 
-import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.render.RenderUtil;
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.Camera;
-import crazypants.vecmath.Matrix4d;
-import crazypants.vecmath.VecmathUtil;
-import crazypants.vecmath.Vector3d;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,15 +21,22 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.ForgeHooksClient;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
+import crazypants.vecmath.Camera;
+import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector3d;
 
 public class GuiEnderface extends GuiScreen {
 
@@ -61,7 +64,7 @@ public class GuiEnderface extends GuiScreen {
   private boolean animateInX = false;
   private boolean animateInY = false;
   // private boolean animating = true;
-  float animationDuration = 180;
+  float animationDuration = 60;
 
   private final Vector3d origin = new Vector3d();
   private final Vector3d eye = new Vector3d();
@@ -202,8 +205,9 @@ public class GuiEnderface extends GuiScreen {
     List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
     for (ViewableBlocks ug : blocks) {
       if(!ug.bc.equals(new BlockCoord(ioX, ioY, ioZ))) {
-        MovingObjectPosition res = ug.block.collisionRayTrace(world, ug.bc.x, ug.bc.y, ug.bc.z,
-            Vec3.createVectorHelper(start.x, start.y, start.z), Vec3.createVectorHelper(end.x, end.y, end.z));
+        MovingObjectPosition res = player.worldObj.rayTraceBlocks(Vec3.createVectorHelper(start.x, start.y, start.z),
+            Vec3.createVectorHelper(end.x, end.y, end.z), false);
+
         if(res != null) {
           hits.add(res);
         }
@@ -213,11 +217,11 @@ public class GuiEnderface extends GuiScreen {
     if(hit != null) {
       Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
       //TODO:1.7
-//      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
-//        block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
-//      } else {
-        openInterface(hit.blockX, hit.blockY, hit.blockZ);
-//      }
+      //      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
+      //        block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
+      //      } else {
+      openInterface(hit.blockX, hit.blockY, hit.blockZ);
+      //      }
     }
 
   }
@@ -260,6 +264,8 @@ public class GuiEnderface extends GuiScreen {
 
       if(chunkLoaded) {
 
+        //TODO: Need to depth sort transparent passes
+
         TravelController.instance.setSelectionEnabled(false);
 
         GL11.glEnable(GL11.GL_CULL_FACE);
@@ -270,22 +276,26 @@ public class GuiEnderface extends GuiScreen {
         RenderUtil.bindBlockTexture();
 
         Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
-        for (ViewableBlocks ug : blocks) {
-          RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-          RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
+        for (int pass = 0; pass < 2; pass++) {
+
+          ForgeHooksClient.setRenderPass(pass);
+          setGlStateForPass(pass);
+
+          Tessellator.instance.startDrawingQuads();
+          Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
+
+          for (ViewableBlocks ug : blocks) {
+            if(ug.block.canRenderInPass(pass)) {
+              RB.setRenderBounds(0, 0, 0, 1, 1, 1);
+              RB.renderBlockByRenderType(ug.block, ug.bc.x, ug.bc.y, ug.bc.z);
+            }
+          }
+          Tessellator.instance.draw();
+          Tessellator.instance.setTranslation(0, 0, 0);
         }
-        Tessellator.instance.draw();
-        Tessellator.instance.setTranslation(0, 0, 0);
 
         RenderHelper.enableStandardItemLighting();
 
-
-//TODO:1.7 check this
-//        TileEntityRenderer.instance.playerX = origin.x - eye.x;
-//        TileEntityRenderer.instance.playerY = origin.y - eye.y;
-//        TileEntityRenderer.instance.playerZ = origin.z - eye.z;
         TileEntityRendererDispatcher.instance.field_147558_l = origin.x - eye.x;
         TileEntityRendererDispatcher.instance.field_147560_j = origin.y - eye.y;
         TileEntityRendererDispatcher.instance.field_147561_k = origin.z - eye.z;
@@ -293,20 +303,46 @@ public class GuiEnderface extends GuiScreen {
         TileEntityRendererDispatcher.staticPlayerX = origin.x - eye.x;
         TileEntityRendererDispatcher.staticPlayerY = origin.y - eye.y;
         TileEntityRendererDispatcher.staticPlayerZ = origin.z - eye.z;
-        for (ViewableBlocks ug : blocks) {
-          TileEntity tile = world.getTileEntity(ug.bc.x, ug.bc.y, ug.bc.z);
-          if(tile != null) {
-            TileEntityRendererDispatcher.instance.renderTileEntity(tile, partialTick);
+
+        for (int pass = 0; pass < 2; pass++) {
+
+          ForgeHooksClient.setRenderPass(pass);
+          setGlStateForPass(pass);
+
+          for (ViewableBlocks ug : blocks) {
+            TileEntity tile = world.getTileEntity(ug.bc.x, ug.bc.y, ug.bc.z);
+            if(tile != null) {
+              Vector3d at = new Vector3d(eye.x - 0.5, eye.y - 0.5, eye.z - 0.5);
+              at.x += ug.bc.x - ioX;
+              at.y += ug.bc.y - ioY;
+              at.z += ug.bc.z - ioZ;
+              TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
+            }
           }
         }
-
+        ForgeHooksClient.setRenderPass(-1);
+        setGlStateForPass(0);
         TravelController.instance.setSelectionEnabled(true);
 
       } else {
         drawCenteredString(Minecraft.getMinecraft().fontRenderer, "EnderIO chunk not loaded.", width / 2, height / 2 - 32, 0xFFFFFFFF);
       }
     }
+
     drawEffectOverlay(partialTick);
+  }
+
+  private void setGlStateForPass(int pass) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    if(pass == 0) {
+      GL11.glDisable(GL11.GL_BLEND);
+      GL11.glDepthMask(true);
+    } else {
+      GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GL11.glDepthMask(false);
+    }
+
   }
 
   private boolean updateCamera(float partialTick) {
@@ -381,7 +417,7 @@ public class GuiEnderface extends GuiScreen {
     GL11.glEnable(GL11.GL_LIGHTING);
     mc.entityRenderer.enableLightmap(0);
 
-    renderPortalOverlay(0.9f - (0.1f * (1 - portalFade)), scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
+    renderPortalOverlay(0.8f - (0.2f * (1 - portalFade)), scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
 
     GL11.glDepthMask(true);
     GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -397,7 +433,7 @@ public class GuiEnderface extends GuiScreen {
     if(par1 < 1.0F) {
       par1 *= par1;
       par1 *= par1;
-      par1 = par1 * 0.8F + 0.2F;
+      par1 = par1 * 0.9F + 0.1F;
     }
     GL11.glColor4f(1.0F, 1.0F, 1.0F, par1);
     RenderUtil.bindBlockTexture();
@@ -528,15 +564,18 @@ public class GuiEnderface extends GuiScreen {
   void openInterface(int x, int y, int z) {
 
     ///TODO:1.7
-//    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
-//      if(Config.enderIoMeAccessEnabled) {
-//        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
-//        PacketDispatcher.sendPacketToServer(pkt);
-//      }
-//    } else {
-//      Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
-//      PacketDispatcher.sendPacketToServer(pkt);
-//    }
+    //    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
+    //      if(Config.enderIoMeAccessEnabled) {
+    //        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
+    //        PacketDispatcher.sendPacketToServer(pkt);
+    //      }
+    //    } else {
+    //      Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
+    //      PacketDispatcher.sendPacketToServer(pkt);
+    //    }
+
+    PacketOpenRemoteUi p = new PacketOpenRemoteUi(x, y, z);
+    EnderIO.packetPipeline.sendToServer(p);
   }
 
   static class ViewableBlocks {

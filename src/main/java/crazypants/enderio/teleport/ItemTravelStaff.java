@@ -157,7 +157,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   public void setFull(ItemStack container) {
-    setEnergy(container, getMaxEnergyStored(container));
+    setEnergy(container, Config.travelStaffMaxStoredPower * 10);
   }
 
   private void updateDamage(ItemStack stack) {

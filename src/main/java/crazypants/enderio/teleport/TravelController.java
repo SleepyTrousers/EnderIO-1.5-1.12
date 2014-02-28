@@ -177,16 +177,16 @@ public class TravelController {
     if(eio.canBlockBeAccessed(player)) {
 
       int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
-      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+      if(requiredPower >= 0 && requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
         if(requiredPower > 0) {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower);
           EnderIO.packetPipeline.sendToServer(p);
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
             TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
-      } else {
-        player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
       }
+    } else {
+      player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
     }
   }
 
@@ -208,12 +208,11 @@ public class TravelController {
     }
 
     int requiredPower = 0;
-    if(source == TravelSource.STAFF_BLINK) {
-      requiredPower = getRequiredPower(player, source, coord);
-      if(requiredPower < 0) {
-        return false;
-      }
+    requiredPower = getRequiredPower(player, source, coord);
+    if(requiredPower < 0) {
+      return false;
     }
+
     if(!isInRangeTarget(player, coord, source.maxDistanceTravelledSq)) {
       if(source != TravelSource.STAFF_BLINK) {
         player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));

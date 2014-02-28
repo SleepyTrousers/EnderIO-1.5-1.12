@@ -119,7 +119,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
 
   // Method to call from FMLInitializationEvent
   public void initalise() {
-    this.channels = NetworkRegistry.INSTANCE.newChannel("TConstruct", this);
+    this.channels = NetworkRegistry.INSTANCE.newChannel("EnderIO", this);
     registerPackets();
   }
 

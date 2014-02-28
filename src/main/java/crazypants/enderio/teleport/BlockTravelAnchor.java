@@ -6,11 +6,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
@@ -19,6 +23,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
+import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
@@ -28,19 +33,24 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
 
   public static BlockTravelAnchor create() {
 
-    //TODO: 1.7
-    //TravelPacketHandler pp = new TravelPacketHandler();
-    //PacketHandler.instance.addPacketProcessor(pp);
-    //NetworkRegistry.instance().registerConnectionHandler(pp);
-
     EnderIO.packetPipeline.registerPacket(PacketAccessMode.class);
     EnderIO.packetPipeline.registerPacket(PacketTravelEvent.class);
     EnderIO.packetPipeline.registerPacket(PacketDrainStaff.class);
     EnderIO.packetPipeline.registerPacket(PacketOpenAuthGui.class);
+    EnderIO.packetPipeline.registerPacket(PacketConfigSync.class);
 
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();
+
+    FMLCommonHandler.instance().bus().register(result);
+
     return result;
+  }
+
+  //to lazy to create a new class
+  @SubscribeEvent
+  public void onPlayerLoggon(PlayerLoggedInEvent evt) {
+    EnderIO.packetPipeline.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
   }
 
   IIcon selectedOverlayIcon;

@@ -1,11 +1,5 @@
 package crazypants.enderio.enderface;
 
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.*;
-import crazypants.enderio.enderface.te.MeProxy;
-import crazypants.enderio.teleport.ITravelAccessable;
-import crazypants.util.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -18,6 +12,18 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.enderface.te.MeProxy;
+import crazypants.enderio.teleport.ITravelAccessable;
+import crazypants.util.Lang;
 
 public class BlockEnderIO extends Block implements ITileEntityProvider {
 
@@ -42,8 +48,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
 
     });
 
-    //TODO:1.7
-    //PacketHandler.instance.addPacketProcessor(new EnderfacePacketProcessor());
+    EnderIO.packetPipeline.registerPacket(PacketOpenRemoteUi.class);
 
     BlockEnderIO result = new BlockEnderIO();
     result.init();
@@ -70,6 +75,12 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
+  public int getRenderBlockPass() {
+    return 1;
+  }
+
+  @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack item) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEnderIO) {
@@ -93,7 +104,7 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof ITravelAccessable) {
       ITravelAccessable ta = (ITravelAccessable) te;
-        System.out.println("crazypants.enderio.enderface.BlockEnderIO.onBlockActivated:  Using as UI: " + entityPlayer.getUniqueID().toString());
+      System.out.println("crazypants.enderio.enderface.BlockEnderIO.onBlockActivated:  Using as UI: " + entityPlayer.getUniqueID().toString());
       if(ta.canUiBeAccessed(entityPlayer)) {
         entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, world, x, y, z);
       } else {
@@ -139,7 +150,6 @@ public class BlockEnderIO extends Block implements ITileEntityProvider {
     highlightOverlayIcon = IIconRegister.registerIcon("enderio:enderIOHighlight");
     selectedOverlayIcon = IIconRegister.registerIcon("enderio:enderIOSelected");
   }
-
 
   @Override
   public TileEntity createNewTileEntity(World var1, int var2) {
