@@ -76,8 +76,8 @@ public class PowerHandlerUtil {
       return 0;
     }
 
-    float energyStored = pp.getEnergyStored();
-    float canUse = quantity;
+    double energyStored = pp.getEnergyStored();
+    double canUse = quantity;
     canUse = Math.min(canUse, pp.getMaxEnergyReceived());
     // Don't overflow it
     canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);
@@ -97,19 +97,18 @@ public class PowerHandlerUtil {
     ph.setEnergy(ph.getEnergyStored() + canUse);
     receptor.applyPerdition();
 
-    return canUse;
+    return (float) canUse;
   }
 
-  
   public static int recieveRedstoneFlux(ForgeDirection from, PowerHandler powerHandler, int maxReceive, boolean simulate) {
     return recieveRedstoneFlux(from, powerHandler, maxReceive, simulate, false);
   }
-  
+
   public static int recieveRedstoneFlux(ForgeDirection from, PowerHandler powerHandler, int maxReceive, boolean simulate, boolean tickPH) {
     int canRecieve = (int) getMaxEnergyRecievedMj(powerHandler, maxReceive / 10, from);
     if(!simulate) {
       if(tickPH) {
-        doBuildCraftEnergyTick(powerHandler, from);        
+        doBuildCraftEnergyTick(powerHandler, from);
       }
       powerHandler.setEnergy(powerHandler.getEnergyStored() + canRecieve);
     }
@@ -120,13 +119,13 @@ public class PowerHandlerUtil {
     if(ph == null) {
       return 0;
     }
-    float canRecieve = max;
+    double canRecieve = max;
     canRecieve = Math.min(canRecieve, ph.getMaxEnergyReceived());
     canRecieve = Math.min(canRecieve, ph.getMaxEnergyStored() - ph.getEnergyStored());
     if(canRecieve <= ph.getMinEnergyReceived()) {
       return 0;
     }
-    return canRecieve;
+    return (float) canRecieve;
   }
 
   public static void doBuildCraftEnergyTick(PowerHandler ph, ForgeDirection from) {
@@ -137,7 +136,7 @@ public class PowerHandlerUtil {
     if(pp == null) {
       return;
     }
-    float stored = ph.getEnergyStored();
+    double stored = ph.getEnergyStored();
     pp.receiveEnergy(Type.PIPE, 0, from);
     ph.setEnergy(stored);
   }
@@ -145,18 +144,24 @@ public class PowerHandlerUtil {
   private static class NullPerditionCalculator extends PerditionCalculator {
 
     @Override
-    public float applyPerdition(PowerHandler powerHandler, float current, long ticksPassed) {
+    public double applyPerdition(PowerHandler powerHandler, double current, long ticksPassed) {
       if(current <= 0) {
         return 0;
       }
-      float decAmount = 0.001f;
-      float res;
+      double decAmount = 0.001f;
+      double res;
       do {
         res = current - decAmount;
         decAmount *= 10;
       } while (res >= current && decAmount < PerditionCalculator.MIN_POWERLOSS);
       return res;
     }
+
+    @Override
+    public double getTaxPercent() {
+      return 0;
+    }
+
   }
 
 }

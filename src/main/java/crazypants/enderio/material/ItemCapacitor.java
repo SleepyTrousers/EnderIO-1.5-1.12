@@ -29,7 +29,6 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   private final IIcon[] icons;
 
   protected ItemCapacitor() {
-    super(ModObject.itemBasicCapacitor.id);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemBasicCapacitor.unlocalisedName);
     setHasSubtypes(true);
@@ -64,7 +63,7 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Capacitors.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }

@@ -3,6 +3,7 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -13,8 +14,8 @@ import crazypants.enderio.material.BlockFusedQuartz.Type;
 
 public class ItemFusedQuartz extends ItemBlock {
 
-  public ItemFusedQuartz(int par1) {
-    super(par1);
+  public ItemFusedQuartz() {
+    super(EnderIO.blockFusedQuartz);
     this.setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
@@ -29,6 +30,7 @@ public class ItemFusedQuartz extends ItemBlock {
     return par1;
   }
 
+  @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
     meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
@@ -37,7 +39,7 @@ public class ItemFusedQuartz extends ItemBlock {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Type.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }

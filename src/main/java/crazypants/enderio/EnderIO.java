@@ -13,6 +13,14 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.material.BlockFusedQuartz;
+import crazypants.enderio.material.ItemAlloy;
+import crazypants.enderio.material.ItemCapacitor;
+import crazypants.enderio.material.ItemFusedQuartzFrame;
+import crazypants.enderio.material.ItemMachinePart;
+import crazypants.enderio.material.ItemMaterial;
+import crazypants.enderio.material.ItemPowderIngot;
+import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.network.PacketPipeline;
 import crazypants.enderio.network.PacketTileEntity;
 import crazypants.enderio.teleport.BlockTravelAnchor;
@@ -33,13 +41,13 @@ public class EnderIO {
   public static GuiHandler guiHandler = new GuiHandler();
 
   // Materials
-  //  public static ItemCapacitor itemBasicCapacitor;
-  //  public static ItemAlloy itemAlloy;
-  //  public static BlockFusedQuartz blockFusedQuartz;
-  //  public static ItemFusedQuartzFrame itemFusedQuartzFrame;
-  //  public static ItemMachinePart itemMachinePart;
-  //  public static ItemPowderIngot itemPowderIngot;
-  //  public static ItemMaterial itemMaterial;
+  public static ItemCapacitor itemBasicCapacitor;
+  public static ItemAlloy itemAlloy;
+  public static BlockFusedQuartz blockFusedQuartz;
+  public static ItemFusedQuartzFrame itemFusedQuartzFrame;
+  public static ItemMachinePart itemMachinePart;
+  public static ItemPowderIngot itemPowderIngot;
+  public static ItemMaterial itemMaterial;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -97,13 +105,13 @@ public class EnderIO {
 
     //    ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    //    itemBasicCapacitor = ItemCapacitor.create();
-    //    itemAlloy = ItemAlloy.create();
-    //    blockFusedQuartz = BlockFusedQuartz.create();
-    //    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
-    //    itemMachinePart = ItemMachinePart.create();
-    //    itemPowderIngot = ItemPowderIngot.create();
-    //    itemMaterial = ItemMaterial.create();
+    itemBasicCapacitor = ItemCapacitor.create();
+    itemAlloy = ItemAlloy.create();
+    blockFusedQuartz = BlockFusedQuartz.create();
+    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+    itemMachinePart = ItemMachinePart.create();
+    itemPowderIngot = ItemPowderIngot.create();
+    itemMaterial = ItemMaterial.create();
 
     blockEnderIo = BlockEnderIO.create();
     itemEnderface = ItemEnderface.create();
@@ -147,7 +155,7 @@ public class EnderIO {
     //    itemYetaWench = ItemYetaWrench.create();
     //    itemMJReader = ItemMJReader.create();
     //
-    //    MaterialRecipes.registerOresInDictionary();
+    MaterialRecipes.registerOresInDictionary();
   }
 
   @EventHandler
@@ -188,7 +196,7 @@ public class EnderIO {
     //    PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
 
     //    EnderfaceRecipes.addRecipes();
-    //    MaterialRecipes.addRecipes();
+    MaterialRecipes.addRecipes();
     //    ConduitRecipes.addRecipes();
     //    MachineRecipes.addRecipes();
     //    ItemRecipes.addRecipes();

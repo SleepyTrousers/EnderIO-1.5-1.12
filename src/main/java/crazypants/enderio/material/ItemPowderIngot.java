@@ -23,7 +23,6 @@ public class ItemPowderIngot extends Item {
   }
 
   private ItemPowderIngot() {
-    super(ModObject.itemPowderIngot.id);
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -58,7 +57,7 @@ public class ItemPowderIngot extends Item {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < PowderIngot.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }

@@ -1,13 +1,5 @@
 package crazypants.enderio;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import crazypants.enderio.enderface.EnderIoRenderer;
-import crazypants.enderio.enderface.TileEnderIO;
-import crazypants.enderio.teleport.TileTravelAnchor;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -15,6 +7,18 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.enderface.EnderIoRenderer;
+import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.material.BlockFusedQuartz;
+import crazypants.enderio.material.FusedQuartzFrameRenderer;
+import crazypants.enderio.material.FusedQuartzRenderer;
+import crazypants.enderio.teleport.TileTravelAnchor;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
 
 public class ClientProxy extends CommonProxy {
 
@@ -30,22 +34,22 @@ public class ClientProxy extends CommonProxy {
   // @formatter:on
 
   static {
-//    AbstractMachineBlock.initIcon();
-//    RedstoneConduit.initIcons();
-//    InsulatedRedstoneConduit.initIcons();
-//    RedstoneSwitch.initIcons();
-//    PowerConduit.initIcons();
-//    LiquidConduit.initIcons();
-//    AdvancedLiquidConduit.initIcons();
-//    ItemConduit.initIcons();
-//    MeConduit.initIcons();
+    //    AbstractMachineBlock.initIcon();
+    //    RedstoneConduit.initIcons();
+    //    InsulatedRedstoneConduit.initIcons();
+    //    RedstoneSwitch.initIcons();
+    //    PowerConduit.initIcons();
+    //    LiquidConduit.initIcons();
+    //    AdvancedLiquidConduit.initIcons();
+    //    ItemConduit.initIcons();
+    //    MeConduit.initIcons();
   }
 
-//  private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
-//
-//  private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
-//
-//  private ConduitBundleRenderer cbr;
+  //  private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
+  //
+  //  private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
+  //
+  //  private ConduitBundleRenderer cbr;
 
   @Override
   public World getClientWorld() {
@@ -57,13 +61,13 @@ public class ClientProxy extends CommonProxy {
     return Minecraft.getMinecraft().thePlayer;
   }
 
-//  public ConduitBundleRenderer getConduitBundleRenderer() {
-//    return cbr;
-//  }
-//
-//  public void setCbr(ConduitBundleRenderer cbr) {
-//    this.cbr = cbr;
-//  }
+  //  public ConduitBundleRenderer getConduitBundleRenderer() {
+  //    return cbr;
+  //  }
+  //
+  //  public void setCbr(ConduitBundleRenderer cbr) {
+  //    this.cbr = cbr;
+  //  }
 
   @Override
   public void load() {
@@ -71,88 +75,88 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-//    BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
-//    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
-//    RenderingRegistry.registerBlockHandler(bcfgr);
-//
-//    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
-//    RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
-//
-//    BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
-//    RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
-//
-//    CapacitorBankRenderer capr = new CapacitorBankRenderer();
-//    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);
-//
-//    BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
-//    CapBankRenderer2 cbr2 = new CapBankRenderer2();
-//    RenderingRegistry.registerBlockHandler(cbr2);
-//
-//    FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);
-//
-//    ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit, itemConRenderer);
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMeConduit, itemConRenderer);
-//
-//    PaintedItemRenderer pir = new PaintedItemRenderer();
-//    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFence), pir);
-//    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFenceGate), pir);
-//    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomWall), pir);
-//    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomStair), pir);
+    //    BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
+    //    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
+    //    RenderingRegistry.registerBlockHandler(bcfgr);
+    //
+    BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
+    //
+    //    BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
+    //    RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
+    //
+    //    CapacitorBankRenderer capr = new CapacitorBankRenderer();
+    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);
+    //
+    //    BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
+    //    CapBankRenderer2 cbr2 = new CapBankRenderer2();
+    //    RenderingRegistry.registerBlockHandler(cbr2);
+    //
+    FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);
+    //
+    //    ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit, itemConRenderer);
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMeConduit, itemConRenderer);
+    //
+    //    PaintedItemRenderer pir = new PaintedItemRenderer();
+    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFence), pir);
+    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFenceGate), pir);
+    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomWall), pir);
+    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomStair), pir);
 
     //TODO:1.7
     //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomSlab), pir);
 
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
-//    MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
-//
-//    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
-//    BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
-//    RenderingRegistry.registerBlockHandler(cbr);
-//    ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
+    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
+    //
+    //    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
+    //    BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
+    //    RenderingRegistry.registerBlockHandler(cbr);
+    //    ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
 
-//    conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
-//    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
-//    conduitRenderers.add(new LiquidConduitRenderer());
-//    conduitRenderers.add(new PowerConduitRenderer());
-//    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
-//    conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
+    //    conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
+    //    conduitRenderers.add(new AdvancedLiquidConduitRenderer());
+    //    conduitRenderers.add(new LiquidConduitRenderer());
+    //    conduitRenderers.add(new PowerConduitRenderer());
+    //    conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
+    //    conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
 
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), eior);
 
-//    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
-//
-//    HyperCubeRenderer hcr = new HyperCubeRenderer();
-//    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
-//    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
+    //    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+    //
+    //    HyperCubeRenderer hcr = new HyperCubeRenderer();
+    //    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
+    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
 
-//    new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
-//    // Tick handler
-//    if(Config.useSneakMouseWheelYetaWrench) {
-//      MinecraftForge.EVENT_BUS.register(new YetaWrenchTickHandler());
-//    }
+    //    new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
+    //    // Tick handler
+    //    if(Config.useSneakMouseWheelYetaWrench) {
+    //      MinecraftForge.EVENT_BUS.register(new YetaWrenchTickHandler());
+    //    }
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     FMLCommonHandler.instance().bus().register(TravelController.instance);
 
   }
 
-//  @Override
-//  public ConduitRenderer getRendererForConduit(IConduit conduit) {
-//    for (ConduitRenderer renderer : conduitRenderers) {
-//      if(renderer.isRendererForConduit(conduit)) {
-//        return renderer;
-//      }
-//    }
-//    return dcr;
-//  }
+  //  @Override
+  //  public ConduitRenderer getRendererForConduit(IConduit conduit) {
+  //    for (ConduitRenderer renderer : conduitRenderers) {
+  //      if(renderer.isRendererForConduit(conduit)) {
+  //        return renderer;
+  //      }
+  //    }
+  //    return dcr;
+  //  }
 
   @Override
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {

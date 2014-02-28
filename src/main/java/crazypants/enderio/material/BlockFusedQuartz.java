@@ -3,28 +3,26 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.TileEntityCustomBlock;
+import crazypants.enderio.enderface.BlockEio;
 import crazypants.util.Lang;
 
-public class BlockFusedQuartz extends Block implements ITileEntityProvider {
+public class BlockFusedQuartz extends BlockEio {
 
   public static int renderId;
 
@@ -58,20 +56,20 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   IIcon[] frameIcons;
 
   private BlockFusedQuartz() {
-    super(ModObject.blockFusedQuartz.id, Material.glass);
-    setHardness(0.5F);
-    setStepSound(Block.soundGlassFootstep);
-    setUnlocalizedName(ModObject.blockFusedQuartz.unlocalisedName);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    //TODO:1.7 no custom block class
+    //super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityCustomBlock.class, Material.glass);
+    super(ModObject.blockFusedQuartz.unlocalisedName, null, Material.glass);
+    setStepSound(Block.soundTypeGlass);
   }
 
-  private void init() {
+  @Override
+  protected void init() {
+    super.init();
 
-    GameRegistry.registerBlock(this, ItemFusedQuartz.class, ModObject.blockFusedQuartz.unlocalisedName);
-    LanguageRegistry.addName(this, ModObject.blockFusedQuartz.unlocalisedName);
     for (Type subtype : Type.values()) {
       String unlocalisedName = "blockFusedQuartz." + subtype.unlocalisedName;
       LanguageRegistry.instance().addStringLocalization(unlocalisedName, Lang.localize(unlocalisedName));
+
     }
   }
 
@@ -103,7 +101,7 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public int getLightOpacity(World world, int x, int y, int z) {
+  public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     return 0;
   }
 
@@ -113,7 +111,7 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
   }
 
   @Override
-  public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Type.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
@@ -121,12 +119,22 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
 
   @Override
   public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-    int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
-    return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+    Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
+    return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_) {
+    return true;
+  }
+
+  @Override
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return true;
+  }
+
+  @Override
+  public void registerBlockIcons(IIconRegister iIconRegister) {
     //This little oddity is so the standard rendering used for items and breaking effects
     //uses the item texture, while the custom renderer uses 'realBlockIcon' to render the 'non-frame' part of the block.
     Type[] ts = Type.values();
@@ -135,9 +143,9 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
     frameIcons = new IIcon[ts.length];
 
     for (int i = 0; i < ts.length; i++) {
-      blockIcon[i] = IIconRegister.registerIcon(ts[i].blockIcon);
-      itemsIcons[i] = IIconRegister.registerIcon(ts[i].itemIcon);
-      frameIcons[i] = IIconRegister.registerIcon(ts[i].frameIcon);
+      blockIcon[i] = iIconRegister.registerIcon(ts[i].blockIcon);
+      itemsIcons[i] = iIconRegister.registerIcon(ts[i].itemIcon);
+      frameIcons[i] = iIconRegister.registerIcon(ts[i].frameIcon);
     }
   }
 
@@ -158,39 +166,30 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
     return frameIcons[meta];
   }
 
-  @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    return new TileEntityCustomBlock();
-  }
-
   /**
    * Remove the tile entity too.
    */
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
-      if(te instanceof TileEntityCustomBlock) {
-        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-
-        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlockId(), tef.getSourceBlockMetadata());
-        if(itemStack != null) {
-          float f = 0.7F;
-          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-          entityitem.delayBeforeCanPickup = 10;
-          world.spawnEntityInWorld(entityitem);
-        }
-      }
+      //TODO:1.7
+      //      if(te instanceof TileEntityCustomBlock) {
+      //        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+      //
+      //        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlockId(), tef.getSourceBlockMetadata());
+      //        if(itemStack != null) {
+      //          float f = 0.7F;
+      //          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+      //          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+      //          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+      //          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+      //          entityitem.delayBeforeCanPickup = 10;
+      //          world.spawnEntityInWorld(entityitem);
+      //        }
+      //      }
 
     }
 
@@ -201,8 +200,9 @@ public class BlockFusedQuartz extends Block implements ITileEntityProvider {
     if(sourceBlockId <= 0) {
       return null;
     }
-    ItemStack result = new ItemStack(ModObject.itemFusedQuartzFrame.actualId, 1, quartzBlockMeta);
-    PainterUtil.setSourceBlock(result, sourceBlockId, sourceBlockMetadata);
+    ItemStack result = new ItemStack(EnderIO.instance.itemFusedQuartzFrame, 1, quartzBlockMeta);
+    //TODO:1.7
+    //PainterUtil.setSourceBlock(result, sourceBlockId, sourceBlockMetadata);
     return result;
   }
 

@@ -227,6 +227,9 @@ public class ConnectedTextureRenderer implements IRenderFace {
 
   private void applyLighting(Vertex vert, Vector3d samplePoint, List<Vertex> litVertices) {
     Vertex closest = getClosestVertex(litVertices, samplePoint);
+    if(closest == null) {
+      return;
+    }
     vert.setBrightness(closest.brightness);
     Vector4f col = closest.getColor();
     if(col != null) {
@@ -262,6 +265,9 @@ public class ConnectedTextureRenderer implements IRenderFace {
 
   private void moveCorners(List<Vertex> vertices, ForgeDirection edge, float scaleFactor) {
     int[] indices = getClosest(edge, vertices);
+    if(indices[0] < 0) {
+      return;
+    }
     vertices.get(indices[0]).xyz.x -= scaleFactor * edge.offsetX;
     vertices.get(indices[1]).xyz.x -= scaleFactor * edge.offsetX;
     vertices.get(indices[0]).xyz.y -= scaleFactor * edge.offsetY;

@@ -23,7 +23,6 @@ public class ItemMaterial extends Item {
   }
 
   private ItemMaterial() {
-    super(ModObject.itemMaterial.id);
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -58,7 +57,7 @@ public class ItemMaterial extends Item {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Material.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }

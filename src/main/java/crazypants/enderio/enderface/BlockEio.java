@@ -15,7 +15,11 @@ public abstract class BlockEio extends Block {
   protected final String name;
 
   protected BlockEio(String name, Class<? extends TileEntity> teClass) {
-    super(Material.rock);
+    this(name, teClass, Material.rock);
+  }
+
+  protected BlockEio(String name, Class<? extends TileEntity> teClass, Material mat) {
+    super(mat);
     this.teClass = teClass;
     this.name = name;
     setHardness(0.5F);

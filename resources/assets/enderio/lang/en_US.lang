@@ -49,7 +49,7 @@ enderio.vibrantCrystal.name=Vibrant Crystal
 
 
 //Quartz / Glass
-enderio.blockFusedQuartz=Fused Quartz
+tile.blockFusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
 

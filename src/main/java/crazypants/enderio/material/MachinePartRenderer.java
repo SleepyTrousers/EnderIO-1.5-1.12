@@ -1,10 +1,10 @@
 package crazypants.enderio.material;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -70,7 +70,7 @@ public class MachinePartRenderer implements IItemRenderer {
 
   private void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
     renderBlocks.setOverrideBlockTexture(EnderIO.itemMachinePart.getIconFromDamage(item.getItemDamage()));
-    renderBlocks.renderBlockAsItem(Block.stone, 0, 1.0F);
+    renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
     renderBlocks.clearOverrideBlockTexture();
   }
 }

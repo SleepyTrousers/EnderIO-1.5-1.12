@@ -32,7 +32,7 @@ public class PowerInterfaceBC implements IPowerInterface {
 
   @Override
   public float getEnergyStored(ForgeDirection dir) {
-    float result = 0;
+    double result = 0;
     if(bcPower instanceof IInternalPowerReceptor) {
       result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getEnergyStored();
     } else if(bcPower != null && !(bcPower instanceof IPowerEmitter)) {
@@ -41,12 +41,12 @@ public class PowerInterfaceBC implements IPowerInterface {
         result += pr.getEnergyStored();
       }
     }
-    return result;
+    return (float) result;
   }
 
   @Override
   public float getMaxEnergyStored(ForgeDirection dir) {
-    float result = 0;
+    double result = 0;
     if(bcPower instanceof IInternalPowerReceptor) {
       result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getMaxEnergyStored();
     } else if(bcPower != null && !(bcPower instanceof IPowerEmitter)) {
@@ -55,7 +55,7 @@ public class PowerInterfaceBC implements IPowerInterface {
         result += pr.getMaxEnergyStored();
       }
     }
-    return result;
+    return (float) result;
   }
 
   @Override
@@ -65,7 +65,7 @@ public class PowerInterfaceBC implements IPowerInterface {
       if(pr == null || pr.getType() == Type.ENGINE) {
         return 0;
       }
-      return pr.powerRequest();
+      return (float) pr.powerRequest();
     }
 
     return 0;
@@ -78,7 +78,7 @@ public class PowerInterfaceBC implements IPowerInterface {
       if(pr == null) {
         return 0;
       }
-      return pr.getMinEnergyReceived();
+      return (float) pr.getMinEnergyReceived();
     }
     return 0;
   }
@@ -96,8 +96,8 @@ public class PowerInterfaceBC implements IPowerInterface {
       if(pr == null) {
         return 0;
       }
-      float offer = Math.min(pr.powerRequest(), canOffer);
-      return pr.receiveEnergy(Type.PIPE, offer, opposite);
+      double offer = Math.min(pr.powerRequest(), canOffer);
+      return (float) pr.receiveEnergy(Type.PIPE, offer, opposite);
     }
     return 0;
   }

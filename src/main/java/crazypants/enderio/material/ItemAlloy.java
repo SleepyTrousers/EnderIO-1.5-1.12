@@ -26,7 +26,6 @@ public class ItemAlloy extends Item {
   }
 
   private ItemAlloy() {
-    super(ModObject.itemAlloy.id);
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -74,7 +73,7 @@ public class ItemAlloy extends Item {
 
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < numItems; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
