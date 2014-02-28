@@ -1,8 +1,6 @@
 package crazypants.enderio.teleport;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,12 +14,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
@@ -29,7 +26,7 @@ import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.Lang;
 
-public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntityProvider {
+public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider {
 
   public static BlockTravelAnchor create() {
 
@@ -57,28 +54,22 @@ public class BlockTravelAnchor extends Block implements IGuiHandler, ITileEntity
   IIcon highlightOverlayIcon;
 
   private BlockTravelAnchor() {
-    super(Material.rock);
-    setHardness(0.5F);
-    setStepSound(Block.soundTypeStone);
-    setBlockName(ModObject.blockTravelPlatform.unlocalisedName);
-    if(Config.travelAnchorEnabled) {
-      setCreativeTab(EnderIOTab.tabEnderIO);
-    } else {
+    super(ModObject.blockTravelAnchor.unlocalisedName, TileTravelAnchor.class);
+    if(!Config.travelAnchorEnabled) {
       setCreativeTab(null);
     }
   }
 
-  private void init() {
-
-    GameRegistry.registerBlock(this, ModObject.blockTravelPlatform.unlocalisedName);
-    GameRegistry.registerTileEntity(TileTravelAnchor.class, ModObject.blockTravelPlatform.unlocalisedName + "TileEntity");
+  @Override
+  protected void init() {
+    super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
   }
 
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
-    blockIcon = iIconRegister.registerIcon("enderio:blockTravelAnchor");
+    super.registerBlockIcons(iIconRegister);
     highlightOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorHighlight");
     selectedOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorSelected");
   }

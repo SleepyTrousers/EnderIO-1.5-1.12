@@ -93,7 +93,7 @@ tile.blockHyperCube.name=Dimensional Transceiver
 tile.blockPowerMonitor.name=Power Monitor
 
 //Travel
-tile.blockTravelPlatform.name=Travel Anchor
+tile.blockTravelAnchor.name=Travel Anchor
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
 item.itemTravelStaff.name=Staff of Traveling

@@ -63,7 +63,7 @@ public enum ModObject {
   itemItemConduit,
   itemMeConduit,
 
-  blockTravelPlatform,
+  blockTravelAnchor,
   itemTravelStaff;
 
   public final String unlocalisedName;
