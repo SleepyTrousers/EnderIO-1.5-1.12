@@ -4,10 +4,8 @@ import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -76,13 +74,14 @@ public class MachineRecipes {
     }
 
     //MJ Monitor
-    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
-    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
-    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
-    ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
-    GameRegistry
-        .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
-            'r', redstoneConduit, 'c', capacitor);
+    //TODO:1.7
+    //    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
+    //    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
+    //    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
+    //    ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
+    //    GameRegistry
+    //        .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
+    //            'r', redstoneConduit, 'c', capacitor);
 
   }
 
@@ -118,10 +117,10 @@ public class MachineRecipes {
     //painter
     ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
     if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qqq", "mdm", "CMC", 'm', metal, 'M', machineChassi, 'q', Item.netherQuartz, 'd', Item.diamond,
+      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qqq", "mdm", "CMC", 'm', metal, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond,
           'C', capacitor, 'q', Items.quartz, 'd', Items.diamond));
     } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "mMm", "mCm", 'm', metal, 'M', machineChassi, 'q', Item.netherQuartz, 'd', Item.diamond,
+      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "mMm", "mCm", 'm', metal, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond,
           'C', capacitor, 'q', Items.quartz, 'd', Items.diamond));
     }
 
@@ -129,10 +128,10 @@ public class MachineRecipes {
     ItemStack capacitorBank = new ItemStack(EnderIO.blockCapacitorBank, 1, 0);
     ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor, 1, 1);
     if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', metal, 'c', activatedCapacitor, 'r', Block.blockRedstone, 'M',
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', metal, 'c', activatedCapacitor, 'r', Blocks.redstone_block, 'M',
           machineChassi));
     } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', metal, 'c', activatedCapacitor, 'r', Block.blockRedstone));
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', metal, 'c', activatedCapacitor, 'r', Blocks.redstone_block));
     }
 
     //light
@@ -149,18 +148,19 @@ public class MachineRecipes {
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor));
 
     } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', Block.glass, 'd', glowstone, 's', silicon, 'c', capacitor));
+      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', Blocks.glass, 'd', glowstone, 's', silicon, 'c', capacitor));
 
     }
 
-    //MJ Reader    
-    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
-    ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
-    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
-    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
-
-    GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g',
-        Blocks.glass_pane, 's', silicon, 'e',
-        electricalSteel));
+    //TODO:1.7
+    //    //MJ Reader    
+    //    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
+    //    ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    //    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
+    //    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
+    //
+    //    GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g',
+    //        Blocks.glass_pane, 's', silicon, 'e',
+    //        electricalSteel));
   }
 }

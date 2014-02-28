@@ -2,14 +2,10 @@ package crazypants.enderio.machine.alloy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeComponent;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -22,7 +18,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   private float energyRequired = DEFAULT_ENERGY_USE;
   private ItemStack output;
 
-  private final List<IEnderIoRecipe> recipeEIO;
+  //private final List<IEnderIoRecipe> recipeEIO;
 
   private float expPerItem;
 
@@ -34,14 +30,15 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
     expPerItem = recipe.getOutputs()[0].getExperiance();
     energyRequired = recipe.getEnergyRequired();
 
-    List<IRecipeComponent> reipceComps = new ArrayList<IRecipeComponent>(recipe.getInputs().length);
-    for (RecipeInput input : recipe.getInputs()) {
-      crazypants.enderio.crafting.impl.RecipeInput ri = new crazypants.enderio.crafting.impl.RecipeInput(input.getInput(), -1, input.getEquivelentInputs());
-      reipceComps.add(ri);
-    }
-    reipceComps.add(new crazypants.enderio.crafting.impl.RecipeOutput(output));
-    IEnderIoRecipe rec = new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, energyRequired, reipceComps);
-    this.recipeEIO = Collections.singletonList(rec);
+    //TODO:1.7
+    //    List<IRecipeComponent> reipceComps = new ArrayList<IRecipeComponent>(recipe.getInputs().length);
+    //    for (RecipeInput input : recipe.getInputs()) {
+    //      crazypants.enderio.crafting.impl.RecipeInput ri = new crazypants.enderio.crafting.impl.RecipeInput(input.getInput(), -1, input.getEquivelentInputs());
+    //      reipceComps.add(ri);
+    //    }
+    //    reipceComps.add(new crazypants.enderio.crafting.impl.RecipeOutput(output));
+    //    IEnderIoRecipe rec = new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, energyRequired, reipceComps);
+    //    this.recipeEIO = Collections.singletonList(rec);
   }
 
   @Override
@@ -156,9 +153,9 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
     return result.toArray(new MachineRecipeInput[result.size()]);
   }
 
-  public List<IEnderIoRecipe> getAllRecipes() {
-    return recipeEIO;
-  }
+  //  public List<IEnderIoRecipe> getAllRecipes() {
+  //    return recipeEIO;
+  //  }
 
   static class InputKey {
 

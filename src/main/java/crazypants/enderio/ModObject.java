@@ -10,6 +10,8 @@ public enum ModObject {
   blockConduitFacade,
   itemConduitFacade,
   itemRedstoneConduit,
+  itemItemConduit,
+  itemMeConduit,
 
   // Power
   itemPowerConduit,
@@ -20,12 +22,24 @@ public enum ModObject {
   // Materials
   itemBasicCapacitor,
   itemAlloy,
+  itemMaterial,
   blockFusedQuartz,
+  itemFusedQuartzFrame,
+  itemMachinePart,
+  itemPowderIngot,
 
-  // Stirling Gen
+  // Machines
   blockStirlingGenerator,
   blockReservoir,
   blockAlloySmelter,
+  blockSolarPanel,
+  blockCapacitorBank,
+  blockSagMill,
+  blockHyperCube,
+  blockPowerMonitor,
+
+  blockElectricLight,
+  blockLightNode,
 
   // Painter
   blockPainter,
@@ -33,48 +47,19 @@ public enum ModObject {
   blockCustomFenceGate,
   blockCustomWall,
   blockCustomStair,
-  itemFusedQuartzFrame,
-
-  // Solar Panel
-  blockSolarPanel,
-
-  blockElectricLight,
-  blockLightNode,
-
-  blockCapacitorBank,
-
-  itemYetaWrench,
-
   blockCustomSlab,
   blockCustomDoubleSlab,
 
-  blockCrusher,
-
-  blockHyperCube,
-
-  itemMachinePart,
-  itemPowderIngot,
-
   itemMJReader,
-  itemMaterial,
-
-  blockPowerMonitor,
-
-  itemItemConduit,
-  itemMeConduit,
+  itemYetaWrench,
 
   blockTravelAnchor,
   itemTravelStaff;
 
   public final String unlocalisedName;
-  //public final String name;
-
-  public int actualId;
 
   private ModObject() {
     this.unlocalisedName = name();
-    //this.name = Lang.localize(name());
-    actualId = -1;
   }
 
 }

@@ -44,7 +44,7 @@ public class CrusherRecipeManager {
     } else {
       Log.error("Could not load recipes for SAG Mill.");
     }
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockCrusher.unlocalisedName, new CrusherMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.unlocalisedName, new CrusherMachineRecipe());
   }
 
   public void addCustumRecipes(String xmlDef) {

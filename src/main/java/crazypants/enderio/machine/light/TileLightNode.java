@@ -28,7 +28,6 @@ public class TileLightNode extends TileEntityEio {
     }
     if(worldObj.getWorldTime() % 42 == 0) {
       if(worldObj.getBlock(parentX, parentY, parentZ) != EnderIO.blockElectricLight) {
-        System.out.println("TileLightNode.updateEntity: ");
         worldObj.setBlockToAir(xCoord, yCoord, zCoord);
       }
     }

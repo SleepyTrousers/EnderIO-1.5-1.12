@@ -1,5 +1,9 @@
 package crazypants.enderio;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -13,10 +17,18 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.machine.alloy.AlloyRecipeManager;
+import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.crusher.BlockCrusher;
+import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
+import crazypants.enderio.machine.monitor.BlockPowerMonitor;
+import crazypants.enderio.machine.monitor.ItemMJReader;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
@@ -81,22 +93,22 @@ public class EnderIO {
   //  public static ItemMeConduit itemMeConduit;
   //
   //  // Machines
-  //  public static BlockStirlingGenerator blockStirlingGenerator;
+  public static BlockStirlingGenerator blockStirlingGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
-
-  //  public static BlockAlloySmelter blockAlloySmelter;
+  public static BlockAlloySmelter blockAlloySmelter;
   //  public static BlockCapacitorBank blockCapacitorBank;
-  //  public static BlockCrusher blockCrusher;
+  public static BlockCrusher blockCrusher;
   //  public static BlockHyperCube blockHyperCube;
-  //  public static BlockPowerMonitor blockPowerMonitor;
-  //
+  public static BlockPowerMonitor blockPowerMonitor;
+
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
   //
   //  public static ItemYetaWrench itemYetaWench;
-  //  public static ItemMJReader itemMJReader;
+  public static ItemMJReader itemMJReader;
+
   //
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -137,13 +149,13 @@ public class EnderIO {
     //    blockCustomSlab.init();
     //    blockCustomDoubleSlab.init();
     //
-    //    blockStirlingGenerator = BlockStirlingGenerator.create();
+    blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
     blockReservoir = BlockReservoir.create();
-    //    blockAlloySmelter = BlockAlloySmelter.create();
+    blockAlloySmelter = BlockAlloySmelter.create();
     //    blockCapacitorBank = BlockCapacitorBank.create();
-    //    blockCrusher = BlockCrusher.create();
-    //    blockPowerMonitor = BlockPowerMonitor.create();
+    blockCrusher = BlockCrusher.create();
+    blockPowerMonitor = BlockPowerMonitor.create();
     //
     //    blockConduitBundle = BlockConduitBundle.create();
     //    blockConduitFacade = BlockConduitFacade.create();
@@ -159,8 +171,8 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
     //
     //    itemYetaWench = ItemYetaWrench.create();
-    //    itemMJReader = ItemMJReader.create();
-    //
+    itemMJReader = ItemMJReader.create();
+
     MaterialRecipes.registerOresInDictionary();
   }
 
@@ -176,28 +188,28 @@ public class EnderIO {
     MinecraftForge.EVENT_BUS.register(this);
 
     //Register Custom Dungeon Loot here
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
-    //        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
     //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
     //        .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemMJReader, 1, 0), 1, 1, 1));
-    //
-    //    ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
-    //    itemTravelStaff.setFull(staff);
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 30));
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 40));
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 30));
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
-    //    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-    //        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 5, 20, 50));
-    //    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-    //        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 14, 35));
-    //    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-    //        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()), 2, 6, 20));
-    //    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-    //        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 2, 6, 10));
-    //    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
-    //    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 20));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemMJReader, 1, 0), 1, 1, 1));
+
+    ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
+    itemTravelStaff.setFull(staff);
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 30));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 40));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 30));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 5, 20, 50));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 14, 35));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()), 2, 6, 20));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 2, 6, 10));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
+    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 20));
     //
     //    PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
 
@@ -224,12 +236,13 @@ public class EnderIO {
   public void postInit(FMLPostInitializationEvent event) {
 
     packetPipeline.postInitialise();
-
-    //    CrusherRecipeManager.getInstance().loadRecipesFromConfig();
-    //    AlloyRecipeManager.getInstance().loadRecipesFromConfig();
-    //    MaterialRecipes.addOreDictionaryRecipes();
+    MaterialRecipes.registerExternalOresInDictionary();
+    MaterialRecipes.addOreDictionaryRecipes();
     //    MachineRecipes.addOreDictionaryRecipes();
     //    ConduitRecipes.addOreDictionaryRecipes();
+
+    CrusherRecipeManager.getInstance().loadRecipesFromConfig();
+    AlloyRecipeManager.getInstance().loadRecipesFromConfig();
   }
 
   @EventHandler

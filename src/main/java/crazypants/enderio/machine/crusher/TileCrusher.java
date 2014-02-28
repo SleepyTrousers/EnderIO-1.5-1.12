@@ -12,18 +12,23 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public String getInvName() {
-    return ModObject.blockCrusher.name;
+  public String getInventoryName() {
+    return ModObject.blockSagMill.unlocalisedName;
   }
 
   @Override
   public String getMachineName() {
-    return ModObject.blockCrusher.unlocalisedName;
+    return ModObject.blockSagMill.unlocalisedName;
   }
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return CrusherRecipeManager.instance.getRecipeForInput(itemstack) != null;
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
   }
 
 }

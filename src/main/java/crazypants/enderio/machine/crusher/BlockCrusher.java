@@ -16,7 +16,7 @@ public class BlockCrusher extends AbstractMachineBlock {
   }
 
   private BlockCrusher() {
-    super(ModObject.blockCrusher, TileCrusher.class);
+    super(ModObject.blockSagMill, TileCrusher.class);
   }
 
   @Override

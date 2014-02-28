@@ -7,13 +7,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   public static BlockAlloySmelter create() {
-    PacketHandler.instance.addPacketProcessor(new AlloySmelterPacketProcessor());
+    //TODO:1.7
+    //PacketHandler.instance.addPacketProcessor(new AlloySmelterPacketProcessor());
     BlockAlloySmelter ppainter = new BlockAlloySmelter();
     ppainter.init();
     return ppainter;
@@ -28,11 +28,11 @@ public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
-    super.registerIcons(IIconRegister);
-    vanillaSmeltingOn = IIconRegister.registerIcon("enderio:furnaceSmeltingOn");
-    vanillaSmeltingOff = IIconRegister.registerIcon("enderio:furnaceSmeltingOff");
-    vanillaSmeltingOnly = IIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
+  public void registerBlockIcons(IIconRegister iIconRegister) {
+    super.registerBlockIcons(iIconRegister);
+    vanillaSmeltingOn = iIconRegister.registerIcon("enderio:furnaceSmeltingOn");
+    vanillaSmeltingOff = iIconRegister.registerIcon("enderio:furnaceSmeltingOff");
+    vanillaSmeltingOnly = iIconRegister.registerIcon("enderio:furnaceSmeltingOnly");
   }
 
   @Override

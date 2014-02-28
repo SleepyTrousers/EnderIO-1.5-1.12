@@ -184,11 +184,17 @@ public class BlockElectricLight extends BlockEio {
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    TileElectricLight te = (TileElectricLight) world.getTileEntity(x, y, z);
-    if(te != null) {
-      te.onBlockRemoved();
+
+    TileEntity t = world.getTileEntity(x, y, z);
+    TileElectricLight te = null;
+    if(t instanceof TileElectricLight) {
+      te = (TileElectricLight) t;
     }
-    world.removeTileEntity(x, y, z);
+    if(t != null) {
+      te.onBlockRemoved();
+      world.removeTileEntity(x, y, z);
+    }
+
   }
 
 }

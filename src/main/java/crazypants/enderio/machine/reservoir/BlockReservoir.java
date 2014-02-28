@@ -194,12 +194,14 @@ public class BlockReservoir extends BlockContainer {
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
     if(world.isRemote) {
       return;
     }
-    TileReservoir te = (TileReservoir) world.getTileEntity(x, y, z);
-    te.onNeighborBlockChange(blockId);
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileReservoir) {
+      ((TileReservoir) te).onNeighborBlockChange(block);
+    }
   }
 
   @Override

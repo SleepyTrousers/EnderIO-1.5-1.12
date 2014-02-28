@@ -33,81 +33,81 @@ sand/cobble/wood=0.1
     
     <recipe name="Electrical Steel" energyCost="1000">
       <input>
-        <itemStack itemID="265" /> <!-- Iron -->
-        <itemStack itemID="263" /> <!-- Coal -->        
+        <itemStack modID="minecraft" itemName="iron_ingot"/>
+        <itemStack modID="minecraft" itemName="coal"/>        
         <itemStack oreDictionary="itemSilicon"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="0" exp="0.5"/> 
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="0" exp="0.5"/> 
       </output>
     </recipe>
     
     <recipe name="Energetic Alloy" energyCost="1000">
       <input>
-        <itemStack itemID="331" /> <!-- Red stone -->
-        <itemStack itemID="266" /> <!-- Gold -->
-        <itemStack itemID="348" /> <!-- Glow stone -->
+        <itemStack modID="minecraft" itemName="redstone"/>
+        <itemStack modID="minecraft" itemName="gold_ingot"/>
+        <itemStack modID="minecraft" itemName="glowstone_dust"/>        
       </input>                  
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="1" exp="0.7"/> 
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" exp="0.7"/> 
       </output>
     </recipe>
     
     <recipe name="Vibrant Alloy" energyCost="1000">
       <input>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="1"/> <!-- Energetic Alloy -->
-        <itemStack itemID="368" /> <!-- Ender Pearl -->
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1"/> <!-- Energetic Alloy -->
+        <itemStack modID="minecraft" itemName="ender_pearl"/>
       </input>                       
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="2" exp="1"/> 
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="2" exp="1"/> 
       </output>
     </recipe>
     
     <recipe name="Redstone Alloy" energyCost="1000">
       <input>
-        <itemStack itemID="331" /> <!-- Redstone -->
-        <itemStack modID="EnderIO" itemName="enderIO:itemMaterial" itemMeta="0" /> <!-- Silicon -->
+        <itemStack modID="minecraft" itemName="redstone"/>
+        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="0" /> <!-- Silicon -->
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="3" exp="0.5"/> 
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="3" exp="0.5"/> 
       </output>
     </recipe>
     
     <recipe name="Conductive Iron" energyCost="1000">
       <input>
-        <itemStack itemID="331" number="2"/> <!-- Redstone -->
-        <itemStack itemID="265" /> <!-- Iron Ingot -->
+        <itemStack modID="minecraft" itemName="redstone"/>
+        <itemStack modID="minecraft" itemName="iron_ingot"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="4" exp="0.5"/> 
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="4" exp="0.5"/> 
       </output>
     </recipe>
     
     <recipe name="Pulsating Iron" energyCost="1000">
       <input>
-        <itemStack itemID="265" /> <!-- Iron Ingot -->
-        <itemStack itemID="368" /> <!-- Ender Pearl -->
+      <itemStack modID="minecraft" itemName="iron_ingot"/>
+      <itemStack modID="minecraft" itemName="ender_pearl"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:itemAlloy" itemMeta="5" exp="0.7"/> 
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="5" exp="0.7"/> 
       </output>
     </recipe>
     
     <recipe name="Fused Quartz" energyCost="500">
-      <input>
-        <itemStack itemID="406" number="4" /> <!-- Nether Quartz-->
+      <input>        
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
       </input>            
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="0" exp="0.5"/> 
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0" exp="0.5"/> 
       </output>
     </recipe>
     
     <recipe name="Fused Glass" energyCost="250">
       <input>
-        <itemStack itemID="12" />
+        <itemStack modID="minecraft" itemName="sand"/>
       </input>            
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="1" exp="0.2"/> 
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.2"/> 
       </output>
     </recipe>
     
@@ -116,7 +116,7 @@ sand/cobble/wood=0.1
         <itemStack oreDictionary="sand" />
       </input>            
       <output>
-        <itemStack modID="EnderIO" itemName="enderIO:blockFusedQuartz" itemMeta="1" exp="0.2"/> 
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.2"/> 
       </output>
     </recipe>
   

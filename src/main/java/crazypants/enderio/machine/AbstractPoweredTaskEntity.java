@@ -232,7 +232,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+    super.readCustomNBT(nbtRoot);
     currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
     String uid = nbtRoot.getString("lastCompletedRecipe");
     lastCompletedRecipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
@@ -240,7 +240,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
+    super.writeCustomNBT(nbtRoot);
     if(currentTask != null) {
       NBTTagCompound currentTaskNBT = new NBTTagCompound();
       currentTask.writeToNBT(currentTaskNBT);

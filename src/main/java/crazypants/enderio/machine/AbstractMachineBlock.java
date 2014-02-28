@@ -86,7 +86,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public TileEntity createTileEntity(World world, int metadata) {
+  public TileEntity createNewTileEntity(World var1, int var2) {
     try {
       return teClass.newInstance();
     } catch (Exception e) {

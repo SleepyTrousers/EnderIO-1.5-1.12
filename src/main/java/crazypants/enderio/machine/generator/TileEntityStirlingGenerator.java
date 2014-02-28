@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,7 +59,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  public String getInvName() {
+  public String getInventoryName() {
     return "Stirling Generator";
   }
 
@@ -96,21 +97,21 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
+    super.readCustomNBT(nbtRoot);
     burnTime = nbtRoot.getInteger("burnTime");
     totalBurnTime = nbtRoot.getInteger("totalBurnTime");
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
     nbtRoot.setInteger("burnTime", burnTime);
     nbtRoot.setInteger("totalBurnTime", totalBurnTime);
   }
 
   @Override
-  public void onNeighborBlockChange(int blockId) {
+  public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
     receptorsDirty = true;
   }
@@ -134,7 +135,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
           burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
           if(burnTime > 0) {
             totalBurnTime = burnTime;
-            ItemStack containedItem = inventory[0].getItem().getContainerItemStack(inventory[0]);
+            ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
             if(containedItem != null) {
               inventory[0] = containedItem;
             } else {
@@ -155,12 +156,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       powerHandler.update();
       return false;
     }
-    float canTransmit = Math.min(powerHandler.getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
+    double canTransmit = Math.min(powerHandler.getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
     float transmitted = 0;
 
-    float stored = powerHandler.getEnergyStored();
+    double stored = powerHandler.getEnergyStored();
     powerHandler.update();
-    float storedAfter = powerHandler.getEnergyStored();
+    double storedAfter = powerHandler.getEnergyStored();
 
     checkReceptors();
 
@@ -174,7 +175,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       Receptor receptor = receptorIterator.next();
       IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
-        float used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
+        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), (float) canTransmit);
         transmitted += used;
         canTransmit -= used;
       }
@@ -222,6 +223,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       this.receptor = rec;
       this.fromDir = fromDir;
     }
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
   }
 
 }

@@ -36,7 +36,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public String getInvName() {
+  public String getInventoryName() {
     return "Alloy Smelter";
   }
 
@@ -183,16 +183,21 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
+    super.readCustomNBT(nbtRoot);
     short mb = nbtRoot.getShort("mode");
     mode = Mode.values()[mb];
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
     nbtRoot.setShort("mode", (short) mode.ordinal());
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
   }
 
 }

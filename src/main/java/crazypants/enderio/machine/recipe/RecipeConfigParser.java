@@ -357,11 +357,11 @@ public class RecipeConfigParser extends DefaultHandler {
 
       Item i = GameRegistry.findItem(modId, name);
       if(i != null) {
-        res = new ItemStack(i, 1, useMeta ? itemMeta : 0);
+        res = new ItemStack(i, stackSize, useMeta ? itemMeta : 0);
       } else {
         Block b = GameRegistry.findBlock(modId, name);
         if(b != null) {
-          res = new ItemStack(b, 1, useMeta ? itemMeta : 0);
+          res = new ItemStack(b, stackSize, useMeta ? itemMeta : 0);
         }
       }
     }

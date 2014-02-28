@@ -8,12 +8,11 @@ import java.awt.Rectangle;
 import java.text.NumberFormat;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiScreenBase;
@@ -96,8 +95,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
     });
 
-    fontRenderer = Minecraft.getMinecraft().fontRenderer;
-    int x = MARGIN + fontRenderer.getStringWidth(titleStr) + SPACING;
+    int x = MARGIN + Minecraft.getMinecraft().fontRenderer.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBoxEIO(this, 21267, x, 8);
     enabledB.setSelectedToolTip(Lang.localize("enderio.gui.enabled"));
@@ -113,17 +111,17 @@ public class GuiPowerMonitor extends GuiScreenBase {
     buttonList.clear();
     enabledB.onGuiInit();
 
-    int x = guiLeft + MARGIN + fontRenderer.getStringWidth(engineTxt2) + 4;
-    int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + fontRenderer.FONT_HEIGHT;
-    startTF = new GuiTextField(fontRenderer, x, y, 28, 14);
+    int x = guiLeft + MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
+    int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
+    startTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
     startTF.setCanLoseFocus(true);
     startTF.setMaxStringLength(3);
     startTF.setFocused(true);
     startTF.setText(INT_NF.format(te.asPercentInt(te.startLevel)));
 
-    y = y + fontRenderer.FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
-    x = guiLeft + MARGIN + fontRenderer.getStringWidth(engineTxt5);
-    endTF = new GuiTextField(fontRenderer, x, y, 28, 14);
+    y = y + getFontRenderer().FONT_HEIGHT + ICON_SIZE + ICON_SIZE + 4;
+    x = guiLeft + MARGIN + getFontRenderer().getStringWidth(engineTxt5);
+    endTF = new GuiTextField(getFontRenderer(), x, y, 28, 14);
     endTF.setCanLoseFocus(true);
     endTF.setMaxStringLength(3);
     endTF.setFocused(false);
@@ -205,8 +203,9 @@ public class GuiPowerMonitor extends GuiScreenBase {
       if(i >= 0) {
         te.stopLevel = te.asPercentFloat(i);
       }
-      Packet pkt = PowerMonitorPacketHandler.createPowerMonitotPacket(te);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = PowerMonitorPacketHandler.createPowerMonitotPacket(te);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
 
   }
@@ -238,6 +237,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     } else {
       rgb = ColorUtil.getRGB(Color.black);
     }
+    FontRenderer fontRenderer = getFontRenderer();
     fontRenderer.drawString(titleStr, x, y, rgb, false);
 
     x = left + fontRenderer.getStringWidth(titleStr) + SPACING + ICON_SIZE + SPACING;
@@ -302,6 +302,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
 
     int sectionGap = SPACING;
 
+    FontRenderer fontRenderer = getFontRenderer();
     rgb = headingCol;
     StringBuilder sb = new StringBuilder();
     sb.append(monHeading1);

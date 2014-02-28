@@ -20,6 +20,7 @@ import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
+import crazypants.enderio.material.MachinePartRenderer;
 import crazypants.enderio.teleport.TileTravelAnchor;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
@@ -115,7 +116,7 @@ public class ClientProxy extends CommonProxy {
     //TODO:1.7
     //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomSlab), pir);
 
-    //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
     //
     //    cbr = new ConduitBundleRenderer((float) Config.conduitScale);

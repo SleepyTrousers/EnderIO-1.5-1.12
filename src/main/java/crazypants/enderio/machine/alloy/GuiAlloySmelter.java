@@ -4,12 +4,10 @@ import java.awt.Rectangle;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
@@ -61,7 +59,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
     int x = guiLeft + xSize - 5 - BUTTON_SIZE;
     int y = guiTop + 60;
 
-    vanillaFurnaceButton = new IconButton(fontRenderer, SMELT_MODE_BUTTON_ID, x, y, getIconForMode(), RenderUtil.BLOCK_TEX);
+    vanillaFurnaceButton = new IconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, x, y, getIconForMode(), RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 
     buttonList.add(vanillaFurnaceButton);
@@ -72,8 +70,9 @@ public class GuiAlloySmelter extends GuiMachineBase {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
       tileEntity.setMode(tileEntity.getMode().next());
       vanillaFurnaceButton.setIcon(getIconForMode());
-      Packet pkt = AlloySmelterPacketProcessor.getSmeltingModePacket(tileEntity);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = AlloySmelterPacketProcessor.getSmeltingModePacket(tileEntity);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     } else {
       super.actionPerformed(par1GuiButton);
     }

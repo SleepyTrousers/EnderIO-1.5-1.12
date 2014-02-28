@@ -145,7 +145,7 @@ public class AlloyRecipeManager {
 
   public float getExperianceForOutput(ItemStack output) {
     for (IAlloyRecipe recipe : recipes) {
-      if(recipe.getOutput().itemID == output.itemID && recipe.getOutput().getItemDamage() == output.getItemDamage()) {
+      if(recipe.getOutput().getItem() == output.getItem() && recipe.getOutput().getItemDamage() == output.getItemDamage()) {
         return recipe.getOutputs()[0].getExperiance();
       }
     }

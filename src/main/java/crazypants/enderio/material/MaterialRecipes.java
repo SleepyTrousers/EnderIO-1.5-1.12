@@ -24,8 +24,8 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
     OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
     OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
-    OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemPowderIngot, 1, Material.SILICON.ordinal()));
-    OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemPowderIngot, 1, MachinePart.BASIC_GEAR.ordinal()));
+    OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
+    OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
 
     int oreId = OreDictionary.getOreID("glass");
     ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
