@@ -172,17 +172,16 @@ public class TravelController implements ITickHandler {
     }
     TileEnderIO eio = (TileEnderIO) te;
     if(eio.canBlockBeAccessed(player.username)) {
-
       int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
-      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+      if(requiredPower >= 0 && requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
         if(requiredPower > 0) {
           PacketDispatcher.sendPacketToServer(TravelPacketHandler.createDrainPowerPacket(requiredPower));
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
             TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
-      } else {
-        player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
       }
+    } else {
+      player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("gui.travelAccessable.unauthorised")));
     }
   }
 
@@ -204,12 +203,11 @@ public class TravelController implements ITickHandler {
     }
 
     int requiredPower = 0;
-    if(source == TravelSource.STAFF_BLINK) {
-      requiredPower = getRequiredPower(player, source, coord);
-      if(requiredPower < 0) {
-        return false;
-      }
+    requiredPower = getRequiredPower(player, source, coord);
+    if(requiredPower < 0) {
+      return false;
     }
+
     if(!isInRangeTarget(player, coord, source.maxDistanceTravelledSq)) {
       if(source != TravelSource.STAFF_BLINK) {
         player.sendChatToPlayer(ChatMessageComponent.createFromText(Lang.localize("blockTravelPlatform.outOfRange")));
