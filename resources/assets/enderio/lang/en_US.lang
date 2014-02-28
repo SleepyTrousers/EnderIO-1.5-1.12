@@ -100,7 +100,7 @@ item.itemTravelStaff.name=Staff of Traveling
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 //Painter
-tile.enderio.blockPainter.name=Painting Machine
+tile.blockPainter.name=Painting Machine
 enderio.blockPainter.paintedWith=Painted with:
 enderio.blockCustomFence=Painted Fence
 enderio.blockCustomFenceGate=Painted Gate

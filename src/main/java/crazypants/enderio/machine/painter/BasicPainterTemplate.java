@@ -2,6 +2,8 @@ package crazypants.enderio.machine.painter;
 
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -17,16 +19,16 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     if(paintSource == null) {
       return false;
     }
-    Block block = Util.getBlockFromItemId(paintSource.itemID);
+    Block block = Util.getBlockFromItemId(paintSource);
     if(block == null) {
       return false;
     }
-    return block.isOpaqueCube() || (block.blockMaterial.isOpaque() && block.renderAsNormalBlock()) || block.blockID == Block.glass.blockID;
+    return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock()) || block == Blocks.glass;
   }
 
-  protected final int[] validIds;
+  protected final String[] validIds;
 
-  protected BasicPainterTemplate(int... validTargetBlocksIds) {
+  protected BasicPainterTemplate(String... validTargetBlocksIds) {
     this.validIds = validTargetBlocksIds;
   }
 
@@ -48,7 +50,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return null;
     }
     ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
-    PainterUtil.setSourceBlock(result, paintSource.itemID, paintSource.getItemDamage());
+    PainterUtil.setSourceBlock(result, Util.getBlockFromItemId(paintSource).getUnlocalizedName(), paintSource.getItemDamage());
     return new ItemStack[] { result };
   }
 
@@ -89,18 +91,19 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return false;
     }
 
+    Block blk = Util.getBlockFromItemId(target);
+    if(blk == null) {
+      return false;
+    }
+
     for (int i = 0; i < validIds.length; i++) {
-      if(validIds[i] == target.itemID) {
+      if(validIds[i].equals(blk.getUnlocalizedName())) {
         return true;
       }
     }
 
-    Block blk = Util.getBlockFromItemId(target.itemID);
-    if(blk == null) {
-      return false;
-    }
     for (int i = 0; i < validIds.length; i++) {
-      if(validIds[i] == blk.blockID) {
+      if(validIds[i].equals(blk.getUnlocalizedName())) {
         return true;
       }
     }
@@ -112,8 +115,8 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     return getClass().getCanonicalName();
   }
 
-  protected int getResultId(ItemStack target) {
-    return target.itemID;
+  protected Item getResultId(ItemStack target) {
+    return target.getItem();
   }
 
   public int getQuantityConsumed(MachineRecipeInput input) {

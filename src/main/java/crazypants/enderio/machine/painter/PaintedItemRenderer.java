@@ -2,6 +2,8 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -42,7 +44,12 @@ public class PaintedItemRenderer implements IItemRenderer {
 
     GL11.glPushMatrix();
     GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-    renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID], item.getItemDamage(), 1.0f);
+
+    Item i = item.getItem();
+    if(i instanceof ItemBlock) {
+      renderBlocks.renderBlockAsItem(((ItemBlock) i).field_150939_a, item.getItemDamage(), 1.0f);
+    }
+
     GL11.glPopMatrix();
     renderBlocks.clearOverrideBlockTexture();
   }
@@ -53,7 +60,11 @@ public class PaintedItemRenderer implements IItemRenderer {
       int meta = PainterUtil.getSourceBlockMetadata(item);
       renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, meta));
     }
-    renderBlocks.renderBlockAsItem(Block.blocksList[item.itemID], item.getItemDamage(), 1.0f);
+    Item i = item.getItem();
+    if(i instanceof ItemBlock) {
+      renderBlocks.renderBlockAsItem(((ItemBlock) i).field_150939_a, item.getItemDamage(), 1.0f);
+    }
+
     renderBlocks.clearOverrideBlockTexture();
   }
 

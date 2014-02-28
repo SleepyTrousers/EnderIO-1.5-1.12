@@ -26,6 +26,8 @@ import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.monitor.ItemMJReader;
+import crazypants.enderio.machine.painter.BlockCustomFence;
+import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
@@ -75,8 +77,8 @@ public class EnderIO {
   public static ItemTravelStaff itemTravelStaff;
 
   // Painter
-  //  public static BlockPainter blockPainter;
-  //  public static BlockCustomFence blockCustomFence;
+  public static BlockPainter blockPainter;
+  public static BlockCustomFence blockCustomFence;
   //  public static BlockCustomFenceGate blockCustomFenceGate;
   //  public static BlockCustomWall blockCustomWall;
   //  public static BlockCustomStair blockCustomStair;
@@ -138,10 +140,8 @@ public class EnderIO {
     blockTravelPlatform = BlockTravelAnchor.create();
     itemTravelStaff = ItemTravelStaff.create();
 
-    //    blockHyperCube = BlockHyperCube.create();
-    //
-    //    blockPainter = BlockPainter.create();
-    //    blockCustomFence = BlockCustomFence.create();
+    blockPainter = BlockPainter.create();
+    blockCustomFence = BlockCustomFence.create();
     //    blockCustomFenceGate = BlockCustomFenceGate.create();
     //    blockCustomWall = BlockCustomWall.create();
     //    blockCustomStair = BlockCustomStair.create();
@@ -149,7 +149,7 @@ public class EnderIO {
     //    blockCustomDoubleSlab = new BlockCustomSlab(true);
     //    blockCustomSlab.init();
     //    blockCustomDoubleSlab.init();
-    //
+
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
     blockReservoir = BlockReservoir.create();
@@ -157,6 +157,8 @@ public class EnderIO {
     blockCapacitorBank = BlockCapacitorBank.create();
     blockCrusher = BlockCrusher.create();
     blockPowerMonitor = BlockPowerMonitor.create();
+    //  blockHyperCube = BlockHyperCube.create();
+
     //
     //    blockConduitBundle = BlockConduitBundle.create();
     //    blockConduitFacade = BlockConduitFacade.create();

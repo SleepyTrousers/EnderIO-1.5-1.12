@@ -1,10 +1,8 @@
 package crazypants.util;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Joiner;
-import com.google.common.io.Files;
-import crazypants.enderio.Log;
-import crazypants.vecmath.Vector3d;
+import java.io.File;
+import java.io.IOException;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -13,16 +11,29 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.File;
-import java.io.IOException;
+import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.google.common.io.Files;
+
+import crazypants.enderio.Log;
+import crazypants.vecmath.Vector3d;
 
 public class Util {
+
+  public static Block getBlockFromItemId(ItemStack itemId) {
+    Item item = itemId.getItem();
+    if(item instanceof ItemBlock) {
+      return ((ItemBlock) item).field_150939_a;
+    }
+    return null;
+  }
 
   public static ItemStack consumeItem(ItemStack stack) {
     if(stack.stackSize == 1) {

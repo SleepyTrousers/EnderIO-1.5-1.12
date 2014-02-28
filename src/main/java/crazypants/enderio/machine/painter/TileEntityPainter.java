@@ -23,8 +23,13 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
   }
 
   @Override
-  public String getInvName() {
+  public String getInventoryName() {
     return "Auto Painter";
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
   }
 
   @Override
