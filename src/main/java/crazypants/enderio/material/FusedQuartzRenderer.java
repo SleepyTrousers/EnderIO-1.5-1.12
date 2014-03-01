@@ -44,14 +44,15 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
     int meta = blockAccess.getBlockMetadata(x, y, z);
-    if((meta == 0 && renderPass != 0) || (meta == 1 && renderPass == 0)) {
-      TileEntityPaintedBlock tecb = null;
-      TileEntity te = blockAccess.getTileEntity(x, y, z);
-      if(te instanceof TileEntityPaintedBlock) {
-        tecb = (TileEntityPaintedBlock) te;
-      }
-      renderFrame(blockAccess, x, y, z, tecb, false, meta);
+    //TODO:1.7 this makes it go splat
+    //if((meta == 0 && renderPass != 0) || (meta == 1 && renderPass == 0)) {
+    TileEntityPaintedBlock tecb = null;
+    TileEntity te = blockAccess.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      tecb = (TileEntityPaintedBlock) te;
     }
+    renderFrame(blockAccess, x, y, z, tecb, false, meta);
+    //    }
     return true;
   }
 

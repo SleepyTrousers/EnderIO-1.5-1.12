@@ -15,6 +15,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -63,13 +64,10 @@ public class BlockFusedQuartz extends BlockEio {
 
   @Override
   protected void init() {
-    super.init();
-    //TODO:1.7
-    //    for (Type subtype : Type.values()) {
-    //      String unlocalisedName = "blockFusedQuartz." + subtype.unlocalisedName;
-    //      LanguageRegistry.instance().addStringLocalization(unlocalisedName, Lang.localize(unlocalisedName));
-    //
-    //    }
+    GameRegistry.registerBlock(this, ItemFusedQuartz.class, name);
+    if(teClass != null) {
+      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+    }
   }
 
   @Override
@@ -87,17 +85,18 @@ public class BlockFusedQuartz extends BlockEio {
     return renderId;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int getRenderBlockPass() {
-    return 1;
-  }
-
-  @Override
-  public boolean canRenderInPass(int pass) {
-    FusedQuartzRenderer.renderPass = pass;
-    return true;
-  }
+  //TODO:1.7 this makes it go splat
+  //  @Override
+  //  @SideOnly(Side.CLIENT)
+  //  public int getRenderBlockPass() {
+  //    return 1;
+  //  }
+  //
+  //  @Override
+  //  public boolean canRenderInPass(int pass) {
+  //    FusedQuartzRenderer.renderPass = pass;
+  //    return true;
+  //  }
 
   @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
@@ -107,14 +106,6 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   public int damageDropped(int par1) {
     return par1;
-  }
-
-  public static int func_150032_b(int p_150032_0_) {
-    return func_150031_c(p_150032_0_);
-  }
-
-  public static int func_150031_c(int p_150031_0_) {
-    return ~p_150031_0_ & 15;
   }
 
   @Override
