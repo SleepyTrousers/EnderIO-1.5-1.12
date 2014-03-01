@@ -113,10 +113,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
           if(colCount > 0) {
             col.scale(0.25);
             tes.setColorRGBA_F(col.x, col.y, col.z, col.w);
-          } else {
-            tes.setColorOpaque_F(1, 1, 1);
           }
-
           if(Config.renderCapBankGaugeBackground) {
             renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
           }
@@ -156,6 +153,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
         if(v != null) {
           if(v.color != null) {
             tes.setColorRGBA_F(v.color.x, v.color.y, v.color.z, v.color.w);
+          } else {
+            tes.setColorOpaque_F(0.7f, 0.7f, 0.7f);
           }
           if(v.brightness > 0) {
             tes.setBrightness(v.brightness);
@@ -213,6 +212,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
         if(v != null) {
           if(v.color != null) {
             tes.setColorRGBA_F(v.color.x, v.color.y, v.color.z, v.color.w);
+          } else {
+            tes.setColorOpaque_F(0.7f, 0.7f, 0.7f);
           }
           if(v.brightness > 0) {
             tes.setBrightness(v.brightness);

@@ -1,11 +1,9 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHalfSlab;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -14,6 +12,7 @@ import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -22,21 +21,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.util.Util;
 
-public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvider {
+public class BlockCustomSlab extends BlockSlab implements ITileEntityProvider {
 
   private IIcon lastRemovedComponetIcon = null;
 
@@ -45,10 +37,10 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   private final boolean isDouble;
 
   public BlockCustomSlab(boolean isDouble) {
-    super(isDouble ? ModObject.blockCustomDoubleSlab.actualId : ModObject.blockCustomSlab.actualId, isDouble, new Material(MapColor.stoneColor));
+    super(isDouble, new Material(MapColor.stoneColor));
     this.isDouble = isDouble;
     setCreativeTab(null);
-    setUnlocalizedName(ModObject.blockCustomSlab.unlocalisedName);
+    setBlockName(ModObject.blockCustomSlab.unlocalisedName + isDouble);
     setHardness(0.5F);
     setResistance(5.0F);
     setLightOpacity(0);
@@ -58,44 +50,42 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     // This is required so it is assigned prior to the BlockItem being
     // registered.
     if(isDouble) {
-      LanguageRegistry.addName(this, ModObject.blockCustomDoubleSlab.name);
       GameRegistry.registerBlock(this, BlockItemCustomSlab.class, ModObject.blockCustomDoubleSlab.unlocalisedName);
       GameRegistry.registerTileEntity(TileEntityCustomSlab.class, ModObject.blockCustomDoubleSlab.unlocalisedName + "TileEntity");
     } else {
-      LanguageRegistry.addName(this, ModObject.blockCustomSlab.name);
       GameRegistry.registerBlock(this, BlockItemCustomSlab.class, ModObject.blockCustomSlab.unlocalisedName);
       GameRegistry.registerTileEntity(TileEntityCustomBlock.class, ModObject.blockCustomSlab.unlocalisedName + "TileEntity");
       MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
     }
   }
 
-  public static ItemStack createItemStackForSourceBlock(int id, int damage) {
-    ItemStack result = new ItemStack(ModObject.blockCustomSlab.id, 1, 0);
-    PainterUtil.setSourceBlock(result, id, damage);
+  public static ItemStack createItemStackForSourceBlock(Block source, int damage) {
+    ItemStack result = new ItemStack(EnderIO.blockCustomSlab, 1, 0);
+    PainterUtil.setSourceBlock(result, source, damage);
     return result;
   }
 
   @Override
-  public IIcon getBlockTexture(IBlockAccess world, int x, int y, int z, int blockSide) {
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlockId() > 0 && tef.getSourceBlockId() < Block.blocksList.length) {
-        return blocksList[tef.getSourceBlockId()].getIcon(blockSide, tef.getSourceBlockMetadata());
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     }
-    return blocksList[Block.anvil.blockID].getBlockTexture(world, x, y, z, blockSide);
+    return Blocks.anvil.getIcon(world, x, y, z, blockSide);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:conduitConnector");
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addBlockHitEffects(World world, MovingObjectPosition target,
+  public boolean addHitEffects(World world, MovingObjectPosition target,
       EffectRenderer effectRenderer) {
     IIcon tex = null;
 
@@ -116,7 +106,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean addBlockDestroyEffects(World world, int x, int y, int z, int
+  public boolean addDestroyEffects(World world, int x, int y, int z, int
       meta, EffectRenderer effectRenderer) {
     IIcon tex = lastRemovedComponetIcon;
     byte b0 = 4;
@@ -170,22 +160,17 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
+  public TileEntity createNewTileEntity(World world, int metadata) {
     return new TileEntityCustomSlab();
   }
 
   @Override
-  public int getLightOpacity(World world, int x, int y, int z) {
+  public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlockId() > 0) {
-        return Math.min(super.getLightOpacity(world, x, y, z), Block.lightOpacity[tef.getSourceBlockId()]);
+      if(tef.getSourceBlock() != null) {
+        return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity(world, x, y, z));
       }
 
     }
@@ -194,16 +179,12 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    int id = -1;
-    Block b = PainterUtil.getSourceBlock(stack);
-    if(b != null) {
-      id = b.blockID;
-    }
 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      tef.setSourceBlockId(id);
+      Block b = PainterUtil.getSourceBlock(stack);
+      tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
     }
     world.markBlockForUpdate(x, y, z);
@@ -214,7 +195,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
    * Remove the tile entity too.
    */
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
 
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -223,7 +204,7 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
 
         for (int i = 0; i < super.quantityDropped(null); i++) {
-          ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlockId(), tef.getSourceBlockMetadata());
+          ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 
           float f = 0.7F;
           double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -235,11 +216,11 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
         }
       }
     }
-    world.removeBlockTileEntity(x, y, z);
+    world.removeTileEntity(x, y, z);
   }
 
   @Override
-  public String getFullSlabName(int i) {
+  public String func_150002_b(int var1) {
     return getUnlocalizedName();
   }
 
@@ -248,17 +229,10 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
     return 0; // need to do custom dropping to maintain source metadata
   }
 
-  /**
-   * Returns the ID of the items to drop on destruction.
-   */
-  @Override
-  public int idDropped(int par1, Random par2Random, int par3) {
-    return ModObject.blockCustomSlab.id;
-  }
-
   public static final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
+      super(Blocks.wooden_slab, Blocks.stone_slab);
     }
 
     @Override
@@ -267,26 +241,26 @@ public class BlockCustomSlab extends BlockHalfSlab implements ITileEntityProvide
       if(paintSource == null) {
         return new ItemStack[0];
       }
-      return new ItemStack[] { createItemStackForSourceBlock(paintSource.itemID, paintSource.getItemDamage()) };
+      return new ItemStack[] { createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()) };
     }
 
-    @Override
-    public boolean isValidTarget(ItemStack target) {
-      if(target == null) {
-        return false;
-      }
-      Block blk = Util.getBlockFromItemId(target.itemID);
-      return blk instanceof BlockHalfSlab;
-    }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockHalfSlab>(new ItemStack(Block.stoneSingleSlab), BlockHalfSlab.class, new ItemStack(Block.woodSingleSlab));
-      IRecipeOutput output = new RecipeOutput(new ItemStack(ModObject.blockCustomSlab.actualId, 1, 0));
-
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
-    }
+    //    @Override
+    //    public boolean isValidTarget(ItemStack target) {
+    //      if(target == null) {
+    //        return false;
+    //      }
+    //      Block blk = Util.getBlockFromItemId(target.itemID);
+    //      return blk instanceof BlockHalfSlab;
+    //    }
+    //
+    //    @Override
+    //    public List<IEnderIoRecipe> getAllRecipes() {
+    //      IRecipeInput input = new RecipeInputClass<BlockHalfSlab>(new ItemStack(Block.stoneSingleSlab), BlockHalfSlab.class, new ItemStack(Block.woodSingleSlab));
+    //      IRecipeOutput output = new RecipeOutput(new ItemStack(ModObject.blockCustomSlab.actualId, 1, 0));
+    //
+    //      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
+    //      return Collections.singletonList(recipe);
+    //    }
   }
 
 }

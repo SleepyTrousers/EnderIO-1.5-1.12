@@ -26,10 +26,14 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock()) || block == Blocks.glass;
   }
 
-  protected final String[] validIds;
+  protected final Block[] validTargets;
 
-  protected BasicPainterTemplate(String... validTargetBlocksIds) {
-    this.validIds = validTargetBlocksIds;
+  //  protected BasicPainterTemplate(String... validTargetBlocksIds) {
+  //    this.validIds = validTargetBlocksIds;
+  //  }
+
+  protected BasicPainterTemplate(Block... validTargetBlocks) {
+    this.validTargets = validTargetBlocks;
   }
 
   @Override
@@ -50,7 +54,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return null;
     }
     ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
-    PainterUtil.setSourceBlock(result, Util.getBlockFromItemId(paintSource).getUnlocalizedName(), paintSource.getItemDamage());
+    PainterUtil.setSourceBlock(result, Util.getBlockFromItemId(paintSource), paintSource.getItemDamage());
     return new ItemStack[] { result };
   }
 
@@ -96,14 +100,14 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return false;
     }
 
-    for (int i = 0; i < validIds.length; i++) {
-      if(validIds[i].equals(blk.getUnlocalizedName())) {
+    for (int i = 0; i < validTargets.length; i++) {
+      if(validTargets[i] == blk) {
         return true;
       }
     }
 
-    for (int i = 0; i < validIds.length; i++) {
-      if(validIds[i].equals(blk.getUnlocalizedName())) {
+    for (int i = 0; i < validTargets.length; i++) {
+      if(validTargets[i] == blk) {
         return true;
       }
     }

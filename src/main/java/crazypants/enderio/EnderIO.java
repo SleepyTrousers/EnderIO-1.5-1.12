@@ -27,6 +27,10 @@ import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.monitor.ItemMJReader;
 import crazypants.enderio.machine.painter.BlockCustomFence;
+import crazypants.enderio.machine.painter.BlockCustomFenceGate;
+import crazypants.enderio.machine.painter.BlockCustomSlab;
+import crazypants.enderio.machine.painter.BlockCustomStair;
+import crazypants.enderio.machine.painter.BlockCustomWall;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
@@ -79,11 +83,11 @@ public class EnderIO {
   // Painter
   public static BlockPainter blockPainter;
   public static BlockCustomFence blockCustomFence;
-  //  public static BlockCustomFenceGate blockCustomFenceGate;
-  //  public static BlockCustomWall blockCustomWall;
-  //  public static BlockCustomStair blockCustomStair;
-  //  public static BlockCustomSlab blockCustomSlab;
-  //  public static BlockCustomSlab blockCustomDoubleSlab;
+  public static BlockCustomFenceGate blockCustomFenceGate;
+  public static BlockCustomWall blockCustomWall;
+  public static BlockCustomStair blockCustomStair;
+  public static BlockCustomSlab blockCustomSlab;
+  public static BlockCustomSlab blockCustomDoubleSlab;
   //
   //  // Conduits
   //  public static BlockConduitBundle blockConduitBundle;
@@ -142,13 +146,13 @@ public class EnderIO {
 
     blockPainter = BlockPainter.create();
     blockCustomFence = BlockCustomFence.create();
-    //    blockCustomFenceGate = BlockCustomFenceGate.create();
-    //    blockCustomWall = BlockCustomWall.create();
-    //    blockCustomStair = BlockCustomStair.create();
-    //    blockCustomSlab = new BlockCustomSlab(false);
-    //    blockCustomDoubleSlab = new BlockCustomSlab(true);
-    //    blockCustomSlab.init();
-    //    blockCustomDoubleSlab.init();
+    blockCustomFenceGate = BlockCustomFenceGate.create();
+    blockCustomWall = BlockCustomWall.create();
+    blockCustomStair = BlockCustomStair.create();
+    blockCustomSlab = new BlockCustomSlab(false);
+    blockCustomDoubleSlab = new BlockCustomSlab(true);
+    blockCustomSlab.init();
+    blockCustomDoubleSlab.init();
 
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();

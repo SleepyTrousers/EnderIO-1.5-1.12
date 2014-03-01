@@ -102,12 +102,12 @@ enderio.itemTravelStaff.notEnoughPower=Not enough power
 //Painter
 tile.blockPainter.name=Painting Machine
 enderio.blockPainter.paintedWith=Painted with:
-enderio.blockCustomFence=Painted Fence
-enderio.blockCustomFenceGate=Painted Gate
-enderio.blockCustomWall=Painted Wall
-enderio.blockCustomStair=Painted Stairs
-enderio.blockCustomSlab=Painted Slab
-enderio.blockCustomDoubleSlab=Painted Slab
+tile.blockCustomFence=Painted Fence
+tile.blockCustomFenceGate=Painted Gate
+tile.blockCustomWall=Painted Wall
+tile.blockCustomStair=Painted Stairs
+tile.blockCustomSlab=Painted Slab
+tile.blockCustomDoubleSlab=Painted Slab
 
 //Items
 item.enderio.itemYetaWrench.name=Yeta Wrench

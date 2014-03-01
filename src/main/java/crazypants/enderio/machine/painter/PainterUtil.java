@@ -52,13 +52,13 @@ public final class PainterUtil {
     return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
   }
 
-  public static void setSourceBlock(ItemStack item, String sourceId, int meta) {
+  public static void setSourceBlock(ItemStack item, Block source, int meta) {
     NBTTagCompound tag = item.getTagCompound();
     if(tag == null) {
       tag = new NBTTagCompound();
       item.setTagCompound(tag);
     }
-    tag.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, sourceId);
+    tag.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(source));
     tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
   }
 

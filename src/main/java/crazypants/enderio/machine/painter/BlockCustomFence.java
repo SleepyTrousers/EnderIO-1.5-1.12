@@ -54,9 +54,9 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
-  public static ItemStack createItemStackForSourceBlock(String id, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockCustomFence, 1, damage);
-    PainterUtil.setSourceBlock(result, id, damage);
+  public static ItemStack createItemStackForSourceBlock(Block source, int sourceMeta) {
+    ItemStack result = new ItemStack(EnderIO.blockCustomFence, 1, sourceMeta);
+    PainterUtil.setSourceBlock(result, source, sourceMeta);
     return result;
   }
 
@@ -142,10 +142,8 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlockId() != null) {
-
-        //TODO:1.7        
-        //return Math.min(super.getLightOpacity(world, x, y, z), Block.lightOpacity[tef.getSourceBlockId()]);
+      if(tef.getSourceBlock() != null) {
+        return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity());
       }
     }
     return super.getLightOpacity(world, x, y, z);
@@ -175,8 +173,8 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlockId() != null && getBlockFromName(tef.getSourceBlockId()) != null) {
-        return getBlockFromName(tef.getSourceBlockId()).getIcon(blockSide, tef.getSourceBlockMetadata());
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
       }
     } else {
       System.out.println("BlockCustFence: No tile entity.");
@@ -203,7 +201,7 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileEntityCustomBlock) {
       TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      tef.setSourceBlockId(b == null ? null : b.getUnlocalizedName());
+      tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
     }
     world.markBlockForUpdate(x, y, z);
@@ -221,7 +219,7 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
       if(te instanceof TileEntityCustomBlock) {
         TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
 
-        ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlockId(), tef.getSourceBlockMetadata());
+        ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 
         float f = 0.7F;
         double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -260,13 +258,13 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
   public static final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.fence.getUnlocalizedName()/* , Block.netherFence.blockID */);
+      super(Blocks.fence, Blocks.nether_brick_fence);
     }
 
     @Override
     public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-      return new ItemStack[] { createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()).getUnlocalizedName(), paintSource.getItemDamage()) };
+      return new ItemStack[] { createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()) };
     }
 
     //    @Override

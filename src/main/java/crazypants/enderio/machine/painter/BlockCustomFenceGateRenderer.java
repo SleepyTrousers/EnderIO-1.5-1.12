@@ -4,19 +4,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 
 public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-    renderer.renderBlockAsItem(Block.fenceGate, metadata, 1);
+    renderer.renderBlockAsItem(Blocks.fence_gate, metadata, 1);
   }
 
   @Override
-  public boolean shouldRender3DInInventory() {
+  public boolean shouldRender3DInInventory(int modelId) {
     return true;
   }
 
@@ -41,14 +42,14 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
     float f4 = 0.3125F;
     float f5 = 1.0F;
 
-    if((i1 == 2 || i1 == 0) && rb.blockAccess.getBlockId(par2 - 1, par3, par4) == Block.cobblestoneWall.blockID
-        && rb.blockAccess.getBlockId(par2 + 1, par3, par4) == Block.cobblestoneWall.blockID ||
-        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlockId(par2, par3, par4 - 1) == Block.cobblestoneWall.blockID
-        && rb.blockAccess.getBlockId(par2, par3, par4 + 1) == Block.cobblestoneWall.blockID ||
-        (i1 == 2 || i1 == 0) && rb.blockAccess.getBlockId(par2 - 1, par3, par4) == ModObject.blockCustomWall.id
-        && rb.blockAccess.getBlockId(par2 + 1, par3, par4) == ModObject.blockCustomWall.id ||
-        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlockId(par2, par3, par4 - 1) == ModObject.blockCustomWall.id
-        && rb.blockAccess.getBlockId(par2, par3, par4 + 1) == ModObject.blockCustomWall.id)
+    if((i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == Blocks.cobblestone_wall
+        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == Blocks.cobblestone_wall ||
+        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == Blocks.cobblestone_wall
+        && rb.blockAccess.getBlock(par2, par3, par4 + 1) == Blocks.cobblestone_wall ||
+        (i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EnderIO.blockCustomWall
+        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == EnderIO.blockCustomWall ||
+        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EnderIO.blockCustomWall
+        && rb.blockAccess.getBlock(par2, par3, par4 + 1) == EnderIO.blockCustomWall)
     {
       f -= 0.1875F;
       f1 -= 0.1875F;

@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -10,8 +11,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockItemCustomWall extends ItemBlock {
 
-  public BlockItemCustomWall(int id) {
-    super(id);
+  public BlockItemCustomWall(Block block) {
+    super(block);
     setHasSubtypes(true);
   }
 

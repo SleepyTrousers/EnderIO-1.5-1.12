@@ -15,6 +15,8 @@ import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
+import crazypants.enderio.machine.painter.BlockCustomFenceGate;
+import crazypants.enderio.machine.painter.BlockCustomFenceGateRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.power.CapBankRenderer2;
@@ -84,12 +86,11 @@ public class ClientProxy extends CommonProxy {
 
     // Renderers
 
-    //    BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
-    //    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
-    //    RenderingRegistry.registerBlockHandler(bcfgr);
-    //
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
+
+    FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);
 
     BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
@@ -100,10 +101,7 @@ public class ClientProxy extends CommonProxy {
     BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
     CapBankRenderer2 cbr2 = new CapBankRenderer2();
     RenderingRegistry.registerBlockHandler(cbr2);
-    //
-    FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
-    MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);
-    //
+
     //    ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
@@ -111,18 +109,21 @@ public class ClientProxy extends CommonProxy {
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMeConduit, itemConRenderer);
     //
+
+    BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
+    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(bcfgr);
+
     PaintedItemRenderer pir = new PaintedItemRenderer();
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFence), pir);
-    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFenceGate), pir);
-    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomWall), pir);
-    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomStair), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFenceGate), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomWall), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomStair), pir);
 
-    //TODO:1.7
-    //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomSlab), pir);
-
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomSlab), pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
-    //
+
     //    cbr = new ConduitBundleRenderer((float) Config.conduitScale);
     //    BlockConduitBundle.rendererId = RenderingRegistry.getNextAvailableRenderId();
     //    RenderingRegistry.registerBlockHandler(cbr);
