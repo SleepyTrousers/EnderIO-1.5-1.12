@@ -109,6 +109,14 @@ public class BlockFusedQuartz extends BlockEio {
     return par1;
   }
 
+  public static int func_150032_b(int p_150032_0_) {
+    return func_150031_c(p_150032_0_);
+  }
+
+  public static int func_150031_c(int p_150031_0_) {
+    return ~p_150031_0_ & 15;
+  }
+
   @Override
   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Type.values().length; ++j) {
@@ -177,7 +185,7 @@ public class BlockFusedQuartz extends BlockEio {
       if(te instanceof TileEntityPaintedBlock) {
         TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
 
-        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlockId(), tef.getSourceBlockMetadata());
+        ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlock(), tef.getSourceBlockMetadata());
         if(itemStack != null) {
           float f = 0.7F;
           double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -194,12 +202,12 @@ public class BlockFusedQuartz extends BlockEio {
     super.breakBlock(world, x, y, z, par5, par6);
   }
 
-  private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, String sourceBlockId, int sourceBlockMetadata) {
-    if(sourceBlockId == null) {
+  private ItemStack createItemStackForSourceBlock(int quartzBlockMeta, Block sourceBlock, int sourceBlockMetadata) {
+    if(sourceBlock == null) {
       return null;
     }
     ItemStack result = new ItemStack(EnderIO.instance.itemFusedQuartzFrame, 1, quartzBlockMeta);
-    PainterUtil.setSourceBlock(result, sourceBlockId, sourceBlockMetadata);
+    PainterUtil.setSourceBlock(result, sourceBlock, sourceBlockMetadata);
     return result;
   }
 

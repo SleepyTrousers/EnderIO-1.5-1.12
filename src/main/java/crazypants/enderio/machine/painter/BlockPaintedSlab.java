@@ -40,7 +40,7 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
     super(isDouble, new Material(MapColor.stoneColor));
     this.isDouble = isDouble;
     setCreativeTab(null);
-    setBlockName(ModObject.blockPaintedSlab.unlocalisedName + isDouble);
+    setBlockName(ModObject.blockPaintedSlab.unlocalisedName + (isDouble ? "Double" : ""));
     setHardness(0.5F);
     setResistance(5.0F);
     setLightOpacity(0);

@@ -23,10 +23,10 @@ public enum ModObject {
   itemBasicCapacitor,
   itemAlloy,
   itemMaterial,
-  blockFusedQuartz,
-  itemFusedQuartzFrame,
   itemMachinePart,
   itemPowderIngot,
+  blockFusedQuartz,
+  itemFusedQuartzFrame,
 
   // Machines
   blockStirlingGenerator,
