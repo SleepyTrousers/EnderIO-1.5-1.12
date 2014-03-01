@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -19,29 +17,25 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
-import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Util;
 
-public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHandler {
+public class BlockHyperCube extends BlockEio implements IGuiHandler {
 
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
   public static BlockHyperCube create() {
-    HyperCubePacketHandler pp = new HyperCubePacketHandler();
-    PacketHandler.instance.addPacketProcessor(pp);
-    NetworkRegistry.instance().registerConnectionHandler(pp);
+    //TODO:1.7
+    //    HyperCubePacketHandler pp = new HyperCubePacketHandler();    
+    //    PacketHandler.instance.addPacketProcessor(pp);
+    //    NetworkRegistry.instance().registerConnectionHandler(pp);
 
     BlockHyperCube result = new BlockHyperCube();
     result.init();
@@ -49,17 +43,13 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   }
 
   private BlockHyperCube() {
-    super(ModObject.blockHyperCube.id, Material.ground);
-    setHardness(0.5F);
-    setStepSound(Block.soundMetalFootstep);
-    setUnlocalizedName("enderio." + ModObject.blockHyperCube.name());
-    setCreativeTab(EnderIOTab.tabEnderIO);
-    setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    super(ModObject.blockHyperCube.unlocalisedName, TileHyperCube.class);
+
   }
 
-  private void init() {
-    GameRegistry.registerBlock(this, ModObject.blockHyperCube.unlocalisedName);
-    GameRegistry.registerTileEntity(TileHyperCube.class, ModObject.blockHyperCube.unlocalisedName + "TileEntity");
+  @Override
+  protected void init() {
+    super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
   }
 
@@ -68,12 +58,12 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   }
 
   @Override
-  public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side) {
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return true;
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:tesseractPortal");
   }
 
@@ -93,16 +83,6 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    return new TileHyperCube();
-  }
-
-  @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
     return 8;
   }
@@ -117,16 +97,17 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
     if(world.isRemote) {
       return;
     }
     TileHyperCube te = (TileHyperCube) world.getTileEntity(x, y, z);
     te.onNeighborBlockChange();
+
   }
 
   @Override
-  public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
     ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -134,7 +115,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
-        PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getInternalPowerHandler().getEnergyStored());
+        PowerHandlerUtil.setStoredEnergyForItem(itemStack, (float) hc.getInternalPowerHandler().getEnergyStored());
         setChannelOnItem(hc, itemStack);
         setIoOnItem(hc, itemStack);
         ret.add(itemStack);
@@ -213,14 +194,14 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
   }
 
   @Override
-  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileHyperCube) {
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
-        PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getInternalPowerHandler().getEnergyStored());
+        PowerHandlerUtil.setStoredEnergyForItem(itemStack, (float) hc.getInternalPowerHandler().getEnergyStored());
         setChannelOnItem(hc, itemStack);
         setIoOnItem(hc, itemStack);
         float f = 0.7F;
@@ -236,7 +217,7 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
       }
     }
-    return super.removeBlockByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z);
   }
 
   @Override
@@ -249,17 +230,12 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
       TileHyperCube cb = (TileHyperCube) te;
       cb.getInternalPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
-        cb.setOwner(((EntityPlayerMP) player).username);
+        cb.setOwner(((EntityPlayerMP) player).getGameProfile().getId());
       }
       cb.setChannel(getChannelFromItem(stack));
       setIoOnTransciever(cb, stack);
     }
     world.markBlockForUpdate(x, y, z);
-  }
-
-  @Override
-  public int idDropped(int par1, Random par2Random, int par3) {
-    return 0;
   }
 
   @Override
@@ -269,19 +245,19 @@ public class BlockHyperCube extends Block implements ITileEntityProvider, IGuiHa
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removeBlockByPlayer(world, entityPlayer, x, y, z);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      }
-    }
+    //TODO:1.7
+    //    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+    //      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+    //        if(wrench.canWrench(entityPlayer, x, y, z)) {
+    //          removeBlockByPlayer(world, entityPlayer, x, y, z);
+    //          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    //            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+    //          }
+    //          return true;
+    //        }
+    //      }
+    //    }
     if(entityPlayer.isSneaking()) {
       return false;
     }

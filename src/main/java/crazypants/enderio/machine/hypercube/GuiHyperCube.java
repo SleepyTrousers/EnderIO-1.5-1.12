@@ -8,17 +8,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.machine.IRedstoneModeControlable;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -122,25 +118,27 @@ public class GuiHyperCube extends GuiScreenBase {
     fluidB = new IconButtonEIO(this, FLUID_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_FLUID);
     fluidB.setIconMargin(3, 3);
 
+    //TODO:1.7
     x += 24;
-    rsB = new RedstoneModeButton(this, 99, x, y, new IRedstoneModeControlable() {
-
-      @Override
-      public void setRedstoneControlMode(RedstoneControlMode mode) {
-        RedstoneControlMode curMode = getRedstoneControlMode();
-        cube.setRedstoneControlMode(mode);
-        if(curMode != mode) {
-          Packet pkt = HyperCubePacketHandler.createRedstonePacket(cube);
-          PacketDispatcher.sendPacketToServer(pkt);
-        }
-
-      }
-
-      @Override
-      public RedstoneControlMode getRedstoneControlMode() {
-        return cube.getRedstoneControlMode();
-      }
-    });
+    //    rsB = new RedstoneModeButton(this, 99, x, y, new IRedstoneModeControlable() {
+    //
+    //      @Override
+    //      public void setRedstoneControlMode(RedstoneControlMode mode) {
+    //        RedstoneControlMode curMode = getRedstoneControlMode();
+    //        cube.setRedstoneControlMode(mode);
+    //        if(curMode != mode) {
+    //          Packet pkt = HyperCubePacketHandler.createRedstonePacket(cube);
+    //          PacketDispatcher.sendPacketToServer(pkt);
+    //        }
+    //
+    //      }
+    //
+    //      @Override
+    //      public RedstoneControlMode getRedstoneControlMode() {
+    //        return cube.getRedstoneControlMode();
+    //      }
+    //    });
+    rsB = new RedstoneModeButton(this, 99, x, y, IconEIO.REDSTONE_MODE_ALWAYS);
 
     updateIoButtons();
 
@@ -232,7 +230,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
     y = guiTop + 12;
     x = guiLeft + 8;
-    newChannelTF = new GuiTextField(fontRenderer, x, y, 103, 16);
+    newChannelTF = new GuiTextField(getFontRenderer(), x, y, 103, 16);
     newChannelTF.setCanLoseFocus(false);
     newChannelTF.setMaxStringLength(32);
     newChannelTF.setFocused(true);
@@ -265,9 +263,9 @@ public class GuiHyperCube extends GuiScreenBase {
       cube.setModeForChannel(SubChannel.FLUID, nextMode);
 
       updateIoButtons();
-
-      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
+      //      PacketDispatcher.sendPacketToServer(pkt);
 
     } else if(par1GuiButton.id == POWER_MODE_BUTTON_ID) {
 
@@ -276,9 +274,9 @@ public class GuiHyperCube extends GuiScreenBase {
       cube.setModeForChannel(SubChannel.POWER, nextMode);
 
       updateIoButtons();
-
-      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
+      //      PacketDispatcher.sendPacketToServer(pkt);
 
     } else if(par1GuiButton.id == ITEM_MODE_BUTTON_ID) {
 
@@ -287,21 +285,22 @@ public class GuiHyperCube extends GuiScreenBase {
       cube.setModeForChannel(SubChannel.ITEM, nextMode);
 
       updateIoButtons();
-
-      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = HyperCubePacketHandler.createIoModePacket(cube);
+      //      PacketDispatcher.sendPacketToServer(pkt);
 
     } else if(par1GuiButton.id == ADD_BUTTON_ID) {
 
       Channel c;
       if(privateButton.isSelected()) {
-        c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.username);
+        c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
       } else {
         c = new Channel(newChannelTF.getText(), null);
       }
       ClientChannelRegister.instance.addChannel(c);
-      Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, true);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, true);
+      //      PacketDispatcher.sendPacketToServer(pkt);
 
       setActiveChannel(c);
 
@@ -323,8 +322,9 @@ public class GuiHyperCube extends GuiScreenBase {
           setActiveChannel(null);
         }
         ClientChannelRegister.instance.channelRemoved(c);
-        Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, false);
-        PacketDispatcher.sendPacketToServer(pkt);
+        //TODO:1.7
+        //        Packet pkt = HyperCubePacketHandler.createAddRemoveChannelPacket(c, false);
+        //        PacketDispatcher.sendPacketToServer(pkt);
       }
     }
 
@@ -334,8 +334,10 @@ public class GuiHyperCube extends GuiScreenBase {
     cube.setChannel(c);
     publicChannelList.setActiveChannel(isPublic(c) ? c : null);
     privateChannelList.setActiveChannel(isPrivate(c) ? c : null);
-    Packet pkt = HyperCubePacketHandler.createChannelSelectedPacket(cube, c);
-    PacketDispatcher.sendPacketToServer(pkt);
+    //TODO:1.7
+    //    Packet pkt = HyperCubePacketHandler.createChannelSelectedPacket(cube, c);
+    //    PacketDispatcher.sendPacketToServer(pkt);
+
   }
 
   @Override
@@ -395,10 +397,10 @@ public class GuiHyperCube extends GuiScreenBase {
     int x = guiLeft + 12;
     int y = guiTop + 35;
     int rgb = ColorUtil.getRGB(Color.white);
-    drawString(fontRenderer, Lang.localize("gui.trans.publicHeading"), x, y, rgb);
+    drawString(getFontRenderer(), Lang.localize("gui.trans.publicHeading"), x, y, rgb);
 
     x += 109;
-    drawString(fontRenderer, Lang.localize("gui.trans.privateHeading"), x, y, rgb);
+    drawString(getFontRenderer(), Lang.localize("gui.trans.privateHeading"), x, y, rgb);
 
     IoMode fluidMode = cube.getModeForChannel(SubChannel.FLUID);
     IoMode powerMode = cube.getModeForChannel(SubChannel.POWER);
@@ -458,7 +460,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
   @Override
   public FontRenderer getFontRenderer() {
-    return fontRenderer;
+    return Minecraft.getMinecraft().fontRenderer;
   }
 
 }

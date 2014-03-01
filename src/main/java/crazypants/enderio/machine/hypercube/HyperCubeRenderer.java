@@ -48,7 +48,7 @@ public class HyperCubeRenderer extends TileEntitySpecialRenderer implements IIte
     model.render(cube, x, y, z);
 
     if(cube.getInternalPowerHandler().getEnergyStored() > 0) {
-      renderPower(te.worldObj, x, y, z, cube.getChannel() != null);
+      renderPower(te.getWorldObj(), x, y, z, cube.getChannel() != null);
     }
 
     GL11.glDisable(GL12.GL_RESCALE_NORMAL);

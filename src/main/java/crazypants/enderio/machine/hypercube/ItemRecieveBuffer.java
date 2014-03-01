@@ -81,7 +81,7 @@ public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory
       if(stack != null) {
         NBTTagCompound stackRoot = new NBTTagCompound();
         stack.writeToNBT(stackRoot);
-        nbtRoot.setCompoundTag("recieveBuffer" + i, stackRoot);
+        nbtRoot.setTag("recieveBuffer" + i, stackRoot);
       }
     }
 

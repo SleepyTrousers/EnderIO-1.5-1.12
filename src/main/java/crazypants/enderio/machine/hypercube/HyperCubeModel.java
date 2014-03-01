@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.hypercube;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 
@@ -13,13 +14,13 @@ public class HyperCubeModel extends ModelBase implements IModel {
   public static final float SCALE = 1 / 16f;
 
   private static final String TEXTURE = "enderio:models/hyperCube.png";
-  //private static final String MODEL = "enderio:models/hyperCube.obj";
-  private static final String MODEL = "/assets/enderio/models/hyperCube.obj";
+  private static final String MODEL = "enderio:models/hyperCube.obj";
+  //private static final String MODEL = "/assets/enderio/models/hyperCube.obj";
 
   private IModelCustom model;
 
   public HyperCubeModel() {
-    model = AdvancedModelLoader.loadModel(MODEL);
+    model = AdvancedModelLoader.loadModel(new ResourceLocation(MODEL));
   }
 
   @Override

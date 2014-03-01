@@ -17,11 +17,14 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
+import crazypants.enderio.machine.hypercube.BlockHyperCube;
+import crazypants.enderio.machine.hypercube.HyperCubeRegister;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
@@ -106,7 +109,7 @@ public class EnderIO {
   public static BlockAlloySmelter blockAlloySmelter;
   public static BlockCapacitorBank blockCapacitorBank;
   public static BlockCrusher blockCrusher;
-  //  public static BlockHyperCube blockHyperCube;
+  public static BlockHyperCube blockHyperCube;
   public static BlockPowerMonitor blockPowerMonitor;
 
   public static BlockElectricLight blockElectricLight;
@@ -130,19 +133,17 @@ public class EnderIO {
 
     //    ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    itemBasicCapacitor = ItemCapacitor.create();
-    itemAlloy = ItemAlloy.create();
-    blockFusedQuartz = BlockFusedQuartz.create();
-    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
-    itemMachinePart = ItemMachinePart.create();
-    itemPowderIngot = ItemPowderIngot.create();
-    itemMaterial = ItemMaterial.create();
-
     blockEnderIo = BlockEnderIO.create();
-    itemEnderface = ItemEnderface.create();
 
     blockTravelPlatform = BlockTravelAnchor.create();
-    itemTravelStaff = ItemTravelStaff.create();
+
+    blockSolarPanel = BlockSolarPanel.create();
+    blockStirlingGenerator = BlockStirlingGenerator.create();
+
+    blockCrusher = BlockCrusher.create();
+    blockAlloySmelter = BlockAlloySmelter.create();
+    blockPowerMonitor = BlockPowerMonitor.create();
+    blockCapacitorBank = BlockCapacitorBank.create();
 
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
@@ -154,16 +155,20 @@ public class EnderIO {
     blockPaintedSlab.init();
     blockPaintedDoubleSlab.init();
 
-    blockStirlingGenerator = BlockStirlingGenerator.create();
-    blockSolarPanel = BlockSolarPanel.create();
+    blockHyperCube = BlockHyperCube.create();
+    blockElectricLight = BlockElectricLight.create();
+    blockLightNode = BlockLightNode.create();
     blockReservoir = BlockReservoir.create();
-    blockAlloySmelter = BlockAlloySmelter.create();
-    blockCapacitorBank = BlockCapacitorBank.create();
-    blockCrusher = BlockCrusher.create();
-    blockPowerMonitor = BlockPowerMonitor.create();
-    //  blockHyperCube = BlockHyperCube.create();
 
-    //
+    blockFusedQuartz = BlockFusedQuartz.create();
+    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+
+    itemBasicCapacitor = ItemCapacitor.create();
+    itemMachinePart = ItemMachinePart.create();
+    itemMaterial = ItemMaterial.create();
+    itemAlloy = ItemAlloy.create();
+    itemPowderIngot = ItemPowderIngot.create();
+
     //    blockConduitBundle = BlockConduitBundle.create();
     //    blockConduitFacade = BlockConduitFacade.create();
     //    itemConduitFacade = ItemConduitFacade.create();
@@ -174,10 +179,10 @@ public class EnderIO {
     //    itemItemConduit = ItemItemConduit.create();
     //    itemMeConduit = ItemMeConduit.create();
     //
-    blockElectricLight = BlockElectricLight.create();
-    blockLightNode = BlockLightNode.create();
-    //
-    //    itemYetaWench = ItemYetaWrench.create();
+
+    //    itemYetaWench = ItemYetaWrench.create();    
+    itemEnderface = ItemEnderface.create();
+    itemTravelStaff = ItemTravelStaff.create();
     itemMJReader = ItemMJReader.create();
 
     MaterialRecipes.registerOresInDictionary();
@@ -223,7 +228,7 @@ public class EnderIO {
     //    EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     //    ConduitRecipes.addRecipes();
-    //    MachineRecipes.addRecipes();
+    MachineRecipes.addRecipes();
     //    ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();
 
@@ -232,7 +237,6 @@ public class EnderIO {
     //    triggerFullEnergy = new TriggerEnderIO("enderIO.trigger.fullEnergy", 2);
     //    triggerIsCharging = new TriggerEnderIO("enderIO.trigger.isCharging", 3);
     //    triggerFinishedCharging = new TriggerEnderIO("enderIO.trigger.finishedCharging", 4);
-
     //    ActionManager.registerTriggerProvider(new TriggerProviderEIO());
 
     proxy.load();
@@ -245,7 +249,7 @@ public class EnderIO {
     packetPipeline.postInitialise();
     MaterialRecipes.registerExternalOresInDictionary();
     MaterialRecipes.addOreDictionaryRecipes();
-    //    MachineRecipes.addOreDictionaryRecipes();
+    MachineRecipes.addOreDictionaryRecipes();
     //    ConduitRecipes.addOreDictionaryRecipes();
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
@@ -254,12 +258,11 @@ public class EnderIO {
 
   @EventHandler
   public void serverStarted(FMLServerStartedEvent event) {
-    System.out.println("EnderIO.serverStarted: ");
-    //    HyperCubeRegister.load();
+    HyperCubeRegister.load();
   }
 
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
-    //    HyperCubeRegister.unload();
+    HyperCubeRegister.unload();
   }
 }

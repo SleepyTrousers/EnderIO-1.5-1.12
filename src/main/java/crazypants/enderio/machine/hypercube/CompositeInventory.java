@@ -144,10 +144,10 @@ public class CompositeInventory implements ISidedInventory {
   }
 
   @Override
-  public void onInventoryChanged() {
+  public void markDirty() {
     for (InvEntry inv : inventories) {
       if(inv != null) {
-        inv.inv.onInventoryChanged();
+        inv.inv.markDirty();
       }
     }
   }
@@ -155,13 +155,8 @@ public class CompositeInventory implements ISidedInventory {
   //---------------- Inventory
 
   @Override
-  public String getInvName() {
-    return ModObject.blockHyperCube.name;
-  }
-
-  @Override
-  public boolean isInvNameLocalized() {
-    return false;
+  public String getInventoryName() {
+    return ModObject.blockHyperCube.unlocalisedName;
   }
 
   @Override
@@ -175,16 +170,21 @@ public class CompositeInventory implements ISidedInventory {
   }
 
   @Override
-  public void openChest() {
+  public void openInventory() {
   }
 
   @Override
-  public void closeChest() {
+  public void closeInventory() {
   }
 
   @Override
   public ItemStack getStackInSlotOnClosing(int i) {
     return null;
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
   }
 
   private static class InvEntry {

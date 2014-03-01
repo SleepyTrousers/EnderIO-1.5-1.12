@@ -13,6 +13,8 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
+import crazypants.enderio.machine.hypercube.TileHyperCube;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
@@ -143,10 +145,10 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), eior);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
-    //
-    //    HyperCubeRenderer hcr = new HyperCubeRenderer();
-    //    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
-    //    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
+
+    HyperCubeRenderer hcr = new HyperCubeRenderer();
+    ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
 
     //    new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
     //    // Tick handler
