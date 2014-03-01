@@ -3,10 +3,13 @@ package crazypants.enderio.machine.painter;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockWall;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -25,34 +28,59 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
-
-  public static BlockCustomWall create() {
-    BlockCustomWall result = new BlockCustomWall();
-    result.init();
-    return result;
-  }
+public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
 
   private IIcon lastRemovedComponetIcon = null;
 
   private Random rand = new Random();
 
-  public BlockCustomWall() {
-    super(Blocks.cobblestone);
+  private final boolean isDouble;
+
+  public BlockPaintedSlab(boolean isDouble) {
+    super(isDouble, new Material(MapColor.stoneColor));
+    this.isDouble = isDouble;
     setCreativeTab(null);
-    setBlockName(ModObject.blockCustomWall.unlocalisedName);
+    setBlockName(ModObject.blockPaintedSlab.unlocalisedName + isDouble);
+    setHardness(0.5F);
+    setResistance(5.0F);
+    setLightOpacity(0);
   }
 
-  private void init() {
-    GameRegistry.registerBlock(this, BlockItemCustomWall.class, ModObject.blockCustomWall.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntityCustomBlock.class, ModObject.blockCustomWall.unlocalisedName + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
+  public void init() {
+    // This is required so it is assigned prior to the BlockItem being
+    // registered.
+    if(isDouble) {
+      GameRegistry.registerBlock(this, BlockItemPaintedSlab.class, ModObject.blockPaintedDoubleSlab.unlocalisedName);
+      GameRegistry.registerTileEntity(TileEntityPaintedSlab.class, ModObject.blockPaintedDoubleSlab.unlocalisedName + "TileEntity");
+    } else {
+      GameRegistry.registerBlock(this, BlockItemPaintedSlab.class, ModObject.blockPaintedSlab.unlocalisedName);
+      GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedSlab.unlocalisedName + "TileEntity");
+      MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
+    }
   }
 
-  public static ItemStack createItemStackForSourceBlock(Block id, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockCustomWall, 1, damage);
-    PainterUtil.setSourceBlock(result, id, damage);
+  public static ItemStack createItemStackForSourceBlock(Block source, int damage) {
+    ItemStack result = new ItemStack(EnderIO.blockPaintedSlab, 1, 0);
+    PainterUtil.setSourceBlock(result, source, damage);
     return result;
+  }
+
+  @Override
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+      }
+    }
+    return Blocks.anvil.getIcon(world, x, y, z, blockSide);
+  }
+
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void registerBlockIcons(IIconRegister IIconRegister) {
+    blockIcon = IIconRegister.registerIcon("enderio:conduitConnector");
   }
 
   @SideOnly(Side.CLIENT)
@@ -61,7 +89,7 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
       EffectRenderer effectRenderer) {
     IIcon tex = null;
 
-    TileEntityCustomBlock cb = (TileEntityCustomBlock)
+    TileEntityPaintedBlock cb = (TileEntityPaintedBlock)
         world.getTileEntity(target.blockX, target.blockY, target.blockZ);
     Block b = cb.getSourceBlock();
     if(b != null) {
@@ -132,64 +160,35 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
   }
 
   @Override
+  public TileEntity createNewTileEntity(World world, int metadata) {
+    return new TileEntityPaintedSlab();
+  }
+
+  @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
         return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity(world, x, y, z));
       }
+
     }
     return super.getLightOpacity(world, x, y, z);
   }
 
   @Override
-  public boolean canPlaceTorchOnTop(World world, int x, int y, int z) {
-    Block id = world.getBlock(x, y, z);
-    if(id == this) {
-      return true;
-    }
-    return super.canPlaceTorchOnTop(world, x, y, z);
-  }
-
-  @Override
-  public boolean canConnectWallTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
-    Block l = par1IBlockAccess.getBlock(par2, par3, par4);
-    if(l == EnderIO.blockCustomFenceGate) {
-      return true;
-    }
-    return super.canConnectWallTo(par1IBlockAccess, par2, par3, par4);
-  }
-
-  @Override
-  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
-      if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
-      }
-    }
-    return Blocks.anvil.getIcon(world, x, y, z, blockSide);
-  }
-
-  @Override
-  public TileEntity createNewTileEntity(World world, int metadata) {
-    return new TileEntityCustomBlock();
-  }
-
-  @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    int id = -1;
-    Block b = PainterUtil.getSourceBlock(stack);
 
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      Block b = PainterUtil.getSourceBlock(stack);
       tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
     }
     world.markBlockForUpdate(x, y, z);
+    super.onBlockPlacedBy(world, x, y, z, player, stack);
   }
 
   /**
@@ -201,26 +200,28 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
-      if(te instanceof TileEntityCustomBlock) {
-        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+      if(te instanceof TileEntityPaintedSlab && !((TileEntityPaintedSlab) te).isConvertingToFullBlock) {
+        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
 
-        ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
+        for (int i = 0; i < super.quantityDropped(null); i++) {
+          ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
-
-      } else {
-        System.out.println("dropBlockAsItem_do: No tile entity.");
+          float f = 0.7F;
+          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+          entityitem.delayBeforeCanPickup = 10;
+          world.spawnEntityInWorld(entityitem);
+        }
       }
-
     }
-
     world.removeTileEntity(x, y, z);
+  }
+
+  @Override
+  public String func_150002_b(int var1) {
+    return getUnlocalizedName();
   }
 
   @Override
@@ -231,22 +232,35 @@ public class BlockCustomWall extends BlockWall implements ITileEntityProvider {
   public static final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.cobblestone_wall);
+      super(Blocks.wooden_slab, Blocks.stone_slab, EnderIO.blockPaintedDoubleSlab, EnderIO.blockPaintedSlab);
     }
 
     @Override
     public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
+      if(paintSource == null) {
+        return new ItemStack[0];
+      }
       return new ItemStack[] { createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()) };
     }
 
     //    @Override
+    //    public boolean isValidTarget(ItemStack target) {
+    //      if(target == null) {
+    //        return false;
+    //      }
+    //      Block blk = Util.getBlockFromItemId(target.itemID);
+    //      return blk instanceof BlockHalfSlab;
+    //    }
+    //
+    //    @Override
     //    public List<IEnderIoRecipe> getAllRecipes() {
-    //      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, new ItemStack(Block.cobblestoneWall), new ItemStack(
-    //          ModObject.blockCustomWall.actualId, 1, 0));
+    //      IRecipeInput input = new RecipeInputClass<BlockHalfSlab>(new ItemStack(Block.stoneSingleSlab), BlockHalfSlab.class, new ItemStack(Block.woodSingleSlab));
+    //      IRecipeOutput output = new RecipeOutput(new ItemStack(ModObject.blockCustomSlab.actualId, 1, 0));
+    //
+    //      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
     //      return Collections.singletonList(recipe);
     //    }
-
   }
 
 }

@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.painter;
 
-public class TileEntityCustomSlab extends TileEntityCustomBlock {
+public class TileEntityPaintedSlab extends TileEntityPaintedBlock {
 
   boolean isConvertingToFullBlock = false;
 

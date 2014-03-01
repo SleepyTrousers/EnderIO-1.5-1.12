@@ -9,16 +9,16 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockItemCustomFenceGate extends ItemBlock {
+public class BlockItemPaintedStair extends ItemBlock {
 
-  public BlockItemCustomFenceGate(Block block) {
+  public BlockItemPaintedStair(Block block) {
     super(block);
     setHasSubtypes(true);
   }
 
   @Override
   public int getMetadata(int par1) {
-    return par1;
+    return 0;
   }
 
   @Override
@@ -27,5 +27,4 @@ public class BlockItemCustomFenceGate extends ItemBlock {
     super.addInformation(item, par2EntityPlayer, list, par4);
     list.add(PainterUtil.getTooltTipText(item));
   }
-
 }

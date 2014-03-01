@@ -21,7 +21,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.TileEntityCustomBlock;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 
 public class BlockFusedQuartz extends BlockEio {
 
@@ -57,7 +57,7 @@ public class BlockFusedQuartz extends BlockEio {
   IIcon[] frameIcons;
 
   private BlockFusedQuartz() {
-    super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityCustomBlock.class, Material.glass);
+    super(ModObject.blockFusedQuartz.unlocalisedName, TileEntityPaintedBlock.class, Material.glass);
     setStepSound(Block.soundTypeGlass);
   }
 
@@ -174,8 +174,8 @@ public class BlockFusedQuartz extends BlockEio {
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
-      if(te instanceof TileEntityCustomBlock) {
-        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+      if(te instanceof TileEntityPaintedBlock) {
+        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
 
         ItemStack itemStack = createItemStackForSourceBlock(world.getBlockMetadata(x, y, z), tef.getSourceBlockId(), tef.getSourceBlockMetadata());
         if(itemStack != null) {

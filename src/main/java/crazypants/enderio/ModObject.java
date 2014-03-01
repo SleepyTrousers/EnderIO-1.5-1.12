@@ -43,12 +43,12 @@ public enum ModObject {
 
   // Painter
   blockPainter,
-  blockCustomFence,
-  blockCustomFenceGate,
-  blockCustomWall,
-  blockCustomStair,
-  blockCustomSlab,
-  blockCustomDoubleSlab,
+  blockPaintedFence,
+  blockPaintedFenceGate,
+  blockPaintedWall,
+  blockPaintedStair,
+  blockPaintedSlab,
+  blockPaintedDoubleSlab,
 
   itemMJReader,
   itemYetaWrench,

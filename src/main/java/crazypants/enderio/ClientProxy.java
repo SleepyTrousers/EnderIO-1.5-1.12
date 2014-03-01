@@ -15,8 +15,8 @@ import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
-import crazypants.enderio.machine.painter.BlockCustomFenceGate;
-import crazypants.enderio.machine.painter.BlockCustomFenceGateRenderer;
+import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
+import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.power.CapBankRenderer2;
@@ -110,17 +110,17 @@ public class ClientProxy extends CommonProxy {
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMeConduit, itemConRenderer);
     //
 
-    BlockCustomFenceGateRenderer bcfgr = new BlockCustomFenceGateRenderer();
-    BlockCustomFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
+    BlockPaintedFenceGateRenderer bcfgr = new BlockPaintedFenceGateRenderer();
+    BlockPaintedFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(bcfgr);
 
     PaintedItemRenderer pir = new PaintedItemRenderer();
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFence), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomFenceGate), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomWall), pir);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomStair), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedFence), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedFenceGate), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedWall), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedStair), pir);
 
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCustomSlab), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedSlab), pir);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     //    MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
 

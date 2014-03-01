@@ -27,10 +27,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockCustomFence extends BlockFence implements ITileEntityProvider {
+public class BlockPaintedFence extends BlockFence implements ITileEntityProvider {
 
-  public static BlockCustomFence create() {
-    BlockCustomFence result = new BlockCustomFence();
+  public static BlockPaintedFence create() {
+    BlockPaintedFence result = new BlockPaintedFence();
     result.init();
     return result;
   }
@@ -39,9 +39,9 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
 
   private Random rand = new Random();
 
-  public BlockCustomFence() {
-    super(ModObject.blockCustomFence.unlocalisedName, Material.wood);
-    setBlockName(ModObject.blockCustomFence.unlocalisedName);
+  public BlockPaintedFence() {
+    super(ModObject.blockPaintedFence.unlocalisedName, Material.wood);
+    setBlockName(ModObject.blockPaintedFence.unlocalisedName);
     setHardness(2.0F);
     setResistance(5.0F);
     setStepSound(soundTypeWood);
@@ -49,13 +49,13 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, BlockItemCustomFence.class, ModObject.blockCustomFence.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntityCustomBlock.class, ModObject.blockCustomFence.unlocalisedName + "TileEntity");
+    GameRegistry.registerBlock(this, BlockItemPaintedFence.class, ModObject.blockPaintedFence.unlocalisedName);
+    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedFence.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
   public static ItemStack createItemStackForSourceBlock(Block source, int sourceMeta) {
-    ItemStack result = new ItemStack(EnderIO.blockCustomFence, 1, sourceMeta);
+    ItemStack result = new ItemStack(EnderIO.blockPaintedFence, 1, sourceMeta);
     PainterUtil.setSourceBlock(result, source, sourceMeta);
     return result;
   }
@@ -66,7 +66,7 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
       EffectRenderer effectRenderer) {
     IIcon tex = null;
 
-    TileEntityCustomBlock cb = (TileEntityCustomBlock)
+    TileEntityPaintedBlock cb = (TileEntityPaintedBlock)
         world.getTileEntity(target.blockX, target.blockY, target.blockZ);
     Block b = cb.getSourceBlock();
     if(b != null) {
@@ -140,8 +140,8 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
   @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
         return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity());
       }
@@ -161,18 +161,17 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
   @Override
   public boolean canConnectFenceTo(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
     Block l = par1IBlockAccess.getBlock(par2, par3, par4);
-    //TODO:1.7
-    //    if(l == EnderIO.blockCustomFenceGate) {
-    //      return true;
-    //    }
+    if(l == EnderIO.blockPaintedFenceGate) {
+      return true;
+    }
     return super.canConnectFenceTo(par1IBlockAccess, par2, par3, par4);
   }
 
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
         return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
       }
@@ -190,7 +189,7 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
 
   @Override
   public TileEntity createNewTileEntity(World var1, int var2) {
-    return new TileEntityCustomBlock();
+    return new TileEntityPaintedBlock();
   }
 
   @Override
@@ -199,8 +198,8 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     Block b = PainterUtil.getSourceBlock(stack);
 
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
     }
@@ -216,8 +215,8 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
-      if(te instanceof TileEntityCustomBlock) {
-        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+      if(te instanceof TileEntityPaintedBlock) {
+        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
 
         ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 
@@ -258,7 +257,7 @@ public class BlockCustomFence extends BlockFence implements ITileEntityProvider 
   public static final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.fence, Blocks.nether_brick_fence);
+      super(Blocks.fence, Blocks.nether_brick_fence, EnderIO.blockPaintedFence);
     }
 
     @Override

@@ -26,11 +26,11 @@ import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.monitor.ItemMJReader;
-import crazypants.enderio.machine.painter.BlockCustomFence;
-import crazypants.enderio.machine.painter.BlockCustomFenceGate;
-import crazypants.enderio.machine.painter.BlockCustomSlab;
-import crazypants.enderio.machine.painter.BlockCustomStair;
-import crazypants.enderio.machine.painter.BlockCustomWall;
+import crazypants.enderio.machine.painter.BlockPaintedFence;
+import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
+import crazypants.enderio.machine.painter.BlockPaintedSlab;
+import crazypants.enderio.machine.painter.BlockPaintedStair;
+import crazypants.enderio.machine.painter.BlockPaintedWall;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
@@ -82,12 +82,12 @@ public class EnderIO {
 
   // Painter
   public static BlockPainter blockPainter;
-  public static BlockCustomFence blockCustomFence;
-  public static BlockCustomFenceGate blockCustomFenceGate;
-  public static BlockCustomWall blockCustomWall;
-  public static BlockCustomStair blockCustomStair;
-  public static BlockCustomSlab blockCustomSlab;
-  public static BlockCustomSlab blockCustomDoubleSlab;
+  public static BlockPaintedFence blockPaintedFence;
+  public static BlockPaintedFenceGate blockPaintedFenceGate;
+  public static BlockPaintedWall blockPaintedWall;
+  public static BlockPaintedStair blockPaintedStair;
+  public static BlockPaintedSlab blockPaintedSlab;
+  public static BlockPaintedSlab blockPaintedDoubleSlab;
   //
   //  // Conduits
   //  public static BlockConduitBundle blockConduitBundle;
@@ -145,14 +145,14 @@ public class EnderIO {
     itemTravelStaff = ItemTravelStaff.create();
 
     blockPainter = BlockPainter.create();
-    blockCustomFence = BlockCustomFence.create();
-    blockCustomFenceGate = BlockCustomFenceGate.create();
-    blockCustomWall = BlockCustomWall.create();
-    blockCustomStair = BlockCustomStair.create();
-    blockCustomSlab = new BlockCustomSlab(false);
-    blockCustomDoubleSlab = new BlockCustomSlab(true);
-    blockCustomSlab.init();
-    blockCustomDoubleSlab.init();
+    blockPaintedFence = BlockPaintedFence.create();
+    blockPaintedFenceGate = BlockPaintedFenceGate.create();
+    blockPaintedWall = BlockPaintedWall.create();
+    blockPaintedStair = BlockPaintedStair.create();
+    blockPaintedSlab = new BlockPaintedSlab(false);
+    blockPaintedDoubleSlab = new BlockPaintedSlab(true);
+    blockPaintedSlab.init();
+    blockPaintedDoubleSlab.init();
 
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();

@@ -4,14 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.TileEntityEio;
 
-public class TileEntityCustomBlock extends TileEntityEio {
+public class TileEntityPaintedBlock extends TileEntityEio {
 
   private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
   private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
   private Block sourceBlock;
   private int sourceBlockMetadata;
 
-  public TileEntityCustomBlock() {
+  public TileEntityPaintedBlock() {
     this.sourceBlock = null;
   }
 

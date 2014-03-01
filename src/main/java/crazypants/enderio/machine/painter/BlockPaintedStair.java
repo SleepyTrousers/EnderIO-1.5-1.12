@@ -26,10 +26,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockCustomStair extends BlockStairs implements ITileEntityProvider {
+public class BlockPaintedStair extends BlockStairs implements ITileEntityProvider {
 
-  public static BlockCustomStair create() {
-    BlockCustomStair result = new BlockCustomStair();
+  public static BlockPaintedStair create() {
+    BlockPaintedStair result = new BlockPaintedStair();
     result.init();
     return result;
   }
@@ -38,21 +38,21 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
 
   private Random rand = new Random();
 
-  protected BlockCustomStair() {
+  protected BlockPaintedStair() {
     super(Blocks.stone, 0);
     setCreativeTab(null);
-    setBlockName(ModObject.blockCustomStair.unlocalisedName);
+    setBlockName(ModObject.blockPaintedStair.unlocalisedName);
     setLightOpacity(0);
   }
 
   private void init() {
-    GameRegistry.registerBlock(this, BlockItemCustomStair.class, ModObject.blockCustomStair.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEntityCustomBlock.class, ModObject.blockCustomStair.unlocalisedName + "TileEntity");
+    GameRegistry.registerBlock(this, BlockItemPaintedStair.class, ModObject.blockPaintedStair.unlocalisedName);
+    GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedStair.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
   public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockCustomStair, 1, damage);
+    ItemStack result = new ItemStack(EnderIO.blockPaintedStair, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }
@@ -63,7 +63,7 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
       EffectRenderer effectRenderer) {
     IIcon tex = null;
 
-    TileEntityCustomBlock cb = (TileEntityCustomBlock)
+    TileEntityPaintedBlock cb = (TileEntityPaintedBlock)
         world.getTileEntity(target.blockX, target.blockY, target.blockZ);
     Block b = cb.getSourceBlock();
     if(b != null) {
@@ -144,8 +144,8 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
         return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
       }
@@ -161,14 +161,14 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
 
   @Override
   public TileEntity createNewTileEntity(World world, int metadata) {
-    return new TileEntityCustomBlock();
+    return new TileEntityPaintedBlock();
   }
 
   @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
         return Math.min(super.getLightOpacity(world, x, y, z), tef.getSourceBlock().getLightOpacity());
       }
@@ -182,8 +182,8 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
 
     Block b = PainterUtil.getSourceBlock(stack);
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityCustomBlock) {
-      TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
     }
@@ -200,8 +200,8 @@ public class BlockCustomStair extends BlockStairs implements ITileEntityProvider
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
-      if(te instanceof TileEntityCustomBlock) {
-        TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+      if(te instanceof TileEntityPaintedBlock) {
+        TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
 
         ItemStack itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
 

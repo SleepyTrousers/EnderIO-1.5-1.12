@@ -13,15 +13,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 
-public class BlockItemCustomSlab extends ItemSlab {
+public class BlockItemPaintedSlab extends ItemSlab {
 
   private boolean isFullBlock;
 
-  public BlockItemCustomSlab(Block blk) {
-    super(blk, EnderIO.blockCustomSlab, EnderIO.blockCustomDoubleSlab, blk == EnderIO.blockCustomDoubleSlab);
+  public BlockItemPaintedSlab(Block blk) {
+    super(blk, EnderIO.blockPaintedSlab, EnderIO.blockPaintedDoubleSlab, blk == EnderIO.blockPaintedDoubleSlab);
     setHasSubtypes(true);
-    isFullBlock = blk == EnderIO.blockCustomDoubleSlab;
-    setUnlocalizedName(ModObject.blockCustomSlab.unlocalisedName);
+    isFullBlock = blk == EnderIO.blockPaintedDoubleSlab;
+    setUnlocalizedName(ModObject.blockPaintedSlab.unlocalisedName);
   }
 
   @Override
@@ -52,34 +52,34 @@ public class BlockItemCustomSlab extends ItemSlab {
       int k1 = j1 & 7;
       boolean flag = (j1 & 8) != 0;
 
-      if((side == 1 && !flag || side == 0 && flag) && i1 == EnderIO.blockCustomSlab && k1 == par1ItemStack.getItemDamage()) {
+      if((side == 1 && !flag || side == 0 && flag) && i1 == EnderIO.blockPaintedSlab && k1 == par1ItemStack.getItemDamage()) {
 
-        if(world.checkNoEntityCollision(EnderIO.blockCustomDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))) {
+        if(world.checkNoEntityCollision(EnderIO.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))) {
 
           TileEntity te = world.getTileEntity(x, y, z);
-          if(te instanceof TileEntityCustomSlab) {
-            ((TileEntityCustomSlab) te).isConvertingToFullBlock = true;
+          if(te instanceof TileEntityPaintedSlab) {
+            ((TileEntityPaintedSlab) te).isConvertingToFullBlock = true;
           }
 
-          if(world.setBlock(x, y, z, EnderIO.blockCustomDoubleSlab, k1, 3)) {
+          if(world.setBlock(x, y, z, EnderIO.blockPaintedDoubleSlab, k1, 3)) {
 
             te = world.getTileEntity(x, y, z);
-            if(te instanceof TileEntityCustomBlock) {
+            if(te instanceof TileEntityPaintedBlock) {
 
               Block b = PainterUtil.getSourceBlock(par1ItemStack);
-              TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+              TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
               tef.setSourceBlock(b);
               tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(par1ItemStack));
               world.markBlockForUpdate(x, y, z);
             }
 
             world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F,
-                EnderIO.blockCustomDoubleSlab.stepSound.getStepResourcePath(), (EnderIO.blockCustomDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
-                EnderIO.blockCustomDoubleSlab.stepSound.getPitch() * 0.8F);
+                EnderIO.blockPaintedDoubleSlab.stepSound.getStepResourcePath(), (EnderIO.blockPaintedDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
+                EnderIO.blockPaintedDoubleSlab.stepSound.getPitch() * 0.8F);
             --par1ItemStack.stackSize;
           } else {
-            if(te instanceof TileEntityCustomSlab) {
-              ((TileEntityCustomSlab) te).isConvertingToFullBlock = false;
+            if(te instanceof TileEntityPaintedSlab) {
+              ((TileEntityPaintedSlab) te).isConvertingToFullBlock = false;
             }
 
           }
@@ -114,34 +114,34 @@ public class BlockItemCustomSlab extends ItemSlab {
     int j1 = world.getBlockMetadata(x, y, z);
     int k1 = j1 & 7;
 
-    if(i1 == EnderIO.blockCustomSlab && k1 == par1ItemStack.getItemDamage()) {
+    if(i1 == EnderIO.blockPaintedSlab && k1 == par1ItemStack.getItemDamage()) {
 
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileEntityCustomSlab) {
-        ((TileEntityCustomSlab) te).isConvertingToFullBlock = true;
+      if(te instanceof TileEntityPaintedSlab) {
+        ((TileEntityPaintedSlab) te).isConvertingToFullBlock = true;
       }
 
-      if(world.checkNoEntityCollision(EnderIO.blockCustomDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
-          && world.setBlock(x, y, z, EnderIO.blockCustomDoubleSlab, k1, 3)) {
+      if(world.checkNoEntityCollision(EnderIO.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
+          && world.setBlock(x, y, z, EnderIO.blockPaintedDoubleSlab, k1, 3)) {
 
         te = world.getTileEntity(x, y, z);
-        if(te instanceof TileEntityCustomBlock) {
+        if(te instanceof TileEntityPaintedBlock) {
 
           Block b = PainterUtil.getSourceBlock(par1ItemStack);
-          TileEntityCustomBlock tef = (TileEntityCustomBlock) te;
+          TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
           tef.setSourceBlock(b);
           tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(par1ItemStack));
           world.markBlockForUpdate(x, y, z);
         }
 
         world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F,
-            EnderIO.blockCustomDoubleSlab.stepSound.getStepResourcePath(), (EnderIO.blockCustomDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
-            EnderIO.blockCustomDoubleSlab.stepSound.getPitch() * 0.8F);
+            EnderIO.blockPaintedDoubleSlab.stepSound.getStepResourcePath(), (EnderIO.blockPaintedDoubleSlab.stepSound.getVolume() + 1.0F) / 2.0F,
+            EnderIO.blockPaintedDoubleSlab.stepSound.getPitch() * 0.8F);
         --par1ItemStack.stackSize;
 
       } else {
-        if(te instanceof TileEntityCustomSlab) {
-          ((TileEntityCustomSlab) te).isConvertingToFullBlock = false;
+        if(te instanceof TileEntityPaintedSlab) {
+          ((TileEntityPaintedSlab) te).isConvertingToFullBlock = false;
         }
 
       }

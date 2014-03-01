@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 
-public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandler {
+public class BlockPaintedFenceGateRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
@@ -23,7 +23,7 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
 
   @Override
   public int getRenderId() {
-    return BlockCustomFenceGate.renderId;
+    return BlockPaintedFenceGate.renderId;
   }
 
   @Override
@@ -46,10 +46,10 @@ public class BlockCustomFenceGateRenderer implements ISimpleBlockRenderingHandle
         && rb.blockAccess.getBlock(par2 + 1, par3, par4) == Blocks.cobblestone_wall ||
         (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == Blocks.cobblestone_wall
         && rb.blockAccess.getBlock(par2, par3, par4 + 1) == Blocks.cobblestone_wall ||
-        (i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EnderIO.blockCustomWall
-        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == EnderIO.blockCustomWall ||
-        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EnderIO.blockCustomWall
-        && rb.blockAccess.getBlock(par2, par3, par4 + 1) == EnderIO.blockCustomWall)
+        (i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EnderIO.blockPaintedWall
+        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == EnderIO.blockPaintedWall ||
+        (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EnderIO.blockPaintedWall
+        && rb.blockAccess.getBlock(par2, par3, par4 + 1) == EnderIO.blockPaintedWall)
     {
       f -= 0.1875F;
       f1 -= 0.1875F;

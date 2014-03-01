@@ -8,11 +8,17 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 
-public class BlockItemCustomWall extends ItemBlock {
+public class BlockItemPaintedFence extends ItemBlock {
 
-  public BlockItemCustomWall(Block block) {
-    super(block);
+  public BlockItemPaintedFence(Block p_i45328_1_) {
+    super(p_i45328_1_);
+    setHasSubtypes(true);
+  }
+
+  public BlockItemPaintedFence() {
+    super(EnderIO.blockPaintedFence);
     setHasSubtypes(true);
   }
 
