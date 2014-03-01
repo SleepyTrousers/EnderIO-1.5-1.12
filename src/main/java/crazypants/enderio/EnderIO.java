@@ -18,6 +18,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.machine.MachineRecipes;
+import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
@@ -195,6 +196,7 @@ public class EnderIO {
 
     packetPipeline.initalise();
     packetPipeline.registerPacket(PacketTileEntity.class);
+    packetPipeline.registerPacket(PacketRedstoneMode.class);
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);
@@ -222,8 +224,6 @@ public class EnderIO {
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 2, 6, 10));
     ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
     ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 20));
-    //
-    //    PacketHandler.instance.addPacketProcessor(new RedstoneModePacketProcessor());
 
     //    EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();

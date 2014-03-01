@@ -11,12 +11,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
-import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
@@ -41,8 +42,10 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   private final TileCapacitorBank capBank;
 
-  private IconButton inputRedstoneButton;
-  private IconButton outputRedstoneButton;
+  //  private IconButton inputRedstoneButton;
+  //  private IconButton outputRedstoneButton;
+  private RedstoneModeButton inputRsButton;
+  private RedstoneModeButton outputRsButton;
 
   private GuiTextField maxInputTF;
   private GuiTextField maxOutputTF;
@@ -62,93 +65,51 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     });
 
-    addToolTip(new GuiToolTip(new Rectangle(0, 0, 0, 0), "") {
+    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
+    int y = inputY;
+    inputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
       @Override
-      protected void updateText() {
-        text.clear();
-        text.add(Lang.localize("gui.capBank.inputRs"));
-        text.add(capBank.getInputControlMode().getTooltip());
+      public void setRedstoneControlMode(RedstoneControlMode mode) {
+        capBank.setInputControlMode(mode);
+        EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
       }
 
       @Override
-      public void onTick(int mouseX, int mouseY) {
-        bounds.setBounds(xSize - rightMargin - GuiMachineBase.BUTTON_SIZE, inputY, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
-        super.onTick(mouseX, mouseY);
+      public RedstoneControlMode getRedstoneControlMode() {
+        return capBank.getInputControlMode();
       }
-
     });
+    inputRsButton.setTooltipKey("enderio.gui.capBank.inputRs");
 
-    addToolTip(new GuiToolTip(new Rectangle(0, 0, 0, 0), "") {
+    y += 20;
+    outputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
       @Override
-      protected void updateText() {
-        text.clear();
-        text.add(Lang.localize("gui.capBank.outputRs"));
-        text.add(capBank.getOutputControlMode().getTooltip());
+      public void setRedstoneControlMode(RedstoneControlMode mode) {
+        capBank.setOutputControlMode(mode);
+        EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
       }
 
       @Override
-      public void onTick(int mouseX, int mouseY) {
-        bounds.setBounds(xSize - rightMargin - GuiMachineBase.BUTTON_SIZE, outputY, GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
-        super.onTick(mouseX, mouseY);
+      public RedstoneControlMode getRedstoneControlMode() {
+        return capBank.getOutputControlMode();
       }
-
     });
+    outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
 
-  }
-
-  @Override
-  protected void actionPerformed(GuiButton par1GuiButton) {
-    if(par1GuiButton.id == INPUT_BUTTON_ID) {
-      int ordinal = capBank.getInputControlMode().ordinal();
-      ordinal++;
-      if(ordinal >= RedstoneControlMode.values().length) {
-        ordinal = 0;
-      }
-      capBank.setInputControlMode(RedstoneControlMode.values()[ordinal]);
-      inputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getInputControlMode()));
-      //TODO:1.7
-      //      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
-      //      PacketDispatcher.sendPacketToServer(pkt);
-    } else if(par1GuiButton.id == OUTPUT_BUTTON_ID) {
-      int ordinal = capBank.getOutputControlMode().ordinal();
-      ordinal++;
-      if(ordinal >= RedstoneControlMode.values().length) {
-        ordinal = 0;
-      }
-      capBank.setOutputControlMode(RedstoneControlMode.values()[ordinal]);
-      outputRedstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(capBank.getOutputControlMode()));
-      //TODO:1.7
-      //      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(capBank);
-      //      PacketDispatcher.sendPacketToServer(pkt);
-    }
-  }
-
-  @Override
-  public boolean doesGuiPauseGame() {
-    return false;
   }
 
   @Override
   public void initGui() {
     super.initGui();
     int x = guiLeft + xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
-    //int y = guiTop + 5;
     int y = guiTop + inputY;
 
     FontRenderer fontRenderer = getFontRenderer();
-    inputRedstoneButton = new IconButton(fontRenderer, INPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(capBank.getInputControlMode()),
-        RenderUtil.BLOCK_TEX);
-    inputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
-    buttonList.add(inputRedstoneButton);
 
-    //y = y + 5 + GuiMachineBase.BUTTON_SIZE;
-    y = guiTop + outputY;
-    outputRedstoneButton = new IconButton(fontRenderer, OUTPUT_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(capBank.getOutputControlMode()),
-        RenderUtil.BLOCK_TEX);
-    outputRedstoneButton.setSize(GuiMachineBase.BUTTON_SIZE, GuiMachineBase.BUTTON_SIZE);
-    buttonList.add(outputRedstoneButton);
+    inputRsButton.onGuiInit();
+    outputRsButton.onGuiInit();
 
     x = guiLeft + inputX;
     y = guiTop + inputY;
@@ -179,37 +140,30 @@ public class GuiCapacitorBank extends GuiContainerBase {
   }
 
   private void updateInputOutput() {
-
     int input = parsePower(maxInputTF);
     if(input >= 0 && capBank.getMaxInput() != input) {
       setMaxInput(input);
     }
-
     int output = parsePower(maxOutputTF);
     if(output >= 0 && capBank.getMaxOutput() != output) {
       setMaxOutput(output);
     }
-
   }
 
   private void setMaxOutput(int output) {
-    capBank.setMaxOutput(output);
     if(output != capBank.getMaxOutput()) {
+      capBank.setMaxOutput(output);
       maxOutputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxOutput()));
+      EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
     }
-    //TODO:1.7
-    //    Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
-    //    PacketDispatcher.sendPacketToServer(pkt);
   }
 
   private void setMaxInput(int input) {
-    capBank.setMaxInput(input);
     if(input != capBank.getMaxInput()) {
+      capBank.setMaxInput(input);
       maxInputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxInput()));
+      EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
     }
-    //TODO:1.7
-    //    Packet pkt = CapacitorBankPacketHandler.createMaxInputOutputPacket(capBank);
-    //    PacketDispatcher.sendPacketToServer(pkt);
   }
 
   private int parsePower(GuiTextField tf) {

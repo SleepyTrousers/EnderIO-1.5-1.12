@@ -36,13 +36,10 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
   public static int renderId = -1;
 
   public static BlockCapacitorBank create() {
+    EnderIO.packetPipeline.registerPacket(PacketClientState.class);
+
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
-
-    //TODO:1.7
-    //CapacitorBankPacketHandler pp = new CapacitorBankPacketHandler();
-    //PacketHandler.instance.addPacketProcessor(pp);
-
     return res;
   }
 

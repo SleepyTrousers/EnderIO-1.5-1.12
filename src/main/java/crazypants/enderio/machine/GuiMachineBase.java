@@ -7,12 +7,11 @@ import net.minecraft.inventory.Container;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
-import crazypants.gui.IconButton;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+import crazypants.util.BlockCoord;
 
 public abstract class GuiMachineBase extends GuiContainerBase {
 
@@ -23,11 +22,10 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
   public static final int BUTTON_SIZE = 16;
-  protected static final int REDSTONE_BUTTON_ID = 99;
 
   private AbstractMachineEntity tileEntity;
 
-  private IconButton redstoneButton;
+  private RedstoneModeButton redstoneButton;
 
   public GuiMachineBase(AbstractMachineEntity machine, Container container) {
     super(container);
@@ -42,53 +40,15 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       }
 
     });
-    addToolTip(new GuiToolTip(new Rectangle(0, 0, 0, 0), "") {
-
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add(Lang.localize("gui.tooltip.redstoneControlMode"));
-        text.add(tileEntity.getRedstoneControlMode().getTooltip());
-      }
-
-      @Override
-      public void onTick(int mouseX, int mouseY) {
-        bounds.setBounds(xSize - 5 - BUTTON_SIZE, 5, BUTTON_SIZE, BUTTON_SIZE);
-        super.onTick(mouseX, mouseY);
-      }
-
-    });
-
-  }
-
-  @Override
-  protected void actionPerformed(GuiButton par1GuiButton) {
-    if(par1GuiButton.id == REDSTONE_BUTTON_ID) {
-      int ordinal = tileEntity.getRedstoneControlMode().ordinal();
-      ordinal++;
-      if(ordinal >= RedstoneControlMode.values().length) {
-        ordinal = 0;
-      }
-      tileEntity.setRedstoneControlMode(RedstoneControlMode.values()[ordinal]);
-      redstoneButton.setIcon(AbstractMachineBlock.getRedstoneControlIcon(tileEntity.getRedstoneControlMode()));
-      //TODO:1.7
-      //      Packet pkt = RedstoneModePacketProcessor.getRedstoneControlPacket(tileEntity);
-      //      PacketDispatcher.sendPacketToServer(pkt);
-    }
+    int x = xSize - 5 - BUTTON_SIZE;
+    int y = 5;
+    redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
   }
 
   @Override
   public void initGui() {
     super.initGui();
-    int x = guiLeft + xSize - 5 - BUTTON_SIZE;
-    int y = guiTop + 5;
-
-    redstoneButton = new IconButton(getFontRenderer(), REDSTONE_BUTTON_ID, x, y, AbstractMachineBlock.getRedstoneControlIcon(tileEntity
-        .getRedstoneControlMode()),
-        RenderUtil.BLOCK_TEX);
-    redstoneButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-
-    buttonList.add(redstoneButton);
+    redstoneButton.onGuiInit();
   }
 
   @Override

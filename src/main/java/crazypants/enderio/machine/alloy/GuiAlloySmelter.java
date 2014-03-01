@@ -22,7 +22,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
 
   private IconButton vanillaFurnaceButton;
 
-  protected static final int SMELT_MODE_BUTTON_ID = REDSTONE_BUTTON_ID + 1;
+  protected static final int SMELT_MODE_BUTTON_ID = 76;
 
   public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
     super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory));
@@ -70,9 +70,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
       tileEntity.setMode(tileEntity.getMode().next());
       vanillaFurnaceButton.setIcon(getIconForMode());
-      //TODO:1.7
-      //      Packet pkt = AlloySmelterPacketProcessor.getSmeltingModePacket(tileEntity);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketClientState(tileEntity));
     } else {
       super.actionPerformed(par1GuiButton);
     }

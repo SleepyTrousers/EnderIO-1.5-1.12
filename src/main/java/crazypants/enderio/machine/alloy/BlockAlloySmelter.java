@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -12,8 +13,9 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   public static BlockAlloySmelter create() {
-    //TODO:1.7
-    //PacketHandler.instance.addPacketProcessor(new AlloySmelterPacketProcessor());
+
+    EnderIO.packetPipeline.registerPacket(PacketClientState.class);
+
     BlockAlloySmelter ppainter = new BlockAlloySmelter();
     ppainter.init();
     return ppainter;

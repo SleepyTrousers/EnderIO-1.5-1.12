@@ -9,7 +9,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -25,38 +24,9 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.render.IconUtil;
 import crazypants.util.Util;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
-
-  public static final IIcon[] REDSTONE_CONTROL_ICONS = new IIcon[RedstoneControlMode.values().length];
-
-  @SideOnly(Side.CLIENT)
-  public static void initIcon() {
-    IconUtil.addIconProvider(new IconUtil.IIconProvider() {
-
-      @Override
-      public void registerIcons(IIconRegister IIconRegister) {
-        REDSTONE_CONTROL_ICONS[RedstoneControlMode.IGNORE.ordinal()] = IIconRegister.registerIcon("enderio:iconRedstoneIgnore");
-        REDSTONE_CONTROL_ICONS[RedstoneControlMode.ON.ordinal()] = IIconRegister.registerIcon("enderio:iconRedstoneOn");
-        REDSTONE_CONTROL_ICONS[RedstoneControlMode.OFF.ordinal()] = IIconRegister.registerIcon("enderio:iconRedstoneOff");
-        REDSTONE_CONTROL_ICONS[RedstoneControlMode.NEVER.ordinal()] = IIconRegister.registerIcon("enderio:iconRedstoneNever");
-      }
-
-      @Override
-      public int getTextureType() {
-        return 0;
-      }
-
-    });
-
-  }
-
-  @SideOnly(Side.CLIENT)
-  public static IIcon getRedstoneControlIcon(RedstoneControlMode mode) {
-    return REDSTONE_CONTROL_ICONS[mode.ordinal()];
-  }
 
   @SideOnly(Side.CLIENT)
   protected IIcon[][] iconBuffer;
@@ -179,18 +149,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     world.removeTileEntity(x, y, z);
 
   }
-
-  //TODO:1.7 is this the correct mapping?
-  @Override
-  public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
-    //return Item.getItemFromBlock(this);
-    return null;
-  }
-
-  //  @Override
-  //  public int idDropped(int par1, Random par2Random, int par3) {
-  //    return 0;
-  //  }
 
   @Override
   public int quantityDropped(Random r) {

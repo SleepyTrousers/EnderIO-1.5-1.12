@@ -47,7 +47,6 @@ public class ClientProxy extends CommonProxy {
   // @formatter:on
 
   static {
-    //    AbstractMachineBlock.initIcon();
     //    RedstoneConduit.initIcons();
     //    InsulatedRedstoneConduit.initIcons();
     //    RedstoneSwitch.initIcons();

@@ -24,6 +24,7 @@ import crazypants.gui.GuiToolTip;
 import crazypants.gui.ListSelectionListener;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
 public class GuiHyperCube extends GuiScreenBase {
@@ -138,7 +139,7 @@ public class GuiHyperCube extends GuiScreenBase {
     //        return cube.getRedstoneControlMode();
     //      }
     //    });
-    rsB = new RedstoneModeButton(this, 99, x, y, IconEIO.REDSTONE_MODE_ALWAYS);
+    rsB = new RedstoneModeButton(this, 99, x, y, te, new BlockCoord(te));
 
     updateIoButtons();
 

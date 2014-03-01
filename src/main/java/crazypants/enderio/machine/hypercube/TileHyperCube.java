@@ -24,6 +24,7 @@ import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -34,7 +35,7 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileHyperCube extends TileEntityEio implements IInternalPowerReceptor, IFluidHandler, ISidedInventory {
+public class TileHyperCube extends TileEntityEio implements IInternalPowerReceptor, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
 
   private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
 
@@ -138,10 +139,12 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     recieveBuffer = new ItemRecieveBuffer(this);
   }
 
+  @Override
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
   }
 
+  @Override
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
