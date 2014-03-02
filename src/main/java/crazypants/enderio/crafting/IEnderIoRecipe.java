@@ -11,7 +11,7 @@ public interface IEnderIoRecipe {
 
   public static final String ALLOY_SMELTER_ID = ModObject.blockAlloySmelter.unlocalisedName;
 
-  public static final String SAG_MILL_ID = ModObject.blockCrusher.unlocalisedName;
+  public static final String SAG_MILL_ID = ModObject.blockSagMill.unlocalisedName;
 
   String getCrafterId();
 

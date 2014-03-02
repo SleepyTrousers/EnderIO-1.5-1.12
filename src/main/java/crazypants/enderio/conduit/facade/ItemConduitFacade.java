@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.facade;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -17,6 +18,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 
@@ -118,13 +121,12 @@ public class ItemConduitFacade extends Item {
       return target != null && target.getItem() == EnderIO.itemConduitFacade;
     }
 
-    //TODO:1.7
-    //    @Override
-    //    public List<IEnderIoRecipe> getAllRecipes() {
-    //      ItemStack is = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
-    //      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
-    //      return Collections.singletonList(recipe);
-    //    }
+    @Override
+    public List<IEnderIoRecipe> getAllRecipes() {
+      ItemStack is = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
+      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
+      return Collections.singletonList(recipe);
+    }
 
   }
 

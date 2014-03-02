@@ -1,6 +1,9 @@
 package crazypants.enderio.machine;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.crafting.IEnderIoRecipe;
 
 /**
  * A MachineRecipe implementation must be stateless, always returning the same
@@ -95,7 +98,6 @@ public interface IMachineRecipe {
    * 
    * @return
    */
-  //TODO:1.7
-  //List<IEnderIoRecipe> getAllRecipes();
+  List<IEnderIoRecipe> getAllRecipes();
 
 }

@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,6 +25,7 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.util.Util;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
@@ -68,19 +70,18 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
-    //TODO:1.7
-    //    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-    //      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-    //        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-    //        if(wrench.canWrench(entityPlayer, x, y, z)) {
-    //          removeBlockByPlayer(world, entityPlayer, x, y, z);
-    //          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-    //            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-    //          }
-    //          return true;
-    //        }
-    //      }
-    //    }
+    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if(wrench.canWrench(entityPlayer, x, y, z)) {
+          removedByPlayer(world, entityPlayer, x, y, z);
+          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
+        }
+      }
+    }
 
     if(entityPlayer.isSneaking()) {
       return false;

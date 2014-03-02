@@ -7,7 +7,6 @@ import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.util.Util;
 
 public class RecipeInput extends RecipeComponent implements IRecipeInput {
 
@@ -31,11 +30,11 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
 
   public RecipeInput(ItemStack input, boolean addSubtypes) {
     super(input, -1);
-    Item inputItem = Util.getItem(input.itemID);
+    Item inputItem = input.getItem();
     if(addSubtypes && inputItem != null && inputItem.getHasSubtypes()) {
       equivelents = new ArrayList<ItemStack>();
       ArrayList<ItemStack> sublist = new ArrayList<ItemStack>();
-      inputItem.getSubItems(inputItem.itemID, null, sublist);
+      inputItem.getSubItems(inputItem, null, sublist);
       for (ItemStack st : sublist) {
         if(itemPrototype.getItemDamage() != st.getItemDamage()) {
           equivelents.add(st.copy());

@@ -30,8 +30,8 @@ public class RecipeInputClass<T> extends RecipeComponent implements IRecipeInput
 
   @Override
   public boolean isEquivalent(ItemStack candidate) {
-    Block block = Util.getBlockFromItemId(candidate.itemID);
-    Item item = Util.getItem(candidate.itemID);
+    Block block = Util.getBlockFromItemId(candidate);
+    Item item = candidate.getItem();
     return (item != null && allowedClass.isAssignableFrom(item.getClass()) || (block != null && allowedClass.isAssignableFrom(block.getClass())));
   }
 
