@@ -67,7 +67,7 @@ public class ItemFilter implements IInventory {
           matched = true;
         }
       }
-      if(!matched && it != null && item.itemID == it.itemID) {
+      if(!matched && it != null && item.getItem() == it.getItem()) {
         matched = true;
         if(matchMeta && item.getItemDamage() != it.getItemDamage()) {
           matched = false;
@@ -227,13 +227,8 @@ public class ItemFilter implements IInventory {
   }
 
   @Override
-  public String getInvName() {
+  public String getInventoryName() {
     return "Item Filter";
-  }
-
-  @Override
-  public boolean isInvNameLocalized() {
-    return false;
   }
 
   @Override
@@ -242,7 +237,12 @@ public class ItemFilter implements IInventory {
   }
 
   @Override
-  public void onInventoryChanged() {
+  public boolean hasCustomInventoryName() {
+    return false;
+  }
+
+  @Override
+  public void markDirty() {
   }
 
   @Override
@@ -251,11 +251,11 @@ public class ItemFilter implements IInventory {
   }
 
   @Override
-  public void openChest() {
+  public void openInventory() {
   }
 
   @Override
-  public void closeChest() {
+  public void closeInventory() {
   }
 
   @Override

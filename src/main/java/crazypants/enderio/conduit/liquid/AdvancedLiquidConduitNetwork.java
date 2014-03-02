@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -12,7 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.IConduit;
@@ -60,6 +59,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     super.addConduit(con);
   }
 
+  @Override
   public boolean setFluidType(FluidStack newType) {
     if(super.setFluidType(newType)) {
 
@@ -100,7 +100,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         }
         con.getTank().setLiquid(f);
         BlockCoord bc = con.getLocation();
-        con.getBundle().getEntity().worldObj.markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
+        con.getBundle().getEntity().getWorldObj().markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
       }
 
     }
@@ -108,7 +108,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
   @Override
   public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().worldObj;
+    World world = conduit.getBundle().getEntity().getWorldObj();
     if(world == null) {
       return;
     }
@@ -299,12 +299,13 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   private class InnerTickHandler implements TickListener {
+
     @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    public void tickStart(ServerTickEvent evt) {
     }
 
     @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+    public void tickEnd(ServerTickEvent evt) {
       doTick();
     }
   }

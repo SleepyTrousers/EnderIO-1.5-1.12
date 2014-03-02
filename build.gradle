@@ -50,12 +50,9 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-	    exclude '**/enderio/conduit/**' 
 	    exclude '**/enderio/crafting/**' 
-	    exclude '**/enderio/item/**' 
 	    exclude '**/enderio/nei/**' 
 	    exclude '**/enderio/trigger/**' 	    
-	    exclude '**/powercrystals/**' 
             // exclude 'some exclusion'
             // include 'some inclusion'
         }

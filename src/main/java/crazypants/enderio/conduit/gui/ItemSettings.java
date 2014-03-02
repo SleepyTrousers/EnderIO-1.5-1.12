@@ -4,9 +4,6 @@ import java.awt.Color;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.network.packet.Packet;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -86,8 +83,9 @@ public class ItemSettings extends BaseSettingsPanel {
         RedstoneControlMode curMode = getRedstoneControlMode();
         itemConduit.setExtractionRedstoneMode(mode, gui.dir);
         if(curMode != mode) {
-          Packet pkt = ConduitPacketHandler.createExtractionModePacket(itemConduit, gui.dir, mode);
-          PacketDispatcher.sendPacketToServer(pkt);
+          //TODO:1.7
+          //          Packet pkt = ConduitPacketHandler.createExtractionModePacket(itemConduit, gui.dir, mode);
+          //          PacketDispatcher.sendPacketToServer(pkt);
         }
 
       }
@@ -299,12 +297,14 @@ public class ItemSettings extends BaseSettingsPanel {
       activeFilter.setBlacklist(!activeFilter.isBlacklist());
       sendFilterChange();
     } else if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
-      Packet pkt = ConduitPacketHandler.createItemLoopPacket(itemConduit, gui.dir);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createItemLoopPacket(itemConduit, gui.dir);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     } else if(guiButton.id == ID_CHANNEL) {
 
       ConnectionMode mode = con.getConectionMode(gui.dir);
@@ -324,8 +324,9 @@ public class ItemSettings extends BaseSettingsPanel {
       } else {
         return;
       }
-      Packet pkt = ConduitPacketHandler.createItemChannelPacket(itemConduit, gui.dir, col, input);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createItemChannelPacket(itemConduit, gui.dir, col, input);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 
@@ -335,8 +336,9 @@ public class ItemSettings extends BaseSettingsPanel {
     if(activeFilter != null) {
       ConnectionMode mode = con.getConectionMode(gui.dir);
       boolean inputActive = (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
-      Packet pkt = ConduitPacketHandler.createItemFilterPacket(itemConduit, gui.dir, inputActive, activeFilter);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createItemFilterPacket(itemConduit, gui.dir, inputActive, activeFilter);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 

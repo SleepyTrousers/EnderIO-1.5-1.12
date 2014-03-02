@@ -1,9 +1,6 @@
 package crazypants.enderio.conduit.gui;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.network.packet.Packet;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.gui.ColorButton;
@@ -11,7 +8,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.util.DyeColor;
 import crazypants.util.Lang;
 
 public class PowerSettings extends BaseSettingsPanel {
@@ -38,8 +34,9 @@ public class PowerSettings extends BaseSettingsPanel {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setRedstoneMode(mode, gui.dir);
         if(curMode != mode) {
-          Packet pkt = ConduitPacketHandler.createExtractionModePacket(conduit, gui.dir, mode);
-          PacketDispatcher.sendPacketToServer(pkt);
+          //TODO:1.7
+          //          Packet pkt = ConduitPacketHandler.createExtractionModePacket(conduit, gui.dir, mode);
+          //          PacketDispatcher.sendPacketToServer(pkt);
         }
 
       }
@@ -61,8 +58,9 @@ public class PowerSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(conduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createSignalColorPacket(conduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 

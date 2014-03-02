@@ -11,10 +11,10 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.util.ForgeDirection;
-import appeng.api.WorldCoord;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.render.ColorUtil;
+import crazypants.util.BlockCoord;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 
@@ -33,7 +33,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   protected void actionPerformed(GuiButton b) {
     ForgeDirection dir = ForgeDirection.values()[b.id];
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    WorldCoord loc = cb.getLocation();
+    BlockCoord loc = cb.getBlockCoord();
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 
@@ -64,10 +64,10 @@ public class GuiExternalConnectionSelector extends GuiScreen {
 
     int butHeight = 20;
     String txt = "Select Connection to Adjust";
-    int x = width / 2 - (fontRenderer.getStringWidth(txt) / 2);
-    int y = height / 2 - (int) (butHeight * 3) - 5;
+    int x = width / 2 - (Minecraft.getMinecraft().fontRenderer.getStringWidth(txt) / 2);
+    int y = height / 2 - butHeight * 3 - 5;
     Tessellator.instance.startDrawingQuads();
-    drawString(fontRenderer, txt, x, y, ColorUtil.getARGB(Color.white));
+    drawString(Minecraft.getMinecraft().fontRenderer, txt, x, y, ColorUtil.getARGB(Color.white));
     Tessellator.instance.draw();
 
   }

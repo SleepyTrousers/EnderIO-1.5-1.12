@@ -3,9 +3,6 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.network.packet.Packet;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.gui.ColorButton;
@@ -40,8 +37,9 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      Packet pkt = ConduitPacketHandler.createSignalColorPacket(insCon, gui.dir, DyeColor.values()[cb.getColorIndex()]);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createSignalColorPacket(insCon, gui.dir, DyeColor.values()[cb.getColorIndex()]);
+      //      PacketDispatcher.sendPacketToServer(pkt);
     }
   }
 

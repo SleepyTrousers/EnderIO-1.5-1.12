@@ -15,8 +15,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -124,7 +124,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
       return true;
     } else if(ConduitUtil.isToolEquipped(player)) {
-      if(!getBundle().getEntity().worldObj.isRemote) {
+      if(!getBundle().getEntity().getWorldObj().isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
@@ -393,7 +393,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public ItemStack createItem() {
-    ItemStack result = new ItemStack(ModObject.itemItemConduit.actualId, 1, metaData);
+    ItemStack result = new ItemStack(EnderIO.itemItemConduit, 1, metaData);
     return result;
   }
 

@@ -7,7 +7,6 @@ import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -17,13 +16,11 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -109,8 +106,9 @@ public class LiquidConduit extends AbstractTankConduit {
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer        
       BlockCoord loc = getLocation();
-      Packet packet = ConduitPacketHandler.createFluidConduitLevelPacket(this);
-      PacketDispatcher.sendPacketToAllAround(loc.x, loc.y, loc.z, 64, world.provider.dimensionId, packet);
+      //TODO:1.7
+      //      Packet packet = ConduitPacketHandler.createFluidConduitLevelPacket(this);
+      //      PacketDispatcher.sendPacketToAllAround(loc.x, loc.y, loc.z, 64, world.provider.dimensionId, packet);
 
       lastSyncRatio = tank.getFilledRatio();
     }
@@ -280,7 +278,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   private ILiquidConduit getFluidConduit(ForgeDirection dir) {
     TileEntity ent = getBundle().getEntity();
-    return ConduitUtil.getConduit(ent.worldObj, ent, dir, ILiquidConduit.class);
+    return ConduitUtil.getConduit(ent.getWorldObj(), ent, dir, ILiquidConduit.class);
   }
 
   @Override
@@ -337,7 +335,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemLiquidConduit.actualId, 1, 0);
+    return new ItemStack(EnderIO.itemLiquidConduit, 1, 0);
   }
 
   @Override

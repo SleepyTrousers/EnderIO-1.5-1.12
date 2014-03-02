@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.item;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
@@ -120,7 +119,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     for (Target t : source.sendPriority) {
       ItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
       if(input == null || f == null || f.doesItemPassFilter(input)) {
-        String s = "[" + t.distance + "] " + Lang.localize(t.inv.inv.getInvName(), false);
+        String s = "[" + t.distance + "] " + Lang.localize(t.inv.inv.getInventoryName(), false);
         result.add(s);
       }
     }
@@ -133,7 +132,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(inv.hasTarget(con, dir)) {
         ItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(input)) {
-          result.add(Lang.localize(inv.inv.getInvName(), false));
+          result.add(Lang.localize(inv.inv.getInventoryName(), false));
         }
       }
     }
@@ -141,7 +140,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   private boolean isRemote(ItemConduit itemConduit) {
-    World world = itemConduit.getBundle().getEntity().worldObj;
+    World world = itemConduit.getBundle().getEntity().getWorldObj();
     if(world != null && world.isRemote) {
       return true;
     }
@@ -150,7 +149,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   @Override
   public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().worldObj;
+    World world = conduit.getBundle().getEntity().getWorldObj();
     if(world == null) {
       return;
     }
@@ -352,10 +351,10 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         curStack.stackSize -= numInserted;
         if(curStack.stackSize > 0) {
           inv.setInventorySlotContents(slot, curStack);
-          inv.onInventoryChanged();
+          inv.markDirty();
         } else {
           inv.setInventorySlotContents(slot, null);
-          inv.onInventoryChanged();
+          inv.markDirty();
         }
       }
       con.itemsExtracted(numInserted, slot);
@@ -511,11 +510,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     long tick;
 
     @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    public void tickStart(ServerTickEvent evt) {
     }
 
     @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+    public void tickEnd(ServerTickEvent evt) {
       doTick(tick);
     }
   }

@@ -3,9 +3,9 @@ package crazypants.enderio.conduit.liquid;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -33,7 +33,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
     if(ConduitUtil.isToolEquipped(player)) {
 
-      if(!getBundle().getEntity().worldObj.isRemote) {
+      if(!getBundle().getEntity().getWorldObj().isRemote) {
 
         if(res != null && res.component != null) {
 
@@ -48,7 +48,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
             }
 
             BlockCoord loc = getLocation().getLocation(faceHit);
-            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
+            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
             if(n == null) {
               return false;
             }
@@ -82,10 +82,10 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
       }
       return true;
 
-    } else if(player.getCurrentEquippedItem().itemID == Item.bucketEmpty.itemID) {
+    } else if(player.getCurrentEquippedItem().getItem() == Items.bucket) {
 
-      if(!getBundle().getEntity().worldObj.isRemote) {
-        long curTick = getBundle().getEntity().worldObj.getWorldTime();
+      if(!getBundle().getEntity().getWorldObj().isRemote) {
+        long curTick = getBundle().getEntity().getWorldObj().getWorldTime();
         if(curTick - lastEmptyTick < 20) {
           numEmptyEvents++;
         } else {
@@ -97,8 +97,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           if(network.fluidTypeLocked) {
             network.setFluidTypeLocked(false);
             numEmptyEvents = 0;
-            ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemLiquidConduit.unlockedType"));
-            player.sendChatToPlayer(c);
+            player.addChatComponentMessage(new ChatComponentText(Lang.localize("itemLiquidConduit.unlockedType")));
           }
         } else if(network != null) {
           network.setFluidType(null);
@@ -111,14 +110,13 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
       FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(player.getCurrentEquippedItem());
       if(fluid != null) {
-        if(!getBundle().getEntity().worldObj.isRemote) {
+        if(!getBundle().getEntity().getWorldObj().isRemote) {
           if(network != null
               && (network.getFluidType() == null || network.getTotalVolume() < 500 || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
             network.setFluidType(fluid);
             network.setFluidTypeLocked(true);
-            ChatMessageComponent c = ChatMessageComponent.createFromText(Lang.localize("itemLiquidConduit.lockedType") + " "
-                + FluidRegistry.getFluidName(fluid));
-            player.sendChatToPlayer(c);
+            player.addChatComponentMessage(new ChatComponentText(Lang.localize("itemLiquidConduit.lockedType") + " "
+                + FluidRegistry.getFluidName(fluid)));
           }
         }
         return true;

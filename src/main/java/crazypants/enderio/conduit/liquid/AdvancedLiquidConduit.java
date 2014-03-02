@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -120,7 +120,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemLiquidConduit.actualId, 1, 1);
+    return new ItemStack(EnderIO.itemLiquidConduit, 1, 1);
   }
 
   @Override

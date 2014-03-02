@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -39,7 +40,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   public IFluidHandler getTankContainer(int x, int y, int z) {
-    TileEntity te = getBundle().getEntity().worldObj.getTileEntity(x, y, z);
+    TileEntity te = getBundle().getEntity().getWorldObj().getTileEntity(x, y, z);
     if(te instanceof IFluidHandler) {
       if(te instanceof IPipeTile) {
         if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
@@ -62,7 +63,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public boolean onNeighborBlockChange(int blockId) {
+  public boolean onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
     return super.onNeighborBlockChange(blockId);
   }
@@ -143,7 +144,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
       Integer val = externalRedstoneSignals.get(dir);
       if(val == null) {
         TileEntity te = getBundle().getEntity();
-        externalSignal = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
+        externalSignal = te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
         externalRedstoneSignals.put(dir, externalSignal);
       } else {
         externalSignal = val;

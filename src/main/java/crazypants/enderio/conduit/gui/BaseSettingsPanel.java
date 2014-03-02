@@ -5,12 +5,9 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.network.packet.Packet;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-import crazypants.enderio.conduit.ConduitPacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.gui.IconButtonEIO;
@@ -96,14 +93,16 @@ public class BaseSettingsPanel implements ISettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     if(guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.dir, con.getPreviousConnectionMode(gui.dir));
-      Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
+      //      PacketDispatcher.sendPacketToServer(pkt);
       connectionModeChanged(con.getConectionMode(gui.dir));
 
     } else if(guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.dir, con.getNextConnectionMode(gui.dir));
-      Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
-      PacketDispatcher.sendPacketToServer(pkt);
+      //TODO:1.7
+      //      Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
+      //      PacketDispatcher.sendPacketToServer(pkt);
       connectionModeChanged(con.getConectionMode(gui.dir));
     }
   }

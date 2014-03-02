@@ -16,9 +16,12 @@ import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.item.ItemItemConduit;
+import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
@@ -108,10 +111,9 @@ public class EnderIO {
   public static ItemConduitFacade itemConduitFacade;
   public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
-  //  public static ItemLiquidConduit itemLiquidConduit;
-  //  public static ItemItemConduit itemItemConduit;
-  //  public static ItemMeConduit itemMeConduit;
-  //
+  public static ItemLiquidConduit itemLiquidConduit;
+  public static ItemItemConduit itemItemConduit;
+
   //  // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
   public static BlockSolarPanel blockSolarPanel;
@@ -184,10 +186,8 @@ public class EnderIO {
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
-    //    itemLiquidConduit = ItemLiquidConduit.create();
-    //    itemItemConduit = ItemItemConduit.create();
-    //    itemMeConduit = ItemMeConduit.create();
-    //
+    itemLiquidConduit = ItemLiquidConduit.create();
+    itemItemConduit = ItemItemConduit.create();
 
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
@@ -235,7 +235,7 @@ public class EnderIO {
 
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
-    //    ConduitRecipes.addRecipes();
+    ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
     ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();

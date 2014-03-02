@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.liquid;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -54,7 +53,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   @Override
   public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().worldObj;
+    World world = conduit.getBundle().getEntity().getWorldObj();
     if(world == null) {
       return;
     }
@@ -70,7 +69,15 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
   }
 
-  private void doTick(long curTime) {
+  private void doTick() {
+
+    List<LiquidConduit> cons = getConduits();
+    if(cons == null || cons.isEmpty()) {
+      return;
+    }
+
+    long curTime = cons.get(0).getBundle().getEntity().getWorldObj().getTotalWorldTime();
+
     // 1000 water, 6000 lava
     if(liquidType != null && liquidType.getFluid() != null) {
       int visc = Math.max(1000, liquidType.getFluid().getViscosity());
@@ -214,10 +221,10 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     // First flow all we can down, then balance the rest
     if(con.getConduitConnections().contains(ForgeDirection.DOWN)) {
       BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
-      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, ILiquidConduit.class);
+      ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
       if(dc instanceof LiquidConduit) {
         LiquidConduit downCon = (LiquidConduit) dc;
-        int filled = ((LiquidConduit) downCon).fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
+        int filled = downCon.fill(ForgeDirection.UP, tank.getFluid().copy(), false, false, pushPoken);
         int actual = filled;
         actual = Math.min(actual, tank.getFluidAmount());
         actual = Math.min(actual, downCon.getTank().getAvailableSpace());
@@ -275,7 +282,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     BlockCoord loc = con.getLocation();
     Collection<ILiquidConduit> connections =
-        ConduitUtil.getConnectedConduits(con.getBundle().getEntity().worldObj,
+        ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorldObj(),
             loc.x, loc.y, loc.z, ILiquidConduit.class);
     int numTargets = 0;
     for (ILiquidConduit n : connections) {
@@ -374,15 +381,13 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   private class InnerTickHandler implements TickListener {
 
-    long tick;
-
     @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    public void tickStart(ServerTickEvent evt) {
     }
 
     @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-      doTick(tick);
+    public void tickEnd(ServerTickEvent evt) {
+      doTick();
     }
   }
 
