@@ -136,8 +136,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     powerHandler.setEnergy(powerHandler.getEnergyStored() - energyPerTick);
     boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
 
-    update = true;
-
     NetworkPowerManager pm = getPowerManager();
     if(pm != null && update) {
       update(pm);
