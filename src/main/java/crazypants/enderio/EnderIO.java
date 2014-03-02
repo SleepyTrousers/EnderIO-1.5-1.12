@@ -15,8 +15,17 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.facade.BlockConduitFacade;
+import crazypants.enderio.conduit.facade.ItemConduitFacade;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.power.ItemPowerConduit;
+import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
+import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.item.ItemRecipes;
+import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -92,13 +101,13 @@ public class EnderIO {
   public static BlockPaintedStair blockPaintedStair;
   public static BlockPaintedSlab blockPaintedSlab;
   public static BlockPaintedSlab blockPaintedDoubleSlab;
-  //
+
   //  // Conduits
-  //  public static BlockConduitBundle blockConduitBundle;
-  //  public static BlockConduitFacade blockConduitFacade;
-  //  public static ItemConduitFacade itemConduitFacade;
-  //  public static ItemRedstoneConduit itemRedstoneConduit;
-  //  public static ItemPowerConduit itemPowerConduit;
+  public static BlockConduitBundle blockConduitBundle;
+  public static BlockConduitFacade blockConduitFacade;
+  public static ItemConduitFacade itemConduitFacade;
+  public static ItemRedstoneConduit itemRedstoneConduit;
+  public static ItemPowerConduit itemPowerConduit;
   //  public static ItemLiquidConduit itemLiquidConduit;
   //  public static ItemItemConduit itemItemConduit;
   //  public static ItemMeConduit itemMeConduit;
@@ -116,8 +125,7 @@ public class EnderIO {
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
-  //
-  //  public static ItemYetaWrench itemYetaWench;
+  public static ItemYetaWrench itemYetaWench;
   public static ItemMJReader itemMJReader;
 
   //
@@ -132,7 +140,7 @@ public class EnderIO {
 
     Config.load(event);
 
-    //    ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
+    ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     blockEnderIo = BlockEnderIO.create();
 
@@ -170,18 +178,18 @@ public class EnderIO {
     itemAlloy = ItemAlloy.create();
     itemPowderIngot = ItemPowderIngot.create();
 
-    //    blockConduitBundle = BlockConduitBundle.create();
-    //    blockConduitFacade = BlockConduitFacade.create();
-    //    itemConduitFacade = ItemConduitFacade.create();
-    //
-    //    itemRedstoneConduit = ItemRedstoneConduit.create();
-    //    itemPowerConduit = ItemPowerConduit.create();
+    blockConduitBundle = BlockConduitBundle.create();
+    blockConduitFacade = BlockConduitFacade.create();
+    itemConduitFacade = ItemConduitFacade.create();
+
+    itemRedstoneConduit = ItemRedstoneConduit.create();
+    itemPowerConduit = ItemPowerConduit.create();
     //    itemLiquidConduit = ItemLiquidConduit.create();
     //    itemItemConduit = ItemItemConduit.create();
     //    itemMeConduit = ItemMeConduit.create();
     //
 
-    //    itemYetaWench = ItemYetaWrench.create();    
+    itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
     itemMJReader = ItemMJReader.create();
@@ -204,8 +212,8 @@ public class EnderIO {
     //Register Custom Dungeon Loot here
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
-    //    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
-    //        .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
+        .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemMJReader, 1, 0), 1, 1, 1));
 
     ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
@@ -225,11 +233,11 @@ public class EnderIO {
     ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
     ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 20));
 
-    //    EnderfaceRecipes.addRecipes();
+    EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     //    ConduitRecipes.addRecipes();
     MachineRecipes.addRecipes();
-    //    ItemRecipes.addRecipes();
+    ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();
 
     //    triggerNoEnergy = new TriggerEnderIO("enderIO.trigger.noEnergy", 0);

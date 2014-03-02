@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-import appeng.api.me.tiles.IGridMachine;
 import cofh.api.transport.IItemConduit;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +16,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemConduit, IGridMachine {
+public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemConduit {
 
   TileEntity getEntity();
 
@@ -54,7 +54,7 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
 
   // events
 
-  void onNeighborBlockChange(int blockId);
+  void onNeighborBlockChange(Block blockId);
 
   void onBlockRemoved();
 
@@ -80,11 +80,11 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
 
   boolean hasFacade();
 
-  void setFacadeId(int blockID);
+  void setFacadeId(Block block);
 
-  void setFacadeId(int blockID, boolean triggerUpdate);
+  void setFacadeId(Block block, boolean triggerUpdate);
 
-  int getFacadeId();
+  Block getFacadeId();
 
   void setFacadeMetadata(int meta);
 

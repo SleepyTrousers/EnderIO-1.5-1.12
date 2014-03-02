@@ -33,10 +33,10 @@ public class MpsUtil {
   }
 
   public boolean isPowerFistEquiped(ItemStack equipped) {
-    if(!isMpsInstalled || equipped == null || Item.itemsList[equipped.itemID] == null) {
+    if(!isMpsInstalled || equipped == null || equipped.getItem() == null) {
       return false;
     }
-    Item item = Item.itemsList[equipped.itemID];
+    Item item = equipped.getItem();
     if(powerFistClass.isAssignableFrom(item.getClass())) {
       return true;
     }

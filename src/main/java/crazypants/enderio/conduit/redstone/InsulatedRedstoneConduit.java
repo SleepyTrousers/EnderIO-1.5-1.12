@@ -13,21 +13,18 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
-import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.power.IPowerEmitter;
 import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -63,9 +60,12 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     });
   }
 
-  private static List<Integer> VANILLA_CONECTABLES = Arrays.asList(
-      23, 25, 27, 28, 29, 33, 46, 55, 64, 69, 70, 71, 72, 75, 76, 77, 93, 94,
-      96, 107, 123, 124, 131, 143, 147, 148, 149, 150, 151, 152, 154, 157, 158);
+  private static List<Block> VANILLA_CONECTABLES = Arrays.asList(Blocks.redstone_lamp, Blocks.redstone_torch, Blocks.redstone_wire, Blocks.redstone_block,
+      Blocks.dispenser, Blocks.lever, Blocks.wooden_button, Blocks.stone_button, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate,
+      Blocks.dropper, Blocks.daylight_detector, Blocks.command_block, Blocks.golden_rail);
+  //TODO:1.7  need to map all these
+  //    23, 25, 27, 28, 29, 33, 46, 55, 64, 69, 70, 71, 72, 75, 76, 77, 93, 94,
+  //    96, 107, 123, 124, 131, 143, 147, 148, 149, 150, 151, 152, 154, 157, 158);
 
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
@@ -74,7 +74,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
 
-    World world = getBundle().getEntity().worldObj;
+    World world = getBundle().getEntity().getWorldObj();
     if(!world.isRemote) {
 
       DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
@@ -103,8 +103,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
           } else if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
 
             BlockCoord loc = getLocation().getLocation(faceHit);
-            int id = world.getBlockId(loc.x, loc.y, loc.z);
-            if(id == ModObject.blockConduitBundle.actualId) {
+            Block id = world.getBlock(loc.x, loc.y, loc.z);
+            if(id == EnderIO.blockConduitBundle) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
               if(neighbour != null && neighbour.getConectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
@@ -125,7 +125,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
           } else if(containsConduitConnection(connDir)) {
             BlockCoord loc = getLocation().getLocation(connDir);
-            IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, IRedstoneConduit.class);
+            IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class);
             if(neighbour != null) {
               if(network != null) {
                 network.destroyNetwork();
@@ -193,7 +193,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 2);
+    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
   }
 
   @Override
@@ -245,44 +245,29 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     }
     //Not set so figure it out
     BlockCoord loc = getLocation().getLocation(direction);
-    int id = getBundle().getEntity().worldObj.getBlockId(loc.x, loc.y, loc.z);
+    Block block = getBundle().getEntity().getWorldObj().getBlock(loc.x, loc.y, loc.z);
 
-    if(VANILLA_CONECTABLES.contains(Integer.valueOf(id))) {
+    if(VANILLA_CONECTABLES.contains(block)) {
       return true;
     }
 
-    if(id == ModObject.blockConduitBundle.actualId) {
+    if(block == EnderIO.blockConduitBundle) {
       return false;
     }
 
-    if(id == ModObject.blockCapacitorBank.actualId) {
+    if(block == EnderIO.blockCapacitorBank) {
       return true;
     }
 
-    if(id == ModObject.blockElectricLight.actualId) {
+    if(block == EnderIO.blockElectricLight) {
       return true;
     }
 
-    Block block = Block.blocksList[id];
     if(block == null) {
       return false;
     }
 
-    if(block instanceof IRedNetNoConnection) {
-      return false;
-    }
-
-    World world = getBundle().getEntity().worldObj;
-    if(block instanceof IConnectableRedNet) {
-      RedNetConnectionType conType = ((IConnectableRedNet) block).getConnectionType(world, loc.x, loc.y, loc.z, direction.getOpposite());
-      try {
-        return conType != null && (conType.isSingleSubnet || conType.isAllSubnets);
-      } catch (NoSuchFieldError ex) {
-        Log.error("InsulatedRedstoneConduit: An outdated version of the Rednet API has been found.");
-        return true;
-      }
-    }
-
+    World world = getBundle().getEntity().getWorldObj();
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
     if(te instanceof IPowerEmitter || te instanceof IRedstoneControl) {
       return true;

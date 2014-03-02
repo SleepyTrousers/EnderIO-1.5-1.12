@@ -107,7 +107,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   @Override
   public void onUpdateEntity(IConduit conduit) {
-    World world = conduit.getBundle().getEntity().worldObj;
+    World world = conduit.getBundle().getEntity().getWorldObj();
     if(world == null) {
       return;
     }
@@ -158,20 +158,26 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj)
+      if(this == obj) {
         return true;
-      if(obj == null)
+      }
+      if(obj == null) {
         return false;
-      if(getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       ReceptorKey other = (ReceptorKey) obj;
       if(coord == null) {
-        if(other.coord != null)
+        if(other.coord != null) {
           return false;
-      } else if(!coord.equals(other.coord))
+        }
+      } else if(!coord.equals(other.coord)) {
         return false;
-      if(direction != other.direction)
+      }
+      if(direction != other.direction) {
         return false;
+      }
       return true;
     }
 

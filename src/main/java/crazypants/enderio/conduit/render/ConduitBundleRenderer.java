@@ -23,7 +23,6 @@ import org.lwjgl.opengl.GL12;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -59,7 +58,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         if(renderer.isDynamic()) {
           if(brightness == -1) {
             BlockCoord loc = bundle.getBlockCoord();
-            brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
+            brightness = bundle.getEntity().getWorldObj().getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
 
             RenderUtil.bindBlockTexture();
 
@@ -101,16 +100,16 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     boolean renderConduit = true;
     if(bundle.hasFacade()) {
 
-      int facadeId = bundle.getFacadeId();
+      Block facadeId = bundle.getFacadeId();
       if(ConduitUtil.isFacadeHidden(bundle, player)) {
-        bundle.setFacadeId(0, false);
+        bundle.setFacadeId(null, false);
         bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
       } else {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
         renderConduit = false;
       }
 
-      BlockConduitFacade facb = (BlockConduitFacade) Block.blocksList[ModObject.blockConduitFacade.actualId];
+      BlockConduitFacade facb = EnderIO.blockConduitFacade;
       facb.setBlockOverride(bundle);
       facb.setBlockBounds(0, 0, 0, 1, 1, 1);
       rb.setRenderBoundsFromBlock(facb);
@@ -129,7 +128,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
         brightness = 15 << 20 | 15 << 4;
       } else {
-        brightness = bundle.getEntity().worldObj.getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
+        brightness = bundle.getEntity().getWorldObj().getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
       }
       renderConduits(bundle, x, y, z, 0, brightness);
     }
@@ -214,7 +213,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   }
 
   @Override
-  public boolean shouldRender3DInInventory() {
+  public boolean shouldRender3DInInventory(int modelId) {
     return false;
   }
 

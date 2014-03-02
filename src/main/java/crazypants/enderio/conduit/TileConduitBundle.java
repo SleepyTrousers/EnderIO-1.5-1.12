@@ -6,25 +6,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import appeng.api.WorldCoord;
-import appeng.api.me.util.IGridInterface;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.PacketHandler;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -34,19 +31,18 @@ import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
-import crazypants.enderio.conduit.me.IMeConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 
-public class TileConduitBundle extends TileEntity implements IConduitBundle {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   static final short NBT_VERSION = 1;
 
   private final List<IConduit> conduits = new ArrayList<IConduit>();
 
-  private int facadeId = -1;
+  private Block facadeId = null;
   private int facadeMeta = 0;
 
   private boolean facadeChanged;
@@ -79,9 +75,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound nbtRoot) {
-    super.writeToNBT(nbtRoot);
-
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
     NBTTagList conduitTags = new NBTTagList();
     for (IConduit conduit : conduits) {
       NBTTagCompound conduitRoot = new NBTTagCompound();
@@ -89,28 +83,35 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       conduitTags.appendTag(conduitRoot);
     }
     nbtRoot.setTag("conduits", conduitTags);
-    nbtRoot.setInteger("facadeId", facadeId);
+    if(facadeId != null) {
+      nbtRoot.setString("facadeId", Block.blockRegistry.getNameForObject(facadeId));
+    } else {
+      nbtRoot.setString("facadeId", "null");
+    }
     nbtRoot.setInteger("facadeMeta", facadeMeta);
     nbtRoot.setShort("nbtVersion", NBT_VERSION);
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound nbtRoot) {
-    super.readFromNBT(nbtRoot);
-
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
     short nbtVersion = nbtRoot.getShort("nbtVersion");
 
     conduits.clear();
-    NBTTagList conduitTags = nbtRoot.getTagList("conduits");
+    NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
     for (int i = 0; i < conduitTags.tagCount(); i++) {
-      NBTTagCompound conduitTag = (NBTTagCompound) conduitTags.tagAt(i);
+      NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
       IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
       if(conduit != null) {
         conduit.setBundle(this);
         conduits.add(conduit);
       }
     }
-    facadeId = nbtRoot.getInteger("facadeId");
+    String fs = nbtRoot.getString("facadeId");
+    if(fs == null || "null".equals(fs)) {
+      facadeId = null;
+    } else {
+      facadeId = Block.getBlockFromName(fs);
+    }
     facadeMeta = nbtRoot.getInteger("facadeMeta");
 
     if(worldObj != null && worldObj.isRemote) {
@@ -121,11 +122,11 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
   @Override
   public boolean hasFacade() {
-    return facadeId > 0;
+    return facadeId != null;
   }
 
   @Override
-  public void setFacadeId(int blockID, boolean triggerUpdate) {
+  public void setFacadeId(Block blockID, boolean triggerUpdate) {
     this.facadeId = blockID;
     if(triggerUpdate) {
       facadeChanged = true;
@@ -133,12 +134,12 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   @Override
-  public void setFacadeId(int blockID) {
+  public void setFacadeId(Block blockID) {
     setFacadeId(blockID, true);
   }
 
   @Override
-  public int getFacadeId() {
+  public Block getFacadeId() {
     return facadeId;
   }
 
@@ -181,11 +182,6 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   @Override
-  public Packet getDescriptionPacket() {
-    return PacketHandler.getPacket(this);
-  }
-
-  @Override
   public void onChunkUnload() {
     for (IConduit conduit : conduits) {
       conduit.onChunkUnload(worldObj);
@@ -213,8 +209,9 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
     if(facadeChanged) {
       //force re-calc of lighting for both client and server
       ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord);
-      worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
-      worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+      //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+      worldObj.func_147451_t(xCoord, yCoord, zCoord);
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       facadeChanged = false;
     }
 
@@ -237,7 +234,8 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
         int shouldBeLO = rs == FacadeRenderState.FULL ? 255 : 0;
         if(curLO != shouldBeLO) {
           setLightOpacity(shouldBeLO);
-          worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+          //worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+          worldObj.func_147451_t(xCoord, yCoord, zCoord);
         }
       }
 
@@ -255,7 +253,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
 
       }
       if(markForUpdate) {
-        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       }
     }
   }
@@ -266,7 +264,7 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
   }
 
   @Override
-  public void onNeighborBlockChange(int blockId) {
+  public void onNeighborBlockChange(Block blockId) {
     boolean needsUpdate = false;
     for (IConduit conduit : conduits) {
       needsUpdate |= conduit.onNeighborBlockChange(blockId);
@@ -791,76 +789,6 @@ public class TileConduitBundle extends TileEntity implements IConduitBundle {
       return ic.insertItem(from, item);
     }
     return item;
-  }
-
-  @Override
-  public WorldCoord getLocation() {
-    return new WorldCoord(xCoord, yCoord, zCoord);
-  }
-
-  @Override
-  public boolean isValid() {
-    return getConduit(IMeConduit.class) != null;
-  }
-
-  @Override
-  public void setPowerStatus(boolean hasPower) {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      ic.setPoweredStatus(hasPower);
-    }
-  }
-
-  @Override
-  public boolean isPowered() {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      return ic.isPowered();
-    }
-    return false;
-  }
-
-  @Override
-  public IGridInterface getGrid() {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      return ic.getGrid();
-    }
-    return null;
-  }
-
-  @Override
-  public void setGrid(IGridInterface gi) {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      ic.setGrid(gi);
-    }
-  }
-
-  @Override
-  public float getPowerDrainPerTick() {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      return ic.getPowerDrainPerTick();
-    }
-    return 0;
-  }
-
-  @Override
-  public void setNetworkReady(boolean isReady) {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      ic.setNetworkReady(isReady);
-    }
-  }
-
-  @Override
-  public boolean isMachineActive() {
-    IMeConduit ic = getConduit(IMeConduit.class);
-    if(ic != null) {
-      return ic.isMachineActive();
-    }
-    return false;
   }
 
 }

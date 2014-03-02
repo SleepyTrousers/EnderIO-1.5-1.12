@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.render;
 
 import static crazypants.util.ForgeDirectionOffsets.offsetScaled;
-import static net.minecraftforge.common.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 
 import java.util.List;
 

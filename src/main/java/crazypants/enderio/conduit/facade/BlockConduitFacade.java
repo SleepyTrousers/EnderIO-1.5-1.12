@@ -9,7 +9,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
@@ -26,38 +25,33 @@ public class BlockConduitFacade extends Block {
   private Block blockOverride;
 
   private BlockConduitFacade() {
-    super(ModObject.blockConduitFacade.id, new Material(MapColor.stoneColor));
+    super(new Material(MapColor.stoneColor));
     setHardness(0.5F);
-    setStepSound(Block.soundStoneFootstep);
-    setUnlocalizedName(ModObject.blockConduitFacade.unlocalisedName);
+    setStepSound(Block.soundTypeStone);
+    setBlockName(ModObject.blockConduitFacade.unlocalisedName);
     setCreativeTab(null);
   }
 
   private void init() {
-    LanguageRegistry.addName(this, "Utility for Rendering DO NOT USE");
     GameRegistry.registerBlock(this, ModObject.blockConduitFacade.unlocalisedName);
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:conduitFacade");
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IIcon getBlockTexture(IBlockAccess ba, int x, int y, int z, int side) {
+  public IIcon getIcon(IBlockAccess ba, int x, int y, int z, int side) {
     TileEntity te = ba.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return blockIcon;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    int id = cb.getFacadeId();
-    int meta = cb.getFacadeMetadata();
-    if(id <= 0 || id == blockID) {
-      return blockIcon;
-    }
-    Block block = Block.blocksList[id];
+    Block block = cb.getFacadeId();
     if(block != null) {
+      int meta = cb.getFacadeMetadata();
       return block.getIcon(side, meta);
     }
     return blockIcon;
@@ -112,12 +106,12 @@ public class BlockConduitFacade extends Block {
       return;
     }
 
-    int id = cb.getFacadeId();
+    Block block = cb.getFacadeId();
     int meta = cb.getFacadeMetadata();
-    if(id <= 0 || id == blockID) {
+    if(block == null || block == this) {
       return;
     }
-    blockOverride = Block.blocksList[id];
+    blockOverride = block;
   }
 
   @Override
@@ -132,14 +126,13 @@ public class BlockConduitFacade extends Block {
   private Mimic getMimic(IBlockAccess ba, int x, int y, int z) {
     TileEntity te = ba.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
-      // System.out.println("BlockConduitFacade.getMimic: Not a conduit bundle");
       return null;
     }
     IConduitBundle cb = (IConduitBundle) te;
-    int id = cb.getFacadeId();
+    Block id = cb.getFacadeId();
     int meta = cb.getFacadeMetadata();
 
-    if(id <= 0) {
+    if(id == null) {
       return null;
     }
 
@@ -147,15 +140,13 @@ public class BlockConduitFacade extends Block {
   }
 
   class Mimic {
-    int id;
+
     int meta;
     Block block;
 
-    private Mimic(int id, int meta) {
-      super();
-      this.id = id;
+    private Mimic(Block block, int meta) {
+      this.block = block;
       this.meta = meta;
-      this.block = Block.blocksList[id];
     }
 
   }

@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.render.ConduitRenderer;
 
 public class CommonProxy {
 
@@ -20,10 +22,9 @@ public class CommonProxy {
     return null;
   }
 
-  //TODO:1.7
-  //  public ConduitRenderer getRendererForConduit(IConduit conduit) {
-  //    return null;
-  //  }
+  public ConduitRenderer getRendererForConduit(IConduit conduit) {
+    return null;
+  }
 
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
     return 5;

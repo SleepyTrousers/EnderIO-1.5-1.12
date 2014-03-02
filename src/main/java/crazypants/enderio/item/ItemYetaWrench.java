@@ -12,16 +12,16 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 
 public class ItemYetaWrench extends Item implements IToolWrench {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
-      PacketHandler.instance.addPacketProcessor(new YetaWrenchPacketProcessor());
+      EnderIO.packetPipeline.registerPacket(YetaWrenchPacketProcessor.class);
     }
     ItemYetaWrench result = new ItemYetaWrench();
     result.init();
@@ -29,9 +29,8 @@ public class ItemYetaWrench extends Item implements IToolWrench {
   }
 
   protected ItemYetaWrench() {
-    super(ModObject.itemYetaWrench.id);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName("enderio." + ModObject.itemYetaWrench.name());
+    setUnlocalizedName(ModObject.itemYetaWrench.unlocalisedName);
     setMaxStackSize(1);
   }
 
@@ -47,8 +46,7 @@ public class ItemYetaWrench extends Item implements IToolWrench {
 
   @Override
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-    int blockId = world.getBlockId(x, y, z);
-    Block block = Block.blocksList[blockId];
+    Block block = world.getBlock(x, y, z);
     if(block != null && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
       player.swingItem();
       return !world.isRemote;
@@ -83,9 +81,10 @@ public class ItemYetaWrench extends Item implements IToolWrench {
     player.swingItem();
   }
 
-  @Override
-  public boolean shouldPassSneakingClickToBlock(World par2World, int par4, int par5, int par6) {
-    return true;
-  }
+  //TODO:1.7 is this still needed?
+  //  @Override
+  //  public boolean shouldPassSneakingClickToBlock(World par2World, int par4, int par5, int par6) {
+  //    return true;
+  //  }
 
 }

@@ -15,10 +15,10 @@ public class PowerTracker {
   private float recievedThisTick = 0;
 
   public void tickStart(float storedEnergy) {
-    float curStorage = storedEnergy;
+    double curStorage = storedEnergy;
 
     if(previousStorageLevel > -1) {
-      float recieved = curStorage - previousStorageLevel;
+      double recieved = curStorage - previousStorageLevel;
       recieved = Math.max(0, recieved);
       recievedThisTick += recieved;
     }

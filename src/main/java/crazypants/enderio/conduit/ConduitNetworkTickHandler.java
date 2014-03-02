@@ -1,20 +1,20 @@
 package crazypants.enderio.conduit;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
-public class ConduitNetworkTickHandler implements ITickHandler {
+public class ConduitNetworkTickHandler {
 
   public static final ConduitNetworkTickHandler instance = new ConduitNetworkTickHandler();
 
   public static interface TickListener {
-    public void tickStart(EnumSet<TickType> type, Object... tickData);
+    public void tickStart(TickEvent.ServerTickEvent evt);
 
-    public void tickEnd(EnumSet<TickType> type, Object... tickData);
+    public void tickEnd(TickEvent.ServerTickEvent evt);
   }
 
   private final List<TickListener> listeners = new ArrayList<TickListener>();
@@ -27,29 +27,26 @@ public class ConduitNetworkTickHandler implements ITickHandler {
     listeners.remove(listener);
   }
 
-  @Override
-  public void tickStart(EnumSet<TickType> type, Object... tickData) {
-    for (TickListener h : listeners) {
-      h.tickStart(type, tickData);
+  @SubscribeEvent
+  public void onServerTick(TickEvent.ServerTickEvent event) {
+    if(event.phase == Phase.START) {
+      tickStart(event);
+    } else {
+      tickEnd(event);
     }
   }
 
-  @Override
-  public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+  public void tickStart(TickEvent.ServerTickEvent event) {
     for (TickListener h : listeners) {
-      h.tickEnd(type, tickData);
+      h.tickStart(event);
+    }
+  }
+
+  public void tickEnd(TickEvent.ServerTickEvent event) {
+    for (TickListener h : listeners) {
+      h.tickEnd(event);
     }
     listeners.clear();
-  }
-
-  @Override
-  public EnumSet<TickType> ticks() {
-    return EnumSet.of(TickType.WORLD);
-  }
-
-  @Override
-  public String getLabel() {
-    return null;
   }
 
 }

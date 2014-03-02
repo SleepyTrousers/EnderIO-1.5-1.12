@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.facade;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -82,7 +83,7 @@ public class FacadeRenderer implements IItemRenderer {
 
     } else {
       renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getIconFromDamage(0));
-      renderBlocks.renderBlockAsItem(Block.stone, 0, 1.0F);
+      renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
       renderBlocks.clearOverrideBlockTexture();
     }
 

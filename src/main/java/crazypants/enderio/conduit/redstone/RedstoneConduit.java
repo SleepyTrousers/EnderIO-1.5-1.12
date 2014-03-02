@@ -8,13 +8,14 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -59,7 +60,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 0);
+    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 0);
   }
 
   @Override
@@ -85,7 +86,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public void updateNetwork() {
-    World world = getBundle().getEntity().worldObj;
+    World world = getBundle().getEntity().getWorldObj();
     if(world != null) {
       updateNetwork(world);
     }
@@ -141,8 +142,8 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public boolean onNeighborBlockChange(int blockId) {
-    World world = getBundle().getEntity().worldObj;
+  public boolean onNeighborBlockChange(Block blockId) {
+    World world = getBundle().getEntity().getWorldObj();
     if(world.isRemote) {
       return false;
     }
@@ -166,7 +167,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   //returns 16 for string power inputs
   protected int getExternalPowerLevel(ForgeDirection dir) {
-    World world = getBundle().getEntity().worldObj;
+    World world = getBundle().getEntity().getWorldObj();
     BlockCoord loc = getLocation();
     loc = loc.getLocation(dir);
 
@@ -176,7 +177,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
 
     int res = world.getIndirectPowerLevelTo(loc.x, loc.y, loc.z, dir.ordinal());
-    if(res < 15 && world.getBlockId(loc.x, loc.y, loc.z) == Block.redstoneWire.blockID) {
+    if(res < 15 && world.getBlock(loc.x, loc.y, loc.z) == Blocks.redstone_wire) {
       int wireIn = world.getBlockMetadata(loc.x, loc.y, loc.z);
       res = Math.max(res, wireIn);
     }

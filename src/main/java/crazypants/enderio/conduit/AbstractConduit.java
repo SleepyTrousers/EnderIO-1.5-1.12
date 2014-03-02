@@ -1,19 +1,26 @@
 package crazypants.enderio.conduit;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.geom.CollidableCache;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.util.BlockCoord;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.*;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.geom.CollidableCache;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.util.BlockCoord;
 
 public abstract class AbstractConduit implements IConduit {
 
@@ -431,14 +438,14 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public boolean onNeighborBlockChange(int blockId) {
+  public boolean onNeighborBlockChange(Block block) {
     // Check for changes to external connections, connections to conduits are
     // handled by the bundle
 
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
-    if(blockId == Block.getIdFromBlock(EnderIO.blockConduitBundle)) {
+    if(block == EnderIO.blockConduitBundle) {
       return false;
     }
 

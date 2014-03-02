@@ -1,59 +1,44 @@
 package crazypants.enderio.item;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
-import net.minecraft.entity.player.EntityPlayerMP;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import cpw.mods.fml.common.network.Player;
-import crazypants.enderio.IPacketProcessor;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.network.IPacketEio;
 
-public class YetaWrenchPacketProcessor implements IPacketProcessor {
+public class YetaWrenchPacketProcessor implements IPacketEio {
 
-  public static Packet getWrenchModePacket(int slot, ConduitDisplayMode mode) {
-    ByteArrayOutputStream bos = new ByteArrayOutputStream(140);
-    DataOutputStream dos = new DataOutputStream(bos);
-    try {
-      dos.writeInt(PacketHandler.ID_YETA_WRENCH_MODE_PACKET);
-      dos.writeInt(slot);
-      dos.writeShort(mode.ordinal());
-    } catch (IOException e) {
-      // never thrown
-    }
+  private int slot;
+  private ConduitDisplayMode mode;
 
-    Packet250CustomPayload pkt = new Packet250CustomPayload();
-    pkt.channel = PacketHandler.CHANNEL;
-    pkt.data = bos.toByteArray();
-    pkt.length = bos.size();
-    pkt.isChunkDataPacket = true;
-    return pkt;
+  public YetaWrenchPacketProcessor() {
+  }
+
+  public YetaWrenchPacketProcessor(int slot, ConduitDisplayMode mode) {
+    this.slot = slot;
+    this.mode = mode;
+  }
+
+  @Override
+  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+    buffer.writeInt(slot);
+    buffer.writeShort(mode.ordinal());
+  }
+
+  @Override
+  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+    slot = buffer.readShort();
+    mode = ConduitDisplayMode.values()[buffer.readShort()];
+  }
+
+  @Override
+  public void handleClientSide(EntityPlayer player) {
 
   }
 
   @Override
-  public boolean canProcessPacket(int packetID) {
-    return packetID == PacketHandler.ID_YETA_WRENCH_MODE_PACKET;
-  }
-
-  @Override
-  public void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player playerIn) throws IOException {
-
-    int slot = -1;
-    if(!(playerIn instanceof EntityPlayerMP)) {
-      return;
-    }
-
-    EntityPlayerMP player = (EntityPlayerMP) playerIn;
-    slot = data.readInt();
-    short ordinal = data.readShort();
-
+  public void handleServerSide(EntityPlayer player) {
     ItemStack stack = null;
     if(slot > -1 && slot < 9) {
       stack = player.inventory.getStackInSlot(slot);
@@ -61,7 +46,7 @@ public class YetaWrenchPacketProcessor implements IPacketProcessor {
     if(stack == null) {
       return;
     }
-    ConduitDisplayMode.setDisplayMode(stack, ConduitDisplayMode.values()[ordinal]);
-
+    ConduitDisplayMode.setDisplayMode(stack, mode);
   }
+
 }

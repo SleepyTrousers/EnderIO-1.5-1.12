@@ -18,7 +18,6 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
@@ -54,7 +53,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
   @Override
   public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
 
-    BlockCoord placeAt = Util.canPlaceItem(stack, ModObject.blockConduitBundle.actualId, player, world, x, y, z, side);
+    BlockCoord placeAt = Util.canPlaceItem(stack, EnderIO.blockConduitBundle, player, world, x, y, z, side);
     if(placeAt != null) {
       if(!world.isRemote) {
         if(world.setBlock(placeAt.x, placeAt.y, placeAt.z, EnderIO.blockConduitBundle, 0, 1)) {
@@ -119,12 +118,9 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
   }
 
-
-
-
   @Override
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+  public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < subtypes.length; ++j) {
       par3List.add(new ItemStack(this, 1, j));
     }

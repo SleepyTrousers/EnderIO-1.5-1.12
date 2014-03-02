@@ -7,15 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.util.BlockCoord;
-import crazypants.util.Util;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -186,31 +181,21 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
     TileEntity te = con.getBundle().getEntity();
 
-    te.worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord, te.yCoord, te.zCoord));
+    World worldObj = te.getWorldObj();
+    worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord));
 
     // Need to notify neighbours neighbours for changes to string signals
     if(signal != null && signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord) {
 
-      te.worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord + 1, te.yCoord, te.zCoord));
-      te.worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, te.worldObj.getBlockId(te.xCoord - 1, te.yCoord, te.zCoord));
-      te.worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, te.worldObj.getBlockId(te.xCoord, te.yCoord + 1, te.zCoord));
-      te.worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, te.worldObj.getBlockId(te.xCoord, te.yCoord - 1, te.zCoord));
-      te.worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, te.worldObj.getBlockId(te.xCoord, te.yCoord, te.zCoord + 1));
-      te.worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, te.worldObj.getBlockId(te.xCoord, te.yCoord, te.zCoord - 1));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord + 1, te.yCoord, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord - 1, te.yCoord, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord + 1, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord - 1, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord + 1));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord - 1));
 
     }
-    broadcastRednetUpdate(con);
-  }
 
-  private void broadcastRednetUpdate(IRedstoneConduit con) {
-    World worldObj = con.getBundle().getEntity().worldObj;
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord to = con.getLocation().getLocation(dir);
-      Block b = Util.getBlock(worldObj.getBlockId(to.x, to.y, to.z));
-      if(b instanceof IRedNetNetworkContainer) {
-        ((IRedNetNetworkContainer) b).updateNetwork(worldObj, to.x, to.y, to.z);
-      }
-    }
   }
 
 }

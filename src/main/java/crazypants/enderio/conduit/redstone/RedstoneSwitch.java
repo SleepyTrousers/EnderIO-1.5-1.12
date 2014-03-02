@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
@@ -48,7 +48,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(ModObject.itemRedstoneConduit.actualId, 1, 1);
+    return new ItemStack(EnderIO.itemRedstoneConduit, 1, 1);
   }
 
   @Override

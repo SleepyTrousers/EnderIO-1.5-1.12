@@ -1,16 +1,11 @@
 package crazypants.enderio.conduit;
 
-import static net.minecraftforge.common.ForgeDirection.getOrientation;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
@@ -25,38 +20,36 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
-import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
 
-public class BlockConduitBundle extends Block implements ITileEntityProvider, IConnectableRedNet, IGuiHandler {
+public class BlockConduitBundle extends BlockEio implements IGuiHandler {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
 
   public static BlockConduitBundle create() {
 
-    PacketHandler.instance.addPacketProcessor(new ConduitPacketHandler());
-    TickRegistry.registerTickHandler(ConduitNetworkTickHandler.instance, Side.SERVER);
+    //TODO:1.7
+    //    PacketHandler.instance.addPacketProcessor(new ConduitPacketHandler());    
+    MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
+    FMLCommonHandler.instance().bus().register(ConduitNetworkTickHandler.instance);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
@@ -72,25 +65,22 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   private Random rand = new Random();
 
   protected BlockConduitBundle() {
-    super(ModObject.blockConduitBundle.id, new Material(MapColor.stoneColor));
-    setHardness(0.5F);
+    super(ModObject.blockConduitBundle.unlocalisedName, TileConduitBundle.class);
     setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
-    setStepSound(Block.soundMetalFootstep);
-    setUnlocalizedName(ModObject.blockConduitBundle.unlocalisedName);
     setCreativeTab(null);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public boolean addBlockHitEffects(World world, MovingObjectPosition target,
+  public boolean addHitEffects(World world, MovingObjectPosition target,
       EffectRenderer effectRenderer) {
     IIcon tex = null;
 
     TileConduitBundle cb = (TileConduitBundle)
         world.getTileEntity(target.blockX, target.blockY, target.blockZ);
     if(ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
-      if(cb.getFacadeId() > 0 && Block.blocksList[cb.getFacadeId()] != null) {
-        tex = Block.blocksList[cb.getFacadeId()].getIcon(target.sideHit,
+      if(cb.getFacadeId() != null) {
+        tex = cb.getFacadeId().getIcon(target.sideHit,
             cb.getFacadeMetadata());
       }
     } else if(target.hitInfo instanceof CollidableComponent) {
@@ -111,7 +101,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
 
   @Override
   @SideOnly(Side.CLIENT)
-  public boolean addBlockDestroyEffects(World world, int x, int y, int z, int
+  public boolean addDestroyEffects(World world, int x, int y, int z, int
       meta, EffectRenderer effectRenderer) {
     IIcon tex = lastRemovedComponetIcon;
     byte b0 = 4;
@@ -164,11 +154,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     effectRenderer.addEffect(digFX);
   }
 
-  private void init() {
-    LanguageRegistry.addName(this, ModObject.blockConduitBundle.name);
-    GameRegistry.registerBlock(this, ModObject.blockConduitBundle.unlocalisedName);
-    GameRegistry.registerTileEntity(TileConduitBundle.class, ModObject.blockConduitBundle.unlocalisedName + "TileEntity");
-
+  @Override
+  protected void init() {
+    super.init();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), this);
     }
@@ -185,9 +173,9 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       IConduit conduit = bundle.getConduit(cc.conduitType);
       if(conduit != null) {
         return conduit.createItem();
-      } else if(cc.conduitType == null && bundle.getFacadeId() > 0) {
+      } else if(cc.conduitType == null && bundle.getFacadeId() != null) {
         // use the facde
-        ItemStack fac = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
+        ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
         PainterUtil.setSourceBlock(fac, bundle.getFacadeId(),
             bundle.getFacadeMetadata());
         return fac;
@@ -203,12 +191,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       return 0;
     }
     IConduitBundle bun = (IConduitBundle) te;
-    return bun.getFacadeId() > 0 ? bun.getFacadeMetadata() : 0;
-  }
-
-  @Override
-  public int idDropped(int par1, Random par2Random, int par3) {
-    return 0;
+    return bun.getFacadeId() != null ? bun.getFacadeMetadata() : 0;
   }
 
   @Override
@@ -221,20 +204,20 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   }
 
   @Override
-  public void registerIcons(IIconRegister IIconRegister) {
+  public void registerBlockIcons(IIconRegister IIconRegister) {
     connectorIcon = IIconRegister.registerIcon(KEY_CONNECTOR_ICON);
     blockIcon = connectorIcon;
   }
 
   @Override
-  public boolean isBlockSolidOnSide(World world, int x, int y, int z,
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z,
       ForgeDirection side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return false;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() > 0) {
+    if(con.getFacadeId() != null) {
       return true;
     }
     return false;
@@ -256,17 +239,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   }
 
   @Override
-  public TileEntity createNewTileEntity(World world) {
-    return null;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    return new TileConduitBundle();
-  }
-
-  @Override
-  public int getLightOpacity(World world, int x, int y, int z) {
+  public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle)) {
       return super.getLightOpacity(world, x, y, z);
@@ -282,7 +255,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       return super.getLightValue(world, x, y, z);
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() > 0) {
+    if(con.getFacadeId() != null) {
       return 0;
     }
     Collection<IConduit> conduits = con.getConduits();
@@ -305,7 +278,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     if(con == null) {
       return 0;
     }
-    return con.isProvidingStrongPower(getOrientation(par5));
+    return con.isProvidingStrongPower(ForgeDirection.getOrientation(par5));
   }
 
   @Override
@@ -320,7 +293,8 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     if(con == null) {
       return 0;
     }
-    return con.isProvidingWeakPower(getOrientation(par5));
+
+    return con.isProvidingWeakPower(ForgeDirection.getOrientation(par5));
   }
 
   @Override
@@ -329,72 +303,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   }
 
   @Override
-  public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
-    return RedNetConnectionType.CableAll;
-  }
-
-  @Override
-  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
-      return new int[16];
-    }
-    IConduitBundle bundle = (IConduitBundle) te;
-    IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
-    if(con == null) {
-      return new int[16];
-    }
-    return con.getOutputValues(world, x, y, z, side);
-  }
-
-  @Override
-  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
-      return 0;
-    }
-    IConduitBundle bundle = (IConduitBundle) te;
-    IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
-    if(con == null) {
-      return 0;
-    }
-    return con.getOutputValue(world, x, y, z, side, subnet);
-  }
-
-  @Override
-  public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof IConduitBundle) {
-      IConduitBundle bundle = (IConduitBundle) te;
-      IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
-      if(con != null) {
-        if(con instanceof IInsulatedRedstoneConduit) {
-          ((IInsulatedRedstoneConduit) con).onInputsChanged(side, inputValues);
-        }
-        con.onNeighborBlockChange(world.getBlockId(x, y, z));
-      }
-    }
-
-  }
-
-  @Override
-  public void onInputChanged(World world, int x, int y, int z, ForgeDirection side, int inputValue) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof IConduitBundle) {
-      IConduitBundle bundle = (IConduitBundle) te;
-      IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
-      if(con != null) {
-        if(con instanceof IInsulatedRedstoneConduit) {
-          ((IInsulatedRedstoneConduit) con).onInputChanged(side, inputValue);
-        }
-        con.onNeighborBlockChange(world.getBlockId(x, y, z));
-      }
-    }
-
-  }
-
-  @Override
-  public boolean removeBlockByPlayer(World world, EntityPlayer player, int x,
+  public boolean removedByPlayer(World world, EntityPlayer player, int x,
       int y, int z) {
     IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
     if(te == null) {
@@ -405,10 +314,10 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     List<ItemStack> drop = new ArrayList<ItemStack>();
     if(ConduitUtil.isSolidFacadeRendered(te, player)) {
       breakBlock = false;
-      ItemStack fac = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
+      ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
       PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
       drop.add(fac);
-      te.setFacadeId(-1);
+      te.setFacadeId(null);
       te.setFacadeMetadata(0);
     }
 
@@ -481,13 +390,13 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, int par5, int
+  public void breakBlock(World world, int x, int y, int z, Block par5, int
       par6) {
     IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
     if(te != null) {
       te.onBlockRemoved();
     }
-    world.removeBlockTileEntity(x, y, z);
+    world.removeTileEntity(x, y, z);
   }
 
   @Override
@@ -500,24 +409,24 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
     }
 
     ItemStack stack = player.getCurrentEquippedItem();
-    if(stack != null && stack.itemID == ModObject.itemConduitFacade.actualId
+    if(stack != null && stack.getItem() == EnderIO.itemConduitFacade
         && !bundle.hasFacade()) {
       // Add facade
       if(player.isSneaking()) {
         return false;
       }
 
-      if(PainterUtil.getSourceBlockId(player.getCurrentEquippedItem()) <= 0) {
+      if(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()) != null) {
         return false;
       }
 
-      bundle.setFacadeId(PainterUtil.getSourceBlockId(player.getCurrentEquippedItem()));
+      bundle.setFacadeId(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()));
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
       if(!player.capabilities.isCreativeMode) {
         stack.stackSize--;
       }
       world.markBlockForUpdate(x, y, z);
-      bundle.getEntity().onInventoryChanged();
+      bundle.getEntity().markDirty();
       return true;
 
     } else if(ConduitUtil.isConduitEquipped(player)) {
@@ -530,7 +439,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       if(!bundle.hasType(equipped.getBaseConduitType())) {
         bundle.addConduit(equipped.createConduit(stack));
         if(!player.capabilities.isCreativeMode) {
-          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getPlaceSound(),
+          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
               (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
           player.getCurrentEquippedItem().stackSize--;
         }
@@ -549,7 +458,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
         IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
         if(wrench.canWrench(player, x, y, z)) {
           if(!world.isRemote) {
-            removeBlockByPlayer(world, player, x, y, z);
+            removedByPlayer(world, player, x, y, z);
             if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
               ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
             }
@@ -576,7 +485,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
         for (IConduit con : bundle.getConduits()) {
           if(ConduitUtil.renderConduit(player, con.getCollidableType())
               && con.onBlockActivated(player, getHitForConduitType(all, con.getCollidableType()), all)) {
-            bundle.getEntity().onInventoryChanged();
+            bundle.getEntity().markDirty();
             result = true;
           }
 
@@ -606,7 +515,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
           IConduit con = bundle.getConduit(rr.component.conduitType);
           if(con != null && con.onBlockActivated(player,
               rr, all)) {
-            bundle.getEntity().onInventoryChanged();
+            bundle.getEntity().markDirty();
             return true;
           }
         }
@@ -615,7 +524,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       IConduit closestConduit = bundle.getConduit(closest.component.conduitType);
       if(closestConduit != null && ConduitUtil.renderConduit(player, closestConduit) && closestConduit.onBlockActivated(player,
           closest, all)) {
-        bundle.getEntity().onInventoryChanged();
+        bundle.getEntity().markDirty();
         return true;
       }
     }
@@ -659,7 +568,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   }
 
   @Override
-  public void onNeighborBlockChange(World world, int x, int y, int z, int
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block
       blockId) {
     TileEntity tile = world.getTileEntity(x, y, z);
     if((tile instanceof IConduitBundle)) {
@@ -677,7 +586,7 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
       return;
     }
     IConduitBundle con = (IConduitBundle) te;
-    if(con.getFacadeId() > 0) {
+    if(con.getFacadeId() != null) {
       setBlockBounds(0, 0, 0, 1, 1, 1);
       super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist,
           par7Entity);

@@ -1,13 +1,14 @@
 package crazypants.render;
 
-import cpw.mods.fml.common.Mod;
+import java.util.ArrayList;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.ArrayList;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class IconUtil {
 
@@ -44,6 +45,7 @@ public class IconUtil {
   }
 
   @Mod.EventHandler
+  @SubscribeEvent
   public void onIconLoad(TextureStitchEvent.Pre event) {
     for (IIconProvider reg : iconProviders) {
       if(reg.getTextureType() == event.map.getTextureType()) {

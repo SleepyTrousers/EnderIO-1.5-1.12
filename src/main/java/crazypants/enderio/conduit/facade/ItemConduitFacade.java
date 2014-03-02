@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.facade;
 
-import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,8 +17,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 
@@ -33,7 +31,6 @@ public class ItemConduitFacade extends Item {
   protected IIcon overlayIcon;
 
   protected ItemConduitFacade() {
-    super(ModObject.itemConduitFacade.id);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName("enderio." + ModObject.itemConduitFacade.name());
     setMaxStackSize(64);
@@ -67,11 +64,11 @@ public class ItemConduitFacade extends Item {
     int placeZ = z + dir.offsetZ;
 
     if(player.canPlayerEdit(placeX, placeY, placeZ, side, itemStack) && world.isAirBlock(placeX, placeY, placeZ)
-        && PainterUtil.getSourceBlockId(itemStack) > 0) {
+        && PainterUtil.getSourceBlock(itemStack) != null) {
 
-      world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle.blockID);
+      world.setBlock(placeX, placeY, placeZ, EnderIO.blockConduitBundle);
       IConduitBundle bundle = (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ);
-      bundle.setFacadeId(PainterUtil.getSourceBlockId(itemStack));
+      bundle.setFacadeId(PainterUtil.getSourceBlock(itemStack));
       bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(itemStack));
       if(!player.capabilities.isCreativeMode) {
         itemStack.stackSize--;
@@ -91,15 +88,15 @@ public class ItemConduitFacade extends Item {
   @Override
   public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
     if(PainterUtil.getSourceBlock(itemStack) == null) {
-      PainterUtil.setSourceBlock(itemStack, ModObject.itemConduitFacade.id, 0);
+      PainterUtil.setSourceBlock(itemStack, EnderIO.blockConduitFacade, 0);
     }
   }
 
-  public ItemStack createItemStackForSourceBlock(int id, int itemDamage) {
-    if(id < 1) {
-      id = ModObject.blockConduitFacade.id;
+  public ItemStack createItemStackForSourceBlock(Block id, int itemDamage) {
+    if(id == null) {
+      id = EnderIO.blockConduitFacade;
     }
-    ItemStack result = new ItemStack(itemID, 1, 0);
+    ItemStack result = new ItemStack(id, 1, 0);
     PainterUtil.setSourceBlock(result, id, itemDamage);
     return result;
   }
@@ -114,15 +111,20 @@ public class ItemConduitFacade extends Item {
   public static final class FacadePainterRecipe extends BasicPainterTemplate {
 
     public FacadePainterRecipe() {
-      super(ModObject.itemConduitFacade.actualId);
     }
 
     @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      ItemStack is = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
-      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
-      return Collections.singletonList(recipe);
+    public boolean isValidTarget(ItemStack target) {
+      return target != null && target.getItem() == EnderIO.itemConduitFacade;
     }
+
+    //TODO:1.7
+    //    @Override
+    //    public List<IEnderIoRecipe> getAllRecipes() {
+    //      ItemStack is = new ItemStack(ModObject.itemConduitFacade.actualId, 1, 0);
+    //      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
+    //      return Collections.singletonList(recipe);
+    //    }
 
   }
 

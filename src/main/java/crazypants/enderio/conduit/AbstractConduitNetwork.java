@@ -76,7 +76,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   public void notifyNetworkOfUpdate() {
     for (I con : conduits) {
       TileEntity te = con.getBundle().getEntity();
-      te.worldObj.markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
+      te.getWorldObj().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
     }
   }
 

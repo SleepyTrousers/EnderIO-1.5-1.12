@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.power;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Set;
 import net.minecraft.world.World;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
@@ -154,7 +153,7 @@ public class NetworkPowerManager {
       if(r.emmiter.getPowerHandler() != null && r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
 
         // do a summy recieve or recieve energy counter will never tick down
-        float es = r.emmiter.getPowerHandler().getEnergyStored();
+        double es = r.emmiter.getPowerHandler().getEnergyStored();
         PowerReceiver pr = r.emmiter.getPowerReceiver(r.direction.getOpposite());
         pr.receiveEnergy(Type.STORAGE, 0, null);
         r.emmiter.getPowerHandler().setEnergy(es);
@@ -242,7 +241,7 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickStart(con.getPowerHandler().getEnergyStored());
+        tracker.tickStart((float) con.getPowerHandler().getEnergyStored());
       }
     }
   }
@@ -274,7 +273,7 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickEnd(con.getPowerHandler().getEnergyStored());
+        tracker.tickEnd((float) con.getPowerHandler().getEnergyStored());
       }
     }
   }
@@ -582,11 +581,11 @@ public class NetworkPowerManager {
   private class InnerTickHandler implements TickListener {
 
     @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    public void tickStart(ServerTickEvent evt) {
     }
 
     @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+    public void tickEnd(ServerTickEvent evt) {
       doApplyRecievedPower();
     }
   }

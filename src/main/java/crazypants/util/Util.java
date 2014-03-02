@@ -65,7 +65,7 @@ public class Util {
   }
 
   // derived from ItemBlock.onItemUse
-  public static BlockCoord canPlaceItem(ItemStack itemUsed, int blockIdToBePlaced, EntityPlayer player, World world, int x, int y, int z, int side) {
+  public static BlockCoord canPlaceItem(ItemStack itemUsed, Block blockIdToBePlaced, EntityPlayer player, World world, int x, int y, int z, int side) {
     Block block = world.getBlock(x, y, z);
 
     if(block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
@@ -92,9 +92,9 @@ public class Util {
       return null;
     } else if(!player.canPlayerEdit(x, y, z, side, itemUsed)) {
       return null;
-    } else if(y == 255 && Block.getBlockById(blockIdToBePlaced).getMaterial().isSolid()) {
+    } else if(y == 255 && blockIdToBePlaced.getMaterial().isSolid()) {
       return null;
-    } else if(world.canPlaceEntityOnSide(Block.getBlockById(blockIdToBePlaced), x, y, z, false, side, player, itemUsed)) {
+    } else if(world.canPlaceEntityOnSide(blockIdToBePlaced, x, y, z, false, side, player, itemUsed)) {
       return new BlockCoord(x, y, z);
     }
     return null;

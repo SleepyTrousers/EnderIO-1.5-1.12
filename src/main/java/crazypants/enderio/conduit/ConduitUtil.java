@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
@@ -64,7 +64,7 @@ public class ConduitUtil {
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IConduit conduit) {
     TileEntity te = conduit.getBundle().getEntity();
-    World world = te.worldObj;
+    World world = te.getWorldObj();
     Collection<? extends IConduit> connections = ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, conduit.getBaseConduitType());
 
     if(reuseNetwork(conduit, connections, world)) {
@@ -100,7 +100,7 @@ public class ConduitUtil {
   public static <T extends IConduit> void disconectConduits(T con, ForgeDirection connDir) {
     con.conduitConnectionRemoved(connDir);
     BlockCoord loc = con.getLocation().getLocation(connDir);
-    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, con.getBaseConduitType());
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null) {
       neighbour.conduitConnectionRemoved(connDir.getOpposite());
       if(neighbour.getNetwork() != null) {
@@ -114,7 +114,7 @@ public class ConduitUtil {
 
   public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
     BlockCoord loc = con.getLocation().getLocation(faceHit);
-    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().worldObj, loc.x, loc.y, loc.z, con.getBaseConduitType());
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
       neighbour.conduitConnectionAdded(faceHit.getOpposite());
@@ -138,8 +138,9 @@ public class ConduitUtil {
           //in the light reaching bellow the block from the sky. To avoid 
           //modifying core classes to expose this functionality I am just placing then breaking
           //a block above this one to force the check
-          worldObj.setBlock(xCoord, yCoord + i, zCoord, 1, 0, 3);
+          worldObj.setBlock(xCoord, yCoord + i, zCoord, Blocks.stone, 0, 3);
           worldObj.setBlockToAir(xCoord, yCoord + i, zCoord);
+
           return true;
         }
       }
@@ -159,11 +160,11 @@ public class ConduitUtil {
   }
 
   public static boolean isSolidFacadeRendered(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() > 0 && !isFacadeHidden(bundle, player);
+    return bundle.getFacadeId() != null && !isFacadeHidden(bundle, player);
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() > 0 && (isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
+    return bundle.getFacadeId() != null && (isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -175,9 +176,11 @@ public class ConduitUtil {
     if(equipped == null) {
       return ConduitDisplayMode.ALL;
     }
-    if(equipped.itemID != ModObject.itemYetaWrench.actualId) {
-      return ConduitDisplayMode.ALL;
-    }
+
+    //    if(equipped.getItem() != EnderIO.itemYetaWrench) {
+    //      return ConduitDisplayMode.ALL;
+    //    }
+
     ConduitDisplayMode result = ConduitDisplayMode.getDisplayMode(equipped);
     if(result == null) {
       return ConduitDisplayMode.ALL;
@@ -252,7 +255,7 @@ public class ConduitUtil {
     if(equipped == null) {
       return false;
     }
-    return equipped.itemID == ModObject.itemMJReader.actualId;
+    return equipped.getItem() == EnderIO.itemMJReader;
   }
 
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {
@@ -300,7 +303,7 @@ public class ConduitUtil {
     conduit.writeToNBT(conduitBody);
 
     conduitRoot.setString("conduitType", conduit.getClass().getCanonicalName());
-    conduitRoot.setCompoundTag("conduit", conduitBody);
+    conduitRoot.setTag("conduit", conduitBody);
   }
 
   public static IConduit readConduitFromNBT(NBTTagCompound conduitRoot, short nbtVersion) {
@@ -335,7 +338,7 @@ public class ConduitUtil {
     int signalStrength = getInternalSignalForColor(bundle, col);
     if(signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
       TileEntity te = bundle.getEntity();
-      signalStrength = Math.max(signalStrength, te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+      signalStrength = Math.max(signalStrength, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
     }
     return mode.isConditionMet(mode, signalStrength);
   }

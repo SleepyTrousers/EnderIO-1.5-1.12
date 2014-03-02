@@ -6,11 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.EventPriority;
-import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.gui.IconEIO;
 
@@ -23,7 +22,7 @@ public class YetaWrenchOverlayRenderer {
     MinecraftForge.EVENT_BUS.register(this);
   }
 
-  @ForgeSubscribe(priority = EventPriority.NORMAL)
+  @SubscribeEvent
   public void renderOverlay(RenderGameOverlayEvent event) {
     ItemStack equippedWrench = getEquippedWrench();
     if(equippedWrench != null && event.type == ElementType.ALL) {
@@ -33,7 +32,7 @@ public class YetaWrenchOverlayRenderer {
 
   private ItemStack getEquippedWrench() {
     ItemStack equipped = Minecraft.getMinecraft().thePlayer.getCurrentEquippedItem();
-    if(equipped != null && equipped.itemID == wrench.itemID) {
+    if(equipped != null && equipped.getItem() == wrench) {
       return equipped;
     }
     return null;

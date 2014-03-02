@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,7 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import crazypants.enderio.ModObject;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -54,7 +55,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
 
   static ItemStack createItemStackForSubtype(int subtype) {
-    ItemStack result = new ItemStack(ModObject.itemPowerConduit.actualId, 1, subtype);
+    ItemStack result = new ItemStack(EnderIO.itemPowerConduit, 1, subtype);
     return result;
   }
 
@@ -129,7 +130,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       setSignalColor(res.component.dir, col);
       return true;
     } else if(ConduitUtil.isToolEquipped(player)) {
-      if(!getBundle().getEntity().worldObj.isRemote) {
+      if(!getBundle().getEntity().getWorldObj().isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
@@ -245,7 +246,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public void onTick() {
     if(powerHandler != null && powerHandler.getEnergyStored() > 0) {
-      energyStored = Math.min(energyStored + powerHandler.getEnergyStored(), getCapacitor().getMaxEnergyStored());
+      energyStored = (float) Math.min(energyStored + powerHandler.getEnergyStored(), getCapacitor().getMaxEnergyStored());
       powerHandler.setEnergy(0);
     }
   }
@@ -324,7 +325,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     int result;
     if(cached == null) {
       TileEntity te = getBundle().getEntity();
-      result = te.worldObj.getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
+      result = te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord);
       externalRedstoneSignals.put(dir, result);
     } else {
       result = cached;
@@ -356,11 +357,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public World getWorld() {
-    return getBundle().getEntity().worldObj;
+    return getBundle().getEntity().getWorldObj();
   }
 
   @Override
-  public boolean onNeighborBlockChange(int blockId) {
+  public boolean onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
     if(network != null) {
       network.powerManager.receptorsChanged();
@@ -440,7 +441,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public IPowerInterface getExternalPowerReceptor(ForgeDirection direction) {
     TileEntity te = bundle.getEntity();
-    World world = te.worldObj;
+    World world = te.getWorldObj();
     if(world == null) {
       return null;
     }
