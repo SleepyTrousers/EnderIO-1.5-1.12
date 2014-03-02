@@ -51,7 +51,7 @@ public abstract class AbstractConduit implements IConduit {
 
   private int lastNumConections = -1;
 
-  private boolean updateConnections = true;
+  protected boolean connectionsDirty = true;
 
   protected AbstractConduit() {
   }
@@ -333,7 +333,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   private void updateConnections() {
-    if(!updateConnections) {
+    if(!connectionsDirty) {
       return;
     }
 
@@ -360,7 +360,7 @@ public abstract class AbstractConduit implements IConduit {
       connectionsChanged();
     }
 
-    updateConnections = false;
+    connectionsDirty = false;
   }
 
   protected void connectionsChanged() {
@@ -448,7 +448,7 @@ public abstract class AbstractConduit implements IConduit {
       return false;
     }
 
-    updateConnections = true;
+    connectionsDirty = true;
 
     return true;
   }

@@ -47,4 +47,6 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor {
 
   void setEnergyStored(float give);
 
+  boolean getConnectionsDirty();
+
 }

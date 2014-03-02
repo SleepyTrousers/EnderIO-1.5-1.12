@@ -113,6 +113,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public boolean getConnectionsDirty() {
+    return connectionsDirty;
+  }
+
+  @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
     if(ConduitUtil.isProbeEquipped(player)) {

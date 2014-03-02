@@ -90,10 +90,12 @@ public class NetworkPowerManager {
     float result = 0;
     Set<IPowerInterface> done = new HashSet<IPowerInterface>();
     for (ReceptorEntry re : receptors) {
-      IPowerInterface powerReceptor = re.powerInterface;
-      if(!done.contains(powerReceptor)) {
-        done.add(powerReceptor);
-        result += powerReceptor.getEnergyStored(re.direction);
+      if(!re.emmiter.getConnectionsDirty()) {
+        IPowerInterface powerReceptor = re.powerInterface;
+        if(!done.contains(powerReceptor)) {
+          done.add(powerReceptor);
+          result += powerReceptor.getEnergyStored(re.direction);
+        }
       }
     }
     return result;
@@ -103,10 +105,12 @@ public class NetworkPowerManager {
     float result = 0;
     Set<IPowerInterface> done = new HashSet<IPowerInterface>();
     for (ReceptorEntry re : receptors) {
-      IPowerInterface powerReceptor = re.powerInterface;
-      if(!done.contains(powerReceptor)) {
-        done.add(powerReceptor);
-        result += powerReceptor.getMaxEnergyStored(re.direction);
+      if(!re.emmiter.getConnectionsDirty()) {
+        IPowerInterface powerReceptor = re.powerInterface;
+        if(!done.contains(powerReceptor)) {
+          done.add(powerReceptor);
+          result += powerReceptor.getMaxEnergyStored(re.direction);
+        }
       }
     }
     return result;
