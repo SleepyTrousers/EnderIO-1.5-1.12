@@ -119,26 +119,7 @@ public class GuiHyperCube extends GuiScreenBase {
     fluidB = new IconButtonEIO(this, FLUID_MODE_BUTTON_ID, x, y, IconEIO.WRENCH_OVERLAY_FLUID);
     fluidB.setIconMargin(3, 3);
 
-    //TODO:1.7
     x += 24;
-    //    rsB = new RedstoneModeButton(this, 99, x, y, new IRedstoneModeControlable() {
-    //
-    //      @Override
-    //      public void setRedstoneControlMode(RedstoneControlMode mode) {
-    //        RedstoneControlMode curMode = getRedstoneControlMode();
-    //        cube.setRedstoneControlMode(mode);
-    //        if(curMode != mode) {
-    //          Packet pkt = HyperCubePacketHandler.createRedstonePacket(cube);
-    //          PacketDispatcher.sendPacketToServer(pkt);
-    //        }
-    //
-    //      }
-    //
-    //      @Override
-    //      public RedstoneControlMode getRedstoneControlMode() {
-    //        return cube.getRedstoneControlMode();
-    //      }
-    //    });
     rsB = new RedstoneModeButton(this, 99, x, y, te, new BlockCoord(te));
 
     updateIoButtons();

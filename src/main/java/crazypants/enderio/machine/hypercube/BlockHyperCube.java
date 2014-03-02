@@ -16,7 +16,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -32,13 +34,17 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler {
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
   public static BlockHyperCube create() {
-    //TODO:1.7
-    //    HyperCubePacketHandler pp = new HyperCubePacketHandler();    
-    //    PacketHandler.instance.addPacketProcessor(pp);
-    //    NetworkRegistry.instance().registerConnectionHandler(pp);
+
+    EnderIO.packetPipeline.registerPacket(PacketChannelList.class);
 
     BlockHyperCube result = new BlockHyperCube();
     result.init();
+
+    //TODO:1.7 Not getting the client event
+    ConnectionHandler ch = new ConnectionHandler();
+    FMLCommonHandler.instance().bus().register(ch);
+    MinecraftForge.EVENT_BUS.register(ch);
+
     return result;
   }
 

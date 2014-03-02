@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -14,8 +15,8 @@ import crazypants.util.DyeColor;
 public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> implements ITileEntityProvider {
 
   public static BlockPowerMonitor create() {
-    //TODO:1.7
-    //PacketHandler.instance.addPacketProcessor(new PowerMonitorPacketHandler());
+
+    EnderIO.packetPipeline.registerPacket(PacketPowerMonitor.class);
 
     BlockPowerMonitor result = new BlockPowerMonitor();
     result.init();

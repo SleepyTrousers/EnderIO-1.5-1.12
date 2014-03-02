@@ -4,15 +4,12 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
@@ -36,18 +33,12 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     EnderIO.packetPipeline.registerPacket(PacketOpenAuthGui.class);
     EnderIO.packetPipeline.registerPacket(PacketConfigSync.class);
 
+    ConnectionHandler ch = new ConnectionHandler();
+    FMLCommonHandler.instance().bus().register(ch);
+
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();
-
-    FMLCommonHandler.instance().bus().register(result);
-
     return result;
-  }
-
-  //to lazy to create a new class
-  @SubscribeEvent
-  public void onPlayerLoggon(PlayerLoggedInEvent evt) {
-    EnderIO.packetPipeline.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
   }
 
   IIcon selectedOverlayIcon;
