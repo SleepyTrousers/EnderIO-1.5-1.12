@@ -124,33 +124,32 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     powerHandler.setEnergy(powerHandler.getEnergyStored() - energyPerTick);
-    boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 20 == 0;
+    boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
 
     //    NetworkPowerManager pm = getPowerManager();
-    //    if(pm != null) {
+    //    if(pm != null && update) {
     //      update(pm);
-    //    }
-
-    //    Signal sig = null;
-    //    if(!engineControlEnabled) {
-    //      sig = null;
-    //    } else {
-    //      float percentFull = getPercentFull();
-    //      if(currentlyEmmittedSignal == null) {
-    //        if(percentFull <= startLevel) {
-    //          sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, signalColor);
-    //        }
+    //      Signal sig = null;
+    //      if(!engineControlEnabled) {
+    //        sig = null;
     //      } else {
-    //        if(percentFull >= stopLevel) {
-    //          sig = null;
+    //        float percentFull = getPercentFull();
+    //        if(currentlyEmmittedSignal == null) {
+    //          if(percentFull <= startLevel) {
+    //            sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, signalColor);
+    //          }
     //        } else {
-    //          sig = currentlyEmmittedSignal;
+    //          if(percentFull >= stopLevel) {
+    //            sig = null;
+    //          } else {
+    //            sig = currentlyEmmittedSignal;
+    //          }
     //        }
     //      }
-    //    }
-    //    if(currentlyEmmittedSignal != sig) {
-    //      currentlyEmmittedSignal = sig;
-    //      broadcastSignal();
+    //      if(currentlyEmmittedSignal != sig) {
+    //        currentlyEmmittedSignal = sig;
+    //        broadcastSignal();
+    //      }
     //    }
 
     return update;

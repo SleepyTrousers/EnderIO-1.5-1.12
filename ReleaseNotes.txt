@@ -1,10 +1,13 @@
+0.11.2
+- #518 Crash when breaking a TE redstone conduit, connected to an EIO power conduit, which is connected to a Power Monitor.
+
 0.11.1
-#497 Alloy only mode broken 
-#500 Server crash with TravelStaff 
-#502 Fixed ore dictionary integration of EIO silicon
-#503 Capacitor full gate condition does not trigger 
-#506 Added zh_TW localisation (mymagadsl) 
-#508 Fixed zooming of distant travel anchors
+- #497 Alloy only mode broken 
+- #500 Server crash with TravelStaff 
+- #502 Fixed ore dictionary integration of EIO silicon
+- #503 Capacitor full gate condition does not trigger 
+- #506 Added zh_TW localisation (mymagadsl) 
+- #508 Fixed zooming of distant travel anchors
 
 0.11.0
 Features
