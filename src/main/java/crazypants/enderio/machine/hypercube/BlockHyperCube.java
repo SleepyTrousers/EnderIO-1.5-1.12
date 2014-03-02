@@ -36,6 +36,8 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler {
   public static BlockHyperCube create() {
 
     EnderIO.packetPipeline.registerPacket(PacketChannelList.class);
+    EnderIO.packetPipeline.registerPacket(PacketClientState.class);
+    EnderIO.packetPipeline.registerPacket(PacketAddRemoveChannel.class);
 
     BlockHyperCube result = new BlockHyperCube();
     result.init();
@@ -155,7 +157,6 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler {
   }
 
   private void setIoOnItem(TileHyperCube hc, ItemStack itemStack) {
-    System.out.println("BlockHyperCube.setIoOnItem: ");
     NBTTagCompound tag = itemStack.getTagCompound();
     if(tag == null) {
       tag = new NBTTagCompound();
@@ -163,12 +164,10 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler {
     }
     for (SubChannel sc : SubChannel.values()) {
       tag.setShort("sendRecieve" + sc.ordinal(), (short) hc.getModeForChannel(sc).ordinal());
-      System.out.println("BlockHyperCube.setIoOnItem: sendRecieve" + sc.ordinal());
     }
   }
 
   private void setIoOnTransciever(TileHyperCube hc, ItemStack itemStack) {
-    System.out.println("BlockHyperCube.setIoOnTransciever: ");
     NBTTagCompound tag = itemStack.getTagCompound();
     if(tag == null) {
       return;
