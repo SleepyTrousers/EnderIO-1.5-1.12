@@ -694,6 +694,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     if(blockId != ModObject.blockCapacitorBank.actualId) {
       receptorsDirty = true;
       getController().masterReceptorsDirty = true;
+      getController().redstoneStateDirty = true;
     }
     redstoneStateDirty = true;
   }

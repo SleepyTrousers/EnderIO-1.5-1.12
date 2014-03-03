@@ -242,6 +242,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
           for (String str : targets) {
             sb.append("  - ");
             sb.append(str);
+            sb.append(" ");
             sb.append("\n");
           }
         }
