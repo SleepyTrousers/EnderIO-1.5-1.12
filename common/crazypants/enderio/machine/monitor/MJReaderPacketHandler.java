@@ -230,7 +230,7 @@ public class MJReaderPacketHandler implements IPacketProcessor {
           sb.append(input.getDisplayName());
         }
         sb.append(" ");
-        List<String> targets = icn.getTargetsForExtraction(conduit.getLocation().getLocation(dir), input);
+        List<String> targets = icn.getTargetsForExtraction(conduit.getLocation().getLocation(dir), conduit, input);
         if(targets.isEmpty()) {
           sb.append(" ");
           sb.append(Lang.localize("gui.mjReader.noOutputs"));
