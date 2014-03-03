@@ -49,7 +49,7 @@ public class ItemYetaWrench extends Item implements IToolWrench {
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
     int blockId = world.getBlockId(x, y, z);
     Block block = Block.blocksList[blockId];
-    if(block != null && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side))) {
+    if(block != null && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(side)) && !player.isSneaking()) {
       player.swingItem();
       return !world.isRemote;
     }
