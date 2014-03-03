@@ -111,7 +111,7 @@ tile.blockPaintedDoubleSlab.name=Painted Slab
 
 //Items
 item.enderio.itemYetaWrench.name=Yeta Wrench
-item.enderio.itemMJReader.name=Conduit Probe
+item.enderio.itemConduitProbe.name=Conduit Probe
 
 enderio.itemEnderface.wrongDimension=EnderIO block is in a different dimension.
 enderio.itemEnderface.tooFar=EnderIO block is too distant.

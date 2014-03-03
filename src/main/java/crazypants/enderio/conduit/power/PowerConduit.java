@@ -32,7 +32,7 @@ import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.monitor.MJReaderPacketHandler;
+import crazypants.enderio.machine.monitor.PacketConduitProbe;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IPowerInterface;
@@ -123,7 +123,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     DyeColor col = DyeColor.getColorFromDye(player.getCurrentEquippedItem());
     if(ConduitUtil.isProbeEquipped(player)) {
       if(!player.worldObj.isRemote) {
-        MJReaderPacketHandler.getInstance().sendInfoMessage(player, this);
+        new PacketConduitProbe().sendInfoMessage(player, this);
       }
       return true;
     } else if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {

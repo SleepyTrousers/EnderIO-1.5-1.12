@@ -30,7 +30,7 @@ import crazypants.enderio.network.IPacketEio;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.Lang;
 
-public class MJReaderPacketHandler implements IPacketEio {
+public class PacketConduitProbe implements IPacketEio {
 
   private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
   private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";
@@ -73,14 +73,14 @@ public class MJReaderPacketHandler implements IPacketEio {
   private int z;
   private ForgeDirection side;
 
-  public MJReaderPacketHandler() {
+  public PacketConduitProbe() {
   }
 
-  public MJReaderPacketHandler(int x2, int y2, int z2, int side2) {
+  public PacketConduitProbe(int x2, int y2, int z2, int side2) {
     this(x2, y2, z2, ForgeDirection.getOrientation(side2));
   }
 
-  public MJReaderPacketHandler(int x, int y, int z, ForgeDirection side) {
+  public PacketConduitProbe(int x, int y, int z, ForgeDirection side) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -156,7 +156,7 @@ public class MJReaderPacketHandler implements IPacketEio {
     }
   }
 
-  public void sendInfoMessage(EntityPlayer player, TileConduitBundle tcb) {
+  public static void sendInfoMessage(EntityPlayer player, TileConduitBundle tcb) {
 
     if(tcb.getConduit(IItemConduit.class) != null) {
       sendInfoMessage(player, tcb.getConduit(IItemConduit.class), null);
@@ -167,7 +167,7 @@ public class MJReaderPacketHandler implements IPacketEio {
     }
   }
 
-  public void sendInfoMessage(EntityPlayer player, IPowerConduit conduit) {
+  public static void sendInfoMessage(EntityPlayer player, IPowerConduit conduit) {
     PowerConduitNetwork pcn = (PowerConduitNetwork) conduit.getNetwork();
     NetworkPowerManager pm = pcn.getPowerManager();
     PowerTracker tracker = pm.getTracker(conduit);
@@ -178,7 +178,7 @@ public class MJReaderPacketHandler implements IPacketEio {
     }
   }
 
-  public void sendInfoMessage(EntityPlayer player, IItemConduit conduit, ItemStack input) {
+  public static void sendInfoMessage(EntityPlayer player, IItemConduit conduit, ItemStack input) {
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();
     sb.append(color);
@@ -268,7 +268,7 @@ public class MJReaderPacketHandler implements IPacketEio {
 
   }
 
-  public void sendInfoMessage(EntityPlayer player, NetworkPowerManager pm) {
+  public static void sendInfoMessage(EntityPlayer player, NetworkPowerManager pm) {
     PowerTracker tracker = pm.getNetworkPowerTracker();
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();
@@ -308,7 +308,7 @@ public class MJReaderPacketHandler implements IPacketEio {
     player.addChatComponentMessage(new ChatComponentText(sb.toString()));
   }
 
-  private void sendPowerConduitInfo(EntityPlayer player, IPowerConduit con, PowerTracker tracker) {
+  public static void sendPowerConduitInfo(EntityPlayer player, IPowerConduit con, PowerTracker tracker) {
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();
     sb.append(color);

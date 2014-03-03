@@ -74,7 +74,7 @@ public class MachineRecipes {
     }
 
     //MJ Monitor
-    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
+    ItemStack mJReader = new ItemStack(EnderIO.itemConduitProbe, 1, 0);
     ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
     ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
@@ -152,7 +152,7 @@ public class MachineRecipes {
     }
 
     //MJ Reader    
-    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
+    ItemStack mJReader = new ItemStack(EnderIO.itemConduitProbe, 1, 0);
     ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);

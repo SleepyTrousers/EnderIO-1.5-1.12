@@ -26,7 +26,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.monitor.MJReaderPacketHandler;
+import crazypants.enderio.machine.monitor.PacketConduitProbe;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
@@ -120,7 +120,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     if(ConduitUtil.isProbeEquipped(player)) {
       if(!player.worldObj.isRemote) {
-        MJReaderPacketHandler.getInstance().sendInfoMessage(player, this, null);
+        PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
     } else if(ConduitUtil.isToolEquipped(player)) {
@@ -150,7 +150,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         ForgeDirection connDir = res.component.dir;
         if(connDir != null && connDir != ForgeDirection.UNKNOWN && containsExternalConnection(connDir)) {
           if(!player.worldObj.isRemote) {
-            MJReaderPacketHandler.getInstance().sendInfoMessage(player, this, player.getCurrentEquippedItem());
+            PacketConduitProbe.sendInfoMessage(player, this, player.getCurrentEquippedItem());
           }
           return true;
         }

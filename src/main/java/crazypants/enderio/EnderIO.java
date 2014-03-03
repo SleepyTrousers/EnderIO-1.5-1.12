@@ -41,7 +41,7 @@ import crazypants.enderio.machine.hypercube.HyperCubeRegister;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
-import crazypants.enderio.machine.monitor.ItemMJReader;
+import crazypants.enderio.machine.monitor.ItemConduitProbe;
 import crazypants.enderio.machine.painter.BlockPaintedFence;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedSlab;
@@ -128,9 +128,8 @@ public class EnderIO {
   public static BlockLightNode blockLightNode;
 
   public static ItemYetaWrench itemYetaWench;
-  public static ItemMJReader itemMJReader;
+  public static ItemConduitProbe itemConduitProbe;
 
-  //
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
   //  public static ITrigger triggerFullEnergy;
@@ -192,7 +191,7 @@ public class EnderIO {
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
-    itemMJReader = ItemMJReader.create();
+    itemConduitProbe = ItemConduitProbe.create();
 
     MaterialRecipes.registerOresInDictionary();
   }
@@ -214,7 +213,7 @@ public class EnderIO {
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
         .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
-    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemMJReader, 1, 0), 1, 1, 1));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 1));
 
     ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
     itemTravelStaff.setFull(staff);

@@ -252,7 +252,7 @@ public class ConduitUtil {
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == EnderIO.itemMJReader;
+    return equipped.getItem() == EnderIO.itemConduitProbe;
   }
 
   public static <T extends IConduit> T getConduit(IBlockAccess world, int x, int y, int z, Class<T> type) {

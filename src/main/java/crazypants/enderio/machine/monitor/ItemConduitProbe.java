@@ -21,22 +21,22 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 
-public class ItemMJReader extends Item {
+public class ItemConduitProbe extends Item {
 
   private static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
-  public static ItemMJReader create() {
+  public static ItemConduitProbe create() {
 
-    EnderIO.packetPipeline.registerPacket(MJReaderPacketHandler.class);
+    EnderIO.packetPipeline.registerPacket(PacketConduitProbe.class);
 
-    ItemMJReader result = new ItemMJReader();
+    ItemConduitProbe result = new ItemConduitProbe();
     result.init();
     return result;
   }
 
-  protected ItemMJReader() {
+  protected ItemConduitProbe() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName("enderio." + ModObject.itemMJReader.name());
+    setUnlocalizedName("enderio." + ModObject.itemConduitProbe.name());
     setMaxStackSize(64);
   }
 
@@ -68,9 +68,9 @@ public class ItemMJReader extends Item {
     }
 
     TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle) && MJReaderPacketHandler.canCreatePacket(world, x, y, z)) {
+    if(!(te instanceof IConduitBundle) && PacketConduitProbe.canCreatePacket(world, x, y, z)) {
       if(world.isRemote) {
-        EnderIO.packetPipeline.sendToServer(new MJReaderPacketHandler(x, y, z, side));
+        EnderIO.packetPipeline.sendToServer(new PacketConduitProbe(x, y, z, side));
       }
       return true;
     }
@@ -79,7 +79,7 @@ public class ItemMJReader extends Item {
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemMJReader.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemConduitProbe.unlocalisedName);
   }
 
   @Override
