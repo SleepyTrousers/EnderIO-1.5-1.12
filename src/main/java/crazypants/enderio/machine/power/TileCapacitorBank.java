@@ -692,6 +692,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     if(block != EnderIO.blockCapacitorBank) {
       receptorsDirty = true;
       getController().masterReceptorsDirty = true;
+      getController().redstoneStateDirty = true;
     }
     redstoneStateDirty = true;
   }

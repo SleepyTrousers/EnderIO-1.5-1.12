@@ -31,7 +31,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   private long timeAtLastApply;
 
   private final List<NetworkedInventory> inventories = new ArrayList<ItemConduitNetwork.NetworkedInventory>();
-  private final Map<BlockCoord, NetworkedInventory> invMap = new HashMap<BlockCoord, ItemConduitNetwork.NetworkedInventory>();
+  private final Map<BlockCoord, List<NetworkedInventory>> invMap = new HashMap<BlockCoord, List<ItemConduitNetwork.NetworkedInventory>>();
 
   private final Map<BlockCoord, IItemConduit> conMap = new HashMap<BlockCoord, IItemConduit>();
 
@@ -68,17 +68,35 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     BlockCoord bc = new BlockCoord(x, y, z);
     NetworkedInventory inv = new NetworkedInventory(externalInventory, itemConduit, direction, bc);
     inventories.add(inv);
-    invMap.put(bc, inv);
+    getOrCreate(bc).add(inv);
     requiresSort = true;
+  }
+
+  private List<NetworkedInventory> getOrCreate(BlockCoord bc) {
+    List<NetworkedInventory> res = invMap.get(bc);
+    if(res == null) {
+      res = new ArrayList<ItemConduitNetwork.NetworkedInventory>();
+      invMap.put(bc, res);
+    }
+    return res;
   }
 
   public void inventoryRemoved(ItemConduit itemConduit, int x, int y, int z) {
     BlockCoord bc = new BlockCoord(x, y, z);
-    NetworkedInventory inv = invMap.remove(bc);
-    if(inv != null) {
-      inventories.remove(inv);
+    List<NetworkedInventory> invs = getOrCreate(bc);
+    NetworkedInventory remove = null;
+    for (NetworkedInventory ni : invs) {
+      if(ni.con.getLocation().equals(itemConduit.getLocation())) {
+        remove = ni;
+        break;
+      }
     }
-    requiresSort = true;
+    if(remove != null) {
+      invs.remove(remove);
+      inventories.remove(remove);
+      requiresSort = true;
+    }
+
   }
 
   public void routesChanged() {
@@ -86,43 +104,55 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
-    BlockCoord loc = itemConduit.getLocation().getLocation(side);
-    NetworkedInventory inv = invMap.get(loc);
-    if(inv == null || item == null) {
+    if(item == null) {
       return item;
     }
 
-    int numInserted = inv.insertIntoTargets(item.copy());
-    if(numInserted >= item.stackSize) {
-      //TODO: I was returning null here as per the API but quarries plus
-      //was interpreting this as nothing being taken
-      ItemStack result = item.copy();
-      result.stackSize = 0;
-      return result;
+    BlockCoord loc = itemConduit.getLocation().getLocation(side);
+
+    ItemStack result = null;
+    List<NetworkedInventory> invs = getOrCreate(loc);
+    for (NetworkedInventory inv : invs) {
+
+      if(inv.con.getLocation().equals(loc)) {
+
+        int numInserted = inv.insertIntoTargets(item.copy());
+        if(numInserted >= item.stackSize) {
+          //TODO: I was returning null here as per the API but quarries plus
+          //was interpreting this as nothing being taken
+          result = item.copy();
+          result.stackSize = 0;
+          return result;
+        }
+        if(result == null) {
+          result = item.copy();
+        }
+        result.stackSize -= numInserted;
+      }
     }
-    ItemStack result = item.copy();
-    result.stackSize -= numInserted;
+
     return result;
   }
 
-  public List<String> getTargetsForExtraction(BlockCoord extractFrom, ItemStack input) {
+  public List<String> getTargetsForExtraction(BlockCoord extractFrom, IItemConduit con, ItemStack input) {
     List<String> result = new ArrayList<String>();
-    NetworkedInventory source = invMap.get(extractFrom);
-    if(source == null) {
-      return result;
-    }
 
-    if(source.sendPriority == null) {
-      return result;
-    }
+    List<NetworkedInventory> invs = getOrCreate(extractFrom);
+    for (NetworkedInventory source : invs) {
 
-    for (Target t : source.sendPriority) {
-      ItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
-      if(input == null || f == null || f.doesItemPassFilter(input)) {
-        String s = "[" + t.distance + "] " + Lang.localize(t.inv.inv.getInventoryName(), false);
-        result.add(s);
+      if(source.con.getLocation().equals(con.getLocation())) {
+        if(source != null && source.sendPriority != null) {
+          for (Target t : source.sendPriority) {
+            ItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
+            if(input == null || f == null || f.doesItemPassFilter(input)) {
+              String s = Lang.localize(t.inv.inv.getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
+              result.add(s);
+            }
+          }
+        }
       }
     }
+
     return result;
   }
 
@@ -410,7 +440,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         return;
       }
 
-      Map<BlockCoord, Target> result = new HashMap<BlockCoord, Target>();
+      //Map<BlockCoord, Target> result = new HashMap<BlockCoord, Target>();
+      List<Target> result = new ArrayList<ItemConduitNetwork.NetworkedInventory.Target>();
 
       for (NetworkedInventory other : inventories) {
         if((con.isSelfFeedEnabled(conDir) || (other != this))
@@ -420,7 +451,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           if(Config.itemConduitUsePhyscialDistance) {
             sendPriority.add(new Target(other, distanceTo(other), other.isSticky()));
           } else {
-            result.put(other.location, new Target(other, 9999999, other.isSticky()));
+            //result.put(other.location, new Target(other, 9999999, other.isSticky()));
+            result.add(new Target(other, 9999999, other.isSticky()));
           }
         }
       }
@@ -434,7 +466,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           steps.add(con.getLocation());
           calculateDistances(result, visited, steps, 0);
 
-          sendPriority.addAll(result.values());
+          sendPriority.addAll(result);
 
           Collections.sort(sendPriority);
         }
@@ -442,7 +474,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
     }
 
-    private void calculateDistances(Map<BlockCoord, Target> result, Map<BlockCoord, Integer> visited, List<BlockCoord> steps, int distance) {
+    private void calculateDistances(List<Target> targets, Map<BlockCoord, Integer> visited, List<BlockCoord> steps, int distance) {
       if(steps == null || steps.isEmpty()) {
         return;
       }
@@ -452,7 +484,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         IItemConduit con = conMap.get(bc);
         if(con != null) {
           for (ForgeDirection dir : con.getExternalConnections()) {
-            Target target = result.get(bc.getLocation(dir));
+            Target target = getTarget(targets, con, dir);
             if(target != null && target.distance > distance) {
               target.distance = distance;
             }
@@ -473,7 +505,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           }
         }
       }
-      calculateDistances(result, visited, nextSteps, distance + 1);
+      calculateDistances(targets, visited, nextSteps, distance + 1);
+    }
+
+    private Target getTarget(List<Target> targets, IItemConduit con, ForgeDirection dir) {
+      for (Target target : targets) {
+        if(target.inv.conDir == dir && target.inv.con.getLocation().equals(con.getLocation())) {
+          return target;
+        }
+      }
+      return null;
     }
 
     private int distanceTo(NetworkedInventory other) {
