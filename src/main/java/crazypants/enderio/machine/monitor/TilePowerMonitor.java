@@ -5,6 +5,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.power.NetworkPowerManager;
+import crazypants.enderio.conduit.power.PowerConduitNetwork;
+import crazypants.enderio.conduit.power.PowerTracker;
+import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -27,6 +34,8 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   float startLevel = 0.75f;
   float stopLevel = 0.99f;
   DyeColor signalColor = DyeColor.RED;
+
+  private Signal currentlyEmmittedSignal;
 
   //Signal currentlyEmmittedSignal;
 
@@ -126,31 +135,31 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     powerHandler.setEnergy(powerHandler.getEnergyStored() - energyPerTick);
     boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
 
-    //    NetworkPowerManager pm = getPowerManager();
-    //    if(pm != null && update) {
-    //      update(pm);
-    //      Signal sig = null;
-    //      if(!engineControlEnabled) {
-    //        sig = null;
-    //      } else {
-    //        float percentFull = getPercentFull();
-    //        if(currentlyEmmittedSignal == null) {
-    //          if(percentFull <= startLevel) {
-    //            sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, signalColor);
-    //          }
-    //        } else {
-    //          if(percentFull >= stopLevel) {
-    //            sig = null;
-    //          } else {
-    //            sig = currentlyEmmittedSignal;
-    //          }
-    //        }
-    //      }
-    //      if(currentlyEmmittedSignal != sig) {
-    //        currentlyEmmittedSignal = sig;
-    //        broadcastSignal();
-    //      }
-    //    }
+    NetworkPowerManager pm = getPowerManager();
+    if(pm != null && update) {
+      update(pm);
+      Signal sig = null;
+      if(!engineControlEnabled) {
+        sig = null;
+      } else {
+        float percentFull = getPercentFull();
+        if(currentlyEmmittedSignal == null) {
+          if(percentFull <= startLevel) {
+            sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, signalColor);
+          }
+        } else {
+          if(percentFull >= stopLevel) {
+            sig = null;
+          } else {
+            sig = currentlyEmmittedSignal;
+          }
+        }
+      }
+      if(currentlyEmmittedSignal != sig) {
+        currentlyEmmittedSignal = sig;
+        broadcastSignal();
+      }
+    }
 
     return update;
   }
@@ -164,35 +173,34 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     return (powerInConduits + powerInCapBanks) / (maxPowerInCoduits + maxPowerInCapBanks);
   }
 
-  //TODO:1.7
-  //  private void update(NetworkPowerManager pm) {
-  //    powerInConduits = pm.getPowerInConduits();
-  //    maxPowerInCoduits = pm.getMaxPowerInConduits();
-  //    powerInCapBanks = pm.getPowerInCapacitorBanks();
-  //    maxPowerInCapBanks = pm.getMaxPowerInCapacitorBanks();
-  //    powerInMachines = pm.getPowerInReceptors();
-  //    maxPowerInMachines = pm.getMaxPowerInReceptors();
-  //    PowerTracker tracker = pm.getNetworkPowerTracker();
-  //    aveMjSent = tracker.getAverageMjTickSent();
-  //    aveMjRecieved = tracker.getAverageMjTickRecieved();
-  //
-  //  }
-  //
-  //  private NetworkPowerManager getPowerManager() {
-  //    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-  //      IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
-  //      if(con != null) {
-  //        AbstractConduitNetwork<?, ?> n = con.getNetwork();
-  //        if(n instanceof PowerConduitNetwork) {
-  //          NetworkPowerManager pm = ((PowerConduitNetwork) n).getPowerManager();
-  //          if(pm != null) {
-  //            return pm;
-  //          }
-  //        }
-  //      }
-  //    }
-  //    return null;
-  //  }
+  private void update(NetworkPowerManager pm) {
+    powerInConduits = pm.getPowerInConduits();
+    maxPowerInCoduits = pm.getMaxPowerInConduits();
+    powerInCapBanks = pm.getPowerInCapacitorBanks();
+    maxPowerInCapBanks = pm.getMaxPowerInCapacitorBanks();
+    powerInMachines = pm.getPowerInReceptors();
+    maxPowerInMachines = pm.getMaxPowerInReceptors();
+    PowerTracker tracker = pm.getNetworkPowerTracker();
+    aveMjSent = tracker.getAverageMjTickSent();
+    aveMjRecieved = tracker.getAverageMjTickRecieved();
+
+  }
+
+  private NetworkPowerManager getPowerManager() {
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      IPowerConduit con = ConduitUtil.getConduit(worldObj, this, dir, IPowerConduit.class);
+      if(con != null) {
+        AbstractConduitNetwork<?, ?> n = con.getNetwork();
+        if(n instanceof PowerConduitNetwork) {
+          NetworkPowerManager pm = ((PowerConduitNetwork) n).getPowerManager();
+          if(pm != null) {
+            return pm;
+          }
+        }
+      }
+    }
+    return null;
+  }
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
