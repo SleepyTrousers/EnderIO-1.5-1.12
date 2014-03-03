@@ -19,6 +19,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -118,10 +119,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    //TODO:1.7
-    String str = getEnergyStored(itemStack) + "";
-    //    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-    //        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
+        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
     list.add(str);
   }
 

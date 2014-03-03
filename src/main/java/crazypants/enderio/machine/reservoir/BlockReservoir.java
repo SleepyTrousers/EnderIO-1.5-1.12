@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -124,15 +125,13 @@ public class BlockReservoir extends BlockContainer {
             tank.drain(ForgeDirection.UNKNOWN, liquid.amount, true);
             return true;
 
+          } else if(ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
+            tank.setAutoEject(!tank.isAutoEject());
+            for (BlockCoord bc : tank.multiblock) {
+              world.markBlockForUpdate(bc.x, bc.y, bc.z);
+            }
+
           }
-          //TODO:1.7
-          //          else if(ConduitUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {
-          //            tank.setAutoEject(!tank.isAutoEject());
-          //            for (BlockCoord bc : tank.multiblock) {
-          //              world.markBlockForUpdate(bc.x, bc.y, bc.z);
-          //            }
-          //
-          //          }
 
         }
       }

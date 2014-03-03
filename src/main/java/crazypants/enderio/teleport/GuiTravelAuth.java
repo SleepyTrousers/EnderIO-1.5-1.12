@@ -1,23 +1,27 @@
 package crazypants.enderio.teleport;
 
-import crazypants.gui.GuiContainerBase;
-import crazypants.render.ColorUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
+import java.awt.Color;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.PacketTileEntity;
+import crazypants.gui.GuiContainerBase;
+import crazypants.render.ColorUtil;
+import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiTravelAuth extends GuiContainerBase {
 
   private final String title;
   private final ITravelAccessable ta;
-  //private final String username;
+  private final String username;
   private boolean failed = false;
   private final EntityPlayer player;
 
@@ -25,7 +29,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     super(new ContainerTravelAuth(player.inventory));
     this.ta = te;
     title = Lang.localize("gui.travelAccessable.enterCode");
-    //username = player.getUniqueID().toString();
+    username = player.getGameProfile().getId();
     this.player = player;
   }
 
@@ -46,8 +50,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
     if(ta.authoriseUser(player, poo.enteredPassword)) {
       TileEntity te = ((TileEntity) ta);
-      //TODO: 1.7
-      //PacketDispatcher.sendPacketToServer(te.getDescriptionPacket());
+      EnderIO.packetPipeline.sendToServer(new PacketTileEntity(te));
 
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();

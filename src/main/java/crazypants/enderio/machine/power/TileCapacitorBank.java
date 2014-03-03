@@ -23,6 +23,9 @@ import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -116,11 +119,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       return FaceConnectionMode.LOCKED;
     }
     if(curMode == FaceConnectionMode.LOCKED) {
-      //TODO:1.7
-      //      if(rec == null || rec.getDelegate() instanceof IConduitBundle) {
-      //        setFaceMode(faceHit, FaceConnectionMode.NONE, true);
-      //        return FaceConnectionMode.NONE;
-      //      }
+      if(rec == null || rec.getDelegate() instanceof IConduitBundle) {
+        setFaceMode(faceHit, FaceConnectionMode.NONE, true);
+        return FaceConnectionMode.NONE;
+      }
     }
     setFaceMode(faceHit, FaceConnectionMode.INPUT, true);
     return FaceConnectionMode.INPUT;
@@ -321,19 +323,18 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           && mode != FaceConnectionMode.INPUT && mode != FaceConnectionMode.LOCKED
           && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used;
-        //TODO:1.7
-        //        if(receptor.receptor.getDelegate() instanceof IConduitBundle) {
-        //          //All other power transfer is handled by the conduit network
-        //          IConduitBundle bundle = (IConduitBundle) receptor.receptor.getDelegate();
-        //          IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
-        //          if(conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
-        //            used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
-        //          } else {
-        //            used = 0;
-        //          }
-        //        } else {
-        used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
-        //        }
+        if(receptor.receptor.getDelegate() instanceof IConduitBundle) {
+          //All other power transfer is handled by the conduit network
+          IConduitBundle bundle = (IConduitBundle) receptor.receptor.getDelegate();
+          IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
+          if(conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
+            used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
+          } else {
+            used = 0;
+          }
+        } else {
+          used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
+        }
 
         transmitted += used;
         canTransmit -= used;

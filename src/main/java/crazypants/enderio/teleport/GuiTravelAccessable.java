@@ -1,5 +1,15 @@
 package crazypants.enderio.teleport;
 
+import java.awt.Color;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
@@ -9,14 +19,6 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 public class GuiTravelAccessable extends GuiContainerBase {
 
@@ -50,8 +52,6 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-
-
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
     col2x = (col1x + fr.getStringWidth(protectedStr) / 2);
@@ -84,13 +84,8 @@ public class GuiTravelAccessable extends GuiContainerBase {
     te.setAccessMode(curMode);
 
     BlockCoord bc = te.getLocation();
-
-    PacketAccessMode p = new PacketAccessMode(bc.x,bc.y,bc.z,curMode);
+    PacketAccessMode p = new PacketAccessMode(bc.x, bc.y, bc.z, curMode);
     EnderIO.packetPipeline.sendToServer(p);
-
-    //TODO: 1.7
-//    Packet packet = TravelPacketHandler.createAccessModePacket(bc.x, bc.y, bc.z, curMode);
-//    PacketDispatcher.sendPacketToServer(packet);
   }
 
   @Override

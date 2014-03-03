@@ -12,8 +12,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.tools.IToolWrench;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.enderface.BlockEio;
 
 public class BlockSolarPanel extends BlockEio {
@@ -48,22 +50,21 @@ public class BlockSolarPanel extends BlockEio {
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-    //TODO:1.7
-    //    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-    //      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-    //        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-    //        if(wrench.canWrench(entityPlayer, x, y, z)) {
-    //          removedByPlayer(world, entityPlayer, x, y, z);
-    //          if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
-    //            dropBlockAsItem(world, x, y, z, 0, 0);
-    //          }
-    //          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-    //            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-    //          }
-    //          return true;
-    //        }
-    //      }
-    //    }
+    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
+      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
+        if(wrench.canWrench(entityPlayer, x, y, z)) {
+          removedByPlayer(world, entityPlayer, x, y, z);
+          if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
+            dropBlockAsItem(world, x, y, z, 0, 0);
+          }
+          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
+          }
+          return true;
+        }
+      }
+    }
     return false;
   }
 

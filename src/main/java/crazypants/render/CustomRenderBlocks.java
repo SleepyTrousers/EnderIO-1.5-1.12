@@ -1,19 +1,19 @@
 package crazypants.render;
 
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vector4f;
-import crazypants.vecmath.Vertex;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vector4f;
+import crazypants.vecmath.Vertex;
 
 public class CustomRenderBlocks extends RenderBlocks {
 
@@ -46,12 +46,12 @@ public class CustomRenderBlocks extends RenderBlocks {
   }
 
   public void setDefaultTesselatorEnabled(boolean enabled) {
-    //TODO:1.7
-//    if(enabled) {
-//      Tessellator.instance = DEFAULT_TES;
-//    } else {
-//      Tessellator.instance = BUF_TES;
-//    }
+    //TODO:1.7: Need to fix up not having a double buffer
+    //    if(enabled) {
+    //      Tessellator.instance = DEFAULT_TES;
+    //    } else {
+    //      Tessellator.instance = BUF_TES;
+    //    }
   }
 
   public boolean isTranslateToXYZ() {
