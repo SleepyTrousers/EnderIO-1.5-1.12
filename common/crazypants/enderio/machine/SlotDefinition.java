@@ -41,6 +41,10 @@ public class SlotDefinition {
     return slot >= minOutputSlot && slot <= maxOutputSlot;
   }
 
+  public int getNumUpgradeSlots() {
+    return Math.max(0, maxUpgradeSlot - minUpgradeSlot + 1);
+  }
+
   public int getNumInputSlots() {
     return Math.max(0, maxInputSlot - minInputSlot + 1);
   }

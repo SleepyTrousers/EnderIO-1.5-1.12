@@ -19,9 +19,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public int[] getAccessibleSlotsFromSide(int var1) {
-    int[] res = new int[inventory.length];
-    for (int i = 0; i < res.length; i++) {
-      res[i] = i;
+    int[] res = new int[inventory.length - slotDefinition.getNumUpgradeSlots()];
+    int index = 0;
+    for (int i = 0; i < inventory.length; i++) {
+      if(!slotDefinition.isUpgradeSlot(i)) {
+        res[index] = i;
+        index++;
+      }
     }
     return res;
   }
