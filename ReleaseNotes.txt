@@ -1,5 +1,11 @@
 0.11.2
-- #518 Crash when breaking a TE redstone conduit, connected to an EIO power conduit, which is connected to a Power Monitor.
+- #510 Travel distance config not working correctly
+- #511 Staff of Traveling not using power
+- #512 Capacitor banks not responding to redstone signals bug 
+- #517 Item conduit filters fail when more than one conduit ends at one chest
+- #518 Crash when breaking a TE redstone conduit, connected to an EIO power conduit, which is connected to a Power Monitor. 
+- #519 Can't shift-wrench to pick up certain TE blocks 
+- #520 Alloy Smelter upgrade breaks ME interface 'blocking mode' 
 
 0.11.1
 - #497 Alloy only mode broken 
