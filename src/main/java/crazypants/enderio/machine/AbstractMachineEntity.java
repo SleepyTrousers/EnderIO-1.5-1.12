@@ -228,8 +228,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     if(worldObj.isRemote) {
       // check if the block on the client needs to update its texture
       if(isActive() != lastActive) {
-        //TODO:1.7 is this ok?
-        //worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       }
       lastActive = isActive();
@@ -291,10 +289,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     // read in the inventories contents
     inventory = new ItemStack[slotDefinition.getNumSlots()];
 
-    //TODO:1.7
-    //NBTTagList itemList = nbtRoot.getTagList("Items");
     NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-
     for (int i = 0; i < itemList.tagCount(); i++) {
       NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
       byte slot = itemStack.getByte("Slot");

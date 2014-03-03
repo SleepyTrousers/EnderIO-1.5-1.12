@@ -216,12 +216,11 @@ public class GuiEnderface extends GuiScreen {
     MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
     if(hit != null) {
       Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-      //TODO:1.7
-      //      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
-      //        block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
-      //      } else {
-      openInterface(hit.blockX, hit.blockY, hit.blockZ);
-      //      }
+      if(block == EnderIO.blockHyperCube || block == EnderIO.blockCapacitorBank) {
+        block.onBlockActivated(world, hit.blockX, hit.blockY, hit.blockZ, player, 0, 0, 0, 0);
+      } else {
+        openInterface(hit.blockX, hit.blockY, hit.blockZ);
+      }
     }
 
   }
@@ -555,18 +554,6 @@ public class GuiEnderface extends GuiScreen {
   }
 
   void openInterface(int x, int y, int z) {
-
-    ///TODO: Applied Energistics
-    //    if(MeProxy.instance.isMeAccessTerminal(player, x, y, z)) {
-    //      if(Config.enderIoMeAccessEnabled) {
-    //        Packet250CustomPayload pkt = EnderfacePacketProcessor.createMePacket(x, y, z);
-    //        PacketDispatcher.sendPacketToServer(pkt);
-    //      }
-    //    } else {
-    //      Packet250CustomPayload pkt = EnderfacePacketProcessor.createPacketEnderface(x, y, z);
-    //      PacketDispatcher.sendPacketToServer(pkt);
-    //    }
-
     PacketOpenRemoteUi p = new PacketOpenRemoteUi(x, y, z);
     EnderIO.packetPipeline.sendToServer(p);
   }

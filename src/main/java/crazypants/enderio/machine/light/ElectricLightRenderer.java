@@ -18,11 +18,9 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
     BoundingBox bb = new BoundingBox(0, 0, 0, 1, 0.2, 1);
     boolean doDraw = false;
-    //TODO:1.7    
-    //    if(!Tessellator.instance.isDrawing) {
-    //      doDraw = true;
+
     Tessellator.instance.startDrawingQuads();
-    //    }
+
     IIcon[] textures = new IIcon[6];
     textures[0] = block.getBlockTextureFromSide(ForgeDirection.NORTH.ordinal());
     textures[1] = block.getBlockTextureFromSide(ForgeDirection.SOUTH.ordinal());
@@ -30,12 +28,9 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     textures[3] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal());
     textures[4] = block.getBlockTextureFromSide(ForgeDirection.WEST.ordinal());
     textures[5] = block.getBlockTextureFromSide(ForgeDirection.EAST.ordinal());
-
     CubeRenderer.render(bb, textures, null);
 
-    //if(doDraw) {
     Tessellator.instance.draw();
-    //}
   }
 
   @Override

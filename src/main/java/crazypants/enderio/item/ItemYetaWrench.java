@@ -81,10 +81,4 @@ public class ItemYetaWrench extends Item implements IToolWrench {
     player.swingItem();
   }
 
-  //TODO:1.7 is this still needed?
-  //  @Override
-  //  public boolean shouldPassSneakingClickToBlock(World par2World, int par4, int par5, int par6) {
-  //    return true;
-  //  }
-
 }

@@ -37,27 +37,25 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
 
   private Signal currentlyEmmittedSignal;
 
-  //Signal currentlyEmmittedSignal;
-
   public TilePowerMonitor() {
     super(new SlotDefinition(0, 0));
   }
 
   public int[] getRednetOutputValues(ForgeDirection side) {
-    //    if(currentlyEmmittedSignal == null) {
-    //      return new int[16];
-    //    }
+    if(currentlyEmmittedSignal == null) {
+      return new int[16];
+    }
     int[] res = new int[DyeColor.values().length];
-    //    for (DyeColor col : DyeColor.values()) {
-    //      res[col.ordinal()] = currentlyEmmittedSignal.color == col ? 15 : 0;
-    //    }
+    for (DyeColor col : DyeColor.values()) {
+      res[col.ordinal()] = currentlyEmmittedSignal.color == col ? 15 : 0;
+    }
     return res;
   }
 
   public int getRednetOutputValue(ForgeDirection side, int subnet) {
-    //    if(currentlyEmmittedSignal != null) {
-    //      return 15;
-    //    }
+    if(currentlyEmmittedSignal != null) {
+      return 15;
+    }
     return 0;
   }
 

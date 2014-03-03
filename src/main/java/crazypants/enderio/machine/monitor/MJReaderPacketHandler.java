@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.monitor;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -7,9 +10,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -19,16 +26,11 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.IPacketEio;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.Lang;
 
-public class MJReaderPacketHandler {
-
-  static final MJReaderPacketHandler instance = new MJReaderPacketHandler();
-
-  public static MJReaderPacketHandler getInstance() {
-    return instance;
-  }
+public class MJReaderPacketHandler implements IPacketEio {
 
   private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
   private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";
@@ -66,68 +68,93 @@ public class MJReaderPacketHandler {
     return false;
   }
 
-  //TODO:1.7
-  //  public static Packet createInfoRequestPacket(int x, int y, int z, int side) {
-  //  
-  //      dos.writeInt(x);
-  //      dos.writeInt(y);
-  //      dos.writeInt(z);
-  //      dos.writeInt(side);
-  //  
-  //  }
+  private int x;
+  private int y;
+  private int z;
+  private ForgeDirection side;
 
-  //    private void sendInfoMessage(DataInputStream data, EntityPlayer player) throws IOException {
-  //      int x = data.readInt();
-  //      int y = data.readInt();
-  //      int z = data.readInt();
-  //      int side = data.readInt();
-  //  
-  //      World world = player.worldObj;
-  //      if(world == null) {
-  //        Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
-  //        return;
-  //      }
-  //  
-  //      Block block = world.getBlock(x, y, z);
-  //  
-  //      if(block == null) {
-  //        Log.warn("MJReaderPacketHandler.sendInfoMessage: Null block for is " + id);
-  //        return;
-  //      }
-  //  
-  //      TileEntity te = world.getTileEntity(x, y, z);
-  //  
-  //      if(te instanceof TileConduitBundle) {
-  //  
-  //        sendInfoMessage(player, (TileConduitBundle) te);
-  //  
-  //      } else
-  //  
-  //      if(te instanceof IInternalPowerReceptor) {
-  //  
-  //        IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
-  //        PowerHandler ph = pr.getPowerHandler();
-  //        if(ph == null) {
-  //          player.sendChatToPlayer(ChatMessageComponent.createFromText(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
-  //        }
-  //  
-  //        sendPowerReciptorInfo(player, block, ph.getEnergyStored(), ph.getMaxEnergyStored(), ph.getMinEnergyReceived(), ph.getMaxEnergyReceived(), ph
-  //            .getPowerReceiver().powerRequest());
-  //  
-  //      } else if(te instanceof IPowerReceptor) {
-  //  
-  //        IPowerReceptor pr = (IPowerReceptor) te;
-  //        PowerReceiver rec = pr.getPowerReceiver(ForgeDirection.values()[side]);
-  //        if(rec == null) {
-  //          player.sendChatToPlayer(ChatMessageComponent.createFromText(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
-  //        } else {
-  //          sendPowerReciptorInfo(player, block, rec.getEnergyStored(), rec.getMaxEnergyStored(), rec.getMinEnergyReceived(), rec.getMaxEnergyReceived(),
-  //              rec.powerRequest());
-  //        }
-  //  
-  //      }
-  //  
-  //    }
+  public MJReaderPacketHandler() {
+  }
+
+  public MJReaderPacketHandler(int x2, int y2, int z2, int side2) {
+    this(x2, y2, z2, ForgeDirection.getOrientation(side2));
+  }
+
+  public MJReaderPacketHandler(int x, int y, int z, ForgeDirection side) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.side = side;
+  }
+
+  @Override
+  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+    buf.writeInt(x);
+    buf.writeInt(y);
+    buf.writeInt(z);
+    buf.writeShort(side.ordinal());
+
+  }
+
+  @Override
+  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+    x = buffer.readInt();
+    y = buffer.readInt();
+    z = buffer.readInt();
+    side = ForgeDirection.getOrientation(buffer.readShort());
+  }
+
+  @Override
+  public void handleClientSide(EntityPlayer player) {
+
+  }
+
+  @Override
+  public void handleServerSide(EntityPlayer player) {
+    World world = player.worldObj;
+    if(world == null) {
+      Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
+      return;
+    }
+    Block block = world.getBlock(x, y, z);
+    if(block == null) {
+      return;
+    }
+
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileConduitBundle) {
+
+      sendInfoMessage(player, (TileConduitBundle) te);
+
+    } else
+
+    if(te instanceof IInternalPowerReceptor) {
+
+      IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
+      PowerHandler ph = pr.getPowerHandler();
+      if(ph == null) {
+
+        player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
+      }
+
+      sendPowerReciptorInfo(player, block, (float) ph.getEnergyStored(), (float) ph.getMaxEnergyStored(), (float) ph.getMinEnergyReceived(),
+          (float) ph.getMaxEnergyReceived(), (float) ph
+              .getPowerReceiver().powerRequest());
+
+    } else if(te instanceof IPowerReceptor) {
+
+      IPowerReceptor pr = (IPowerReceptor) te;
+      PowerReceiver rec = pr.getPowerReceiver(side);
+      if(rec == null) {
+        player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
+      } else {
+        sendPowerReciptorInfo(player, block, (float) rec.getEnergyStored(), (float) rec.getMaxEnergyStored(), (float) rec.getMinEnergyReceived(),
+            (float) rec.getMaxEnergyReceived(),
+            (float) rec.powerRequest());
+      }
+
+    }
+  }
 
   public void sendInfoMessage(EntityPlayer player, TileConduitBundle tcb) {
 

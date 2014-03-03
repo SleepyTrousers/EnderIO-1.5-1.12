@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiScreenBase;
@@ -203,9 +204,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
       if(i >= 0) {
         te.stopLevel = te.asPercentFloat(i);
       }
-      //TODO:1.7
-      //      Packet pkt = PowerMonitorPacketHandler.createPowerMonitotPacket(te);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketPowerMonitor(te));
     }
 
   }

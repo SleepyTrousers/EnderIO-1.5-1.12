@@ -74,14 +74,13 @@ public class MachineRecipes {
     }
 
     //MJ Monitor
-    //TODO:1.7
-    //    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
-    //    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
-    //    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
-    //    ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
-    //    GameRegistry
-    //        .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
-    //            'r', redstoneConduit, 'c', capacitor);
+    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
+    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
+    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
+    ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
+    GameRegistry
+        .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
+            'r', redstoneConduit, 'c', capacitor);
 
   }
 
@@ -152,15 +151,14 @@ public class MachineRecipes {
 
     }
 
-    //TODO:1.7
-    //    //MJ Reader    
-    //    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
-    //    ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
-    //    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
-    //    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
-    //
-    //    GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g',
-    //        Blocks.glass_pane, 's', silicon, 'e',
-    //        electricalSteel));
+    //MJ Reader    
+    ItemStack mJReader = new ItemStack(EnderIO.itemMJReader, 1, 0);
+    ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
+    ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g',
+        Blocks.glass_pane, 's', silicon, 'e',
+        electricalSteel));
   }
 }

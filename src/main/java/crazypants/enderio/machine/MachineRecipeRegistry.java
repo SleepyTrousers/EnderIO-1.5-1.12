@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.crafting.RecipeReigistry;
+
 public class MachineRecipeRegistry {
 
   public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();
@@ -14,11 +18,10 @@ public class MachineRecipeRegistry {
 
   public void registerRecipe(String machine, IMachineRecipe recipe) {
     getRecipesForMachine(machine).put(recipe.getUid(), recipe);
-    //TODO:1.7
-    //    Side side = FMLCommonHandler.instance().getEffectiveSide();
-    //    if(side == Side.CLIENT) {
-    //      RecipeReigistry.instance.registerRecipes(recipe.getAllRecipes());
-    //    }
+    Side side = FMLCommonHandler.instance().getEffectiveSide();
+    if(side == Side.CLIENT) {
+      RecipeReigistry.instance.registerRecipes(recipe.getAllRecipes());
+    }
   }
 
   public Map<String, IMachineRecipe> getRecipesForMachine(String machineName) {

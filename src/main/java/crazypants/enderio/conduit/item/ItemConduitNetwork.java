@@ -115,14 +115,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     for (NetworkedInventory inv : invs) {
 
       if(inv.con.getLocation().equals(loc)) {
-
         int numInserted = inv.insertIntoTargets(item.copy());
         if(numInserted >= item.stackSize) {
-          //TODO: I was returning null here as per the API but quarries plus
-          //was interpreting this as nothing being taken
-          result = item.copy();
-          result.stackSize = 0;
-          return result;
+          return null;
         }
         if(result == null) {
           result = item.copy();

@@ -1,17 +1,25 @@
 package crazypants.enderio.machine.monitor;
 
 import java.text.NumberFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
 
 public class ItemMJReader extends Item {
 
@@ -19,8 +27,7 @@ public class ItemMJReader extends Item {
 
   public static ItemMJReader create() {
 
-    //TODO:1.7
-    //    PacketHandler.instance.addPacketProcessor(MJReaderPacketHandler.getInstance());
+    EnderIO.packetPipeline.registerPacket(MJReaderPacketHandler.class);
 
     ItemMJReader result = new ItemMJReader();
     result.init();
@@ -38,36 +45,35 @@ public class ItemMJReader extends Item {
       float par9, float par10) {
 
     if(player.isSneaking()) {
-      //TODO:1.7
+
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof IConduitBundle) {
+        IConduitBundle cb = (IConduitBundle) te;
+        Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
+        for (IConduit con : cb.getConduits()) {
+          cons.addAll(con.getExternalConnections());
+        }
+
+        if(cons.isEmpty()) {
+          return false;
+        }
+        if(cons.size() == 1) {
+          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
+          return true;
+        }
+        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
+
+      }
+      return false;
     }
-    //      TileEntity te = world.getTileEntity(x, y, z);
-    //      if(te instanceof IConduitBundle) {
-    //        IConduitBundle cb = (IConduitBundle) te;
-    //        Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
-    //        for (IConduit con : cb.getConduits()) {
-    //          cons.addAll(con.getExternalConnections());
-    //        }
-    //
-    //        if(cons.isEmpty()) {
-    //          return false;
-    //        }
-    //        if(cons.size() == 1) {
-    //          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
-    //          return true;
-    //        }
-    //        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
-    //
-    //      }
-    //      return false;
-    //    }
-    //
-    //    TileEntity te = world.getTileEntity(x, y, z);
-    //    if(!(te instanceof IConduitBundle) && MJReaderPacketHandler.canCreatePacket(world, x, y, z)) {
-    //      if(world.isRemote) {
-    //        PacketDispatcher.sendPacketToServer(MJReaderPacketHandler.createInfoRequestPacket(x, y, z, side));
-    //      }
-    //      return true;
-    //    }
+
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle) && MJReaderPacketHandler.canCreatePacket(world, x, y, z)) {
+      if(world.isRemote) {
+        EnderIO.packetPipeline.sendToServer(new MJReaderPacketHandler(x, y, z, side));
+      }
+      return true;
+    }
 
     return false;
   }

@@ -120,7 +120,7 @@ public class PacketOpenRemoteUi implements IPacketEio {
       this.y = y;
       this.z = z;
 
-      // TODO: Move to config?
+      // TODO: Move to config? or use reflectioon helper?
       this.realObj = obj;
       interceptNames.add("openGui");
       interceptNames.add("func_146100_a");

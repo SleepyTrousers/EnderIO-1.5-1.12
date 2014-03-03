@@ -37,17 +37,4 @@ public class ItemLiquidConduit extends AbstractItemConduit {
     return new LiquidConduit();
   }
 
-  //TODO
-  //  @Override
-  //  @SideOnly(Side.CLIENT)
-  //  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-  //    if(PREFIX == null) {
-  //      POSTFIX = " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTick();
-  //      PREFIX = Lang.localize("power.maxOutput") + " ";
-  //    }
-  //    super.addInformation(itemStack, par2EntityPlayer, list, par4);
-  //    ICapacitor cap = PowerConduit.CAPACITORS[itemStack.getItemDamage()];
-  //    list.add(PREFIX + PowerDisplayUtil.formatPower(cap.getMaxEnergyExtracted()) + POSTFIX);
-  //  }
-
 }
