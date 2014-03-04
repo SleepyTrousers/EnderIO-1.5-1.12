@@ -8,8 +8,10 @@ import net.minecraft.client.gui.GuiButton;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.render.ColorUtil;
@@ -93,16 +95,12 @@ public class BaseSettingsPanel implements ISettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     if(guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.dir, con.getPreviousConnectionMode(gui.dir));
-      //TODO:1.7
-      //      Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketConnectionMode(con, gui.dir));
       connectionModeChanged(con.getConectionMode(gui.dir));
 
     } else if(guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.dir, con.getNextConnectionMode(gui.dir));
-      //TODO:1.7
-      //      Packet pkt = ConduitPacketHandler.createConnectionModePacket(gui.bundle, con, gui.dir);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketConnectionMode(con, gui.dir));
       connectionModeChanged(con.getConectionMode(gui.dir));
     }
   }

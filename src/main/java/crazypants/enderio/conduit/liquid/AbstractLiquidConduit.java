@@ -75,7 +75,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
-  public RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir) {
+  public RedstoneControlMode getExtractionRedstoneMode(ForgeDirection dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if(res == null) {
       res = RedstoneControlMode.ON;
@@ -121,7 +121,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     if(!isExtractingFromDir(dir)) {
       return false;
     }
-    RedstoneControlMode mode = getExtractioRedstoneMode(dir);
+    RedstoneControlMode mode = getExtractionRedstoneMode(dir);
     if(mode == RedstoneControlMode.IGNORE) {
       return true;
     }

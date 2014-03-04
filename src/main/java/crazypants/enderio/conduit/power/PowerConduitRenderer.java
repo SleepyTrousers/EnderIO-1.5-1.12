@@ -53,9 +53,9 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     if(IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       IPowerConduit pc = (IPowerConduit) conduit;
       ConnectionMode conMode = pc.getConectionMode(component.dir);
-      if(conduit.containsExternalConnection(component.dir) && pc.getRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
+      if(conduit.containsExternalConnection(component.dir) && pc.getExtractionRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
           && conMode != ConnectionMode.DISABLED) {
-        int c = ((IPowerConduit) conduit).getSignalColor(component.dir).getColor();
+        int c = ((IPowerConduit) conduit).getExtractionSignalColor(component.dir).getColor();
         Tessellator tessellator = Tessellator.instance;
         tessellator.setColorOpaque_I(c);
 

@@ -176,9 +176,9 @@ public class ConduitUtil {
       return ConduitDisplayMode.ALL;
     }
 
-    //    if(equipped.getItem() != EnderIO.itemYetaWrench) {
-    //      return ConduitDisplayMode.ALL;
-    //    }
+    if(equipped.getItem() != EnderIO.itemYetaWench) {
+      return ConduitDisplayMode.ALL;
+    }
 
     ConduitDisplayMode result = ConduitDisplayMode.getDisplayMode(equipped);
     if(result == null) {

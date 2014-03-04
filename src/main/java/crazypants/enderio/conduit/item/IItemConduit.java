@@ -4,10 +4,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.conduit.IExtractor;
 import crazypants.util.DyeColor;
 
-public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit {
+public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit, IExtractor {
 
   IIcon getTextureForInputMode();
 
@@ -36,14 +36,6 @@ public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit 
   ItemFilter getOutputFilter(ForgeDirection dir);
 
   int getMetaData();
-
-  void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir);
-
-  RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir);
-
-  void setExtractionSignalColor(ForgeDirection dir, DyeColor col);
-
-  DyeColor getExtractionSignalColor(ForgeDirection dir);
 
   boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
 

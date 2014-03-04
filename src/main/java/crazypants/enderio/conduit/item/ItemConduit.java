@@ -231,7 +231,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public RedstoneControlMode getExtractioRedstoneMode(ForgeDirection dir) {
+  public RedstoneControlMode getExtractionRedstoneMode(ForgeDirection dir) {
     RedstoneControlMode res = extractionModes.get(dir);
     if(res == null) {
       res = RedstoneControlMode.ON;
@@ -255,7 +255,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public boolean isExtractionRedstoneConditionMet(ForgeDirection dir) {
-    RedstoneControlMode mode = getExtractioRedstoneMode(dir);
+    RedstoneControlMode mode = getExtractionRedstoneMode(dir);
     if(mode == null) {
       return true;
     }

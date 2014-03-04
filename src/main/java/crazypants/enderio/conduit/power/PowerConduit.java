@@ -127,7 +127,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       }
       return true;
     } else if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {
-      setSignalColor(res.component.dir, col);
+      setExtractionSignalColor(res.component.dir, col);
       return true;
     } else if(ConduitUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().getWorldObj().isRemote) {
@@ -155,7 +155,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   private boolean isColorBandRendered(ForgeDirection dir) {
-    return getConectionMode(dir) != ConnectionMode.DISABLED && getRedstoneMode(dir) != RedstoneControlMode.IGNORE;
+    return getConectionMode(dir) != ConnectionMode.DISABLED && getExtractionRedstoneMode(dir) != RedstoneControlMode.IGNORE;
   }
 
   @Override
@@ -168,13 +168,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public void setRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
+  public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
     rsModes.put(dir, mode);
     setClientStateDirty();
   }
 
   @Override
-  public RedstoneControlMode getRedstoneMode(ForgeDirection dir) {
+  public RedstoneControlMode getExtractionRedstoneMode(ForgeDirection dir) {
     RedstoneControlMode res = rsModes.get(dir);
     if(res == null) {
       res = RedstoneControlMode.IGNORE;
@@ -183,13 +183,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public void setSignalColor(ForgeDirection dir, DyeColor col) {
+  public void setExtractionSignalColor(ForgeDirection dir, DyeColor col) {
     rsColors.put(dir, col);
     setClientStateDirty();
   }
 
   @Override
-  public DyeColor getSignalColor(ForgeDirection dir) {
+  public DyeColor getExtractionSignalColor(ForgeDirection dir) {
     DyeColor res = rsColors.get(dir);
     if(res == null) {
       res = DyeColor.RED;
@@ -292,7 +292,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   private boolean isRedstoneEnabled(ForgeDirection dir) {
     boolean result;
-    RedstoneControlMode mode = getRedstoneMode(dir);
+    RedstoneControlMode mode = getExtractionRedstoneMode(dir);
     if(mode == RedstoneControlMode.NEVER) {
       return false;
     }
@@ -300,7 +300,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       return true;
     }
 
-    DyeColor col = getSignalColor(dir);
+    DyeColor col = getExtractionSignalColor(dir);
     // internal signal
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
     if(mode.isConditionMet(mode, signal)) {

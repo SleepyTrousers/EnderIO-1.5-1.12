@@ -4,10 +4,13 @@ import java.awt.Color;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemFilter;
+import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -83,16 +86,14 @@ public class ItemSettings extends BaseSettingsPanel {
         RedstoneControlMode curMode = getRedstoneControlMode();
         itemConduit.setExtractionRedstoneMode(mode, gui.dir);
         if(curMode != mode) {
-          //TODO:1.7
-          //          Packet pkt = ConduitPacketHandler.createExtractionModePacket(itemConduit, gui.dir, mode);
-          //          PacketDispatcher.sendPacketToServer(pkt);
+          EnderIO.packetPipeline.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
         }
 
       }
 
       @Override
       public RedstoneControlMode getRedstoneControlMode() {
-        return itemConduit.getExtractioRedstoneMode(gui.dir);
+        return itemConduit.getExtractionRedstoneMode(gui.dir);
       }
     });
 
@@ -232,7 +233,7 @@ public class ItemSettings extends BaseSettingsPanel {
     } else {
 
       rsB.onGuiInit();
-      rsB.setMode(itemConduit.getExtractioRedstoneMode(gui.dir));
+      rsB.setMode(itemConduit.getExtractionRedstoneMode(gui.dir));
 
       colorB.onGuiInit();
       colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
@@ -297,14 +298,14 @@ public class ItemSettings extends BaseSettingsPanel {
       activeFilter.setBlacklist(!activeFilter.isBlacklist());
       sendFilterChange();
     } else if(guiButton.id == ID_COLOR_BUTTON) {
-      //TODO:1.7
-      //      Packet pkt = ConduitPacketHandler.createSignalColorPacket(itemConduit, gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+
+      itemConduit.setExtractionSignalColor(gui.dir, DyeColor.values()[colorB.getColorIndex()]);
+      EnderIO.packetPipeline.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
+
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
-      //TODO:1.7
-      //      Packet pkt = ConduitPacketHandler.createItemLoopPacket(itemConduit, gui.dir);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+
     } else if(guiButton.id == ID_CHANNEL) {
 
       ConnectionMode mode = con.getConectionMode(gui.dir);
@@ -324,9 +325,7 @@ public class ItemSettings extends BaseSettingsPanel {
       } else {
         return;
       }
-      //TODO:1.7
-      //      Packet pkt = ConduitPacketHandler.createItemChannelPacket(itemConduit, gui.dir, col, input);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
     }
   }
 
@@ -336,9 +335,7 @@ public class ItemSettings extends BaseSettingsPanel {
     if(activeFilter != null) {
       ConnectionMode mode = con.getConectionMode(gui.dir);
       boolean inputActive = (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
-      //TODO:1.7
-      //      Packet pkt = ConduitPacketHandler.createItemFilterPacket(itemConduit, gui.dir, inputActive, activeFilter);
-      //      PacketDispatcher.sendPacketToServer(pkt);
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
     }
   }
 

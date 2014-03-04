@@ -35,6 +35,10 @@ import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
+import crazypants.enderio.conduit.packet.PacketConnectionMode;
+import crazypants.enderio.conduit.packet.PacketExtractMode;
+import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
+import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -47,12 +51,14 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
 
   public static BlockConduitBundle create() {
 
-    //TODO:1.7
-    //    PacketHandler.instance.addPacketProcessor(new ConduitPacketHandler());    
     MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
     FMLCommonHandler.instance().bus().register(ConduitNetworkTickHandler.instance);
 
     EnderIO.packetPipeline.registerPacket(PacketFluidLevel.class);
+    EnderIO.packetPipeline.registerPacket(PacketExtractMode.class);
+    EnderIO.packetPipeline.registerPacket(PacketConnectionMode.class);
+    EnderIO.packetPipeline.registerPacket(PacketItemConduitFilter.class);
+    EnderIO.packetPipeline.registerPacket(PacketRedstoneConduitSignalColor.class);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
