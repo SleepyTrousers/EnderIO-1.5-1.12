@@ -82,15 +82,15 @@ enderio.enderCapacitor.name=八合一電容器
 
 
 //Machines
-enderio.blockStirlingGenerator.name=斯特林發電機
-enderio.blockReservoir.name=蓄水池
-enderio.blockAlloySmelter.name=合金冶煉機
-enderio.blockSolarPanel.name=光電池
-enderio.blockElectricLight.name=充能燈
-enderio.blockCapacitorBank.name=電容組
-enderio.blockCrusher.name=半自磨機
-enderio.blockHyperCube.name=跨位面收發器
-enderio.blockPowerMonitor.name=能量顯示器
+tile.enderio.blockStirlingGenerator.name=斯特林發電機
+tile.enderio.blockReservoir.name=蓄水池
+tile.enderio.blockAlloySmelter.name=合金冶煉機
+tile.enderio.blockSolarPanel.name=光電池
+tile.enderio.blockElectricLight.name=充能燈
+tile.enderio.blockCapacitorBank.name=電容組
+tile.enderio.blockCrusher.name=半自磨機
+tile.enderio.blockHyperCube.name=跨位面收發器
+tile.enderio.blockPowerMonitor.name=能量顯示器
 
 //Travel
 tile.enderio.blockTravelPlatform.name=旅行錨
@@ -110,8 +110,8 @@ enderio.blockCustomSlab=染色臺階
 enderio.blockCustomDoubleSlab=染色臺階
 
 //Items
-enderio.itemYetaWrench.name=耶塔扳手
-enderio.itemMJReader.name=能量探頭
+item.enderio.itemYetaWrench.name=耶塔扳手
+item.enderio.itemMJReader.name=能量探頭
 
 enderio.itemEnderface.wrongDimension=安德接口方塊處於不同位面.
 enderio.itemEnderface.tooFar=安德接口方塊距離太遠.
@@ -160,7 +160,7 @@ enderio.gui.mjReader.noPowerFromSide=不能從這個側面獲得能量
 enderio.gui.mjReader.connectionDir=連接到
 enderio.gui.mjReader.extractedItems=抽取物品
 enderio.gui.mjReader.extractedItem=物品
-enderio.gui.mjReader.noOutputs=有無有效輸出
+enderio.gui.mjReader.noOutputs=有無效輸出
 enderio.gui.mjReader.insertedInto=將被插入到：
 enderio.gui.mjReader.noItems=沒有收到物品。
 enderio.gui.mjReader.noItem=不能接收

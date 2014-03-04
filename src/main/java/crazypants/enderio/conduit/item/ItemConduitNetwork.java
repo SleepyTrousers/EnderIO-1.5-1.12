@@ -110,17 +110,14 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
     BlockCoord loc = itemConduit.getLocation().getLocation(side);
 
-    ItemStack result = null;
+    ItemStack result = item.copy();
     List<NetworkedInventory> invs = getOrCreate(loc);
     for (NetworkedInventory inv : invs) {
 
-      if(inv.con.getLocation().equals(loc)) {
+      if(inv.con.getLocation().equals(itemConduit.getLocation())) {
         int numInserted = inv.insertIntoTargets(item.copy());
         if(numInserted >= item.stackSize) {
           return null;
-        }
-        if(result == null) {
-          result = item.copy();
         }
         result.stackSize -= numInserted;
       }
