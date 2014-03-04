@@ -7,7 +7,7 @@ enderio.power.tick=/t
 enderio.power.maxOutput=Max. Output
 
 //Ender IO / Enderface
-enderio.blockEnderIo=Ender-IO
+tile.blockEnderIo.name=Ender-IO
 item.enderio.itemEnderface.name=Endergesicht
 
 //Conduits
@@ -49,7 +49,7 @@ enderio.vibrantCrystal.name=Dynamischer Kristall
 
 
 //Quartz / Glass
-enderio.blockFusedQuartz=Fusionsquarz
+tile.blockFusedQuartz.name=Fusionsquarz
 enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
 enderio.blockFusedQuartz.fusedGlass.name=Ziemlich Klares Glas
 
@@ -81,37 +81,37 @@ enderio.activatedCapacitor.name=Doppelschichtkondensator
 enderio.enderCapacitor.name=Oktadischer Kondensator
 
 //Machines
-tile.enderio.blockStirlingGenerator.name=Stirling-Generator
-tile.enderio.blockReservoir.name=Reservoir
-tile.enderio.blockAlloySmelter.name=Legierungsschmelze
-tile.enderio.blockSolarPanel.name=Photovoltaikzelle
-tile.enderio.blockElectricLight.name=Energiebetriebenes Licht
-tile.enderio.blockCapacitorBank.name=Kondensatorbank
-tile.enderio.blockCapacitorBank.tooltipPrefix=Enthält
-tile.enderio.blockCrusher.name=SAG-Mahlwerk
-tile.enderio.blockHyperCube.name=Dimensional-Transceiver
-tile.enderio.blockPowerMonitor.name=Energiemonitor
+tile.blockStirlingGenerator.name=Stirling-Generator
+tile.blockReservoir.name=Reservoir
+tile.blockAlloySmelter.name=Legierungsschmelze
+tile.blockSolarPanel.name=Photovoltaikzelle
+tile.blockElectricLight.name=Energiebetriebenes Licht
+tile.blockCapacitorBank.name=Kondensatorbank
+tile.blockCapacitorBank.tooltipPrefix=Enthält
+tile.blockSagMill.name=SAG-Mahlwerk
+tile.blockHyperCube.name=Dimensional-Transceiver
+tile.blockPowerMonitor.name=Energiemonitor
 
 //Travel
-tile.enderio.blockTravelPlatform.name=Reiseanker
+tile.blockTravelAnchor.name=Reiseanker
 enderio.blockTravelPlatform.invalidTarget=Ziel ist blockiert
 enderio.blockTravelPlatform.outOfRange=Ziel ist außer Reichweite
-item.enderio.itemTravelStaff.name=Stab des Reisens
+item.itemTravelStaff.name=Stab des Reisens
 enderio.itemTravelStaff.notEnoughPower=Nicht genügend Energie
 
 //Painter
-tile.enderio.blockPainter.name=Färbemaschine
+tile.blockPainter.name=Färbemaschine
 enderio.blockPainter.paintedWith=Bemalt mit:
-enderio.blockCustomFence=Bemalter Zaun
-enderio.blockCustomFenceGate=Bemaltes Tor
-enderio.blockCustomWall=Bemalte Wand
-enderio.blockCustomStair=Bemalte Treppe
-enderio.blockCustomSlab=Bemalte Stufe
-enderio.blockCustomDoubleSlab=Bemalte Stufe
+tile.blockPaintedFence.name=Bemalter Zaun
+tile.blockPaintedFenceGate.name=Bemaltes Tor
+tile.blockPaintedWall.name=Bemalte Wand
+tile.blockPaintedStair.name=Bemalte Treppe
+tile.blockPaintedSlab.name=Bemalte Stufe
+tile.blockPaintedDoubleSlab.name=Bemalte Stufe
 
 //Items
-item.enderio.itemYetaWrench.name=Yeta-Schraubenschlüssel
-item.enderio.itemMJReader.name=Leitungssonde
+item.itemYetaWrench.name=Yeta-Schraubenschlüssel
+item.enderio.itemConduitProbe.name=Leitungssonde
 
 enderio.itemEnderface.wrongDimension=EnderIO-Block ist in einer anderen Dimension.
 enderio.itemEnderface.tooFar=EnderIO-Block ist zu weit entfernt.
