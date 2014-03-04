@@ -1,3 +1,7 @@
+0.11.3
+- #523 Crash
+- #524 Ender IO Item conduits are eating items 
+
 0.11.2
 - #510 Travel distance config not working correctly
 - #511 Staff of Traveling not using power
