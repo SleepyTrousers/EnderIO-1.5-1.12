@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * Created by CrazyPants on 27/02/14.
  */
-public class PacketTileEntity implements IPacketEio {
+public class PacketTileEntityNbt implements IPacketEio {
 
   TileEntity te;
 
@@ -22,11 +22,11 @@ public class PacketTileEntity implements IPacketEio {
 
   boolean renderOnUpdate = false;
 
-  public PacketTileEntity() {
+  public PacketTileEntityNbt() {
 
   }
 
-  public PacketTileEntity(TileEntity te) {
+  public PacketTileEntityNbt(TileEntity te) {
     this.te = te;
     x = te.xCoord;
     y = te.yCoord;

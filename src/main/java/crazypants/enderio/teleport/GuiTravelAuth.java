@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.PacketTileEntity;
+import crazypants.enderio.network.PacketTileEntityNbt;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -50,7 +50,7 @@ public class GuiTravelAuth extends GuiContainerBase {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
     if(ta.authoriseUser(player, poo.enteredPassword)) {
       TileEntity te = ((TileEntity) ta);
-      EnderIO.packetPipeline.sendToServer(new PacketTileEntity(te));
+      EnderIO.packetPipeline.sendToServer(new PacketTileEntityNbt(te));
 
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();

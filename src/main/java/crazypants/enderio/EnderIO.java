@@ -61,7 +61,7 @@ import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.network.PacketPipeline;
-import crazypants.enderio.network.PacketTileEntity;
+import crazypants.enderio.network.PacketTileEntityNbt;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
@@ -202,7 +202,7 @@ public class EnderIO {
     instance = this;
 
     packetPipeline.initalise();
-    packetPipeline.registerPacket(PacketTileEntity.class);
+    packetPipeline.registerPacket(PacketTileEntityNbt.class);
     packetPipeline.registerPacket(PacketRedstoneMode.class);
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);

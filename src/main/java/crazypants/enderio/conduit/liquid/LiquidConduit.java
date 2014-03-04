@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
@@ -106,10 +107,7 @@ public class LiquidConduit extends AbstractTankConduit {
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer        
       BlockCoord loc = getLocation();
-      //TODO:1.7
-      //      Packet packet = ConduitPacketHandler.createFluidConduitLevelPacket(this);
-      //      PacketDispatcher.sendPacketToAllAround(loc.x, loc.y, loc.z, 64, world.provider.dimensionId, packet);
-
+      EnderIO.packetPipeline.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }

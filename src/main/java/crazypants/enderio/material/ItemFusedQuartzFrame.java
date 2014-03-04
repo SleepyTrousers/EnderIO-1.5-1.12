@@ -37,7 +37,7 @@ public class ItemFusedQuartzFrame extends Item {
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemFusedQuartzFrame.unlocalisedName);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe(this));
   }
 
   @Override
@@ -83,17 +83,20 @@ public class ItemFusedQuartzFrame extends Item {
 
   public static final class FramePainterRecipe extends BasicPainterTemplate {
 
-    public FramePainterRecipe() {
+    private ItemFusedQuartzFrame i;
+
+    public FramePainterRecipe(ItemFusedQuartzFrame itemFusedQuartzFrame) {
+      i = itemFusedQuartzFrame;
     }
 
     @Override
     public boolean isValidTarget(ItemStack target) {
-      return target != null && target.getItem() == EnderIO.itemFusedQuartzFrame;
+      return target != null && target.getItem() == i;
     }
 
     @Override
     public List<IEnderIoRecipe> getAllRecipes() {
-      ItemStack is = new ItemStack(EnderIO.itemFusedQuartzFrame, 1, 0);
+      ItemStack is = new ItemStack(i, 1, 0);
       IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
       return Collections.singletonList(recipe);
     }
