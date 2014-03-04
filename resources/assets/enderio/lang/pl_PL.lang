@@ -209,6 +209,16 @@ enderio.gui.alloy.mode.all=Przetapiaj wszystko
 enderio.gui.alloy.mode.alloy=Tylko stopy
 enderio.gui.alloy.mode.furnace=Tylko jak zwykły piec
 
+//Travel Blocks
+enderio.gui.travelAccessable.privateBlock1=Można
+enderio.gui.travelAccessable.privateBlock2=zmienić tylko te ustawienia.
+enderio.gui.travelAccessable.public=Publiczny
+enderio.gui.travelAccessable.private=Prywatny
+enderio.gui.travelAccessable.protected=Chroniony
+enderio.gui.travelAccessable.unauthorised=Nie masz dostępu do tego bloku.
+enderio.gui.travelAccessable.enterCode=Podaj hasło
+enderio.gui.travelAccessable.ok=Autoryzuj
+
 //conduits
 enderio.gui.conduit.ioMode=Tryb
 enderio.gui.conduit.ioMode.inOut=Wej./Wyj.
