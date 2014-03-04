@@ -242,7 +242,7 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickStart(con.getPowerHandler().getEnergyStored());
+        tracker.tickStart(con.getEnergyStored());
       }
     }
   }
@@ -274,7 +274,7 @@ public class NetworkPowerManager {
     for (IPowerConduit con : network.getConduits()) {
       if(con.hasExternalConnections()) {
         PowerTracker tracker = getOrCreateTracker(con);
-        tracker.tickEnd(con.getPowerHandler().getEnergyStored());
+        tracker.tickEnd(con.getEnergyStored());
       }
     }
   }
