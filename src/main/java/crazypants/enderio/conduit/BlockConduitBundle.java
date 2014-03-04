@@ -425,7 +425,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
         return false;
       }
 
-      if(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()) != null) {
+      if(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()) == null) {
         return false;
       }
 

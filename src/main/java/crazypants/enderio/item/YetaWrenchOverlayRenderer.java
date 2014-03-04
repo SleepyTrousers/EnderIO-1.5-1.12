@@ -63,8 +63,6 @@ public class YetaWrenchOverlayRenderer {
       IconEIO.WRENCH_OVERLAY_ITEM.renderIcon(offsetX + 32, offsetY - 32, 16, 16, 0, true);
     } else if(mode == ConduitDisplayMode.REDSTONE) {
       IconEIO.WRENCH_OVERLAY_REDSTONE.renderIcon(offsetX + 16, offsetY - 32, 16, 16, 0, true);
-    } else if(mode == ConduitDisplayMode.ME) {
-      IconEIO.WRENCH_OVERLAY_ME.renderIcon(offsetX + 24, offsetY - 16, 16, 16, 0, true);
     }
 
   }

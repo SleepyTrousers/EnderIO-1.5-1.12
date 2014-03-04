@@ -28,7 +28,7 @@ public class YetaWrenchPacketProcessor implements IPacketEio {
 
   @Override
   public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
-    slot = buffer.readShort();
+    slot = buffer.readInt();
     mode = ConduitDisplayMode.values()[buffer.readShort()];
   }
 
