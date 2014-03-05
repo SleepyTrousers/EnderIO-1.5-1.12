@@ -231,6 +231,9 @@ public class TravelController implements ITickHandler {
   }
 
   public int getRequiredPower(EntityPlayer player, TravelSource source, BlockCoord coord) {
+    if(!ItemTravelStaff.isEquipped(player)) {
+      return 0;
+    }
     int requiredPower;
     ItemStack staff = player.getCurrentEquippedItem();
     requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
