@@ -69,7 +69,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       notifyNeigborsOfSignalUpdate(signal);
     }
     // and new nodes neighbours of all signals
-    for (Signal signal : signals) {
+    for (Signal signal : createSignalsCopy()) {
       notifyConduitNeighbours(con, signal);
     }
     updatingNetwork = false;
@@ -130,6 +130,29 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     notifyNeigborsOfSignalUpdate(newSig);
     updatingNetwork = false;
   }
+  
+  public void replaceSignals(Signal[] oldSigs, Signal[] newSigs) {
+    updatingNetwork = true;
+    if(oldSigs != null) {
+      for(Signal s : oldSigs) {
+        if(s != null) {
+          signals.remove(s);
+        }
+      }
+    }
+    if(newSigs != null) {
+      for(Signal s : newSigs) {
+        if(s != null) {
+          signals.add(s);
+        }
+      }
+    }
+    notifyNetworkOfUpdate();
+    /* no need to pass signal as it is only used when the signal location
+     * matches the conduit location, but here we have signals from neighbor blocks */
+    notifyNeigborsOfSignalUpdate(null);
+    updatingNetwork = false;
+  }
 
   @Override
   public void notifyNetworkOfUpdate() {
@@ -149,7 +172,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     for (IRedstoneConduit con : conduits) {
       TileEntity te = con.getBundle().getEntity();
       sb.append("<");
-      sb.append(te.xCoord + "," + te.yCoord + "," + te.zCoord);
+      sb.append(te.xCoord).append(',').append(te.yCoord).append(',').append(te.zCoord);
       sb.append(">");
     }
     return sb.toString();
@@ -166,8 +189,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     return sb.toString();
   }
 
+  protected Signal[] createSignalsCopy() {
+    return signals.toArray(new Signal[signals.size()]);
+  }
+
   public void notifyNeigborsOfSignals() {
-    for (Signal signal : signals) {
+    Signal[] signalsCopy = createSignalsCopy();
+    for (Signal signal : signalsCopy) {
       notifyNeigborsOfSignalUpdate(signal);
     }
   }
