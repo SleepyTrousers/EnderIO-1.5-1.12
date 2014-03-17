@@ -134,10 +134,14 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
     DyeColor col = getExtractionSignalColor(dir);
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    if(mode.isConditionMet(mode, signal)) {
+    if(mode.isConditionMet(mode, signal) && mode != RedstoneControlMode.OFF) {
       return true;
     }
 
+    return isConditionMetByExternalSignal(dir, mode, col);
+  }
+
+  private boolean isConditionMetByExternalSignal(ForgeDirection dir, RedstoneControlMode mode, DyeColor col) {
     int externalSignal = 0;
     if(col == DyeColor.RED) {
       Integer val = externalRedstoneSignals.get(dir);
