@@ -14,6 +14,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.common.TickType;
 import crazypants.enderio.Config;
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
@@ -587,7 +588,11 @@ public class NetworkPowerManager {
 
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-      doApplyRecievedPower();
+      try {
+        doApplyRecievedPower();
+      } catch (Exception e) {
+        Log.warn("NetworkPowerManager: Exception thrown when updating power network " + e);
+      }
     }
   }
 
