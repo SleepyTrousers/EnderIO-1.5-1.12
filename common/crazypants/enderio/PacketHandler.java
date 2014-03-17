@@ -57,6 +57,8 @@ public class PacketHandler implements IPacketHandler {
 
   public static final int ID_ME_TERMINAL = 28;
 
+  public static final int ID_MJ_READER_OPEN_CONDUIT_UI = 29;
+
   public static final String CHANNEL = "EnderIO";
 
   public static PacketHandler instance;

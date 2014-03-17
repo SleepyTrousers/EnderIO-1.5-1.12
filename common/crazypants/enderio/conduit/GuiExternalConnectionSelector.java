@@ -12,8 +12,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.ForgeDirection;
 import appeng.api.WorldCoord;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.machine.monitor.MJReaderPacketHandler;
 import crazypants.render.ColorUtil;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
@@ -34,6 +36,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     ForgeDirection dir = ForgeDirection.values()[b.id];
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     WorldCoord loc = cb.getLocation();
+
+    PacketDispatcher.sendPacketToServer(MJReaderPacketHandler.createOpenConduitGuiPacket(cb, dir));
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 

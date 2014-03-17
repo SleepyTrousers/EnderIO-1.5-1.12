@@ -20,10 +20,13 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.network.Player;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.IPacketProcessor;
 import crazypants.enderio.Log;
 import crazypants.enderio.PacketHandler;
 import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
@@ -59,6 +62,27 @@ public class MJReaderPacketHandler implements IPacketProcessor {
   private static final String ENERGY_CONDUIT = Lang.localize("itemPowerConduit");
   private static final String REQUEST_RANGE = " " + Lang.localize("gui.mjReader.requestRange") + ": ";;
   private static final String CUR_REQUEST = " " + Lang.localize("gui.mjReader.currentRequest") + ": ";;
+
+  public static Packet createOpenConduitGuiPacket(IConduitBundle bundle, ForgeDirection dir) {
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    DataOutputStream dos = new DataOutputStream(bos);
+    try {
+      dos.writeInt(PacketHandler.ID_MJ_READER_OPEN_CONDUIT_UI);
+      TileEntity te = bundle.getEntity();
+      dos.writeInt(te.xCoord);
+      dos.writeInt(te.yCoord);
+      dos.writeInt(te.zCoord);
+      dos.writeInt(dir.ordinal());
+    } catch (IOException e) {
+      // never thrown
+    }
+    Packet250CustomPayload pkt = new Packet250CustomPayload();
+    pkt.channel = PacketHandler.CHANNEL;
+    pkt.data = bos.toByteArray();
+    pkt.length = bos.size();
+    pkt.isChunkDataPacket = true;
+    return pkt;
+  }
 
   public static boolean canCreatePacket(World world, int x, int y, int z) {
     int id = world.getBlockId(x, y, z);
@@ -105,16 +129,33 @@ public class MJReaderPacketHandler implements IPacketProcessor {
 
   @Override
   public boolean canProcessPacket(int packetID) {
-    return PacketHandler.ID_MJ_READER_INFO_REQUEST == packetID;
+    return PacketHandler.ID_MJ_READER_INFO_REQUEST == packetID || PacketHandler.ID_MJ_READER_OPEN_CONDUIT_UI == packetID;
   }
 
   @Override
   public void processPacket(int packetID, INetworkManager manager, DataInputStream data, Player player) throws IOException {
     if(packetID == PacketHandler.ID_MJ_READER_INFO_REQUEST) {
       sendInfoMessage(data, player);
+    } else if(packetID == PacketHandler.ID_MJ_READER_OPEN_CONDUIT_UI) {
+      handleUiPacket(data, player);
     } else {
       Log.error("MJReaderPacketHandler.processPacket: Recieved unkown packet with ID " + packetID);
     }
+  }
+
+  private void handleUiPacket(DataInputStream data, Player p) throws IOException {
+    int x = data.readInt();
+    int y = data.readInt();
+    int z = data.readInt();
+    int side = data.readInt();
+
+    EntityPlayer player = (EntityPlayer) p;
+    World world = player.worldObj;
+    if(world == null) {
+      Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
+      return;
+    }
+    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + side, player.worldObj, x, y, z);
   }
 
   private void sendInfoMessage(DataInputStream data, Player p) throws IOException {
