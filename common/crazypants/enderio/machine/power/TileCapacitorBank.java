@@ -514,7 +514,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
     float freeSpace = maxStoredEnergy - storedEnergy;
     int result = (int) Math.min(maxReceive / 10, freeSpace);
     if(!simulate) {
-      storedEnergy += result;
+      doAddEnergy(result);
     }
     return result * 10;
   }
@@ -631,7 +631,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   void doAddEnergy(float add) {
-    storedEnergy = Math.min(maxStoredEnergy, storedEnergy + add);
+    storedEnergy = Math.max(0, Math.min(maxStoredEnergy, storedEnergy + add));
   }
 
   void doSetMaxInput(int in) {
@@ -680,6 +680,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   private void updatePowerHandler() {
     if(storedEnergy > maxStoredEnergy) {
       storedEnergy = maxStoredEnergy;
+    } else if(storedEnergy < 0) {
+      storedEnergy = 0;
     }
     powerHandler = null;
   }
