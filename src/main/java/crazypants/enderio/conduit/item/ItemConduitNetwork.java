@@ -238,7 +238,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       this.location = location;
       world = con.getBundle().getWorld();
 
-      TileEntity te = world.getBlockTileEntity(location.x, location.y, location.z);
+      TileEntity te = world.getTileEntity(location.x, location.y, location.z);
       if(te.getClass().getName().contains("cpw.mods.ironchest")) {
         recheckInv = true;
       } else if(te instanceof TileEntityChest) {
@@ -411,7 +411,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
     private void updateInventory() {
 
-      TileEntity te = world.getBlockTileEntity(location.x, location.y, location.z);
+      TileEntity te = world.getTileEntity(location.x, location.y, location.z);
       if(te instanceof ISidedInventory) {
         this.inv = (ISidedInventory) te;
       } else if(te instanceof IInventory) {
