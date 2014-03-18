@@ -254,10 +254,8 @@ public class EnderIO {
   public void postInit(FMLPostInitializationEvent event) {
 
     packetPipeline.postInitialise();
-    MaterialRecipes.registerExternalOresInDictionary();
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();
-    //    ConduitRecipes.addOreDictionaryRecipes();
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();

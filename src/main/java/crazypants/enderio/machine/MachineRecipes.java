@@ -34,12 +34,13 @@ public class MachineRecipes {
 
     //reservoir
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
+    ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
-    ItemStack glassSides;
+    Object glassSides;
     if(Config.useHardRecipes) {
       glassSides = fusedQuartz;
     } else {
-      glassSides = new ItemStack(Blocks.glass_pane, 1, 0);
+      glassSides = "glass";
     }
     GameRegistry.addShapedRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassSides, 'c', Items.cauldron, 'f', fusedQuartz);
 
@@ -136,18 +137,11 @@ public class MachineRecipes {
     //light
     ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 0);
     ItemStack glowstone = new ItemStack(Items.glowstone_dust);
-    ArrayList<ItemStack> siliconEntries = OreDictionary.getOres("itemSilicon");
-    Object silicon;
-    if(siliconEntries == null || siliconEntries.isEmpty()) {
-      silicon = new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal());
-    } else {
-      silicon = "itemSilicon";
-    }
     if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', silicon, 'c', capacitor));
+      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
 
     } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', Blocks.glass, 'd', glowstone, 's', silicon, 'c', capacitor));
+      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', "glass", 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
 
     }
 
@@ -158,7 +152,7 @@ public class MachineRecipes {
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
 
     GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g',
-        Blocks.glass_pane, 's', silicon, 'e',
+        Blocks.glass_pane, 's', "itemSilicon", 'e',
         electricalSteel));
   }
 }
