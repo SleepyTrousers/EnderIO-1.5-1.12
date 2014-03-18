@@ -741,6 +741,9 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     }
     for (TileHyperCube cube : cubes) {
       if(cube != this && cube != null && cube.canRecieveItems()) {
+        if(cube.inventoriesDirty) {
+          cube.updateInventories();
+        }
         res.addInventory(cube.localInventory);
       }
     }

@@ -363,7 +363,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
-    if(network != null) {
+    if(network != null && network.powerManager != null) {
       network.powerManager.receptorsChanged();
     }
     return super.onNeighborBlockChange(blockId);

@@ -52,7 +52,9 @@ public class InventoryWrapper implements ISidedInventory {
 
   @Override
   public void setInventorySlotContents(int slot, ItemStack itemStack) {
-    inv.setInventorySlotContents(slot, itemStack);
+    if(slot >= 0 && slot < inv.getSizeInventory()) {
+      inv.setInventorySlotContents(slot, itemStack);
+    }
   }
 
   @Override
@@ -87,7 +89,7 @@ public class InventoryWrapper implements ISidedInventory {
 
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-    return inv.isItemValidForSlot(slot, itemStack);
+    return slot >= 0 && slot < getSizeInventory() && inv.isItemValidForSlot(slot, itemStack);
   }
 
   @Override
@@ -106,7 +108,7 @@ public class InventoryWrapper implements ISidedInventory {
 
   @Override
   public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
-    return true;
+    return slot >= 0 && slot < getSizeInventory();
   }
 
   @Override

@@ -34,6 +34,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     ForgeDirection dir = ForgeDirection.values()[b.id];
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     BlockCoord loc = cb.getBlockCoord();
+    //TODO:1.7
+    //PacketDispatcher.sendPacketToServer(MJReaderPacketHandler.createOpenConduitGuiPacket(cb, dir));
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 

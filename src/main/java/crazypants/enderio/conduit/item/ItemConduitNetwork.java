@@ -225,10 +225,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
     int tickDeficit;
 
-    //work around for a vanilla chest changing into a double chest without doing unnedded checks all the time 
+    //work around for a vanilla chest changing into a double chest without doing unneeded checks all the time 
     boolean recheckInv = false;
-    private int delay = 0;
-    IInventory origInv;
+    World world;
 
     NetworkedInventory(IInventory inv, IItemConduit con, ForgeDirection conDir, BlockCoord location) {
 
@@ -237,16 +236,15 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       this.con = con;
       this.conDir = conDir;
       this.location = location;
+      world = con.getBundle().getWorld();
 
-      if(inv instanceof ISidedInventory) {
-        this.inv = (ISidedInventory) inv;
-      } else {
-        if(inv instanceof TileEntityChest) {
-          recheckInv = true;
-        }
-        this.inv = new InventoryWrapper(inv);
+      TileEntity te = world.getBlockTileEntity(location.x, location.y, location.z);
+      if(te.getClass().getName().contains("cpw.mods.ironchest")) {
+        recheckInv = true;
+      } else if(te instanceof TileEntityChest) {
+        recheckInv = true;
       }
-
+      updateInventory();
     }
 
     public boolean hasTarget(IItemConduit conduit, ForgeDirection dir) {
@@ -310,12 +308,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     private boolean transferItems() {
 
       if(recheckInv) {
-        //Re-check vanilla chests twice a second to make sure they haven't become double chests 
-        delay++;
-        if(delay % 10 == 0) {
-          inv = new InventoryWrapper(((InventoryWrapper) inv).getWrappedInv());
-          delay = 0;
-        }
+        updateInventory();
       }
 
       int[] slotIndices = inv.getAccessibleSlotsFromSide(inventorySide);
@@ -400,6 +393,9 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           matchedStickyInput = of.isValid() && of.doesItemPassFilter(toExtract);
         }
         if(target.stickyInput || !matchedStickyInput) {
+          if(target.inv.recheckInv) {
+            target.inv.updateInventory();
+          }
           int inserted = target.inv.insertItem(toExtract);
           if(inserted > 0) {
             toExtract.stackSize -= inserted;
@@ -411,6 +407,16 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         }
       }
       return totalToInsert - leftToInsert;
+    }
+
+    private void updateInventory() {
+
+      TileEntity te = world.getBlockTileEntity(location.x, location.y, location.z);
+      if(te instanceof ISidedInventory) {
+        this.inv = (ISidedInventory) te;
+      } else if(te instanceof IInventory) {
+        inv = new InventoryWrapper((IInventory) te);
+      }
     }
 
     private int insertItem(ItemStack item) {
@@ -431,8 +437,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(!canExtract()) {
         return;
       }
-
-      //Map<BlockCoord, Target> result = new HashMap<BlockCoord, Target>();
       List<Target> result = new ArrayList<ItemConduitNetwork.NetworkedInventory.Target>();
 
       for (NetworkedInventory other : inventories) {
@@ -443,7 +447,6 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
           if(Config.itemConduitUsePhyscialDistance) {
             sendPriority.add(new Target(other, distanceTo(other), other.isSticky()));
           } else {
-            //result.put(other.location, new Target(other, 9999999, other.isSticky()));
             result.add(new Target(other, 9999999, other.isSticky()));
           }
         }

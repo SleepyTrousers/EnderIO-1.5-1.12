@@ -27,7 +27,7 @@ public class CompositeInventory implements ISidedInventory {
       return;
     }
     inventories.add(new InvEntry(inv, size, side));
-    size += inv.getSizeInventory();
+    updateSize();
   }
 
   public void removeInventory(IInventory inv) {

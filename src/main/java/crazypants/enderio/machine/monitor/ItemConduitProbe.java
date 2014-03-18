@@ -41,7 +41,7 @@ public class ItemConduitProbe extends Item {
   }
 
   @Override
-  public boolean onItemUseFirst(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
+  public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
 
     if(player.isSneaking()) {
