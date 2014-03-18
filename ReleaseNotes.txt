@@ -1,3 +1,16 @@
+0.11.4
+- #521 Item conduits only fill one half of large chests when placing the second chest after connecting the conduits  
+- #529 Using travel anchor causes crash 
+- #533 NullPointerException 
+- #539 Capacitor bank content can go negative 
+- #545 Crash with Conduit Probe 
+- #548 AE Crashes 
+- #552 Fixed NPE crash(Xfel)
+- #553 OpenBlocks XP Bottler crash 
+- #554 Updated localization for zh_CN (ProgrammedSoul)
+- #556 Fluid Conduit 'Active Without Signal' not working
+- #557 Conduits eating items after upgrading an iron chest
+
 0.11.3
 - #523 Crash
 - #524 Ender IO Item conduits are eating items 
