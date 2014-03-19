@@ -1,12 +1,14 @@
 package crazypants.enderio;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import crazypants.vecmath.VecmathUtil;
-import net.minecraftforge.common.config.Configuration;
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
+
+import net.minecraftforge.common.config.Configuration;
+
+import org.apache.commons.io.FileUtils;
+
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import crazypants.vecmath.VecmathUtil;
 
 public final class Config {
 
@@ -82,6 +84,10 @@ public final class Config {
 
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
+
+  public static double darkSteelLeggingWalkModifier = 0.3;
+  public static double darkSteelLeggingSprintModifier = 0.5;
+  public static double darkSteelBootsJumpModifier = 1.5;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -238,6 +244,13 @@ public final class Config {
             + " from being hidden behind a facade. This produces "
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
         .getBoolean(updateLightingWhenHidingFacades);
+
+    darkSteelLeggingWalkModifier = config.get("Settings", "darkSteelLeggingWalkModifier", darkSteelLeggingWalkModifier,
+        "Speed modifier applied when walking in the Dark Steel Boots.").getDouble(darkSteelLeggingWalkModifier);
+    darkSteelLeggingSprintModifier = config.get("Settings", "darkSteelLeggingSprintModifier", darkSteelLeggingSprintModifier,
+        "Speed modifier applied when sprinting in the Dark Steel Boots.").getDouble(darkSteelLeggingSprintModifier);
+    darkSteelBootsJumpModifier = config.get("Settings", "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
+        "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")
