@@ -26,11 +26,8 @@ public class MaterialRecipes {
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
     OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
 
-    int oreId = OreDictionary.getOreID("glass");
-    ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
-    if(ingots.isEmpty()) {
-      OreDictionary.registerOre("glass", Blocks.glass);
-    }
+    OreDictionary.registerOre("glass", Blocks.glass);
+
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("glassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
@@ -39,8 +36,6 @@ public class MaterialRecipes {
     GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane), "   ", "eee", "eee", 'e', pureGlass);
     GameRegistry.addShapelessRecipe(new ItemStack(Blocks.glass), pureGlass);
     GameRegistry.addShapedRecipe(new ItemStack(Items.glass_bottle), "   ", "g g", " g ", 'g', pureGlass);
-
-    OreDictionary.registerOre("glass", Blocks.glass);
 
   }
 

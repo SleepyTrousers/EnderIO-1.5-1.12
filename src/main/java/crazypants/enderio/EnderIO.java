@@ -27,6 +27,7 @@ import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.item.ItemDarkSteelArmor;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.machine.MachineRecipes;
@@ -127,8 +128,14 @@ public class EnderIO {
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
+  // // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
+
+  public static ItemDarkSteelArmor itemDarkSteelHelmet;
+  public static ItemDarkSteelArmor itemDarkSteelChestplate;
+  public static ItemDarkSteelArmor itemDarkSteelLeggings;
+  public static ItemDarkSteelArmor itemDarkSteelBoots;
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -192,6 +199,11 @@ public class EnderIO {
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
     itemConduitProbe = ItemConduitProbe.create();
+
+    itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
+    itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
+    itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
+    itemDarkSteelBoots = ItemDarkSteelArmor.create(3);
 
     MaterialRecipes.registerOresInDictionary();
   }

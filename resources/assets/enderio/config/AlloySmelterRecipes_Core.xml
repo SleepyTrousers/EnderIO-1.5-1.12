@@ -93,6 +93,17 @@ sand/cobble/wood=0.1
       </output>
     </recipe>
     
+    <recipe name="Dark Steel" energyCost="2000">
+      <input>
+        <itemStack modID="minecraft" itemName="iron_ingot"/>         
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" /> <!--  coal dust -->
+        <itemStack modID="minecraft" itemName="obsidian"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="6" exp="0.5"/> 
+      </output>
+    </recipe>
+    
     <recipe name="Fused Quartz" energyCost="500">
       <input>        
         <itemStack modID="minecraft" itemName="quartz" number="4"/>

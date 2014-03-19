@@ -7,7 +7,8 @@ public enum Alloy {
   PHASED_GOLD("phasedGold"),
   REDSTONE_ALLOY("redstoneAlloy"),
   CONDUCTIVE_IRON("conductiveIron"),
-  PHASED_IRON("phasedIron");
+  PHASED_IRON("phasedIron"),
+  DARK_STEEL("darkSteel");
 
   public final String unlocalisedName;
   public final String iconKey;

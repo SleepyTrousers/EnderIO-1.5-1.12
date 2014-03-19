@@ -36,6 +36,7 @@ enderio.itemMeConduit.name=ME Conduit
 //Materials
 enderio.itemMaterial.name=Materials
 enderio.silicon.name=Silicon
+enderio.darkSteel.name=Dark Steel
 enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
@@ -117,6 +118,11 @@ enderio.itemEnderface.wrongDimension=EnderIO block is in a different dimension.
 enderio.itemEnderface.tooFar=EnderIO block is too distant.
 enderio.itemEnderface.destroyed=EnderIO block has been destroyed.
 enderio.itemEnderface.noSync=Enderface not synchronized with EnderIO.
+
+item.darkSteel_helmet.name=Dark Helm
+item.darkSteel_chestplate.name=Dark Plate
+item.darkSteel_leggings.name=Dark Leggings
+item.darkSteel_boots.name=Dark Boots
 
 
 //------GUI
