@@ -42,7 +42,7 @@ public class MachineRecipes {
     } else {
       glassSides = "glass";
     }
-    GameRegistry.addShapedRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassSides, 'c', Items.cauldron, 'f', fusedQuartz);
+    GameRegistry.addRecipe(new ShapedOreRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassSides, 'c', Items.cauldron, 'f', fusedQuartz));
 
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);

@@ -34,6 +34,8 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.gui.ExternalConnectionContainer;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.GuiExternalConnectionSelector;
+import crazypants.enderio.conduit.gui.PacketOpenConduitUI;
 import crazypants.enderio.conduit.liquid.PacketFluidLevel;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
@@ -59,6 +61,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
     EnderIO.packetPipeline.registerPacket(PacketConnectionMode.class);
     EnderIO.packetPipeline.registerPacket(PacketItemConduitFilter.class);
     EnderIO.packetPipeline.registerPacket(PacketRedstoneConduitSignalColor.class);
+    EnderIO.packetPipeline.registerPacket(PacketOpenConduitUI.class);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
