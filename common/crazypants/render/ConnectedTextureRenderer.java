@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
@@ -190,7 +191,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
       }
     }
 
-    RenderUtil.addVerticesToTessellator(finalVerts, rb.getDefaultTesselator());
+    RenderUtil.addVerticesToTessellator(finalVerts, Tessellator.instance);
   }
 
   private Vertex getClosestVertex(List<Vertex> vertices, Vector3d corner) {

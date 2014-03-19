@@ -32,6 +32,18 @@ public class Vertex {
     this.uv = new Vector2f(uv);
   }
 
+  public Vertex(double x, double y, double z, double u, double v, int brightness, float r, float g, float b, float a) {
+    xyz.set(x, y, z);
+    uv = new Vector2f(u, v);
+    this.brightness = brightness;
+    color = new Vector4f(r, g, b, a);
+  }
+
+  public Vertex(double x, double y, double z, double u, double v) {
+    xyz.set(x, y, z);
+    uv = new Vector2f(u, v);
+  }
+
   public void setXYZ(double x, double y, double z) {
     xyz.set(x, y, z);
   }
