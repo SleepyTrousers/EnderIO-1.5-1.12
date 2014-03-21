@@ -89,6 +89,12 @@ public final class Config {
   public static double darkSteelLeggingSprintModifier = 0.5;
   public static double darkSteelBootsJumpModifier = 1.5;
 
+  public static int darkSteelPowerStorage = 100000;
+  public static int darkSteelWalkPowerCost = darkSteelPowerStorage / 3000;
+  public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
+  public static boolean darkSteelDrainPowerFromInventory = true;
+  public static int darkSteelBootsJumpPowerCost = 100;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -251,6 +257,18 @@ public final class Config {
         "Speed modifier applied when sprinting in the Dark Steel Boots.").getDouble(darkSteelLeggingSprintModifier);
     darkSteelBootsJumpModifier = config.get("Settings", "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
+
+    darkSteelPowerStorage = config.get("Settings", "darkSteelPowerStorage", darkSteelPowerStorage,
+        "Amount of power stored (RF) per crystal in the armor items recipe.").getInt(darkSteelPowerStorage);
+    darkSteelWalkPowerCost = config.get("Settings", "darkSteelWalkPowerCost", darkSteelWalkPowerCost,
+        "Amount of power stored (RF) per block walked when wearing the dark steel boots.").getInt(darkSteelWalkPowerCost);
+    darkSteelSprintPowerCost = config.get("Settings", "darkSteelSprintPowerCost", darkSteelWalkPowerCost,
+        "Amount of power stored (RF) per block walked when wearing the dark stell boots.").getInt(darkSteelSprintPowerCost);
+    darkSteelDrainPowerFromInventory = config.get("Settings", "darkSteelDrainPowerFromInventory", darkSteelDrainPowerFromInventory,
+        "If true, drak steel armor will drain power stored (RF) in power containers in the players invenotry.").getBoolean(darkSteelDrainPowerFromInventory);
+
+    darkSteelBootsJumpPowerCost = config.get("Settings", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
+        "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

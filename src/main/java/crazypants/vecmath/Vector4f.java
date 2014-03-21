@@ -31,6 +31,13 @@ public class Vector4f {
     this(other.x, other.y, other.z, other.w);
   }
 
+  public void interpolate(Vector4f destination, float factor) {
+    x = (1 - factor) * x + factor * destination.x;
+    y = (1 - factor) * y + factor * destination.y;
+    z = (1 - factor) * z + factor * destination.z;
+    w = (1 - factor) * w + factor * destination.w;
+  }
+
   public void set(Vector4f vec) {
     x = vec.x;
     y = vec.y;

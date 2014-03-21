@@ -36,6 +36,7 @@ import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.item.DarkSteelArmorRenderer;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
 import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
@@ -179,6 +180,12 @@ public class ClientProxy extends CommonProxy {
     }
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     FMLCommonHandler.instance().bus().register(TravelController.instance);
+
+    DarkSteelArmorRenderer dsr = new DarkSteelArmorRenderer();
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelBoots, dsr);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelLeggings, dsr);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelChestplate, dsr);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelHelmet, dsr);
 
   }
 

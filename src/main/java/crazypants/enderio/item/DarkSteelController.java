@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovementInput;
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -31,6 +32,7 @@ public class DarkSteelController {
   private int ticksSinceLastJump;
 
   private DarkSteelController() {
+    EnderIO.packetPipeline.registerPacket(PacketDarkSteelPowerPacket.class);
   }
 
   @SubscribeEvent
@@ -52,13 +54,68 @@ public class DarkSteelController {
 
     ItemStack leggings = player.getEquipmentInSlot(2);
     if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings) {
-      if(player.isSprinting()) {
-        moveInst.applyModifier(sprintModifier);
-      } else {
-        moveInst.applyModifier(walkModifier);
+
+      double horzMovement = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
+      double costModifier = player.isSprinting() ? (Config.darkSteelSprintPowerCost * 1.25) : Config.darkSteelWalkPowerCost;
+      int cost = (int) (horzMovement * costModifier);
+
+      int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelLeggings);
+      if(totalEnergy > 0 && totalEnergy >= cost) {
+        usePlayerEnergy(player, EnderIO.itemDarkSteelLeggings, cost);
+        if(player.isSprinting()) {
+          moveInst.applyModifier(sprintModifier);
+        } else {
+          moveInst.applyModifier(walkModifier);
+        }
       }
     }
 
+  }
+
+  void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
+
+    if(cost == 0) {
+      return;
+    }
+
+    int remaining = cost;
+    if(Config.darkSteelDrainPowerFromInventory) {
+      for (ItemStack stack : player.inventory.mainInventory) {
+        if(stack != null && stack.getItem() instanceof IEnergyContainerItem) {
+          IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
+          remaining -= cont.extractEnergy(stack, remaining, false);
+          if(remaining <= 0) {
+            return;
+          }
+        }
+      }
+    }
+
+    if(armor != null) {
+      ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
+      if(stack != null) {
+        armor.extractEnergy(stack, remaining, false);
+        //player.inventory.markDirty();
+      }
+    }
+  }
+
+  private int getPlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor) {
+    int res = 0;
+
+    if(Config.darkSteelDrainPowerFromInventory) {
+      for (ItemStack stack : player.inventory.mainInventory) {
+        if(stack != null && stack.getItem() instanceof IEnergyContainerItem) {
+          IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
+          res += cont.extractEnergy(stack, Integer.MAX_VALUE, true);
+        }
+      }
+    }
+    if(armor != null) {
+      ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
+      res = armor.getEnergyStored(stack);
+    }
+    return res;
   }
 
   @SideOnly(Side.CLIENT)
@@ -71,13 +128,9 @@ public class DarkSteelController {
       }
       MovementInput input = player.movementInput;
       if(input.jump && !wasJumping) {
-        jumpCount = 1;
-        player.motionY += 0.15 * Config.darkSteelBootsJumpModifier;
-        ticksSinceLastJump = 0;
-      } else if(input.jump && jumpCount < 2 && ticksSinceLastJump > 5) {
-        player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * 2;
-        jumpCount = 2;
-        ticksSinceLastJump = 0;
+        doJump(player);
+      } else if(input.jump && jumpCount < 3 && ticksSinceLastJump > 5) {
+        doJump(player);
       }
 
       wasJumping = !player.isCollidedVertically;
@@ -86,6 +139,21 @@ public class DarkSteelController {
       }
       ticksSinceLastJump++;
     }
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void doJump(EntityClientPlayerMP player) {
+    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1, 2.5);
+    int availablePower = getPlayerEnergy(player, EnderIO.itemDarkSteelBoots);
+
+    if(availablePower > 0 && requiredPower <= availablePower) {
+      jumpCount++;
+      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
+      ticksSinceLastJump = 0;
+      usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, requiredPower);
+      EnderIO.packetPipeline.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
+    }
+
   }
 
 }

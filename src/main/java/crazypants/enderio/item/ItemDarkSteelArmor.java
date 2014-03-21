@@ -6,12 +6,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.EnumHelper;
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 
-public class ItemDarkSteelArmor extends ItemArmor {
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 45, new int[] { 3, 8, 6, 3 }, 25);
 
@@ -21,11 +26,29 @@ public class ItemDarkSteelArmor extends ItemArmor {
     FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
   }
 
+  public static ItemDarkSteelArmor forArmorType(short armorType) {
+    switch (armorType) {
+    case 0:
+      return EnderIO.itemDarkSteelHelmet;
+    case 1:
+      return EnderIO.itemDarkSteelLeggings;
+    case 2:
+      return EnderIO.itemDarkSteelChestplate;
+    case 3:
+      return EnderIO.itemDarkSteelBoots;
+    }
+    return null;
+  }
+
   public static ItemDarkSteelArmor create(int armorType) {
     ItemDarkSteelArmor res = new ItemDarkSteelArmor(armorType);
     res.init();
     return res;
   }
+
+  private int capacity;
+  private int maxReceive;
+  private int maxExtract;
 
   protected ItemDarkSteelArmor(int armorType) {
     super(MATERIAL, 0, armorType);
@@ -34,6 +57,13 @@ public class ItemDarkSteelArmor extends ItemArmor {
     String str = "darkSteel_" + NAMES[armorType];
     setUnlocalizedName(str);
     setTextureName("enderIO:" + str);
+
+    capacity = Config.darkSteelPowerStorage;
+    maxReceive = capacity / 5;
+    maxExtract = maxReceive;
+    if(armorType < 2) {
+      capacity *= 2;
+    }
   }
 
   protected void init() {
@@ -42,7 +72,15 @@ public class ItemDarkSteelArmor extends ItemArmor {
 
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add("Durability: " + (itemstack.getMaxDamage() - itemstack.getItemDamage()));
+    list.add("Durability: " + (itemstack.getMaxDamage() - itemstack.getItemDamage()) + "/" + itemstack.getMaxDamage());
+    String str = "Power: " + PowerDisplayUtil.formatPower(getEnergyStored(itemstack)) + "/"
+        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack)) + " " + PowerDisplayUtil.abrevation();
+    list.add(str);
+  }
+
+  @Override
+  public boolean isDamaged(ItemStack stack) {
+    return false;
   }
 
   @Override
@@ -51,6 +89,72 @@ public class ItemDarkSteelArmor extends ItemArmor {
       return "enderio:textures/models/armor/darkSteel_layer_2.png";
     }
     return "enderio:textures/models/armor/darkSteel_layer_1.png";
+  }
+
+  public ItemStack createItemStack() {
+    ItemStack res = new ItemStack(this);
+    setEnergy(res, 0);
+    return res;
+  }
+
+  @Override
+  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+
+    if(container.stackTagCompound == null) {
+      container.stackTagCompound = new NBTTagCompound();
+    }
+    int energy = container.stackTagCompound.getInteger("Energy");
+    int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+
+    if(!simulate) {
+      energy += energyReceived;
+      container.stackTagCompound.setInteger("Energy", energy);
+    }
+    return energyReceived;
+  }
+
+  @Override
+  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+
+    if(container == null || container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
+      return 0;
+    }
+    int energy = container.stackTagCompound.getInteger("Energy");
+    int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+
+    if(!simulate) {
+      energy -= energyExtracted;
+      container.stackTagCompound.setInteger("Energy", energy);
+    }
+    return energyExtracted;
+  }
+
+  @Override
+  public int getEnergyStored(ItemStack container) {
+    if(container == null || container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
+      return 0;
+    }
+    return container.stackTagCompound.getInteger("Energy");
+  }
+
+  @Override
+  public int getMaxEnergyStored(ItemStack container) {
+    return capacity;
+  }
+
+  void setEnergy(ItemStack container, int energy) {
+    if(container.stackTagCompound == null) {
+      container.stackTagCompound = new NBTTagCompound();
+    }
+    container.stackTagCompound.setInteger("Energy", energy);
+  }
+
+  public void setFull(ItemStack container) {
+    setEnergy(container, capacity);
+  }
+
+  public boolean isJustCrafted(ItemStack stack) {
+    return getEnergyStored(stack) == 0 && getDisplayDamage(stack) == 0;
   }
 
   //Idea from Mekanism

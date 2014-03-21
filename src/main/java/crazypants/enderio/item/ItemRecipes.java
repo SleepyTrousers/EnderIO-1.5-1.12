@@ -5,6 +5,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
+import crazypants.enderio.material.Material;
 
 public class ItemRecipes {
 
@@ -15,6 +16,20 @@ public class ItemRecipes {
 
     // Wrench
     GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
+
+    ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
+    ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
+
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "scs", "s s", "   ", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "   ", "scs", "s s", 's', darkSteel, 'c', vibCry);
+
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelChestplate.createItemStack(), "s s", "scs", "sss", 's', darkSteel, 'c', vibCry);
+
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelLeggings.createItemStack(), "csc", "s s", "s s", 's', darkSteel, 'c', vibCry);
+
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "c c", "   ", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "c c", 's', darkSteel, 'c', vibCry);
+
   }
 
 }

@@ -1,7 +1,17 @@
 package crazypants.render;
 
-import crazypants.util.BlockCoord;
-import crazypants.vecmath.*;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -15,14 +25,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import crazypants.util.BlockCoord;
+import crazypants.vecmath.Matrix4d;
+import crazypants.vecmath.VecmathUtil;
+import crazypants.vecmath.Vector2f;
+import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vector4d;
+import crazypants.vecmath.Vector4f;
+import crazypants.vecmath.Vertex;
 
 public class RenderUtil {
 
@@ -139,6 +153,19 @@ public class RenderUtil {
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();
     tessellator.setColorOpaque_I(colorRGB);
+    tessellator.addVertex(x, y + height, z);
+    tessellator.addVertex(x + width, y + height, z);
+    tessellator.addVertex(x + width, y, z);
+    tessellator.addVertex(x, y, z);
+    tessellator.draw();
+    GL11.glEnable(GL11.GL_TEXTURE_2D);
+  }
+
+  public static void renderQuad2D(double x, double y, double z, double width, double height, Vector4f colorRGBA) {
+    GL11.glColor4f(colorRGBA.x, colorRGBA.y, colorRGBA.z, colorRGBA.w);
+    GL11.glDisable(GL11.GL_TEXTURE_2D);
+    Tessellator tessellator = Tessellator.instance;
+    tessellator.startDrawingQuads();
     tessellator.addVertex(x, y + height, z);
     tessellator.addVertex(x + width, y + height, z);
     tessellator.addVertex(x + width, y, z);
