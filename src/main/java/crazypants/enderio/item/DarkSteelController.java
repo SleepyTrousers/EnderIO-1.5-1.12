@@ -95,7 +95,6 @@ public class DarkSteelController {
       ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
       if(stack != null) {
         armor.extractEnergy(stack, remaining, false);
-        //player.inventory.markDirty();
       }
     }
   }

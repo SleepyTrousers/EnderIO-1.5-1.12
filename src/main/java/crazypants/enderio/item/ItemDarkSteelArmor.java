@@ -3,10 +3,13 @@ package crazypants.enderio.item;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -16,9 +19,15 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem {
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor {
 
-  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 45, new int[] { 3, 8, 6, 3 }, 25);
+  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 33, new int[] { 2, 7, 5, 2 }, 25);
+
+  public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorage, Config.darkSteelPowerStorage, Config.darkSteelPowerStorage * 2,
+      Config.darkSteelPowerStorage * 2 };
+
+  public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorage, Config.darkSteelPowerStorage, Config.darkSteelPowerStorage * 2,
+      Config.darkSteelPowerStorage * 2 };
 
   public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
 
@@ -31,9 +40,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     case 0:
       return EnderIO.itemDarkSteelHelmet;
     case 1:
-      return EnderIO.itemDarkSteelLeggings;
-    case 2:
       return EnderIO.itemDarkSteelChestplate;
+    case 2:
+      return EnderIO.itemDarkSteelLeggings;
     case 3:
       return EnderIO.itemDarkSteelBoots;
     }
@@ -46,9 +55,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return res;
   }
 
-  private int capacity;
-  private int maxReceive;
-  private int maxExtract;
+  private int capacityRF;
+  private int maxReceiveRF;
+  private int maxExtractRF;
+
+  private int powerPerDamagePoint;
 
   protected ItemDarkSteelArmor(int armorType) {
     super(MATERIAL, 0, armorType);
@@ -58,12 +69,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     setUnlocalizedName(str);
     setTextureName("enderIO:" + str);
 
-    capacity = Config.darkSteelPowerStorage;
-    maxReceive = capacity / 5;
-    maxExtract = maxReceive;
-    if(armorType < 2) {
-      capacity *= 2;
-    }
+    capacityRF = CAPACITY[armorType];
+    maxReceiveRF = CAPACITY[0] / 5;
+    maxExtractRF = maxReceiveRF;
+
+    powerPerDamagePoint = capacityRF / MATERIAL.getDurability(armorType);
   }
 
   protected void init() {
@@ -104,7 +114,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       container.stackTagCompound = new NBTTagCompound();
     }
     int energy = container.stackTagCompound.getInteger("Energy");
-    int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+    int energyReceived = Math.min(capacityRF - energy, Math.min(this.maxReceiveRF, maxReceive));
 
     if(!simulate) {
       energy += energyReceived;
@@ -120,7 +130,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       return 0;
     }
     int energy = container.stackTagCompound.getInteger("Energy");
-    int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+    int energyExtracted = Math.min(energy, Math.min(this.maxExtractRF, maxExtract));
 
     if(!simulate) {
       energy -= energyExtracted;
@@ -139,7 +149,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    return capacity;
+    return capacityRF;
   }
 
   void setEnergy(ItemStack container, int energy) {
@@ -150,11 +160,59 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   public void setFull(ItemStack container) {
-    setEnergy(container, capacity);
+    setEnergy(container, capacityRF);
   }
 
   public boolean isJustCrafted(ItemStack stack) {
     return getEnergyStored(stack) == 0 && getDisplayDamage(stack) == 0;
+  }
+
+  @Override
+  public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    double damageRatio = damageReduceAmount + (getEnergyStored(armor) > 0 ? 1 : 0);
+    damageRatio /= 25D;
+    ArmorProperties ap = new ArmorProperties(0, damageRatio, armor.getMaxDamage() + 1 - armor.getItemDamage());
+    return ap;
+  }
+
+  @Override
+  public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+    return armor.getItemDamageForDisplay();
+  }
+
+  @Override
+  public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
+    ItemDarkSteelArmor am = (ItemDarkSteelArmor) stack.getItem();
+
+    boolean abs = absorbWithPower(stack);
+    if(abs && getEnergyStored(stack) > 0) {
+      extractEnergy(stack, damage * powerPerDamagePoint, false);
+    } else {
+      damage = stack.getItemDamage() + damage;
+      if(damage >= getMaxDamage()) {
+        stack.stackSize = 0;
+      }
+      stack.setItemDamage(damage);
+    }
+    setAbsorbWithPower(stack, !abs);
+
+  }
+
+  private boolean absorbWithPower(ItemStack is) {
+    NBTTagCompound root = is.getTagCompound();
+    if(root == null) {
+      return false;
+    }
+    return root.getBoolean("absorbWithPower");
+  }
+
+  private void setAbsorbWithPower(ItemStack is, boolean val) {
+    NBTTagCompound root = is.getTagCompound();
+    if(root == null) {
+      root = new NBTTagCompound();
+      is.setTagCompound(root);
+    }
+    root.setBoolean("absorbWithPower", val);
   }
 
   //Idea from Mekanism
