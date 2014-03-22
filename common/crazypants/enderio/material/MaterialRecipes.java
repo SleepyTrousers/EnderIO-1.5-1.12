@@ -24,9 +24,16 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustGold", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_GOLD.ordinal()));
     OreDictionary.registerOre("dustCopper", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_COPPER.ordinal()));
     OreDictionary.registerOre("dustTin", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_TIN.ordinal()));
+
+    OreDictionary.registerOre("gearStone", new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal()));
+
     OreDictionary.registerOre("dustEnderPearl", new ItemStack(ModObject.itemPowderIngot.actualId, 1, PowderIngot.POWDER_ENDER.ordinal()));
     OreDictionary.registerOre("itemSilicon", new ItemStack(ModObject.itemMaterial.actualId, 1, Material.SILICON.ordinal()));
-    OreDictionary.registerOre("gearStone", new ItemStack(ModObject.itemMachinePart.actualId, 1, MachinePart.BASIC_GEAR.ordinal()));
+    OreDictionary.registerOre("ingotConductiveIron", new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.CONDUCTIVE_IRON.ordinal()));
+    OreDictionary.registerOre("ingotElectricalSteel", new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ELECTRICAL_STEEL.ordinal()));
+    OreDictionary.registerOre("ingotEnergeticAlloy", new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENERGETIC_ALLOY.ordinal()));
+    OreDictionary.registerOre("ingotVibrantAlloy", new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_GOLD.ordinal()));
+    OreDictionary.registerOre("ingotPulsatingIron", new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.PHASED_IRON.ordinal()));
 
     int oreId = OreDictionary.getOreID("glass");
     ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);

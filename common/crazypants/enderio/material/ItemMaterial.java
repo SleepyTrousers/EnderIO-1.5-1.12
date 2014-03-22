@@ -64,4 +64,16 @@ public class ItemMaterial extends Item {
     }
   }
 
+  @Override
+  public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    if(par1ItemStack == null) {
+      return false;
+    }
+    int damage = par1ItemStack.getItemDamage();
+    if(damage == Material.VIBRANT_CYSTAL.ordinal()) {
+      return true;
+    }
+    return false;
+  }
+
 }
