@@ -67,7 +67,7 @@ import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 
-@Mod(modid = "EnderIO", name = "Ender IO", version = "1.1.0alpha", dependencies = "required-after:Forge@[7.0,);required-after:FML@[5.0.5,)")
+@Mod(modid = "EnderIO", name = "Ender IO", version = "1.1.0_alpha", dependencies = "required-after:Forge@[7.0,);required-after:FML@[5.0.5,)")
 public class EnderIO {
 
   @Instance("EnderIO")
