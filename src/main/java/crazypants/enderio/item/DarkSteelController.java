@@ -42,8 +42,8 @@ public class DarkSteelController {
     //boots step height
     ItemStack boots = player.getEquipmentInSlot(1);
     if(boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
-      player.stepHeight = 1.001F;
-    } else if(player.stepHeight == 1.001F) {
+      player.stepHeight = 1.0023F;
+    } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
     }
 
@@ -142,15 +142,19 @@ public class DarkSteelController {
 
   @SideOnly(Side.CLIENT)
   private void doJump(EntityClientPlayerMP player) {
-    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1, 2.5);
-    int availablePower = getPlayerEnergy(player, EnderIO.itemDarkSteelBoots);
 
-    if(availablePower > 0 && requiredPower <= availablePower) {
-      jumpCount++;
-      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
-      ticksSinceLastJump = 0;
-      usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, requiredPower);
-      EnderIO.packetPipeline.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
+    ItemStack boots = player.getEquipmentInSlot(1);
+    if(boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
+      int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(jumpCount + 1, 2.5);
+      int availablePower = getPlayerEnergy(player, EnderIO.itemDarkSteelBoots);
+
+      if(availablePower > 0 && requiredPower <= availablePower) {
+        jumpCount++;
+        player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
+        ticksSinceLastJump = 0;
+        usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, requiredPower);
+        EnderIO.packetPipeline.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
+      }
     }
 
   }
