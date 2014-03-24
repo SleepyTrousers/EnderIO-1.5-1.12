@@ -18,6 +18,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.material.Alloy;
 
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor {
 
@@ -196,6 +197,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     }
     setAbsorbWithPower(stack, !abs);
 
+  }
+
+  @Override
+  public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
+    return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
   }
 
   private boolean absorbWithPower(ItemStack is) {
