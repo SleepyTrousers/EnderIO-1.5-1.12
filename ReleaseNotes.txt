@@ -1,3 +1,7 @@
+1.0
+- #447 Capacitor Bank and Quite Clear Glass causing rendering issues.
+- Registered EIO alloys in the ore dictionary.
+
 0.11.4
 - #521 Item conduits only fill one half of large chests when placing the second chest after connecting the conduits  
 - #529 Using travel anchor causes crash 
