@@ -10,11 +10,12 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;
 
-public class DarkSteelArmorRenderer implements IItemRenderer {
+public class PoweredItemRenderer implements IItemRenderer {
 
   private RenderItem ri = new RenderItem();
 
@@ -40,10 +41,12 @@ public class DarkSteelArmorRenderer implements IItemRenderer {
     Minecraft mc = Minecraft.getMinecraft();
     ri.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
 
-    ItemDarkSteelArmor armor = (ItemDarkSteelArmor) item.getItem();
-    if(armor.isJustCrafted(item)) {
+    IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
+    if(isJustCrafted(item)) {
       return;
     }
+
+    //System.out.println("PoweredItemRenderer.renderToInventory: 22" + item);
 
     //    GL11.glEnable(GL11.GL_BLEND);
     //    GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_ALPHA);
@@ -62,6 +65,9 @@ public class DarkSteelArmorRenderer implements IItemRenderer {
 
     maxDam = armor.getMaxEnergyStored(item);
     dispDamage = armor.getEnergyStored(item);
+
+    //System.out.println("PoweredItemRenderer.renderToInventory: " + dispDamage + " / " + maxDam);
+
     r = 0.4f;
     g = 0.4f;
     b = 1f;
@@ -70,6 +76,10 @@ public class DarkSteelArmorRenderer implements IItemRenderer {
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+  }
+
+  private boolean isJustCrafted(ItemStack item) {
+    return EnergyContainer.getEnergyStored(item) == 0 && item.getItemDamageForDisplay() == 0;
   }
 
   private void renderBar(int y, double maxDam, double dispDamage, Color full, Color empty) {

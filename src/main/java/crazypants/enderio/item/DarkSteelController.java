@@ -24,8 +24,12 @@ public class DarkSteelController {
 
   private AttributeModifier walkModifier = new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed",
       Config.darkSteelLeggingWalkModifier, 1);
+
   private AttributeModifier sprintModifier = new AttributeModifier(new UUID(6, 320981923), "generic.movementSpeed",
       Config.darkSteelLeggingSprintModifier, 1);
+
+  private AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier",
+      2, 0);
 
   private boolean wasJumping;
   private int jumpCount;
@@ -67,6 +71,17 @@ public class DarkSteelController {
         } else {
           moveInst.applyModifier(walkModifier);
         }
+      }
+    }
+
+    //sword
+    if(ItemDarkSteelSword.isEquipped(player)) {
+      IAttributeInstance attackInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+      attackInst.removeModifier(swordDamageModifierPowered);
+
+      ItemStack sword = player.getCurrentEquippedItem();
+      if(Config.darkSteelSwordPowerUsePerHit <= 0 || EnderIO.itemDarkSteelSword.getEnergyStored(sword) >= Config.darkSteelSwordPowerUsePerHit) {
+        attackInst.applyModifier(swordDamageModifierPowered);
       }
     }
 

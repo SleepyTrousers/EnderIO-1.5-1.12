@@ -1,12 +1,8 @@
 package crazypants.enderio;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.minecraftforge.common.config.Configuration;
-
-import org.apache.commons.io.FileUtils;
-
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import crazypants.vecmath.VecmathUtil;
 
@@ -95,23 +91,20 @@ public final class Config {
   public static boolean darkSteelDrainPowerFromInventory = true;
   public static int darkSteelBootsJumpPowerCost = 100;
 
+  public static float darkSteelSwordWitherSkullChance = 0.05f;
+  public static float darkSteelSwordWitherSkullLootingModifier = 0.167f / 3f; //at looting 3, have a 1 in 6 chance of getting a skull
+  public static float darkSteelSwordSkullChance = 0.2f;
+  public static float darkSteelSwordSkullLootingModifier = 0.15f;
+  public static float vanillaSwordSkullLootingModifier = 0.1f;
+  public static int darkSteelSwordPowerUsePerHit = 250;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
       configDirectory.mkdir();
     }
 
-    File deprecatedFile = event.getSuggestedConfigurationFile();
-
     File configFile = new File(configDirectory, "EnderIO.cfg");
-    if(deprecatedFile.exists()) {
-      try {
-        FileUtils.moveFile(deprecatedFile, configFile);
-      } catch (IOException e) {
-        Log.warn("Could not move old config file to new directory: " + e);
-      }
-    }
-
     Configuration cfg = new Configuration(configFile);
     try {
       cfg.load();
@@ -269,6 +262,24 @@ public final class Config {
 
     darkSteelBootsJumpPowerCost = config.get("Settings", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
+
+    darkSteelSwordSkullChance = (float) config.get("Settings", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
+        "The base chance a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(darkSteelSwordSkullChance);
+    darkSteelSwordSkullLootingModifier = (float) config.get("Settings", "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
+        "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+        darkSteelSwordSkullLootingModifier);
+    darkSteelSwordWitherSkullChance = (float) config.get("Settings", "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,
+        "The base chance a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+        darkSteelSwordWitherSkullChance);
+    darkSteelSwordWitherSkullLootingModifier = (float) config.get("Settings", "darkSteelSwordWitherSkullLootingModifie",
+        darkSteelSwordWitherSkullLootingModifier,
+        "The chance per looting level that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+        darkSteelSwordWitherSkullLootingModifier);
+    vanillaSwordSkullLootingModifier = (float) config.get("Settings", "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
+        "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+        vanillaSwordSkullLootingModifier);
+    darkSteelSwordPowerUsePerHit = config.get("Settings", "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
+        "The amount of power (RF) used per hit.").getInt(darkSteelSwordPowerUsePerHit);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

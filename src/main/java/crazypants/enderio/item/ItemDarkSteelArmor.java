@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
@@ -56,11 +55,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return res;
   }
 
-  private int capacityRF;
-  private int maxReceiveRF;
-  private int maxExtractRF;
-
   private int powerPerDamagePoint;
+  private EnergyContainer energyCont;
 
   protected ItemDarkSteelArmor(int armorType) {
     super(MATERIAL, 0, armorType);
@@ -70,11 +66,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     setUnlocalizedName(str);
     setTextureName("enderIO:" + str);
 
-    capacityRF = CAPACITY[armorType];
-    maxReceiveRF = CAPACITY[0] / 5;
-    maxExtractRF = maxReceiveRF;
+    energyCont = new EnergyContainer(CAPACITY[armorType], Config.darkSteelPowerStorage / 5, Config.darkSteelPowerStorage / 5);
 
-    powerPerDamagePoint = capacityRF / MATERIAL.getDurability(armorType);
+    powerPerDamagePoint = Config.darkSteelPowerStorage / MATERIAL.getDurability(armorType);
   }
 
   protected void init() {
@@ -84,8 +78,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add("Durability: " + (itemstack.getMaxDamage() - itemstack.getItemDamage()) + "/" + itemstack.getMaxDamage());
-    String str = "Power: " + PowerDisplayUtil.formatPower(getEnergyStored(itemstack)) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack)) + " " + PowerDisplayUtil.abrevation();
+    String str = "Power: " + PowerDisplayUtil.formatPower(getEnergyStored(itemstack) / 10) + "/"
+        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack) / 10) + " " + PowerDisplayUtil.abrevation();
     list.add(str);
   }
 
@@ -104,68 +98,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   public ItemStack createItemStack() {
     ItemStack res = new ItemStack(this);
-    setEnergy(res, 0);
+    energyCont.setEnergy(res, 0);
     return res;
-  }
-
-  @Override
-  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-
-    if(container.stackTagCompound == null) {
-      container.stackTagCompound = new NBTTagCompound();
-    }
-    int energy = container.stackTagCompound.getInteger("Energy");
-    int energyReceived = Math.min(capacityRF - energy, Math.min(this.maxReceiveRF, maxReceive));
-
-    if(!simulate) {
-      energy += energyReceived;
-      container.stackTagCompound.setInteger("Energy", energy);
-    }
-    return energyReceived;
-  }
-
-  @Override
-  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-
-    if(container == null || container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
-      return 0;
-    }
-    int energy = container.stackTagCompound.getInteger("Energy");
-    int energyExtracted = Math.min(energy, Math.min(this.maxExtractRF, maxExtract));
-
-    if(!simulate) {
-      energy -= energyExtracted;
-      container.stackTagCompound.setInteger("Energy", energy);
-    }
-    return energyExtracted;
-  }
-
-  @Override
-  public int getEnergyStored(ItemStack container) {
-    if(container == null || container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
-      return 0;
-    }
-    return container.stackTagCompound.getInteger("Energy");
-  }
-
-  @Override
-  public int getMaxEnergyStored(ItemStack container) {
-    return capacityRF;
-  }
-
-  void setEnergy(ItemStack container, int energy) {
-    if(container.stackTagCompound == null) {
-      container.stackTagCompound = new NBTTagCompound();
-    }
-    container.stackTagCompound.setInteger("Energy", energy);
-  }
-
-  public void setFull(ItemStack container) {
-    setEnergy(container, capacityRF);
-  }
-
-  public boolean isJustCrafted(ItemStack stack) {
-    return getEnergyStored(stack) == 0 && getDisplayDamage(stack) == 0;
   }
 
   @Override
@@ -184,8 +118,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
     ItemDarkSteelArmor am = (ItemDarkSteelArmor) stack.getItem();
-
-    boolean abs = absorbWithPower(stack);
+    boolean abs = energyCont.isAbsorbDamageWithPower(stack);
     if(abs && getEnergyStored(stack) > 0) {
       extractEnergy(stack, damage * powerPerDamagePoint, false);
     } else {
@@ -195,8 +128,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       }
       stack.setItemDamage(damage);
     }
-    setAbsorbWithPower(stack, !abs);
-
+    energyCont.setAbsorbDamageWithPower(stack, !abs);
   }
 
   @Override
@@ -204,21 +136,24 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
   }
 
-  private boolean absorbWithPower(ItemStack is) {
-    NBTTagCompound root = is.getTagCompound();
-    if(root == null) {
-      return false;
-    }
-    return root.getBoolean("absorbWithPower");
+  @Override
+  public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+    return energyCont.receiveEnergy(container, maxReceive, simulate);
   }
 
-  private void setAbsorbWithPower(ItemStack is, boolean val) {
-    NBTTagCompound root = is.getTagCompound();
-    if(root == null) {
-      root = new NBTTagCompound();
-      is.setTagCompound(root);
-    }
-    root.setBoolean("absorbWithPower", val);
+  @Override
+  public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+    return energyCont.extractEnergy(container, maxExtract, simulate);
+  }
+
+  @Override
+  public int getEnergyStored(ItemStack container) {
+    return energyCont.getEnergyStored(container);
+  }
+
+  @Override
+  public int getMaxEnergyStored(ItemStack container) {
+    return energyCont.getMaxEnergyStored(container);
   }
 
   //Idea from Mekanism
