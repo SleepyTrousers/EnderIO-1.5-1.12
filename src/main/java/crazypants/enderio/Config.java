@@ -104,6 +104,7 @@ public final class Config {
   public static int darkSteelPickPowerUseObsidian = 2500;
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUsePerDamagePoint = 250;
+  public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -302,6 +303,8 @@ public final class Config {
         "The efeciency when breaking obsidian with a powered  Dark Pickaxe.").getInt(darkSteelPickEffeciencyObsidian);
     darkSteelPickPowerUsePerDamagePoint = config.get("Settings", "darkSteelPickPowerUsePerDamagePoint", darkSteelPickPowerUsePerDamagePoint,
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
+    darkSteelPickEffeciencyBoostWhenPowered = (float) config.get("Settings", "darkSteelPickEffeciencyBoostWhenPowered",
+        darkSteelPickEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

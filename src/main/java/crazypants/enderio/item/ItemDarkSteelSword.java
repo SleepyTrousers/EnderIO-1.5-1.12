@@ -232,4 +232,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   }
 
+  public ItemStack createItemStack() {
+    return new ItemStack(this);
+  }
+
 }

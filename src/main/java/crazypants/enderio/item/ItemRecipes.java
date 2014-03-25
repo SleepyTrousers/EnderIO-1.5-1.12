@@ -1,6 +1,7 @@
 package crazypants.enderio.item;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
@@ -30,6 +31,14 @@ public class ItemRecipes {
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "c c", "   ", 's', darkSteel, 'c', vibCry);
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "c c", 's', darkSteel, 'c', vibCry);
 
-  }
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "c c", 's', darkSteel, 'c', vibCry);
 
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelSword.createItemStack(), " s ", " s ", " c ", 's', darkSteel, 'c', vibCry);
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "scs", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
+        "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "scs", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
+        "woodStick"));
+
+  }
 }

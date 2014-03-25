@@ -79,6 +79,18 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return true;
   }
 
+  @Override
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+
+    int slot = player.inventory.currentItem + 1;
+    if(slot < 9 && player.inventory.mainInventory[slot] != null) {
+      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, par3World, par4, par5, par6, par7, par8,
+          par9, par10);
+    }
+
+    return super.onItemUse(item, player, par3World, par4, par5, par6, par7, par8, par9, par10);
+  }
+
   private void applyDamage(EntityLivingBase entity, ItemStack item, int damage) {
     boolean absorbWithPower = energyCont.isAbsorbDamageWithPower(item);
     if(getEnergyStored(item) > 0 && absorbWithPower) {
@@ -102,7 +114,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
     if(ForgeHooks.isToolEffective(stack, block, meta)) {
       if(Config.darkSteelPickPowerUsePerDamagePoint > 0 && energyCont.getEnergyStored(stack) > 0) {
-        return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + 3;
+        return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
     }
@@ -146,11 +158,16 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
         + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack) / 10) + " " + PowerDisplayUtil.abrevation();
     list.add(str);
     list.add("");
-    list.add(EnumChatFormatting.BLUE + "+3 Effeciency when Powered");
-    list.add(EnumChatFormatting.BLUE + "" + Config.darkSteelPickEffeciencyObsidian + " Effeciency when Powered");
-    list.add(EnumChatFormatting.BLUE + "and breaking obsidian (cost " + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
+    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " Effeciency when powered");
+    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " Effeciency breaking obsidian ");
+    list.add(EnumChatFormatting.BLUE + "     (cost "
+        + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
         + PowerDisplayUtil.abrevation() + ")");
 
+  }
+
+  public ItemStack createItemStack() {
+    return new ItemStack(this);
   }
 
 }
