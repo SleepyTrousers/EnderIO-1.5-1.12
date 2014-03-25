@@ -81,11 +81,12 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
+  public static int darkSteelPowerStorage = 100000;
+
   public static double darkSteelLeggingWalkModifier = 0.3;
   public static double darkSteelLeggingSprintModifier = 0.5;
   public static double darkSteelBootsJumpModifier = 1.5;
 
-  public static int darkSteelPowerStorage = 100000;
   public static int darkSteelWalkPowerCost = darkSteelPowerStorage / 3000;
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = true;
@@ -97,6 +98,12 @@ public final class Config {
   public static float darkSteelSwordSkullLootingModifier = 0.15f;
   public static float vanillaSwordSkullLootingModifier = 0.1f;
   public static int darkSteelSwordPowerUsePerHit = 250;
+  public static double darkSteelSwordEnderPearlDropChance = 1;
+  public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.2;
+
+  public static int darkSteelPickPowerUseObsidian = 2500;
+  public static int darkSteelPickEffeciencyObsidian = 50;
+  public static int darkSteelPickPowerUsePerDamagePoint = 250;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -280,6 +287,21 @@ public final class Config {
         vanillaSwordSkullLootingModifier);
     darkSteelSwordPowerUsePerHit = config.get("Settings", "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
         "The amount of power (RF) used per hit.").getInt(darkSteelSwordPowerUsePerHit);
+    darkSteelSwordEnderPearlDropChance = config.get("Settings", "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
+        "The chance that an ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+        darkSteelSwordEnderPearlDropChance);
+    darkSteelSwordEnderPearlDropChancePerLooting = config.get("Settings", "darkSteelSwordEnderPearlDropChancePerLooting",
+        darkSteelSwordEnderPearlDropChancePerLooting,
+        "The chance for each looting level that an additional ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)")
+        .getDouble(
+            darkSteelSwordEnderPearlDropChancePerLooting);
+
+    darkSteelPickPowerUseObsidian = config.get("Settings", "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian,
+        "The amount of power (RF) used to break an obsidian block.").getInt(darkSteelPickPowerUseObsidian);
+    darkSteelPickEffeciencyObsidian = config.get("Settings", "darkSteelPickEffeciencyObsidian", darkSteelPickEffeciencyObsidian,
+        "The efeciency when breaking obsidian with a powered  Dark Pickaxe.").getInt(darkSteelPickEffeciencyObsidian);
+    darkSteelPickPowerUsePerDamagePoint = config.get("Settings", "darkSteelPickPowerUsePerDamagePoint", darkSteelPickPowerUsePerDamagePoint,
+        "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

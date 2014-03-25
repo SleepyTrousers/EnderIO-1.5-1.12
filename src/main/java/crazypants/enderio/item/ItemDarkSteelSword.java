@@ -79,7 +79,6 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   @SubscribeEvent
   public void onEnderTeleport(EnderTeleportEvent evt) {
     if(evt.entityLiving.getEntityData().getBoolean("hitByDarkSteelSword")) {
-      System.out.println("ItemDarkSteelSword.onEnderTeleport: cancelled teleport");
       evt.setCanceled(true);
     }
   }
@@ -100,9 +99,12 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       }
       if(isEquipped(player)) {
         if(evt.entityLiving instanceof EntityEnderman) {
-          int numPearls = 1;
+          int numPearls = 0;
+          if(Math.random() >= Config.darkSteelSwordEnderPearlDropChance) {
+            numPearls++;
+          }
           for (int i = 0; i < evt.lootingLevel; i++) {
-            if(Math.random() > 0.2) { //TODO: Config
+            if(Math.random() >= Config.darkSteelSwordEnderPearlDropChancePerLooting) {
               numPearls++;
             }
           }

@@ -187,6 +187,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelChestplate, dsr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelHelmet, dsr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelSword, dsr);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelPickaxe, dsr);
 
   }
 

@@ -28,6 +28,7 @@ import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.item.ItemDarkSteelArmor;
+import crazypants.enderio.item.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.ItemDarkSteelSword;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemYetaWrench;
@@ -138,6 +139,7 @@ public class EnderIO {
   public static ItemDarkSteelArmor itemDarkSteelLeggings;
   public static ItemDarkSteelArmor itemDarkSteelBoots;
   public static ItemDarkSteelSword itemDarkSteelSword;
+  public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -208,6 +210,7 @@ public class EnderIO {
     itemDarkSteelBoots = ItemDarkSteelArmor.create(3);
 
     itemDarkSteelSword = ItemDarkSteelSword.create();
+    itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
 
     MaterialRecipes.registerOresInDictionary();
   }
