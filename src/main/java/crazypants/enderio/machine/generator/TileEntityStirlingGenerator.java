@@ -120,8 +120,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
 
+    double stored = powerHandler.getEnergyStored();
+    powerHandler.update();
+    powerHandler.setEnergy(stored);
+
     if(burnTime > 0 && redstoneCheckPassed) {
-      powerHandler.setEnergy(powerHandler.getEnergyStored() + ENERGY_PER_TICK);
+      powerHandler.setEnergy(stored + (ENERGY_PER_TICK * getEnergyMultiplier()));
       burnTime--;
       needsUpdate = true;
     }
@@ -132,7 +136,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
       if(burnTime <= 0 && powerHandler.getEnergyStored() < powerHandler.getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
-          burnTime = TileEntityFurnace.getItemBurnTime(inventory[0]);
+          burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) * getBurnTimeMultiplier());
           if(burnTime > 0) {
             totalBurnTime = burnTime;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
@@ -148,6 +152,26 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     }
 
     return needsUpdate;
+  }
+
+  private float getEnergyMultiplier() {
+    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
+      return 2;
+    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
+      return 4;
+    }
+    return 1;
+  }
+
+  private float getBurnTimeMultiplier() {
+    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
+      //burn for 62.5% of the time to produce 2x the power, i.e. 1.25 the effecientcy
+      return 0.625f;
+    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
+      //burn for half as long to produce 4x the power, i.e. twice the effecientcy
+      return 0.5f;
+    }
+    return 1;
   }
 
   private boolean transmitEnergy() {
