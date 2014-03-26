@@ -36,9 +36,13 @@ enderio.itemMeConduit.name=ME-Leitung
 //Materials
 enderio.itemMaterial.name=Materialien
 enderio.silicon.name=Silicium
+enderio.darkSteel.name=Dunkelstahl
 enderio.conduitBinder.name=Leitungsbinder
 enderio.binderComposite.name=Bindegemisch
 enderio.phasedIronNugget.name=Pulsierender Eisennugget
+
+//Liquids
+item.bucketNutrientdistillation.name=Eimer mit nahrhaftem Destillat
 
 //Crafting components
 enderio.itemMachinePart.name=Maschinenteile
@@ -91,6 +95,7 @@ tile.blockCapacitorBank.tooltipPrefix=Enthält
 tile.blockSagMill.name=SAG-Mahlwerk
 tile.blockHyperCube.name=Dimensional-Transceiver
 tile.blockPowerMonitor.name=Energiemonitor
+tile.blockStill.name=Braubottich
 
 //Travel
 tile.blockTravelAnchor.name=Reiseanker
@@ -117,6 +122,13 @@ enderio.itemEnderface.wrongDimension=EnderIO-Block ist in einer anderen Dimensio
 enderio.itemEnderface.tooFar=EnderIO-Block ist zu weit entfernt.
 enderio.itemEnderface.destroyed=EnderIO-Block wurde zerstört.
 enderio.itemEnderface.noSync=Endergesicht ist mit keinem EnderIO synchronisiert.
+
+item.darkSteel_helmet.name=Dunkelhelm
+item.darkSteel_chestplate.name=Dunkelpanzer
+item.darkSteel_leggings.name=Dunkelbeinschutz
+item.darkSteel_boots.name=Dunkelstiefel
+item.darkSteel_sword.name=Der Ender
+item.darkSteel_pickaxe.name=Dunkelspitzhacke
 
 
 //------GUI
