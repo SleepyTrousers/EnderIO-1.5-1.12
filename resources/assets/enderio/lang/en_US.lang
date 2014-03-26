@@ -41,6 +41,9 @@ enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 
+//Liquids
+item.bucketNutrientdistillation.name=Nutrient Distillation Bucket
+
 //Crafting components
 enderio.itemMachinePart.name=Machine Parts
 enderio.machineChassi.name=Machine Chassi

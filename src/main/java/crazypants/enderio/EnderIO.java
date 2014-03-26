@@ -1,10 +1,14 @@
 package crazypants.enderio;
 
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -27,6 +31,8 @@ import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.fluid.BlockFluidEio;
+import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemDarkSteelArmor;
 import crazypants.enderio.item.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.ItemDarkSteelSword;
@@ -108,7 +114,7 @@ public class EnderIO {
   public static BlockPaintedSlab blockPaintedSlab;
   public static BlockPaintedSlab blockPaintedDoubleSlab;
 
-  //  // Conduits
+  // Conduits
   public static BlockConduitBundle blockConduitBundle;
   public static BlockConduitFacade blockConduitFacade;
   public static ItemConduitFacade itemConduitFacade;
@@ -117,7 +123,7 @@ public class EnderIO {
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
 
-  //  // Machines
+  // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
@@ -130,7 +136,12 @@ public class EnderIO {
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
-  // // Items
+  //Fluids
+  public static Fluid fluidNutrientDistillation;
+  public static BlockFluidEio blockNutrientDistillation;
+  public static ItemBucketEio itemBucketNutrientDistillation;
+
+  // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
 
@@ -180,6 +191,12 @@ public class EnderIO {
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
     blockReservoir = BlockReservoir.create();
+
+    Fluid f = new Fluid("nutrientDistillation").setDensity(1500).setViscosity(3000);
+    FluidRegistry.registerFluid(f);
+    fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
+    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));
+    itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
 
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();

@@ -1,6 +1,9 @@
 1.1.0_alpha
 - Ported 1.0 for MC 1.6.4 to MC 1.7.2
-- Added Dark Steel (Alloy) armor
+- Added Dark Steel powered armor
+- Added 'The Ender' powered sword
+- Added Dark Steel powered pickaxe
+- Stirling Generator now gets more efficient and faster with upgrades.
 
 1.0
 - #447 Capacitor Bank and Quite Clear Glass causing rendering issues.
