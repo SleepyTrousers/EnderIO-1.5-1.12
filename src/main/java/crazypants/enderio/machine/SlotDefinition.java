@@ -42,14 +42,23 @@ public class SlotDefinition {
   }
 
   public int getNumUpgradeSlots() {
+    if(minUpgradeSlot < 0) {
+      return 0;
+    }
     return Math.max(0, maxUpgradeSlot - minUpgradeSlot + 1);
   }
 
   public int getNumInputSlots() {
+    if(minInputSlot < 0) {
+      return 0;
+    }
     return Math.max(0, maxInputSlot - minInputSlot + 1);
   }
 
   public int getNumOutputSlots() {
+    if(minOutputSlot < 0) {
+      return 0;
+    }
     return Math.max(0, maxOutputSlot - minOutputSlot + 1);
   }
 

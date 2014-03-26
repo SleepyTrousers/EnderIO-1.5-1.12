@@ -1,19 +1,28 @@
 package crazypants.enderio.machine.recipe;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public interface IRecipe {
 
-  public abstract boolean isValid();
+  boolean isValid();
 
-  public abstract float getEnergyRequired();
+  float getEnergyRequired();
 
-  public abstract RecipeOutput[] getOutputs();
+  RecipeOutput[] getOutputs();
 
-  public abstract RecipeInput[] getInputs();
+  RecipeInput[] getInputs();
 
-  public abstract ItemStack[] getInputStacks();
+  ItemStack[] getInputStacks();
 
-  public abstract boolean isInputForRecipe(ItemStack[] test);
+  boolean isInputForRecipe(List<ItemStack> test);
+
+  boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);
+
+  boolean isValidInput(ItemStack item);
+
+  boolean isValidInput(FluidStack fluid);
 
 }

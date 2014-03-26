@@ -31,7 +31,7 @@ public class AlloyMachineRecipe extends AbstractMachineRecipe {
         stacks.add(mi.item);
       }
     }
-    return AlloyRecipeManager.instance.getRecipeForInputs(stacks.toArray(new ItemStack[stacks.size()]));
+    return AlloyRecipeManager.instance.getRecipeForInputs(stacks);
   }
 
   @Override

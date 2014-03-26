@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Recipe implements IRecipe {
 
@@ -27,11 +28,16 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(ItemStack[] test) {
+  public boolean isInputForRecipe(List<ItemStack> test) {
+    return isInputForRecipe(test, null);
+  }
+
+  @Override
+  public boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids) {
     if(test == null) {
       return false;
     }
-    if(test.length != inputs.length) {
+    if(test.size() != inputs.length) {
       return false;
     }
     List<RecipeInput> recIns = new ArrayList<RecipeInput>(Arrays.asList(inputs));
@@ -47,7 +53,40 @@ public class Recipe implements IRecipe {
         recIns.remove(ri);
       }
     }
+    if(testFluids != null) {
+      for (FluidStack input : testFluids) {
+        if(input != null) {
+          RecipeInput ri = getInputForStack(input);
+          if(ri == null || ri.getInput() == null) {
+            return false;
+          }
+          if(input.amount < ri.getFluidInput().amount) {
+            return false;
+          }
+          recIns.remove(ri);
+        }
+      }
+    }
     return recIns.size() == 0;
+  }
+
+  @Override
+  public boolean isValidInput(ItemStack item) {
+    return getInputForStack(item) != null;
+  }
+
+  @Override
+  public boolean isValidInput(FluidStack fluid) {
+    return getInputForStack(fluid) != null;
+  }
+
+  private RecipeInput getInputForStack(FluidStack input) {
+    for (RecipeInput ri : inputs) {
+      if(ri.isInput(input)) {
+        return ri;
+      }
+    }
+    return null;
   }
 
   private RecipeInput getInputForStack(ItemStack input) {

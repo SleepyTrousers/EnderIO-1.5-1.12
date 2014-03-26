@@ -3,9 +3,11 @@ package crazypants.enderio.machine.recipe;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeOutput {
 
+  private final FluidStack outputFluid;
   private final ItemStack output;
   private final float chance;
   private float exp;
@@ -38,6 +40,14 @@ public class RecipeOutput {
     this.output = output.copy();
     this.chance = chance;
     this.exp = exp;
+    outputFluid = null;
+  }
+
+  public RecipeOutput(FluidStack output) {
+    this.outputFluid = output;
+    this.output = null;
+    chance = 1;
+    exp = 0;
   }
 
   public float getChance() {
@@ -50,6 +60,10 @@ public class RecipeOutput {
 
   public ItemStack getOutput() {
     return output;
+  }
+
+  public FluidStack getFluidOutput() {
+    return outputFluid;
   }
 
 }

@@ -2,6 +2,7 @@ package crazypants.enderio.machine.crusher;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -68,7 +69,7 @@ public class CrusherRecipeManager {
       return null;
     }
     for (Recipe recipe : recipes) {
-      if(recipe.isInputForRecipe(new ItemStack[] { input })) {
+      if(recipe.isInputForRecipe(Collections.singletonList(input))) {
         return recipe;
       }
     }
@@ -84,10 +85,10 @@ public class CrusherRecipeManager {
     }
 
     List<Recipe> newRecipes = config.getRecipes(true);
-    Log.info("Found " + newRecipes.size() + " valid SAG Mill recipes in config.");    
+    Log.info("Found " + newRecipes.size() + " valid SAG Mill recipes in config.");
     for (Recipe rec : newRecipes) {
       addRecipe(rec);
-    }    
+    }
     Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
   }
 

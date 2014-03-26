@@ -2,6 +2,7 @@ package crazypants.enderio.machine.alloy;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -100,7 +101,7 @@ public class AlloyRecipeManager {
       Log.debug("Could not add invalid recipe: " + recipe);
       return;
     }
-    IRecipe rec = getRecipeForInputs(recipe.getInputStacks());
+    IRecipe rec = getRecipeForInputs(Arrays.asList(recipe.getInputStacks()));
     if(rec != null) {
       Log.warn("Not adding supplied recipe as a recipe already exists for the input: " + recipe);
       return;
@@ -108,7 +109,7 @@ public class AlloyRecipeManager {
     recipes.add(recipe);
   }
 
-  IRecipe getRecipeForInputs(ItemStack[] inputs) {
+  IRecipe getRecipeForInputs(List<ItemStack> inputs) {
     for (IAlloyRecipe rec : recipes) {
       if(rec.isInputForRecipe(inputs)) {
         return rec;

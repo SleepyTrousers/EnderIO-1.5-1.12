@@ -1,12 +1,12 @@
 package crazypants.enderio;
 
-import cpw.mods.fml.common.network.IGuiHandler;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.HashMap;
-import java.util.Map;
+import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -32,6 +32,7 @@ public class GuiHandler implements IGuiHandler {
 
   public static final int GUI_ID_TRAVEL_ACCESSABLE = 18;
   public static final int GUI_ID_TRAVEL_AUTH = 19;
+  public static final int GUI_ID_STILL = 20;
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

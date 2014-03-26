@@ -30,7 +30,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   public GuiMachineBase(AbstractMachineEntity machine, Container container) {
     super(container);
     tileEntity = machine;
-    addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
+    addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
 
       @Override
       protected void updateText() {
@@ -45,6 +45,22 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
   }
 
+  protected int getPowerX() {
+    return POWER_X;
+  }
+
+  protected int getPowerY() {
+    return POWER_Y;
+  }
+
+  protected int getPowerWidth() {
+    return POWER_WIDTH;
+  }
+
+  protected int getPowerHeight() {
+    return POWER_HEIGHT;
+  }
+
   @Override
   public void initGui() {
     super.initGui();
@@ -56,9 +72,9 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     int k = (width - xSize) / 2;
     int l = (height - ySize) / 2;
-    int i1 = tileEntity.getEnergyStoredScaled(POWER_HEIGHT);
+    int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());
     // x, y, u, v, width, height
-    drawTexturedModalRect(k + POWER_X, l + BOTTOM_POWER_Y - i1, 176, 31, POWER_WIDTH, i1);
+    drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, 176, 31, getPowerWidth(), i1);
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);

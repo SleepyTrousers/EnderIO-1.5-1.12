@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.crafting.IRecipeComponent;
@@ -108,13 +109,17 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
     return new ItemStack[] { output.copy() };
   }
 
-  //@Override
   @Override
-  public boolean isValidInput(MachineRecipeInput input) {
+  public boolean isValidInput(ItemStack input) {
     if(input == null) {
       return false;
     }
-    return getRecipeComponentFromInput(input.item) != null;
+    return getRecipeComponentFromInput(input) != null;
+  }
+
+  @Override
+  public boolean isValidInput(FluidStack fluid) {
+    return false;
   }
 
   //@Override
@@ -223,11 +228,16 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(ItemStack[] test) {
+  public boolean isInputForRecipe(List<ItemStack> test) {
     if(test == null) {
       return false;
     }
     return recipe.isInputForRecipe(test);
+  }
+
+  @Override
+  public boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids) {
+    return (testFluids == null || testFluids.isEmpty()) && isInputForRecipe(test);
   }
 
   @Override

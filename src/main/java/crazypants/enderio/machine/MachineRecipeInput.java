@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class MachineRecipeInput {
 
@@ -20,10 +21,18 @@ public class MachineRecipeInput {
   public final int slotNumber;
   public final ItemStack item;
 
+  public final FluidStack fluid;
+
   public MachineRecipeInput(int slotNumber, ItemStack item) {
-    super();
     this.slotNumber = slotNumber;
     this.item = item;
+    this.fluid = null;
+  }
+
+  public MachineRecipeInput(int slotNumber, FluidStack fluid) {
+    this.slotNumber = slotNumber;
+    this.item = null;
+    this.fluid = fluid;
   }
 
 }

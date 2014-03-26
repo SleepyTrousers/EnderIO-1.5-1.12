@@ -15,12 +15,14 @@ public abstract class AbstractMachineContainer extends Container {
 
     addMachineSlots(playerInv);
 
-    addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), 12, 60) {
-      @Override
-      public boolean isItemValid(ItemStack itemStack) {
-        return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
-      }
-    });
+    if(te.getSlotDefinition().getNumInputSlots() == 1) {
+      addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), 12, 60) {
+        @Override
+        public boolean isItemValid(ItemStack itemStack) {
+          return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
+        }
+      });
+    }
 
     // add players inventory
     for (int i = 0; i < 3; ++i) {
@@ -75,7 +77,7 @@ public abstract class AbstractMachineContainer extends Container {
         //Check from inv->input then inv->upgrade then inv->hotbar or hotbar->inv
         if(slotIndex >= startPlayerSlot) {
           if(!mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
-            if(!mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
+            if(slotDef.getNumOutputSlots() > 0 && !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
               if(slotIndex <= endPlayerSlot) {
                 if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                   return null;

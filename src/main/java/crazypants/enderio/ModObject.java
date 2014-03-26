@@ -37,6 +37,7 @@ public enum ModObject {
   blockSagMill,
   blockHyperCube,
   blockPowerMonitor,
+  blockStill,
 
   blockElectricLight,
   blockLightNode,
