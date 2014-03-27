@@ -54,6 +54,10 @@ public class MachineRecipes {
       GameRegistry.addShapedRecipe(crusher, "fff", "imi", "ici", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'c', capacitor);
     }
 
+    //Still
+    ItemStack still = new ItemStack(EnderIO.blockStill, 1, 0);
+    GameRegistry.addShapedRecipe(crusher, "iii", "dmd", "gcg", 'd', Items.cauldron, 'g', basicGear, 'm', machineChassi, 'i', Items.iron_ingot, 'c', capacitor);
+
     //transceiver
     ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
     ItemStack obsidian = new ItemStack(Blocks.obsidian);

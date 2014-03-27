@@ -8,6 +8,8 @@ import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.render.RenderUtil;
 
 public class GuiStill extends GuiMachineBase {
@@ -31,12 +33,29 @@ public class GuiStill extends GuiMachineBase {
     int guiTop = (height - ySize) / 2;
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-    //    int i1 = still.getProgressScaled(24);
-    //    drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, i1 + 1);
-
     if(still.getProgress() < 1 && still.getProgress() > 0) {
       int scaled = still.getProgressScaled(12);
       drawTexturedModalRect(guiLeft + 81, guiTop + 76 - scaled, 176, 12 - scaled, 14, scaled + 2);
+
+      IIcon inputIcon = null;
+      for (MachineRecipeInput input : still.getCurrentTask().getInputs()) {
+        if(input.fluid != null && input.fluid.getFluid() != null) {
+          inputIcon = input.fluid.getFluid().getStillIcon();
+          break;
+        }
+      }
+      StillMachineRecipe rec = (StillMachineRecipe) still.getCurrentTask().getRecipe();
+      IIcon outputIcon = null;
+      for (ResultStack res : rec.getCompletedResult(1.0f, still.getCurrentTask().getInputs())) {
+        if(res.fluid != null && res.fluid.getFluid() != null) {
+          outputIcon = res.fluid.getFluid().getStillIcon();
+        }
+      }
+
+      if(inputIcon != null && outputIcon != null) {
+        renderVat(inputIcon, outputIcon, still.getProgress());
+      }
+
     }
 
     RenderUtil.bindBlockTexture();
@@ -45,6 +64,26 @@ public class GuiStill extends GuiMachineBase {
 
     RenderUtil.bindTexture("enderio:textures/gui/still.png");
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+  }
+
+  private void renderVat(IIcon inputIcon, IIcon outputIcon, float progress) {
+    RenderUtil.bindBlockTexture();
+
+    int x = guiLeft + 76;
+    int y = guiTop + 34;
+
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glColor4f(1, 1, 1, 0.75f * (1f - progress));
+    drawTexturedModelRectFromIcon(x, y, inputIcon, 26, 28);
+
+    GL11.glColor4f(1, 1, 1, 0.75f * progress);
+    drawTexturedModelRectFromIcon(x, y, outputIcon, 26, 28);
+
+    GL11.glDisable(GL11.GL_BLEND);
+
+    GL11.glColor4f(1, 1, 1, 1);
+    RenderUtil.bindTexture("enderio:textures/gui/still.png");
+    drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }
 
   private void renderTank(FluidTank tank, int x) {

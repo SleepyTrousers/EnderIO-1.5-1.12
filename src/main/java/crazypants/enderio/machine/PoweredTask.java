@@ -75,6 +75,14 @@ public class PoweredTask {
     return recipe.getCompletedResult(chance, inputs);
   }
 
+  public MachineRecipeInput[] getInputs() {
+    return inputs;
+  }
+
+  public void setInputs(MachineRecipeInput[] inputs) {
+    this.inputs = inputs;
+  }
+
   public void writeToNBT(NBTTagCompound nbtRoot) {
     NBTTagCompound stackRoot;
 

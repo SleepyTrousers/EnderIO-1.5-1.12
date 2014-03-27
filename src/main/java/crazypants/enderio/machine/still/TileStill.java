@@ -14,6 +14,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 
 public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandler {
@@ -157,6 +158,10 @@ public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandle
     outputTank.writeToNBT(tankRoot);
     nbtRoot.setTag("outputTank", tankRoot);
 
+  }
+
+  public PoweredTask getCurrentTask() {
+    return currentTask;
   }
 
 }
