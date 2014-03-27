@@ -110,7 +110,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   }
 
   @Override
-  public boolean isValidInput(ItemStack input) {
+  public boolean isValidInput(int slot, ItemStack input) {
     if(input == null) {
       return false;
     }
@@ -228,16 +228,11 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(List<ItemStack> test) {
-    if(test == null) {
+  public boolean isInputForRecipe(MachineRecipeInput... inputs) {
+    if(inputs == null) {
       return false;
     }
-    return recipe.isInputForRecipe(test);
-  }
-
-  @Override
-  public boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids) {
-    return (testFluids == null || testFluids.isEmpty()) && isInputForRecipe(test);
+    return recipe.isInputForRecipe(inputs);
   }
 
   @Override

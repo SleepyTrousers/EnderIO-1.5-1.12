@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.machine.MachineRecipeInput;
 
 public class Recipe implements IRecipe {
 
@@ -29,50 +30,36 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(List<ItemStack> test) {
-    return isInputForRecipe(test, null);
+  public boolean isInputForRecipe(MachineRecipeInput... inputs) {
+    if(inputs == null || inputs.length == 0) {
+      return false;
+    }
+
+    int numFound = 0;
+    for (MachineRecipeInput input : inputs) {
+      if(input.isFluid()) {
+        RecipeInput ri = getInputForStack(input.fluid);
+        if(ri == null || ri.getFluidInput() == null) {
+          return false;
+        }
+        numFound++;
+      } else {
+        RecipeInput ri = getInputForStack(input.item);
+        if(ri == null || ri.getInput() == null || ri.getSlotNumber() != input.slotNumber) {
+          return false;
+        }
+        if(input.item.stackSize < ri.getInput().stackSize) {
+          return false;
+        }
+        numFound++;
+      }
+    }
+
+    return numFound == 3;
   }
 
   @Override
-  public boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids) {
-    if(test == null) {
-      return false;
-    }
-    if(test.size() != inputs.length) {
-      return false;
-    }
-    List<RecipeInput> recIns = new ArrayList<RecipeInput>(Arrays.asList(inputs));
-    for (ItemStack input : test) {
-      if(input != null) {
-        RecipeInput ri = getInputForStack(input);
-        if(ri == null || ri.getInput() == null) {
-          return false;
-        }
-        if(input.stackSize < ri.getInput().stackSize) {
-          return false;
-        }
-        recIns.remove(ri);
-      }
-    }
-    if(testFluids != null) {
-      for (FluidStack input : testFluids) {
-        if(input != null) {
-          RecipeInput ri = getInputForStack(input);
-          if(ri == null || ri.getInput() == null) {
-            return false;
-          }
-          if(input.amount < ri.getFluidInput().amount) {
-            return false;
-          }
-          recIns.remove(ri);
-        }
-      }
-    }
-    return recIns.size() == 0;
-  }
-
-  @Override
-  public boolean isValidInput(ItemStack item) {
+  public boolean isValidInput(int slot, ItemStack item) {
     return getInputForStack(item) != null;
   }
 

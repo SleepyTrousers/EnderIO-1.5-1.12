@@ -48,6 +48,7 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_MOD_ID = "modID";
   public static final String AT_NUMBER = "number";
   public static final String AT_MULTIPLIER = "multiplier";
+  public static final String AT_SLOT = "slot";
   public static final String AT_CHANCE = "chance";
   public static final String AT_EXP = "exp";
 
@@ -331,7 +332,8 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       ItemStack stack = ores.get(0).copy();
       stack.stackSize = stackSize;
-      return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict), getFloatValue(AT_MULTIPLIER, attributes, 1));
+      return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict), getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes,
+          -1));
     }
 
     boolean useMeta = true;
@@ -363,7 +365,7 @@ public class RecipeConfigParser extends DefaultHandler {
       Log.debug("Could not create an item stack from the attributes " + toString(attributes));
       return null;
     }
-    return new RecipeInput(res, useMeta, getFloatValue(AT_MULTIPLIER, attributes, 1));
+    return new RecipeInput(res, useMeta, getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes, -1));
   }
 
   public static boolean getBooleanValue(String qName, Attributes attributes, boolean def) {

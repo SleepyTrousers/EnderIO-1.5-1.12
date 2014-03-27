@@ -46,8 +46,14 @@ public class StillRecipeManager {
 
     RecipeInput[] ins = new RecipeInput[] {
         new RecipeInput(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), 0.5f),
-        new RecipeInput(new ItemStack(Items.rotten_flesh), true, 2),
-        new RecipeInput(new ItemStack(Items.nether_wart), true, 1.5f)
+        new RecipeInput(new ItemStack(Items.rotten_flesh), true, 2, 0),
+        new RecipeInput(new ItemStack(Items.beef), true, 1, 0),
+        new RecipeInput(new ItemStack(Items.chicken), true, 1, 0),
+        new RecipeInput(new ItemStack(Items.porkchop), true, 1, 0),
+        new RecipeInput(new ItemStack(Items.skull), false, 2.5f, 0),
+
+        new RecipeInput(new ItemStack(Items.nether_wart), true, 1.5f, 1),
+        new RecipeInput(new ItemStack(Items.sugar), true, 1f, 1)
     };
 
     FluidStack resStack = FluidRegistry.getFluidStack("nutrientdistillation", FluidContainerRegistry.BUCKET_VOLUME);
@@ -75,12 +81,24 @@ public class StillRecipeManager {
     //    processConfig(config);
   }
 
-  public IRecipe getRecipeForInput(List<ItemStack> input, List<FluidStack> inputFluids) {
-    if(input == null || inputFluids == null) {
+  //  public IRecipe getRecipeForInput(List<ItemStack> input, List<FluidStack> inputFluids) {
+  //    if(input == null || inputFluids == null) {
+  //      return null;
+  //    }
+  //    for (IRecipe recipe : recipes) {
+  //      if(recipe.isInputForRecipe(input, inputFluids)) {
+  //        return recipe;
+  //      }
+  //    }
+  //    return null;
+  //  }
+
+  public IRecipe getRecipeForInput(MachineRecipeInput[] inputs) {
+    if(inputs == null || inputs.length == 0) {
       return null;
     }
     for (IRecipe recipe : recipes) {
-      if(recipe.isInputForRecipe(input, inputFluids)) {
+      if(recipe.isInputForRecipe(inputs)) {
         return recipe;
       }
     }
@@ -117,7 +135,7 @@ public class StillRecipeManager {
 
   public boolean isValidInput(MachineRecipeInput input) {
     for (IRecipe recipe : recipes) {
-      if(input.item != null && recipe.isValidInput(input.item)) {
+      if(input.item != null && recipe.isValidInput(input.slotNumber, input.item)) {
         return true;
       } else if(input.fluid != null && recipe.isValidInput(input.fluid)) {
         return true;

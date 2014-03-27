@@ -9,12 +9,12 @@ public class OreDictionaryRecipeInput extends RecipeInput {
 
   private int oreId;
 
-  public OreDictionaryRecipeInput(ItemStack itemStack, int oreId) {
-    this(itemStack, oreId, 1);
+  public OreDictionaryRecipeInput(ItemStack itemStack, int oreId, int slot) {
+    this(itemStack, oreId, 1, slot);
   }
 
-  public OreDictionaryRecipeInput(ItemStack stack, int oreId, float multiplier) {
-    super(stack, true, multiplier);
+  public OreDictionaryRecipeInput(ItemStack stack, int oreId, float multiplier, int slot) {
+    super(stack, true, multiplier, slot);
     this.oreId = oreId;
   }
 

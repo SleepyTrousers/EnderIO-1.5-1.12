@@ -5,6 +5,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeInput {
 
+  private final int slot;
   private final ItemStack input;
   private final boolean useMeta;
 
@@ -17,26 +18,27 @@ public class RecipeInput {
   }
 
   public RecipeInput(ItemStack input, boolean useMeta) {
-    this(input, useMeta, null, 1);
+    this(input, useMeta, null, 1, -1);
   }
 
   public RecipeInput(FluidStack fluid) {
-    this(null, false, fluid, 1f);
+    this(null, false, fluid, 1f, -1);
   }
 
   public RecipeInput(FluidStack fluidStack, float mulitplier) {
-    this(null, true, fluidStack, mulitplier);
+    this(null, true, fluidStack, mulitplier, -1);
   }
 
-  public RecipeInput(ItemStack item, boolean useMeta, float multiplier) {
-    this(item, useMeta, null, multiplier);
+  public RecipeInput(ItemStack item, boolean useMeta, float multiplier, int slot) {
+    this(item, useMeta, null, multiplier, slot);
   }
 
-  protected RecipeInput(ItemStack input, boolean useMeta, FluidStack fluid, float mulitplier) {
+  protected RecipeInput(ItemStack input, boolean useMeta, FluidStack fluid, float mulitplier, int slot) {
     this.input = input;
     this.useMeta = useMeta;
     this.fluid = fluid;
     this.mulitplier = mulitplier;
+    this.slot = slot;
   }
 
   public boolean isFluid() {
@@ -53,6 +55,10 @@ public class RecipeInput {
 
   public float getMulitplier() {
     return mulitplier;
+  }
+
+  public int getSlotNumber() {
+    return slot;
   }
 
   public boolean isInput(ItemStack test) {

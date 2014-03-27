@@ -135,13 +135,26 @@ public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandle
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
 
-    NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("inputTank");
-    if(tankRoot != null) {
-      inputTank.readFromNBT(tankRoot);
+    if(nbtRoot.hasKey("inputTank")) {
+      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("inputTank");
+      if(tankRoot != null) {
+        inputTank.readFromNBT(tankRoot);
+      } else {
+        inputTank.setFluid(null);
+      }
+    } else {
+      inputTank.setFluid(null);
     }
-    tankRoot = (NBTTagCompound) nbtRoot.getTag("outputTank");
-    if(tankRoot != null) {
-      outputTank.readFromNBT(tankRoot);
+
+    if(nbtRoot.hasKey("inputTank")) {
+      NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("outputTank");
+      if(tankRoot != null) {
+        outputTank.readFromNBT(tankRoot);
+      } else {
+        outputTank.setFluid(null);
+      }
+    } else {
+      outputTank.setFluid(null);
     }
 
   }
@@ -149,13 +162,16 @@ public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandle
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
-    NBTTagCompound tankRoot = new NBTTagCompound();
-    inputTank.writeToNBT(tankRoot);
-    nbtRoot.setTag("inputTank", tankRoot);
-
-    tankRoot = new NBTTagCompound();
-    outputTank.writeToNBT(tankRoot);
-    nbtRoot.setTag("outputTank", tankRoot);
+    if(inputTank.getFluidAmount() > 0) {
+      NBTTagCompound tankRoot = new NBTTagCompound();
+      inputTank.writeToNBT(tankRoot);
+      nbtRoot.setTag("inputTank", tankRoot);
+    }
+    if(outputTank.getFluidAmount() > 0) {
+      NBTTagCompound tankRoot = new NBTTagCompound();
+      outputTank.writeToNBT(tankRoot);
+      nbtRoot.setTag("outputTank", tankRoot);
+    }
 
   }
 

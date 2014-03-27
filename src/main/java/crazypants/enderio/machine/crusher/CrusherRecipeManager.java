@@ -2,13 +2,13 @@ package crazypants.enderio.machine.crusher;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.Config;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.Recipe;
@@ -69,7 +69,7 @@ public class CrusherRecipeManager {
       return null;
     }
     for (Recipe recipe : recipes) {
-      if(recipe.isInputForRecipe(Collections.singletonList(input))) {
+      if(recipe.isInputForRecipe(new MachineRecipeInput(0, input))) {
         return recipe;
       }
     }

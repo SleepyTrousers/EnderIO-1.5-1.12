@@ -69,4 +69,8 @@ public class MachineRecipeInput {
     root.setInteger("slotNum", slotNumber);
   }
 
+  public boolean isFluid() {
+    return fluid != null;
+  }
+
 }

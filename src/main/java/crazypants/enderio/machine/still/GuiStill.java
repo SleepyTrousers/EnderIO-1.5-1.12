@@ -103,6 +103,8 @@ public class GuiStill extends GuiMachineBase {
     float fullness = (float) tank.getFluidAmount() / (float) tank.getCapacity();
     int height = Math.round(47 * fullness);
 
+    //System.out.println("GuiStill.renderTank: " + tank.getFluidAmount());
+
     x = guiLeft + x;
     int y = guiTop + 12;
     y = y + (47 - height);

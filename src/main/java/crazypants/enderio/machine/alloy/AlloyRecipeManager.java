@@ -109,8 +109,14 @@ public class AlloyRecipeManager {
   }
 
   IRecipe getRecipeForInputs(List<ItemStack> inputs) {
+    MachineRecipeInput[] ins = new MachineRecipeInput[inputs.size()];
+
+    for (int i = 0; i < inputs.size(); i++) {
+      ins[i] = new MachineRecipeInput(-1, inputs.get(i));
+    }
+
     for (IAlloyRecipe rec : recipes) {
-      if(rec.isInputForRecipe(inputs)) {
+      if(rec.isInputForRecipe(ins)) {
         return rec;
       }
     }

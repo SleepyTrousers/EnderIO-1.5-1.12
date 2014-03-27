@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.still;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -22,26 +22,6 @@ public class StillRecipe implements IRecipe {
   protected final RecipeOutput[] output;
   protected final float energyRequired;
 
-  //  public StillRecipe(FluidStack inputFluid, FluidStack outputFluid, ItemStack... inputStacks) {
-  //    this.inputFluidStack = inputFluid;
-  //    this.inputStacks = inputStacks;
-  //    this.outputFluidStack = outputFluid;
-  //
-  //    List<RecipeInput> inputList = new ArrayList<RecipeInput>(3);
-  //    if(inputFluidStack != null) {
-  //      inputList.add(new RecipeInput(inputFluid));
-  //    }
-  //    if(inputStacks != null) {
-  //      for (ItemStack in : inputStacks) {
-  //        if(in != null) {
-  //          inputList.add(new RecipeInput(in));
-  //        }
-  //      }
-  //    }
-  //    inputs = inputList.toArray(new RecipeInput[inputList.size()]);
-  //    output = new RecipeOutput[] { new RecipeOutput(outputFluidStack) };
-  //  }
-
   public StillRecipe(Recipe recipe) {
     List<FluidStack> fluids = recipe.getInputFluidStacks();
     if(fluids != null && !fluids.isEmpty()) {
@@ -49,7 +29,6 @@ public class StillRecipe implements IRecipe {
     } else {
       inputFluidStack = null;
     }
-    this.inputStacks = recipe.getInputStacks();
 
     FluidStack os = null;
     for (RecipeOutput output : recipe.getOutputs()) {
@@ -60,41 +39,30 @@ public class StillRecipe implements IRecipe {
     }
     outputFluidStack = os;
 
-    List<RecipeInput> inputList = new ArrayList<RecipeInput>(3);
-    if(inputFluidStack != null) {
-      inputList.add(new RecipeInput(inputFluidStack));
-    }
-    if(inputStacks != null) {
-      for (ItemStack in : inputStacks) {
-        if(in != null) {
-          inputList.add(new RecipeInput(in));
-        }
-      }
-    }
-    inputs = inputList.toArray(new RecipeInput[inputList.size()]);
-    output = new RecipeOutput[] { new RecipeOutput(outputFluidStack) };
+    this.inputStacks = recipe.getInputStacks();
+    inputs = recipe.getInputs();
 
+    output = new RecipeOutput[] { new RecipeOutput(outputFluidStack) };
     energyRequired = recipe.getEnergyRequired();
 
-    float inputFluidMul = 1;
-    float outputFluidMul = 1;
-    for (RecipeInput ri : recipe.getInputs()) {
-      if(!ri.isFluid()) {
-        inputFluidMul *= ri.getMulitplier();
-      }
-      outputFluidMul *= ri.getMulitplier();
-    }
-    inputFluidStack.amount = Math.round(inputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
-    outputFluidStack.amount = Math.round(outputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
-
-    System.out.println("StillRecipe.StillRecipe: Input amount = " + inputFluidStack.amount);
-    System.out.println("StillRecipe.StillRecipe: Output amount = " + outputFluidStack.amount);
+    //    float inputFluidMul = 1;
+    //    float outputFluidMul = 1;
+    //    for (RecipeInput ri : recipe.getInputs()) {
+    //      if(!ri.isFluid()) {
+    //        inputFluidMul *= ri.getMulitplier();
+    //      }
+    //      outputFluidMul *= ri.getMulitplier();
+    //    }
+    //    inputFluidStack.amount = Math.round(inputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
+    //    outputFluidStack.amount = Math.round(outputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
+    //    System.out.println("StillRecipe.StillRecipe: Input amount = " + inputFluidStack.amount);
+    //    System.out.println("StillRecipe.StillRecipe: Output amount = " + outputFluidStack.amount);
 
   }
 
   @Override
   public boolean isValid() {
-    return inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() < 3 && outputFluidStack != null;
+    return inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() > 2 && outputFluidStack != null;
   }
 
   @Override
@@ -118,12 +86,12 @@ public class StillRecipe implements IRecipe {
   }
 
   @Override
-  public boolean isValidInput(ItemStack item) {
+  public boolean isValidInput(int slot, ItemStack item) {
     if(item == null) {
       return false;
     }
     for (RecipeInput ri : inputs) {
-      if(item != null && ri.isInput(item)) {
+      if(item != null && ri.getSlotNumber() == slot && ri.isInput(item)) {
         return true;
       }
     }
@@ -144,40 +112,91 @@ public class StillRecipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(List<ItemStack> test) {
-    return false;
-  }
-
-  @Override
-  public boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids) {
-    if(!isValid() || test == null || test.size() != 2 || testFluids == null || testFluids.size() != 1 || testFluids.get(0) == null) {
-      return false;
-    }
-    boolean validFluid = inputFluidStack.isFluidEqual(testFluids.get(0)) && inputFluidStack.amount <= testFluids.get(0).amount;
-    if(!validFluid) {
+  public boolean isInputForRecipe(MachineRecipeInput... inputs) {
+    if(!isValid() || inputs == null || inputs.length < 2) {
       return false;
     }
 
-    for (int i = 0; i < inputs.length; i++) {
-      if(!inputs[i].isFluid() && !containsInput(inputs[i], test)) {
-        return false;
-      }
-    }
-    return true;
-  }
+    int found = 0;
+    for (MachineRecipeInput in : inputs) {
+      if(in.isFluid()) {
+        FluidStack needFluid = getRequiredFluidInput(inputs);
+        boolean validFluid = needFluid.isFluidEqual(in.fluid);
+        if(validFluid && needFluid.amount <= in.fluid.amount) {
+          found++;
+        }
 
-  private boolean containsInput(RecipeInput recipeInput, List<ItemStack> test) {
-    for (ItemStack stack : test) {
-      if(recipeInput.isInput(stack)) {
-        return true;
+      } else {
+        if(isValidInput(in.slotNumber, in.item)) { //TODO: Check stack counts
+          found++;
+        }
       }
     }
-    return false;
+
+    return found == 3;
+
   }
 
   @Override
   public List<FluidStack> getInputFluidStacks() {
     return Collections.singletonList(inputFluidStack);
+  }
+
+  public float getMultiplierForInput(FluidStack item) {
+    for (RecipeInput input : inputs) {
+      if(input.isInput(item)) {
+        return input.getMulitplier();
+      }
+    }
+    return 1;
+  }
+
+  public FluidStack getRequiredFluidInput(MachineRecipeInput[] inputs) {
+    float inputFluidMul = 1;
+    float outputFluidMul = 1;
+    FluidStack inputFluidStack = null;
+    for (MachineRecipeInput ri : inputs) {
+      if(!ri.isFluid()) {
+        inputFluidMul *= getMultiplierForInput(ri.item);
+      } else {
+        inputFluidStack = ri.fluid.copy();
+      }
+    }
+    inputFluidStack.amount = Math.round(inputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
+    return inputFluidStack;
+  }
+
+  public FluidStack getFluidOutput(MachineRecipeInput... inputs) {
+    FluidStack outFluid = getOutputFluid().copy();
+    float outMul = 1;
+    for (MachineRecipeInput ri : inputs) {
+      outMul *= getMultiplierForInput(ri.item);
+      outMul *= getMultiplierForInput(ri.fluid);
+    }
+    outFluid.amount = Math.round(outMul * FluidContainerRegistry.BUCKET_VOLUME);
+    return outFluid;
+  }
+
+  public float getMultiplierForInput(ItemStack item) {
+    for (RecipeInput input : inputs) {
+      if(input.isInput(item)) {
+        return input.getMulitplier();
+      }
+    }
+    return 1;
+  }
+
+  public int getNumConsumed(ItemStack item) {
+    for (RecipeInput input : inputs) {
+      if(input.isInput(item)) {
+        return input.getInput().stackSize;
+      }
+    }
+    return 1;
+  }
+
+  public FluidStack getOutputFluid() {
+    return outputFluidStack;
   }
 
 }

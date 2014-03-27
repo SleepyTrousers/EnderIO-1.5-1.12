@@ -11,7 +11,6 @@ import crazypants.enderio.crafting.IRecipeComponent;
 import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.crafting.IRecipeOutput;
 import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.AbstractMachineRecipe;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -25,18 +24,7 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public IRecipe getRecipeForInputs(MachineRecipeInput[] inputs) {
-    List<ItemStack> items = new ArrayList<ItemStack>();
-    List<FluidStack> fluids = new ArrayList<FluidStack>();
-    for (MachineRecipeInput mi : inputs) {
-      if(mi != null) {
-        if(mi.item != null) {
-          items.add(mi.item);
-        } else if(mi.fluid != null) {
-          fluids.add(mi.fluid);
-        }
-      }
-    }
-    return StillRecipeManager.instance.getRecipeForInput(items, fluids);
+    return StillRecipeManager.instance.getRecipeForInput(inputs);
   }
 
   @Override
@@ -53,6 +41,38 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
+  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+
+    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
+
+    StillRecipe rec = (StillRecipe) getRecipeForInputs(inputs);
+    FluidStack inputFluidStack = rec.getRequiredFluidInput(inputs);
+    result.add(new MachineRecipeInput(0, inputFluidStack));
+
+    for (MachineRecipeInput ri : inputs) {
+      if(!ri.isFluid()) {
+        ItemStack st = ri.item.copy();
+        st.stackSize = rec.getNumConsumed(ri.item);
+        result.add(new MachineRecipeInput(ri.slotNumber, st));
+      }
+    }
+    return result;
+
+  }
+
+  @Override
+  public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+    if(inputs == null || inputs.length <= 0) {
+      return new ResultStack[0];
+    }
+    StillRecipe recipe = (StillRecipe) getRecipeForInputs(inputs);
+    if(recipe == null || !recipe.isValid()) {
+      return new ResultStack[0];
+    }
+    return new ResultStack[] { new ResultStack(recipe.getFluidOutput(inputs)) };
+  }
+
+  @Override
   public List<IEnderIoRecipe> getAllRecipes() {
     List<IEnderIoRecipe> result = new ArrayList<IEnderIoRecipe>();
     List<IRecipe> recipes = StillRecipeManager.getInstance().getRecipes();
@@ -60,7 +80,7 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
       List<IRecipeComponent> components = new ArrayList<IRecipeComponent>();
       for (crazypants.enderio.machine.recipe.RecipeInput ri : cr.getInputs()) {
         if(ri.getInput() != null) {
-          IRecipeInput input = new RecipeInput(ri.getInput(), -1, ri.getEquivelentInputs());
+          IRecipeInput input = new crazypants.enderio.crafting.impl.RecipeInput(ri.getInput(), -1, ri.getEquivelentInputs());
           components.add(input);
         }
       }

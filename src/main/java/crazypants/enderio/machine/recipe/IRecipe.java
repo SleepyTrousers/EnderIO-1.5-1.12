@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.machine.MachineRecipeInput;
 
 public interface IRecipe {
 
@@ -19,11 +20,13 @@ public interface IRecipe {
 
   List<FluidStack> getInputFluidStacks();
 
-  boolean isInputForRecipe(List<ItemStack> test);
+  //  boolean isInputForRecipe(List<ItemStack> test);
+  //
+  //  boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);
 
-  boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);
+  boolean isInputForRecipe(MachineRecipeInput... inputs);
 
-  boolean isValidInput(ItemStack item);
+  boolean isValidInput(int slotNumber, ItemStack item);
 
   boolean isValidInput(FluidStack fluid);
 
