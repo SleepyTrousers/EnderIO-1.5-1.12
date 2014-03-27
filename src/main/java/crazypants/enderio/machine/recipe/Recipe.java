@@ -2,6 +2,7 @@ package crazypants.enderio.machine.recipe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -99,15 +100,30 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public ItemStack[] getInputStacks() {
+  public List<ItemStack> getInputStacks() {
     if(inputs == null) {
-      return new ItemStack[0];
+      return Collections.emptyList();
     }
-    ItemStack[] res = new ItemStack[inputs.length];
-    for (int i = 0; i < res.length; i++) {
+    List<ItemStack> res = new ArrayList<ItemStack>(inputs.length);
+    for (int i = 0; i < inputs.length; i++) {
       RecipeInput in = inputs[i];
-      if(in != null) {
-        res[i] = in.getInput();
+      if(in != null && in.getInput() != null) {
+        res.add(in.getInput());
+      }
+    }
+    return res;
+  }
+
+  @Override
+  public List<FluidStack> getInputFluidStacks() {
+    if(inputs == null) {
+      return Collections.emptyList();
+    }
+    List<FluidStack> res = new ArrayList<FluidStack>(inputs.length);
+    for (int i = 0; i < inputs.length; i++) {
+      RecipeInput in = inputs[i];
+      if(in != null && in.getFluidInput() != null) {
+        res.add(in.getFluidInput());
       }
     }
     return res;

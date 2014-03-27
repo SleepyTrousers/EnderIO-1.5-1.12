@@ -223,7 +223,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   }
 
   @Override
-  public ItemStack[] getInputStacks() {
+  public List<ItemStack> getInputStacks() {
     return recipe.getInputStacks();
   }
 
@@ -243,5 +243,10 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   @Override
   public RecipeInput[] getInputs() {
     return recipe.getInputs();
+  }
+
+  @Override
+  public List<FluidStack> getInputFluidStacks() {
+    return Collections.emptyList();
   }
 }

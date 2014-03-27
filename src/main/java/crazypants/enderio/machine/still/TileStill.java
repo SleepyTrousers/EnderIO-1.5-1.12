@@ -89,7 +89,6 @@ public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandle
 
   @Override
   protected void drainInputFluid(MachineRecipeInput fluid) {
-    System.out.println("TileStill.drainInputFluid: ");
     inputTank.drain(fluid.fluid.amount, true);
     tanksDirty = true;
   }

@@ -10,20 +10,33 @@ public class RecipeInput {
 
   private final FluidStack fluid;
 
+  private final float mulitplier;
+
   public RecipeInput(ItemStack input) {
     this(input, true);
   }
 
   public RecipeInput(ItemStack input, boolean useMeta) {
-    this.input = input;
-    this.useMeta = useMeta;
-    this.fluid = null;
+    this(input, useMeta, null, 1);
   }
 
   public RecipeInput(FluidStack fluid) {
-    this.input = null;
-    this.useMeta = false;
+    this(null, false, fluid, 1f);
+  }
+
+  public RecipeInput(FluidStack fluidStack, float mulitplier) {
+    this(null, true, fluidStack, mulitplier);
+  }
+
+  public RecipeInput(ItemStack item, boolean useMeta, float multiplier) {
+    this(item, useMeta, null, multiplier);
+  }
+
+  protected RecipeInput(ItemStack input, boolean useMeta, FluidStack fluid, float mulitplier) {
+    this.input = input;
+    this.useMeta = useMeta;
     this.fluid = fluid;
+    this.mulitplier = mulitplier;
   }
 
   public boolean isFluid() {
@@ -36,6 +49,10 @@ public class RecipeInput {
 
   public FluidStack getFluidInput() {
     return fluid;
+  }
+
+  public float getMulitplier() {
+    return mulitplier;
   }
 
   public boolean isInput(ItemStack test) {

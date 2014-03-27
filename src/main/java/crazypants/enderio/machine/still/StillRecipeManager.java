@@ -13,7 +13,10 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeConfig;
+import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.recipe.RecipeOutput;
 
 public class StillRecipeManager {
 
@@ -38,10 +41,22 @@ public class StillRecipeManager {
     //    } else {
     //      Log.error("Could not load recipes for SAG Mill.");
     //    }
-    FluidStack resStack = FluidRegistry.getFluidStack("nutrientdistillation", FluidContainerRegistry.BUCKET_VOLUME);
+
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockStill.unlocalisedName, new StillMachineRecipe());
-    addRecipe(new StillRecipe(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), resStack, new ItemStack(Items.rotten_flesh),
-        new ItemStack(Items.nether_wart)));
+
+    RecipeInput[] ins = new RecipeInput[] {
+        new RecipeInput(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), 0.5f),
+        new RecipeInput(new ItemStack(Items.rotten_flesh), true, 2),
+        new RecipeInput(new ItemStack(Items.nether_wart), true, 1.5f)
+    };
+
+    FluidStack resStack = FluidRegistry.getFluidStack("nutrientdistillation", FluidContainerRegistry.BUCKET_VOLUME);
+    RecipeOutput[] outs = new RecipeOutput[] {
+        new RecipeOutput(resStack)
+    };
+
+    Recipe rec = new Recipe(ins, outs, 1000);
+    addRecipe(new StillRecipe(rec));
   }
 
   public void addCustumRecipes(String xmlDef) {

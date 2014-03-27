@@ -43,11 +43,11 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_DUMP_ITEMS = "modObjects";
   public static final String AT_ORE_DICT = "oreDictionary";
   public static final String AT_ENERGY_COST = "energyCost";
-  public static final String AT_ITEM_ID = "itemID";
   public static final String AT_ITEM_META = "itemMeta";
   public static final String AT_ITEM_NAME = "itemName";
   public static final String AT_MOD_ID = "modID";
   public static final String AT_NUMBER = "number";
+  public static final String AT_MULTIPLIER = "multiplier";
   public static final String AT_CHANCE = "chance";
   public static final String AT_EXP = "exp";
 
@@ -331,7 +331,7 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       ItemStack stack = ores.get(0).copy();
       stack.stackSize = stackSize;
-      return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict));
+      return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict), getFloatValue(AT_MULTIPLIER, attributes, 1));
     }
 
     boolean useMeta = true;
@@ -341,13 +341,6 @@ public class RecipeConfigParser extends DefaultHandler {
     }
     int itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
 
-    int itemID = getIntValue(AT_ITEM_ID, attributes, -1);
-    if(itemID > 0) {
-
-      //TODO:1.7 do I want to support ID still?
-      //return new RecipeInput(new ItemStack(itemID, stackSize, itemMeta), useMeta);
-      return null;
-    }
     ItemStack res = null;
 
     String modId = getStringValue(AT_MOD_ID, attributes, null);
@@ -370,7 +363,7 @@ public class RecipeConfigParser extends DefaultHandler {
       Log.debug("Could not create an item stack from the attributes " + toString(attributes));
       return null;
     }
-    return new RecipeInput(res, useMeta);
+    return new RecipeInput(res, useMeta, getFloatValue(AT_MULTIPLIER, attributes, 1));
   }
 
   public static boolean getBooleanValue(String qName, Attributes attributes, boolean def) {

@@ -15,7 +15,9 @@ public interface IRecipe {
 
   RecipeInput[] getInputs();
 
-  ItemStack[] getInputStacks();
+  List<ItemStack> getInputStacks();
+
+  List<FluidStack> getInputFluidStacks();
 
   boolean isInputForRecipe(List<ItemStack> test);
 
