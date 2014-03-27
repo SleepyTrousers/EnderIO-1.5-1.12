@@ -90,7 +90,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       EntityPlayer player = (EntityPlayer) evt.source.getEntity();
 
       double skullDropChance = getSkullDropChance(player, evt);
-      if(Math.random() >= skullDropChance) {
+      if(Math.random() <= skullDropChance) {
         ItemStack skull = getSkullForEntity(evt.entityLiving);
         if(skull != null && !containsDrop(evt, skull)) {
           //TODO: Shouldn't I add this to the list in the event?
