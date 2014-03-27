@@ -100,7 +100,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       if(isEquipped(player)) {
         if(evt.entityLiving instanceof EntityEnderman) {
           int numPearls = 0;
-          if(Math.random() >= Config.darkSteelSwordEnderPearlDropChance) {
+          if(Math.random() <= Config.darkSteelSwordEnderPearlDropChance) {
             numPearls++;
           }
           for (int i = 0; i < evt.lootingLevel; i++) {
