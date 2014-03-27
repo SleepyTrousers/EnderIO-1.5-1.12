@@ -395,6 +395,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
   }
 
   private void updateCapacitorFromSlot() {
+    if(slotDefinition.getNumUpgradeSlots() <= 0) {
+      setCapacitor(Capacitors.BASIC_CAPACITOR);
+      return;
+    }
     ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
     if(contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);

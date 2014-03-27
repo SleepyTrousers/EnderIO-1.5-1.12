@@ -13,6 +13,8 @@ public interface IEnderIoRecipe {
 
   public static final String SAG_MILL_ID = ModObject.blockSagMill.unlocalisedName;
 
+  public static final String STILL_ID = ModObject.blockAlloySmelter.unlocalisedName;
+
   String getCrafterId();
 
   List<IRecipeInput> getInputs();

@@ -94,7 +94,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     ItemStack output = null;
     int inputCount = 0;
     for (MachineRecipeInput ri : inputs) {
@@ -103,11 +103,11 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       }
     }
     if(output == null) {
-      return new ItemStack[0];
+      return new ResultStack[0];
     }
     ItemStack result = output.copy();
     result.stackSize = result.stackSize * getNumInputs(inputs);
-    return new ItemStack[] { result };
+    return new ResultStack[] { new ResultStack(result) };
   }
 
   @Override
@@ -140,7 +140,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     int consumed = 0;
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput ri : inputs) {
@@ -156,7 +156,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
         }
       }
     }
-    return result.toArray(new MachineRecipeInput[result.size()]);
+    return result;
   }
 
   @Override

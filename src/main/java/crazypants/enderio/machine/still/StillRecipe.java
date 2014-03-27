@@ -105,7 +105,7 @@ public class StillRecipe implements IRecipe {
     }
 
     for (int i = 0; i < inputs.length; i++) {
-      if(!containsInput(inputs[i], test)) {
+      if(!inputs[i].isFluid() && !containsInput(inputs[i], test)) {
         return false;
       }
     }

@@ -8,6 +8,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
@@ -60,7 +61,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     if(mode == Mode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().vanillaRecipe;
       if(vr.isRecipe(getInputs())) {
-        ItemStack[] res = vr.getCompletedResult(chance, getInputs());
+        ResultStack[] res = vr.getCompletedResult(chance, getInputs());
         if(res == null || res.length == 0) {
           return null;
         }

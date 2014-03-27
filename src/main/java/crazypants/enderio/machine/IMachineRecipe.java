@@ -3,6 +3,7 @@ package crazypants.enderio.machine;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 
 /**
@@ -57,7 +58,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  ItemStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs);
+  ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs);
 
   /**
    * Returns the experience a user gains when this recipe has generated the
@@ -91,7 +92,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs);
+  List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs);
 
   /**
    * Returns all possible outputs from the recipe.
@@ -99,5 +100,27 @@ public interface IMachineRecipe {
    * @return
    */
   List<IEnderIoRecipe> getAllRecipes();
+
+  public static class ResultStack {
+
+    public final ItemStack item;
+    public final FluidStack fluid;
+
+    public ResultStack(ItemStack item, FluidStack fluid) {
+      this.item = item;
+      this.fluid = fluid;
+    }
+
+    public ResultStack(ItemStack item) {
+      this.item = item;
+      this.fluid = null;
+    }
+
+    public ResultStack(FluidStack fluid) {
+      this.item = null;
+      this.fluid = fluid;
+    }
+
+  }
 
 }

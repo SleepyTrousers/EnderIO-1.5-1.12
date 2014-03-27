@@ -241,12 +241,12 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
     }
 
     @Override
-    public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+    public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if(paintSource == null) {
-        return new ItemStack[0];
+        return new ResultStack[0];
       }
-      return new ItemStack[] { createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()) };
+      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
 
     @Override

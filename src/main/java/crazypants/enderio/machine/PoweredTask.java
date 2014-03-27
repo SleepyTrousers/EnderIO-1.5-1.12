@@ -1,14 +1,17 @@
 package crazypants.enderio.machine;
 
-import net.minecraft.item.ItemStack;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
 public class PoweredTask {
 
-  public static final String KEY_INPUTS_SLOTS = "inputsSlots";
-  public static final String KEY_INPUTS_STACKS = "inputsStacks";
+  public static final String KEY_INPUT_STACKS = "inputsStacks";
+
   public static final String KEY_RECIPE = "recipeUid";
   public static final String KEY_USED_ENERGY = "usedEnergy";
   private static final String KEY_CHANCE = "chance";
@@ -31,7 +34,7 @@ public class PoweredTask {
     this.inputs = inputsIn;
     int numInputs = 0;
     for (int i = 0; i < inputsIn.length; i++) {
-      if(inputsIn[i] != null && inputsIn[i].item != null) {
+      if(inputsIn[i] != null && (inputsIn[i].item != null || inputsIn[i].fluid != null)) {
         numInputs++;
       }
     }
@@ -39,9 +42,14 @@ public class PoweredTask {
     inputs = new MachineRecipeInput[numInputs];
     int index = 0;
     for (int i = 0; i < inputsIn.length; i++) {
-      if(inputsIn[i] != null && inputsIn[i].item != null) {
-        inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
-        index++;
+      if(inputsIn[i] != null) {
+        if(inputsIn[i].item != null) {
+          inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].item.copy());
+          index++;
+        } else if(inputsIn[i].fluid != null) {
+          inputs[index] = new MachineRecipeInput(inputsIn[i].slotNumber, inputsIn[i].fluid.copy());
+          index++;
+        }
       }
     }
 
@@ -63,26 +71,21 @@ public class PoweredTask {
     return MathHelper.clamp_float(usedEnergy / requiredEnergy, 0, 1);
   }
 
-  public ItemStack[] getCompletedResult() {
+  public ResultStack[] getCompletedResult() {
     return recipe.getCompletedResult(chance, inputs);
   }
 
   public void writeToNBT(NBTTagCompound nbtRoot) {
     NBTTagCompound stackRoot;
 
-    int[] inputSlots = new int[inputs.length];
-    for (int i = 0; i < inputSlots.length; i++) {
-      inputSlots[i] = inputs[i].slotNumber;
-    }
-    nbtRoot.setIntArray(KEY_INPUTS_SLOTS, inputSlots);
-
     NBTTagList inputItems = new NBTTagList();
     for (MachineRecipeInput ri : inputs) {
       stackRoot = new NBTTagCompound();
-      ri.item.writeToNBT(stackRoot);
+      ri.writeToNbt(stackRoot);
       inputItems.appendTag(stackRoot);
     }
-    nbtRoot.setTag(KEY_INPUTS_STACKS, inputItems);
+
+    nbtRoot.setTag(KEY_INPUT_STACKS, inputItems);
 
     nbtRoot.setString(KEY_RECIPE, recipe.getUid());
     nbtRoot.setFloat(KEY_USED_ENERGY, usedEnergy);
@@ -100,26 +103,22 @@ public class PoweredTask {
     float usedEnergy = nbtRoot.getFloat(KEY_USED_ENERGY);
     float chance = nbtRoot.getFloat(KEY_CHANCE);
 
-    int[] inputSlots = nbtRoot.getIntArray(KEY_INPUTS_SLOTS);
-    if(inputSlots == null || inputSlots.length <= 0) {
-      return null;
-    }
-    NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUTS_STACKS);
-    if(inputItems == null || inputItems.tagCount() != inputSlots.length) {
+    NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUT_STACKS);
+    if(inputItems == null || inputItems.tagCount() < 1) {
       return null;
     }
 
-    MachineRecipeInput[] inputs = new MachineRecipeInput[inputSlots.length];
-    for (int i = 0; i < inputSlots.length; i++) {
+    List<MachineRecipeInput> ins = new ArrayList<MachineRecipeInput>(3);
+    for (int i = 0; i < inputItems.tagCount(); i++) {
       NBTTagCompound stackTag = inputItems.getCompoundTagAt(i);
-      ItemStack item = ItemStack.loadItemStackFromNBT(stackTag);
-      inputs[i] = new MachineRecipeInput(inputSlots[i], item);
+      MachineRecipeInput mi = MachineRecipeInput.readFromNBT(stackTag);
+      ins.add(mi);
     }
 
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
     if(recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, chance, inputs);
+      return new PoweredTask(recipe, usedEnergy, chance, ins.toArray(new MachineRecipeInput[ins.size()]));
     }
     return null;
 

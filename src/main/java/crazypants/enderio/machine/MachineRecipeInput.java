@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MachineRecipeInput {
@@ -33,6 +34,39 @@ public class MachineRecipeInput {
     this.slotNumber = slotNumber;
     this.item = null;
     this.fluid = fluid;
+  }
+
+  public MachineRecipeInput(int slotNumber, ItemStack item, FluidStack fluid) {
+    this.slotNumber = slotNumber;
+    this.item = item;
+    this.fluid = fluid;
+  }
+
+  public static MachineRecipeInput readFromNBT(NBTTagCompound root) {
+    int slotNum = root.getInteger("slotNum");
+    ItemStack item = null;
+    FluidStack fluid = null;
+    if(root.hasKey("itemStack")) {
+      NBTTagCompound stackRoot = root.getCompoundTag("itemStack");
+      item = ItemStack.loadItemStackFromNBT(stackRoot);
+    } else if(root.hasKey("fluidStack")) {
+      NBTTagCompound stackRoot = root.getCompoundTag("fluidStack");
+      fluid = FluidStack.loadFluidStackFromNBT(stackRoot);
+    }
+    return new MachineRecipeInput(slotNum, item, fluid);
+  }
+
+  public void writeToNbt(NBTTagCompound root) {
+    if(item != null) {
+      NBTTagCompound stackRoot = new NBTTagCompound();
+      item.writeToNBT(stackRoot);
+      root.setTag("itemStack", stackRoot);
+    } else if(fluid != null) {
+      NBTTagCompound stackRoot = new NBTTagCompound();
+      fluid.writeToNBT(stackRoot);
+      root.setTag("fluidStack", stackRoot);
+    }
+    root.setInteger("slotNum", slotNumber);
   }
 
 }

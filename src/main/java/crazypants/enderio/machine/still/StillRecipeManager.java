@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -39,9 +38,10 @@ public class StillRecipeManager {
     //    } else {
     //      Log.error("Could not load recipes for SAG Mill.");
     //    }
+    FluidStack resStack = FluidRegistry.getFluidStack("nutrientdistillation", FluidContainerRegistry.BUCKET_VOLUME);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockStill.unlocalisedName, new StillMachineRecipe());
-    addRecipe(new StillRecipe(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), new FluidStack(
-        EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Items.rotten_flesh), new ItemStack(Items.nether_wart)));
+    addRecipe(new StillRecipe(new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME), resStack, new ItemStack(Items.rotten_flesh),
+        new ItemStack(Items.nether_wart)));
   }
 
   public void addCustumRecipes(String xmlDef) {

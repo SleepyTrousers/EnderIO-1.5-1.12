@@ -21,21 +21,21 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   public abstract IRecipe getRecipeForInputs(MachineRecipeInput[] inputs);
 
   @Override
-  public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     IRecipe rec = getRecipeForInputs(inputs);
-
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput input : inputs) {
-      if(input != null && input.item != null) {
+      if(input != null && (input.item != null || input.fluid != null)) {
         for (RecipeInput ri : rec.getInputs()) {
           if(ri.isInput(input.item)) {
             result.add(new MachineRecipeInput(input.slotNumber, ri.getInput().copy()));
+          } else if(ri.isInput(input.fluid)) {
+            result.add(new MachineRecipeInput(input.slotNumber, ri.getFluidInput().copy()));
           }
         }
       }
     }
-
-    return result.toArray(new MachineRecipeInput[result.size()]);
+    return result;
   }
 
   @Override
@@ -53,25 +53,29 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     if(inputs == null || inputs.length <= 0) {
-      return new ItemStack[0];
+      return new ResultStack[0];
     }
     IRecipe recipe = getRecipeForInputs(inputs);
     if(recipe == null) {
-      return new ItemStack[0];
+      return new ResultStack[0];
     }
     RecipeOutput[] outputs = recipe.getOutputs();
     if(outputs == null) {
-      return new ItemStack[0];
+      return new ResultStack[0];
     }
-    List<ItemStack> result = new ArrayList<ItemStack>();
+    List<ResultStack> result = new ArrayList<ResultStack>();
     for (RecipeOutput output : outputs) {
       if(output.getChance() >= chance) {
-        result.add(output.getOutput());
+        if(output.isFluid()) {
+          result.add(new ResultStack(output.getFluidOutput()));
+        } else {
+          result.add(new ResultStack(output.getOutput()));
+        }
       }
     }
-    return result.toArray(new ItemStack[result.size()]);
+    return result.toArray(new ResultStack[result.size()]);
 
   }
 

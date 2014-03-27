@@ -23,8 +23,11 @@ public class BlockFluidEio extends BlockFluidClassic {
     return res;
   }
 
+  protected Fluid fluid;
+
   protected BlockFluidEio(Fluid fluid, Material material) {
     super(fluid, material);
+    this.fluid = fluid;
   }
 
   protected void init() {
@@ -42,11 +45,10 @@ public class BlockFluidEio extends BlockFluidClassic {
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iconRegister) {
-    //nutrientdistillation_still.png
-    //nutrientdistillation_still.png
     icons = new IIcon[] { iconRegister.registerIcon("enderio:" + fluidName + "_still"),
         iconRegister.registerIcon("enderio:" + fluidName + "_flow") };
 
+    fluid.setIcons(icons[0], icons[1]);
   }
 
   @Override

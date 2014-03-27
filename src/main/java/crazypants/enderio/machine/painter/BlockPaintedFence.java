@@ -265,9 +265,9 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     }
 
     @Override
-    public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+    public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-      return new ItemStack[] { createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()) };
+      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
 
     @Override

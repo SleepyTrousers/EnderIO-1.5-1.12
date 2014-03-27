@@ -66,4 +66,8 @@ public class RecipeOutput {
     return outputFluid;
   }
 
+  public boolean isFluid() {
+    return outputFluid != null;
+  }
+
 }

@@ -1,6 +1,10 @@
 package crazypants.enderio.machine.painter;
 
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
+
+import java.util.Collections;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -47,7 +51,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public ItemStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
+  public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
     ItemStack target = getTarget(inputs);
     ItemStack paintSource = getPaintSource(inputs);
     if(target == null || paintSource == null) {
@@ -55,7 +59,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     }
     ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
     PainterUtil.setSourceBlock(result, Util.getBlockFromItemId(paintSource), paintSource.getItemDamage());
-    return new ItemStack[] { result };
+    return new ResultStack[] { new ResultStack(result) };
   }
 
   public ItemStack getTarget(MachineRecipeInput... inputs) {
@@ -128,7 +132,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public MachineRecipeInput[] getQuantitiesConsumed(MachineRecipeInput[] inputs) {
+  public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     MachineRecipeInput consume = null;
     for (MachineRecipeInput input : inputs) {
       if(input != null && input.slotNumber == 0 && input.item != null) {
@@ -138,7 +142,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       }
     }
     if(consume != null) {
-      return new MachineRecipeInput[] { consume };
+      return Collections.singletonList(consume);
     }
     return null;
   }
