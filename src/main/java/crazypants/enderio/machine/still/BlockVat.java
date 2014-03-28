@@ -42,7 +42,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
     }
 
-    //check for filled fluid containers and see if we can fill up
+    //check for filled fluid containers and see if we can empty them into our input tank
     FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
     if(fluid == null) {
       if(item.getItem() == Items.water_bucket) {
@@ -56,11 +56,11 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       int filled = vat.fill(ForgeDirection.UP, fluid, false);
       if(filled >= fluid.amount) {
         vat.fill(ForgeDirection.UP, fluid, true);
+        if(!entityPlayer.capabilities.isCreativeMode) {
+          entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
+        }
+        return true;
       }
-      if(!entityPlayer.capabilities.isCreativeMode) {
-        entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
-      }
-      return true;
     }
 
     //now check for empty fluid containers to fill
@@ -72,7 +72,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
         FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
         for (FluidContainerData data : datas) {
-          if(data.fluid.getFluid().getName().equals(available.getFluid().getName())) {
+          if(data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
             res = data.filledContainer.copy();
             filled = FluidContainerRegistry.getFluidForFilledItem(res);
           }

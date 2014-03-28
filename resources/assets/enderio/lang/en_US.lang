@@ -41,9 +41,11 @@ enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 
-//Liquids
+//Fluids
 item.bucketNutrientdistillation.name=Nutrient Distillation Bucket
 item.bucketHootch.name=Hootch Bucket
+enderio.fluid.millibucket.abr=MB
+
 
 //Crafting components
 enderio.itemMachinePart.name=Machine Parts
@@ -205,6 +207,10 @@ enderio.gui.alloy.mode.heading=Furnace Mode
 enderio.gui.alloy.mode.all=All Smelting
 enderio.gui.alloy.mode.alloy=Alloys Only
 enderio.gui.alloy.mode.furnace=Furnace Only
+
+//Vat
+enderio.vat.outputTank=Output Tank
+enderio.vat.inputTank=Input Tank
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only

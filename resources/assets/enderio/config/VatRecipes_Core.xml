@@ -20,20 +20,21 @@
         <fluidStack name="water" multiplier="0.5"/>
       </input>      
       <output>
-        <fluidStack name="nutrientdistillation"/>        
+        <fluidStack name="nutrient_distillation"/>        
       </output>
       
     </recipe>
     
     <recipe name="Hootch" energyCost="500">
       <input>
+        <itemStack modID="minecraft" itemName="poisonous_potato" slot="0" multiplier="2"/>
         <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="2"/>                                               
         <itemStack modID="minecraft" itemName="wheat" slot="0" multiplier="1.5"/>
         <itemStack modID="minecraft" itemName="wheat_seeds" slot="0" multiplier="1"/>        
         
         <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1"/>
                 
-        <fluidStack name="water" multiplier="1"/>
+        <fluidStack name="water" multiplier="0.5"/>
       </input>      
       <output>
         <fluidStack name="hootch"/>        
