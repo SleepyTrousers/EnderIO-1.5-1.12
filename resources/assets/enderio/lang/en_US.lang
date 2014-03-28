@@ -42,6 +42,8 @@ enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 
 //Fluids
+fluid.nutrient_distillation=Nutrient Distillation
+fluid.hootch=Hootch
 item.bucketNutrientdistillation.name=Nutrient Distillation Bucket
 item.bucketHootch.name=Hootch Bucket
 enderio.fluid.millibucket.abr=MB

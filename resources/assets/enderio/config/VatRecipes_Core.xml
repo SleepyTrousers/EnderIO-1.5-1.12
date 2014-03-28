@@ -1,3 +1,15 @@
+<!-- 
+Vat recipes take two item inputs and one fluid input, and output a fluid.
+The various values are calulcated like this:
+
+For:
+input volume = 1000 (a bucket) * inputFluid.multiplier * slot0.multiplier
+
+Produce:
+output fluid volume = 1000 (a bucket) * inputFluid.multiplier * slot0.multiplier * slot1.multiplier.
+
+The vat always uses 1 MJ per tick, so energy cost also equates to duration.
+ -->
 <VatRecipes>
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
