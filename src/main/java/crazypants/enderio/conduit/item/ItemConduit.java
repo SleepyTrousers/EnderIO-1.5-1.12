@@ -378,7 +378,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
-    return getExternalInventory(direction) != null;
+    IInventory inv = getExternalInventory(direction);
+    if (inv instanceof ISidedInventory) {
+    	return ((ISidedInventory)inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal()).length != 0;
+    } else {
+    	return inv != null;
+    }
   }
 
   @Override
