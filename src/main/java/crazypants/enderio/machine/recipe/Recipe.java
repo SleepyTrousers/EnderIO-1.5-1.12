@@ -35,27 +35,35 @@ public class Recipe implements IRecipe {
       return false;
     }
 
-    int numFound = 0;
+    int usedCount = 0;
     for (MachineRecipeInput input : inputs) {
-      if(input.isFluid()) {
-        RecipeInput ri = getInputForStack(input.fluid);
-        if(ri == null || ri.getFluidInput() == null) {
-          return false;
+      if(input != null) {
+        if(input.item != null) {
+          RecipeInput ri = getInputForStack(input.item);
+          if(ri == null || ri.getInput() == null) {
+            return false;
+          }
+          if(input.item.stackSize < ri.getInput().stackSize) {
+            return false;
+          }
+          usedCount++;
+        } else if(input.fluid != null) {
+          RecipeInput ri = getInputForStack(input.fluid);
+          if(ri == null || ri.getInput() == null) {
+            return false;
+          }
+          if(input.fluid.amount < ri.getFluidInput().amount) {
+            return false;
+          }
+          usedCount++;
         }
-        numFound++;
-      } else {
-        RecipeInput ri = getInputForStack(input.item);
-        if(ri == null || ri.getInput() == null || ri.getSlotNumber() != input.slotNumber) {
-          return false;
-        }
-        if(input.item.stackSize < ri.getInput().stackSize) {
-          return false;
-        }
-        numFound++;
       }
     }
+    return usedCount == getMinNumInputs();
+  }
 
-    return numFound == 3;
+  protected int getMinNumInputs() {
+    return inputs.length;
   }
 
   @Override

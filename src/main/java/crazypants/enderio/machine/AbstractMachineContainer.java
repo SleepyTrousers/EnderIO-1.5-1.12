@@ -15,7 +15,7 @@ public abstract class AbstractMachineContainer extends Container {
 
     addMachineSlots(playerInv);
 
-    if(te.getSlotDefinition().getNumInputSlots() == 1) {
+    if(te.getSlotDefinition().getNumUpgradeSlots() == 1) {
       addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), 12, 60) {
         @Override
         public boolean isItemValid(ItemStack itemStack) {

@@ -1,5 +1,6 @@
 package crazypants.enderio.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -121,17 +122,38 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     if(currentTask != null) {
       lastCompletedRecipe = currentTask.getRecipe();
       ResultStack[] output = currentTask.getCompletedResult();
+
       if(output != null && output.length > 0) {
         ResultStack[] results = currentTask.getCompletedResult();
-        for (ResultStack result : results) {
-          if(result != null) {
-            if(result.item != null) {
-              mergeItemResult(result);
-            } else if(result.fluid != null) {
-              mergeFluidResult(result);
+
+        List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
+        if(slotDefinition.getNumOutputSlots() > 0) {
+          for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+            ItemStack it = inventory[i];
+            if(it != null) {
+              it = it.copy();
             }
+            outputStacks.add(it);
           }
         }
+
+        for (ResultStack result : results) {
+          if(result.item != null) {
+            mergeItemResult(result.item, outputStacks);
+          } else if(result.fluid != null) {
+            mergeFluidResult(result);
+          }
+        }
+
+        if(slotDefinition.getNumOutputSlots() > 0) {
+          int listIndex = 0;
+          for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+            ItemStack st = outputStacks.get(listIndex);
+            inventory[i] = st;
+            listIndex++;
+          }
+        }
+
       }
     }
     currentTask = null;
@@ -147,24 +169,31 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     return false;
   }
 
-  protected void mergeItemResult(ResultStack result) {
-    int toMerge = result.item.stackSize;
-    for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot() && toMerge > 0; i++) {
-      int outputIndex = i;
-      if(inventory[outputIndex] == null) {
-        inventory[outputIndex] = result.item.copy();
-        toMerge = 0;
-      } else {
-        int newStackSize = Math.min(inventory[outputIndex].stackSize + getNumCanMerge(inventory[outputIndex], result.item),
-            inventory[outputIndex].getMaxStackSize());
-        int merged = newStackSize - inventory[outputIndex].stackSize;
-        toMerge -= merged;
-        if(merged > 0) {
-          inventory[outputIndex] = result.item.copy();
-          inventory[outputIndex].stackSize = newStackSize;
+  private boolean mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
+
+    //try to add it to existing stacks first
+    item = item.copy();
+    for (ItemStack outStack : outputStacks) {
+      if(outStack != null && item != null) {
+        int num = getNumCanMerge(outStack, item);
+        outStack.stackSize += num;
+        item.stackSize -= num;
+        if(item.stackSize <= 0) {
+          return true;
         }
       }
     }
+
+    //Try and add it to an empty slot
+    for (int i = 0; i < outputStacks.size(); i++) {
+      ItemStack outStack = outputStacks.get(i);
+      if(outStack == null) {
+        outputStacks.set(i, item);
+        return true;
+      }
+    }
+
+    return false;
   }
 
   protected MachineRecipeInput[] getInputs() {
@@ -190,25 +219,20 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
 
     ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getInputs());
-    ItemStack[] outputStacks = new ItemStack[slotDefinition.getNumOutputSlots()];
-    int copyIndex = 0;
+    List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
     if(slotDefinition.getNumOutputSlots() > 0) {
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
-        ItemStack inv = inventory[i];
-        if(inv != null) {
-          outputStacks[copyIndex] = inv.copy();
+        ItemStack st = inventory[i];
+        if(st != null) {
+          st = st.copy();
         }
-        copyIndex++;
+        outputStacks.add(st);
       }
     }
 
     for (ResultStack result : nextResults) {
       if(result.item != null) {
-        int canMerge = 0;
-        for (ItemStack outStack : outputStacks) {
-          canMerge += getNumCanMerge(outStack, result.item);
-        }
-        if(canMerge < result.item.stackSize) {
+        if(!mergeItemResult(result.item, outputStacks)) {
           return false;
         }
       } else if(result.fluid != null) {

@@ -45,19 +45,6 @@ public class StillRecipe implements IRecipe {
     output = new RecipeOutput[] { new RecipeOutput(outputFluidStack) };
     energyRequired = recipe.getEnergyRequired();
 
-    //    float inputFluidMul = 1;
-    //    float outputFluidMul = 1;
-    //    for (RecipeInput ri : recipe.getInputs()) {
-    //      if(!ri.isFluid()) {
-    //        inputFluidMul *= ri.getMulitplier();
-    //      }
-    //      outputFluidMul *= ri.getMulitplier();
-    //    }
-    //    inputFluidStack.amount = Math.round(inputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
-    //    outputFluidStack.amount = Math.round(outputFluidMul * FluidContainerRegistry.BUCKET_VOLUME);
-    //    System.out.println("StillRecipe.StillRecipe: Input amount = " + inputFluidStack.amount);
-    //    System.out.println("StillRecipe.StillRecipe: Output amount = " + outputFluidStack.amount);
-
   }
 
   @Override

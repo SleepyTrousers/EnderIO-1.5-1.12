@@ -25,13 +25,7 @@ public class AlloyMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public IRecipe getRecipeForInputs(MachineRecipeInput[] inputs) {
-    List<ItemStack> stacks = new ArrayList<ItemStack>();
-    for (MachineRecipeInput mi : inputs) {
-      if(mi != null && mi.item != null) {
-        stacks.add(mi.item);
-      }
-    }
-    return AlloyRecipeManager.instance.getRecipeForInputs(stacks);
+    return AlloyRecipeManager.instance.getRecipeForInputs(inputs);
   }
 
   @Override
