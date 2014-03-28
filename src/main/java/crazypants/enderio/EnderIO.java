@@ -32,6 +32,7 @@ import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.fluid.BlockFluidEio;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemDarkSteelArmor;
 import crazypants.enderio.item.ItemDarkSteelPickaxe;
@@ -196,7 +197,7 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
     blockReservoir = BlockReservoir.create();
 
-    Fluid f = new Fluid("nutrientDistillation").setDensity(1500).setViscosity(3000);
+    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_UNLOCALISED_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));

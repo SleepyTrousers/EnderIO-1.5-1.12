@@ -1,0 +1,45 @@
+<StillRecipes>
+  
+  <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
+    
+    <recipe name="Nutrient Distilation" energyCost="1000">
+      <input>
+        <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="2"/>
+        <itemStack modID="minecraft" itemName="skull" slot="0" multiplier="2"/>
+        <itemStack modID="minecraft" itemName="chicken" slot="0" multiplier="1"/>
+        <itemStack modID="minecraft" itemName="beef" slot="0" multiplier="1"/>
+        <itemStack modID="minecraft" itemName="porkchop" slot="0" multiplier="1"/>
+                
+        <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1"/>        
+        <itemStack modID="minecraft" itemName="brown_mushroom" slot="1" multiplier="1.5"/>     
+        <itemStack modID="minecraft" itemName="red_mushroom" slot="1" multiplier="1.5"/>
+        <itemStack modID="minecraft" itemName="nether_wart" slot="1" multiplier="1.5"/>
+        <itemStack modID="minecraft" itemName="fermented_spider_eye" slot="1" multiplier="2"/>
+        
+        
+        <fluidStack name="water" multiplier="0.5"/>
+      </input>      
+      <output>
+        <fluidStack name="nutrientdistillation"/>        
+      </output>
+      
+    </recipe>
+    
+    <!-- Just a temp recipe for testing -->
+    <recipe name="Lava" energyCost="1000">
+      <input>
+        <itemStack modID="minecraft" itemName="netherrack" slot="0" multiplier="0.25"/>                
+        <itemStack modID="minecraft" itemName="gunpowder" slot="1" multiplier="1"/>                        
+        <fluidStack name="water" multiplier="4"/>
+      </input>      
+      <output>
+        <fluidStack name="lava"/>        
+      </output>
+      
+    </recipe>
+    
+   
+  </recipeGroup>
+  
+  
+</StillRecipes>  

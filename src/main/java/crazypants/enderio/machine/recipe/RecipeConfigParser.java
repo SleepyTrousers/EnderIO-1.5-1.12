@@ -12,6 +12,10 @@ import javax.xml.parsers.SAXParserFactory;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.io.IOUtils;
@@ -36,6 +40,7 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String ELEMENT_INPUT = "input";
   public static final String ELEMENT_OUTPUT = "output";
   public static final String ELEMENT_ITEM_STACK = "itemStack";
+  public static final String ELEMENT_FLUID_STACK = "fluidStack";
   public static final String ELEMENT_DUMP_REGISTERY = "dumpRegistery";
 
   public static final String AT_NAME = "name";
@@ -47,6 +52,7 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_ITEM_NAME = "itemName";
   public static final String AT_MOD_ID = "modID";
   public static final String AT_NUMBER = "number";
+  public static final String AT_AMOUNT = "amount";
   public static final String AT_MULTIPLIER = "multiplier";
   public static final String AT_SLOT = "slot";
   public static final String AT_CHANCE = "chance";
@@ -280,7 +286,8 @@ public class RecipeConfigParser extends DefaultHandler {
       return;
     }
 
-    if(ELEMENT_ITEM_STACK.equals(localName)) {
+    boolean isFluidStack = ELEMENT_FLUID_STACK.equals(localName);
+    if(ELEMENT_ITEM_STACK.equals(localName) || isFluidStack) {
       if(!inputTagOpen && !outputTagOpen) {
         Log.warn(LP + "Encounterd an item stack outside of either an <input> or <output> tag.");
         return;
@@ -289,10 +296,19 @@ public class RecipeConfigParser extends DefaultHandler {
         Log.warn(LP + "Encounterd an item stack within both an <input> and <output> tag.");
         return;
       }
+
       if(inputTagOpen) {
-        addInputStack(attributes);
+        if(isFluidStack) {
+          addInputFluidStack(attributes);
+        } else {
+          addInputStack(attributes);
+        }
       } else {
-        addOutputStack(attributes);
+        if(isFluidStack) {
+          addOutputFluidStack(attributes);
+        } else {
+          addOutputStack(attributes);
+        }
       }
     }
 
@@ -300,7 +316,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   //TODO: What a hack!
   private boolean isElementRoot(String str) {
-    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str);
+    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "StillRecipes".equals(str);
   }
 
   private void addOutputStack(Attributes attributes) {
@@ -318,6 +334,36 @@ public class RecipeConfigParser extends DefaultHandler {
       return;
     }
     recipe.addInput(stack);
+  }
+
+  private void addOutputFluidStack(Attributes attributes) {
+    RecipeInput stack = getFluidStack(attributes);
+    if(stack == null) {
+      return;
+    }
+    recipe.addOutput(new RecipeOutput(stack.getFluidInput()));
+  }
+
+  private void addInputFluidStack(Attributes attributes) {
+    RecipeInput stack = getFluidStack(attributes);
+    if(stack == null) {
+      return;
+    }
+    recipe.addInput(stack);
+  }
+
+  private RecipeInput getFluidStack(Attributes attributes) {
+    int amount = getIntValue(AT_AMOUNT, attributes, FluidContainerRegistry.BUCKET_VOLUME);
+    String name = getStringValue(AT_NAME, attributes, null);
+    if(name == null) {
+      return null;
+    }
+    Fluid fluid = FluidRegistry.getFluid(name);
+    if(fluid == null) {
+      Log.warn("When parsing recipes could not find fluid with name: " + name);
+      return null;
+    }
+    return new RecipeInput(new FluidStack(fluid, amount), getFloatValue(AT_MULTIPLIER, attributes, 1));
   }
 
   public static RecipeInput getItemStack(Attributes attributes) {

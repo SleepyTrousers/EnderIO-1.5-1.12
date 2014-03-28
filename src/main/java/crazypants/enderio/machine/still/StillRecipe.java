@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.IRecipe;
-import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 
@@ -22,7 +21,7 @@ public class StillRecipe implements IRecipe {
   protected final RecipeOutput[] output;
   protected final float energyRequired;
 
-  public StillRecipe(Recipe recipe) {
+  public StillRecipe(IRecipe recipe) {
     List<FluidStack> fluids = recipe.getInputFluidStacks();
     if(fluids != null && !fluids.isEmpty()) {
       inputFluidStack = fluids.get(0).copy();
@@ -49,7 +48,7 @@ public class StillRecipe implements IRecipe {
 
   @Override
   public boolean isValid() {
-    return inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() > 2 && outputFluidStack != null;
+    return inputFluidStack != null && inputStacks != null && !inputStacks.isEmpty() && inputStacks.size() > 0 && outputFluidStack != null;
   }
 
   @Override
