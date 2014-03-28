@@ -146,7 +146,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
       inputTank.setFluid(null);
     }
 
-    if(nbtRoot.hasKey("inputTank")) {
+    if(nbtRoot.hasKey("outputTank")) {
       NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("outputTank");
       if(tankRoot != null) {
         outputTank.readFromNBT(tankRoot);

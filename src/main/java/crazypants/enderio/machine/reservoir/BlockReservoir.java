@@ -106,8 +106,13 @@ public class BlockReservoir extends BlockContainer {
         FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
         if(available != null) {
           ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
-
+          if(current.getItem() == Items.bucket) {
+            filled = new ItemStack(Items.water_bucket);
+          }
           liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
+          if(current.getItem() == Items.bucket) {
+            liquid = new FluidStack(FluidRegistry.WATER, 1000);
+          }
 
           if(liquid != null) {
             if(!entityPlayer.capabilities.isCreativeMode) {

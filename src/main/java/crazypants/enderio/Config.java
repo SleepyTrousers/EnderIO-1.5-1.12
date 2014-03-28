@@ -311,7 +311,7 @@ public final class Config {
 
     hootchPowerPerCycle = config.get("Settings", "hootchPowerPerCycle", hootchPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);
-    hootchPowerTotalBurnTime = config.get("Settings", "hootchPowerTotalBurnTime", hootchPowerPerCycle,
+    hootchPowerTotalBurnTime = config.get("Settings", "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(hootchPowerTotalBurnTime);
 
     //TODO: Debug
