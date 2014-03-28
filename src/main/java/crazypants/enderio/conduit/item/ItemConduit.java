@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -379,10 +380,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IInventory inv = getExternalInventory(direction);
-    if (inv instanceof ISidedInventory) {
-    	return ((ISidedInventory)inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal()).length != 0;
+    if(inv instanceof ISidedInventory) {
+      return ((ISidedInventory) inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal()).length != 0;
     } else {
-    	return inv != null;
+      return inv != null;
     }
   }
 
