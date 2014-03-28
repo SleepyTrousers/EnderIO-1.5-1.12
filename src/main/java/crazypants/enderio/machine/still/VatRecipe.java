@@ -11,7 +11,7 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 
-public class StillRecipe implements IRecipe {
+public class VatRecipe implements IRecipe {
 
   protected final FluidStack inputFluidStack;
   protected final List<ItemStack> inputStacks;
@@ -21,7 +21,7 @@ public class StillRecipe implements IRecipe {
   protected final RecipeOutput[] output;
   protected final float energyRequired;
 
-  public StillRecipe(IRecipe recipe) {
+  public VatRecipe(IRecipe recipe) {
     List<FluidStack> fluids = recipe.getInputFluidStacks();
     if(fluids != null && !fluids.isEmpty()) {
       inputFluidStack = fluids.get(0).copy();

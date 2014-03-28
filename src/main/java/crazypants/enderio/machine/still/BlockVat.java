@@ -7,16 +7,16 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 
-public class BlockStill extends AbstractMachineBlock<TileStill> {
+public class BlockVat extends AbstractMachineBlock<TileVat> {
 
-  public static BlockStill create() {
-    BlockStill res = new BlockStill();
+  public static BlockVat create() {
+    BlockVat res = new BlockVat();
     res.init();
     return res;
   }
 
-  public BlockStill() {
-    super(ModObject.blockStill, TileStill.class);
+  public BlockVat() {
+    super(ModObject.blockVat, TileVat.class);
   }
 
   @Override
@@ -24,8 +24,8 @@ public class BlockStill extends AbstractMachineBlock<TileStill> {
     // The server needs the container as it manages the adding and removing of
     // items, which are then sent to the client for display
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileStill) {
-      return new ContainerStill(player.inventory, (TileStill) te);
+    if(te instanceof TileVat) {
+      return new ContainerVat(player.inventory, (TileVat) te);
     }
     return null;
   }
@@ -33,8 +33,8 @@ public class BlockStill extends AbstractMachineBlock<TileStill> {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileStill) {
-      return new GuiStill(player.inventory, (TileStill) te);
+    if(te instanceof TileVat) {
+      return new GuiVat(player.inventory, (TileVat) te);
     }
     return null;
   }

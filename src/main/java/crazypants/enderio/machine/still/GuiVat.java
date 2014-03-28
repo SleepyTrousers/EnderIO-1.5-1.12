@@ -12,12 +12,12 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.render.RenderUtil;
 
-public class GuiStill extends GuiMachineBase {
+public class GuiVat extends GuiMachineBase {
 
-  private final TileStill still;
+  private final TileVat still;
 
-  public GuiStill(InventoryPlayer inventory, TileStill te) {
-    super(te, new ContainerStill(inventory, te));
+  public GuiVat(InventoryPlayer inventory, TileVat te) {
+    super(te, new ContainerVat(inventory, te));
     still = te;
   }
 
@@ -44,7 +44,7 @@ public class GuiStill extends GuiMachineBase {
           break;
         }
       }
-      StillMachineRecipe rec = (StillMachineRecipe) still.getCurrentTask().getRecipe();
+      VatMachineRecipe rec = (VatMachineRecipe) still.getCurrentTask().getRecipe();
       IIcon outputIcon = null;
       for (ResultStack res : rec.getCompletedResult(1.0f, still.getCurrentTask().getInputs())) {
         if(res.fluid != null && res.fluid.getFluid() != null) {

@@ -12,20 +12,20 @@ import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 
-public class StillRecipeManager {
+public class VatRecipeManager {
 
-  private static final String CORE_FILE_NAME = "StillRecipes_Core.xml";
-  private static final String CUSTOM_FILE_NAME = "StillRecipes_User.xml";
+  private static final String CORE_FILE_NAME = "VatRecipes_Core.xml";
+  private static final String CUSTOM_FILE_NAME = "VatRecipes_User.xml";
 
-  static final StillRecipeManager instance = new StillRecipeManager();
+  static final VatRecipeManager instance = new VatRecipeManager();
 
-  public static StillRecipeManager getInstance() {
+  public static VatRecipeManager getInstance() {
     return instance;
   }
 
   private final List<IRecipe> recipes = new ArrayList<IRecipe>();
 
-  public StillRecipeManager() {
+  public VatRecipeManager() {
   }
 
   public void loadRecipesFromConfig() {
@@ -33,10 +33,10 @@ public class StillRecipeManager {
     if(config != null) {
       processConfig(config);
     } else {
-      Log.error("Could not load recipes for SAG Mill.");
+      Log.error("Could not load recipes for Vat.");
     }
 
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockStill.unlocalisedName, new StillMachineRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockVat.unlocalisedName, new VatMachineRecipe());
 
   }
 
@@ -71,19 +71,19 @@ public class StillRecipeManager {
   private void processConfig(RecipeConfig config) {
 
     List<Recipe> newRecipes = config.getRecipes(false);
-    Log.info("Found " + newRecipes.size() + " valid Still recipes in config.");
+    Log.info("Found " + newRecipes.size() + " valid Vat recipes in config.");
     for (Recipe rec : newRecipes) {
       addRecipe(rec);
     }
-    Log.info("Finished processing Still recipes. " + recipes.size() + " recipes avaliable.");
+    Log.info("Finished processing Vat recipes. " + recipes.size() + " recipes avaliable.");
   }
 
   public void addRecipe(IRecipe recipe) {
     if(recipe == null || !recipe.isValid()) {
-      Log.debug("Could not add invalid recipe: " + recipe);
+      Log.debug("Could not add invalid Vat recipe: " + recipe);
       return;
     }
-    recipes.add(new StillRecipe(recipe));
+    recipes.add(new VatRecipe(recipe));
   }
 
   public List<IRecipe> getRecipes() {

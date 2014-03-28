@@ -61,8 +61,8 @@ import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
-import crazypants.enderio.machine.still.BlockStill;
-import crazypants.enderio.machine.still.StillRecipeManager;
+import crazypants.enderio.machine.still.BlockVat;
+import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
@@ -135,7 +135,7 @@ public class EnderIO {
   public static BlockCrusher blockCrusher;
   public static BlockHyperCube blockHyperCube;
   public static BlockPowerMonitor blockPowerMonitor;
-  public static BlockStill blockStill;
+  public static BlockVat blockVat;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -178,7 +178,7 @@ public class EnderIO {
 
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();
-    blockStill = BlockStill.create();
+    blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
     blockCapacitorBank = BlockCapacitorBank.create();
 
@@ -300,7 +300,7 @@ public class EnderIO {
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
-    StillRecipeManager.getInstance().loadRecipesFromConfig();
+    VatRecipeManager.getInstance().loadRecipesFromConfig();
   }
 
   @EventHandler

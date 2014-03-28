@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.AbstractMachineContainer;
 import crazypants.enderio.machine.AbstractMachineEntity;
 
-public class ContainerStill extends AbstractMachineContainer {
+public class ContainerVat extends AbstractMachineContainer {
 
-  public ContainerStill(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerVat(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);
   }
 

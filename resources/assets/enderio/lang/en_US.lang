@@ -95,7 +95,7 @@ tile.blockCapacitorBank.tooltipPrefix=Contains
 tile.blockSagMill.name=SAG Mill
 tile.blockHyperCube.name=Dimensional Transceiver
 tile.blockPowerMonitor.name=Power Monitor
-tile.blockStill.name=The Vat
+tile.blockVat.name=The Vat
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor

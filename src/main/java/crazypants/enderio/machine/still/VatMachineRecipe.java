@@ -15,7 +15,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.AbstractMachineRecipe;
 import crazypants.enderio.machine.recipe.IRecipe;
 
-public class StillMachineRecipe extends AbstractMachineRecipe {
+public class VatMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public String getUid() {
@@ -24,7 +24,7 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public IRecipe getRecipeForInputs(MachineRecipeInput[] inputs) {
-    return StillRecipeManager.instance.getRecipeForInput(inputs);
+    return VatRecipeManager.instance.getRecipeForInput(inputs);
   }
 
   @Override
@@ -32,12 +32,12 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
     if(input == null) {
       return false;
     }
-    return StillRecipeManager.instance.isValidInput(input);
+    return VatRecipeManager.instance.isValidInput(input);
   }
 
   @Override
   public String getMachineName() {
-    return ModObject.blockStill.unlocalisedName;
+    return ModObject.blockVat.unlocalisedName;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
 
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
 
-    StillRecipe rec = (StillRecipe) getRecipeForInputs(inputs);
+    VatRecipe rec = (VatRecipe) getRecipeForInputs(inputs);
     FluidStack inputFluidStack = rec.getRequiredFluidInput(inputs);
     result.add(new MachineRecipeInput(0, inputFluidStack));
 
@@ -65,7 +65,7 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
     if(inputs == null || inputs.length <= 0) {
       return new ResultStack[0];
     }
-    StillRecipe recipe = (StillRecipe) getRecipeForInputs(inputs);
+    VatRecipe recipe = (VatRecipe) getRecipeForInputs(inputs);
     if(recipe == null || !recipe.isValid()) {
       return new ResultStack[0];
     }
@@ -75,7 +75,7 @@ public class StillMachineRecipe extends AbstractMachineRecipe {
   @Override
   public List<IEnderIoRecipe> getAllRecipes() {
     List<IEnderIoRecipe> result = new ArrayList<IEnderIoRecipe>();
-    List<IRecipe> recipes = StillRecipeManager.getInstance().getRecipes();
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
     for (IRecipe cr : recipes) {
       List<IRecipeComponent> components = new ArrayList<IRecipeComponent>();
       for (crazypants.enderio.machine.recipe.RecipeInput ri : cr.getInputs()) {

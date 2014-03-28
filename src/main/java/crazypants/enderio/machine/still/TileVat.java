@@ -17,7 +17,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 
-public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandler {
+public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler {
 
   private static final FluidStack WATER = new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
 
@@ -26,13 +26,13 @@ public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandle
 
   boolean tanksDirty = false;
 
-  public TileStill() {
+  public TileVat() {
     super(new SlotDefinition(0, 1, -1, -1, -1, -1));
   }
 
   @Override
   public String getInventoryName() {
-    return ModObject.blockStill.unlocalisedName;
+    return ModObject.blockVat.unlocalisedName;
   }
 
   @Override
@@ -42,12 +42,12 @@ public class TileStill extends AbstractPoweredTaskEntity implements IFluidHandle
 
   @Override
   public String getMachineName() {
-    return ModObject.blockStill.unlocalisedName;
+    return ModObject.blockVat.unlocalisedName;
   }
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    return StillRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
+    return VatRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
   }
 
   @Override

@@ -1,4 +1,4 @@
-<StillRecipes>
+<VatRecipes>
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
     
@@ -42,4 +42,4 @@
   </recipeGroup>
   
   
-</StillRecipes>  
+</VatRecipes>  
