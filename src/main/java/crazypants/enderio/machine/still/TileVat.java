@@ -179,4 +179,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     return currentTask;
   }
 
+  @Override
+  protected float getPowerUsePerTick() {
+    return 1;
+  }
+
 }

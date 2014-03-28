@@ -43,6 +43,7 @@ enderio.phasedIronNugget.name=Pulsating Iron Nugget
 
 //Liquids
 item.bucketNutrientdistillation.name=Nutrient Distillation Bucket
+item.bucketHootch.name=Hootch Bucket
 
 //Crafting components
 enderio.itemMachinePart.name=Machine Parts

@@ -145,6 +145,10 @@ public class EnderIO {
   public static BlockFluidEio blockNutrientDistillation;
   public static ItemBucketEio itemBucketNutrientDistillation;
 
+  public static Fluid fluidHootch;
+  public static BlockFluidEio blocHootch;
+  public static ItemBucketEio itemBucketHootch;
+
   // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
@@ -197,11 +201,17 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
     blockReservoir = BlockReservoir.create();
 
-    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_UNLOCALISED_NAME).setDensity(1500).setViscosity(3000);
+    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));
     itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
+
+    f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
+    FluidRegistry.registerFluid(f);
+    fluidHootch = FluidRegistry.getFluid(f.getName());
+    blocHootch = BlockFluidEio.create(fluidHootch, new MaterialLiquid(MapColor.grayColor));
+    itemBucketHootch = ItemBucketEio.create(fluidHootch);
 
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();

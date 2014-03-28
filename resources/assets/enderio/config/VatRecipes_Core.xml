@@ -2,7 +2,7 @@
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
     
-    <recipe name="Nutrient Distilation" energyCost="1000">
+    <recipe name="Nutrient Distilation" energyCost="500">
       <input>
         <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="2"/>
         <itemStack modID="minecraft" itemName="skull" slot="0" multiplier="2"/>
@@ -21,6 +21,22 @@
       </input>      
       <output>
         <fluidStack name="nutrientdistillation"/>        
+      </output>
+      
+    </recipe>
+    
+    <recipe name="Hootch" energyCost="500">
+      <input>
+        <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="2"/>                                               
+        <itemStack modID="minecraft" itemName="wheat" slot="0" multiplier="1.5"/>
+        <itemStack modID="minecraft" itemName="wheat_seeds" slot="0" multiplier="1"/>        
+        
+        <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1"/>
+                
+        <fluidStack name="water" multiplier="1"/>
+      </input>      
+      <output>
+        <fluidStack name="hootch"/>        
       </output>
       
     </recipe>
