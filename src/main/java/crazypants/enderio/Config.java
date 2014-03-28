@@ -106,6 +106,9 @@ public final class Config {
   public static int darkSteelPickPowerUsePerDamagePoint = 250;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
 
+  public static int hootchPowerPerCycle = 6;
+  public static int hootchPowerTotalBurnTime = 25000;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -305,6 +308,11 @@ public final class Config {
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
     darkSteelPickEffeciencyBoostWhenPowered = (float) config.get("Settings", "darkSteelPickEffeciencyBoostWhenPowered",
         darkSteelPickEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
+
+    hootchPowerPerCycle = config.get("Settings", "hootchPowerPerCycle", hootchPowerPerCycle,
+        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);
+    hootchPowerTotalBurnTime = config.get("Settings", "hootchPowerTotalBurnTime", hootchPowerPerCycle,
+        "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(hootchPowerTotalBurnTime);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

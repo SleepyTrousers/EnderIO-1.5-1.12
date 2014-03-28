@@ -9,6 +9,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import buildcraft.api.fuels.IronEngineFuel;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -212,6 +213,8 @@ public class EnderIO {
     fluidHootch = FluidRegistry.getFluid(f.getName());
     blocHootch = BlockFluidEio.create(fluidHootch, new MaterialLiquid(MapColor.grayColor));
     itemBucketHootch = ItemBucketEio.create(fluidHootch);
+
+    IronEngineFuel.addFuel("hootch", Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
 
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
