@@ -41,8 +41,13 @@ enderio.conduitBinder.name=Leitungsbinder
 enderio.binderComposite.name=Bindegemisch
 enderio.phasedIronNugget.name=Pulsierender Eisennugget
 
-//Liquids
+//Fluids
+fluid.nutrient_distillation=Nahrhaftes Destillat
+fluid.hootch=Gebräu
 item.bucketNutrientdistillation.name=Eimer mit nahrhaftem Destillat
+item.bucketHootch.name=Eimer mit Gebräu
+enderio.fluid.millibucket.abr=mB
+
 
 //Crafting components
 enderio.itemMachinePart.name=Maschinenteile
@@ -95,7 +100,8 @@ tile.blockCapacitorBank.tooltipPrefix=Enthält
 tile.blockSagMill.name=SAG-Mahlwerk
 tile.blockHyperCube.name=Dimensional-Transceiver
 tile.blockPowerMonitor.name=Energiemonitor
-tile.blockStill.name=Braubottich
+tile.blockVat.name=Der Bottich
+tile.blockCombustionGenerator.name=Verbrennungsgenerator
 
 //Travel
 tile.blockTravelAnchor.name=Reiseanker
@@ -204,6 +210,10 @@ enderio.gui.alloy.mode.heading=Schmelz-Modus
 enderio.gui.alloy.mode.all=Schmelze alles
 enderio.gui.alloy.mode.alloy=Nur Legierungen
 enderio.gui.alloy.mode.furnace=Nur Ofen
+
+//Vat
+enderio.vat.outputTank=Output-Tank
+enderio.vat.inputTank=Input-Tank
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Nur
