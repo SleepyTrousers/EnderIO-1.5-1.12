@@ -355,6 +355,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
 
   @Override
   public ItemStack getStackInSlot(int slot) {
+    if(slot < 0 || slot >= inventory.length) {
+      return null;
+    }
     return inventory[slot];
   }
 

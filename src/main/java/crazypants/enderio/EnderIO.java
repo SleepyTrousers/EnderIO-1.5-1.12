@@ -46,6 +46,7 @@ import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.generator.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.hypercube.HyperCubeRegister;
@@ -129,6 +130,7 @@ public class EnderIO {
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
+  public static BlockCombustionGenerator blockCombustionGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
@@ -180,6 +182,7 @@ public class EnderIO {
 
     blockSolarPanel = BlockSolarPanel.create();
     blockStirlingGenerator = BlockStirlingGenerator.create();
+    blockCombustionGenerator = BlockCombustionGenerator.create();
 
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();
@@ -201,39 +204,41 @@ public class EnderIO {
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
     blockReservoir = BlockReservoir.create();
+    
+    blockFusedQuartz = BlockFusedQuartz.create();
+    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
+    blockConduitBundle = BlockConduitBundle.create();
+    blockConduitFacade = BlockConduitFacade.create();
+    itemConduitFacade = ItemConduitFacade.create();    
+
+    itemRedstoneConduit = ItemRedstoneConduit.create();
+    itemPowerConduit = ItemPowerConduit.create();
+    itemLiquidConduit = ItemLiquidConduit.create();
+    itemItemConduit = ItemItemConduit.create();
+    
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));
-    itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
+    
 
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
     blocHootch = BlockFluidEio.create(fluidHootch, new MaterialLiquid(MapColor.grayColor));
-    itemBucketHootch = ItemBucketEio.create(fluidHootch);
-
     IronEngineFuel.addFuel("hootch", Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
-
-    blockFusedQuartz = BlockFusedQuartz.create();
-    itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
+    
 
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();
     itemMaterial = ItemMaterial.create();
     itemAlloy = ItemAlloy.create();
     itemPowderIngot = ItemPowderIngot.create();
-
-    blockConduitBundle = BlockConduitBundle.create();
-    blockConduitFacade = BlockConduitFacade.create();
-    itemConduitFacade = ItemConduitFacade.create();
-
-    itemRedstoneConduit = ItemRedstoneConduit.create();
-    itemPowerConduit = ItemPowerConduit.create();
-    itemLiquidConduit = ItemLiquidConduit.create();
-    itemItemConduit = ItemItemConduit.create();
-
+    
+    itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
+    itemBucketHootch = ItemBucketEio.create(fluidHootch);
+    
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();

@@ -101,6 +101,7 @@ tile.blockSagMill.name=SAG Mill
 tile.blockHyperCube.name=Dimensional Transceiver
 tile.blockPowerMonitor.name=Power Monitor
 tile.blockVat.name=The Vat
+tile.blockCombustionGenerator.name=Combustion Generator
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
