@@ -215,6 +215,11 @@ enderio.gui.alloy.mode.furnace=Furnace Only
 enderio.vat.outputTank=Output Tank
 enderio.vat.inputTank=Input Tank
 
+//Combustion Gen
+enderio.combustionGenerator.coolantTank=Coolant
+enderio.combustionGenerator.fuelTank=Fuel
+enderio.combustionGenerator.output=Output:
+
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
 enderio.gui.travelAccessable.privateBlock2=may change this blocks settings.

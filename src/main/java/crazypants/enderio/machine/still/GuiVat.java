@@ -2,6 +2,7 @@ package crazypants.enderio.machine.still;
 
 import java.awt.Rectangle;
 
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,13 +22,13 @@ import crazypants.util.Lang;
 public class GuiVat extends GuiMachineBase {
 
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
-  
+
   private final TileVat vat;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
     super(te, new ContainerVat(inventory, te));
     vat = te;
-    
+
     addToolTip(new GuiToolTip(new Rectangle(30, 12, 15, 47), "") {
 
       @Override
@@ -35,29 +36,29 @@ public class GuiVat extends GuiMachineBase {
         text.clear();
         String heading = Lang.localize("vat.inputTank");
         if(vat.inputTank.getFluid() != null) {
-          heading += ": " + vat.inputTank.getFluid().getFluid().getLocalizedName();  
-        } 
+          heading += ": " + vat.inputTank.getFluid().getFluid().getLocalizedName();
+        }
         text.add(heading);
         text.add(Fluids.toCapactityString(vat.inputTank));
       }
 
     });
-    
-    addToolTip(new GuiToolTip(new Rectangle(132,12,15,47), "") {
+
+    addToolTip(new GuiToolTip(new Rectangle(132, 12, 15, 47), "") {
 
       @Override
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("vat.outputTank");
         if(vat.outputTank.getFluid() != null) {
-          heading += ": " + vat.outputTank.getFluid().getFluid().getLocalizedName();  
-        } 
+          heading += ": " + vat.outputTank.getFluid().getFluid().getLocalizedName();
+        }
         text.add(heading);
         text.add(Fluids.toCapactityString(vat.outputTank));
       }
 
     });
-    
+
   }
 
   /**
@@ -97,9 +98,11 @@ public class GuiVat extends GuiMachineBase {
 
     }
 
-    RenderUtil.bindBlockTexture();
-    renderTank(vat.inputTank, 30);
-    renderTank(vat.outputTank, 132);
+    int x = guiLeft + 30;
+    int y = guiTop + 12;
+    RenderUtil.renderGuiTank(vat.inputTank, x, y, zLevel, 15,47);
+    x = guiLeft + 132;
+    RenderUtil.renderGuiTank(vat.outputTank, x, y, zLevel, 15,47);
 
     RenderUtil.bindTexture(GUI_TEXTURE);
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -125,36 +128,7 @@ public class GuiVat extends GuiMachineBase {
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }
 
-  private void renderTank(FluidTank tank, int x) {
-    FluidStack fluid = tank.getFluid();
-    if(fluid == null || fluid.getFluid() == null || fluid.amount <= 0) {
-      return;
-    }
-
-    IIcon icon = fluid.getFluid().getStillIcon();
-    if(icon == null) {
-      icon = fluid.getFluid().getIcon();
-      if(icon == null) {
-        return;
-      }
-    }
-
-    float fullness = (float) tank.getFluidAmount() / (float) tank.getCapacity();
-    int height = Math.round(47 * fullness);
-
-    //System.out.println("GuiStill.renderTank: " + tank.getFluidAmount());
-
-    x = guiLeft + x;
-    int y = guiTop + 12;
-    y = y + (47 - height);
-
-    GL11.glColor4f(1, 1, 1, 0.75f);
-    GL11.glEnable(GL11.GL_BLEND);
-    drawTexturedModelRectFromIcon(x, y, icon, 15, height);
-    GL11.glDisable(GL11.GL_BLEND);
-
-  }
-
+  
   @Override
   protected int getPowerX() {
     return 10;

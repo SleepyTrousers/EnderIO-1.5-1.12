@@ -33,8 +33,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
   // Power
   protected Capacitors capacitorType;
 
-  // Used on the client as the power provided isn't sinked
-  private float storedEnergy;
+  protected float storedEnergy;
 
   protected ItemStack[] inventory;
   protected final SlotDefinition slotDefinition;
@@ -235,7 +234,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
 
     } // else is server, do all logic only on the server
 
-    storedEnergy = (float) powerHandler.getEnergyStored();
+    updateStoredEnergyFromPowerHandler();
 
     boolean requiresClientSync = forceClientUpdate;
     if(forceClientUpdate) {
@@ -265,6 +264,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
       markDirty();
     }
 
+  }
+
+  protected void updateStoredEnergyFromPowerHandler() {
+    storedEnergy = (float) powerHandler.getEnergyStored();
   }
 
   protected abstract boolean processTasks(boolean redstoneCheckPassed);
@@ -310,7 +313,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
 
     nbtRoot.setShort("facing", facing);
-    nbtRoot.setFloat("storedEnergy", (float) powerHandler.getEnergyStored());
+    nbtRoot.setFloat("storedEnergy", storedEnergy);
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
     nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
 

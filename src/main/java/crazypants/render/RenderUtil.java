@@ -25,6 +25,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
@@ -423,6 +426,45 @@ public class RenderUtil {
     }
     return null;
   }
+  
+  public static void renderGuiTank(FluidTank tank, double x, double y, double zLevel, double width, double height) {
+    renderGuiTank(tank.getFluid(),tank.getCapacity(),tank.getFluidAmount(), x, y, zLevel, width, height);
+  }
+  
+  public static void renderGuiTank(FluidStack fluid, int capacity, int amount, double x, double y, double zLevel, double width, double height) {    
+    if(fluid == null || fluid.getFluid() == null || fluid.amount <= 0) {
+      return;
+    }
+
+    IIcon icon = fluid.getFluid().getStillIcon();
+    if(icon == null) {
+      icon = fluid.getFluid().getIcon();
+      if(icon == null) {
+        return;
+      }
+    }
+
+    double fullness = (double) amount/ (double) capacity;
+    int fluidHeight = (int) Math.round(height * fullness);
+
+    RenderUtil.bindBlockTexture();
+    y = y + (47 - fluidHeight);
+    GL11.glColor4f(1, 1, 1, 0.75f);
+    GL11.glEnable(GL11.GL_BLEND);
+    drawTexturedModelRectFromIcon(x, y, zLevel, icon, width, fluidHeight);
+    GL11.glDisable(GL11.GL_BLEND);
+  }
+
+  public static void drawTexturedModelRectFromIcon(double x, double y, double z, IIcon icon, double width, double height) {
+    Tessellator tessellator = Tessellator.instance;
+    tessellator.startDrawingQuads();
+    tessellator.addVertexWithUV(x, y + height, z, icon.getMinU(), icon.getMaxV());
+    tessellator.addVertexWithUV(x + width, y + height, z, icon.getMaxU(), icon.getMaxV());
+    tessellator.addVertexWithUV(x + width, y, z, icon.getMaxU(), icon.getMinV());
+    tessellator.addVertexWithUV(x, y, z, icon.getMinU(), icon.getMinV());
+    tessellator.draw();
+  }
+
 
   private static class EdgeNeighbour {
     final ForgeDirection dir;
