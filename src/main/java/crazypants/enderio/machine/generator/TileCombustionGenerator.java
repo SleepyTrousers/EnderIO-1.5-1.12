@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.generator;
 
+import cofh.api.energy.EnergyStorage;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +21,7 @@ import buildcraft.api.power.IPowerEmitter;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.BlockCoord;
 
 public class TileCombustionGenerator extends AbstractMachineEntity implements IPowerEmitter, IFluidHandler  {
 
@@ -29,6 +32,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   private int ticksRemaingFuel;
   private int ticksRemaingCoolant;  
   private boolean active;
+  
+  private PowerDistributor powerDis;
   
   public TileCombustionGenerator() {
     super(new SlotDefinition(-1, -1, -1, -1, -1, -1));
@@ -96,6 +101,16 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     return null;
   }
 
+  
+  
+  @Override
+  public void onNeighborBlockChange(Block blockId) {
+    super.onNeighborBlockChange(blockId);
+    if(powerDis != null) {
+      powerDis.neighboursChanged();
+    }
+  }
+
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {    
     boolean res = tanksDirty;    
@@ -110,7 +125,22 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       active = isActive;
       res = true;
     }    
+    
+    transmitEnergy();
+    
     return res;
+  }
+  
+  private boolean transmitEnergy() { 
+    if(storedEnergy <= 0) {
+      return false;
+    }
+    if(powerDis == null) {
+      powerDis = new PowerDistributor(new BlockCoord(this));
+    }        
+    float transmitted = powerDis.transmitEnergy(worldObj, (float)storedEnergy);   
+    storedEnergy -= transmitted;
+    return transmitted > 0;      
   }
 
   private boolean checkActive() {
@@ -182,8 +212,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   protected void updateStoredEnergyFromPowerHandler() {
    //no-op as we don't actually need a BC power handler for a generator
     //Need to clean this up 
-  }
-  
+  }  
 
   @Override
   public int getEnergyStored(ForgeDirection from) {

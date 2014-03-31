@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.generator;
 
+import java.awt.Color;
+
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
@@ -7,7 +10,10 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 @SideOnly(Side.CLIENT)
 public class GuiStirlingGenerator extends GuiMachineBase {
@@ -39,6 +45,22 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    
+    FontRenderer fr = getFontRenderer();
+    int y = guiTop + fr.FONT_HEIGHT / 2 + 3;
+    
+    double output = 0;
+    if(entity.isActive()) {
+      output = entity.getPowerPerTick();
+    }
+    String txt =  Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();    
+    int sw = fr.getStringWidth(txt);
+    fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
+    
+    txt =  Lang.localize("stirlingGenerator.burnRate") + " " + (1/entity.getBurnTimeMultiplier());    
+    sw = fr.getStringWidth(txt);
+    y += fr.FONT_HEIGHT + 3;
+    fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
   }
 }

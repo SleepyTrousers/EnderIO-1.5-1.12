@@ -29,9 +29,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   private int burnTime = 0;
   private int totalBurnTime;
 
-  private final List<Receptor> receptors = new ArrayList<Receptor>();
-  private ListIterator<Receptor> receptorIterator = receptors.listIterator();
-  private boolean receptorsDirty = true;
+  private PowerDistributor powerDis;
 
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0), Type.ENGINE);
@@ -113,19 +111,35 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
-    receptorsDirty = true;
+    if(powerDis != null) {
+      powerDis.neighboursChanged();
+    }
+  }
+  
+  protected void updateStoredEnergyFromPowerHandler() {
+    //no-op as we don't actually need a BC power handler for a generator
+     //Need to clean this up 
+   }  
+
+   @Override
+   public int getEnergyStored(ForgeDirection from) {
+     return (int)(storedEnergy * 10);
+   }
+  
+  
+
+  public double getPowerPerTick() {
+    return ENERGY_PER_TICK * getEnergyMultiplier();
   }
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
 
-    double stored = powerHandler.getEnergyStored();
-    powerHandler.update();
-    powerHandler.setEnergy(stored);
-
     if(burnTime > 0 && redstoneCheckPassed) {
-      powerHandler.setEnergy(stored + (ENERGY_PER_TICK * getEnergyMultiplier()));
+      if(storedEnergy < powerHandler.getMaxEnergyStored()) {
+        storedEnergy += (ENERGY_PER_TICK * getEnergyMultiplier());
+      }
       burnTime--;
       needsUpdate = true;
     }
@@ -134,7 +148,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
     if(redstoneCheckPassed) {
 
-      if(burnTime <= 0 && powerHandler.getEnergyStored() < powerHandler.getMaxEnergyStored()) {
+      if(burnTime <= 0 && storedEnergy < powerHandler.getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
           burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) * getBurnTimeMultiplier());
           if(burnTime > 0) {
@@ -163,7 +177,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return 1;
   }
 
-  private float getBurnTimeMultiplier() {
+  public float getBurnTimeMultiplier() {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
       //burn for 62.5% of the time to produce 2x the power, i.e. 1.25 the effecientcy
       return 0.625f;
@@ -174,84 +188,25 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return 1;
   }
 
-  private boolean transmitEnergy() {
-
-    if(powerHandler.getEnergyStored() <= 0) {
-      powerHandler.update();
+  //private PowerDistributor powerDis;
+  private boolean transmitEnergy() { 
+    if(powerDis == null) {
+      powerDis = new PowerDistributor(new BlockCoord(this));
+    }
+    double canTransmit = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyExtracted());
+    if(canTransmit <= 0) {
       return false;
     }
-    double canTransmit = Math.min(powerHandler.getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
-    float transmitted = 0;
-
-    double stored = powerHandler.getEnergyStored();
-    powerHandler.update();
-    double storedAfter = powerHandler.getEnergyStored();
-
-    checkReceptors();
-
-    if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
-      receptorIterator = receptors.listIterator();
-    }
-
-    int appliedCount = 0;
-    int numReceptors = receptors.size();
-    while (receptorIterator.hasNext() && canTransmit > 0 && appliedCount < numReceptors) {
-      Receptor receptor = receptorIterator.next();
-      IPowerInterface pp = receptor.receptor;
-      if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
-        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), (float) canTransmit);
-        transmitted += used;
-        canTransmit -= used;
-      }
-      if(canTransmit <= 0) {
-        break;
-      }
-
-      if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
-        receptorIterator = receptors.listIterator();
-      }
-      appliedCount++;
-    }
-
-    powerHandler.setEnergy(powerHandler.getEnergyStored() - transmitted);
-
-    return transmitted > 0;
-
-  }
-
-  private void checkReceptors() {
-    if(!receptorsDirty) {
-      return;
-    }
-    receptors.clear();
-
-    BlockCoord bc = new BlockCoord(xCoord, yCoord, zCoord);
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord checkLoc = bc.getLocation(dir);
-      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      IPowerInterface pi = PowerHandlerUtil.create(te);
-      if(pi != null) {
-        receptors.add(new Receptor(pi, dir));
-      }
-    }
-    receptorIterator = receptors.listIterator();
-    receptorsDirty = false;
-
-  }
-
-  static class Receptor {
-    IPowerInterface receptor;
-    ForgeDirection fromDir;
-
-    private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
-      this.receptor = rec;
-      this.fromDir = fromDir;
-    }
+    float transmitted = powerDis.transmitEnergy(worldObj, (float)canTransmit);   
+    storedEnergy -= transmitted;
+    return transmitted > 0;      
   }
 
   @Override
   public boolean hasCustomInventoryName() {
     return false;
   }
+
+  
 
 }

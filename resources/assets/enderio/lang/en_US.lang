@@ -220,6 +220,10 @@ enderio.combustionGenerator.coolantTank=Coolant
 enderio.combustionGenerator.fuelTank=Fuel
 enderio.combustionGenerator.output=Output:
 
+//Stirling Gen
+enderio.stirlingGenerator.output=Output:
+enderio.stirlingGenerator.burnRate=Burn Rate:
+
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
 enderio.gui.travelAccessable.privateBlock2=may change this blocks settings.
