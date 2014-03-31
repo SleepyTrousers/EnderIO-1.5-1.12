@@ -44,7 +44,9 @@ enderio.phasedIronNugget.name=Pulsating Iron Nugget
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
 fluid.hootch=Hootch
-item.bucketNutrientdistillation.name=Nutrient Distillation Bucket
+fluid.fire_water=Fire Water
+fluid.rocket_fuel=Rocket Fuel
+item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 item.bucketHootch.name=Hootch Bucket
 enderio.fluid.millibucket.abr=MB
 

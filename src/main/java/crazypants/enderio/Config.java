@@ -107,7 +107,11 @@ public final class Config {
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
 
   public static int hootchPowerPerCycle = 6;
-  public static int hootchPowerTotalBurnTime = 25000;
+  public static int hootchPowerTotalBurnTime = 12000;
+  public static int rocketFuelPowerPerCycle = 9;
+  public static int rocketFuelPowerTotalBurnTime = 12000;
+  public static int fireWaterPowerPerCycle = 12;
+  public static int fireWaterPowerTotalBurnTime = 12000;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -151,7 +155,7 @@ public final class Config {
 
     conduitScale = config.get("Settings", "conduitScale", DEFAULT_CONDUIT_SCALE,
         "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" +
-            "In SMP, all clients must be using the same value as the server.").getDouble(DEFAULT_CONDUIT_SCALE);
+        "In SMP, all clients must be using the same value as the server.").getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
 
     fluidConduitExtractRate = config.get("Settings", "fluidConduitExtractRate", fluidConduitExtractRate,
@@ -184,7 +188,7 @@ public final class Config {
             "perInterfacePowerTrackingEnabled",
             detailedPowerTrackingEnabled,
             "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the MJ Reader but has a negative impact on server performance.")
-        .getBoolean(detailedPowerTrackingEnabled);
+            .getBoolean(detailedPowerTrackingEnabled);
 
     useSneakMouseWheelYetaWrench = config.get("Settings", "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
         "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is eqipped.")
@@ -240,8 +244,8 @@ public final class Config {
         .get("Settings", "travelStaffBlinkThroughClearBlocksEnabled", travelStaffBlinkThroughClearBlocksEnabled,
             "If travelStaffBlinkThroughSolidBlocksEnabled is set to false and this is true, the travel " +
                 "staff can only be used to blink through transparent or partial blocks (e.g. torches). " +
-                "If both are false, only air blocks may be teleported through.")
-        .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
+            "If both are false, only air blocks may be teleported through.")
+            .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
 
     enderIoRange = config.get("Settings", "enderIoRange", enderIoRange,
         "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);
@@ -253,7 +257,7 @@ public final class Config {
         "When true, correct lighting is recalculated (client side) for conduit bundles when transitioning to"
             + " from being hidden behind a facade. This produces "
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
-        .getBoolean(updateLightingWhenHidingFacades);
+            .getBoolean(updateLightingWhenHidingFacades);
 
     darkSteelLeggingWalkModifier = config.get("Settings", "darkSteelLeggingWalkModifier", darkSteelLeggingWalkModifier,
         "Speed modifier applied when walking in the Dark Steel Boots.").getDouble(darkSteelLeggingWalkModifier);
@@ -278,22 +282,22 @@ public final class Config {
         "The base chance a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(darkSteelSwordSkullChance);
     darkSteelSwordSkullLootingModifier = (float) config.get("Settings", "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        darkSteelSwordSkullLootingModifier);
+            darkSteelSwordSkullLootingModifier);
     darkSteelSwordWitherSkullChance = (float) config.get("Settings", "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,
         "The base chance a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        darkSteelSwordWitherSkullChance);
+            darkSteelSwordWitherSkullChance);
     darkSteelSwordWitherSkullLootingModifier = (float) config.get("Settings", "darkSteelSwordWitherSkullLootingModifie",
         darkSteelSwordWitherSkullLootingModifier,
         "The chance per looting level that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        darkSteelSwordWitherSkullLootingModifier);
+            darkSteelSwordWitherSkullLootingModifier);
     vanillaSwordSkullLootingModifier = (float) config.get("Settings", "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        vanillaSwordSkullLootingModifier);
+            vanillaSwordSkullLootingModifier);
     darkSteelSwordPowerUsePerHit = config.get("Settings", "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
         "The amount of power (RF) used per hit.").getInt(darkSteelSwordPowerUsePerHit);
     darkSteelSwordEnderPearlDropChance = config.get("Settings", "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
         "The chance that an ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        darkSteelSwordEnderPearlDropChance);
+            darkSteelSwordEnderPearlDropChance);
     darkSteelSwordEnderPearlDropChancePerLooting = config.get("Settings", "darkSteelSwordEnderPearlDropChancePerLooting",
         darkSteelSwordEnderPearlDropChancePerLooting,
         "The chance for each looting level that an additional ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)")
@@ -313,6 +317,20 @@ public final class Config {
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);
     hootchPowerTotalBurnTime = config.get("Settings", "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(hootchPowerTotalBurnTime);
+
+    rocketFuelPowerPerCycle = config.get("Settings", "rocketFuelPowerPerCycle", rocketFuelPowerPerCycle,
+        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(rocketFuelPowerPerCycle);
+    rocketFuelPowerTotalBurnTime = config.get("Settings", "rocketFuelPowerTotalBurnTime", rocketFuelPowerTotalBurnTime,
+        "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(rocketFuelPowerTotalBurnTime);
+
+
+
+
+    fireWaterPowerPerCycle = config.get("Settings", "fireWaterPowerPerCycle", fireWaterPowerPerCycle,
+        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(fireWaterPowerPerCycle);
+    fireWaterPowerTotalBurnTime = config.get("Settings", "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
+        "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(fireWaterPowerTotalBurnTime);
+
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

@@ -54,19 +54,29 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       
     </recipe>
     
-    <!-- Just a temp recipe for testing -->
-    <recipe name="Lava" energyCost="1000">
+    <recipe name="Rocket Fuel" energyCost="500">
       <input>
-        <itemStack modID="minecraft" itemName="netherrack" slot="0" multiplier="0.25"/>                
-        <itemStack modID="minecraft" itemName="gunpowder" slot="1" multiplier="1"/>                        
-        <fluidStack name="water" multiplier="4"/>
+        <itemStack modID="minecraft" itemName="gunpowder" slot="0" multiplier="1"/>                
+        <itemStack modID="minecraft" itemName="redstone" slot="1" multiplier="1"/>                
+        <fluidStack name="hootch" multiplier="1"/>
       </input>      
       <output>
-        <fluidStack name="lava"/>        
+        <fluidStack name="rocket_fuel"/>        
       </output>
       
     </recipe>
     
+    <recipe name="Fire Water" energyCost="500">
+      <input>
+        <itemStack modID="minecraft" itemName="blaze_powder" slot="0" multiplier="1"/>                
+        <itemStack modID="minecraft" itemName="redstone" slot="1" multiplier="1"/>                
+        <fluidStack name="hootch" multiplier="1"/>
+      </input>      
+      <output>
+        <fluidStack name="fire_water"/>        
+      </output>
+      
+    </recipe>
    
   </recipeGroup>
   

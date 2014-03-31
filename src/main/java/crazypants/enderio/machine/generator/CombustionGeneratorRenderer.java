@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -205,11 +204,6 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     tes.startDrawingQuads();
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     tes.draw();
-
-    renderer.setRenderBoundsFromBlock(Blocks.stone);
-    renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getDefaultFrameIcon(0));
-    renderer.renderBlockAsItem(Blocks.cobblestone, 0, 1);
-    renderer.setOverrideBlockTexture(null);
   }
 
   @Override

@@ -47,12 +47,16 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    return VatRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
+    MachineRecipeInput[] inputs = getInputs();
+    inputs[i] = new MachineRecipeInput(i, itemstack);
+
+    //return VatRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
+    return VatRecipeManager.getInstance().isValidInput(inputs);
   }
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(resource == null || !resource.isFluidEqual(WATER)) {
+    if(resource == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
     tanksDirty = true;
@@ -115,10 +119,17 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(fluid == null || fluid.getID() != WATER.getFluid().getID()) {
+
+    if(fluid == null || (inputTank.getFluid() != null && inputTank.getFluid().getFluid().getID() != fluid.getID())) {
       return false;
     }
-    return true;
+
+    MachineRecipeInput[] inputs = getInputs();
+    if(inputTank.getFluidAmount() <= 0) {
+      inputs[inputs.length - 1] = new MachineRecipeInput(0, new FluidStack(fluid, 1));
+    }
+
+    return VatRecipeManager.getInstance().isValidInput(inputs);
   }
 
   @Override

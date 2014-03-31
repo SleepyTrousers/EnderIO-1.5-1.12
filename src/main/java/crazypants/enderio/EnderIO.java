@@ -152,6 +152,14 @@ public class EnderIO {
   public static BlockFluidEio blocHootch;
   public static ItemBucketEio itemBucketHootch;
 
+  public static Fluid fluidRocketFuel;
+  public static BlockFluidEio blockRocketFuel;
+  public static ItemBucketEio itemBucketRocketFuel;
+
+  public static Fluid fluidFireWater;
+  public static BlockFluidEio blockFireWater;
+  public static ItemBucketEio itemBucketFireWater;
+
   // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
@@ -162,6 +170,8 @@ public class EnderIO {
   public static ItemDarkSteelArmor itemDarkSteelBoots;
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
+
+
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -204,41 +214,56 @@ public class EnderIO {
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
     blockReservoir = BlockReservoir.create();
-    
+
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
-    itemConduitFacade = ItemConduitFacade.create();    
+    itemConduitFacade = ItemConduitFacade.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
-    
+
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));
-    
+
 
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
     blocHootch = BlockFluidEio.create(fluidHootch, new MaterialLiquid(MapColor.grayColor));
-    IronEngineFuel.addFuel("hootch", Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
-    
+    IronEngineFuel.addFuel(Fluids.HOOTCH_NAME, Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
+
+
+    f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
+    FluidRegistry.registerFluid(f);
+    fluidRocketFuel = FluidRegistry.getFluid(f.getName());
+    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, new MaterialLiquid(MapColor.grayColor));
+    IronEngineFuel.addFuel(Fluids.ROCKET_FUEL_NAME, Config.rocketFuelPowerPerCycle, Config.rocketFuelPowerTotalBurnTime);
+
+
+    f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
+    FluidRegistry.registerFluid(f);
+    fluidFireWater = FluidRegistry.getFluid(f.getName());
+    blockFireWater = BlockFluidEio.create(fluidFireWater, new MaterialLiquid(MapColor.grayColor));
+    IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
+
 
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();
     itemMaterial = ItemMaterial.create();
     itemAlloy = ItemAlloy.create();
     itemPowderIngot = ItemPowderIngot.create();
-    
+
     itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
     itemBucketHootch = ItemBucketEio.create(fluidHootch);
-    
+    itemBucketRocketFuel = ItemBucketEio.create(fluidRocketFuel);
+
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
@@ -271,7 +296,7 @@ public class EnderIO {
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 1, 3, 60));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
-        .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
+    .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 1));
 
     ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);

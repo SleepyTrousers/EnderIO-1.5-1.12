@@ -180,7 +180,7 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       return;
     }
-    // Custom tag handling    
+    // Custom tag handling
     if(customHandler != null) {
       if(customHandler.endElement(uri, localName, qName)) {
         return;
@@ -250,7 +250,7 @@ public class RecipeConfigParser extends DefaultHandler {
       return;
     }
 
-    // Custom tag handling    
+    // Custom tag handling
     if(customHandler != null) {
       if(customHandler.startElement(uri, localName, qName, attributes)) {
         return;
@@ -316,7 +316,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   //TODO: What a hack!
   private boolean isElementRoot(String str) {
-    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "StillRecipes".equals(str);
+    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "VatRecipes".equals(str);
   }
 
   private void addOutputStack(Attributes attributes) {

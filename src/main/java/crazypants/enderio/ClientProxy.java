@@ -54,6 +54,8 @@ import crazypants.enderio.machine.power.CapBankRenderer2;
 import crazypants.enderio.machine.power.CapacitorBankRenderer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.still.BlockVat;
+import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
@@ -67,12 +69,12 @@ public class ClientProxy extends CommonProxy {
   // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
 
-      { 3, 2, 0, 0, 0, 0 },
-      { 2, 3, 1, 1, 1, 1 },
-      { 1, 1, 3, 2, 5, 4 },
-      { 0, 0, 2, 3, 4, 5 },
-      { 4, 5, 4, 5, 3, 2 },
-      { 5, 4, 5, 4, 2, 3 } };
+    { 3, 2, 0, 0, 0, 0 },
+    { 2, 3, 1, 1, 1, 1 },
+    { 1, 1, 3, 2, 5, 4 },
+    { 0, 0, 2, 3, 4, 5 },
+    { 4, 5, 4, 5, 3, 2 },
+    { 5, 4, 5, 4, 2, 3 } };
   // @formatter:on
 
   static {
@@ -117,11 +119,15 @@ public class ClientProxy extends CommonProxy {
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
-    
+
     BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
     CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
     RenderingRegistry.registerBlockHandler(cr);
     ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
+
+    BlockVat.renderId = RenderingRegistry.getNextAvailableRenderId();
+    VatRenderer vr = new VatRenderer();
+    RenderingRegistry.registerBlockHandler(vr);
 
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);

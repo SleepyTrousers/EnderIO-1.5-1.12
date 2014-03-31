@@ -1,9 +1,12 @@
 package crazypants.enderio.machine.still;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -13,10 +16,14 @@ import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.util.ItemUtil;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.util.Util;
 
 public class BlockVat extends AbstractMachineBlock<TileVat> {
+
+  public static int renderId;
+
+
 
   public static BlockVat create() {
     BlockVat res = new BlockVat();
@@ -24,8 +31,47 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     return res;
   }
 
+  protected IIcon onIcon;
+  protected IIcon topIcon;
+
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
+  }
+
+  @Override
+  public void registerBlockIcons(IIconRegister iIconRegister) {
+    blockIcon = iIconRegister.registerIcon("enderio:vatFront");
+    onIcon = iIconRegister.registerIcon("enderio:vatFrontOn");
+    topIcon = iIconRegister.registerIcon("enderio:vatTop");
+  }
+
+  @Override
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+    // used to render the block in the world
+    TileEntity te = world.getTileEntity(x, y, z);
+    boolean on = false;
+    if(te instanceof AbstractMachineEntity) {
+      AbstractMachineEntity me = (AbstractMachineEntity) te;
+      on = me.isActive();
+    }
+
+    if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
+      return topIcon;
+    }
+
+    if(on) {
+      return onIcon;
+    } else {
+      return blockIcon;
+    }
+  }
+
+  @Override
+  public IIcon getIcon(int blockSide, int blockMeta) {
+    if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
+      return topIcon;
+    }
+    return blockIcon;
   }
 
   @Override
@@ -86,9 +132,9 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
           entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, item);
           for (int i = 0; i < entityPlayer.inventory.mainInventory.length; i++) {
             if(entityPlayer.inventory.mainInventory[i] == null) {
-              entityPlayer.inventory.setInventorySlotContents(i, res);              
+              entityPlayer.inventory.setInventorySlotContents(i, res);
               return true;
-            }            
+            }
           }
           if(!world.isRemote) {
             Util.dropItems(world, res, x, y, z, true);
@@ -104,7 +150,24 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
-  
+
+  @Override
+  public int getRenderType() {
+    return renderId;
+  }
+
+
+  @Override
+  public boolean renderAsNormalBlock() {
+    return false;
+  }
+
+
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
