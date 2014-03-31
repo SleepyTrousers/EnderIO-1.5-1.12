@@ -44,7 +44,9 @@ enderio.phasedIronNugget.name=Pulsierender Eisennugget
 //Fluids
 fluid.nutrient_distillation=Nahrhaftes Destillat
 fluid.hootch=Gebräu
-item.bucketNutrientdistillation.name=Eimer mit nahrhaftem Destillat
+fluid.fire_water=Spiritus
+fluid.rocket_fuel=Treibstoff
+item.bucketNutrient_distillation.name=Eimer mit nahrhaftem Destillat
 item.bucketHootch.name=Eimer mit Gebräu
 enderio.fluid.millibucket.abr=mB
 
@@ -221,8 +223,9 @@ enderio.combustionGenerator.fuelTank=Brennstoff
 enderio.combustionGenerator.output=Output:
 
 //Stirling Gen
- +enderio.stirlingGenerator.output=Output:
- +enderio.stirlingGenerator.burnRate=Burn Rate:
+enderio.stirlingGenerator.output=Output:
+enderio.stirlingGenerator.burnRate=Brennrate:
+
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Nur
 enderio.gui.travelAccessable.privateBlock2=darf die Einstellungen dieses Blocks ändern.
