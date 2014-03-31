@@ -47,9 +47,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-      new BasicCapacitor(500, 1500, 128),
-      new BasicCapacitor(512, 3000, 512),
-      new BasicCapacitor(2048, 5000, 2048)
+    new BasicCapacitor(500, 1500, 128),
+    new BasicCapacitor(512, 3000, 512),
+    new BasicCapacitor(2048, 5000, 2048)
   };
 
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
@@ -342,14 +342,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return getCapacitor().getMaxEnergyReceived();
   }
 
-  @Override
-  public PowerHandler getPowerHandler() {
-    return powerHandler;
-  }
 
-  @Override
-  public void applyPerdition() {
-  }
 
   @Override
   public void doWork(PowerHandler workProvider) {
@@ -507,6 +500,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     result.add(cc);
 
     return result;
+  }
+
+  @Override
+  public double getMaxEnergyStored() {
+    return CAPACITORS[subtype].getMaxEnergyStored();
   }
 
 }

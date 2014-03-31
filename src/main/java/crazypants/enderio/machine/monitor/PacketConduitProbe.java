@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
+import static crazypants.enderio.power.PowerInterfaceBC.fromRF;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -14,7 +15,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -28,6 +28,8 @@ import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.IPacketEio;
 import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.PowerInterfaceBC;
+import crazypants.enderio.power.PowerInterfaceRF;
 import crazypants.util.Lang;
 
 public class PacketConduitProbe implements IPacketEio {
@@ -128,32 +130,30 @@ public class PacketConduitProbe implements IPacketEio {
 
     } else
 
-    if(te instanceof IInternalPowerReceptor) {
+      if(te instanceof IInternalPowerReceptor) {
 
-      IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
-      PowerHandler ph = pr.getPowerHandler();
-      if(ph == null) {
+        IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
 
-        player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
+        PowerInterfaceBC.fromRF(pr.getEnergyStored(null));
+
+        pr.getEnergyStored(null);
+
+        sendPowerReciptorInfo(player, block, fromRF(pr.getEnergyStored(null)), fromRF(pr.getMaxEnergyStored(null)), 0,
+            0, PowerInterfaceRF.getPowerRequestMJ(ForgeDirection.NORTH, pr));
+
+      } else if(te instanceof IPowerReceptor) {
+
+        IPowerReceptor pr = (IPowerReceptor) te;
+        PowerReceiver rec = pr.getPowerReceiver(side);
+        if(rec == null) {
+          player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
+        } else {
+          sendPowerReciptorInfo(player, block, (float) rec.getEnergyStored(), (float) rec.getMaxEnergyStored(), (float) rec.getMinEnergyReceived(),
+              (float) rec.getMaxEnergyReceived(),
+              (float) rec.powerRequest());
+        }
+
       }
-
-      sendPowerReciptorInfo(player, block, (float) ph.getEnergyStored(), (float) ph.getMaxEnergyStored(), (float) ph.getMinEnergyReceived(),
-          (float) ph.getMaxEnergyReceived(), (float) ph
-              .getPowerReceiver().powerRequest());
-
-    } else if(te instanceof IPowerReceptor) {
-
-      IPowerReceptor pr = (IPowerReceptor) te;
-      PowerReceiver rec = pr.getPowerReceiver(side);
-      if(rec == null) {
-        player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
-      } else {
-        sendPowerReciptorInfo(player, block, (float) rec.getEnergyStored(), (float) rec.getMaxEnergyStored(), (float) rec.getMinEnergyReceived(),
-            (float) rec.getMaxEnergyReceived(),
-            (float) rec.powerRequest());
-      }
-
-    }
   }
 
   public static void sendInfoMessage(EntityPlayer player, TileConduitBundle tcb) {
@@ -319,9 +319,9 @@ public class PacketConduitProbe implements IPacketEio {
     sb = new StringBuilder();
     sb.append(color);
     sb.append(CON_BUF);
-    sb.append(PowerDisplayUtil.formatPower(con.getPowerHandler().getEnergyStored()));
+    sb.append(PowerDisplayUtil.formatPower(con.getEnergyStored()));
     sb.append(OF);
-    sb.append(PowerDisplayUtil.formatPower(con.getPowerHandler().getMaxEnergyStored()));
+    sb.append(PowerDisplayUtil.formatPower(con.getMaxEnergyStored()));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");

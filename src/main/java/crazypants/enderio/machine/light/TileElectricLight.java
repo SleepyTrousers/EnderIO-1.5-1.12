@@ -140,7 +140,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir != face && dir != face.getOpposite()) { // don't project behind
-                                                       // us
+          // us
           Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
           addNodeInDirection(new Vector3d(offset), after);
           addNodeInDirection(offset.add(ForgeDirectionOffsets.forDirCopy(face.getOpposite())), after);
@@ -340,15 +340,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   @Override
   public World getWorld() {
     return worldObj;
-  }
-
-  @Override
-  public PowerHandler getPowerHandler() {
-    return powerHandler;
-  }
-
-  @Override
-  public void applyPerdition() {
   }
 
   // RF Power

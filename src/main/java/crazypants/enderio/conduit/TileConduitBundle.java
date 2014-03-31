@@ -244,7 +244,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         if(!ConduitUtil.forceSkylightRecalculation(worldObj, xCoord, yCoord, zCoord)) {
           markForUpdate = true;
         }
-      } else { //can do the else as only need to update once      
+      } else { //can do the else as only need to update once
         ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
         if(curMode != lastMode) {
           markForUpdate = true;
@@ -638,23 +638,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return null;
   }
 
-  @Override
-  public PowerHandler getPowerHandler() {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      return pc.getPowerHandler();
-    }
-    return null;
-  }
-
-  @Override
-  public void applyPerdition() {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      pc.applyPerdition();
-    }
-
-  }
 
   @Override
   public World getWorld() {

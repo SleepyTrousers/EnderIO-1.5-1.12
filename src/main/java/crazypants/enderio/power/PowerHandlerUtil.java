@@ -70,34 +70,36 @@ public class PowerHandlerUtil {
   }
 
   public static float transmitInternal(IInternalPowerReceptor receptor, PowerReceiver pp, float quantity, Type type, ForgeDirection from) {
+    IEnergyHandler eh = receptor;
+    return eh.receiveEnergy(from, (int) (quantity* 10), false) / 10f;
 
-    PowerHandler ph = receptor.getPowerHandler();
-    if(ph == null) {
-      return 0;
-    }
-
-    double energyStored = pp.getEnergyStored();
-    double canUse = quantity;
-    canUse = Math.min(canUse, pp.getMaxEnergyReceived());
-    // Don't overflow it
-    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);
-    if(canUse <= pp.getMinEnergyReceived()) {
-      pp.receiveEnergy(type, 0, null);
-      ph.setEnergy(energyStored);
-      return 0;
-    }
-
-    // Do all required functions except:
-    // - We will handle perd'n ourselves and there is not need to drain excess
-    // from our engines as they are self regulating
-    // - Also not making use of the doWork calls.
-    pp.receiveEnergy(type, 0, from);
-    ph.setEnergy(energyStored);
-
-    ph.setEnergy(ph.getEnergyStored() + canUse);
-    receptor.applyPerdition();
-
-    return (float) canUse;
+    //    PowerHandler ph = receptor.getPowerHandler();
+    //    if(ph == null) {
+    //      return 0;
+    //    }
+    //
+    //    double energyStored = pp.getEnergyStored();
+    //    double canUse = quantity;
+    //    canUse = Math.min(canUse, pp.getMaxEnergyReceived());
+    //    // Don't overflow it
+    //    canUse = Math.min(canUse, pp.getMaxEnergyStored() - energyStored);
+    //    if(canUse <= pp.getMinEnergyReceived()) {
+    //      pp.receiveEnergy(type, 0, null);
+    //      ph.setEnergy(energyStored);
+    //      return 0;
+    //    }
+    //
+    //    // Do all required functions except:
+    //    // - We will handle perd'n ourselves and there is not need to drain excess
+    //    // from our engines as they are self regulating
+    //    // - Also not making use of the doWork calls.
+    //    pp.receiveEnergy(type, 0, from);
+    //    ph.setEnergy(energyStored);
+    //
+    //    ph.setEnergy(ph.getEnergyStored() + canUse);
+    //    receptor.applyPerdition();
+    //
+    //    return (float) canUse;
   }
 
   public static int recieveRedstoneFlux(ForgeDirection from, PowerHandler powerHandler, int maxReceive, boolean simulate) {

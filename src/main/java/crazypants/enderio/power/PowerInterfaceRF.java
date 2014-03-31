@@ -47,6 +47,14 @@ public class PowerInterfaceRF implements IPowerInterface {
     return 0;
   }
 
+
+  public static float getPowerRequestMJ(ForgeDirection dir, IEnergyHandler handler) {
+    if(handler != null && dir != null && handler.canInterface(dir)) {
+      return handler.receiveEnergy(dir, 99999999, true) / 10f;
+    }
+    return 0;
+  }
+
   @Override
   public float getMinEnergyReceived(ForgeDirection dir) {
     return 0;
@@ -55,8 +63,8 @@ public class PowerInterfaceRF implements IPowerInterface {
   @Override
   public float recieveEnergy(ForgeDirection opposite, float canOffer) {
     if(rfPower != null && opposite != null) {
-        return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10f;
-      }
+      return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10f;
+    }
     return 0;
   }
 }

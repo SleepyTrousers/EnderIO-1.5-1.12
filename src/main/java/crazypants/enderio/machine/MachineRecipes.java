@@ -27,6 +27,7 @@ public class MachineRecipes {
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
     ItemStack basicGear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
     ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
+    ItemStack electricSteel = new ItemStack(EnderIO.itemAlloy,1,Alloy.ELECTRICAL_STEEL.ordinal());
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
@@ -56,14 +57,14 @@ public class MachineRecipes {
 
     //Still
     ItemStack still = new ItemStack(EnderIO.blockVat, 1, 0);
-    GameRegistry.addShapedRecipe(crusher, "iii", "dmd", "gcg", 'd', Items.cauldron, 'g', basicGear, 'm', machineChassi, 'i', Items.iron_ingot, 'c', capacitor);
+    GameRegistry.addShapedRecipe(crusher, "eve", "eme", "ece", 'v', Items.cauldron, 'm', machineChassi, 'i', electricSteel, 'c', capacitor);
 
     //transceiver
     ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
     ItemStack obsidian = new ItemStack(Blocks.obsidian);
     ItemStack phasedGold = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal());
     GameRegistry
-        .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
+    .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
 
     //solar panel
     if(Config.photovoltaicCellEnabled) {
@@ -84,8 +85,8 @@ public class MachineRecipes {
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
     ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
     GameRegistry
-        .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
-            'r', redstoneConduit, 'c', capacitor);
+    .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
+        'r', redstoneConduit, 'c', capacitor);
 
   }
 
@@ -149,7 +150,7 @@ public class MachineRecipes {
 
     }
 
-    //MJ Reader    
+    //MJ Reader
     ItemStack mJReader = new ItemStack(EnderIO.itemConduitProbe, 1, 0);
     ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack powerConduit = new ItemStack(EnderIO.itemPowerConduit, 1, 0);

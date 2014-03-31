@@ -34,7 +34,7 @@ public class PowerInterfaceBC implements IPowerInterface {
   public float getEnergyStored(ForgeDirection dir) {
     double result = 0;
     if(bcPower instanceof IInternalPowerReceptor) {
-      result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getEnergyStored();
+      result = ((IInternalPowerReceptor) bcPower).getEnergyStored(null)/10;
     } else if(bcPower != null && !(bcPower instanceof IPowerEmitter)) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
       if(pr != null) {
@@ -48,7 +48,7 @@ public class PowerInterfaceBC implements IPowerInterface {
   public float getMaxEnergyStored(ForgeDirection dir) {
     double result = 0;
     if(bcPower instanceof IInternalPowerReceptor) {
-      result = ((IInternalPowerReceptor) bcPower).getPowerHandler().getMaxEnergyStored();
+      result = ((IInternalPowerReceptor) bcPower).getMaxEnergyStored(null)/10;
     } else if(bcPower != null && !(bcPower instanceof IPowerEmitter)) {
       PowerReceiver pr = bcPower.getPowerReceiver(dir);
       if(pr != null) {
@@ -100,6 +100,11 @@ public class PowerInterfaceBC implements IPowerInterface {
       return (float) pr.receiveEnergy(Type.PIPE, offer, opposite);
     }
     return 0;
+  }
+
+  public static int fromRF(int energyStored) {
+    return energyStored/10;
+
   }
 
 }

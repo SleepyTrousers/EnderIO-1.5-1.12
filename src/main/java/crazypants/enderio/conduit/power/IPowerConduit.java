@@ -30,7 +30,7 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
 
   IIcon getTextureForOutputMode();
 
-  //called from NetworkPowerManager 
+  //called from NetworkPowerManager
   void onTick();
 
   //mj
@@ -39,5 +39,7 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
   void setEnergyStored(float give);
 
   boolean getConnectionsDirty();
+
+  double getMaxEnergyStored();
 
 }

@@ -13,14 +13,14 @@ import crazypants.util.BlockCoord;
 
 public class PowerDistributor {
 
-  
+
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
-  
+
   private final BlockCoord bc;
-  
-  
+
+
   public PowerDistributor(BlockCoord bc) {
     this.bc = bc;
   }
@@ -29,7 +29,7 @@ public class PowerDistributor {
   public void neighboursChanged() {
     receptorsDirty = true;
   }
-  
+
   public float transmitEnergy(World worldObj, float available) {
 
     float transmitted = 0;
@@ -44,7 +44,7 @@ public class PowerDistributor {
       Receptor receptor = receptorIterator.next();
       IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= available) {
-        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), (float) available);
+        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), available);
         transmitted += used;
         available -= used;
       }
@@ -65,7 +65,7 @@ public class PowerDistributor {
     if(!receptorsDirty) {
       return;
     }
-    receptors.clear();   
+    receptors.clear();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord checkLoc = bc.getLocation(dir);
       TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
@@ -77,7 +77,7 @@ public class PowerDistributor {
     receptorIterator = receptors.listIterator();
     receptorsDirty = false;
   }
-  
+
   static class Receptor {
     IPowerInterface receptor;
     ForgeDirection fromDir;

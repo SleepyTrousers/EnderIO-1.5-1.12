@@ -64,15 +64,6 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     receptorsDirty = true;
   }
 
-  @Override
-  public void applyPerdition() {
-  }
-
-  @Override
-  public PowerHandler getPowerHandler() {
-    return powerHandler;
-  }
-
   // RF Power
 
   @Override

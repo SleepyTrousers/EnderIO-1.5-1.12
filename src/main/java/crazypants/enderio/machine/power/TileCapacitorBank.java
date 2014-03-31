@@ -463,7 +463,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return getController().doGetMaxIO();
   }
 
-  @Override
   public PowerHandler getPowerHandler() {
     return getController().doGetPowerHandler();
   }
@@ -670,10 +669,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   @Override
   public World getWorld() {
     return worldObj;
-  }
-
-  @Override
-  public void applyPerdition() {
   }
 
   private void updatePowerHandler() {

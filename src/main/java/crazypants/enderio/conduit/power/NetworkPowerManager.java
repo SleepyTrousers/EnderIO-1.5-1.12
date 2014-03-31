@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.world.World;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
+import buildcraft.api.power.IPowerEmitter;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.Config;
 import crazypants.enderio.Log;
@@ -88,12 +87,12 @@ public class NetworkPowerManager {
 
   public float getPowerInReceptors() {
     float result = 0;
-    Set<IPowerInterface> done = new HashSet<IPowerInterface>();
+    Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
         IPowerInterface powerReceptor = re.powerInterface;
-        if(!done.contains(powerReceptor)) {
-          done.add(powerReceptor);
+        if(!done.contains(powerReceptor.getDelegate()) && !(powerReceptor.getDelegate() instanceof IPowerEmitter)) {
+          done.add(powerReceptor.getDelegate());
           result += powerReceptor.getEnergyStored(re.direction);
         }
       }
@@ -103,12 +102,12 @@ public class NetworkPowerManager {
 
   public float getMaxPowerInReceptors() {
     float result = 0;
-    Set<IPowerInterface> done = new HashSet<IPowerInterface>();
+    Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
         IPowerInterface powerReceptor = re.powerInterface;
-        if(!done.contains(powerReceptor)) {
-          done.add(powerReceptor);
+        if(!done.contains(powerReceptor.getDelegate()) && !(powerReceptor.getDelegate() instanceof IPowerEmitter)) {
+          done.add(powerReceptor.getDelegate());
           result += powerReceptor.getMaxEnergyStored(re.direction);
         }
       }
@@ -151,53 +150,39 @@ public class NetworkPowerManager {
       }
 
       ReceptorEntry r = receptorIterator.next();
-      if(r.emmiter.getPowerHandler() != null && r.emmiter.getPowerHandler().isPowerSource(r.direction)) {
+      IPowerInterface pp = r.powerInterface;
+      if(pp != null) {
 
-        // do a summy recieve or recieve energy counter will never tick down
-        double es = r.emmiter.getPowerHandler().getEnergyStored();
-        PowerReceiver pr = r.emmiter.getPowerReceiver(r.direction.getOpposite());
-        pr.receiveEnergy(Type.STORAGE, 0, null);
-        r.emmiter.getPowerHandler().setEnergy(es);
+        float used = 0;
+        if(pp.getClass() == PowerInterfaceRF.class) {
 
-      } else {
+          float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+          used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+          trackerSend(r.emmiter, used, false);
 
-        IPowerInterface pp = r.powerInterface;
+        } else {
 
-        if(pp != null) {
+          float reservedForEntry = removeReservedEnergy(r);
+          available += reservedForEntry;
+          float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+          float requested = pp.getPowerRequest(r.direction.getOpposite());
 
-          float used = 0;
-
-          if(pp.getClass() == PowerInterfaceRF.class) {
-
-            float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-            used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
-            trackerSend(r.emmiter, used, false);
-
-          } else {
-
-            float reservedForEntry = removeReservedEnergy(r);
-            available += reservedForEntry;
-            float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-            float requested = pp.getPowerRequest(r.direction.getOpposite());
-
-            // If it is possible to supply the minimum amount of energy
-            if(pp.getMinEnergyReceived(r.direction) <= r.emmiter.getMaxEnergyExtracted(r.direction) && requested > 0) {
-              // Buffer energy if we can't meet it now
-              if(pp.getMinEnergyReceived(r.direction) > canOffer) {
-                reserveEnergy(r, canOffer);
-                used += canOffer;
-              } else {
-                used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
-                trackerSend(r.emmiter, used, false);
-              }
+          // If it is possible to supply the minimum amount of energy
+          if(pp.getMinEnergyReceived(r.direction) <= r.emmiter.getMaxEnergyExtracted(r.direction) && requested > 0) {
+            // Buffer energy if we can't meet it now
+            if(pp.getMinEnergyReceived(r.direction) > canOffer) {
+              reserveEnergy(r, canOffer);
+              used += canOffer;
+            } else {
+              used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+              trackerSend(r.emmiter, used, false);
             }
           }
-          available -= used;
-          if(available <= 0) {
-            break;
-          }
         }
-
+        available -= used;
+        if(available <= 0) {
+          break;
+        }
       }
       appliedCount++;
     }

@@ -117,14 +117,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     redstoneStateDirty = true;
   }
 
-  @Override
-  public PowerHandler getPowerHandler() {
-    return powerHandler;
-  }
-
-  @Override
-  public void applyPerdition() {
-  }
+  //  @Override
+  //  public PowerHandler getPowerHandler() {
+  //    return powerHandler;
+  //  }
+  //
+  //  @Override
+  //  public void applyPerdition() {
+  //  }
 
   public short getFacing() {
     return facing;
@@ -212,6 +212,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
     return (int) (powerHandler.getMaxEnergyStored() * 10);
+  }
+
+  public int getMaxEnergyStoredMJ() {
+    return (int)powerHandler.getMaxEnergyStored();
   }
 
   // --- Process Loop

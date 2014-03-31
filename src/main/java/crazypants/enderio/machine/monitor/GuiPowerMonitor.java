@@ -90,7 +90,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getPowerHandler().getMaxEnergyStored()) + " "
+        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStoredMJ()) + " "
             + PowerDisplayUtil.abrevation());
       }
 
@@ -367,7 +367,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     sb.append(formatPowerFloat(te.aveMjSent));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
-    sb.append(PowerDisplayUtil.ofStr());
+    sb.append(PowerDisplayUtil.perTickStr());
     fontRenderer.drawString(sb.toString(), x, y, rgb, false);
 
     rgb = headingCol;

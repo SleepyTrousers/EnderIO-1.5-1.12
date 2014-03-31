@@ -1,14 +1,9 @@
 package crazypants.enderio.machine.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
@@ -17,8 +12,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
 public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory, IPowerEmitter {
@@ -59,6 +52,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   @Override
   public String getInventoryName() {
     return "Stirling Generator";
+  }
+
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    return 0;
   }
 
   @Override
@@ -115,18 +113,19 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       powerDis.neighboursChanged();
     }
   }
-  
+
+  @Override
   protected void updateStoredEnergyFromPowerHandler() {
     //no-op as we don't actually need a BC power handler for a generator
-     //Need to clean this up 
-   }  
+    //Need to clean this up
+  }
 
-   @Override
-   public int getEnergyStored(ForgeDirection from) {
-     return (int)(storedEnergy * 10);
-   }
-  
-  
+  @Override
+  public int getEnergyStored(ForgeDirection from) {
+    return (int)(storedEnergy * 10);
+  }
+
+
 
   public double getPowerPerTick() {
     return ENERGY_PER_TICK * getEnergyMultiplier();
@@ -189,7 +188,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   //private PowerDistributor powerDis;
-  private boolean transmitEnergy() { 
+  private boolean transmitEnergy() {
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
@@ -197,9 +196,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     if(canTransmit <= 0) {
       return false;
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, (float)canTransmit);   
+    float transmitted = powerDis.transmitEnergy(worldObj, (float)canTransmit);
     storedEnergy -= transmitted;
-    return transmitted > 0;      
+    return transmitted > 0;
   }
 
   @Override
@@ -207,6 +206,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return false;
   }
 
-  
+
 
 }

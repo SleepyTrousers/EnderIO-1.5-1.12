@@ -408,7 +408,6 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     return worldObj;
   }
 
-  @Override
   public PowerHandler getPowerHandler() {
     if(getModeForChannel(SubChannel.POWER) == IoMode.RECIEVE) {
       return getDisabledPowerHandler();
@@ -459,10 +458,6 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   @Override
   public void doWork(PowerHandler workProvider) {
-  }
-
-  @Override
-  public void applyPerdition() {
   }
 
   @Override
