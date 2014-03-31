@@ -39,6 +39,8 @@ import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.item.PoweredItemRenderer;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
+import crazypants.enderio.machine.generator.BlockCombustionGenerator;
+import crazypants.enderio.machine.generator.CombustionGeneratorRenderer;
 import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
 import crazypants.enderio.machine.hypercube.TileHyperCube;
 import crazypants.enderio.machine.light.BlockElectricLight;
@@ -114,6 +116,9 @@ public class ClientProxy extends CommonProxy {
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
+    
+    BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new CombustionGeneratorRenderer());
 
     FusedQuartzFrameRenderer fqfr = new FusedQuartzFrameRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemFusedQuartzFrame, fqfr);
@@ -210,3 +215,4 @@ public class ClientProxy extends CommonProxy {
   }
 
 }
+

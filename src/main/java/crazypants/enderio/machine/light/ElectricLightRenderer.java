@@ -28,7 +28,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     textures[3] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal());
     textures[4] = block.getBlockTextureFromSide(ForgeDirection.WEST.ordinal());
     textures[5] = block.getBlockTextureFromSide(ForgeDirection.EAST.ordinal());
-    CubeRenderer.render(bb, textures, null);
+    CubeRenderer.render(bb, textures, null, null);
 
     Tessellator.instance.draw();
   }
@@ -50,7 +50,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     textures[4] = block.getIcon(world, x, y, z, ForgeDirection.WEST.ordinal());
     textures[5] = block.getIcon(world, x, y, z, ForgeDirection.EAST.ordinal());
 
-    CubeRenderer.render(bb, textures, null);
+    CubeRenderer.render(bb, textures, null, null);
 
     return true;
   }

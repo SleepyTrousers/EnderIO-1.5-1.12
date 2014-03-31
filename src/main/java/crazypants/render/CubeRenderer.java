@@ -166,7 +166,7 @@ public final class CubeRenderer {
     addVecWithUV(verts[3], minU, maxV);
   }
 
-  public static void render(BoundingBox bb, IIcon[] faceTextures, VertexTransform xForm) {
+  public static void render(BoundingBox bb, IIcon[] faceTextures, VertexTransform xForm, float[] brightnessPerSide) {
     setupVertices(bb, xForm);
     float minU;
     float maxU;
@@ -177,6 +177,11 @@ public final class CubeRenderer {
     Tessellator tessellator = Tessellator.instance;
 
     tessellator.setNormal(0, 0, -1);
+    if(brightnessPerSide != null) {
+      float cm = brightnessPerSide[ForgeDirection.NORTH.ordinal()];
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }
+    
     tex = faceTextures[0];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
@@ -188,6 +193,10 @@ public final class CubeRenderer {
     addVecWithUV(verts[2], minU, maxV);
 
     tessellator.setNormal(0, 0, 1);
+    if(brightnessPerSide != null) {
+      float cm = brightnessPerSide[ForgeDirection.SOUTH.ordinal()];
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }
     tex = faceTextures[1];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
@@ -199,6 +208,10 @@ public final class CubeRenderer {
     addVecWithUV(verts[7], minU, maxV);
 
     tessellator.setNormal(0, 1, 0);
+    if(brightnessPerSide != null) {
+      float cm = brightnessPerSide[ForgeDirection.UP.ordinal()];
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }
     tex = faceTextures[2];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
@@ -210,6 +223,10 @@ public final class CubeRenderer {
     addVecWithUV(verts[7], maxU, minV);
 
     tessellator.setNormal(0, -1, 0);
+    if(brightnessPerSide != null) {
+      float cm = brightnessPerSide[ForgeDirection.UP.ordinal()];
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }
     tex = faceTextures[3];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
@@ -221,6 +238,10 @@ public final class CubeRenderer {
     addVecWithUV(verts[4], maxU, minV);
 
     tessellator.setNormal(1, 0, 0);
+    if(brightnessPerSide != null) {
+      float cm = brightnessPerSide[ForgeDirection.EAST.ordinal()];
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }
     tex = faceTextures[4];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
@@ -232,6 +253,10 @@ public final class CubeRenderer {
     addVecWithUV(verts[1], minU, minV);
 
     tessellator.setNormal(-1, 0, 0);
+    if(brightnessPerSide != null) {
+      float cm = brightnessPerSide[ForgeDirection.WEST.ordinal()];
+      tessellator.setColorOpaque_F(cm, cm, cm);
+    }
     tex = faceTextures[5];
     minU = tex.getMinU();
     maxU = tex.getMaxU();

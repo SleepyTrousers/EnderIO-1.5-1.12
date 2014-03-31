@@ -62,7 +62,7 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
     BoundingBox bb = switchBounds.translate(trans);
 
     for (VertexTransform tf : xForms) {
-      CubeRenderer.render(bb, icons, tf);
+      CubeRenderer.render(bb, icons, tf,null);
     }
     bb = connectorBounds.translate(trans);
     for (VertexTransform tf : xForms) {
