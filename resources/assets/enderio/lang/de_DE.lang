@@ -215,6 +215,14 @@ enderio.gui.alloy.mode.furnace=Nur Ofen
 enderio.vat.outputTank=Output-Tank
 enderio.vat.inputTank=Input-Tank
 
+//Combustion Gen
+enderio.combustionGenerator.coolantTank=Kühlmittel
+enderio.combustionGenerator.fuelTank=Brennstoff
+enderio.combustionGenerator.output=Output:
+
+//Stirling Gen
+ +enderio.stirlingGenerator.output=Output:
+ +enderio.stirlingGenerator.burnRate=Burn Rate:
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Nur
 enderio.gui.travelAccessable.privateBlock2=darf die Einstellungen dieses Blocks ändern.
