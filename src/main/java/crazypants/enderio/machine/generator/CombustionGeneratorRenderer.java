@@ -1,9 +1,9 @@
 package crazypants.enderio.machine.generator;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -11,13 +11,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTank;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.material.BlockFusedQuartz;
-import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
@@ -41,7 +42,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       }
     }
 
-    
+
     IIcon[] textures = new IIcon[6];
     if(world != null) {
       textures[0] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.NORTH.ordinal());
@@ -87,10 +88,10 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     bb = bb.translate(0, -0.29f, 0);
     xform.set(x, y, z, facing);
     CubeRenderer.render(bb, textures, xform, cols);
-    
-    
-    IIcon tex = active ? EnderIO.blockCombustionGenerator.getFrontOn() : EnderIO.blockCombustionGenerator.getFrontOff(); 
-  //middle chunk
+
+
+    IIcon tex = active ? EnderIO.blockCombustionGenerator.getFrontOn() : EnderIO.blockCombustionGenerator.getFrontOff();
+    //middle chunk
     if(scaleX) {
       textures[0] = tex;
       textures[1] = tex;
@@ -98,24 +99,23 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       textures[4] = tex;
       textures[5] = tex;
     }
-    
+
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(1, 0.34, 1);
     xform.set(x, y, z, facing);
     CubeRenderer.render(bb, textures, xform, cols);
-    
+
 
     //top / bottom connectors
-    bb = BoundingBox.UNIT_CUBE.scale(0.35,1,0.35);    
+    bb = BoundingBox.UNIT_CUBE.scale(0.35,1,0.35);
     bb = bb.translate(x, y, z);
-    //CubeRenderer.render(bb, EnderIO.blockCombustionGenerator.getBlankSideIcon(), null, cols, false);
     CubeRenderer.render(bb, textures[2], null, cols, false);
-    
-    
-    
+
+
+
     //tanks
     float size = 0.34f;
-    bb = BoundingBox.UNIT_CUBE.scale(0.98, 1, 0.98);
+    bb = BoundingBox.UNIT_CUBE.scale(0.98, 0.98, 0.98);
 
     scx = scaleX ? size : 1;
     scz = scaleX ? 1 : size;
@@ -135,8 +135,63 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
   }
 
   @Override
-  public void renderTileEntityAt(TileEntity var1, double var2, double var4, double var6, float var8) {
+  public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float var8) {
 
+    TileCombustionGenerator gen = (TileCombustionGenerator) tileentity;
+    if(gen.coolantTank.getFluidAmount() <= 0 && gen.fuelTank.getFluidAmount() <=0 ) {
+      return;
+    }
+
+
+    Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
+
+    float val = RenderUtil.claculateTotalBrightnessForLocation(tileentity.getWorldObj(), tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+    GL11.glColor3f(val, val, val);
+
+    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+    GL11.glEnable(GL11.GL_CULL_FACE);
+    GL11.glDisable(GL11.GL_LIGHTING);
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+    RenderUtil.bindBlockTexture();
+    Tessellator tes = Tessellator.instance;
+    tes.setTranslation(x, y, z);
+    tes.startDrawingQuads();
+
+    BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.96, 0.96, 0.96);
+    renderTank(gen, bb, gen.coolantTank, true);
+    renderTank(gen, bb, gen.fuelTank, false);
+    tes.draw();
+    tes.setTranslation(0,0,0);
+
+    GL11.glPopAttrib();
+    Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
+
+  }
+
+  private void renderTank(TileCombustionGenerator gen, BoundingBox bb, FluidTank tank, boolean isLeft) {
+    boolean scaleX = gen.getFacing() != 4 && gen.getFacing() != 5;
+    float size = 0.34f;
+    if(tank.getFluidAmount() > 0) {
+      IIcon icon = tank.getFluid().getFluid().getStillIcon();
+      if(icon != null) {
+        float fullness = (float)(tank.getFluidAmount() - 1000) / (tank.getCapacity() - 1000);
+        float scx = scaleX ? size : 1f;
+        float scz = scaleX ? 1f : size;
+        bb = bb.scale(scx, 0.97 * fullness, scz);
+
+        float tx = scaleX ? size * 1.25f : 0;
+        float tz = scaleX ? 0 : 0.25f * 1.25f;
+        float ty = -(0.98f - (bb.maxY - bb.minY)) / 2;
+        if(!isLeft) {
+          tx = -tx;
+          tz = -tz;
+        }
+        bb = bb.translate(tx, ty ,tz);
+        CubeRenderer.render(bb, icon);
+      }
+    }
   }
 
   @Override
