@@ -33,6 +33,11 @@ public class MachineRecipes {
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
     GameRegistry.addShapedRecipe(stirlingGen, "bbb", "bfb", "gpg", 'b', Blocks.stonebrick, 'f', Blocks.furnace, 'p', Blocks.piston, 'g', basicGear);
 
+    //Combustion Gen
+    ItemStack res = new ItemStack(EnderIO.blockReservoir, 1, 0);
+    ItemStack comGen = new ItemStack(EnderIO.blockCombustionGenerator, 1, 0);
+    GameRegistry.addShapedRecipe(comGen, "eee", "rmr", "gcg", 'e', electricSteel, 'r', EnderIO.blockReservoir, 'm', machineChassi, 'g', basicGear,'c', capacitor);
+
     //reservoir
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
@@ -57,7 +62,7 @@ public class MachineRecipes {
 
     //Still
     ItemStack still = new ItemStack(EnderIO.blockVat, 1, 0);
-    GameRegistry.addShapedRecipe(crusher, "eve", "eme", "ece", 'v', Items.cauldron, 'm', machineChassi, 'i', electricSteel, 'c', capacitor);
+    GameRegistry.addShapedRecipe(still, "eve", "eme", "ece", 'v', Items.cauldron, 'm', machineChassi, 'e', electricSteel, 'c', capacitor);
 
     //transceiver
     ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);

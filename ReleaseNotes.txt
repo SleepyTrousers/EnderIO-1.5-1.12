@@ -4,6 +4,9 @@
 - Added 'The Ender' powered sword
 - Added Dark Steel powered pickaxe
 - Stirling Generator now gets more efficient and faster with upgrades.
+- Added 'The Vat' to produce liquid fuels (see VatRecipes_Core.xml for recipes)
+  - Added liquids: Hooch, Fire Water and Rocket Fuel 
+- Added 'Combustion Generator'  
 
 1.0
 - #447 Capacitor Bank and Quite Clear Glass causing rendering issues.

@@ -48,6 +48,8 @@ fluid.fire_water=Fire Water
 fluid.rocket_fuel=Rocket Fuel
 item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 item.bucketHootch.name=Hootch Bucket
+item.bucketRocket_fuel.name=Rocket Fuel Bucket
+item.bucketFire_water.name=Fire Water Bucket
 enderio.fluid.millibucket.abr=MB
 
 

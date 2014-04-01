@@ -263,6 +263,7 @@ public class EnderIO {
     itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
     itemBucketHootch = ItemBucketEio.create(fluidHootch);
     itemBucketRocketFuel = ItemBucketEio.create(fluidRocketFuel);
+    itemBucketFireWater = ItemBucketEio.create(fluidFireWater);
 
     itemYetaWench = ItemYetaWrench.create();
     itemEnderface = ItemEnderface.create();
