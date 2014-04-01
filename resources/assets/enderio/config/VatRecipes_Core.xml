@@ -14,7 +14,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
     
-    <recipe name="Nutrient Distilation" energyCost="500">
+    <recipe name="Nutrient Distilation" energyCost="1000">
       <input>
         <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="2"/>
         <itemStack modID="minecraft" itemName="skull" slot="0" multiplier="2"/>
@@ -37,7 +37,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       
     </recipe>
     
-    <recipe name="Hootch" energyCost="500">
+    <recipe name="Hootch" energyCost="1000">
       <input>
         <itemStack modID="minecraft" itemName="poisonous_potato" slot="0" multiplier="2"/>
         <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="2"/>                                               
@@ -46,7 +46,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
         
         <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1"/>
                 
-        <fluidStack name="water" multiplier="0.5"/>
+        <fluidStack name="water" multiplier="0.25"/>
       </input>      
       <output>
         <fluidStack name="hootch"/>        
@@ -54,7 +54,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       
     </recipe>
     
-    <recipe name="Rocket Fuel" energyCost="500">
+    <recipe name="Rocket Fuel" energyCost="1000">
       <input>
         <itemStack modID="minecraft" itemName="gunpowder" slot="0" multiplier="1"/>                
         <itemStack modID="minecraft" itemName="redstone" slot="1" multiplier="1"/>                
@@ -66,7 +66,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       
     </recipe>
     
-    <recipe name="Fire Water" energyCost="500">
+    <recipe name="Fire Water" energyCost="1000">
       <input>
         <itemStack modID="minecraft" itemName="blaze_powder" slot="0" multiplier="1"/>                
         <itemStack modID="minecraft" itemName="redstone" slot="1" multiplier="1"/>                

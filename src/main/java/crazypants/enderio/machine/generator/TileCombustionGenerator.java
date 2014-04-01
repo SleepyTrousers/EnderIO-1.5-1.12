@@ -33,6 +33,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   private PowerDistributor powerDis;
   private float transmitted;
 
+  private boolean inPause = false;
+
   public TileCombustionGenerator() {
     super(new SlotDefinition(-1, -1, -1, -1, -1, -1));
     powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
@@ -125,6 +127,10 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     transmitEnergy();
 
+    if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
+      inPause = true;
+    }
+
     return res;
   }
 
@@ -152,9 +158,17 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       return false;
     }
 
-    if(coolantTank.getFluidAmount() <= 0 || storedEnergy >= powerHandler.getMaxEnergyStored() - fuel.powerPerCycle) {
+    if(coolantTank.getFluidAmount() <= 0 || storedEnergy >= powerHandler.getMaxEnergyStored()) {
       return false;
     }
+
+    //once full, don't start again until we have drained 2 seconds worth of power to prevent
+    //flickering on and off constantly when powering a machine that draws less than this produces
+    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - fuel.powerPerCycle) * 40) {
+      return false;
+    }
+    inPause = false;
+
     Coolant coolant = IronEngineCoolant.getCoolant(coolantTank.getFluid());
     if(coolant == null) {
       return false;
@@ -167,12 +181,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       fuelTank.drain(1, true);
       ticksRemaingFuel = getNumTicksPerMbFuel(fuel);
       res = true;
+      tanksDirty = true;
     }
     ticksRemaingCoolant--;
     if(ticksRemaingCoolant <= 0) {
       coolantTank.drain(1, true);
       ticksRemaingCoolant = getNumTicksPerMbCoolant(coolant, fuel);
       res = true;
+      tanksDirty = true;
     }
 
 

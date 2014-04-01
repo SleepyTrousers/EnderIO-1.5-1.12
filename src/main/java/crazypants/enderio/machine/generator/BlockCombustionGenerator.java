@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.generator;
 
+import java.util.Random;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -14,14 +16,15 @@ import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.util.Util;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
   public static int renderId;
 
-  protected IIcon frontOn;
-  protected IIcon frontOff;
+  //  protected IIcon frontOn;
+  //  protected IIcon frontOff;
 
   public static BlockCombustionGenerator create() {
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
@@ -36,8 +39,8 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
     super.registerBlockIcons(iIconRegister);
-    frontOn = iIconRegister.registerIcon("enderio:combustionGenFrontOn");
-    frontOff = iIconRegister.registerIcon("enderio:combustionGenFront");
+    //    frontOn = iIconRegister.registerIcon("enderio:combustionGenFrontOn");
+    //    frontOff = iIconRegister.registerIcon("enderio:combustionGenFront");
   }
 
   @Override
@@ -108,17 +111,17 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     return false;
   }
 
-  public IIcon getBlankSideIcon() {
-    return iconBuffer[0][3];
+  public IIcon getBackIcon() {
+    return iconBuffer[0][2];
   }
 
-  public IIcon getFrontOn() {
-    return frontOn;
-  }
-
-  public IIcon getFrontOff() {
-    return frontOff;
-  }
+  //  public IIcon getFrontOn() {
+  //    return frontOn;
+  //  }
+  //
+  //  public IIcon getFrontOff() {
+  //    return frontOff;
+  //  }
 
   @Override
   public String getTopIconKey(boolean active) {
@@ -126,14 +129,43 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
-  public String getBackIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
+  public String getMachineFrontIconKey(boolean active) {
+    if(active) {
+      return "enderio:combustionGenFrontOn";
+    }
+    return "enderio:combustionGenFront";
   }
 
   @Override
-  public String getMachineFrontIconKey(boolean active) {
+  public String getBackIconKey(boolean active) {
     return "enderio:blankMachinePanel";
+  }
 
+  @Override
+  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+    // If active, randomly throw some smoke around
+    if(isActive(world, x, y, z)) {
+
+      TileEntity te = world.getTileEntity(x, y, z);
+      int facing = 3;
+      if(te instanceof AbstractMachineEntity) {
+        AbstractMachineEntity me = (AbstractMachineEntity) te;
+        facing = me.facing;
+      }
+      ForgeDirection dir = ForgeDirection.getOrientation(facing);
+      int xmod = Math.abs(dir.offsetX);
+      int zmod = Math.abs(dir.offsetY);
+
+      float startX = x + (1.0F * zmod) + (0.5f * xmod);
+      float startY = y + 0.5F;
+      float startZ = z + (1.0F * xmod) + (0.5f * zmod);
+      for (int i = 0; i < 4; i++) {
+        float xOffset = (-0.2F - rand.nextFloat() * 0.6F);
+        float yOffset = -0.1F + rand.nextFloat() * 0.2F;
+        float zOffset = (-0.2F - rand.nextFloat() * 0.6F);
+        world.spawnParticle("smoke", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
+      }
+    }
   }
 
 }

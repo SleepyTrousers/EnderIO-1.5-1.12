@@ -48,16 +48,17 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       textures[1] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.SOUTH.ordinal());
       textures[2] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.UP.ordinal());
       textures[3] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.DOWN.ordinal());
-      textures[4] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.WEST.ordinal());
-      textures[5] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.EAST.ordinal());
+      textures[4] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.EAST.ordinal());
+      textures[5] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.WEST.ordinal());
     } else {
       textures[0] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.NORTH.ordinal(), 0);
       textures[1] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.SOUTH.ordinal(), 0);
       textures[2] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.UP.ordinal(), 0);
       textures[3] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.DOWN.ordinal(), 0);
-      textures[4] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.WEST.ordinal(), 0);
       textures[5] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.EAST.ordinal(), 0);
+      textures[4] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.WEST.ordinal(), 0);
     }
+
 
     float b = 1;
     if(world instanceof World) {
@@ -70,12 +71,31 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       cols[i] = b * m;
     }
 
+
+
+    //middle chunk
+    BoundingBox bb = BoundingBox.UNIT_CUBE;
+    bb = BoundingBox.UNIT_CUBE;
+    bb = bb.scale(1, 0.34, 1);
+    xform.set(x, y, z, facing);
+    CubeRenderer.render(bb, textures, xform, cols);
+
+
     boolean scaleX = facing != 4 && facing != 5;
     float scx = scaleX ? 0.7f : 1;
     float scz = scaleX ? 1 : 0.7f;
 
+    //change the front texture to blank for the top and bottom sections
+    if(scaleX) {
+      textures[0] = EnderIO.blockCombustionGenerator.getBackIcon();
+      textures[1] = EnderIO.blockCombustionGenerator.getBackIcon();
+    } else {
+      textures[4] = EnderIO.blockCombustionGenerator.getBackIcon();
+      textures[5] = EnderIO.blockCombustionGenerator.getBackIcon();
+    }
+
     //top 1/3
-    BoundingBox bb = BoundingBox.UNIT_CUBE;
+    bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(scx, 0.25, scz);
     bb = bb.translate(0, 0.29f, 0);
     xform.set(x, y, z, facing);
@@ -89,28 +109,10 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     CubeRenderer.render(bb, textures, xform, cols);
 
 
-    IIcon tex = active ? EnderIO.blockCombustionGenerator.getFrontOn() : EnderIO.blockCombustionGenerator.getFrontOff();
-    //middle chunk
-    if(scaleX) {
-      textures[0] = tex;
-      textures[1] = tex;
-    } else {
-      textures[4] = tex;
-      textures[5] = tex;
-    }
-
-    bb = BoundingBox.UNIT_CUBE;
-    bb = bb.scale(1, 0.34, 1);
-    xform.set(x, y, z, facing);
-    CubeRenderer.render(bb, textures, xform, cols);
-
-
     //top / bottom connectors
     bb = BoundingBox.UNIT_CUBE.scale(0.35,1,0.35);
     bb = bb.translate(x, y, z);
     CubeRenderer.render(bb, textures[2], null, cols, false);
-
-
 
     //tanks
     float size = 0.34f;
@@ -124,7 +126,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     float tz = scaleX ? 0 : 0.25f * 1.25f;
     bb = bb.translate(x + tx, y, z + tz);
 
-    tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
+    IIcon tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
     CubeRenderer.render(bb, tex, null, cols, false);
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);

@@ -107,11 +107,12 @@ public final class Config {
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
 
   public static int hootchPowerPerCycle = 6;
-  public static int hootchPowerTotalBurnTime = 12000;
+  public static int hootchPowerTotalBurnTime = 8000;
   public static int rocketFuelPowerPerCycle = 9;
-  public static int rocketFuelPowerTotalBurnTime = 12000;
+  public static int rocketFuelPowerTotalBurnTime = (int)Math.round(hootchPowerTotalBurnTime * 1.2);
   public static int fireWaterPowerPerCycle = 12;
-  public static int fireWaterPowerTotalBurnTime = 12000;
+  public static int fireWaterPowerTotalBurnTime = (int)Math.round(hootchPowerTotalBurnTime * 1.5);
+  public static float vatPowerUserPerTick = 2;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -181,6 +182,10 @@ public final class Config {
         "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIO);
     transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
         "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
+
+
+    vatPowerUserPerTick = (float)config.get("Settings", "vatPowerUserPerTick", vatPowerUserPerTick,
+        "Power use (MJ/t) used by the vat.").getDouble(vatPowerUserPerTick);
 
     detailedPowerTrackingEnabled = config
         .get(
