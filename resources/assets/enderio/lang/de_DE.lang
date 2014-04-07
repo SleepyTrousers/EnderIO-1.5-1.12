@@ -48,6 +48,8 @@ fluid.fire_water=Spiritus
 fluid.rocket_fuel=Treibstoff
 item.bucketNutrient_distillation.name=Eimer mit nahrhaftem Destillat
 item.bucketHootch.name=Eimer mit Gebräu
+item.bucketRocket_fuel.name=Eimer mit Treibstoff
+item.bucketFire_water.name=Eimer mit Spiritus
 enderio.fluid.millibucket.abr=mB
 
 
