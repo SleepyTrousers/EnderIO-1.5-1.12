@@ -2,7 +2,6 @@ package crazypants.enderio.machine.generator;
 
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,9 +22,6 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   public static int renderId;
 
-  //  protected IIcon frontOn;
-  //  protected IIcon frontOff;
-
   public static BlockCombustionGenerator create() {
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();
@@ -34,13 +30,6 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   protected BlockCombustionGenerator() {
     super(ModObject.blockCombustionGenerator, TileCombustionGenerator.class);
-  }
-
-  @Override
-  public void registerBlockIcons(IIconRegister iIconRegister) {
-    super.registerBlockIcons(iIconRegister);
-    //    frontOn = iIconRegister.registerIcon("enderio:combustionGenFrontOn");
-    //    frontOff = iIconRegister.registerIcon("enderio:combustionGenFront");
   }
 
   @Override
@@ -113,19 +102,6 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   public IIcon getBackIcon() {
     return iconBuffer[0][2];
-  }
-
-  //  public IIcon getFrontOn() {
-  //    return frontOn;
-  //  }
-  //
-  //  public IIcon getFrontOff() {
-  //    return frontOff;
-  //  }
-
-  @Override
-  public String getTopIconKey(boolean active) {
-    return super.getTopIconKey(active);
   }
 
   @Override

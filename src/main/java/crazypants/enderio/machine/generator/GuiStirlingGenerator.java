@@ -25,10 +25,7 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     this.entity = te;
   }
 
-  /**
-   * Draw the background layer for the GuiContainer (everything behind the
-   * items)
-   */
+
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -45,19 +42,19 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
+
     FontRenderer fr = getFontRenderer();
     int y = guiTop + fr.FONT_HEIGHT / 2 + 3;
-    
+
     double output = 0;
     if(entity.isActive()) {
       output = entity.getPowerPerTick();
     }
-    String txt =  Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();    
+    String txt =  Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
-    
-    txt =  Lang.localize("stirlingGenerator.burnRate") + " " + (1/entity.getBurnTimeMultiplier());    
+
+    txt =  Lang.localize("stirlingGenerator.burnRate") + " " + (1/entity.getBurnTimeMultiplier());
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

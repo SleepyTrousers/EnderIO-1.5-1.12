@@ -39,9 +39,8 @@
 
 
   Valid input item definitions:
-  - Must have either: itemID, modID + itemName or oreDictionary
-  - 'itemID' must be a valid blockID or itemID.
-  - 'modID' is the identifier registered by the mod with Forge (for example, Ender IO is EnderIO).
+  - Must have either: modID + itemName or oreDictionary
+  - 'modID' is the identifier registered by the mod with Forge (for example vanilla blocks use 'minecraft' while Ender IO is 'EnderIO').
   This value can be found in the details panel of Forge's 'mods' UI.
   - 'itemName' the name used to register the block/item with forge. To dump all registered items to config/modObjectsRegistery.txt
   include: <dumpRegistry modObjects="true/>
@@ -51,8 +50,7 @@
   oreDictionary. If a '*' is used for the metadata value then meta data will ignored when determining if an input is valid.
 
   Examples:
-  <itemStack itemID="" />
-  <itemStack itemID="" itemMeta="" />
+
   <itemStack modID="" itemName="" />
   <itemStack modID="" itemName="" itemMeta="" />
   <itemStack oreDictionary="" />
@@ -65,9 +63,10 @@
   being crafted for each 4 inputs processed by the SAG Mill.
 
   Examples:
-  <itemStack itemID="22" number="2"/>
-  <itemStack itemID="22" itemMeta="*"/>
-  <itemStack itemID="22" itemMeta="3" chance="0.2"/>
+  <itemStack modID="minecraft" itemName="sand"/>
+  <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="6" />
+  <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+  <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />   
   <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="0" number="4" chance="0.1"/>
 
 -->
@@ -195,7 +194,7 @@
 
     <recipe name="Stone" energyCost="240">
       <input>
-        <itemStack itemID="1" />
+        <itemStack modID="minecraft" itemName="stone" />        
       </input>
       <output>
         <itemStack modID="minecraft" itemName="cobblestone" />
@@ -224,7 +223,7 @@
 
     <recipe name="Glass" energyCost="120">
       <input>
-        <itemStack modID="minecraft" itemName="glass"/>
+        <itemStack oreDictionary="glass" />         
       </input>
       <output>
         <itemStack modID="minecraft" itemName="sand"/>
@@ -273,79 +272,80 @@
 
     <recipe name="Bone" energyCost="240">
       <input>
-        <itemStack itemID="352" />
+        <itemStack modID="minecraft" itemName="bone" />
       </input>
       <output>
-        <itemStack itemID="351" itemMeta="15" number="6" />
-        <itemStack itemID="351" itemMeta="15" number="2" chance="0.1" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="6" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="2" chance="0.1" />        
       </output>
     </recipe>
 
-    <recipe name="ClayBlock" energyCost="240">
+    <recipe name="ClayBlock" energyCost="240">     
       <input>
-        <itemStack itemID="82" />
+        <itemStack modID="minecraft" itemName="clay" />        
       </input>
-      <output>
-        <itemStack itemID="337" number="2" />
-        <itemStack itemID="337" number="1" chance="0.1" />
-        <itemStack modID="EnderIO" itemName="itemMaterial" number="4" itemMeta="0" chance="0.4" />
+      <output>      
+        <itemStack modID="minecraft" itemName="clay_ball" number="2" />
+        <itemStack modID="minecraft" itemName="clay_ball" number="1" chance="0.1" />        
+        <itemStack modID="EnderIO" itemName="itemMaterial" number="2" itemMeta="0" chance="0.8" />
       </output>
     </recipe>
 
     <recipe name="Wool" energyCost="120">
       <input>
-        <itemStack itemID="35" itemMeta="*" />
+        <itemStack modID="minecraft" itemName="wool" />
       </input>
       <output>
-        <itemStack itemID="287" number="3" />
-        <itemStack itemID="287" number="1" chance="0.1" />
+        <itemStack modID="minecraft" itemName="string" number="3"/>        
+        <itemStack modID="minecraft" itemName="string" number="1" chance="0.1"/>
       </output>
     </recipe>
 
     <recipe name="Wheat" energyCost="80">
-      <input>
-        <itemStack itemID="296" />
+      <input>      
+        <itemStack modID="minecraft" itemName="wheat" />        
       </input>
       <output>
-        <itemStack itemID="295" number="2" />
+        <itemStack modID="minecraft" itemName="wheat_seeds" number="2"/>        
       </output>
     </recipe>
 
     <recipe name="RedstoneOre" energyCost="300">
       <input>
-        <itemStack itemID="73" />
+        <itemStack modID="minecraft" itemName="redstone_ore" />        
       </input>
       <output>
-        <itemStack itemID="331" number="8" />
-        <itemStack itemID="331" number="1" chance="0.2" />
+        <itemStack modID="minecraft" itemName="redstone" number="8"/>
+        <itemStack modID="minecraft" itemName="redstone" number="1" chance="0.2"/>        
         <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="0" chance="0.8" />               
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
       </output>
     </recipe>
 
     <recipe name="LapisLazuliOre" energyCost="300">
-      <input>
-        <itemStack itemID="21" />
+      <input>      
+        <itemStack modID="minecraft" itemName="lapis_ore" />        
       </input>
       <output>
-        <itemStack itemID="351" itemMeta="4" number="8" />
-        <itemStack itemID="351" itemMeta="4" number="1" chance="0.2" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="8" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="1" chance="0.2" />        
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
       </output>
     </recipe>
 
     <recipe name="Quartz Ore" energyCost="720">
       <input>
-        <itemStack itemID="153" />
+        <itemStack modID="minecraft" itemName="quartz_ore" />        
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="4"/>        
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+        <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />        
       </output>
     </recipe>
 
     <recipe name="Block of Quartz" energyCost="240">
       <input>
-        <itemStack itemID="155" itemMeta="0" />
+        <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*"/>
       </input>
       <output>
         <itemStack modID="minecraft" itemName="quartz" number="2"/>
@@ -353,29 +353,10 @@
       </output>
     </recipe>
 
-    <recipe name="Chiseled Quartz Block" energyCost="240">
-      <input>
-        <itemStack itemID="155" itemMeta="1" />
-      </input>
-      <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2"/>
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25"/>
-      </output>
-    </recipe>
-
-    <recipe name="Pillar Quartz Block" energyCost="240">
-      <input>
-        <itemStack itemID="155" itemMeta="2" />
-      </input>
-      <output>               
-        <itemStack modID="minecraft" itemName="quartz" number="2"/>
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25"/>        
-      </output>
-    </recipe>
 
     <recipe name="Quartz Stairs" energyCost="120">
-      <input>
-        <itemStack itemID="156" itemMeta="1" />
+      <input>      
+        <itemStack modID="minecraft" itemName="quartz_stairs"/>        
       </input>
       <output>
         <itemStack modID="minecraft" itemName="quartz" number="2"/>
@@ -384,8 +365,8 @@
     </recipe>
 
     <recipe name="Quartz Slab" energyCost="120">
-      <input>
-        <itemStack itemID="44" itemMeta="7" />
+      <input>      
+        <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />        
       </input>
       <output>
         <itemStack modID="minecraft" itemName="quartz" number="2"/>
@@ -509,7 +490,7 @@
   
     <recipe name="Obsidian" energyCost="400">
       <input>
-        <itemStack itemID="49" />
+        <itemStack modID="minecraft" itemName="obsidian"/>
       </input>      
       <output>
         <itemStack oreDictionary="dustObsidian" number="4"/>        
@@ -599,22 +580,11 @@
       <output>
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
-    </recipe>
-
-    <recipe name="NetherQuartzOre" energyCost="360">
-      <input>
-        <itemStack itemID="153" />
-      </input>
-      <output>
-        <itemStack itemID="406" number="2" />
-        <itemStack oreDictionary="dustNetherQuartz" />
-        <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />
-      </output>
-    </recipe>
+    </recipe>    
 
     <recipe name="NetherQuartz" energyCost="240">
       <input>
-        <itemStack itemID="406" />
+        <itemStack modID="minecraft" itemName="quartz" />        
       </input>
       <output>
         <itemStack oreDictionary="dustNetherQuartz" />
@@ -625,8 +595,8 @@
   <recipeGroup name="Railcraft">    
 
     <recipe name="Charcoal" energyCost="240">
-      <input>
-        <itemStack itemID="263" itemMeta="1" />
+      <input>        
+        <itemStack modID="minecraft" itemName="coal" itemMeta="1"/>
       </input>
       <output>
         <itemStack oreDictionary="dustCharcoal" number="1" />
@@ -652,7 +622,7 @@
         <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="0" />
       </input>
       <output>
-        <itemStack itemID="351" itemMeta="15" number="8" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="8" />        
       </output>
     </recipe>
 
@@ -661,7 +631,7 @@
         <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="1" />
       </input>
       <output>
-        <itemStack itemID="351" itemMeta="15" number="12" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="12" />
       </output>
     </recipe>
 
@@ -670,7 +640,7 @@
         <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="2" />
       </input>
       <output>
-        <itemStack itemID="351" itemMeta="15" number="24" />
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="24" />
       </output>
     </recipe>
   </recipeGroup>
