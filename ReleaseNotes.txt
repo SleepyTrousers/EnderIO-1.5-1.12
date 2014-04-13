@@ -3,6 +3,7 @@
 - #591 Work around to avoid non reproducible crash.
 - #587 Crash placing Item Conduit between Iron Chest & Basic Project Bench 
 - #582 Dimensional Transceiver cannot be powered locally unless power mode is set to send 
+- #567 Improved server startup times when using large EnderIO power networks 
 
 1.0
 - #447 Capacitor Bank and Quite Clear Glass causing rendering issues.
