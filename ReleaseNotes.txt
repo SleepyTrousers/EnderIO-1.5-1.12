@@ -1,5 +1,6 @@
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
+- #580 Fixed infinite power when mixing TE and EIO conduits in certain ways
 - #582 Dimensional Transceiver cannot be powered locally unless power mode is set to send
 - #587 Crash placing Item Conduit between Iron Chest & Basic Project Bench 
 - #589 Work around for crash when using Better Furnace blocks as paint sources for facades. 
