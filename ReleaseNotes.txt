@@ -1,3 +1,8 @@
+1.0.1
+- #589 Work around for crash when using Better Furnace blocks as paint sources for facades.
+- #591 Work around to avoid unreproducible crash.
+- #587 Crash placing Item Conduit between Iron Chest & Basic Project Bench 
+
 1.0
 - #447 Capacitor Bank and Quite Clear Glass causing rendering issues.
 - Registered EIO alloys in the ore dictionary.
