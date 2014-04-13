@@ -4,6 +4,7 @@
 - #587 Crash placing Item Conduit between Iron Chest & Basic Project Bench 
 - #589 Work around for crash when using Better Furnace blocks as paint sources for facades. 
 - #591 Work around to avoid non reproducible crash.
+- #592 Power monitor reports larger capacitor bank size 
 - #593 Crash when jumping on travel anchor while looking at an 'Ender IO' block 
 
 1.0

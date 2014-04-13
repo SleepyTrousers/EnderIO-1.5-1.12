@@ -455,6 +455,7 @@ public class NetworkPowerManager {
       maxCap = 0;
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
+        cb = cb.getController();
 
         boolean processed = capBanks.contains(cb);
 
