@@ -6,6 +6,7 @@
 - #591 Work around to avoid non reproducible crash.
 - #592 Power monitor reports larger capacitor bank size 
 - #593 Crash when jumping on travel anchor while looking at an 'Ender IO' block 
+- #594 Changing equipped item causes FPS drop 
 
 1.0
 - #447 Capacitor Bank and Quite Clear Glass causing rendering issues.
