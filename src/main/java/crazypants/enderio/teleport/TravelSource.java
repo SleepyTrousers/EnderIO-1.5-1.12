@@ -5,8 +5,8 @@ import crazypants.enderio.Config;
 public enum TravelSource {
 
   BLOCK(0, Config.travelAnchorMaxDistance),
-  STAFF(Config.travelStaffPowerPerBlock * 10, Config.travelStaffMaxDistance),
-  STAFF_BLINK(Config.travelStaffPowerPerBlock * 10, Config.travelStaffMaxBlinkDistance);
+  STAFF(Config.travelStaffPowerPerBlockRF, Config.travelStaffMaxDistance),
+  STAFF_BLINK(Config.travelStaffPowerPerBlockRF, Config.travelStaffMaxBlinkDistance);
 
   public static int getMaxDistance() {
     return STAFF.maxDistanceTravelledSq;

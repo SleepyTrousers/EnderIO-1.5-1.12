@@ -51,6 +51,10 @@ public class PowerDisplayUtil {
     FLOAT_NF.setMaximumFractionDigits(1);
   }
 
+  public static String formatPower(PowerType type, double amount) {
+    return INT_NF.format(currentPowerType.toDisplayValue(type.fromDisplayValue(amount)));
+  }
+
   public static String formatPower(double powerMJ) {
     return INT_NF.format(currentPowerType.toDisplayValue(powerMJ));
   }

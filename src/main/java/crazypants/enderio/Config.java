@@ -67,9 +67,9 @@ public final class Config {
   public static int travelAnchorMaxDistance = 48;
 
   public static int travelStaffMaxDistance = 96;
-  public static float travelStaffPowerPerBlock = 10;
-  public static int travelStaffMaxStoredPower = 25000;
-  public static int travelStaffMaxPowerIo = 500;
+  public static float travelStaffPowerPerBlockRF = 250;
+  public static int travelStaffMaxStoredPowerRF = 250000;
+  public static int travelStaffMaxPowerIoRF = 1250;
   public static int travelStaffMaxBlinkDistance = 8;
   public static int travelStaffBlinkPauseTicks = 10;
 
@@ -81,7 +81,7 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
-  public static int darkSteelPowerStorage = 100000;
+  public static int darkSteelPowerStorage = 250000;
 
   public static double darkSteelLeggingWalkModifier = 0.3;
   public static double darkSteelLeggingSprintModifier = 0.5;
@@ -89,21 +89,21 @@ public final class Config {
 
   public static int darkSteelWalkPowerCost = darkSteelPowerStorage / 3000;
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
-  public static boolean darkSteelDrainPowerFromInventory = true;
-  public static int darkSteelBootsJumpPowerCost = 100;
+  public static boolean darkSteelDrainPowerFromInventory = false;
+  public static int darkSteelBootsJumpPowerCost = 250;
 
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.167f / 3f; //at looting 3, have a 1 in 6 chance of getting a skull
   public static float darkSteelSwordSkullChance = 0.2f;
   public static float darkSteelSwordSkullLootingModifier = 0.15f;
   public static float vanillaSwordSkullLootingModifier = 0.1f;
-  public static int darkSteelSwordPowerUsePerHit = 250;
+  public static int darkSteelSwordPowerUsePerHit = 750;
   public static double darkSteelSwordEnderPearlDropChance = 1;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.2;
 
-  public static int darkSteelPickPowerUseObsidian = 2500;
+  public static int darkSteelPickPowerUseObsidian = 10000;
   public static int darkSteelPickEffeciencyObsidian = 50;
-  public static int darkSteelPickPowerUsePerDamagePoint = 250;
+  public static int darkSteelPickPowerUsePerDamagePoint = 750;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
 
   public static int hootchPowerPerCycle = 6;
@@ -224,14 +224,14 @@ public final class Config {
 
     travelStaffMaxDistance = config.get("Settings", "travelStaffMaxDistance", travelStaffMaxDistance,
         "Maximum number of blocks that can be traveled using the Staff of the Traveling.").getInt(travelStaffMaxDistance);
-    travelStaffPowerPerBlock = (float) config.get("Settings", "travelStaffPowerPerBlock", travelStaffPowerPerBlock,
-        "Number of MJ required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlock);
+    travelStaffPowerPerBlockRF = (float) config.get("Settings", "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
+        "Number of MJ required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
-    travelStaffMaxStoredPower = config.get("Settings", "travelStaffMaxStoredPower", travelStaffMaxStoredPower,
-        "Maximum number of MJ that can be stored using in the Staff of the Traveling.").getInt(travelStaffMaxStoredPower);
+    travelStaffMaxStoredPowerRF = config.get("Settings", "travelStaffMaxStoredPowerRF", travelStaffMaxStoredPowerRF,
+        "Maximum number of MJ that can be stored using in the Staff of the Traveling.").getInt(travelStaffMaxStoredPowerRF);
 
-    travelStaffMaxPowerIo = config.get("Settings", "travelStaffMaxPowerIo", travelStaffMaxPowerIo,
-        "Maximum number of MJ that the Staff of the Traveling can be charged per tick.").getInt(travelStaffMaxPowerIo);
+    travelStaffMaxPowerIoRF = config.get("Settings", "travelStaffMaxPowerIoRF", travelStaffMaxPowerIoRF,
+        "Maximum number of MJ that the Staff of the Traveling can be charged per tick.").getInt(travelStaffMaxPowerIoRF);
 
     travelStaffMaxBlinkDistance = config.get("Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
         "Max number of blocks teleported when shift clicking the staff.").getInt(travelStaffMaxBlinkDistance);
