@@ -361,11 +361,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public PowerHandler getPowerHandler() {
-    return powerHandler;
-  }
-
-  @Override
   public void doWork(PowerHandler workProvider) {
   }
 
