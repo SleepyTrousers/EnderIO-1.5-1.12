@@ -90,6 +90,9 @@ public class EnderIoRecipe implements IEnderIoRecipe {
 
   @Override
   public boolean isOutput(ItemStack output) {
+    if(output == null) {
+      return false;
+    }
     for (IRecipeComponent rc : outputs) {
       if(rc.isEquivalent(output)) {
         return true;

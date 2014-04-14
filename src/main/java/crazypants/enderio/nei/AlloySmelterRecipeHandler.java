@@ -1,8 +1,5 @@
 package crazypants.enderio.nei;
 
-import static codechicken.core.gui.GuiDraw.changeTexture;
-import static codechicken.core.gui.GuiDraw.drawTexturedModalRect;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +53,10 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void loadCraftingRecipes(ItemStack result) {
 
+    if(result == null) {
+      return;
+    }
+
     List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.ALLOY_SMELTER_ID, result);
 
     for (IEnderIoRecipe recipe : recipes) {
@@ -103,8 +104,9 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void drawBackground(int recipe) {
     GL11.glColor4f(1, 1, 1, 1);
-    changeTexture(getGuiTexture());
-    drawTexturedModalRect(0, 0, 5, 3, 166, 73);
+
+    GuiDraw.changeTexture(getGuiTexture());
+    GuiDraw.drawTexturedModalRect(0, 0, 5, 3, 166, 73);
   }
 
   @Override
@@ -136,7 +138,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public List<PositionedStack> getIngredients() {
-        return getCycledIngredients(cycleticks / 20, input);
+      return getCycledIngredients(cycleticks / 20, input);
     }
 
     @Override

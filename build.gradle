@@ -43,6 +43,7 @@ minecraft {
 
 dependencies {
     compile files('lib/cglib-nodep-2.2.3.jar')
+    compile files('lib/NeiStub172.jar')
 }
 
 // configure  the source folders
@@ -50,7 +51,6 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-	    exclude '**/enderio/nei/**' 
 	    exclude '**/enderio/trigger/**' 	    
             // exclude 'some exclusion'
             // include 'some inclusion'
