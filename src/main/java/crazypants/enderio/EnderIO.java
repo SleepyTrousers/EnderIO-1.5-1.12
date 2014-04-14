@@ -32,6 +32,7 @@ import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.farm.BlockFarmStation;
 import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
@@ -171,6 +172,8 @@ public class EnderIO {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
 
+  public static BlockFarmStation blockFarmStation;
+
 
 
   //  public static ITrigger triggerNoEnergy;
@@ -198,6 +201,7 @@ public class EnderIO {
     blockAlloySmelter = BlockAlloySmelter.create();
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
+    blockFarmStation = BlockFarmStation.create();
     blockCapacitorBank = BlockCapacitorBank.create();
 
     blockPainter = BlockPainter.create();
