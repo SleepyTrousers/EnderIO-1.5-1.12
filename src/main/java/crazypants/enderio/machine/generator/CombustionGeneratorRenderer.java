@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -60,9 +59,10 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     }
 
 
+    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
     float b = 1;
-    if(world instanceof World) {
-      b = RenderUtil.claculateTotalBrightnessForLocation((World) world, x, y, z);
+    if(world != null) {
+      b = RenderUtil.claculateTotalBrightnessForLocation(Minecraft.getMinecraft().theWorld, x, y, z);
     }
 
     float[] cols = new float[6];

@@ -38,8 +38,9 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
     textures[4] = EnderIO.blockFarmStation.getIcon(3, 0);
     textures[5] = EnderIO.blockFarmStation.getIcon(3, 0);
 
+    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
     float b = 1;
-    if(world instanceof World) {
+    if(world != null) {
       b = RenderUtil.claculateTotalBrightnessForLocation((World) world, x, y, z);
     }
 

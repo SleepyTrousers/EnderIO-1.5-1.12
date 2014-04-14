@@ -1,12 +1,12 @@
 package crazypants.enderio.machine.still;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
@@ -54,9 +54,10 @@ public class VatRenderer implements ISimpleBlockRenderingHandler {
       textures[5] = EnderIO.blockVat.getIcon(3, 0);
     }
 
+    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
     float b = 1;
-    if(world instanceof World) {
-      b = RenderUtil.claculateTotalBrightnessForLocation((World) world, x, y, z);
+    if(world != null) {
+      b = RenderUtil.claculateTotalBrightnessForLocation(Minecraft.getMinecraft().theWorld, x, y, z);
     }
 
     float[] cols = new float[6];
