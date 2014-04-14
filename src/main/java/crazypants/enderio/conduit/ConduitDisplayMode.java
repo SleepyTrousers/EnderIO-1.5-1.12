@@ -2,6 +2,7 @@ package crazypants.enderio.conduit;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
+import crazypants.enderio.EnderIO;
 
 public enum ConduitDisplayMode {
   ALL,
@@ -27,7 +28,7 @@ public enum ConduitDisplayMode {
   }
 
   public static ConduitDisplayMode getDisplayMode(ItemStack equipped) {
-    if(equipped == null) {
+    if(equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
       return ALL;
     }
     int index = equipped.getItemDamage();

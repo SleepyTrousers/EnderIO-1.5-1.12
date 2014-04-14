@@ -80,10 +80,12 @@ public class BlockConduitFacade extends Block {
   @SideOnly(Side.CLIENT)
   public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
     if(blockOverride != null) {
-      return blockOverride.colorMultiplier(par1IBlockAccess, par2, par3, par4);
-    } else {
-      return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+      try { //work around for Issue #589
+        return blockOverride.colorMultiplier(par1IBlockAccess, par2, par3, par4);
+      } catch (Exception e) {
+      }
     }
+    return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
   }
 
   public Block getIconOverrideBlock() {

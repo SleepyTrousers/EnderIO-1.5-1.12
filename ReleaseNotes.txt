@@ -1,12 +1,23 @@
 1.1.0_alpha
-- Ported 1.0 for MC 1.6.4 to MC 1.7.2
+- Ported 1.0.1 for MC 1.6.4 to MC 1.7.2
 - Added Dark Steel powered armor
 - Added 'The Ender' powered sword
 - Added Dark Steel powered pickaxe
 - Stirling Generator now gets more efficient and faster with upgrades.
 - Added 'The Vat' to produce liquid fuels (see VatRecipes_Core.xml for recipes)
   - Added liquids: Hooch, Fire Water and Rocket Fuel 
-- Added 'Combustion Generator'  
+  - Added 'Combustion Generator'  
+
+1.0.1
+- #567 Improved server startup times when using large EnderIO power networks
+- #580 Fixed infinite power when mixing TE and EIO conduits in certain ways
+- #582 Dimensional Transceiver cannot be powered locally unless power mode is set to send
+- #587 Crash placing Item Conduit between Iron Chest & Basic Project Bench 
+- #589 Work around for crash when using Better Furnace blocks as paint sources for facades. 
+- #591 Work around to avoid non reproducible crash.
+- #592 Power monitor reports larger capacitor bank size 
+- #593 Crash when jumping on travel anchor while looking at an 'Ender IO' block 
+- #594 Changing equipped item causes FPS drop 
 
 1.0
 - #447 Capacitor Bank and Quite Clear Glass causing rendering issues.

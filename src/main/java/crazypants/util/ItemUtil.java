@@ -42,9 +42,12 @@ public class ItemUtil {
       inventorySide = ForgeDirection.UNKNOWN;
     }
 
+    int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal());
+    if(slots == null) {
+      return 0;
+    }
     int numInserted = 0;
     int numToInsert = item.stackSize;
-    int[] slots = sidedInv.getAccessibleSlotsFromSide(inventorySide.ordinal());
     for (int i = 0; i < slots.length && numToInsert > 0; i++) {
       int slot = slots[i];
       if(sidedInv.canInsertItem(slot, item, inventorySide.ordinal())) {

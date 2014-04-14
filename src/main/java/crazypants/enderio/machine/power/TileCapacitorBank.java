@@ -823,7 +823,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     render = true;
   }
 
-  TileCapacitorBank getController() {
+  public TileCapacitorBank getController() {
     if(isMaster() || !isMultiblock()) {
       return this;
     }

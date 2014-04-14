@@ -101,6 +101,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   protected final EnumMap<ForgeDirection, RedstoneControlMode> rsModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, DyeColor> rsColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
+  protected EnumMap<ForgeDirection, Long> recievedTicks;
+
   private final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
 
   private boolean redstoneStateDirty = true;
@@ -281,15 +283,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return powerHandler;
   }
 
-  @Override
-  public float getMaxEnergyExtracted(ForgeDirection dir) {
-    ConnectionMode mode = getConectionMode(dir);
-    if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
-      return 0;
-    }
-    return getCapacitor().getMaxEnergyExtracted();
-  }
-
   private boolean isRedstoneEnabled(ForgeDirection dir) {
     boolean result;
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
@@ -342,7 +335,35 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return getCapacitor().getMaxEnergyReceived();
   }
 
+  @Override
+  public float getMaxEnergyExtracted(ForgeDirection dir) {
+    ConnectionMode mode = getConectionMode(dir);
+    if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
+      return 0;
+    }
+    if(recievedRfThisTick(dir)) {
+      return 0;
+    }
+    return getCapacitor().getMaxEnergyExtracted();
+  }
 
+  private boolean recievedRfThisTick(ForgeDirection dir) {
+    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getWorld() == null) {
+      return false;
+    }
+
+    long curTick = getBundle().getWorld().getTotalWorldTime();
+    long recT = recievedTicks.get(dir);
+    if(curTick >= (recT - 5)) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public PowerHandler getPowerHandler() {
+    return powerHandler;
+  }
 
   @Override
   public void doWork(PowerHandler workProvider) {
@@ -364,13 +385,21 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    if(getMaxEnergyRecieved(from) == 0) {
+    if(getMaxEnergyRecieved(from) == 0 || maxReceive <= 0) {
       return 0;
     }
     float freeSpace = getCapacitor().getMaxEnergyStored() - energyStored;
     int result = (int) Math.min(maxReceive / 10, freeSpace);
-    if(!simulate) {
+    if(!simulate && result > 0) {
       energyStored += result;
+
+      if(getBundle() != null) {
+        if(recievedTicks == null) {
+          recievedTicks = new EnumMap<ForgeDirection, Long>(ForgeDirection.class);
+        }
+        recievedTicks.put(from, getBundle().getWorld().getTotalWorldTime());
+      }
+
     }
     return result * 10;
   }

@@ -430,7 +430,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    if(getModeForChannel(SubChannel.POWER).isSendEnabled()) {
+    if(getModeForChannel(SubChannel.POWER) != IoMode.RECIEVE) {
       return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
     }
     return 0;

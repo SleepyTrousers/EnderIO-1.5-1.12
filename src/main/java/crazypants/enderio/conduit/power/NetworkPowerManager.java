@@ -37,6 +37,8 @@ public class NetworkPowerManager {
 
   private final List<ReceptorEntry> storageReceptors = new ArrayList<ReceptorEntry>();
 
+  private boolean receptorsDirty = true;
+
   private boolean lastActiveValue = false;
   private int ticksWithNoPower = 0;
 
@@ -123,6 +125,8 @@ public class NetworkPowerManager {
   public void doApplyRecievedPower() {
 
     trackerStartTick();
+
+    checkReceptors();
 
     // Update our energy stored based on what's in our conduits
     updateNetorkStorage();
@@ -365,16 +369,25 @@ public class NetworkPowerManager {
   }
 
   public void receptorsChanged() {
+    receptorsDirty = true;
+  }
+
+  private void checkReceptors() {
+    if(!receptorsDirty) {
+      return;
+    }
     receptors.clear();
     storageReceptors.clear();
     for (ReceptorEntry rec : network.getPowerReceptors()) {
-      if(rec.powerInterface.getDelegate() instanceof TileCapacitorBank) {
+      if(rec.powerInterface.getDelegate() != null && rec.powerInterface.getDelegate().getClass() == TileCapacitorBank.class) {
         storageReceptors.add(rec);
       } else {
         receptors.add(rec);
       }
     }
     receptorIterator = receptors.listIterator();
+
+    receptorsDirty = false;
   }
 
   void onNetworkDestroyed() {
@@ -426,6 +439,7 @@ public class NetworkPowerManager {
       maxCap = 0;
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
+        cb = cb.getController();
 
         boolean processed = capBanks.contains(cb);
 

@@ -20,10 +20,14 @@ public class OreDictionaryRecipeInput extends RecipeInput {
 
   @Override
   public boolean isInput(ItemStack test) {
-    if(test == null) {
+    if(test == null || oreId < 0) {
       return false;
     }
-    return OreDictionary.getOreID(test) == oreId;
+    try { //work around for issue #591
+      return OreDictionary.getOreID(test) == oreId;
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   @Override
