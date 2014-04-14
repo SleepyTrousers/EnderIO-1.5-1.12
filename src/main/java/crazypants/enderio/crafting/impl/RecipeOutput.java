@@ -1,6 +1,7 @@
 package crazypants.enderio.crafting.impl;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.crafting.IRecipeOutput;
 
 public class RecipeOutput extends RecipeComponent implements IRecipeOutput {
@@ -22,6 +23,11 @@ public class RecipeOutput extends RecipeComponent implements IRecipeOutput {
   public RecipeOutput(ItemStack itemPrototype, int slot, float chance) {
     super(itemPrototype, slot);
     this.chance = chance;
+  }
+
+  public RecipeOutput(FluidStack fluidOutput, int slot) {
+    super(fluidOutput, slot);
+    chance = 1.0f;
   }
 
   @Override

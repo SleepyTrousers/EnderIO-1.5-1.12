@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.crafting.IRecipeComponent;
 import crazypants.enderio.crafting.IRecipeInput;
@@ -89,6 +90,19 @@ public class EnderIoRecipe implements IEnderIoRecipe {
   }
 
   @Override
+  public boolean isOutput(FluidStack output) {
+    if(output == null) {
+      return false;
+    }
+    for (IRecipeComponent rc : outputs) {
+      if(rc.isEquivalent(output)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public boolean isOutput(ItemStack output) {
     if(output == null) {
       return false;
@@ -105,5 +119,7 @@ public class EnderIoRecipe implements IEnderIoRecipe {
   public float getRequiredEnergy() {
     return requiredEnergy;
   }
+
+
 
 }

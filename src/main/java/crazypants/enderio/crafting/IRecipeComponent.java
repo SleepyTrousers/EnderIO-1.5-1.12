@@ -1,6 +1,7 @@
 package crazypants.enderio.crafting;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public abstract interface IRecipeComponent {
 
@@ -15,6 +16,8 @@ public abstract interface IRecipeComponent {
    * @return
    */
   ItemStack getItem();
+
+  FluidStack getFluid();
 
   /**
    * Equivalent to getItem().stacksize
@@ -34,5 +37,7 @@ public abstract interface IRecipeComponent {
   boolean isValidSlot(int slot);
 
   boolean isEquivalent(ItemStack candidate);
+
+  boolean isEquivalent(FluidStack output);
 
 }

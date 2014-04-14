@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.crafting.IRecipeInput;
 
 public class RecipeInput extends RecipeComponent implements IRecipeInput {
@@ -43,6 +44,11 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
     } else {
       equivelents = Collections.emptyList();
     }
+  }
+
+  public RecipeInput(FluidStack fluidInput, int slot) {
+    super(fluidInput, slot);
+    equivelents = Collections.emptyList();
   }
 
   @Override

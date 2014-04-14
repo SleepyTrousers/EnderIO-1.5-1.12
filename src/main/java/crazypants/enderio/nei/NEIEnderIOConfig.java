@@ -5,7 +5,6 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.alloy.GuiAlloySmelter;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
 
@@ -15,8 +14,10 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     API.registerRecipeHandler(new SagMillRecipeHandler());
     API.registerUsageHandler(new AlloySmelterRecipeHandler());
     API.registerUsageHandler(new SagMillRecipeHandler());
-    //TODO:
-    API.setGuiOffset(GuiAlloySmelter.class, 5, 3);
+
+    API.registerRecipeHandler(new VatRecipeHandler());
+    API.registerUsageHandler(new VatRecipeHandler());
+
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));
     if(!Config.photovoltaicCellEnabled) {

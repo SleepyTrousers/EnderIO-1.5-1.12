@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public final class RecipeReigistry {
 
@@ -22,6 +23,10 @@ public final class RecipeReigistry {
     for (IEnderIoRecipe recipe : recipes) {
       registerRecipe(recipe);
     }
+  }
+
+  public List<IEnderIoRecipe> getRecipesForOutput(String crafterId, FluidStack fluid) {
+    return getRecipesForOutput(crafterId, fluid, null);
   }
 
   public List<IEnderIoRecipe> getRecipesForOutput(String crafterId, ItemStack output) {
@@ -49,6 +54,19 @@ public final class RecipeReigistry {
     return result;
   }
 
+  public List<IEnderIoRecipe> getRecipesForOutput(String crafterId, FluidStack fluid, List<IEnderIoRecipe> result) {
+    if(result == null) {
+      result = new ArrayList<IEnderIoRecipe>();
+    }
+    List<IEnderIoRecipe> recipes = getRecipesForCrafter(crafterId);
+    for (IEnderIoRecipe recipe : recipes) {
+      if(recipe.isOutput(fluid)) {
+        result.add(recipe);
+      }
+    }
+    return result;
+  }
+
   public List<IEnderIoRecipe> getRecipesForCrafter(String crafterId) {
     List<IEnderIoRecipe> result = crafterRecipes.get(crafterId);
     if(result == null) {
@@ -60,5 +78,7 @@ public final class RecipeReigistry {
 
   private RecipeReigistry() {
   }
+
+
 
 }

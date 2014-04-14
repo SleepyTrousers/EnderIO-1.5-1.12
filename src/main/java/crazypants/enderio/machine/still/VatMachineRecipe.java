@@ -80,16 +80,24 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
       List<IRecipeComponent> components = new ArrayList<IRecipeComponent>();
       for (crazypants.enderio.machine.recipe.RecipeInput ri : cr.getInputs()) {
         if(ri.getInput() != null) {
-          IRecipeInput input = new crazypants.enderio.crafting.impl.RecipeInput(ri.getInput(), -1, ri.getEquivelentInputs());
+          IRecipeInput input = new crazypants.enderio.crafting.impl.RecipeInput(ri.getInput(), ri.getSlotNumber(), ri.getEquivelentInputs());
+          components.add(input);
+        } else if(ri.getFluidInput() != null) {
+          IRecipeInput input = new crazypants.enderio.crafting.impl.RecipeInput(ri.getFluidInput(), 0);
           components.add(input);
         }
       }
 
       for (crazypants.enderio.machine.recipe.RecipeOutput co : cr.getOutputs()) {
-        IRecipeOutput output = new crazypants.enderio.crafting.impl.RecipeOutput(co.getOutput(), co.getChance());
-        components.add(output);
+        if(co.isFluid()) {
+          IRecipeOutput output = new crazypants.enderio.crafting.impl.RecipeOutput(co.getFluidOutput(), -1);
+          components.add(output);
+        } else {
+          IRecipeOutput output = new crazypants.enderio.crafting.impl.RecipeOutput(co.getOutput(), co.getChance());
+          components.add(output);
+        }
       }
-      result.add(new EnderIoRecipe(IEnderIoRecipe.STILL_ID, cr.getEnergyRequired(), components));
+      result.add(new EnderIoRecipe(IEnderIoRecipe.VAT_ID, cr.getEnergyRequired(), components));
     }
     return result;
   }

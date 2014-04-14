@@ -68,7 +68,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public void loadCraftingRecipes(String outputId, Object[] results)
+  public void loadCraftingRecipes(String outputId, Object... results)
   {
     if(outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class)
     {
@@ -158,7 +158,9 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       if(recipeSize > 2) {
         this.input.add(new PositionedStack(getInputs(ingredients.get(2)), 98, 14));
       }
-      this.output = new PositionedStack(result, 74, 54);
+      if(result != null) {
+        this.output = new PositionedStack(result, 74, 54);
+      }
       this.energy = energy; //If we wanted to do an energy cost
     }
   }

@@ -43,7 +43,8 @@ minecraft {
 
 dependencies {
     compile files('lib/cglib-nodep-2.2.3.jar')
-    compile files('lib/NeiStub172.jar')
+    compile files('lib/NotEnoughItems-1.7.2-rc2.jar')
+    compile files('lib/CodeChickenCore 1.7.2-rc1.jar')
 }
 
 // configure  the source folders
