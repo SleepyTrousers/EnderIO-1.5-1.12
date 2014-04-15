@@ -20,6 +20,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));
+    API.hideItem(new ItemStack(EnderIO.blockFarmStation));
     if(!Config.photovoltaicCellEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockSolarPanel));
     }

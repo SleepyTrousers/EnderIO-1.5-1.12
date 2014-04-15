@@ -106,7 +106,7 @@ tile.blockHyperCube.name=Dimensional Transceiver
 tile.blockPowerMonitor.name=Power Monitor
 tile.blockVat.name=The Vat
 tile.blockCombustionGenerator.name=Combustion Generator
-tile.blockFarmStation.name=Farming Station
+tile.blockFarmStation.name=Farming Station [NOT IMPLEMENTED]
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
