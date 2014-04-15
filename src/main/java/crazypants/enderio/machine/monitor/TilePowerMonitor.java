@@ -33,7 +33,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   boolean engineControlEnabled = false;
   float startLevel = 0.75f;
   float stopLevel = 0.99f;
-  DyeColor signalColor = DyeColor.RED;
 
   private Signal currentlyEmmittedSignal;
 
@@ -143,7 +142,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
         float percentFull = getPercentFull();
         if(currentlyEmmittedSignal == null) {
           if(percentFull <= startLevel) {
-            sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, signalColor);
+            sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
           }
         } else {
           if(percentFull >= stopLevel) {
@@ -216,7 +215,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     engineControlEnabled = nbtRoot.getBoolean("engineControlEnabled");
     startLevel = nbtRoot.getFloat("startLevel");
     stopLevel = nbtRoot.getFloat("stopLevel");
-    signalColor = DyeColor.fromIndex(nbtRoot.getShort("signalColor"));
   }
 
   @Override
@@ -235,7 +233,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     nbtRoot.setBoolean("engineControlEnabled", engineControlEnabled);
     nbtRoot.setFloat("startLevel", startLevel);
     nbtRoot.setFloat("stopLevel", stopLevel);
-    nbtRoot.setShort("signalColor", (short) signalColor.ordinal());
   }
 
   @Override

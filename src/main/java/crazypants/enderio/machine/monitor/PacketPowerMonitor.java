@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import crazypants.enderio.Log;
 import crazypants.enderio.network.IPacketEio;
-import crazypants.util.DyeColor;
 
 public class PacketPowerMonitor implements IPacketEio {
 
@@ -16,7 +15,7 @@ public class PacketPowerMonitor implements IPacketEio {
   boolean engineControlEnabled;
   float startLevel;
   float stopLevel;
-  DyeColor signalColor;
+
 
   public PacketPowerMonitor() {
   }
@@ -25,6 +24,9 @@ public class PacketPowerMonitor implements IPacketEio {
     x = pm.xCoord;
     y = pm.yCoord;
     z = pm.zCoord;
+    engineControlEnabled = pm.engineControlEnabled;
+    startLevel = pm.startLevel;
+    stopLevel = pm.stopLevel;
   }
 
   @Override
@@ -35,7 +37,7 @@ public class PacketPowerMonitor implements IPacketEio {
     buf.writeBoolean(engineControlEnabled);
     buf.writeFloat(startLevel);
     buf.writeFloat(stopLevel);
-    buf.writeShort(signalColor.ordinal());
+
   }
 
   @Override
@@ -46,7 +48,7 @@ public class PacketPowerMonitor implements IPacketEio {
     engineControlEnabled = buffer.readBoolean();
     startLevel = buffer.readFloat();
     stopLevel = buffer.readFloat();
-    signalColor = DyeColor.fromIndex(buffer.readShort());
+
   }
 
   @Override
@@ -69,7 +71,6 @@ public class PacketPowerMonitor implements IPacketEio {
     pm.engineControlEnabled = engineControlEnabled;
     pm.startLevel = startLevel;
     pm.stopLevel = stopLevel;
-    pm.signalColor = signalColor;
     player.worldObj.markBlockForUpdate(x, y, z);
   }
 
