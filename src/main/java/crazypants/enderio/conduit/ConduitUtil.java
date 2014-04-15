@@ -134,7 +134,7 @@ public class ConduitUtil {
       for (int i = 1; i < 12; i++) {
         if(worldObj.isAirBlock(xCoord, yCoord + i, zCoord)) {
           //We need to force the re-lighting of the column due to a change
-          //in the light reaching bellow the block from the sky. To avoid 
+          //in the light reaching bellow the block from the sky. To avoid
           //modifying core classes to expose this functionality I am just placing then breaking
           //a block above this one to force the check
           worldObj.setBlock(xCoord, yCoord + i, zCoord, Blocks.stone, 0, 3);
@@ -342,6 +342,9 @@ public class ConduitUtil {
 
   public static int getInternalSignalForColor(IConduitBundle bundle, DyeColor col) {
     int signalStrength = 0;
+    if(bundle == null) {
+      return 0;
+    }
     IRedstoneConduit rsCon = bundle.getConduit(IRedstoneConduit.class);
     if(rsCon != null) {
       Set<Signal> signals = rsCon.getNetworkOutputs(ForgeDirection.UNKNOWN);
