@@ -3,13 +3,15 @@ package crazypants.enderio.machine;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler;
@@ -22,9 +24,10 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements IInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
 
   public short facing;
 
@@ -52,6 +55,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
 
   protected Map<ForgeDirection, IoMode> faceModes;
 
+  private int[] allSlots;
+
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition;
     facing = 3;
@@ -59,6 +64,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor, this, powerType);
     inventory = new ItemStack[slotDefinition.getNumSlots()];
     redstoneControlMode = RedstoneControlMode.IGNORE;
+
+    allSlots = new int[slotDefinition.getNumSlots()];
+    for(int i=0;i<allSlots.length;i++) {
+      allSlots[i] = i;
+    }
   }
 
   public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
@@ -282,11 +292,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
       redstoneStateDirty = false;
     }
 
+    if(worldObj.getTotalWorldTime() % 20 == 0) {
+      requiresClientSync |= doSideIo();
+    }
+
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    requiresClientSync |= (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0);
+    requiresClientSync |= (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 5 == 0);
 
     if(requiresClientSync) {
       lastSyncPowerStored = storedEnergy;
@@ -298,6 +312,55 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
       markDirty();
     }
 
+  }
+
+  protected boolean doSideIo() {
+    if(faceModes == null) {
+      return false;
+    }
+    boolean res = false;
+    Set<Entry<ForgeDirection, IoMode>> ents = faceModes.entrySet();
+    for(Entry<ForgeDirection, IoMode> ent : ents) {
+      IoMode mode = ent.getValue();
+      if(mode.pulls()) {
+        res = res | doPull(ent.getKey());
+      }
+      if(mode.pushes()) {
+        res = res | doPush(ent.getKey());
+      }
+    }
+    return res;
+  }
+
+  protected boolean doPush(ForgeDirection dir) {
+    BlockCoord loc = getLocation().getLocation(dir);
+    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+    boolean res = false;
+
+    if(slotDefinition.getNumOutputSlots() <= 0) {
+      return false;
+    }
+
+    for(int i=slotDefinition.minOutputSlot; i<= slotDefinition.maxOutputSlot;i++) {
+      ItemStack item = inventory[i];
+      if(item != null) {
+        int num = ItemUtil.doInsertItem(te, item, dir.getOpposite());
+        if(num > 0) {
+          item.stackSize -= num;
+          if(item.stackSize <= 0) {
+            item = null;
+          }
+          inventory[i] = item;
+          markDirty();
+          res = true;
+        }
+      }
+    }
+    return res;
+  }
+
+  protected boolean doPull(ForgeDirection key) {
+    return false;
   }
 
   protected void updateStoredEnergyFromPowerHandler() {
@@ -475,6 +538,38 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
 
   @Override
   public void closeInventory() {
+  }
+
+
+
+  @Override
+  public String getInventoryName() {
+    return getMachineName();
+  }
+
+  @Override
+  public boolean hasCustomInventoryName() {
+    return false;
+  }
+
+  @Override
+  public int[] getAccessibleSlotsFromSide(int var1) {
+    ForgeDirection dir = ForgeDirection.getOrientation(var1);
+    IoMode mode = getIoMode(dir);
+    if(mode == IoMode.DISABLED) {
+      return new int[0];
+    }
+    return allSlots;
+  }
+
+  @Override
+  public boolean canInsertItem(int var1, ItemStack var2, int var3) {
+    return true;
+  }
+
+  @Override
+  public boolean canExtractItem(int var1, ItemStack var2, int var3) {
+    return true;
   }
 
   public void onNeighborBlockChange(Block blockId) {
