@@ -586,7 +586,6 @@ public class NetworkPowerManager {
 
     @Override
     public void tickEnd(ServerTickEvent evt) {
-      doApplyRecievedPower();
       try {
         doApplyRecievedPower();
       } catch (Exception e) {
