@@ -122,7 +122,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     scz = scaleX ? 1 : size;
     bb = bb.scale(scx, 1, scz);
 
-    float tx = scaleX ? size * 1.25f : 0;
+    float tx = scaleX ? 0.25f * 1.25f : 0;
     float tz = scaleX ? 0 : 0.25f * 1.25f;
     bb = bb.translate(x + tx, y, z + tz);
 
