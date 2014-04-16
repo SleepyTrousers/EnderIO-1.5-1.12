@@ -7,6 +7,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +25,7 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
 
@@ -333,14 +335,18 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   protected boolean doPush(ForgeDirection dir) {
-    BlockCoord loc = getLocation().getLocation(dir);
-    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
-    boolean res = false;
 
     if(slotDefinition.getNumOutputSlots() <= 0) {
       return false;
     }
 
+    BlockCoord loc = getLocation().getLocation(dir);
+    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+    if(te == null) {
+      return false;
+    }
+
+    boolean res = false;
     for(int i=slotDefinition.minOutputSlot; i<= slotDefinition.maxOutputSlot;i++) {
       ItemStack item = inventory[i];
       if(item != null) {
@@ -359,7 +365,66 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return res;
   }
 
-  protected boolean doPull(ForgeDirection key) {
+  protected boolean doPull(ForgeDirection dir) {
+
+    if(slotDefinition.getNumInputSlots() <= 0) {
+      return false;
+    }
+
+    boolean hasSpace = false;
+    for(int slot=slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace;slot++) {
+      hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < inventory[slot].getMaxStackSize();
+    }
+    if(!hasSpace) {
+      return false;
+    }
+
+    BlockCoord loc = getLocation().getLocation(dir);
+    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+    if(te == null) {
+      return false;
+    }
+    if( !(te instanceof IInventory)) {
+      return false;
+    }
+    ISidedInventory target;
+    if(te instanceof ISidedInventory) {
+      target = (ISidedInventory)te;
+    } else {
+      target = new InventoryWrapper((IInventory)te);
+    }
+
+    int[] targetSlots = target.getAccessibleSlotsFromSide(dir.getOpposite().ordinal());
+    if(targetSlots == null) {
+      return false;
+    }
+
+    for(int inputSlot=slotDefinition.minInputSlot; inputSlot <= slotDefinition.maxInputSlot;inputSlot++) {
+      if(doPull(inputSlot, target, targetSlots, dir)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  protected boolean doPull(int inputSlot, ISidedInventory target, int[] targetSlots, ForgeDirection side) {
+    ItemStack curStack = inventory[inputSlot];
+    for(int i=0;i<targetSlots.length;i++) {
+      int tSlot = targetSlots[i];
+      ItemStack targetStack = target.getStackInSlot(tSlot);
+      if(targetStack != null) {
+        int res = ItemUtil.doInsertItem(this, targetStack, side.getOpposite());
+        if(res > 0) {
+          targetStack = targetStack.copy();
+          targetStack.stackSize -= res;
+          if(targetStack.stackSize <= 0) {
+            targetStack = null;
+          }
+          target.setInventorySlotContents(tSlot, targetStack);
+          return true;
+        }
+      }
+    }
     return false;
   }
 

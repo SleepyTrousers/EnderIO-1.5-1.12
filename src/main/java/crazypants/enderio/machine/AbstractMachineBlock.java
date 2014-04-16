@@ -83,6 +83,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
         if(wrench.canWrench(entityPlayer, x, y, z)) {
+          //TODO: Store Machine IO settings, power etc
           removedByPlayer(world, entityPlayer, x, y, z);
           if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
             ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
