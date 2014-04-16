@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.generator;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -15,16 +17,29 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.CustomCubeRenderer;
+import crazypants.render.CustomRenderBlocks;
+import crazypants.render.IRenderFace;
 import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
+import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
   private VertXForm xform = new VertXForm();
+
+  private CustomCubeRenderer ccr = new CustomCubeRenderer();
+
+  private OverlayRenderer overlayRenderer = new OverlayRenderer();
+
+  private TileCombustionGenerator gen;
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
@@ -34,9 +49,11 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     if(world != null) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileCombustionGenerator) {
-        TileCombustionGenerator gen = (TileCombustionGenerator) te;
+        gen = (TileCombustionGenerator) te;
         facing = gen.facing;
         active = gen.isActive();
+      } else {
+        gen = null;
       }
     }
 
@@ -131,6 +148,11 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);
     CubeRenderer.render(bb, tex, null, cols, false);
+
+    if(gen != null) {
+      ccr.renderBlock(world, block, x, y, z, overlayRenderer);
+    }
+    gen = null;
 
     return true;
   }
@@ -253,6 +275,29 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
 
     @Override
     public void applyToNormal(Vector3f vec) {
+    }
+
+  }
+
+  private class OverlayRenderer implements IRenderFace {
+
+    @Override
+    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
+        boolean translateToXyz) {
+
+      if(gen != null && par1Block instanceof AbstractMachineBlock) {
+        Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, 0.01);
+        Tessellator.instance.addTranslation((float)offset.x, (float)offset.y, (float)offset.z);
+
+        IoMode mode = gen.getIoMode(face);
+        IIcon tex = ((AbstractMachineBlock)par1Block).getOverlayIconForMode(mode);
+        if(tex != null) {
+          ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z, tex);
+        }
+
+        Tessellator.instance.addTranslation(-(float)offset.x, -(float)offset.y, -(float)offset.z);
+      }
+
     }
 
   }

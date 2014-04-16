@@ -1,5 +1,9 @@
 package crazypants.enderio.machine;
 
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -46,15 +50,50 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
 
   private boolean redstoneStateDirty = true;
 
+  protected Map<ForgeDirection, IoMode> faceModes;
+
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
-    this.slotDefinition = slotDefinition; // plus one for capacitor
+    this.slotDefinition = slotDefinition;
     facing = 3;
     capacitorType = Capacitors.BASIC_CAPACITOR;
     powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor, this, powerType);
-
     inventory = new ItemStack[slotDefinition.getNumSlots()];
-
     redstoneControlMode = RedstoneControlMode.IGNORE;
+  }
+
+  public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
+    IoMode curMode = getIoMode(faceHit);
+    IoMode mode = curMode.next();
+    while(!supportsMode(faceHit, mode)) {
+      mode = mode.next();
+    }
+    setIoMode(faceHit, mode);
+    return mode;
+  }
+
+  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+    return true;
+  }
+
+  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+    if(mode == IoMode.NONE && faceModes == null) {
+      return;
+    }
+    if(faceModes == null) {
+      faceModes = new EnumMap<ForgeDirection, IoMode>(ForgeDirection.class);
+    }
+    faceModes.put(faceHit, mode);
+  }
+
+  public IoMode getIoMode(ForgeDirection face) {
+    if(faceModes == null) {
+      return IoMode.NONE;
+    }
+    IoMode res = faceModes.get(face);
+    if(res == null) {
+      return IoMode.NONE;
+    }
+    return res;
   }
 
   public BlockCoord getLocation() {
@@ -116,15 +155,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
   }
-
-  //  @Override
-  //  public PowerHandler getPowerHandler() {
-  //    return powerHandler;
-  //  }
-  //
-  //  @Override
-  //  public void applyPerdition() {
-  //  }
 
   public short getFacing() {
     return facing;
@@ -311,6 +341,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     }
     redstoneControlMode = RedstoneControlMode.values()[rsContr];
 
+    if(nbtRoot.hasKey("hasFaces")) {
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if(nbtRoot.hasKey("face" + dir.ordinal())) {
+          setIoMode(dir, IoMode.values()[nbtRoot.getShort("face" + dir.ordinal())]);
+        }
+      }
+    }
+
   }
 
   @Override
@@ -334,6 +372,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IIn
     nbtRoot.setTag("Items", itemList);
 
     nbtRoot.setInteger("redstoneControlMode", redstoneControlMode.ordinal());
+
+    //face modes
+    if(faceModes != null) {
+      nbtRoot.setByte("hasFaces", (byte) 1);
+      for (Entry<ForgeDirection, IoMode> e : faceModes.entrySet()) {
+        nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
+      }
+    }
+
   }
 
   // ---- Inventory

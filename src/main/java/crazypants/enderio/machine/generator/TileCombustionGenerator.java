@@ -17,6 +17,7 @@ import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import buildcraft.api.power.IPowerEmitter;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.BlockCoord;
 
@@ -35,9 +36,16 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   private boolean inPause = false;
 
+  private int maxOutputTick = 10;
+
   public TileCombustionGenerator() {
     super(new SlotDefinition(-1, -1, -1, -1, -1, -1));
     powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
+  }
+
+  @Override
+  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+    return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
 
   @Override
@@ -119,7 +127,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       return res;
     }
 
-    boolean isActive = checkActive();
+    boolean isActive = generateEnergy();
     if(isActive != this.active) {
       active = isActive;
       res = true;
@@ -146,12 +154,12 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    double transmitted = powerDis.transmitEnergy(worldObj, storedEnergy);
+    transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, storedEnergy));
     storedEnergy -= transmitted;
     return transmitted > 0;
   }
 
-  private boolean checkActive() {
+  private boolean generateEnergy() {
 
     Fuel fuel = fuelTank.getFluid() == null ? null : IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid());
     if(fuel == null) {
@@ -191,14 +199,9 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       tanksDirty = true;
     }
 
-
-
     float oldVal = storedEnergy;
     storedEnergy += fuel.powerPerCycle;
-
     storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
-
-    transmitted = storedEnergy - oldVal;
 
     return fuelTank.getFluidAmount() > 0 && coolantTank.getFluidAmount() > 0;
   }

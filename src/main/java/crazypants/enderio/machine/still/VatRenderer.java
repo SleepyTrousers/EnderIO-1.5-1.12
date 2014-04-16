@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.still;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -10,17 +12,29 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.generator.TileCombustionGenerator;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.CustomCubeRenderer;
+import crazypants.render.CustomRenderBlocks;
+import crazypants.render.IRenderFace;
 import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
+import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class VatRenderer implements ISimpleBlockRenderingHandler {
 
   private VertXForm xform = new VertXForm();
+
+  private CustomCubeRenderer ccr = new CustomCubeRenderer();
+
+  private OverlayRenderer overlayRenderer = new OverlayRenderer();
+
+  private TileVat vat;
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
@@ -29,10 +43,12 @@ public class VatRenderer implements ISimpleBlockRenderingHandler {
     boolean active = false;
     if(world != null) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileCombustionGenerator) {
-        TileCombustionGenerator gen = (TileCombustionGenerator) te;
-        facing = gen.facing;
-        active = gen.isActive();
+      if(te instanceof TileVat) {
+        vat = (TileVat) te;
+        facing = vat.facing;
+        active = vat.isActive();
+      } else {
+        vat = null;
       }
     }
 
@@ -66,20 +82,27 @@ public class VatRenderer implements ISimpleBlockRenderingHandler {
       cols[i] = b * m;
     }
 
+    float fudge = 1f;
+
     //-x side
-    BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.333, 1,1);
-    bb = bb.translate(0.5f - (0.3f/2),0,0);
+    BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.333, fudge,fudge);
+    bb = bb.translate(0.5f - (0.333f/2),0,0);
     xform.set(x, y, z);
     CubeRenderer.render(bb, textures, xform, cols);
 
-    bb = BoundingBox.UNIT_CUBE.scale(0.4, 1,1);
+    bb = BoundingBox.UNIT_CUBE.scale(0.4, fudge,fudge);
     xform.set(x, y, z);
     CubeRenderer.render(bb, textures, xform, cols);
 
-    bb = BoundingBox.UNIT_CUBE.scale(0.333, 1,1);
-    bb = bb.translate(-0.5f + (0.3f/2),0,0);
+    bb = BoundingBox.UNIT_CUBE.scale(0.333, fudge,fudge);
+    bb = bb.translate(-0.5f + (0.333f/2),0,0);
     xform.set(x, y, z);
     CubeRenderer.render(bb, textures, xform, cols);
+
+    if(vat != null) {
+      ccr.renderBlock(world, block, x, y, z, overlayRenderer);
+    }
+    vat = null;
 
     return true;
   }
@@ -131,6 +154,29 @@ public class VatRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void applyToNormal(Vector3f vec) {
+    }
+
+  }
+
+  private class OverlayRenderer implements IRenderFace {
+
+    @Override
+    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
+        boolean translateToXyz) {
+
+      if(vat != null && par1Block instanceof AbstractMachineBlock) {
+        Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, 0.01);
+        Tessellator.instance.addTranslation((float)offset.x, (float)offset.y, (float)offset.z);
+
+        IoMode mode = vat.getIoMode(face);
+        IIcon tex = ((AbstractMachineBlock)par1Block).getOverlayIconForMode(mode);
+        if(tex != null) {
+          ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z, tex);
+        }
+
+        Tessellator.instance.addTranslation(-(float)offset.x, -(float)offset.y, -(float)offset.z);
+      }
+
     }
 
   }

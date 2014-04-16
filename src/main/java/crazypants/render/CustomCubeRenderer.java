@@ -54,4 +54,10 @@ public class CustomCubeRenderer {
     this.overrideTexture = overrideTexture;
   }
 
+  public CustomRenderBlocks getCustomRenderBlocks() {
+    return rb;
+  }
+
+
+
 }

@@ -187,10 +187,10 @@ public final class CubeRenderer {
     maxU = tex.getMaxU();
     minV = tex.getMinV();
     maxV = tex.getMaxV();
-    addVecWithUV(verts[1], minU, minV);
-    addVecWithUV(verts[0], maxU, minV);
-    addVecWithUV(verts[3], maxU, maxV);
-    addVecWithUV(verts[2], minU, maxV);
+    addVecWithUV(verts[1], minU, maxV);
+    addVecWithUV(verts[0], maxU, maxV);
+    addVecWithUV(verts[3], maxU, minV);
+    addVecWithUV(verts[2], minU, minV);
 
     tessellator.setNormal(0, 0, 1);
     if(brightnessPerSide != null) {
@@ -202,10 +202,10 @@ public final class CubeRenderer {
     maxU = tex.getMaxU();
     minV = tex.getMinV();
     maxV = tex.getMaxV();
-    addVecWithUV(verts[4], minU, minV);
-    addVecWithUV(verts[5], maxU, minV);
-    addVecWithUV(verts[6], maxU, maxV);
-    addVecWithUV(verts[7], minU, maxV);
+    addVecWithUV(verts[4], minU, maxV);
+    addVecWithUV(verts[5], maxU, maxV);
+    addVecWithUV(verts[6], maxU, minV);
+    addVecWithUV(verts[7], minU, minV);
 
     tessellator.setNormal(0, 1, 0);
     if(brightnessPerSide != null) {
@@ -247,10 +247,10 @@ public final class CubeRenderer {
     maxU = tex.getMaxU();
     minV = tex.getMinV();
     maxV = tex.getMaxV();
-    addVecWithUV(verts[2], minU, maxV);
-    addVecWithUV(verts[6], maxU, maxV);
-    addVecWithUV(verts[5], maxU, minV);
-    addVecWithUV(verts[1], minU, minV);
+    addVecWithUV(verts[2], minU, minV);
+    addVecWithUV(verts[6], maxU, minV);
+    addVecWithUV(verts[5], maxU, maxV);
+    addVecWithUV(verts[1], minU, maxV);
 
     tessellator.setNormal(-1, 0, 0);
     if(brightnessPerSide != null) {
@@ -262,10 +262,10 @@ public final class CubeRenderer {
     maxU = tex.getMaxU();
     minV = tex.getMinV();
     maxV = tex.getMaxV();
-    addVecWithUV(verts[0], minU, minV);
-    addVecWithUV(verts[4], maxU, minV);
-    addVecWithUV(verts[7], maxU, maxV);
-    addVecWithUV(verts[3], minU, maxV);
+    addVecWithUV(verts[0], minU, maxV);
+    addVecWithUV(verts[4], maxU, maxV);
+    addVecWithUV(verts[7], maxU, minV);
+    addVecWithUV(verts[3], minU, minV);
   }
 
   public static void setupVertices(BoundingBox bound) {

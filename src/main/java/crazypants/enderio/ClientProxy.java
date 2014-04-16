@@ -41,6 +41,8 @@ import crazypants.enderio.farm.FarmingStationRenderer;
 import crazypants.enderio.item.PoweredItemRenderer;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineRenderer;
 import crazypants.enderio.machine.generator.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.CombustionGeneratorRenderer;
 import crazypants.enderio.machine.generator.TileCombustionGenerator;
@@ -118,6 +120,9 @@ public class ClientProxy extends CommonProxy {
     super.load();
 
     // Renderers
+
+    AbstractMachineBlock.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new AbstractMachineRenderer());
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());

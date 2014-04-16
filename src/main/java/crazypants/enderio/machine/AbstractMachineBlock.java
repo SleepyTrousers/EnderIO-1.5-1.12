@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -29,6 +30,14 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.util.Util;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
+
+  public static int renderId;
+
+  protected IIcon overlayIconPull;
+  protected IIcon overlayIconPush;
+  protected IIcon overlayIconPushPull;
+  protected IIcon overlayIconDisabled;
+  protected IIcon overlayIconNone;
 
   @SideOnly(Side.CLIENT)
   protected IIcon[][] iconBuffer;
@@ -68,16 +77,23 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+    if(ConduitUtil.isToolEquipped(entityPlayer)) {
+      if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
         if(wrench.canWrench(entityPlayer, x, y, z)) {
           removedByPlayer(world, entityPlayer, x, y, z);
           if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
             ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
           }
+          return true;
+        }
+      } else {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if(te instanceof AbstractMachineEntity) {
+          ((AbstractMachineEntity)te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
+          world.markBlockForUpdate(x, y, z);
           return true;
         }
       }
@@ -88,6 +104,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
     entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);
     return true;
+  }
+
+  @Override
+  public int getRenderType() {
+    return renderId;
   }
 
   @Override
@@ -111,10 +132,40 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     iconBuffer[0][10] = iIconRegister.registerIcon(side);
     iconBuffer[0][11] = iIconRegister.registerIcon(side);
 
+    registerOverlayIcons(iIconRegister);
+
+
+  }
+
+  protected void registerOverlayIcons(IIconRegister iIconRegister) {
+    overlayIconPull = iIconRegister.registerIcon("enderio:machineOverlayPull");
+    overlayIconPush = iIconRegister.registerIcon("enderio:machineOverlayPush");
+    overlayIconPushPull = iIconRegister.registerIcon("enderio:machineOverlayPushPull");
+    overlayIconDisabled = iIconRegister.registerIcon("enderio:machineOverlayDisabled");
+    overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
+  }
+
+  public IIcon getOverlayIconForMode(IoMode mode) {
+    if(mode == null) {
+      return null;
+    }
+    switch (mode) {
+    case DISABLED:
+      return overlayIconDisabled;
+    case PULL:
+      return overlayIconPull;
+    case PUSH:
+      return overlayIconPush;
+    case PUSH_PULL:
+      return overlayIconPushPull;
+    default:
+      return null;
+    }
   }
 
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+
     // used to render the block in the world
     TileEntity te = world.getTileEntity(x, y, z);
     int facing = 0;

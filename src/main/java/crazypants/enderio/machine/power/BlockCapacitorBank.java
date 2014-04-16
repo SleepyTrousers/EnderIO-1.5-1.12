@@ -27,7 +27,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.enderface.BlockEio;
-import crazypants.enderio.machine.power.TileCapacitorBank.FaceConnectionMode;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -181,14 +181,14 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
       return blockIcon;
     }
     TileCapacitorBank cb = (TileCapacitorBank) te;
-    FaceConnectionMode mode = cb.getFaceModeForFace(ForgeDirection.values()[side]);
-    if(mode == null || mode == FaceConnectionMode.NONE) {
+    IoMode mode = cb.getFaceModeForFace(ForgeDirection.values()[side]);
+    if(mode == null || mode == IoMode.NONE) {
       return blockIcon;
     }
-    if(mode == FaceConnectionMode.INPUT) {
+    if(mode == IoMode.PULL) {
       return blockIconInput;
     }
-    if(mode == FaceConnectionMode.OUTPUT) {
+    if(mode == IoMode.PUSH) {
       return blockIconOutput;
     }
     return blockIconLocked;

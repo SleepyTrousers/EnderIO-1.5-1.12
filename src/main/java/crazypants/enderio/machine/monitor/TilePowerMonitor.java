@@ -13,6 +13,7 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.DyeColor;
@@ -38,6 +39,11 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
 
   public TilePowerMonitor() {
     super(new SlotDefinition(0, 0));
+  }
+
+  @Override
+  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+    return mode == IoMode.NONE;
   }
 
   public int[] getRednetOutputValues(ForgeDirection side) {

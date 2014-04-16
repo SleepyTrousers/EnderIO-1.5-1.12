@@ -10,6 +10,7 @@ import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.Capacitors;
 import crazypants.util.BlockCoord;
@@ -27,6 +28,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0), Type.ENGINE);
     configurePowerHandler();
+  }
+
+  @Override
+  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
+    return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
 
   @Override

@@ -45,6 +45,12 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     blockIcon = iIconRegister.registerIcon("enderio:vatFront");
     onIcon = iIconRegister.registerIcon("enderio:vatFrontOn");
     topIcon = iIconRegister.registerIcon("enderio:vatTop");
+
+    overlayIconPull = iIconRegister.registerIcon("enderio:vatOverlayPull");
+    overlayIconPush = iIconRegister.registerIcon("enderio:vatOverlayPush");
+    overlayIconPushPull = iIconRegister.registerIcon("enderio:vatOverlayPushPull");
+    overlayIconDisabled = iIconRegister.registerIcon("enderio:vatOverlayDisabled");
+    overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
   }
 
   @Override
