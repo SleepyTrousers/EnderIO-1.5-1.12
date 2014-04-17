@@ -17,6 +17,8 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.BlockCoord;
+import crazypants.util.FluidUtil;
 
 public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler {
 
@@ -24,6 +26,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   final FluidTank inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
+
+  private static int IO_MB_TICK = 50;
 
   boolean tanksDirty = false;
 
@@ -50,9 +54,69 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     MachineRecipeInput[] inputs = getInputs();
     inputs[i] = new MachineRecipeInput(i, itemstack);
-
-    //return VatRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
     return VatRecipeManager.getInstance().isValidInput(inputs);
+  }
+
+  @Override
+  protected boolean doPush(ForgeDirection dir) {
+    boolean res = super.doPush(dir);
+    if(outputTank.getFluidAmount() > 0) {
+
+      BlockCoord loc = getLocation().getLocation(dir);
+      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+      if(target != null) {
+        if(target.canFill(dir.getOpposite(), outputTank.getFluid().getFluid())) {
+          FluidStack push = outputTank.getFluid().copy();
+          push.amount = Math.min(push.amount, IO_MB_TICK);
+          int filled = target.fill(dir.getOpposite(), outputTank.getFluid(), true);
+          if(filled > 0) {
+            outputTank.drain(filled, true);
+            return true;
+          }
+        }
+      }
+
+    }
+    return res;
+  }
+
+  @Override
+  protected boolean doPull(ForgeDirection dir) {
+    boolean res = super.doPull(dir);
+    if(inputTank.getFluidAmount() < inputTank.getCapacity()) {
+      BlockCoord loc = getLocation().getLocation(dir);
+      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+      if(target != null) {
+
+        if(inputTank.getFluidAmount() > 0) {
+          FluidStack canPull = inputTank.getFluid().copy();
+          canPull.amount = inputTank.getCapacity() - inputTank.getFluidAmount();
+          FluidStack drained = target.drain(dir.getOpposite(),canPull , true);
+          if(drained != null && drained.amount > 0) {
+            inputTank.fill(drained, true);
+            return true;
+          }
+        } else {
+          //empty input tank
+          FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
+          for(FluidTankInfo info : infos) {
+            if(info.fluid != null && info.fluid.amount > 0) {
+              if(canFill(dir, info.fluid.getFluid()) /*&& target.canDrain(dir.getOpposite(), info.fluid.getFluid())*/) {
+                FluidStack canPull = info.fluid.copy();
+                canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+                FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
+                if(drained != null && drained.amount > 0) {
+                  inputTank.fill(drained, true);
+                  return true;
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+    return res;
   }
 
   @Override
