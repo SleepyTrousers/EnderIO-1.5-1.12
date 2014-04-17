@@ -27,7 +27,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   final FluidTank inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
 
-  private static int IO_MB_TICK = 50;
+  private static int IO_MB_TICK = 250;
 
   boolean tanksDirty = false;
 
@@ -91,6 +91,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
         if(inputTank.getFluidAmount() > 0) {
           FluidStack canPull = inputTank.getFluid().copy();
           canPull.amount = inputTank.getCapacity() - inputTank.getFluidAmount();
+          canPull.amount = Math.min(canPull.amount, IO_MB_TICK);
           FluidStack drained = target.drain(dir.getOpposite(),canPull , true);
           if(drained != null && drained.amount > 0) {
             inputTank.fill(drained, true);
