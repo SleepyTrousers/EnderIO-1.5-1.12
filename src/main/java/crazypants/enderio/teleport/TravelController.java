@@ -272,8 +272,14 @@ public class TravelController {
       return false;
     }
     World w = player.worldObj;
-    return canTeleportTo(player, source, bc.getLocation(ForgeDirection.UP), w)
-        && canTeleportTo(player, source, bc.getLocation(ForgeDirection.UP).getLocation(ForgeDirection.UP), w);
+    BlockCoord baseLoc = bc;
+    if(source != TravelSource.STAFF_BLINK) {
+      //targeting a block so go one up
+      baseLoc = bc.getLocation(ForgeDirection.UP);
+    }
+
+    return canTeleportTo(player, source, baseLoc, w)
+        && canTeleportTo(player, source, baseLoc.getLocation(ForgeDirection.UP), w);
   }
 
   private boolean canTeleportTo(EntityPlayer player, TravelSource source, BlockCoord bc, World w) {

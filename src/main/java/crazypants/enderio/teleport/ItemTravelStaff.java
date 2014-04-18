@@ -9,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.ItemEnergyContainer;
@@ -74,17 +76,69 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
         Vector3d eye = Util.getEyePositionEio(player);
         Vector3d look = Util.getLookVecEio(player);
 
-        Vector3d sample = new Vector3d();
 
-        for (int i = Math.round(Config.travelStaffMaxBlinkDistance); i > 0; i--) {
-          sample.set(look);
-          sample.scale(i);
-          sample.add(eye);
-          BlockCoord coord = new BlockCoord((int) sample.x, (int) sample.y, (int) sample.z);
-          if(TravelController.instance.travelToLocation(player, TravelSource.STAFF_BLINK, coord)) {
-            player.swingItem();
-            lastBlickTick = player.worldObj.getTotalWorldTime();
-            return equipped;
+        Vector3d sample = new Vector3d(look);
+        sample.scale(Config.travelStaffMaxBlinkDistance);
+        sample.add(eye);
+        Vec3 eye3 = Vec3.createVectorHelper(eye.x,eye.y,eye.z);
+        Vec3 end = Vec3.createVectorHelper(sample.x,sample.y,sample.z);
+
+        double playerHeight = player.yOffset;
+        //if you looking at you feet, and your player height to the max distance, or part there of
+        double lookComp = -look.y * playerHeight;
+        double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
+
+        MovingObjectPosition p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+        if(p == null) {
+
+          //go as far as possible
+          for (double i = maxDistance; i > 1; i--) {
+
+            sample.set(look);
+            sample.scale(i);
+            sample.add(eye);
+            //we test against our feets location
+            sample.y -= playerHeight;
+
+            //if(doBlink(player, eye, look, sample, i)) {
+            if(doBlinkAround(player, sample)) {
+              return equipped;
+            }
+          }
+        } else {
+
+          eye3 = Vec3.createVectorHelper(eye.x,eye.y,eye.z);
+
+          Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
+          double sampleDistance = 1.5;
+          double teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
+          while(teleDistance < maxDistance) {
+            sample.set(look);
+            sample.scale(sampleDistance);
+            sample.add(targetBc);
+            //we test against our feets location
+            sample.y -= playerHeight;
+
+            if(doBlinkAround(player, sample)) {
+              return equipped;
+            }
+            teleDistance++;
+            sampleDistance++;
+          }
+          sampleDistance = -0.5;
+          teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
+          while(teleDistance > 1) {
+            sample.set(look);
+            sample.scale(sampleDistance);
+            sample.add(targetBc);
+            //we test against our feets location
+            sample.y -= playerHeight;
+
+            if(doBlinkAround(player, sample)) {
+              return equipped;
+            }
+            sampleDistance--;
+            teleDistance--;
           }
         }
       }
@@ -114,6 +168,30 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     }
     player.swingItem();
     return equipped;
+  }
+
+  private boolean doBlinkAround(EntityPlayer player, Vector3d sample) {
+    if(doBlink(player, new BlockCoord((int)Math.round(sample.x),(int)Math.round(sample.y) - 1,(int)Math.round(sample.z)))) {
+      return true;
+    }
+    if(doBlink(player, new BlockCoord((int)Math.round(sample.x),(int)Math.round(sample.y),(int)Math.round(sample.z)))) {
+      return true;
+    }
+    if(doBlink(player, new BlockCoord((int)Math.round(sample.x),(int)Math.round(sample.y) + 1,(int)Math.round(sample.z)))) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean doBlink(EntityPlayer player, BlockCoord coord) {
+
+    if(TravelController.instance.travelToLocation(player, TravelSource.STAFF_BLINK, coord)) {
+      player.swingItem();
+      lastBlickTick = player.worldObj.getTotalWorldTime();
+      return true;
+    }
+
+    return false;
   }
 
   @Override

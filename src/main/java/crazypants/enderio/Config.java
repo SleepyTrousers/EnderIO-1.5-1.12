@@ -70,7 +70,7 @@ public final class Config {
   public static float travelStaffPowerPerBlockRF = 250;
   public static int travelStaffMaxStoredPowerRF = 250000;
   public static int travelStaffMaxPowerIoRF = 1250;
-  public static int travelStaffMaxBlinkDistance = 8;
+  public static int travelStaffMaxBlinkDistance = 16;
   public static int travelStaffBlinkPauseTicks = 10;
 
   public static boolean travelStaffEnabled = true;
