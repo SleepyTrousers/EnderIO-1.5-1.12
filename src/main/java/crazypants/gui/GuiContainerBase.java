@@ -56,38 +56,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     ttMan.addToolTip(toolTip);
   }
 
-  //  @Override
-  //  protected void mouseClicked(int par1, int par2, int par3) {
-  //    for(IGuiOverlay overlay : overlays) {
-  //      if(overlay != null && overlay.isVisible() && overlay.mouseClicked(par1, par2, par3)) {
-  //        return;
-  //      }
-  //    }
-  //    super.mouseClicked(par1, par2, par3);
-  //  }
-  //
-  //  @Override
-  //  protected void mouseClickMove(int par1, int par2, int par3, long par4) {
-  //    for(IGuiOverlay overlay : overlays) {
-  //      if(overlay != null && overlay.isVisible() && overlay.mouseClickMove(par1, par2, par3, par4)) {
-  //        return;
-  //      }
-  //    }
-  //    super.mouseClickMove(par1, par2, par3, par4);
-  //  }
-  //
-  //  @Override
-  //  protected void mouseMovedOrUp(int par1, int par2, int par3) {
-  //    for(IGuiOverlay overlay : overlays) {
-  //      if(overlay != null && overlay.isVisible() && overlay.mouseMovedOrUp(par1, par2, par3)) {
-  //        return;
-  //      }
-  //    }
-  //    super.mouseMovedOrUp(par1, par2, par3);
-  //  }
-
-
-
   @Override
   public void handleMouseInput() {
     int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
@@ -101,10 +69,22 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super.handleMouseInput();
   }
 
+  @Override
+  protected boolean func_146978_c(int p_146978_1_, int p_146978_2_, int p_146978_3_, int p_146978_4_, int p_146978_5_, int p_146978_6_)  {
+    int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+    int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+    int b = Mouse.getEventButton();
+    for(IGuiOverlay overlay : overlays) {
+      if(overlay != null && overlay.isVisible() && overlay.isMouseInBounds(x, y)) {
+        return false;
+      }
+    }
+    return super.func_146978_c(p_146978_1_, p_146978_2_, p_146978_3_, p_146978_4_, p_146978_5_, p_146978_6_);
+  }
+
 
   @Override
   public void handleKeyboardInput() {
-    // TODO Auto-generated method stub
     super.handleKeyboardInput();
   }
 
@@ -130,8 +110,8 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     int my = par2;
     for(IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible() && isMouseInOverlay(par1, par2, overlay)) {
-        mx = -1;
-        my = -1;
+        mx = -5000;
+        my = -5000;
       }
     }
 

@@ -61,7 +61,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
   @Override
   public boolean handleMouseInput(int x, int y, int b) {
-    if(!mouseInBounds(x, y)) {
+    if(!isMouseInBounds(x, y)) {
       renderer.handleMouseInput();
       return false;
     }
@@ -70,7 +70,8 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
     return true;
   }
 
-  private boolean mouseInBounds(int mouseX, int mouseY) {
+  @Override
+  public boolean isMouseInBounds(int mouseX, int mouseY) {
     int x = mouseX - screen.getGuiLeft();
     int y = mouseY - screen.getGuiTop();
     if(bounds.contains(x,y)) {

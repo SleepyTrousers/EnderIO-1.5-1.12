@@ -28,4 +28,6 @@ public interface IGuiOverlay {
 
   boolean handleMouseInput(int x, int y, int b);
 
+  boolean isMouseInBounds(int mouseX, int mouseY);
+
 }

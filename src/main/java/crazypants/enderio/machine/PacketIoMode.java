@@ -56,7 +56,6 @@ public class PacketIoMode implements IPacketEio {
   }
 
   private void handle(EntityPlayer player) {
-    System.out.println("PacketIoMode.handle: ");
     TileEntity te = player.worldObj.getTileEntity(x, y, z);
     if(te instanceof IIoConfigurable) {
       IIoConfigurable me = (IIoConfigurable) te;

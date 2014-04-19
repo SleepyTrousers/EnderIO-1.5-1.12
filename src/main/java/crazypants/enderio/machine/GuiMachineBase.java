@@ -52,9 +52,18 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
 
     y += 20;
-    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.BUTTON_DOWN);
+    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
+    configB.setToolTip("Toggles the IO config overlay.");
 
-    configOverlay = new GuiOverlayIoConfig(machine);
+    configOverlay = new GuiOverlayIoConfig(machine) {
+
+      @Override
+      public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        configB.setIcon(visible ? IconEIO.IO_CONFIG_DOWN : IconEIO.IO_CONFIG_UP);
+      }
+
+    };
     addOverlay(configOverlay);
   }
 
@@ -78,7 +87,8 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == CONFIG_ID) {
-      configOverlay.setVisible(!configOverlay.isVisible());
+      boolean vis = !configOverlay.isVisible();
+      configOverlay.setVisible(vis);
     }
   }
 
@@ -104,5 +114,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     }
 
   }
+
+
 
 }
