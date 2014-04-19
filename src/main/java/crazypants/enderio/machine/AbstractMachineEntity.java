@@ -29,7 +29,7 @@ import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable, IIoConfigurable {
 
   public short facing;
 
@@ -108,6 +108,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return res;
   }
 
+  @Override
   public BlockCoord getLocation() {
     return new BlockCoord(this);
   }

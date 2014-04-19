@@ -1,40 +1,168 @@
 package crazypants.gui;
 
-import crazypants.gui.ToolTipManager.ToolTipRenderer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Container;
+
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.util.Iterator;
-import java.util.List;
+import crazypants.enderio.gui.IGuiOverlay;
+import crazypants.gui.ToolTipManager.ToolTipRenderer;
 
 public abstract class GuiContainerBase extends GuiContainer implements ToolTipRenderer, IGuiScreen {
 
   protected ToolTipManager ttMan = new ToolTipManager();
+  protected List<IGuiOverlay> overlays = new ArrayList<IGuiOverlay>();
 
   protected GuiContainerBase(Container par1Container) {
     super(par1Container);
   }
+
+
+  @Override
+  public void initGui() {
+    super.initGui();
+    for(IGuiOverlay overlay : overlays) {
+      overlay.init(this);
+    }
+  }
+
+  @Override
+  protected void keyTyped(char par1, int par2) {
+    if (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
+      //this.mc.thePlayer.closeScreen();
+      for(IGuiOverlay overlay : overlays) {
+        if(overlay.isVisible()) {
+          overlay.setVisible(false);
+          return;
+        }
+      }
+    }
+    super.keyTyped(par1, par2);
+  }
+
 
   @Override
   public void addToolTip(GuiToolTip toolTip) {
     ttMan.addToolTip(toolTip);
   }
 
+  //  @Override
+  //  protected void mouseClicked(int par1, int par2, int par3) {
+  //    for(IGuiOverlay overlay : overlays) {
+  //      if(overlay != null && overlay.isVisible() && overlay.mouseClicked(par1, par2, par3)) {
+  //        return;
+  //      }
+  //    }
+  //    super.mouseClicked(par1, par2, par3);
+  //  }
+  //
+  //  @Override
+  //  protected void mouseClickMove(int par1, int par2, int par3, long par4) {
+  //    for(IGuiOverlay overlay : overlays) {
+  //      if(overlay != null && overlay.isVisible() && overlay.mouseClickMove(par1, par2, par3, par4)) {
+  //        return;
+  //      }
+  //    }
+  //    super.mouseClickMove(par1, par2, par3, par4);
+  //  }
+  //
+  //  @Override
+  //  protected void mouseMovedOrUp(int par1, int par2, int par3) {
+  //    for(IGuiOverlay overlay : overlays) {
+  //      if(overlay != null && overlay.isVisible() && overlay.mouseMovedOrUp(par1, par2, par3)) {
+  //        return;
+  //      }
+  //    }
+  //    super.mouseMovedOrUp(par1, par2, par3);
+  //  }
+
+
+
   @Override
-  public void removeToolTip(GuiToolTip toolTip) {
-    ttMan.removeToolTip(toolTip);
+  public void handleMouseInput() {
+    int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
+    int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+    int b = Mouse.getEventButton();
+    for(IGuiOverlay overlay : overlays) {
+      if(overlay != null && overlay.isVisible() && overlay.handleMouseInput(x, y, b)) {
+        return;
+      }
+    }
+    super.handleMouseInput();
+  }
+
+
+  @Override
+  public void handleKeyboardInput() {
+    // TODO Auto-generated method stub
+    super.handleKeyboardInput();
+  }
+
+
+  public void addOverlay(IGuiOverlay overlay) {
+    overlays.add(overlay);
+  }
+
+  public void removeOverlay(IGuiOverlay overlay) {
+    overlays.remove(overlay);
   }
 
   @Override
   protected final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     drawForegroundImpl(mouseX, mouseY);
     ttMan.drawTooltips(this, mouseX, mouseY);
+  }
+
+  @Override
+  public void drawScreen(int par1, int par2, float par3) {
+
+    int mx = par1;
+    int my = par2;
+    for(IGuiOverlay overlay : overlays) {
+      if(overlay != null && overlay.isVisible() && isMouseInOverlay(par1, par2, overlay)) {
+        mx = -1;
+        my = -1;
+      }
+    }
+
+    super.drawScreen(mx, my, par3);
+
+    GL11.glPushMatrix();
+    GL11.glTranslatef(guiLeft, guiTop, 0.0F);
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    for(IGuiOverlay overlay : overlays) {
+      if(overlay != null && overlay.isVisible()) {
+        overlay.draw(par1, par2, par3);
+      }
+    }
+    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GL11.glPopMatrix();
+  }
+
+  private boolean isMouseInOverlay(int mouseX, int mouseY, IGuiOverlay overlay) {
+    int x = mouseX - getGuiLeft();
+    int y = mouseY - getGuiTop();
+    if(overlay.getBounds().contains(x,y)) {
+      return true;
+    }
+    return false;
+  }
+
+
+  @Override
+  public void removeToolTip(GuiToolTip toolTip) {
+    ttMan.removeToolTip(toolTip);
   }
 
   protected void drawForegroundImpl(int mouseX, int mouseY) {
@@ -144,6 +272,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     return xSize;
   }
 
+  @Override
   public int getYSize() {
     return ySize;
   }

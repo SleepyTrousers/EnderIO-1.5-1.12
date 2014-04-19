@@ -6,16 +6,22 @@ public interface IGuiScreen {
 
   void addToolTip(GuiToolTip toolTip);
 
-  public int getGuiLeft();
-
-  public int getGuiTop();
-
-  public int getXSize();
-
-  public void addButton(GuiButton button);
-
-  public void removeButton(GuiButton button);
-
   void removeToolTip(GuiToolTip toolTip);
+
+  int getGuiLeft();
+
+  int getGuiTop();
+
+  int getXSize();
+
+  int getYSize();
+
+  void addButton(GuiButton button);
+
+  void removeButton(GuiButton button);
+
+
+
+
 
 }

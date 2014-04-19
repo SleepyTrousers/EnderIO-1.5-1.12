@@ -25,7 +25,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -176,6 +175,8 @@ public class RenderUtil {
     tessellator.draw();
     GL11.glEnable(GL11.GL_TEXTURE_2D);
   }
+
+
 
   /**
    * left, bottom, right, top
@@ -426,12 +427,12 @@ public class RenderUtil {
     }
     return null;
   }
-  
+
   public static void renderGuiTank(FluidTank tank, double x, double y, double zLevel, double width, double height) {
     renderGuiTank(tank.getFluid(),tank.getCapacity(),tank.getFluidAmount(), x, y, zLevel, width, height);
   }
-  
-  public static void renderGuiTank(FluidStack fluid, int capacity, int amount, double x, double y, double zLevel, double width, double height) {    
+
+  public static void renderGuiTank(FluidStack fluid, int capacity, int amount, double x, double y, double zLevel, double width, double height) {
     if(fluid == null || fluid.getFluid() == null || fluid.amount <= 0) {
       return;
     }
