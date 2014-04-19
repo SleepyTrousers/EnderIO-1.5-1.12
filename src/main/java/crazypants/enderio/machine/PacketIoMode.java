@@ -4,30 +4,26 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.network.IPacketEio;
 
-public class PacketRedstoneMode implements IPacketEio {
+public class PacketIoMode implements IPacketEio {
 
   private int x;
   private int y;
   private int z;
-  private RedstoneControlMode mode;
+  private IoMode mode;
+  private ForgeDirection face;
 
-  public PacketRedstoneMode() {
+  public PacketIoMode() {
   }
 
-  public PacketRedstoneMode(IRedstoneModeControlable cont, int x, int y, int z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    mode = cont.getRedstoneControlMode();
-  }
-
-  public PacketRedstoneMode(AbstractMachineEntity ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
-    mode = ent.getRedstoneControlMode();
+  public PacketIoMode(IIoConfigurable cont, ForgeDirection face) {
+    this.x = cont.getLocation().x;
+    this.y = cont.getLocation().y;
+    this.z = cont.getLocation().z;
+    this.face = face;
+    mode = cont.getIoMode(face);
   }
 
   @Override
@@ -36,6 +32,8 @@ public class PacketRedstoneMode implements IPacketEio {
     buf.writeInt(y);
     buf.writeInt(z);
     buf.writeShort((short) mode.ordinal());
+    buf.writeShort((short) face.ordinal());
+
   }
 
   @Override
@@ -43,8 +41,8 @@ public class PacketRedstoneMode implements IPacketEio {
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    short ordinal = buf.readShort();
-    mode = RedstoneControlMode.values()[ordinal];
+    mode = IoMode.values()[buf.readShort()];
+    face = ForgeDirection.values()[buf.readShort()];
   }
 
   @Override
@@ -58,10 +56,11 @@ public class PacketRedstoneMode implements IPacketEio {
   }
 
   private void handle(EntityPlayer player) {
+    System.out.println("PacketIoMode.handle: ");
     TileEntity te = player.worldObj.getTileEntity(x, y, z);
-    if(te instanceof IRedstoneModeControlable) {
-      IRedstoneModeControlable me = (IRedstoneModeControlable) te;
-      me.setRedstoneControlMode(mode);
+    if(te instanceof IIoConfigurable) {
+      IIoConfigurable me = (IIoConfigurable) te;
+      me.setIoMode(face, mode);
       player.worldObj.markBlockForUpdate(x, y, z);
     }
   }

@@ -73,6 +73,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
   }
 
+  @Override
   public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
     IoMode curMode = getIoMode(faceHit);
     IoMode mode = curMode.next();
@@ -83,10 +84,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return mode;
   }
 
+  @Override
   public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
     return true;
   }
 
+  @Override
   public void setIoMode(ForgeDirection faceHit, IoMode mode) {
     if(mode == IoMode.NONE && faceModes == null) {
       return;
@@ -95,8 +98,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       faceModes = new EnumMap<ForgeDirection, IoMode>(ForgeDirection.class);
     }
     faceModes.put(faceHit, mode);
+    forceClientUpdate = true;
+
   }
 
+  @Override
   public IoMode getIoMode(ForgeDirection face) {
     if(faceModes == null) {
       return IoMode.NONE;
@@ -277,6 +283,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       }
       lastActive = isActive();
+      if(forceClientUpdate) {
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        forceClientUpdate = false;
+      }
       return;
 
     } // else is server, do all logic only on the server
@@ -284,11 +294,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     updateStoredEnergyFromPowerHandler();
 
     boolean requiresClientSync = forceClientUpdate;
-    if(forceClientUpdate) {
-      // First update, send state to client
-      forceClientUpdate = false;
-    }
-
     boolean prevRedCheck = redstoneCheckPassed;
     if(redstoneStateDirty) {
       redstoneCheckPassed = RedstoneControlMode.isConditionMet(redstoneControlMode, this);
@@ -478,6 +483,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       }
     }
 
+    forceClientUpdate = nbtRoot.getBoolean("forceClientUpdate");
+
   }
 
   @Override
@@ -509,6 +516,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
         nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
       }
     }
+    nbtRoot.setBoolean("forceClientUpdate", forceClientUpdate);
+    forceClientUpdate = false;
+
 
   }
 

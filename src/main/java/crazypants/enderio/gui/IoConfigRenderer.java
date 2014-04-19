@@ -31,7 +31,9 @@ import org.lwjgl.opengl.GL14;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IIoConfigurable;
+import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.BoundingBox;
 import crazypants.render.RenderUtil;
@@ -238,6 +240,7 @@ public class IoConfigRenderer {
       if(te instanceof IIoConfigurable) {
         IIoConfigurable configuarble = (IIoConfigurable) te;
         configuarble.toggleIoModeForFace(ForgeDirection.getOrientation(hit.sideHit));
+        EnderIO.packetPipeline.sendToServer(new PacketIoMode(configuarble,ForgeDirection.getOrientation(hit.sideHit)));
       }
     }
   }
@@ -299,9 +302,9 @@ public class IoConfigRenderer {
       setGlStateForPass(pass, false);
       doTileEntityRenderPass(configurables, pass);
       setGlStateForPass(pass, true);
-      if(pass == 2) {
-        doTileEntityRenderPass(neighbours, pass);
-      }
+      //if(pass == 2) {
+      doTileEntityRenderPass(neighbours, pass);
+      //}
     }
     ForgeHooksClient.setRenderPass(-1);
     setGlStateForPass(0, false);

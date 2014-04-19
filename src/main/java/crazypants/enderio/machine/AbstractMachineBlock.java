@@ -48,6 +48,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   protected final Class<T> teClass;
 
+  static {
+    EnderIO.packetPipeline.registerPacket(PacketIoMode.class);
+  }
+
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
     super(new Material(MapColor.ironColor));
     modObject = mo;

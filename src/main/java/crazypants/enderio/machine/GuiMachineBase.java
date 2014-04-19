@@ -74,19 +74,13 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     return POWER_HEIGHT;
   }
 
-
-
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
-    System.out.println("GuiMachineBase.actionPerformed: ");
     if(b.id == CONFIG_ID) {
-      System.out.println("GuiMachineBase.actionPerformed: 2");
       configOverlay.setVisible(!configOverlay.isVisible());
     }
   }
-
-
 
   @Override
   public void initGui() {
