@@ -279,8 +279,8 @@ public class IoConfigRenderer {
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
     //
     RenderHelper.disableStandardItemLighting();
-    //mc.entityRenderer.enableLightmap(0);
-    mc.entityRenderer.disableLightmap(0);
+    mc.entityRenderer.enableLightmap(0);
+    //mc.entityRenderer.disableLightmap(0);
     RenderUtil.bindBlockTexture();
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -294,6 +294,7 @@ public class IoConfigRenderer {
     }
 
     RenderHelper.enableStandardItemLighting();
+    GL11.glEnable(GL11.GL_LIGHTING);
     TileEntityRendererDispatcher.instance.field_147558_l = origin.x - eye.x;
     TileEntityRendererDispatcher.instance.field_147560_j = origin.y - eye.y;
     TileEntityRendererDispatcher.instance.field_147561_k = origin.z - eye.z;
@@ -306,7 +307,7 @@ public class IoConfigRenderer {
       doTileEntityRenderPass(configurables, pass);
       setGlStateForPass(pass, true);
       //if(pass == 2) {
-      //doTileEntityRenderPass(neighbours, pass);
+      doTileEntityRenderPass(neighbours, pass);
       //}
     }
     ForgeHooksClient.setRenderPass(-1);
@@ -358,15 +359,16 @@ public class IoConfigRenderer {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_ALPHA);
+        //GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_ALPHA);
+        GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_COLOR);
         //GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
-        GL14.glBlendColor(0.0f, 0.0f, 0.0f, 0.8f);
+        GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.35f);
         GL11.glDepthMask(true);
       } else {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_ALPHA);
         //GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
-        GL14.glBlendColor(0.0f, 0.0f, 0.0f, 0.8f);
+        GL14.glBlendColor(0.0f, 0.0f, 0.0f, 0.35f);
         GL11.glDepthMask(false);
       }
       return;
