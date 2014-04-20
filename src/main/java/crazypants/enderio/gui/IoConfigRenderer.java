@@ -45,6 +45,7 @@ import crazypants.vecmath.Camera;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
 public class IoConfigRenderer {
@@ -53,8 +54,8 @@ public class IoConfigRenderer {
 
   //private int range;
   private boolean dragging = false;
-  private float pitch = -45;
-  private float yaw = 45;
+  private float pitch = 0;
+  private float yaw =0;
   private double distance;
   private long initTime;
 
@@ -74,6 +75,9 @@ public class IoConfigRenderer {
 
   private SelectedFace selection;
 
+  private boolean renderNeighbours = true;
+  private boolean inNeigButBounds = false;
+
   public IoConfigRenderer(IIoConfigurable configuarble) {
     this(Collections.singletonList(configuarble.getLocation()));
   }
@@ -90,8 +94,11 @@ public class IoConfigRenderer {
     origin.set(c);
     pitchRot.setIdentity();
     yawRot.setIdentity();
-    distance = Math.max(Math.max(bb.sizeX(), bb.sizeY()), bb.sizeZ()) + 4;
 
+    pitch = -mc.thePlayer.rotationPitch;
+    yaw = 180 - mc.thePlayer.rotationYaw;
+
+    distance = Math.max(Math.max(bb.sizeX(), bb.sizeY()), bb.sizeZ()) + 4;
 
     for(BlockCoord bc : configurables) {
       for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -115,10 +122,6 @@ public class IoConfigRenderer {
     return selection;
   }
 
-  public void setSelection(SelectedFace selection) {
-    this.selection = selection;
-  }
-
   public void handleMouseInput() {
 
     if(Mouse.getEventButton() == 0) {
@@ -138,8 +141,8 @@ public class IoConfigRenderer {
       }
     }
 
-    distance -= Mouse.getDWheel() * 0.01;
-    distance = VecmathUtil.clamp(distance, 0.1, 20);
+    distance -= Mouse.getEventDWheel() * 0.01;
+    distance = VecmathUtil.clamp(distance, 0.01, 200);
 
     long elapsed = world.getTotalWorldTime() - initTime;
     int x = Mouse.getEventX();
@@ -152,10 +155,14 @@ public class IoConfigRenderer {
       updateSelection(start, end);
     }
 
-    if(Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
-      if(selection != null) {
-        selection.config.toggleIoModeForFace(selection.face);
-        EnderIO.packetPipeline.sendToServer(new PacketIoMode(selection.config,selection.face));
+    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+      if(Mouse.getEventButton() == 1) {
+        if(selection != null) {
+          selection.config.toggleIoModeForFace(selection.face);
+          EnderIO.packetPipeline.sendToServer(new PacketIoMode(selection.config,selection.face));
+        }
+      } else if(Mouse.getEventButton() == 0 && inNeigButBounds) {
+        renderNeighbours = !renderNeighbours;
       }
     }
   }
@@ -209,17 +216,19 @@ public class IoConfigRenderer {
       return;
     }
     applyCamera(partialTick);
-
     TravelController.instance.setSelectionEnabled(false);
-    doRender();
+    renderScene();
     TravelController.instance.setSelectionEnabled(true);
-    if(selection != null) {
-      renderSelection(parentBounds);
-    }
+    renderSelection();
 
+    renderOverlay(par1, par2);
   }
 
-  private void renderSelection(Rectangle parentBounds) {
+  private void renderSelection() {
+    if(selection == null) {
+      return;
+    }
+
     BoundingBox bb = new BoundingBox(selection.config.getLocation());
 
     IIcon icon = EnderIO.blockAlloySmelter.selectedFaceIcon;
@@ -237,56 +246,78 @@ public class IoConfigRenderer {
     Tessellator.instance.draw();
     Tessellator.instance.setTranslation(0,0,0);
 
+  }
+
+  private void renderOverlay(int mx, int my) {
     Rectangle vp = camera.getViewport();
     ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+
+    int vpx = vp.x / scaledresolution.getScaleFactor();
+    int vph = vp.height / scaledresolution.getScaleFactor();
+    int vpw = vp.width/ scaledresolution.getScaleFactor();
+    int vpy = (int)((float)(vp.y + vp.height - 4)/(float)scaledresolution.getScaleFactor());
+
     GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
     GL11.glMatrixMode(GL11.GL_PROJECTION);
     GL11.glLoadIdentity();
     GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
-    //GL11.glOrtho(0.0D, vp.width, vp.height, 0.0D, 1000.0D, 3000.0D);
-    //GL11.glOrtho(vp.x, vp.width, vp.height, vp.y, 1000.0D, 3000.0D);
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
     GL11.glLoadIdentity();
-    //GL11.glTranslatef(parentBounds.x, parentBounds.y, -2000.0F);
-    GL11.glTranslatef(vp.x / scaledresolution.getScaleFactor(), (float)(vp.y + vp.height - 4)/(float)scaledresolution.getScaleFactor(), -2000.0F);
-    //GL11.glTranslatef(vp.x / scaledresolution.getScaleFactor(),(vp.y + vp.height) / scaledresolution.getScaleFactor(), -2000.0F);
+    GL11.glTranslatef(vpx, vpy, -2000.0F);
 
-    IconEIO ioIcon = null;
-    //    INPUT
-    IoMode mode = selection.config.getIoMode(selection.face);
-    if(mode == IoMode.PULL) {
-      ioIcon = IconEIO.INPUT_SMALL_INV;
-    } else if(mode == IoMode.PUSH) {
-      ioIcon = IconEIO.OUTPUT_SMALL_INV;
-    } else if(mode == IoMode.PUSH_PULL) {
-      ioIcon = IconEIO.INPUT_OUTPUT;
-    } else if(mode == IoMode.DISABLED) {
-      ioIcon = IconEIO.DISABLED;
+    GL11.glDisable(GL11.GL_LIGHTING);
+
+    int x = vpw - 16;
+    int y = vph - 16;
+
+    mx -= vpx;
+    my -= vpy;
+    if(mx >= x && mx <= x + IconEIO.IO_WHATSIT.width &&
+        my >= y && my <= y + IconEIO.IO_WHATSIT.height) {
+      RenderUtil.renderQuad2D(x, y, 0, IconEIO.IO_WHATSIT.width, IconEIO.IO_WHATSIT.height, new Vector4f(0.4f,0.4f,0.4f,0.6f));
+      inNeigButBounds = true;
+    } else {
+      inNeigButBounds = false;
     }
 
+    GL11.glColor3f(1, 1, 1);
+    IconEIO.IO_WHATSIT.renderIcon(x, y, true);
 
-    int y = (vp.height )/ scaledresolution.getScaleFactor() - mc.fontRenderer.FONT_HEIGHT - 2;
-    mc.fontRenderer.drawString(mode.getLocalisedName(), 4, y, ColorUtil.getRGB(Color.white));
 
+    if(selection != null) {
+      IconEIO ioIcon = null;
+      //    INPUT
+      IoMode mode = selection.config.getIoMode(selection.face);
+      if(mode == IoMode.PULL) {
+        ioIcon = IconEIO.INPUT_SMALL_INV;
+      } else if(mode == IoMode.PUSH) {
+        ioIcon = IconEIO.OUTPUT_SMALL_INV;
+      } else if(mode == IoMode.PUSH_PULL) {
+        ioIcon = IconEIO.INPUT_OUTPUT;
+      } else if(mode == IoMode.DISABLED) {
+        ioIcon = IconEIO.DISABLED;
+      }
 
-    if(ioIcon != null) {
-      int w = mc.fontRenderer.getStringWidth(mode.getLocalisedName());
-      double x = (w - ioIcon.width)/2;
-      x = Math.max(0, w);
-      x /=2;
-      x += 4;
-      x /= scaledresolution.getScaleFactor();
-      ioIcon.renderIcon(x, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
+      y = vph - mc.fontRenderer.FONT_HEIGHT - 2;
+      mc.fontRenderer.drawString(mode.getLocalisedName(), 4, y, ColorUtil.getRGB(Color.white));
+      if(ioIcon != null) {
+        int w = mc.fontRenderer.getStringWidth(mode.getLocalisedName());
+        double xd = (w - ioIcon.width)/2;
+        xd = Math.max(0, w);
+        xd /=2;
+        xd += 4;
+        xd /= scaledresolution.getScaleFactor();
+        ioIcon.renderIcon(xd, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
+      }
     }
   }
 
-  private void doRender() {
+  private void renderScene() {
     GL11.glEnable(GL11.GL_CULL_FACE);
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-    //
+
     RenderHelper.disableStandardItemLighting();
-    mc.entityRenderer.enableLightmap(0);
-    //mc.entityRenderer.disableLightmap(0);
+    mc.entityRenderer.disableLightmap(0);
     RenderUtil.bindBlockTexture();
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -296,8 +327,10 @@ public class IoConfigRenderer {
     for (int pass = 0; pass < 1; pass++) {
       setGlStateForPass(pass, false);
       doWorldRenderPass(trans, configurables, pass);
-      setGlStateForPass(pass, true);
-      doWorldRenderPass(trans, neighbours, pass);
+      if(renderNeighbours) {
+        setGlStateForPass(pass, true);
+        doWorldRenderPass(trans, neighbours, pass);
+      }
     }
 
     RenderHelper.enableStandardItemLighting();
@@ -312,8 +345,10 @@ public class IoConfigRenderer {
     for (int pass = 0; pass < 2; pass++) {
       setGlStateForPass(pass, false);
       doTileEntityRenderPass(configurables, pass);
-      setGlStateForPass(pass, true);
-      doTileEntityRenderPass(neighbours, pass);
+      if(renderNeighbours) {
+        setGlStateForPass(pass, true);
+        doTileEntityRenderPass(neighbours, pass);
+      }
     }
     ForgeHooksClient.setRenderPass(-1);
     setGlStateForPass(0, false);
@@ -324,10 +359,10 @@ public class IoConfigRenderer {
     for (BlockCoord bc : blocks) {
       TileEntity tile = world.getTileEntity(bc.x, bc.y, bc.z);
       if(tile != null) {
-        Vector3d at = new Vector3d(eye.x - 0.5, eye.y - 0.5, eye.z - 0.5);
-        at.x += bc.x - originBC.x;
-        at.y += bc.y - originBC.y;
-        at.z += bc.z - originBC.z;
+        Vector3d at = new Vector3d(eye.x, eye.y, eye.z);
+        at.x += bc.x - origin.x;
+        at.y += bc.y - origin.y;
+        at.z += bc.z - origin.z;
         TileEntityRendererDispatcher.instance.renderTileEntityAt(tile, at.x, at.y, at.z, 0);
       }
     }
@@ -338,6 +373,7 @@ public class IoConfigRenderer {
 
     Tessellator.instance.startDrawingQuads();
     Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
+    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
 
     for(BlockCoord bc : blocks) {
       Block block = world.getBlock(bc.x, bc.y, bc.z);
@@ -360,18 +396,19 @@ public class IoConfigRenderer {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     if(isNeighbour) {
 
+      float alpha = 0.8f;
       if(pass == 0) {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_COLOR);
-        GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.35f);
+        GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
         GL11.glDepthMask(true);
       } else {
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_ALPHA);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
         //GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
-        GL14.glBlendColor(0.0f, 0.0f, 0.0f, 0.35f);
+        GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
         GL11.glDepthMask(false);
       }
       return;

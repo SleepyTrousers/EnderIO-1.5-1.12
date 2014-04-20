@@ -80,6 +80,10 @@ public final class IconEIO {
   public static final IconEIO IO_CONFIG_UP = new IconEIO(80, 116, 24, 24);
   public static final IconEIO IO_CONFIG_DOWN  = new IconEIO(104, 116, 24, 24);
 
+  public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13,13);
+
+
+
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 
