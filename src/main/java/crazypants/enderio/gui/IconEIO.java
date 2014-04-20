@@ -60,8 +60,12 @@ public final class IconEIO {
   public static final IconEIO FILTER_ORE_DICT_OFF = new IconEIO(64 + 44, 212, 22, 22);
 
   public static final IconEIO INPUT = new IconEIO(128, 197 + 32, 30, 14);
+  public static final IconEIO INPUT_SMALL = new IconEIO(159, 220, 16, 8);
+
   public static final IconEIO OUTPUT = new IconEIO(128, 180 + 32, 30, 14);
-  public static final IconEIO INPUT_OUTPUT = new IconEIO(158, 180 + 32, 30, 8);
+  public static final IconEIO OUTPUT_SMALL = new IconEIO(177, 220, 16, 8);
+
+  public static final IconEIO INPUT_OUTPUT = new IconEIO(159, 212, 30, 8);
 
   public static final IconEIO INPUT_OFF = new IconEIO(188, 180 + 32, 30, 14);
   public static final IconEIO OUTPUT_OFF = new IconEIO(188, 197 + 32, 30, 14);

@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,18 +9,17 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import net.minecraft.util.Vec3Pool;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -33,15 +33,19 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IIoConfigurable;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.BoundingBox;
+import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.IBlockAccessWrapper;
 import crazypants.vecmath.Camera;
 import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vertex;
 
 public class IoConfigRenderer {
 
@@ -64,12 +68,11 @@ public class IoConfigRenderer {
   private final Matrix4d yawRot = new Matrix4d();
 
   public BlockCoord originBC;
-  //  public IIoConfigurable configuarble;
 
   private List<BlockCoord> configurables = new ArrayList<BlockCoord>();
   private List<BlockCoord> neighbours = new ArrayList<BlockCoord>();
 
-  private boolean neighboursPass = false;
+  private SelectedFace selection;
 
   public IoConfigRenderer(IIoConfigurable configuarble) {
     this(Collections.singletonList(configuarble.getLocation()));
@@ -84,11 +87,10 @@ public class IoConfigRenderer {
     Vector3d c = bb.getCenter();
 
     originBC = new BlockCoord((int) c.x, (int) c.y, (int) c.z);
-    //origin.set(originBC.x + 0.5, originBC.y + 0.5, originBC.z + 0.5);
     origin.set(c);
     pitchRot.setIdentity();
     yawRot.setIdentity();
-    distance = Math.max(Math.max(bb.sizeX(), bb.sizeY()), bb.sizeZ()) + 3;
+    distance = Math.max(Math.max(bb.sizeX(), bb.sizeY()), bb.sizeZ()) + 4;
 
 
     for(BlockCoord bc : configurables) {
@@ -100,84 +102,21 @@ public class IoConfigRenderer {
       }
     }
 
+    world = mc.thePlayer.worldObj;
+    RB.blockAccess = new InnerBA();
+
   }
 
-  boolean nPass = false;
   public void init() {
-    world = mc.thePlayer.worldObj;
     initTime = world.getTotalWorldTime();
-    //RB.blockAccess = world;
+  }
 
-    RB.blockAccess = new IBlockAccess() {
+  public SelectedFace getSelection() {
+    return selection;
+  }
 
-      @Override
-      public boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default) {
-        System.out.println("IoConfigRenderer.init().new IBlockAccess() {...}.isSideSolid: ");
-        return false;
-      }
-
-      @Override
-      public int isBlockProvidingPowerTo(int var1, int var2, int var3, int var4) {
-        return world.isBlockProvidingPowerTo(var1, var2, var3, var4);
-      }
-
-      @Override
-      public boolean isAirBlock(int var1, int var2, int var3) {
-        if(!neighboursPass && !configurables.contains(new BlockCoord(var1,var2,var3))) {
-          return false;
-        }
-        return world.isAirBlock(var1, var2, var3);
-      }
-
-      @Override
-      public Vec3Pool getWorldVec3Pool() {
-        return world.getWorldVec3Pool();
-      }
-
-      @Override
-      public TileEntity getTileEntity(int var1, int var2, int var3) {
-
-        return world.getTileEntity(var1, var2, var3);
-      }
-
-      @Override
-      @SideOnly(Side.CLIENT)
-      public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
-        return 15 << 20 | 15 << 4;
-      }
-
-      @Override
-      @SideOnly(Side.CLIENT)
-      public int getHeight() {
-        return world.getHeight();
-      }
-
-      @Override
-      public int getBlockMetadata(int var1, int var2, int var3) {
-        return world.getBlockMetadata(var1, var2, var3);
-      }
-
-      @Override
-      public Block getBlock(int var1, int var2, int var3) {
-        if(!neighboursPass && !configurables.contains(new BlockCoord(var1,var2,var3))) {
-          return Blocks.air;
-        }
-        return world.getBlock(var1, var2, var3);
-      }
-
-      @Override
-      @SideOnly(Side.CLIENT)
-      public BiomeGenBase getBiomeGenForCoords(int var1, int var2) {
-
-        return world.getBiomeGenForCoords(var1, var2);
-      }
-
-      @Override
-      @SideOnly(Side.CLIENT)
-      public boolean extendedLevelsInChunkCache() {
-        return world.extendedLevelsInChunkCache();
-      }
-    };
+  public void setSelection(SelectedFace selection) {
+    this.selection = selection;
   }
 
   public void handleMouseInput() {
@@ -203,22 +142,25 @@ public class IoConfigRenderer {
     distance = VecmathUtil.clamp(distance, 0.1, 20);
 
     long elapsed = world.getTotalWorldTime() - initTime;
+    int x = Mouse.getEventX();
+    int y = Mouse.getEventY();
+    Vector3d start = new Vector3d();
+    Vector3d end = new Vector3d();
+    if(camera.getRayForPixel(x, y, start, end)) {
+      end.scale(distance * 2);
+      end.add(start);
+      updateSelection(start, end);
+    }
 
     if(Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
-      int x = Mouse.getEventX();
-      int y = Mouse.getEventY();
-      Vector3d start = new Vector3d();
-      Vector3d end = new Vector3d();
-      if(camera.getRayForPixel(x, y, start, end)) {
-        end.scale(distance * 2);
-        end.add(start);
-        doSelection(start, end);
+      if(selection != null) {
+        selection.config.toggleIoModeForFace(selection.face);
+        EnderIO.packetPipeline.sendToServer(new PacketIoMode(selection.config,selection.face));
       }
-
     }
   }
 
-  private void doSelection(Vector3d start, Vector3d end) {
+  private void updateSelection(Vector3d start, Vector3d end) {
     start.add(origin);
     end.add(origin);
     List<MovingObjectPosition> hits = new ArrayList<MovingObjectPosition>();
@@ -233,14 +175,14 @@ public class IoConfigRenderer {
         }
       }
     }
-
+    selection = null;
     MovingObjectPosition hit = getClosestHit(Vec3.createVectorHelper(start.x, start.y, start.z), hits);
     if(hit != null) {
       TileEntity te = world.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
       if(te instanceof IIoConfigurable) {
         IIoConfigurable configuarble = (IIoConfigurable) te;
-        configuarble.toggleIoModeForFace(ForgeDirection.getOrientation(hit.sideHit));
-        EnderIO.packetPipeline.sendToServer(new PacketIoMode(configuarble,ForgeDirection.getOrientation(hit.sideHit)));
+        ForgeDirection face = ForgeDirection.getOrientation(hit.sideHit);
+        selection = new SelectedFace(configuarble, face);
       }
     }
   }
@@ -261,8 +203,8 @@ public class IoConfigRenderer {
     return closest;
   }
 
-  public void drawScreen(int par1, int par2, float partialTick, Rectangle vp) {
-    //TODO: Need to depth sort transparent passes
+  public void drawScreen(int par1, int par2, float partialTick, Rectangle vp, Rectangle parentBounds) {
+
     if(!updateCamera(partialTick, vp.x, vp.y, vp.width, vp.height)) {
       return;
     }
@@ -271,7 +213,72 @@ public class IoConfigRenderer {
     TravelController.instance.setSelectionEnabled(false);
     doRender();
     TravelController.instance.setSelectionEnabled(true);
+    if(selection != null) {
+      renderSelection(parentBounds);
+    }
 
+  }
+
+  private void renderSelection(Rectangle parentBounds) {
+    BoundingBox bb = new BoundingBox(selection.config.getLocation());
+
+    IIcon icon = EnderIO.blockAlloySmelter.selectedFaceIcon;
+    List<Vertex> corners = bb.getCornersWithUvForFace(selection.face,icon.getMinU(),icon.getMaxU(),icon.getMinV(),icon.getMaxV());
+
+    GL11.glDisable(GL11.GL_DEPTH_TEST);
+    GL11.glDisable(GL11.GL_LIGHTING);
+    RenderUtil.bindBlockTexture();
+    GL11.glColor3f(1,1,1);
+    Tessellator.instance.startDrawingQuads();
+    Tessellator.instance.setColorOpaque_F(1, 1, 1);
+    Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
+    Tessellator.instance.setTranslation(trans.x, trans.y, trans.z);
+    RenderUtil.addVerticesToTesselator(corners);
+    Tessellator.instance.draw();
+    Tessellator.instance.setTranslation(0,0,0);
+
+    Rectangle vp = camera.getViewport();
+    ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+    GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
+    GL11.glMatrixMode(GL11.GL_PROJECTION);
+    GL11.glLoadIdentity();
+    GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
+    //GL11.glOrtho(0.0D, vp.width, vp.height, 0.0D, 1000.0D, 3000.0D);
+    //GL11.glOrtho(vp.x, vp.width, vp.height, vp.y, 1000.0D, 3000.0D);
+    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+    GL11.glLoadIdentity();
+    //GL11.glTranslatef(parentBounds.x, parentBounds.y, -2000.0F);
+    GL11.glTranslatef(vp.x / scaledresolution.getScaleFactor(), (float)(vp.y + vp.height - 4)/(float)scaledresolution.getScaleFactor(), -2000.0F);
+    //GL11.glTranslatef(vp.x / scaledresolution.getScaleFactor(),(vp.y + vp.height) / scaledresolution.getScaleFactor(), -2000.0F);
+
+    IconEIO ioIcon = null;
+    //    INPUT
+    IoMode mode = selection.config.getIoMode(selection.face);
+    if(mode == IoMode.PULL) {
+      ioIcon = IconEIO.INPUT_SMALL;
+
+    } else if(mode == IoMode.PUSH) {
+      ioIcon = IconEIO.OUTPUT_SMALL;
+    } else if(mode == IoMode.PUSH_PULL) {
+      ioIcon = IconEIO.INPUT_OUTPUT;
+    } else if(mode == IoMode.DISABLED) {
+      //TODO:
+    }
+
+
+    int y = (vp.height )/ scaledresolution.getScaleFactor() - mc.fontRenderer.FONT_HEIGHT - 2;
+    mc.fontRenderer.drawString(mode.getLocalisedName(), 4, y, ColorUtil.getRGB(Color.white));
+
+
+    if(ioIcon != null) {
+      int w = mc.fontRenderer.getStringWidth(mode.getLocalisedName());
+      double x = (w - ioIcon.width)/2;
+      x = Math.max(0, w);
+      x /=2;
+      x += 4;
+      x /= scaledresolution.getScaleFactor();
+      ioIcon.renderIcon(x, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
+    }
   }
 
   private void doRender() {
@@ -284,6 +291,7 @@ public class IoConfigRenderer {
     RenderUtil.bindBlockTexture();
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glEnable(GL11.GL_TEXTURE_2D);
+    GL11.glEnable(GL11.GL_ALPHA_TEST);
 
     Vector3d trans = new Vector3d((-origin.x) + eye.x, (-origin.y) + eye.y, (-origin.z) + eye.z);
     for (int pass = 0; pass < 1; pass++) {
@@ -306,9 +314,7 @@ public class IoConfigRenderer {
       setGlStateForPass(pass, false);
       doTileEntityRenderPass(configurables, pass);
       setGlStateForPass(pass, true);
-      //if(pass == 2) {
       doTileEntityRenderPass(neighbours, pass);
-      //}
     }
     ForgeHooksClient.setRenderPass(-1);
     setGlStateForPass(0, false);
@@ -351,7 +357,7 @@ public class IoConfigRenderer {
   }
 
   private void setGlStateForPass(int pass, boolean isNeighbour) {
-    nPass = isNeighbour;
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     if(isNeighbour) {
 
@@ -359,9 +365,7 @@ public class IoConfigRenderer {
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
-        //GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_ALPHA);
         GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_COLOR);
-        //GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
         GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.35f);
         GL11.glDepthMask(true);
       } else {
@@ -411,6 +415,59 @@ public class IoConfigRenderer {
     RenderUtil.loadMatrix(camera.getTransposeViewMatrix());
     GL11.glTranslatef(-(float) eye.x, -(float) eye.y, -(float) eye.z);
 
+  }
+
+  public static class SelectedFace {
+
+    public IIoConfigurable config;
+    public ForgeDirection face;
+
+    public SelectedFace(IIoConfigurable config, ForgeDirection face) {
+      super();
+      this.config = config;
+      this.face = face;
+    }
+
+    @Override
+    public String toString() {
+      return "SelectedFace [config=" + config + ", face=" + face + "]";
+    }
+
+
+  }
+
+  private class InnerBA extends IBlockAccessWrapper {
+
+    InnerBA() {
+      super(world);
+    }
+
+    @Override
+    public boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default) {
+      return false;
+    }
+
+    @Override
+    public boolean isAirBlock(int var1, int var2, int var3) {
+      if(!configurables.contains(new BlockCoord(var1,var2,var3))) {
+        return false;
+      }
+      return super.isAirBlock(var1, var2, var3);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
+      return 15 << 20 | 15 << 4;
+    }
+
+    @Override
+    public Block getBlock(int var1, int var2, int var3) {
+      if(!configurables.contains(new BlockCoord(var1,var2,var3))) {
+        return Blocks.air;
+      }
+      return super.getBlock(var1, var2, var3);
+    }
   }
 
 }

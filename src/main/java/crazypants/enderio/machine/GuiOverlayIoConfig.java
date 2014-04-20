@@ -47,17 +47,17 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   @Override
   public void draw(int mouseX, int mouseY, float partialTick) {
 
-    //RenderUtil.renderQuad2D(bounds.x, bounds.y, 0, bounds.width, bounds.height, ColorUtil.getRGB(Color.lightGray.brighter()));
     RenderUtil.renderQuad2D(bounds.x, bounds.y, 0, bounds.width, bounds.height, ColorUtil.getRGB(Color.black));
     Minecraft mc = Minecraft.getMinecraft();
     ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 
     int vpx = ( (screen.getGuiLeft() + bounds.x)* scaledresolution.getScaleFactor());
-    int vpy = (screen.getGuiTop())* scaledresolution.getScaleFactor();
+    int vpy = (screen.getGuiTop() + 4) * scaledresolution.getScaleFactor();
     int w = bounds.width * scaledresolution.getScaleFactor();
     int h = bounds.height * scaledresolution.getScaleFactor();
 
-    renderer.drawScreen(mouseX, mouseY, partialTick, new Rectangle(vpx,vpy,w,h));
+    renderer.drawScreen(mouseX, mouseY, partialTick, new Rectangle(vpx,vpy,w,h), bounds);
+
   }
 
   @Override

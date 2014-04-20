@@ -33,11 +33,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   public static int renderId;
 
-  protected IIcon overlayIconPull;
-  protected IIcon overlayIconPush;
-  protected IIcon overlayIconPushPull;
-  protected IIcon overlayIconDisabled;
-  protected IIcon overlayIconNone;
+  public IIcon overlayIconPull;
+  public IIcon overlayIconPush;
+  public IIcon overlayIconPushPull;
+  public IIcon overlayIconDisabled;
+  public IIcon overlayIconNone;
+
+  public IIcon selectedFaceIcon;
 
   @SideOnly(Side.CLIENT)
   protected IIcon[][] iconBuffer;
@@ -148,6 +150,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     overlayIconPushPull = iIconRegister.registerIcon("enderio:machineOverlayPushPull");
     overlayIconDisabled = iIconRegister.registerIcon("enderio:machineOverlayDisabled");
     overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
+    selectedFaceIcon= iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
   }
 
   public IIcon getOverlayIconForMode(IoMode mode) {

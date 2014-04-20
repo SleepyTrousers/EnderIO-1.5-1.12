@@ -27,7 +27,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super(par1Container);
   }
 
-
   @Override
   public void initGui() {
     super.initGui();
@@ -87,7 +86,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   public void handleKeyboardInput() {
     super.handleKeyboardInput();
   }
-
 
   public void addOverlay(IGuiOverlay overlay) {
     overlays.add(overlay);
