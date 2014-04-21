@@ -58,7 +58,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
     super.initGui();
 
     int x = guiLeft + xSize - 5 - BUTTON_SIZE;
-    int y = guiTop + 60;
+    int y = guiTop + 62;
 
     vanillaFurnaceButton = new IconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, x, y, getIconForMode(), RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);

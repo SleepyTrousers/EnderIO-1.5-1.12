@@ -157,6 +157,7 @@ enderio.gui.tooltip.redstoneControlMode.on=Active with signal
 enderio.gui.tooltip.redstoneControlMode.off=Active without signal
 enderio.gui.tooltip.redstoneControlMode.never=Never active
 
+enderio.gui.machine.ioMode.overlay.tooltip=Configure IO
 enderio.gui.machine.ioMode.none=None
 enderio.gui.machine.ioMode.pull=Pull
 enderio.gui.machine.ioMode.push=Push

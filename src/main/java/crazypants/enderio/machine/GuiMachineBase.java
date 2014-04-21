@@ -17,6 +17,7 @@ import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
 public abstract class GuiMachineBase extends GuiContainerBase {
@@ -61,9 +62,9 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
 
-    y += 20;
+    y += 19;
     configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
-    configB.setToolTip("Toggles the IO config overlay.");
+    configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
 
     configOverlay = new GuiOverlayIoConfig(machine) {
 
@@ -75,6 +76,10 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
     };
     addOverlay(configOverlay);
+  }
+
+  protected boolean showRecipeButton() {
+    return true;
   }
 
 
@@ -147,6 +152,11 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);
       guibutton.drawButton(this.mc, 0, 0);
+    }
+
+    if(showRecipeButton()) {
+      IconEIO.RECIPE.renderIcon(k + 155, l + 43,16,16,0, true);
+      //IconEIO.RECIPE.renderIcon(0,0,0,16,16,true);
     }
 
     SelectedFace sel = configOverlay.getSelection();

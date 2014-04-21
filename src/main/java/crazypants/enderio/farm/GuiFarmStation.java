@@ -25,5 +25,10 @@ public class GuiFarmStation extends GuiMachineBase {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
+  @Override
+  protected boolean showRecipeButton() {
+    return false;
+  }
+
 
 }

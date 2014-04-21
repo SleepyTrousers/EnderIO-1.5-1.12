@@ -56,7 +56,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void loadTransferRects() {
     //Set this up later to show all alloy recipes
-    transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(81-5, 32-11, 15, 23), "EnderIOSagMill", new Object[0]));
+    transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(149, 32, 16, 16), "EnderIOSagMill", new Object[0]));
   }
 
   @Override

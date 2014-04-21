@@ -25,6 +25,10 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     this.entity = te;
   }
 
+  @Override
+  protected boolean showRecipeButton() {
+    return false;
+  }
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

@@ -82,6 +82,8 @@ public final class IconEIO {
 
   public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13,13);
 
+  public static final IconEIO RECIPE = new IconEIO(128, 116, 24,24);
+
 
 
   private static final int TEX_SIZE = 256;
