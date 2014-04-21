@@ -84,15 +84,25 @@ public class IoConfigRenderer {
   public IoConfigRenderer(List<BlockCoord> configurables) {
     this.configurables.addAll(configurables);
 
-    Vector3d min = new Vector3d(Double.MAX_VALUE,Double.MAX_VALUE,Double.MAX_VALUE);
-    Vector3d max = new Vector3d(-Double.MAX_VALUE,-Double.MAX_VALUE,-Double.MAX_VALUE);
-    for(BlockCoord bc : configurables) {
-      min.set(Math.min(bc.x, min.x),Math.min(bc.y, min.y),Math.min(bc.z, min.z));
-      max.set(Math.max(bc.x, max.x),Math.max(bc.y, max.y),Math.max(bc.z, max.z));
+    Vector3d c;
+    Vector3d size;
+    if(configurables.size() == 1) {
+      BlockCoord bc = configurables.get(0);
+      c = new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
+      size = new Vector3d(1,1,1);
+    } else {
+      Vector3d min = new Vector3d(Double.MAX_VALUE,Double.MAX_VALUE,Double.MAX_VALUE);
+      Vector3d max = new Vector3d(-Double.MAX_VALUE,-Double.MAX_VALUE,-Double.MAX_VALUE);
+      for(BlockCoord bc : configurables) {
+        min.set(Math.min(bc.x, min.x),Math.min(bc.y, min.y),Math.min(bc.z, min.z));
+        max.set(Math.max(bc.x, max.x),Math.max(bc.y, max.y),Math.max(bc.z, max.z));
+      }
+      size = new Vector3d(max);
+      size.sub(min);
+      size.scale(0.5);
+      c = new Vector3d(min.x + size.x, min.y + size.y,min.z + size.z);
+      size.scale(2);
     }
-    Vector3d size = new Vector3d(max);
-    size.sub(min);
-    Vector3d c = new Vector3d(min.x + size.x, min.y + size.y,min.z + size.z);
 
     originBC = new BlockCoord((int) c.x, (int) c.y, (int) c.z);
     origin.set(c);
