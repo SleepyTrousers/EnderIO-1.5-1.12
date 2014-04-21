@@ -255,14 +255,13 @@ public class IoConfigRenderer {
     //    INPUT
     IoMode mode = selection.config.getIoMode(selection.face);
     if(mode == IoMode.PULL) {
-      ioIcon = IconEIO.INPUT_SMALL;
-
+      ioIcon = IconEIO.INPUT_SMALL_INV;
     } else if(mode == IoMode.PUSH) {
-      ioIcon = IconEIO.OUTPUT_SMALL;
+      ioIcon = IconEIO.OUTPUT_SMALL_INV;
     } else if(mode == IoMode.PUSH_PULL) {
       ioIcon = IconEIO.INPUT_OUTPUT;
     } else if(mode == IoMode.DISABLED) {
-      //TODO:
+      ioIcon = IconEIO.DISABLED;
     }
 
 

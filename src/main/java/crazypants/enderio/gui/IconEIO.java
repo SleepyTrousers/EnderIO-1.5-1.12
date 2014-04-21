@@ -61,9 +61,12 @@ public final class IconEIO {
 
   public static final IconEIO INPUT = new IconEIO(128, 197 + 32, 30, 14);
   public static final IconEIO INPUT_SMALL = new IconEIO(159, 220, 16, 8);
+  public static final IconEIO INPUT_SMALL_INV = new IconEIO(159, 228, 16, 8);
+  public static final IconEIO DISABLED = new IconEIO(159, 236, 16, 8);
 
   public static final IconEIO OUTPUT = new IconEIO(128, 180 + 32, 30, 14);
   public static final IconEIO OUTPUT_SMALL = new IconEIO(177, 220, 16, 8);
+  public static final IconEIO OUTPUT_SMALL_INV = new IconEIO(177, 228, 16, 8);
 
   public static final IconEIO INPUT_OUTPUT = new IconEIO(159, 212, 30, 8);
 
