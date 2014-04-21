@@ -52,7 +52,7 @@ public class GuiStirlingGenerator extends GuiMachineBase {
 
     double output = 0;
     if(entity.isActive()) {
-      output = entity.getPowerPerTick();
+      output = entity.getPowerUsePerTick();
     }
     String txt =  Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);

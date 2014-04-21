@@ -79,6 +79,11 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   }
 
   private boolean doPull(ForgeDirection dir, FluidTank inputTank, boolean isCoolant) {
+
+    if(isSideDisabled(dir.ordinal())) {
+      return false;
+    }
+
     if(inputTank.getFluidAmount() < inputTank.getCapacity()) {
       BlockCoord loc = getLocation().getLocation(dir);
       IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
@@ -147,7 +152,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   public boolean canEmitPowerFrom(ForgeDirection side) {
-    return true;
+    return !isSideDisabled(side.ordinal());
   }
 
   @Override
@@ -335,6 +340,9 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
+    if(isSideDisabled(from.ordinal())) {
+      return false;
+    }
     return IronEngineCoolant.isCoolant(fluid) || IronEngineFuel.getFuelForFluid(fluid) != null;
   }
 
@@ -345,6 +353,9 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    if(isSideDisabled(from.ordinal())) {
+      return new FluidTankInfo[0];
+    }
     return new FluidTankInfo[] {coolantTank.getInfo(), fuelTank.getInfo()};
   }
 
@@ -406,6 +417,20 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
     return transmitted;
   }
+
+  @Override
+  public float getPowerUsePerTick() {
+    if(fuelTank.getFluidAmount() <= 0) {
+      return 0;
+    }
+    Fuel fuel = IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid());
+    if(fuel == null) {
+      return 0;
+    }
+    return fuel.powerPerCycle;
+  }
+
+
 
 
 

@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity implements ISidedInventory {
@@ -22,6 +23,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public int[] getAccessibleSlotsFromSide(int var1) {
+    ForgeDirection dir = ForgeDirection.getOrientation(var1);
+    IoMode mode = getIoMode(dir);
+    if(mode == IoMode.DISABLED) {
+      return new int[0];
+    }
+
     int[] res = new int[inventory.length - slotDefinition.getNumUpgradeSlots()];
     int index = 0;
     for (int i = 0; i < inventory.length; i++) {
@@ -35,8 +42,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   @Override
   public boolean canInsertItem(int i, ItemStack itemstack, int j) {
-
-    if(!slotDefinition.isInputSlot(i)) {
+    if(!super.canInsertItem(i, itemstack, j)) {
       return false;
     }
     if(!isItemValidForSlot(i, itemstack)) {
@@ -46,17 +52,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return true;
     }
     return inventory[i].isItemEqual(itemstack);
-  }
-
-  @Override
-  public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-    if(!slotDefinition.isOutputSlot(i)) {
-      return false;
-    }
-    if(inventory[i] == null || inventory[i].stackSize < itemstack.stackSize) {
-      return false;
-    }
-    return itemstack.getItem() == inventory[i].getItem();
   }
 
   @Override

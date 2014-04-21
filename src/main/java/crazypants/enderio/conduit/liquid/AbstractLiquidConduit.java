@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
@@ -54,7 +55,15 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
-    return getExternalHandler(direction) != null;
+    IFluidHandler h = getExternalHandler(direction);
+    if(h == null) {
+      return false;
+    }
+    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
+    if(info == null) {
+      return false;
+    }
+    return  info.length > 0;
   }
 
   @Override
@@ -110,7 +119,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     }
     IFluidHandler ext = getExternalHandler(dir);
     if(ext instanceof TileReservoir) { // dont push to an auto ejecting
-                                       // resevoir or we loop
+      // resevoir or we loop
       TileReservoir tr = (TileReservoir) ext;
       return !tr.isMultiblock() || !tr.isAutoEject();
     }

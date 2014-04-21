@@ -59,6 +59,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   protected boolean doPush(ForgeDirection dir) {
+
+    if(isSideDisabled(dir.ordinal())) {
+      return false;
+    }
+
     boolean res = super.doPush(dir);
     if(outputTank.getFluidAmount() > 0) {
 
@@ -82,6 +87,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   protected boolean doPull(ForgeDirection dir) {
+
+    if(isSideDisabled(dir.ordinal())) {
+      return false;
+    }
+
     boolean res = super.doPull(dir);
     if(inputTank.getFluidAmount() < inputTank.getCapacity()) {
       BlockCoord loc = getLocation().getLocation(dir);
@@ -122,6 +132,10 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    if(isSideDisabled(from.ordinal())) {
+      return 0;
+    }
+
     if(resource == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
@@ -131,6 +145,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    if(isSideDisabled(from.ordinal())) {
+      return null;
+    }
     if(outputTank.getFluid() == null || resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
       return null;
     }
@@ -140,6 +157,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    if(isSideDisabled(from.ordinal())) {
+      return null;
+    }
     tanksDirty = true;
     return outputTank.drain(maxDrain, doDrain);
   }
@@ -185,7 +205,9 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-
+    if(isSideDisabled(from.ordinal())) {
+      return false;
+    }
     if(fluid == null || (inputTank.getFluid() != null && inputTank.getFluid().getFluid().getID() != fluid.getID())) {
       return false;
     }
@@ -200,11 +222,17 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    if(isSideDisabled(from.ordinal())) {
+      return false;
+    }
     return outputTank.getFluid() != null && outputTank.getFluid().getFluid().getID() == fluid.getID();
   }
 
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    if(isSideDisabled(from.ordinal())) {
+      return new FluidTankInfo[0];
+    }
     return new FluidTankInfo[] { inputTank.getInfo(), outputTank.getInfo() };
   }
 
@@ -257,7 +285,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   }
 
   @Override
-  protected float getPowerUsePerTick() {
+  public float getPowerUsePerTick() {
     return Config.vatPowerUserPerTick;
   }
 

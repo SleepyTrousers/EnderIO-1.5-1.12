@@ -131,9 +131,8 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return (int)(storedEnergy * 10);
   }
 
-
-
-  public double getPowerPerTick() {
+  @Override
+  public float getPowerUsePerTick() {
     return ENERGY_PER_TICK * getEnergyMultiplier();
   }
 

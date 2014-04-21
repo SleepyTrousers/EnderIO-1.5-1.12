@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.render.RenderUtil;
+import crazypants.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
 public class GuiPainter extends GuiMachineBase {
@@ -43,6 +44,15 @@ public class GuiPainter extends GuiMachineBase {
   @Override
   protected boolean showRecipeButton() {
     return false;
+  }
+
+  @Override
+  protected void renderSlotHighlight(int slot, Vector4f col) {
+    if(tileEntity.getSlotDefinition().isOutputSlot(slot)) {
+      renderSlotHighlight(col, 117,31,24,24);
+    } else if(slot != 1) {
+      super.renderSlotHighlight(slot, col);
+    }
   }
 
 }

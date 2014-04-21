@@ -51,6 +51,10 @@ public class PowerDisplayUtil {
     FLOAT_NF.setMaximumFractionDigits(1);
   }
 
+  public static String formatStoredPower(double amount, double capacity) {
+    return formatPower(amount) + "/" + formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
+  }
+
   public static String formatPower(PowerType type, double amount) {
     return INT_NF.format(currentPowerType.toDisplayValue(type.fromDisplayValue(amount)));
   }

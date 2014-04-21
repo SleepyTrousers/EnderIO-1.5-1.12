@@ -53,8 +53,10 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(PowerDisplayUtil.formatPower(tileEntity.getEnergyStored()) + "/"
-            + PowerDisplayUtil.formatPower(tileEntity.getCapacitor().getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
+        text.add("Max: " + PowerDisplayUtil.formatPower(tileEntity.getPowerUsePerTick()) + " " +  PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
+        //text.add()
+        text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
+
       }
 
     });

@@ -59,6 +59,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   private int[] allSlots;
 
+  protected boolean notifyNeighbours = false;
+
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition;
     facing = 3;
@@ -99,7 +101,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
     faceModes.put(faceHit, mode);
     forceClientUpdate = true;
-
+    notifyNeighbours = true;
   }
 
   @Override
@@ -224,6 +226,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
+    if(isSideDisabled(side.ordinal())) {
+      return null;
+    }
     return powerHandler.getPowerReceiver();
   }
 
@@ -232,7 +237,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return worldObj;
   }
 
-  protected float getPowerUsePerTick() {
+  public float getPowerUsePerTick() {
     return capacitorType.capacitor.getMaxEnergyExtracted();
   }
 
@@ -240,6 +245,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    if(isSideDisabled(from.ordinal())) {
+      return 0;
+    }
     return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
   }
 
@@ -250,7 +258,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public boolean canInterface(ForgeDirection from) {
-    return true;
+    return !isSideDisabled(from.ordinal());
   }
 
   @Override
@@ -318,6 +326,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
       markDirty();
+    }
+
+    if(notifyNeighbours) {
+      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, blockType);
+      notifyNeighbours = false;
     }
 
   }
@@ -630,22 +643,41 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public int[] getAccessibleSlotsFromSide(int var1) {
-    ForgeDirection dir = ForgeDirection.getOrientation(var1);
-    IoMode mode = getIoMode(dir);
-    if(mode == IoMode.DISABLED) {
+    if(isSideDisabled(var1)) {
       return new int[0];
     }
     return allSlots;
   }
 
   @Override
-  public boolean canInsertItem(int var1, ItemStack var2, int var3) {
-    return true;
+  public boolean canInsertItem(int slot, ItemStack var2, int side) {
+    if(isSideDisabled(side)) {
+      return false;
+    }
+    return slotDefinition.isInputSlot(slot);
   }
 
   @Override
-  public boolean canExtractItem(int var1, ItemStack var2, int var3) {
-    return true;
+  public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+    if(isSideDisabled(side)) {
+      return false;
+    }
+    if(!slotDefinition.isOutputSlot(slot)) {
+      return false;
+    }
+    if(inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
+      return false;
+    }
+    return itemstack.getItem() == inventory[slot].getItem();
+  }
+
+  public boolean isSideDisabled(int var1) {
+    ForgeDirection dir = ForgeDirection.getOrientation(var1);
+    IoMode mode = getIoMode(dir);
+    if(mode == IoMode.DISABLED) {
+      return true;
+    }
+    return false;
   }
 
   public void onNeighborBlockChange(Block blockId) {
