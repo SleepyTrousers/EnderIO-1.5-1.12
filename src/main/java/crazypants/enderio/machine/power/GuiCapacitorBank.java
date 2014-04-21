@@ -42,8 +42,6 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   private final TileCapacitorBank capBank;
 
-  //  private IconButton inputRedstoneButton;
-  //  private IconButton outputRedstoneButton;
   private RedstoneModeButton inputRsButton;
   private RedstoneModeButton outputRsButton;
 

@@ -103,7 +103,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
 
       ForgeDirection faceHit = ForgeDirection.getOrientation(side);
       TileCapacitorBank tcb = (TileCapacitorBank) te;
-      tcb.toggleModeForFace(faceHit);
+      tcb.toggleIoModeForFace(faceHit);
       if(world.isRemote) {
         world.markBlockForUpdate(x, y, z);
       } else {
@@ -181,7 +181,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
       return blockIcon;
     }
     TileCapacitorBank cb = (TileCapacitorBank) te;
-    IoMode mode = cb.getFaceModeForFace(ForgeDirection.values()[side]);
+    IoMode mode = cb.getIoMode(ForgeDirection.values()[side]);
     if(mode == null || mode == IoMode.NONE) {
       return blockIcon;
     }
