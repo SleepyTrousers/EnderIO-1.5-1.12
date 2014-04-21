@@ -52,7 +52,6 @@ public class IoConfigRenderer {
 
   protected static final RenderBlocks RB = new RenderBlocks();
 
-  //private int range;
   private boolean dragging = false;
   private float pitch = 0;
   private float yaw =0;
@@ -84,11 +83,16 @@ public class IoConfigRenderer {
 
   public IoConfigRenderer(List<BlockCoord> configurables) {
     this.configurables.addAll(configurables);
-    BoundingBox bb = new BoundingBox(configurables.get(0));
-    for (int i = 1; i < configurables.size(); i++) {
-      bb.expandBy(new BoundingBox(configurables.get(i)));
+
+    Vector3d min = new Vector3d(Double.MAX_VALUE,Double.MAX_VALUE,Double.MAX_VALUE);
+    Vector3d max = new Vector3d(-Double.MAX_VALUE,-Double.MAX_VALUE,-Double.MAX_VALUE);
+    for(BlockCoord bc : configurables) {
+      min.set(Math.min(bc.x, min.x),Math.min(bc.y, min.y),Math.min(bc.z, min.z));
+      max.set(Math.max(bc.x, max.x),Math.max(bc.y, max.y),Math.max(bc.z, max.z));
     }
-    Vector3d c = bb.getCenter();
+    Vector3d size = new Vector3d(max);
+    size.sub(min);
+    Vector3d c = new Vector3d(min.x + size.x, min.y + size.y,min.z + size.z);
 
     originBC = new BlockCoord((int) c.x, (int) c.y, (int) c.z);
     origin.set(c);
@@ -98,7 +102,7 @@ public class IoConfigRenderer {
     pitch = -mc.thePlayer.rotationPitch;
     yaw = 180 - mc.thePlayer.rotationYaw;
 
-    distance = Math.max(Math.max(bb.sizeX(), bb.sizeY()), bb.sizeZ()) + 4;
+    distance = Math.max(Math.max(size.x, size.y), size.z) + 4;
 
     for(BlockCoord bc : configurables) {
       for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -111,7 +115,6 @@ public class IoConfigRenderer {
 
     world = mc.thePlayer.worldObj;
     RB.blockAccess = new InnerBA();
-
   }
 
   public void init() {
@@ -299,7 +302,7 @@ public class IoConfigRenderer {
       }
 
       y = vph - mc.fontRenderer.FONT_HEIGHT - 2;
-      mc.fontRenderer.drawString(mode.getLocalisedName(), 4, y, ColorUtil.getRGB(Color.white));
+      mc.fontRenderer.drawString(getLabelForMode(mode), 4, y, ColorUtil.getRGB(Color.white));
       if(ioIcon != null) {
         int w = mc.fontRenderer.getStringWidth(mode.getLocalisedName());
         double xd = (w - ioIcon.width)/2;
@@ -310,6 +313,10 @@ public class IoConfigRenderer {
         ioIcon.renderIcon(xd, y - mc.fontRenderer.FONT_HEIGHT - 2,true);
       }
     }
+  }
+
+  protected String getLabelForMode(IoMode mode) {
+    return mode.getLocalisedName();
   }
 
   private void renderScene() {
@@ -407,7 +414,7 @@ public class IoConfigRenderer {
       } else {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CONSTANT_COLOR);
-        //GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
+        GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.8f);
         GL14.glBlendColor(1.0f, 1.0f, 1.0f, alpha);
         GL11.glDepthMask(false);
       }

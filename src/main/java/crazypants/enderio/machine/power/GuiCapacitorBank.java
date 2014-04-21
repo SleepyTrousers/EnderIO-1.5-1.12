@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.power;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -12,19 +14,26 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconButtonEIO;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.GuiOverlayIoConfig;
 import crazypants.enderio.machine.IRedstoneModeControlable;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
 public class GuiCapacitorBank extends GuiContainerBase {
 
   protected static final int INPUT_BUTTON_ID = 18;
   protected static final int OUTPUT_BUTTON_ID = 37;
+
+  protected static final int CONFIG_ID = 377996104;
 
   private static final int POWER_X = 8;
   private static final int POWER_Y = 9;
@@ -47,6 +56,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   private GuiTextField maxInputTF;
   private GuiTextField maxOutputTF;
+
+  private GuiOverlayIoConfig configOverlay;
+  private IconButtonEIO configB;
 
   public GuiCapacitorBank(InventoryPlayer playerInv, TileCapacitorBank te) {
     super(new ContainerCapacitorBank(playerInv, te));
@@ -96,11 +108,61 @@ public class GuiCapacitorBank extends GuiContainerBase {
     });
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
 
+
+    y += 20;
+    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
+    configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
+
+    List<BlockCoord> coords = new ArrayList<BlockCoord>();
+    if(te.isMultiblock()) {
+      BlockCoord[] mb = te.getController().multiblock;
+      if(mb != null) {
+        coords.addAll(Arrays.asList(mb));
+      }
+    }
+
+    if(coords.isEmpty()) {
+      coords.add(te.getLocation());
+    }
+
+    configOverlay = new GuiOverlayIoConfig(coords) {
+
+      @Override
+      public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        configB.setIcon(visible ? IconEIO.IO_CONFIG_DOWN : IconEIO.IO_CONFIG_UP);
+      }
+
+      @Override
+      protected String getLabelForMode(IoMode mode) {
+        if(mode == IoMode.PUSH) {
+          return Lang.localize("gui.capBank.outputMode");
+        } else if(mode == IoMode.PULL) {
+          return Lang.localize("gui.capBank.inputMode");
+        }
+        return super.getLabelForMode(mode);
+      }
+
+    };
+    addOverlay(configOverlay);
+
+  }
+
+  @Override
+  protected void actionPerformed(GuiButton b) {
+    super.actionPerformed(b);
+    if(b.id == CONFIG_ID) {
+      boolean vis = !configOverlay.isVisible();
+      configOverlay.setVisible(vis);
+    }
   }
 
   @Override
   public void initGui() {
     super.initGui();
+
+    configB.onGuiInit();
+
     int x = guiLeft + xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
     int y = guiTop + inputY;
 

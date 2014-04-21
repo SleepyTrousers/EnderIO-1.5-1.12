@@ -88,6 +88,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   private boolean masterReceptorsDirty;
 
+  private boolean notifyNeighbours = false;
+
   float energyAtLastRender = -1;
 
   public TileCapacitorBank() {
@@ -151,8 +153,9 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     if(updateReceptors) {
       receptorsDirty = true;
       getController().masterReceptorsDirty = true;
+      notifyNeighbours = true;
     }
-
+    render = true;
   }
 
   @Override
@@ -202,6 +205,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
 
     if(!isContoller()) {
+      if(notifyNeighbours) {
+        worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+        notifyNeighbours = false;
+      }
       return;
     }
 
@@ -240,6 +247,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       lastSyncPowerStored = storedEnergy;
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       markDirty();
+    }
+
+    if(notifyNeighbours) {
+      worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+      notifyNeighbours = false;
     }
 
   }
@@ -492,7 +504,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
 
     IoMode mode = getIoMode(side);
-    if(mode == IoMode.DISABLED || mode == IoMode.PUSH) {
+    if(mode == IoMode.DISABLED) {
+      return null;
+    }
+    if(mode == IoMode.PUSH) {
       return getDisabledPowerHandler().getPowerReceiver();
     }
     return getPowerHandler().getPowerReceiver();

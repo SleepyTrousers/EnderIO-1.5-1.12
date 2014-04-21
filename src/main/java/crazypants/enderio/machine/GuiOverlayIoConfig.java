@@ -2,6 +2,9 @@ package crazypants.enderio.machine;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -13,6 +16,7 @@ import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.gui.IGuiScreen;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.BlockCoord;
 
 public class GuiOverlayIoConfig implements IGuiOverlay {
 
@@ -25,11 +29,14 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
   private IoConfigRenderer renderer;
 
-  private IIoConfigurable ioConf;
-
+  private List<BlockCoord> coords = new ArrayList<BlockCoord>();
 
   public GuiOverlayIoConfig(IIoConfigurable ioConf) {
-    this.ioConf = ioConf;
+    coords.add(ioConf.getLocation());
+  }
+
+  public GuiOverlayIoConfig(Collection<BlockCoord> bc) {
+    coords.addAll(bc);
   }
 
   @Override
@@ -40,9 +47,20 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   @Override
   public void init(IGuiScreen screen) {
     this.screen = screen;
-    renderer = new IoConfigRenderer(ioConf);
+    renderer = new IoConfigRenderer(coords) {
+
+      @Override
+      protected String getLabelForMode(IoMode mode) {
+        return GuiOverlayIoConfig.this.getLabelForMode(mode);
+      }
+
+    };
     renderer.init();
     bounds = new Rectangle(5, screen.getYSize() - height -5, screen.getXSize() - 10, height);
+  }
+
+  protected String getLabelForMode(IoMode mode) {
+    return mode.getLocalisedName();
   }
 
   @Override
