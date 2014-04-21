@@ -5,8 +5,10 @@
 - Added Dark Steel powered pickaxe
 - Stirling Generator now gets more efficient and faster with upgrades.
 - Added 'The Vat' to produce liquid fuels (see VatRecipes_Core.xml for recipes)
-  - Added liquids: Hooch, Fire Water and Rocket Fuel 
-  - Added 'Combustion Generator'  
+- Added liquid fuels: Hooch, Fire Water and Rocket Fuel 
+- Added 'Combustion Generator'   
+- Added per side auto 'push/push' of items/fluids to all machines
+- Overhaul of machine UI's, adding more information   
 
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
