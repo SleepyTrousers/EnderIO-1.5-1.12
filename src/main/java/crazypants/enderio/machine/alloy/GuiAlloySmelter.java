@@ -15,6 +15,7 @@ import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
+import crazypants.vecmath.Vector4f;
 
 public class GuiAlloySmelter extends GuiMachineBase {
 
@@ -63,6 +64,15 @@ public class GuiAlloySmelter extends GuiMachineBase {
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 
     buttonList.add(vanillaFurnaceButton);
+  }
+
+  @Override
+  protected void renderSlotHighlight(int slot, Vector4f col) {
+    if(tileEntity.getSlotDefinition().isOutputSlot(slot)) {
+      renderSlotHighlight(col, 75,54,24,24);
+    } else {
+      super.renderSlotHighlight(slot, col);
+    }
   }
 
   @Override

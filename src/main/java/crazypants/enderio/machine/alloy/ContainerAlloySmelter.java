@@ -27,7 +27,7 @@ public class ContainerAlloySmelter extends AbstractMachineContainer {
         return tileEntity.isItemValidForSlot(0, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 1, 78, 7) {
+    addSlotToContainer(new Slot(tileEntity, 1, 79, 7) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isItemValidForSlot(1, itemStack);

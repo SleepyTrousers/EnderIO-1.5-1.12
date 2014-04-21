@@ -4,18 +4,27 @@ import java.awt.Rectangle;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
+import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.vecmath.Vector4f;
 
 public abstract class GuiMachineBase extends GuiContainerBase {
+
+
+  public static final Vector4f PUSH_COLOR = new Vector4f(0.8f,0.4f,0.1f,0.5f);
+  public static final Vector4f PULL_COLOR = new Vector4f(0.1f,0.4f,0.8f,0.5f);
+
 
   protected static final int POWER_Y = 14;
   protected final int POWER_X = 15;
@@ -25,6 +34,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
   public static final int BUTTON_SIZE = 16;
   private static final int CONFIG_ID = 8962349;
+
 
   private AbstractMachineEntity tileEntity;
 
@@ -65,6 +75,32 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
     };
     addOverlay(configOverlay);
+  }
+
+
+  public void renderSlotHighlights(IoMode mode) {
+    SlotDefinition slotDef = tileEntity.getSlotDefinition();
+    if(slotDef.getNumInputSlots() > 0 && (mode == IoMode.PULL || mode == IoMode.PUSH_PULL)) {
+      for (int slot = slotDef.getMinInputSlot(); slot <= slotDef.getMaxInputSlot(); slot++) {
+        renderSlotHighlight(slot,PULL_COLOR);
+      }
+    }
+    if(slotDef.getNumOutputSlots() > 0 && (mode == IoMode.PUSH || mode == IoMode.PUSH_PULL)) {
+      for (int slot = slotDef.getMinOutputSlot(); slot <= slotDef.getMaxOutputSlot(); slot++) {
+        renderSlotHighlight(slot,PUSH_COLOR);
+      }
+    }
+  }
+
+  protected void renderSlotHighlight(int slot, Vector4f col) {
+    Slot invSlot = (Slot)inventorySlots.inventorySlots.get(slot);
+    renderSlotHighlight(col, invSlot.xDisplayPosition,invSlot.yDisplayPosition,16,16);
+  }
+
+  protected void renderSlotHighlight(Vector4f col, int x, int y, int width, int height) {
+    GL11.glEnable(GL11.GL_BLEND);
+    RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, width, height, col);
+    GL11.glDisable(GL11.GL_BLEND);
   }
 
   protected int getPowerX() {
@@ -113,8 +149,15 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       guibutton.drawButton(this.mc, 0, 0);
     }
 
+    SelectedFace sel = configOverlay.getSelection();
+    if(sel != null) {
+      IoMode mode = sel.config.getIoMode(sel.face);
+      if(mode != null) {
+        renderSlotHighlights(mode);
+      }
+    }
+
+
   }
-
-
 
 }

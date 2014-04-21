@@ -2,18 +2,15 @@ package crazypants.enderio.machine.still;
 
 import java.awt.Rectangle;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
@@ -60,6 +57,22 @@ public class GuiVat extends GuiMachineBase {
     });
 
   }
+
+  @Override
+  public void renderSlotHighlights(IoMode mode) {
+    super.renderSlotHighlights(mode);
+
+    int x = 30;
+    int y = 12;
+    if(mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
+      renderSlotHighlight(PULL_COLOR,x-2,y-2,15+4,47+4);
+    }
+    if(mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) {
+      x = 132;
+      renderSlotHighlight(PUSH_COLOR,x-2,y-2,15+4,47+4);
+    }
+  }
+
 
   /**
    * Draw the background layer for the GuiContainer (everything behind the
@@ -128,7 +141,7 @@ public class GuiVat extends GuiMachineBase {
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }
 
-  
+
   @Override
   protected int getPowerX() {
     return 10;

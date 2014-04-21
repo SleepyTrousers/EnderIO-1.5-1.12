@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IoConfigRenderer;
+import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.gui.IGuiScreen;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -97,6 +98,9 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
     return bounds;
   }
 
+  public SelectedFace getSelection() {
+    return renderer.getSelection();
+  }
 
 
 

@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
@@ -55,6 +56,22 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       }
 
     });
+
+  }
+
+  @Override
+  public void renderSlotHighlights(IoMode mode) {
+    super.renderSlotHighlights(mode);
+
+    if(mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
+      int x = 48 - 2;
+      int y = 21 - 2;
+      int w = 15 + 4;
+      int h = 47 + 4;
+      renderSlotHighlight(PULL_COLOR,x,y,w,h);
+      x = 114 - 2;
+      renderSlotHighlight(PULL_COLOR,x,y,w,h);
+    }
 
   }
 
