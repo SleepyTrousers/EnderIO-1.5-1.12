@@ -222,19 +222,16 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    //TODO: Localize
-
     if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
       list.add(Lang.localize("item.darkSteel.tooltip.line1"));
-      list.add("Increased skull and ender pearl drops.");
-      list.add("Enderman can't teleport once hit.");
-      list.add(EnumChatFormatting.BLUE + "+1 Damage when Powered");
+      list.add(Lang.localize("item.darkSteel_sword.tooltip.line1"));
+      list.add(Lang.localize("item.darkSteel_sword.tooltip.line2"));
+      list.add(EnumChatFormatting.BLUE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
     } else {
       list.add(ItemUtil.getDurabilityString(itemstack));
       list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
       list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
     }
-
   }
 
   public ItemStack createItemStack() {

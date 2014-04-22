@@ -27,6 +27,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
 public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable, IIoConfigurable {
@@ -563,14 +564,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     root.setBoolean("eio.abstractMachine", true);
     writeCommon(root);
 
-    //setStackDisplayName
     String name;
     if(stack.hasDisplayName()) {
       name = stack.getDisplayName();
     } else {
       name = getBlockType().getLocalizedName();
     }
-    name += " (Configured)";
+    name += " " + Lang.localize("machine.tooltip.configured");
     stack.setStackDisplayName(name);
   }
 

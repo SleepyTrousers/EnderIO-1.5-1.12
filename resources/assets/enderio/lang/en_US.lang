@@ -108,6 +108,7 @@ tile.blockPowerMonitor.name=Power Monitor
 tile.blockVat.name=The Vat
 tile.blockCombustionGenerator.name=Combustion Generator
 tile.blockFarmStation.name=Farming Station [NOT IMPLEMENTED]
+enderio.machine.tooltip.configured=(Configured)
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
@@ -136,12 +137,18 @@ item.darkSteel_boots.name=Dark Boots
 item.darkSteel_sword.name=The Ender
 item.darkSteel_pickaxe.name=Dark Pick
 
-
 enderio.item.tooltip.power=Power:
 enderio.item.tooltip.showDetails=<Hold Shift>
 enderio.item.darkSteel.tooltip.power=Power:
 enderio.item.darkSteel.tooltip.durability=Durability:
 enderio.item.darkSteel.tooltip.line1=Half durability damage absorbed by power.
+
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+        
+enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops.
+enderio.item.darkSteel_sword.tooltip.line2=Enderman can't teleport once hit.
+enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 
 
 

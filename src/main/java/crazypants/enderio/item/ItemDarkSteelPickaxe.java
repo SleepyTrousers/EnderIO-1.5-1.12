@@ -158,10 +158,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      //TODO: Localize
       list.add(Lang.localize("item.darkSteel.tooltip.line1"));
-      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " Effeciency when powered");
-      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " Effeciency breaking obsidian ");
+      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
       list.add(EnumChatFormatting.BLUE + "     (cost "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
           + PowerDisplayUtil.abrevation() + ")");
