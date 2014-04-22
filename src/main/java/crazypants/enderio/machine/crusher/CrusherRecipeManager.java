@@ -164,4 +164,10 @@ public class CrusherRecipeManager {
     return recipe.getInputs()[0].getInput();
   }
 
+  public List<GrindingBall> getBalls() {
+    return balls;
+  }
+
+
+
 }

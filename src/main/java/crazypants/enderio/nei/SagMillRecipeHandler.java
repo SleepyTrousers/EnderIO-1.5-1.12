@@ -22,6 +22,8 @@ import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.crafting.IRecipeOutput;
 import crazypants.enderio.crafting.RecipeReigistry;
+import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.crusher.GrindingBall;
 import crazypants.enderio.machine.crusher.GuiCrusher;
 import crazypants.render.RenderUtil;
 
@@ -171,7 +173,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
     protected int numTargetOuput;
     protected int indexOfTargetOutput;
-    private PositionedStack input;
+    private List<PositionedStack> input;
     private PositionedStack output;
     private ArrayList<PositionedStack> otherOutputs;
     private float[] outputChance;
@@ -183,11 +185,15 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     }
 
     public float getChanceForOutput(ItemStack stack) {
+      if(stack == null) {
+        return -1;
+      }
       if(output.item.equals(stack)) {
         return outputChance[0];
       }
       for (int i = 0; i < otherOutputs.size(); i++) {
-        if(otherOutputs.get(i).item.equals(stack)) {
+        PositionedStack oo = otherOutputs.get(i);
+        if(oo != null && oo.item.equals(stack) && i+1 < outputChance.length) {
           return outputChance[i + 1];
         }
       }
@@ -195,9 +201,8 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public PositionedStack getIngredient() {
-      randomRenderPermutation(input, cycleticks / 20);
-      return input;
+    public List<PositionedStack> getIngredients() {
+      return getCycledIngredients(cycleticks / 20, input);
     }
 
     @Override
@@ -216,7 +221,12 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
     public MillRecipe(ItemStack targetedResult, float energy, IRecipeInput ingredient, List<IRecipeOutput> outputs) {
       this.energy = energy;
-      input = new PositionedStack(getInputs(ingredient), 80 - offset.x, 12 - offset.y);
+
+      input = new ArrayList<PositionedStack>(2);
+      input.add(new PositionedStack(getInputs(ingredient), 80 - offset.x, 12 - offset.y));
+
+      input.add(new PositionedStack(getBalls(), 122 - offset.x, 23 - offset.y));
+
       output = new PositionedStack(outputs.get(0).getItem(), 49 - offset.x, 59 - offset.y);
       otherOutputs = new ArrayList<PositionedStack>();
       if(outputs.size() > 1) {
@@ -239,6 +249,15 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
           numTargetOuput = outputs.get(i).getQuantity();
         }
       }
+    }
+
+    private List<ItemStack> getBalls() {
+      List<GrindingBall> daBalls = CrusherRecipeManager.getInstance().getBalls();
+      List<ItemStack> res = new ArrayList<ItemStack>();
+      for(GrindingBall ball : daBalls) {
+        res.add(ball.getInput());
+      }
+      return res;
     }
   }
 
