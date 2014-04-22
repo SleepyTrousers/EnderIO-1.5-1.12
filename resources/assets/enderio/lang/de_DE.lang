@@ -53,12 +53,13 @@ item.bucketFire_water.name=Eimer mit Spiritus
 enderio.fluid.millibucket.abr=mB
 
 
-//Crafting components
+//Materials
 enderio.itemMachinePart.name=Maschinenteile
 enderio.machineChassi.name=Maschinenhülle
 enderio.basicGear.name=Basiszahnrad
 enderio.pulsatingCrystal.name=Pulsierender Kristall
 enderio.vibrantCrystal.name=Dynamischer Kristall
+enderio.darkGrindingBall.name=Dunkelstahlkugel
 
 
 //Quartz / Glass
@@ -128,18 +129,20 @@ tile.blockPaintedDoubleSlab.name=Bemalte Stufe
 //Items
 item.itemYetaWrench.name=Yeta-Schraubenschlüssel
 item.enderio.itemConduitProbe.name=Leitungssonde
-
-enderio.itemEnderface.wrongDimension=EnderIO-Block ist in einer anderen Dimension.
-enderio.itemEnderface.tooFar=EnderIO-Block ist zu weit entfernt.
-enderio.itemEnderface.destroyed=EnderIO-Block wurde zerstört.
-enderio.itemEnderface.noSync=Endergesicht ist mit keinem EnderIO synchronisiert.
-
 item.darkSteel_helmet.name=Dunkelhelm
 item.darkSteel_chestplate.name=Dunkelpanzer
 item.darkSteel_leggings.name=Dunkelbeinschutz
 item.darkSteel_boots.name=Dunkelstiefel
 item.darkSteel_sword.name=Der Ender
 item.darkSteel_pickaxe.name=Dunkelspitzhacke
+
+
+enderio.item.tooltip.power=Energie:
+enderio.item.tooltip.showDetails=<Halte Shift>
+enderio.item.darkSteel.tooltip.power=Energie:
+enderio.item.darkSteel.tooltip.durability=Haltbarkeit:
+enderio.item.darkSteel.tooltip.line1=Häfte des Haltbarkeitsschadens von Energie absorbiert.
+
 
 
 //------GUI
@@ -156,6 +159,13 @@ enderio.gui.tooltip.redstoneControlMode.ignore=Immer aktiv.
 enderio.gui.tooltip.redstoneControlMode.on=Aktiv mit Signal.
 enderio.gui.tooltip.redstoneControlMode.off=Aktiv ohne Signal.
 enderio.gui.tooltip.redstoneControlMode.never=Niemals aktiv.
+
+enderio.gui.machine.ioMode.overlay.tooltip=IO Konfigurieren
+enderio.gui.machine.ioMode.none=Nichts
+enderio.gui.machine.ioMode.pull=Input
+enderio.gui.machine.ioMode.push=Output
+enderio.gui.machine.ioMode.disabled=Deaktiviert
+enderio.gui.machine.ioMode.pullPush=Input / Output
 
 //Power Monitor
 enderio.gui.powerMonitor.engineControl=Motorkontrolle
@@ -197,6 +207,8 @@ enderio.gui.capBank.outputRs=Output-Redstone-Modus
 enderio.gui.capBank.maxIo=Max. I/O
 enderio.gui.capBank.maxInput=Max. Input
 enderio.gui.capBank.maxOutput=Max. Ouput
+enderio.gui.capBank.inputMode=Input
+enderio.gui.capBank.outputMode=Ouput
 
 //Transceiver
 enderio.gui.trans.publicChannel=Öffentl. Kanal
