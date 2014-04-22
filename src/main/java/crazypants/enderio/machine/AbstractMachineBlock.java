@@ -1,5 +1,6 @@
 package crazypants.enderio.machine;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -8,6 +9,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -27,7 +29,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.util.Util;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
 
@@ -195,31 +196,42 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      TileEntity ent = world.getTileEntity(x, y, z);
-      if(ent != null) {
-        if(teClass.isAssignableFrom(ent.getClass())) {
-          @SuppressWarnings("unchecked")
-          T te = (T) world.getTileEntity(x, y, z);
-          Util.dropItems(world, te, x, y, z, true);
-        }
-      }
-    }
-    world.removeTileEntity(x, y, z);
-
-  }
-
-  @Override
   public int quantityDropped(Random r) {
     return 0;
   }
 
   @Override
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof AbstractMachineEntity) {
+        AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
+        ItemStack itemStack = new ItemStack(this);
+        machineEntity.writeToItemStack(itemStack);
+        ret.add(itemStack);
+      }
+    }
+    return ret;
+  }
+
+  @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if(!world.isRemote && !player.capabilities.isCreativeMode) {
-      ItemStack st = new ItemStack(this);
-      Util.dropItems(world, st, x, y, z, false);
+    if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof AbstractMachineEntity) {
+        AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
+        ItemStack itemStack = new ItemStack(this);
+        machineEntity.writeToItemStack(itemStack);
+
+        float f = 0.7F;
+        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+        entityitem.delayBeforeCanPickup = 10;
+        world.spawnEntityInWorld(entityitem);
+      }
     }
     return super.removedByPlayer(world, player, x, y, z);
   }
@@ -244,6 +256,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       break;
     default:
       break;
+    }
+    te.readFromItemStack(stack);
+    if(world.isRemote) {
+      return;
     }
     world.markBlockForUpdate(x, y, z);
   }

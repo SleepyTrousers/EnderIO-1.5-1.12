@@ -362,7 +362,15 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
+    active = nbtRoot.getBoolean("active");
+    transmitted = nbtRoot.getFloat("transmitted");
+  }
 
+
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
     if(nbtRoot.hasKey("coolantTank")) {
       NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("coolantTank");
       if(tankRoot != null) {
@@ -387,14 +395,11 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     ticksRemaingFuel = nbtRoot.getInteger("ticksRemaingFuel");
     ticksRemaingCoolant = nbtRoot.getInteger("ticksRemaingCoolant");
-    active = nbtRoot.getBoolean("active");
-    transmitted = nbtRoot.getFloat("transmitted");
-
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
     if(coolantTank.getFluidAmount() > 0) {
       NBTTagCompound tankRoot = new NBTTagCompound();
       coolantTank.writeToNBT(tankRoot);
@@ -407,6 +412,11 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
     nbtRoot.setInteger("ticksRemaingFuel",ticksRemaingFuel);
     nbtRoot.setInteger("ticksRemaingCoolant",ticksRemaingCoolant);
+  }
+
+  @Override
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("active",active);
     nbtRoot.setFloat("transmitted",transmitted);
   }

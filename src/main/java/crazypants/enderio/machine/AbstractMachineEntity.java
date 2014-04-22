@@ -460,6 +460,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 
     facing = nbtRoot.getShort("facing");
+    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
+    forceClientUpdate = nbtRoot.getBoolean("forceClientUpdate");
+    readCommon(nbtRoot);
+  }
+
+  public void readCommon(NBTTagCompound nbtRoot) {
 
     setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
 
@@ -467,8 +473,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     powerHandler.setEnergy(storedEnergy);
     // For the client as provider is not saved to NBT
     this.storedEnergy = storedEnergy;
-
-    redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
 
     // read in the inventories contents
     inventory = new ItemStack[slotDefinition.getNumSlots()];
@@ -496,17 +500,33 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       }
     }
 
-    forceClientUpdate = nbtRoot.getBoolean("forceClientUpdate");
+  }
 
+  public void readFromItemStack(ItemStack stack) {
+    if(stack == null || stack.stackTagCompound == null) {
+      return;
+    }
+    NBTTagCompound root = stack.stackTagCompound ;
+    if(!root.hasKey("eio.abstractMachine")) {
+      return;
+    }
+    readCommon(root);
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
 
     nbtRoot.setShort("facing", facing);
+    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
+    nbtRoot.setBoolean("forceClientUpdate", forceClientUpdate);
+    forceClientUpdate = false;
+
+    writeCommon(nbtRoot);
+  }
+
+  public void writeCommon(NBTTagCompound nbtRoot) {
     nbtRoot.setFloat("storedEnergy", storedEnergy);
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
-    nbtRoot.setBoolean("redstoneCheckPassed", redstoneCheckPassed);
 
     // write inventory list
     NBTTagList itemList = new NBTTagList();
@@ -529,11 +549,32 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
         nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
       }
     }
-    nbtRoot.setBoolean("forceClientUpdate", forceClientUpdate);
-    forceClientUpdate = false;
-
-
   }
+
+  public void writeToItemStack(ItemStack stack) {
+    if(stack == null) {
+      return;
+    }
+    if(stack.stackTagCompound == null) {
+      stack.stackTagCompound = new NBTTagCompound();
+    }
+
+    NBTTagCompound root = stack.stackTagCompound;
+    root.setBoolean("eio.abstractMachine", true);
+    writeCommon(root);
+
+    //setStackDisplayName
+    String name;
+    if(stack.hasDisplayName()) {
+      name = stack.getDisplayName();
+    } else {
+      name = getBlockType().getLocalizedName();
+    }
+    name += " (Configured)";
+    stack.setStackDisplayName(name);
+  }
+
+
 
   // ---- Inventory
   // ------------------------------------------------------------------------------
@@ -628,8 +669,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   @Override
   public void closeInventory() {
   }
-
-
 
   @Override
   public String getInventoryName() {

@@ -237,8 +237,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   }
 
   @Override
-  public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
 
     if(nbtRoot.hasKey("inputTank")) {
       NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("inputTank");
@@ -265,8 +265,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
     if(inputTank.getFluidAmount() > 0) {
       NBTTagCompound tankRoot = new NBTTagCompound();
       inputTank.writeToNBT(tankRoot);
