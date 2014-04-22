@@ -20,25 +20,32 @@ public class ContainerCrusher extends AbstractMachineContainer {
         return tileEntity.isItemValidForSlot(0, itemStack);
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 1, 49, 59) {
+    addSlotToContainer(new Slot(tileEntity, 1, 122, 23) {
+      @Override
+      public boolean isItemValid(ItemStack itemStack) {
+        return tileEntity.isItemValidForSlot(1, itemStack);
+      }
+    });
+
+    addSlotToContainer(new Slot(tileEntity, 2, 49, 59) {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 2, 70, 59) {
+    addSlotToContainer(new Slot(tileEntity, 3, 70, 59) {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 3, 91, 59) {
+    addSlotToContainer(new Slot(tileEntity, 4, 91, 59) {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
       }
     });
-    addSlotToContainer(new Slot(tileEntity, 4, 112, 59) {
+    addSlotToContainer(new Slot(tileEntity, 5, 112, 59) {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;

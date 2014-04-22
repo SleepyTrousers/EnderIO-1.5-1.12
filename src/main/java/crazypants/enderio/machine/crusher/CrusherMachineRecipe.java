@@ -33,7 +33,7 @@ public class CrusherMachineRecipe extends AbstractMachineRecipe {
     if(input == null) {
       return false;
     }
-    return CrusherRecipeManager.instance.getRecipeForInput(input.item) != null;
+    return CrusherRecipeManager.instance.isValidInput(input);
   }
 
   @Override
@@ -57,9 +57,6 @@ public class CrusherMachineRecipe extends AbstractMachineRecipe {
         IRecipeOutput output = new crazypants.enderio.crafting.impl.RecipeOutput(co.getOutput(), co.getChance());
         components.add(output);
       }
-      //    IRecipeInput input = new RecipeInput(CrusherRecipeManager.getInput(cr));
-      //    List<IRecipeComponent> components = new ArrayList<IRecipeComponent>();
-      //    components.add(input);
       result.add(new EnderIoRecipe(IEnderIoRecipe.SAG_MILL_ID, cr.getEnergyRequired(), components));
     }
     return result;

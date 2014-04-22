@@ -12,6 +12,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+
+import org.lwjgl.input.Keyboard;
+
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
@@ -19,6 +22,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
+import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem {
 
@@ -152,18 +157,20 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    //TODO: Localize
-    list.add("Durability: " + (itemstack.getMaxDamage() - itemstack.getItemDamage()) + "/" + itemstack.getMaxDamage());
-    String str = "Power: " + PowerDisplayUtil.formatPower(getEnergyStored(itemstack) / 10) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack) / 10) + " " + PowerDisplayUtil.abrevation();
-    list.add(str);
-    list.add("");
-    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " Effeciency when powered");
-    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " Effeciency breaking obsidian ");
-    list.add(EnumChatFormatting.BLUE + "     (cost "
-        + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
-        + PowerDisplayUtil.abrevation() + ")");
+    if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      //TODO: Localize
+      list.add(Lang.localize("item.darkSteel.tooltip.line1"));
+      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " Effeciency when powered");
+      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " Effeciency breaking obsidian ");
+      list.add(EnumChatFormatting.BLUE + "     (cost "
+          + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
+          + PowerDisplayUtil.abrevation() + ")");
 
+    } else {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+      list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
+    }
   }
 
   public ItemStack createItemStack() {

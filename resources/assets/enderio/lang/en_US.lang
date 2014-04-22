@@ -53,12 +53,13 @@ item.bucketFire_water.name=Fire Water Bucket
 enderio.fluid.millibucket.abr=MB
 
 
-//Crafting components
+//Materials
 enderio.itemMachinePart.name=Machine Parts
 enderio.machineChassi.name=Machine Chassi
 enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
+enderio.darkGrindingBall.name=Dark Steel Ball
 
 
 //Quartz / Glass
@@ -128,18 +129,20 @@ tile.blockPaintedDoubleSlab.name=Painted Slab
 //Items
 item.itemYetaWrench.name=Yeta Wrench
 item.enderio.itemConduitProbe.name=Conduit Probe
-
-enderio.itemEnderface.wrongDimension=EnderIO block is in a different dimension.
-enderio.itemEnderface.tooFar=EnderIO block is too distant.
-enderio.itemEnderface.destroyed=EnderIO block has been destroyed.
-enderio.itemEnderface.noSync=Enderface not synchronized with EnderIO.
-
 item.darkSteel_helmet.name=Dark Helm
 item.darkSteel_chestplate.name=Dark Plate
 item.darkSteel_leggings.name=Dark Leggings
 item.darkSteel_boots.name=Dark Boots
 item.darkSteel_sword.name=The Ender
 item.darkSteel_pickaxe.name=Dark Pick
+
+
+enderio.item.tooltip.power=Power:
+enderio.item.tooltip.showDetails=<Hold Shift>
+enderio.item.darkSteel.tooltip.power=Power:
+enderio.item.darkSteel.tooltip.durability=Durability:
+enderio.item.darkSteel.tooltip.line1=Half durability damage absorbed by power.
+
 
 
 //------GUI

@@ -2,6 +2,8 @@ package crazypants.enderio.machine.power;
 
 import java.text.NumberFormat;
 
+import net.minecraft.item.ItemStack;
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.Config;
 import crazypants.util.Lang;
 
@@ -49,6 +51,21 @@ public class PowerDisplayUtil {
   static {
     FLOAT_NF.setMinimumFractionDigits(1);
     FLOAT_NF.setMaximumFractionDigits(1);
+  }
+
+
+
+  public static String getStoredEnergyString(ItemStack item) {
+    if(item == null) {
+      return null;
+    }
+    if(! (item.getItem() instanceof IEnergyContainerItem) ) {
+      return null;
+    }
+
+    IEnergyContainerItem ci = (IEnergyContainerItem)item.getItem();
+    return Lang.localize("item.tooltip.power")+ " "+ PowerDisplayUtil.formatPower(ci.getEnergyStored(item) / 10) + "/"
+    + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored(item) / 10) + " " + PowerDisplayUtil.abrevation();
   }
 
   public static String formatStoredPower(double amount, double capacity) {

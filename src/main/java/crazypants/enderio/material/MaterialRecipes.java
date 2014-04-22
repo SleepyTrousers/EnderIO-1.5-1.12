@@ -53,6 +53,7 @@ public class MaterialRecipes {
     ItemStack phasedGold = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal());
     ItemStack phasedIron = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal());
     ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
 
     //Conduit Binder
     ItemStack cbc = binderComposite.copy();
@@ -83,6 +84,11 @@ public class MaterialRecipes {
 
     ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
     GameRegistry.addShapedRecipe(vibCry, "nnn", "ngn", "nnn", 'n', vibrantNugget, 'g', Items.emerald);
+
+    //Balls
+    ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DRAK_GRINDING_BALL.ordinal());
+    GameRegistry.addShapedRecipe(darkBall, " s ", "sss", " s ", 's', darkSteel);
+
 
     //Smelting
     FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()), new ItemStack(Items.iron_ingot), 0);
@@ -138,7 +144,7 @@ public class MaterialRecipes {
       GameRegistry.addRecipe(new ShapedOreRecipe(capacitor, " gr", "gcg", "rg ", 'r', Items.redstone, 'g', gold, 'c', "ingotCopper"));
     } else {
       GameRegistry.
-          addShapedRecipe(capacitor, " gr", "gig", "rg ", 'r', Items.redstone, 'g', gold, 'i', Items.iron_ingot);
+      addShapedRecipe(capacitor, " gr", "gig", "rg ", 'r', Items.redstone, 'g', gold, 'i', Items.iron_ingot);
     }
 
     int dustCoal = OreDictionary.getOreID("dustCoal");

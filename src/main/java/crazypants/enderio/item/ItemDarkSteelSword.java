@@ -2,7 +2,6 @@ package crazypants.enderio.item;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -14,11 +13,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovementInput;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+
+import org.lwjgl.input.Keyboard;
+
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -27,6 +28,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
+import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 import crazypants.util.Util;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem {
@@ -220,15 +223,17 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     //TODO: Localize
-    list.add("Durability: " + (itemstack.getMaxDamage() - itemstack.getItemDamage()) + "/" + itemstack.getMaxDamage());
-    String str = "Power: " + PowerDisplayUtil.formatPower(getEnergyStored(itemstack) / 10) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack) / 10) + " " + PowerDisplayUtil.abrevation();
-    list.add(str);
-    MovementInput input = Minecraft.getMinecraft().thePlayer.movementInput;
-    list.add("Increased skull and ender pearl drops.");
-    list.add("Enderman can't teleport once hit.");
-    list.add("");
-    list.add(EnumChatFormatting.BLUE + "+1 Damage when Powered");
+
+    if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      list.add(Lang.localize("item.darkSteel.tooltip.line1"));
+      list.add("Increased skull and ender pearl drops.");
+      list.add("Enderman can't teleport once hit.");
+      list.add(EnumChatFormatting.BLUE + "+1 Damage when Powered");
+    } else {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+      list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
+    }
 
   }
 

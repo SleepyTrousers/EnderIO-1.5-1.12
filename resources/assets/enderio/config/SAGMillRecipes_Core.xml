@@ -1612,5 +1612,13 @@
     </recipe>
   </recipeGroup>
 
+  <grindingBalls>  
+    <grindingBall grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationMJ="2400">
+      <itemStack modID="minecraft" itemName="flint"/>
+    </grindingBall>
+    <grindingBall grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationMJ="10000">
+      <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="7" />
+    </grindingBall>
+  </grindingBalls>
 
 </SAGMillRecipes>

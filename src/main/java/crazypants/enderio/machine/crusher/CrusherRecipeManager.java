@@ -29,17 +29,54 @@ public class CrusherRecipeManager {
 
   static final CrusherRecipeManager instance = new CrusherRecipeManager();
 
+
+
   public static CrusherRecipeManager getInstance() {
     return instance;
   }
 
   private final List<Recipe> recipes = new ArrayList<Recipe>();
 
+  private final List<GrindingBall> balls = new ArrayList<GrindingBall>();
+
   public CrusherRecipeManager() {
+    //    GrindingBall gb = new GrindingBall(new ItemStack(Items.flint));
+    //    gb.setGrindingMultiplier(1.25f);
+    //    gb.setChanceMultiplier(1.25f);
+    //    gb.setPowerMultiplier(0.75f);
+    //    gb.setDurationMJ(ORE_ENERGY_COST * 6);
+    //
+    //    balls.add(gb);
+  }
+
+  public boolean isValidSagBall(ItemStack stack) {
+    return getGrindballFromStack(stack) != null;
+  }
+
+  public IGrindingMultiplier getGrindballFromStack(ItemStack stack) {
+    if(stack == null) {
+      return null;
+    }
+    for(GrindingBall ball : balls) {
+      if(ball.isInput(stack)) {
+        return ball;
+      }
+    }
+    return null;
+  }
+
+  public boolean isValidInput(MachineRecipeInput input) {
+    if(input.slotNumber == 1) {
+      return isValidSagBall(input.item);
+    }
+    return getRecipeForInput(input.item) != null;
   }
 
   public void loadRecipesFromConfig() {
-    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, null);
+    GrindingBallTagHandler th = new GrindingBallTagHandler();
+    RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, th);
+    balls.addAll(th.balls);
+    Log.info("Loaded " + balls.size() + " grinding balls from SAG Mill config.");
     if(config != null) {
       processConfig(config);
     } else {

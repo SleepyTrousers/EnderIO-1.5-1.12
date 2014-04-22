@@ -8,8 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
+
+import org.lwjgl.input.Keyboard;
+
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -18,16 +22,18 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
+import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 33, new int[] { 2, 7, 5, 2 }, 25);
 
   public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorage, Config.darkSteelPowerStorage, Config.darkSteelPowerStorage * 2,
-      Config.darkSteelPowerStorage * 2 };
+    Config.darkSteelPowerStorage * 2 };
 
   public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorage, Config.darkSteelPowerStorage, Config.darkSteelPowerStorage * 2,
-      Config.darkSteelPowerStorage * 2 };
+    Config.darkSteelPowerStorage * 2 };
 
   public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
 
@@ -77,10 +83,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add("Durability: " + (itemstack.getMaxDamage() - itemstack.getItemDamage()) + "/" + itemstack.getMaxDamage());
-    String str = "Power: " + PowerDisplayUtil.formatPower(getEnergyStored(itemstack) / 10) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemstack) / 10) + " " + PowerDisplayUtil.abrevation();
-    list.add(str);
+    if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+      list.add(Lang.localize("item.darkSteel.tooltip.line1"));
+    } else {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+      list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
+    }
   }
 
   @Override
@@ -162,7 +171,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   //  {
   //    int chance = event.world.rand.nextInt(100);
   //    int armorType = event.world.rand.nextInt(4);
-  //    
+  //
   //    if(chance < 3)
   //    {
   //      if(event.entityLiving instanceof EntityZombie || event.entityLiving instanceof EntitySkeleton)
@@ -172,7 +181,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   //        int chestplate = event.world.rand.nextInt(100);
   //        int leggings = event.world.rand.nextInt(100);
   //        int boots = event.world.rand.nextInt(100);
-  //        
+  //
   //        if(armorType == 0)
   //        {
   //          if(event.entityLiving instanceof EntityZombie && sword < 50) event.entityLiving.setCurrentItemOrArmor(0, new ItemStack(GlowstoneSword));

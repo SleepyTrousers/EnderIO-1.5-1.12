@@ -55,7 +55,7 @@ public class PoweredTask {
 
     this.recipe = recipe;
     this.usedEnergy = usedEnergy;
-    this.chance = chance;
+    this.chance = MathHelper.clamp_float(chance, 0, 1);
     requiredEnergy = recipe.getEnergyRequired(inputsIn);
   }
 
@@ -81,6 +81,22 @@ public class PoweredTask {
 
   public void setInputs(MachineRecipeInput[] inputs) {
     this.inputs = inputs;
+  }
+
+  public float getRequiredEnergy() {
+    return requiredEnergy;
+  }
+
+  public void setRequiredEnergy(float requiredEnergy) {
+    this.requiredEnergy = requiredEnergy;
+  }
+
+  public float getChance() {
+    return chance;
+  }
+
+  public void setChance(float chance) {
+    this.chance = chance;
   }
 
   public void writeToNBT(NBTTagCompound nbtRoot) {

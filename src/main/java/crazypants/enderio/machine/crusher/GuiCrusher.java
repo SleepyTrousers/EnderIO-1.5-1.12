@@ -4,15 +4,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.render.RenderUtil;
 
 public class GuiCrusher extends GuiMachineBase {
 
-  private AbstractMachineEntity tileEntity;
+  private TileCrusher tileEntity;
 
-  public GuiCrusher(InventoryPlayer par1InventoryPlayer, AbstractMachineEntity inventory) {
+  public GuiCrusher(InventoryPlayer par1InventoryPlayer, TileCrusher inventory) {
     super(inventory, new ContainerCrusher(par1InventoryPlayer, inventory));
     tileEntity = inventory;
   }
@@ -29,11 +28,16 @@ public class GuiCrusher extends GuiMachineBase {
     int guiTop = (height - ySize) / 2;
 
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-    int i1;
 
-    i1 = tileEntity.getProgressScaled(24);
-    drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, i1 + 1);
+    int barHeight = tileEntity.getProgressScaled(24);
+    drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, barHeight + 1);
 
+    barHeight = tileEntity.getBallDurationScaled(16);
+    if(barHeight > 0) {
+      drawTexturedModalRect(guiLeft + 142, guiTop + 23 + (16 - barHeight), 186, 31, 4, barHeight);
+    }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
+
+
 }

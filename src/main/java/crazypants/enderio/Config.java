@@ -99,7 +99,7 @@ public final class Config {
   public static float vanillaSwordSkullLootingModifier = 0.1f;
   public static int darkSteelSwordPowerUsePerHit = 750;
   public static double darkSteelSwordEnderPearlDropChance = 1;
-  public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.2;
+  public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.1;
 
   public static int darkSteelPickPowerUseObsidian = 10000;
   public static int darkSteelPickEffeciencyObsidian = 50;

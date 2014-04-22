@@ -158,7 +158,6 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
     if(showRecipeButton()) {
       IconEIO.RECIPE.renderIcon(k + 155, l + 43,16,16,0, true);
-      //IconEIO.RECIPE.renderIcon(0,0,0,16,16,true);
     }
 
     SelectedFace sel = configOverlay.getSelection();

@@ -11,6 +11,13 @@ import cofh.api.transport.IItemConduit;
 
 public class ItemUtil {
 
+  public static String getDurabilityString(ItemStack item) {
+    if(item == null) {
+      return null;
+    }
+    return Lang.localize("item.darkSteel.tooltip.durability") + " " +  (item.getMaxDamage() - item.getItemDamage()) + "/" + item.getMaxDamage();
+  }
+
   public static int doInsertItem(Object into, ItemStack item, ForgeDirection side) {
     if(into == null || item == null) {
       return 0;

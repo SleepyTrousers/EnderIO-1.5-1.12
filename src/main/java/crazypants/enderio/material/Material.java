@@ -8,7 +8,8 @@ public enum Material {
   PHASED_IRON_NUGGET("phasedIronNugget"),
   VIBRANT_NUGGET("vibrantNugget"),
   PULSATING_CYSTAL("pulsatingCrystal"),
-  VIBRANT_CYSTAL("vibrantCrystal");
+  VIBRANT_CYSTAL("vibrantCrystal"),
+  DRAK_GRINDING_BALL("darkGrindingBall");
 
   public final String unlocalisedName;
   public final String iconKey;
