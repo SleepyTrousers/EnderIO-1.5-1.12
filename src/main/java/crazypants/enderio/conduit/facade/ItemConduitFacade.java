@@ -20,10 +20,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 
-public class ItemConduitFacade extends Item {
+public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider {
 
   public static ItemConduitFacade create() {
     ItemConduitFacade result = new ItemConduitFacade();
@@ -108,7 +110,30 @@ public class ItemConduitFacade extends Item {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack item, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(item, par2EntityPlayer, list, par4);
-    list.add(PainterUtil.getTooltTipText(item));
+
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+
+
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    if(PainterUtil.getSourceBlock(itemstack) == null) {
+      list.add("Not Painted");
+    } else {
+      list.add(PainterUtil.getTooltTipText(itemstack));
+    }
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   public static final class FacadePainterRecipe extends BasicPainterTemplate {

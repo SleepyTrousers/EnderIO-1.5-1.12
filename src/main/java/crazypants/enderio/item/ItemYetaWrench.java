@@ -16,8 +16,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 
-public class ItemYetaWrench extends Item implements IToolWrench {
+public class ItemYetaWrench extends Item implements IToolWrench, IResourceTooltipProvider {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
@@ -85,7 +86,5 @@ public class ItemYetaWrench extends Item implements IToolWrench {
   public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
     return true;
   }
-
-  //doesSneakBypassUse
 
 }

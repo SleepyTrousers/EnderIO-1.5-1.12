@@ -30,7 +30,7 @@ group= "com.enderio"
 archivesBaseName = "enderio" // the name that all artifacts will use as a base. artifacts names follow this pattern: [baseName]-[appendix]-[version]-[classifier].[extension]
 
 minecraft {
-    version = "1.7.2-10.12.0.1034"    
+    version = "1.7.2-10.12.0.1061"    
 
     //assetDir = "run/assets" // the place for ForgeGradle to download the assets. The assets that the launcher gets and stuff
 

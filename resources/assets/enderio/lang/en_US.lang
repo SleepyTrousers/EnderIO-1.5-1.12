@@ -9,7 +9,7 @@ enderio.power.maxOutput=Max Output
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
 tile.blockEnderIo.description.line1=Allow remote access to near by
-tile.blockEnderIo.description.line2=blocks.
+tile.blockEnderIo.description.line2=blocks
 tile.blockEnderIo.description.line3=Used with Travel Anchors or
 tile.blockEnderIo.description.line4=the Staff of Travel
 
@@ -19,6 +19,9 @@ item.enderio.itemEnderface.name=Enderface
 enderio.blockConduitBundle=Conduit Bundle
 enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
+item.enderio.itemConduitFacade.description.line1=Painted in the Painting Machine
+item.enderio.itemConduitFacade.description.line2=Right click on a conduit to place
+item.enderio.itemConduitFacade.description.line3=Hidden when a wrench is equipped
 
 enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
@@ -31,7 +34,13 @@ enderio.itemRedstoneConduitInsulated.name=Insulated Redstone Conduit
 enderio.itemLiquidConduit.name=Fluid Conduit
 enderio.itemLiquidConduitAdvanced.name=Pressurized Fluid Conduit
 enderio.itemLiquidConduit.lockedType=Fluid type locked to
-enderio.itemLiquidConduit.unlockedType=Fluid type unlocked 
+enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
+
+enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
+enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
+enderio.itemLiquidConduit.tooltip.description.line1=Fluids will not flow upwards 
+enderio.itemLiquidConduit.tooltip.description.line2=Flow rate dependent on fluid
+enderio.itemLiquidConduit.tooltip.description.line3=viscosity
 
 enderio.itemItemConduit.name=Item Conduit
 enderio.itemItemConduitEmpowered.name=Empowered Item Conduit
@@ -59,6 +68,7 @@ enderio.fluid.millibucket.abr=MB
 
 enderio.fuel.tooltip.heading=Fuel Details
 enderio.fuel.tooltip.burnTime=burn time
+enderio.fluid.millibucketsTick=MB/t
 
 
 //Materials
@@ -196,9 +206,14 @@ tile.blockPainter.description.line2= Conduit Facades, Stairs, Fences
 tile.blockPainter.description.line3= Gates, Slabs, Cobblestone Walls
 tile.blockPainter.description.line3= Glass Frames
 
-
 //Items
 item.itemYetaWrench.name=Yeta Wrench
+item.itemYetaWrench.description.line1=Hides conduit facades when held
+item.itemYetaWrench.description.line2=Shift-Click to break machines 
+item.itemYetaWrench.description.line3=and conduits instantly
+item.itemYetaWrench.description.line4=Use Shift-Mouse Wheel to render
+item.itemYetaWrench.description.line5=a single conduit type
+
 item.enderio.itemConduitProbe.name=Conduit Probe
 item.darkSteel_helmet.name=Dark Helm
 item.darkSteel_chestplate.name=Dark Plate

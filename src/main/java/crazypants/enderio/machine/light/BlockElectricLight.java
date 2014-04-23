@@ -1,11 +1,7 @@
 package crazypants.enderio.machine.light;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -17,11 +13,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.enderface.BlockEio;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.vecmath.Vector3f;
 
-public class BlockElectricLight extends BlockEio implements IAdvancedTooltipProvider {
+public class BlockElectricLight extends BlockEio implements IResourceTooltipProvider {
 
   private static final float BLOCK_HEIGHT = 0.05f;
   private static final float BLOCK_WIDTH = 0.3f;
@@ -52,19 +47,6 @@ public class BlockElectricLight extends BlockEio implements IAdvancedTooltipProv
   protected void init() {
     GameRegistry.registerBlock(this, ModObject.blockElectricLight.unlocalisedName);
     GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
-  }
-
-  @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   @Override

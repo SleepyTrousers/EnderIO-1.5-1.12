@@ -21,6 +21,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.power.PowerDisplayUtil.PowerType;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
@@ -28,7 +29,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem {
+public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem, IResourceTooltipProvider {
 
   public static boolean isEquipped(EntityPlayer ep) {
     if(ep == null || ep.getCurrentEquippedItem() == null) {

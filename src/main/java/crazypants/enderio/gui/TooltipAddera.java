@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,14 +44,18 @@ public class TooltipAddera {
       }
     }
 
-    if(evt.itemStack.getItem() instanceof IAdvancedTooltipProvider) {
+    if(evt.itemStack.getItem() instanceof IResourceTooltipProvider) {
+      addInformation((IResourceTooltipProvider)evt.itemStack.getItem(), evt);
+    } else if(evt.itemStack.getItem() instanceof IAdvancedTooltipProvider) {
       IAdvancedTooltipProvider ttp = (IAdvancedTooltipProvider)evt.itemStack.getItem();
       addInformation(ttp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
       return;
     }
 
     Block blk = Block.getBlockFromItem(evt.itemStack.getItem());
-    if(blk instanceof IAdvancedTooltipProvider) {
+    if(blk instanceof IResourceTooltipProvider) {
+      addInformation((IResourceTooltipProvider)blk, evt);
+    } else if(blk instanceof IAdvancedTooltipProvider) {
       addInformation((IAdvancedTooltipProvider)blk, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
       return;
     }
@@ -59,6 +64,8 @@ public class TooltipAddera {
       addTooltipForFluid(evt.toolTip, evt.itemStack);
     }
   }
+
+
 
   public static void addTooltipForFluid(List list, ItemStack stk) {
     FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(stk);
@@ -83,6 +90,15 @@ public class TooltipAddera {
     }
   }
 
+  public static void addInformation(IResourceTooltipProvider item, ItemTooltipEvent evt) {
+    if(showAdvancedTooltips()) {
+      addDescriptionFromResources(evt.toolTip, item.getUnlocalizedName());
+    } else {
+      addShowDetailsTooltip(evt.toolTip);
+    }
+
+  }
+
   public static void addInformation(IAdvancedTooltipProvider tt, ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     tt.addCommonEntries(itemstack, entityplayer, list, flag);
     if(showAdvancedTooltips()) {
@@ -101,15 +117,8 @@ public class TooltipAddera {
     return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
   }
 
-  public static void addDescriptionFromResources(List list,ItemStack itemstack) {
-    if(itemstack.getItem() == null) {
-      return;
-    }
-    Block blk = Block.getBlockFromItem(itemstack.getItem());
-    if(blk == null) {
-      return;
-    }
-    String keyBase = blk.getUnlocalizedName() + ".description.line";
+  public static void addDescriptionFromResources(List<String> list, String unlocalizedName) {
+    String keyBase = unlocalizedName + ".description.line";
     boolean done = false;
     int line = 1;
     while(!done) {
@@ -122,6 +131,21 @@ public class TooltipAddera {
         line++;
       }
     }
+  }
+
+  public static void addDescriptionFromResources(List list,ItemStack itemstack) {
+    if(itemstack.getItem() == null) {
+      return;
+    }
+    String unlock = null;
+    Block blk = Block.getBlockFromItem(itemstack.getItem());
+    if(blk != null && blk != Blocks.air) {
+      unlock = blk.getUnlocalizedName();
+    }
+    if(unlock == null) {
+      unlock = itemstack.getItem().getUnlocalizedName();
+    }
+    addDescriptionFromResources(list, unlock);
   }
 
 

@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.reservoir;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -24,14 +22,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockReservoir extends BlockContainer implements IAdvancedTooltipProvider {
+public class BlockReservoir extends BlockContainer implements IResourceTooltipProvider {
 
   public static BlockReservoir create() {
     BlockReservoir result = new BlockReservoir();
@@ -76,24 +73,6 @@ public class BlockReservoir extends BlockContainer implements IAdvancedTooltipPr
   private void init() {
     GameRegistry.registerBlock(this, ModObject.blockReservoir.unlocalisedName);
     GameRegistry.registerTileEntity(TileReservoir.class, ModObject.blockReservoir.unlocalisedName + "TileEntity");
-  }
-
-
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   @Override

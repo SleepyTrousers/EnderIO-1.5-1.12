@@ -17,8 +17,9 @@ import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.enderface.BlockEio;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 
-public class BlockSolarPanel extends BlockEio {
+public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider {
 
   public static BlockSolarPanel create() {
     BlockSolarPanel result = new BlockSolarPanel();

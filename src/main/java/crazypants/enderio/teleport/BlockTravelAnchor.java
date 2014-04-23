@@ -1,7 +1,5 @@
 package crazypants.enderio.teleport;
 
-import java.util.List;
-
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,15 +11,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.enderface.BlockEio;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
@@ -29,7 +24,7 @@ import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.Lang;
 
-public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IAdvancedTooltipProvider {
+public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider {
 
   public static BlockTravelAnchor create() {
 
@@ -62,22 +57,6 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   @Override

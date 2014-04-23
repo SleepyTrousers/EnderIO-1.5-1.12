@@ -20,8 +20,9 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 
-public class ItemConduitProbe extends Item {
+public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
 
   private static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
