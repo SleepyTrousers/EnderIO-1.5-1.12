@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
@@ -60,8 +61,8 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private GuiOverlayIoConfig configOverlay;
   private IconButtonEIO configB;
 
-  public GuiCapacitorBank(InventoryPlayer playerInv, TileCapacitorBank te) {
-    super(new ContainerCapacitorBank(playerInv, te));
+  public GuiCapacitorBank(Entity player, InventoryPlayer playerInv, TileCapacitorBank te) {
+    super(new ContainerCapacitorBank(player, playerInv, te));
     this.capBank = te;
 
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
@@ -261,6 +262,11 @@ public class GuiCapacitorBank extends GuiContainerBase {
     int sy = (height - ySize) / 2;
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+
+    //armor slots
+    drawTexturedModalRect(sx - 21, sy + 24, 232, 0, 24, 81);
+
+
 
     int i1 = capBank.getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176, 0, POWER_WIDTH, i1);

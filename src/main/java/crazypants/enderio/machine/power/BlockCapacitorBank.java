@@ -122,7 +122,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
-      return new ContainerCapacitorBank(player.inventory, ((TileCapacitorBank) te).getController());
+      return new ContainerCapacitorBank(player, player.inventory, ((TileCapacitorBank) te).getController());
     }
     return null;
   }
@@ -131,7 +131,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileCapacitorBank) {
-      return new GuiCapacitorBank(player.inventory, ((TileCapacitorBank) te).getController());
+      return new GuiCapacitorBank(player, player.inventory, ((TileCapacitorBank) te).getController());
     }
     return null;
   }

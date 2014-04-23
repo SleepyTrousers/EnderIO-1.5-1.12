@@ -17,6 +17,12 @@ public abstract class AbstractMachineContainer extends Container {
 
     if(te.getSlotDefinition().getNumUpgradeSlots() == 1) {
       addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), 12, 60) {
+
+        @Override
+        public int getSlotStackLimit() {
+          return 1;
+        }
+
         @Override
         public boolean isItemValid(ItemStack itemStack) {
           return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
