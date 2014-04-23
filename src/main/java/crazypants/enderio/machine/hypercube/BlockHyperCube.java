@@ -2,6 +2,7 @@ package crazypants.enderio.machine.hypercube;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -21,17 +22,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.enderface.BlockEio;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Util;
 
-public class BlockHyperCube extends BlockEio implements IGuiHandler {
+public class BlockHyperCube extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider {
 
   static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
@@ -61,6 +66,24 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler {
   protected void init() {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_HYPER_CUBE, this);
+  }
+
+
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   public IIcon getPortalIcon() {

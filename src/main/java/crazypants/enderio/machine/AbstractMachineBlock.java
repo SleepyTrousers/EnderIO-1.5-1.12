@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -29,8 +30,10 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.util.Lang;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler {
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IAdvancedTooltipProvider {
 
   public static int renderId;
 
@@ -81,6 +84,40 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       FMLCommonHandler.instance().raiseException(e, "Could not create tile entity from class " + teClass, true);
       return null;
     }
+  }
+
+  @Override
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    if(itemstack.getItem() == null) {
+      return;
+    }
+    Block blk = Block.getBlockFromItem(itemstack.getItem());
+    if(blk == null) {
+      return;
+    }
+
+    String keyBase = blk.getUnlocalizedName() + ".description.line";
+    boolean done = false;
+    int line = 1;
+    while(!done) {
+      String key = keyBase + line;
+      String val = Lang.localize(key, false);
+      if(val == null || val.trim().length() < 0 || val.equals(key) || line > 12) {
+        done = true;
+      } else {
+        list.add(val);
+        line++;
+      }
+    }
+
   }
 
   @Override

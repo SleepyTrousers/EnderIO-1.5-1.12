@@ -27,13 +27,15 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.enderface.BlockEio;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
+public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider {
 
   public static int renderId = -1;
 
@@ -73,6 +75,23 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler {
     is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
     list.add(is);
 
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), TileCapacitorBank.BASE_CAP.getMaxEnergyStored()));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   @Override

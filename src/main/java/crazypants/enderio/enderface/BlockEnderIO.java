@@ -1,5 +1,7 @@
 package crazypants.enderio.enderface;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,10 +19,12 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.enderface.te.MeProxy;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.teleport.ITravelAccessable;
 import crazypants.util.Lang;
 
-public class BlockEnderIO extends BlockEio {
+public class BlockEnderIO extends BlockEio implements IAdvancedTooltipProvider {
 
   public static BlockEnderIO create() {
 
@@ -58,6 +62,22 @@ public class BlockEnderIO extends BlockEio {
 
   private BlockEnderIO() {
     super(ModObject.blockEnderIo.unlocalisedName, TileEnderIO.class);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.addDescriptionFromResources(list, itemstack);
   }
 
   @Override

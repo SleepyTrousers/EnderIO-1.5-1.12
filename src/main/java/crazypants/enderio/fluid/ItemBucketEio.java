@@ -1,6 +1,9 @@
 package crazypants.enderio.fluid;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
@@ -10,9 +13,13 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 
-public class ItemBucketEio extends ItemBucket {
+public class ItemBucketEio extends ItemBucket implements IAdvancedTooltipProvider{
 
   public static ItemBucketEio create(Fluid fluid) {
     ItemBucketEio b = new ItemBucketEio(fluid.getBlock(), fluid.getName());
@@ -39,5 +46,25 @@ public class ItemBucketEio extends ItemBucket {
   protected void init() {
     GameRegistry.registerItem(this, "bucket" + StringUtils.capitalize(fluidName));
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.instance.addTooltipForFluid(list, itemstack);
+  }
+
+
+
+
 
 }

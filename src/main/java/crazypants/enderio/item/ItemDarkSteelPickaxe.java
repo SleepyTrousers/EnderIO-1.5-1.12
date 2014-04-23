@@ -18,7 +18,6 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.TooltipUtil;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
@@ -152,11 +151,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
     return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
-  }
-
-  @Override
-  public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipUtil.addInformation(this, itemstack, entityplayer, list, flag);
   }
 
   @Override

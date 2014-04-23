@@ -8,6 +8,11 @@ enderio.power.maxOutput=Max Output
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
+tile.blockEnderIo.description.line1=Allow remote access to near by
+tile.blockEnderIo.description.line2=blocks.
+tile.blockEnderIo.description.line3=Used with Travel Anchors or
+tile.blockEnderIo.description.line4=the Staff of Travel
+
 item.enderio.itemEnderface.name=Enderface
 
 //Conduits
@@ -101,22 +106,76 @@ enderio.machine.tooltip.upgrade=Machine Upgrade
 
 //Machines
 tile.blockStirlingGenerator.name=Stirling Generator
+tile.blockStirlingGenerator.description.line1=Burns solid fuel to generate power
+tile.blockStirlingGenerator.description.line2=Can be upgraded to increase output
+tile.blockStirlingGenerator.description.line3=and efficiency
+
 tile.blockReservoir.name=Reservoir
+tile.blockReservoir.description.line1=Formed when placed 2x2x1 
+tile.blockReservoir.description.line2=Add two buckets of water for 
+tile.blockReservoir.description.line3=an infinite water source
+tile.blockReservoir.description.line4=Produces one bucket a second
+tile.blockReservoir.description.line5=Right click with a wrench to 
+tile.blockReservoir.description.line6=enable auto-output
+
 tile.blockAlloySmelter.name=Alloy Smelter
+tile.blockAlloySmelter.description.line1=Used to create EnderIO alloys
+tile.blockAlloySmelter.description.line2=Can also be used as a powered 
+tile.blockAlloySmelter.description.line3=furnace
+
 tile.blockSolarPanel.name=Photovoltaic Cell
+tile.blockSolarPanel.description.line1=Produces power during daylight hours
+tile.blockSolarPanel.description.line2=Must have a clear line of site to 
+tile.blockSolarPanel.description.line3=the sky
+
 tile.blockElectricLight.name=Powered Light
+tile.blockElectricLight.description.line1=Lights a large area when supplied with
+tile.blockElectricLight.description.line2=power and a redstone signal
+
 tile.blockCapacitorBank.name=Capacitor Bank
+tile.blockCapacitorBank.description.line1=Multi-block energy storage.
+tile.blockCapacitorBank.description.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
+
 tile.blockSagMill.name=SAG Mill
+tile.blockSagMill.description.line1=Grinds ore and other items
+tile.blockSagMill.description.line2=Can be upgraded to increase speed
+tile.blockSagMill.description.line3=Add grinding balls to increase output
+tile.blockSagMill.description.line4=and efficiency
+tile.blockSagMill.tooltipPrefix=Contains
+
 tile.blockHyperCube.name=Dimensional Transceiver
+tile.blockHyperCube.description.line1=Transports items, fluids and power
+tile.blockHyperCube.description.line2=wirelessly across any distance and
+tile.blockHyperCube.description.line3=between dimensions
+
 tile.blockPowerMonitor.name=Power Monitor
+tile.blockPowerMonitor.description.line1=Displays details of power use and
+tile.blockPowerMonitor.description.line2=and storage
+tile.blockPowerMonitor.description.line3=Can be used to emit redstone based
+tile.blockPowerMonitor.description.line4=based on stored power levels
+tile.blockPowerMonitor.description.line5=Must be attached to an EnderIO 
+tile.blockPowerMonitor.description.line6=conduit
+
 tile.blockVat.name=The Vat
+tile.blockVat.description.line1=Used to brew EnderIO fluids
+
 tile.blockCombustionGenerator.name=Combustion Generator
+tile.blockCombustionGenerator.description.line1=Burns liquid fuel to generate power
+tile.blockCombustionGenerator.description.line2=Requires a coolant (e.g. water)
+tile.blockCombustionGenerator.description.line3=Output dependent on fuel
+
 tile.blockFarmStation.name=Farming Station [NOT IMPLEMENTED]
 enderio.machine.tooltip.configured=(Configured)
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
+tile.blockTravelAnchor.description.line1=Allows teleportation between anchors
+tile.blockTravelAnchor.description.line2=Stand an one Anchor, look at 
+tile.blockTravelAnchor.description.line3=another and jump to travel
+tile.blockTravelAnchor.description.line4=Can also be used with the Staff
+tile.blockTravelAnchor.description.line5=of Travel
+
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
 item.itemTravelStaff.name=Staff of Traveling
@@ -131,6 +190,12 @@ tile.blockPaintedWall.name=Painted Wall
 tile.blockPaintedStair.name=Painted Stairs
 tile.blockPaintedSlab.name=Painted Slab
 tile.blockPaintedDoubleSlab.name=Painted Slab
+
+tile.blockPainter.description.line1=Used to paint:
+tile.blockPainter.description.line2= Conduit Facades, Stairs, Fences
+tile.blockPainter.description.line3= Gates, Slabs, Cobblestone Walls
+tile.blockPainter.description.line3= Glass Frames
+
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench

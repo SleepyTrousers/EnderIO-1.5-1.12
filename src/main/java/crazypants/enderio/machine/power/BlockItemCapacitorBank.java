@@ -3,15 +3,11 @@ package crazypants.enderio.machine.power;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.util.Lang;
 
 public class BlockItemCapacitorBank extends ItemBlock {
 
@@ -24,14 +20,6 @@ public class BlockItemCapacitorBank extends ItemBlock {
   public BlockItemCapacitorBank() {
     super(EnderIO.blockCapacitorBank);
     setHasSubtypes(true);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-    list.add(Lang.localize("tile.enderio.blockCapacitorBank.tooltipPrefix", false) + " "
-        + PowerDisplayUtil.formatPower(PowerHandlerUtil.getStoredEnergyForItem(itemStack)) + " " + PowerDisplayUtil.abrevation());
-    super.addInformation(itemStack, par2EntityPlayer, list, par4);
   }
 
   @Override
