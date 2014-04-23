@@ -175,7 +175,9 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
   public void writeToNBT(NBTTagCompound root) {
     super.writeToNBT(root);
     root.setShort("accessMode", (short) accessMode.ordinal());
-    root.setString("placedBy", placedBy);
+    if(placedBy != null && placedBy.trim().length() > 0) {
+      root.setString("placedBy", placedBy);
+    }
     for (int i = 0; i < password.length; i++) {
       ItemStack stack = password[i];
       if(stack != null) {
@@ -186,10 +188,14 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
     }
     StringBuffer userStr = new StringBuffer();
     for (String user : authorisedUsers) {
-      userStr.append(user);
-      userStr.append(",");
+      if(user != null && user.trim().length() > 0) {
+        userStr.append(user);
+        userStr.append(",");
+      }
     }
-    root.setString("authorisedUsers", userStr.toString());
+    if(authorisedUsers.size() > 0) {
+      root.setString("authorisedUsers", userStr.toString());
+    }
   }
 
   @Override

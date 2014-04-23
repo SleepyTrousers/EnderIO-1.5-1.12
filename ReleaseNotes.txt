@@ -1,3 +1,6 @@
+1.0.2
+- #605 Server Crashing - java.lang.IllegalArgumentException: Empty string not allowed/NBT 
+
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
 - #580 Fixed infinite power when mixing TE and EIO conduits in certain ways
