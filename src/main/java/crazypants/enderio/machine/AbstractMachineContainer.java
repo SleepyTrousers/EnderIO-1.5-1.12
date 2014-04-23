@@ -25,6 +25,9 @@ public abstract class AbstractMachineContainer extends Container {
 
         @Override
         public boolean isItemValid(ItemStack itemStack) {
+          //          if(itemStack != null && itemStack.stackSize > 1) {
+          //            return false;
+          //          }
           return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
         }
       });
@@ -144,14 +147,15 @@ public abstract class AbstractMachineContainer extends Container {
             && slot.isItemValid(par1ItemStack)) {
 
           int mergedSize = itemstack1.stackSize + par1ItemStack.stackSize;
-          if(mergedSize <= par1ItemStack.getMaxStackSize()) {
+          int maxStackSize =  Math.min(par1ItemStack.getMaxStackSize(), slot.getSlotStackLimit());
+          if(mergedSize <= maxStackSize) {
             par1ItemStack.stackSize = 0;
             itemstack1.stackSize = mergedSize;
             slot.onSlotChanged();
             result = true;
-          } else if(itemstack1.stackSize < par1ItemStack.getMaxStackSize()) {
-            par1ItemStack.stackSize -= par1ItemStack.getMaxStackSize() - itemstack1.stackSize;
-            itemstack1.stackSize = par1ItemStack.getMaxStackSize();
+          } else if(itemstack1.stackSize < maxStackSize) {
+            par1ItemStack.stackSize -= maxStackSize - itemstack1.stackSize;
+            itemstack1.stackSize = maxStackSize;
             slot.onSlotChanged();
             result = true;
           }
@@ -177,9 +181,16 @@ public abstract class AbstractMachineContainer extends Container {
         itemstack1 = slot.getStack();
 
         if(itemstack1 == null && slot.isItemValid(par1ItemStack)) {
-          slot.putStack(par1ItemStack.copy());
+          ItemStack in = par1ItemStack.copy();
+          in.stackSize = Math.min(in.stackSize, slot.getSlotStackLimit());
+
+          slot.putStack(in);
           slot.onSlotChanged();
-          par1ItemStack.stackSize = 0;
+          if(in.stackSize >= par1ItemStack.stackSize) {
+            par1ItemStack.stackSize = 0;
+          } else {
+            par1ItemStack.stackSize -= in.stackSize;
+          }
           result = true;
           break;
         }
