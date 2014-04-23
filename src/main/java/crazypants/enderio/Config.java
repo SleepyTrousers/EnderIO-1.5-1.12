@@ -114,6 +114,9 @@ public final class Config {
   public static int fireWaterPowerTotalBurnTime = (int)Math.round(hootchPowerTotalBurnTime * 1.5);
   public static float vatPowerUserPerTick = 2;
 
+  public static boolean addFuelTooltipsToAllFluidContainers = true;
+  public static boolean addFurnaceFuelTootip = true;
+
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
     if(!configDirectory.exists()) {
@@ -328,14 +331,13 @@ public final class Config {
     rocketFuelPowerTotalBurnTime = config.get("Settings", "rocketFuelPowerTotalBurnTime", rocketFuelPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(rocketFuelPowerTotalBurnTime);
 
-
-
-
     fireWaterPowerPerCycle = config.get("Settings", "fireWaterPowerPerCycle", fireWaterPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(fireWaterPowerPerCycle);
     fireWaterPowerTotalBurnTime = config.get("Settings", "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(fireWaterPowerTotalBurnTime);
 
+    addFuelTooltipsToAllFluidContainers = config.get("Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
+        "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(addFuelTooltipsToAllFluidContainers);
 
     //TODO: Debug
     renderCapBankGauge = config.get("Debug", "renderCapBankGauge", renderCapBankGauge, "If not true capacitor banks will not render the level gauge at all.")

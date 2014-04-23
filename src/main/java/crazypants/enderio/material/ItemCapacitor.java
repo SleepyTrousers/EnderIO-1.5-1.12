@@ -4,17 +4,21 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.ICapacitorItem;
+import crazypants.util.Lang;
 
 public class ItemCapacitor extends Item implements ICapacitorItem {
 
@@ -74,5 +78,16 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
     int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, Capacitors.values().length - 1);
     return Capacitors.values()[damage].capacitor;
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    if(par1ItemStack != null && par1ItemStack.getItemDamage() > 0) {
+      par3List.add(Lang.localize("machine.tooltip.upgrade"));
+    }
+
+  }
+
+
 
 }

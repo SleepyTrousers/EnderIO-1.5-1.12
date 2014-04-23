@@ -12,20 +12,19 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-
-import org.lwjgl.input.Keyboard;
-
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipUtil;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider {
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -157,19 +156,27 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      list.add(Lang.localize("item.darkSteel.tooltip.line1"));
-      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
-      list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-      list.add(EnumChatFormatting.BLUE + "     (cost "
-          + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
-          + PowerDisplayUtil.abrevation() + ")");
+    TooltipUtil.addInformation(this, itemstack, entityplayer, list, flag);
+  }
 
-    } else {
-      list.add(ItemUtil.getDurabilityString(itemstack));
-      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
-      list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
-    }
+  @Override
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    list.add(ItemUtil.getDurabilityString(itemstack));
+    list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+  }
+
+  @Override
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    list.add(Lang.localize("item.darkSteel.tooltip.line1"));
+    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
+    list.add(EnumChatFormatting.BLUE + "     (cost "
+        + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
+        + PowerDisplayUtil.abrevation() + ")");
   }
 
   public ItemStack createItemStack() {

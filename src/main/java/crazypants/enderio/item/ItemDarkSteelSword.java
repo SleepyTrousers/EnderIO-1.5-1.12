@@ -17,22 +17,21 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-
-import org.lwjgl.input.Keyboard;
-
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipUtil;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem {
+public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider {
 
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", 3, 1561, 7, 2, 25);
 
@@ -222,16 +221,25 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-      list.add(Lang.localize("item.darkSteel.tooltip.line1"));
-      list.add(Lang.localize("item.darkSteel_sword.tooltip.line1"));
-      list.add(Lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(EnumChatFormatting.BLUE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
-    } else {
-      list.add(ItemUtil.getDurabilityString(itemstack));
-      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
-      list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
-    }
+    TooltipUtil.addInformation(this, itemstack, entityplayer, list, flag);
+  }
+
+  @Override
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    list.add(ItemUtil.getDurabilityString(itemstack));
+    list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+  }
+
+  @Override
+  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    list.add(Lang.localize("item.darkSteel.tooltip.line1"));
+    list.add(Lang.localize("item.darkSteel_sword.tooltip.line1"));
+    list.add(Lang.localize("item.darkSteel_sword.tooltip.line2"));
+    list.add(EnumChatFormatting.BLUE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
   }
 
   public ItemStack createItemStack() {

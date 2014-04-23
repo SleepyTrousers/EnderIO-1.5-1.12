@@ -68,6 +68,10 @@ public class PowerDisplayUtil {
     + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored(item) / 10) + " " + PowerDisplayUtil.abrevation();
   }
 
+  public static String formatPowerPerTick(float powerPerTick) {
+    return formatPower(powerPerTick) + " " + abrevation() + perTickStr();
+  }
+
   public static String formatStoredPower(double amount, double capacity) {
     return formatPower(amount) + "/" + formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
   }
@@ -109,5 +113,7 @@ public class PowerDisplayUtil {
   public static int fromDisplay(int input) {
     return (int) currentPowerType.fromDisplayValue(input);
   }
+
+
 
 }

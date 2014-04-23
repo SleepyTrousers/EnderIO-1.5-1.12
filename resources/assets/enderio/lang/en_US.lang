@@ -52,6 +52,9 @@ item.bucketRocket_fuel.name=Rocket Fuel Bucket
 item.bucketFire_water.name=Fire Water Bucket
 enderio.fluid.millibucket.abr=MB
 
+enderio.fuel.tooltip.heading=Fuel Details
+enderio.fuel.tooltip.burnTime=burn time
+
 
 //Materials
 enderio.itemMachinePart.name=Machine Parts
@@ -93,6 +96,8 @@ enderio.itemBasicCapacitor.name=Capacitor
 enderio.basicCapacitor.name=Basic Capacitor
 enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
+
+enderio.machine.tooltip.upgrade=Machine Upgrade
 
 //Machines
 tile.blockStirlingGenerator.name=Stirling Generator

@@ -38,6 +38,7 @@ import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.farm.BlockFarmStation;
 import crazypants.enderio.farm.FarmingStationRenderer;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.PoweredItemRenderer;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
@@ -118,6 +119,9 @@ public class ClientProxy extends CommonProxy {
   @Override
   public void load() {
     super.load();
+
+    //make sure the tooltip stuff is registered
+    TooltipAddera tta = TooltipAddera.instance;
 
     // Renderers
 
