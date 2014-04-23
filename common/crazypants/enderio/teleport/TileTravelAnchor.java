@@ -23,7 +23,7 @@ public class TileTravelAnchor extends TileEntity implements ITravelAccessable {
     PROTECTED
   }
 
-  private AccessMode accessMode = AccessMode.PRIVATE;
+  private AccessMode accessMode = AccessMode.PUBLIC;
 
   private ItemStack[] password = new ItemStack[5];
 
