@@ -9,6 +9,10 @@
 - Added 'Combustion Generator'   
 - Added per side auto 'push/push' of items/fluids to all machines
 - Overhaul of machine UI's, adding more information   
+- Machines maintained their inventory, upgrades, power and IO modes when broken 
+
+1.0.2
+- #605 Server Crashing - java.lang.IllegalArgumentException: Empty string not allowed/NBT 
 
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
