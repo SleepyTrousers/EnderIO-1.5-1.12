@@ -188,7 +188,13 @@ tile.blockTravelAnchor.description.line5=of Travel
 
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
+
 item.itemTravelStaff.name=Staff of Traveling
+item.itemTravelStaff.description.line1=When held Travel Anchors and EnderIO
+item.itemTravelStaff.description.line2=blocks become visible and can be
+item.itemTravelStaff.description.line3=activated by <r-click>
+item.itemTravelStaff.description.line4=<shift><r-click> will teleport the
+item.itemTravelStaff.description.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 //Painter
@@ -215,6 +221,12 @@ item.itemYetaWrench.description.line4=Use Shift-Mouse Wheel to render
 item.itemYetaWrench.description.line5=a single conduit type
 
 item.enderio.itemConduitProbe.name=Conduit Probe
+item.enderio.itemConduitProbe.description.line1=Right-Click on a conduit to display 
+item.enderio.itemConduitProbe.description.line2=details about its network 
+item.enderio.itemConduitProbe.description.line3=Shift Right-Click on a conduit to
+item.enderio.itemConduitProbe.description.line4=to access its connection settings
+
+
 item.darkSteel_helmet.name=Dark Helm
 item.darkSteel_chestplate.name=Dark Plate
 item.darkSteel_leggings.name=Dark Leggings
