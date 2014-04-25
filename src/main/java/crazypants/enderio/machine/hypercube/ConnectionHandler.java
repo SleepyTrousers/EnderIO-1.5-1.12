@@ -16,9 +16,7 @@ public class ConnectionHandler {
   }
 
   @SubscribeEvent
-  public void onDisconnectedFromServer(ClientDisconnectionFromServerEvent evt) {
-    //TODO:1.7 this is never called
-    System.out.println("################################################################### BlockHyperCube.onDisconnectedFromServer: ");
+  public void onDisconnectedFromServer(ClientDisconnectionFromServerEvent evt) {    
     ClientChannelRegister.instance.reset();
   }
 
