@@ -118,7 +118,7 @@ public class TooltipAddera {
   }
 
   public static void addDescriptionFromResources(List<String> list, String unlocalizedName) {
-    String keyBase = unlocalizedName + ".description.line";
+    String keyBase = unlocalizedName + ".tooltip.detailed.line";
     boolean done = false;
     int line = 1;
     while(!done) {
