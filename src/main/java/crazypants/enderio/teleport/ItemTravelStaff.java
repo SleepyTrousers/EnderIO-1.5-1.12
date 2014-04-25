@@ -47,7 +47,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   protected ItemTravelStaff() {
-    super(Config.travelStaffMaxStoredPowerRF, Config.travelStaffMaxPowerIoRF, 0);
+    super(Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemTravelStaff.name());
     setMaxDamage(16);
@@ -236,7 +236,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   public void setFull(ItemStack container) {
-    setEnergy(container, Config.travelStaffMaxStoredPowerRF);
+    setEnergy(container, Config.darkSteelPowerStorageBase);
   }
 
   private void updateDamage(ItemStack stack) {

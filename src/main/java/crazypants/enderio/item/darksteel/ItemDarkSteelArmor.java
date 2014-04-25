@@ -22,15 +22,15 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider {
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 33, new int[] { 2, 7, 5, 2 }, 25);
 
-  public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorage, Config.darkSteelPowerStorage, Config.darkSteelPowerStorage * 2,
-    Config.darkSteelPowerStorage * 2 };
+  public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
+      Config.darkSteelPowerStorageBase * 2 };
 
-  public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorage, Config.darkSteelPowerStorage, Config.darkSteelPowerStorage * 2,
-    Config.darkSteelPowerStorage * 2 };
+  public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
+      Config.darkSteelPowerStorageBase * 2 };
 
   public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
 
@@ -60,7 +60,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   private int powerPerDamagePoint;
-  private EnergyContainer energyCont;
 
   protected ItemDarkSteelArmor(int armorType) {
     super(MATERIAL, 0, armorType);
@@ -70,9 +69,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     setUnlocalizedName(str);
     setTextureName("enderIO:" + str);
 
-    energyCont = new EnergyContainer(CAPACITY[armorType], Config.darkSteelPowerStorage / 5, Config.darkSteelPowerStorage / 5);
-
-    powerPerDamagePoint = Config.darkSteelPowerStorage / MATERIAL.getDurability(armorType);
+    powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
   }
 
   protected void init() {
@@ -81,16 +78,21 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    AnvilRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add(ItemUtil.getDurabilityString(itemstack));
-    list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+    }
+    AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -107,9 +109,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   public ItemStack createItemStack() {
-    ItemStack res = new ItemStack(this);
-    energyCont.setEnergy(res, 0);
-    return res;
+    return new ItemStack(this);
   }
 
   @Override
@@ -127,10 +127,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
-    ItemDarkSteelArmor am = (ItemDarkSteelArmor) stack.getItem();
-    boolean abs = energyCont.isAbsorbDamageWithPower(stack);
-    if(abs && getEnergyStored(stack) > 0) {
-      extractEnergy(stack, damage * powerPerDamagePoint, false);
+
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      eu.extractEnergy(damage * powerPerDamagePoint, false);
+
     } else {
       damage = stack.getItemDamage() + damage;
       if(damage >= getMaxDamage()) {
@@ -138,7 +139,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       }
       stack.setItemDamage(damage);
     }
-    energyCont.setAbsorbDamageWithPower(stack, !abs);
+    if(eu != null) {
+      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
+      eu.writeToItem(stack);
+    }
   }
 
   @Override
@@ -148,22 +152,46 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return energyCont.receiveEnergy(container, maxReceive, simulate);
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
+    if(eu == null) {
+      return 0;
+    }
+    int res = eu.receiveEnergy(maxReceive, simulate);
+    if(!simulate && res > 0) {
+      eu.writeToItem(container);
+    }
+    return res;
   }
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return energyCont.extractEnergy(container, maxExtract, simulate);
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
+    if(eu == null) {
+      return 0;
+    }
+    int res = eu.extractEnergy(maxExtract, simulate);
+    if(!simulate && res > 0) {
+      eu.writeToItem(container);
+    }
+    return res;
   }
 
   @Override
   public int getEnergyStored(ItemStack container) {
-    return energyCont.getEnergyStored(container);
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
+    if(eu == null) {
+      return 0;
+    }
+    return eu.getEnergy();
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    return energyCont.getMaxEnergyStored(container);
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
+    if(eu == null) {
+      return 0;
+    }
+    return eu.getCapacity();
   }
 
   //Idea from Mekanism

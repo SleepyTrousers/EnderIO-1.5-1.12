@@ -50,7 +50,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return res;
   }
 
-  private EnergyContainer energyCont = new EnergyContainer(Config.darkSteelPowerStorage, Config.darkSteelPowerStorage / 10, Config.darkSteelPowerStorage / 10);
+  private EnergyContainer energyCont = new EnergyContainer(Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 10, Config.darkSteelPowerStorageBase / 10);
 
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);

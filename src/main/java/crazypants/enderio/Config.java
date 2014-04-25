@@ -68,8 +68,7 @@ public final class Config {
 
   public static int travelStaffMaxDistance = 96;
   public static float travelStaffPowerPerBlockRF = 250;
-  public static int travelStaffMaxStoredPowerRF = 250000;
-  public static int travelStaffMaxPowerIoRF = 1250;
+
   public static int travelStaffMaxBlinkDistance = 16;
   public static int travelStaffBlinkPauseTicks = 10;
 
@@ -81,13 +80,16 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
-  public static int darkSteelPowerStorage = 250000;
+  public static int darkSteelPowerStorageBase = 50000;
+  public static int darkSteelPowerStorageLevelOne = 150000;
+  public static int darkSteelPowerStorageLevelTwo = 250000;
+  public static int darkSteelPowerStorageLevelThree = 500000;
 
   public static double darkSteelLeggingWalkModifier = 0.3;
   public static double darkSteelLeggingSprintModifier = 0.5;
   public static double darkSteelBootsJumpModifier = 1.5;
 
-  public static int darkSteelWalkPowerCost = darkSteelPowerStorage / 3000;
+  public static int darkSteelWalkPowerCost = darkSteelPowerStorageLevelTwo / 3000;
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = false;
   public static int darkSteelBootsJumpPowerCost = 250;
@@ -116,6 +118,11 @@ public final class Config {
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
+
+  public static int darkSteelUpgradeVibrantCost = 20;
+  public static int darkSteelUpgradePowerOneCost = 10;
+  public static int darkSteelUpgradePowerTwoCost = 20;
+  public static int darkSteelUpgradePowerThreeCost = 30;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -230,12 +237,6 @@ public final class Config {
     travelStaffPowerPerBlockRF = (float) config.get("Settings", "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
         "Number of MJ required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
-    travelStaffMaxStoredPowerRF = config.get("Settings", "travelStaffMaxStoredPowerRF", travelStaffMaxStoredPowerRF,
-        "Maximum number of MJ that can be stored using in the Staff of the Traveling.").getInt(travelStaffMaxStoredPowerRF);
-
-    travelStaffMaxPowerIoRF = config.get("Settings", "travelStaffMaxPowerIoRF", travelStaffMaxPowerIoRF,
-        "Maximum number of MJ that the Staff of the Traveling can be charged per tick.").getInt(travelStaffMaxPowerIoRF);
-
     travelStaffMaxBlinkDistance = config.get("Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
         "Max number of blocks teleported when shift clicking the staff.").getInt(travelStaffMaxBlinkDistance);
 
@@ -267,6 +268,26 @@ public final class Config {
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
             .getBoolean(updateLightingWhenHidingFacades);
 
+
+    darkSteelPowerStorageBase = config.get("Settings", "darkSteelPowerStorageBase", darkSteelPowerStorageBase,
+        "Base amount of power stored by dark steel items.").getInt(darkSteelPowerStorageBase);
+      darkSteelPowerStorageLevelOne = config.get("Settings", "darkSteelPowerStorageLevelOne", darkSteelPowerStorageLevelOne,
+          "Amount of power stored by dark steel items with a level 1 upgrade.").getInt(darkSteelPowerStorageLevelOne);
+      darkSteelPowerStorageLevelTwo = config.get("Settings", "darkSteelPowerStorageLevelTwo", darkSteelPowerStorageLevelTwo,
+          "Amount of power stored by dark steel items with a level 2 upgrade.").getInt(darkSteelPowerStorageLevelTwo);
+      darkSteelPowerStorageLevelThree = config.get("Settings", "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
+          "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
+
+      darkSteelUpgradeVibrantCost = config.get("Settings", "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost,
+          "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradeVibrantCost);
+      darkSteelUpgradePowerOneCost = config.get("Settings", "darkSteelUpgradePowerOneCost", darkSteelUpgradePowerOneCost,
+          "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerOneCost);
+      darkSteelUpgradePowerTwoCost = config.get("Settings", "darkSteelUpgradePowerTwoCost", darkSteelUpgradePowerTwoCost,
+          "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerTwoCost);
+      darkSteelUpgradePowerThreeCost = config.get("Settings", "darkSteelUpgradePowerThreeCost", darkSteelUpgradePowerThreeCost,
+          "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerThreeCost);
+
+
     darkSteelLeggingWalkModifier = config.get("Settings", "darkSteelLeggingWalkModifier", darkSteelLeggingWalkModifier,
         "Speed modifier applied when walking in the Dark Steel Boots.").getDouble(darkSteelLeggingWalkModifier);
     darkSteelLeggingSprintModifier = config.get("Settings", "darkSteelLeggingSprintModifier", darkSteelLeggingSprintModifier,
@@ -274,8 +295,8 @@ public final class Config {
     darkSteelBootsJumpModifier = config.get("Settings", "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 
-    darkSteelPowerStorage = config.get("Settings", "darkSteelPowerStorage", darkSteelPowerStorage,
-        "Amount of power stored (RF) per crystal in the armor items recipe.").getInt(darkSteelPowerStorage);
+    darkSteelPowerStorageBase = config.get("Settings", "darkSteelPowerStorage", darkSteelPowerStorageBase,
+        "Amount of power stored (RF) per crystal in the armor items recipe.").getInt(darkSteelPowerStorageBase);
     darkSteelWalkPowerCost = config.get("Settings", "darkSteelWalkPowerCost", darkSteelWalkPowerCost,
         "Amount of power stored (RF) per block walked when wearing the dark steel boots.").getInt(darkSteelWalkPowerCost);
     darkSteelSprintPowerCost = config.get("Settings", "darkSteelSprintPowerCost", darkSteelWalkPowerCost,

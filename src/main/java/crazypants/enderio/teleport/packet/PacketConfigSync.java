@@ -18,7 +18,6 @@ public class PacketConfigSync implements IPacketEio {
     dos.writeBoolean(Config.travelStaffBlinkThroughClearBlocksEnabled);
     dos.writeInt(Config.travelStaffBlinkPauseTicks);
     dos.writeInt(Config.travelStaffMaxDistance);
-    dos.writeInt(Config.travelStaffMaxPowerIoRF);
     dos.writeInt(Config.travelStaffMaxBlinkDistance);
     dos.writeFloat(Config.travelStaffPowerPerBlockRF);
   }
@@ -33,7 +32,6 @@ public class PacketConfigSync implements IPacketEio {
     Config.travelStaffBlinkThroughClearBlocksEnabled = data.readBoolean();
     Config.travelStaffBlinkPauseTicks = data.readInt();
     Config.travelStaffMaxDistance = data.readInt();
-    Config.travelStaffMaxPowerIoRF = data.readInt();
     Config.travelStaffMaxBlinkDistance = data.readInt();
     Config.travelStaffPowerPerBlockRF = data.readFloat();
   }

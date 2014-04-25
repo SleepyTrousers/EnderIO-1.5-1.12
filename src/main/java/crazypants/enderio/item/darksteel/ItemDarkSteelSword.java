@@ -59,9 +59,9 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     return res;
   }
 
-  private int powerPerDamagePoint = Config.darkSteelPowerStorage / MATERIAL.getMaxUses();
+  private int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
 
-  private EnergyContainer energyCont = new EnergyContainer(Config.darkSteelPowerStorage, Config.darkSteelPowerStorage / 10, Config.darkSteelPowerStorage / 10);
+  private EnergyContainer energyCont = new EnergyContainer(Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 10, Config.darkSteelPowerStorageBase / 10);
 
   public ItemDarkSteelSword() {
     super(MATERIAL);

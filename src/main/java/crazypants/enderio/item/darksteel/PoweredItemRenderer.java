@@ -46,12 +46,6 @@ public class PoweredItemRenderer implements IItemRenderer {
       return;
     }
 
-    //System.out.println("PoweredItemRenderer.renderToInventory: 22" + item);
-
-    //    GL11.glEnable(GL11.GL_BLEND);
-    //    GL11.glBlendFunc(GL11.GL_CONSTANT_ALPHA, GL11.GL_CONSTANT_ALPHA);
-    //    GL14.glBlendColor(1, 1, 1, 0.75f);
-
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.renderQuad2D(2, 13, 0, 13, 3, ColorUtil.getRGB(Color.black));
 
@@ -66,8 +60,6 @@ public class PoweredItemRenderer implements IItemRenderer {
     maxDam = armor.getMaxEnergyStored(item);
     dispDamage = armor.getEnergyStored(item);
 
-    //System.out.println("PoweredItemRenderer.renderToInventory: " + dispDamage + " / " + maxDam);
-
     r = 0.4f;
     g = 0.4f;
     b = 1f;
@@ -79,7 +71,7 @@ public class PoweredItemRenderer implements IItemRenderer {
   }
 
   private boolean isJustCrafted(ItemStack item) {
-    return EnergyContainer.getEnergyStored(item) == 0 && item.getItemDamageForDisplay() == 0;
+    return EnergyUpgrade.loadFromItem(item) == null && item.getItemDamageForDisplay() == 0;
   }
 
   private void renderBar(int y, double maxDam, double dispDamage, Color full, Color empty) {

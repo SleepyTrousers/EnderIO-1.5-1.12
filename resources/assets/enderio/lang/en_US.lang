@@ -226,7 +226,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line2=details about its network
 item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift Right-Click on a conduit to
 item.enderio.itemConduitProbe.tooltip.detailed.line4=to access its connection settings
 
-
+//Dark Steel
 item.darkSteel_helmet.name=Dark Helm
 item.darkSteel_chestplate.name=Dark Plate
 item.darkSteel_leggings.name=Dark Leggings
@@ -247,7 +247,10 @@ enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Enderman can't teleport once hit.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 
-
+enderio.darksteel.upgrade.vibrant=Vibrant
+enderio.darksteel.upgrade.energy_one=Energy 1
+enderio.darksteel.upgrade.energy_two=Energy 2
+enderio.darksteel.upgrade.energy_three=Energy 3
 
 //------GUI
 

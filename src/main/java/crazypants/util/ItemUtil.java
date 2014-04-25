@@ -4,6 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.transport.IPipeTile;
@@ -16,6 +17,13 @@ public class ItemUtil {
       return null;
     }
     return Lang.localize("item.darkSteel.tooltip.durability") + " " +  (item.getMaxDamage() - item.getItemDamage()) + "/" + item.getMaxDamage();
+  }
+
+  public static NBTTagCompound getOrCreateNBT(ItemStack stack) {
+    if(stack.stackTagCompound == null) {
+      stack.stackTagCompound = new NBTTagCompound();
+    }
+    return stack.stackTagCompound;
   }
 
   public static int doInsertItem(Object into, ItemStack item, ForgeDirection side) {
