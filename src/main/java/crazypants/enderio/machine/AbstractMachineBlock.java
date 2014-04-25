@@ -1,7 +1,6 @@
 package crazypants.enderio.machine;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -30,10 +29,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.util.Lang;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IAdvancedTooltipProvider {
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider {
 
   public static int renderId;
 
@@ -87,47 +85,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-  }
-
-  @Override
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if(itemstack.getItem() == null) {
-      return;
-    }
-    Block blk = Block.getBlockFromItem(itemstack.getItem());
-    if(blk == null) {
-      return;
-    }
-
-    String keyBase = blk.getUnlocalizedName() + ".description.line";
-    boolean done = false;
-    int line = 1;
-    while(!done) {
-      String key = keyBase + line;
-      String val = Lang.localize(key, false);
-      if(val == null || val.trim().length() < 0 || val.equals(key) || line > 12) {
-        done = true;
-      } else {
-        list.add(val);
-        line++;
-      }
-    }
-
-  }
-
-  @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
     if(ConduitUtil.isToolEquipped(entityPlayer)) {
       if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
         if(wrench.canWrench(entityPlayer, x, y, z)) {
-          //TODO: Store Machine IO settings, power etc
           removedByPlayer(world, entityPlayer, x, y, z);
           if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
             ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);

@@ -1,4 +1,4 @@
-package crazypants.enderio.item;
+package crazypants.enderio.item.darksteel;
 
 import java.util.UUID;
 

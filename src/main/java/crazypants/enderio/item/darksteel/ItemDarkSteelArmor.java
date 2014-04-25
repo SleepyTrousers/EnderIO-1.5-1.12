@@ -1,4 +1,4 @@
-package crazypants.enderio.item;
+package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -35,6 +36,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   static {
     FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
+    MinecraftForge.EVENT_BUS.register(AnvilRecipeManager.instance);
   }
 
   public static ItemDarkSteelArmor forArmorType(short armorType) {
