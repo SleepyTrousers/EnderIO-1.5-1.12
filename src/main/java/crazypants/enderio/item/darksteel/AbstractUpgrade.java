@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.util.ItemUtil;
@@ -18,13 +19,19 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   public static final String KEY_UPGRADE_PREFIX = "eio.darksteel.upgrade.";
 
+  public static void addUpgardeTitle(List list, IDarkSteelUpgrade upgrade) {
+    //list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(upgrade.getUnlocalizedName()) + ":");
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(upgrade.getUnlocalizedName()));
+    //list.add(Lang.localize(upgrade.getUnlocalizedName()) + ":");
+  }
+
   protected final int levelCost;
   protected final String id;
   protected final String unlocName;
 
   protected AbstractUpgrade(String id, String unlocName, int levelCost) {
     this.levelCost = levelCost;
-    this.id =  KEY_UPGRADE_PREFIX + id;
+    this.id = KEY_UPGRADE_PREFIX + id;
     this.unlocName = unlocName;
   }
 
@@ -42,7 +49,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(Lang.localize(unlocName));
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName));
   }
 
   @Override
@@ -91,7 +98,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     if(!hasUpgrade(stack)) {
       return null;
     }
-    return (NBTTagCompound)stack.stackTagCompound.getTag(id);
+    return (NBTTagCompound) stack.stackTagCompound.getTag(id);
   }
 
   public abstract void writeUpgradeToNBT(NBTTagCompound upgradeRoot);

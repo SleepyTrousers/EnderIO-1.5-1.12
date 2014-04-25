@@ -23,7 +23,7 @@ import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -49,8 +49,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
-
-  private EnergyContainer energyCont = new EnergyContainer(Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 10, Config.darkSteelPowerStorageBase / 10);
 
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);
@@ -95,13 +93,22 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   private void applyDamage(EntityLivingBase entity, ItemStack item, int damage) {
-    boolean absorbWithPower = energyCont.isAbsorbDamageWithPower(item);
-    if(getEnergyStored(item) > 0 && absorbWithPower) {
-      extractEnergy(item, Config.darkSteelPickPowerUsePerDamagePoint * damage, false);
+
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(item);
+    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      eu.extractEnergy(damage * Config.darkSteelPickPowerUsePerDamagePoint, false);
+
     } else {
-      item.damageItem(damage, entity);
+      damage = item.getItemDamage() + damage;
+      if(damage >= getMaxDamage()) {
+        item.stackSize = 0;
+      }
+      item.setItemDamage(damage);
     }
-    energyCont.setAbsorbDamageWithPower(item, !absorbWithPower);
+    if(eu != null) {
+      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
+      eu.writeToItem(item);
+    }
 
   }
 
@@ -116,7 +123,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
     if(ForgeHooks.isToolEffective(stack, block, meta)) {
-      if(Config.darkSteelPickPowerUsePerDamagePoint > 0 && energyCont.getEnergyStored(stack) > 0) {
+      if(Config.darkSteelPickPowerUsePerDamagePoint > 0 && getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
@@ -130,22 +137,22 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return energyCont.receiveEnergy(container, maxReceive, simulate);
+    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
   }
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return energyCont.extractEnergy(container, maxExtract, simulate);
+    return EnergyUpgrade.extractEnergy(container, maxExtract, simulate);
   }
 
   @Override
   public int getEnergyStored(ItemStack container) {
-    return energyCont.getEnergyStored(container);
+    return EnergyUpgrade.getEnergyStored(container);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    return energyCont.getMaxEnergyStored(container);
+    return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
   @Override
@@ -155,22 +162,30 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    AnvilRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
-    list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+    AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(Lang.localize("item.darkSteel.tooltip.line1"));
-    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
-    list.add(EnumChatFormatting.BLUE + "+" + Config.darkSteelPickEffeciencyObsidian + " " + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-    list.add(EnumChatFormatting.BLUE + "     (cost "
-        + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
-        + PowerDisplayUtil.abrevation() + ")");
+
+    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+      EnergyUpgrade.addVibrantTooltip(list, itemstack);
+      list.add(EnumChatFormatting.ITALIC + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
+          + Lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+      list.add(EnumChatFormatting.ITALIC + "+" + Config.darkSteelPickEffeciencyObsidian + " "
+          + Lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
+      list.add(EnumChatFormatting.ITALIC + "     (cost "
+          + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
+          + PowerDisplayUtil.abrevation() + ")");
+    }
+    EnergyUpgrade.addNextUpgradeTooltip(itemstack, entityplayer, list, flag);
+    AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {

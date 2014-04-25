@@ -18,7 +18,6 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 
@@ -90,8 +89,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add(ItemUtil.getDurabilityString(itemstack));
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+      EnergyUpgrade.addVibrantTooltip(list, itemstack);
     }
+    EnergyUpgrade.addNextUpgradeTooltip(itemstack, entityplayer, list, flag);
     AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
@@ -152,46 +152,22 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    int res = eu.receiveEnergy(maxReceive, simulate);
-    if(!simulate && res > 0) {
-      eu.writeToItem(container);
-    }
-    return res;
+    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
   }
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    int res = eu.extractEnergy(maxExtract, simulate);
-    if(!simulate && res > 0) {
-      eu.writeToItem(container);
-    }
-    return res;
+    return EnergyUpgrade.extractEnergy(container, maxExtract, simulate);
   }
 
   @Override
   public int getEnergyStored(ItemStack container) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    return eu.getEnergy();
+    return EnergyUpgrade.getEnergyStored(container);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
-    if(eu == null) {
-      return 0;
-    }
-    return eu.getCapacity();
+    return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
   //Idea from Mekanism

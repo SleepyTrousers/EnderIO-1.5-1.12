@@ -238,7 +238,8 @@ enderio.item.tooltip.power=Power:
 enderio.item.tooltip.showDetails=<Hold Shift>
 enderio.item.darkSteel.tooltip.power=Power:
 enderio.item.darkSteel.tooltip.durability=Durability:
-enderio.item.darkSteel.tooltip.line1=Half durability damage absorbed by power.
+enderio.item.darkSteel.tooltip.line1=Half durability damage absorbed
+enderio.item.darkSteel.tooltip.line2=by power.
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian

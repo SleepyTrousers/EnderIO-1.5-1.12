@@ -24,13 +24,12 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider {
+public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", 3, 1561, 7, 2, 25);
 
@@ -60,8 +59,6 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   }
 
   private int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
-
-  private EnergyContainer energyCont = new EnergyContainer(Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 10, Config.darkSteelPowerStorageBase / 10);
 
   public ItemDarkSteelSword() {
     super(MATERIAL);
@@ -173,44 +170,55 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase entity, EntityLivingBase playerEntity) {
 
     if(playerEntity instanceof EntityPlayer) {
+
       EntityPlayer player = (EntityPlayer) playerEntity;
       ItemStack sword = player.getCurrentEquippedItem();
-      boolean absorbPower = energyCont.isAbsorbDamageWithPower(sword);
-      if(isEquippedAndPowered(player, powerPerDamagePoint) && absorbPower) {
-        extractEnergy(player.getCurrentEquippedItem(), powerPerDamagePoint, false);
+
+      //Durability damage
+      EnergyUpgrade eu = EnergyUpgrade.loadFromItem(par1ItemStack);
+      if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+        eu.extractEnergy(powerPerDamagePoint, false);
+
       } else {
         super.hitEntity(par1ItemStack, entity, playerEntity);
       }
-      energyCont.setAbsorbDamageWithPower(sword, !absorbPower);
 
-      if(isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
-        extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelSwordPowerUsePerHit, false);
-        if(entity instanceof EntityEnderman) {
-          entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
+      //sword hit
+      if(eu != null) {
+        eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
+        eu.writeToItem(sword);
+
+        if(eu.energy > Config.darkSteelSwordPowerUsePerHit) {
+          extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelSwordPowerUsePerHit, false);
+          if(entity instanceof EntityEnderman) {
+            entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
+          }
         }
+
       }
+
     }
     return true;
   }
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    return energyCont.receiveEnergy(container, maxReceive, simulate);
+    return EnergyUpgrade.receiveEnergy(container, maxReceive, simulate);
   }
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    return energyCont.extractEnergy(container, maxExtract, simulate);
+    return EnergyUpgrade.extractEnergy(container, maxExtract, simulate);
   }
 
   @Override
   public int getEnergyStored(ItemStack container) {
-    return energyCont.getEnergyStored(container);
+    return EnergyUpgrade.getEnergyStored(container);
   }
 
   @Override
   public int getMaxEnergyStored(ItemStack container) {
-    return energyCont.getMaxEnergyStored(container);
+    return EnergyUpgrade.getMaxEnergyStored(container);
   }
 
   @Override
@@ -220,20 +228,29 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    AnvilRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
-    list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+      list.add(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BLUE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+    }
+    AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(Lang.localize("item.darkSteel.tooltip.line1"));
-    list.add(Lang.localize("item.darkSteel_sword.tooltip.line1"));
-    list.add(Lang.localize("item.darkSteel_sword.tooltip.line2"));
-    list.add(EnumChatFormatting.BLUE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+    list.add(ItemUtil.getDurabilityString(itemstack));
+
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+      EnergyUpgrade.addVibrantTooltip(list, itemstack);
+      list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel_sword.tooltip.line1"));
+      list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel_sword.tooltip.line2"));
+      list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+    }
+    EnergyUpgrade.addNextUpgradeTooltip(itemstack, entityplayer, list, flag);
+    AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {
