@@ -90,8 +90,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.addDescriptionFromResources(list, itemstack);
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
   }
 
   @Override

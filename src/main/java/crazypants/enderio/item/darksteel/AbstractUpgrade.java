@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
@@ -17,13 +18,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   private static final String KEY_UNLOC_NAME = "unlocalized_name";
 
-  public static final String KEY_UPGRADE_PREFIX = "eio.darksteel.upgrade.";
-
-  public static void addUpgardeTitle(List list, IDarkSteelUpgrade upgrade) {
-    //list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(upgrade.getUnlocalizedName()) + ":");
-    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(upgrade.getUnlocalizedName()));
-    //list.add(Lang.localize(upgrade.getUnlocalizedName()) + ":");
-  }
+  public static final String KEY_UPGRADE_PREFIX = "enderio.darksteel.upgrade.";
 
   protected final int levelCost;
   protected final String id;
@@ -44,17 +39,20 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.instance.addCommonTooltipFromResources(list, unlocName);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName));
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName + ".name", false));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName + ".name", false));
+    TooltipAddera.instance.addDetailedTooltipFromResources(list, unlocName);
   }
 
   @Override

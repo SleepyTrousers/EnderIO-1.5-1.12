@@ -59,7 +59,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     int extractRate;
     int maxIo;
 
@@ -75,7 +75,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     list.add(Lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
 
     if(itemstack.getItemDamage() == 0) {
-      TooltipAddera.addDescriptionFromResources(list, itemstack);
+      TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
     }
 
   }

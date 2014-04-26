@@ -16,7 +16,7 @@ public interface IAdvancedTooltipProvider {
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag);
 
   @SideOnly(Side.CLIENT)
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag);
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag);
 
 
 }

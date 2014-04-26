@@ -233,23 +233,21 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.BLUE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
-    }
     AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add(ItemUtil.getDurabilityString(itemstack));
-
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      EnergyUpgrade.addVibrantTooltip(list, itemstack);
-      list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel_sword.tooltip.line1"));
-      list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+    String str = EnergyUpgrade.getStoredEnergyString(itemstack);
+    if(str != null) {
+      list.add(str);
     }
-    EnergyUpgrade.addNextUpgradeTooltip(itemstack, entityplayer, list, flag);
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+      list.add(EnumChatFormatting.WHITE +  Lang.localize("item.darkSteel_sword.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
+    }
     AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 

@@ -234,12 +234,9 @@ item.darkSteel_boots.name=Dark Boots
 item.darkSteel_sword.name=The Ender
 item.darkSteel_pickaxe.name=Dark Pick
 
-enderio.item.tooltip.power=Power:
+
 enderio.item.tooltip.showDetails=<Hold Shift>
-enderio.item.darkSteel.tooltip.power=Power:
 enderio.item.darkSteel.tooltip.durability=Durability:
-enderio.item.darkSteel.tooltip.line1=Half durability damage absorbed
-enderio.item.darkSteel.tooltip.line2=by power.
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
@@ -248,10 +245,25 @@ enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Enderman can't teleport once hit.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 
-enderio.darksteel.upgrade.vibrant=Vibrant
-enderio.darksteel.upgrade.energy_one=Energy 1
-enderio.darksteel.upgrade.energy_two=Energy 2
-enderio.darksteel.upgrade.energy_three=Energy 3
+enderio.darksteel.upgrade.vibrant.name=Empowered
+enderio.darksteel.upgrade.vibrant.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.vibrant.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.vibrant.tooltip.detailed.line3=by power.
+
+enderio.darksteel.upgrade.energy_one.name=Empowered 2
+enderio.darksteel.upgrade.energy_one.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.energy_one.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.energy_one.tooltip.detailed.line3=by power.
+
+enderio.darksteel.upgrade.energy_two.name=Empowered 3
+enderio.darksteel.upgrade.energy_two.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.energy_two.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.energy_two.tooltip.detailed.line3=by power.
+
+enderio.darksteel.upgrade.energy_three.name=Empowered 4
+enderio.darksteel.upgrade.energy_three.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.energy_three.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.energy_three.tooltip.detailed.line3=by power.
 
 //------GUI
 

@@ -5,43 +5,35 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
-import crazypants.util.Lang;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
   public static final EnergyUpgrade VIBRANT = new EnergyUpgrade(
-      "darksteel.upgrade.vibrant", Config.darkSteelUpgradeVibrantCost,
+      "enderio.darksteel.upgrade.vibrant", Config.darkSteelUpgradeVibrantCost,
       new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()),
       Config.darkSteelPowerStorageBase,
-      Config.darkSteelPowerStorageBase / 100) {
-
-    @Override
-    public boolean canAddToItem(ItemStack stack) {
-      return !hasUpgrade(stack);
-    }
-  };
+      Config.darkSteelPowerStorageBase / 100);
 
   public static final EnergyUpgrade ENERGY_ONE = new EnergyUpgrade(
-      "darksteel.upgrade.energy_one", Config.darkSteelUpgradePowerOneCost,
+      "enderio.darksteel.upgrade.energy_one", Config.darkSteelUpgradePowerOneCost,
       new ItemStack(EnderIO.itemBasicCapacitor, 1, 0),
       Config.darkSteelPowerStorageLevelOne,
       Config.darkSteelPowerStorageLevelOne / 100);
 
   public static final EnergyUpgrade ENERGY_TWO = new EnergyUpgrade(
-      "darksteel.upgrade.energy_two", Config.darkSteelUpgradePowerTwoCost,
+      "enderio.darksteel.upgrade.energy_two", Config.darkSteelUpgradePowerTwoCost,
       new ItemStack(EnderIO.itemBasicCapacitor, 1, 1),
       Config.darkSteelPowerStorageLevelTwo,
       Config.darkSteelPowerStorageLevelTwo / 100);
 
   public static final EnergyUpgrade ENERGY_THREE = new EnergyUpgrade(
-      "darksteel.upgrade.energy_three", Config.darkSteelUpgradePowerThreeCost,
+      "enderio.darksteel.upgrade.energy_three", Config.darkSteelUpgradePowerThreeCost,
       new ItemStack(EnderIO.itemBasicCapacitor, 1, 2),
       Config.darkSteelPowerStorageLevelThree,
       Config.darkSteelPowerStorageLevelThree / 100);
@@ -69,16 +61,6 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public static boolean itemHasAnyPowerUpgrade(ItemStack itemstack) {
     return loadFromItem(itemstack) != null;
-  }
-
-  public static void addNextUpgradeTooltip(ItemStack stack, EntityPlayer entityplayer, List list, boolean flag) {
-    EnergyUpgrade up = loadFromItem(stack);
-    up = next(up);
-    if(up != null) {
-      list.add(EnumChatFormatting.YELLOW + "Anvil Upgrades: ");
-      list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + " <" + Lang.localize(up.getUnlocalizedName()) + ": "
-          + up.upgradeItem.getDisplayName() + " + " + up.levelCost + " lvs>");
-    }
   }
 
   public static EnergyUpgrade next(EnergyUpgrade upgrade) {
@@ -118,6 +100,14 @@ public class EnergyUpgrade extends AbstractUpgrade {
     return res;
   }
 
+  public static String getStoredEnergyString(ItemStack itemstack) {
+    EnergyUpgrade up = loadFromItem(itemstack);
+    if(up == null) {
+      return null;
+    }
+    return PowerDisplayUtil.formatStoredPower(up.energy / 10, up.capacity/10);
+  }
+
   public static int getEnergyStored(ItemStack container) {
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(container);
     if(eu == null) {
@@ -132,13 +122,6 @@ public class EnergyUpgrade extends AbstractUpgrade {
       return 0;
     }
     return eu.getCapacity();
-  }
-
-  public static void addVibrantTooltip(List list, ItemStack itemstack) {
-    list.add(PowerDisplayUtil.getStoredEnergyString(itemstack));
-    AbstractUpgrade.addUpgardeTitle(list, EnergyUpgrade.VIBRANT);
-    list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel.tooltip.line1"));
-    list.add(EnumChatFormatting.ITALIC + Lang.localize("item.darkSteel.tooltip.line2"));
   }
 
   protected int capacity;
@@ -179,39 +162,50 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   @Override
+  public ItemStack getUpgradeItem() {
+    return upgradeItem;
+  }
+
+  @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() == null) {
+    if(stack == null || stack.getItem() == null || !(stack.getItem() instanceof IDarkSteelItem)) {
       return false;
     }
-    if(stack.getItem() instanceof IDarkSteelItem) {
-      if(!itemHasAnyPowerUpgrade(stack)) {
-        return false;
-      }
-      EnergyUpgrade curUp = loadFromItem(stack);
-      if(curUp == null) {
-        return true;
-      }
-      return curUp.capacity < capacity;
+    EnergyUpgrade up = next(loadFromItem(stack));
+    if(up == null) {
+      return false;
     }
-    return false;
+    return up.unlocName.equals(unlocName);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    super.addCommonEntries(itemstack, entityplayer, list, flag);
-  }
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    int startIndex = list.size();
+    super.addDetailedEntries(itemstack, entityplayer, list, flag);
+    int endIndex = list.size();
+    int cap = capacity;
+//    if(!unlocName.equals(VIBRANT.unlocName)) {
+//      cap = cap - VIBRANT.capacity;
+//    }
+//    cap /= 10;
 
-
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    if(!unlocName.equals(VIBRANT.unlocName)) {
-      VIBRANT.addBasicEntries(itemstack, entityplayer, list, flag);
+    String capString = PowerDisplayUtil.formatPower(cap) + " " + PowerDisplayUtil.abrevation();
+    for(int i=startIndex;i<endIndex;i++) {
+      String str = (String)list.get(i);
+      str = str.replaceAll("\\$P", capString);
+      list.set(i, str);
     }
-    super.addBasicEntries(itemstack, entityplayer, list, flag);
   }
+
+//  @Override
+//  @SideOnly(Side.CLIENT)
+//  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+//    if(!unlocName.equals(VIBRANT.unlocName)) {
+//      VIBRANT.addBasicEntries(itemstack, entityplayer, list, flag);
+//    }
+//    super.addBasicEntries(itemstack, entityplayer, list, flag);
+//  }
 
   @Override
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
@@ -272,6 +266,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
     EnergyUpgrade up = loadFromItem(stack);
     return up.unlocName.equals(unlocName);
   }
+
+
 
 
 

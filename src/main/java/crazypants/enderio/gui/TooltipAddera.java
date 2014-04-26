@@ -92,7 +92,7 @@ public class TooltipAddera {
 
   public static void addInformation(IResourceTooltipProvider item, ItemTooltipEvent evt) {
     if(showAdvancedTooltips()) {
-      addDescriptionFromResources(evt.toolTip, item.getUnlocalizedName());
+      addDetailedTooltipFromResources(evt.toolTip, item.getUnlocalizedName());
     } else {
       addShowDetailsTooltip(evt.toolTip);
     }
@@ -102,7 +102,7 @@ public class TooltipAddera {
   public static void addInformation(IAdvancedTooltipProvider tt, ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     tt.addCommonEntries(itemstack, entityplayer, list, flag);
     if(showAdvancedTooltips()) {
-      tt.addAdvancedEntries(itemstack, entityplayer, list, flag);
+      tt.addDetailedEntries(itemstack, entityplayer, list, flag);
     } else {
       tt.addBasicEntries(itemstack, entityplayer, list, flag);
       addShowDetailsTooltip(list);
@@ -117,8 +117,20 @@ public class TooltipAddera {
     return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
   }
 
-  public static void addDescriptionFromResources(List<String> list, String unlocalizedName) {
-    String keyBase = unlocalizedName + ".tooltip.detailed.line";
+  public static void addDetailedTooltipFromResources(List list, String unlocalizedName) {
+    addTooltipFromResources(list, unlocalizedName, ".tooltip.detailed.line");
+  }
+
+  public static void addBasicTooltipFromResources(List list, String unlocalizedName) {
+    addTooltipFromResources(list, unlocalizedName, ".tooltip.basic.line");
+  }
+
+  public static void addCommonTooltipFromResources(List list, String unlocalizedName) {
+    addTooltipFromResources(list, unlocalizedName, ".tooltip.common.line");
+  }
+
+  public static void addTooltipFromResources(List list, String unlocalizedName, String tooltipTag) {
+    String keyBase = unlocalizedName + tooltipTag;
     boolean done = false;
     int line = 1;
     while(!done) {
@@ -133,7 +145,7 @@ public class TooltipAddera {
     }
   }
 
-  public static void addDescriptionFromResources(List list,ItemStack itemstack) {
+  public static void addDetailedTooltipFromResources(List list,ItemStack itemstack) {
     if(itemstack.getItem() == null) {
       return;
     }
@@ -145,7 +157,7 @@ public class TooltipAddera {
     if(unlock == null) {
       unlock = itemstack.getItem().getUnlocalizedName();
     }
-    addDescriptionFromResources(list, unlock);
+    addDetailedTooltipFromResources(list, unlock);
   }
 
 

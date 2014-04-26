@@ -86,12 +86,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   @Override
-  public void addAdvancedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add(ItemUtil.getDurabilityString(itemstack));
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      EnergyUpgrade.addVibrantTooltip(list, itemstack);
+    String str = EnergyUpgrade.getStoredEnergyString(itemstack);
+    if(str != null) {
+      list.add(str);
     }
-    EnergyUpgrade.addNextUpgradeTooltip(itemstack, entityplayer, list, flag);
     AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 

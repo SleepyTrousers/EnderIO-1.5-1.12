@@ -19,4 +19,6 @@ public interface IDarkSteelUpgrade extends IAdvancedTooltipProvider {
 
   void removeFromItem(ItemStack stack);
 
+  ItemStack getUpgradeItem();
+
 }
