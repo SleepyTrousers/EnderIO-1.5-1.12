@@ -22,11 +22,17 @@ public class DarkSteelController {
 
   public static final DarkSteelController instance = new DarkSteelController();
 
-  private AttributeModifier walkModifier = new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed",
-      Config.darkSteelLeggingWalkModifier, 1);
+  private AttributeModifier[] walkModifiers = new AttributeModifier[] {
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[0], 1),
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[1], 1),
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[2], 1),
+  };
 
-  private AttributeModifier sprintModifier = new AttributeModifier(new UUID(6, 320981923), "generic.movementSpeed",
-      Config.darkSteelLeggingSprintModifier, 1);
+  private AttributeModifier[] sprintModifiers = new AttributeModifier[] {
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
+  };
 
   private AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier",
       2, 0);
@@ -46,7 +52,7 @@ public class DarkSteelController {
     //boots step height
     ItemStack boots = player.getEquipmentInSlot(1);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if(jumpUpgrade == null || boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
+    if(jumpUpgrade != null && boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
       player.stepHeight = 1.0023F;
     } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
@@ -54,23 +60,25 @@ public class DarkSteelController {
 
     //leggings
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
-    moveInst.removeModifier(walkModifier);
-    moveInst.removeModifier(sprintModifier);
+    moveInst.removeModifier(walkModifiers[0]); //any will so as they all have the same UID
+    moveInst.removeModifier(sprintModifiers[0]);
 
     ItemStack leggings = player.getEquipmentInSlot(2);
-    if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings) {
+    SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
+    if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
 
       double horzMovement = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
-      double costModifier = player.isSprinting() ? (Config.darkSteelSprintPowerCost * 1.25) : Config.darkSteelWalkPowerCost;
+      double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost  : Config.darkSteelWalkPowerCost;
+      costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
       int cost = (int) (horzMovement * costModifier);
 
       int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelLeggings);
       if(totalEnergy > 0 && totalEnergy >= cost) {
         usePlayerEnergy(player, EnderIO.itemDarkSteelLeggings, cost);
         if(player.isSprinting()) {
-          moveInst.applyModifier(sprintModifier);
+          moveInst.applyModifier(sprintModifiers[speedUpgrade.level - 1]);
         } else {
-          moveInst.applyModifier(walkModifier);
+          moveInst.applyModifier(walkModifiers[speedUpgrade.level - 1]);
         }
       }
     }
@@ -89,11 +97,9 @@ public class DarkSteelController {
   }
 
   void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
-
     if(cost == 0) {
       return;
     }
-
     int remaining = cost;
     if(Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {

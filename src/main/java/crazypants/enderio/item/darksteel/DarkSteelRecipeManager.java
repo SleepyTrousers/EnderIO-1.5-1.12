@@ -25,6 +25,9 @@ public class DarkSteelRecipeManager {
     upgrades.add(JumpUpgrade.JUMP_ONE);
     upgrades.add(JumpUpgrade.JUMP_TWO);
     upgrades.add(JumpUpgrade.JUMP_THREE);
+    upgrades.add(SpeedUpgrade.SPEED_ONE);
+    upgrades.add(SpeedUpgrade.SPEED_TWO);
+    upgrades.add(SpeedUpgrade.SPEED_THREE);
   }
 
   @SubscribeEvent

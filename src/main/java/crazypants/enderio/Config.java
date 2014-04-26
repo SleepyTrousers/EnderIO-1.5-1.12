@@ -85,8 +85,14 @@ public final class Config {
   public static int darkSteelPowerStorageLevelTwo = 250000;
   public static int darkSteelPowerStorageLevelThree = 500000;
 
-  public static double darkSteelLeggingWalkModifier = 0.3;
-  public static double darkSteelLeggingSprintModifier = 0.5;
+  public static float darkSteelSpeedOneWalkModifier = 0.1f;
+  public static float darkSteelSpeedTwoWalkMultiplier = 0.2f;
+  public static float darkSteelSpeedThreeWalkMultiplier = 0.3f;
+
+  public static float darkSteelSpeedOneSprintModifier = 0.1f;
+  public static float darkSteelSpeedTwoSprintMultiplier= 0.3f;
+  public static float darkSteelSpeedThreeSprintMultiplier = 0.5f;
+
   public static double darkSteelBootsJumpModifier = 1.5;
 
   public static int darkSteelWalkPowerCost = darkSteelPowerStorageLevelTwo / 3000;
@@ -288,10 +294,26 @@ public final class Config {
           "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerThreeCost);
 
 
-    darkSteelLeggingWalkModifier = config.get("Settings", "darkSteelLeggingWalkModifier", darkSteelLeggingWalkModifier,
-        "Speed modifier applied when walking in the Dark Steel Boots.").getDouble(darkSteelLeggingWalkModifier);
-    darkSteelLeggingSprintModifier = config.get("Settings", "darkSteelLeggingSprintModifier", darkSteelLeggingSprintModifier,
-        "Speed modifier applied when sprinting in the Dark Steel Boots.").getDouble(darkSteelLeggingSprintModifier);
+//    darkSteelLeggingWalkModifier = config.get("Settings", "darkSteelLeggingWalkModifier", darkSteelLeggingWalkModifier,
+//        "Speed modifier applied when walking in the Dark Steel Boots.").getDouble(darkSteelLeggingWalkModifier);
+//    darkSteelLeggingSprintModifier = config.get("Settings", "darkSteelLeggingSprintModifier", darkSteelLeggingSprintModifier,
+//        "Speed modifier applied when sprinting in the Dark Steel Boots.").getDouble(darkSteelLeggingSprintModifier);
+
+    darkSteelSpeedOneWalkModifier = (float)config.get("Settings", "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
+        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneWalkModifier);
+    darkSteelSpeedTwoWalkMultiplier = (float)config.get("Settings", "darkSteelSpeedTwoWalkMultiplier", darkSteelSpeedTwoWalkMultiplier,
+        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedTwoWalkMultiplier);
+    darkSteelSpeedThreeWalkMultiplier = (float)config.get("Settings", "darkSteelSpeedThreeWalkMultiplier", darkSteelSpeedThreeWalkMultiplier,
+        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedThreeWalkMultiplier);
+
+    darkSteelSpeedOneSprintModifier = (float)config.get("Settings", "darkSteelSpeedOneSprintModifier", darkSteelSpeedOneSprintModifier,
+        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneSprintModifier);
+    darkSteelSpeedTwoSprintMultiplier = (float)config.get("Settings", "darkSteelSpeedTwoSprintMultiplier", darkSteelSpeedTwoSprintMultiplier,
+        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedTwoSprintMultiplier);
+    darkSteelSpeedThreeSprintMultiplier = (float)config.get("Settings", "darkSteelSpeedThreeSprintMultiplier", darkSteelSpeedThreeSprintMultiplier,
+        "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedThreeSprintMultiplier);
+
+
     darkSteelBootsJumpModifier = config.get("Settings", "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 

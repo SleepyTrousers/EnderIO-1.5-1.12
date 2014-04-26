@@ -21,23 +21,24 @@ public class ItemRecipes {
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
     ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
 
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "scs", "s s", "   ", 's', darkSteel, 'c', vibCry);
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "   ", "scs", "s s", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "sss", "s s", "   ", 's', darkSteel);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "   ", "sss", "s s", 's', darkSteel);
 
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelChestplate.createItemStack(), "s s", "scs", "sss", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelChestplate.createItemStack(), "s s", "sss", "sss", 's', darkSteel);
 
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelLeggings.createItemStack(), "csc", "s s", "s s", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelLeggings.createItemStack(), "sss", "s s", "s s", 's', darkSteel);
 
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "c c", "   ", 's', darkSteel, 'c', vibCry);
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "c c", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "s s", "   ", 's', darkSteel);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "s s", 's', darkSteel);
 
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "c c", 's', darkSteel, 'c', vibCry);
+    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "s s", 's', darkSteel);
 
-    GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelSword.createItemStack(), " s ", " s ", " c ", 's', darkSteel, 'c', vibCry);
 
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "scs", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 't', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 't', "woodStick"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
         "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "scs", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
         "woodStick"));
 
   }

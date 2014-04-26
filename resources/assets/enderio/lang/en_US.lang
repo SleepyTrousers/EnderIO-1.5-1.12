@@ -250,17 +250,17 @@ enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Half durability damage absorbed
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.empowered_two.name=Empowered 2
+enderio.darksteel.upgrade.empowered_two.name=Empowered II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Half durability damage absorbed
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.empowered_three.name=Empowered 3
+enderio.darksteel.upgrade.empowered_three.name=Empowered III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Half durability damage absorbed
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.empowered_four.name=Empowered 4
+enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Half durability damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
@@ -268,16 +268,22 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
 enderio.darksteel.upgrade.jump_one.name=Jump
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
 
-enderio.darksteel.upgrade.jump_two.name=Jump 2
+enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
 
-enderio.darksteel.upgrade.jump_three.name=Jump 3
+enderio.darksteel.upgrade.jump_three.name=Jump III
 enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Allows triple jumps
 
 enderio.darksteel.upgrade.speed_one.name=Speed
 enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Increases movement speed
+
+enderio.darksteel.upgrade.speed_two.name=Speed II
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Increases movement speed
+
+enderio.darksteel.upgrade.speed_three.name=Speed III
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Increases movement speed
 
 //------GUI
 
