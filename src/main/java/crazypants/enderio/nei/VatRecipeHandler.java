@@ -32,6 +32,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
   private Rectangle inTankBounds = new Rectangle(25,1,15,47);
   private Rectangle outTankBounds = new Rectangle(127,1,15,47);
+  private Rectangle inTankBoundsLower = new Rectangle(25,70,15,47);
+  private Rectangle outTankBoundsLower = new Rectangle(127,70,15,47);
 
 
   public VatRecipeHandler() {
@@ -150,7 +152,6 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     return currenttip;
   }
 
-
   @Override
   public List<String> handleTooltip(GuiRecipe gui, List<String> arg1, int recipeIndex) {
 
@@ -159,21 +160,33 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     int[] offset = RecipeInfo.getGuiOffset(gui);
     Point relMouse = new Point(pos.x- ( (gui.width - 176) / 2) - offset[0], pos.y - ((gui.height - 166) /2) - offset[1] );
 
-    if(inTankBounds.contains(relMouse)) {
-      InnerVatRecipe rec = (InnerVatRecipe)arecipes.get(recipeIndex);
-      if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-        arg1.add(rec.inFluid.getFluid().getLocalizedName());
+    if (mouseInBounds(relMouse)) {
+      if (recipeIndex % 2 == 0 && inTankBounds.union(outTankBounds).contains(relMouse)) {
+        return getVatFluid(recipeIndex, arg1, inTankBounds.contains(relMouse));
       }
-      return arg1;
-    } else if(outTankBounds.contains(relMouse)) {
-      InnerVatRecipe rec = (InnerVatRecipe)arecipes.get(recipeIndex);
-      if(rec.result != null && rec.result.getFluid() != null) {
-        arg1.add(rec.result.getFluid().getLocalizedName());
+      else if (recipeIndex % 2 == 1 && inTankBoundsLower.union(outTankBoundsLower).contains(relMouse)) {
+        return getVatFluid(recipeIndex, arg1, inTankBoundsLower.contains(relMouse));
       }
-      return arg1;
-    } else {
-      return super.handleTooltip(gui, arg1, recipeIndex);
     }
+    return super.handleTooltip(gui, arg1, recipeIndex);
+  }
+  
+  private boolean mouseInBounds(Point mouse) {
+    return inTankBounds.union(outTankBounds).union(inTankBoundsLower).union(outTankBoundsLower).contains(mouse);
+  }
+  
+  private List<String> getVatFluid(int index, List<String> list, boolean in) {
+    InnerVatRecipe rec = (InnerVatRecipe)arecipes.get(index);
+    if (in) {
+      if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
+        list.add(rec.inFluid.getFluid().getLocalizedName());
+      }
+    } else {
+      if(rec.result != null && rec.result.getFluid() != null) {
+        list.add(rec.result.getFluid().getLocalizedName());
+      }
+    }
+    return list;
   }
 
   public void renderIcon(IIcon icon, double x, double y, double width, double height, double zLevel) {
