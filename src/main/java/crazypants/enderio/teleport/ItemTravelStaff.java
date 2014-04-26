@@ -47,7 +47,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   protected ItemTravelStaff() {
-    super(Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 100, 0);
+    super(Config.darkSteelPowerStorageLevelTwo, Config.darkSteelPowerStorageLevelTwo / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemTravelStaff.name());
     setMaxDamage(16);

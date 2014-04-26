@@ -102,15 +102,25 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
             numPearls++;
           }
           for (int i = 0; i < evt.lootingLevel; i++) {
-            if(Math.random() >= Config.darkSteelSwordEnderPearlDropChancePerLooting) {
+            if(Math.random() <= Config.darkSteelSwordEnderPearlDropChancePerLooting) {
               numPearls++;
             }
           }
-          //TODO: Shouldn't I add this to the list in the event?
-          Util.dropItems(player.worldObj, new ItemStack(Items.ender_pearl, numPearls, 0), evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ,
-              true);
-        }
 
+          int existing = 0;
+          for (EntityItem stack : evt.drops) {
+            if(stack.getEntityItem() != null && stack.getEntityItem().getItem() == Items.ender_pearl) {
+              existing += stack.getEntityItem().stackSize;
+            }
+          }
+          int toDrop = numPearls - existing;
+          if(toDrop > 0) {
+            evt.drops.add(Util.createDrop(player.worldObj, new ItemStack(Items.ender_pearl, toDrop, 0), evt.entityLiving.posX, evt.entityLiving.posY,
+                                evt.entityLiving.posZ,
+                                false));
+          }
+
+        }
       }
 
     }
@@ -244,7 +254,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE +  Lang.localize("item.darkSteel_sword.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line1"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line2"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
