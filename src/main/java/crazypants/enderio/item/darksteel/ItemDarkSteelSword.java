@@ -228,12 +228,12 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    AnvilRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -248,7 +248,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line2"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
     }
-    AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {

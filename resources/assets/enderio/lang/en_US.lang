@@ -245,25 +245,39 @@ enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Enderman can't teleport once hit.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 
-enderio.darksteel.upgrade.vibrant.name=Empowered
-enderio.darksteel.upgrade.vibrant.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.vibrant.tooltip.detailed.line2=Half durability damage absorbed
-enderio.darksteel.upgrade.vibrant.tooltip.detailed.line3=by power.
+enderio.darksteel.upgrade.empowered_one.name=Empowered
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.energy_one.name=Empowered 2
-enderio.darksteel.upgrade.energy_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.energy_one.tooltip.detailed.line2=Half durability damage absorbed
-enderio.darksteel.upgrade.energy_one.tooltip.detailed.line3=by power.
+enderio.darksteel.upgrade.empowered_two.name=Empowered 2
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.energy_two.name=Empowered 3
-enderio.darksteel.upgrade.energy_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.energy_two.tooltip.detailed.line2=Half durability damage absorbed
-enderio.darksteel.upgrade.energy_two.tooltip.detailed.line3=by power.
+enderio.darksteel.upgrade.empowered_three.name=Empowered 3
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.energy_three.name=Empowered 4
-enderio.darksteel.upgrade.energy_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.energy_three.tooltip.detailed.line2=Half durability damage absorbed
-enderio.darksteel.upgrade.energy_three.tooltip.detailed.line3=by power.
+enderio.darksteel.upgrade.empowered_four.name=Empowered 4
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.jump_one.name=Jump
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
+
+enderio.darksteel.upgrade.jump_two.name=Jump 2
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
+
+enderio.darksteel.upgrade.jump_three.name=Jump 3
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Allows triple jumps
+
+enderio.darksteel.upgrade.speed_one.name=Speed
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Increases movement speed
 
 //------GUI
 

@@ -35,7 +35,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   static {
     FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
-    MinecraftForge.EVENT_BUS.register(AnvilRecipeManager.instance);
+    MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }
 
   public static ItemDarkSteelArmor forArmorType(short armorType) {
@@ -77,12 +77,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    AnvilRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -92,7 +92,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(str != null) {
       list.add(str);
     }
-    AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override

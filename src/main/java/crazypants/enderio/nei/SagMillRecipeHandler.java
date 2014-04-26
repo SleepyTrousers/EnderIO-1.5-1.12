@@ -25,6 +25,7 @@ import crazypants.enderio.crafting.RecipeReigistry;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.GrindingBall;
 import crazypants.enderio.machine.crusher.GuiCrusher;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.render.RenderUtil;
 
 public class SagMillRecipeHandler extends TemplateRecipeHandler {
@@ -116,7 +117,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     drawProgressBar(50, 33, 176, 0, 22, 13, 48, 3);
 
     MillRecipe recipe = (MillRecipe) arecipes.get(recipeIndex);
-    String energyString = (int) recipe.getEnergy() + " MJ";
+    String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 90, 22, 0xFFFFFFFF);
   }
 

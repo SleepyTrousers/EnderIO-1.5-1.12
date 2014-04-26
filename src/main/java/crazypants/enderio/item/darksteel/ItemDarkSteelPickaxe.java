@@ -162,12 +162,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    AnvilRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    AnvilRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -186,7 +186,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian / 10) + " "
           + PowerDisplayUtil.abrevation() + ")");
     }
-    AnvilRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {

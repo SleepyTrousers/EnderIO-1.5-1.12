@@ -17,6 +17,7 @@ import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.crafting.IRecipeOutput;
 import crazypants.enderio.crafting.RecipeReigistry;
 import crazypants.enderio.machine.alloy.GuiAlloySmelter;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
@@ -113,7 +114,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     drawProgressBar(98, 33, 176, 0, 22, 13, 48, 3);
     drawProgressBar(50, 33, 176, 0, 22, 13, 48, 3);
     AlloySmelterRecipe recipe = (AlloySmelterRecipe) arecipes.get(recipeIndex);
-    String energyString = (int) recipe.getEnergy() + " MJ";
+    String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 100, 57, 0xFFFFFFFF);
   }
 

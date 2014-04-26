@@ -5,22 +5,26 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.util.Lang;
 
-public class AnvilRecipeManager {
+public class DarkSteelRecipeManager {
 
-  public static AnvilRecipeManager instance = new AnvilRecipeManager();
+  public static DarkSteelRecipeManager instance = new DarkSteelRecipeManager();
 
   private List<IDarkSteelUpgrade> upgrades = new ArrayList<IDarkSteelUpgrade>();
 
-  public AnvilRecipeManager() {
-    upgrades.add(EnergyUpgrade.VIBRANT);
-    upgrades.add(EnergyUpgrade.ENERGY_ONE);
-    upgrades.add(EnergyUpgrade.ENERGY_TWO);
-    upgrades.add(EnergyUpgrade.ENERGY_THREE);
+  public DarkSteelRecipeManager() {
+    upgrades.add(EnergyUpgrade.EMPOWERED);
+    upgrades.add(EnergyUpgrade.EMPOWERED_TWO);
+    upgrades.add(EnergyUpgrade.EMPOWERED_THREE);
+    upgrades.add(EnergyUpgrade.EMPOWERED_FOUR);
+    upgrades.add(JumpUpgrade.JUMP_ONE);
+    upgrades.add(JumpUpgrade.JUMP_TWO);
+    upgrades.add(JumpUpgrade.JUMP_THREE);
   }
 
   @SubscribeEvent
@@ -32,6 +36,9 @@ public class AnvilRecipeManager {
     for (IDarkSteelUpgrade upgrade : upgrades) {
       if(upgrade.isUpgradeItem(evt.right) && upgrade.canAddToItem(evt.left)) {
         ItemStack res = new ItemStack(evt.left.getItem(), 1, evt.left.getItemDamage());
+        if(evt.left.stackTagCompound != null) {
+          res.stackTagCompound = (NBTTagCompound)evt.left.stackTagCompound.copy();
+        }
         upgrade.writeToItem(res);
         evt.output = res;
         evt.cost = upgrade.getLevelCost();
