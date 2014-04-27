@@ -247,8 +247,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       }
 
       inputs = new ArrayList<PositionedStack>();
-      inputs.add(new PositionedStack(inputsOne, 51, 0));
-      inputs.add(new PositionedStack(inputsTwo, 99,0));
+      inputs.add(new PositionedStack(inputsOne, 51, 1));
+      inputs.add(new PositionedStack(inputsTwo, 100,1));
 
       this.energy = energy;
       this.result = result;
