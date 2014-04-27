@@ -293,7 +293,7 @@
 
     <recipe name="Wool" energyCost="120">
       <input>
-        <itemStack modID="minecraft" itemName="wool" />
+        <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>
       </input>
       <output>
         <itemStack modID="minecraft" itemName="string" number="3"/>        
