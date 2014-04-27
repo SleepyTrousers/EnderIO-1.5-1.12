@@ -24,7 +24,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
   private TileCombustionGenerator gen;
 
   public GuiCombustionGenerator(InventoryPlayer par1InventoryPlayer, TileCombustionGenerator te) {
-    super(te, new EmptyContainer());
+    super(te, new ContainerCombustionEngine(par1InventoryPlayer, te));
     this.gen = te;
 
     addToolTip(new GuiToolTip(new Rectangle(48, 21, 15, 47), "") {

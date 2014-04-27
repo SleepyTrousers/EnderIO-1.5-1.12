@@ -72,12 +72,20 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCombustionGenerator) {
+      return new ContainerCombustionEngine(player.inventory, (TileCombustionGenerator)te);
+    }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return new GuiCombustionGenerator(player.inventory, (TileCombustionGenerator) world.getTileEntity(x, y, z));
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCombustionGenerator) {
+      return new GuiCombustionGenerator(player.inventory, (TileCombustionGenerator) te);
+    }
+    return null;
   }
 
   @Override
