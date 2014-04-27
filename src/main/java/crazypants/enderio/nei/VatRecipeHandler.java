@@ -30,11 +30,10 @@ import crazypants.render.RenderUtil;
 
 public class VatRecipeHandler extends TemplateRecipeHandler {
 
-  private Rectangle inTankBounds = new Rectangle(25,1,15,47);
-  private Rectangle outTankBounds = new Rectangle(127,1,15,47);
-  private Rectangle inTankBoundsLower = new Rectangle(25,70,15,47);
-  private Rectangle outTankBoundsLower = new Rectangle(127,70,15,47);
-
+  private Rectangle inTankBounds = new Rectangle(25, 1, 15, 47);
+  private Rectangle outTankBounds = new Rectangle(127, 1, 15, 47);
+  private Rectangle inTankBoundsLower = new Rectangle(25, 70, 15, 47);
+  private Rectangle outTankBoundsLower = new Rectangle(127, 70, 15, 47);
 
   public VatRecipeHandler() {
   }
@@ -113,7 +112,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
 
     for (IEnderIoRecipe recipe : recipes) {
-      if (recipe.isInput(ingredient)) {
+      if(recipe.isInput(ingredient)) {
         InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
         res.setIngredientPermutation(res.inputs, ingredient);
         arecipes.add(res);
@@ -123,13 +122,14 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void drawExtras(int recipeIndex) {
-    InnerVatRecipe rec = (InnerVatRecipe)arecipes.get(recipeIndex);
+    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
     if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-      RenderUtil.renderGuiTank(rec.inFluid, rec.inFluid.amount, rec.inFluid.amount, inTankBounds.x,inTankBounds.y,0,inTankBounds.width,inTankBounds.height);
+      RenderUtil.renderGuiTank(rec.inFluid, rec.inFluid.amount, rec.inFluid.amount, inTankBounds.x, inTankBounds.y, 0, inTankBounds.width, inTankBounds.height);
     }
 
     if(rec.result != null && rec.result.getFluid() != null) {
-      RenderUtil.renderGuiTank(rec.result, rec.result.amount, rec.result.amount, outTankBounds.x,outTankBounds.y,0,outTankBounds.width,outTankBounds.height);
+      RenderUtil
+          .renderGuiTank(rec.result, rec.result.amount, rec.result.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
     }
 
     //    drawProgressBar(98, 33, 176, 0, 22, 13, 48, 3);
@@ -140,8 +140,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    int col = ColorUtil.getRGBA(0.75f,1.0f,1.0f,1.0f);
-    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 86 - width/2, 55, col, true);
+    int col = ColorUtil.getRGBA(0.75f, 1.0f, 1.0f, 1.0f);
+    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 86 - width / 2, 55, col, true);
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glColor4f(1, 1, 1, 1);
 
@@ -158,26 +158,26 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     Point pos = GuiDraw.getMousePosition();
 
     int[] offset = RecipeInfo.getGuiOffset(gui);
-    Point relMouse = new Point(pos.x- ( (gui.width - 176) / 2) - offset[0], pos.y - ((gui.height - 166) /2) - offset[1] );
+    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset[0], pos.y - ((gui.height - 166) / 2) - offset[1]);
 
-    if (mouseInBounds(relMouse)) {
-      if (recipeIndex % 2 == 0 && inTankBounds.union(outTankBounds).contains(relMouse)) {
+    if(mouseInBounds(relMouse)) {
+      if(recipeIndex % 2 == 0 && inTankBounds.union(outTankBounds).contains(relMouse)) {
         return getVatFluid(recipeIndex, arg1, inTankBounds.contains(relMouse));
       }
-      else if (recipeIndex % 2 == 1 && inTankBoundsLower.union(outTankBoundsLower).contains(relMouse)) {
+      else if(recipeIndex % 2 == 1 && inTankBoundsLower.union(outTankBoundsLower).contains(relMouse)) {
         return getVatFluid(recipeIndex, arg1, inTankBoundsLower.contains(relMouse));
       }
     }
     return super.handleTooltip(gui, arg1, recipeIndex);
   }
-  
+
   private boolean mouseInBounds(Point mouse) {
-    return inTankBounds.union(outTankBounds).union(inTankBoundsLower).union(outTankBoundsLower).contains(mouse);
+    return inTankBounds.contains(mouse) || outTankBounds.contains(mouse) || inTankBoundsLower.contains(mouse) || outTankBoundsLower.contains(mouse);
   }
-  
+
   private List<String> getVatFluid(int index, List<String> list, boolean in) {
-    InnerVatRecipe rec = (InnerVatRecipe)arecipes.get(index);
-    if (in) {
+    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(index);
+    if(in) {
       if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
         list.add(rec.inFluid.getFluid().getLocalizedName());
       }
@@ -221,7 +221,6 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     return result;
   }
 
-
   public class InnerVatRecipe extends TemplateRecipeHandler.CachedRecipe {
 
     private ArrayList<PositionedStack> inputs;
@@ -246,7 +245,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     public InnerVatRecipe(float energy, List<IRecipeInput> ingredients, FluidStack result) {
       ArrayList<ItemStack> inputsOne = new ArrayList<ItemStack>();
       ArrayList<ItemStack> inputsTwo = new ArrayList<ItemStack>();
-      for(IRecipeInput input : ingredients) {
+      for (IRecipeInput input : ingredients) {
         if(input.getItem() != null) {
           List<ItemStack> equivs = getInputs(input);
           if(input.getSlot() == 0) {
@@ -261,7 +260,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
       inputs = new ArrayList<PositionedStack>();
       inputs.add(new PositionedStack(inputsOne, 51, 1));
-      inputs.add(new PositionedStack(inputsTwo, 100,1));
+      inputs.add(new PositionedStack(inputsTwo, 100, 1));
 
       this.energy = energy;
       this.result = result;
