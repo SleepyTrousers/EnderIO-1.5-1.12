@@ -9,6 +9,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import buildcraft.api.fuels.IronEngineCoolant;
 import buildcraft.api.fuels.IronEngineFuel;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -81,7 +82,7 @@ import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 
-@Mod(modid = "EnderIO", name = "Ender IO", version = "1.1.0_alpha", dependencies = "required-after:Forge@[7.0,);required-after:FML@[5.0.5,)")
+@Mod(modid = "EnderIO", name = "Ender IO", version = "1.1.0_alpha", dependencies = "required-after:Forge@[10.12.1.1060,);required-after:FML@[5.0.5,)")
 public class EnderIO {
 
   @Instance("EnderIO")
@@ -254,6 +255,10 @@ public class EnderIO {
     fluidFireWater = FluidRegistry.getFluid(f.getName());
     blockFireWater = BlockFluidEio.create(fluidFireWater, new MaterialLiquid(MapColor.grayColor));
     IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
+
+    if(!IronEngineCoolant.isCoolant(FluidRegistry.getFluid("water"))) {
+      IronEngineCoolant.addCoolant(FluidRegistry.getFluid("water"), 0.0023F);
+    }
 
 
     itemBasicCapacitor = ItemCapacitor.create();
