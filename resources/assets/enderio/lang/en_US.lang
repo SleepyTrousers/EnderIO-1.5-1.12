@@ -78,6 +78,10 @@ enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.darkGrindingBall.name=Dark Steel Ball
+enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
+enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
+enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
+enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
 
 
 //Quartz / Glass
@@ -346,9 +350,9 @@ enderio.gui.capBank.inputRs=Input Redstone Mode
 enderio.gui.capBank.outputRs=Output Redstone Mode
 enderio.gui.capBank.maxIo=Max I/O
 enderio.gui.capBank.maxInput=Max Input
-enderio.gui.capBank.maxOutput=Max Ouput
+enderio.gui.capBank.maxOutput=Max Output
 enderio.gui.capBank.inputMode=Input
-enderio.gui.capBank.outputMode=Ouput
+enderio.gui.capBank.outputMode=Output
 
 //Transceiver
 enderio.gui.trans.publicChannel=Public Channel
