@@ -35,6 +35,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
   protected IIcon onIcon;
   protected IIcon topIcon;
+  protected IIcon blockIconSingle;
 
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
@@ -43,7 +44,10 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:vatFront");
+    blockIconSingle = iIconRegister.registerIcon("enderio:vatFrontSingle");
     onIcon = iIconRegister.registerIcon("enderio:vatFrontOn");
+
+
     topIcon = iIconRegister.registerIcon("enderio:vatTop");
 
     overlayIconPull = iIconRegister.registerIcon("enderio:vatOverlayPull");
@@ -51,6 +55,11 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     overlayIconPushPull = iIconRegister.registerIcon("enderio:vatOverlayPushPull");
     overlayIconDisabled = iIconRegister.registerIcon("enderio:vatOverlayDisabled");
     overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
+  }
+
+  @Override
+  public int getLightOpacity() {
+    return 0;
   }
 
   @Override
@@ -65,6 +74,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
     if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
       return topIcon;
+    } else if(blockSide == ForgeDirection.EAST.ordinal() || blockSide == ForgeDirection.WEST.ordinal()) {
+      return blockIconSingle;
     }
 
     if(on) {
@@ -73,6 +84,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       return blockIcon;
     }
   }
+
+
 
   @Override
   public IIcon getIcon(int blockSide, int blockMeta) {

@@ -1,7 +1,6 @@
 package crazypants.enderio.farm;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
@@ -15,6 +14,7 @@ import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
@@ -38,16 +38,9 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
     textures[4] = EnderIO.blockFarmStation.getIcon(3, 0);
     textures[5] = EnderIO.blockFarmStation.getIcon(3, 0);
 
-    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
-    float b = 1;
-    if(world != null) {
-      b = RenderUtil.claculateTotalBrightnessForLocation(Minecraft.getMinecraft().theWorld, x, y, z);
-    }
-
     float[] cols = new float[6];
     for (int i = 0; i < 6; i++) {
-      float m = RenderUtil.getColorMultiplierForFace(ForgeDirection.values()[i]);
-      cols[i] = b * m;
+      cols[i] = RenderUtil.getColorMultiplierForFace(ForgeDirection.values()[i]);
     }
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
@@ -56,7 +49,7 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
     float scale = 0.7f;
     float width = 0.4f;
-    float trans = (1 - scale)/2;
+    float trans = (1 - scale) / 2;
     bb = BoundingBox.UNIT_CUBE.scale(1, scale, width);
     bb = bb.translate(0, -trans, 0);
     Tessellator.instance.addTranslation(x, y, z);
@@ -71,11 +64,10 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
     float topWidth = 0.15f;
     bb = BoundingBox.UNIT_CUBE.scale(1, topWidth, 1);
-    bb = bb.translate(0, 0.2f + topWidth/2f, 0);
+    bb = bb.translate(0, 0.2f + topWidth / 2f, 0);
     Tessellator.instance.addTranslation(x, y, z);
     CubeRenderer.render(bb, textures, null, cols);
     Tessellator.instance.addTranslation(-x, -y, -z);
-
 
     return true;
   }
@@ -103,6 +95,11 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
       this.x = x;
       this.y = y;
       this.z = z;
+    }
+
+    @Override
+    public void apply(Vertex vertex) {
+      apply(vertex.xyz);
     }
 
     @Override

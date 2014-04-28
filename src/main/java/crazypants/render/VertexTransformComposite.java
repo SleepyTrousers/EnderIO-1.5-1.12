@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class VertexTransformComposite implements VertexTransform {
 
@@ -23,11 +24,17 @@ public class VertexTransformComposite implements VertexTransform {
   }
 
   @Override
+  public void apply(Vertex vertex) {
+    for (VertexTransform xform : xforms) {
+      xform.apply(vertex);
+    }
+  }
+
+  @Override
   public void apply(Vector3d vec) {
     for (VertexTransform xform : xforms) {
       xform.apply(vec);
     }
-
   }
 
   @Override

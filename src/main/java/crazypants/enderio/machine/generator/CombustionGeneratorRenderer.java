@@ -35,12 +35,14 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
 
   private OverlayRenderer overlayRenderer = new OverlayRenderer();
 
+  private FacingVertexTransform vt = new FacingVertexTransform();
+
   private TileCombustionGenerator gen;
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-    short facing = 3;
+    short facing = (short)ForgeDirection.EAST.ordinal();
     boolean active = false;
     if(world != null) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -61,7 +63,8 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     //middle chunk
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(1, 0.34, 1);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
+    vt.setFacing(facing);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt);
 
     scaleX = facing != 4 && facing != 5;
     scx = scaleX ? 0.7f : 1;
@@ -71,18 +74,18 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(scx, 0.21, scz);
     bb = bb.translate(0, 0.26f, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt);
 
 
     //lower 1/3
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(scx, 0.21, scz);
     bb = bb.translate(0, -0.26f, 0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt);
 
     //top / bottom connectors
     bb = BoundingBox.UNIT_CUBE.scale(0.35, 1, 0.35);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt);
 
     //tanks
     float size = 0.64f;
@@ -96,10 +99,10 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     bb = bb.translate(tx, 0, tz);
 
     IIcon tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing, tex);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, tex);
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing, tex);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt,tex);
 
     if(gen != null) {
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);

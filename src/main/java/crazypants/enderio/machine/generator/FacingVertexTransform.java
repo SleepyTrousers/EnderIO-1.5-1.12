@@ -3,6 +3,7 @@ package crazypants.enderio.machine.generator;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 class FacingVertexTransform implements VertexTransform {
 
@@ -14,6 +15,11 @@ class FacingVertexTransform implements VertexTransform {
 
   public void setFacing(int facing) {
     transX = facing != 4 && facing != 5;
+  }
+
+  @Override
+  public void apply(Vertex vertex) {
+    apply(vertex.xyz);
   }
 
   @Override
@@ -29,10 +35,6 @@ class FacingVertexTransform implements VertexTransform {
         vec.z += 0.5;
       }
     }
-
-//    vec.y -= 0.5;
-//    vec.y *= 0.8;
-//    vec.y += 0.5;
   }
 
   @Override

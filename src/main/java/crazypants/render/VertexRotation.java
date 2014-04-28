@@ -3,6 +3,7 @@ package crazypants.render;
 import crazypants.vecmath.Quat4d;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class VertexRotation implements VertexTransform {
 
@@ -16,6 +17,11 @@ public class VertexRotation implements VertexTransform {
     this.axis = new Vector3d(axis);
     this.angle = angle;
     quat = Quat4d.makeRotate(angle, axis);
+  }
+
+  @Override
+  public void apply(Vertex vertex) {
+    apply(vertex.xyz);
   }
 
   @Override

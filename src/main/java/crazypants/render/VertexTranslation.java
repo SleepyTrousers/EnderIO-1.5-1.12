@@ -2,6 +2,7 @@ package crazypants.render;
 
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class VertexTranslation implements VertexTransform {
 
@@ -27,6 +28,11 @@ public class VertexTranslation implements VertexTransform {
 
   public VertexTranslation(Vector3f trans) {
     this(trans.x, trans.y, trans.z);
+  }
+
+  @Override
+  public void apply(Vertex vertex) {
+    apply(vertex.xyz);
   }
 
   @Override
