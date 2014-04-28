@@ -88,6 +88,12 @@ public class Vector3d {
     z *= s;
   }
 
+  public void scale(double sx, double sy, double sz) {
+    x *= sx;
+    y *= sy;
+    z *= sz;
+  }
+
   public void normalize() {
     double scale = 1.0 / Math.sqrt(x * x + y * y + z * z);
     scale(scale);
@@ -133,5 +139,7 @@ public class Vector3d {
     y = Math.abs(y);
     z = Math.abs(z);
   }
+
+
 
 }

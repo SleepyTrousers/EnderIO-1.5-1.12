@@ -25,15 +25,11 @@ import crazypants.render.CustomCubeRenderer;
 import crazypants.render.CustomRenderBlocks;
 import crazypants.render.IRenderFace;
 import crazypants.render.RenderUtil;
-import crazypants.render.VertexTransform;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
 
 public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
-
-  private VertXForm xform = new VertXForm();
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
@@ -57,97 +53,53 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
       }
     }
 
-
-    IIcon[] textures = new IIcon[6];
-    if(world != null) {
-      textures[0] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.NORTH.ordinal());
-      textures[1] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.SOUTH.ordinal());
-      textures[2] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.UP.ordinal());
-      textures[3] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.DOWN.ordinal());
-      textures[4] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.EAST.ordinal());
-      textures[5] = EnderIO.blockCombustionGenerator.getIcon(world, x, y, z, ForgeDirection.WEST.ordinal());
-    } else {
-      textures[0] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.NORTH.ordinal(), 0);
-      textures[1] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.SOUTH.ordinal(), 0);
-      textures[2] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.UP.ordinal(), 0);
-      textures[3] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.DOWN.ordinal(), 0);
-      textures[5] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.EAST.ordinal(), 0);
-      textures[4] = EnderIO.blockCombustionGenerator.getIcon(ForgeDirection.WEST.ordinal(), 0);
-    }
-
-
-    Tessellator.instance.setBrightness(15 << 20 | 15 << 4);
-    float b = 1;
-    if(world != null) {
-      b = RenderUtil.claculateTotalBrightnessForLocation(Minecraft.getMinecraft().theWorld, x, y, z);
-    }
-
-    float[] cols = new float[6];
-    for (int i = 0; i < 6; i++) {
-      float m = RenderUtil.getColorMultiplierForFace(ForgeDirection.values()[i]);
-      cols[i] = b * m;
-    }
-
-
+    BoundingBox bb;
+    boolean scaleX = facing != 4 && facing != 5;
+    float scx;
+    float scz;
 
     //middle chunk
-    BoundingBox bb = BoundingBox.UNIT_CUBE;
     bb = BoundingBox.UNIT_CUBE;
     bb = bb.scale(1, 0.34, 1);
-    xform.set(x, y, z, facing);
-    CubeRenderer.render(bb, textures, xform, cols);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
 
-
-    boolean scaleX = facing != 4 && facing != 5;
-    float scx = scaleX ? 0.7f : 1;
-    float scz = scaleX ? 1 : 0.7f;
-
-    //change the front texture to blank for the top and bottom sections
-    if(scaleX) {
-      textures[0] = EnderIO.blockCombustionGenerator.getBackIcon();
-      textures[1] = EnderIO.blockCombustionGenerator.getBackIcon();
-    } else {
-      textures[4] = EnderIO.blockCombustionGenerator.getBackIcon();
-      textures[5] = EnderIO.blockCombustionGenerator.getBackIcon();
-    }
+    scaleX = facing != 4 && facing != 5;
+    scx = scaleX ? 0.7f : 1;
+    scz = scaleX ? 1 : 0.7f;
 
     //top 1/3
     bb = BoundingBox.UNIT_CUBE;
-    bb = bb.scale(scx, 0.25, scz);
-    bb = bb.translate(0, 0.29f, 0);
-    xform.set(x, y, z, facing);
-    CubeRenderer.render(bb, textures, xform, cols);
+    bb = bb.scale(scx, 0.21, scz);
+    bb = bb.translate(0, 0.26f, 0);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
+
 
     //lower 1/3
     bb = BoundingBox.UNIT_CUBE;
-    bb = bb.scale(scx, 0.25, scz);
-    bb = bb.translate(0, -0.29f, 0);
-    xform.set(x, y, z, facing);
-    CubeRenderer.render(bb, textures, xform, cols);
-
+    bb = bb.scale(scx, 0.21, scz);
+    bb = bb.translate(0, -0.26f, 0);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
 
     //top / bottom connectors
-    bb = BoundingBox.UNIT_CUBE.scale(0.35,1,0.35);
-    bb = bb.translate(x, y, z);
-    CubeRenderer.render(bb, textures[2], null, cols, false);
+    bb = BoundingBox.UNIT_CUBE.scale(0.35, 1, 0.35);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing);
 
     //tanks
-    float size = 0.34f;
-    bb = BoundingBox.UNIT_CUBE.scale(0.98, 0.98, 0.98);
-
+    float size = 0.64f;
+    bb = BoundingBox.UNIT_CUBE.scale(0.98, 1, 0.98);
     scx = scaleX ? size : 1;
     scz = scaleX ? 1 : size;
     bb = bb.scale(scx, 1, scz);
 
-    float tx = scaleX ? 0.25f * 1.25f : 0;
-    float tz = scaleX ? 0 : 0.25f * 1.25f;
-    bb = bb.translate(x + tx, y, z + tz);
+    float tx = scaleX ? 0.5f: 0;
+    float tz = scaleX ? 0 : 0.5f;
+    bb = bb.translate(tx, 0, tz);
 
     IIcon tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
-    CubeRenderer.render(bb, tex, null, cols, false);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing, tex);
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);
-    CubeRenderer.render(bb, tex, null, cols, false);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, facing, tex);
 
     if(gen != null) {
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);
@@ -161,10 +113,9 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float var8) {
 
     TileCombustionGenerator gen = (TileCombustionGenerator) tileentity;
-    if(gen.coolantTank.getFluidAmount() <= 0 && gen.fuelTank.getFluidAmount() <=0 ) {
+    if(gen.coolantTank.getFluidAmount() <= 0 && gen.fuelTank.getFluidAmount() <= 0) {
       return;
     }
-
 
     Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
@@ -186,7 +137,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     renderTank(gen, bb, gen.coolantTank, true);
     renderTank(gen, bb, gen.fuelTank, false);
     tes.draw();
-    tes.setTranslation(0,0,0);
+    tes.setTranslation(0, 0, 0);
 
     GL11.glPopAttrib();
     Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
@@ -199,19 +150,19 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     if(tank.getFluidAmount() > 0) {
       IIcon icon = tank.getFluid().getFluid().getStillIcon();
       if(icon != null) {
-        float fullness = (float)(tank.getFluidAmount() - 1000) / (tank.getCapacity() - 1000);
+        float fullness = (float) (tank.getFluidAmount() - 1000) / (tank.getCapacity() - 1000);
         float scx = scaleX ? size : 1f;
         float scz = scaleX ? 1f : size;
         bb = bb.scale(scx, 0.97 * fullness, scz);
 
-        float tx = scaleX ? 0.25f  * 1.25f : 0;
+        float tx = scaleX ? 0.25f * 1.25f : 0;
         float tz = scaleX ? 0 : 0.25f * 1.25f;
         float ty = -(0.98f - (bb.maxY - bb.minY)) / 2;
         if(!isLeft) {
           tx = -tx;
           tz = -tz;
         }
-        bb = bb.translate(tx, ty ,tz);
+        bb = bb.translate(tx, ty, tz);
         CubeRenderer.render(bb, icon);
       }
     }
@@ -225,58 +176,16 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
     Tessellator tes = Tessellator.instance;
+    GL11.glDisable(GL11.GL_LIGHTING);
     tes.startDrawingQuads();
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     tes.draw();
+    GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   @Override
   public int getRenderId() {
     return BlockCombustionGenerator.renderId;
-  }
-
-  private static class VertXForm implements VertexTransform {
-
-    int x;
-    int y;
-    int z;
-    boolean transX;
-
-    public VertXForm() {
-    }
-
-    void set(int x, int y, int z, short facing) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      transX = facing != 4 && facing != 5;
-    }
-
-    @Override
-    public void apply(Vector3d vec) {
-      if(vec.y > 0.9 || vec.y < 0.1) {
-        if(transX) {
-          vec.x -= 0.5;
-          vec.x *= 0.6;
-          vec.x += 0.5;
-        } else {
-          vec.z -= 0.5;
-          vec.z *= 0.6;
-          vec.z += 0.5;
-        }
-      }
-
-      vec.y -= 0.5;
-      vec.y *= 0.8;
-      vec.y += 0.5;
-
-      vec.add(x, y, z);
-    }
-
-    @Override
-    public void applyToNormal(Vector3f vec) {
-    }
-
   }
 
   private class OverlayRenderer implements IRenderFace {
@@ -287,15 +196,15 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
 
       if(gen != null && par1Block instanceof AbstractMachineBlock) {
         Vector3d offset = ForgeDirectionOffsets.offsetScaled(face, 0.01);
-        Tessellator.instance.addTranslation((float)offset.x, (float)offset.y, (float)offset.z);
+        Tessellator.instance.addTranslation((float) offset.x, (float) offset.y, (float) offset.z);
 
         IoMode mode = gen.getIoMode(face);
-        IIcon tex = ((AbstractMachineBlock)par1Block).getOverlayIconForMode(mode);
+        IIcon tex = ((AbstractMachineBlock) par1Block).getOverlayIconForMode(mode);
         if(tex != null) {
-          ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z, tex);
+          ccr.getCustomRenderBlocks().doDefaultRenderFace(face, par1Block, x, y, z, tex);
         }
 
-        Tessellator.instance.addTranslation(-(float)offset.x, -(float)offset.y, -(float)offset.z);
+        Tessellator.instance.addTranslation(-(float) offset.x, -(float) offset.y, -(float) offset.z);
       }
 
     }

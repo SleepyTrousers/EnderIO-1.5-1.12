@@ -33,6 +33,11 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   }
 
   @Override
+  public int getLightOpacity() {
+    return 0;
+  }
+
+  @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
     TileEntity te = world.getTileEntity(x, y, z);
