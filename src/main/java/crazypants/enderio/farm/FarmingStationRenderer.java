@@ -3,14 +3,13 @@ package crazypants.enderio.farm;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.generator.TranslatedCubeRenderer;
 import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
@@ -22,30 +21,19 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+    GL11.glDisable(GL11.GL_LIGHTING);
     Tessellator.instance.startDrawingQuads();
     renderWorldBlock(null, 0, 0, 0, block, modelId, renderer);
     Tessellator.instance.draw();
+    GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
-    IIcon[] textures = new IIcon[6];
-    textures[0] = EnderIO.blockFarmStation.getIcon(3, 0);
-    textures[1] = EnderIO.blockFarmStation.getIcon(3, 0);
-    textures[2] = EnderIO.blockFarmStation.getIcon(1, 0);
-    textures[3] = EnderIO.blockFarmStation.getIcon(0, 0);
-    textures[4] = EnderIO.blockFarmStation.getIcon(3, 0);
-    textures[5] = EnderIO.blockFarmStation.getIcon(3, 0);
-
-    float[] cols = new float[6];
-    for (int i = 0; i < 6; i++) {
-      cols[i] = RenderUtil.getColorMultiplierForFace(ForgeDirection.values()[i]);
-    }
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
-    xform.set(x, y, z);
-    CubeRenderer.render(bb, textures, xform, cols);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
 
     float scale = 0.7f;
     float width = 0.4f;
@@ -53,20 +41,20 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
     bb = BoundingBox.UNIT_CUBE.scale(1, scale, width);
     bb = bb.translate(0, -trans, 0);
     Tessellator.instance.addTranslation(x, y, z);
-    CubeRenderer.render(bb, textures, null, cols);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
     Tessellator.instance.addTranslation(-x, -y, -z);
 
     bb = BoundingBox.UNIT_CUBE.scale(width, scale, 1);
     bb = bb.translate(0, -trans, 0);
     Tessellator.instance.addTranslation(x, y, z);
-    CubeRenderer.render(bb, textures, null, cols);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
     Tessellator.instance.addTranslation(-x, -y, -z);
 
     float topWidth = 0.15f;
     bb = BoundingBox.UNIT_CUBE.scale(1, topWidth, 1);
     bb = bb.translate(0, 0.2f + topWidth / 2f, 0);
     Tessellator.instance.addTranslation(x, y, z);
-    CubeRenderer.render(bb, textures, null, cols);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
     Tessellator.instance.addTranslation(-x, -y, -z);
 
     return true;
@@ -84,17 +72,7 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
   private static class VertXForm implements VertexTransform {
 
-    int x;
-    int y;
-    int z;
-
     public VertXForm() {
-    }
-
-    void set(int x, int y, int z) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
     }
 
     @Override
@@ -105,7 +83,6 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
     @Override
     public void apply(Vector3d vec) {
       if(vec.y > 0.9) {
-
         double pinch = 0.5;
         vec.x -= 0.5;
         vec.x *= pinch;
@@ -119,8 +96,6 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
       vec.y -= 0.5;
       vec.y *= scale;
       vec.y += (0.5 * scale);
-
-      vec.add(x, y, z);
     }
 
     @Override
