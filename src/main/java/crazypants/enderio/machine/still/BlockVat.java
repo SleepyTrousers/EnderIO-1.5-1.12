@@ -36,6 +36,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   protected IIcon onIcon;
   protected IIcon topIcon;
   protected IIcon blockIconSingle;
+  protected IIcon blockIconSingleOn;
 
   public BlockVat() {
     super(ModObject.blockVat, TileVat.class);
@@ -45,8 +46,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:vatFront");
     blockIconSingle = iIconRegister.registerIcon("enderio:vatFrontSingle");
+    blockIconSingleOn = iIconRegister.registerIcon("enderio:vatFrontOnSingle");
     onIcon = iIconRegister.registerIcon("enderio:vatFrontOn");
-
 
     topIcon = iIconRegister.registerIcon("enderio:vatTop");
 
@@ -75,7 +76,11 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     if(blockSide == ForgeDirection.UP.ordinal() || blockSide == ForgeDirection.DOWN.ordinal()) {
       return topIcon;
     } else if(blockSide == ForgeDirection.EAST.ordinal() || blockSide == ForgeDirection.WEST.ordinal()) {
-      return blockIconSingle;
+      if(on) {
+        return blockIconSingleOn;
+      } else {
+        return blockIconSingle;
+      }
     }
 
     if(on) {

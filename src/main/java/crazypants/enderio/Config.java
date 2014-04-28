@@ -115,11 +115,11 @@ public final class Config {
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
 
   public static int hootchPowerPerCycle = 6;
-  public static int hootchPowerTotalBurnTime = 8000;
-  public static int rocketFuelPowerPerCycle = 9;
-  public static int rocketFuelPowerTotalBurnTime = (int)Math.round(hootchPowerTotalBurnTime * 1.2);
-  public static int fireWaterPowerPerCycle = 12;
-  public static int fireWaterPowerTotalBurnTime = (int)Math.round(hootchPowerTotalBurnTime * 1.5);
+  public static int hootchPowerTotalBurnTime = 4000;
+  public static int rocketFuelPowerPerCycle = 16;
+  public static int rocketFuelPowerTotalBurnTime = 7000;
+  public static int fireWaterPowerPerCycle = 8;
+  public static int fireWaterPowerTotalBurnTime = 15000;
   public static float vatPowerUserPerTick = 2;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
