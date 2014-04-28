@@ -19,7 +19,11 @@ import org.lwjgl.input.Keyboard;
 import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
+import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.Lang;
 
@@ -27,6 +31,9 @@ public class TooltipAddera {
 
 
   public static TooltipAddera instance = new TooltipAddera();
+
+  //TODO: Need to decouple this stuff with a callback
+  private BallTipProvider btp = new BallTipProvider();
 
   static {
     MinecraftForge.EVENT_BUS.register(instance);
@@ -62,6 +69,12 @@ public class TooltipAddera {
 
     if(Config.addFuelTooltipsToAllFluidContainers) {
       addTooltipForFluid(evt.toolTip, evt.itemStack);
+    }
+
+    IGrindingMultiplier gb = CrusherRecipeManager.getInstance().getGrindballFromStack(evt.itemStack);
+    if(gb != null) {
+      btp.ball = gb;
+      TooltipAddera.instance.addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
     }
   }
 
@@ -158,6 +171,40 @@ public class TooltipAddera {
       unlock = itemstack.getItem().getUnlocalizedName();
     }
     addDetailedTooltipFromResources(list, unlock);
+  }
+
+  private static class BallTipProvider implements IAdvancedTooltipProvider {
+
+    IGrindingMultiplier ball;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+      if(ball == null) {
+        return;
+      }
+      list.add(EnumChatFormatting.BLUE + Lang.localize("darkGrindingBall.tooltip.detailed.line1"));
+      list.add(EnumChatFormatting.GRAY + Lang.localize("darkGrindingBall.tooltip.detailed.line2") + toPercent(ball.getGrindingMultiplier()));
+      list.add(EnumChatFormatting.GRAY + Lang.localize("darkGrindingBall.tooltip.detailed.line3") + toPercent(ball.getChanceMultiplier()));
+      list.add(EnumChatFormatting.GRAY + Lang.localize("darkGrindingBall.tooltip.detailed.line4") + toPercent(1 - ball.getPowerMultiplier()));
+    }
+
+    private String toPercent(float fl) {
+      fl = fl * 100;
+      int per = Math.round(fl);
+      return " " + per + "%";
+    }
   }
 
 
