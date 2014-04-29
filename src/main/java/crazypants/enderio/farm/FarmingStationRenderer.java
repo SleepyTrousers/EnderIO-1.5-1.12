@@ -22,9 +22,11 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
     GL11.glDisable(GL11.GL_LIGHTING);
+    GL11.glDisable(GL11.GL_CULL_FACE);
     Tessellator.instance.startDrawingQuads();
-    renderWorldBlock(null, 0, 0, 0, block, modelId, renderer);
+    renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     Tessellator.instance.draw();
+    GL11.glEnable(GL11.GL_CULL_FACE);
     GL11.glEnable(GL11.GL_LIGHTING);
   }
 
@@ -33,29 +35,23 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
 
     float scale = 0.7f;
     float width = 0.4f;
     float trans = (1 - scale) / 2;
     bb = BoundingBox.UNIT_CUBE.scale(1, scale, width);
     bb = bb.translate(0, -trans, 0);
-    Tessellator.instance.addTranslation(x, y, z);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
-    Tessellator.instance.addTranslation(-x, -y, -z);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
 
     bb = BoundingBox.UNIT_CUBE.scale(width, scale, 1);
     bb = bb.translate(0, -trans, 0);
-    Tessellator.instance.addTranslation(x, y, z);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
-    Tessellator.instance.addTranslation(-x, -y, -z);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
 
     float topWidth = 0.15f;
     bb = BoundingBox.UNIT_CUBE.scale(1, topWidth, 1);
-    bb = bb.translate(0, 0.2f + topWidth / 2f, 0);
-    Tessellator.instance.addTranslation(x, y, z);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
-    Tessellator.instance.addTranslation(-x, -y, -z);
+    bb = bb.translate(0, 0.3f + topWidth / 2f, 0);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
 
     return true;
   }

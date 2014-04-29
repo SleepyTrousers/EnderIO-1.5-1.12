@@ -23,7 +23,6 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   protected BlockFarmStation() {
     super(ModObject.blockFarmStation, TileFarmStation.class);
     setBlockBounds(0, 0, 0, 1, 0.85f, 1);
-    setCreativeTab(null);
   }
 
   @Override
@@ -51,12 +50,12 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {
-    return "enderio:blankMachinePanel";
+    return getBackIconKey(active);
   }
 
   @Override
   protected String getSideIconKey(boolean active) {
-    return "enderio:itemConduitIoConnector";
+    return super.getBackIconKey(active);
   }
 
   @Override

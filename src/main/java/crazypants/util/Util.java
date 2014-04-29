@@ -272,4 +272,13 @@ public class Util {
     return new Vector3d(lv.xCoord, lv.yCoord, lv.zCoord);
   }
 
+  public static boolean isEquipped(EntityPlayer player, Class<? extends Item> class1) {
+    if(player == null || player.inventory == null || player.inventory.getCurrentItem() == null) {
+    return false;
+    }
+    //player.inventory.getCurrentItem().getClass().getItem().isAssignableFrom(class1)
+    return class1.isAssignableFrom(player.inventory.getCurrentItem().getItem().getClass());
+  }
+
+
 }

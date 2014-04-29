@@ -14,6 +14,7 @@ import crazypants.render.IRenderFace;
 import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
 public class TranslatedCubeRenderer {
@@ -29,8 +30,13 @@ public class TranslatedCubeRenderer {
   }
 
   public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, IIcon overrideTexture) {
+    renderBoundingBox(x, y, z, block, bb, vt, overrideTexture, true);
+  }
+
+  public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, IIcon overrideTexture, boolean doLighting) {
     block.setBlockBounds(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
     xformRenderer.xform = vt;
+    xformRenderer.enableLighting = doLighting;
     ccr.setOverrideTexture(overrideTexture);
     ccr.renderBlock(Minecraft.getMinecraft().theWorld, block, x, y, z, xformRenderer);
     ccr.setOverrideTexture(null);
@@ -39,7 +45,8 @@ public class TranslatedCubeRenderer {
 
   private class XFormRenderer implements IRenderFace {
 
-    public VertexTransform xform;
+    VertexTransform xform;
+    boolean enableLighting = true;
 
     @Override
     public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
@@ -49,6 +56,12 @@ public class TranslatedCubeRenderer {
         for (Vertex v : refVertices) {
           v.xyz.sub(xyz);
           xform.apply(v);
+          if(!enableLighting) {
+            v.brightness = -1;
+            float col = RenderUtil.getColorMultiplierForFace(face);
+            v.color = new Vector4f(col,col,col,1);
+            v.normal = null;
+          }
         }
       }
       Tessellator.instance.addTranslation((float)x, (float)y, (float)z);
