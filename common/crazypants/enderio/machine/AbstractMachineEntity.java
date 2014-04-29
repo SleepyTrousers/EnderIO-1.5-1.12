@@ -29,6 +29,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
   protected int ticksSinceSync = -1;
   protected boolean forceClientUpdate = true;
   protected boolean lastActive;
+  protected int ticksSinceActiveChanged = 0;
   protected float lastSyncPowerStored = -1;
 
   // Power
@@ -221,7 +222,7 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
 
   @Override
   public void updateEntity() {
- 
+
     if(worldObj == null) { // sanity check
       return;
     }
@@ -229,19 +230,23 @@ public abstract class AbstractMachineEntity extends TileEntity implements IInven
     if(worldObj.isRemote) {
       // check if the block on the client needs to update its texture
       if(isActive() != lastActive) {
-        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        ticksSinceActiveChanged++;
+        if(ticksSinceActiveChanged > 20 || isActive()) {
+          ticksSinceActiveChanged = 0;
+          worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+          lastActive = isActive();
+        }
       }
-      lastActive = isActive();
       return;
 
     } // else is server, do all logic only on the server
-    
+
     storedEnergy = powerHandler.getEnergyStored();
 
     boolean requiresClientSync = forceClientUpdate;
     if(forceClientUpdate) {
       // First update, send state to client
-      forceClientUpdate = false;      
+      forceClientUpdate = false;
     }
 
     boolean prevRedCheck = redstoneCheckPassed;
