@@ -222,7 +222,7 @@ public class LiquidConduit extends AbstractTankConduit {
     } else {
       return 0;
     }
-    //int recieveAmount = resource.amount;
+    resource = resource.copy();
     resource.amount = Math.min(MAX_IO_PER_TICK, resource.amount);
 
     if(doPush) {
