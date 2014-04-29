@@ -105,7 +105,7 @@ public class LiquidConduit extends AbstractTankConduit {
     } else if((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
 
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
-      //need to get the required  values to the entity renderer        
+      //need to get the required  values to the entity renderer
       BlockCoord loc = getLocation();
       EnderIO.packetPipeline.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
@@ -204,7 +204,7 @@ public class LiquidConduit extends AbstractTankConduit {
     } else {
       return 0;
     }
-    //int recieveAmount = resource.amount;
+    resource = resource.copy();
     resource.amount = Math.min(MAX_IO_PER_TICK, resource.amount);
 
     if(doPush) {

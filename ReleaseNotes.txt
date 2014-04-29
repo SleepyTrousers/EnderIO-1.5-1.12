@@ -3,6 +3,7 @@
 - Added Dark Steel powered armor
 - Added 'The Ender' powered sword
 - Added Dark Steel powered pickaxe
+- Armor and tools upgradable in the anvil to add power + extras 
 - Stirling Generator now gets more efficient and faster with upgrades.
 - Added 'The Vat' to produce liquid fuels (see VatRecipes_Core.xml for recipes)
 - Added liquid fuels: Hooch, Fire Water and Rocket Fuel 
@@ -15,7 +16,7 @@
 - #601 Capacitor bank overcharges with BC kinetic pipes
 - #602 SMP crash with MrCraysFurniture mod.
 - #605 Server Crashing - java.lang.IllegalArgumentException: Empty string not allowed/NBT 
-
+- #607 LiquidConduit modifies FluidStack passed to fill
 
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
