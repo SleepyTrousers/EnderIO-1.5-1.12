@@ -70,7 +70,7 @@ import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.trigger.TriggerEnderIO;
 import crazypants.enderio.trigger.TriggerProviderEIO;
 
-@Mod(name = "EnderIO", modid = "EnderIO", version = "1.0.1", dependencies = "required-after:Forge@[9.11.0.883,)")
+@Mod(name = "EnderIO", modid = "EnderIO", version = "1.0.2", dependencies = "required-after:Forge@[9.11.0.883,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true, channels = { "EnderIO" }, packetHandler = PacketHandler.class)
 public class EnderIO {
 
