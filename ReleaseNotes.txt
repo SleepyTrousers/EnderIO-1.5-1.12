@@ -1,5 +1,6 @@
 1.0.2
 - #605 Server Crashing - java.lang.IllegalArgumentException: Empty string not allowed/NBT 
+- #617 Dynamic Tanks / Mekanism Tanks + EnderIO Conduit crash. 
 
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks

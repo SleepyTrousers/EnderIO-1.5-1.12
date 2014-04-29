@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
@@ -241,6 +242,20 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
       FluidStack couldDrain = liquidType.copy();
       couldDrain.amount = maxExtract;
+
+      boolean foundFluid = false;
+      FluidTankInfo[] info = extTank.getTankInfo(dir.getOpposite());
+      if(info != null) {
+        for (FluidTankInfo inf : info) {
+          if(inf != null && inf.fluid != null && inf.fluid.amount > 0) {
+            foundFluid = true;
+          }
+        }
+      }
+      if(!foundFluid) {
+        return false;
+      }
+
       FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
       if(drained == null || drained.amount <= 0) {
         return false;

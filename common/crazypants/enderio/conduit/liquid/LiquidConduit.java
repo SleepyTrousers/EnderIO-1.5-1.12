@@ -137,6 +137,20 @@ public class LiquidConduit extends AbstractTankConduit {
 
         IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
         if(extTank != null) {
+
+          boolean foundFluid = false;
+          FluidTankInfo[] info = extTank.getTankInfo(dir.getOpposite());
+          if(info != null) {
+            for (FluidTankInfo inf : info) {
+              if(inf != null && inf.fluid != null && inf.fluid.amount > 0) {
+                foundFluid = true;
+              }
+            }
+          }
+          if(!foundFluid) {
+            return;
+          }
+
           FluidStack couldDrain = extTank.drain(dir.getOpposite(), MAX_EXTRACT_PER_TICK, false);
           if(couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain.getFluid())) {
             int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
