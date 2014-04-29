@@ -483,7 +483,11 @@ public class BlockConduitBundle extends Block implements ITileEntityProvider, IC
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int
       par6) {
-    IConduitBundle te = (IConduitBundle) world.getBlockTileEntity(x, y, z);
+    TileEntity tile = world.getBlockTileEntity(x, y, z);
+    if(!(tile instanceof IConduitBundle)) {
+      return;
+    }
+    IConduitBundle te = (IConduitBundle) tile;
     if(te != null) {
       te.onBlockRemoved();
     }
