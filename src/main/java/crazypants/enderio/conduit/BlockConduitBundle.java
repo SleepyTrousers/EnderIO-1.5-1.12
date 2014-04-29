@@ -402,9 +402,13 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
   }
 
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int
-      par6) {
-    IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
+  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
+
+    TileEntity tile = world.getTileEntity(x, y, z);
+    if(!(tile instanceof IConduitBundle)) {
+      return;
+    }
+    IConduitBundle te = (IConduitBundle) tile;
     if(te != null) {
       te.onBlockRemoved();
     }
