@@ -117,8 +117,8 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
     super.addInformation(itemStack, par2EntityPlayer, list, par4);
-    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+    String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack) / 10) + "/"
+        + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack) / 10) + " " + PowerDisplayUtil.abrevation();
     list.add(str);
   }
 

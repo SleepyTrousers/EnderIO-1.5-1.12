@@ -6,6 +6,7 @@
 - #607 LiquidConduit modifies FluidStack passed to fill 
 - #611 Dimensional Transceiver crashing servers with ArrayIndexOutOfBounds
 - #617 Dynamic Tanks / Mekanism Tanks + EnderIO Conduit crash.
+- #621 Staff of Travelling tooltip showing 10x the actual power stored 
  
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
