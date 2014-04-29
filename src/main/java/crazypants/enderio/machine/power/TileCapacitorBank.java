@@ -58,6 +58,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   private int maxOutput;
 
+  private int mjBuf = 0;
+
   private boolean multiblockDirty = false;
 
   private RedstoneControlMode inputControlMode;
@@ -636,8 +638,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   PowerHandler doGetPowerHandler() {
     if(inputEnabled) {
-      if(powerHandler == null) {
-        powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxInput, maxInput, maxOutput), this, Type.STORAGE);
+      float space = getMaxEnergyStored() - getEnergyStored();
+      int canAccept = (int) Math.min(space, maxInput);
+      if(powerHandler == null || canAccept != mjBuf) {
+        mjBuf = canAccept;
+        powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxInput, mjBuf, maxOutput), this, Type.STORAGE);
       }
       return powerHandler;
     }

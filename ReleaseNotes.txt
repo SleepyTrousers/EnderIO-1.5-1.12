@@ -12,7 +12,10 @@
 - Machines maintained their inventory, upgrades, power and IO modes when broken 
 
 1.0.2
+- #601 Capacitor bank overcharges with BC kinetic pipes
+- #602 SMP crash with MrCraysFurniture mod.
 - #605 Server Crashing - java.lang.IllegalArgumentException: Empty string not allowed/NBT 
+
 
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
