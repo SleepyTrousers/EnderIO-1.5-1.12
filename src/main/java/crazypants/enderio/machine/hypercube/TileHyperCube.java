@@ -245,6 +245,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     fluidHandlersDirty = true;
     inventoriesDirty = true;
     redstoneStateDirty = true;
+    updateInventories();
   }
 
   @Override
