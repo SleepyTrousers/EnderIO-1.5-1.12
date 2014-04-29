@@ -17,6 +17,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
   protected final Random random = new Random();
 
+  protected int ticksSinceCheckedRecipe = 0;
+  protected boolean startFailed = false;
+
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
   }
@@ -86,12 +89,25 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       return requiresClientSync;
     }
 
+    if(startFailed) {
+      ticksSinceCheckedRecipe++;
+      if(ticksSinceCheckedRecipe < 20) {
+        return false;
+      }
+    }
+    ticksSinceCheckedRecipe = 0;
+
     float chance = random.nextFloat();
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
-      requiresClientSync |= startNextTask(nextRecipe, chance);
+      boolean started = startNextTask(nextRecipe, chance);
+      startFailed = !started;
+      requiresClientSync |= started;
+    } else {
+      startFailed = true;
     }
+
     return requiresClientSync;
   }
 

@@ -38,6 +38,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   protected int ticksSinceSync = -1;
   protected boolean forceClientUpdate = true;
   protected boolean lastActive;
+  protected int ticksSinceActiveChanged = 0;
   protected float lastSyncPowerStored = -1;
 
   // Power
@@ -289,14 +290,21 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(worldObj.isRemote) {
       // check if the block on the client needs to update its texture
       if(isActive() != lastActive) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        ticksSinceActiveChanged++;
+        if(ticksSinceActiveChanged > 20 || isActive()) {
+          ticksSinceActiveChanged = 0;
+          lastActive = isActive();
+          forceClientUpdate = false;
+          worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
       }
-      lastActive = isActive();
+
       if(forceClientUpdate) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         forceClientUpdate = false;
       }
       return;
+
 
     } // else is server, do all logic only on the server
 
