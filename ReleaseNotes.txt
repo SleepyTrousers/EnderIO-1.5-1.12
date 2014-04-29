@@ -4,7 +4,8 @@
 - #605 Server Crashing - java.lang.IllegalArgumentException: Empty string not allowed/NBT
 - #606 Fixed performance issue when EIO machines where full.
 - #607 LiquidConduit modifies FluidStack passed to fill 
-- #617 Dynamic Tanks / Mekanism Tanks + EnderIO Conduit crash. 
+- #611 Dimensional Transceiver crashing servers with ArrayIndexOutOfBounds
+- #617 Dynamic Tanks / Mekanism Tanks + EnderIO Conduit crash.
  
 1.0.1
 - #567 Improved server startup times when using large EnderIO power networks
