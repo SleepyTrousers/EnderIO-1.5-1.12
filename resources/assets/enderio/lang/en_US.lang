@@ -173,7 +173,7 @@ enderio.gui.capBank.inputRs=Input Redstone Mode
 enderio.gui.capBank.outputRs=Output Redstone Mode
 enderio.gui.capBank.maxIo=Max I/O
 enderio.gui.capBank.maxInput=Max Input
-enderio.gui.capBank.maxOutput=Max Ouput
+enderio.gui.capBank.maxOutput=Max Output
 
 //Transceiver
 enderio.gui.trans.publicChannel=Public Channel
