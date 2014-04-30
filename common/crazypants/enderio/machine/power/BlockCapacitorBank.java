@@ -236,12 +236,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-	  System.out.println("Block removed by player at "+x+", "+y+", "+z);
-	  System.out.println("world.isRemote: "+world.isRemote);
-	  
     if(!world.isRemote) {
-      System.out.println("I care now!");
-      
       TileEntity te = world.getBlockTileEntity(x, y, z);
       
       if(te instanceof TileCapacitorBank) {
@@ -265,7 +260,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
       }
     }
     
-    System.out.println("Super!");
     return super.removeBlockByPlayer(world, player, x, y, z);
   }
 
@@ -294,7 +288,6 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-	  System.out.println("Break block!");
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if(!(te instanceof TileCapacitorBank)) {
