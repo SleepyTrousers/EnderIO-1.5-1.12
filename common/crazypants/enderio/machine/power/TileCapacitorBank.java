@@ -709,6 +709,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   public void onBreakBlock() {
+	  System.out.println("On break block!!!!!!!!!!!!!!!");
     TileCapacitorBank controller = getController();
     controller.clearCurrentMultiblock();
   }
@@ -763,7 +764,10 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
 
   private void setMultiblock(BlockCoord[] mb) {
 
+	  if (mb != null)
+		  System.out.println("Incoming multiblock size: "+mb.length);
     if(multiblock != null && isMaster()) {
+    	
       // split up current multiblock and reconfigure all the internal capacitors
       float powerPerBlock = storedEnergy / multiblock.length;
       for (BlockCoord bc : multiblock) {

@@ -236,23 +236,36 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if(!world.isRemote && (!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop")))) {
+	  System.out.println("Block removed by player at "+x+", "+y+", "+z);
+	  System.out.println("world.isRemote: "+world.isRemote);
+	  
+    if(!world.isRemote) {
+      System.out.println("I care now!");
+      
       TileEntity te = world.getBlockTileEntity(x, y, z);
+      
       if(te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
 
-        ItemStack itemStack =
-            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
+        // If we are not in Creative or blockCapBankAllwaysDrop is set to true, allow the item drop.
+        // This option allows creative players to pick up broken capacitor banks
+        
+        if (!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
+	        ItemStack itemStack =
+	            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
+	        float f = 0.7F;
+	        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+	        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+	        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+	        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+	        entityitem.delayBeforeCanPickup = 10;
+	        world.spawnEntityInWorld(entityitem);
+        }
       }
     }
+    
+    System.out.println("Super!");
     return super.removeBlockByPlayer(world, player, x, y, z);
   }
 
@@ -281,6 +294,7 @@ public class BlockCapacitorBank extends Block implements ITileEntityProvider, IG
 
   @Override
   public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+	  System.out.println("Break block!");
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getBlockTileEntity(x, y, z);
       if(!(te instanceof TileCapacitorBank)) {
