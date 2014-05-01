@@ -745,6 +745,17 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       mb[i] = new BlockCoord(blocks.get(i));
     }
 
+    TileCapacitorBank secondary = blocks.get(1);
+    maxInput = maxOutput = -1;
+    
+    if (secondary.maxInput != secondary.maxIO) {
+    	maxInput = secondary.maxInput;
+    }
+    
+    if (secondary.maxOutput != secondary.maxIO) {
+    	maxOutput = secondary.maxOutput;
+    }
+
     for (TileCapacitorBank cb : blocks) {
       cb.setMultiblock(mb);
     }
@@ -762,7 +773,6 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
   }
 
   private void setMultiblock(BlockCoord[] mb) {
-
     if(multiblock != null && isMaster()) {
       // split up current multiblock and reconfigure all the internal capacitors
       float powerPerBlock = storedEnergy / multiblock.length;
@@ -771,8 +781,8 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         if(cb != null) {
           cb.maxStoredEnergy = BASE_CAP.getMaxEnergyStored();
           cb.maxIO = BASE_CAP.getMaxEnergyExtracted();
-          cb.maxInput = cb.maxIO;
-          cb.maxOutput = cb.maxIO;
+          cb.maxInput = Math.min(cb.maxInput, cb.maxIO);
+          cb.maxOutput = Math.min(cb.maxOutput, cb.maxIO);
           cb.storedEnergy = powerPerBlock;
           cb.updatePowerHandler();
           cb.multiblockDirty = true;
@@ -805,14 +815,15 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
       storedEnergy = totalStored;
       maxStoredEnergy = totalCap;
       maxIO = totalIO;
-      maxInput = maxIO;
-      maxOutput = maxIO;
+      maxInput = maxInput < 0 ? maxIO : Math.min(maxInput,  maxIO); 
+      maxOutput = maxOutput < 0 ? maxIO : Math.min(maxOutput, maxIO);
+      
       for (BlockCoord bc : multiblock) {
         TileCapacitorBank cb = getCapBank(bc);
-        if(cb != null) {
+        if(cb != null && cb != this) {
           cb.maxIO = totalIO;
-          cb.maxInput = maxIO;
-          cb.maxOutput = maxIO;
+          cb.maxInput = maxInput;
+          cb.maxOutput = maxOutput;
         }
       }
 
@@ -1003,7 +1014,7 @@ public class TileCapacitorBank extends TileEntity implements IInternalPowerRecep
         render = true;
       }
     }
-
+    
     maxIO = nbtRoot.getInteger("maxIO");
     if(nbtRoot.hasKey("maxInput")) {
       maxInput = nbtRoot.getInteger("maxInput");
