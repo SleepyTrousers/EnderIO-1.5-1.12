@@ -21,18 +21,16 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+
     GL11.glDisable(GL11.GL_LIGHTING);
-    GL11.glDisable(GL11.GL_CULL_FACE);
     Tessellator.instance.startDrawingQuads();
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     Tessellator.instance.draw();
-    GL11.glEnable(GL11.GL_CULL_FACE);
     GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
     TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);

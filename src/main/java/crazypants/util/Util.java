@@ -281,4 +281,12 @@ public class Util {
   }
 
 
+  public static boolean isType(ItemStack stack, Class<? extends Item> class1) {
+    if(stack == null || class1 == null) {
+      return false;
+    }
+    return class1.isAssignableFrom(stack.getItem().getClass());
+  }
+
+
 }

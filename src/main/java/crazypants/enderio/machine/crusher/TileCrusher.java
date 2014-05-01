@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
@@ -67,7 +68,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
 
   @Override
   protected void taskComplete() {
-    PoweredTask ct = currentTask;
+    IPoweredTask ct = currentTask;
     super.taskComplete();
     //run it again if the ball says so
     if(gb != null) {

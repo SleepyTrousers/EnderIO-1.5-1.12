@@ -11,7 +11,7 @@ public final class Config {
   static int BID = 700;
   static int IID = 8524;
 
-  public static final double DEFAULT_CONDUIT_SCALE = 0.2;
+  public static final double DEFAULT_CONDUIT_SCALE = 0.75;
 
   public static boolean useAlternateBinderRecipe;
 

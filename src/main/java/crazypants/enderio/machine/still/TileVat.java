@@ -14,8 +14,8 @@ import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
@@ -280,7 +280,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   }
 
-  public PoweredTask getCurrentTask() {
+  public IPoweredTask getCurrentTask() {
     return currentTask;
   }
 

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import crazypants.util.BlockCoord;
 
 public class FarmersComune implements IFarmerJoe {
@@ -23,15 +23,18 @@ public class FarmersComune implements IFarmerJoe {
   }
 
   static {
-    joinComune(new PotatoeFarmerPaddy());
+    joinComune(new DefaultSeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
+    joinComune(new DefaultSeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
+    joinComune(new DefaultSeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
+    joinComune(new NetherWartFarmer());
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();
 
   @Override
-  public boolean isFarmerForTheJob(World worldObj, BlockCoord bc, Block block, int meta, EntityPlayer player) {
+  public boolean canHarvest(TileFarmStation farm,  BlockCoord bc, Block block, int meta) {
     for (IFarmerJoe joe : farmers) {
-      if(joe.isFarmerForTheJob(worldObj, bc, block, meta, player)) {
+      if(joe.canHarvest(farm, bc, block, meta)) {
         return true;
       }
     }
@@ -39,22 +42,32 @@ public class FarmersComune implements IFarmerJoe {
   }
 
   @Override
-  public List<EntityItem> harvestBlock(World worldObj, BlockCoord bc, Block block, int meta, EntityPlayer player) {
-    if(!block.canHarvestBlock(player, meta)) {
+  public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+    if(!block.canHarvestBlock(farm.getFakePlayer(), meta)) {
       return null;
     }
     for (IFarmerJoe joe : farmers) {
-      if(joe.isFarmerForTheJob(worldObj, bc, block, meta, player)) {
-        return joe.harvestBlock(worldObj, bc, block, meta, player);
+      if(joe.canHarvest(farm, bc, block, meta)) {
+        return joe.harvestBlock(farm, bc, block, meta);
       }
     }
     return null;
   }
 
   @Override
-  public boolean prepareBlock(World worldObj, BlockCoord bc, Block block, int meta, EntityPlayer player) {
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     for (IFarmerJoe joe : farmers) {
-      if(joe.prepareBlock(worldObj, bc, block, meta, player)) {
+      if(joe.prepareBlock(farm, bc, block, meta)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public boolean canPlant(ItemStack stack) {
+    for (IFarmerJoe joe : farmers) {
+      if(joe.canPlant(stack)) {
         return true;
       }
     }

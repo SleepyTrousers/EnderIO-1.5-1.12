@@ -86,7 +86,7 @@ public abstract class AbstractMachineContainer extends Container {
         //Check from inv->input then inv->upgrade then inv->hotbar or hotbar->inv
         if(slotIndex >= startPlayerSlot) {
           if(!mergeItemStack(origStack, slotDef.getMinInputSlot(), slotDef.getMaxInputSlot() + 1, false)) {
-            if(slotDef.getNumOutputSlots() > 0 && !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
+            if(slotDef.getNumUpgradeSlots() > 0 && !mergeItemStack(origStack, slotDef.getMinUpgradeSlot(), slotDef.getMaxUpgradeSlot() + 1, false)) {
               if(slotIndex <= endPlayerSlot) {
                 if(!mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                   return null;

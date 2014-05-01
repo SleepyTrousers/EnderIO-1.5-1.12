@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
-public class PoweredTask {
+public class PoweredTask implements IPoweredTask {
 
   public static final String KEY_INPUT_STACKS = "inputsStacks";
 
@@ -59,18 +59,25 @@ public class PoweredTask {
     requiredEnergy = recipe.getEnergyRequired(inputsIn);
   }
 
+
+  @Override
   public void update(float availableEnergy) {
     usedEnergy += availableEnergy;
   }
 
+  @Override
   public boolean isComplete() {
     return usedEnergy >= requiredEnergy;
   }
 
+
+  @Override
   public float getProgress() {
     return MathHelper.clamp_float(usedEnergy / requiredEnergy, 0, 1);
   }
 
+
+  @Override
   public ResultStack[] getCompletedResult() {
     return recipe.getCompletedResult(chance, inputs);
   }
@@ -83,6 +90,10 @@ public class PoweredTask {
     this.inputs = inputs;
   }
 
+  /* (non-Javadoc)
+   * @see crazypants.enderio.machine.IPoweredTask#getRequiredEnergy()
+   */
+  @Override
   public float getRequiredEnergy() {
     return requiredEnergy;
   }
@@ -91,6 +102,10 @@ public class PoweredTask {
     this.requiredEnergy = requiredEnergy;
   }
 
+  /* (non-Javadoc)
+   * @see crazypants.enderio.machine.IPoweredTask#getChance()
+   */
+  @Override
   public float getChance() {
     return chance;
   }
@@ -99,6 +114,10 @@ public class PoweredTask {
     this.chance = chance;
   }
 
+  /* (non-Javadoc)
+   * @see crazypants.enderio.machine.IPoweredTask#writeToNBT(net.minecraft.nbt.NBTTagCompound)
+   */
+  @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     NBTTagCompound stackRoot;
 

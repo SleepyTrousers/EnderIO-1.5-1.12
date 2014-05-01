@@ -12,7 +12,7 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity implements ISidedInventory {
 
-  protected PoweredTask currentTask = null;
+  protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
 
   protected final Random random = new Random();
@@ -134,46 +134,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected void taskComplete() {
-
     if(currentTask != null) {
       lastCompletedRecipe = currentTask.getRecipe();
       ResultStack[] output = currentTask.getCompletedResult();
-
       if(output != null && output.length > 0) {
-
         ResultStack[] results = currentTask.getCompletedResult();
-
-        List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
-        if(slotDefinition.getNumOutputSlots() > 0) {
-          for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
-            ItemStack it = inventory[i];
-            if(it != null) {
-              it = it.copy();
-            }
-            outputStacks.add(it);
-          }
-        }
-
-        for (ResultStack result : results) {
-          if(result.item != null) {
-            mergeItemResult(result.item, outputStacks);
-          } else if(result.fluid != null) {
-            mergeFluidResult(result);
-          }
-        }
-
-        if(slotDefinition.getNumOutputSlots() > 0) {
-          int listIndex = 0;
-          for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
-            ItemStack st = outputStacks.get(listIndex);
-            if(st != null) {
-              st = st.copy();
-            }
-            inventory[i] = st;
-            listIndex++;
-          }
-        }
-
+        mergeResults(results);
       } else {
         System.out.println("AbstractPoweredTaskEntity.taskComplete: no output " + output);
       }
@@ -182,6 +148,42 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     }
     markDirty();
     currentTask = null;
+  }
+
+  protected void mergeResults(ResultStack[] results) {
+    List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
+    if(slotDefinition.getNumOutputSlots() > 0) {
+      for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+        ItemStack it = inventory[i];
+        if(it != null) {
+          it = it.copy();
+        }
+        outputStacks.add(it);
+      }
+    }
+
+    for (ResultStack result : results) {
+      if(result.item != null) {
+        int numMerged = mergeItemResult(result.item, outputStacks);
+        if(numMerged > 0) {
+          result.item.stackSize -= numMerged;
+        }
+      } else if(result.fluid != null) {
+        mergeFluidResult(result);
+      }
+    }
+
+    if(slotDefinition.getNumOutputSlots() > 0) {
+      int listIndex = 0;
+      for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+        ItemStack st = outputStacks.get(listIndex);
+        if(st != null) {
+          st = st.copy();
+        }
+        inventory[i] = st;
+        listIndex++;
+      }
+    }
   }
 
   protected void mergeFluidResult(ResultStack result) {
@@ -194,17 +196,21 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     return false;
   }
 
-  private boolean mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
+  protected int mergeItemResult(ItemStack item, List<ItemStack> outputStacks) {
 
+    int res = 0;
+
+    ItemStack copy = item.copy();
     //try to add it to existing stacks first
-    item = item.copy();
+    copy = copy.copy();
     for (ItemStack outStack : outputStacks) {
-      if(outStack != null && item != null) {
-        int num = getNumCanMerge(outStack, item);
+      if(outStack != null && copy != null) {
+        int num = getNumCanMerge(outStack, copy);
         outStack.stackSize += num;
-        item.stackSize -= num;
-        if(item.stackSize <= 0) {
-          return true;
+        res += num;
+        copy.stackSize -= num;
+        if(copy.stackSize <= 0) {
+          return item.stackSize;
         }
       }
     }
@@ -213,12 +219,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
     for (int i = 0; i < outputStacks.size(); i++) {
       ItemStack outStack = outputStacks.get(i);
       if(outStack == null) {
-        outputStacks.set(i, item);
-        return true;
+        outputStacks.set(i, copy);
+        return item.stackSize;
       }
     }
 
-    return false;
+    return 0;
   }
 
   protected MachineRecipeInput[] getInputs() {
@@ -257,7 +263,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
     for (ResultStack result : nextResults) {
       if(result.item != null) {
-        if(!mergeItemResult(result.item, outputStacks)) {
+        if(mergeItemResult(result.item, outputStacks) == 0) {
           return false;
         }
       } else if(result.fluid != null) {
