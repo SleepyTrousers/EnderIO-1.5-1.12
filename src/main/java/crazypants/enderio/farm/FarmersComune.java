@@ -23,10 +23,12 @@ public class FarmersComune implements IFarmerJoe {
   }
 
   static {
-    joinComune(new DefaultSeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
-    joinComune(new DefaultSeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
-    joinComune(new DefaultSeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
+    joinComune(new SeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
+    joinComune(new SeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
+    joinComune(new SeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
     joinComune(new NetherWartFarmer());
+    joinComune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
+    joinComune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();

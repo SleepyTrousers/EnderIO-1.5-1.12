@@ -12,22 +12,22 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 
-public class DefaultSeedFarmer implements IFarmerJoe {
+public class SeedFarmer implements IFarmerJoe {
 
   protected Block plantedBlock;
   protected int plantedBlockMeta;
   protected int grownBlockMeta;
   protected ItemStack seeds;
 
-  public DefaultSeedFarmer(Block plantedBlock, ItemStack seeds) {
+  public SeedFarmer(Block plantedBlock, ItemStack seeds) {
     this(plantedBlock, 0,7,seeds);
   }
 
-  public DefaultSeedFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
+  public SeedFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
     this(plantedBlock,0,grownBlockMeta,seeds);
   }
 
-  public DefaultSeedFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
+  public SeedFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
     this.plantedBlock = plantedBlock;
     this.plantedBlockMeta = plantedBlockMeta;
     this.grownBlockMeta = grownBlockMeta;
@@ -72,7 +72,6 @@ public class DefaultSeedFarmer implements IFarmerJoe {
     if(isGroundTilled(farm, bc)) {
       return plantFromInvenetory(farm, bc);
     }
-
     if(farm.hasSeed(getSeeds(), bc)) {
       boolean tilled= tillBlock(farm, bc);
       if(!tilled) {
@@ -133,7 +132,7 @@ public class DefaultSeedFarmer implements IFarmerJoe {
   protected boolean tillBlock(TileFarmStation farm, BlockCoord plantingLocation) {
     World worldObj = farm.getWorldObj();
     BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
-    Block dirtBlock = worldObj.getBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z);
+    Block dirtBlock = farm.getBlock(dirtLoc);
     if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && farm.hasHoe()) {
       worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
@@ -145,10 +144,7 @@ public class DefaultSeedFarmer implements IFarmerJoe {
   }
 
   protected boolean isGroundTilled(TileFarmStation farm, BlockCoord plantingLocation) {
-    World worldObj = farm.getWorldObj();
-    BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
-    Block dirtBlock = worldObj.getBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z);
-    return dirtBlock == Blocks.farmland;
+    return farm.getBlock(plantingLocation.getLocation(ForgeDirection.DOWN)) == Blocks.farmland;
   }
 
   protected boolean canPlant(World worldObj, BlockCoord bc) {
@@ -157,7 +153,7 @@ public class DefaultSeedFarmer implements IFarmerJoe {
     IPlantable plantable = (IPlantable) getPlantedBlock();
     if(target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) &&
         target.canBlockStay(worldObj, bc.x, bc.y, bc.z) &&
-        ground.canSustainPlant(worldObj, bc.x, bc.y, bc.z, ForgeDirection.UP, plantable)) {
+        ground.canSustainPlant(worldObj, bc.x, bc.y -1, bc.z, ForgeDirection.UP, plantable)) {
       return true;
     }
     return false;

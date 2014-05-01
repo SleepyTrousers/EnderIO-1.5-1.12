@@ -22,6 +22,11 @@ public class HarvestResult implements IHarvestResult {
     harvestedBlocks.add(harvestedBlock);
   }
 
+  public HarvestResult() {
+    drops = new ArrayList<EntityItem>();
+    harvestedBlocks = new ArrayList<BlockCoord>();
+  }
+
   @Override
   public List<EntityItem> getDrops() {
     return drops;

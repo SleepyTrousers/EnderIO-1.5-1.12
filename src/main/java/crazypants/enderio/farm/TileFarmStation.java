@@ -39,7 +39,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   private crazypants.util.BlockCoord lastScanned;
   private FakePlayer farmerJoe;
 
-  private int farmSize = 3;
+  private int farmSize = 1;
   private int minToolSlot = 0;
   private int maxToolSlot = 1;
 
@@ -109,6 +109,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     if(toDamage != null) {
       toDamage.damageItem(1, farmerJoe);
     }
+  }
+
+  public Block getBlock(BlockCoord up) {
+    return worldObj.getBlock(up.x, up.y, up.z);
   }
 
   @Override
@@ -381,7 +385,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       return 1;
     }
   }
-
 
 
 }
