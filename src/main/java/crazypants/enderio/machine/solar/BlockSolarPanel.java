@@ -107,4 +107,9 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

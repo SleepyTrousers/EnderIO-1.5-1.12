@@ -257,4 +257,9 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
     par3List.add(is);
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

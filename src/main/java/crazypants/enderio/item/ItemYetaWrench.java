@@ -87,4 +87,9 @@ public class ItemYetaWrench extends Item implements IToolWrench, IResourceToolti
     return true;
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

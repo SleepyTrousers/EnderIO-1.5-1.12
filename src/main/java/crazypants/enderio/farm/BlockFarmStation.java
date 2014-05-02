@@ -81,4 +81,9 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

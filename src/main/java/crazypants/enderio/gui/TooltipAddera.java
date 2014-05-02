@@ -105,7 +105,7 @@ public class TooltipAddera {
 
   public static void addInformation(IResourceTooltipProvider item, ItemTooltipEvent evt) {
     if(showAdvancedTooltips()) {
-      addDetailedTooltipFromResources(evt.toolTip, item.getUnlocalizedName());
+      addDetailedTooltipFromResources(evt.toolTip, item.getUnlocalizedNameForTooltip());
     } else {
       addShowDetailsTooltip(evt.toolTip);
     }

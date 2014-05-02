@@ -198,4 +198,9 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
 
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

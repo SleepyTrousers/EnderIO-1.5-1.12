@@ -137,4 +137,11 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
     selectedOverlayIcon = iIconRegister.registerIcon("enderio:enderIOSelected");
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
+
+
 }

@@ -89,4 +89,9 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
     itemIcon = IIconRegister.registerIcon("enderio:mJReader");
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

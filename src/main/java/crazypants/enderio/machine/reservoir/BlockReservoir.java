@@ -293,4 +293,9 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
 
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }

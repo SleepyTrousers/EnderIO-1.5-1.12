@@ -319,4 +319,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return false;
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip() {
+    return getUnlocalizedName();
+  }
+
 }
