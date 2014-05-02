@@ -605,7 +605,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
         }
       }
     }
-    return res.toArray(new FluidTankInfo[res.size()]);
+    if(res.isEmpty()) {
+     return new FluidTankInfo[] {new FluidTankInfo(null, 0) };
+    } else {
+      return res.toArray(new FluidTankInfo[res.size()]);
+    }
   }
 
   private List<NetworkFluidHandler> getNetworkHandlers() {
