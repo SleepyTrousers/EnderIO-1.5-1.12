@@ -74,10 +74,8 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     {
       List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
       for (IEnderIoRecipe recipe : recipes) {
-        for (IRecipeOutput output : recipe.getOutputs()) {
-          AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
-          arecipes.add(res);
-        }
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getItem());
+        arecipes.add(res);
       }
     } else {
       super.loadCraftingRecipes(outputId, results);
@@ -90,7 +88,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
 
     for (IEnderIoRecipe recipe : recipes) {
-      if (recipe.isInput(ingredient)) {
+      if(recipe.isInput(ingredient)) {
         for (IRecipeOutput output : recipe.getOutputs()) {
           AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
           res.setIngredientPermutation(res.input, ingredient);

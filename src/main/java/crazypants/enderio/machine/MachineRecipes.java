@@ -22,7 +22,6 @@ public class MachineRecipes {
   public static void addRecipes() {
     //Common ingredients
     ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 4, Material.CONDUIT_BINDER.ordinal());
-    ItemStack silicon = new ItemStack(EnderIO.itemMaterial, 4, Material.SILICON.ordinal());
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
     ItemStack basicGear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());

@@ -12,10 +12,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
 import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -165,18 +162,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       return Collections.emptyList();
     }
     List<IEnderIoRecipe> result = new ArrayList<IEnderIoRecipe>();
-    //    Map<List<Integer>, ItemStack> metaList = FurnaceRecipes.smelting().getMetaSmeltingList();
-    //    for (Entry<List<Integer>, ItemStack> entry : metaList.entrySet()) {
-    //      List<Integer> idMeta = entry.getKey();
-    //      IRecipeInput input = new crazypants.enderio.crafting.impl.RecipeInput(new ItemStack(idMeta.get(0), 1, idMeta.get(1)), false);
-    //      IRecipeOutput output = new RecipeOutput(entry.getValue());
-    //      result.add(new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, MJ_PER_ITEM, input, output));
-    //    }
-    Map<Integer, ItemStack> sl = FurnaceRecipes.smelting().getSmeltingList();
-    for (Entry<Integer, ItemStack> entry : sl.entrySet()) {
-      IRecipeInput input = new crazypants.enderio.crafting.impl.RecipeInput(new ItemStack(entry.getValue().getItem(), 1, 0), false);
-      IRecipeOutput output = new RecipeOutput(entry.getValue());
-      result.add(new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, MJ_PER_ITEM, input, output));
+    Map<ItemStack, ItemStack> metaList = FurnaceRecipes.smelting().getSmeltingList();
+    for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
+      result.add(new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, MJ_PER_ITEM, entry.getKey(), entry.getValue()));
     }
     return result;
   }
