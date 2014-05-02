@@ -105,6 +105,9 @@ public class ItemUtil {
           }
         }
 
+        if (!inv.isItemValidForSlot(slot, toInsert))
+        	inserted = 0;
+        
         if(inserted > 0) {
           numInserted += inserted;
           numToInsert -= inserted;
