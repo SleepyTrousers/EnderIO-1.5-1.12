@@ -39,7 +39,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   private crazypants.util.BlockCoord lastScanned;
   private FakePlayer farmerJoe;
 
-  private int farmSize = 1;
+  private int farmSize = 3;
   private int minToolSlot = 0;
   private int maxToolSlot = 1;
 
@@ -62,7 +62,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   }
 
   private ItemStack getTool(Class<ItemHoe> class1) {
-    for(int i=minToolSlot;i<=maxToolSlot;i++) {
+    for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if(Util.isType(inventory[i], class1)) {
         return inventory[i];
       }
@@ -83,7 +83,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
   public int getMaxLootingValue() {
     int result = 0;
-    for(int i=minToolSlot;i<=maxToolSlot;i++) {
+    for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if(inventory[i] != null) {
         int level = EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, inventory[i]);
         if(level > result) {
@@ -97,7 +97,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   public void damageMaxLootingItem() {
     int maxLooting = 0;
     ItemStack toDamage = null;
-    for(int i=minToolSlot;i<=maxToolSlot;i++) {
+    for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if(inventory[i] != null) {
         int level = EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, inventory[i]);
         if(level > maxLooting) {
@@ -165,11 +165,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   }
 
   public boolean hasSeed(ItemStack seeds, BlockCoord bc) {
-    for(int i=minSupSlot;i<maxSupSlot;i++) {
-      ItemStack inv = inventory[i];
-      if(inv != null && inv.isItemEqual(seeds)) {
-        return true;
-      }
+    int slot = getSupplySlotForCoord(bc);
+    ItemStack inv = inventory[slot];
+    if(inv != null && inv.isItemEqual(seeds)) {
+      return true;
     }
     return false;
   }
@@ -178,18 +177,29 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     if(stack == null || forBlock == null) {
       return false;
     }
-    for(int i=minSupSlot;i<maxSupSlot;i++) {
-      ItemStack inv = inventory[i];
-      if(inv != null && inv.isItemEqual(stack)) {
-        inv.stackSize--;
-        if(inv.stackSize == 0) {
-          inv = null;
-        }
-        setInventorySlotContents(i, inv);
-        return true;
+    int slot = getSupplySlotForCoord(forBlock);
+    ItemStack inv = inventory[slot];
+    if(inv != null && inv.isItemEqual(stack)) {
+      inv.stackSize--;
+      if(inv.stackSize == 0) {
+        inv = null;
       }
+      setInventorySlotContents(slot, inv);
+      return true;
     }
     return false;
+  }
+
+  protected int getSupplySlotForCoord(BlockCoord forBlock) {
+
+    if(forBlock.x <= xCoord && forBlock.z > zCoord) {
+      return minSupSlot;
+    } else if(forBlock.x > xCoord && forBlock.z > zCoord - 1) {
+      return minSupSlot + 1;
+    } else if(forBlock.x < xCoord && forBlock.z <= zCoord) {
+      return minSupSlot + 2;
+    }
+    return minSupSlot + 3;
   }
 
   private void doHoover() {
@@ -385,6 +395,5 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       return 1;
     }
   }
-
 
 }
