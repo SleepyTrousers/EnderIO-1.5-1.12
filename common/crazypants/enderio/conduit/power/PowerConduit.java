@@ -387,6 +387,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+	  super.setConnectionMode(dir, mode);
+	  recievedTicks = null;
+  }
+  
+  @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     if(getMaxEnergyRecieved(from) == 0 || maxReceive <= 0) {
       return 0;
