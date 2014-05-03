@@ -92,7 +92,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
     FontRenderer fr = getFontRenderer();
     double output = 0;
     if(gen.isActive()) {
-      output = gen.getCurrentOutputMj();
+      output = gen.getMjGeneratedLastTick();
     }
     String txt =  Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);

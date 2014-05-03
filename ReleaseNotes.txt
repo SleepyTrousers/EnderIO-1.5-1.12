@@ -11,6 +11,7 @@
 - Added per side auto 'push/push' of items/fluids to all machines
 - Overhaul of machine UI's, adding more information   
 - Machines maintained their inventory, upgrades, power and IO modes when broken 
+- New textures for SAG Mill and Stirling Gen (Tahg)
 
 1.0.3
 - Capacitor Banks remember their IO limits when block are added/removed. (William Lahti)

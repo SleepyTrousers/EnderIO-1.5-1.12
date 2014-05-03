@@ -33,7 +33,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   private boolean active;
 
   private PowerDistributor powerDis;
-  private float transmitted;
+
+  private float generated;
 
   private boolean inPause = false;
 
@@ -220,11 +221,11 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       res = true;
     }
 
-    transmitEnergy();
-
     if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
       inPause = true;
     }
+
+    transmitEnergy();
 
     return res;
   }
@@ -241,12 +242,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, storedEnergy));
+    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, storedEnergy));
     storedEnergy -= transmitted;
     return transmitted > 0;
   }
 
   private boolean generateEnergy() {
+
+    generated = 0;
 
     Fuel fuel = fuelTank.getFluid() == null ? null : IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid());
     if(fuel == null) {
@@ -259,7 +262,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     //once full, don't start again until we have drained 2 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - fuel.powerPerCycle) * 40) {
+    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (fuel.powerPerCycle * 40))) {
       return false;
     }
     inPause = false;
@@ -287,6 +290,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     float oldVal = storedEnergy;
     storedEnergy += fuel.powerPerCycle;
+    generated = fuel.powerPerCycle;
     storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
 
     return fuelTank.getFluidAmount() > 0 && coolantTank.getFluidAmount() > 0;
@@ -362,7 +366,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     active = nbtRoot.getBoolean("active");
-    transmitted = nbtRoot.getFloat("transmitted");
+    generated = nbtRoot.getFloat("generated");
   }
 
   @Override
@@ -415,14 +419,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("active", active);
-    nbtRoot.setFloat("transmitted", transmitted);
+    nbtRoot.setFloat("generated", generated);
   }
 
-  public double getCurrentOutputMj() {
+  public double getMjGeneratedLastTick() {
     if(!active) {
       return 0;
     }
-    return transmitted;
+    return generated;
   }
 
   @Override

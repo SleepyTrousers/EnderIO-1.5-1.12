@@ -379,10 +379,10 @@ enderio.vat.inputTank=Input Tank
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Coolant
 enderio.combustionGenerator.fuelTank=Fuel
-enderio.combustionGenerator.output=Output:
+enderio.combustionGenerator.output=Generating:
 
 //Stirling Gen
-enderio.stirlingGenerator.output=Output:
+enderio.stirlingGenerator.output=Generating:
 enderio.stirlingGenerator.burnRate=Burn Rate:
 
 //Travel Blocks
