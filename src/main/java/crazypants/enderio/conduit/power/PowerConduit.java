@@ -170,6 +170,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
+  public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+    super.setConnectionMode(dir, mode);
+    recievedTicks = null;
+  }
+
+  @Override
   public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
     rsModes.put(dir, mode);
     setClientStateDirty();

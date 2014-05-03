@@ -119,6 +119,9 @@ public class ItemUtil {
             toInsert.stackSize = 0;
           }
         }
+        if (!inv.isItemValidForSlot(slot, toInsert)) {
+          inserted = 0;
+        }
 
         if(inserted > 0) {
           numInserted += inserted;
