@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -13,6 +14,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   public static BlockFarmStation create() {
+    EnderIO.packetPipeline.registerPacket(FarmActionPacket.class);
     BlockFarmStation result = new BlockFarmStation();
     result.init();
     return result;

@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
- * Created by brad on 27/02/14.
+ *
  */
 public interface IPacketEio {
 

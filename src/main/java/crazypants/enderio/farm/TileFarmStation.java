@@ -21,6 +21,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -37,7 +38,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
   private static final float ENERGY_PER_TICK = 1;
 
-  private crazypants.util.BlockCoord lastScanned;
+  private BlockCoord lastScanned;
   private FakePlayer farmerJoe;
 
   private int farmSize = 3;
@@ -97,8 +98,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       tool.damageItem(damage, farmerJoe);
     }
   }
-
-
 
   public EntityPlayer getFakePlayer() {
     return farmerJoe;
@@ -160,9 +159,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     if(!redstoneCheckPassed || !hasPower()) {
       return false;
     }
-    if(worldObj.getWorldTime() % 4 != 0) {
-      return false;
-    }
+//    if(worldObj.getWorldTime() % 4 != 0) {
+//      return false;
+//    }
 
     BlockCoord bc = getNextCoord();
     if(bc == null) {
@@ -181,10 +180,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
     FarmersComune.instance.prepareBlock(this, bc, block, meta);
     IHarvestResult harvest = FarmersComune.instance.harvestBlock(this, bc, block, meta);
-    if(harvest != null && harvest.getDrops() != null) {
-      for (EntityItem ei : harvest.getDrops()) {
-        if(ei != null) {
-          worldObj.spawnEntityInWorld(ei);
+    if(harvest != null) {
+      if(harvest.getDrops() != null) {
+        FarmActionPacket pkt = new FarmActionPacket(harvest.getHarvestedBlocks());
+        EnderIO.packetPipeline.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+        for (EntityItem ei : harvest.getDrops()) {
+          if(ei != null) {
+            worldObj.spawnEntityInWorld(ei);
+          }
         }
       }
     }
@@ -431,7 +434,5 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       return 1;
     }
   }
-
-
 
 }

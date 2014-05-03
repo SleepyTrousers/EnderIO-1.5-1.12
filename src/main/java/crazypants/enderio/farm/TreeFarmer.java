@@ -80,7 +80,7 @@ public class TreeFarmer implements IFarmerJoe {
   }
 
   protected void harvestUp(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
-    boolean foundWoodAtLevel = false;
+
     if(wood == farm.getBlock(bc) && farm.hasAxe()) {
       res.harvestedBlocks.add(bc);
       ArrayList<ItemStack> drops = wood.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(bc), farm.geAxeLootingValue());
@@ -92,23 +92,32 @@ public class TreeFarmer implements IFarmerJoe {
       }
       farm.damageAxe();
       farm.getWorld().setBlockToAir(bc.x, bc.y, bc.z);
-      foundWoodAtLevel = true;
-    } else {
-      //for new trees, check the sides
-      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        if(dir.offsetY == 0) {
-          foundWoodAtLevel |= wood == farm.getBlock(bc.getLocation(dir));
-        }
-      }
-    }
 
-    if(foundWoodAtLevel) {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir != ForgeDirection.DOWN) {
           harvestUp(farm, bc.getLocation(dir), res);
         }
       }
+
+
+    } else {
+      //for new trees, check the sides
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if(dir.offsetY == 0) {
+          if(wood == farm.getBlock(bc.getLocation(dir))) {
+            harvestUp(farm, bc.getLocation(dir), res);
+          }
+        }
+      }
     }
+//
+//    if(foundWoodAtLevel) {
+//      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+//        if(dir != ForgeDirection.DOWN) {
+//    harvestUp(farm, bc.getLocation(dir), res);
+//        }
+//      }
+//    }
 
   }
 
