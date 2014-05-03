@@ -69,9 +69,9 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     for (RecipeOutput output : outputs) {
       if(output.getChance() >= chance) {
         if(output.isFluid()) {
-          result.add(new ResultStack(output.getFluidOutput()));
+          result.add(new ResultStack(output.getFluidOutput().copy()));
         } else {
-          result.add(new ResultStack(output.getOutput()));
+          result.add(new ResultStack(output.getOutput().copy()));
         }
       }
     }

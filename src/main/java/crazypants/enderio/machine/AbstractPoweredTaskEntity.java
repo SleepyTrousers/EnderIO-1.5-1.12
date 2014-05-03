@@ -140,12 +140,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       if(output != null && output.length > 0) {
         ResultStack[] results = currentTask.getCompletedResult();
         mergeResults(results);
-      } else {
-        System.out.println("AbstractPoweredTaskEntity.taskComplete: no output " + output);
-      }
-    } else {
-      System.out.println("AbstractPoweredTaskEntity.taskComplete: current task is null");
-    }
+      } 
+    } 
     markDirty();
     currentTask = null;
   }
@@ -202,7 +198,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
 
     ItemStack copy = item.copy();
     //try to add it to existing stacks first
-    copy = copy.copy();
     for (ItemStack outStack : outputStacks) {
       if(outStack != null && copy != null) {
         int num = getNumCanMerge(outStack, copy);
