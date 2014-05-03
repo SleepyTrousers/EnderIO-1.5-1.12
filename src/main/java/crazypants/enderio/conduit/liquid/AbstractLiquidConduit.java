@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
@@ -59,11 +58,16 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     if(h == null) {
       return false;
     }
-    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
-    if(info == null) {
-      return false;
-    }
-    return  info.length > 0;
+    //TODO: This check was added to work around a bug in dynamic tanks, but
+    //it causes issues with not conecting to empty tanks such as dim. trans +
+    //BC fluid pipes, so I am removing it for now.
+
+//    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
+//    if(info == null) {
+//      return false;
+//    }
+//    return  info.length > 0;
+    return true;
   }
 
   @Override
