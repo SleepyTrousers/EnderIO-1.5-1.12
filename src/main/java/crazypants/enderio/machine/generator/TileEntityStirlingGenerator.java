@@ -140,7 +140,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
 
-    if(burnTime > 0 && redstoneCheckPassed) {
+    if(burnTime > 0) {
       if(storedEnergy < powerHandler.getMaxEnergyStored()) {
         storedEnergy += (ENERGY_PER_TICK * getEnergyMultiplier());
       }

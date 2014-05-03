@@ -41,9 +41,5 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
     return "enderio:stirlingGenFrontOff";
   }
 
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return "enderio:stirlingGenSide";
-  }
 
 }
