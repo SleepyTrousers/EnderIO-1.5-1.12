@@ -83,7 +83,7 @@ public class SeedFarmer implements IFarmerJoe {
 
   protected boolean plantFromInvenetory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
-    if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(getSeeds(), bc)) {
+    if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(getSeeds(), bc) != null) {
       return plant(worldObj, bc);
     }
     return false;

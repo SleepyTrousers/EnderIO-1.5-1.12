@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemShears;
@@ -34,7 +35,7 @@ import crazypants.util.Util;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntitySelector {
 
-  private static final float ENERGY_PER_TICK = 4;
+  private static final float ENERGY_PER_TICK = 1;
 
   private crazypants.util.BlockCoord lastScanned;
   private FakePlayer farmerJoe;
@@ -57,11 +58,31 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     return hasTool(ItemHoe.class);
   }
 
-  private boolean hasTool(Class<ItemHoe> class1) {
+  public boolean hasAxe() {
+    return hasTool(ItemAxe.class);
+  }
+
+  public int geAxeLootingValue() {
+    ItemStack tool = getTool(ItemAxe.class);
+    if(tool == null) {
+      return 0;
+    }
+    return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, tool);
+  }
+
+  public void damageAxe() {
+    damageTool(ItemAxe.class, 1);
+  }
+
+  public void damageHoe(int i) {
+    damageTool(ItemHoe.class, i);
+  }
+
+  private boolean hasTool(Class<? extends Item> class1) {
     return getTool(class1) != null;
   }
 
-  private ItemStack getTool(Class<ItemHoe> class1) {
+  private ItemStack getTool(Class<? extends Item> class1) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if(Util.isType(inventory[i], class1)) {
         return inventory[i];
@@ -70,12 +91,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     return null;
   }
 
-  public void damageHoe(int i) {
-    ItemStack tool = getTool(ItemHoe.class);
+  private void damageTool(Class<? extends Item> class1, int damage) {
+    ItemStack tool = getTool(class1);
     if(tool != null) {
-      tool.damageItem(1, farmerJoe);
+      tool.damageItem(damage, farmerJoe);
     }
   }
+
+
 
   public EntityPlayer getFakePlayer() {
     return farmerJoe;
@@ -111,8 +134,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     }
   }
 
-  public Block getBlock(BlockCoord up) {
-    return worldObj.getBlock(up.x, up.y, up.z);
+  public Block getBlock(BlockCoord bc) {
+    return worldObj.getBlock(bc.x, bc.y, bc.z);
+  }
+
+  public int getBlockMeta(BlockCoord bc) {
+    return worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
   }
 
   @Override
@@ -173,21 +200,30 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     return false;
   }
 
-  public boolean getSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
+  public ItemStack getSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
+    return getSeedFromSupplies(stack, forBlock, true);
+  }
+
+  public ItemStack getSeedFromSupplies(ItemStack stack, BlockCoord forBlock, boolean matchMetadata) {
     if(stack == null || forBlock == null) {
-      return false;
+      return null;
     }
     int slot = getSupplySlotForCoord(forBlock);
     ItemStack inv = inventory[slot];
-    if(inv != null && inv.isItemEqual(stack)) {
-      inv.stackSize--;
-      if(inv.stackSize == 0) {
-        inv = null;
+    if(inv != null) {
+      if(matchMetadata ? inv.isItemEqual(stack) : inv.getItem() == stack.getItem()) {
+        ItemStack result = inv.copy();
+        result.stackSize = 1;
+
+        inv.stackSize--;
+        if(inv.stackSize == 0) {
+          inv = null;
+        }
+        setInventorySlotContents(slot, inv);
+        return result;
       }
-      setInventorySlotContents(slot, inv);
-      return true;
     }
-    return false;
+    return null;
   }
 
   protected int getSupplySlotForCoord(BlockCoord forBlock) {
@@ -208,7 +244,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     }
     BoundingBox bb = new BoundingBox(getLocation());
     AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    aabb = aabb.expand(farmSize + 1, farmSize + 1, farmSize + 1);
+    aabb = aabb.expand(farmSize + 3, farmSize + 3, farmSize + 3);
     List<Entity> interestingItems = worldObj.selectEntitiesWithinAABB(Entity.class, aabb, this);
 
     for (Entity entity : interestingItems) {
@@ -395,5 +431,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       return 1;
     }
   }
+
+
 
 }

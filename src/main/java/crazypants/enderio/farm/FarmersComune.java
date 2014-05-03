@@ -29,6 +29,8 @@ public class FarmersComune implements IFarmerJoe {
     joinComune(new NetherWartFarmer());
     joinComune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     joinComune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
+    joinComune(new TreeFarmer(Blocks.sapling, Blocks.log));
+    joinComune(new TreeFarmer(Blocks.sapling, Blocks.log2));
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();
