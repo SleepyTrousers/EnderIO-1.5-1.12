@@ -27,7 +27,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
     super(te, new ContainerCombustionEngine(par1InventoryPlayer, te));
     this.gen = te;
 
-    addToolTip(new GuiToolTip(new Rectangle(48, 21, 15, 47), "") {
+    addToolTip(new GuiToolTip(new Rectangle(114, 21, 15, 47), "") {
 
       @Override
       protected void updateText() {
@@ -42,7 +42,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
 
     });
 
-    addToolTip(new GuiToolTip(new Rectangle(114, 21, 15, 47), "") {
+    addToolTip(new GuiToolTip(new Rectangle(48, 21, 15, 47), "") {
 
       @Override
       protected void updateText() {
@@ -101,7 +101,8 @@ public class GuiCombustionGenerator extends GuiMachineBase {
     int x = guiLeft + 48;
     int y = guiTop + 21;
     if(gen.coolantTank.getFluidAmount() > 0) {
-      //left tank
+      x = guiLeft + 114;
+      //right tank
       RenderUtil.renderGuiTank(gen.coolantTank.getFluid(), 4000, gen.coolantTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
@@ -121,9 +122,10 @@ public class GuiCombustionGenerator extends GuiMachineBase {
     }
 
     if(gen.fuelTank.getFluidAmount() > 0) {
-      //right tank
-      x = guiLeft + 114;
+      //left tank
+      x = guiLeft + 48;
 
+      //RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 4000, gen.fuelTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
       RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 4000, gen.fuelTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
@@ -133,6 +135,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       }
 
       //center tank
+      //RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 1000, Math.min(gen.fuelTank.getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
       RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 1000, Math.min(gen.fuelTank.getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
     }
 

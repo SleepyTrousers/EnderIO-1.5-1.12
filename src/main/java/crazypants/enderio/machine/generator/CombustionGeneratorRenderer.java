@@ -150,6 +150,11 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
   private void renderTank(TileCombustionGenerator gen, BoundingBox bb, FluidTank tank, boolean isLeft) {
     boolean scaleX = gen.getFacing() != 4 && gen.getFacing() != 5;
     float size = 0.34f;
+
+    if(gen.getFacing() == 5 || gen.getFacing() == 2) {
+      isLeft = !isLeft;
+    }
+
     if(tank.getFluidAmount() > 0) {
       IIcon icon = tank.getFluid().getFluid().getStillIcon();
       if(icon != null) {

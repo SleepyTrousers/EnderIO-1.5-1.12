@@ -142,16 +142,20 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
         facing = me.facing;
       }
       ForgeDirection dir = ForgeDirection.getOrientation(facing);
-      int xmod = Math.abs(dir.offsetX);
-      int zmod = Math.abs(dir.offsetY);
+      float startX = x + (dir.offsetX == 0 ? 0.5f : 0f);
+      float startY = y + 0.5f;
+      float startZ = z + (dir.offsetZ == 0 ? 0.5f : 0f);
 
-      float startX = x + (1.0F * zmod) + (0.5f * xmod);
-      float startY = y + 0.5F;
-      float startZ = z + (1.0F * xmod) + (0.5f * zmod);
-      for (int i = 0; i < 4; i++) {
-        float xOffset = (-0.2F - rand.nextFloat() * 0.6F);
-        float yOffset = -0.1F + rand.nextFloat() * 0.2F;
-        float zOffset = (-0.2F - rand.nextFloat() * 0.6F);
+      if(dir.offsetX == 1) {
+        startX++;
+      } else if (dir.offsetZ == 1) {
+        startZ++;
+      }
+
+      for (int i = 0; i < 2; i++) {
+        float xOffset = 0;
+        float yOffset = 0;
+        float zOffset = 0;
         world.spawnParticle("smoke", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
       }
     }
