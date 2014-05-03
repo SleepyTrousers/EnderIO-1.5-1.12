@@ -15,6 +15,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -215,6 +217,14 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_STILL;
+  }
+
+
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    return true;
   }
 
   @Override
