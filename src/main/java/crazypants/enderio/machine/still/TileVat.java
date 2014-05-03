@@ -102,7 +102,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
           FluidStack canPull = inputTank.getFluid().copy();
           canPull.amount = inputTank.getCapacity() - inputTank.getFluidAmount();
           canPull.amount = Math.min(canPull.amount, IO_MB_TICK);
-          FluidStack drained = target.drain(dir.getOpposite(),canPull , true);
+          FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
           if(drained != null && drained.amount > 0) {
             inputTank.fill(drained, true);
             return true;
@@ -110,15 +110,17 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
         } else {
           //empty input tank
           FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-          for(FluidTankInfo info : infos) {
-            if(info.fluid != null && info.fluid.amount > 0) {
-              if(canFill(dir, info.fluid.getFluid()) /*&& target.canDrain(dir.getOpposite(), info.fluid.getFluid())*/) {
-                FluidStack canPull = info.fluid.copy();
-                canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-                FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-                if(drained != null && drained.amount > 0) {
-                  inputTank.fill(drained, true);
-                  return true;
+          if(infos != null) {
+            for (FluidTankInfo info : infos) {
+              if(info.fluid != null && info.fluid.amount > 0) {
+                if(canFill(dir, info.fluid.getFluid())) {
+                  FluidStack canPull = info.fluid.copy();
+                  canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+                  FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
+                  if(drained != null && drained.amount > 0) {
+                    inputTank.fill(drained, true);
+                    return true;
+                  }
                 }
               }
             }
