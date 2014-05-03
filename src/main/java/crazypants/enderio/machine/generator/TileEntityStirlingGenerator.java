@@ -87,7 +87,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public boolean isActive() {
-    return burnTime > 0 && redstoneCheckPassed;
+    return burnTime > 0;
   }
 
   @Override
