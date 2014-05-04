@@ -1,4 +1,4 @@
-package crazypants.enderio.farm;
+package crazypants.enderio.machine.farm;
 
 import net.minecraft.entity.player.InventoryPlayer;
 

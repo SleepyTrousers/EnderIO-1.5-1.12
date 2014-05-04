@@ -1,4 +1,4 @@
-package crazypants.enderio.farm;
+package crazypants.enderio.machine.farm;
 
 import java.util.List;
 

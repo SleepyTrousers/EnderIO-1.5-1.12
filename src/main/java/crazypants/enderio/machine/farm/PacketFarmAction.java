@@ -1,4 +1,4 @@
-package crazypants.enderio.farm;
+package crazypants.enderio.machine.farm;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
