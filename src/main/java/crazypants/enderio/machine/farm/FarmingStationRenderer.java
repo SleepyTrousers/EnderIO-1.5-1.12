@@ -3,6 +3,8 @@ package crazypants.enderio.machine.farm;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -10,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.machine.generator.TranslatedCubeRenderer;
 import crazypants.render.BoundingBox;
+import crazypants.render.CubeRenderer;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
@@ -50,6 +53,23 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
     bb = BoundingBox.UNIT_CUBE.scale(1, topWidth, 1);
     bb = bb.translate(0, 0.3f + topWidth / 2f, 0);
     TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
+
+    if(world != null) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileFarmStation && ((TileFarmStation) te).isActive) {
+        bb = BoundingBox.UNIT_CUBE.scale(1, 0.08, .4);
+        bb = bb.translate(0, 0.1f, 0);
+        bb = bb.translate(x, y, z);
+        Tessellator.instance.setColorOpaque_F(1, 1, 1);
+        CubeRenderer.render(bb, Blocks.portal.getBlockTextureFromSide(1));
+
+        bb = BoundingBox.UNIT_CUBE.scale(.4, 0.08, 1);
+        bb = bb.translate(0, 0.1f, 0);
+        bb = bb.translate(x, y, z);
+        Tessellator.instance.setColorOpaque_F(1, 1, 1);
+        CubeRenderer.render(bb, Blocks.portal.getBlockTextureFromSide(1));
+      }
+    }
 
     return true;
   }

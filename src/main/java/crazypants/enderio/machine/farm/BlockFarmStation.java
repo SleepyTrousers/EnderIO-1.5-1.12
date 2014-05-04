@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -63,6 +64,17 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   public int getRenderType() {
     return renderId;
+  }
+
+  @Override
+  public int getLightValue(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileFarmStation) {
+      int res = ((TileFarmStation)te).isActive() ? 15 : 0;
+      return res;
+    }
+    return 0;
+    //return world.getBlockMetadata(x, y, z) == 0 ? 0 : 15;
   }
 
   @Override

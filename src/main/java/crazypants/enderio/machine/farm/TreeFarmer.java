@@ -82,7 +82,11 @@ public class TreeFarmer implements IFarmerJoe {
 
   protected void harvestUp(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
 
-    if(wood == farm.getBlock(bc) && farm.hasAxe()) {
+    if(!farm.hasAxe()) {
+      return;
+    }
+
+    if(wood == farm.getBlock(bc)) {
       res.harvestedBlocks.add(bc);
       ArrayList<ItemStack> drops = wood.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(bc), farm.geAxeLootingValue());
       if(drops != null) {

@@ -26,6 +26,7 @@ public class MachineRecipes {
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
     ItemStack basicGear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
     ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
+    ItemStack pulCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
     ItemStack electricSteel = new ItemStack(EnderIO.itemAlloy,1,Alloy.ELECTRICAL_STEEL.ordinal());
 
     //stirling gen
@@ -62,6 +63,10 @@ public class MachineRecipes {
     //Still
     ItemStack still = new ItemStack(EnderIO.blockVat, 1, 0);
     GameRegistry.addShapedRecipe(still, "eve", "eme", "ece", 'v', Items.cauldron, 'm', machineChassi, 'e', electricSteel, 'c', capacitor);
+
+    //Farm
+    ItemStack farm = new ItemStack(EnderIO.blockFarmStation, 1, 0);
+    GameRegistry.addShapedRecipe(farm, "ehe", "eme", "pcp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricSteel, 'c', capacitor, 'p', pulCry);
 
     //transceiver
     ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);

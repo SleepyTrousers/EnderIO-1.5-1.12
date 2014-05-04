@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,6 +51,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
   private int minSupSlot = maxToolSlot + 1;
   private int maxSupSlot = minSupSlot + 4;
+
+  boolean isActive = false;
+  boolean wasActive = false;
 
   private static final DummyTask TASK = new DummyTask();
 
@@ -254,9 +258,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   }
 
   private void doHoover() {
-    if(isFull()) {
-      return;
-    }
+
     BoundingBox bb = new BoundingBox(getLocation());
     AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
     aabb = aabb.expand(farmSize + 3, farmSize + 3, farmSize + 3);
@@ -381,19 +383,22 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   }
 
   @Override
-  public boolean isActive() {
-    return false;
-  }
-
-  @Override
   public float getProgress() {
-    return 0;
+    return 0.5f;
   }
 
   @Override
   public void updateEntity() {
+
     super.updateEntity();
-    doHoover();
+    if(wasActive != isActive) {
+      worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+    }
+    wasActive = isActive;
+
+    if(!isFull() && isActive()) {
+      doHoover();
+    }
   }
 
   @Override
@@ -405,7 +410,18 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     currentTask = TASK;
+    isActive = nbtRoot.getBoolean("isActive");
   }
+
+
+
+  @Override
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
+    nbtRoot.setBoolean("isActive", isActive());
+  }
+
+
 
   private static class DummyTask implements IPoweredTask {
     @Override
