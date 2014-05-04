@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
@@ -22,6 +23,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -36,12 +38,13 @@ import crazypants.util.Util;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntitySelector {
 
-  private static final float ENERGY_PER_TICK = 1;
+  private static final float ENERGY_PER_TICK = Config.farmContinuousEnergyUse;
 
   private BlockCoord lastScanned;
   private FakePlayer farmerJoe;
 
-  private int farmSize = 3;
+  private int farmSize = Config.farmDefaultSize;
+
   private int minToolSlot = 0;
   private int maxToolSlot = 1;
 
@@ -69,6 +72,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       return 0;
     }
     return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, tool);
+  }
+
+  public void actionPerformed() {
+    usePower(Config.farmActionEnergyUse);
   }
 
   public void damageAxe() {
@@ -159,9 +166,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     if(!redstoneCheckPassed || !hasPower()) {
       return false;
     }
-//    if(worldObj.getWorldTime() % 4 != 0) {
-//      return false;
-//    }
+    //    if(worldObj.getWorldTime() % 4 != 0) {
+    //      return false;
+    //    }
 
     BlockCoord bc = getNextCoord();
     if(bc == null) {
@@ -178,15 +185,20 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       farmerJoe = FakePlayerFactory.getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
     }
 
-    FarmersComune.instance.prepareBlock(this, bc, block, meta);
-    IHarvestResult harvest = FarmersComune.instance.harvestBlock(this, bc, block, meta);
-    if(harvest != null) {
-      if(harvest.getDrops() != null) {
-        FarmActionPacket pkt = new FarmActionPacket(harvest.getHarvestedBlocks());
-        EnderIO.packetPipeline.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
-        for (EntityItem ei : harvest.getDrops()) {
-          if(ei != null) {
-            worldObj.spawnEntityInWorld(ei);
+    if(block == Blocks.air) {
+      FarmersComune.instance.prepareBlock(this, bc, block, meta);
+      block = worldObj.getBlock(bc.x, bc.y, bc.z);
+    }
+    if(block != Blocks.air && hasPower()) {
+      IHarvestResult harvest = FarmersComune.instance.harvestBlock(this, bc, block, meta);
+      if(harvest != null) {
+        if(harvest.getDrops() != null) {
+          PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
+          EnderIO.packetPipeline.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+          for (EntityItem ei : harvest.getDrops()) {
+            if(ei != null) {
+              worldObj.spawnEntityInWorld(ei);
+            }
           }
         }
       }

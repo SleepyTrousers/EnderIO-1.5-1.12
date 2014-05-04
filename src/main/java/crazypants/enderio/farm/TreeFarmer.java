@@ -46,7 +46,7 @@ public class TreeFarmer implements IFarmerJoe {
     if(canPlant(worldObj, bc)) {
       ItemStack seed = farm.getSeedFromSupplies(saplingItem, bc, false);
       if(seed != null) {
-        return plant(worldObj, bc, seed);
+        return plant(farm, worldObj, bc, seed);
       }
     }
     return false;
@@ -63,10 +63,11 @@ public class TreeFarmer implements IFarmerJoe {
     return false;
   }
 
-  protected boolean plant(World worldObj, BlockCoord bc, ItemStack seed) {
+  protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc, ItemStack seed) {
     worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
     if(canPlant(worldObj, bc)) {
       worldObj.setBlock(bc.x, bc.y, bc.z, sapling, seed.getItemDamage(), 1 | 2);
+      farm.actionPerformed();
       return true;
     }
     return false;
@@ -91,6 +92,7 @@ public class TreeFarmer implements IFarmerJoe {
 
       }
       farm.damageAxe();
+      farm.actionPerformed();
       farm.getWorld().setBlockToAir(bc.x, bc.y, bc.z);
 
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -98,7 +100,6 @@ public class TreeFarmer implements IFarmerJoe {
           harvestUp(farm, bc.getLocation(dir), res);
         }
       }
-
 
     } else {
       //for new trees, check the sides
@@ -110,14 +111,6 @@ public class TreeFarmer implements IFarmerJoe {
         }
       }
     }
-//
-//    if(foundWoodAtLevel) {
-//      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-//        if(dir != ForgeDirection.DOWN) {
-//    harvestUp(farm, bc.getLocation(dir), res);
-//        }
-//      }
-//    }
 
   }
 

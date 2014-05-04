@@ -127,7 +127,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
   }
 
   protected double usePower() {
-    double used = Math.min(powerHandler.getEnergyStored(), getPowerUsePerTick());
+    return usePower(getPowerUsePerTick());
+  }
+
+  protected double usePower(double wantToUse) {
+    double used = Math.min(powerHandler.getEnergyStored(), wantToUse);
     powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
     currentTask.update((float) used);
     return used;
@@ -140,8 +144,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity im
       if(output != null && output.length > 0) {
         ResultStack[] results = currentTask.getCompletedResult();
         mergeResults(results);
-      } 
-    } 
+      }
+    }
     markDirty();
     currentTask = null;
   }

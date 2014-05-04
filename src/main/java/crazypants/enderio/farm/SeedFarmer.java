@@ -84,7 +84,7 @@ public class SeedFarmer implements IFarmerJoe {
   protected boolean plantFromInvenetory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
     if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(getSeeds(), bc) != null) {
-      return plant(worldObj, bc);
+      return plant(farm, worldObj, bc);
     }
     return false;
   }
@@ -101,6 +101,7 @@ public class SeedFarmer implements IFarmerJoe {
 
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
     farm.damageMaxLootingItem();
+    farm.actionPerformed();
     boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
@@ -117,7 +118,7 @@ public class SeedFarmer implements IFarmerJoe {
     }
 
     if(removed) {
-      if(!plant(worldObj, bc)) {
+      if(!plant(farm, worldObj, bc)) {
         result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, getSeeds().copy()));
         worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
       }
@@ -138,6 +139,7 @@ public class SeedFarmer implements IFarmerJoe {
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
           (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
       farm.damageHoe(1);
+      farm.actionPerformed();
       return true;
     }
     return false;
@@ -159,10 +161,11 @@ public class SeedFarmer implements IFarmerJoe {
     return false;
   }
 
-  protected boolean plant(World worldObj, BlockCoord bc) {
+  protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc) {
     worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
     if(canPlant(worldObj, bc)) {
       worldObj.setBlock(bc.x, bc.y, bc.z, getPlantedBlock(), getPlantedBlockMeta(), 1 | 2);
+      farm.actionPerformed();
       return true;
     }
     return false;

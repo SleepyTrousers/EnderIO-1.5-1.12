@@ -11,7 +11,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.GaugeBounds.VPos;
 import crazypants.render.ConnectedTextureRenderer;
@@ -42,9 +41,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
     GaugueRenderer gaugeRenderer = new GaugueRenderer();
     renderers.add(connectedTexRenderer);
-    if(Config.renderCapBankGauge) {
-      renderers.add(gaugeRenderer);
-    }
+    renderers.add(gaugeRenderer);
   }
 
   @Override
@@ -58,7 +55,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       TileCapacitorBank cb = ((TileCapacitorBank) te);
       cb.energyAtLastRender = cb.getEnergyStored();
     }
-    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3)); //can't do in constructor as texture not loaded yet          
+    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3)); //can't do in constructor as texture not loaded yet
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
     return true;
   }
@@ -114,12 +111,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
             col.scale(0.25);
             tes.setColorRGBA_F(col.x, col.y, col.z, col.w);
           }
-          if(Config.renderCapBankGaugeBackground) {
-            renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
-          }
-          if(Config.renderCapBankGaugeLevel) {
-            renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon, ((TileCapacitorBank) te).getEnergyStoredRatio(), refVertices, x, y, z);
-          }
+          renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
+          renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon, ((TileCapacitorBank) te).getEnergyStoredRatio(), refVertices, x, y, z);
           tes.addTranslation((float) -x, (float) -y, (float) -z);
           return;
         }

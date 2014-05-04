@@ -14,7 +14,7 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   public static BlockFarmStation create() {
-    EnderIO.packetPipeline.registerPacket(FarmActionPacket.class);
+    EnderIO.packetPipeline.registerPacket(PacketFarmAction.class);
     BlockFarmStation result = new BlockFarmStation();
     result.init();
     return result;

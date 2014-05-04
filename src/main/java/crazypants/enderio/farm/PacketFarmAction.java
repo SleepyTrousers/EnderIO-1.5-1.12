@@ -11,16 +11,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import crazypants.enderio.network.IPacketEio;
 import crazypants.util.BlockCoord;
 
-public class FarmActionPacket implements IPacketEio {
+public class PacketFarmAction implements IPacketEio {
 
   private static Random rand = new Random();
 
   private List<BlockCoord> coords;
 
-  public FarmActionPacket() {
+  public PacketFarmAction() {
   }
 
-  public FarmActionPacket(List<BlockCoord> coords) {
+  public PacketFarmAction(List<BlockCoord> coords) {
     this.coords = coords;
   }
 
@@ -49,14 +49,14 @@ public class FarmActionPacket implements IPacketEio {
   public void handleClientSide(EntityPlayer player) {
     for (BlockCoord bc : coords) {
       for (int i = 0; i < 15; i++) {
-        double xOff = 0.5 + (rand.nextDouble() - 0.5);
-        double yOff = -0.5 + (rand.nextDouble() - 0.5) * 0.2;
-        double zOff = 0.5 + (rand.nextDouble() - 0.5);
-        player.worldObj.spawnParticle("portal", bc.x + xOff, bc.y + yOff, bc.z + zOff, 0, 0, 0);
+        double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
+        double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
+        double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
+        player.worldObj.spawnParticle("portal", bc.x + xOff, bc.y + yOff, bc.z + zOff,
+            (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(), (rand.nextDouble() - 0.5) * 1.5);
       }
     }
 
-    System.out.println("FarmActionPacket.handleClientSide: !!!!!!!!!!!!!!!");
   }
 
   @Override

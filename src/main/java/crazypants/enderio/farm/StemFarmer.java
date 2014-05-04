@@ -53,6 +53,7 @@ public class StemFarmer extends SeedFarmer {
 
         }
         farm.damageMaxLootingItem();
+        farm.actionPerformed();
         farm.getWorld().setBlockToAir(harvestCoord.x, harvestCoord.y, harvestCoord.z);
       } else {
         done = true;
@@ -66,7 +67,7 @@ public class StemFarmer extends SeedFarmer {
   protected boolean plantFromInvenetory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
     if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(seeds, bc) != null) {
-      return plant(worldObj, bc);
+      return plant(farm, worldObj, bc);
     }
     return false;
   }
