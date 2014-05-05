@@ -1,5 +1,6 @@
 package crazypants.enderio.power;
 
+import buildcraft.api.mj.MjAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,6 +20,10 @@ public class PowerHandlerUtil {
       return new PowerInterfaceRF((IEnergyHandler) o);
     } else if(o instanceof IPowerReceptor) {
       return new PowerInterfaceBC((IPowerReceptor) o);
+    }
+    MjAPI.BatteryObject battery = MjAPI.getMjBattery(o);
+    if(battery != null) {
+      return new PowerInterfaceBC2(battery);
     }
     return null;
   }
