@@ -125,7 +125,7 @@ public final class Config {
   public static int darkSteelUpgradePowerThreeCost = 30;
 
   public static float farmContinuousEnergyUse = 1;
-  public static float farmActionEnergyUse = 100;
+  public static float farmActionEnergyUse = 40;
   public static int farmDefaultSize = 3;
 
   public static void load(FMLPreInitializationEvent event) {
