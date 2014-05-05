@@ -283,7 +283,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       } else {
         double speed = 0.035;
         entity.motionX += x / distance * speed;
-        entity.motionY += y * speed * 2.2;
+        entity.motionY += y * speed;
+        if(y > 0) {
+          entity.motionY = 0.12;
+        }
         entity.motionZ += z / distance * speed;
       }
 
