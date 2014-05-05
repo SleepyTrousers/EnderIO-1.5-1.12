@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -75,7 +74,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     if(tool == null) {
       return 0;
     }
-    return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, tool);
+    return getLooting(tool);
+  }
+
+  private int getLooting(ItemStack stack) {
+    return Math.max(
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack),
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));
   }
 
   public void actionPerformed() {
@@ -118,7 +123,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     int result = 0;
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if(inventory[i] != null) {
-        int level = EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, inventory[i]);
+        int level = getLooting(inventory[i]);
         if(level > result) {
           result = level;
         }
@@ -132,7 +137,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     ItemStack toDamage = null;
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
       if(inventory[i] != null) {
-        int level = EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, inventory[i]);
+        int level = getLooting(inventory[i]);
         if(level > maxLooting) {
           maxLooting = level;
           toDamage = inventory[i];
@@ -154,8 +159,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack stack) {
+    if(stack == null) {
+      return false;
+    }
     if(i < 2) {
-      return Util.isType(stack, ItemHoe.class) || Util.isType(stack, ItemAxe.class) || Util.isType(stack, ItemShears.class);
+      return Util.isType(stack, ItemHoe.class) || Util.isType(stack, ItemAxe.class) || getLooting(stack) > 0;
     }
     return FarmersComune.instance.canPlant(stack);
   }
@@ -413,15 +421,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     isActive = nbtRoot.getBoolean("isActive");
   }
 
-
-
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("isActive", isActive());
   }
-
-
 
   private static class DummyTask implements IPoweredTask {
     @Override

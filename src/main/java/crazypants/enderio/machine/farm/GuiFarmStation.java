@@ -29,6 +29,10 @@ public class GuiFarmStation extends GuiMachineBase {
   protected boolean showRecipeButton() {
     return false;
   }
+  @Override
+  protected int getPowerHeight() {
+    return 57;
+  }
 
 
 }
