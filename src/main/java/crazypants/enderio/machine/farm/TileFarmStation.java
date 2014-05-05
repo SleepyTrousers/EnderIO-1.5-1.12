@@ -270,25 +270,35 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     BoundingBox bb = new BoundingBox(getLocation());
     AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
     aabb = aabb.expand(farmSize + 3, farmSize + 3, farmSize + 3);
-    List<Entity> interestingItems = worldObj.selectEntitiesWithinAABB(Entity.class, aabb, this);
+    List<EntityItem> interestingItems = worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);
 
-    for (Entity entity : interestingItems) {
+    for (EntityItem entity : interestingItems) {
       double x = (xCoord + 0.5D - entity.posX);
       double y = (yCoord + 0.5D - entity.posY);
       double z = (zCoord + 0.5D - entity.posZ);
 
-      double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance < 1.25) {
-        hooverEntity(entity);
-      } else {
-        double speed = 0.035;
-        entity.motionX += x / distance * speed;
-        entity.motionY += y * speed;
-        entity.motionZ += z / distance * speed;
+      if (isInteresting(entity)) {
+        double distance = Math.sqrt(x * x + y * y + z * z);
+        if(distance < 1.25) {
+          hooverEntity(entity);
+        } else {
+          double speed = 0.035;
+          entity.motionX += x / distance * speed;
+          entity.motionY += y * speed;
+          entity.motionZ += z / distance * speed;
+        }
       }
     }
   }
-
+  
+  private boolean isInteresting(EntityItem entity) {
+    for (int i = 0; i < inventory.length; i++) {
+      if (isMachineItemValidForSlot(i, entity.getEntityItem()))
+        return true;
+    }
+    return false;
+  }
+  
   private boolean isFull() {
     for (int i = minSupSlot; i <= maxSupSlot; i++) {
       ItemStack stack = inventory[i];
