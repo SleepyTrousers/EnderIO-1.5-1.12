@@ -663,10 +663,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public boolean canInterface(ForgeDirection from) {
+  public boolean canConnectEnergy(ForgeDirection from) {
     IPowerConduit pc = getConduit(IPowerConduit.class);
     if(pc != null) {
-      return pc.canInterface(from);
+      return pc.canConnectEnergy(from);
     }
     return false;
   }
