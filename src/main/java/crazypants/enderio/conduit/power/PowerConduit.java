@@ -411,7 +411,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public boolean canInterface(ForgeDirection from) {
+  public boolean canConnectEnergy(ForgeDirection from) {
     return true;
   }
 

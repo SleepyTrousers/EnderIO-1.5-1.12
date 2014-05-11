@@ -259,7 +259,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   @Override
-  public boolean canInterface(ForgeDirection from) {
+  public boolean canConnectEnergy(ForgeDirection from) {
     return !isSideDisabled(from.ordinal());
   }
 

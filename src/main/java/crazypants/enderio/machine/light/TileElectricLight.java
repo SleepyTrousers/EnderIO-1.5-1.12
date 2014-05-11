@@ -355,7 +355,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   @Override
-  public boolean canInterface(ForgeDirection from) {
+  public boolean canConnectEnergy(ForgeDirection from) {
     return true;
   }
 
