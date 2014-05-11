@@ -49,7 +49,7 @@ dependencies {
     compile files('lib/NotEnoughItems-1.7.2-1.0.1-universal.jar')
     compile files('lib/CodeChickenCore-1.7.2-1.0.0-universal.jar')
     compile files('lib/CodeChickenLib-1.7.2-1.1.0.76-dev.jar')
-    exportedCompile 'com.mod-buildcraft:buildcraft:6.0.10:api'
+    exportedCompile 'com.mod-buildcraft:buildcraft:6.0.11:api'
 }
 
 // configure  the source folders

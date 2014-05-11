@@ -1,12 +1,12 @@
 package crazypants.enderio.power;
 
-import buildcraft.api.mj.MjAPI;
+import buildcraft.api.mj.IBatteryObject;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class PowerInterfaceBC2 implements IPowerInterface {
-  private final MjAPI.BatteryObject battery;
+  private final IBatteryObject battery;
 
-  public PowerInterfaceBC2(MjAPI.BatteryObject battery) {
+  public PowerInterfaceBC2(IBatteryObject battery) {
     this.battery = battery;
   }
 
@@ -42,6 +42,6 @@ public class PowerInterfaceBC2 implements IPowerInterface {
 
   @Override
   public float recieveEnergy(ForgeDirection opposite, float canOffer) {
-    return (float) battery.addEnergy(Math.min(canOffer, battery.maxReceivedPerCycle()));
+    return (float) battery.addEnergy(canOffer);
   }
 }
