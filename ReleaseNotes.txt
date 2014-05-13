@@ -14,6 +14,7 @@
 - New textures for SAG Mill and Stirling Gen (Tahg)
 - Updated BC API to be compatible with BC 6 (Prototik)
 - Updated RF API (dark-skript)
+- Added Russian localization (ZigTheHedge, Adaptivity) 
 
 1.0.3
 - Capacitor Banks remember their IO limits when block are added/removed. (William Lahti)
