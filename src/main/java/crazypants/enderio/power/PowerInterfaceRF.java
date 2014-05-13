@@ -18,7 +18,7 @@ public class PowerInterfaceRF implements IPowerInterface {
   @Override
   public boolean canConduitConnect(ForgeDirection direction) {
     if(rfPower != null && direction != null) {
-      return rfPower.canInterface(direction.getOpposite());
+      return rfPower.canConnectEnergy(direction.getOpposite());
     }
     return false;
   }
@@ -41,7 +41,7 @@ public class PowerInterfaceRF implements IPowerInterface {
 
   @Override
   public float getPowerRequest(ForgeDirection dir) {
-    if(rfPower != null && dir != null && rfPower.canInterface(dir)) {
+    if(rfPower != null && dir != null && rfPower.canConnectEnergy(dir)) {
       return rfPower.receiveEnergy(dir, 99999999, true) / 10f;
     }
     return 0;
@@ -49,7 +49,7 @@ public class PowerInterfaceRF implements IPowerInterface {
 
 
   public static float getPowerRequestMJ(ForgeDirection dir, IEnergyHandler handler) {
-    if(handler != null && dir != null && handler.canInterface(dir)) {
+    if(handler != null && dir != null && handler.canConnectEnergy(dir)) {
       return handler.receiveEnergy(dir, 99999999, true) / 10f;
     }
     return 0;
