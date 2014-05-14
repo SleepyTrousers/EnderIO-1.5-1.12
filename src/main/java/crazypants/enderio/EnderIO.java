@@ -16,6 +16,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
@@ -241,6 +242,7 @@ public class EnderIO {
     fluidHootch = FluidRegistry.getFluid(f.getName());
     blocHootch = BlockFluidEio.create(fluidHootch, new MaterialLiquid(MapColor.grayColor));
     IronEngineFuel.addFuel(Fluids.HOOTCH_NAME, Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycle * Config.hootchPowerTotalBurnTime));
 
 
     f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
@@ -248,6 +250,7 @@ public class EnderIO {
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
     blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, new MaterialLiquid(MapColor.grayColor));
     IronEngineFuel.addFuel(Fluids.ROCKET_FUEL_NAME, Config.rocketFuelPowerPerCycle, Config.rocketFuelPowerTotalBurnTime);
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@" + (Config.rocketFuelPowerPerCycle * Config.rocketFuelPowerTotalBurnTime));
 
 
     f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
@@ -255,6 +258,7 @@ public class EnderIO {
     fluidFireWater = FluidRegistry.getFluid(f.getName());
     blockFireWater = BlockFluidEio.create(fluidFireWater, new MaterialLiquid(MapColor.grayColor));
     IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@" + (Config.fireWaterPowerPerCycle * Config.fireWaterPowerTotalBurnTime));
 
     if(!IronEngineCoolant.isCoolant(FluidRegistry.getFluid("water"))) {
       IronEngineCoolant.addCoolant(FluidRegistry.getFluid("water"), 0.0023F);
