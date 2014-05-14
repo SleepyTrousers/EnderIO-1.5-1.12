@@ -50,9 +50,9 @@ public class FarmersComune implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    if(!block.canHarvestBlock(farm.getFakePlayer(), meta)) {
-      return null;
-    }
+//    if(!block.canHarvestBlock(farm.getFakePlayer(), meta)) {
+//      return null;
+//    }
     for (IFarmerJoe joe : farmers) {
       if(joe.canHarvest(farm, bc, block, meta)) {
         return joe.harvestBlock(farm, bc, block, meta);

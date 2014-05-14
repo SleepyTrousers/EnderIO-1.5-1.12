@@ -42,7 +42,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   private static final float ENERGY_PER_TICK = Config.farmContinuousEnergyUse;
 
   private BlockCoord lastScanned;
-  private FakePlayer farmerJoe;
+  private EntityPlayerMP farmerJoe;
 
   private int farmSize = Config.farmDefaultSize;
 
@@ -211,7 +211,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     }
     int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
     if(farmerJoe == null) {
-      farmerJoe = FakePlayerFactory.getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
+      farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
     }
 
     if(block == Blocks.air) {
@@ -291,7 +291,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
     for (EntityItem entity : interestingItems) {
       double x = (xCoord + 0.5D - entity.posX);
-      double y = (yCoord + 0.5D - entity.posY);
+      double y = (yCoord + 1D - entity.posY);
       double z = (zCoord + 0.5D - entity.posZ);
 
       double distance = Math.sqrt(x * x + y * y + z * z);

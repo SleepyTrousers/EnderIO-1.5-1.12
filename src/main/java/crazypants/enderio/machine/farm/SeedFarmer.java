@@ -18,6 +18,7 @@ public class SeedFarmer implements IFarmerJoe {
   protected int plantedBlockMeta;  
   protected int grownBlockMeta;
   protected ItemStack seeds;
+  protected boolean requiresFarmland = true;
 
   public SeedFarmer(Block plantedBlock, ItemStack seeds) {
     this(plantedBlock, 0, 7, seeds);
@@ -83,8 +84,12 @@ public class SeedFarmer implements IFarmerJoe {
     return plantFromInvenetory(farm, bc);
   }
 
-  protected boolean requiresFarmland() {
-    return true;
+  public boolean requiresFarmland() {
+    return requiresFarmland;
+  }
+  
+  public void setRequiresFarmland(boolean requiresFarmland) {
+    this.requiresFarmland = requiresFarmland;
   }
 
   protected boolean plantFromInvenetory(TileFarmStation farm, BlockCoord bc) {

@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class PickableFarmer extends SeedFarmer {
-
+  
   public PickableFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
     super(plantedBlock, plantedBlockMeta, grownBlockMeta, seeds);
   }
@@ -42,12 +42,9 @@ public class PickableFarmer extends SeedFarmer {
     for(int slot=0;slot < inv.length;slot++) {
       ItemStack stack = inv[slot];
       if(stack != null) {
-        inv[slot] = null;
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, bc.x + d0, bc.y + d1, bc.z + d2, stack);
+        inv[slot] = null;        
+        
+        EntityItem entityitem = new EntityItem(world, bc.x + 0.5, bc.y + 1, bc.z + 0.5, stack);
         drops.add(entityitem);
       }
     }
