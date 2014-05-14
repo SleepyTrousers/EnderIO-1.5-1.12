@@ -250,21 +250,26 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if(!world.isRemote && (!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop")))) {
+    if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileCapacitorBank) {
         TileCapacitorBank cb = (TileCapacitorBank) te;
         cb.onBreakBlock();
 
-        ItemStack itemStack =
-            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
+        // If we are not in Creative or blockCapBankAllwaysDrop is set to true, allow the item drop.
+        // This option allows creative players to pick up broken capacitor banks
+
+        if(!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
+          ItemStack itemStack =
+              BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
+          float f = 0.7F;
+          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+          entityitem.delayBeforeCanPickup = 10;
+          world.spawnEntityInWorld(entityitem);
+        }
       }
     }
     return super.removedByPlayer(world, player, x, y, z);
