@@ -455,10 +455,10 @@ public class NetworkPowerManager {
       canFill = 0;
       stored = 0;
       maxCap = 0;
-      
+
       float toBalance = 0;
       float maxToBalance = 0;
-      
+
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
         cb = cb.getController();
@@ -470,11 +470,11 @@ public class NetworkPowerManager {
           maxCap += cb.getMaxEnergyStored();
           capBanks.add(cb);
 
-          if (rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
-        	  toBalance += cb.getEnergyStored();
-        	  maxToBalance += cb.getMaxEnergyStored();
+          if(rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
+            toBalance += cb.getEnergyStored();
+            maxToBalance += cb.getMaxEnergyStored();
           }
-          
+
           float canGet = 0;
 
           if(cb.isOutputEnabled(rec.direction.getOpposite())) {
@@ -488,7 +488,7 @@ public class NetworkPowerManager {
             canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
             this.canFill += canFill;
           }
-          
+
           enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter, rec.direction));
         }
 
@@ -508,13 +508,13 @@ public class NetworkPowerManager {
       int canRemove = 0;
       int canAdd = 0;
       for (CapBankSupplyEntry entry : enteries) {
-        if (entry.emmiter.getConectionMode(entry.direction) != ConnectionMode.IN_OUT)
-      	  continue;
-        entry.calcToBalance(filledRatio);
-        if(entry.toBalance < 0) {
-          canRemove += -entry.toBalance;
-        } else {
-          canAdd += entry.toBalance;
+        if(entry.emmiter.getConectionMode(entry.direction) == ConnectionMode.IN_OUT) {
+          entry.calcToBalance(filledRatio);
+          if(entry.toBalance < 0) {
+            canRemove += -entry.toBalance;
+          } else {
+            canAdd += entry.toBalance;
+          }
         }
       }
 
@@ -522,20 +522,21 @@ public class NetworkPowerManager {
 
       for (int i = 0; i < enteries.size() && toalTransferAmount > 0; i++) {
         CapBankSupplyEntry from = enteries.get(i);
-        if (from.emmiter.getConectionMode(from.direction) != ConnectionMode.IN_OUT)
-        	  continue;
-        float amount = from.toBalance;
-        amount = minAbs(amount, toalTransferAmount);
-        from.capBank.addEnergy(amount);
-        toalTransferAmount -= Math.abs(amount);
-        float toTranfser = Math.abs(amount);
+        if(from.emmiter.getConectionMode(from.direction) == ConnectionMode.IN_OUT) {
 
-        for (int j = i + 1; j < enteries.size() && toTranfser > 0; j++) {
-          CapBankSupplyEntry to = enteries.get(j);
-          if(Math.signum(amount) != Math.signum(to.toBalance)) {
-            float toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
-            to.capBank.addEnergy(toAmount * Math.signum(to.toBalance));
-            toTranfser -= toAmount;
+          float amount = from.toBalance;
+          amount = minAbs(amount, toalTransferAmount);
+          from.capBank.addEnergy(amount);
+          toalTransferAmount -= Math.abs(amount);
+          float toTranfser = Math.abs(amount);
+
+          for (int j = i + 1; j < enteries.size() && toTranfser > 0; j++) {
+            CapBankSupplyEntry to = enteries.get(j);
+            if(Math.signum(amount) != Math.signum(to.toBalance)) {
+              float toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
+              to.capBank.addEnergy(toAmount * Math.signum(to.toBalance));
+              toTranfser -= toAmount;
+            }
           }
         }
 
