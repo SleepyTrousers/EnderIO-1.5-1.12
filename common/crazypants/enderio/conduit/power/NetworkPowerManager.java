@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.common.TickType;
 import crazypants.enderio.Config;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.machine.power.TileCapacitorBank;
@@ -453,6 +455,10 @@ public class NetworkPowerManager {
       canFill = 0;
       stored = 0;
       maxCap = 0;
+      
+      float toBalance = 0;
+      float maxToBalance = 0;
+      
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
         cb = cb.getController();
@@ -464,6 +470,11 @@ public class NetworkPowerManager {
           maxCap += cb.getMaxEnergyStored();
           capBanks.add(cb);
 
+          if (rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
+        	  toBalance += cb.getEnergyStored();
+        	  maxToBalance += cb.getMaxEnergyStored();
+          }
+          
           float canGet = 0;
 
           if(cb.isOutputEnabled(rec.direction.getOpposite())) {
@@ -477,14 +488,15 @@ public class NetworkPowerManager {
             canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
             this.canFill += canFill;
           }
-          enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter));
+          
+          enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter, rec.direction));
         }
 
       }
 
       filledRatio = 0;
-      if(maxCap > 0) {
-        filledRatio = stored / maxCap;
+      if(maxToBalance > 0) {
+        filledRatio = toBalance / maxToBalance;
       }
     }
 
@@ -496,6 +508,8 @@ public class NetworkPowerManager {
       int canRemove = 0;
       int canAdd = 0;
       for (CapBankSupplyEntry entry : enteries) {
+        if (entry.emmiter.getConectionMode(entry.direction) != ConnectionMode.IN_OUT)
+      	  continue;
         entry.calcToBalance(filledRatio);
         if(entry.toBalance < 0) {
           canRemove += -entry.toBalance;
@@ -508,6 +522,8 @@ public class NetworkPowerManager {
 
       for (int i = 0; i < enteries.size() && toalTransferAmount > 0; i++) {
         CapBankSupplyEntry from = enteries.get(i);
+        if (from.emmiter.getConectionMode(from.direction) != ConnectionMode.IN_OUT)
+        	  continue;
         float amount = from.toBalance;
         amount = minAbs(amount, toalTransferAmount);
         from.capBank.addEnergy(amount);
@@ -574,11 +590,14 @@ public class NetworkPowerManager {
     final float canFill;
     float toBalance;
     IPowerConduit emmiter;
+    ForgeDirection direction;
 
-    private CapBankSupplyEntry(TileCapacitorBank capBank, float available, float canFill, IPowerConduit emmiter) {
+    private CapBankSupplyEntry(TileCapacitorBank capBank, float available, float canFill, IPowerConduit emmiter, ForgeDirection direction) {
       this.capBank = capBank;
       this.canExtract = available;
       this.canFill = canFill;
+      this.direction = direction;
+      this.emmiter = emmiter;
     }
 
     void calcToBalance(float targetRatio) {
