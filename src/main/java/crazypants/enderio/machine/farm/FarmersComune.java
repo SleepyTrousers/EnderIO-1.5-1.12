@@ -3,9 +3,12 @@ package crazypants.enderio.machine.farm;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import crazypants.util.BlockCoord;
 
@@ -30,7 +33,7 @@ public class FarmersComune implements IFarmerJoe {
     joinComune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     joinComune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
     joinComune(new TreeFarmer(Blocks.sapling, Blocks.log));
-    joinComune(new TreeFarmer(Blocks.sapling, Blocks.log2));
+    joinComune(new TreeFarmer(Blocks.sapling, Blocks.log2));    
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();

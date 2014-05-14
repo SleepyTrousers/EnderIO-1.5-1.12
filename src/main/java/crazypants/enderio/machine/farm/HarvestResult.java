@@ -18,7 +18,7 @@ public class HarvestResult implements IHarvestResult {
 
   public HarvestResult(List<EntityItem> drops, BlockCoord harvestedBlock) {
     this.drops = drops;
-    this.harvestedBlocks = new ArrayList<BlockCoord>();
+    this.harvestedBlocks = new ArrayList<BlockCoord>();    
     harvestedBlocks.add(harvestedBlock);
   }
 
