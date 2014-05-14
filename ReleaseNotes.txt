@@ -20,7 +20,7 @@
 - Capacitor Banks remember their IO limits when block are added/removed. (William Lahti)
 - #627 Insert mode on Conduit stops transfer  (William Lahti) 
 - #638 Capacitor Banks charging slots filling with junk (William Lahti) 
-- Russian localization (ZigTheHedge)
+- Russian localization (ZigTheHedge, Adaptivity)
 
 1.0.2
 - #601 Capacitor bank overcharges with BC kinetic pipes

@@ -108,12 +108,28 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     return null;
   }
 
+  private void destroyTool(Class<? extends Item> class1) {
+    for (int i = minToolSlot; i <= maxToolSlot; i++) {
+      if(Util.isType(inventory[i], class1)) {
+        inventory[i] = null;
+        markDirty();
+        return;
+      }
+    }
+
+  }
+
   private void damageTool(Class<? extends Item> class1, int damage) {
     ItemStack tool = getTool(class1);
     if(tool != null) {
       tool.damageItem(damage, farmerJoe);
+      if(tool.getItemDamage() >= tool.getMaxDamage()) {
+        destroyTool(class1);
+      }
     }
   }
+
+
 
   public EntityPlayer getFakePlayer() {
     return farmerJoe;
