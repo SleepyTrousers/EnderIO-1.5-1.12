@@ -236,7 +236,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyConta
   }
 
   public void setFull(ItemStack container) {
-    setEnergy(container, Config.darkSteelPowerStorageBase);
+    setEnergy(container, Config.darkSteelPowerStorageLevelTwo);
   }
 
   private void updateDamage(ItemStack stack) {

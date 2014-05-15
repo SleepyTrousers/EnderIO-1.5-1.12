@@ -366,6 +366,7 @@ public class EnderIO {
     packetPipeline.postInitialise();
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();
+    ItemRecipes.addOreDictionaryRecipes();
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();

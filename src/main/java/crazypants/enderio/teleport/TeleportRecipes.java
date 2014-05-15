@@ -2,6 +2,7 @@ package crazypants.enderio.teleport;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
@@ -27,12 +28,15 @@ public class TeleportRecipes {
     if(Config.travelStaffEnabled) {
       //travel staff
       ItemStack travelStaff = new ItemStack(EnderIO.itemTravelStaff);
+      EnderIO.itemTravelStaff.setEnergy(travelStaff, 0);
       ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
       ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
-      GameRegistry
+      IRecipe rec = GameRegistry
           .addShapedRecipe(travelStaff, "  g", " s ", "c  ", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
-      GameRegistry
+      rec = GameRegistry
           .addShapedRecipe(travelStaff, "g  ", " s ", "  c", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
+      
+      System.out.println("TeleportRecipes.addRecipes: " + rec);
     }
   }
 

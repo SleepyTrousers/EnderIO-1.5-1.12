@@ -18,8 +18,7 @@ public class ItemRecipes {
     // Wrench
     GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
 
-    ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
-    ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
+    ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());    
 
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "sss", "s s", "   ", 's', darkSteel);
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelHelmet.createItemStack(), "   ", "sss", "s s", 's', darkSteel);
@@ -33,13 +32,13 @@ public class ItemRecipes {
 
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "s s", 's', darkSteel);
 
-
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 't', "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 't', "woodStick"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
-        "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'c', vibCry, 'w',
-        "woodStick"));
-
+  }
+  
+  public static void addOreDictionaryRecipes() {
+    ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelSword.createItemStack(),  " s ", " s ", " w ", 's', darkSteel, 'w', "woodStick"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "stickWood"));
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.itemDarkSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', darkSteel, 'w', "woodStick"));
   }
 }
