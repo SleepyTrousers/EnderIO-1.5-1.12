@@ -4,12 +4,12 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.crafting.IEnderIoRecipe;
@@ -31,9 +31,6 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     return "enderio:textures/gui/alloySmelter.png";
   }
 
-  public PositionedStack getResult() {
-    return null;
-  }
 
   @Override
   public Class<? extends GuiContainer> getGuiClass() {
@@ -98,22 +95,13 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     }
   }
 
-  //Move the GUI down 8 pixels.
-  @Override
-  public void drawBackground(int recipe) {
-    GL11.glColor4f(1, 1, 1, 1);
-
-    GuiDraw.changeTexture(getGuiTexture());
-    GuiDraw.drawTexturedModalRect(0, 0, 5, 3, 166, 73);
-  }
-
   @Override
   public void drawExtras(int recipeIndex) {
-    drawProgressBar(98, 33, 176, 0, 22, 13, 48, 3);
-    drawProgressBar(50, 33, 176, 0, 22, 13, 48, 3);
+    drawProgressBar(98, 25, 176, 0, 22, 13, 48, 3);
+    drawProgressBar(50, 25, 176, 0, 22, 13, 48, 3);
     AlloySmelterRecipe recipe = (AlloySmelterRecipe) arecipes.get(recipeIndex);
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
-    GuiDraw.drawString(energyString, 100, 57, 0xFFFFFFFF);
+    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 100, 50, 0xFFFFFFFF);
   }
 
   public List<ItemStack> getInputs(IRecipeInput input) {
@@ -147,17 +135,18 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     public AlloySmelterRecipe(float energy, List<IRecipeInput> ingredients, ItemStack result) {
       int recipeSize = ingredients.size();
       this.input = new ArrayList<PositionedStack>();
+      int yOff = 8;
       if(recipeSize > 0) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(0)), 49, 14));
+        this.input.add(new PositionedStack(getInputs(ingredients.get(0)), 49, 14 - yOff));
       }
       if(recipeSize > 1) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(1)), 73, 4));
+        this.input.add(new PositionedStack(getInputs(ingredients.get(1)), 73, 4 - yOff));
       }
       if(recipeSize > 2) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(2)), 98, 14));
+        this.input.add(new PositionedStack(getInputs(ingredients.get(2)), 98, 14 - yOff));
       }
       if(result != null) {
-        this.output = new PositionedStack(result, 74, 54);
+        this.output = new PositionedStack(result, 74, 54 - yOff);
       }
       this.energy = energy; //If we wanted to do an energy cost
     }
