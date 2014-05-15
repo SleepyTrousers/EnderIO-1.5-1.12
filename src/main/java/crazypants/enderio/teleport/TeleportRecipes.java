@@ -34,9 +34,7 @@ public class TeleportRecipes {
       IRecipe rec = GameRegistry
           .addShapedRecipe(travelStaff, "  g", " s ", "c  ", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
       rec = GameRegistry
-          .addShapedRecipe(travelStaff, "g  ", " s ", "  c", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
-      
-      System.out.println("TeleportRecipes.addRecipes: " + rec);
+          .addShapedRecipe(travelStaff, "g  ", " s ", "  c", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);      
     }
   }
 

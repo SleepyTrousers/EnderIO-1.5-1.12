@@ -200,9 +200,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     //    }
 
     BlockCoord bc = getNextCoord();
+    if(bc != null && bc.equals(getLocation())) { //don't try and harvest ourselves
+      bc = getNextCoord();
+    }
     if(bc == null) {
       return false;
-    }
+    }    
     lastScanned = bc;
 
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);

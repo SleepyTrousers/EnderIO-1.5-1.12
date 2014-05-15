@@ -13,36 +13,69 @@ import crazypants.util.BlockCoord;
 
 public final class ModdedCrops {
 
-  //System.out.println("FarmersComune.enclosing_method: ");
-
   public static void addModdedFarmers() {
-    String natura = "Natura";
-    String blockName = "N Crops";
+    addNutura();
+    addTiC();    
+  }
 
-    Block natCropBlock = GameRegistry.findBlock(natura, blockName);
-    if(natCropBlock != null) {
-      Item natSeedItem = GameRegistry.findItem(natura, "barley.seed");
-      if(natSeedItem != null) {
-        //barley
-        FarmersComune.instance.joinComune(new SeedFarmer(natCropBlock, 3, new ItemStack(natSeedItem)));
-        // cotton
-        FarmersComune.instance.joinComune(new PickableFarmer(natCropBlock, 4, 8, new ItemStack(natSeedItem, 1, 1)));
-      }
-    }
-
-    blockName = "BerryBush";
-    natCropBlock = GameRegistry.findBlock(natura, blockName);
-    if(natCropBlock != null) {
-      Item natSeedItem = GameRegistry.findItem(natura, blockName);
-      if(natSeedItem != null) {
-        for (int i = 0; i < 4; i++) {
-          PickableFarmer farmer = new NaturaBerryFarmer(natCropBlock, i, 12 + i, new ItemStack(natSeedItem, 1, 12 + i));
+  private static void addTiC() {
+    String mod = "TConstruct";
+    String blockName = "ore.berries.two";
+    
+    Block cropBlock = GameRegistry.findBlock(mod, blockName);
+    if(cropBlock != null) {
+      Item seedItem = GameRegistry.findItem(mod, blockName);
+      if(seedItem != null) {
+        for (int i = 0; i < 2; i++) {                
+          PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
           FarmersComune.instance.joinComune(farmer);
         }
       }
     }
+    
+    blockName = "ore.berries.one";
+    cropBlock = GameRegistry.findBlock(mod, blockName);
+    if(cropBlock != null) {
+      Item seedItem = GameRegistry.findItem(mod, blockName);
+      if(seedItem != null) {
+        for (int i = 0; i < 4; i++) {        
+          PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
+          farmer.setRequiresFarmland(false);
+          FarmersComune.instance.joinComune(farmer);
+        }
+      }
+    }
+    
+  }
 
+  private static void addNutura() {
+    String mod = "Natura";
+    String blockName = "N Crops";
+
+    Block cropBlock = GameRegistry.findBlock(mod, blockName);
+    if(cropBlock != null) {
+      Item seedItem = GameRegistry.findItem(mod, "barley.seed");
+      if(seedItem != null) {
+        //barley
+        FarmersComune.instance.joinComune(new SeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
+        // cotton
+        FarmersComune.instance.joinComune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
+      }
+    }
+
+    blockName = "BerryBush";
+    cropBlock = GameRegistry.findBlock(mod, blockName);
+    if(cropBlock != null) {
+      Item seedItem = GameRegistry.findItem(mod, blockName);
+      if(seedItem != null) {
+        for (int i = 0; i < 4; i++) {
+          PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 12 + i));
+          farmer.setRequiresFarmland(false);
+          FarmersComune.instance.joinComune(farmer);
+        }
+      }
+    }
   }
 
   private ModdedCrops() {

@@ -68,13 +68,12 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   @Override
   public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileFarmStation) {
-      int res = ((TileFarmStation)te).isActive() ? 15 : 0;
-      return res;
-    }
+//    TileEntity te = world.getTileEntity(x, y, z);
+//    if(te instanceof TileFarmStation) {
+//      int res = ((TileFarmStation)te).isActive() ? 15 : 0;
+//      return res;
+//    }
     return 0;
-    //return world.getBlockMetadata(x, y, z) == 0 ? 0 : 15;
   }
 
   @Override
