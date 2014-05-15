@@ -1,3 +1,6 @@
+1.0.4
+- #672 Stack overflow when creating a loop with item conduits and tesseracts. 
+
 1.0.3
 - Capacitor Banks remember their IO limits when block are added/removed. (William Lahti)
 - #627 Insert mode on Conduit stops transfer  (William Lahti) 
