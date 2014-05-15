@@ -66,6 +66,11 @@ public class Util {
 
   // derived from ItemBlock.onItemUse
   public static BlockCoord canPlaceItem(ItemStack itemUsed, Block blockIdToBePlaced, EntityPlayer player, World world, int x, int y, int z, int side) {
+    
+    if(blockIdToBePlaced == null) {
+      return null;
+    }
+    
     Block block = world.getBlock(x, y, z);
 
     if(block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {

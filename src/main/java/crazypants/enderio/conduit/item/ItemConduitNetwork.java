@@ -37,6 +37,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
   private boolean requiresSort = true;
 
+  private boolean doingSend = false;
+
   private final InnerTickHandler tickHandler = new InnerTickHandler();
 
   public ItemConduitNetwork() {
@@ -104,26 +106,34 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   public ItemStack sendItems(ItemConduit itemConduit, ItemStack item, ForgeDirection side) {
+    if(doingSend) {
+      return item;
+    }
+
     if(item == null) {
       return item;
     }
 
-    BlockCoord loc = itemConduit.getLocation().getLocation(side);
+    try {
+      doingSend = true;
+      BlockCoord loc = itemConduit.getLocation().getLocation(side);
 
-    ItemStack result = item.copy();
-    List<NetworkedInventory> invs = getOrCreate(loc);
-    for (NetworkedInventory inv : invs) {
+      ItemStack result = item.copy();
+      List<NetworkedInventory> invs = getOrCreate(loc);
+      for (NetworkedInventory inv : invs) {
 
-      if(inv.con.getLocation().equals(itemConduit.getLocation())) {
-        int numInserted = inv.insertIntoTargets(item.copy());
-        if(numInserted >= item.stackSize) {
-          return null;
+        if(inv.con.getLocation().equals(itemConduit.getLocation())) {
+          int numInserted = inv.insertIntoTargets(item.copy());
+          if(numInserted >= item.stackSize) {
+            return null;
+          }
+          result.stackSize -= numInserted;
         }
-        result.stackSize -= numInserted;
       }
+      return result;
+    } finally {
+      doingSend = false;
     }
-
-    return result;
   }
 
   public List<String> getTargetsForExtraction(BlockCoord extractFrom, IItemConduit con, ItemStack input) {

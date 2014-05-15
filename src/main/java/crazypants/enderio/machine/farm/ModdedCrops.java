@@ -94,8 +94,6 @@ public final class ModdedCrops {
       }      
       return super.canHarvest(farm, bc, block, meta);
     }
-    
-    
 
   }
 
