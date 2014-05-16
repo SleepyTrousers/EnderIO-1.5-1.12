@@ -64,11 +64,11 @@ item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 item.bucketHootch.name=Hootch Bucket
 item.bucketRocket_fuel.name=Rocket Fuel Bucket
 item.bucketFire_water.name=Fire Water Bucket
-enderio.fluid.millibucket.abr=MB
+enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Fuel Details
 enderio.fuel.tooltip.burnTime=burn time
-enderio.fluid.millibucketsTick=MB/t
+enderio.fluid.millibucketsTick=mB/t
 
 
 //Materials
