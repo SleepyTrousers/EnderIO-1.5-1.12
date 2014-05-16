@@ -38,7 +38,7 @@ enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
 
 enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
 enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line1=Fluids will not flow upwards 
+enderio.itemLiquidConduit.tooltip.tooltip.detailed.line1=Fluids will not flow upwards
 enderio.itemLiquidConduit.tooltip.tooltip.detailed.line2=Flow rate dependent on fluid
 enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=viscosity
 
@@ -125,21 +125,21 @@ tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase o
 tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency
 
 tile.blockReservoir.name=Reservoir
-tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1 
-tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for 
+tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
+tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
 tile.blockReservoir.tooltip.detailed.line3=an infinite water source
 tile.blockReservoir.tooltip.detailed.line4=Produces one bucket a second
-tile.blockReservoir.tooltip.detailed.line5=Right click with a wrench to 
+tile.blockReservoir.tooltip.detailed.line5=Right click with a wrench to
 tile.blockReservoir.tooltip.detailed.line6=enable auto-output
 
 tile.blockAlloySmelter.name=Alloy Smelter
 tile.blockAlloySmelter.tooltip.detailed.line1=Used to create EnderIO alloys
-tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered 
+tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
 tile.blockAlloySmelter.tooltip.detailed.line3=furnace
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
-tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of site to 
+tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of site to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
 
 tile.blockElectricLight.name=Powered Light
@@ -169,7 +169,7 @@ tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
 tile.blockPowerMonitor.tooltip.detailed.line2=and storage
 tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone based
 tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
-tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO 
+tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
 tile.blockPowerMonitor.tooltip.detailed.line6=conduit
 
 tile.blockVat.name=The Vat
@@ -186,7 +186,7 @@ enderio.machine.tooltip.configured=(Configured)
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
 tile.blockTravelAnchor.tooltip.detailed.line1=Allows teleportation between anchors
-tile.blockTravelAnchor.tooltip.detailed.line2=Stand an one Anchor, look at 
+tile.blockTravelAnchor.tooltip.detailed.line2=Stand an one Anchor, look at
 tile.blockTravelAnchor.tooltip.detailed.line3=another and jump to travel
 tile.blockTravelAnchor.tooltip.detailed.line4=Can also be used with the Staff
 tile.blockTravelAnchor.tooltip.detailed.line5=of Travel
@@ -220,14 +220,14 @@ tile.blockPainter.tooltip.detailed.line3= Glass Frames
 //Items
 item.itemYetaWrench.name=Yeta Wrench
 item.itemYetaWrench.tooltip.detailed.line1=Hides conduit facades when held
-item.itemYetaWrench.tooltip.detailed.line2=Shift-Click to break machines 
+item.itemYetaWrench.tooltip.detailed.line2=Shift-Click to break machines
 item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
 item.itemYetaWrench.tooltip.detailed.line4=Use Shift-Mouse Wheel to render
 item.itemYetaWrench.tooltip.detailed.line5=a single conduit type
 
 item.enderio.itemConduitProbe.name=Conduit Probe
-item.enderio.itemConduitProbe.tooltip.detailed.line1=Right-Click on a conduit to display 
-item.enderio.itemConduitProbe.tooltip.detailed.line2=details about its network 
+item.enderio.itemConduitProbe.tooltip.detailed.line1=Right-Click on a conduit to display
+item.enderio.itemConduitProbe.tooltip.detailed.line2=details about its network
 item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift Right-Click on a conduit to
 item.enderio.itemConduitProbe.tooltip.detailed.line4=to access its connection settings
 
@@ -245,7 +245,7 @@ enderio.item.darkSteel.tooltip.durability=Durability:
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
-        
+
 enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops.
 enderio.item.darkSteel_sword.tooltip.line2=Enderman can't teleport once hit.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
