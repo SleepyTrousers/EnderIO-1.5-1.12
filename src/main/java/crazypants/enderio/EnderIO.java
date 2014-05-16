@@ -49,7 +49,7 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
-import crazypants.enderio.machine.farm.ModdedCrops;
+import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.BlockStirlingGenerator;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
@@ -371,7 +371,7 @@ public class EnderIO {
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
-    ModdedCrops.addModdedFarmers();
+    FarmersRegistry.addFarmers();
   }
 
   @EventHandler

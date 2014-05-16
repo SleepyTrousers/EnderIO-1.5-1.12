@@ -20,20 +20,8 @@ public class FarmersComune implements IFarmerJoe {
     instance.farmers.add(joe);
   }
 
-  public static void leaveComune(IFarmerJoe joe) {
-    //instance.farmers.remove(joe);
-    throw new UnsupportedOperationException("As if this would be implemented.");
-  }
-
-  static {
-    joinComune(new SeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
-    joinComune(new SeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
-    joinComune(new SeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
-    joinComune(new NetherWartFarmer());
-    joinComune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
-    joinComune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
-    joinComune(new TreeFarmer(Blocks.sapling, Blocks.log));
-    joinComune(new TreeFarmer(Blocks.sapling, Blocks.log2));    
+  public static void leaveComune(IFarmerJoe joe) {    
+    throw new UnsupportedOperationException("As if this would be implemented. The comune is for life!");
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();
