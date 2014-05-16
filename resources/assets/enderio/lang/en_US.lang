@@ -12,7 +12,7 @@ tile.blockEnderIo.tooltip.detailed.line1=Allow remote access to near by
 tile.blockEnderIo.tooltip.detailed.line2=blocks
 tile.blockEnderIo.tooltip.detailed.line3=Used with Travel Anchors or
 tile.blockEnderIo.tooltip.detailed.line4=the Staff of Travel
-
+e
 item.enderio.itemEnderface.name=Enderface
 
 //Conduits
@@ -247,7 +247,7 @@ enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
 
 enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops.
-enderio.item.darkSteel_sword.tooltip.line2=Enderman can't teleport once hit.
+enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
