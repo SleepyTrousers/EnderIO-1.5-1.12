@@ -147,6 +147,7 @@ tile.blockElectricLight.tooltip.detailed.line1=Lights a large area when supplied
 tile.blockElectricLight.tooltip.detailed.line2=power and a redstone signal
 
 tile.blockCapacitorBank.name=Capacitor Bank
+tile.blockCapacitorBank.creative.name=Creative Capacitor Bank
 tile.blockCapacitorBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains

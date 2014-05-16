@@ -381,7 +381,9 @@ public class NetworkPowerManager {
     receptors.clear();
     storageReceptors.clear();
     for (ReceptorEntry rec : network.getPowerReceptors()) {
-      if(rec.powerInterface.getDelegate() != null && rec.powerInterface.getDelegate().getClass() == TileCapacitorBank.class) {
+      if(rec.powerInterface.getDelegate() != null && 
+         rec.powerInterface.getDelegate().getClass() == TileCapacitorBank.class && 
+         !((TileCapacitorBank)rec.powerInterface.getDelegate()).isCreative()) {
         storageReceptors.add(rec);
       } else {
         receptors.add(rec);

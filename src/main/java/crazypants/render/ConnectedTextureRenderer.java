@@ -57,6 +57,8 @@ public class ConnectedTextureRenderer implements IRenderFace {
 
   private TextureCallback edgeTexureCallback;
 
+  private boolean matchMetaData;
+
   public boolean isForceAllEdges() {
     return forceAllEdges;
   }
@@ -80,6 +82,11 @@ public class ConnectedTextureRenderer implements IRenderFace {
     }
     edgeTexureCallback = new DefaultTextureCallback(texture);
   }
+  
+  public void setMatchMeta(boolean matchMetaData) {
+    this.matchMetaData = matchMetaData;        
+  }
+
 
   @Override
   public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
@@ -96,7 +103,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
       if(forceAllEdges) {
         edges = RenderUtil.getEdgesForFace(face);
       } else {
-        edges = RenderUtil.getNonConectedEdgesForFace(rb.blockAccess, (int) x, (int) y, (int) z, face);
+        edges = RenderUtil.getNonConectedEdgesForFace(rb.blockAccess, (int) x, (int) y, (int) z, face, matchMetaData);
       }
 
       List<ForgeDirection> allEdges = RenderUtil.getEdgesForFace(face);
@@ -239,12 +246,6 @@ public class ConnectedTextureRenderer implements IRenderFace {
     }
   }
 
-  //    private int interpolateBrightness(float u, float v, int bl, int br, int tl, int tr) {
-  //      //(1 - yfrac) * [(1 - xfrac)*s00 + xfrac*s01] +  yfrac * [(1 - xfrac)*s10 + xfrac*s11]                  
-  //      float res = (1 - v) * ((1 - u) * bl + u * tl) + v * ((1 - u) * br + u * tr);
-  //      return (int) res;
-  //    }
-
   private boolean needsCorner(ForgeDirection dir, ForgeDirection dir2, List<ForgeDirection> edges, ForgeDirection face,
       Block par1Block, double x, double y,
       double z, IBlockAccess blockAccess) {
@@ -308,44 +309,5 @@ public class ConnectedTextureRenderer implements IRenderFace {
     return xyz.z;
   }
 
-  //  private void moveCornerVec(List<Vector3d> corners, Vector3d edge, float scaleFactor) {
-  //    int[] indices = getClosestVec(edge, corners);
-  //    corners.get(indices[0]).x -= scaleFactor * edge.x;
-  //    corners.get(indices[1]).x -= scaleFactor * edge.x;
-  //    corners.get(indices[0]).y -= scaleFactor * edge.y;
-  //    corners.get(indices[1]).y -= scaleFactor * edge.y;
-  //    corners.get(indices[0]).z -= scaleFactor * edge.z;
-  //    corners.get(indices[1]).z -= scaleFactor * edge.z;
-  //  }
-  //  
-  //  private int[] getClosestVec(Vector3d edge, List<Vector3d> corners) {
-  //    int[] res = new int[] { -1, -1 };
-  //    boolean highest = edge.x > 0 || edge.y > 0 || edge.z > 0;
-  //    double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
-  //    int index = 0;
-  //    for (Vector3d v : corners) {
-  //      double val = get(v, edge);
-  //      if(highest ? val >= minMax : val <= minMax) {
-  //        if(val != minMax) {
-  //          res[0] = index;
-  //        } else {
-  //          res[1] = index;
-  //        }
-  //        minMax = val;
-  //      }
-  //      index++;
-  //    }
-  //    return res;
-  //  }
-  //
-  //  private double get(Vector3d xyz, Vector3d edge) {
-  //    if(Math.abs(edge.x) > 0.5) {
-  //      return xyz.x;
-  //    }
-  //    if(Math.abs(edge.y) > 0.5) {
-  //      return xyz.y;
-  //    }
-  //    return xyz.z;
-  //  }
-
+  
 }

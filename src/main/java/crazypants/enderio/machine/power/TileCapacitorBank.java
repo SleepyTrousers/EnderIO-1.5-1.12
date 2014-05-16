@@ -94,6 +94,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   float energyAtLastRender = -1;
 
+  private boolean isCreative = false;
+
   public TileCapacitorBank() {
     inventory = new ItemStack[4];
     storedEnergy = 0;
@@ -242,6 +244,9 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       storedEnergy += powerHandler.getEnergyStored();
       powerHandler.setEnergy(0);
     }
+    if(isCreative) {
+      storedEnergy = getMaxEnergyStored()/2;
+    }
 
     requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0;
 
@@ -358,7 +363,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           && mode != IoMode.PULL && mode != IoMode.DISABLED
           && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
         float used;
-        if(receptor.receptor.getDelegate() instanceof IConduitBundle) {
+        if(receptor.receptor.getDelegate() instanceof IConduitBundle && !isCreative) {
           //All other power transfer is handled by the conduit network
           IConduitBundle bundle = (IConduitBundle) receptor.receptor.getDelegate();
           IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
@@ -367,7 +372,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           } else {
             used = 0;
           }
-        } else {
+        } else {          
           used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         }
 
@@ -548,6 +553,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   public int doReceiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     float freeSpace = maxStoredEnergy - storedEnergy;
+    freeSpace = Math.min(freeSpace, getMaxInput());
     int result = (int) Math.min(maxReceive / 10, freeSpace);
     if(!simulate) {
       doAddEnergy(result);
@@ -757,6 +763,9 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   }
 
   private void formMultiblock() {
+    if(isCreative) {
+      return;
+    }
     List<TileCapacitorBank> blocks = new ArrayList<TileCapacitorBank>();
     blocks.add(this);
     findNighbouringBanks(this, blocks);
@@ -790,10 +799,13 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   }
 
   private void findNighbouringBanks(TileCapacitorBank tileCapacitorBank, List<TileCapacitorBank> blocks) {
+    if(isCreative) {
+      return;
+    }
     BlockCoord bc = new BlockCoord(tileCapacitorBank);
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       TileCapacitorBank cb = getCapBank(bc.getLocation(dir));
-      if(cb != null && !blocks.contains(cb)) {
+      if(cb != null && !blocks.contains(cb) && !cb.isCreative) {
         blocks.add(cb);
         findNighbouringBanks(cb, blocks);
       }
@@ -1156,8 +1168,20 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public boolean hasCustomInventoryName() {
-    // TODO Auto-generated method stub
+    
     return false;
+  }
+
+  public void setCreativeMode() {
+    this.isCreative = true;
+    maxIO = maxIO * 1000;
+    maxInput = maxIO;
+    maxOutput = maxIO;    
+    updatePowerHandler();
+  }
+
+  public boolean isCreative() {
+    return isCreative;
   }
 
 }

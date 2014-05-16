@@ -354,7 +354,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
     long curTick = getBundle().getWorld().getTotalWorldTime();
     long recT = recievedTicks.get(dir);
-    if(curTick >= (recT - 5)) {
+    if(curTick - recT <= 5) {
       return true;
     }
     return false;

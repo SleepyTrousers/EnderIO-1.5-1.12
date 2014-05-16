@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -17,6 +18,7 @@ import crazypants.render.ConnectedTextureRenderer;
 import crazypants.render.CustomCubeRenderer;
 import crazypants.render.CustomRenderBlocks;
 import crazypants.render.IRenderFace;
+import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ForgeDirectionOffsets;
@@ -38,6 +40,7 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
   public CapBankRenderer2() {
     connectedTexRenderer = new ConnectedTextureRenderer();
+    connectedTexRenderer.setMatchMeta(true);
 
     GaugueRenderer gaugeRenderer = new GaugueRenderer();
     renderers.add(connectedTexRenderer);
@@ -55,7 +58,14 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       TileCapacitorBank cb = ((TileCapacitorBank) te);
       cb.energyAtLastRender = cb.getEnergyStored();
     }
-    connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3)); //can't do in constructor as texture not loaded yet
+    int meta = world.getBlockMetadata(x, y, z);
+    if(meta == 1) {
+      connectedTexRenderer.setEdgeTexture(IconUtil.whiteTexture);
+      connectedTexRenderer.setForceAllEdges(true);
+    } else {
+      connectedTexRenderer.setEdgeTexture(EnderIO.blockAlloySmelter.getBlockTextureFromSide(3));
+      connectedTexRenderer.setForceAllEdges(false);
+    }
     CustomCubeRenderer.instance.renderBlock(world, block, x, y, z, renderers);
     return true;
   }

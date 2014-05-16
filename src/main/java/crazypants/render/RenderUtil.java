@@ -299,8 +299,13 @@ public class RenderUtil {
     }
 
   }
-
+  
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
+    return getNonConectedEdgesForFace(blockAccess, x, y, z, face, false);
+  }
+  
+  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, boolean matchMetaData) {
+    
     Block block = blockAccess.getBlock(x, y, z);
     if(block == null) {
       return Collections.emptyList();
@@ -316,13 +321,14 @@ public class RenderUtil {
     }
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     for (EdgeNeighbour edge : edges) {
-      if(blockAccess.getBlock(edge.bc.x, edge.bc.y, edge.bc.z) != block) {
+      boolean matchingNeighbour = blockAccess.getBlock(edge.bc.x, edge.bc.y, edge.bc.z) == block;
+      if(matchingNeighbour && matchMetaData) {
+        matchingNeighbour = blockAccess.getBlockMetadata(x, y, z) == blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z) ;
+      }
+      if(!matchingNeighbour) {
         result.add(edge.dir);
       }
-      // else if(blockAccess.getBlockId(edge.bc.x + face.offsetX, edge.bc.y +
-      // face.offsetY, edge.bc.z + face.offsetZ) == blockID) {
-      // result.add(edge.dir); //corner
-      // }
+     
     }
     return result;
   }

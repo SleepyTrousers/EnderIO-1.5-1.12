@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -30,6 +31,7 @@ import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.material.ItemFusedQuartz;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -61,7 +63,13 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   protected void init() {
-    super.init();
+    //super.init();
+
+    GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, name);
+    if(teClass != null) {
+      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+    }
+
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_CAPACITOR_BANK, this);
     setLightOpacity(255);
   }
@@ -72,9 +80,19 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
     ItemStack is = BlockItemCapacitorBank.createItemStackWithPower(0);
     list.add(is);
+    
     is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
     list.add(is);
 
+    is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored() / 2);
+    is.setItemDamage(1);
+    list.add(is);
+
+  }
+
+  @Override
+  public int damageDropped(int par1) {
+    return par1;
   }
 
   @Override
@@ -219,6 +237,10 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       return;
     }
     TileCapacitorBank tr = (TileCapacitorBank) world.getTileEntity(x, y, z);
+    int meta = world.getBlockMetadata(x, y, z);
+    if(meta == 1) {
+      tr.setCreativeMode();
+    }
     tr.onBlockAdded();
   }
 

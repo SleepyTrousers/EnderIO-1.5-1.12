@@ -19,6 +19,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector2f;
@@ -45,7 +46,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    renderBlock(null, PowerHandlerUtil.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
+    renderBlock(null, PowerHandlerUtil.getStoredEnergyForItem(item) / TileCapacitorBank.BASE_CAP.getMaxEnergyStored(), item.getItemDamage());
   }
 
   //------------------------- Entity renderer
@@ -61,14 +62,14 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glTranslated(x, y, z);
 
     TileCapacitorBank cb = (TileCapacitorBank) te;
-    renderBlock(cb, cb.getEnergyStoredRatio());
+    renderBlock(cb, cb.getEnergyStoredRatio(), 0);
 
     GL11.glPopMatrix();
     Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
 
   }
 
-  private void renderBlock(TileCapacitorBank te, float filledRatio) {
+  private void renderBlock(TileCapacitorBank te, float filledRatio, int meta) {
     RenderUtil.bindBlockTexture();
     Tessellator tes = Tessellator.instance;
 
@@ -115,9 +116,9 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     tes.setColorRGBA_F(maxBrightness, maxBrightness, maxBrightness, 1);
     if(te != null) {
       //RenderUtil.setTesselatorBrightness(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
-      renderBorder(te.getWorld(), te.xCoord, te.yCoord, te.zCoord);
+      renderBorder(te.getWorld(), te.xCoord, te.yCoord, te.zCoord, meta);
     } else {
-      renderBorder(null, 0, 0, 0);
+      renderBorder(null, 0, 0, 0, meta);
     }
     for (GaugeBounds gb : gaugeBounds) {
       renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon);
@@ -139,8 +140,13 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
   }
 
-  private void renderBorder(IBlockAccess blockAccess, int x, int y, int z) {
-    IIcon texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
+  private void renderBorder(IBlockAccess blockAccess, int x, int y, int z, int meta) {
+    IIcon texture;
+    if(meta == 0) {
+      texture = EnderIO.blockAlloySmelter.getBlockTextureFromSide(3);
+    } else {
+      texture = IconUtil.whiteTexture;
+    }
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
       RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
           blockAccess == null, false, false);
