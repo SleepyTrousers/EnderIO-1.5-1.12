@@ -17,7 +17,7 @@ import crazypants.util.BlockCoord;
 
 public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory, IPowerEmitter {
 
-  public static final float ENERGY_PER_TICK = 1;
+  public static final float ENERGY_PER_TICK = 2;
 
   /** How many ticks left until the item is burnt. */
   private int burnTime = 0;
@@ -184,12 +184,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public float getBurnTimeMultiplier() {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
       //burn for 62.5% of the time to produce 2x the power, i.e. 1.25 the effecientcy
-      return 0.625f;
+      return 1.25f;
     } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
       //burn for half as long to produce 4x the power, i.e. twice the effecientcy
-      return 0.5f;
+      return 1;
     }
-    return 1;
+    return 2;
   }
 
   //private PowerDistributor powerDis;

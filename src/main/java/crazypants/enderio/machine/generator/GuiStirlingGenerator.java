@@ -58,7 +58,7 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt =  Lang.localize("stirlingGenerator.burnRate") + " " + (1/entity.getBurnTimeMultiplier());
+    txt =  Lang.localize("stirlingGenerator.burnRate") + " " + (entity.getBurnTimeMultiplier()) + "x";
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
