@@ -398,7 +398,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   @Override
   public void setCapacitor(Capacitors capacitorType) {
     //no support for capacitor upgrades
-    powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
+//    powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
+//    powerHandler.setEnergy(storedEnergy);    
   }
   
   
