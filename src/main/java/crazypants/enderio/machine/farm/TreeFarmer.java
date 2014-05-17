@@ -3,6 +3,7 @@ package crazypants.enderio.machine.farm;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -82,9 +83,10 @@ public class TreeFarmer implements IFarmerJoe {
 
   protected void harvestUp(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
 
-    if(!farm.hasAxe()) {
+    if(!farm.hasAxe() || !isInHarvestBounds(farm, bc) || res.harvestedBlocks.contains(bc)) {
       return;
     }
+
 
     if(wood == farm.getBlock(bc)) {
       res.harvestedBlocks.add(bc);
@@ -106,16 +108,47 @@ public class TreeFarmer implements IFarmerJoe {
       }
 
     } else {
-      //for new trees, check the sides
+      // check the sides for connected wood
+      harvestAdjancentWood(farm, bc, res);
+      //and another check for large oaks, where wood can be surrounded by leaves
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir.offsetY == 0) {
-          if(wood == farm.getBlock(bc.getLocation(dir))) {
-            harvestUp(farm, bc.getLocation(dir), res);
-          }
+          Block targetBlock = farm.getBlock(bc.getLocation(dir));
+          if(targetBlock instanceof BlockLeaves) {
+            harvestAdjancentWood(farm, bc, res);
+          } 
         }
       }
     }
 
+  }
+
+  private void harvestAdjancentWood(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      if(dir.offsetY == 0) {
+        Block targetBlock = farm.getBlock(bc.getLocation(dir));
+        if(wood == targetBlock) {
+          harvestUp(farm, bc.getLocation(dir), res);
+        } 
+      }
+    }
+  }
+
+  private boolean isInHarvestBounds(TileFarmStation farm, BlockCoord bc) {
+    BlockCoord fLoc = farm.getLocation();
+    int dist = Math.abs(fLoc.x - bc.x);
+    if(dist > farm.getFarmSize() + 7) {
+      return false;
+    }
+    dist = Math.abs(fLoc.z - bc.z);
+    if(dist > farm.getFarmSize() + 7) {
+      return false;
+    }    
+    dist = Math.abs(bc.y - fLoc.y);
+    if(dist > 20) {
+      return false;
+    }
+    return true;    
   }
 
 }

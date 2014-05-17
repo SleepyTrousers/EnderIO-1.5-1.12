@@ -84,6 +84,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
         EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));
   }
 
+  public int getFarmSize() {
+    return farmSize;
+  }
+
+  public void setFarmSize(int farmSize) {
+    this.farmSize = farmSize;
+  }
+
   public void actionPerformed() {
     usePower(Config.farmActionEnergyUse);
   }
