@@ -21,8 +21,24 @@ public final class FarmersRegistry {
     FarmersComune.instance.joinComune(new TreeFarmer(Blocks.sapling, Blocks.log));
     FarmersComune.instance.joinComune(new TreeFarmer(Blocks.sapling, Blocks.log2));    
     
+    
+    addExtraUtilities();
     addNutura();
     addTiC();    
+  }
+
+  private static void addExtraUtilities() {
+
+    String mod = "ExtraUtilities";
+    String name = "plant/ender_lilly";
+    Block cropBlock = GameRegistry.findBlock(mod, name);
+    if(cropBlock != null) {
+      Item seedItem = GameRegistry.findItem(mod, name);
+      if(seedItem != null) {
+        FarmersComune.instance.joinComune(new SeedFarmer(cropBlock, new ItemStack(seedItem)));
+      }
+    }
+    
   }
 
   private static void addTiC() {
