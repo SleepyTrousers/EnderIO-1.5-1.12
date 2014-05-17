@@ -87,13 +87,14 @@ public class TreeFarmer implements IFarmerJoe {
       return;
     }
 
-
-    if(wood == farm.getBlock(bc)) {
+    Block blk = farm.getBlock(bc);
+    if(wood == blk || blk instanceof BlockLeaves) {
       res.harvestedBlocks.add(bc);
-      ArrayList<ItemStack> drops = wood.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(bc), farm.geAxeLootingValue());
+      
+      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(bc), farm.geAxeLootingValue());
       if(drops != null) {
         for (ItemStack drop : drops) {
-          res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+          res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));         
         }
 
       }
@@ -145,7 +146,7 @@ public class TreeFarmer implements IFarmerJoe {
       return false;
     }    
     dist = Math.abs(bc.y - fLoc.y);
-    if(dist > 20) {
+    if(dist > 30) {
       return false;
     }
     return true;    

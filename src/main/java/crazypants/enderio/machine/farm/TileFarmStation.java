@@ -2,6 +2,8 @@ package crazypants.enderio.machine.farm;
 
 import java.util.List;
 
+import buildcraft.api.power.PowerHandler.Type;
+
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.Enchantment;
@@ -20,6 +22,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
+import net.minecraftforge.common.IExtendedEntityProperties;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -32,12 +36,16 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Util;
 
-public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntitySelector {
+public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEntitySelector*/ {
 
   private static final float ENERGY_PER_TICK = Config.farmContinuousEnergyUse;
 
@@ -52,14 +60,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   private int minSupSlot = maxToolSlot + 1;
   private int maxSupSlot = minSupSlot + 4;
 
-  boolean isActive = false;
-  boolean wasActive = false;
-
   private static final DummyTask TASK = new DummyTask();
+  
+  private ICapacitor cap = new BasicCapacitor(200,25000);
 
   public TileFarmStation() {
     super(new SlotDefinition(6, 4, 0));
     currentTask = TASK;
+    powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
   }
 
   public boolean hasHoe() {
@@ -138,8 +146,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     }
   }
 
-
-
   public EntityPlayerMP getFakePlayer() {
     return farmerJoe;
   }
@@ -188,7 +194,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
       return false;
     }
     if(i < 2) {
-      return Util.isType(stack, ItemHoe.class) || Util.isType(stack, ItemAxe.class) || getLooting(stack) > 0;
+      return 
+          (Util.isType(stack, ItemHoe.class) && !hasHoe()) || 
+          (Util.isType(stack, ItemAxe.class) && !hasAxe()) || 
+          (getTool(stack.getItem().getClass()) == null && getLooting(stack) > 0);
     }
     return FarmersComune.instance.canPlant(stack);
   }
@@ -203,9 +212,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     if(!redstoneCheckPassed || !hasPower()) {
       return false;
     }
-    //    if(worldObj.getWorldTime() % 4 != 0) {
-    //      return false;
-    //    }
+    if(worldObj.getWorldTime() % 2 != 0) {
+      return false;
+    }
 
     BlockCoord bc = getNextCoord();
     if(bc != null && bc.equals(getLocation())) { //don't try and harvest ourselves
@@ -213,7 +222,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     }
     if(bc == null) {
       return false;
-    }    
+    }
     lastScanned = bc;
 
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
@@ -236,10 +245,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
           EnderIO.packetPipeline.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
           for (EntityItem ei : harvest.getDrops()) {
-            if(ei != null) {
-              worldObj.spawnEntityInWorld(ei);
+            if(ei != null) {            
+              insertHarvestDrop(ei);
+              if(!ei.isDead) {
+                worldObj.spawnEntityInWorld(ei);
+              }
             }
           }
+
         }
       }
     }
@@ -293,51 +306,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
     return minSupSlot + 3;
   }
 
-  private void doHoover() {
-
-    BoundingBox bb = new BoundingBox(getLocation());
-    AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    aabb = aabb.expand(farmSize + 3, farmSize + 3, farmSize + 3);
-    List<EntityItem> interestingItems = worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);
-
-    for (EntityItem entity : interestingItems) {
-      double x = (xCoord + 0.5D - entity.posX);
-      double y = (yCoord + 1D - entity.posY);
-      double z = (zCoord + 0.5D - entity.posZ);
-
-      double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance < 1.25) {
-        hooverEntity(entity);
-      } else {
-        double speed = 0.035;
-        entity.motionX += x / distance * speed;
-        entity.motionY += y * speed;
-        if(y > 0) {
-          entity.motionY = 0.12;
-        }
-        entity.motionZ += z / distance * speed;
-      }
-
-    }
-  }
-
-  private boolean isFull() {
-    for (int i = minSupSlot; i <= maxSupSlot; i++) {
-      ItemStack stack = inventory[i];
-      if(stack == null || stack.stackSize < stack.getMaxStackSize()) {
-        return false;
-      }
-    }
-    for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
-      ItemStack stack = inventory[i];
-      if(stack == null || stack.stackSize < stack.getMaxStackSize()) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private void hooverEntity(Entity entity) {
+  private void insertHarvestDrop(Entity entity) {
     if(!worldObj.isRemote) {
       if(entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
@@ -354,36 +323,35 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
 
   }
 
+
   private int insertResult(ItemStack stack) {
 
     int origSize = stack.stackSize;
     stack = stack.copy();
 
-    //try and place in the inputs first to restock
-    int inserted = ItemUtil.doInsertItem(this, stack, ForgeDirection.UNKNOWN);
+    int inserted = 0;
+    for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot && inserted < stack.stackSize; i++) {
+      ItemStack curStack = inventory[i];
+      if(isItemValidForSlot(i, stack) && (curStack == null || curStack.stackSize < 16)) {
+        if(curStack == null) {
+          inventory[i] = stack.copy();
+          inserted = stack.stackSize;
+        } else if(curStack.isItemEqual(stack)) {
+          inserted = Math.min(16 - curStack.stackSize, stack.stackSize);
+          inventory[i].stackSize += inserted;
+        }
+      }
+    }
+
+    stack.stackSize -= inserted;
     if(inserted >= origSize) {
       return origSize;
     }
-    stack.stackSize -= inserted;
+    
     ResultStack[] in = new ResultStack[] { new ResultStack(stack) };
     mergeResults(in);
     return origSize - (in[0].item == null ? 0 : in[0].item.stackSize);
 
-  }
-
-  @Override
-  public boolean isEntityApplicable(Entity entity) {
-    if(entity.isDead) {
-      return false;
-    }
-    if(entity instanceof IProjectile) {
-      return entity.motionY < 0.01;
-    }
-    if(entity instanceof EntityItem) {
-      ItemStack stack = ((EntityItem) entity).getEntityItem();
-      return true;
-    }
-    return false;
   }
 
   private BlockCoord getNextCoord() {
@@ -428,17 +396,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   }
 
   @Override
-  public void updateEntity() {
+  public void setCapacitor(Capacitors capacitorType) {
+    //no support for capacitor upgrades
+    powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
+  }
+  
+  
 
-    super.updateEntity();
-    if(wasActive != isActive) {
-      worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-    }
-    wasActive = isActive;
-
-    if(!isFull() && isActive()) {
-      doHoover();
-    }
+  @Override
+  public ICapacitor getCapacitor() {  
+    return cap;
   }
 
   @Override
@@ -450,7 +417,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IEntit
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     currentTask = TASK;
-    isActive = nbtRoot.getBoolean("isActive");
   }
 
   @Override

@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity implements ISidedInventory {
+public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;

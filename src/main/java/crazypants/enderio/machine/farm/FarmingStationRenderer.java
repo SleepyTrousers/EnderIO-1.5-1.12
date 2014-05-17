@@ -56,7 +56,7 @@ public class FarmingStationRenderer implements ISimpleBlockRenderingHandler {
 
     if(world != null) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileFarmStation && ((TileFarmStation) te).isActive) {
+      if(te instanceof TileFarmStation && ((TileFarmStation) te).isActive()) {
         bb = BoundingBox.UNIT_CUBE.scale(1, 0.08, .4);
         bb = bb.translate(0, 0.1f, 0);
         bb = bb.translate(x, y, z);
