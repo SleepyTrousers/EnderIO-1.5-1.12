@@ -381,7 +381,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IInventory inv = getExternalInventory(direction);
     if(inv instanceof ISidedInventory) {
-      return ((ISidedInventory) inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal()).length != 0;
+      int[] slots = ((ISidedInventory) inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal());
+      return slots != null && slots.length != 0;
     } else {
       return inv != null;
     }
