@@ -244,7 +244,7 @@ item.darkSteel_chestplate.name=Dark Plate
 item.darkSteel_leggings.name=Dark Leggings
 item.darkSteel_boots.name=Dark Boots
 item.darkSteel_sword.name=The Ender
-item.darkSteel_pickaxe.name=Dark Pick
+item.darkSteel_pickaxe.name=Dark Pickaxe
 
 
 enderio.item.tooltip.showDetails=<Hold Shift>
