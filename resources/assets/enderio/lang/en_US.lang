@@ -8,7 +8,7 @@ enderio.power.maxOutput=Max Output
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
-tile.blockEnderIo.tooltip.detailed.line1=Allow remote access to near by
+tile.blockEnderIo.tooltip.detailed.line1=Allow remote access to nearby
 tile.blockEnderIo.tooltip.detailed.line2=blocks
 tile.blockEnderIo.tooltip.detailed.line3=Used with Travel Anchors or
 tile.blockEnderIo.tooltip.detailed.line4=the Staff of Travel
@@ -128,7 +128,7 @@ tile.blockReservoir.name=Reservoir
 tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
 tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
 tile.blockReservoir.tooltip.detailed.line3=an infinite water source
-tile.blockReservoir.tooltip.detailed.line4=Produces one bucket a second
+tile.blockReservoir.tooltip.detailed.line4=Produces one bucket in a second
 tile.blockReservoir.tooltip.detailed.line5=Right click with a wrench to
 tile.blockReservoir.tooltip.detailed.line6=enable auto-output
 
@@ -166,7 +166,7 @@ tile.blockHyperCube.tooltip.detailed.line3=between dimensions
 
 tile.blockPowerMonitor.name=Power Monitor
 tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
-tile.blockPowerMonitor.tooltip.detailed.line2=and storage
+tile.blockPowerMonitor.tooltip.detailed.line2=storage
 tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone
 tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
 tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
@@ -186,7 +186,7 @@ enderio.machine.tooltip.configured=(Configured)
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
 tile.blockTravelAnchor.tooltip.detailed.line1=Allows teleportation between anchors
-tile.blockTravelAnchor.tooltip.detailed.line2=Stand an one Anchor, look at
+tile.blockTravelAnchor.tooltip.detailed.line2=Stand on one Anchor, look at
 tile.blockTravelAnchor.tooltip.detailed.line3=another and jump to travel
 tile.blockTravelAnchor.tooltip.detailed.line4=Can also be used with the Staff
 tile.blockTravelAnchor.tooltip.detailed.line5=of Travel
