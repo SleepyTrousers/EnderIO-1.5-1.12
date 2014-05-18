@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import thermalexpansion.api.item.IChargeableItem;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -289,29 +288,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
             used = (chargable.getEnergyStored(item) - cur) / 10;
           }
 
-        } else if(item.getItem() instanceof IChargeableItem) {
-          IChargeableItem chargable = (IChargeableItem) item.getItem();
-          float max = chargable.getMaxEnergyStored(item);
-          float cur = chargable.getEnergyStored(item);
-          float canUse = Math.min(available, max - cur);
-
-          if(cur < max) {
-            if(chargable.getClass().getName().startsWith("appeng") || "appeng.common.base.AppEngMultiChargeable".equals(chargable.getClass().getName())) {
-              // 256 max limit
-              canUse = Math.min(canUse, 256);
-              NBTTagCompound tc = item.getTagCompound();
-              if(tc == null) {
-                item.setTagCompound(tc = new NBTTagCompound());
-              }
-              double newVal = (cur + canUse) * 5.0;
-              tc.setDouble("powerLevel", newVal);
-              used = canUse;
-
-            } else {
-              used = chargable.receiveEnergy(item, canUse, true);
-            }
-          }
-        }
+        } 
         if(used > 0) {
           storedEnergy = storedEnergy - used;
           chargedItem = true;
@@ -1028,7 +1005,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     if(itemstack == null) {
       return false;
     }
-    return itemstack.getItem() instanceof IChargeableItem || itemstack.getItem() instanceof IEnergyContainerItem;
+    return itemstack.getItem() instanceof IEnergyContainerItem;
   }
 
   @Override
