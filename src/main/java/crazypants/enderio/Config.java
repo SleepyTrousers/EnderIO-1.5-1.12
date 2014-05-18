@@ -127,6 +127,10 @@ public final class Config {
   public static float farmContinuousEnergyUse = 1;
   public static float farmActionEnergyUse = 40;
   public static int farmDefaultSize = 3;
+  
+  public static int magnetPowerUsePerTickRF = 5;
+  public static int magnetPowerCapacityRF = 100000;
+  public static int magnetRange = 5;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -379,6 +383,14 @@ public final class Config {
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
     farmDefaultSize = config.get("Settings", "farmDefaultSize", farmDefaultSize,
         "The numver of blocks a farm will extend from its center").getInt(farmDefaultSize);
+    
+    
+    magnetPowerUsePerTickRF = config.get("Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerTickRF,
+        "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerTickRF);    
+    magnetPowerCapacityRF = config.get("Settings", "magnetPowerCapacityRF", magnetPowerCapacityRF,
+        "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);    
+    magnetRange = config.get("Settings", "magnetRange", magnetRange,
+        "Range of the magnet in blocks.").getInt(magnetRange);
 
   }
 

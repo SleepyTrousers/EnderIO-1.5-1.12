@@ -57,7 +57,8 @@ public enum ModObject {
   itemYetaWrench,
 
   blockTravelAnchor,
-  itemTravelStaff;
+  itemTravelStaff, 
+  itemMagnet;
 
   public final String unlocalisedName;
 

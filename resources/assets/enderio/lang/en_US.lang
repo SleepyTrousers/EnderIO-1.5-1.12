@@ -180,7 +180,7 @@ tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to genera
 tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. water)
 tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
 
-tile.blockFarmStation.name=Farming Station [WIP]
+tile.blockFarmStation.name=Farming Station
 enderio.machine.tooltip.configured=(Configured)
 
 //Travel
@@ -224,6 +224,13 @@ item.itemYetaWrench.tooltip.detailed.line2=Shift-Click to break machines
 item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
 item.itemYetaWrench.tooltip.detailed.line4=Use Shift-Mouse Wheel to render
 item.itemYetaWrench.tooltip.detailed.line5=a single conduit type
+
+item.itemMagnet.name=Electromagnet [WIP]
+item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
+item.itemMagnet.tooltip.detailed.line2=Shift+R-Click to enable / disable
+item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
+item.itemMagnet.tooltip.detailed.line4=hot bar to function 
+
 
 item.enderio.itemConduitProbe.name=Conduit Probe
 item.enderio.itemConduitProbe.tooltip.detailed.line1=Right-Click on a conduit to display

@@ -25,9 +25,6 @@ public abstract class AbstractMachineContainer extends Container {
 
         @Override
         public boolean isItemValid(ItemStack itemStack) {
-          //          if(itemStack != null && itemStack.stackSize > 1) {
-          //            return false;
-          //          }
           return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
         }
       });

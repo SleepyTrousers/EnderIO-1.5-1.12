@@ -37,6 +37,7 @@ import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
+import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.ItemRecipes;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
@@ -143,6 +144,7 @@ public class EnderIO {
   public static BlockHyperCube blockHyperCube;
   public static BlockPowerMonitor blockPowerMonitor;
   public static BlockVat blockVat;
+  public static BlockFarmStation blockFarmStation;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -167,6 +169,7 @@ public class EnderIO {
   // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
+  public static ItemMagnet itemMagnet;
 
   public static ItemDarkSteelArmor itemDarkSteelHelmet;
   public static ItemDarkSteelArmor itemDarkSteelChestplate;
@@ -175,7 +178,7 @@ public class EnderIO {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
 
-  public static BlockFarmStation blockFarmStation;
+  
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -281,6 +284,8 @@ public class EnderIO {
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
     itemConduitProbe = ItemConduitProbe.create();
+    
+    itemMagnet = ItemMagnet.create();
 
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
@@ -289,6 +294,8 @@ public class EnderIO {
 
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
+    
+    
 
     MaterialRecipes.registerOresInDictionary();
   }

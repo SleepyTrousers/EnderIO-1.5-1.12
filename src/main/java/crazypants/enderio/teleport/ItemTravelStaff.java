@@ -29,7 +29,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class ItemTravelStaff extends ItemEnergyContainer implements IEnergyContainerItem, IResourceTooltipProvider {
+public class ItemTravelStaff extends ItemEnergyContainer implements IResourceTooltipProvider {
 
   public static boolean isEquipped(EntityPlayer ep) {
     if(ep == null || ep.getCurrentEquippedItem() == null) {
