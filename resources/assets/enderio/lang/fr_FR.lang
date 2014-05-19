@@ -24,20 +24,36 @@ enderio.itemRedstoneConduitSwitch=Interrupteur Redstone
 enderio.itemRedstoneConduitInsulated=Conduit de Redstone isolé
 
 enderio.itemLiquidConduit=Conduit pour fluides
+enderio.itemLiquidConduitAdvanced.name=Conduit pour fluides préssurisé
+enderio.itemLiquidConduit.lockedType=Type de Fluide verrouillé sur
+enderio.itemLiquidConduit.unlockedType=Type de Fluide Déverrouillé
 
-enderio.itemItemConduit=Tuyau pour objet
-enderio.itemItemConduitEmpowered=Tuyau pour objet Avancé
+enderio.itemItemConduit=Conduit à objets
+enderio.itemItemConduitEmpowered=Conduit à objets Avancé
+
+enderio.itemMeConduit.name=Conduit ME
 
 //Materials
 enderio.itemMaterial=Matériaux
 enderio.silicon=Silicium
 enderio.conduitBinder=Jonction
 enderio.binderComposite=Jonction Composite
-enderio.phasedIronNugget=Pépite de fer Palpitant
+enderio.phasedIronNugget=Pépite de fer Étincelant
 
+//Crafting components
 enderio.itemMachinePart=Pièces Détachées
+enderio.machineChassi.name=Chassis Machine
+enderio.basicGear.name=Roue Basique
+enderio.pulsatingCrystal.name=Cristal palpitant
+enderio.vibrantCrystal.name=Cristal Étincelant
+
+
+//Quartz / Glass
 enderio.blockFusedQuartz=Quartz uni
-enderio.itemFusedQuartzFrame=Cadre de Quartz uni
+enderio.blockFusedQuartz.fusedQuartz.name=Quartz uni
+enderio.blockFusedQuartz.fusedGlass.name=Verre Quasi-Transparent
+
+item.enderio.itemFusedQuartzFrame.name=Cadre de Quartz uni
 enderio.itemPowderIngot=Poudres & Lingots
 
 //Alloys
@@ -47,7 +63,8 @@ enderio.energeticAlloy=Alliage Énergetique
 enderio.phasedGold=Alliage Étincelant
 enderio.redstoneAlloy=Alliage de Redstone
 enderio.conductiveIron=Fer conducteur
-enderio.phasedIron=Fer Étincelant
+enderio.phasedIron=Fer Palpitant
+enderio.vibrantNugget.name=Pépite Étincelante
 
 //Powder / Ingot
 enderio.powderCoal=Poudre de charbon
@@ -63,22 +80,30 @@ enderio.basicCapacitor=Condensateur de base
 enderio.activatedCapacitor=Condensateur Double-Couche
 enderio.enderCapacitor=Condensateur Octadique
 
-
 //Machines
-enderio.blockStirlingGenerator=Générateur Stirling
-enderio.blockReservoir=Réservoir
-enderio.blockAlloySmelter=Fonderie
-enderio.blockSolarPanel=Cellule Photovoltaïque
-enderio.blockElectricLight=Lampe électrique
-enderio.blockCapacitorBank=Batterie de condensateurs
-enderio.blockCrusher=Broyeur SAG
-enderio.blockHyperCube=Émetteur-Récepteur Dimensionnel
-enderio.blockPowerMonitor=Moniteur d'énergie
+tile.enderio.blockStirlingGenerator=Générateur Stirling
+tile.enderio.blockReservoir=Réservoir
+tile.enderio.blockAlloySmelter=Fonderie
+tile.enderio.blockSolarPanel=Cellule Photovoltaïque
+tile.enderio.blockElectricLight=Lampe électrique
+tile.enderio.blockCapacitorBank=Batterie de condensateurs
+tile.enderio.blockCapacitorBank.tooltipPrefix=Contient
+tile.enderio.blockCrusher=Broyeur SAG
+tile.enderio.blockHyperCube=Transducteur Dimensionnel
+tile.enderio.blockPowerMonitor=Moniteur d'énergie
+
+//Travel
+tile.enderio.blockTravelPlatform.name=Ancre de Téléportation
+enderio.blockTravelPlatform.invalidTarget=La Destination est bloquée
+enderio.blockTravelPlatform.outOfRange=Destination trop lointaine
+item.enderio.itemTravelStaff.name=Bâton de Téléportation
+enderio.itemTravelStaff.notEnoughPower=Pas assez d'énergie
 
 //Painter
-enderio.blockPainter=Machine à Enduction
+tile.enderio.blockPainter.name=Machine à Enduction
+enderio.blockPainter.paintedWith=Peint avec :
 enderio.blockCustomFence=Barrière peinte
-enderio.blockCustomFenceGate=porte peinte
+enderio.blockCustomFenceGate=Porte peinte
 enderio.blockCustomWall=Mur Peint
 enderio.blockCustomStair=Escaliers peints
 enderio.blockCustomSlab=Dalle peinte
@@ -86,7 +111,7 @@ enderio.blockCustomDoubleSlab=Dalle peinte
 
 //Items
 enderio.itemYetaWrench=Clé Yeta
-enderio.itemMJReader=Lecteur MJ
+enderio.itemMJReader=Sonde RF
 
 enderio.itemEnderface.wrongDimension=Le bloc EnderIO est dans une autre dimension.
 enderio.itemEnderface.tooFar=Le bloc EnderIO est trop loin.
@@ -147,6 +172,19 @@ enderio.gui.mjReader.networkHeading=Réseau Électrique
 enderio.gui.mjReader.conduitBuffer=Stockage Interne
 enderio.gui.mjReader.requestRange=Demande par tick
 enderio.gui.mjReader.currentRequest=Demande Actuelle
+enderio.gui.mjReader.itemHeading=Conduit à objets
+enderio.gui.mjReader.itemNoConnections=n'a pas de connexion externe
+enderio.gui.mjReader.noPowerFromSide=ne peut recevoir d'énergie de ce côté
+enderio.gui.mjReader.connectionDir=connexion à
+enderio.gui.mjReader.extractedItems=Objets Extraits
+enderio.gui.mjReader.extractedItem=Objet
+enderio.gui.mjReader.noOutputs=n'a aucune sortie valide
+enderio.gui.mjReader.insertedInto=sera inséré dans :
+enderio.gui.mjReader.noItems=Ne reçoit aucun objet.
+enderio.gui.mjReader.noItem=Ne peut pas recevoir
+enderio.gui.mjReader.receiveItems=Peut recevoir des objets de :
+enderio.gui.mjReader.receiveItem1=Peut recevoir
+enderio.gui.mjReader.receiveItem2=depuis :
 
 //CapacitorBank
 enderio.gui.capBank.inputRs=Mode Redstone Entrée
