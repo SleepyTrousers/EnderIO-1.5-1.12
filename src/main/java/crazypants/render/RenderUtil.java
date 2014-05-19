@@ -19,7 +19,9 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -174,6 +176,41 @@ public class RenderUtil {
     tessellator.addVertex(x, y, z);
     tessellator.draw();
     GL11.glEnable(GL11.GL_TEXTURE_2D);
+  }
+  
+  public static Matrix4d createBillboardMatrix(TileEntity te, EntityLivingBase entityPlayer) {
+    return createBillboardMatrix(new Vector3d(te.xCoord + 0.5, te.yCoord + 0.5, te.zCoord + 0.5), entityPlayer);
+  }
+  
+  public static Matrix4d createBillboardMatrix(Vector3d lookAt, EntityLivingBase entityPlayer) {
+    Vector3d playerEye = new Vector3d(entityPlayer.posX, entityPlayer.posY + 1.62 - entityPlayer.yOffset, entityPlayer.posZ);
+    Vector3d blockOrigin = new Vector3d(lookAt.x, lookAt.y, lookAt.z);
+    Matrix4d lookMat = VecmathUtil.createMatrixAsLookAt(blockOrigin, playerEye, RenderUtil.UP_V);
+    lookMat.setTranslation(new Vector3d());
+    lookMat.invert();
+    return lookMat;
+  }
+  
+  public static void renderBillboard(Matrix4d lookMat, float minU, float maxU, float minV, float maxV, double size, int brightness) {
+    Tessellator tes = Tessellator.instance;
+    tes.startDrawingQuads();
+    tes.setBrightness(brightness);
+
+    double s = size / 2;
+    Vector3d v = new Vector3d();
+    v.set(-s, s, 0);
+    lookMat.transform(v);
+    tes.addVertexWithUV(v.x, v.y, v.z, minU, maxV);
+    v.set(s, s, 0);
+    lookMat.transform(v);
+    tes.addVertexWithUV(v.x, v.y, v.z, maxU, maxV);
+    v.set(s, -s, 0);
+    lookMat.transform(v);
+    tes.addVertexWithUV(v.x, v.y, v.z, maxU, minV);
+    v.set(-s, -s, 0);
+    lookMat.transform(v);
+    tes.addVertexWithUV(v.x, v.y, v.z, minU, minV);
+    tes.draw();
   }
 
 

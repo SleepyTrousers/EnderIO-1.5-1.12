@@ -42,15 +42,9 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
 
-    //System.out.println("EnderIoRenderer.renderTileEntityAt: " + x + "," + y + "," + z);
-
+    
     EntityLivingBase entityPlayer = Minecraft.getMinecraft().thePlayer;
-
-    Vector3d playerEye = new Vector3d(entityPlayer.posX, entityPlayer.posY + 1.62 - entityPlayer.yOffset, entityPlayer.posZ);
-    Vector3d blockOrigin = new Vector3d(te.xCoord + 0.5, te.yCoord + 0.5, te.zCoord + 0.5);
-    Matrix4d lookMat = VecmathUtil.createMatrixAsLookAt(blockOrigin, playerEye, RenderUtil.UP_V);
-    lookMat.setTranslation(new Vector3d());
-    lookMat.invert();
+    Matrix4d lookMat = RenderUtil.createBillboardMatrix(te, entityPlayer);
 
     int brightness = RenderUtil.setTesselatorBrightness(entityPlayer.worldObj, te.xCoord, te.yCoord, te.zCoord);
     render(x, y, z, lookMat, brightness);
@@ -73,7 +67,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     //GL11.glDisable(GL11.GL_CULL_FACE);
     GL11.glDepthMask(false);
     GL11.glColor3f(1, 1, 1);
-    renderBillboard(lookMat, minU, maxU, minV, maxV, 0.8, brightness);
+    RenderUtil.renderBillboard(lookMat, minU, maxU, minV, maxV, 0.8, brightness);
 
     // Glint
     float maxUV = 32;
@@ -92,7 +86,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     float tans = Minecraft.getSystemTime() % 3000L / 3000.0F * 8.0F;
     GL11.glTranslatef(tans, 0.0F, 0.0F);
     GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
-    renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
+    RenderUtil.renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
     GL11.glPopMatrix();
 
     GL11.glPushMatrix();
@@ -100,7 +94,7 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
     tans = Minecraft.getSystemTime() % 4873L / 4873.0F * 8.0F;
     GL11.glTranslatef(-tans, 0.0F, 0.0F);
     GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
-    renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
+    RenderUtil.renderBillboard(lookMat, 0, maxUV, 0, maxUV, 0.8, brightness);
     GL11.glPopMatrix();
 
     GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -133,29 +127,6 @@ public class EnderIoRenderer extends TileEntitySpecialRenderer implements IItemR
 
     GL11.glDepthMask(true);
 
-  }
-
-  private void renderBillboard(Matrix4d lookMat, float minU, float maxU, float minV, float maxV, double size, int brightness) {
-
-    Tessellator tes = Tessellator.instance;
-    tes.startDrawingQuads();
-    tes.setBrightness(brightness);
-
-    double s = size / 2;
-    Vector3d v = new Vector3d();
-    v.set(-s, s, 0);
-    lookMat.transform(v);
-    tes.addVertexWithUV(v.x, v.y, v.z, minU, maxV);
-    v.set(s, s, 0);
-    lookMat.transform(v);
-    tes.addVertexWithUV(v.x, v.y, v.z, maxU, maxV);
-    v.set(s, -s, 0);
-    lookMat.transform(v);
-    tes.addVertexWithUV(v.x, v.y, v.z, maxU, minV);
-    v.set(-s, -s, 0);
-    lookMat.transform(v);
-    tes.addVertexWithUV(v.x, v.y, v.z, minU, minV);
-    tes.draw();
   }
 
   @Override

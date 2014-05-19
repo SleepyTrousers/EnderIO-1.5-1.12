@@ -25,6 +25,8 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   private AccessMode accessMode = AccessMode.PUBLIC;
 
   private ItemStack[] password = new ItemStack[5];
+  
+  private ItemStack itemLabel;
 
   private String placedBy;
 
@@ -120,6 +122,14 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     this.password = password;
   }
 
+  public ItemStack getItemLabel() {
+    return itemLabel;
+  }
+
+  public void setItemLabel(ItemStack lableIcon) {
+    this.itemLabel = lableIcon;
+  }
+
   @Override
   public String getPlacedBy() {
     return placedBy;
@@ -180,18 +190,13 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
         }
       }
     }
-  }
-
-  @Override
-  public Packet getDescriptionPacket() {
-    NBTTagCompound tag = new NBTTagCompound();
-    writeCustomNBT(tag);
-    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
-  }
-
-  @Override
-  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-    readCustomNBT(pkt.func_148857_g());
+    if(root.hasKey("itemLabel")) {
+      NBTTagCompound stackRoot = (NBTTagCompound) root.getTag("itemLabel");
+      itemLabel = ItemStack.loadItemStackFromNBT(stackRoot);
+    } else {
+      itemLabel = null;
+    }
+    
   }
 
   @Override
@@ -218,5 +223,22 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(authorisedUsers.size() > 0) {
       root.setString("authorisedUsers", userStr.toString());
     }
+    if(itemLabel != null) {
+      NBTTagCompound labelRoot = new NBTTagCompound();
+      itemLabel.writeToNBT(labelRoot);
+      root.setTag("itemLabel", labelRoot);
+    }
+  }
+  
+  @Override
+  public Packet getDescriptionPacket() {
+    NBTTagCompound tag = new NBTTagCompound();
+    writeCustomNBT(tag);
+    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, tag);
+  }
+
+  @Override
+  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    readCustomNBT(pkt.func_148857_g());
   }
 }

@@ -24,6 +24,10 @@ public interface ITravelAccessable {
   ItemStack[] getPassword();
 
   void setPassword(ItemStack[] password);
+  
+  ItemStack getItemLabel();
+  
+  void setItemLabel(ItemStack lableIcon);
 
   String getPlacedBy();
 

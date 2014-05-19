@@ -170,7 +170,6 @@ public class PacketOpenRemoteUi implements IPacketEio {
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
 
-      System.out.println("PacketOpenRemoteUi.PlayerProxy.intercept: 1 " + method.getName());
       if(interceptNames.contains(method.getName())) {
 
         Object res = method.invoke(realObj, objects);

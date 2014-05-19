@@ -58,7 +58,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
     col2x += (176 - col2x) / 2;
 
     int x = 0;
-    int y = 20;
+    int y = 50;
 
     x = col0x - 8;
     privateCB = new CheckBoxEIO(this, ID_PRIVATE, x, y);
@@ -72,6 +72,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
     publicCB = new CheckBoxEIO(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
+    ySize = 185;
   }
 
   @Override
@@ -110,7 +111,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
 
     int col = ColorUtil.getRGB(Color.white);
     int x = sx;
-    int y = sy + 8;
+    int y = sy + 38;
 
     FontRenderer fontRenderer = getFontRenderer();
     x = sx + col0x - fontRenderer.getStringWidth(privateStr) / 2;
@@ -135,7 +136,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
-      drawTexturedModalRect(43, 42, 5, 5, 90, 18);
+      drawTexturedModalRect(43, 72, 5, 35, 90, 18);
       GL11.glDisable(GL11.GL_BLEND);
       GL11.glEnable(GL11.GL_DEPTH_TEST);
       GL11.glColor4f(1, 1, 1, 1);
