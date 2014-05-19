@@ -573,7 +573,7 @@
       </output>
     </recipe>
 
-    <recipe name="CertusQuartzCrystal " energyCost="240">
+    <recipe name="CertusQuartzCrystal" energyCost="240">
       <input>
         <itemStack oreDictionary="crystalCertusQuartz" />
       </input>
@@ -581,6 +581,15 @@
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>    
+
+    <recipe name="FluixCrystal" energyCost="240">
+      <input>
+        <itemStack oreDictionary="crystalFluix" />
+      </input>
+      <output>
+        <itemStack oreDictionary="dustFluix" />
+      </output>
+    </recipe>
 
     <recipe name="NetherQuartz" energyCost="240">
       <input>
