@@ -164,7 +164,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(inv.hasTarget(con, dir)) {
         ItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(input)) {
-          result.add(Lang.localize(inv.inv.getInventoryName(), false));
+          result.add(Lang.localize(inv.inv.getInventoryName(), false)  + " " + inv.location);
         }
       }
     }
@@ -197,20 +197,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   private void doTick(long tick) {
-    //    long start = System.nanoTime();
+
     for (NetworkedInventory ni : inventories) {
       if(requiresSort) {
         ni.updateInsertOrder();
       }
       ni.onTick(tick);
     }
-
-    //    if(requiresSort) {
-    //      long took = System.nanoTime() - start;
-    //      double secs = took / 1000000000.0;
-    //      System.out.println("Sortinging item network: took " + took + " nano " + secs + " secs, " + (secs * 1000) + " millis");
-    //    }
-
     requiresSort = false;
 
   }

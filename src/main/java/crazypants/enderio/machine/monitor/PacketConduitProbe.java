@@ -264,8 +264,10 @@ public class PacketConduitProbe implements IPacketEio {
 
       }
     }
-    player.addChatComponentMessage(new ChatComponentText(sb.toString()));
-
+    String[] lines = sb.toString().split("\n");
+    for(String line : lines) {
+      player.addChatComponentMessage(new ChatComponentText(line));
+    }    
   }
 
   public static void sendInfoMessage(EntityPlayer player, NetworkPowerManager pm) {
@@ -305,7 +307,11 @@ public class PacketConduitProbe implements IPacketEio {
     sb.append("\n");
     sb.append(AVE_IN);
     sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickRecieved()));
-    player.addChatComponentMessage(new ChatComponentText(sb.toString()));
+    
+    String[] lines = sb.toString().split("\n");
+    for(String line : lines) {
+      player.addChatComponentMessage(new ChatComponentText(line));
+    }      
   }
 
   public static void sendPowerConduitInfo(EntityPlayer player, IPowerConduit con, PowerTracker tracker) {
@@ -330,7 +336,11 @@ public class PacketConduitProbe implements IPacketEio {
     sb.append("\n");
     sb.append(AVE_IN);
     sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickRecieved()));
-    player.addChatComponentMessage(new ChatComponentText(sb.toString()));
+    
+    String[] lines = sb.toString().split("\n");
+    for(String line : lines) {
+      player.addChatComponentMessage(new ChatComponentText(line));
+    }      
 
   }
 
@@ -365,7 +375,10 @@ public class PacketConduitProbe implements IPacketEio {
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
 
-    player.addChatComponentMessage(new ChatComponentText(sb.toString()));
+    String[] lines = sb.toString().split("\n");
+    for(String line : lines) {
+      player.addChatComponentMessage(new ChatComponentText(line));
+    }      
   }
 
 }
