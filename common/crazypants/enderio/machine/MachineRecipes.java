@@ -75,10 +75,10 @@ public class MachineRecipes {
       ItemStack energeticAlloy = new ItemStack(ModObject.itemAlloy.actualId, 1, Alloy.ENERGETIC_ALLOY.ordinal());
       ItemStack solarPanel = new ItemStack(blockSolarPanel.actualId, 1, 0);
       if(Config.useHardRecipes) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', capacitor, 'e',
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Block.daylightSensor, 'f', "glassHardened", 'c', capacitor, 'e',
             energeticAlloy, 'p', phasedGold));
       } else {
-        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "efe", "cdc", 'd', Block.daylightSensor, 'f', fusedQuartz, 'c', "dustCoal", 'e',
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "efe", "cdc", 'd', Block.daylightSensor, 'f', "glassHardened", 'c', "dustCoal", 'e',
             energeticAlloy));
       }
     }

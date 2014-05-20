@@ -290,7 +290,7 @@ public class TileReservoir extends TileEntity implements IFluidHandler {
 
     nbtRoot.setBoolean("autoEject", autoEject);
 
-    if(tank.getFluid() != null) {
+    if(tank.getFluid() != null && FluidRegistry.getFluidName(tank.getFluid().fluidID) != null) {
       nbtRoot.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
     }
     if(regenTank != null) {
