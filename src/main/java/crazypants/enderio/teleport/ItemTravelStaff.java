@@ -73,7 +73,11 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IResourceToo
   @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
     if(player.isSneaking()) {
-      if(Config.travelStaffBlinkEnabled && world.isRemote && player.worldObj.getTotalWorldTime() - lastBlickTick >= Config.travelStaffBlinkPauseTicks) {
+      long ticksSinceBlink = player.worldObj.getTotalWorldTime() - lastBlickTick;
+      if(ticksSinceBlink < 0) {
+        lastBlickTick = -1;
+      }
+      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {             
         Vector3d eye = Util.getEyePositionEio(player);
         Vector3d look = Util.getLookVecEio(player);
 
