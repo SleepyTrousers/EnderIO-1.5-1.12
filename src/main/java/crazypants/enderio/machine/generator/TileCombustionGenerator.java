@@ -212,6 +212,10 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     tanksDirty = false;
 
     if(!redstoneChecksPassed) {
+      if(active) {
+        active = false;
+        res = true;
+      }
       return res;
     }
 
