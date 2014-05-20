@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,11 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketConfigSync;
@@ -127,6 +128,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       }
     }
     return null;
+  }
+
+  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
+    super.breakBlock(world, x, y, z, block, p_149749_6_);
+    world.removeTileEntity(x, y, z);
   }
 
 }

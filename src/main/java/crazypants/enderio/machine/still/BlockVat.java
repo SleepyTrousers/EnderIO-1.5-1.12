@@ -22,6 +22,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.render.VertexRotation;
+import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
@@ -117,15 +118,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
     }
 
     //check for filled fluid containers and see if we can empty them into our input tank
-    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
-    if(fluid == null) {
-      if(item.getItem() == Items.water_bucket) {
-        fluid = new FluidStack(FluidRegistry.WATER, 1000);
-      } else if(item.getItem() == Items.lava_bucket) {
-        fluid = new FluidStack(FluidRegistry.LAVA, 1000);
-      }
-    }
-
+    FluidStack fluid = FluidUtil.getFluidFromItem(item);
     if(fluid != null) {
       int filled = vat.fill(ForgeDirection.UP, fluid, false);
       if(filled >= fluid.amount) {

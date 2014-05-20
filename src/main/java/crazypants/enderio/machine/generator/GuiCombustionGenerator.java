@@ -158,13 +158,4 @@ public class GuiCombustionGenerator extends GuiMachineBase {
     return 60;
   }
 
-  public static class EmptyContainer extends Container {
-
-    @Override
-    public boolean canInteractWith(EntityPlayer var1) {
-      return true;
-    }
-
-  }
-
 }

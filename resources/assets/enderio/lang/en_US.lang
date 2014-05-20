@@ -181,6 +181,10 @@ tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. wa
 tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
 
 tile.blockFarmStation.name=Farming Station
+
+tile.blockTank.name=Fluid Tank
+enderio.tank.tank=Tank
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Travel

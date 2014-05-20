@@ -70,6 +70,7 @@ import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
+import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
@@ -145,6 +146,7 @@ public class EnderIO {
   public static BlockPowerMonitor blockPowerMonitor;
   public static BlockVat blockVat;
   public static BlockFarmStation blockFarmStation;
+  public static BlockTank blockTank;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -206,7 +208,7 @@ public class EnderIO {
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
     blockFarmStation = BlockFarmStation.create();
-    blockCapacitorBank = BlockCapacitorBank.create();
+    blockCapacitorBank = BlockCapacitorBank.create();    
 
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
@@ -221,6 +223,7 @@ public class EnderIO {
     blockHyperCube = BlockHyperCube.create();
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
+    blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();

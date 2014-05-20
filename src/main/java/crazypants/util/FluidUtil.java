@@ -1,7 +1,12 @@
 package crazypants.util;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
@@ -27,6 +32,25 @@ public class FluidUtil {
       return (IFluidHandler) te;
     }
     return null;
+  }
+  
+  public static FluidStack getFluidFromItem(ItemStack item) {
+    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
+    if(fluid == null) {
+      if(item.getItem() == Items.water_bucket) {
+        fluid = new FluidStack(FluidRegistry.WATER, 1000);
+      } else if(item.getItem() == Items.lava_bucket) {
+        fluid = new FluidStack(FluidRegistry.LAVA, 1000);
+      }
+    }
+    return fluid;
+  }
+  
+  public static ItemStack getEmptyContainer(ItemStack stack) {
+    if(stack.getItem().hasContainerItem(stack)) {
+      return stack.getItem().getContainerItem(stack);
+    } 
+    return null;    
   }
 
 

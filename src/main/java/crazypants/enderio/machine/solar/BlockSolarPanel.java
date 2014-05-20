@@ -13,10 +13,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider {
@@ -110,6 +110,11 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   @Override
   public String getUnlocalizedNameForTooltip() {
     return getUnlocalizedName();
+  }
+
+  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
+    super.breakBlock(world, x, y, z, block, p_149749_6_);
+    world.removeTileEntity(x, y, z);
   }
 
 }

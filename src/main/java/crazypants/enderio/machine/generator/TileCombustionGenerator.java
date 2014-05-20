@@ -139,16 +139,6 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   }
 
   @Override
-  public String getInventoryName() {
-    return ModObject.blockCombustionGenerator.unlocalisedName;
-  }
-
-  @Override
-  public boolean hasCustomInventoryName() {
-    return false;
-  }
-
-  @Override
   public String getMachineName() {
     return ModObject.blockCombustionGenerator.unlocalisedName;
   }

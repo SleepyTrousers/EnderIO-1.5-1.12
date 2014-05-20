@@ -72,7 +72,7 @@ public class SlotDefinition {
   }
 
   public int getNumSlots() {
-    return Math.max(Math.max(maxInputSlot, maxOutputSlot), maxUpgradeSlot) + 1;
+    return Math.max(Math.max(getMaxInputSlot(), getMaxOutputSlot()), getMaxUpgradeSlot()) + 1;
   }
 
   public int getMinUpgradeSlot() {

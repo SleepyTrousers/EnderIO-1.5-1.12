@@ -25,6 +25,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
 import crazypants.util.BlockCoord;
+import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
@@ -83,15 +84,7 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
 
       TileReservoir tank = (TileReservoir) world.getTileEntity(x, y, z);
 
-      FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
-      if(liquid == null) {
-        if(current.getItem() == Items.water_bucket) {
-          liquid = new FluidStack(FluidRegistry.WATER, 1000);
-        } else if(current.getItem() == Items.lava_bucket) {
-          liquid = new FluidStack(FluidRegistry.LAVA, 1000);
-        }
-      }
-
+      FluidStack liquid = FluidUtil.getFluidFromItem(current);
       if(liquid != null) {
         // Handle filled containers
         int qty = tank.getController().doFill(ForgeDirection.UNKNOWN, liquid, true);

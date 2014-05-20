@@ -16,6 +16,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
@@ -52,15 +53,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
     }
 
     //check for filled fluid containers and see if we can empty them into our tanks
-    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
-    if(fluid == null) {
-      if(item.getItem() == Items.water_bucket) {
-        fluid = new FluidStack(FluidRegistry.WATER, 1000);
-      } else if(item.getItem() == Items.lava_bucket) {
-        fluid = new FluidStack(FluidRegistry.LAVA, 1000);
-      }
-    }
-
+    FluidStack fluid = FluidUtil.getFluidFromItem(item);
     if(fluid != null) {
       int filled = gen.fill(ForgeDirection.UP, fluid, false);
       if(filled >= fluid.amount) {

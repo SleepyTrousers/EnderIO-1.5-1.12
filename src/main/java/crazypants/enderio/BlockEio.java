@@ -1,4 +1,4 @@
-package crazypants.enderio.enderface;
+package crazypants.enderio;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.Log;
 
 public abstract class BlockEio extends Block {
 

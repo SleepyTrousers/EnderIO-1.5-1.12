@@ -1,5 +1,6 @@
 package crazypants.enderio.enderface;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
@@ -142,6 +144,10 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
     return getUnlocalizedName();
   }
 
+  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
+      super.breakBlock(world, x, y, z, block, p_149749_6_);
+      world.removeTileEntity(x, y, z);
+  }
 
 
 }

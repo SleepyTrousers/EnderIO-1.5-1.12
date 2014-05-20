@@ -21,11 +21,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.enderface.BlockEio;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
@@ -294,6 +294,11 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   @Override
   public String getUnlocalizedNameForTooltip() {
     return getUnlocalizedName();
+  }
+
+  public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
+    super.breakBlock(world, x, y, z, block, p_149749_6_);
+    world.removeTileEntity(x, y, z);
   }
 
 }

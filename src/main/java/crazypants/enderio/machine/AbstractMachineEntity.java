@@ -317,9 +317,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       redstoneStateDirty = false;
     }
 
-    if(worldObj.getTotalWorldTime() % 20 == 0) {
-      requiresClientSync |= doSideIo();
-    }
+    
+    requiresClientSync |= doSideIo();
+    
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
@@ -348,6 +348,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(faceModes == null) {
       return false;
     }
+    
     boolean res = false;
     Set<Entry<ForgeDirection, IoMode>> ents = faceModes.entrySet();
     for(Entry<ForgeDirection, IoMode> ent : ents) {
@@ -365,6 +366,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   protected boolean doPush(ForgeDirection dir) {
 
     if(slotDefinition.getNumOutputSlots() <= 0) {
+      return false;
+    }
+    if(worldObj.getWorldTime() % 20 != 0) {
       return false;
     }
 
@@ -396,6 +400,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   protected boolean doPull(ForgeDirection dir) {
 
     if(slotDefinition.getNumInputSlots() <= 0) {
+      return false;
+    }
+    if(worldObj.getWorldTime() % 20 != 0) {
       return false;
     }
 
