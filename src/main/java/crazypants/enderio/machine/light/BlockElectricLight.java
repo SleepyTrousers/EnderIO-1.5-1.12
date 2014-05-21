@@ -2,6 +2,7 @@ package crazypants.enderio.machine.light;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -199,7 +200,7 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

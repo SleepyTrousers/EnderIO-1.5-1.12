@@ -221,7 +221,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof AbstractMachineEntity) {
         AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
-        ItemStack itemStack = new ItemStack(this);
+        int meta = damageDropped(world.getBlockMetadata(x, y, z));
+        ItemStack itemStack = new ItemStack(this, 1, meta);
         machineEntity.writeToItemStack(itemStack);
 
         float f = 0.7F;
@@ -229,6 +230,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+                        
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
       }
@@ -320,7 +322,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

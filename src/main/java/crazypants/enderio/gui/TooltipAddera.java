@@ -51,17 +51,19 @@ public class TooltipAddera {
       }
     }
 
-    if(evt.itemStack.getItem() instanceof IResourceTooltipProvider) {
-      addInformation((IResourceTooltipProvider)evt.itemStack.getItem(), evt);
-    } else if(evt.itemStack.getItem() instanceof IAdvancedTooltipProvider) {
+    if(evt.itemStack.getItem() instanceof IAdvancedTooltipProvider) {
       IAdvancedTooltipProvider ttp = (IAdvancedTooltipProvider)evt.itemStack.getItem();
       addInformation(ttp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
+      return;
+    } else if(evt.itemStack.getItem() instanceof IResourceTooltipProvider) {
+      addInformation((IResourceTooltipProvider)evt.itemStack.getItem(), evt);
       return;
     }
 
     Block blk = Block.getBlockFromItem(evt.itemStack.getItem());
     if(blk instanceof IResourceTooltipProvider) {
       addInformation((IResourceTooltipProvider)blk, evt);
+      return;
     } else if(blk instanceof IAdvancedTooltipProvider) {
       addInformation((IAdvancedTooltipProvider)blk, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
       return;
@@ -105,7 +107,7 @@ public class TooltipAddera {
 
   public static void addInformation(IResourceTooltipProvider item, ItemTooltipEvent evt) {
     if(showAdvancedTooltips()) {
-      addDetailedTooltipFromResources(evt.toolTip, item.getUnlocalizedNameForTooltip());
+      addDetailedTooltipFromResources(evt.toolTip, item.getUnlocalizedNameForTooltip(evt.itemStack));
     } else {
       addShowDetailsTooltip(evt.toolTip);
     }
@@ -163,10 +165,10 @@ public class TooltipAddera {
       return;
     }
     String unlock = null;
-    Block blk = Block.getBlockFromItem(itemstack.getItem());
-    if(blk != null && blk != Blocks.air) {
-      unlock = blk.getUnlocalizedName();
-    }
+//    Block blk = Block.getBlockFromItem(itemstack.getItem());
+//    if(blk != null && blk != Blocks.air) {
+//      unlock = blk.getUnlocalizedName();
+//    }
     if(unlock == null) {
       unlock = itemstack.getItem().getUnlocalizedName();
     }

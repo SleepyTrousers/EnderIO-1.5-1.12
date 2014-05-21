@@ -262,7 +262,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IResourceToo
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

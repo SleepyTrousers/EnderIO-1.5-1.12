@@ -1,21 +1,40 @@
 package crazypants.enderio.machine.tank;
 
+import java.util.List;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.power.BlockItemCapacitorBank;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.power.TileCapacitorBank;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.FluidUtil;
+import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class BlockTank extends AbstractMachineBlock<TileTank> {
+public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
    
@@ -31,8 +50,17 @@ public class BlockTank extends AbstractMachineBlock<TileTank> {
 
   @Override
   protected void init() {
-    super.init();
+    GameRegistry.registerBlock(this, BlockItemTank.class, ModObject.blockTank.unlocalisedName);
+    if(teClass != null) {
+      GameRegistry.registerTileEntity(teClass, ModObject.blockTank.unlocalisedName + "TileEntity");
+    }
+    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TANK, this);
     setLightOpacity(0);
+  }
+  
+  @Override
+  public int damageDropped(int par1) {
+    return par1;
   }
   
   @Override
@@ -104,11 +132,16 @@ public class BlockTank extends AbstractMachineBlock<TileTank> {
   }
 
   
+  
+  @Override
+  public TileEntity createNewTileEntity(World var1, int var2) {
+    return new TileTank(var2);
+  }
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileTank)) {
-      System.out.println("BlockTank.getServerGuiElement: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       return null;
     }
     return new ContainerTank(player.inventory, (TileTank)te);
@@ -118,7 +151,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> {
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileTank)) {
-      System.out.println("BlockTank.getClientGuiElement: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       return null;
     }
     return new GuiTank(player.inventory, (TileTank)te);
@@ -145,9 +177,39 @@ public boolean isOpaqueCube() {
   protected int getGuiId() {
     return GuiHandler.GUI_ID_TANK;
   }
+  
+  
+  @Override
+  public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
+
+    // used to render the block in the world
+    TileEntity te = world.getTileEntity(x, y, z);
+    int facing = 0;
+    if(te instanceof AbstractMachineEntity) {
+      AbstractMachineEntity me = (AbstractMachineEntity) te;
+      facing = me.facing;
+    }
+    int meta = world.getBlockMetadata(x, y, z);
+    meta = MathHelper.clamp_int(meta, 0, 1);
+    if(meta == 1) {
+      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing] + 6];
+    } else {
+      return iconBuffer[0][ClientProxy.sideAndFacingToSpriteOffset[blockSide][facing]];
+    }
+  }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
+  public IIcon getIcon(int blockSide, int blockMeta) {
+    int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
+    return iconBuffer[0][blockSide + offset];
+  }
+  
+
+  @Override
+  protected String getMachineFrontIconKey(boolean pressurized) {
+    if(pressurized) {
+      return "enderio:blockTankAdvanced";
+    }
     return "enderio:blockTank";
   }
   
@@ -157,6 +219,43 @@ public boolean isOpaqueCube() {
   
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
+  }
+    
+  @Override
+  protected String getTopIconKey(boolean pressurized) {
+    if(pressurized) { 
+      return "enderio:blockTankTopAdvanced";
+    }
+    return "enderio:machineTop";
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {    
+    if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {    
+      FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) itemstack.stackTagCompound.getTag("tankContents"));
+      if(fl != null && fl.getFluid() != null) {
+        String str = fl.amount + " " + Lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getLocalizedName();
+        list.add(str);        
+      } 
+    }  
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+  }
+  
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
+    System.out.println("BlockTank.getUnlocalizedNameForTooltip: ");
+    return stack.getUnlocalizedName();
   }
   
 }

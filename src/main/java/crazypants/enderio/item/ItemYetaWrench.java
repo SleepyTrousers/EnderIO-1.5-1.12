@@ -88,7 +88,7 @@ public class ItemYetaWrench extends Item implements IToolWrench, IResourceToolti
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

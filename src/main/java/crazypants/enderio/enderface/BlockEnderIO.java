@@ -140,7 +140,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

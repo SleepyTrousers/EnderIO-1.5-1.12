@@ -23,6 +23,7 @@ public class IconUtil {
   private static ArrayList<IIconProvider> iconProviders = new ArrayList<IIconProvider>();
 
   public static IIcon whiteTexture;
+  public static IIcon blankTexture;
 
   static {
     MinecraftForge.EVENT_BUS.register(new IconUtil());

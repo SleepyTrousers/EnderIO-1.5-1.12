@@ -110,6 +110,14 @@ public class RenderUtil {
     return Minecraft.getMinecraft().fontRenderer;
   }
 
+  public static float[] getDefaultPerSideBrightness() {
+    float[] brightnessPerSide = new float[6];
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      brightnessPerSide[dir.ordinal()] = RenderUtil.getColorMultiplierForFace(dir);
+    }
+    return brightnessPerSide;
+  }
+
   public static float claculateTotalBrightnessForLocation(World worldObj, int xCoord, int yCoord, int zCoord) {
     int i = worldObj.getLightBrightnessForSkyBlocks(xCoord, yCoord, zCoord, 0);
     int j = i % 65536;
@@ -177,11 +185,11 @@ public class RenderUtil {
     tessellator.draw();
     GL11.glEnable(GL11.GL_TEXTURE_2D);
   }
-  
+
   public static Matrix4d createBillboardMatrix(TileEntity te, EntityLivingBase entityPlayer) {
     return createBillboardMatrix(new Vector3d(te.xCoord + 0.5, te.yCoord + 0.5, te.zCoord + 0.5), entityPlayer);
   }
-  
+
   public static Matrix4d createBillboardMatrix(Vector3d lookAt, EntityLivingBase entityPlayer) {
     Vector3d playerEye = new Vector3d(entityPlayer.posX, entityPlayer.posY + 1.62 - entityPlayer.yOffset, entityPlayer.posZ);
     Vector3d blockOrigin = new Vector3d(lookAt.x, lookAt.y, lookAt.z);
@@ -190,7 +198,7 @@ public class RenderUtil {
     lookMat.invert();
     return lookMat;
   }
-  
+
   public static void renderBillboard(Matrix4d lookMat, float minU, float maxU, float minV, float maxV, double size, int brightness) {
     Tessellator tes = Tessellator.instance;
     tes.startDrawingQuads();
@@ -212,8 +220,6 @@ public class RenderUtil {
     tes.addVertexWithUV(v.x, v.y, v.z, minU, minV);
     tes.draw();
   }
-
-
 
   /**
    * left, bottom, right, top
@@ -336,13 +342,13 @@ public class RenderUtil {
     }
 
   }
-  
+
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
     return getNonConectedEdgesForFace(blockAccess, x, y, z, face, false);
   }
-  
+
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, boolean matchMetaData) {
-    
+
     Block block = blockAccess.getBlock(x, y, z);
     if(block == null) {
       return Collections.emptyList();
@@ -360,12 +366,12 @@ public class RenderUtil {
     for (EdgeNeighbour edge : edges) {
       boolean matchingNeighbour = blockAccess.getBlock(edge.bc.x, edge.bc.y, edge.bc.z) == block;
       if(matchingNeighbour && matchMetaData) {
-        matchingNeighbour = blockAccess.getBlockMetadata(x, y, z) == blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z) ;
+        matchingNeighbour = blockAccess.getBlockMetadata(x, y, z) == blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z);
       }
       if(!matchingNeighbour) {
         result.add(edge.dir);
       }
-     
+
     }
     return result;
   }
@@ -472,7 +478,7 @@ public class RenderUtil {
   }
 
   public static void renderGuiTank(FluidTank tank, double x, double y, double zLevel, double width, double height) {
-    renderGuiTank(tank.getFluid(),tank.getCapacity(),tank.getFluidAmount(), x, y, zLevel, width, height);
+    renderGuiTank(tank.getFluid(), tank.getCapacity(), tank.getFluidAmount(), x, y, zLevel, width, height);
   }
 
   public static void renderGuiTank(FluidStack fluid, int capacity, int amount, double x, double y, double zLevel, double width, double height) {
@@ -488,7 +494,7 @@ public class RenderUtil {
       }
     }
 
-    double fullness = (double) amount/ (double) capacity;
+    double fullness = (double) amount / (double) capacity;
     int fluidHeight = (int) Math.round(height * fullness);
 
     RenderUtil.bindBlockTexture();
@@ -508,7 +514,6 @@ public class RenderUtil {
     tessellator.addVertexWithUV(x, y, z, icon.getMinU(), icon.getMinV());
     tessellator.draw();
   }
-
 
   private static class EdgeNeighbour {
     final ForgeDirection dir;

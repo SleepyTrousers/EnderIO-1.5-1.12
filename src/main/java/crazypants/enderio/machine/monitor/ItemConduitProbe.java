@@ -90,7 +90,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

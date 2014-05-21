@@ -292,7 +292,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

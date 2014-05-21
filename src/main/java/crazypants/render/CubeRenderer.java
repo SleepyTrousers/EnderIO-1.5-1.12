@@ -182,7 +182,7 @@ public final class CubeRenderer {
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
 
-    tex = faceTextures[0];
+    tex = faceTextures[ForgeDirection.NORTH.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -197,7 +197,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.SOUTH.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = faceTextures[1];
+    tex = faceTextures[ForgeDirection.SOUTH.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -212,7 +212,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.UP.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = faceTextures[2];
+    tex = faceTextures[ForgeDirection.UP.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -227,7 +227,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.DOWN.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = faceTextures[3];
+    tex = faceTextures[ForgeDirection.DOWN.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -242,7 +242,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.EAST.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = faceTextures[4];
+    tex = faceTextures[ForgeDirection.EAST.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -257,7 +257,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.WEST.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = faceTextures[5];
+    tex = faceTextures[ForgeDirection.WEST.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();

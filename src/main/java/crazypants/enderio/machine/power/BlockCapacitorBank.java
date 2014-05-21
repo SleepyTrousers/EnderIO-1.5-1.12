@@ -284,6 +284,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
         if(!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
           ItemStack itemStack =
               BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
+          if(cb.isCreative()) {
+            itemStack.setItemDamage(1);
+          }
           float f = 0.7F;
           double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
           double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;

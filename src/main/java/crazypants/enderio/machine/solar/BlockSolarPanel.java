@@ -106,12 +106,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     setBlockBoundsBasedOnState(par1World, par2, par3, par4);
     super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
   }
-
-  @Override
-  public String getUnlocalizedNameForTooltip() {
-    return getUnlocalizedName();
-  }
-
+  
   public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
     super.breakBlock(world, x, y, z, block, p_149749_6_);
     world.removeTileEntity(x, y, z);

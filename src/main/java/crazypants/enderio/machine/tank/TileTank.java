@@ -4,6 +4,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -24,8 +25,17 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
 
   private static int IO_MB_TICK = 100;
 
-  protected FluidTankEio tank = new FluidTankEio(16000);
+  protected FluidTankEio tank;// = new FluidTankEio(16000);
   protected int lastUpdateLevel = -1;
+
+  public TileTank(int meta) {
+    super(new SlotDefinition(0, 1, 2, 3, -1, -1));
+    if(meta == 1) {
+      tank = new FluidTankEio(32000);
+    } else {
+      tank = new FluidTankEio(16000);
+    }
+  }
 
   public TileTank() {
     super(new SlotDefinition(0, 1, 2, 3, -1, -1));
@@ -309,6 +319,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
+    nbtRoot.setInteger("tankType",getBlockMetadata());
     if(tank.getFluidAmount() > 0) {
       NBTTagCompound fluidRoot = new NBTTagCompound();
       tank.getFluid().writeToNBT(fluidRoot);
@@ -319,6 +330,14 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
+    int tankType = nbtRoot.getInteger("tankType");
+    tankType = MathHelper.clamp_int(tankType, 0, 1);
+    if(tankType == 1) {
+      tank = new FluidTankEio(32000);
+    } else {
+      tank = new FluidTankEio(16000);
+    }
+    
     if(nbtRoot.hasKey("tankContents")) {
       FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) nbtRoot.getTag("tankContents"));
       tank.setFluid(fl);

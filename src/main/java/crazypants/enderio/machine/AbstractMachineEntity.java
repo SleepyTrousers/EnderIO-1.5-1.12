@@ -583,7 +583,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(stack.hasDisplayName()) {
       name = stack.getDisplayName();
     } else {
-      name = getBlockType().getLocalizedName();
+      name = Lang.localize(stack.getUnlocalizedName() + ".name", false);
     }
     name += " " + Lang.localize("machine.tooltip.configured");
     stack.setStackDisplayName(name);

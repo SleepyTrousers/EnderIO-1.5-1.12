@@ -171,10 +171,8 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
   }
 
   @Override
-  public String getUnlocalizedNameForTooltip() {
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 
-  
-  
 }
