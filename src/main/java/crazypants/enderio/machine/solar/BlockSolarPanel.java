@@ -2,6 +2,8 @@ package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -30,6 +32,8 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   private static final float BLOCK_HEIGHT = 0.15f;
 
   IIcon sideIcon;
+  IIcon advancedSideIcon;
+  IIcon advancedIcon;
 
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class);
@@ -39,6 +43,14 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
+  @Override
+  protected void init() {
+    GameRegistry.registerBlock(this, BlockItemSolorPanel.class, name);
+    if(teClass != null) {
+      GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+    }
+  }
+  
   @Override
   public boolean renderAsNormalBlock() {
     return false;
@@ -72,9 +84,9 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   @Override
   public IIcon getIcon(int side, int meta) {
     if(side == ForgeDirection.UP.ordinal()) {
-      return blockIcon;
+      return meta == 0 ? blockIcon : advancedIcon;
     }
-    return sideIcon;
+    return meta == 0 ? sideIcon : advancedSideIcon;
   }
 
   @Override
@@ -88,7 +100,9 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   @Override
   public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:solarPanelTop");
+    advancedIcon = IIconRegister.registerIcon("enderio:solarPanelAdvancedTop");
     sideIcon = IIconRegister.registerIcon("enderio:solarPanelSide");
+    advancedSideIcon = IIconRegister.registerIcon("enderio:solarPanelAdvancedSide");
   }
 
   @Override

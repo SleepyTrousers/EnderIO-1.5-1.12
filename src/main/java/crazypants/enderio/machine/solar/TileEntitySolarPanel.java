@@ -29,8 +29,6 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
-  private float energyPerTick = (float) Config.maxPhotovoltaicOutput;
-
   private float lastCollectionValue = -1;
   private int checkOffset;
   private static final int CHECK_INTERVAL = 100;
@@ -107,10 +105,18 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
     if(lastCollectionValue == -1 || (worldObj.getWorldTime() + checkOffset) % CHECK_INTERVAL == 0) {
       float fromSun = calculateLightRatio();
-      lastCollectionValue = energyPerTick * fromSun;
+      lastCollectionValue = getEnergyPerTick() * fromSun;
     }
     float collected = lastCollectionValue;
     powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), powerHandler.getEnergyStored() + collected));
+  }
+
+  private float getEnergyPerTick() {
+    int meta = getBlockMetadata();
+    if(meta == 0) {
+      return (float)Config.maxPhotovoltaicOutput;
+    }
+    return (float)Config.maxPhotovoltaicAdvancedOutput;
   }
 
   private float calculateLightRatio() {

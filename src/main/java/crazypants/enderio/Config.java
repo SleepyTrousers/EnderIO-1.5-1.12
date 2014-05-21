@@ -38,6 +38,7 @@ public final class Config {
   public static boolean detailedPowerTrackingEnabled = false;
 
   public static double maxPhotovoltaicOutput = 1.0;
+  public static double maxPhotovoltaicAdvancedOutput = 4.0;
 
   public static boolean useSneakMouseWheelYetaWrench = true;
 
@@ -131,6 +132,7 @@ public final class Config {
   public static int magnetPowerUsePerTickRF = 5;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
+  
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -168,6 +170,8 @@ public final class Config {
 
     maxPhotovoltaicOutput = config.get("Settings", "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
         "Maximum output in MJ/t of the Photovoltaic Panels.").getDouble(maxPhotovoltaicOutput);
+    maxPhotovoltaicAdvancedOutput= config.get("Settings", "maxPhotovoltaicAdvancedOutput", maxPhotovoltaicAdvancedOutput,
+        "Maximum output in MJ/t of the Advanced Photovoltaic Panels.").getDouble(maxPhotovoltaicAdvancedOutput);
 
     useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);

@@ -33,14 +33,7 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler {
 
     Tessellator.instance.startDrawingQuads();
 
-    IIcon[] textures = new IIcon[6];
-    textures[0] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal());
-    textures[1] = block.getBlockTextureFromSide(ForgeDirection.WEST.ordinal()); //left
-    textures[2] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal()); //up
-    textures[3] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal());
-    textures[4] = block.getBlockTextureFromSide(ForgeDirection.SOUTH.ordinal());
-    textures[5] = block.getBlockTextureFromSide(ForgeDirection.EAST.ordinal());
-
+    IIcon[] textures = RenderUtil.getBlockTextures(block, metadata);
 
     float[] brightnessPerSide = new float[6];
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {

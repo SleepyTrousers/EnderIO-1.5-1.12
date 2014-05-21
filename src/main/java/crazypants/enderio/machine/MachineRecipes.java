@@ -24,12 +24,22 @@ public class MachineRecipes {
     //Common ingredients
     ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 4, Material.CONDUIT_BINDER.ordinal());
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
+    ItemStack capacitor2 = new ItemStack(itemBasicCapacitor, 1, 1);
+    ItemStack capacitor3 = new ItemStack(itemBasicCapacitor, 1, 2);
     ItemStack enderCapacitor = new ItemStack(itemBasicCapacitor, 1, Capacitors.ENDER_CAPACITOR.ordinal());
     ItemStack basicGear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
     ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
+    ItemStack silicon = new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal());
     ItemStack pulCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
+    ItemStack vidCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
     ItemStack electricSteel = new ItemStack(EnderIO.itemAlloy,1,Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
+    ItemStack phasedGold = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal());
+    ItemStack phasedIron = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal());
+    ItemStack energeticAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal());
+    ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
+    ItemStack enlightedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 2);
+    ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
@@ -40,9 +50,7 @@ public class MachineRecipes {
     ItemStack comGen = new ItemStack(EnderIO.blockCombustionGenerator, 1, 0);
     GameRegistry.addShapedRecipe(comGen, "eee", "rmr", "gcg", 'e', electricSteel, 'r', EnderIO.blockReservoir, 'm', machineChassi, 'g', basicGear,'c', capacitor);
 
-    //reservoir
-    ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
-    ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
+    //reservoir    
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
     Object glassSides;
     if(Config.useHardRecipes) {
@@ -80,20 +88,25 @@ public class MachineRecipes {
     //transceiver
     ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
     ItemStack obsidian = new ItemStack(Blocks.obsidian);
-    ItemStack phasedGold = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal());
+    
     GameRegistry
     .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
 
     //solar panel
     if(Config.photovoltaicCellEnabled) {
-      ItemStack energeticAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal());
+      
       ItemStack solarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 0);
+      ItemStack advSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 1);
       if(Config.useHardRecipes) {
         GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'c', capacitor, 'e',
             energeticAlloy, 'p', phasedGold));
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e',
+            phasedIron, 'p', phasedGold));
       } else {
-        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "efe", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'c', "dustCoal", 'e',
-            energeticAlloy));
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'p', silicon, 'e',
+            energeticAlloy, 'c', electricSteel));
+        GameRegistry.addRecipe(new ShapedOreRecipe(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vidCry, 'e',
+            phasedGold, 'c', phasedIron));
       }
     }
 

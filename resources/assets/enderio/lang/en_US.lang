@@ -143,9 +143,11 @@ tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
 tile.blockAlloySmelter.tooltip.detailed.line3=furnace
 
 tile.blockSolarPanel.name=Photovoltaic Cell
+tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of site to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
+enderio.maxSolorProduction=Max Output
 
 tile.blockElectricLight.name=Powered Light
 tile.blockElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
