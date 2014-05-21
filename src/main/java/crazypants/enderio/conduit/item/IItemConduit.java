@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.item;
 
+import cofh.api.transport.IItemDuct;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -7,7 +8,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.util.DyeColor;
 
-public interface IItemConduit extends IConduit, cofh.api.transport.IItemConduit, IExtractor {
+public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
 
   IIcon getTextureForInputMode();
 

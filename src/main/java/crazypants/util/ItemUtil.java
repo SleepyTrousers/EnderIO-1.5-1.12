@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.transport.IPipeTile;
-import cofh.api.transport.IItemConduit;
+import cofh.api.transport.IItemDuct;
 
 public class ItemUtil {
 
@@ -34,15 +34,15 @@ public class ItemUtil {
       return ItemUtil.doInsertItem((ISidedInventory) into, item, side);
     } else if(into instanceof IInventory) {
       return ItemUtil.doInsertItem(getInventory((IInventory) into), item);
-    } else if(into instanceof IItemConduit) {
-      return ItemUtil.doInsertItem((IItemConduit) into, item, side);
+    } else if(into instanceof IItemDuct) {
+      return ItemUtil.doInsertItem((IItemDuct) into, item, side);
     } else if(into instanceof IPipeTile) {
       return ((IPipeTile) into).injectItem(item, true, side);
     }
     return 0;
   }
 
-  public static int doInsertItem(IItemConduit con, ItemStack item, ForgeDirection inventorySide) {
+  public static int doInsertItem(IItemDuct con, ItemStack item, ForgeDirection inventorySide) {
     int startedWith = item.stackSize;
     ItemStack remaining = con.insertItem(inventorySide, item);
     if(remaining == null) {

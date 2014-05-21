@@ -748,24 +748,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   // ---- TE Item Conduits
 
   @Override
-  public ItemStack sendItems(ItemStack item, ForgeDirection side) {
-    IItemConduit ic = getConduit(IItemConduit.class);
-    if(ic != null) {
-      return ic.sendItems(item, side);
-    }
-    return item;
-  }
-
-  @Override
-  public ItemStack insertItem(ForgeDirection from, ItemStack item, boolean simulate) {
-    IItemConduit ic = getConduit(IItemConduit.class);
-    if(ic != null) {
-      return ic.insertItem(from, item, simulate);
-    }
-    return item;
-  }
-
-  @Override
   public ItemStack insertItem(ForgeDirection from, ItemStack item) {
     IItemConduit ic = getConduit(IItemConduit.class);
     if(ic != null) {

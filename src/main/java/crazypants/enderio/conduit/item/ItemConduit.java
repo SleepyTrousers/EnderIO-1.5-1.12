@@ -162,12 +162,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public ItemStack sendItems(ItemStack item, ForgeDirection side) {
-    return insertItem(side, item, false);
-  }
-
-  @Override
-  public ItemStack insertItem(ForgeDirection from, ItemStack item, boolean simulate) {
+  public ItemStack insertItem(ForgeDirection from, ItemStack item) {
     if(!externalConnections.contains(from)) {
       return item;
     } else if(!getConectionMode(from).acceptsInput()) {
@@ -175,16 +170,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     } else if(network == null) {
       return item;
     }
-    if(simulate) {
-      Log.error("Unsupported, deprecated method called. No item will transfer.");
-      return item;
-    }
+   
     return network.sendItems(this, item, from);
-  }
-
-  @Override
-  public ItemStack insertItem(ForgeDirection from, ItemStack item) {
-    return insertItem(from, item, false);
   }
 
   @Override
