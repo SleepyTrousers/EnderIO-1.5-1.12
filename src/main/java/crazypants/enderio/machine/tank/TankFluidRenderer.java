@@ -18,35 +18,8 @@ public class TankFluidRenderer extends TileEntitySpecialRenderer {
     TileTank tank = (TileTank)te;
     if(tank.tank.getFluidAmount() <= 0) {
       return;
-    }
-    
-    renderTankFluid(tank.tank, (float)x, (float)y, (float)z);
-//    IIcon icon = tank.tank.getFluid().getFluid().getStillIcon();
-//    if(icon != null) {
-//      float fullness = tank.tank.getFilledRatio();
-//      
-//      float scale = 0.97f;
-//      float yScale = 0.97f * fullness;
-//      BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, yScale , scale);
-//      bb = bb.translate(0, -(1 - yScale)/2, 0);
-//
-//      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-//      GL11.glEnable(GL11.GL_CULL_FACE);
-//      GL11.glDisable(GL11.GL_LIGHTING);
-//      GL11.glEnable(GL11.GL_BLEND);
-//      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//      
-//      RenderUtil.bindBlockTexture();
-//      
-//      Tessellator.instance.startDrawingQuads();
-//      Tessellator.instance.addTranslation((float)x, (float)y, (float)z);
-//      CubeRenderer.render(bb, icon);
-//      Tessellator.instance.addTranslation(-(float)x, -(float)y, -(float)z);
-//      Tessellator.instance.draw();
-//      
-//      GL11.glPopAttrib();
-//    }
-    
+    }    
+    renderTankFluid(tank.tank, (float)x, (float)y, (float)z);    
   }
   
   public static void renderTankFluid(FluidTankEio tank, float x, float y, float z) {

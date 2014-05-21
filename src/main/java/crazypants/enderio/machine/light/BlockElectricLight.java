@@ -40,7 +40,7 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
     super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class);
 
     setLightOpacity(0);
-    //setLightValue(0);
+    
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
@@ -68,8 +68,8 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
 
     TileEntity te = blockAccess.getTileEntity(x, y, z);
     if(te instanceof TileElectricLight) {
-      ForgeDirection onFace = ((TileElectricLight) te).getFace();
-      if(side == (onFace.offsetX == 0 ? onFace.getOpposite().ordinal() : onFace.ordinal())) {
+      ForgeDirection onFace = ((TileElectricLight) te).getFace();      
+      if(side == (onFace.getOpposite().ordinal())) {      
         boolean on = blockAccess.getBlockMetadata(x, y, z) != 0;
         return on ? blockIcon : blockIconOff;
       }
@@ -81,7 +81,7 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
   @Override
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int par2) {
-    if(side == ForgeDirection.DOWN.ordinal()) {
+    if(side == ForgeDirection.UP.ordinal()) {
       return blockIcon;
     }
     return blockIconSide;

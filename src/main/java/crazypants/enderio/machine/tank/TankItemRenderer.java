@@ -2,6 +2,7 @@ package crazypants.enderio.machine.tank;
 
 import java.awt.Color;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -56,21 +57,16 @@ public class TankItemRenderer implements IItemRenderer {
     }
 
     GL11.glEnable(GL11.GL_ALPHA_TEST);
-    IIcon[] icons = new IIcon[6];
-    int i = 0;
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      //      if(dir.offsetY == 0 && hasFluid) {
-      //        //icons[i] = EnderIO.blockFusedQuartz.getIcon(dir.ordinal(), 0);
-      //        icons[i] = Blocks.iron_bars.getIcon(0, 0);
-      //      } else {
-      icons[i] = EnderIO.blockTank.getIcon(dir.ordinal(), item.getItemDamage());
-      //      }
-      i++;
-    }
+    Block block = EnderIO.blockTank;
+    int meta = item.getItemDamage();
+    
+    IIcon[] icons = RenderUtil.getBlockTextures(block, meta);
     BoundingBox bb = BoundingBox.UNIT_CUBE.translate(0, -0.1f, 0);
     Tessellator.instance.startDrawingQuads();
     CubeRenderer.render(bb, icons, null, RenderUtil.getDefaultPerSideBrightness());
     Tessellator.instance.draw();
 
   }
+
+ 
 }

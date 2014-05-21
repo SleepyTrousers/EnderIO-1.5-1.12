@@ -21,13 +21,7 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
     Tessellator.instance.startDrawingQuads();
 
-    IIcon[] textures = new IIcon[6];
-    textures[0] = block.getBlockTextureFromSide(ForgeDirection.NORTH.ordinal());
-    textures[1] = block.getBlockTextureFromSide(ForgeDirection.SOUTH.ordinal());
-    textures[2] = block.getBlockTextureFromSide(ForgeDirection.DOWN.ordinal());
-    textures[3] = block.getBlockTextureFromSide(ForgeDirection.UP.ordinal());
-    textures[4] = block.getBlockTextureFromSide(ForgeDirection.WEST.ordinal());
-    textures[5] = block.getBlockTextureFromSide(ForgeDirection.EAST.ordinal());
+    IIcon[] textures = RenderUtil.getBlockTextures(block, metadata);
     CubeRenderer.render(bb, textures, null, null);
 
     Tessellator.instance.draw();
@@ -41,15 +35,8 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
     bb = bb.translate(x, y, z);
     RenderUtil.setTesselatorBrightness(world, x, y, z);
-
-    IIcon[] textures = new IIcon[6];
-    textures[0] = block.getIcon(world, x, y, z, ForgeDirection.NORTH.ordinal());
-    textures[1] = block.getIcon(world, x, y, z, ForgeDirection.SOUTH.ordinal());
-    textures[2] = block.getIcon(world, x, y, z, ForgeDirection.UP.ordinal());
-    textures[3] = block.getIcon(world, x, y, z, ForgeDirection.DOWN.ordinal());
-    textures[4] = block.getIcon(world, x, y, z, ForgeDirection.WEST.ordinal());
-    textures[5] = block.getIcon(world, x, y, z, ForgeDirection.EAST.ordinal());
-
+    
+    IIcon[] textures = RenderUtil.getBlockTextures(world, x, y, z);
     CubeRenderer.render(bb, textures, null, null);
 
     return true;

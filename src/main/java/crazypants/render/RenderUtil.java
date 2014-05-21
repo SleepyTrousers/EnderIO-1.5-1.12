@@ -117,6 +117,27 @@ public class RenderUtil {
     }
     return brightnessPerSide;
   }
+  
+  public static IIcon[] getBlockTextures(Block block, int meta) {
+    IIcon[] icons = new IIcon[6];
+    int i = 0;
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      icons[i] = block.getIcon(dir.ordinal(), meta);
+      i++;
+    }
+    return icons;
+  }
+  
+  public static IIcon[] getBlockTextures(IBlockAccess world, int x, int y, int z) {
+    Block block = world.getBlock(x, y, z);
+    IIcon[] icons = new IIcon[6];
+    int i = 0;
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      icons[i] = block.getIcon(world,x,y,z,dir.ordinal());
+      i++;
+    }
+    return icons;
+  }
 
   public static float claculateTotalBrightnessForLocation(World worldObj, int xCoord, int yCoord, int zCoord) {
     int i = worldObj.getLightBrightnessForSkyBlocks(xCoord, yCoord, zCoord, 0);
