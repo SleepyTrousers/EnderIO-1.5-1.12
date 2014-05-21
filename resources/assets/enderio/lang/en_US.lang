@@ -54,6 +54,8 @@ enderio.darkSteel.name=Dark Steel
 enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
+tile.blockDarkIronBars.name=Dark Iron Bars
+enderio.blastResistant=Blast Resistant
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation

@@ -6,10 +6,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -235,6 +237,17 @@ public boolean isOpaqueCube() {
   }
 
   @Override
+  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+    int meta = world.getBlockMetadata(x, y, z);
+    meta = MathHelper.clamp_int(meta, 0, 1);
+    if(meta == 1) {
+      return 2000;
+    } else {
+      return super.getExplosionResistance(par1Entity);
+    }
+  }
+  
+  @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {    
     if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {    
@@ -250,6 +263,9 @@ public boolean isOpaqueCube() {
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+    if(itemstack.getItemDamage() == 1) {
+      list.add(EnumChatFormatting.ITALIC + Lang.localize("blastResistant"));
+    }
   }
   
   @Override

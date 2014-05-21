@@ -12,6 +12,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
@@ -28,6 +29,7 @@ public class MachineRecipes {
     ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
     ItemStack pulCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
     ItemStack electricSteel = new ItemStack(EnderIO.itemAlloy,1,Alloy.ELECTRICAL_STEEL.ordinal());
+    ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
@@ -44,12 +46,19 @@ public class MachineRecipes {
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
     Object glassSides;
     if(Config.useHardRecipes) {
-      glassSides = fusedQuartz;
+      glassSides = "glassHardened";
     } else {
       glassSides = "glass";
     }
     GameRegistry.addRecipe(new ShapedOreRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassSides, 'c', Items.cauldron, 'f', fusedQuartz));
 
+    //Tanks
+    ItemStack basicTank = new ItemStack(EnderIO.blockTank,1,0);
+    GameRegistry.addRecipe(new ShapedOreRecipe(basicTank, "ibi", "bgb", "ibi", 'g', "glass", 'i', Items.iron_ingot, 'b', Blocks.iron_bars));
+    
+    ItemStack advTank = new ItemStack(EnderIO.blockTank,1,1);
+    GameRegistry.addRecipe(new ShapedOreRecipe(advTank, "ibi", "bgb", "ibi", 'g', "glassHardened", 'i', darkSteel, 'b', EnderIO.blockDarkIronBars));
+    
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);
     if(Config.useHardRecipes) {

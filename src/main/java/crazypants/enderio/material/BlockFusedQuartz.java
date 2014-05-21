@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -67,6 +68,17 @@ public class BlockFusedQuartz extends BlockEio {
     GameRegistry.registerBlock(this, ItemFusedQuartz.class, name);
     if(teClass != null) {
       GameRegistry.registerTileEntity(teClass, name + "TileEntity");
+    }
+  }
+  
+  @Override
+  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+    int meta = world.getBlockMetadata(x, y, z);
+    meta = MathHelper.clamp_int(meta, 0, 1);
+    if(meta == 0) {
+      return 2000;
+    } else {
+      return super.getExplosionResistance(par1Entity);
     }
   }
 

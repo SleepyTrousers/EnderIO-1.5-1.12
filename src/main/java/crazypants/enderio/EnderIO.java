@@ -72,6 +72,7 @@ import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
@@ -107,6 +108,7 @@ public class EnderIO {
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
+  public static BlockDarkIronBars blockDarkIronBars;
 
   // Enderface
   public static BlockEnderIO blockEnderIo;
@@ -289,6 +291,8 @@ public class EnderIO {
     itemConduitProbe = ItemConduitProbe.create();
     
     itemMagnet = ItemMagnet.create();
+    
+    blockDarkIronBars = BlockDarkIronBars.create();
 
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);

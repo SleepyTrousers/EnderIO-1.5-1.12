@@ -27,6 +27,7 @@ public enum ModObject {
   itemPowderIngot,
   blockFusedQuartz,
   itemFusedQuartzFrame,
+  blockDarkIronBars,
 
   // Machines
   blockStirlingGenerator,

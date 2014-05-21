@@ -99,6 +99,10 @@ public class MaterialRecipes {
     ItemStack enderDust = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal());
     GameRegistry.addShapedRecipe(new ItemStack(Items.ender_pearl), "eee", "eee", "eee", 'e', enderDust);
 
+    //Dark Iron Bars
+    ItemStack diBars = new ItemStack(EnderIO.blockDarkIronBars, 16, 0);
+    GameRegistry.addShapedRecipe(diBars, "ddd", "ddd", "   ", 'd', darkSteel);
+    
     // Fused Quartz Frame
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
