@@ -29,6 +29,7 @@ public class MaterialRecipes {
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
     OreDictionary.registerOre("woodStick", Items.stick);
+    OreDictionary.registerOre("sand", Blocks.sand);
 
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);

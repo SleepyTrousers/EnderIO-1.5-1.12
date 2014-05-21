@@ -43,8 +43,11 @@ public class ItemFusedQuartz extends ItemBlockWithMetadata {
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     int meta = par1ItemStack.getItemDamage();
     meta = MathHelper.clamp_int(meta, 0, BlockFusedQuartz.Type.values().length - 1);
-    if(meta == 0) {
+    if(meta == 0 || meta == 2) {
       par3List.add(Lang.localize("blastResistant"));
+    }
+    if(meta > 1) {
+      par3List.add(Lang.localize("lightEmitter"));
     }
   }
   

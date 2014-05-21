@@ -56,6 +56,7 @@ enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 tile.blockDarkIronBars.name=Dark Iron Bars
 enderio.blastResistant=Blast Resistant
+enderio.lightEmitter=Emits Light
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
@@ -90,6 +91,8 @@ enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
 tile.blockFusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedQuartz.name=Fused Quartz
 enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
 
 item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
 enderio.itemPowderIngot=Powders & Ingots

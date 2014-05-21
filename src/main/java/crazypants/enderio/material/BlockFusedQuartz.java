@@ -32,7 +32,9 @@ public class BlockFusedQuartz extends BlockEio {
   public enum Type {
 
     FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
-    GLASS("fusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem");
+    GLASS("fusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem"),
+    ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem"),
+    ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass", "enderio:fusedGlassFrame", "enderio:fusedGlassItem");
 
     final String unlocalisedName;
     final String blockIcon;
@@ -70,7 +72,7 @@ public class BlockFusedQuartz extends BlockEio {
       GameRegistry.registerTileEntity(teClass, name + "TileEntity");
     }
   }
-  
+
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     int meta = world.getBlockMetadata(x, y, z);
@@ -113,6 +115,19 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
     return 0;
+  }
+
+  @Override
+  public int getLightValue(IBlockAccess world, int x, int y, int z) {
+    Block block = world.getBlock(x, y, z);
+    if(block != this) {
+      return super.getLightValue(world, x, y, z);
+    }
+    int meta = world.getBlockMetadata(x, y, z);
+    if(meta > 1) {
+      return 15;
+    }
+    return super.getLightValue(world, x, y, z);
   }
 
   @Override

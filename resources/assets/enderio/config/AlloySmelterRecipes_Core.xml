@@ -115,19 +115,30 @@ sand/cobble/wood=0.1
     
     <recipe name="Fused Glass" energyCost="250">
       <input>
-        <itemStack modID="minecraft" itemName="sand"/>
+        <itemStack oreDictionary="sand" />
       </input>            
       <output>
         <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.2"/> 
       </output>
     </recipe>
     
-    <recipe name="Fused Glass (Ore Dict)" energyCost="250">
-      <input>
-        <itemStack oreDictionary="sand" />
+    <recipe name="Enlightened Fused Quartz" energyCost="500">
+      <input>        
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+        <itemStack modID="minecraft" itemName="glowstone_dust" number="4"/>
       </input>            
       <output>
-        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="1" exp="0.2"/> 
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="2" exp="0.5"/> 
+      </output>
+    </recipe>
+       
+    <recipe name="Enlightened Fused Glass" energyCost="250">
+      <input>
+        <itemStack oreDictionary="sand" />
+        <itemStack modID="minecraft" itemName="glowstone_dust" number="4"/>
+      </input>            
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="3" exp="0.2"/> 
       </output>
     </recipe>
   
