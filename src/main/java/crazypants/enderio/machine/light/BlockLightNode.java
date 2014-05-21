@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.light;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
@@ -17,8 +18,8 @@ public class BlockLightNode extends BlockEio {
   }
 
   public BlockLightNode() {
-    super(ModObject.blockLightNode.unlocalisedName, TileLightNode.class);
-    setCreativeTab(null);
+    super(ModObject.blockLightNode.unlocalisedName, TileLightNode.class, Material.air);
+    setCreativeTab(null);    
     setBlockBounds(0, 0, 0, 0, 0, 0);
   }
 
