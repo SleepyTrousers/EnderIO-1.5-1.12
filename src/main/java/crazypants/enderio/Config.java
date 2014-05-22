@@ -108,6 +108,11 @@ public final class Config {
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUsePerDamagePoint = 750;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
+  
+  public static int darkSteelAxePowerUsePerDamagePoint = 750;
+  public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;
+  public static float darkSteelAxeEffeciencyBoostWhenPowered = 2;
+  public static float darkSteelAxeSpeedPenaltyMultiHarvest = 8;
 
   public static int hootchPowerPerCycle = 6;
   public static int hootchPowerTotalBurnTime = 4000;
@@ -129,7 +134,7 @@ public final class Config {
   public static float farmActionEnergyUse = 40;
   public static int farmDefaultSize = 3;
   
-  public static int magnetPowerUsePerTickRF = 5;
+  public static int magnetPowerUsePerTickRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
   
@@ -360,6 +365,15 @@ public final class Config {
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
     darkSteelPickEffeciencyBoostWhenPowered = (float) config.get("Settings", "darkSteelPickEffeciencyBoostWhenPowered",
         darkSteelPickEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
+    
+    darkSteelAxePowerUsePerDamagePoint = config.get("Settings", "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
+        "Power use (RF) per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);
+    darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get("Settings", "darkSteelPickAxeUsePerDamagePointMultiHarvest", darkSteelAxePowerUsePerDamagePointMultiHarvest,
+        "Power use (RF) per damage/durability point avoided when shift-harvesting multiple logs").getInt(darkSteelAxePowerUsePerDamagePointMultiHarvest);
+    darkSteelAxeSpeedPenaltyMultiHarvest = (float) config.get("Settings", "darkSteelAxeSpeedPenaltyMultiHarvest", darkSteelAxeSpeedPenaltyMultiHarvest,
+        "How much slower shift-harvesting logs is.").getDouble(darkSteelAxeSpeedPenaltyMultiHarvest);
+    darkSteelAxeEffeciencyBoostWhenPowered = (float) config.get("Settings", "darkSteelAxeEffeciencyBoostWhenPowered",
+        darkSteelAxeEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelAxeEffeciencyBoostWhenPowered);
 
     hootchPowerPerCycle = config.get("Settings", "hootchPowerPerCycle", hootchPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);

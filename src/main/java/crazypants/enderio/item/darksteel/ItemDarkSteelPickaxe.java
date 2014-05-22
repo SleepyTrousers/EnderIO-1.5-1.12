@@ -123,7 +123,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
     if(ForgeHooks.isToolEffective(stack, block, meta)) {
-      if(Config.darkSteelPickPowerUsePerDamagePoint > 0 && getEnergyStored(stack) > 0) {
+      if(Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
       }
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
