@@ -36,6 +36,9 @@ public class OreDictionaryRecipeInput extends RecipeInput {
     if(res == null || res.isEmpty()) {
       return null;
     }
+    for(ItemStack st : res) {
+      st.stackSize = getInput().stackSize;
+    }
     return res.toArray(new ItemStack[res.size()]);
   }
 
