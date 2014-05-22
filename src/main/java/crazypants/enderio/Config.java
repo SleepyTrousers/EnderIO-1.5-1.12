@@ -121,6 +121,8 @@ public final class Config {
   public static int fireWaterPowerPerCycle = 8;
   public static int fireWaterPowerTotalBurnTime = 15000;
   public static float vatPowerUserPerTick = 2;
+  
+  public static boolean combustionGeneratorUseOpaqueModel = true;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
@@ -137,6 +139,7 @@ public final class Config {
   public static int magnetPowerUsePerTickRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
+  
   
 
   public static void load(FMLPreInitializationEvent event) {
@@ -402,6 +405,8 @@ public final class Config {
     farmDefaultSize = config.get("Settings", "farmDefaultSize", farmDefaultSize,
         "The numver of blocks a farm will extend from its center").getInt(farmDefaultSize);
     
+    combustionGeneratorUseOpaqueModel = config.get("Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
+        "If true, fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);    
     
     magnetPowerUsePerTickRF = config.get("Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerTickRF,
         "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerTickRF);    

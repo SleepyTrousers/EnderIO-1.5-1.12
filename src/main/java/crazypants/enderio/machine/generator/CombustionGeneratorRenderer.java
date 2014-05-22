@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
@@ -98,7 +99,12 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     float tz = scaleX ? 0 : 0.5f;
     bb = bb.translate(tx, 0, tz);
 
-    IIcon tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
+    IIcon tex;
+    if(Config.combustionGeneratorUseOpaqueModel) {
+      tex = EnderIO.blockCombustionGenerator.getIcon(4,0);
+    } else {
+      tex = EnderIO.blockFusedQuartz.getDefaultFrameIcon(0);
+    } 
     TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, vt, tex, world != null);
 
     bb = bb.translate(-tx * 2, 0, -tz * 2);

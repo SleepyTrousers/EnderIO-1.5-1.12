@@ -141,7 +141,9 @@ public class ClientProxy extends CommonProxy {
     BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
     CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
     RenderingRegistry.registerBlockHandler(cr);
-    ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
+    if(!Config.combustionGeneratorUseOpaqueModel) {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
+    }
 
     BlockVat.renderId = RenderingRegistry.getNextAvailableRenderId();
     VatRenderer vr = new VatRenderer();
