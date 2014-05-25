@@ -51,6 +51,12 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     }
   }
   
+  
+  @Override
+  public int damageDropped(int damage) {  
+    return damage;
+  }
+
   @Override
   public boolean renderAsNormalBlock() {
     return false;
