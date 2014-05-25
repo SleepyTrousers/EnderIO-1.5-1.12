@@ -325,7 +325,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    requiresClientSync |= (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 5 == 0);
+    requiresClientSync |= (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0);
 
     if(requiresClientSync) {
       lastSyncPowerStored = storedEnergy;

@@ -254,9 +254,9 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       return false;
     }
 
-    //once full, don't start again until we have drained 2 seconds worth of power to prevent
+    //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (fuel.powerPerCycle * 40))) {
+    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (fuel.powerPerCycle * 200))) {
       return false;
     }
     inPause = false;

@@ -144,8 +144,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       if(storedEnergy < powerHandler.getMaxEnergyStored()) {
         storedEnergy += (ENERGY_PER_TICK * getEnergyMultiplier());
       }
-      burnTime--;
-      needsUpdate = true;
+      burnTime--;      
     }
 
     needsUpdate |= transmitEnergy();
