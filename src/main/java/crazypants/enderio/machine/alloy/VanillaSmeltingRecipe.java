@@ -83,7 +83,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   private boolean isExcluded(ItemStack item) {
     for (RecipeInput ri : excludes) {
-      if(ri.isInput(item)) {
+      if(ri != null && ri.isInput(item)) {
         return true;
       }
     }
