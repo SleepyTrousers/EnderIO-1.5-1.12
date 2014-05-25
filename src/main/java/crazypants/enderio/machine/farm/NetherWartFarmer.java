@@ -16,7 +16,8 @@ public class NetherWartFarmer extends SeedFarmer {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    if(block != Blocks.air) {
+
+    if(!farm.isAir(bc)) {
       return false;
     }
     World worldObj = farm.getWorldObj();

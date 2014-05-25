@@ -187,6 +187,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   public int getBlockMeta(BlockCoord bc) {
     return worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
   }
+  
+  public boolean isAir(BlockCoord bc) {
+    return worldObj.isAirBlock(bc.x, bc.y, bc.z);
+  }
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack stack) {
@@ -234,11 +238,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
     }
 
-    if(block == Blocks.air) {
+    
+    if(isAir(bc)) {
       FarmersComune.instance.prepareBlock(this, bc, block, meta);
       block = worldObj.getBlock(bc.x, bc.y, bc.z);
     }
-    if(block != Blocks.air && hasPower()) {
+    if(!isAir(bc) && hasPower()) {
       IHarvestResult harvest = FarmersComune.instance.harvestBlock(this, bc, block, meta);
       if(harvest != null) {
         if(harvest.getDrops() != null) {
