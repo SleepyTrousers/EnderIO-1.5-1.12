@@ -226,7 +226,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(network == null) {
+    if(network == null || !getConectionMode(from).acceptsInput()) {
       return 0;
     }
     return network.fill(from, resource, doFill);
@@ -234,7 +234,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(network == null) {
+    if(network == null || !getConectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, resource, doDrain);
@@ -242,7 +242,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(network == null) {
+    if(network == null || !getConectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, maxDrain, doDrain);
