@@ -94,8 +94,8 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
     // assume failure, reset to 0 if we do extract
     ticksSinceFailedExtract++;
-    if(ticksSinceFailedExtract > 9 && ticksSinceFailedExtract % 10 != 0) {
-      // after 10 ticks of failing, only check every 10 ticks
+    if(ticksSinceFailedExtract > 25 && ticksSinceFailedExtract % 10 != 0) {
+      // after 25 ticks of failing, only check every 10 ticks
       return;
     }
 
