@@ -5,7 +5,13 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,6 +31,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
 public class TooltipAddera {
@@ -49,6 +56,10 @@ public class TooltipAddera {
       if(time > 0) {
         evt.toolTip.add("Burn time " + time);
       }
+    }
+    
+    if(Config.addDurabilityTootip) {
+      addDurabilityTooltip(evt.toolTip, evt.itemStack);
     }
 
     if(evt.itemStack.getItem() instanceof IAdvancedTooltipProvider) {
@@ -80,7 +91,16 @@ public class TooltipAddera {
     }
   }
 
-
+  public static void addDurabilityTooltip(List<String> toolTip, ItemStack itemStack) {
+    if(!itemStack.isItemStackDamageable()) {
+      return;
+    }
+    Item item = itemStack.getItem();
+    if(item instanceof ItemTool || item instanceof ItemArmor || 
+        item instanceof ItemSword || item instanceof ItemHoe || item instanceof ItemBow) {
+      toolTip.add(ItemUtil.getDurabilityString(itemStack));
+    }    
+  }
 
   public static void addTooltipForFluid(List list, ItemStack stk) {
     FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(stk);

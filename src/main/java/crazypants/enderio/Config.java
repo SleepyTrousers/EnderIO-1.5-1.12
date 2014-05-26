@@ -126,6 +126,7 @@ public final class Config {
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
+  public static boolean addDurabilityTootip = true;
 
   public static int darkSteelUpgradeVibrantCost = 20;
   public static int darkSteelUpgradePowerOneCost = 10;
@@ -139,7 +140,6 @@ public final class Config {
   public static int magnetPowerUsePerTickRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
-  
   
 
   public static void load(FMLPreInitializationEvent event) {
@@ -395,7 +395,12 @@ public final class Config {
 
     addFuelTooltipsToAllFluidContainers = config.get("Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
-        addFuelTooltipsToAllFluidContainers);
+        addFuelTooltipsToAllFluidContainers);   
+    addDurabilityTootip = config.get("Settings", "addDurabilityTootip", addFuelTooltipsToAllFluidContainers,
+        "If true, adds durability tooltips to tools and armor").getBoolean(
+            addDurabilityTootip);
+    addFurnaceFuelTootip = config.get("Settings", "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
+        "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
 
 
     farmContinuousEnergyUse = (float)config.get("Settings", "farmContinuousEnergyUse", farmContinuousEnergyUse,

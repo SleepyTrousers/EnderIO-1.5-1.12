@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -24,15 +25,17 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem {
 
-  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 33, new int[] { 2, 7, 5, 2 }, 25);
+  public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
   public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
       Config.darkSteelPowerStorageBase * 2 };
 
-  public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
+  public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase,
+      Config.darkSteelPowerStorageBase * 2,
       Config.darkSteelPowerStorageBase * 2 };
 
   public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
@@ -42,7 +45,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     MinecraftForge.EVENT_BUS.register(DarkSteelRecipeManager.instance);
   }
 
-  public static ItemDarkSteelArmor forArmorType(short armorType) {
+  public static ItemDarkSteelArmor forArmorType(int armorType) {
     switch (armorType) {
     case 0:
       return EnderIO.itemDarkSteelHelmet;
@@ -54,6 +57,19 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       return EnderIO.itemDarkSteelBoots;
     }
     return null;
+  }
+
+  public static int getPoweredProtectionIncrease(int armorType) {
+    switch (armorType) {
+    case 0:
+      return 1;
+    case 1:
+      return 2;
+    case 2:
+    case 3:
+      return 1;
+    }
+    return 0;
   }
 
   public static ItemDarkSteelArmor create(int armorType) {
@@ -78,11 +94,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   protected void init() {
     GameRegistry.registerItem(this, getUnlocalizedName());
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
-    ItemStack is = new ItemStack(this);   
+    ItemStack is = new ItemStack(this);
     par3List.add(is);
 
     is = new ItemStack(this);
@@ -129,6 +145,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(str != null) {
       list.add(str);
     }
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
+      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2")); 
+    }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
@@ -151,7 +171,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-    double damageRatio = damageReduceAmount + (getEnergyStored(armor) > 0 ? 1 : 0);
+    if(source.isUnblockable()) {
+      return null;
+    }
+    double damageRatio = damageReduceAmount + (getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
     damageRatio /= 25D;
     ArmorProperties ap = new ArmorProperties(0, damageRatio, armor.getMaxDamage() + 1 - armor.getItemDamage());
     return ap;
@@ -159,7 +182,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-    return armor.getItemDamageForDisplay();
+    ItemDarkSteelArmor arm = forArmorType(3 - slot);
+    int powerBonus = getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
+    return arm.getArmorMaterial().getDamageReductionAmount(3 - slot) + powerBonus;
   }
 
   @Override
@@ -184,7 +209,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    //return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
     return false;
   }
 

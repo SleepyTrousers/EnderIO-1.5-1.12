@@ -245,7 +245,7 @@ item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
 item.itemYetaWrench.tooltip.detailed.line4=Use Shift-Mouse Wheel to render
 item.itemYetaWrench.tooltip.detailed.line5=a single conduit type
 
-item.itemMagnet.name=Electromagnet [WIP]
+item.itemMagnet.name=Electromagnet
 item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
 item.itemMagnet.tooltip.detailed.line2=Shift+R-Click to enable / disable
 item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
@@ -276,9 +276,12 @@ enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
 
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple log
 
-enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops.
-enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit.
+enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
+
+enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection 
+enderio.item.darkSteel_armor.tooltip.line2=when powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
