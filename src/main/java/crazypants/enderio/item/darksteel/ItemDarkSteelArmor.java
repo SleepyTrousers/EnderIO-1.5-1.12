@@ -2,9 +2,11 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -14,6 +16,8 @@ import net.minecraftforge.common.util.EnumHelper;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
@@ -73,6 +77,39 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   protected void init() {
     GameRegistry.registerItem(this, getUnlocalizedName());
+  }
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+    ItemStack is = new ItemStack(this);   
+    par3List.add(is);
+
+    is = new ItemStack(this);
+    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.setPowerFull(is);
+    if(armorType == 2) {
+      SpeedUpgrade.SPEED_THREE.writeToItem(is);
+    } else if(armorType == 3) {
+      JumpUpgrade.JUMP_THREE.writeToItem(is);
+    }
+    
+    par3List.add(is);
+  }
+
+  @Override
+  public int getIngotsRequiredForFullRepair() {
+    switch (armorType) {
+    case 0:
+      return 5;//EnderIO.itemDarkSteelHelmet;
+    case 1:
+      return 8;//EnderIO.itemDarkSteelChestplate;
+    case 2:
+      return 7;//EnderIO.itemDarkSteelLeggings;
+    case 3:
+      return 4;//EnderIO.itemDarkSteelBoots;
+    }
+    return 4;
   }
 
   @Override
@@ -147,7 +184,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+    //return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+    return false;
   }
 
   @Override

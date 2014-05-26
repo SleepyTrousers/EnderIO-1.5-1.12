@@ -2,6 +2,7 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -10,6 +11,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumChatFormatting;
@@ -20,6 +22,8 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
@@ -69,6 +73,23 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     setTextureName("enderIO:" + str);
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+    ItemStack is = new ItemStack(this);   
+    par3List.add(is);
+
+    is = new ItemStack(this);
+    EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
+    EnergyUpgrade.setPowerFull(is);    
+    par3List.add(is);
+  }
+  
+  @Override
+  public int getIngotsRequiredForFullRepair() {
+    return 3;  
+  }
+  
   @Override
   public boolean isDamaged(ItemStack stack) {
     return false;
@@ -233,7 +254,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public boolean getIsRepairable(ItemStack i1, ItemStack i2) {
-    return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+    //return i2 != null && i2.getItem() == EnderIO.itemAlloy && i2.getItemDamage() == Alloy.DARK_STEEL.ordinal();
+    return false;
   }
 
   @Override

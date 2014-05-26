@@ -99,6 +99,25 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
     return res;
   }
+  
+  public static void setPowerLevel(ItemStack item, int amount) {
+    if(item == null || !itemHasAnyPowerUpgrade(item)) {
+      return;
+    }
+    amount = Math.min(amount, getMaxEnergyStored(item));
+    EnergyUpgrade eu = loadFromItem(item);
+    eu.setEnergy(amount);
+    eu.writeToItem(item);
+  }
+  
+  public static void setPowerFull(ItemStack item) {
+    if(item == null || !itemHasAnyPowerUpgrade(item)) {
+      return;
+    }
+    EnergyUpgrade eu = loadFromItem(item);    
+    eu.setEnergy(eu.getCapacity());   
+    eu.writeToItem(item);
+  }
 
   public static String getStoredEnergyString(ItemStack itemstack) {
     EnergyUpgrade up = loadFromItem(itemstack);
