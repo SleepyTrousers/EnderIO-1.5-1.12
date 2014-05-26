@@ -256,11 +256,22 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         return false;
       }
 
-      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
-      if(drained == null || drained.amount <= 0) {
+//      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
+//      if(drained == null || drained.amount <= 0) {
+//        return false;
+//      }
+//      tank.addAmount(drained.amount);     
+
+      //Have to use this 'double handle' approach to work around an issue with TiC
+      FluidStack drained = extTank.drain(dir.getOpposite(), maxExtract, false);
+      if(drained == null || drained.amount == 0) {        
         return false;
-      }
-      tank.addAmount(drained.amount);
+      } else {
+        if(drained.isFluidEqual(getFluidType())) {
+          drained = extTank.drain(dir.getOpposite(), maxExtract, true);
+          tank.addAmount(drained.amount);          
+        } 
+      }      
       return true;
     }
     return false;
