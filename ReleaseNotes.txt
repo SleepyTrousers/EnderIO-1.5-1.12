@@ -1,3 +1,9 @@
+1.0.6
+- #698 Added Translations/Corrections for fr_FR.lang (WLCD) 
+- #703 Crash in AlloySmelter.
+- #704 Pressurized Fluid Conduits accept input when in insert mode.
+- #708 Fluid conduits pull very slowly from a Tinker's Smeltery
+
 1.0.5
 - #653 Photovoltatic cells won't accept hardened glass
 - #679 Staff Of Traveling not working after server restart or in twilight forest
