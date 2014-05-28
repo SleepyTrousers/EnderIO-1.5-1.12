@@ -49,10 +49,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   protected boolean doPull(ForgeDirection dir) {
-    boolean res = super.doPull(dir);
-    //    res |= doPull(dir, coolantTank,true);
-    //    res |= doPull(dir, fuelTank,false);
-
+    boolean res = super.doPull(dir);    
     BlockCoord loc = getLocation().getLocation(dir);
     IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
     if(target != null) {
@@ -67,8 +64,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
               if(drained != null && drained.amount > 0) {
                 int filled = fill(dir, drained, false);
                 if(filled > 0) {
-                  target.drain(dir.getOpposite(), canPull, true);
-                  fill(dir, drained, true);
+                  drained = target.drain(dir.getOpposite(), filled, true);
+                  fill(dir, drained, true);                  
                   return true;
                 }
               }
@@ -79,58 +76,6 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
 
     return res;
-  }
-
-  private boolean doPull(ForgeDirection dir, FluidTank inputTank, boolean isCoolant) {
-
-    if(isSideDisabled(dir.ordinal())) {
-      return false;
-    }
-
-    if(inputTank.getFluidAmount() < inputTank.getCapacity()) {
-      BlockCoord loc = getLocation().getLocation(dir);
-      IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-      if(target != null) {
-
-        if(inputTank.getFluidAmount() > 0) {
-          FluidStack canPull = inputTank.getFluid().copy();
-          canPull.amount = inputTank.getCapacity() - inputTank.getFluidAmount();
-          canPull.amount = Math.min(canPull.amount, IO_MB_TICK);
-          FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-          if(drained != null && drained.amount > 0) {
-            inputTank.fill(drained, true);
-            return true;
-          }
-        } else {
-          //empty input tank
-          FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-          for (FluidTankInfo info : infos) {
-            if(info.fluid != null && info.fluid.amount > 0) {
-              FluidStack fluid = info.fluid;
-
-              if(canFill(dir, info.fluid.getFluid())) {
-                if((isCoolant && !IronEngineCoolant.isCoolant(fluid.getFluid()))) {
-                  return false;
-                }
-                if(isCoolant && IronEngineFuel.getFuelForFluid(fluid.getFluid()) == null) {
-                  return false;
-                }
-
-                FluidStack canPull = info.fluid.copy();
-                canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-                FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
-                if(drained != null && drained.amount > 0) {
-                  inputTank.fill(drained, true);
-                  return true;
-                }
-              }
-            }
-          }
-        }
-
-      }
-    }
-    return false;
   }
 
   @Override

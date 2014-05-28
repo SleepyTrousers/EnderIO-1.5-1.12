@@ -39,9 +39,9 @@ public class MaterialRecipes {
     OreDictionary.registerOre("glassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
 
     //Glass stuff for compatability
-    GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane), "   ", "eee", "eee", 'e', pureGlass);
+    GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane,16,0), "   ", "eee", "eee", 'e', pureGlass);
     GameRegistry.addShapelessRecipe(new ItemStack(Blocks.glass), pureGlass);
-    GameRegistry.addShapedRecipe(new ItemStack(Items.glass_bottle), "   ", "g g", " g ", 'g', pureGlass);
+    GameRegistry.addShapedRecipe(new ItemStack(Items.glass_bottle,3,0), "   ", "g g", " g ", 'g', pureGlass);
 
   }
 
