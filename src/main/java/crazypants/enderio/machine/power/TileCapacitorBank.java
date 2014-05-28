@@ -47,7 +47,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   private float lastSyncPowerStored;
 
-  private float storedEnergy;
+  float storedEnergy;
 
   private int maxStoredEnergy;
 
@@ -94,6 +94,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   float energyAtLastRender = -1;
 
   private boolean isCreative = false;
+
+  float lastRenderStoredRatio;
 
   public TileCapacitorBank() {
     inventory = new ItemStack[4];
@@ -215,8 +217,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       return;
     }
 
-    boolean requiresClientSync = false;
-    requiresClientSync = chargeItems();
+    
+    chargeItems();
 
     boolean hasSignal = isRecievingRedstoneSignal();
     if(inputControlMode == RedstoneControlMode.IGNORE) {
@@ -247,14 +249,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       storedEnergy = getMaxEnergyStored()/2;
     }
 
-    requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0;
-
-    if(requiresClientSync) {
+    if(lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0) {
       lastSyncPowerStored = storedEnergy;
-      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-      markDirty();
+      EnderIO.packetPipeline.sendToAllAround(new PacketPowerStorage(this), this, 64);      
     }
-
+    
     if(notifyNeighbours) {
       worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
       notifyNeighbours = false;
@@ -269,7 +268,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return gaugeBounds;
   }
 
-  private boolean chargeItems() {
+  private void chargeItems() {
     boolean chargedItem = false;
     float available = Math.min(maxIO, storedEnergy);
     for (ItemStack item : inventory) {
@@ -296,7 +295,9 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
         }
       }
     }
-    return chargedItem;
+    if(chargedItem) {
+      markDirty();
+    }    
   }
 
   public boolean isOutputEnabled() {

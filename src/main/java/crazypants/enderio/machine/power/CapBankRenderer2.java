@@ -90,8 +90,9 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
       if(!(te instanceof TileCapacitorBank)) {
         return;
       }
+      TileCapacitorBank capBank = ((TileCapacitorBank) te);
       List<GaugeBounds> gaugeBounds = null;
-      gaugeBounds = ((TileCapacitorBank) te).getGaugeBounds();
+      gaugeBounds = capBank.getGaugeBounds();
 
       if(gaugeBounds == null || gaugeBounds.isEmpty()) {
         return;
@@ -122,7 +123,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
             tes.setColorRGBA_F(col.x, col.y, col.z, col.w);
           }
           renderGaugeOnFace(gb, EnderIO.blockCapacitorBank.overlayIcon, refVertices, x, y, z);
-          renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon, ((TileCapacitorBank) te).getEnergyStoredRatio(), refVertices, x, y, z);
+          renderFillBarOnFace(gb, EnderIO.blockCapacitorBank.fillBarIcon,capBank.getEnergyStoredRatio(), refVertices, x, y, z);
+          capBank.lastRenderStoredRatio = capBank.getEnergyStoredRatio();
           tes.addTranslation((float) -x, (float) -y, (float) -z);
           return;
         }

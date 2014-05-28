@@ -212,8 +212,12 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, IPacke
     this.channels.get(Side.SERVER).writeAndFlush(message);
   }
 
+  public void sendToAllAround(IPacketEio message, TileEntity te, int range) {
+    sendToAllAround(message, new TargetPoint(te.getWorldObj().provider.dimensionId, te.xCoord, te.yCoord, te.zCoord, range));
+  }
+  
   public void sendToAllAround(IPacketEio message, TileEntity te) {
-    sendToAllAround(message, new TargetPoint(te.getWorldObj().provider.dimensionId, te.xCoord, te.yCoord, te.zCoord, 16));
+    sendToAllAround(message, te, 16);
   }
   
   /**

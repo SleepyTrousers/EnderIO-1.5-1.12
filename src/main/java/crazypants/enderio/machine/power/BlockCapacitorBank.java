@@ -43,6 +43,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   public static BlockCapacitorBank create() {
     EnderIO.packetPipeline.registerPacket(PacketClientState.class);
+    EnderIO.packetPipeline.registerPacket(PacketPowerStorage.class);
 
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
