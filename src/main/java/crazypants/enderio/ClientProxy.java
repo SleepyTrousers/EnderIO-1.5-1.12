@@ -45,6 +45,7 @@ import crazypants.enderio.machine.AbstractMachineRenderer;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.generator.BlockCombustionGenerator;
+import crazypants.enderio.machine.generator.CombustionGeneratorModelRenderer;
 import crazypants.enderio.machine.generator.CombustionGeneratorRenderer;
 import crazypants.enderio.machine.generator.TileCombustionGenerator;
 import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
@@ -78,12 +79,12 @@ public class ClientProxy extends CommonProxy {
   // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
 
-    { 3, 2, 0, 0, 0, 0 },
-    { 2, 3, 1, 1, 1, 1 },
-    { 1, 1, 3, 2, 5, 4 },
-    { 0, 0, 2, 3, 4, 5 },
-    { 4, 5, 4, 5, 3, 2 },
-    { 5, 4, 5, 4, 2, 3 } };
+      { 3, 2, 0, 0, 0, 0 },
+      { 2, 3, 1, 1, 1, 1 },
+      { 1, 1, 3, 2, 5, 4 },
+      { 0, 0, 2, 3, 4, 5 },
+      { 4, 5, 4, 5, 3, 2 },
+      { 5, 4, 5, 4, 2, 3 } };
   // @formatter:on
 
   static {
@@ -138,11 +139,17 @@ public class ClientProxy extends CommonProxy {
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
 
-    BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
-    CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
-    RenderingRegistry.registerBlockHandler(cr);
-    if(!Config.combustionGeneratorUseOpaqueModel) {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
+    if(Config.useCombustionGenModel) {
+      CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);
+      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCombustionGenerator), cgmr);
+    } else {      
+      BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
+      CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
+      RenderingRegistry.registerBlockHandler(cr);
+      if(!Config.combustionGeneratorUseOpaqueModel) {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
+      }      
     }
 
     BlockVat.renderId = RenderingRegistry.getNextAvailableRenderId();
@@ -247,4 +254,3 @@ public class ClientProxy extends CommonProxy {
   }
 
 }
-

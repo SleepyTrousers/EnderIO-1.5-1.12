@@ -141,6 +141,8 @@ public final class Config {
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
   
+  public static boolean useCombustionGenModel = false;
+  
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -419,7 +421,9 @@ public final class Config {
         "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);    
     magnetRange = config.get("Settings", "magnetRange", magnetRange,
         "Range of the magnet in blocks.").getInt(magnetRange);
-
+    
+    useCombustionGenModel = config.get("Settings", "magnetRange", useCombustionGenModel,
+        "Set to true to enabled WIP combustion generator model.").getBoolean(useCombustionGenModel);
   }
 
   private Config() {

@@ -21,7 +21,7 @@ import crazypants.util.Util;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
-  public static int renderId;
+  public static int renderId = -1;
 
   public static BlockCombustionGenerator create() {
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
