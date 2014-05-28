@@ -15,6 +15,8 @@ import buildcraft.api.fuels.IronEngineCoolant.Coolant;
 import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import buildcraft.api.power.IPowerEmitter;
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -49,7 +51,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   protected boolean doPull(ForgeDirection dir) {
-    boolean res = super.doPull(dir);    
+    boolean res = super.doPull(dir);
     BlockCoord loc = getLocation().getLocation(dir);
     IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
     if(target != null) {
@@ -65,8 +67,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
                 int filled = fill(dir, drained, false);
                 if(filled > 0) {
                   drained = target.drain(dir.getOpposite(), filled, true);
-                  fill(dir, drained, true);                  
-                  return true;
+                  fill(dir, drained, true);
+                  return res;
                 }
               }
             }
@@ -143,8 +145,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-    boolean res = tanksDirty;
-    tanksDirty = false;
+    boolean res = false;
 
     if(!redstoneChecksPassed) {
       if(active) {
@@ -152,19 +153,25 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
         res = true;
       }
       return res;
-    }
+    } else {
 
-    boolean isActive = generateEnergy();
-    if(isActive != this.active) {
-      active = isActive;
-      res = true;
-    }
+      boolean isActive = generateEnergy();
+      if(isActive != this.active) {
+        active = isActive;
+        res = true;
+      }
 
-    if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
-      inPause = true;
-    }
+      if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
+        inPause = true;
+      }
 
-    transmitEnergy();
+      transmitEnergy();
+    }
+    
+    if(tanksDirty) {     
+      EnderIO.packetPipeline.sendToAllAround(new PacketTanks(this), this);
+      tanksDirty = false;
+    }
 
     return res;
   }

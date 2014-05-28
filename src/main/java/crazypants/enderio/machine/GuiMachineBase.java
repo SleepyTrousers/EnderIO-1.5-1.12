@@ -45,18 +45,21 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   public GuiMachineBase(AbstractMachineEntity machine, Container container) {
     super(container);
     tileEntity = machine;
-    addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
+    if(renderPowerBar()) {
+      addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
 
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add("Max: " + PowerDisplayUtil.formatPower(tileEntity.getPowerUsePerTick()) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
-        //text.add()
-        text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
+        @Override
+        protected void updateText() {
+          text.clear();
+          text.add("Max: " + PowerDisplayUtil.formatPower(tileEntity.getPowerUsePerTick()) + " " + PowerDisplayUtil.abrevation()
+              + PowerDisplayUtil.perTickStr());
+          //text.add()
+          text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
 
-      }
+        }
 
-    });
+      });
+    }
     int x = xSize - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));

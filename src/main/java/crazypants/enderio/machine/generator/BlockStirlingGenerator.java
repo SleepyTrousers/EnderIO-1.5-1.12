@@ -2,13 +2,18 @@ package crazypants.enderio.machine.generator;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.PacketPowerStorage;
 
 public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> {
 
   public static BlockStirlingGenerator create() {
+    
+    EnderIO.packetPipeline.registerPacket(PacketBurnTime.class);
+    
     BlockStirlingGenerator gen = new BlockStirlingGenerator();
     gen.init();
     return gen;

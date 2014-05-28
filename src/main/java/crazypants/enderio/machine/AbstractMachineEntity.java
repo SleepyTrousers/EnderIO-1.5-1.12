@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -318,14 +320,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
 
     
-    requiresClientSync |= doSideIo();
-    
+    requiresClientSync |= doSideIo();    
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    requiresClientSync |= (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0);
+    boolean powerChanged = (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 5 == 0);
 
     if(requiresClientSync) {
       lastSyncPowerStored = storedEnergy;
@@ -335,6 +336,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       // And this will make sure our current tile entity state is saved
       markDirty();
+    } else if(powerChanged) {
+      lastSyncPowerStored = storedEnergy;
+      EnderIO.packetPipeline.sendToAllAround(new PacketPowerStorage(this), this);       
     }
 
     if(notifyNeighbours) {
@@ -376,9 +380,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
     if(te == null) {
       return false;
-    }
-
-    boolean res = false;
+    }    
     for(int i=slotDefinition.minOutputSlot; i<= slotDefinition.maxOutputSlot;i++) {
       ItemStack item = inventory[i];
       if(item != null) {
@@ -389,12 +391,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
             item = null;
           }
           inventory[i] = item;
-          markDirty();
-          res = true;
+          markDirty();    
         }
       }
     }
-    return res;
+    return false;
   }
 
   protected boolean doPull(ForgeDirection dir) {
@@ -436,7 +437,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     for(int inputSlot=slotDefinition.minInputSlot; inputSlot <= slotDefinition.maxInputSlot;inputSlot++) {
       if(doPull(inputSlot, target, targetSlots, dir)) {
-        return true;
+        return false;
       }
     }
     return false;

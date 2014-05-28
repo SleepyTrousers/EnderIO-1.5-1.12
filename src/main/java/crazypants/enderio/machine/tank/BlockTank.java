@@ -39,7 +39,7 @@ import crazypants.util.Util;
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
-   
+   EnderIO.packetPipeline.registerPacket(PacketTank.class);
     BlockTank res = new BlockTank();
     res.init();
     return res;

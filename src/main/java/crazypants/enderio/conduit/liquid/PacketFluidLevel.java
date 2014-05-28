@@ -34,7 +34,6 @@ public class PacketFluidLevel extends AbstractPacketTileEntity<TileEntity> {
   public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
     super.decode(ctx, buf);
     tc = ByteBufUtils.readTag(buf);
-
   }
 
   @Override
@@ -49,47 +48,5 @@ public class PacketFluidLevel extends AbstractPacketTileEntity<TileEntity> {
     }
     con.readFromNBT(tc, TileConduitBundle.NBT_VERSION);
   }
-
-  //  public static Packet createFluidConduitLevelPacket(ILiquidConduit liquidConduit) {
-  //    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-  //    DataOutputStream dos = new DataOutputStream(bos);
-  //    IConduitBundle bundle = liquidConduit.getBundle();
-  //    try {
-  //      dos.writeInt(PacketHandler.ID_CONDUIT_FLUID_LEVEL);
-  //      dos.writeInt(bundle.getEntity().xCoord);
-  //      dos.writeInt(bundle.getEntity().yCoord);
-  //      dos.writeInt(bundle.getEntity().zCoord);
-  //      NBTTagCompound tc = new NBTTagCompound();
-  //      liquidConduit.writeToNBT(tc);
-  //      PacketUtil.writeNBTTagCompound(tc, dos);
-  //
-  //    } catch (IOException e) {
-  //      // never thrown
-  //    }
-  //    Packet250CustomPayload pkt = new Packet250CustomPayload();
-  //    pkt.channel = PacketHandler.CHANNEL;
-  //    pkt.data = bos.toByteArray();
-  //    pkt.length = bos.size();
-  //    pkt.isChunkDataPacket = true;
-  //    return pkt;
-  //  }
-  //
-  //  private void processFluidConduitLevelPacket(DataInputStream data, Player player) throws IOException {
-  //    World world = getWorld(player);
-  //    if(world == null) {
-  //      return;
-  //    }
-  //    IConduitBundle conBun = getConduitBundle(data, world);
-  //    if(conBun == null) {
-  //      return;
-  //    }
-  //    ILiquidConduit con = conBun.getConduit(ILiquidConduit.class);
-  //    if(con == null) {
-  //      //Log.warn("processFluidConduitLevelPacket: no fluid conduit exists in bundle when recieving packet.");
-  //      return;
-  //    }
-  //    NBTTagCompound tc = PacketUtil.readNBTTagCompound(data);
-  //    con.readFromNBT(tc, TileConduitBundle.NBT_VERSION);
-  //  }
 
 }

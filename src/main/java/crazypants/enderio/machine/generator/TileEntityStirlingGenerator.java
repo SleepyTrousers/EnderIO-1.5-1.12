@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -20,8 +21,8 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public static final float ENERGY_PER_TICK = 2;
 
   /** How many ticks left until the item is burnt. */
-  private int burnTime = 0;
-  private int totalBurnTime;
+  int burnTime = 0;
+  int totalBurnTime;
 
   private PowerDistributor powerDis;
 
@@ -139,15 +140,17 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
-
+    boolean sendBurnTimePacket = false;
+    
     if(burnTime > 0) {
       if(storedEnergy < powerHandler.getMaxEnergyStored()) {
         storedEnergy += (ENERGY_PER_TICK * getEnergyMultiplier());
       }
-      burnTime--;      
+      burnTime--;
+      sendBurnTimePacket = worldObj.getWorldTime() % 20 == 1;    
     }
 
-    needsUpdate |= transmitEnergy();
+    transmitEnergy();
 
     if(redstoneCheckPassed) {
 
@@ -166,6 +169,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
           needsUpdate = true;
         }
       }
+    }
+    if(!needsUpdate && sendBurnTimePacket) {
+      EnderIO.packetPipeline.sendToAllAround(new PacketBurnTime(this), this);
     }
 
     return needsUpdate;

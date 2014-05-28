@@ -43,6 +43,8 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
+    System.out.println("CombustionGeneratorRenderer.renderWorldBlock: ");
+    
     short facing = (short)ForgeDirection.EAST.ordinal();
     boolean active = false;
     if(world != null) {

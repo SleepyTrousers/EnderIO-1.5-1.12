@@ -65,6 +65,6 @@ public class GuiTank extends GuiMachineBase {
   }
   
   protected boolean renderPowerBar() {
-    return true;
+    return false;
   }
 }

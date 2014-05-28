@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -24,6 +25,8 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   public static int renderId = -1;
 
   public static BlockCombustionGenerator create() {
+    EnderIO.packetPipeline.registerPacket(PacketTanks.class);
+    
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();
     return gen;

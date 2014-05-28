@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
@@ -27,6 +28,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
 
   protected FluidTankEio tank;// = new FluidTankEio(16000);
   protected int lastUpdateLevel = -1;
+  
+  private boolean tankDirty = false;
 
   public TileTank(int meta) {
     super(new SlotDefinition(0, 1, 2, 3, -1, -1));
@@ -60,7 +63,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
           int filled = target.fill(dir.getOpposite(), push, true);
           if(filled > 0) {
             tank.drain(filled, true);
-            return true;
+            tankDirty = true;
+            return res;
           }
         }
       }
@@ -89,7 +93,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
           FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
           if(drained != null && drained.amount > 0) {
             tank.fill(drained, true);
-            return true;
+            tankDirty = true;
+            return res;
           }
         } else {
 
@@ -103,7 +108,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
                   FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
                   if(drained != null && drained.amount > 0) {
                     tank.fill(drained, true);
-                    return true;
+                    tankDirty = true;
+                    return res;
                   }
                 }
               }
@@ -118,17 +124,29 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    return tank.fill(resource, doFill);
+    int res = tank.fill(resource, doFill);
+    if(res > 0 && doFill) {
+      tankDirty = true;
+    }
+    return res;
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    return tank.drain(resource, doDrain);
+    FluidStack res = tank.drain(resource, doDrain);
+    if(res != null && res.amount > 0 && doDrain) {
+      tankDirty = true;      
+    }
+    return res;
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    return tank.drain(maxDrain, doDrain);
+    FluidStack res = tank.drain(maxDrain, doDrain);
+    if(res != null && res.amount > 0 && doDrain) {
+      tankDirty = true;      
+    }
+    return res;
   }
 
   @Override
@@ -195,7 +213,12 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     int filledLevel = getFilledLevel();
     if(lastUpdateLevel != filledLevel) {
       lastUpdateLevel = filledLevel;
+      tankDirty = false;
       return true;
+    }
+    if(tankDirty && worldObj.getWorldTime() % 10 == 0) {
+      EnderIO.packetPipeline.sendToAllAround(new PacketTank(this), this);
+      tankDirty = false;
     }
     return res;
   }
@@ -245,6 +268,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     }
 
     tank.drain(filledFluid.amount, true);
+    tankDirty = true;
 
     toFill = toFill.copy();
     toFill.stackSize--;
@@ -261,7 +285,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       newStack.stackSize++;
       setInventorySlotContents(3, newStack);
     }
-
+    markDirty();
     return false;
   }
 
@@ -305,7 +329,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       newStack.stackSize++;
       setInventorySlotContents(2, newStack);
     }
-    return true;
+    markDirty();
+    return false;
   }
 
   public PowerReceiver getPowerReceiver(ForgeDirection side) {

@@ -70,7 +70,7 @@ public class PowerDistributor {
       BlockCoord checkLoc = bc.getLocation(dir);
       TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
       IPowerInterface pi = PowerHandlerUtil.create(te);
-      if(pi != null) {
+      if(pi != null && pi.canConduitConnect(dir.getOpposite())) {        
         receptors.add(new Receptor(pi, dir));
       }
     }
