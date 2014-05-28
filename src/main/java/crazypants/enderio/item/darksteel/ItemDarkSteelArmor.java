@@ -172,7 +172,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
     if(source.isUnblockable()) {
-      return null;
+      return new ArmorProperties(0, 0, armor.getMaxDamage() + 1 - armor.getItemDamage());
     }
     double damageRatio = damageReduceAmount + (getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
     damageRatio /= 25D;
