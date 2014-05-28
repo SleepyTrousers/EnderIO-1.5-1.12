@@ -17,6 +17,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   public static BlockPowerMonitor create() {
 
     EnderIO.packetPipeline.registerPacket(PacketPowerMonitor.class);
+    EnderIO.packetPipeline.registerPacket(PacketPowerInfo.class);
 
     BlockPowerMonitor result = new BlockPowerMonitor();
     result.init();

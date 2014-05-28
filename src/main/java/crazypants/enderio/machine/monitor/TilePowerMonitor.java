@@ -137,7 +137,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   protected boolean processTasks(boolean redstoneCheckPassed) {
     powerHandler.setEnergy(powerHandler.getEnergyStored() - energyPerTick);
     boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
-
     NetworkPowerManager pm = getPowerManager();
     if(pm != null && update) {
       update(pm);
@@ -163,8 +162,10 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
         broadcastSignal();
       }
     }
-
-    return update;
+    if(update) {
+      EnderIO.packetPipeline.sendToAllAround(new PacketPowerInfo(this), this);
+    }    
+    return false;
   }
 
   private void broadcastSignal() {
@@ -186,7 +187,6 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     PowerTracker tracker = pm.getNetworkPowerTracker();
     aveMjSent = tracker.getAverageMjTickSent();
     aveMjRecieved = tracker.getAverageMjTickRecieved();
-
   }
 
   private NetworkPowerManager getPowerManager() {
@@ -208,7 +208,10 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
+    readPowerInfoFromNBT(nbtRoot);
+  }
 
+  public void readPowerInfoFromNBT(NBTTagCompound nbtRoot) {
     powerInConduits = nbtRoot.getFloat("powerInConduits");
     maxPowerInCoduits = nbtRoot.getFloat("maxPowerInCoduits");
     powerInCapBanks = nbtRoot.getFloat("powerInCapBanks");
@@ -226,7 +229,10 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
+    writePowerInfoToNBT(nbtRoot);
+  }
 
+  public void writePowerInfoToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setFloat("powerInConduits", powerInConduits);
     nbtRoot.setFloat("maxPowerInCoduits", maxPowerInCoduits);
     nbtRoot.setFloat("powerInCapBanks", powerInCapBanks);
@@ -239,6 +245,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     nbtRoot.setBoolean("engineControlEnabled", engineControlEnabled);
     nbtRoot.setFloat("startLevel", startLevel);
     nbtRoot.setFloat("stopLevel", stopLevel);
+
   }
 
   @Override
