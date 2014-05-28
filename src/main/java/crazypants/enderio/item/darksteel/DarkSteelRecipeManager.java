@@ -76,7 +76,7 @@ public class DarkSteelRecipeManager {
     resultStack.setItemDamage(Math.max(0, resultStack.getItemDamage() - totalDamageRemoved));
     
     evt.output = resultStack;
-    evt.cost = ingots.stackSize + getEnchantmentRepairCost(resultStack);//(int)Math.ceil(getEnchantmentRepairCost(resultStack)/2);
+    evt.cost = ingots.stackSize + (int)Math.ceil(getEnchantmentRepairCost(resultStack)/2);
   }
 
   private void handleUpgrade(AnvilUpdateEvent evt) {
