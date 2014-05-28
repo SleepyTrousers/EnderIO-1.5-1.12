@@ -55,6 +55,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   static {
     EnderIO.packetPipeline.registerPacket(PacketIoMode.class);
     EnderIO.packetPipeline.registerPacket(PacketPowerStorage.class);
+    EnderIO.packetPipeline.registerPacket(PacketCurrentTask.class);
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {

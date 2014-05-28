@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -31,6 +32,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public static int renderId;
 
   public static BlockVat create() {
+    EnderIO.packetPipeline.registerPacket(PacketTanks.class);
     BlockVat res = new BlockVat();
     res.init();
     return res;

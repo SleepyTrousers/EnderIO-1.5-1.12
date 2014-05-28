@@ -51,8 +51,7 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler {
 
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof AbstractMachineEntity) {
-      curEnt = (AbstractMachineEntity)te;
-      System.out.println("AbstractMachineRenderer.renderWorldBlock: ");
+      curEnt = (AbstractMachineEntity)te;      
     } else {
       curEnt = null;
     }

@@ -8,6 +8,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
@@ -83,7 +84,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
     boolean requiresClientSync = false;
     // Process any current items
-    requiresClientSync |= checkProgress(redstoneChecksPassed);
+    requiresClientSync |= checkProgress(redstoneChecksPassed);    
 
     if(currentTask != null || !hasPower() || !hasInputStacks()) {
       return requiresClientSync;
@@ -103,7 +104,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     if(nextRecipe != null) {
       boolean started = startNextTask(nextRecipe, chance);
       startFailed = !started;
-      requiresClientSync |= started;
+      //requiresClientSync |= started;
+      if(started) {
+        EnderIO.packetPipeline.sendToAllAround(new PacketCurrentTask(this), this);
+      }
     } else {
       startFailed = true;
     }
@@ -121,9 +125,12 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     // then check if we are done
     if(currentTask.isComplete()) {
       taskComplete();
-      return true;
+      return false;
     }
-    return worldObj.getWorldTime() % 10 == 0;
+    
+    EnderIO.packetPipeline.sendToAllAround(new PacketCurrentTask(this), this);
+    
+    return false;
   }
 
   protected double usePower() {
@@ -148,6 +155,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     markDirty();
     currentTask = null;
+    EnderIO.packetPipeline.sendToAllAround(new PacketCurrentTask(this), this);
   }
 
   protected void mergeResults(ResultStack[] results) {

@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
@@ -76,7 +77,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
           int filled = target.fill(dir.getOpposite(), push, true);
           if(filled > 0) {
             outputTank.drain(filled, true);
-            return true;
+            tanksDirty = true;
+            return res;
           }
         }
       }
@@ -105,7 +107,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
           FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
           if(drained != null && drained.amount > 0) {
             inputTank.fill(drained, true);
-            return true;
+            tanksDirty = true;
+            return res;
           }
         } else {
           //empty input tank
@@ -119,7 +122,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
                   FluidStack drained = target.drain(dir.getOpposite(), canPull, true);
                   if(drained != null && drained.amount > 0) {
                     inputTank.fill(drained, true);
-                    return true;
+                    tanksDirty = true;
+                    return res;
                   }
                 }
               }
@@ -168,8 +172,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-    boolean res = super.processTasks(redstoneChecksPassed) || tanksDirty;
-    tanksDirty = false;
+    boolean res = super.processTasks(redstoneChecksPassed);
+    if(tanksDirty && worldObj.getWorldTime() % 10 == 0) {
+      EnderIO.packetPipeline.sendToAllAround(new PacketTanks(this), this);
+      tanksDirty = false;
+    }    
     return res;
   }
 
