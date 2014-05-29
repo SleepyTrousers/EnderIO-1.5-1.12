@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -20,6 +21,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.util.Util;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider {
 
@@ -72,11 +74,15 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
       if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
         IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removedByPlayer(world, entityPlayer, x, y, z);
+        if(wrench.canWrench(entityPlayer, x, y, z)) {          
           if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
-            dropBlockAsItem(world, x, y, z, 0, 0);
+            int meta = world.getBlockMetadata(x, y, z);
+            System.out.println("BlockSolarPanel.onBlockActivated: " + meta);
+            System.out.println("BlockSolarPanel.onBlockActivated: " + meta);
+            ItemStack is = new ItemStack(this,1,meta);
+            Util.dropItems(world, is, x, y, z, true);            
           }
+          removedByPlayer(world, entityPlayer, x, y, z);
           if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
             ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
           }
