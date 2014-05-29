@@ -94,7 +94,7 @@ public class TreeFarmer implements IFarmerJoe {
       BlockCoord coord = res.harvestedBlocks.get(i);
       Block blk = farm.getBlock(coord);
 
-      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.geAxeLootingValue());
+      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.getAxeLootingValue());
       if(drops != null) {
         for (ItemStack drop : drops) {
           res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));

@@ -124,7 +124,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     return hasAxe() || hasHoe();
   }
 
-  public int geAxeLootingValue() {
+  public int getAxeLootingValue() {
     ItemStack tool = getTool(ItemAxe.class);
     if(tool == null) {
       return 0;
