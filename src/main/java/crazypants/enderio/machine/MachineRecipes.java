@@ -50,6 +50,10 @@ public class MachineRecipes {
     ItemStack comGen = new ItemStack(EnderIO.blockCombustionGenerator, 1, 0);
     GameRegistry.addShapedRecipe(comGen, "eee", "rmr", "gcg", 'e', electricSteel, 'r', EnderIO.blockReservoir, 'm', machineChassi, 'g', basicGear,'c', capacitor);
 
+    //Crafter
+    ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
+    GameRegistry.addShapedRecipe(crafter, "iti", "imi", "ici", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'c', capacitor);
+    
     //reservoir    
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
     Object glassSides;
