@@ -51,5 +51,20 @@ public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
   protected String getMachineFrontIconKey(boolean active) {
     return "enderio:crafter";
   }
+  
+  @Override
+  protected String getSideIconKey(boolean active) {
+    return "enderio:crafterSide";
+  }
+
+  @Override
+  protected String getBackIconKey(boolean active) {
+    return getSideIconKey(active);
+  }
+
+  @Override
+  protected String getTopIconKey(boolean active) {
+    return "enderio:crafterTop";
+  }
 
 }
