@@ -21,7 +21,7 @@ public class StemFarmer extends SeedFarmer {
     if(plantedBlock == block) {
       return true;
     }
-    return plantFromInvenetory(farm, bc);
+    return plantFromInventory(farm, bc);
   }
 
   @Override
@@ -66,7 +66,7 @@ public class StemFarmer extends SeedFarmer {
   }
 
   @Override
-  protected boolean plantFromInvenetory(TileFarmStation farm, BlockCoord bc) {
+  protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
     if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(seeds, bc) != null) {
       return plant(farm, worldObj, bc);
