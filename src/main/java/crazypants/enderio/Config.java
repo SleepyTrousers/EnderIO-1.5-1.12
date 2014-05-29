@@ -143,6 +143,7 @@ public final class Config {
   
   public static boolean useCombustionGenModel = false;
   
+  public static int crafterMjPerCraft = 250;  
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -424,6 +425,9 @@ public final class Config {
     
     useCombustionGenModel = config.get("Settings", "magnetRange", useCombustionGenModel,
         "Set to true to enabled WIP combustion generator model.").getBoolean(useCombustionGenModel);
+    
+    crafterMjPerCraft= config.get("Settings", "crafterMjPerCraft", crafterMjPerCraft,
+        "MJ used be recipe crafted").getInt(crafterMjPerCraft);
   }
 
   private Config() {

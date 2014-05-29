@@ -1,5 +1,7 @@
 package crazypants.enderio.machine;
 
+import java.awt.Point;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -16,7 +18,7 @@ public abstract class AbstractMachineContainer extends Container {
     addMachineSlots(playerInv);
 
     if(te.getSlotDefinition().getNumUpgradeSlots() == 1) {
-      addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), 12, 60) {
+      addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
 
         @Override
         public int getSlotStackLimit() {
@@ -30,15 +32,17 @@ public abstract class AbstractMachineContainer extends Container {
       });
     }
 
+    int x = getPlayerInventoryOffset().x;
+    int y = getPlayerInventoryOffset().y;
     // add players inventory
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x + j * 18, y + i * 18));
       }
     }
 
     for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, 8 + i * 18, 142));
+      addSlotToContainer(new Slot(playerInv, i, x + i * 18, y + 58));
     }
   }
 
@@ -47,6 +51,14 @@ public abstract class AbstractMachineContainer extends Container {
     return tileEntity.isUseableByPlayer(entityplayer);
   }
 
+  protected Point getPlayerInventoryOffset() {
+    return new Point(8,84);
+  }
+  
+  protected Point getUpgradeOffset() {
+    return new Point(12,60);
+  }
+  
   protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
   @Override

@@ -201,6 +201,8 @@ tile.blockTank.tooltip.detailed.line2=Can be used to empty and
 tile.blockTank.tooltip.detailed.line3=fill fluid containers
 enderio.tank.tank=Tank
 
+tile.blockCrafter.name=Crafter
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Travel

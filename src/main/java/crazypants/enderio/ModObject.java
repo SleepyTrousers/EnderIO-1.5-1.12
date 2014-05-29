@@ -42,6 +42,7 @@ public enum ModObject {
   blockVat,
   blockFarmStation,
   blockTank,
+  blockCrafter,
 
   blockElectricLight,
   blockLightNode,

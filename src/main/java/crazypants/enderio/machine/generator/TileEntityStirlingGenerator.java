@@ -147,7 +147,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
         storedEnergy += (ENERGY_PER_TICK * getEnergyMultiplier());
       }
       burnTime--;
-      sendBurnTimePacket = worldObj.getWorldTime() % 20 == 1;    
+      sendBurnTimePacket = worldObj.getWorldTime() % 20 == 1 || burnTime == 0;    
     }
 
     transmitEnergy();

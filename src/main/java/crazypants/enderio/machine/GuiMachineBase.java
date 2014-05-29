@@ -60,7 +60,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
       });
     }
-    int x = xSize - 5 - BUTTON_SIZE;
+    int x = getXSize() - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
 
@@ -150,7 +150,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     if(renderPowerBar()) {
       int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());
       // x, y, u, v, width, height
-      drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, 176, 31, getPowerWidth(), i1);
+      drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
     }
 
     for (int i = 0; i < buttonList.size(); ++i) {
@@ -170,6 +170,14 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       }
     }
 
+  }
+
+  protected int getPowerV() {
+    return 31;
+  }
+
+  protected int getPowerU() {
+    return 176;
   }
 
   protected boolean renderPowerBar() {

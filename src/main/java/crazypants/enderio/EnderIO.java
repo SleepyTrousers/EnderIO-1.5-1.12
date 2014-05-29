@@ -48,6 +48,7 @@ import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -150,6 +151,7 @@ public class EnderIO {
   public static BlockVat blockVat;
   public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
+  public static BlockCrafter blockCrafter;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -223,6 +225,7 @@ public class EnderIO {
     blockPaintedDoubleSlab = new BlockPaintedSlab(true);
     blockPaintedSlab.init();
     blockPaintedDoubleSlab.init();
+    blockCrafter = BlockCrafter.create();
 
     blockHyperCube = BlockHyperCube.create();
     blockElectricLight = BlockElectricLight.create();

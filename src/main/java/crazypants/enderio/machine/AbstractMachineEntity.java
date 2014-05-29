@@ -709,7 +709,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(isSideDisabled(side)) {
       return false;
     }
-    return slotDefinition.isInputSlot(slot);
+    return slotDefinition.isInputSlot(slot) && isMachineItemValidForSlot(slot, var2);
   }
 
   @Override

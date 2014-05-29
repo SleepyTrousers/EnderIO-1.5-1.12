@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class TemplateSlot extends Slot {
 
-  int slotIndex;
+  protected int slotIndex;
 
   public TemplateSlot(IInventory inventory, int slotIndex, int x, int y) {
     super(inventory, slotIndex, x, y);
