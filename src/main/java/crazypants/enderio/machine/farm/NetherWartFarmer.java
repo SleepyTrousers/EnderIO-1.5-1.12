@@ -24,7 +24,7 @@ public class NetherWartFarmer extends SeedFarmer {
     BlockCoord grn = bc.getLocation(ForgeDirection.DOWN);
     Block blk = worldObj.getBlock(grn.x, grn.y, grn.z);
     
-    return plantFromInvenetory(farm, bc);
+    return plantFromInventory(farm, bc);
   }
 
 

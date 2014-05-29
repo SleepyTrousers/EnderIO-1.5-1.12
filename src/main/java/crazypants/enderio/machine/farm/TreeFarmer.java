@@ -1,12 +1,9 @@
 package crazypants.enderio.machine.farm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -17,12 +14,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import crazypants.util.BlockCoord;
 
 public class TreeFarmer implements IFarmerJoe {
@@ -101,7 +94,7 @@ public class TreeFarmer implements IFarmerJoe {
       BlockCoord coord = res.harvestedBlocks.get(i);
       Block blk = farm.getBlock(coord);
 
-      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.geAxeLootingValue());
+      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.getAxeLootingValue());
       if(drops != null) {
         for (ItemStack drop : drops) {
           res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
@@ -148,13 +141,13 @@ public class TreeFarmer implements IFarmerJoe {
       }
     } else {
       // check the sides for connected wood
-      harvestAdjancentWood(farm, bc, res);
+      harvestAdjacentWood(farm, bc, res);
       //and another check for large oaks, where wood can be surrounded by leaves
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir.offsetY == 0) {
           Block targetBlock = farm.getBlock(bc.getLocation(dir));
           if(targetBlock instanceof BlockLeaves) {
-            harvestAdjancentWood(farm, bc, res);
+            harvestAdjacentWood(farm, bc, res);
           }
         }
       }
@@ -162,7 +155,7 @@ public class TreeFarmer implements IFarmerJoe {
 
   }
 
-  private void harvestAdjancentWood(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
+  private void harvestAdjacentWood(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if(dir.offsetY == 0) {
         Block targetBlock = farm.getBlock(bc.getLocation(dir));

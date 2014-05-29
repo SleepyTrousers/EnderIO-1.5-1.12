@@ -72,7 +72,7 @@ public class SeedFarmer implements IFarmerJoe {
     if(requiresFarmland()) {
       World worldObj = farm.getWorldObj();
       if(isGroundTilled(farm, bc)) {
-        return plantFromInvenetory(farm, bc);
+        return plantFromInventory(farm, bc);
       }
       if(farm.hasSeed(getSeeds(), bc)) {
         boolean tilled = tillBlock(farm, bc);
@@ -81,7 +81,7 @@ public class SeedFarmer implements IFarmerJoe {
         }
       }
     }
-    return plantFromInvenetory(farm, bc);
+    return plantFromInventory(farm, bc);
   }
 
   public boolean requiresFarmland() {
@@ -92,7 +92,7 @@ public class SeedFarmer implements IFarmerJoe {
     this.requiresFarmland = requiresFarmland;
   }
 
-  protected boolean plantFromInvenetory(TileFarmStation farm, BlockCoord bc) {
+  protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
     if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(getSeeds(), bc) != null) {
       return plant(farm, worldObj, bc);
