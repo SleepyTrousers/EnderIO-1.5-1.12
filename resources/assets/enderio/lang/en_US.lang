@@ -187,6 +187,11 @@ tile.blockCombustionGenerator.tooltip.detailed.line1=Burns liquid fuel to genera
 tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. water)
 tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
 
+tile.blockZombieGenerator.name=Zombie Generator
+tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation 
+tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
+enderio.zombieGenerator.fuelTank=Nutrient Tank
+
 tile.blockFarmStation.name=Farming Station
 tile.blockFarmStation.tooltip.detailed.line1=Plants and harvests crops
 tile.blockFarmStation.tooltip.detailed.line2=Requires power and  

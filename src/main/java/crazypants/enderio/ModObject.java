@@ -32,6 +32,7 @@ public enum ModObject {
   // Machines
   blockStirlingGenerator,
   blockCombustionGenerator,
+  blockZombieGenerator,
   blockReservoir,
   blockAlloySmelter,
   blockSolarPanel,

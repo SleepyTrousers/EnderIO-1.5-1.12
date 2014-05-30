@@ -58,8 +58,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     EnderIO.packetPipeline.registerPacket(PacketCurrentTask.class);
   }
 
-  protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
-    super(new Material(MapColor.ironColor));
+  protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
+    super(mat);
     modObject = mo;
     this.teClass = teClass;
     setHardness(2.0F);
@@ -67,7 +67,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setBlockName(mo.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
     random = new Random();
-
+  }
+  
+  protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
+    this(mo, teClass, new Material(MapColor.ironColor));
   }
 
   protected void init() {

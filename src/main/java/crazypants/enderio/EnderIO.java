@@ -55,6 +55,7 @@ import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.hypercube.HyperCubeRegister;
 import crazypants.enderio.machine.light.BlockElectricLight;
@@ -141,6 +142,7 @@ public class EnderIO {
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
   public static BlockCombustionGenerator blockCombustionGenerator;
+  public static BlockZombieGenerator blockZombieGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
@@ -208,6 +210,7 @@ public class EnderIO {
     blockSolarPanel = BlockSolarPanel.create();
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockCombustionGenerator = BlockCombustionGenerator.create();
+    blockZombieGenerator = BlockZombieGenerator.create();
 
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();

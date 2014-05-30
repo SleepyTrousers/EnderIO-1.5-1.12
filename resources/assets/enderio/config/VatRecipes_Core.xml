@@ -13,7 +13,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
 <VatRecipes>
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
-    <!-- 
+     
     <recipe name="Nutrient Distilation" energyCost="1000">
       <input>
         <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="2"/>
@@ -36,7 +36,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       </output>
       
     </recipe>
-     -->
+     
     
     <recipe name="Hootch" energyCost="1000">
       <input>

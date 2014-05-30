@@ -37,11 +37,7 @@ public final class Config {
 
   public static boolean detailedPowerTrackingEnabled = false;
 
-  public static double maxPhotovoltaicOutput = 1.0;
-  public static double maxPhotovoltaicAdvancedOutput = 4.0;
-
   public static boolean useSneakMouseWheelYetaWrench = true;
-
   public static boolean useSneakRightClickYetaWrench = false;
 
   public static boolean useRfAsDefault = true;
@@ -49,11 +45,8 @@ public final class Config {
   public static boolean itemConduitUsePhyscialDistance = false;
 
   public static int advancedFluidConduitExtractRate = 100;
-
   public static int advancedFluidConduitMaxIoRate = 400;
-
   public static int fluidConduitExtractRate = 50;
-
   public static int fluidConduitMaxIoRate = 200;
 
   public static boolean updateLightingWhenHidingFacades = false;
@@ -122,6 +115,13 @@ public final class Config {
   public static int fireWaterPowerTotalBurnTime = 15000;
   public static float vatPowerUserPerTick = 2;
   
+  public static double maxPhotovoltaicOutput = 1.0;
+  public static double maxPhotovoltaicAdvancedOutput = 4.0;
+  
+  public static double zombieGeneratorMjPerTick = 8.0;
+  public static int zombieGeneratorTicksPerMbFuel = 10000;
+
+  
   public static boolean combustionGeneratorUseOpaqueModel = true;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
@@ -143,7 +143,9 @@ public final class Config {
   
   public static boolean useCombustionGenModel = false;
   
-  public static int crafterMjPerCraft = 250;  
+  public static int crafterMjPerCraft = 250;
+  
+    
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -396,6 +398,11 @@ public final class Config {
     fireWaterPowerTotalBurnTime = config.get("Settings", "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(fireWaterPowerTotalBurnTime);
 
+    zombieGeneratorMjPerTick = config.get("Settings", "zombieGeneratorMjPerTick", zombieGeneratorMjPerTick,
+        "The amount of power generated per tick.").getDouble(zombieGeneratorMjPerTick);
+    zombieGeneratorTicksPerMbFuel = config.get("Settings", "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerMbFuel,
+        "The number of ticks one Mb of fuel lasts.").getInt(zombieGeneratorTicksPerMbFuel);
+    
     addFuelTooltipsToAllFluidContainers = config.get("Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
         addFuelTooltipsToAllFluidContainers);   
