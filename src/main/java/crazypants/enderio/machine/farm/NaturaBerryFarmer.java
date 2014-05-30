@@ -18,14 +18,14 @@ public class NaturaBerryFarmer extends PickableFarmer {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     
-    if(block != getPlantedBlock()) {
+    if(block != getPlantedBlock() || !farm.hasHarvestTool()) {
       return null;
     }
     
     IHarvestResult res = new HarvestResult();    
     
     BlockCoord checkBlock = bc;
-    for(int i=0; i < 5; i++) {
+    for(int i=0; i < 5 && farm.hasHarvestTool(); i++) {
       meta = farm.getBlockMeta(checkBlock);
       IHarvestResult blockRes = super.harvestBlock(farm, checkBlock, block, meta);
     
@@ -35,13 +35,15 @@ public class NaturaBerryFarmer extends PickableFarmer {
         for(EntityItem stack : addToDrops) {
           res.getDrops().add(stack);
         }
+        farm.actionPerformed();
+        farm.damageMaxLootingItem();
       }
       checkBlock = checkBlock.getLocation(ForgeDirection.UP);
     }
     
     if(res.getHarvestedBlocks().isEmpty()) {
       return null;
-    }
+    }    
     
     return res;
   }

@@ -23,10 +23,7 @@ public class NetherWartFarmer extends SeedFarmer {
     World worldObj = farm.getWorldObj();
     BlockCoord grn = bc.getLocation(ForgeDirection.DOWN);
     Block blk = worldObj.getBlock(grn.x, grn.y, grn.z);
-    if(blk == Blocks.soul_sand) {
-      System.out.println("NetherWartFarmer.prepareBlock: !!");
-    }
-
+    
     return plantFromInvenetory(farm, bc);
   }
 

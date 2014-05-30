@@ -38,12 +38,14 @@ public class StemFarmer extends SeedFarmer {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+        
+    
     HarvestResult res = new HarvestResult();
     BlockCoord harvestCoord = bc;
     boolean done = false;
     do{
       harvestCoord = harvestCoord.getLocation(ForgeDirection.UP);
-      if(plantedBlock == farm.getBlock(harvestCoord)) {
+      if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasHarvestTool()) {
         res.harvestedBlocks.add(harvestCoord);
         ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorld(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
         if(drops != null) {

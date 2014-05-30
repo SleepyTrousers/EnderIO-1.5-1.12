@@ -103,7 +103,7 @@ public class SeedFarmer implements IFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
 
-    if(!canHarvest(farm, bc, block, meta)) {
+    if(!canHarvest(farm, bc, block, meta) || !farm.hasHarvestTool()) {
       return null;
     }
 

@@ -70,28 +70,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
   }
 
-  public boolean hasHoe() {
-    return hasTool(ItemHoe.class);
-  }
-
-  public boolean hasAxe() {
-    return hasTool(ItemAxe.class);
-  }
-
-  public int geAxeLootingValue() {
-    ItemStack tool = getTool(ItemAxe.class);
-    if(tool == null) {
-      return 0;
-    }
-    return getLooting(tool);
-  }
-
-  private int getLooting(ItemStack stack) {
-    return Math.max(
-        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack),
-        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));
-  }
-
   public int getFarmSize() {
     return farmSize;
   }
@@ -103,7 +81,58 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   public void actionPerformed() {
     usePower(Config.farmActionEnergyUse);
   }
+  
+  public int getMaxLootingValue() {
+    int result = 0;
+    for (int i = minToolSlot; i <= maxToolSlot; i++) {
+      if(inventory[i] != null) {
+        int level = getLooting(inventory[i]);
+        if(level > result) {
+          result = level;
+        }
+      }
+    }
+    return result;
+  }
 
+  public void damageMaxLootingItem() {
+    int maxLooting = -1;
+    ItemStack toDamage = null;
+    for (int i = minToolSlot; i <= maxToolSlot; i++) {
+      if(inventory[i] != null) {
+        int level = getLooting(inventory[i]);
+        if(level > maxLooting) {
+          maxLooting = level;
+          toDamage = inventory[i];
+        }
+      }
+    }
+    if(toDamage != null) {
+      damageTool(toDamage.getItem().getClass(), 1);
+    }
+  }
+
+  public boolean hasHoe() {
+    return hasTool(ItemHoe.class);
+  }
+    
+  public boolean hasAxe() {
+    return hasTool(ItemAxe.class);
+  }
+  
+  public boolean hasHarvestTool() {    
+    return hasAxe() || hasHoe();
+  }
+
+  public int geAxeLootingValue() {
+    ItemStack tool = getTool(ItemAxe.class);
+    if(tool == null) {
+      return 0;
+    }
+    return getLooting(tool);
+  }
+
+  
   public void damageAxe() {
     damageTool(ItemAxe.class, 1);
   }
@@ -145,39 +174,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       }
     }
   }
+  
+  private int getLooting(ItemStack stack) {
+    return Math.max(
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack),
+        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));
+  }
 
   public EntityPlayerMP getFakePlayer() {
     return farmerJoe;
-  }
-
-  public int getMaxLootingValue() {
-    int result = 0;
-    for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(inventory[i] != null) {
-        int level = getLooting(inventory[i]);
-        if(level > result) {
-          result = level;
-        }
-      }
-    }
-    return result;
-  }
-
-  public void damageMaxLootingItem() {
-    int maxLooting = 0;
-    ItemStack toDamage = null;
-    for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(inventory[i] != null) {
-        int level = getLooting(inventory[i]);
-        if(level > maxLooting) {
-          maxLooting = level;
-          toDamage = inventory[i];
-        }
-      }
-    }
-    if(toDamage != null) {
-      toDamage.damageItem(1, farmerJoe);
-    }
   }
 
   public Block getBlock(BlockCoord bc) {
