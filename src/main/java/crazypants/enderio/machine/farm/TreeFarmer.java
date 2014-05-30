@@ -1,18 +1,33 @@
 package crazypants.enderio.machine.farm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockNewLeaf;
+import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import crazypants.util.BlockCoord;
 
 public class TreeFarmer implements IFarmerJoe {
+
+  private static final HeightComparator comp = new HeightComparator();
 
   protected Block sapling;
   protected ItemStack saplingItem;
@@ -78,36 +93,59 @@ public class TreeFarmer implements IFarmerJoe {
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     HarvestResult res = new HarvestResult();
     harvestUp(farm, bc, res);
+    Collections.sort(res.harvestedBlocks, comp);
+    
+    List<BlockCoord> actualHarvests = new ArrayList<BlockCoord>();
+
+    for (int i = 0; i < res.harvestedBlocks.size() && farm.hasAxe(); i++) {
+      BlockCoord coord = res.harvestedBlocks.get(i);
+      Block blk = farm.getBlock(coord);
+
+      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(coord), farm.geAxeLootingValue());
+      if(drops != null) {
+        for (ItemStack drop : drops) {
+          res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+        }
+      }
+
+      if(blk != wood) { //leaves
+        int leaveMeta = farm.getBlockMeta(coord);        
+        boolean canDropApple = 
+            (blk instanceof BlockOldLeaf && (leaveMeta == 0 || leaveMeta == 8)) || //oak
+            (blk instanceof BlockNewLeaf && (leaveMeta == 1 || leaveMeta == 9)); //giant oak
+
+        if(canDropApple) {          
+          if(farm.getWorldObj().rand.nextInt(200) == 0) {            
+            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+          }
+        }               
+      }
+      farm.actionPerformed();
+      farm.damageAxe();
+      farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
+      actualHarvests.add(coord);
+    }
+    res.harvestedBlocks.clear();
+    res.harvestedBlocks.addAll(actualHarvests);
+
     return res;
   }
 
   protected void harvestUp(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
 
-    if(!farm.hasAxe() || !isInHarvestBounds(farm, bc) || res.harvestedBlocks.contains(bc)) {
+    if(!isInHarvestBounds(farm, bc) || res.harvestedBlocks.contains(bc)) {
       return;
     }
 
     Block blk = farm.getBlock(bc);
-    if(wood == blk || blk instanceof BlockLeaves) {
+    boolean isLeaves = blk instanceof BlockLeaves;
+    if(wood == blk || isLeaves) {
       res.harvestedBlocks.add(bc);
-      
-      ArrayList<ItemStack> drops = blk.getDrops(farm.getWorld(), bc.x, bc.y, bc.z, farm.getBlockMeta(bc), farm.geAxeLootingValue());
-      if(drops != null) {
-        for (ItemStack drop : drops) {
-          res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));         
-        }
-
-      }
-      farm.damageAxe();
-      farm.actionPerformed();
-      farm.getWorld().setBlockToAir(bc.x, bc.y, bc.z);
-
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir != ForgeDirection.DOWN) {
           harvestUp(farm, bc.getLocation(dir), res);
         }
       }
-
     } else {
       // check the sides for connected wood
       harvestAdjancentWood(farm, bc, res);
@@ -117,7 +155,7 @@ public class TreeFarmer implements IFarmerJoe {
           Block targetBlock = farm.getBlock(bc.getLocation(dir));
           if(targetBlock instanceof BlockLeaves) {
             harvestAdjancentWood(farm, bc, res);
-          } 
+          }
         }
       }
     }
@@ -130,7 +168,7 @@ public class TreeFarmer implements IFarmerJoe {
         Block targetBlock = farm.getBlock(bc.getLocation(dir));
         if(wood == targetBlock) {
           harvestUp(farm, bc.getLocation(dir), res);
-        } 
+        }
       }
     }
   }
@@ -144,12 +182,26 @@ public class TreeFarmer implements IFarmerJoe {
     dist = Math.abs(fLoc.z - bc.z);
     if(dist > farm.getFarmSize() + 7) {
       return false;
-    }    
+    }
     dist = Math.abs(bc.y - fLoc.y);
     if(dist > 30) {
       return false;
     }
-    return true;    
+    return true;
+  }
+
+  private static class HeightComparator implements Comparator<BlockCoord> {
+
+    @Override
+    public int compare(BlockCoord o1, BlockCoord o2) {
+      return compare(o2.y, o1.y); //reverse order
+    }
+
+    //same as 1.7 Integer.compare
+    public static int compare(int x, int y) {
+      return (x < y) ? -1 : ((x == y) ? 0 : 1);
+    }
+
   }
 
 }
