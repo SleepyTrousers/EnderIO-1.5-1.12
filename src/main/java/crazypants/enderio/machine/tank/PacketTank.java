@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import crazypants.enderio.machine.generator.TileCombustionGenerator;
+import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.network.AbstractPacketTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 

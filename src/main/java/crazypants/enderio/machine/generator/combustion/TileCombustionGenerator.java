@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.machine.generator.combustion;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -21,6 +21,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 

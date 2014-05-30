@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.generator.StirlingGeneratorContainer;
-import crazypants.enderio.machine.generator.TileEntityStirlingGenerator;
+import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
+import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;

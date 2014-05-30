@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.machine.generator.combustion;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;

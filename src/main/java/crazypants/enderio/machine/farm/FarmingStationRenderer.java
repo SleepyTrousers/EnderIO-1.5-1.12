@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.machine.generator.TranslatedCubeRenderer;
+import crazypants.enderio.machine.generator.combustion.TranslatedCubeRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.VertexTransform;

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.machine.generator.combustion;
 
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;

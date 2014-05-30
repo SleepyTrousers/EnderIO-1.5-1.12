@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.machine.generator.stirling;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.machine.generator.combustion;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import crazypants.enderio.machine.AbstractMachineContainer;

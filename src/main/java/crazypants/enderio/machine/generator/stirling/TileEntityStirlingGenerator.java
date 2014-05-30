@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.machine.generator.stirling;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
@@ -13,6 +13,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.PowerDistributor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.util.BlockCoord;
 

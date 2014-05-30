@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.generator.TranslatedCubeRenderer;
+import crazypants.enderio.machine.generator.combustion.TranslatedCubeRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CustomCubeRenderer;
 import crazypants.render.CustomRenderBlocks;
