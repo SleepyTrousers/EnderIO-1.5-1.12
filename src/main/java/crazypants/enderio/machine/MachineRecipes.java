@@ -50,6 +50,10 @@ public class MachineRecipes {
     ItemStack comGen = new ItemStack(EnderIO.blockCombustionGenerator, 1, 0);
     GameRegistry.addShapedRecipe(comGen, "eee", "rmr", "gcg", 'e', electricSteel, 'r', EnderIO.blockReservoir, 'm', machineChassi, 'g', basicGear,'c', capacitor);
 
+    //ZombieGen
+    ItemStack zg = new ItemStack(EnderIO.blockZombieGenerator, 1, 0);
+    GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qcq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(Items.skull, 1, 2),'c', capacitor);
+    
     //Crafter
     ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
     GameRegistry.addShapedRecipe(crafter, "iti", "imi", "ici", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'c', capacitor);

@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,7 +34,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-
+  
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileZombieGenerator)) {
       return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
@@ -59,6 +60,16 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     }
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
+  }  
+  
+  @Override
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    return true;
+  }
+
+  @Override
+  public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
+    return false;
   }
 
   @Override

@@ -30,20 +30,19 @@ import crazypants.util.FluidUtil;
 public class TileZombieGenerator extends AbstractMachineEntity implements IPowerEmitter, IFluidHandler {
 
   private static int IO_MB_TICK = 250;
-  
+
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
-  
-  float outputPerTick = (float)Config.zombieGeneratorMjPerTick;
+
+  float outputPerTick = (float) Config.zombieGeneratorMjPerTick;
   int tickPerMbFuel = Config.zombieGeneratorTicksPerMbFuel;
-  
+
   private boolean tanksDirty;
   private boolean active = false;
-  private PowerDistributor powerDis;  
-  
+  private PowerDistributor powerDis;
+
   private int ticksRemaingFuel;
   private boolean inPause;
-  
-  
+
   public TileZombieGenerator() {
     super(new SlotDefinition(0, 0, 0));
     powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
@@ -58,17 +57,17 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   public boolean canEmitPowerFrom(ForgeDirection side) {
     return !isSideDisabled(side.ordinal());
   }
-  
+
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     return 0;
   }
-  
+
   @Override
   public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
     return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
-  
+
   @Override
   protected boolean doPull(ForgeDirection dir) {
     boolean res = super.doPull(dir);
@@ -103,7 +102,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   public float getPowerUsePerTick() {
     return outputPerTick;
   }
-  
+
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
     return false;
@@ -118,7 +117,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   public float getProgress() {
     return 0.5f;
   }
-  
+
   @Override
   public void onNeighborBlockChange(Block blockId) {
     super.onNeighborBlockChange(blockId);
@@ -126,13 +125,13 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
       powerDis.neighboursChanged();
     }
   }
-  
+
   @Override
   protected void updateStoredEnergyFromPowerHandler() {
     //no-op as we don't actually need a BC power handler for a generator
     //Need to clean this up
   }
-  
+
   @Override
   public int getEnergyStored(ForgeDirection from) {
     return (int) (storedEnergy * 10);
@@ -162,15 +161,15 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
 
       transmitEnergy();
     }
-    
-    if(tanksDirty) {     
+
+    if(tanksDirty) {
       EnderIO.packetPipeline.sendToAllAround(new PacketTank(this), this);
       tanksDirty = false;
     }
 
     return res;
   }
-  
+
   private boolean generateEnergy() {
 
     int generated = 0;
@@ -182,22 +181,24 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     }
     inPause = false;
 
-    boolean res = false;
+    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.9f) {      
+      return false;
+    }
+
+    
     ticksRemaingFuel--;
     if(ticksRemaingFuel <= 0) {
       fuelTank.drain(1, true);
-      ticksRemaingFuel = tickPerMbFuel;
-      res = true;
+      ticksRemaingFuel = tickPerMbFuel;    
       tanksDirty = true;
     }
-
+    
     float oldVal = storedEnergy;
-    storedEnergy += outputPerTick;    
+    storedEnergy += outputPerTick;
     storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
-
-    return fuelTank.getFluidAmount() > fuelTank.getCapacity() * 0.9f; 
+    return true;
   }
-  
+
   private boolean transmitEnergy() {
     if(storedEnergy <= 0) {
       return false;
@@ -215,8 +216,8 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
-    tanksDirty = true;    
-    return fuelTank.fill(resource, doFill);    
+    tanksDirty = true;
+    return fuelTank.fill(resource, doFill);
   }
 
   @Override
@@ -243,17 +244,17 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     return new FluidTankInfo[] { fuelTank.getInfo() };
   }
-  
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    active = nbtRoot.getBoolean("active");   
+    active = nbtRoot.getBoolean("active");
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-   
+
     if(nbtRoot.hasKey("fuelTank")) {
       NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("fuelTank");
       if(tankRoot != null) {
@@ -269,18 +270,18 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
 
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);    
+    super.writeCommon(nbtRoot);
     if(fuelTank.getFluidAmount() > 0) {
       NBTTagCompound tankRoot = new NBTTagCompound();
       fuelTank.writeToNBT(tankRoot);
       nbtRoot.setTag("fuelTank", tankRoot);
-    }    
+    }
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
-    nbtRoot.setBoolean("active", active);   
+    nbtRoot.setBoolean("active", active);
   }
 
 }
