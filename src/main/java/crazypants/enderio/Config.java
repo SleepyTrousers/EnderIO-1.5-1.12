@@ -168,80 +168,76 @@ public final class Config {
   }
 
   public static void processConfig(Configuration config) {
-    useRfAsDefault = config.get("Settings", "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
+    useRfAsDefault = config.get("Power Settings", "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
         .getBoolean(useRfAsDefault);
 
-    useHardRecipes = config.get("Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
+    useHardRecipes = config.get("Recipe Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
 
-    numConduitsPerRecipe = config.get("Settings", "numConduitsPerRecipe", numConduitsPerRecipe,
+    numConduitsPerRecipe = config.get("Recipe Settings", "numConduitsPerRecipe", numConduitsPerRecipe,
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
 
-    photovoltaicCellEnabled = config.get("Settings", "photovoltaicCellEnabled", photovoltaicCellEnabled,
-        "If set to false Photovoltaic Cells will not be craftable.")
+    photovoltaicCellEnabled = config.get("Item Enabling", "photovoltaicCellEnabled", photovoltaicCellEnabled,
+        "If set to false: Photovoltaic Cells will not be craftable.")
         .getBoolean(photovoltaicCellEnabled);
 
-    maxPhotovoltaicOutput = config.get("Settings", "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
+    maxPhotovoltaicOutput = config.get("Power Settings", "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
         "Maximum output in MJ/t of the Photovoltaic Panels.").getDouble(maxPhotovoltaicOutput);
-    maxPhotovoltaicAdvancedOutput= config.get("Settings", "maxPhotovoltaicAdvancedOutput", maxPhotovoltaicAdvancedOutput,
+    maxPhotovoltaicAdvancedOutput= config.get("Power Settings", "maxPhotovoltaicAdvancedOutput", maxPhotovoltaicAdvancedOutput,
         "Maximum output in MJ/t of the Advanced Photovoltaic Panels.").getDouble(maxPhotovoltaicAdvancedOutput);
 
-    useAlternateBinderRecipe = config.get("Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
+    useAlternateBinderRecipe = config.get("Recipe Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);
 
-    conduitScale = config.get("Settings", "conduitScale", DEFAULT_CONDUIT_SCALE,
+    conduitScale = config.get("Aesthetic Settings", "conduitScale", DEFAULT_CONDUIT_SCALE,
         "Valid values are between 0-1, smallest conduits at 0, largest at 1.\n" +
             "In SMP, all clients must be using the same value as the server.").getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
 
-    fluidConduitExtractRate = config.get("Settings", "fluidConduitExtractRate", fluidConduitExtractRate,
-        "Number of millibuckects per tick extract by a fluid conduits auto extract..").getInt(fluidConduitExtractRate);
+    fluidConduitExtractRate = config.get("Efficiency Settings", "fluidConduitExtractRate", fluidConduitExtractRate,
+        "Number of millibuckects per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
 
-    fluidConduitMaxIoRate = config.get("Settings", "fluidConduitMaxIoRate", fluidConduitMaxIoRate,
+    fluidConduitMaxIoRate = config.get("Efficiency Settings", "fluidConduitMaxIoRate", fluidConduitMaxIoRate,
         "Number of millibuckects per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
 
-    advancedFluidConduitExtractRate = config.get("Settings", "advancedFluidConduitExtractRate", advancedFluidConduitExtractRate,
-        "Number of millibuckects per tick extract by advanced fluid conduits auto extract..").getInt(advancedFluidConduitExtractRate);
+    advancedFluidConduitExtractRate = config.get("Efficiency Settings", "advancedFluidConduitExtractRate", advancedFluidConduitExtractRate,
+        "Number of millibuckects per tick extracted by advanced fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
 
-    advancedFluidConduitMaxIoRate = config.get("Settings", "advancedFluidConduitMaxIoRate", advancedFluidConduitMaxIoRate,
+    advancedFluidConduitMaxIoRate = config.get("Efficiency Settings", "advancedFluidConduitMaxIoRate", advancedFluidConduitMaxIoRate,
         "Number of millibuckects per tick that can pass through a single connection to an advanced fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
 
-    useAlternateTesseractModel = config.get("Settings", "useAlternateTransceiverModel", useAlternateTesseractModel,
+    useAlternateTesseractModel = config.get("Aesthetic Settings", "useAlternateTransceiverModel", useAlternateTesseractModel,
         "Use TheKazador's alternatice model for the Dimensional Transceiver")
         .getBoolean(false);
-    transceiverEnergyLoss = config.get("Settings", "transceiverEnergyLoss", transceiverEnergyLoss,
-        "Amount of energy lost when transfered by Dimensional Transceiver 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
-    transceiverUpkeepCost = config.get("Settings", "transceiverUpkeepCost", transceiverUpkeepCost,
+    transceiverEnergyLoss = config.get("Power Settings", "transceiverEnergyLoss", transceiverEnergyLoss,
+        "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
+    transceiverUpkeepCost = config.get("Power Settings", "transceiverUpkeepCost", transceiverUpkeepCost,
         "Number of MJ/t required to keep a Dimensional Transceiver connection open").getDouble(transceiverUpkeepCost);
-    transceiverMaxIO = config.get("Settings", "transceiverMaxIO", transceiverMaxIO,
+    transceiverMaxIO = config.get("Power Settings", "transceiverMaxIO", transceiverMaxIO,
         "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIO);
-    transceiverBucketTransmissionCost = config.get("Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
-        "The cost in MJ of trasporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
+    transceiverBucketTransmissionCost = config.get("Efficiency Settings", "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
+        "The cost in MJ of transporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
 
-    vatPowerUserPerTick = (float) config.get("Settings", "vatPowerUserPerTick", vatPowerUserPerTick,
+    vatPowerUserPerTick = (float) config.get("Power Settings", "vatPowerUserPerTick", vatPowerUserPerTick,
         "Power use (MJ/t) used by the vat.").getDouble(vatPowerUserPerTick);
 
     detailedPowerTrackingEnabled = config
         .get(
-            "Settings",
+            "Advanced Settings",
             "perInterfacePowerTrackingEnabled",
             detailedPowerTrackingEnabled,
             "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the MJ Reader but has a negative impact on server performance.")
         .getBoolean(detailedPowerTrackingEnabled);
 
-    useSneakMouseWheelYetaWrench = config.get("Settings", "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
+    useSneakMouseWheelYetaWrench = config.get("Personal Settings", "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
         "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is eqipped.")
         .getBoolean(useSneakMouseWheelYetaWrench);
 
-    useSneakRightClickYetaWrench = config.get("Settings", "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
+    useSneakRightClickYetaWrench = config.get("Personal Settings", "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
         "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
         .getBoolean(useSneakRightClickYetaWrench);
 
-    itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
-        "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
-        .getBoolean(itemConduitUsePhyscialDistance);
-
-    itemConduitUsePhyscialDistance = config.get("Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
+    itemConduitUsePhyscialDistance = config.get("Efficiency Settings", "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
 
@@ -250,191 +246,191 @@ public final class Config {
       useSneakMouseWheelYetaWrench = true;
     }
 
-    travelAnchorEnabled = config.get("Settings", "travelAnchorEnabled", travelAnchorEnabled,
-        "When set to false the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
+    travelAnchorEnabled = config.get("Item Enabling", "travelAnchorEnabled", travelAnchorEnabled,
+        "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
 
-    travelAnchorMaxDistance = config.get("Settings", "travelAnchorMaxDistance", travelAnchorMaxDistance,
+    travelAnchorMaxDistance = config.get("Anchor Settings", "travelAnchorMaxDistance", travelAnchorMaxDistance,
         "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaxDistance);
 
-    travelStaffMaxDistance = config.get("Settings", "travelStaffMaxDistance", travelStaffMaxDistance,
+    travelStaffMaxDistance = config.get("Staff Settings", "travelStaffMaxDistance", travelStaffMaxDistance,
         "Maximum number of blocks that can be traveled using the Staff of the Traveling.").getInt(travelStaffMaxDistance);
-    travelStaffPowerPerBlockRF = (float) config.get("Settings", "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
+    travelStaffPowerPerBlockRF = (float) config.get("Staff Settings", "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
         "Number of MJ required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
-    travelStaffMaxBlinkDistance = config.get("Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
+    travelStaffMaxBlinkDistance = config.get("Staff Settings", "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
         "Max number of blocks teleported when shift clicking the staff.").getInt(travelStaffMaxBlinkDistance);
 
-    travelStaffBlinkPauseTicks = config.get("Settings", "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
+    travelStaffBlinkPauseTicks = config.get("Staff Settings", "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
 
-    travelStaffEnabled = config.get("Settings", "travelStaffEnabled", travelAnchorEnabled,
-        "If set to false the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
-    travelStaffBlinkEnabled = config.get("Settings", "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
-        "If set to false the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
-    travelStaffBlinkThroughSolidBlocksEnabled = config.get("Settings", "travelStaffBlinkThroughSolidBlocksEnabled", travelStaffBlinkThroughSolidBlocksEnabled,
-        "If set to false the travel staff can be used to blink through any block.").getBoolean(travelStaffBlinkThroughSolidBlocksEnabled);
+    travelStaffEnabled = config.get("Item Enabling", "travelStaffEnabled", travelAnchorEnabled,
+        "If set to false: the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
+    travelStaffBlinkEnabled = config.get("Item Enabling", "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
+        "If set to false: the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
+    travelStaffBlinkThroughSolidBlocksEnabled = config.get("Item Enabling", "travelStaffBlinkThroughSolidBlocksEnabled", travelStaffBlinkThroughSolidBlocksEnabled,
+        "If set to false: the travel staff can be used to blink through any block.").getBoolean(travelStaffBlinkThroughSolidBlocksEnabled);
     travelStaffBlinkThroughClearBlocksEnabled = config
-        .get("Settings", "travelStaffBlinkThroughClearBlocksEnabled", travelStaffBlinkThroughClearBlocksEnabled,
-            "If travelStaffBlinkThroughSolidBlocksEnabled is set to false and this is true, the travel " +
+        .get("Item Enabling", "travelStaffBlinkThroughClearBlocksEnabled", travelStaffBlinkThroughClearBlocksEnabled,
+            "If travelStaffBlinkThroughSolidBlocksEnabled is set to false and this is true: the travel " +
                 "staff can only be used to blink through transparent or partial blocks (e.g. torches). " +
-                "If both are false, only air blocks may be teleported through.")
+                "If both are false: only air blocks may be teleported through.")
         .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
 
-    enderIoRange = config.get("Settings", "enderIoRange", enderIoRange,
+    enderIoRange = config.get("Efficiency Settings", "enderIoRange", enderIoRange,
         "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);
 
-    enderIoMeAccessEnabled = config.get("Settings", "enderIoMeAccessEnabled", enderIoMeAccessEnabled,
-        "If fasle, you will not be able to access a ME acess or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
+    enderIoMeAccessEnabled = config.get("Personal Settings", "enderIoMeAccessEnabled", enderIoMeAccessEnabled,
+        "If false: you will not be able to access a ME acess or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
 
-    updateLightingWhenHidingFacades = config.get("Settings", "updateLightingWhenHidingFacades", updateLightingWhenHidingFacades,
-        "When true, correct lighting is recalculated (client side) for conduit bundles when transitioning to"
+    updateLightingWhenHidingFacades = config.get("Efficiency Settings", "updateLightingWhenHidingFacades", updateLightingWhenHidingFacades,
+        "When true: correct lighting is recalculated (client side) for conduit bundles when transitioning to"
             + " from being hidden behind a facade. This produces "
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
         .getBoolean(updateLightingWhenHidingFacades);
 
-    darkSteelPowerStorageBase = config.get("Settings", "darkSteelPowerStorageBase", darkSteelPowerStorageBase,
+    darkSteelPowerStorageBase = config.get("Dark Steel", "darkSteelPowerStorageBase", darkSteelPowerStorageBase,
         "Base amount of power stored by dark steel items.").getInt(darkSteelPowerStorageBase);
-    darkSteelPowerStorageLevelOne = config.get("Settings", "darkSteelPowerStorageLevelOne", darkSteelPowerStorageLevelOne,
+    darkSteelPowerStorageLevelOne = config.get("Dark Steel", "darkSteelPowerStorageLevelOne", darkSteelPowerStorageLevelOne,
         "Amount of power stored by dark steel items with a level 1 upgrade.").getInt(darkSteelPowerStorageLevelOne);
-    darkSteelPowerStorageLevelTwo = config.get("Settings", "darkSteelPowerStorageLevelTwo", darkSteelPowerStorageLevelTwo,
+    darkSteelPowerStorageLevelTwo = config.get("Dark Steel", "darkSteelPowerStorageLevelTwo", darkSteelPowerStorageLevelTwo,
         "Amount of power stored by dark steel items with a level 2 upgrade.").getInt(darkSteelPowerStorageLevelTwo);
-    darkSteelPowerStorageLevelThree = config.get("Settings", "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
+    darkSteelPowerStorageLevelThree = config.get("Dark Steel", "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
         "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
 
-    darkSteelUpgradeVibrantCost = config.get("Settings", "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost,
+    darkSteelUpgradeVibrantCost = config.get("Dark Steel", "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost,
         "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradeVibrantCost);
-    darkSteelUpgradePowerOneCost = config.get("Settings", "darkSteelUpgradePowerOneCost", darkSteelUpgradePowerOneCost,
+    darkSteelUpgradePowerOneCost = config.get("Dark Steel", "darkSteelUpgradePowerOneCost", darkSteelUpgradePowerOneCost,
         "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerOneCost);
-    darkSteelUpgradePowerTwoCost = config.get("Settings", "darkSteelUpgradePowerTwoCost", darkSteelUpgradePowerTwoCost,
+    darkSteelUpgradePowerTwoCost = config.get("Dark Steel", "darkSteelUpgradePowerTwoCost", darkSteelUpgradePowerTwoCost,
         "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerTwoCost);
-    darkSteelUpgradePowerThreeCost = config.get("Settings", "darkSteelUpgradePowerThreeCost", darkSteelUpgradePowerThreeCost,
+    darkSteelUpgradePowerThreeCost = config.get("Dark Steel", "darkSteelUpgradePowerThreeCost", darkSteelUpgradePowerThreeCost,
         "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerThreeCost);
 
-    darkSteelSpeedOneWalkModifier = (float) config.get("Settings", "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
+    darkSteelSpeedOneWalkModifier = (float) config.get("Dark Steel", "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneWalkModifier);
-    darkSteelSpeedTwoWalkMultiplier = (float) config.get("Settings", "darkSteelSpeedTwoWalkMultiplier", darkSteelSpeedTwoWalkMultiplier,
+    darkSteelSpeedTwoWalkMultiplier = (float) config.get("Dark Steel", "darkSteelSpeedTwoWalkMultiplier", darkSteelSpeedTwoWalkMultiplier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedTwoWalkMultiplier);
-    darkSteelSpeedThreeWalkMultiplier = (float) config.get("Settings", "darkSteelSpeedThreeWalkMultiplier", darkSteelSpeedThreeWalkMultiplier,
+    darkSteelSpeedThreeWalkMultiplier = (float) config.get("Dark Steel", "darkSteelSpeedThreeWalkMultiplier", darkSteelSpeedThreeWalkMultiplier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedThreeWalkMultiplier);
 
-    darkSteelSpeedOneSprintModifier = (float) config.get("Settings", "darkSteelSpeedOneSprintModifier", darkSteelSpeedOneSprintModifier,
+    darkSteelSpeedOneSprintModifier = (float) config.get("Dark Steel", "darkSteelSpeedOneSprintModifier", darkSteelSpeedOneSprintModifier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneSprintModifier);
-    darkSteelSpeedTwoSprintMultiplier = (float) config.get("Settings", "darkSteelSpeedTwoSprintMultiplier", darkSteelSpeedTwoSprintMultiplier,
+    darkSteelSpeedTwoSprintMultiplier = (float) config.get("Dark Steel", "darkSteelSpeedTwoSprintMultiplier", darkSteelSpeedTwoSprintMultiplier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedTwoSprintMultiplier);
-    darkSteelSpeedThreeSprintMultiplier = (float) config.get("Settings", "darkSteelSpeedThreeSprintMultiplier", darkSteelSpeedThreeSprintMultiplier,
+    darkSteelSpeedThreeSprintMultiplier = (float) config.get("Dark Steel", "darkSteelSpeedThreeSprintMultiplier", darkSteelSpeedThreeSprintMultiplier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedThreeSprintMultiplier);
 
-    darkSteelBootsJumpModifier = config.get("Settings", "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
+    darkSteelBootsJumpModifier = config.get("Dark Steel", "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 
-    darkSteelPowerStorageBase = config.get("Settings", "darkSteelPowerStorage", darkSteelPowerStorageBase,
+    darkSteelPowerStorageBase = config.get("Dark Steel", "darkSteelPowerStorage", darkSteelPowerStorageBase,
         "Amount of power stored (RF) per crystal in the armor items recipe.").getInt(darkSteelPowerStorageBase);
-    darkSteelWalkPowerCost = config.get("Settings", "darkSteelWalkPowerCost", darkSteelWalkPowerCost,
+    darkSteelWalkPowerCost = config.get("Dark Steel", "darkSteelWalkPowerCost", darkSteelWalkPowerCost,
         "Amount of power stored (RF) per block walked when wearing the dark steel boots.").getInt(darkSteelWalkPowerCost);
-    darkSteelSprintPowerCost = config.get("Settings", "darkSteelSprintPowerCost", darkSteelWalkPowerCost,
+    darkSteelSprintPowerCost = config.get("Dark Steel", "darkSteelSprintPowerCost", darkSteelWalkPowerCost,
         "Amount of power stored (RF) per block walked when wearing the dark stell boots.").getInt(darkSteelSprintPowerCost);
-    darkSteelDrainPowerFromInventory = config.get("Settings", "darkSteelDrainPowerFromInventory", darkSteelDrainPowerFromInventory,
-        "If true, drak steel armor will drain power stored (RF) in power containers in the players invenotry.").getBoolean(darkSteelDrainPowerFromInventory);
+    darkSteelDrainPowerFromInventory = config.get("Dark Steel", "darkSteelDrainPowerFromInventory", darkSteelDrainPowerFromInventory,
+        "If true, dark steel armor will drain power stored (RF) in power containers in the players invenotry.").getBoolean(darkSteelDrainPowerFromInventory);
 
-    darkSteelBootsJumpPowerCost = config.get("Settings", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
+    darkSteelBootsJumpPowerCost = config.get("Dark Steel", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
 
-    darkSteelSwordSkullChance = (float) config.get("Settings", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
-        "The base chance a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(darkSteelSwordSkullChance);
-    darkSteelSwordSkullLootingModifier = (float) config.get("Settings", "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
+    darkSteelSwordSkullChance = (float) config.get("Dark Steel", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
+        "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(darkSteelSwordSkullChance);
+    darkSteelSwordSkullLootingModifier = (float) config.get("Dark Steel", "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordSkullLootingModifier);
-    darkSteelSwordWitherSkullChance = (float) config.get("Settings", "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,
-        "The base chance a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+    darkSteelSwordWitherSkullChance = (float) config.get("Dark Steel", "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,
+        "The base chance that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordWitherSkullChance);
-    darkSteelSwordWitherSkullLootingModifier = (float) config.get("Settings", "darkSteelSwordWitherSkullLootingModifie",
+    darkSteelSwordWitherSkullLootingModifier = (float) config.get("Dark Steel", "darkSteelSwordWitherSkullLootingModifie",
         darkSteelSwordWitherSkullLootingModifier,
         "The chance per looting level that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordWitherSkullLootingModifier);
-    vanillaSwordSkullLootingModifier = (float) config.get("Settings", "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
+    vanillaSwordSkullLootingModifier = (float) config.get("Personal Settings", "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         vanillaSwordSkullLootingModifier);
-    darkSteelSwordPowerUsePerHit = config.get("Settings", "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
+    darkSteelSwordPowerUsePerHit = config.get("Dark Steel", "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
         "The amount of power (RF) used per hit.").getInt(darkSteelSwordPowerUsePerHit);
-    darkSteelSwordEnderPearlDropChance = config.get("Settings", "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
+    darkSteelSwordEnderPearlDropChance = config.get("Dark Steel", "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
         "The chance that an ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordEnderPearlDropChance);
-    darkSteelSwordEnderPearlDropChancePerLooting = config.get("Settings", "darkSteelSwordEnderPearlDropChancePerLooting",
+    darkSteelSwordEnderPearlDropChancePerLooting = config.get("Dark Steel", "darkSteelSwordEnderPearlDropChancePerLooting",
         darkSteelSwordEnderPearlDropChancePerLooting,
         "The chance for each looting level that an additional ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)")
         .getDouble(
             darkSteelSwordEnderPearlDropChancePerLooting);
 
-    darkSteelPickPowerUseObsidian = config.get("Settings", "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian,
+    darkSteelPickPowerUseObsidian = config.get("Dark Steel", "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian,
         "The amount of power (RF) used to break an obsidian block.").getInt(darkSteelPickPowerUseObsidian);
-    darkSteelPickEffeciencyObsidian = config.get("Settings", "darkSteelPickEffeciencyObsidian", darkSteelPickEffeciencyObsidian,
-        "The efeciency when breaking obsidian with a powered  Dark Pickaxe.").getInt(darkSteelPickEffeciencyObsidian);
-    darkSteelPickPowerUsePerDamagePoint = config.get("Settings", "darkSteelPickPowerUsePerDamagePoint", darkSteelPickPowerUsePerDamagePoint,
+    darkSteelPickEffeciencyObsidian = config.get("Dark Steel", "darkSteelPickEffeciencyObsidian", darkSteelPickEffeciencyObsidian,
+        "The effeciency when breaking obsidian with a powered  Dark Pickaxe.").getInt(darkSteelPickEffeciencyObsidian);
+    darkSteelPickPowerUsePerDamagePoint = config.get("Dark Steel", "darkSteelPickPowerUsePerDamagePoint", darkSteelPickPowerUsePerDamagePoint,
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
-    darkSteelPickEffeciencyBoostWhenPowered = (float) config.get("Settings", "darkSteelPickEffeciencyBoostWhenPowered",
+    darkSteelPickEffeciencyBoostWhenPowered = (float) config.get("Dark Steel", "darkSteelPickEffeciencyBoostWhenPowered",
         darkSteelPickEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
     
-    darkSteelAxePowerUsePerDamagePoint = config.get("Settings", "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
+    darkSteelAxePowerUsePerDamagePoint = config.get("Dark Steel", "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);
-    darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get("Settings", "darkSteelPickAxeUsePerDamagePointMultiHarvest", darkSteelAxePowerUsePerDamagePointMultiHarvest,
+    darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get("Dark Steel", "darkSteelPickAxeUsePerDamagePointMultiHarvest", darkSteelAxePowerUsePerDamagePointMultiHarvest,
         "Power use (RF) per damage/durability point avoided when shift-harvesting multiple logs").getInt(darkSteelAxePowerUsePerDamagePointMultiHarvest);
-    darkSteelAxeSpeedPenaltyMultiHarvest = (float) config.get("Settings", "darkSteelAxeSpeedPenaltyMultiHarvest", darkSteelAxeSpeedPenaltyMultiHarvest,
+    darkSteelAxeSpeedPenaltyMultiHarvest = (float) config.get("Dark Steel", "darkSteelAxeSpeedPenaltyMultiHarvest", darkSteelAxeSpeedPenaltyMultiHarvest,
         "How much slower shift-harvesting logs is.").getDouble(darkSteelAxeSpeedPenaltyMultiHarvest);
-    darkSteelAxeEffeciencyBoostWhenPowered = (float) config.get("Settings", "darkSteelAxeEffeciencyBoostWhenPowered",
+    darkSteelAxeEffeciencyBoostWhenPowered = (float) config.get("Dark Steel", "darkSteelAxeEffeciencyBoostWhenPowered",
         darkSteelAxeEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelAxeEffeciencyBoostWhenPowered);
 
-    hootchPowerPerCycle = config.get("Settings", "hootchPowerPerCycle", hootchPowerPerCycle,
+    hootchPowerPerCycle = config.get("Power Settings", "hootchPowerPerCycle", hootchPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);
-    hootchPowerTotalBurnTime = config.get("Settings", "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime,
+    hootchPowerTotalBurnTime = config.get("Power Settings", "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(hootchPowerTotalBurnTime);
 
-    rocketFuelPowerPerCycle = config.get("Settings", "rocketFuelPowerPerCycle", rocketFuelPowerPerCycle,
+    rocketFuelPowerPerCycle = config.get("Power Settings", "rocketFuelPowerPerCycle", rocketFuelPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(rocketFuelPowerPerCycle);
-    rocketFuelPowerTotalBurnTime = config.get("Settings", "rocketFuelPowerTotalBurnTime", rocketFuelPowerTotalBurnTime,
+    rocketFuelPowerTotalBurnTime = config.get("Power Settings", "rocketFuelPowerTotalBurnTime", rocketFuelPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(rocketFuelPowerTotalBurnTime);
 
-    fireWaterPowerPerCycle = config.get("Settings", "fireWaterPowerPerCycle", fireWaterPowerPerCycle,
+    fireWaterPowerPerCycle = config.get("Power Settings", "fireWaterPowerPerCycle", fireWaterPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(fireWaterPowerPerCycle);
-    fireWaterPowerTotalBurnTime = config.get("Settings", "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
+    fireWaterPowerTotalBurnTime = config.get("Power Settings", "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(fireWaterPowerTotalBurnTime);
 
-    zombieGeneratorMjPerTick = config.get("Settings", "zombieGeneratorMjPerTick", zombieGeneratorMjPerTick,
+    zombieGeneratorMjPerTick = config.get("Power Settings", "zombieGeneratorMjPerTick", zombieGeneratorMjPerTick,
         "The amount of power generated per tick.").getDouble(zombieGeneratorMjPerTick);
-    zombieGeneratorTicksPerMbFuel = config.get("Settings", "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerMbFuel,
+    zombieGeneratorTicksPerMbFuel = config.get("Power Settings", "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerMbFuel,
         "The number of ticks one Mb of fuel lasts.").getInt(zombieGeneratorTicksPerMbFuel);
     
-    addFuelTooltipsToAllFluidContainers = config.get("Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
+    addFuelTooltipsToAllFluidContainers = config.get("Personal Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
         addFuelTooltipsToAllFluidContainers);   
-    addDurabilityTootip = config.get("Settings", "addDurabilityTootip", addFuelTooltipsToAllFluidContainers,
+    addDurabilityTootip = config.get("Personal Settings", "addDurabilityTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds durability tooltips to tools and armor").getBoolean(
             addDurabilityTootip);
-    addFurnaceFuelTootip = config.get("Settings", "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
+    addFurnaceFuelTootip = config.get("Personal Settings", "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
 
 
-    farmContinuousEnergyUse = (float)config.get("Settings", "farmContinuousEnergyUse", farmContinuousEnergyUse,
+    farmContinuousEnergyUse = (float)config.get("Farm Settings", "farmContinuousEnergyUse", farmContinuousEnergyUse,
         "The amount of power used by a farm per tick ").getDouble(farmContinuousEnergyUse);
-    farmActionEnergyUse = (float)config.get("Settings", "farmActionEnergyUse", farmActionEnergyUse,
+    farmActionEnergyUse = (float)config.get("Farm Settings", "farmActionEnergyUse", farmActionEnergyUse,
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
-    farmDefaultSize = config.get("Settings", "farmDefaultSize", farmDefaultSize,
-        "The numver of blocks a farm will extend from its center").getInt(farmDefaultSize);
+    farmDefaultSize = config.get("Farm Settings", "farmDefaultSize", farmDefaultSize,
+        "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
     
-    combustionGeneratorUseOpaqueModel = config.get("Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
-        "If true, fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);    
+    combustionGeneratorUseOpaqueModel = config.get("Aesthetic Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
+        "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);    
     
-    magnetPowerUsePerTickRF = config.get("Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerTickRF,
+    magnetPowerUsePerTickRF = config.get("Magnet Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerTickRF,
         "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerTickRF);    
-    magnetPowerCapacityRF = config.get("Settings", "magnetPowerCapacityRF", magnetPowerCapacityRF,
+    magnetPowerCapacityRF = config.get("Magnet Settings", "magnetPowerCapacityRF", magnetPowerCapacityRF,
         "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);    
-    magnetRange = config.get("Settings", "magnetRange", magnetRange,
+    magnetRange = config.get("Magnet Settings", "magnetRange", magnetRange,
         "Range of the magnet in blocks.").getInt(magnetRange);
     
-    useCombustionGenModel = config.get("Settings", "magnetRange", useCombustionGenModel,
-        "Set to true to enabled WIP combustion generator model.").getBoolean(useCombustionGenModel);
+    useCombustionGenModel = config.get("Aesthetic Settings", "useCombustionGenModel", useCombustionGenModel,
+        "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
     
-    crafterMjPerCraft= config.get("Settings", "crafterMjPerCraft", crafterMjPerCraft,
-        "MJ used be recipe crafted").getInt(crafterMjPerCraft);
+    crafterMjPerCraft= config.get("AutoCrafter Settings", "crafterMjPerCraft", crafterMjPerCraft,
+        "MJ used per autocrafted recipe").getInt(crafterMjPerCraft);
   }
 
   private Config() {
