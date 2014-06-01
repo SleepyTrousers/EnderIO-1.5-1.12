@@ -14,8 +14,10 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
   private ForgeDirection dir;
   private boolean loopMode;
+  private boolean roundRobin;
   private DyeColor colIn;
   private DyeColor colOut;
+  private int priority;
 
   private ItemFilter inputFilter;
   private ItemFilter outputFilter;
@@ -27,8 +29,10 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
     this.dir = dir;
     loopMode = con.isSelfFeedEnabled(dir);
+    roundRobin = con.isRoundRobinEnabled(dir);
     colIn = con.getInputColor(dir);
     colOut = con.getOutputColor(dir);
+    priority = con.getOutputPriority(dir);
 
     inputFilter = con.getInputFilter(dir);
     outputFilter = con.getOutputFilter(dir);
@@ -39,6 +43,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     super.encode(ctx, buf);
     buf.writeShort(dir.ordinal());
     buf.writeBoolean(loopMode);
+    buf.writeBoolean(roundRobin);
+    buf.writeInt(priority);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
     writeFilter(buf, inputFilter);
@@ -58,6 +64,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     super.decode(ctx, buf);
     dir = ForgeDirection.values()[buf.readShort()];
     loopMode = buf.readBoolean();
+    roundRobin = buf.readBoolean();
+    priority = buf.readInt();
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
     inputFilter = readFilter(buf);
@@ -78,9 +86,10 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   protected void handleServerSide(EntityPlayer player, World worldObj, IConduitBundle tile, IItemConduit conduit) {
     conduit.setSelfFeedEnabled(dir, loopMode);
+    conduit.setRoundRobinEnabled(dir, roundRobin);
     conduit.setInputColor(dir, colIn);
     conduit.setOutputColor(dir, colOut);
-
+    conduit.setOutputPriority(dir, priority);
     applyFilter(conduit, inputFilter, true);
     applyFilter(conduit, outputFilter, false);
 

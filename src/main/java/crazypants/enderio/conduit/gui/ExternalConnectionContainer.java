@@ -40,7 +40,7 @@ public class ExternalConnectionContainer extends Container {
     // add players inventory
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 9; ++j) {
-        int x = 8 + j * 18;
+        int x = 23 + j * 18;
         int y = topY + i * 18;
         addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x, y));
         slotLocations.add(new Point(x, y));
@@ -49,7 +49,7 @@ public class ExternalConnectionContainer extends Container {
 
     int y = 171;
     for (int i = 0; i < 9; ++i) {
-      int x = 8 + i * 18;
+      int x = 23 + i * 18;
       addSlotToContainer(new Slot(playerInv, i, x, y));
       slotLocations.add(new Point(x, y));
     }
@@ -61,7 +61,7 @@ public class ExternalConnectionContainer extends Container {
     inputFilter = itemConduit.getInputFilter(dir);
 
     int topY = 67;
-    int leftX = 16;
+    int leftX = 23;
     int index = 0;
 
     for (int row = 0; row < 2; ++row) {
@@ -81,7 +81,7 @@ public class ExternalConnectionContainer extends Container {
 
     outputFilter = itemConduit.getOutputFilter(dir);
 
-    leftX = 16;
+    leftX = 23;
     index = 0;
     for (int row = 0; row < 2; ++row) {
 

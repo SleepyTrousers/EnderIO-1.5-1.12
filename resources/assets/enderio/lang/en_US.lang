@@ -460,6 +460,9 @@ enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Enabled
 enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Disabled
 enderio.gui.conduit.item.selfFeedEnabled=Self Feed Enabled
 enderio.gui.conduit.item.selfFeedDisabled=Self Feed Disabled
+enderio.gui.conduit.item.roundRobinEnabled=Round Robin Enabled
+enderio.gui.conduit.item.roundRobinDisabled=Round Robin Disabled
+enderio.gui.conduit.item.priority=Priority
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color

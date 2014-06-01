@@ -176,8 +176,8 @@ public class TravelController {
     TileEnderIO eio = (TileEnderIO) te;
     if(eio.canBlockBeAccessed(player)) {
 
-      int requiredPower = equipped == null ? 0 : TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target);
-      if(requiredPower >= 0 && requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+      int requiredPower = ItemTravelStaff.isEquipped(player) ? TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target) : 0; 
+      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
         if(requiredPower > 0) {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower);
           EnderIO.packetPipeline.sendToServer(p);

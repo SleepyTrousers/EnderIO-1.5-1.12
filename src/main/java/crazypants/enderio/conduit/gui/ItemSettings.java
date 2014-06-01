@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
+
+import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -18,6 +21,7 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.DyeColor;
@@ -38,6 +42,9 @@ public class ItemSettings extends BaseSettingsPanel {
   private static final int ID_STICKY = 21;
   private static final int ID_LOOP = 22;
   private static final int ID_CHANNEL = 23;
+  private static final int ID_ROUND_ROBIN = 24;
+  private static final int ID_PRIORITY_UP = 25;
+  private static final int ID_PRIORITY_DOWN = 26;
 
   private IItemConduit itemConduit;
 
@@ -54,6 +61,10 @@ public class ItemSettings extends BaseSettingsPanel {
   private ColorButton channelB;
 
   private ToggleButtonEIO loopB;
+  private ToggleButtonEIO roundRobinB;
+
+  private IconButtonEIO priUpB;
+  private IconButtonEIO priDownB;
 
   private RedstoneModeButton rsB;
   private ColorButton colorB;
@@ -63,6 +74,11 @@ public class ItemSettings extends BaseSettingsPanel {
   boolean isAdvanced;
 
   private ItemFilter activeFilter;
+  
+  private int priLeft = 120;
+  private int priWidth = 32;
+
+  private GuiToolTip priorityTooltip;
 
   protected ItemSettings(final GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, Lang.localize("itemItemConduit.name"), gui, con);
@@ -78,7 +94,7 @@ public class ItemSettings extends BaseSettingsPanel {
     nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
     nextFilterB.setSize(8, 16);
 
-    x = 112;
+    x = 115;
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
 
       @Override
@@ -97,12 +113,34 @@ public class ItemSettings extends BaseSettingsPanel {
       }
     });
 
-    x += rsB.getWidth() + gap;
+    x += rsB.getWidth() + 4;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
     colorB.setToolTipHeading(Lang.localize("gui.conduit.item.sigCol"));
 
-    x = 112;
+    x += 4 + colorB.getWidth();
+    roundRobinB = new ToggleButtonEIO(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    roundRobinB.setSelectedToolTip(Lang.localize("gui.conduit.item.roundRobinEnabled"));
+    roundRobinB.setUnselectedToolTip(Lang.localize("gui.conduit.item.roundRobinDisabled"));
+    roundRobinB.setPaintSelectedBorder(false);
+
+    x += 4 + roundRobinB.getWidth();
+    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
+    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
+    loopB.setPaintSelectedBorder(false);
+
+    x = priLeft + priWidth + 9;
+    priUpB = new IconButtonEIO(gui, ID_PRIORITY_UP, x, y, IconEIO.ADD_BUT);
+    priUpB.setSize(10, 10);
+
+    y += 10;
+    priDownB = new IconButtonEIO(gui, ID_PRIORITY_DOWN, x, y, IconEIO.MINUS_BUT);
+    priDownB.setSize(10, 10);
+
+    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9,  y, priWidth, 20), Lang.localize("gui.conduit.item.priority"));
+    
+    x = 115;
     y = 66;
     whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
@@ -121,7 +159,7 @@ public class ItemSettings extends BaseSettingsPanel {
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
-    x = 112;
+    x = 115;
 
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
@@ -138,13 +176,6 @@ public class ItemSettings extends BaseSettingsPanel {
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
-
-    //x += 20;
-    y = customTop;
-    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
-    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
-    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
-    loopB.setPaintSelectedBorder(false);
 
   }
 
@@ -264,9 +295,20 @@ public class ItemSettings extends BaseSettingsPanel {
       whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
     }
 
-    if(mode == ConnectionMode.IN_OUT) {
+    if(mode == ConnectionMode.IN_OUT && !outputActive) {
       loopB.onGuiInit();
       loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.dir));
+    }
+
+    if((mode == ConnectionMode.IN_OUT && !outputActive) || mode == ConnectionMode.INPUT) {
+      roundRobinB.onGuiInit();
+      roundRobinB.setSelected(itemConduit.isRoundRobinEnabled(gui.dir));
+    }
+
+    if((mode == ConnectionMode.IN_OUT && outputActive) || mode == ConnectionMode.OUTPUT) {
+      priUpB.onGuiInit();
+      priDownB.onGuiInit();
+      gui.addToolTip(priorityTooltip);
     }
 
   }
@@ -304,6 +346,18 @@ public class ItemSettings extends BaseSettingsPanel {
 
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+
+    } else if(guiButton.id == ID_ROUND_ROBIN) {
+      itemConduit.setRoundRobinEnabled(gui.dir, !itemConduit.isRoundRobinEnabled(gui.dir));
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      
+    } else if(guiButton.id == ID_PRIORITY_UP) {
+      itemConduit.setOutputPriority(gui.dir, itemConduit.getOutputPriority(gui.dir) + 1);
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+
+    } else if(guiButton.id == ID_PRIORITY_DOWN) {
+      itemConduit.setOutputPriority(gui.dir, itemConduit.getOutputPriority(gui.dir) - 1);
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
 
     } else if(guiButton.id == ID_CHANNEL) {
@@ -362,6 +416,15 @@ public class ItemSettings extends BaseSettingsPanel {
       int x = 0;
       int rgb = ColorUtil.getRGB(Color.darkGray);
       fr.drawString(heading, left + x, top, rgb);
+      
+      boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
+      if(outputActive) {
+        GL11.glColor3f(1, 1, 1);
+        IconEIO.BUTTON_DOWN.renderIcon(left + priLeft, top - 5, priWidth, 20, 0, true);
+        String str = itemConduit.getOutputPriority(gui.dir) + "";
+        int sw = fr.getStringWidth(str);
+        fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
+      }
     }
 
   }
@@ -379,8 +442,12 @@ public class ItemSettings extends BaseSettingsPanel {
     useOreDictB.detach();
     whiteListB.detach();
     stickyB.detach();
+    roundRobinB.detach();
     loopB.detach();
     nextFilterB.detach();
+    priUpB.detach();
+    priDownB.detach();
+    gui.removeToolTip(priorityTooltip);    
   }
 
 }

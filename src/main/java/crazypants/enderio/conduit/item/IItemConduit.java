@@ -35,6 +35,10 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
   ItemFilter getInputFilter(ForgeDirection dir);
 
   ItemFilter getOutputFilter(ForgeDirection dir);
+  
+  int getOutputPriority(ForgeDirection dir);
+  
+  void setOutputPriority(ForgeDirection dir, int priority);
 
   int getMetaData();
 
@@ -43,6 +47,10 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
   boolean isSelfFeedEnabled(ForgeDirection dir);
 
   void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
+  
+  boolean isRoundRobinEnabled(ForgeDirection dir);
+  
+  void setRoundRobinEnabled(ForgeDirection dir, boolean enabled);
 
   DyeColor getInputColor(ForgeDirection dir);
 

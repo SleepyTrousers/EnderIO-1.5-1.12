@@ -93,6 +93,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   protected final EnumMap<ForgeDirection, Boolean> selfFeed = new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
 
+  protected final EnumMap<ForgeDirection, Boolean> roundRobin = new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
+
+  protected final EnumMap<ForgeDirection, Integer> priority = new EnumMap<ForgeDirection, Integer>(ForgeDirection.class);
+
   protected final EnumMap<ForgeDirection, DyeColor> outputColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, DyeColor> inputColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
@@ -170,7 +174,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     } else if(network == null) {
       return item;
     }
-   
+
     return network.sendItems(this, item, from);
   }
 
@@ -365,6 +369,41 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
+  public boolean isRoundRobinEnabled(ForgeDirection dir) {
+    Boolean val = roundRobin.get(dir);
+    if(val == null) {
+      return false;
+    }
+    return val;
+  }
+
+  @Override
+  public void setRoundRobinEnabled(ForgeDirection dir, boolean enabled) {
+    roundRobin.put(dir, enabled);
+    if(network != null) {
+      network.routesChanged();
+    }
+  }
+
+  @Override
+  public int getOutputPriority(ForgeDirection dir) {
+    Integer res = priority.get(dir);
+    if(res == null) {
+      return 0;
+    }
+    return res.intValue();
+  }
+
+  @Override
+  public void setOutputPriority(ForgeDirection dir, int priority) {
+    this.priority.put(dir, priority);
+    if(network != null) {
+      network.routesChanged();
+    }
+
+  }
+
+  @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IInventory inv = getExternalInventory(direction);
     if(inv instanceof ISidedInventory) {
@@ -495,6 +534,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
+    for (Entry<ForgeDirection, Boolean> entry : roundRobin.entrySet()) {
+      if(entry.getValue() != null) {
+        nbtRoot.setBoolean("roundRobin." + entry.getKey().name(), entry.getValue());
+      }
+    }
+    
+    for (Entry<ForgeDirection, Integer> entry : priority.entrySet()) {
+      if(entry.getValue() != null) {
+        nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
+      }
+    }
+
     for (Entry<ForgeDirection, DyeColor> entry : inputColors.entrySet()) {
       if(entry.getValue() != null) {
         short ord = (short) entry.getValue().ordinal();
@@ -551,6 +602,18 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       if(nbtRoot.hasKey(key)) {
         boolean val = nbtRoot.getBoolean(key);
         selfFeed.put(dir, val);
+      }
+
+      key = "roundRobin." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        boolean val = nbtRoot.getBoolean(key);
+        roundRobin.put(dir, val);
+      }
+      
+      key = "priority." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        int val = nbtRoot.getInteger(key);
+        priority.put(dir, val);
       }
 
       key = "inSC." + dir.name();
