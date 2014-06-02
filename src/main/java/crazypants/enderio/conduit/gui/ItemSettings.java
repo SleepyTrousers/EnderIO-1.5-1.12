@@ -38,6 +38,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private static final int ID_STICKY = 21;
   private static final int ID_LOOP = 22;
   private static final int ID_CHANNEL = 23;
+  private static final int ID_ROUND_ROBIN = 24;
 
   private IItemConduit itemConduit;
 
@@ -54,6 +55,7 @@ public class ItemSettings extends BaseSettingsPanel {
   private ColorButton channelB;
 
   private ToggleButtonEIO loopB;
+  private ToggleButtonEIO roundRobinB;
 
   private RedstoneModeButton rsB;
   private ColorButton colorB;
@@ -101,8 +103,22 @@ public class ItemSettings extends BaseSettingsPanel {
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
     colorB.setToolTipHeading(Lang.localize("gui.conduit.item.sigCol"));
+    
+    x += gap + colorB.getWidth();
+    roundRobinB = new ToggleButtonEIO(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+    roundRobinB.setSelectedToolTip(Lang.localize("gui.conduit.item.roundRobinEnabled"));
+    roundRobinB.setUnselectedToolTip(Lang.localize("gui.conduit.item.roundRobinDisabled"));
+    roundRobinB.setPaintSelectedBorder(false);
+    
+    x += gap + roundRobinB.getWidth();
+    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
+    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
+    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
+    loopB.setPaintSelectedBorder(false);
+    
+    
 
-    x = 112;
+    x = 115;
     y = 66;
     whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
@@ -121,7 +137,7 @@ public class ItemSettings extends BaseSettingsPanel {
     stickyB.setPaintSelectedBorder(false);
 
     y += 20;
-    x = 112;
+    x = 115;
 
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
@@ -138,13 +154,6 @@ public class ItemSettings extends BaseSettingsPanel {
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
-
-    //x += 20;
-    y = customTop;
-    loopB = new ToggleButtonEIO(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
-    loopB.setSelectedToolTip(Lang.localize("gui.conduit.item.selfFeedEnabled"));
-    loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
-    loopB.setPaintSelectedBorder(false);
 
   }
 
@@ -266,7 +275,11 @@ public class ItemSettings extends BaseSettingsPanel {
 
     if(mode == ConnectionMode.IN_OUT) {
       loopB.onGuiInit();
-      loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.dir));
+      loopB.setSelected(itemConduit.isSelfFeedEnabled(gui.dir));      
+    }
+    if(!outputActive) {
+      roundRobinB.onGuiInit();
+      roundRobinB.setSelected(itemConduit.isRoundRobinEnabled(gui.dir));
     }
 
   }
@@ -304,6 +317,10 @@ public class ItemSettings extends BaseSettingsPanel {
 
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
+      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      
+    } else if(guiButton.id == ID_ROUND_ROBIN) {
+      itemConduit.setRoundRobinEnabled(gui.dir, !itemConduit.isRoundRobinEnabled(gui.dir));
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
 
     } else if(guiButton.id == ID_CHANNEL) {

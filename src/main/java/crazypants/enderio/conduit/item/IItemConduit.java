@@ -43,6 +43,10 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
   boolean isSelfFeedEnabled(ForgeDirection dir);
 
   void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
+  
+  boolean isRoundRobinEnabled(ForgeDirection dir);
+  
+  void setRoundRobinEnabled(ForgeDirection dir, boolean enabled);
 
   DyeColor getInputColor(ForgeDirection dir);
 

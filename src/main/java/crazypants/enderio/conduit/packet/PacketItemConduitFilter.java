@@ -14,6 +14,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
   private ForgeDirection dir;
   private boolean loopMode;
+  private boolean roundRobin;
   private DyeColor colIn;
   private DyeColor colOut;
 
@@ -27,6 +28,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     super(con.getBundle().getEntity(), ConTypeEnum.ITEM);
     this.dir = dir;
     loopMode = con.isSelfFeedEnabled(dir);
+    roundRobin = con.isRoundRobinEnabled(dir);
     colIn = con.getInputColor(dir);
     colOut = con.getOutputColor(dir);
 
@@ -39,6 +41,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     super.encode(ctx, buf);
     buf.writeShort(dir.ordinal());
     buf.writeBoolean(loopMode);
+    buf.writeBoolean(roundRobin);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
     writeFilter(buf, inputFilter);
@@ -58,6 +61,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     super.decode(ctx, buf);
     dir = ForgeDirection.values()[buf.readShort()];
     loopMode = buf.readBoolean();
+    roundRobin = buf.readBoolean();
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
     inputFilter = readFilter(buf);
@@ -78,6 +82,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   protected void handleServerSide(EntityPlayer player, World worldObj, IConduitBundle tile, IItemConduit conduit) {
     conduit.setSelfFeedEnabled(dir, loopMode);
+    conduit.setRoundRobinEnabled(dir, roundRobin);
     conduit.setInputColor(dir, colIn);
     conduit.setOutputColor(dir, colOut);
 

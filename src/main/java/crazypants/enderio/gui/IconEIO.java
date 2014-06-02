@@ -74,8 +74,11 @@ public final class IconEIO {
   public static final IconEIO OUTPUT_OFF = new IconEIO(188, 197 + 32, 30, 14);
   public static final IconEIO INPUT_OUTPUT_OFF = new IconEIO(218 + 32, 180, 30, 8);
 
-  public static final IconEIO LOOP = new IconEIO(86, 236, 20, 20);
-  public static final IconEIO LOOP_OFF = new IconEIO(106, 236, 20, 20);
+  public static final IconEIO LOOP = new IconEIO(217, 236, 20, 20);
+  public static final IconEIO LOOP_OFF = new IconEIO(236, 236, 20, 20);
+  
+  public static final IconEIO ROUND_ROBIN = new IconEIO(86, 236, 20, 20);
+  public static final IconEIO ROUND_ROBIN_OFF = new IconEIO(106, 236, 20, 20);
 
   public static final IconEIO IO_CONFIG_UP = new IconEIO(80, 116, 24, 24);
   public static final IconEIO IO_CONFIG_DOWN  = new IconEIO(104, 116, 24, 24);
