@@ -34,6 +34,8 @@ public final class Config {
   public static File configDirectory;
 
   public static boolean useHardRecipes = false;
+  
+  public static boolean useSteelInChassi = false;
 
   public static boolean detailedPowerTrackingEnabled = false;
 
@@ -173,6 +175,9 @@ public final class Config {
 
     useHardRecipes = config.get("Recipe Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
+    
+    useSteelInChassi = config.get("Recipe Settings", "useSteelInChassi", useSteelInChassi, "When enabled machine chassis will require steel instead of iron.")
+            .getBoolean(useSteelInChassi);
 
     numConduitsPerRecipe = config.get("Recipe Settings", "numConduitsPerRecipe", numConduitsPerRecipe,
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);

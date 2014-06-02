@@ -120,7 +120,16 @@ public class MaterialRecipes {
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
 
     // Machine Chassi
+
+    ArrayList<ItemStack> steelIngots = OreDictionary.getOres("ingotSteel");
+    
+    if(Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty()) {
+    GameRegistry.addRecipe(new ShapedOreRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', "ingotSteel"));
+    }
+    else {
     GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', Items.iron_ingot);
+    }
+
 
     // Basic Gear
     GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "stickWood", 'c', Blocks.cobblestone));
