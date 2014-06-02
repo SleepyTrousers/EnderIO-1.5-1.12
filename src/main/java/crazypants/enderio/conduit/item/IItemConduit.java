@@ -35,6 +35,10 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
   ItemFilter getInputFilter(ForgeDirection dir);
 
   ItemFilter getOutputFilter(ForgeDirection dir);
+  
+  int getOutputPriority(ForgeDirection dir);
+  
+  void setOutputPriority(ForgeDirection dir, int priority);
 
   int getMetaData();
 

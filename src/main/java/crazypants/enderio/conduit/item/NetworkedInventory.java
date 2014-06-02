@@ -80,6 +80,10 @@ class NetworkedInventory {
   boolean isSticky() {
     return con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
+  
+  int getPriority() {    
+    return con.getOutputPriority(conDir);
+  }
 
   public void onTick(long tick) {
     int transfered;
@@ -266,9 +270,9 @@ class NetworkedInventory {
           && con.getInputColor(conDir) == other.con.getOutputColor(other.conDir)) {
 
         if(Config.itemConduitUsePhyscialDistance) {
-          sendPriority.add(new Target(other, distanceTo(other), other.isSticky()));
+          sendPriority.add(new Target(other, distanceTo(other), other.isSticky(), other.getPriority()));
         } else {
-          result.add(new Target(other, 9999999, other.isSticky()));
+          result.add(new Target(other, 9999999, other.isSticky(), other.getPriority()));
         }
       }
     }
@@ -373,11 +377,13 @@ class NetworkedInventory {
     NetworkedInventory inv;
     int distance;
     boolean stickyInput;
+    int priority;
 
-    Target(NetworkedInventory inv, int distance, boolean stickyInput) {
+    Target(NetworkedInventory inv, int distance, boolean stickyInput, int priority) {
       this.inv = inv;
       this.distance = distance;
       this.stickyInput = stickyInput;
+      this.priority = priority;
     }
 
     @Override
@@ -387,6 +393,9 @@ class NetworkedInventory {
       }
       if(!stickyInput && o.stickyInput) {
         return 1;
+      }
+      if(priority != o.priority) {
+        return ItemConduitNetwork.compare(o.priority,priority);
       }
       return ItemConduitNetwork.compare(distance, o.distance);
     }
