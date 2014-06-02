@@ -108,7 +108,7 @@ public class MachineRecipes {
       if(Config.useHardRecipes) {
         GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'c', capacitor, 'e',
             energeticAlloy, 'p', phasedGold));
-        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e',
+        GameRegistry.addRecipe(new ShapedOreRecipe(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e',
             phasedIron, 'p', phasedGold));
       } else {
         GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'p', silicon, 'e',
