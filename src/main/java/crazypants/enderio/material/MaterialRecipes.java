@@ -23,17 +23,25 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
     OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
     OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
-    OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
+    
     OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
+    
+    OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
+    OreDictionary.registerOre("ingotConductiveIron", new ItemStack(EnderIO.itemMaterial, 1, Alloy.CONDUCTIVE_IRON.ordinal()));
+    OreDictionary.registerOre("ingotElectricalSteel", new ItemStack(EnderIO.itemMaterial, 1, Alloy.ELECTRICAL_STEEL.ordinal()));
+    OreDictionary.registerOre("ingotEnergeticAlloy", new ItemStack(EnderIO.itemMaterial, 1, Alloy.ENERGETIC_ALLOY.ordinal()));
+    OreDictionary.registerOre("ingotVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Alloy.PHASED_GOLD.ordinal()));
+    OreDictionary.registerOre("ingotPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Alloy.PHASED_IRON.ordinal()));
+    OreDictionary.registerOre("ingotDarkSteel", new ItemStack(EnderIO.itemMaterial, 1, Alloy.DARK_STEEL.ordinal()));
+    
 
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
     OreDictionary.registerOre("woodStick", Items.stick);
     OreDictionary.registerOre("sand", Blocks.sand);
     OreDictionary.registerOre("ingotIron", Items.iron_ingot);
-    OreDictionary.registerOre("ingotGold", Items.gold_ingot);
+    OreDictionary.registerOre("ingotGold", Items.gold_ingot);    
     
-
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("glassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
