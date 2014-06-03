@@ -138,7 +138,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
       if(source.con.getLocation().equals(con.getLocation())) {
         if(source != null && source.sendPriority != null) {
           for (Target t : source.sendPriority) {
-            ItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
+            IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
             if(input == null || f == null || f.doesItemPassFilter(input)) {
               String s = Lang.localize(t.inv.inv.getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
               result.add(s);
@@ -155,7 +155,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     List<String> result = new ArrayList<String>();
     for (NetworkedInventory inv : inventories) {
       if(inv.hasTarget(con, dir)) {
-        ItemFilter f = inv.con.getInputFilter(inv.conDir);
+        IItemFilter f = inv.con.getInputFilter(inv.conDir);
         if(input == null || f == null || f.doesItemPassFilter(input)) {
           result.add(Lang.localize(inv.inv.getInventoryName(), false) + " " + inv.location);
         }

@@ -21,6 +21,8 @@ public interface IConduit {
   Class<? extends IConduit> getBaseConduitType();
 
   ItemStack createItem();
+  
+  List<ItemStack> getDrops();
 
   int getLightValue();
 
