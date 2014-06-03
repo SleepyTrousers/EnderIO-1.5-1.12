@@ -5,17 +5,16 @@ import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.monitor.ItemConduitProbe;
 import crazypants.enderio.machine.monitor.PacketConduitProbe;
+import crazypants.enderio.network.PacketHandler;
 
 public class ItemExtractSpeedUpgrade extends Item {
   
   public static ItemExtractSpeedUpgrade create() {
 
-    EnderIO.packetPipeline.registerPacket(PacketConduitProbe.class);
+    PacketHandler.INSTANCE.registerMessage(PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
 
     ItemExtractSpeedUpgrade result = new ItemExtractSpeedUpgrade();
     result.init();
