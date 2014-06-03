@@ -22,6 +22,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
@@ -84,8 +85,8 @@ import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
-import crazypants.enderio.network.PacketPipeline;
-import crazypants.enderio.network.PacketTileEntityNbt;
+import crazypants.enderio.network.MessageTileNBT;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
@@ -99,7 +100,7 @@ public class EnderIO {
   @SidedProxy(clientSide = "crazypants.enderio.ClientProxy", serverSide = "crazypants.enderio.CommonProxy")
   public static CommonProxy proxy;
 
-  public static final PacketPipeline packetPipeline = new PacketPipeline();
+  public static final PacketHandler packetPipeline = new PacketHandler();
 
   public static GuiHandler guiHandler = new GuiHandler();
 
@@ -200,7 +201,7 @@ public class EnderIO {
   public void preInit(FMLPreInitializationEvent event) {
 
     Config.load(event);
-
+    
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     blockEnderIo = BlockEnderIO.create();
@@ -319,9 +320,8 @@ public class EnderIO {
 
     instance = this;
 
-    packetPipeline.initalise();
-    packetPipeline.registerPacket(PacketTileEntityNbt.class);
-    packetPipeline.registerPacket(PacketRedstoneMode.class);
+    PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
     MinecraftForge.EVENT_BUS.register(this);

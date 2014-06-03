@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.network.AbstractPacketTileEntity;
+import crazypants.enderio.network.MessageTileEntity;
 
-public abstract class AbstractConduitBundlePacket extends AbstractPacketTileEntity<TileEntity> {
+public abstract class AbstractConduitBundlePacket extends MessageTileEntity<TileEntity> {
 
   public AbstractConduitBundlePacket() {
   }

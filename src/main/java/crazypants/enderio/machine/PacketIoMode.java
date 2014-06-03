@@ -5,9 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketIoMode implements IPacketEio {
+public class PacketIoMode implements IMessage {
 
   private int x;
   private int y;

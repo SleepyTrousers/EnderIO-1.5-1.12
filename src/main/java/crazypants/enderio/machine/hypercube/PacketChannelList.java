@@ -8,9 +8,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketChannelList implements IPacketEio {
+public class PacketChannelList implements IMessage {
 
   private boolean isPrivate;
   private List<Channel> channels;

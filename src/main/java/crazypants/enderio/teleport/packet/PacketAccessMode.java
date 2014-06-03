@@ -1,17 +1,17 @@
 package crazypants.enderio.teleport.packet;
 
-import crazypants.enderio.network.IPacketEio;
-import crazypants.enderio.teleport.TileTravelAnchor;
-import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.teleport.TileTravelAnchor;
 
 /**
  * Created by CrazyPants on 27/02/14.
  */
-public class PacketAccessMode implements IPacketEio {
+public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessMode, IMessage> {
 
   int x;
   int y;
@@ -29,32 +29,29 @@ public class PacketAccessMode implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf dos) {
-    dos.writeInt(x);
-    dos.writeInt(y);
-    dos.writeInt(z);
-    dos.writeShort(mode.ordinal());
+  public void toBytes(ByteBuf buf) {
+    buf.writeInt(x);
+    buf.writeInt(y);
+    buf.writeInt(z);
+    buf.writeShort(mode.ordinal());
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf data) {
-    x = data.readInt();
-    y = data.readInt();
-    z = data.readInt();
-    mode = TileTravelAnchor.AccessMode.values()[data.readShort()];
+  public void fromBytes(ByteBuf buf) {
+    x = buf.readInt();
+    y = buf.readInt();
+    z = buf.readInt();
+    mode = TileTravelAnchor.AccessMode.values()[buf.readShort()];
   }
 
-  @Override
-  public void handleClientSide(EntityPlayer player) {
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-     TileEntity te = player.worldObj.getTileEntity(x, y, z);
+  public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    TileEntity te = player.worldObj.getTileEntity(x, y, z);
     if(te instanceof TileTravelAnchor) {
       ((TileTravelAnchor) te).setAccessMode(mode);
       player.worldObj.markBlockForUpdate(x, y, z);
       player.worldObj.markTileEntityChunkModified(x,y,z,te);      
     }
+    return null;
   }
 }

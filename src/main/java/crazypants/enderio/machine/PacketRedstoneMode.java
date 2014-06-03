@@ -4,9 +4,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import crazypants.enderio.network.IPacketEio;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRedstoneMode implements IPacketEio {
+public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedstoneMode, IMessage> {
 
   private int x;
   private int y;
@@ -31,7 +33,7 @@ public class PacketRedstoneMode implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -39,7 +41,7 @@ public class PacketRedstoneMode implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
@@ -48,13 +50,10 @@ public class PacketRedstoneMode implements IPacketEio {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    handle(player);
+  public IMessage onMessage(PacketRedstoneMode message, MessageContext ctx)
+  {
+    handle(ctx.getServerHandler().playerEntity);
+    return null;
   }
 
   private void handle(EntityPlayer player) {

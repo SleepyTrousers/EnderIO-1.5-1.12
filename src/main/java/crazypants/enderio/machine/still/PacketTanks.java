@@ -5,10 +5,10 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import crazypants.enderio.network.AbstractPacketTileEntity;
+import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketTanks extends AbstractPacketTileEntity<TileVat> {
+public class PacketTanks extends MessageTileEntity<TileVat> {
 
   private NBTTagCompound nbtRoot;
 
@@ -32,13 +32,13 @@ public class PacketTanks extends AbstractPacketTileEntity<TileVat> {
 
   @Override
   public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+    super.toBytes(ctx, buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
   public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+    super.fromBytes(ctx, buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 

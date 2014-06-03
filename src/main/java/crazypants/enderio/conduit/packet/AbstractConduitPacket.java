@@ -23,13 +23,13 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
 
   @Override
   public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+    super.toBytes(ctx, buf);
     buf.writeShort(conType.ordinal());
   }
 
   @Override
   public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+    super.fromBytes(ctx, buf);
     conType = ConTypeEnum.values()[buf.readShort()];
   }
 

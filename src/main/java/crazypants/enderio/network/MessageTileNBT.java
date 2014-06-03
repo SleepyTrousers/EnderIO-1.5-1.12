@@ -1,17 +1,18 @@
 package crazypants.enderio.network;
 
-import crazypants.enderio.Log;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.Log;
 
 /**
  * Created by CrazyPants on 27/02/14.
  */
-public class PacketTileEntityNbt implements IPacketEio {
+public class MessageTileNBT implements IMessage, IMessageHandler<MessageTileNBT, IMessage> {
 
   TileEntity te;
 
@@ -22,11 +23,11 @@ public class PacketTileEntityNbt implements IPacketEio {
 
   boolean renderOnUpdate = false;
 
-  public PacketTileEntityNbt() {
+  public MessageTileNBT() {
 
   }
 
-  public PacketTileEntityNbt(TileEntity te) {
+  public MessageTileNBT(TileEntity te) {
     this.te = te;
     x = te.xCoord;
     y = te.yCoord;
@@ -36,7 +37,7 @@ public class PacketTileEntityNbt implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void toBytes(ByteBuf buffer) {
     buffer.writeInt(x);
     buffer.writeInt(y);
     buffer.writeInt(z);
@@ -44,7 +45,7 @@ public class PacketTileEntityNbt implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf dis) {
+  public void fromBytes(ByteBuf dis) {
     x = dis.readInt();
     y = dis.readInt();
     z = dis.readInt();
@@ -52,20 +53,13 @@ public class PacketTileEntityNbt implements IPacketEio {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    te = handle(player.getEntityWorld());
+  public IMessage onMessage(MessageTileNBT msg, MessageContext ctx) 
+  {
+    te = handle(ctx.getServerHandler().playerEntity.worldObj);
     if(te != null && renderOnUpdate) {
       te.getWorldObj().markBlockForUpdate(x,y,z);
     }
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    System.out.println("crazypants.enderio.network.PacketTileEntity.handleServerSide");
-    te = handle(player.getEntityWorld());
-    if(te != null) {
-      te.getWorldObj().markBlockForUpdate(x,y,z);
-    }
+    return null;
   }
 
   private TileEntity handle(World world) {

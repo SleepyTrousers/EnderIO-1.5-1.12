@@ -5,9 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class YetaWrenchPacketProcessor implements IPacketEio {
+public class YetaWrenchPacketProcessor implements IMessage {
 
   private int slot;
   private ConduitDisplayMode mode;

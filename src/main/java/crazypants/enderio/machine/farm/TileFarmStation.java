@@ -3,7 +3,6 @@ package crazypants.enderio.machine.farm;
 import java.util.List;
 
 import buildcraft.api.power.PowerHandler.Type;
-
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.Enchantment;
@@ -36,6 +35,7 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -253,7 +253,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       if(harvest != null) {
         if(harvest.getDrops() != null) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          EnderIO.packetPipeline.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+          PacketHandler.INSTANCE.sendToAllAround(new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64), pkt);
           for (EntityItem ei : harvest.getDrops()) {
             if(ei != null) {            
               insertHarvestDrop(ei);

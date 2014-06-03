@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import crazypants.enderio.network.AbstractPacketTileEntity;
-import crazypants.enderio.network.PacketTileEntityNbt;
+import crazypants.enderio.network.MessageTileEntity;
+import crazypants.enderio.network.MessageTileNBT;
 
-public class PacketBurnTime extends AbstractPacketTileEntity<TileEntityStirlingGenerator> {
+public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> {
 
   private int burnTime;
   private int totalBurnTime;
@@ -22,15 +22,15 @@ public class PacketBurnTime extends AbstractPacketTileEntity<TileEntityStirlingG
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+  public void toBytes(ByteBuf buf) {
+    super.toBytes(ctx, buf);
     buf.writeInt(burnTime);
     buf.writeInt(totalBurnTime);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
+    super.fromBytes(ctx, buf);
     burnTime = buf.readInt();
     totalBurnTime = buf.readInt();
   }

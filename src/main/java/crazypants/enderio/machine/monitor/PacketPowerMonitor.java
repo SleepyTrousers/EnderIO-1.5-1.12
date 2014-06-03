@@ -5,9 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import crazypants.enderio.Log;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketPowerMonitor implements IPacketEio {
+public class PacketPowerMonitor implements IMessage {
 
   int x;
   int y;

@@ -5,9 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketAddRemoveChannel implements IPacketEio {
+public class PacketAddRemoveChannel implements IMessage {
 
   private boolean isAdd;
   private Channel channel;

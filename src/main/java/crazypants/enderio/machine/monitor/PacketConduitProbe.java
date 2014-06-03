@@ -26,13 +26,13 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerInterfaceBC;
 import crazypants.enderio.power.PowerInterfaceRF;
 import crazypants.util.Lang;
 
-public class PacketConduitProbe implements IPacketEio {
+public class PacketConduitProbe implements IMessage {
 
   private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
   private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";

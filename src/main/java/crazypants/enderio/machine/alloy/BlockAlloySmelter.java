@@ -5,16 +5,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import crazypants.enderio.EnderIO;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.network.PacketHandler;
 
 public class BlockAlloySmelter extends AbstractMachineBlock<TileAlloySmelter> {
 
   public static BlockAlloySmelter create() {
 
-    EnderIO.packetPipeline.registerPacket(PacketClientState.class);
+    PacketHandler.INSTANCE.registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockAlloySmelter ppainter = new BlockAlloySmelter();
     ppainter.init();

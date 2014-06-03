@@ -1,14 +1,13 @@
 package crazypants.enderio.network;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.enderio.Log;
 
-public class AbstractPacketTileEntity<T extends TileEntity> implements IPacketEio {
+public abstract class MessageTileEntity<T extends TileEntity> implements IMessage {
 
   protected int x;
   protected int y;
@@ -16,18 +15,17 @@ public class AbstractPacketTileEntity<T extends TileEntity> implements IPacketEi
 
   private Class<? extends TileEntity> tileClass;
 
-  protected AbstractPacketTileEntity() {
+  protected MessageTileEntity() {
   }
 
-  protected AbstractPacketTileEntity(T tile) {
+  protected MessageTileEntity(T tile) {
     tileClass = tile.getClass();
     x = tile.xCoord;
     y = tile.yCoord;
     z = tile.zCoord;
   }
 
-  @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -36,7 +34,7 @@ public class AbstractPacketTileEntity<T extends TileEntity> implements IPacketEi
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
@@ -46,34 +44,6 @@ public class AbstractPacketTileEntity<T extends TileEntity> implements IPacketEi
     } catch (Exception e) {
       Log.error("AbstractPacketTileEntity could not load tile entity class: " + str);
     }
-  }
-
-  @Override
-  public void handleClientSide(EntityPlayer player) {
-    T tile = getTileEntity(player.worldObj);
-    if(tile != null) {
-      handleClientSide(player, player.worldObj, tile);
-    }
-  }
-
-  protected void handleClientSide(EntityPlayer player, World worldObj, T tile) {
-    handle(player, worldObj, tile);
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    T tile = getTileEntity(player.worldObj);
-    if(tile != null) {
-      handleServerSide(player, player.worldObj, tile);
-    }
-  }
-
-  protected void handleServerSide(EntityPlayer player, World worldObj, T tile) {
-    handle(player, worldObj, tile);
-  }
-
-  protected void handle(EntityPlayer player, World worldObj, T tile) {
-
   }
 
   protected T getTileEntity(World worldObj) {

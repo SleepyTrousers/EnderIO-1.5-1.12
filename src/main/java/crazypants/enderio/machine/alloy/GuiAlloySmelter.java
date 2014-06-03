@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
 import crazypants.render.RenderUtil;
@@ -80,7 +81,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
       tileEntity.setMode(tileEntity.getMode().next());
       vanillaFurnaceButton.setIcon(getIconForMode());
-      EnderIO.packetPipeline.sendToServer(new PacketClientState(tileEntity));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(tileEntity));
     } else {
       super.actionPerformed(par1GuiButton);
     }

@@ -3,9 +3,9 @@ package crazypants.enderio.item.darksteel;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketDarkSteelPowerPacket implements IPacketEio {
+public class PacketDarkSteelPowerPacket implements IMessage {
 
   private int powerUse;
   private short armorType;

@@ -22,9 +22,9 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketOpenRemoteUi implements IPacketEio {
+public class PacketOpenRemoteUi implements IMessage {
 
   int x;
   int y;

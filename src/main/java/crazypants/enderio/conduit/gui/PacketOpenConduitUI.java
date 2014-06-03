@@ -8,9 +8,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
-import crazypants.enderio.network.AbstractPacketTileEntity;
+import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketOpenConduitUI extends AbstractPacketTileEntity<TileEntity> {
+public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> {
 
   private ForgeDirection dir;
 
@@ -24,13 +24,13 @@ public class PacketOpenConduitUI extends AbstractPacketTileEntity<TileEntity> {
 
   @Override
   public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+    super.toBytes(ctx, buf);
     buf.writeShort(dir.ordinal());
   }
 
   @Override
   public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+    super.fromBytes(ctx, buf);
     dir = ForgeDirection.values()[buf.readShort()];
   }
 

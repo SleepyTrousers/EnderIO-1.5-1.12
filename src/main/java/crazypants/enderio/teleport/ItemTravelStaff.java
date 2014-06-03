@@ -24,6 +24,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.power.PowerDisplayUtil.PowerType;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -158,7 +159,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IResourceToo
           ITravelAccessable ta = (ITravelAccessable) te;
           if(ta.getRequiresPassword(player)) {
             PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
-            EnderIO.packetPipeline.sendToServer(p);
+            PacketHandler.INSTANCE.sendToServer(p);
             return equipped;
           }
         }

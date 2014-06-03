@@ -8,10 +8,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 import crazypants.util.BlockCoord;
 
-public class PacketPowerStorage implements IPacketEio {
+public class PacketPowerStorage implements IMessage {
 
   private int x;
   private int y;

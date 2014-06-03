@@ -5,9 +5,9 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 
-public class PacketClientState implements IPacketEio {
+public class PacketClientState implements IMessage {
 
   private int x;
   private int y;

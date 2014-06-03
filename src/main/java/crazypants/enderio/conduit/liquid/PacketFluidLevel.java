@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.TileConduitBundle;
-import crazypants.enderio.network.AbstractPacketTileEntity;
+import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketFluidLevel extends AbstractPacketTileEntity<TileEntity> {
+public class PacketFluidLevel extends MessageTileEntity<TileEntity> {
 
   NBTTagCompound tc;
 
@@ -26,13 +26,13 @@ public class PacketFluidLevel extends AbstractPacketTileEntity<TileEntity> {
 
   @Override
   public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+    super.toBytes(ctx, buf);
     ByteBufUtils.writeTag(buf, tc);
   }
 
   @Override
   public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+    super.fromBytes(ctx, buf);
     tc = ByteBufUtils.readTag(buf);
   }
 

@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import crazypants.enderio.network.IPacketEio;
+import crazypants.enderio.network.IMessage;
 import crazypants.util.BlockCoord;
 
-public class PacketFarmAction implements IPacketEio {
+public class PacketFarmAction implements IMessage {
 
   private static Random rand = new Random();
 

@@ -1,13 +1,14 @@
 package crazypants.enderio.teleport.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.IPacketEio;
 import crazypants.enderio.teleport.ItemTravelStaff;
 
-public class PacketDrainStaff implements IPacketEio {
+public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainStaff, IMessage> {
 
   int powerUse;
 
@@ -19,24 +20,23 @@ public class PacketDrainStaff implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
-    buffer.writeInt(powerUse);
+  public void toBytes(ByteBuf buf) {
+    buf.writeInt(powerUse);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     powerUse = buffer.readInt();
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer ep) {
+  public IMessage onMessage(PacketDrainStaff message, MessageContext ctx) {
+    EntityPlayer ep = ctx.getServerHandler().playerEntity;
+  
     if(ItemTravelStaff.isEquipped(ep)) {
       EnderIO.itemTravelStaff.extractInternal(ep.getCurrentEquippedItem(), powerUse);
     }
+    return null;
   }
 
 }
