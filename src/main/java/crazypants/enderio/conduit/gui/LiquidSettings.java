@@ -3,7 +3,6 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 
 import net.minecraft.client.gui.GuiButton;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -13,6 +12,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.DyeColor;
 import crazypants.util.Lang;
@@ -46,7 +46,7 @@ public class LiquidSettings extends BaseSettingsPanel {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.dir);
         if(curMode != mode) {
-          EnderIO.packetPipeline.sendToServer(new PacketExtractMode(conduit, gui.dir));
+          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.dir));
         }
 
       }
@@ -68,7 +68,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      EnderIO.packetPipeline.sendToServer(new PacketExtractMode(conduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.dir));
     }
   }
 

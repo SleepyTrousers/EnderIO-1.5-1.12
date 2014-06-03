@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import org.lwjgl.opengl.GL11;
-
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.generator.combustion.CombustionGeneratorModel;
-import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
-import crazypants.render.BoundingBox;
-import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
-import crazypants.render.RenderUtil;
-import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -20,12 +9,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+
+import org.lwjgl.opengl.GL11;
+
+import crazypants.render.BoundingBox;
+import crazypants.render.CubeRenderer;
+import crazypants.render.RenderUtil;
+import crazypants.util.ForgeDirectionOffsets;
+import crazypants.vecmath.Vector3d;
 
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 

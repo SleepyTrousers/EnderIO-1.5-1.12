@@ -1,19 +1,18 @@
 package crazypants.enderio.conduit.liquid;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.TileConduitBundle;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.network.MessageTileEntity;
+import crazypants.util.ClientUtil;
 
-public class PacketFluidLevel extends MessageTileEntity<TileEntity> {
+public class PacketFluidLevel extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketFluidLevel, IMessage>{
 
-  NBTTagCompound tc;
+  public NBTTagCompound tc;
 
   public PacketFluidLevel() {
   }
@@ -25,28 +24,20 @@ public class PacketFluidLevel extends MessageTileEntity<TileEntity> {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.toBytes(ctx, buf);
+  public void toBytes(ByteBuf buf) {
     ByteBufUtils.writeTag(buf, tc);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.fromBytes(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
     tc = ByteBufUtils.readTag(buf);
   }
 
+  
   @Override
-  protected void handleClientSide(EntityPlayer player, World worldObj, TileEntity tile) {
-    if(tc == null || !(tile instanceof IConduitBundle)) {
-      return;
-    }
-    IConduitBundle bundle = (IConduitBundle) tile;
-    ILiquidConduit con = bundle.getConduit(ILiquidConduit.class);
-    if(con == null) {
-      return;
-    }
-    con.readFromNBT(tc, TileConduitBundle.NBT_VERSION);
+  public IMessage onMessage(PacketFluidLevel message, MessageContext ctx)
+  {
+      ClientUtil.doFluidLevelUpdate(message.x, message.y, message.z, message);
+      return null;
   }
-
 }

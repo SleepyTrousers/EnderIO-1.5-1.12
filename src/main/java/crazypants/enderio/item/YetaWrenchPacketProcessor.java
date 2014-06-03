@@ -1,13 +1,13 @@
 package crazypants.enderio.item;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.network.IMessage;
 
-public class YetaWrenchPacketProcessor implements IMessage {
+public class YetaWrenchPacketProcessor implements IMessage, IMessageHandler<YetaWrenchPacketProcessor, IMessage> {
 
   private int slot;
   private ConduitDisplayMode mode;
@@ -21,32 +21,26 @@ public class YetaWrenchPacketProcessor implements IMessage {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void toBytes(ByteBuf buffer) {
     buffer.writeInt(slot);
     buffer.writeShort(mode.ordinal());
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     slot = buffer.readInt();
     mode = ConduitDisplayMode.values()[buffer.readShort()];
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
+  public IMessage onMessage(YetaWrenchPacketProcessor message, MessageContext ctx) {
     ItemStack stack = null;
     if(slot > -1 && slot < 9) {
-      stack = player.inventory.getStackInSlot(slot);
+      stack = ctx.getServerHandler().playerEntity.inventory.getStackInSlot(slot);
     }
-    if(stack == null) {
-      return;
+    if(stack != null) {
+      ConduitDisplayMode.setDisplayMode(stack, mode);
     }
-    ConduitDisplayMode.setDisplayMode(stack, mode);
+    return null;
   }
-
 }

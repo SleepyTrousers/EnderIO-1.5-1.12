@@ -1,16 +1,15 @@
 package crazypants.enderio.conduit.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.conduit.IConduitBundle;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemFilter;
 import crazypants.util.DyeColor;
 
-public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> {
+public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketItemConduitFilter, IMessage> {
 
   private ForgeDirection dir;
   private boolean loopMode;
@@ -39,8 +38,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+  public void toBytes(ByteBuf buf) {
     buf.writeShort(dir.ordinal());
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
@@ -60,8 +58,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
     dir = ForgeDirection.values()[buf.readShort()];
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
@@ -84,7 +81,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  protected void handleServerSide(EntityPlayer player, World worldObj, IConduitBundle tile, IItemConduit conduit) {
+  public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
+    IItemConduit conduit = getTileCasted(ctx);
     conduit.setSelfFeedEnabled(dir, loopMode);
     conduit.setRoundRobinEnabled(dir, roundRobin);
     conduit.setInputColor(dir, colIn);
@@ -93,7 +91,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     applyFilter(conduit, inputFilter, true);
     applyFilter(conduit, outputFilter, false);
 
-    worldObj.markBlockForUpdate(x, y, z);
+    getWorld(ctx).markBlockForUpdate(x, y, z);
+    return null;
   }
 
   private void applyFilter(IItemConduit conduit, ItemFilter filter, boolean isInput) {

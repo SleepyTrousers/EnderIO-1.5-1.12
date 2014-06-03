@@ -15,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.BlockCoord;
 
@@ -36,7 +37,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     ForgeDirection dir = ForgeDirection.values()[b.id];
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     BlockCoord loc = cb.getBlockCoord();
-    EnderIO.packetPipeline.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
+    PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
     player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, loc.x, loc.y, loc.z);
   }
 

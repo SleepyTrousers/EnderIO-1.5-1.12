@@ -4,8 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.network.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
 public class PacketPowerStorage implements IMessage {
 
@@ -25,7 +24,7 @@ public class PacketPowerStorage implements IMessage {
   }
   
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -34,7 +33,7 @@ public class PacketPowerStorage implements IMessage {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();

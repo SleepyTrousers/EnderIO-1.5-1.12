@@ -1,10 +1,10 @@
 package crazypants.enderio.gui;
 
 import net.minecraft.client.Minecraft;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.IGuiScreen;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
@@ -68,7 +68,7 @@ public class RedstoneModeButton extends IconButtonEIO {
     setIcon(ICONS[mode.ordinal()]);
     model.setRedstoneControlMode(mode);
     if(bc != null) {
-      EnderIO.packetPipeline.sendToServer(new PacketRedstoneMode(model, bc.x, bc.y, bc.z));
+      PacketHandler.INSTANCE.sendToServer(new PacketRedstoneMode(model, bc.x, bc.y, bc.z));
     }
   }
 

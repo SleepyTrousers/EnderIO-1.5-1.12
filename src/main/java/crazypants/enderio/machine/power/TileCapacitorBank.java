@@ -28,6 +28,7 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
@@ -251,7 +252,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
     if(lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0) {
       lastSyncPowerStored = storedEnergy;
-      EnderIO.packetPipeline.sendToAllAround(new PacketPowerStorage(this), this, 64);      
+      PacketHandler.INSTANCE.sendToAllAround(new PacketPowerStorage(this), this, 64);      
     }
     
     if(notifyNeighbours) {

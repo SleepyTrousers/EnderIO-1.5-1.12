@@ -1,16 +1,14 @@
 package crazypants.enderio.machine.farm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import crazypants.util.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import crazypants.util.BlockCoord;
 
 public class PickableFarmer extends SeedFarmer {
   

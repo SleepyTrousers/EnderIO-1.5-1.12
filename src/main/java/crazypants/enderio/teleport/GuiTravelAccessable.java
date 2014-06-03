@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;

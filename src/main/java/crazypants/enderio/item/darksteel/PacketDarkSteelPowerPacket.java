@@ -1,11 +1,11 @@
 package crazypants.enderio.item.darksteel;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
-import crazypants.enderio.network.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketDarkSteelPowerPacket implements IMessage {
+public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<PacketDarkSteelPowerPacket, IMessage> {
 
   private int powerUse;
   private short armorType;
@@ -19,25 +19,21 @@ public class PacketDarkSteelPowerPacket implements IMessage {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void toBytes(ByteBuf buffer) {
     buffer.writeInt(powerUse);
     buffer.writeShort(armorType);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     powerUse = buffer.readInt();
     armorType = buffer.readShort();
   }
 
-  @Override
-  public void handleClientSide(EntityPlayer player) {
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    DarkSteelController.instance.usePlayerEnergy(player, ItemDarkSteelArmor.forArmorType(armorType), powerUse);
-    player.fallDistance = 0;
+  public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
+    DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().playerEntity, ItemDarkSteelArmor.forArmorType(armorType), powerUse);
+    ctx.getServerHandler().playerEntity.fallDistance = 0;
+    return null;
   }
 
 }

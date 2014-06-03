@@ -7,10 +7,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemCapacitorBank extends ItemBlock {

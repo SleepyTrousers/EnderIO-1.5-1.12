@@ -384,7 +384,6 @@ public class EnderIO {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
-    packetPipeline.postInitialise();
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();
     ItemRecipes.addOreDictionaryRecipes();

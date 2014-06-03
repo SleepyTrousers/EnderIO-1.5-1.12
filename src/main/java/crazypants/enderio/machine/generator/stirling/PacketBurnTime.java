@@ -1,11 +1,9 @@
 package crazypants.enderio.machine.generator.stirling;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import crazypants.enderio.network.MessageTileEntity;
-import crazypants.enderio.network.MessageTileNBT;
 
 public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> {
 

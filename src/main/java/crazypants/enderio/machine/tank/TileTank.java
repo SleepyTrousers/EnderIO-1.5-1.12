@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.tank;
 
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,19 +7,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
-import crazypants.util.Util;
 
 public class TileTank extends AbstractMachineEntity implements IFluidHandler {
 
@@ -217,7 +213,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       return true;
     }
     if(tankDirty && worldObj.getWorldTime() % 10 == 0) {
-      EnderIO.packetPipeline.sendToAllAround(new PacketTank(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketTank(this), this);
       tankDirty = false;
     }
     return res;

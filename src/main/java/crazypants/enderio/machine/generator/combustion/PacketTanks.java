@@ -31,13 +31,13 @@ public class PacketTanks extends MessageTileEntity<TileCombustionGenerator> {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     super.toBytes(ctx, buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     super.fromBytes(ctx, buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }

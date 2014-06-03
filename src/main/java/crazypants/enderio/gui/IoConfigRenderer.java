@@ -35,6 +35,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PacketIoMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.BoundingBox;
 import crazypants.render.ColorUtil;
@@ -172,7 +173,7 @@ public class IoConfigRenderer {
       if(Mouse.getEventButton() == 1) {
         if(selection != null) {
           selection.config.toggleIoModeForFace(selection.face);
-          EnderIO.packetPipeline.sendToServer(new PacketIoMode(selection.config,selection.face));
+          PacketHandler.INSTANCE.sendToServer(new PacketIoMode(selection.config,selection.face));
         }
       } else if(Mouse.getEventButton() == 0 && inNeigButBounds) {
         renderNeighbours = !renderNeighbours;

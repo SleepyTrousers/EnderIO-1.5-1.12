@@ -8,12 +8,12 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.PowerDistributor;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.util.BlockCoord;
 
@@ -172,7 +172,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       }
     }
     if(!needsUpdate && sendBurnTimePacket) {
-      EnderIO.packetPipeline.sendToAllAround(new PacketBurnTime(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketBurnTime(this), this);
     }
 
     return needsUpdate;

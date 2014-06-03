@@ -1,7 +1,7 @@
 package crazypants.enderio.power;
 
-import buildcraft.api.mj.IBatteryObject;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.mj.IBatteryObject;
 
 public class PowerInterfaceBC2 implements IPowerInterface {
   private final IBatteryObject battery;

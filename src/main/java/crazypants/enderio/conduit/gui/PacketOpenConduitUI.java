@@ -1,16 +1,17 @@
 package crazypants.enderio.conduit.gui;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> {
+public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage>{
 
   private ForgeDirection dir;
 
@@ -23,20 +24,20 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.toBytes(ctx, buf);
+  public void toBytes(ByteBuf buf) {
     buf.writeShort(dir.ordinal());
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.fromBytes(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
     dir = ForgeDirection.values()[buf.readShort()];
   }
 
-  @Override
-  protected void handleServerSide(EntityPlayer player, World worldObj, TileEntity tile) {
-    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+  public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
+      EntityPlayer player = ctx.getServerHandler().playerEntity;
+      TileEntity tile = getWorld(ctx).getTileEntity(x, y, z);
+      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+      return null;
   }
 
 }

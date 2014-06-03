@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -26,7 +27,6 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.IMessage;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerInterfaceBC;
 import crazypants.enderio.power.PowerInterfaceRF;
@@ -90,7 +90,7 @@ public class PacketConduitProbe implements IMessage {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -99,7 +99,7 @@ public class PacketConduitProbe implements IMessage {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();

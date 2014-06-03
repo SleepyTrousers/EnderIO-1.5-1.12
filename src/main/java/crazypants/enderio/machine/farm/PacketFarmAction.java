@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
-import crazypants.enderio.network.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.util.BlockCoord;
 
 public class PacketFarmAction implements IMessage {
@@ -25,7 +25,7 @@ public class PacketFarmAction implements IMessage {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void toBytes(ByteBuf buffer) {
     int size = coords.size();
     buffer.writeInt(size);
     for (BlockCoord coord : coords) {
@@ -37,7 +37,7 @@ public class PacketFarmAction implements IMessage {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     int size = buffer.readInt();
     coords = new ArrayList<BlockCoord>(size);
     for (int i = 0; i < size; i++) {

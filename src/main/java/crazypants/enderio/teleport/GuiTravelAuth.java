@@ -10,9 +10,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.network.MessageTileNBT;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;

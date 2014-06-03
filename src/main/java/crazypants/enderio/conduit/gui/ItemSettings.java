@@ -3,11 +3,11 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 import java.awt.Rectangle;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import crazypants.enderio.EnderIO;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -21,6 +21,7 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -102,7 +103,7 @@ public class ItemSettings extends BaseSettingsPanel {
         RedstoneControlMode curMode = getRedstoneControlMode();
         itemConduit.setExtractionRedstoneMode(mode, gui.dir);
         if(curMode != mode) {
-          EnderIO.packetPipeline.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
+          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
         }
 
       }
@@ -342,23 +343,23 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if(guiButton.id == ID_COLOR_BUTTON) {
 
       itemConduit.setExtractionSignalColor(gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      EnderIO.packetPipeline.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
 
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
 
     } else if(guiButton.id == ID_ROUND_ROBIN) {
       itemConduit.setRoundRobinEnabled(gui.dir, !itemConduit.isRoundRobinEnabled(gui.dir));
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
       
     } else if(guiButton.id == ID_PRIORITY_UP) {
       itemConduit.setOutputPriority(gui.dir, itemConduit.getOutputPriority(gui.dir) + 1);
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
 
     } else if(guiButton.id == ID_PRIORITY_DOWN) {
       itemConduit.setOutputPriority(gui.dir, itemConduit.getOutputPriority(gui.dir) - 1);
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
 
     } else if(guiButton.id == ID_CHANNEL) {
 
@@ -379,7 +380,7 @@ public class ItemSettings extends BaseSettingsPanel {
       } else {
         return;
       }
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
     }
   }
 
@@ -389,7 +390,7 @@ public class ItemSettings extends BaseSettingsPanel {
     if(activeFilter != null) {
       ConnectionMode mode = con.getConectionMode(gui.dir);
       boolean inputActive = (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
     }
   }
 

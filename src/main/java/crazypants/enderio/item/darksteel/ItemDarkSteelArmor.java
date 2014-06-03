@@ -23,7 +23,6 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.material.Alloy;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 

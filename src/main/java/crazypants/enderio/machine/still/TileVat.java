@@ -11,13 +11,13 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
@@ -174,7 +174,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   protected boolean processTasks(boolean redstoneChecksPassed) {
     boolean res = super.processTasks(redstoneChecksPassed);
     if(tanksDirty && worldObj.getWorldTime() % 10 == 0) {
-      EnderIO.packetPipeline.sendToAllAround(new PacketTanks(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketTanks(this), this);
       tanksDirty = false;
     }    
     return res;

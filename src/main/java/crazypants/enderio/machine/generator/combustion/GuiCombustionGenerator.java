@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 
 import org.lwjgl.opengl.GL11;
 

@@ -1,13 +1,15 @@
 package crazypants.gui;
 
-import crazypants.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
+
+import crazypants.render.RenderUtil;
 
 public class ItemButton extends GuiButton {
 

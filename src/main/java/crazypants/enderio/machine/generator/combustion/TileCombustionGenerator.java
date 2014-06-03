@@ -15,13 +15,12 @@ import buildcraft.api.fuels.IronEngineCoolant.Coolant;
 import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import buildcraft.api.power.IPowerEmitter;
-import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.PowerDistributor;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
@@ -170,7 +169,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
     
     if(tanksDirty) {     
-      EnderIO.packetPipeline.sendToAllAround(new PacketTanks(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketTanks(this), this);
       tanksDirty = false;
     }
 
