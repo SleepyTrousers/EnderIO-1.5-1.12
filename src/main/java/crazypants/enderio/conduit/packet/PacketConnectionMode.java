@@ -37,8 +37,8 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
 
   @Override
   public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
-    getTileCasted(ctx).setConnectionMode(dir, mode);
-    getWorld(ctx).markBlockForUpdate(x, y, z);
+    message.getTileCasted(ctx).setConnectionMode(message.dir, message.mode);
+    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
     return null;
   }
 

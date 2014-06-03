@@ -35,11 +35,11 @@ public class YetaWrenchPacketProcessor implements IMessage, IMessageHandler<Yeta
   @Override
   public IMessage onMessage(YetaWrenchPacketProcessor message, MessageContext ctx) {
     ItemStack stack = null;
-    if(slot > -1 && slot < 9) {
+    if(message.slot > -1 && message.slot < 9) {
       stack = ctx.getServerHandler().playerEntity.inventory.getStackInSlot(slot);
     }
     if(stack != null) {
-      ConduitDisplayMode.setDisplayMode(stack, mode);
+      ConduitDisplayMode.setDisplayMode(stack, message.mode);
     }
     return null;
   }

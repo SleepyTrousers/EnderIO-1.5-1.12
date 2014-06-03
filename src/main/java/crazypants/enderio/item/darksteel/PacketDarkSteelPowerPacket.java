@@ -31,7 +31,7 @@ public class PacketDarkSteelPowerPacket implements IMessage, IMessageHandler<Pac
   }
 
   public IMessage onMessage(PacketDarkSteelPowerPacket message, MessageContext ctx) {
-    DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().playerEntity, ItemDarkSteelArmor.forArmorType(armorType), powerUse);
+    DarkSteelController.instance.usePlayerEnergy(ctx.getServerHandler().playerEntity, ItemDarkSteelArmor.forArmorType(armorType), message.powerUse);
     ctx.getServerHandler().playerEntity.fallDistance = 0;
     return null;
   }

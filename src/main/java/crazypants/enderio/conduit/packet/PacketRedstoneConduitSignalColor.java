@@ -36,8 +36,8 @@ public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IIns
 
   @Override
   public IMessage onMessage(PacketRedstoneConduitSignalColor message, MessageContext ctx) {
-    getTileCasted(ctx).setSignalColor(dir, col);
-    getWorld(ctx).markBlockForUpdate(x, y, z);
+    message.getTileCasted(ctx).setSignalColor(message.dir, message.col);
+    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
     return null;
   }
 

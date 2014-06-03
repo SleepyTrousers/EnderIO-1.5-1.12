@@ -57,21 +57,21 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
 
     ep.playSound("mob.endermen.portal", 1.0F, 1.0F);
 
-    ep.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
+    ep.setPositionAndUpdate(message.x + 0.5, message.y + 1.1, message.z + 0.5);
 
-    ep.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);
+    ep.worldObj.playSoundEffect(message.x, message.y, message.z, "mob.endermen.portal", 1.0F, 1.0F);
     ep.fallDistance = 0;
 
-    if(conserveMotion) {
+    if(message.conserveMotion) {
       Vector3d velocityVex = Util.getLookVecEio(ep);
       S12PacketEntityVelocity p = new S12PacketEntityVelocity(ep.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
 
       ctx.getServerHandler().sendPacket(p);
     }
 
-    if(powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff) {
+    if(message.powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff) {
       ItemStack item = ep.getCurrentEquippedItem().copy();
-      EnderIO.itemTravelStaff.extractInternal(item, powerUse);
+      EnderIO.itemTravelStaff.extractInternal(item, message.powerUse);
       ep.setCurrentItemOrArmor(0, item);
     }
 

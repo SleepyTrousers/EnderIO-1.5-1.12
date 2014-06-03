@@ -157,7 +157,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     }
 
     if(tanksDirty) {
-      PacketHandler.INSTANCE.sendToAllAround(new PacketTank(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketZombieTank(this), this);
       tanksDirty = false;
     }
 

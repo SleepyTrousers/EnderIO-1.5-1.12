@@ -46,11 +46,11 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
 
   public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileTravelAnchor) {
-      ((TileTravelAnchor) te).setAccessMode(mode);
-      player.worldObj.markBlockForUpdate(x, y, z);
-      player.worldObj.markTileEntityChunkModified(x,y,z,te);      
+      ((TileTravelAnchor) te).setAccessMode(message.mode);
+      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
+      player.worldObj.markTileEntityChunkModified(message.x, message.y, message.z, te);      
     }
     return null;
   }

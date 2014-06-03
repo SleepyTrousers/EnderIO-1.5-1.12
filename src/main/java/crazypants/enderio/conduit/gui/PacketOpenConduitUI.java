@@ -35,8 +35,8 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
 
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().playerEntity;
-      TileEntity tile = getWorld(ctx).getTileEntity(x, y, z);
-      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+      TileEntity tile = message.getWorld(ctx).getTileEntity(x, y, z);
+      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + message.dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
       return null;
   }
 

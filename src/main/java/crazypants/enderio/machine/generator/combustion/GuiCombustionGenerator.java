@@ -31,11 +31,11 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("combustionGenerator.coolantTank");
-        if(gen.coolantTank.getFluid() != null) {
-          heading += ": " + gen.coolantTank.getFluid().getFluid().getLocalizedName();
+        if(gen.getCoolantTank().getFluid() != null) {
+          heading += ": " + gen.getCoolantTank().getFluid().getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.coolantTank));
+        text.add(Fluids.toCapactityString(gen.getCoolantTank()));
       }
 
     });
@@ -46,11 +46,11 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("combustionGenerator.fuelTank");
-        if(gen.fuelTank.getFluid() != null) {
-          heading += ": " + gen.fuelTank.getFluid().getFluid().getLocalizedName();
+        if(gen.getFuelTank().getFluid() != null) {
+          heading += ": " + gen.getFuelTank().getFluid().getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.fuelTank));
+        text.add(Fluids.toCapactityString(gen.getFuelTank()));
       }
 
     });
@@ -98,10 +98,10 @@ public class GuiCombustionGenerator extends GuiMachineBase {
 
     int x = guiLeft + 48;
     int y = guiTop + 21;
-    if(gen.coolantTank.getFluidAmount() > 0) {
+    if(gen.getCoolantTank().getFluidAmount() > 0) {
       x = guiLeft + 114;
       //right tank
-      RenderUtil.renderGuiTank(gen.coolantTank.getFluid(), 4000, gen.coolantTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
+      RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 4000, gen.getCoolantTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
         txt = gen.getNumTicksPerMbCoolant() + " t/MB";
@@ -112,19 +112,19 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       x = guiLeft + 72;
       y = guiTop + 14;
       //center coolant chamber
-      RenderUtil.renderGuiTank(gen.coolantTank.getFluid(), 1000, Math.min(gen.coolantTank.getFluidAmount(), 1000), x, y, zLevel, 33, 33);
+      RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 1000, Math.min(gen.getCoolantTank().getFluidAmount(), 1000), x, y, zLevel, 33, 33);
       //draw some gui over the top again to make the center shape
       RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");
       drawTexturedModalRect(x, y + 14, 0, 223, 33, 33);
       y += 7;
     }
 
-    if(gen.fuelTank.getFluidAmount() > 0) {
+    if(gen.getFuelTank().getFluidAmount() > 0) {
       //left tank
       x = guiLeft + 48;
 
       //RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 4000, gen.fuelTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
-      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 4000, gen.fuelTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
+      RenderUtil.renderGuiTank(gen.getFuelTank().getFluid(), 4000, gen.getFuelTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
         txt = gen.getNumTicksPerMbFuel() + " t/MB";
@@ -134,7 +134,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
 
       //center tank
       //RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 1000, Math.min(gen.fuelTank.getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
-      RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 1000, Math.min(gen.fuelTank.getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
+      RenderUtil.renderGuiTank(gen.getFuelTank().getFluid(), 1000, Math.min(gen.getFuelTank().getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
     }
 
     RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");

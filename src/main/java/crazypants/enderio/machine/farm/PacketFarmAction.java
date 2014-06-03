@@ -9,9 +9,12 @@ import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.util.BlockCoord;
+import crazypants.util.ClientUtil;
 
-public class PacketFarmAction implements IMessage {
+public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAction, IMessage> {
 
   private static Random rand = new Random();
 
@@ -46,21 +49,12 @@ public class PacketFarmAction implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    for (BlockCoord bc : coords) {
+  public IMessage onMessage(PacketFarmAction message, MessageContext ctx) {
+    for (BlockCoord bc : message.coords) {
       for (int i = 0; i < 15; i++) {
-        double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-        double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
-        double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-        player.worldObj.spawnParticle("portal", bc.x + xOff, bc.y + yOff, bc.z + zOff,
-            (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(), (rand.nextDouble() - 0.5) * 1.5);
+        ClientUtil.spawnFarmParcticles(rand, bc);
       }
     }
-
+    return null;
   }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-  }
-
 }

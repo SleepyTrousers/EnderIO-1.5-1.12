@@ -41,9 +41,9 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> impleme
 
   @Override
   public IMessage onMessage(PacketExtractMode message, MessageContext ctx) {
-    getTileCasted(ctx).setExtractionRedstoneMode(mode, dir);
-    getTileCasted(ctx).setExtractionSignalColor(dir, color);
-    getWorld(ctx).markBlockForUpdate(x, y, z);
+    message.getTileCasted(ctx).setExtractionRedstoneMode(message.mode, message.dir);
+    message.getTileCasted(ctx).setExtractionSignalColor(message.dir, message.color);
+    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
     return null;
   }
 

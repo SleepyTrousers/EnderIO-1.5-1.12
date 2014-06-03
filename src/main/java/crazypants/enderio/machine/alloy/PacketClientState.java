@@ -45,17 +45,12 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   }
 
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
-    handle(ctx.getServerHandler().playerEntity);
-    return null;
-  }
-
-  private void handle(EntityPlayer player) {
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+    TileEntity te = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileAlloySmelter) {
       TileAlloySmelter me = (TileAlloySmelter) te;
-      me.setMode(mode);
-      player.worldObj.markBlockForUpdate(x, y, z);
+      me.setMode(message.mode);
+      ctx.getServerHandler().playerEntity.worldObj.markBlockForUpdate(message.x, message.y, message.z);
     }
+    return null;
   }
-
 }

@@ -82,20 +82,20 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
   @Override
   public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
-    IItemConduit conduit = getTileCasted(ctx);
-    conduit.setSelfFeedEnabled(dir, loopMode);
-    conduit.setRoundRobinEnabled(dir, roundRobin);
-    conduit.setInputColor(dir, colIn);
-    conduit.setOutputColor(dir, colOut);
-    conduit.setOutputPriority(dir, priority);
-    applyFilter(conduit, inputFilter, true);
-    applyFilter(conduit, outputFilter, false);
+    IItemConduit conduit = message.getTileCasted(ctx);
+    conduit.setSelfFeedEnabled(message.dir, message.loopMode);
+    conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
+    conduit.setInputColor(message.dir, message.colIn);
+    conduit.setOutputColor(message.dir, message.colOut);
+    conduit.setOutputPriority(message.dir, message.priority);
+    applyFilter(message.dir, conduit, message.inputFilter, true);
+    applyFilter(message.dir, conduit, message.outputFilter, false);
 
-    getWorld(ctx).markBlockForUpdate(x, y, z);
+    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
     return null;
   }
 
-  private void applyFilter(IItemConduit conduit, ItemFilter filter, boolean isInput) {
+  private void applyFilter(ForgeDirection dir, IItemConduit conduit, ItemFilter filter, boolean isInput) {
     if(filter == null) {
       if(isInput) {
         conduit.setInputFilter(dir, filter);

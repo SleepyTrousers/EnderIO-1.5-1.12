@@ -26,8 +26,8 @@ import crazypants.util.FluidUtil;
 
 public class TileCombustionGenerator extends AbstractMachineEntity implements IPowerEmitter, IFluidHandler {
 
-  final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
-  final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
+  private final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
+  private final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
   private boolean tanksDirty;
 
   private int ticksRemaingFuel;
@@ -117,10 +117,10 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
     tanksDirty = true;
     if(IronEngineCoolant.isCoolant(resource.getFluid())) {
-      return coolantTank.fill(resource, doFill);
+      return getCoolantTank().fill(resource, doFill);
     }
     if(IronEngineFuel.getFuelForFluid(resource.getFluid()) != null) {
-      return fuelTank.fill(resource, doFill);
+      return getFuelTank().fill(resource, doFill);
     }
     return 0;
   }
@@ -169,7 +169,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
     
     if(tanksDirty) {     
-      PacketHandler.INSTANCE.sendToAllAround(new PacketTanks(this), this);
+      PacketHandler.sendToAllAround(new PacketCombustionTank(this), this);
       tanksDirty = false;
     }
 
@@ -197,12 +197,12 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     generated = 0;
 
-    Fuel fuel = fuelTank.getFluid() == null ? null : IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid());
+    Fuel fuel = getFuelTank().getFluid() == null ? null : IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
     if(fuel == null) {
       return false;
     }
 
-    if(coolantTank.getFluidAmount() <= 0 || storedEnergy >= powerHandler.getMaxEnergyStored()) {
+    if(getCoolantTank().getFluidAmount() <= 0 || storedEnergy >= powerHandler.getMaxEnergyStored()) {
       return false;
     }
 
@@ -213,7 +213,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     }
     inPause = false;
 
-    Coolant coolant = IronEngineCoolant.getCoolant(coolantTank.getFluid());
+    Coolant coolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
     if(coolant == null) {
       return false;
     }
@@ -221,14 +221,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     boolean res = false;
     ticksRemaingFuel--;
     if(ticksRemaingFuel <= 0) {
-      fuelTank.drain(1, true);
+      getFuelTank().drain(1, true);
       ticksRemaingFuel = getNumTicksPerMbFuel(fuel);
       res = true;
       tanksDirty = true;
     }
     ticksRemaingCoolant--;
     if(ticksRemaingCoolant <= 0) {
-      coolantTank.drain(1, true);
+      getCoolantTank().drain(1, true);
       ticksRemaingCoolant = getNumTicksPerMbCoolant(coolant, fuel);
       res = true;
       tanksDirty = true;
@@ -239,22 +239,22 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     generated = fuel.powerPerCycle;
     storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
 
-    return fuelTank.getFluidAmount() > 0 && coolantTank.getFluidAmount() > 0;
+    return getFuelTank().getFluidAmount() > 0 && getCoolantTank().getFluidAmount() > 0;
   }
 
   public int getNumTicksPerMbFuel() {
-    if(fuelTank.getFluidAmount() <= 0) {
+    if(getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    return getNumTicksPerMbFuel(IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid()));
+    return getNumTicksPerMbFuel(IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid()));
   }
 
   public int getNumTicksPerMbCoolant() {
-    if(fuelTank.getFluidAmount() <= 0) {
+    if(getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    Fuel fuel = IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid());
-    Coolant coolant = IronEngineCoolant.getCoolant(coolantTank.getFluid());
+    Fuel fuel = IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
+    Coolant coolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
     return getNumTicksPerMbCoolant(coolant, fuel);
   }
 
@@ -305,7 +305,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(isSideDisabled(from.ordinal())) {
       return new FluidTankInfo[0];
     }
-    return new FluidTankInfo[] { coolantTank.getInfo(), fuelTank.getInfo() };
+    return new FluidTankInfo[] { getCoolantTank().getInfo(), getFuelTank().getInfo() };
   }
 
   @Override
@@ -321,23 +321,23 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(nbtRoot.hasKey("coolantTank")) {
       NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("coolantTank");
       if(tankRoot != null) {
-        coolantTank.readFromNBT(tankRoot);
+        getCoolantTank().readFromNBT(tankRoot);
       } else {
-        coolantTank.setFluid(null);
+        getCoolantTank().setFluid(null);
       }
     } else {
-      coolantTank.setFluid(null);
+      getCoolantTank().setFluid(null);
     }
 
     if(nbtRoot.hasKey("fuelTank")) {
       NBTTagCompound tankRoot = (NBTTagCompound) nbtRoot.getTag("fuelTank");
       if(tankRoot != null) {
-        fuelTank.readFromNBT(tankRoot);
+        getFuelTank().readFromNBT(tankRoot);
       } else {
-        fuelTank.setFluid(null);
+        getFuelTank().setFluid(null);
       }
     } else {
-      fuelTank.setFluid(null);
+      getFuelTank().setFluid(null);
     }
 
     ticksRemaingFuel = nbtRoot.getInteger("ticksRemaingFuel");
@@ -347,14 +347,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
-    if(coolantTank.getFluidAmount() > 0) {
+    if(getCoolantTank().getFluidAmount() > 0) {
       NBTTagCompound tankRoot = new NBTTagCompound();
-      coolantTank.writeToNBT(tankRoot);
+      getCoolantTank().writeToNBT(tankRoot);
       nbtRoot.setTag("coolantTank", tankRoot);
     }
-    if(fuelTank.getFluidAmount() > 0) {
+    if(getFuelTank().getFluidAmount() > 0) {
       NBTTagCompound tankRoot = new NBTTagCompound();
-      fuelTank.writeToNBT(tankRoot);
+      getFuelTank().writeToNBT(tankRoot);
       nbtRoot.setTag("fuelTank", tankRoot);
     }
     nbtRoot.setInteger("ticksRemaingFuel", ticksRemaingFuel);
@@ -377,14 +377,22 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   @Override
   public float getPowerUsePerTick() {
-    if(fuelTank.getFluidAmount() <= 0) {
+    if(getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    Fuel fuel = IronEngineFuel.getFuelForFluid(fuelTank.getFluid().getFluid());
+    Fuel fuel = IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
     if(fuel == null) {
       return 0;
     }
     return fuel.powerPerCycle;
+  }
+
+  public FluidTank getCoolantTank() {
+    return coolantTank;
+  }
+
+  public FluidTank getFuelTank() {
+    return fuelTank;
   }
 
 }

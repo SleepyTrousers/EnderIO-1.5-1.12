@@ -8,14 +8,14 @@ import net.minecraft.world.World;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketTank extends MessageTileEntity<TileZombieGenerator> {
+public class PacketZombieTank extends MessageTileEntity<TileZombieGenerator> {
 
   private NBTTagCompound nbtRoot;
 
-  public PacketTank() {
+  public PacketZombieTank() {
   }
 
-  public PacketTank(TileZombieGenerator tile) {
+  public PacketZombieTank(TileZombieGenerator tile) {
     super(tile);
     nbtRoot = new NBTTagCompound();
     if(tile.fuelTank.getFluidAmount() > 0) {
@@ -27,16 +27,15 @@ public class PacketTank extends MessageTileEntity<TileZombieGenerator> {
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(ctx, buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(ctx, buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 
+  
   @Override
   protected void handleClientSide(EntityPlayer player, World worldObj, TileZombieGenerator tile) {
     if(nbtRoot.hasKey("tank")) {

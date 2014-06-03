@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.generator.stirling;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.network.MessageTileEntity;
+import crazypants.util.ClientUtil;
 
-public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> {
+public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerator> implements IMessageHandler<PacketBurnTime, IMessage> {
 
-  private int burnTime;
-  private int totalBurnTime;
+  public int burnTime;
+  public int totalBurnTime;
   
   public PacketBurnTime() {
   }
@@ -21,22 +23,19 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(ctx, buf);
     buf.writeInt(burnTime);
     buf.writeInt(totalBurnTime);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(ctx, buf);
     burnTime = buf.readInt();
     totalBurnTime = buf.readInt();
   }
-
+  
   @Override
-  protected void handleClientSide(EntityPlayer player, World worldObj, TileEntityStirlingGenerator tile) {
-    tile.burnTime = burnTime;
-    tile.totalBurnTime = totalBurnTime;
+  public IMessage onMessage(PacketBurnTime message, MessageContext ctx) {
+    ClientUtil.setStirlingBurnTime(message, message.x, message.y, message.z);
+    return null;
   }
-
 }

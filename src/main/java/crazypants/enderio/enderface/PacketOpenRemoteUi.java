@@ -58,7 +58,7 @@ public class PacketOpenRemoteUi implements IMessage, IMessageHandler<PacketOpenR
   public IMessage onMessage(PacketOpenRemoteUi message, MessageContext ctx) {
     EntityPlayerMP player = (EntityPlayerMP) ctx.getServerHandler().playerEntity;
     net.minecraft.inventory.Container c = player.openContainer;
-    PlayerProxy pp = new PlayerProxy(player, x, y, z);
+    PlayerProxy pp = new PlayerProxy(player, message.x, message.y, message.z);
     EntityPlayerMP proxy = createPlayerProxy(player, pp);
     proxy.playerNetServerHandler = player.playerNetServerHandler;
     proxy.inventory = player.inventory;

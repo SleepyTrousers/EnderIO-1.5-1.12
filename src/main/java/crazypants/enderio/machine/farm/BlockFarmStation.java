@@ -2,6 +2,7 @@ package crazypants.enderio.machine.farm;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,7 +17,7 @@ import crazypants.enderio.network.PacketHandler;
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
   public static BlockFarmStation create() {
-    PacketHandler.INSTANCE.registerPacket(PacketFarmAction.class);
+    PacketHandler.INSTANCE.registerMessage(PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
     BlockFarmStation result = new BlockFarmStation();
     result.init();
     return result;

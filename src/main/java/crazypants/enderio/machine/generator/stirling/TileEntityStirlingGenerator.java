@@ -22,8 +22,8 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public static final float ENERGY_PER_TICK = 2;
 
   /** How many ticks left until the item is burnt. */
-  int burnTime = 0;
-  int totalBurnTime;
+  public int burnTime = 0;
+  public int totalBurnTime;
 
   private PowerDistributor powerDis;
 
@@ -172,7 +172,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
       }
     }
     if(!needsUpdate && sendBurnTimePacket) {
-      PacketHandler.INSTANCE.sendToAllAround(new PacketBurnTime(this), this);
+      PacketHandler.sendToAllAround(new PacketBurnTime(this), this);
     }
 
     return needsUpdate;

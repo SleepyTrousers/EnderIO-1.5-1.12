@@ -21,7 +21,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   public static BlockZombieGenerator create() {
     
-    PacketHandler.INSTANCE.registerPacket(PacketTank.class);
+    PacketHandler.INSTANCE.registerPacket(PacketZombieTank.class);
     
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();

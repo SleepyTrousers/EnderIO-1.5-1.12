@@ -238,7 +238,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       if(harvest != null) {
         if(harvest.getDrops() != null) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          PacketHandler.INSTANCE.sendToAllAround(new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64), pkt);
+          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
           for (EntityItem ei : harvest.getDrops()) {
             if(ei != null) {            
               insertHarvestDrop(ei);
@@ -247,7 +247,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
               }
             }
           }
-
         }
       }
     }

@@ -34,7 +34,7 @@ public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainSt
     EntityPlayer ep = ctx.getServerHandler().playerEntity;
   
     if(ItemTravelStaff.isEquipped(ep)) {
-      EnderIO.itemTravelStaff.extractInternal(ep.getCurrentEquippedItem(), powerUse);
+      EnderIO.itemTravelStaff.extractInternal(ep.getCurrentEquippedItem(), message.powerUse);
     }
     return null;
   }

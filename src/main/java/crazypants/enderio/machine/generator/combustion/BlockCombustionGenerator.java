@@ -2,6 +2,7 @@ package crazypants.enderio.machine.generator.combustion;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +23,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   public static int renderId = -1;
 
   public static BlockCombustionGenerator create() {
-    PacketHandler.INSTANCE.registerPacket(PacketTanks.class);
+    PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
     
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();
