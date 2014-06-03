@@ -32,6 +32,7 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -269,7 +270,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
     World world = getBundle().getEntity().getWorldObj();
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
-    if(te instanceof IPowerEmitter || te instanceof IRedstoneControl) {
+    if(te instanceof IPowerEmitter || te instanceof IRedstoneControl || te instanceof AbstractMachineEntity) {
       return true;
     }
 

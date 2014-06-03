@@ -2,6 +2,7 @@ package crazypants.enderio.conduit;
 
 import static crazypants.enderio.ModObject.blockPainter;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
@@ -49,11 +50,22 @@ public class ConduitRecipes {
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);
 
-    ItemStack itemConduitAdvanced = new ItemStack(EnderIO.itemItemConduit, numConduits, 1);
-    GameRegistry.addShapedRecipe(itemConduitAdvanced, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
+//    ItemStack itemConduitAdvanced = new ItemStack(EnderIO.itemItemConduit, numConduits, 1);
+//    GameRegistry.addShapedRecipe(itemConduitAdvanced, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
 
     MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
+    
+    //Filter Recipes
+    ItemStack basicFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 0);
+    GameRegistry.addShapedRecipe(basicFilter, " p ","php"," p ", 'p', Items.paper, 'h', Blocks.hopper);
+    
+    ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
+    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 0), 'r', Items.redstone);
+    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 2), 'r', Items.redstone);
+    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 4), 'r', Items.redstone);
 
+    ItemStack speedUpgrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0);
+    GameRegistry.addShapedRecipe(speedUpgrade, "iii","epe","ere", 'p', Blocks.piston, 'e', electricalSteel, 'r', Blocks.redstone_torch, 'i', Items.iron_ingot);
   }
 
 }

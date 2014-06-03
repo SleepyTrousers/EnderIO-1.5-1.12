@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -81,14 +83,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   ItemConduitNetwork network;
 
-  int maxExtractedOnTick = 2;
-  float extractRatePerTick = maxExtractedOnTick / 20f;
+//  int maxExtractedOnTick = 2;
+//  float extractRatePerTick = maxExtractedOnTick / 20f;
 
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
-  protected final EnumMap<ForgeDirection, ItemFilter> outputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
-  protected final EnumMap<ForgeDirection, ItemFilter> inputFilters = new EnumMap<ForgeDirection, ItemFilter>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, IItemFilter> outputFilters = new EnumMap<ForgeDirection, IItemFilter>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, IItemFilter> inputFilters = new EnumMap<ForgeDirection, IItemFilter>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, ItemStack> outputFilterUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, ItemStack> inputFilterUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, ItemStack> speedUpgrades = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
 
   protected final EnumMap<ForgeDirection, Boolean> selfFeed = new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
 
@@ -112,12 +117,50 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   private void updateFromMetadata() {
     if(metaData == 1) {
-      maxExtractedOnTick = 64;
-      extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
+      
+      for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
+        if(entry.getValue() != null) {
+          IItemFilter f = entry.getValue();
+          if(!isDefault(f)) {
+            setSpeedUpgrade(entry.getKey(), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 4, 0));
+            setInputFilterUpgrade(entry.getKey(), new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1));
+          }
+        }
+      }
+      
+      for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
+        if(entry.getValue() != null) {
+          IItemFilter f = entry.getValue();
+          if(!isDefault(f)) {            
+            setOutputFilterUpgrade(entry.getKey(), new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1));
+          }
+        }
+      }
+      metaData = 0;
+            
+      //maxExtractedOnTick = 64;
+      //extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
     } else {
-      maxExtractedOnTick = 1;
-      extractRatePerTick = 0.2f; //four items a second      
+      //maxExtractedOnTick = 1;
+      //extractRatePerTick = 0.2f; //four items a second      
     }
+        
+  }
+  
+  @Override
+  public List<ItemStack> getDrops() {
+    List<ItemStack> res = new ArrayList<ItemStack>();
+    res.add(createItem());
+    for(ItemStack stack : speedUpgrades.values()) {
+      res.add(stack);
+    }
+    for(ItemStack stack : inputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    for(ItemStack stack : outputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    return res;
   }
 
   @Override
@@ -178,42 +221,75 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public void setInputFilter(ForgeDirection dir, ItemFilter filter) {
+  public void setInputFilter(ForgeDirection dir, IItemFilter filter) {
     inputFilters.put(dir, filter);
+    if(network != null) {
+      network.routesChanged();
+    }    
+    setClientStateDirty();
   }
 
   @Override
-  public void setOutputFilter(ForgeDirection dir, ItemFilter filter) {
+  public void setOutputFilter(ForgeDirection dir, IItemFilter filter) {
     outputFilters.put(dir, filter);
     if(network != null) {
       network.routesChanged();
     }
-
+    setClientStateDirty();
   }
 
   @Override
-  public ItemFilter getInputFilter(ForgeDirection dir) {
-    ItemFilter res = inputFilters.get(dir);
-    if(res == null) {
-      res = new ItemFilter();
-      inputFilters.put(dir, res);
+  public IItemFilter getInputFilter(ForgeDirection dir) {
+    return inputFilters.get(dir);
+  }
+  
+  @Override
+  public IItemFilter getOutputFilter(ForgeDirection dir) {
+    return outputFilters.get(dir);
+  }
+
+  @Override
+  public void setInputFilterUpgrade(ForgeDirection dir, ItemStack stack) {
+    inputFilterUpgrades.put(dir,  stack);    
+    setInputFilter(dir, FilterRegister.getFilterForUpgrade(stack));
+    setClientStateDirty();
+  }
+
+  @Override
+  public void setOutputFilterUpgrade(ForgeDirection dir, ItemStack stack) {
+    outputFilterUpgrades.put(dir,  stack);    
+    setOutputFilter(dir, FilterRegister.getFilterForUpgrade(stack));  
+    setClientStateDirty();
+  }
+
+  @Override
+  public ItemStack getInputFilterUpgrade(ForgeDirection dir) {
+    return inputFilterUpgrades.get(dir);
+  }
+
+  @Override
+  public ItemStack getOutputFilterUpgrade(ForgeDirection dir) {
+    return outputFilterUpgrades.get(dir);
+  }
+
+  @Override
+  public void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade) {
+    if(upgrade != null) {
+      speedUpgrades.put(dir, upgrade);
+    } else {
+      speedUpgrades.remove(dir);
     }
-    return res;
+    setClientStateDirty();
+  }
+
+  @Override
+  public ItemStack getSpeedUpgrade(ForgeDirection dir) {
+    return speedUpgrades.get(dir);
   }
 
   @Override
   public int getMetaData() {
     return metaData;
-  }
-
-  @Override
-  public ItemFilter getOutputFilter(ForgeDirection dir) {
-    ItemFilter res = outputFilters.get(dir);
-    if(res == null) {
-      res = new ItemFilter();
-      outputFilters.put(dir, res);
-    }
-    return res;
   }
 
   @Override
@@ -292,13 +368,26 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public int getMaximumExtracted() {
-    return maxExtractedOnTick;
+  public int getMaximumExtracted(ForgeDirection dir) {
+    int numUpgrades = getNumSpeedUpgrades(dir);
+    int res = (int)Math.pow(4, numUpgrades);
+    return res;
   }
 
   @Override
-  public float getTickTimePerItem() {
-    return 1f / extractRatePerTick;
+  public float getTickTimePerItem(ForgeDirection dir) {
+    int numUpgrades = getNumSpeedUpgrades(dir);    
+    float maxExtract = 10f / getMaximumExtracted(dir);    
+    return maxExtract;  
+    
+  }
+
+  private int getNumSpeedUpgrades(ForgeDirection dir) {
+    ItemStack stack = speedUpgrades.get(dir);
+    if(stack == null) {
+      return 0;
+    }
+    return stack.stackSize;
   }
 
   @Override
@@ -361,7 +450,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void setSelfFeedEnabled(ForgeDirection dir, boolean enabled) {
-    selfFeed.put(dir, enabled);
+    if(!enabled) {
+      selfFeed.remove(dir);
+    } else {
+      selfFeed.put(dir, enabled);
+    }
     if(network != null) {
       network.routesChanged();
     }
@@ -378,7 +471,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void setRoundRobinEnabled(ForgeDirection dir, boolean enabled) {
-    roundRobin.put(dir, enabled);
+    if(!enabled) {
+      roundRobin.remove(dir);
+    } else {
+      roundRobin.put(dir, enabled);
+    }
     if(network != null) {
       network.routesChanged();
     }
@@ -395,7 +492,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void setOutputPriority(ForgeDirection dir, int priority) {
-    this.priority.put(dir, priority);
+    if(priority == 0) {
+      this.priority.remove(dir);
+    } else {
+      this.priority.put(dir, priority);
+    }
     if(network != null) {
       network.routesChanged();
     }
@@ -491,25 +592,58 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
     nbtRoot.setShort("metaData", (short) metaData);
 
-    for (Entry<ForgeDirection, ItemFilter> entry : inputFilters.entrySet()) {
+    for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
-        ItemFilter f = entry.getValue();
-        if(!f.isDefault()) {
+        IItemFilter f = entry.getValue();
+        if(!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
-          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);          
         }
       }
     }
 
-    for (Entry<ForgeDirection, ItemFilter> entry : outputFilters.entrySet()) {
+    for (Entry<ForgeDirection, ItemStack> entry : speedUpgrades.entrySet()) {
       if(entry.getValue() != null) {
-        ItemFilter f = entry.getValue();
-        if(!f.isDefault()) {
+        ItemStack up = entry.getValue();
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("speedUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+
+    for (Entry<ForgeDirection, IItemFilter> entry : outputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        IItemFilter f = entry.getValue();
+        if(!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
-          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);          
         }
+      }
+    }
+    
+    for (Entry<ForgeDirection, ItemStack> entry : inputFilterUpgrades.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemStack up = entry.getValue();        
+        IItemFilter filter = getInputFilter(entry.getKey());
+        FilterRegister.writeFilterToStack(filter, up);               
+        
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("inputFilterUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+    
+    for (Entry<ForgeDirection, ItemStack> entry : outputFilterUpgrades.entrySet()) {
+      if(entry.getValue() != null) {
+        ItemStack up = entry.getValue();        
+        IItemFilter filter = getOutputFilter(entry.getKey());
+        FilterRegister.writeFilterToStack(filter, up);
+        
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("outputFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
 
@@ -538,7 +672,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         nbtRoot.setBoolean("roundRobin." + entry.getKey().name(), entry.getValue());
       }
     }
-    
+
     for (Entry<ForgeDirection, Integer> entry : priority.entrySet()) {
       if(entry.getValue() != null) {
         nbtRoot.setInteger("priority." + entry.getKey().name(), entry.getValue());
@@ -561,6 +695,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   }
 
+  private boolean isDefault(IItemFilter f) {
+    if(f instanceof ItemFilter) {
+      return ((ItemFilter)f).isDefault();
+    }
+    return false;
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
     super.readFromNBT(nbtRoot, nbtVersion);
@@ -568,19 +709,42 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     metaData = nbtRoot.getShort("metaData");
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemFilter filter = new ItemFilter();
         filter.readFromNBT(filterTag);
-        inputFilters.put(dir, filter);
+        inputFilters.put(dir, filter);        
       }
+      
+      key = "speedUpgrades." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        speedUpgrades.put(dir, ups);
+      }
+            
+      key = "inputFilterUpgrades." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);                
+        inputFilterUpgrades.put(dir, ups);        
+      }
+      
+      key = "outputFilterUpgrades." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        outputFilterUpgrades.put(dir, ups);
+      }
+      
       key = "outFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemFilter filter = new ItemFilter();
         filter.readFromNBT(filterTag);
-        outputFilters.put(dir, filter);
+        outputFilters.put(dir, filter);        
       }
 
       key = "extRM." + dir.name();
@@ -608,7 +772,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         boolean val = nbtRoot.getBoolean(key);
         roundRobin.put(dir, val);
       }
-      
+
       key = "priority." + dir.name();
       if(nbtRoot.hasKey(key)) {
         int val = nbtRoot.getInteger(key);

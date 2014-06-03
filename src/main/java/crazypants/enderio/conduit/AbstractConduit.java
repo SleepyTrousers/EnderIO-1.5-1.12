@@ -11,6 +11,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -68,6 +69,11 @@ public abstract class AbstractConduit implements IConduit {
 
   protected ConnectionMode getDefaultConnectionMode() {
     return ConnectionMode.IN_OUT;
+  }
+
+  @Override
+  public List<ItemStack> getDrops() {
+    return Collections.singletonList(createItem());
   }
 
   @Override
