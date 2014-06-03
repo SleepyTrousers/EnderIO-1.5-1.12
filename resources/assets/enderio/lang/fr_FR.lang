@@ -121,23 +121,23 @@ enderio.itemEnderface.noSync=Le Masque d'Ender n'est pas synchronisé avec l'End
 
 //------GUI
 
-//General
-enderio.color.black=Noir
-enderio.color.red=Rouge
-enderio.color.green=Vert
-enderio.color.brown=Marron
-enderio.color.blue=Bleu
-enderio.color.purple=Violet
-enderio.color.cyan=Cyan
-enderio.color.lightGray=Gris Clair
-enderio.color.gray=Gris
-enderio.color.pink=Rose
-enderio.color.lime=Vert Clair
-enderio.color.yellow=Jaune
-enderio.color.lightBlue=Bleu Clair
-enderio.color.magenta=Magenta
-enderio.color.orange=Orange
-enderio.color.white=Blanc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 enderio.gui.enabled=Activé
 enderio.gui.disabled=Désactivé
@@ -186,6 +186,7 @@ enderio.gui.mjReader.receiveItems=Peut recevoir des objets de :
 enderio.gui.mjReader.receiveItem1=Peut recevoir
 enderio.gui.mjReader.receiveItem2=depuis :
 
+
 //CapacitorBank
 enderio.gui.capBank.inputRs=Mode Redstone Entrée
 enderio.gui.capBank.outputRs=Mode Redstone Sortie
@@ -196,6 +197,7 @@ enderio.gui.capBank.maxOutput=Sortie Max
 //Transceiver
 enderio.gui.trans.publicChannel=Canal Public
 enderio.gui.trans.privateChannel=Canal Privé
+enderio.gui.trans.addChannel=Ajouter Canal
 enderio.gui.trans.deleteChannel=Suppr. Canal
 enderio.gui.trans.activateChannel=Activer Canal
 enderio.gui.trans.powerMode=Mode Énergie
@@ -203,6 +205,21 @@ enderio.gui.trans.fluidMode=Mode Fluides
 enderio.gui.trans.itemMode=Mode Objets
 enderio.gui.trans.publicHeading=Public
 enderio.gui.trans.privateHeading=Privé
+//Alloy Smelter
+enderio.gui.alloy.mode.heading=Mode de Fonderie
+enderio.gui.alloy.mode.all=Tous
+enderio.gui.alloy.mode.alloy=Alliages Seulement
+enderio.gui.alloy.mode.furnace=Fourneau Seulement
+
+//Travel Blocks
+enderio.gui.travelAccessable.privateBlock1=Only
+enderio.gui.travelAccessable.privateBlock2=peut modifier les paramètres de ce bloc.
+enderio.gui.travelAccessable.public=Publique
+enderio.gui.travelAccessable.private=Privé
+enderio.gui.travelAccessable.protected=Protégé
+enderio.gui.travelAccessable.unauthorised=Vous n'êtes pas autorisé à utiliser ce bloc.
+enderio.gui.travelAccessable.enterCode=Code d'accès requis.
+enderio.gui.travelAccessable.ok=Autoriser
 
 //conduits
 enderio.gui.conduit.ioMode=Mode
@@ -212,12 +229,15 @@ enderio.gui.conduit.ioMode.output=Insérer
 enderio.gui.conduit.ioMode.disabled=Désactivé
 enderio.gui.conduit.ioMode.notSet=Par Défaut
 
+enderio.gui.conduit.item.insertionFilter=Filtre d'Insertion
+enderio.gui.conduit.item.extractionFilter=Filtre d'Extraction
 enderio.gui.conduit.item.sigCol=Couleur du signal
 enderio.gui.conduit.item.channel=Canal
 enderio.gui.conduit.item.ignoreMetaData=Meta Data Ignorées
 enderio.gui.conduit.item.matchMetaData=Meta Data Égales
 enderio.gui.conduit.item.whitelist=Liste Blanche
 enderio.gui.conduit.item.blacklist=Liste Noire
+
 enderio.gui.conduit.item.stickyEnabled=Mode Collant activé|les objets sélectionnés|ne seront envoyés qu'ici ou| aux autres Sorties Collantes.
 enderio.gui.conduit.item.stickyDisbaled=Mode Collant désactivé
 enderio.gui.conduit.item.ignoreNBT=Données NBT Ignorées
