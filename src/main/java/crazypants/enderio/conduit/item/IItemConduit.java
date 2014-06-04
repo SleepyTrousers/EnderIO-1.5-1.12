@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.item;
 
 import cofh.api.transport.IItemDuct;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduit;
@@ -22,19 +23,31 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
 
   IInventory getExternalInventory(ForgeDirection direction);
 
-  int getMaximumExtracted();
+  int getMaximumExtracted(ForgeDirection direction);
 
-  float getTickTimePerItem();
+  float getTickTimePerItem(ForgeDirection direction);
 
   void itemsExtracted(int numInserted, int slot);
+  
+  void setInputFilterUpgrade(ForgeDirection dir, ItemStack stack);
 
-  void setInputFilter(ForgeDirection dir, ItemFilter filter);
+  void setOutputFilterUpgrade(ForgeDirection dir, ItemStack stack);
 
-  void setOutputFilter(ForgeDirection dir, ItemFilter filter);
+  ItemStack getInputFilterUpgrade(ForgeDirection dir);
 
-  ItemFilter getInputFilter(ForgeDirection dir);
+  ItemStack getOutputFilterUpgrade(ForgeDirection dir);  
 
-  ItemFilter getOutputFilter(ForgeDirection dir);
+  void setInputFilter(ForgeDirection dir, IItemFilter filter);
+
+  void setOutputFilter(ForgeDirection dir, IItemFilter filter);
+
+  IItemFilter getInputFilter(ForgeDirection dir);
+
+  IItemFilter getOutputFilter(ForgeDirection dir);
+  
+  void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade);
+  
+  ItemStack getSpeedUpgrade(ForgeDirection dir);
   
   int getOutputPriority(ForgeDirection dir);
   

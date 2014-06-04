@@ -78,7 +78,7 @@ class NetworkedInventory {
   }
 
   boolean isSticky() {
-    return con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
+    return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
   
   int getPriority() {    
@@ -132,7 +132,7 @@ class NetworkedInventory {
     }
     int numSlots = slotIndices.length;
     ItemStack extractItem = null;
-    int maxExtracted = con.getMaximumExtracted();
+    int maxExtracted = con.getMaximumExtracted(conDir);
 
     int slot = -1;
     int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
@@ -157,7 +157,7 @@ class NetworkedInventory {
     if(itemStack == null) {
       return false;
     }
-    ItemFilter filter = con.getInputFilter(conDir);
+    IItemFilter filter = con.getInputFilter(conDir);
     if(filter == null) {
       return true;
     }
@@ -188,7 +188,7 @@ class NetworkedInventory {
       }
     }
     con.itemsExtracted(numInserted, slot);
-    tickDeficit = Math.round(numInserted * con.getTickTimePerItem());
+    tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
     return true;
 
   }
@@ -207,8 +207,8 @@ class NetworkedInventory {
     //for (Target target : sendPriority) {
     for (Target target : targets) {
       if(target.stickyInput && !matchedStickyInput) {
-        ItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
-        matchedStickyInput = of.isValid() && of.doesItemPassFilter(toExtract);
+        IItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
+        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(toExtract);
       }
       if(target.stickyInput || !matchedStickyInput) {
         if(target.inv.recheckInv) {
@@ -248,7 +248,7 @@ class NetworkedInventory {
     if(!canInsert() || item == null) {
       return 0;
     }
-    ItemFilter filter = con.getOutputFilter(conDir);
+    IItemFilter filter = con.getOutputFilter(conDir);
     if(filter != null) {
       if(!filter.doesItemPassFilter(item)) {
         return 0;

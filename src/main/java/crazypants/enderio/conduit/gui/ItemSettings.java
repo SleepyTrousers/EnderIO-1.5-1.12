@@ -11,6 +11,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.IItemFilter;
 import crazypants.enderio.conduit.item.ItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
@@ -35,16 +36,11 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private static final int ID_COLOR_BUTTON = 179816;
 
-  private static final int ID_WHITELIST = 17;
-  private static final int ID_NBT = 18;
-  private static final int ID_META = 19;
-  private static final int ID_ORE_DICT = 20;
-  private static final int ID_STICKY = 21;
   private static final int ID_LOOP = 22;
-  private static final int ID_CHANNEL = 23;
   private static final int ID_ROUND_ROBIN = 24;
   private static final int ID_PRIORITY_UP = 25;
   private static final int ID_PRIORITY_DOWN = 26;
+  private static final int ID_CHANNEL = 23;
 
   private IItemConduit itemConduit;
 
@@ -52,13 +48,6 @@ public class ItemSettings extends BaseSettingsPanel {
   private String outputHeading;
 
   private IconButtonEIO nextFilterB;
-
-  private ToggleButtonEIO useMetaB;
-  private ToggleButtonEIO useNbtB;
-  private IconButtonEIO whiteListB;
-  private ToggleButtonEIO useOreDictB;
-  private ToggleButtonEIO stickyB;
-  private ColorButton channelB;
 
   private ToggleButtonEIO loopB;
   private ToggleButtonEIO roundRobinB;
@@ -68,33 +57,41 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private RedstoneModeButton rsB;
   private ColorButton colorB;
+  
+  private ColorButton channelB;
 
   boolean inOutShowIn = false;
 
-  boolean isAdvanced;
+  private IItemFilter activeFilter;
 
-  private ItemFilter activeFilter;
-  
-  private int priLeft = 120;
+  private int priLeft;
   private int priWidth = 32;
 
   private GuiToolTip priorityTooltip;
 
+  private BasicItemFilterGui filterGui;
+
   protected ItemSettings(final GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ITEM, Lang.localize("itemItemConduit.name"), gui, con);
     itemConduit = (IItemConduit) con;
-    isAdvanced = itemConduit.getMetaData() == 1;
 
     inputHeading = Lang.localize("gui.conduit.item.extractionFilter");
     outputHeading = Lang.localize("gui.conduit.item.insertionFilter");
 
-    int x = 98;
+    int x = 52;
     int y = customTop;
 
     nextFilterB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
     nextFilterB.setSize(8, 16);
 
-    x = 115;
+    x = 66;    
+    channelB = new ColorButton(gui, ID_CHANNEL, x, y);
+    channelB.setColorIndex(0);
+    channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
+    
+    x += channelB.getWidth() + 4;
+    priLeft = x - 8;
+    
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
 
       @Override
@@ -130,52 +127,24 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setUnselectedToolTip(Lang.localize("gui.conduit.item.selfFeedDisabled"));
     loopB.setPaintSelectedBorder(false);
 
-    x = priLeft + priWidth + 9;
+    x = priLeft + priWidth + 9;    
     priUpB = new IconButtonEIO(gui, ID_PRIORITY_UP, x, y, IconEIO.ADD_BUT);
-    priUpB.setSize(10, 10);
+    priUpB.setSize(8, 8);
 
-    y += 10;
+    y += 8;
     priDownB = new IconButtonEIO(gui, ID_PRIORITY_DOWN, x, y, IconEIO.MINUS_BUT);
-    priDownB.setSize(10, 10);
+    priDownB.setSize(8, 8);
 
-    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9,  y, priWidth, 20), Lang.localize("gui.conduit.item.priority"));
-    
-    x = 115;
-    y = 66;
-    whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
+    priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 20), Lang.localize("gui.conduit.item.priority"));
 
-    x += 20;
-    useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
-    useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
-    useMetaB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreMetaData"));
-    useMetaB.setPaintSelectedBorder(false);
+    gui.container.filterListeners.add(new FilterChangeListener() {
 
-    x += 20;
-    stickyB = new ToggleButtonEIO(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
-    String[] lines = Lang.localizeList("gui.conduit.item.stickyEnabled");
-    stickyB.setSelectedToolTip(lines);
-    stickyB.setUnselectedToolTip(Lang.localize("gui.conduit.item.stickyDisbaled"));
-    stickyB.setPaintSelectedBorder(false);
+      @Override
+      public void onFilterChanged() {
+        filtersChanged();
+      }
 
-    y += 20;
-    x = 115;
-
-    channelB = new ColorButton(gui, ID_CHANNEL, x, y);
-    channelB.setColorIndex(0);
-    channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
-
-    x += 20;
-    useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
-    useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
-    useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
-    useNbtB.setPaintSelectedBorder(false);
-
-    x += 20;
-    useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
-    useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
-    useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
-    useOreDictB.setPaintSelectedBorder(false);
+    });
 
   }
 
@@ -207,15 +176,10 @@ public class ItemSettings extends BaseSettingsPanel {
 
     ConnectionMode mode = con.getConectionMode(gui.dir);
     if(mode == ConnectionMode.INPUT) {
-      showInput = true;
-      gui.container.setInputSlotsVisible(true);
-      gui.container.setOutputSlotsVisible(false);
-      gui.container.setInventorySlotsVisible(true);
+      showInput = true;     
     } else if(mode == ConnectionMode.OUTPUT) {
       showOutput = true;
-      gui.container.setInputSlotsVisible(false);
-      gui.container.setOutputSlotsVisible(true);
-      gui.container.setInventorySlotsVisible(true);
+
     } else if(mode == ConnectionMode.IN_OUT) {
 
       if(nextFilterB != null) {
@@ -227,17 +191,24 @@ public class ItemSettings extends BaseSettingsPanel {
     }
 
     if(!showInput && !showOutput) {
+      filterGui = null;
       activeFilter = null;
-    } else {
+    } else if(showInput) {
+      activeFilter = itemConduit.getInputFilter(gui.dir);
       gui.container.setInventorySlotsVisible(true);
-      if(showInput) {
-        activeFilter = itemConduit.getInputFilter(gui.dir);
-        gui.container.setInputSlotsVisible(true);
-        gui.container.setOutputSlotsVisible(false);
-      } else {
-        activeFilter = itemConduit.getOutputFilter(gui.dir);
-        gui.container.setInputSlotsVisible(false);
-        gui.container.setOutputSlotsVisible(true);
+      gui.container.setInputSlotsVisible(true);
+      gui.container.setOutputSlotsVisible(false);
+      if(activeFilter != null) {
+        filterGui = new BasicItemFilterGui(gui, itemConduit, true);
+
+      }
+    } else if(showOutput) {
+      activeFilter = itemConduit.getOutputFilter(gui.dir);
+      gui.container.setInputSlotsVisible(false);
+      gui.container.setOutputSlotsVisible(true);
+      gui.container.setInventorySlotsVisible(true);
+      if(activeFilter != null) {
+        filterGui = new BasicItemFilterGui(gui, itemConduit, false);
       }
     }
 
@@ -245,54 +216,59 @@ public class ItemSettings extends BaseSettingsPanel {
 
   }
 
-  private void updateButtons() {
-    if(activeFilter == null || useNbtB == null) {
-      return;
+  private void filtersChanged() {
+    if(filterGui != null) {
+      filterGui.deactivate();
+      filterGui = null;
     }
 
     ConnectionMode mode = con.getConectionMode(gui.dir);
     if(mode == ConnectionMode.DISABLED) {
       return;
     }
-    boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
-    int chanCol;
-    if(outputActive) {
-      stickyB.onGuiInit();
-      stickyB.setSelected(activeFilter.isSticky());
 
-      chanCol = itemConduit.getOutputColor(gui.dir).ordinal();
+    boolean showInput = mode == ConnectionMode.INPUT || (mode == ConnectionMode.IN_OUT && inOutShowIn);
+    if(showInput) {
+      gui.container.setInventorySlotsVisible(true);
+      gui.container.setInputSlotsVisible(true);
+      gui.container.setOutputSlotsVisible(false);
+
+      activeFilter = itemConduit.getInputFilter(gui.dir);
+      if(activeFilter != null) {
+        filterGui = new BasicItemFilterGui(gui, itemConduit, true);
+      }
     } else {
+      gui.container.setInventorySlotsVisible(true);
+      gui.container.setInputSlotsVisible(false);
+      gui.container.setOutputSlotsVisible(true);
+
+      activeFilter = itemConduit.getOutputFilter(gui.dir);
+      if(activeFilter != null) {
+        filterGui = new BasicItemFilterGui(gui, itemConduit, false);
+      }
+
+    }
+    if(filterGui != null) {
+      filterGui.updateButtons();
+    }
+
+  }
+
+  private void updateButtons() {
+
+    ConnectionMode mode = con.getConectionMode(gui.dir);
+    if(mode == ConnectionMode.DISABLED) {
+      return;
+    }
+    boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
+    
+    if(!outputActive) {
 
       rsB.onGuiInit();
       rsB.setMode(itemConduit.getExtractionRedstoneMode(gui.dir));
 
       colorB.onGuiInit();
       colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.dir).ordinal());
-
-      chanCol = itemConduit.getInputColor(gui.dir).ordinal();
-    }
-
-    channelB.onGuiInit();
-    channelB.setColorIndex(chanCol);
-
-    if(isAdvanced) {
-      useNbtB.onGuiInit();
-      useNbtB.setSelected(activeFilter.isMatchNBT());
-
-      useOreDictB.onGuiInit();
-      useOreDictB.setSelected(activeFilter.isUseOreDict());
-    }
-
-    useMetaB.onGuiInit();
-    useMetaB.setSelected(activeFilter.isMatchMeta());
-
-    whiteListB.onGuiInit();
-    if(activeFilter.isBlacklist()) {
-      whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(Lang.localize("gui.conduit.item.blacklist"));
-    } else {
-      whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
     }
 
     if(mode == ConnectionMode.IN_OUT && !outputActive) {
@@ -310,6 +286,19 @@ public class ItemSettings extends BaseSettingsPanel {
       priDownB.onGuiInit();
       gui.addToolTip(priorityTooltip);
     }
+    
+    int chanCol;
+    if(!outputActive) {
+      chanCol = itemConduit.getInputColor(gui.dir).ordinal();      
+    } else {      
+      chanCol = itemConduit.getOutputColor(gui.dir).ordinal();      
+    }
+    channelB.onGuiInit();
+    channelB.setColorIndex(chanCol);
+
+    if(filterGui != null) {
+      filterGui.updateButtons();
+    }
 
   }
 
@@ -319,78 +308,44 @@ public class ItemSettings extends BaseSettingsPanel {
     if(guiButton.id == NEXT_FILTER_ID) {
       inOutShowIn = !inOutShowIn;
       updateGuiVisibility();
-    }
-
-    if(activeFilter == null) {
-      return;
-    }
-    if(guiButton.id == ID_META) {
-      activeFilter.setMatchMeta(useMetaB.isSelected());
-      sendFilterChange();
-    } else if(guiButton.id == ID_NBT) {
-      activeFilter.setMatchNBT(useNbtB.isSelected());
-      sendFilterChange();
-    } else if(guiButton.id == ID_STICKY) {
-      activeFilter.setSticky(stickyB.isSelected());
-      sendFilterChange();
-    } else if(guiButton.id == ID_ORE_DICT) {
-      activeFilter.setUseOreDict(useOreDictB.isSelected());
-      sendFilterChange();
-    } else if(guiButton.id == ID_WHITELIST) {
-      activeFilter.setBlacklist(!activeFilter.isBlacklist());
-      sendFilterChange();
     } else if(guiButton.id == ID_COLOR_BUTTON) {
-
       itemConduit.setExtractionSignalColor(gui.dir, DyeColor.values()[colorB.getColorIndex()]);
       EnderIO.packetPipeline.sendToServer(new PacketExtractMode(itemConduit, gui.dir));
-
     } else if(guiButton.id == ID_LOOP) {
       itemConduit.setSelfFeedEnabled(gui.dir, !itemConduit.isSelfFeedEnabled(gui.dir));
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
-
     } else if(guiButton.id == ID_ROUND_ROBIN) {
       itemConduit.setRoundRobinEnabled(gui.dir, !itemConduit.isRoundRobinEnabled(gui.dir));
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
-      
     } else if(guiButton.id == ID_PRIORITY_UP) {
       itemConduit.setOutputPriority(gui.dir, itemConduit.getOutputPriority(gui.dir) + 1);
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
-
     } else if(guiButton.id == ID_PRIORITY_DOWN) {
       itemConduit.setOutputPriority(gui.dir, itemConduit.getOutputPriority(gui.dir) - 1);
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
-
     } else if(guiButton.id == ID_CHANNEL) {
 
-      ConnectionMode mode = con.getConectionMode(gui.dir);
-      if(mode == ConnectionMode.IN_OUT) {
-        mode = inOutShowIn ? ConnectionMode.INPUT : ConnectionMode.OUTPUT;
-      }
-
-      DyeColor col = DyeColor.values()[channelB.getColorIndex()];
+      DyeColor col = DyeColor.values()[channelB.getColorIndex()];      
       boolean input;
-      if(mode == ConnectionMode.INPUT) {
+      if(isInputVisible()) {
         col = DyeColor.values()[channelB.getColorIndex()];
         itemConduit.setInputColor(gui.dir, col);
         input = true;
-      } else if(mode == ConnectionMode.OUTPUT) {
+      } else  {
         itemConduit.setOutputColor(gui.dir, DyeColor.values()[channelB.getColorIndex()]);
         input = false;
-      } else {
-        return;
-      }
+      } 
       EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+    }
+
+    if(filterGui != null) {
+      filterGui.actionPerformed(guiButton);
     }
   }
 
-  private void sendFilterChange() {
-    updateButtons();
-
-    if(activeFilter != null) {
-      ConnectionMode mode = con.getConectionMode(gui.dir);
-      boolean inputActive = (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
-    }
+  private boolean isInputVisible() {
+    ConnectionMode mode = con.getConectionMode(gui.dir);    
+    return (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
   }
 
   @Override
@@ -402,29 +357,42 @@ public class ItemSettings extends BaseSettingsPanel {
   @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     ConnectionMode mode = con.getConectionMode(gui.dir);
-    if(mode != ConnectionMode.DISABLED) {
-      if(itemConduit.getMetaData() == 0) {
-        RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-      } else {
-        RenderUtil.bindTexture("enderio:textures/gui/itemFilterAdvanced.png");
-      }
-      gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
+    if(mode == ConnectionMode.DISABLED) {
+      return;
+    }
 
-      FontRenderer fr = gui.getFontRenderer();
-      String heading = getHeading();
-      int headingWidth = fr.getStringWidth(heading);
-      int x = 0;
-      int rgb = ColorUtil.getRGB(Color.darkGray);
-      fr.drawString(heading, left + x, top, rgb);
-      
-      boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
-      if(outputActive) {
-        GL11.glColor3f(1, 1, 1);
-        IconEIO.BUTTON_DOWN.renderIcon(left + priLeft, top - 5, priWidth, 20, 0, true);
-        String str = itemConduit.getOutputPriority(gui.dir) + "";
-        int sw = fr.getStringWidth(str);
-        fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
-      }
+    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    gui.drawTexturedModalRect(gui.getGuiLeft(), gui.getGuiTop() + 55, 0, 55, gui.getXSize(), 145);
+
+    FontRenderer fr = gui.getFontRenderer();
+    String heading = getHeading();
+    int headingWidth = fr.getStringWidth(heading);
+    int x = 0;
+    int rgb = ColorUtil.getRGB(Color.darkGray);
+    fr.drawString(heading, left + x, top, rgb);
+
+    boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
+    if(outputActive) {
+      GL11.glColor3f(1, 1, 1);
+      IconEIO.BUTTON_DOWN.renderIcon(left + priLeft, top - 5, priWidth, 16, 0, true);
+      String str = itemConduit.getOutputPriority(gui.dir) + "";
+      int sw = fr.getStringWidth(str);
+      fr.drawString(str, left + priLeft + priWidth - sw - gap, top, ColorUtil.getRGB(Color.black));
+
+    } else {
+      //draw speed upgrade slot
+      GL11.glColor3f(1, 1, 1);
+      RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+      gui.drawTexturedModalRect(gui.getGuiLeft() + 9 + 18, gui.getGuiTop() + 46, 94, 238, 18, 18);      
+    }
+    
+    //filter upgrade slot
+    GL11.glColor3f(1, 1, 1);
+    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+    gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46, 94, 220, 18, 18);
+    
+    if(filterGui != null) {
+      filterGui.renderCustomOptions(top, par1, par2, par3);
     }
 
   }
@@ -436,18 +404,18 @@ public class ItemSettings extends BaseSettingsPanel {
     gui.container.setOutputSlotsVisible(false);
     rsB.detach();
     colorB.detach();
-    channelB.detach();
-    useNbtB.detach();
-    useMetaB.detach();
-    useOreDictB.detach();
-    whiteListB.detach();
-    stickyB.detach();
     roundRobinB.detach();
     loopB.detach();
     nextFilterB.detach();
     priUpB.detach();
     priDownB.detach();
-    gui.removeToolTip(priorityTooltip);    
+    gui.removeToolTip(priorityTooltip);
+    channelB.detach();
+
+    if(filterGui != null) {
+      filterGui.deactivate();
+      filterGui = null;
+    }
   }
 
 }

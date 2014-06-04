@@ -377,7 +377,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
         if(con.getConduitConnections().isEmpty() &&
             con.getExternalConnections().isEmpty() && ConduitUtil.renderConduit(player, con)) {
           te.removeConduit(con);
-          drop.add(con.createItem());
+          drop.addAll(con.getDrops());
           droppedUnconected = true;
         }
       }
@@ -386,7 +386,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
         for (IConduit con : cons) {
           if(ConduitUtil.renderConduit(player, con)) {
             te.removeConduit(con);
-            drop.add(con.createItem());
+            drop.addAll(con.getDrops());
           }
         }
       }
@@ -394,7 +394,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
       IConduit con = te.getConduit(type);
       if(con != null) {
         te.removeConduit(con);
-        drop.add(con.createItem());
+        drop.addAll(con.getDrops());
       }
     }
 
