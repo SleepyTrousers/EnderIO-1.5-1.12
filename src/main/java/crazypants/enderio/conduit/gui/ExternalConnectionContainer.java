@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.IItemFilter;
 import crazypants.enderio.conduit.item.ItemFilter;
@@ -69,13 +70,13 @@ public class ExternalConnectionContainer extends Container {
       x = 10;
       y = 67;
       FilterUpgradeInventory fi = new FilterUpgradeInventory(itemConduit, dir, false);
-      addSlotToContainer(new FilterSlot(fi, 0, x, y));
+      addSlotToContainer(new FilterSlot(fi, 0, x, y, false));
       slotLocations.add(new Point(x, y));
 
       x = 10;
       y = 67;
       fi = new FilterUpgradeInventory(itemConduit, dir, true);
-      addSlotToContainer(new FilterSlot(fi, 0, x, y));
+      addSlotToContainer(new FilterSlot(fi, 0, x, y, true));
       slotLocations.add(new Point(x, y));
 
       x = 10;
@@ -175,6 +176,10 @@ public class ExternalConnectionContainer extends Container {
   @Override
   public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
     if(par4EntityPlayer.worldObj != null) {
+      if(par1 >= startFilterSlot && itemConduit != null) {
+        itemConduit.setInputFilter(dir, inputFilter);
+        itemConduit.setOutputFilter(dir, outputFilter);
+      }
       //      if(itemConduit != null) {
       //        itemConduit.setInputFilter(dir, inputFilter);
       //        itemConduit.setOutputFilter(dir, outputFilter);
@@ -199,14 +204,18 @@ public class ExternalConnectionContainer extends Container {
 
   private class FilterSlot extends Slot {
 
-    public FilterSlot(IInventory par1iInventory, int par2, int par3, int par4) {
+    boolean isInput;
+    
+    public FilterSlot(IInventory par1iInventory, int par2, int par3, int par4, boolean isInput) {
       super(par1iInventory, par2, par3, par4);
+      this.isInput = isInput;
     }
 
     @Override
     public void onSlotChanged() {
       filterChanged();
     }
+
 
   }
 

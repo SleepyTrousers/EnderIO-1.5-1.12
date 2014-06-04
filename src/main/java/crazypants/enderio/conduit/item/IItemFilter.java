@@ -23,4 +23,5 @@ public interface IItemFilter {
   List<Slot> getSlots();
 
   int getSlotCount();
+  
 }

@@ -96,7 +96,7 @@ public class FilterUpgradeInventory implements IInventory {
   }
 
   @Override
-  public void markDirty() {      
+  public void markDirty() {     
   }
 
   @Override

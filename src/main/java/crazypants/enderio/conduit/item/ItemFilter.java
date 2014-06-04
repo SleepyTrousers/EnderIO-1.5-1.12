@@ -40,6 +40,8 @@ public class ItemFilter implements IInventory, IItemFilter {
   int[] oreIds;
 
   private boolean isAdvanced;
+  
+  private IItemConduit con;
 
   public ItemFilter() {
     this(5, false);
@@ -265,7 +267,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public void markDirty() {
+  public void markDirty() {    
   }
 
   @Override

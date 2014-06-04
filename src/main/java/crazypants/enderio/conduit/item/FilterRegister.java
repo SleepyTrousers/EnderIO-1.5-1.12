@@ -41,12 +41,37 @@ public class FilterRegister {
   }
 
   public static IItemFilter getFilterForUpgrade(ItemStack stack) {
-    if(stack != null && stack.getItem() == Items.paper) {     
-      return new ItemFilter(true);
-    } else if(stack != null && stack.getItem() == Items.stick) {
-      return new ItemFilter(false);
+    if(stack == null) {
+      return null;
     }
-    return null;
+    
+    IItemFilter res = null;
+    if(stack != null && stack.getItem() == Items.paper) {     
+      res = new ItemFilter(true);
+    } else if(stack != null && stack.getItem() == Items.stick) {
+      res = new ItemFilter(false);
+    }
+    if(res != null && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {      
+      res.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
+    } 
+    return res;
+  }
+
+  public static void writeFilterToStack(IItemFilter filter, ItemStack stack) {
+    if(stack == null || filter == null) {     
+      return;
+    }    
+    NBTTagCompound filterRoot = new NBTTagCompound();
+    filter.writeToNBT(filterRoot);
+    if(stack.stackTagCompound == null) {
+      stack.stackTagCompound = new NBTTagCompound();
+    }
+    stack.stackTagCompound.setTag("filter", filterRoot);
+    stack.setStackDisplayName("Configured");
+    
+    //System.out.println("FilterRegister.writeFilterToStack: " + stack.stackTagCompound);
+    
+    
   }
 
 }

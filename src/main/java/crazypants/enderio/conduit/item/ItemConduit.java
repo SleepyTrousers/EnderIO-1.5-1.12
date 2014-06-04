@@ -187,6 +187,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     if(network != null) {
       network.routesChanged();
     }    
+    setClientStateDirty();
   }
 
   @Override
@@ -194,7 +195,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     outputFilters.put(dir, filter);
     if(network != null) {
       network.routesChanged();
-    }    
+    }
+    setClientStateDirty();
   }
 
   @Override
@@ -571,7 +573,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     
     for (Entry<ForgeDirection, ItemStack> entry : inputFilterUpgrades.entrySet()) {
       if(entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+        ItemStack up = entry.getValue();        
+        IItemFilter filter = getInputFilter(entry.getKey());
+        FilterRegister.writeFilterToStack(filter, up);               
+        
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
         nbtRoot.setTag("inputFilterUpgrades." + entry.getKey().name(), itemRoot);
@@ -580,7 +585,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     
     for (Entry<ForgeDirection, ItemStack> entry : outputFilterUpgrades.entrySet()) {
       if(entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+        ItemStack up = entry.getValue();        
+        IItemFilter filter = getOutputFilter(entry.getKey());
+        FilterRegister.writeFilterToStack(filter, up);
+        
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
         nbtRoot.setTag("outputFilterUpgrades." + entry.getKey().name(), itemRoot);
@@ -655,8 +663,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemFilter filter = new ItemFilter();
         filter.readFromNBT(filterTag);
-        inputFilters.put(dir, filter);
-        System.out.println("ItemConduit.readFromNBT: input=" + filter);
+        inputFilters.put(dir, filter);        
       }
       
       key = "speedUpgrades." + dir.name();
@@ -669,7 +676,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       key = "inputFilterUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);                
         inputFilterUpgrades.put(dir, ups);        
       }
       
@@ -685,8 +692,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemFilter filter = new ItemFilter();
         filter.readFromNBT(filterTag);
-        outputFilters.put(dir, filter);
-        System.out.println("ItemConduit.readFromNBT: output=" + filter);
+        outputFilters.put(dir, filter);        
       }
 
       key = "extRM." + dir.name();
