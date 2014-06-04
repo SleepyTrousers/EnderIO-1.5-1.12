@@ -64,7 +64,7 @@ public class GuiExternalConnection extends GuiContainerBase {
     buttonList.clear();
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
-        tabs.get(i).onGuiInit(guiLeft + 10, guiTop + 10, xSize - 20, ySize - 20);
+        tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
       } else {
         tabs.get(i).deactivate();
       }

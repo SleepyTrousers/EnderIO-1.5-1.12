@@ -50,7 +50,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     int x = gap * 3 + fr.getStringWidth(modeLabel);
-    int y = gap * 3 + fr.FONT_HEIGHT;
+    int y = 8;// + fr.FONT_HEIGHT;
 
     leftArrow = new IconButtonEIO(gui, PREV_MODE_B, x, y, IconEIO.LEFT_ARROW);
     leftArrow.setSize(8, 16);
@@ -60,6 +60,8 @@ public class BaseSettingsPanel implements ISettingsPanel {
     rightArrow.setSize(8, 16);
 
     customTop = top + gap * 5 + fr.FONT_HEIGHT * 2;
+    customTop -= 16;
+    //customTop = top;
 
   }
 
@@ -115,10 +117,10 @@ public class BaseSettingsPanel implements ISettingsPanel {
     int rgb = ColorUtil.getRGB(Color.darkGray);
     int x = left + (width - fr.getStringWidth(getTypeName())) / 2;
 
-    fr.drawString(getTypeName(), x, top, rgb);
+    //fr.drawString(getTypeName(), x, top, rgb);
 
     x = left;
-    int y = top + gap + fr.FONT_HEIGHT + gap;
+    int y = customTop + 8;//gap + fr.FONT_HEIGHT + gap;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
     String modeString = con.getConectionMode(gui.dir).getLocalisedName();
@@ -134,6 +136,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     gui.getFontRenderer().drawString(modeString, x, y, rgb);
 
     renderCustomOptions(y + gap + fr.FONT_HEIGHT + gap, par1, par2, par3);
+    //renderCustomOptions(y + gap, par1, par2, par3);
   }
 
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {

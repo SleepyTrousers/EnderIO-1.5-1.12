@@ -292,7 +292,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   public List<Slot> getSlots() {
     List<Slot> result = new ArrayList<Slot>();
     
-    int topY = 67;
+    int topY = 69;
     int leftX = 33;
     int index = 0;    
     int numRows = isAdvanced ? 2 : 1;

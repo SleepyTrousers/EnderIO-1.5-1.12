@@ -24,8 +24,7 @@ public class BasicItemFilterGui {
   private static final int ID_NBT = 18;
   private static final int ID_META = 19;
   private static final int ID_ORE_DICT = 20;
-  private static final int ID_STICKY = 21;  
-  private static final int ID_CHANNEL = 23;
+  private static final int ID_STICKY = 21;    
   
   private IItemConduit itemConduit;
   private GuiExternalConnection gui;
@@ -35,7 +34,7 @@ public class BasicItemFilterGui {
   private IconButtonEIO whiteListB;
   private ToggleButtonEIO useOreDictB;
   private ToggleButtonEIO stickyB;
-  private ColorButton channelB;
+  
   
   boolean isAdvanced;
   boolean isInput;
@@ -56,7 +55,7 @@ public class BasicItemFilterGui {
     
     int butLeft = 124;
     int x = butLeft ;
-    int y = 66;
+    int y = 68;
     whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.localize("gui.conduit.item.whitelist"));
 
@@ -76,17 +75,13 @@ public class BasicItemFilterGui {
     y += 20;
     x = butLeft;
 
-    channelB = new ColorButton(gui, ID_CHANNEL, x, y);
-    channelB.setColorIndex(0);
-    channelB.setToolTipHeading(Lang.localize("gui.conduit.item.channel"));
-
     x += 20;
     useNbtB = new ToggleButtonEIO(gui, ID_NBT, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchNBT"));
     useNbtB.setUnselectedToolTip(Lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
-    x += 20;
+    x = butLeft;
     useOreDictB = new ToggleButtonEIO(gui, ID_ORE_DICT, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
@@ -94,17 +89,6 @@ public class BasicItemFilterGui {
   }
   
   public void updateButtons() {
-    
-    int chanCol;
-    if(isInput) {
-      chanCol = itemConduit.getInputColor(gui.dir).ordinal();      
-    } else {
-      stickyB.onGuiInit();
-      stickyB.setSelected(filter.isSticky());
-      chanCol = itemConduit.getOutputColor(gui.dir).ordinal();      
-    }
-    channelB.onGuiInit();
-    channelB.setColorIndex(chanCol);
     
     ItemFilter activeFilter = (ItemFilter)filter;
     
@@ -114,6 +98,11 @@ public class BasicItemFilterGui {
 
       useOreDictB.onGuiInit();
       useOreDictB.setSelected(activeFilter.isUseOreDict());
+      
+      if(!isInput) {
+        stickyB.onGuiInit();
+        stickyB.setSelected(activeFilter.isSticky());
+      }
     }
 
     useMetaB.onGuiInit();
@@ -147,20 +136,7 @@ public class BasicItemFilterGui {
     } else if(guiButton.id == ID_WHITELIST) {
       filter.setBlacklist(!filter.isBlacklist());
       sendFilterChange();
-    } else if(guiButton.id == ID_CHANNEL) {
-
-      DyeColor col = DyeColor.values()[channelB.getColorIndex()];
-      boolean input;
-      if(isInput) {
-        col = DyeColor.values()[channelB.getColorIndex()];
-        itemConduit.setInputColor(gui.dir, col);
-        input = true;
-      } else  {
-        itemConduit.setOutputColor(gui.dir, DyeColor.values()[channelB.getColorIndex()]);
-        input = false;
-      } 
-      EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
-    }
+    } 
   }
   
   private void sendFilterChange() {
@@ -168,8 +144,7 @@ public class BasicItemFilterGui {
     EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
   }
   
-  public void deactivate() {    
-    channelB.detach();
+  public void deactivate() {        
     useNbtB.detach();
     useMetaB.detach();
     useOreDictB.detach();
@@ -180,9 +155,9 @@ public class BasicItemFilterGui {
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
     GL11.glColor3f(1, 1, 1);
     RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-    gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 66, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
     if(filter.isAdvanced()) {      
-      gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 84, 0, 238, 18 * 5, 18);
+      gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
     }
   }
   

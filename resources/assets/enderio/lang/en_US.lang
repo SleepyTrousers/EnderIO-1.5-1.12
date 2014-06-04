@@ -444,8 +444,8 @@ enderio.gui.conduit.ioMode.output=Insert
 enderio.gui.conduit.ioMode.disabled=Disabled
 enderio.gui.conduit.ioMode.notSet=Default
 
-enderio.gui.conduit.item.insertionFilter=Insertion Filter
-enderio.gui.conduit.item.extractionFilter=Extraction Filter
+enderio.gui.conduit.item.insertionFilter=Insert
+enderio.gui.conduit.item.extractionFilter=Extract
 enderio.gui.conduit.item.sigCol=Signal Color
 enderio.gui.conduit.item.channel=Channel
 enderio.gui.conduit.item.ignoreMetaData=Ignore Meta Data

@@ -68,19 +68,19 @@ public class ExternalConnectionContainer extends Container {
     if(itemConduit != null) {
 
       x = 10;
-      y = 67;
+      y = 47;
       FilterUpgradeInventory fi = new FilterUpgradeInventory(itemConduit, dir, false);
       addSlotToContainer(new FilterSlot(fi, 0, x, y, false));
       slotLocations.add(new Point(x, y));
 
       x = 10;
-      y = 67;
+      y = 47;
       fi = new FilterUpgradeInventory(itemConduit, dir, true);
       addSlotToContainer(new FilterSlot(fi, 0, x, y, true));
       slotLocations.add(new Point(x, y));
 
-      x = 10;
-      y = 85;
+      x = 28;
+      y = 47;
       SpeedUpgradesInventory si = new SpeedUpgradesInventory(itemConduit, dir);
       addSlotToContainer(new Slot(si, 0, x, y));
       slotLocations.add(new Point(x, y));
@@ -179,14 +179,7 @@ public class ExternalConnectionContainer extends Container {
       if(par1 >= startFilterSlot && itemConduit != null) {
         itemConduit.setInputFilter(dir, inputFilter);
         itemConduit.setOutputFilter(dir, outputFilter);
-      }
-      //      if(itemConduit != null) {
-      //        itemConduit.setInputFilter(dir, inputFilter);
-      //        itemConduit.setOutputFilter(dir, outputFilter);
-      //        if(par4EntityPlayer.worldObj.isRemote) {
-      //          par4EntityPlayer.worldObj.markBlockForUpdate(bundle.getEntity().xCoord, bundle.getEntity().xCoord, bundle.getEntity().xCoord);
-      //        }
-      //      }     
+      }     
     }
     try {
       return super.slotClick(par1, par2, par3, par4EntityPlayer);

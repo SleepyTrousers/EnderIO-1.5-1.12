@@ -39,7 +39,7 @@ public class IconButtonEIO extends GuiButton {
   public void setToolTip(String... tooltipText) {
     if(toolTip == null) {
       toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
-      gui.addToolTip(toolTip);
+      //gui.addToolTip(toolTip);
       toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
     } else {
       toolTip.setToolTipText(tooltipText);
