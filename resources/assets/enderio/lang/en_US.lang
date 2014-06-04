@@ -45,6 +45,11 @@ enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=viscosity
 enderio.itemItemConduit.name=Item Conduit
 enderio.itemItemConduitEmpowered.name=Empowered Item Conduit
 
+enderio.filterUpgradeBasic.name=Basic Item Filter
+enderio.filterUpgradeAdvanced.name=Advanced Item Filter
+enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+enderio.itemConduitFilterUpgrade.configured=Configured
+
 enderio.itemMeConduit.name=ME Conduit
 
 //Materials

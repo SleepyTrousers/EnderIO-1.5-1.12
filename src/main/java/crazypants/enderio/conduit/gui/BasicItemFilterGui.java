@@ -34,8 +34,7 @@ public class BasicItemFilterGui {
   private IconButtonEIO whiteListB;
   private ToggleButtonEIO useOreDictB;
   private ToggleButtonEIO stickyB;
-  
-  
+    
   boolean isAdvanced;
   boolean isInput;
   

@@ -44,19 +44,20 @@ public class FilterRegister {
     if(stack == null) {
       return null;
     }
-    
-    IItemFilter res = null;
-    if(stack != null && stack.getItem() == Items.paper) {     
-      res = new ItemFilter(true);
-    } else if(stack != null && stack.getItem() == Items.stick) {
-      res = new ItemFilter(false);
-    }
-    if(res != null && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {      
-      res.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
-    } 
+    if( ! (stack.getItem() instanceof IItemFilterUpgrade) ) {
+      return null;
+    }    
+    IItemFilterUpgrade upgrade = (IItemFilterUpgrade)stack.getItem();
+    IItemFilter res = upgrade.createFilterFromStack(stack); 
     return res;
   }
 
+  public static void loadFilterFromStack(IItemFilter filter, ItemStack stack) {
+    if(stack != null && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
+      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
+    }    
+  }
+  
   public static void writeFilterToStack(IItemFilter filter, ItemStack stack) {
     if(stack == null || filter == null) {     
       return;
@@ -66,12 +67,11 @@ public class FilterRegister {
     if(stack.stackTagCompound == null) {
       stack.stackTagCompound = new NBTTagCompound();
     }
-    stack.stackTagCompound.setTag("filter", filterRoot);
-    stack.setStackDisplayName("Configured");
-    
-    //System.out.println("FilterRegister.writeFilterToStack: " + stack.stackTagCompound);
-    
-    
+    stack.stackTagCompound.setTag("filter", filterRoot);           
+  }
+  
+  public static boolean isFilterSet(ItemStack stack) {
+    return stack != null && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter");     
   }
 
 }

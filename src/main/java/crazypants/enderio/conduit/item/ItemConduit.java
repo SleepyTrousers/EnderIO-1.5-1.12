@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -122,6 +124,22 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       maxExtractedOnTick = 1;
       extractRatePerTick = 0.2f; //four items a second      
     }
+  }
+  
+  @Override
+  public List<ItemStack> getDrops() {
+    List<ItemStack> res = new ArrayList<ItemStack>();
+    res.add(createItem());
+    for(ItemStack stack : speedUpgrades.values()) {
+      res.add(stack);
+    }
+    for(ItemStack stack : inputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    for(ItemStack stack : outputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    return res;
   }
 
   @Override

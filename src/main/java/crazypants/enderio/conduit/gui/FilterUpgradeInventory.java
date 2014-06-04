@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.IItemFilterUpgrade;
 
 public class FilterUpgradeInventory implements IInventory {
 
@@ -113,8 +114,11 @@ public class FilterUpgradeInventory implements IInventory {
   }
 
   @Override
-  public boolean isItemValidForSlot(int var1, ItemStack var2) {
-    return true;
+  public boolean isItemValidForSlot(int var1, ItemStack item) {
+    if(item == null) {
+      return false;
+    }
+    return item.getItem() instanceof IItemFilterUpgrade;
   }
 
 

@@ -12,6 +12,7 @@ public enum ModObject {
   itemRedstoneConduit,
   itemItemConduit,
   itemMeConduit,
+  itemBasicFilterUpgrade,
 
   // Power
   itemPowerConduit,
