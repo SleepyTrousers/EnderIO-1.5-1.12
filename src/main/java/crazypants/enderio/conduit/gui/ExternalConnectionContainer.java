@@ -115,8 +115,10 @@ public class ExternalConnectionContainer extends Container {
   protected void filterChanged() {
     int slotsToRemove = inventorySlots.size() - startFilterSlot;
     for (int i = 0; i < slotsToRemove; i++) {
-      inventorySlots.remove(inventorySlots.size() - 1);
-      slotLocations.remove(inventorySlots.size() - 1);
+      int removeIndex = inventorySlots.size() - 1;
+      inventorySlots.remove(removeIndex);
+      inventoryItemStacks.remove(removeIndex);
+      slotLocations.remove(removeIndex);
     }
     addFilterSlots(dir);
 
