@@ -84,8 +84,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   ItemConduitNetwork network;
 
-  int maxExtractedOnTick = 2;
-  float extractRatePerTick = maxExtractedOnTick / 20f;
+//  int maxExtractedOnTick = 2;
+//  float extractRatePerTick = maxExtractedOnTick / 20f;
 
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
@@ -118,12 +118,34 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   private void updateFromMetadata() {
     if(metaData == 1) {
-      maxExtractedOnTick = 64;
-      extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
+      
+      for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
+        if(entry.getValue() != null) {
+          IItemFilter f = entry.getValue();
+          if(!isDefault(f)) {
+            setSpeedUpgrade(entry.getKey(), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 4, 0));
+            setInputFilterUpgrade(entry.getKey(), new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1));
+          }
+        }
+      }
+      
+      for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
+        if(entry.getValue() != null) {
+          IItemFilter f = entry.getValue();
+          if(!isDefault(f)) {            
+            setOutputFilterUpgrade(entry.getKey(), new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1));
+          }
+        }
+      }
+      metaData = 0;
+            
+      //maxExtractedOnTick = 64;
+      //extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
     } else {
-      maxExtractedOnTick = 1;
-      extractRatePerTick = 0.2f; //four items a second      
+      //maxExtractedOnTick = 1;
+      //extractRatePerTick = 0.2f; //four items a second      
     }
+        
   }
   
   @Override
@@ -347,13 +369,26 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   @Override
-  public int getMaximumExtracted() {
-    return maxExtractedOnTick;
+  public int getMaximumExtracted(ForgeDirection dir) {
+    int numUpgrades = getNumSpeedUpgrades(dir);
+    int res = (int)Math.pow(4, numUpgrades);
+    return res;
   }
 
   @Override
-  public float getTickTimePerItem() {
-    return 1f / extractRatePerTick;
+  public float getTickTimePerItem(ForgeDirection dir) {
+    int numUpgrades = getNumSpeedUpgrades(dir);    
+    float maxExtract = 10f / getMaximumExtracted(dir);    
+    return maxExtract;  
+    
+  }
+
+  private int getNumSpeedUpgrades(ForgeDirection dir) {
+    ItemStack stack = speedUpgrades.get(dir);
+    if(stack == null) {
+      return 0;
+    }
+    return stack.stackSize;
   }
 
   @Override

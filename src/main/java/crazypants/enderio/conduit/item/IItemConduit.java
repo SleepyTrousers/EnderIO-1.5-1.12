@@ -23,9 +23,9 @@ public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
 
   IInventory getExternalInventory(ForgeDirection direction);
 
-  int getMaximumExtracted();
+  int getMaximumExtracted(ForgeDirection direction);
 
-  float getTickTimePerItem();
+  float getTickTimePerItem(ForgeDirection direction);
 
   void itemsExtracted(int numInserted, int slot);
   

@@ -50,8 +50,8 @@ public class ConduitRecipes {
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);
 
-    ItemStack itemConduitAdvanced = new ItemStack(EnderIO.itemItemConduit, numConduits, 1);
-    GameRegistry.addShapedRecipe(itemConduitAdvanced, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
+//    ItemStack itemConduitAdvanced = new ItemStack(EnderIO.itemItemConduit, numConduits, 1);
+//    GameRegistry.addShapedRecipe(itemConduitAdvanced, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
 
     MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
     
@@ -64,6 +64,8 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 2), 'r', Items.redstone);
     GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 4), 'r', Items.redstone);
 
+    ItemStack speedUpgrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0);
+    GameRegistry.addShapedRecipe(speedUpgrade, "iii","epe","ere", 'p', Blocks.piston, 'e', electricalSteel, 'r', Blocks.redstone_torch, 'i', Items.iron_ingot);
   }
 
 }

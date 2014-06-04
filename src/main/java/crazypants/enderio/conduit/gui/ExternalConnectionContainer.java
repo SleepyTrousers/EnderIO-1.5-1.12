@@ -69,20 +69,27 @@ public class ExternalConnectionContainer extends Container {
 
       x = 10;
       y = 47;
-      FilterUpgradeInventory fi = new FilterUpgradeInventory(itemConduit, dir, false);
+      InventoryFilterUpgrade fi = new InventoryFilterUpgrade(itemConduit, dir, false);
       addSlotToContainer(new FilterSlot(fi, 0, x, y, false));
       slotLocations.add(new Point(x, y));
 
       x = 10;
       y = 47;
-      fi = new FilterUpgradeInventory(itemConduit, dir, true);
+      fi = new InventoryFilterUpgrade(itemConduit, dir, true);
       addSlotToContainer(new FilterSlot(fi, 0, x, y, true));
       slotLocations.add(new Point(x, y));
 
       x = 28;
       y = 47;
-      SpeedUpgradesInventory si = new SpeedUpgradesInventory(itemConduit, dir);
-      addSlotToContainer(new Slot(si, 0, x, y));
+      final InventorySpeedUpgrades si = new InventorySpeedUpgrades(itemConduit, dir);
+      addSlotToContainer(new Slot(si, 0, x, y) {
+
+        @Override
+        public boolean isItemValid(ItemStack par1ItemStack) {
+          return si.isItemValidForSlot(0, par1ItemStack);
+        }
+        
+      });
       slotLocations.add(new Point(x, y));
 
       addFilterSlots(dir);
@@ -211,7 +218,11 @@ public class ExternalConnectionContainer extends Container {
       filterChanged();
     }
 
-
+    @Override
+    public boolean isItemValid(ItemStack par1ItemStack) {
+      return inventory.isItemValidForSlot(0, par1ItemStack);
+    }
+    
   }
 
 }

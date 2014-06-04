@@ -28,6 +28,7 @@ import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemBasicItemFilter;
+import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
@@ -140,6 +141,7 @@ public class EnderIO {
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
+  public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
 
   // Machines
   public static BlockStirlingGenerator blockStirlingGenerator;
@@ -251,6 +253,7 @@ public class EnderIO {
     itemItemConduit = ItemItemConduit.create();
     
     itemBasicFilterUpgrade = itemBasicFilterUpgrade.create();
+    itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);

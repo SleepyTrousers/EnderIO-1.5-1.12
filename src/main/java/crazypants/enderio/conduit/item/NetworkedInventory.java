@@ -132,7 +132,7 @@ class NetworkedInventory {
     }
     int numSlots = slotIndices.length;
     ItemStack extractItem = null;
-    int maxExtracted = con.getMaximumExtracted();
+    int maxExtracted = con.getMaximumExtracted(conDir);
 
     int slot = -1;
     int slotChecksPerTick = Math.min(numSlots, ItemConduitNetwork.MAX_SLOT_CHECK_PER_TICK);
@@ -188,7 +188,7 @@ class NetworkedInventory {
       }
     }
     con.itemsExtracted(numInserted, slot);
-    tickDeficit = Math.round(numInserted * con.getTickTimePerItem());
+    tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
     return true;
 
   }

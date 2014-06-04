@@ -4,14 +4,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.IItemConduit;
 
-class SpeedUpgradesInventory implements IInventory {
+class InventorySpeedUpgrades implements IInventory {
 
   IItemConduit itemConduit;
   ForgeDirection dir;
   
-  SpeedUpgradesInventory(IItemConduit itemConduit, ForgeDirection dir) {
+  InventorySpeedUpgrades(IItemConduit itemConduit, ForgeDirection dir) {
     this.itemConduit = itemConduit;
     this.dir = dir;
   }
@@ -99,8 +100,11 @@ class SpeedUpgradesInventory implements IInventory {
   }
 
   @Override
-  public boolean isItemValidForSlot(int var1, ItemStack var2) {
-    return true;
+  public boolean isItemValidForSlot(int var1, ItemStack item) {
+    if(item == null) {
+      return false;
+    }
+    return item.getItem() == EnderIO.itemExtractSpeedUpgrade;
   }
 
 }

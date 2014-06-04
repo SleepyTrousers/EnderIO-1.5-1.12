@@ -7,13 +7,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.IItemFilterUpgrade;
 
-public class FilterUpgradeInventory implements IInventory {
+public class InventoryFilterUpgrade implements IInventory {
 
   final IItemConduit itemConduit;
   final ForgeDirection dir;
   final boolean isInput;
   
-  FilterUpgradeInventory(IItemConduit itemConduit, ForgeDirection dir, boolean isInput) {
+  InventoryFilterUpgrade(IItemConduit itemConduit, ForgeDirection dir, boolean isInput) {
     this.itemConduit = itemConduit;
     this.dir = dir;
     this.isInput = isInput;
