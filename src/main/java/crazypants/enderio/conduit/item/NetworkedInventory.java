@@ -157,7 +157,7 @@ class NetworkedInventory {
     if(itemStack == null) {
       return false;
     }
-    ItemFilter filter = con.getInputFilter(conDir);
+    IItemFilter filter = con.getInputFilter(conDir);
     if(filter == null) {
       return true;
     }
@@ -207,7 +207,7 @@ class NetworkedInventory {
     //for (Target target : sendPriority) {
     for (Target target : targets) {
       if(target.stickyInput && !matchedStickyInput) {
-        ItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
+        IItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
         matchedStickyInput = of.isValid() && of.doesItemPassFilter(toExtract);
       }
       if(target.stickyInput || !matchedStickyInput) {
@@ -248,7 +248,7 @@ class NetworkedInventory {
     if(!canInsert() || item == null) {
       return 0;
     }
-    ItemFilter filter = con.getOutputFilter(conDir);
+    IItemFilter filter = con.getOutputFilter(conDir);
     if(filter != null) {
       if(!filter.doesItemPassFilter(item)) {
         return 0;

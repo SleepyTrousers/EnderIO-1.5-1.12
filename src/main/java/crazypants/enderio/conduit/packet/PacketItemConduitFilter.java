@@ -3,12 +3,17 @@ package crazypants.enderio.conduit.packet;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.IItemFilter;
 import crazypants.enderio.conduit.item.ItemFilter;
+import crazypants.enderio.network.NetworkUtil;
 import crazypants.util.DyeColor;
+import crazypants.util.ItemUtil;
 
 public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> {
 
@@ -19,8 +24,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   private DyeColor colOut;
   private int priority;
 
-  private ItemFilter inputFilter;
-  private ItemFilter outputFilter;
+  private IItemFilter inputFilter;
+  private IItemFilter outputFilter;
 
   public PacketItemConduitFilter() {
   }
@@ -47,16 +52,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     buf.writeInt(priority);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
-    writeFilter(buf, inputFilter);
-    writeFilter(buf, outputFilter);
-  }
-
-  private void writeFilter(ByteBuf buf, ItemFilter filter) {
-    buf.writeBoolean(filter.isBlacklist());
-    buf.writeBoolean(filter.isMatchMeta());
-    buf.writeBoolean(filter.isMatchNBT());
-    buf.writeBoolean(filter.isUseOreDict());
-    buf.writeBoolean(filter.isSticky());
+    FilterRegister.writeFilter(buf, inputFilter);
+    FilterRegister.writeFilter(buf, outputFilter);
   }
 
   @Override
@@ -68,19 +65,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     priority = buf.readInt();
     colIn = DyeColor.values()[buf.readShort()];
     colOut = DyeColor.values()[buf.readShort()];
-    inputFilter = readFilter(buf);
-    outputFilter = readFilter(buf);
-  }
-
-  private ItemFilter readFilter(ByteBuf data) {
-
-    ItemFilter itemFilter = new ItemFilter();
-    itemFilter.setBlacklist(data.readBoolean());
-    itemFilter.setMatchMeta(data.readBoolean());
-    itemFilter.setMatchNBT(data.readBoolean());
-    itemFilter.setUseOreDict(data.readBoolean());
-    itemFilter.setSticky(data.readBoolean());
-    return itemFilter;
+    inputFilter = FilterRegister.readFilter(buf);
+    outputFilter = FilterRegister.readFilter(buf);
   }
 
   @Override
@@ -96,22 +82,22 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     worldObj.markBlockForUpdate(x, y, z);
   }
 
-  private void applyFilter(IItemConduit conduit, ItemFilter filter, boolean isInput) {
-    if(filter == null) {
+  private void applyFilter(IItemConduit conduit, IItemFilter filter, boolean isInput) {
+//    if(filter == null) {
       if(isInput) {
         conduit.setInputFilter(dir, filter);
       } else {
         conduit.setOutputFilter(dir, filter);
       }
       return;
-    }
+//    }
 
-    ItemFilter itemFilter = isInput ? conduit.getInputFilter(dir) : conduit.getOutputFilter(dir);
-    itemFilter.setBlacklist(filter.isBlacklist());
-    itemFilter.setMatchMeta(filter.isMatchMeta());
-    itemFilter.setMatchNBT(filter.isMatchNBT());
-    itemFilter.setUseOreDict(filter.isUseOreDict());
-    itemFilter.setSticky(filter.isSticky());
+//    ItemFilter itemFilter = isInput ? conduit.getInputFilter(dir) : conduit.getOutputFilter(dir);
+//    itemFilter.setBlacklist(filter.isBlacklist());
+//    itemFilter.setMatchMeta(filter.isMatchMeta());
+//    itemFilter.setMatchNBT(filter.isMatchNBT());
+//    itemFilter.setUseOreDict(filter.isUseOreDict());
+//    itemFilter.setSticky(filter.isSticky());
 
   }
 

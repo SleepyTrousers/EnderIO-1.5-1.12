@@ -1,15 +1,23 @@
 package crazypants.enderio.conduit.item;
 
+import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
+import crazypants.gui.TemplateSlot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemFilter implements IInventory {
+public class ItemFilter implements IInventory, IItemFilter {
 
   private static final boolean DEFAULT_BLACKLIST = false;
 
@@ -31,20 +39,29 @@ public class ItemFilter implements IInventory {
 
   int[] oreIds;
 
+  private boolean isAdvanced;
+
   public ItemFilter() {
-    this(10);
+    this(5, false);
+  }
+  
+  public ItemFilter(boolean advanced) {
+    this(advanced ? 10 : 5, advanced);
   }
 
-  private ItemFilter(int numItems) {
+  private ItemFilter(int numItems, boolean isAdvanced) {
+    this.isAdvanced = isAdvanced;
     items = new ItemStack[numItems];
     oreIds = new int[numItems];
     Arrays.fill(oreIds, -99);
   }
 
+  @Override
   public boolean doesFilterCaptureStack(ItemStack item) {
     return isSticky() && itemMatched(item);
   }
 
+  @Override
   public boolean doesItemPassFilter(ItemStack item) {
     if(!isValid()) {
       return true;
@@ -96,6 +113,7 @@ public class ItemFilter implements IInventory {
     return res;
   }
 
+  @Override
   public boolean isValid() {
     for (ItemStack item : items) {
       if(item != null) {
@@ -137,6 +155,7 @@ public class ItemFilter implements IInventory {
     this.useOreDict = useOreDict;
   }
 
+  @Override
   public boolean isSticky() {
     return sticky;
   }
@@ -145,12 +164,14 @@ public class ItemFilter implements IInventory {
     this.sticky = sticky;
   }
 
+  @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setBoolean("isBlacklist", isBlacklist);
     nbtRoot.setBoolean("matchMeta", matchMeta);
     nbtRoot.setBoolean("matchNBT", matchNBT);
     nbtRoot.setBoolean("useOreDict", useOreDict);
     nbtRoot.setBoolean("sticky", sticky);
+    nbtRoot.setBoolean("isAdvanced", isAdvanced);
 
     int i = 0;
     for (ItemStack item : items) {
@@ -164,14 +185,16 @@ public class ItemFilter implements IInventory {
 
   }
 
+  @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     isBlacklist = nbtRoot.getBoolean("isBlacklist");
     matchMeta = nbtRoot.getBoolean("matchMeta");
     matchNBT = nbtRoot.getBoolean("matchNBT");
     useOreDict = nbtRoot.getBoolean("useOreDict");
     sticky = nbtRoot.getBoolean("sticky");
+    isAdvanced = nbtRoot.getBoolean("isAdvanced");
 
-    int numItems = 10;
+    int numItems = isAdvanced ? 10 : 5;
     items = new ItemStack[numItems];
     oreIds = new int[numItems];
     for (int i = 0; i < numItems; i++) {
@@ -263,11 +286,49 @@ public class ItemFilter implements IInventory {
     return true;
   }
 
+  @Override
+  public List<Slot> getSlots() {
+    List<Slot> result = new ArrayList<Slot>();
+    
+    int topY = 67;
+    int leftX = 33;
+    int index = 0;    
+    int numRows = isAdvanced ? 2 : 1;
+    for (int row = 0; row < numRows; ++row) {
+      for (int col = 0; col < 5; ++col) {
+        int x = leftX + col * 18;
+        int y = topY + row * 18;        
+        result.add(new TemplateSlot(this, index, x, y));        
+        index++;
+      }
+    }    
+    return result;
+  }
+  
+  @Override
+  public int getSlotCount() { 
+    return getSizeInventory();
+  }
+
+  public boolean isAdvanced() {    
+    return isAdvanced;
+  }
+  
   public boolean isDefault() {
-    return !isValid() && isBlacklist == DEFAULT_BLACKLIST &&
+    return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST &&
         matchMeta == DEFAULT_META &&
         matchNBT == DEFAULT_MBT &&
         useOreDict == DEFAULT_ORE_DICT &&
         sticky == DEFAULT_STICKY;
   }
+
+  @Override
+  public String toString() {
+//    return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT + ", useOreDict=" + useOreDict + ", sticky="
+//        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ", isAdvanced=" + isAdvanced + "]";
+    return "ItemFilter [isAdvanced=" + isAdvanced + "]";
+  }
+  
+  
+
 }
