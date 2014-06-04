@@ -78,7 +78,7 @@ class NetworkedInventory {
   }
 
   boolean isSticky() {
-    return con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
+    return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
   
   int getPriority() {    
@@ -208,7 +208,7 @@ class NetworkedInventory {
     for (Target target : targets) {
       if(target.stickyInput && !matchedStickyInput) {
         IItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
-        matchedStickyInput = of.isValid() && of.doesItemPassFilter(toExtract);
+        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(toExtract);
       }
       if(target.stickyInput || !matchedStickyInput) {
         if(target.inv.recheckInv) {

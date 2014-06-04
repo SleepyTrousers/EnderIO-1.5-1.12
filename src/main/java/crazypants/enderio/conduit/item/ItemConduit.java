@@ -199,12 +199,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public IItemFilter getInputFilter(ForgeDirection dir) {
-    IItemFilter res = inputFilters.get(dir);
-    if(res == null) {
-      res = new ItemFilter();
-      inputFilters.put(dir, res);
-    }
-    return res;
+    return inputFilters.get(dir);
+  }
+  
+  @Override
+  public IItemFilter getOutputFilter(ForgeDirection dir) {
+    return outputFilters.get(dir);
   }
 
   @Override
@@ -249,16 +249,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public int getMetaData() {
     return metaData;
-  }
-
-  @Override
-  public IItemFilter getOutputFilter(ForgeDirection dir) {
-    IItemFilter res = outputFilters.get(dir);
-    if(res == null) {
-      res = new ItemFilter();
-      outputFilters.put(dir, res);
-    }
-    return res;
   }
 
   @Override
