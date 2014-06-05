@@ -39,9 +39,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   int[] oreIds;
 
-  private boolean isAdvanced;
-  
-  private IItemConduit con;
+  private boolean isAdvanced; 
 
   public ItemFilter() {
     this(5, false);

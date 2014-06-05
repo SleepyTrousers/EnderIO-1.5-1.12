@@ -79,7 +79,7 @@ class InventorySpeedUpgrades implements IInventory {
 
   @Override
   public int getInventoryStackLimit() {
-    return 4;
+    return 15;
   }
 
   @Override

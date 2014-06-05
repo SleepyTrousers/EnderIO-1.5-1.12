@@ -84,9 +84,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   ItemConduitNetwork network;
 
-//  int maxExtractedOnTick = 2;
-//  float extractRatePerTick = maxExtractedOnTick / 20f;
-
   protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
   protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
@@ -113,52 +110,65 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   public ItemConduit(int itemDamage) {
     this.metaData = itemDamage;
-    updateFromMetadata();
+    updateFromNonUpgradeableVersion();
   }
 
-  private void updateFromMetadata() {
+  private void updateFromNonUpgradeableVersion() {
+    int filterMeta = metaData;
     if(metaData == 1) {
-      
+
       for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
         if(entry.getValue() != null) {
           IItemFilter f = entry.getValue();
-          if(!isDefault(f)) {
-            setSpeedUpgrade(entry.getKey(), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 4, 0));
-            setInputFilterUpgrade(entry.getKey(), new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1));
+          if(f != null) {
+            setSpeedUpgrade(entry.getKey(), new ItemStack(EnderIO.itemExtractSpeedUpgrade, 15, 0));
           }
         }
       }
-      
-      for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
-        if(entry.getValue() != null) {
-          IItemFilter f = entry.getValue();
-          if(!isDefault(f)) {            
-            setOutputFilterUpgrade(entry.getKey(), new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1));
-          }
-        }
-      }
+
       metaData = 0;
-            
-      //maxExtractedOnTick = 64;
-      //extractRatePerTick = (4 * 64) / 20f; //4 stacks a second
-    } else {
-      //maxExtractedOnTick = 1;
-      //extractRatePerTick = 0.2f; //four items a second      
+    }
+
+    Map<ForgeDirection, ItemStack> converted = new HashMap<ForgeDirection, ItemStack>();
+    
+    convertToItemUpgrades(filterMeta, converted, inputFilters);    
+    for (Entry<ForgeDirection, ItemStack> entry : converted.entrySet()) {
+      setInputFilter(entry.getKey(), null);
+      setInputFilterUpgrade(entry.getKey(), entry.getValue());
     }
         
+    converted.clear();
+    convertToItemUpgrades(filterMeta, converted, outputFilters);
+    for (Entry<ForgeDirection, ItemStack> entry : converted.entrySet()) {
+      setOutputFilter(entry.getKey(), null);
+      setOutputFilterUpgrade(entry.getKey(), entry.getValue());
+    }
+    
+
   }
-  
+
+  protected void convertToItemUpgrades(int filterMeta, Map<ForgeDirection, ItemStack> converted, EnumMap<ForgeDirection, IItemFilter> sourceFilters) {
+    for (Entry<ForgeDirection, IItemFilter> entry : sourceFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        IItemFilter f = entry.getValue();
+        ItemStack up = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, filterMeta);
+        FilterRegister.writeFilterToStack(f, up);
+        converted.put(entry.getKey(), up);
+      }
+    }
+  }
+
   @Override
   public List<ItemStack> getDrops() {
     List<ItemStack> res = new ArrayList<ItemStack>();
     res.add(createItem());
-    for(ItemStack stack : speedUpgrades.values()) {
+    for (ItemStack stack : speedUpgrades.values()) {
       res.add(stack);
     }
-    for(ItemStack stack : inputFilterUpgrades.values()) {
+    for (ItemStack stack : inputFilterUpgrades.values()) {
       res.add(stack);
     }
-    for(ItemStack stack : outputFilterUpgrades.values()) {
+    for (ItemStack stack : outputFilterUpgrades.values()) {
       res.add(stack);
     }
     return res;
@@ -226,7 +236,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     inputFilters.put(dir, filter);
     if(network != null) {
       network.routesChanged();
-    }    
+    }
     setClientStateDirty();
   }
 
@@ -243,7 +253,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public IItemFilter getInputFilter(ForgeDirection dir) {
     return inputFilters.get(dir);
   }
-  
+
   @Override
   public IItemFilter getOutputFilter(ForgeDirection dir) {
     return outputFilters.get(dir);
@@ -251,15 +261,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void setInputFilterUpgrade(ForgeDirection dir, ItemStack stack) {
-    inputFilterUpgrades.put(dir,  stack);    
+    inputFilterUpgrades.put(dir, stack);
     setInputFilter(dir, FilterRegister.getFilterForUpgrade(stack));
     setClientStateDirty();
   }
 
   @Override
   public void setOutputFilterUpgrade(ForgeDirection dir, ItemStack stack) {
-    outputFilterUpgrades.put(dir,  stack);    
-    setOutputFilter(dir, FilterRegister.getFilterForUpgrade(stack));  
+    outputFilterUpgrades.put(dir, stack);
+    setOutputFilter(dir, FilterRegister.getFilterForUpgrade(stack));
     setClientStateDirty();
   }
 
@@ -371,16 +381,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public int getMaximumExtracted(ForgeDirection dir) {
     int numUpgrades = getNumSpeedUpgrades(dir);
-    int res = (int)Math.pow(4, numUpgrades);
+    //int res = (int)Math.pow(4, numUpgrades);
+    int res = 4 + (numUpgrades * 4);
     return res;
   }
 
   @Override
   public float getTickTimePerItem(ForgeDirection dir) {
-    int numUpgrades = getNumSpeedUpgrades(dir);    
-    float maxExtract = 10f / getMaximumExtracted(dir);    
-    return maxExtract;  
-    
+    int numUpgrades = getNumSpeedUpgrades(dir);
+    float maxExtract = 10f / getMaximumExtracted(dir);
+    return maxExtract;
+
   }
 
   private int getNumSpeedUpgrades(ForgeDirection dir) {
@@ -591,7 +602,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
-    nbtRoot.setShort("metaData", (short) metaData);
+    //nbtRoot.setShort("metaData", (short) metaData);
 
     for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
@@ -599,7 +610,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         if(!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
-          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);          
+          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
         }
       }
     }
@@ -619,29 +630,29 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         if(!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
-          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);          
+          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
         }
       }
     }
-    
+
     for (Entry<ForgeDirection, ItemStack> entry : inputFilterUpgrades.entrySet()) {
       if(entry.getValue() != null) {
-        ItemStack up = entry.getValue();        
+        ItemStack up = entry.getValue();
         IItemFilter filter = getInputFilter(entry.getKey());
-        FilterRegister.writeFilterToStack(filter, up);               
-        
+        FilterRegister.writeFilterToStack(filter, up);
+
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
         nbtRoot.setTag("inputFilterUpgrades." + entry.getKey().name(), itemRoot);
       }
     }
-    
+
     for (Entry<ForgeDirection, ItemStack> entry : outputFilterUpgrades.entrySet()) {
       if(entry.getValue() != null) {
-        ItemStack up = entry.getValue();        
+        ItemStack up = entry.getValue();
         IItemFilter filter = getOutputFilter(entry.getKey());
         FilterRegister.writeFilterToStack(filter, up);
-        
+
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
         nbtRoot.setTag("outputFilterUpgrades." + entry.getKey().name(), itemRoot);
@@ -698,7 +709,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   private boolean isDefault(IItemFilter f) {
     if(f instanceof ItemFilter) {
-      return ((ItemFilter)f).isDefault();
+      return ((ItemFilter) f).isDefault();
     }
     return false;
   }
@@ -707,45 +718,57 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
     super.readFromNBT(nbtRoot, nbtVersion);
 
-    metaData = nbtRoot.getShort("metaData");
+    if(nbtRoot.hasKey("metaData")) {
+      metaData = nbtRoot.getShort("metaData");      
+    } else {
+      metaData = 0;
+    }
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      
+
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemFilter filter = new ItemFilter();
+        ItemFilter filter = new ItemFilter(metaData == 1);
+        if(metaData == 1) {
+          //need to force this for upgrades from old version
+          filterTag.setBoolean("isAdvanced", true);          
+        }
         filter.readFromNBT(filterTag);
-        inputFilters.put(dir, filter);        
+        inputFilters.put(dir, filter);
       }
-      
+
       key = "speedUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
         speedUpgrades.put(dir, ups);
       }
-            
+
       key = "inputFilterUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);                
-        inputFilterUpgrades.put(dir, ups);        
+        ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
+        inputFilterUpgrades.put(dir, ups);
       }
-      
+
       key = "outputFilterUpgrades." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = ItemStack.loadItemStackFromNBT(upTag);
         outputFilterUpgrades.put(dir, ups);
       }
-      
+
       key = "outFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemFilter filter = new ItemFilter();
+        ItemFilter filter = new ItemFilter(metaData == 1);
+        if(metaData == 1) {
+          //need to force this for upgrades from old version
+          filterTag.setBoolean("isAdvanced", true);          
+        }
         filter.readFromNBT(filterTag);
-        outputFilters.put(dir, filter);        
+        outputFilters.put(dir, filter);
       }
 
       key = "extRM." + dir.name();
@@ -796,8 +819,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         }
       }
     }
-    updateFromMetadata();
 
+    if(nbtRoot.hasKey("metaData")) {      
+      updateFromNonUpgradeableVersion();
+    }
+    
     if(nbtVersion == 0 && !nbtRoot.hasKey("conModes")) {
       //all externals where on default so need to switch them to the old default
       for (ForgeDirection dir : externalConnections) {
