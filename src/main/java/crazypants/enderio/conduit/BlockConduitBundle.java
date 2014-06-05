@@ -44,6 +44,7 @@ import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
 
@@ -56,12 +57,12 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
     MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
     FMLCommonHandler.instance().bus().register(ConduitNetworkTickHandler.instance);
 
-    EnderIO.packetPipeline.registerPacket(PacketFluidLevel.class);
-    EnderIO.packetPipeline.registerPacket(PacketExtractMode.class);
-    EnderIO.packetPipeline.registerPacket(PacketConnectionMode.class);
-    EnderIO.packetPipeline.registerPacket(PacketItemConduitFilter.class);
-    EnderIO.packetPipeline.registerPacket(PacketRedstoneConduitSignalColor.class);
-    EnderIO.packetPipeline.registerPacket(PacketOpenConduitUI.class);
+    PacketHandler.INSTANCE.registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketExtractMode.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketConnectionMode.class, PacketConnectionMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketItemConduitFilter.class, PacketItemConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitSignalColor.class, PacketRedstoneConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();

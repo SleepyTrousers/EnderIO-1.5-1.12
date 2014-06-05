@@ -1,15 +1,12 @@
 package crazypants.enderio.machine.crafter;
 
 import java.util.List;
-import java.util.Map.Entry;
 
-import crazypants.enderio.machine.IoMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class DummyCraftingGrid implements IInventory {
 

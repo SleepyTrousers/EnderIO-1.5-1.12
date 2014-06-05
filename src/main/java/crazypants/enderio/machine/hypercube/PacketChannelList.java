@@ -8,9 +8,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import crazypants.enderio.network.IPacketEio;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
-public class PacketChannelList implements IPacketEio {
+public class PacketChannelList implements IMessage {
 
   private boolean isPrivate;
   private List<Channel> channels;
@@ -45,7 +45,7 @@ public class PacketChannelList implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void toBytes(ByteBuf buffer) {
     buffer.writeBoolean(isPrivate);
     if(isPrivate) {
       ByteBufUtils.writeUTF8String(buffer, userId);
@@ -58,7 +58,7 @@ public class PacketChannelList implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     isPrivate = buffer.readBoolean();
     if(isPrivate) {
       userId = ByteBufUtils.readUTF8String(buffer);

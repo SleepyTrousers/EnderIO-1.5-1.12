@@ -17,6 +17,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.PacketHandler;
 
 public class DarkSteelController {
 
@@ -42,7 +43,7 @@ public class DarkSteelController {
   private int ticksSinceLastJump;
 
   private DarkSteelController() {
-    EnderIO.packetPipeline.registerPacket(PacketDarkSteelPowerPacket.class);
+    PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
   }
 
   @SubscribeEvent
@@ -179,7 +180,7 @@ public class DarkSteelController {
       player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * jumpCount;
       ticksSinceLastJump = 0;
       usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, requiredPower);
-      EnderIO.packetPipeline.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
     }
 
   }

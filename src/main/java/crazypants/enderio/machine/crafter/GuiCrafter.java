@@ -1,20 +1,11 @@
 package crazypants.enderio.machine.crafter;
 
-import java.awt.Color;
-import java.awt.Point;
-
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
-import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
 
 public class GuiCrafter extends GuiMachineBase  {
 

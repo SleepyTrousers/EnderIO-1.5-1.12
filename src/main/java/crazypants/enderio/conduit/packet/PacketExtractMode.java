@@ -1,16 +1,15 @@
 package crazypants.enderio.conduit.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.conduit.IConduitBundle;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.util.DyeColor;
 
-public class PacketExtractMode extends AbstractConduitPacket<IExtractor> {
+public class PacketExtractMode extends AbstractConduitPacket<IExtractor> implements IMessageHandler<PacketExtractMode, IMessage> {
 
   private ForgeDirection dir;
   private RedstoneControlMode mode;
@@ -27,26 +26,25 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+  public void toBytes(ByteBuf buf) {
     buf.writeShort(dir.ordinal());
     buf.writeShort(mode.ordinal());
     buf.writeShort(color.ordinal());
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
     dir = ForgeDirection.values()[buf.readShort()];
     mode = RedstoneControlMode.values()[buf.readShort()];
     color = DyeColor.values()[buf.readShort()];
   }
 
   @Override
-  protected void handle(EntityPlayer player, World worldObj, IConduitBundle tile, IExtractor conduit) {
-    conduit.setExtractionRedstoneMode(mode, dir);
-    conduit.setExtractionSignalColor(dir, color);
-    worldObj.markBlockForUpdate(x, y, z);
+  public IMessage onMessage(PacketExtractMode message, MessageContext ctx) {
+    message.getTileCasted(ctx).setExtractionRedstoneMode(message.mode, message.dir);
+    message.getTileCasted(ctx).setExtractionSignalColor(message.dir, message.color);
+    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
+    return null;
   }
 
 }

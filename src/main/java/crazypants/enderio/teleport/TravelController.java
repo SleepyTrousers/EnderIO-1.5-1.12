@@ -26,6 +26,7 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
@@ -146,7 +147,7 @@ public class TravelController {
           ITravelAccessable ta = (ITravelAccessable) te;
           if(ta.getRequiresPassword(player)) {
             PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
-            EnderIO.packetPipeline.sendToServer(p);
+            PacketHandler.INSTANCE.sendToServer(p);
             return;
           }
         }
@@ -180,7 +181,7 @@ public class TravelController {
       if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
         if(requiredPower > 0) {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower);
-          EnderIO.packetPipeline.sendToServer(p);
+          PacketHandler.INSTANCE.sendToServer(p);
         }
         player.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENDERFACE, world, target.x,
             TravelController.instance.selectedCoord.y, TravelController.instance.selectedCoord.z);
@@ -441,7 +442,7 @@ public class TravelController {
 
   private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse) {
     PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, source.getConserveMomentum());
-    EnderIO.packetPipeline.sendToServer(p);
+    PacketHandler.INSTANCE.sendToServer(p);
   }
 
   private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {

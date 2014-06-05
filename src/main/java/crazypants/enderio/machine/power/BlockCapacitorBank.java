@@ -31,7 +31,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.material.ItemFusedQuartz;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
@@ -42,8 +42,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   public static int renderId = -1;
 
   public static BlockCapacitorBank create() {
-    EnderIO.packetPipeline.registerPacket(PacketClientState.class);
-    EnderIO.packetPipeline.registerPacket(PacketPowerStorage.class);
+    PacketHandler.INSTANCE.registerPacket(PacketClientState.class);
+    PacketHandler.INSTANCE.registerPacket(PacketPowerStorage.class);
 
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();

@@ -1,11 +1,10 @@
 package crazypants.enderio.material;
 
+import net.minecraft.block.BlockPane;
+import net.minecraft.block.material.Material;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.painter.BlockItemPaintedFence;
-import net.minecraft.block.BlockPane;
-import net.minecraft.block.material.Material;
 
 public class BlockDarkIronBars extends BlockPane {
   

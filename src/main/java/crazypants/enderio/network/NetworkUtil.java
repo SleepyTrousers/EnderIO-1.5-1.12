@@ -1,11 +1,12 @@
 package crazypants.enderio.network;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.io.IOException;
+
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * Created by CrazyPants on 27/02/14.

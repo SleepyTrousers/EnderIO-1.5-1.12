@@ -26,6 +26,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -107,7 +108,7 @@ public class LiquidConduit extends AbstractTankConduit {
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer
       BlockCoord loc = getLocation();
-      EnderIO.packetPipeline.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
+      PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
     }
   }

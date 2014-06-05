@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.enderio.Log;
-import crazypants.enderio.network.IPacketEio;
 
-public class PacketPowerMonitor implements IPacketEio {
+public class PacketPowerMonitor implements IMessage {
 
   int x;
   int y;
@@ -30,7 +30,7 @@ public class PacketPowerMonitor implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -41,7 +41,7 @@ public class PacketPowerMonitor implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();

@@ -2,21 +2,19 @@ package crazypants.enderio.machine.generator.combustion;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 
@@ -25,7 +23,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
   public static int renderId = -1;
 
   public static BlockCombustionGenerator create() {
-    EnderIO.packetPipeline.registerPacket(PacketTanks.class);
+    PacketHandler.INSTANCE.registerMessage(PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
     
     BlockCombustionGenerator gen = new BlockCombustionGenerator();
     gen.init();

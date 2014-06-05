@@ -1,21 +1,16 @@
 package crazypants.enderio.conduit.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.conduit.IConduitBundle;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.IItemFilter;
-import crazypants.enderio.conduit.item.ItemFilter;
-import crazypants.enderio.network.NetworkUtil;
 import crazypants.util.DyeColor;
-import crazypants.util.ItemUtil;
 
-public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> {
+public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketItemConduitFilter, IMessage> {
 
   private ForgeDirection dir;
   private boolean loopMode;
@@ -44,8 +39,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+  public void toBytes(ByteBuf buf) {
     buf.writeShort(dir.ordinal());
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
@@ -57,8 +51,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
     dir = ForgeDirection.values()[buf.readShort()];
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
@@ -70,19 +63,21 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  protected void handleServerSide(EntityPlayer player, World worldObj, IConduitBundle tile, IItemConduit conduit) {
-    conduit.setSelfFeedEnabled(dir, loopMode);
-    conduit.setRoundRobinEnabled(dir, roundRobin);
-    conduit.setInputColor(dir, colIn);
-    conduit.setOutputColor(dir, colOut);
-    conduit.setOutputPriority(dir, priority);
-    applyFilter(conduit, inputFilter, true);
-    applyFilter(conduit, outputFilter, false);
+  public IMessage onMessage(PacketItemConduitFilter message, MessageContext ctx) {
+    IItemConduit conduit = message.getTileCasted(ctx);
+    conduit.setSelfFeedEnabled(message.dir, message.loopMode);
+    conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
+    conduit.setInputColor(message.dir, message.colIn);
+    conduit.setOutputColor(message.dir, message.colOut);
+    conduit.setOutputPriority(message.dir, message.priority);
+    applyFilter(message.dir, conduit, message.inputFilter, true);
+    applyFilter(message.dir, conduit, message.outputFilter, false);
 
-    worldObj.markBlockForUpdate(x, y, z);
+    message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
+    return null;
   }
 
-  private void applyFilter(IItemConduit conduit, IItemFilter filter, boolean isInput) {
+  private void applyFilter(ForgeDirection dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
 //    if(filter == null) {
       if(isInput) {
         conduit.setInputFilter(dir, filter);

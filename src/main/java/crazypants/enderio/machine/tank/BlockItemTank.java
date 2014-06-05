@@ -6,14 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedTooltipProvider {
 

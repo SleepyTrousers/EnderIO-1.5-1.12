@@ -11,8 +11,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.network.PacketHandler;
 
 public class YetaWrenchTickHandler {
   protected int slotSelected = -1;
@@ -56,7 +56,7 @@ public class YetaWrenchTickHandler {
             ConduitDisplayMode.setDisplayMode(stack, newMode);
           }
           if(newMode != null) {
-            EnderIO.packetPipeline.sendToServer(new YetaWrenchPacketProcessor(slotSelected, newMode));
+            PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(slotSelected, newMode));
           }
         }
         slotSelected = -1;

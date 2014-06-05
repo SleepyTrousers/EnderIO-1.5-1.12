@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,6 +20,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -338,7 +337,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       markDirty();
     } else if(powerChanged) {
       lastSyncPowerStored = storedEnergy;
-      EnderIO.packetPipeline.sendToAllAround(new PacketPowerStorage(this), this);       
+      PacketHandler.INSTANCE.sendToAllAround(new PacketPowerStorage(this), this);       
     }
 
     if(notifyNeighbours) {

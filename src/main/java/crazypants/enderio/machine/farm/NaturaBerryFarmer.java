@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;

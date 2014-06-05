@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.tank;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+
 import org.lwjgl.opengl.GL11;
 
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 
 public class TankFluidRenderer extends TileEntitySpecialRenderer {
 

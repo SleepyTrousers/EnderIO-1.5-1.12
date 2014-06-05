@@ -1,17 +1,17 @@
 package crazypants.enderio.machine.power;
 
-import java.util.List;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.network.IPacketEio;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.util.BlockCoord;
 
-public class PacketPowerStorage implements IPacketEio {
+public class PacketPowerStorage implements IMessage {
 
   private int x;
   private int y;
@@ -29,7 +29,7 @@ public class PacketPowerStorage implements IPacketEio {
   }
   
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -38,7 +38,7 @@ public class PacketPowerStorage implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();

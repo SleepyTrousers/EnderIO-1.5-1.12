@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -13,15 +12,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.render.VertexRotation;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
@@ -32,7 +30,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public static int renderId;
 
   public static BlockVat create() {
-    EnderIO.packetPipeline.registerPacket(PacketTanks.class);
+    PacketHandler.INSTANCE.registerPacket(PacketTanks.class);
     BlockVat res = new BlockVat();
     res.init();
     return res;

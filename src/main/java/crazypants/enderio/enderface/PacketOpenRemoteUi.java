@@ -1,7 +1,6 @@
 package crazypants.enderio.enderface;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -22,9 +21,11 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import com.mojang.authlib.GameProfile;
 
-import crazypants.enderio.network.IPacketEio;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketOpenRemoteUi implements IPacketEio {
+public class PacketOpenRemoteUi implements IMessage, IMessageHandler<PacketOpenRemoteUi, IMessage> {
 
   int x;
   int y;
@@ -40,30 +41,24 @@ public class PacketOpenRemoteUi implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void toBytes(ByteBuf buffer) {
     buffer.writeInt(x);
     buffer.writeInt(y);
     buffer.writeInt(z);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();
 
   }
 
-  @Override
-  public void handleClientSide(EntityPlayer player) {
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer p) {
-
-    EntityPlayerMP player = (EntityPlayerMP) p;
+  public IMessage onMessage(PacketOpenRemoteUi message, MessageContext ctx) {
+    EntityPlayerMP player = (EntityPlayerMP) ctx.getServerHandler().playerEntity;
     net.minecraft.inventory.Container c = player.openContainer;
-    PlayerProxy pp = new PlayerProxy(player, x, y, z);
+    PlayerProxy pp = new PlayerProxy(player, message.x, message.y, message.z);
     EntityPlayerMP proxy = createPlayerProxy(player, pp);
     proxy.playerNetServerHandler = player.playerNetServerHandler;
     proxy.inventory = player.inventory;
@@ -81,7 +76,7 @@ public class PacketOpenRemoteUi implements IPacketEio {
     if(c != proxy.openContainer) {
       player.openContainer = proxy.openContainer;
     }
-
+    return null;
   }
 
   public static <T> T createPlayerProxy(EntityPlayerMP player, PlayerProxy proxy) {

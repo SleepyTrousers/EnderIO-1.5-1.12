@@ -1,10 +1,10 @@
 package crazypants.enderio.power;
 
-import buildcraft.api.mj.IBatteryObject;
-import buildcraft.api.mj.MjAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.mj.IBatteryObject;
+import buildcraft.api.mj.MjAPI;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PerditionCalculator;

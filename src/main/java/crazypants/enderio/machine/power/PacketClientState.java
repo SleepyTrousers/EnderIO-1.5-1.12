@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.network.IPacketEio;
 
-public class PacketClientState implements IPacketEio {
+public class PacketClientState implements IMessage {
 
   private int x;
   private int y;
@@ -33,7 +33,7 @@ public class PacketClientState implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf dos) {
+  public void toBytes(ByteBuf dos) {
     dos.writeInt(x);
     dos.writeInt(y);
     dos.writeInt(z);
@@ -44,7 +44,7 @@ public class PacketClientState implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf data) {
+  public void fromBytes(ByteBuf data) {
     x = data.readInt();
     y = data.readInt();
     z = data.readInt();

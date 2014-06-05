@@ -3,14 +3,9 @@ package crazypants.enderio.machine.crafter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.alloy.BlockAlloySmelter;
-import crazypants.enderio.machine.alloy.ContainerAlloySmelter;
-import crazypants.enderio.machine.alloy.PacketClientState;
-import crazypants.enderio.machine.alloy.TileAlloySmelter;
 
 public class BlockCrafter extends AbstractMachineBlock<TileCrafter> {
 

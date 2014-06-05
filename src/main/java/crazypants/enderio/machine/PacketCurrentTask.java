@@ -1,15 +1,13 @@
 package crazypants.enderio.machine;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import crazypants.enderio.machine.tank.TileTank;
-import crazypants.enderio.network.AbstractPacketTileEntity;
+import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketCurrentTask extends AbstractPacketTileEntity<AbstractPoweredTaskEntity> {
+public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEntity> {
 
   private NBTTagCompound nbtRoot;
 
@@ -27,14 +25,14 @@ public class PacketCurrentTask extends AbstractPacketTileEntity<AbstractPoweredT
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+  public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 

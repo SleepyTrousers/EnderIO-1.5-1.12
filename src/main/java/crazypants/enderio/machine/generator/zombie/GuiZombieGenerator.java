@@ -3,20 +3,19 @@ package crazypants.enderio.machine.generator.zombie;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.generator.combustion.ContainerCombustionEngine;
-import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiZombieGenerator extends GuiMachineBase {
 

@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.network.PacketHandler;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
@@ -106,7 +105,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       startFailed = !started;
       //requiresClientSync |= started;
       if(started) {
-        EnderIO.packetPipeline.sendToAllAround(new PacketCurrentTask(this), this);
+        PacketHandler.INSTANCE.sendToAllAround(new PacketCurrentTask(this), this);
       }
     } else {
       startFailed = true;
@@ -128,7 +127,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       return false;
     }
     
-    EnderIO.packetPipeline.sendToAllAround(new PacketCurrentTask(this), this);
+    PacketHandler.INSTANCE.sendToAllAround(new PacketCurrentTask(this), this);
     
     return false;
   }
@@ -155,7 +154,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     markDirty();
     currentTask = null;
-    EnderIO.packetPipeline.sendToAllAround(new PacketCurrentTask(this), this);
+    PacketHandler.INSTANCE.sendToAllAround(new PacketCurrentTask(this), this);
   }
 
   protected void mergeResults(ResultStack[] results) {

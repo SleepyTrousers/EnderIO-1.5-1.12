@@ -122,7 +122,7 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
   public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float var8) {
 
     TileCombustionGenerator gen = (TileCombustionGenerator) tileentity;
-    if(gen.coolantTank.getFluidAmount() <= 0 && gen.fuelTank.getFluidAmount() <= 0) {
+    if(gen.getCoolantTank().getFluidAmount() <= 0 && gen.getFuelTank().getFluidAmount() <= 0) {
       return;
     }
 
@@ -143,8 +143,8 @@ public class CombustionGeneratorRenderer extends TileEntitySpecialRenderer imple
     tes.startDrawingQuads();
 
     BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.96, 0.96, 0.96);
-    renderTank(gen, bb, gen.coolantTank, true);
-    renderTank(gen, bb, gen.fuelTank, false);
+    renderTank(gen, bb, gen.getCoolantTank(), true);
+    renderTank(gen, bb, gen.getFuelTank(), false);
     tes.draw();
     tes.setTranslation(0, 0, 0);
 

@@ -8,28 +8,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import cofh.api.energy.IEnergyContainerItem;
-
-import cpw.mods.fml.common.eventhandler.EventBus;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.material.Alloy;
-import crazypants.util.BlockCoord;
-import crazypants.util.ItemUtil;
-import crazypants.util.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -41,6 +24,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import cofh.api.energy.IEnergyContainerItem;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.util.BlockCoord;
+import crazypants.util.ItemUtil;
+import crazypants.util.Lang;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
 

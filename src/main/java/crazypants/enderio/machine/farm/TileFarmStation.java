@@ -1,32 +1,18 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.List;
-
-import buildcraft.api.power.PowerHandler.Type;
-
 import net.minecraft.block.Block;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraftforge.common.util.ForgeDirection;
+import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
@@ -36,13 +22,12 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
-import crazypants.util.ItemUtil;
 import crazypants.util.Util;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEntitySelector*/ {
@@ -253,7 +238,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       if(harvest != null) {
         if(harvest.getDrops() != null) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-          EnderIO.packetPipeline.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+          PacketHandler.INSTANCE.sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
           for (EntityItem ei : harvest.getDrops()) {
             if(ei != null) {            
               insertHarvestDrop(ei);
@@ -262,7 +247,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
               }
             }
           }
-
         }
       }
     }

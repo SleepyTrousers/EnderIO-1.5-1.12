@@ -21,6 +21,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.network.PacketHandler;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
 
@@ -28,7 +29,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
 
   public static ItemConduitProbe create() {
 
-    EnderIO.packetPipeline.registerPacket(PacketConduitProbe.class);
+    PacketHandler.INSTANCE.registerPacket(PacketConduitProbe.class);
 
     ItemConduitProbe result = new ItemConduitProbe();
     result.init();
@@ -71,7 +72,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IConduitBundle) && PacketConduitProbe.canCreatePacket(world, x, y, z)) {
       if(world.isRemote) {
-        EnderIO.packetPipeline.sendToServer(new PacketConduitProbe(x, y, z, side));
+        PacketHandler.INSTANCE.sendToServer(new PacketConduitProbe(x, y, z, side));
       }
       return true;
     }

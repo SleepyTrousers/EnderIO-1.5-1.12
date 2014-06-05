@@ -30,6 +30,7 @@ import org.lwjgl.opengl.GL12;
 
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
@@ -555,7 +556,7 @@ public class GuiEnderface extends GuiScreen {
 
   void openInterface(int x, int y, int z) {
     PacketOpenRemoteUi p = new PacketOpenRemoteUi(x, y, z);
-    EnderIO.packetPipeline.sendToServer(p);
+    PacketHandler.INSTANCE.sendToServer(p);
   }
 
   static class ViewableBlocks {

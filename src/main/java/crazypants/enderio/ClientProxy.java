@@ -64,7 +64,6 @@ import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRenderer;
-import crazypants.enderio.machine.tank.BlockItemTank;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TankItemRenderer;
 import crazypants.enderio.machine.tank.TileTank;

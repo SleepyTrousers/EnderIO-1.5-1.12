@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import net.minecraft.entity.player.InventoryPlayer;
 import crazypants.enderio.machine.AbstractMachineContainer;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class ContainerZombieGenerator extends AbstractMachineContainer {
 

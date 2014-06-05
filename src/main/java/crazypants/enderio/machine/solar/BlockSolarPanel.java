@@ -2,8 +2,6 @@ package crazypants.enderio.machine.solar;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -16,6 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;

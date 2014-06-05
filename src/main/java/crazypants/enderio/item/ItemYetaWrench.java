@@ -12,17 +12,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.network.PacketHandler;
 
 public class ItemYetaWrench extends Item implements IToolWrench, IResourceTooltipProvider {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
-      EnderIO.packetPipeline.registerPacket(YetaWrenchPacketProcessor.class);
+      PacketHandler.INSTANCE.registerMessage(YetaWrenchPacketProcessor.class, YetaWrenchPacketProcessor.class, PacketHandler.nextID(), Side.SERVER);
     }
     ItemYetaWrench result = new ItemYetaWrench();
     result.init();

@@ -1,17 +1,17 @@
 package crazypants.enderio.teleport.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.IPacketEio;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class PacketTravelEvent implements IPacketEio {
+public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravelEvent, IMessage> {
 
   int x;
   int y;
@@ -31,54 +31,51 @@ public class PacketTravelEvent implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
-    buffer.writeInt(x);
-    buffer.writeInt(y);
-    buffer.writeInt(z);
-    buffer.writeInt(powerUse);
-    buffer.writeBoolean(conserveMotion);
+  public void toBytes(ByteBuf buf) {
+    buf.writeInt(x);
+    buf.writeInt(y);
+    buf.writeInt(z);
+    buf.writeInt(powerUse);
+    buf.writeBoolean(conserveMotion);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
-    x = buffer.readInt();
-    y = buffer.readInt();
-    z = buffer.readInt();
-    powerUse = buffer.readInt();
-    conserveMotion = buffer.readBoolean();
+  public void fromBytes(ByteBuf buf) {
+    x = buf.readInt();
+    y = buf.readInt();
+    z = buf.readInt();
+    powerUse = buf.readInt();
+    conserveMotion = buf.readBoolean();
   }
-
+  
   @Override
-  public void handleClientSide(EntityPlayer player) {
-
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer ep) {
+  public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
+      
+    EntityPlayer ep = ctx.getServerHandler().playerEntity;
 
     ep.worldObj.playSoundEffect(ep.posX, ep.posY, ep.posZ, "mob.endermen.portal", 1.0F, 1.0F);
 
     ep.playSound("mob.endermen.portal", 1.0F, 1.0F);
 
-    ep.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
+    ep.setPositionAndUpdate(message.x + 0.5, message.y + 1.1, message.z + 0.5);
 
-    ep.worldObj.playSoundEffect(x, y, z, "mob.endermen.portal", 1.0F, 1.0F);
+    ep.worldObj.playSoundEffect(message.x, message.y, message.z, "mob.endermen.portal", 1.0F, 1.0F);
     ep.fallDistance = 0;
 
-    if(conserveMotion) {
+    if(message.conserveMotion) {
       Vector3d velocityVex = Util.getLookVecEio(ep);
       S12PacketEntityVelocity p = new S12PacketEntityVelocity(ep.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
 
-      EnderIO.packetPipeline.sendTo(p, (EntityPlayerMP) ep);
-
+      ctx.getServerHandler().sendPacket(p);
     }
 
-    if(powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff) {
+    if(message.powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff) {
       ItemStack item = ep.getCurrentEquippedItem().copy();
-      EnderIO.itemTravelStaff.extractInternal(item, powerUse);
+      EnderIO.itemTravelStaff.extractInternal(item, message.powerUse);
       ep.setCurrentItemOrArmor(0, item);
     }
 
+    return null;
   }
 
 }

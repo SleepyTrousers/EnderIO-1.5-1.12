@@ -1,14 +1,14 @@
 package crazypants.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class BoundingBox {
 

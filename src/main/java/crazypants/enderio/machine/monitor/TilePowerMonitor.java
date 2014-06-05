@@ -15,6 +15,7 @@ import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.DyeColor;
 
@@ -163,7 +164,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
       }
     }
     if(update) {
-      EnderIO.packetPipeline.sendToAllAround(new PacketPowerInfo(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketPowerInfo(this), this);
     }    
     return false;
   }

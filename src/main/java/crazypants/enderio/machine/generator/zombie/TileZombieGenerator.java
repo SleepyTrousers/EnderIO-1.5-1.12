@@ -1,20 +1,14 @@
 package crazypants.enderio.machine.generator.zombie;
 
 import net.minecraft.block.Block;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.fuels.IronEngineCoolant;
-import buildcraft.api.fuels.IronEngineFuel;
-import buildcraft.api.fuels.IronEngineCoolant.Coolant;
-import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import buildcraft.api.power.IPowerEmitter;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
@@ -23,7 +17,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.PowerDistributor;
-import crazypants.enderio.machine.generator.combustion.PacketTanks;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
@@ -163,7 +157,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     }
 
     if(tanksDirty) {
-      EnderIO.packetPipeline.sendToAllAround(new PacketTank(this), this);
+      PacketHandler.INSTANCE.sendToAllAround(new PacketZombieTank(this), this);
       tanksDirty = false;
     }
 

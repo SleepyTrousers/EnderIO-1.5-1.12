@@ -1,13 +1,8 @@
 package crazypants.enderio.teleport;
 
-import java.awt.Color;
-import java.nio.FloatBuffer;
-
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -18,9 +13,7 @@ import org.lwjgl.opengl.GL14;
 
 import crazypants.enderio.EnderIO;
 import crazypants.render.BoundingBox;
-import crazypants.render.ColorUtil;
 import crazypants.render.CubeRenderer;
-import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;

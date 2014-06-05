@@ -14,7 +14,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -23,6 +22,7 @@ import crazypants.enderio.machine.GuiOverlayIoConfig;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
@@ -83,7 +83,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       public void setRedstoneControlMode(RedstoneControlMode mode) {
         capBank.setInputControlMode(mode);
-        EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
+        PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
       }
 
       @Override
@@ -99,7 +99,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
       @Override
       public void setRedstoneControlMode(RedstoneControlMode mode) {
         capBank.setOutputControlMode(mode);
-        EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
+        PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
       }
 
       @Override
@@ -215,7 +215,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     if(output != capBank.getMaxOutput()) {
       capBank.setMaxOutput(output);
       maxOutputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxOutput()));
-      EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
     }
   }
 
@@ -223,7 +223,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     if(input != capBank.getMaxInput()) {
       capBank.setMaxInput(input);
       maxInputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxInput()));
-      EnderIO.packetPipeline.sendToServer(new PacketClientState(capBank));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
     }
   }
 

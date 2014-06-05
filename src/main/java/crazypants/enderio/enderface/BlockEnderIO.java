@@ -20,6 +20,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.enderface.te.MeProxy;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.ITravelAccessable;
 import crazypants.util.Lang;
 
@@ -46,7 +47,7 @@ public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
     });
 
-    EnderIO.packetPipeline.registerPacket(PacketOpenRemoteUi.class);
+    PacketHandler.INSTANCE.registerMessage(PacketOpenRemoteUi.class, PacketOpenRemoteUi.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockEnderIO result = new BlockEnderIO();
     result.init();

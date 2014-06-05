@@ -1,13 +1,12 @@
 package crazypants.enderio.teleport.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
-import crazypants.enderio.network.IPacketEio;
 
-public class PacketOpenAuthGui implements IPacketEio {
+public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAuthGui, IMessage> {
 
   int x;
   int y;
@@ -24,27 +23,21 @@ public class PacketOpenAuthGui implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buffer) {
-    buffer.writeInt(x);
-    buffer.writeInt(y);
-    buffer.writeInt(z);
+  public void toBytes(ByteBuf buf) {
+    buf.writeInt(x);
+    buf.writeInt(y);
+    buf.writeInt(z);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();
   }
 
-  @Override
-  public void handleClientSide(EntityPlayer player) {
-
+  public IMessage onMessage(PacketOpenAuthGui message, cpw.mods.fml.common.network.simpleimpl.MessageContext ctx) {
+    ctx.getServerHandler().playerEntity.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, ctx.getServerHandler().playerEntity.worldObj, message.x, message.y, message.z);
+    return null;
   }
-
-  @Override
-  public void handleServerSide(EntityPlayer ep) {
-    ep.openGui(EnderIO.instance, GuiHandler.GUI_ID_TRAVEL_AUTH, ep.worldObj, x, y, z);
-  }
-
 }

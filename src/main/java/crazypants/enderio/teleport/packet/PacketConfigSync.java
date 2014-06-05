@@ -1,29 +1,29 @@
 package crazypants.enderio.teleport.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.Config;
-import crazypants.enderio.network.IPacketEio;
 
-public class PacketConfigSync implements IPacketEio {
+public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigSync, IMessage> {
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf dos) {
-    dos.writeBoolean(Config.travelAnchorEnabled);
-    dos.writeInt(Config.travelAnchorMaxDistance);
-    dos.writeBoolean(Config.travelStaffEnabled);
-    dos.writeBoolean(Config.travelStaffBlinkEnabled);
-    dos.writeBoolean(Config.travelStaffBlinkThroughSolidBlocksEnabled);
-    dos.writeBoolean(Config.travelStaffBlinkThroughClearBlocksEnabled);
-    dos.writeInt(Config.travelStaffBlinkPauseTicks);
-    dos.writeInt(Config.travelStaffMaxDistance);
-    dos.writeInt(Config.travelStaffMaxBlinkDistance);
-    dos.writeFloat(Config.travelStaffPowerPerBlockRF);
+  public void toBytes(ByteBuf buf) {
+    buf.writeBoolean(Config.travelAnchorEnabled);
+    buf.writeInt(Config.travelAnchorMaxDistance);
+    buf.writeBoolean(Config.travelStaffEnabled);
+    buf.writeBoolean(Config.travelStaffBlinkEnabled);
+    buf.writeBoolean(Config.travelStaffBlinkThroughSolidBlocksEnabled);
+    buf.writeBoolean(Config.travelStaffBlinkThroughClearBlocksEnabled);
+    buf.writeInt(Config.travelStaffBlinkPauseTicks);
+    buf.writeInt(Config.travelStaffMaxDistance);
+    buf.writeInt(Config.travelStaffMaxBlinkDistance);
+    buf.writeFloat(Config.travelStaffPowerPerBlockRF);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf data) {
+  public void fromBytes(ByteBuf data) {
     Config.travelAnchorEnabled = data.readBoolean();
     Config.travelAnchorMaxDistance = data.readInt();
     Config.travelStaffEnabled = data.readBoolean();
@@ -37,13 +37,8 @@ public class PacketConfigSync implements IPacketEio {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-
+  public IMessage onMessage(PacketConfigSync message, MessageContext ctx)
+  {
+    return null;
   }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-
-  }
-
 }

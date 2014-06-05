@@ -1,7 +1,6 @@
 package crazypants.enderio.conduit.gui;
 
 import net.minecraft.client.gui.GuiButton;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -10,6 +9,7 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.DyeColor;
 import crazypants.util.Lang;
 
@@ -37,7 +37,7 @@ public class PowerSettings extends BaseSettingsPanel {
         RedstoneControlMode curMode = getRedstoneControlMode();
         conduit.setExtractionRedstoneMode(mode, gui.dir);
         if(curMode != mode) {
-          EnderIO.packetPipeline.sendToServer(new PacketExtractMode(conduit, gui.dir));
+          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.dir));
         }
 
       }
@@ -60,7 +60,7 @@ public class PowerSettings extends BaseSettingsPanel {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      EnderIO.packetPipeline.sendToServer(new PacketExtractMode(conduit, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.dir));
     }
   }
 

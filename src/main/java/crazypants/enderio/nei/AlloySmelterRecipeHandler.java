@@ -7,9 +7,6 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.opengl.GL11;
-
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.crafting.IEnderIoRecipe;

@@ -5,18 +5,17 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import crazypants.enderio.machine.generator.combustion.TileCombustionGenerator;
-import crazypants.enderio.network.AbstractPacketTileEntity;
+import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketTank extends AbstractPacketTileEntity<TileZombieGenerator> {
+public class PacketZombieTank extends MessageTileEntity<TileZombieGenerator> {
 
   private NBTTagCompound nbtRoot;
 
-  public PacketTank() {
+  public PacketZombieTank() {
   }
 
-  public PacketTank(TileZombieGenerator tile) {
+  public PacketZombieTank(TileZombieGenerator tile) {
     super(tile);
     nbtRoot = new NBTTagCompound();
     if(tile.fuelTank.getFluidAmount() > 0) {
@@ -27,17 +26,16 @@ public class PacketTank extends AbstractPacketTileEntity<TileZombieGenerator> {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.encode(ctx, buf);
+  public void toBytes(ByteBuf buf) {
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
-    super.decode(ctx, buf);
+  public void fromBytes(ByteBuf buf) {
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 
+  
   @Override
   protected void handleClientSide(EntityPlayer player, World worldObj, TileZombieGenerator tile) {
     if(nbtRoot.hasKey("tank")) {

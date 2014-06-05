@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import crazypants.enderio.EnderIO;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import crazypants.enderio.EnderIO;
 
 public class NutrientTank extends FluidTank {
 

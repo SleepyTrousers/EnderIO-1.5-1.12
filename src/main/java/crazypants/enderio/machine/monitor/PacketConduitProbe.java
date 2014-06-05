@@ -2,7 +2,6 @@ package crazypants.enderio.machine.monitor;
 
 import static crazypants.enderio.power.PowerInterfaceBC.fromRF;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 
@@ -16,6 +15,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -26,13 +28,12 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.IPacketEio;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerInterfaceBC;
 import crazypants.enderio.power.PowerInterfaceRF;
 import crazypants.util.Lang;
 
-public class PacketConduitProbe implements IPacketEio {
+public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
 
   private static final String OF = " " + Lang.localize("gui.powerMonitor.of") + " ";
   private static final String CON_STORAGE = " " + Lang.localize("gui.powerMonitor.monHeading1") + ": ";
@@ -90,7 +91,7 @@ public class PacketConduitProbe implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -99,7 +100,7 @@ public class PacketConduitProbe implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buffer) {
+  public void fromBytes(ByteBuf buffer) {
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();
@@ -107,23 +108,19 @@ public class PacketConduitProbe implements IPacketEio {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
+  public IMessage onMessage(PacketConduitProbe message, MessageContext ctx) {
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
     World world = player.worldObj;
     if(world == null) {
       Log.warn("MJReaderPacketHandler.sendInfoMessage: Could not handle packet as player world was null.");
-      return;
+      return null;
     }
-    Block block = world.getBlock(x, y, z);
+    Block block = world.getBlock(message.x, message.y, message.z);
     if(block == null) {
-      return;
+      return null;
     }
 
-    TileEntity te = world.getTileEntity(x, y, z);
+    TileEntity te = world.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileConduitBundle) {
 
       sendInfoMessage(player, (TileConduitBundle) te);
@@ -144,7 +141,7 @@ public class PacketConduitProbe implements IPacketEio {
       } else if(te instanceof IPowerReceptor) {
 
         IPowerReceptor pr = (IPowerReceptor) te;
-        PowerReceiver rec = pr.getPowerReceiver(side);
+        PowerReceiver rec = pr.getPowerReceiver(message.side);
         if(rec == null) {
           player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
         } else {
@@ -154,6 +151,7 @@ public class PacketConduitProbe implements IPacketEio {
         }
 
       }
+    return null;
   }
 
   public static void sendInfoMessage(EntityPlayer player, TileConduitBundle tcb) {

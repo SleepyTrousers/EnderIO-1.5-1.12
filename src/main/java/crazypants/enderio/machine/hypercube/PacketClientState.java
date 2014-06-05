@@ -9,11 +9,11 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
-import crazypants.enderio.network.IPacketEio;
 
-public class PacketClientState implements IPacketEio {
+public class PacketClientState implements IMessage {
 
   private int x;
   private int y;
@@ -36,7 +36,7 @@ public class PacketClientState implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
@@ -59,7 +59,7 @@ public class PacketClientState implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();

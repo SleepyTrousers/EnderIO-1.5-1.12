@@ -14,6 +14,7 @@ import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.render.RenderUtil;
 import crazypants.util.DyeColor;
 import crazypants.util.Lang;
@@ -140,7 +141,7 @@ public class BasicItemFilterGui {
   
   private void sendFilterChange() {
     updateButtons();
-    EnderIO.packetPipeline.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
+    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.dir));
   }
   
   public void deactivate() {        

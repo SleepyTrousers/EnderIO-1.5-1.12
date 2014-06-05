@@ -12,12 +12,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
@@ -29,11 +31,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   public static BlockTravelAnchor create() {
 
-    EnderIO.packetPipeline.registerPacket(PacketAccessMode.class);
-    EnderIO.packetPipeline.registerPacket(PacketTravelEvent.class);
-    EnderIO.packetPipeline.registerPacket(PacketDrainStaff.class);
-    EnderIO.packetPipeline.registerPacket(PacketOpenAuthGui.class);
-    EnderIO.packetPipeline.registerPacket(PacketConfigSync.class);
+    PacketHandler.INSTANCE.registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketTravelEvent.class, PacketTravelEvent.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketOpenAuthGui.class, PacketOpenAuthGui.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
     ConnectionHandler ch = new ConnectionHandler();
     FMLCommonHandler.instance().bus().register(ch);

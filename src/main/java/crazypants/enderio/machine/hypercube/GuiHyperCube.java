@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -19,6 +18,7 @@ import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.GuiToolTip;
@@ -246,7 +246,7 @@ public class GuiHyperCube extends GuiScreenBase {
       cube.setModeForChannel(SubChannel.FLUID, nextMode);
 
       updateIoButtons();
-      EnderIO.packetPipeline.sendToServer(new PacketClientState(cube));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(cube));
 
     } else if(par1GuiButton.id == POWER_MODE_BUTTON_ID) {
 
@@ -255,7 +255,7 @@ public class GuiHyperCube extends GuiScreenBase {
       cube.setModeForChannel(SubChannel.POWER, nextMode);
 
       updateIoButtons();
-      EnderIO.packetPipeline.sendToServer(new PacketClientState(cube));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(cube));
 
     } else if(par1GuiButton.id == ITEM_MODE_BUTTON_ID) {
 
@@ -264,7 +264,7 @@ public class GuiHyperCube extends GuiScreenBase {
       cube.setModeForChannel(SubChannel.ITEM, nextMode);
 
       updateIoButtons();
-      EnderIO.packetPipeline.sendToServer(new PacketClientState(cube));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(cube));
 
     } else if(par1GuiButton.id == ADD_BUTTON_ID) {
 
@@ -275,7 +275,7 @@ public class GuiHyperCube extends GuiScreenBase {
         c = new Channel(newChannelTF.getText(), null);
       }
       ClientChannelRegister.instance.addChannel(c);
-      EnderIO.packetPipeline.sendToServer(new PacketAddRemoveChannel(true, c));
+      PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(true, c));
       setActiveChannel(c);
 
       if(privateButton.isSelected()) {
@@ -296,7 +296,7 @@ public class GuiHyperCube extends GuiScreenBase {
           setActiveChannel(null);
         }
         ClientChannelRegister.instance.channelRemoved(c);
-        EnderIO.packetPipeline.sendToServer(new PacketAddRemoveChannel(false, c));
+        PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(false, c));
       }
     }
 
@@ -307,7 +307,7 @@ public class GuiHyperCube extends GuiScreenBase {
     publicChannelList.setActiveChannel(isPublic(c) ? c : null);
     privateChannelList.setActiveChannel(isPrivate(c) ? c : null);
 
-    EnderIO.packetPipeline.sendToServer(new PacketClientState(cube));
+    PacketHandler.INSTANCE.sendToServer(new PacketClientState(cube));
   }
 
   @Override

@@ -30,6 +30,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.network.PacketHandler;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider {
 
@@ -53,9 +54,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected final Class<T> teClass;
 
   static {
-    EnderIO.packetPipeline.registerPacket(PacketIoMode.class);
-    EnderIO.packetPipeline.registerPacket(PacketPowerStorage.class);
-    EnderIO.packetPipeline.registerPacket(PacketCurrentTask.class);
+    PacketHandler.INSTANCE.registerPacket(PacketIoMode.class);
+    PacketHandler.INSTANCE.registerPacket(PacketPowerStorage.class);
+    PacketHandler.INSTANCE.registerPacket(PacketCurrentTask.class);
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {

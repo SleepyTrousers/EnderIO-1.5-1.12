@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.IPacketEio;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import crazypants.enderio.network.PacketHandler;
 
-public class PacketAddRemoveChannel implements IPacketEio {
+public class PacketAddRemoveChannel implements IMessage {
 
   private boolean isAdd;
   private Channel channel;
@@ -21,7 +21,7 @@ public class PacketAddRemoveChannel implements IPacketEio {
   }
 
   @Override
-  public void encode(ChannelHandlerContext ctx, ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     buf.writeBoolean(isAdd);
     buf.writeBoolean(channel.isPublic());
     ByteBufUtils.writeUTF8String(buf, channel.name);
@@ -31,7 +31,7 @@ public class PacketAddRemoveChannel implements IPacketEio {
   }
 
   @Override
-  public void decode(ChannelHandlerContext ctx, ByteBuf data) {
+  public void fromBytes(ByteBuf data) {
     isAdd = data.readBoolean();
 
     boolean isPublic = data.readBoolean();
@@ -59,7 +59,7 @@ public class PacketAddRemoveChannel implements IPacketEio {
     } else {
       HyperCubeRegister.instance.removeChannel(channel);
     }
-    EnderIO.packetPipeline.sendToAll(new PacketAddRemoveChannel(isAdd, channel));
+    PacketHandler.INSTANCE.sendToAll(new PacketAddRemoveChannel(isAdd, channel));
   }
 
 }

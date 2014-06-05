@@ -2,9 +2,6 @@ package crazypants.enderio.machine.tank;
 
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -28,10 +28,8 @@ import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.power.BlockItemCapacitorBank;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.util.FluidUtil;
 import crazypants.util.Lang;
 import crazypants.util.Util;
@@ -39,7 +37,7 @@ import crazypants.util.Util;
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
-   EnderIO.packetPipeline.registerPacket(PacketTank.class);
+   PacketHandler.INSTANCE.registerPacket(PacketTank.class);
     BlockTank res = new BlockTank();
     res.init();
     return res;

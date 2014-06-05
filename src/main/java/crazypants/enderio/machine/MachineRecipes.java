@@ -12,7 +12,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
