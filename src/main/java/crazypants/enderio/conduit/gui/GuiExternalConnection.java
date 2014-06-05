@@ -1,7 +1,12 @@
 package crazypants.enderio.conduit.gui;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +17,10 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
@@ -19,6 +28,14 @@ import crazypants.render.RenderUtil;
 public class GuiExternalConnection extends GuiContainerBase {
 
   private static final int TAB_HEIGHT = 24;
+  
+  private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER = new HashMap<Class<? extends IConduit>, Integer>();
+  static {
+    TAB_ORDER.put(IItemConduit.class, 0);
+    TAB_ORDER.put(ILiquidConduit.class, 1);
+    TAB_ORDER.put(IRedstoneConduit.class, 2);
+    TAB_ORDER.put(IPowerConduit.class, 3);
+  }
 
   InventoryPlayer playerInv;
   IConduitBundle bundle;
@@ -45,8 +62,27 @@ public class GuiExternalConnection extends GuiContainerBase {
     container.setInputSlotsVisible(false);
     container.setOutputSlotsVisible(false);
     container.setInventorySlotsVisible(false);
+    
+    List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
+    Collections.sort(cons, new Comparator<IConduit>() {
+
+      @Override
+      public int compare(IConduit o1, IConduit o2) {
+        Integer int1 = TAB_ORDER.get(o1.getBaseConduitType());
+        if(int1 == null) {
+          return 1;
+        }
+        Integer int2 = TAB_ORDER.get(o2.getBaseConduitType());
+        if(int2 == null) {
+          return 1;
+        }
+        //NB: using Double.comp instead of Integer.comp as the int version is only from Java 1.7+
+        return Double.compare(int1, int2);
         
-    for (IConduit con : bundle.getConduits()) {
+      }
+    });
+    
+    for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
         ISettingsPanel tab = TabFactory.instance.createPanelForConduit(this, con);
         if(tab != null) {
@@ -55,7 +91,7 @@ public class GuiExternalConnection extends GuiContainerBase {
         }
       }
     }
-
+    
   }
 
   @Override
