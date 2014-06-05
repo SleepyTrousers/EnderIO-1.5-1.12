@@ -13,6 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -110,9 +111,10 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
+    
     if(evt.getPlayer().isSneaking() && isEquipped(evt.getPlayer()) && isLog(evt.block)) {
       int powerStored = getStoredPower(evt.getPlayer());
-
+    
       int maxBlocks = 50;
       Set<BlockCoord> toBreak = new HashSet<BlockCoord>();
       BlockCoord bc = new BlockCoord(evt.x, evt.y, evt.z);
@@ -240,9 +242,11 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   private boolean isLog(Block block) {
     if(logOreId == -1) {
-      logOreId = OreDictionary.getOreID("logWood");
+      logOreId = OreDictionary.getOreID("logWood");      
     }
-    return OreDictionary.getOreID(new ItemStack(block)) == logOreId;
+    int test = OreDictionary.getOreID(new ItemStack(Blocks.log, 1, Short.MAX_VALUE));
+    //NB: Specifying the wildcard as meta is a work around for forge issue #1103
+    return OreDictionary.getOreID(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE)) == logOreId;
   }
 
   protected void init() {

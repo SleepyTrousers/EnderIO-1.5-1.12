@@ -1,15 +1,19 @@
 package crazypants.enderio.machine.crusher;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.network.PacketHandler;
 
 public class BlockCrusher extends AbstractMachineBlock {
 
   public static BlockCrusher create() {
+    PacketHandler.INSTANCE.registerMessage(PacketGrindingBall.class, PacketGrindingBall.class, PacketHandler.nextID(), Side.CLIENT);
+    
     BlockCrusher res = new BlockCrusher();
     res.init();
     return res;

@@ -37,6 +37,7 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
     buf.writeInt(y);
     buf.writeInt(z);
     buf.writeBoolean(engineControlEnabled);
+    System.out.println("PacketPowerMonitor.toBytes: " + engineControlEnabled);
     buf.writeFloat(startLevel);
     buf.writeFloat(stopLevel);
 
@@ -48,6 +49,7 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
     y = buffer.readInt();
     z = buffer.readInt();
     engineControlEnabled = buffer.readBoolean();
+    System.out.println("PacketPowerMonitor.fromBytes: " + engineControlEnabled);
     startLevel = buffer.readFloat();
     stopLevel = buffer.readFloat();
 
@@ -55,8 +57,8 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
 
   @Override
   public IMessage onMessage(PacketPowerMonitor message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(!(te instanceof TilePowerMonitor)) {
       Log.warn("createPowerMonitotPacket: Could not handle packet as TileEntity was not a TilePowerMonitor.");
       return null;

@@ -175,7 +175,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     }
     inPause = false;
 
-    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.9f) {      
+    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {      
       return false;
     }
     

@@ -9,11 +9,14 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 
 public class TileCrusher extends AbstractPoweredTaskEntity {
 
   protected IGrindingMultiplier gb;
   protected int currGbUse = 0;
+  
+  protected int lastSendGbScaled = 0;
 
   public TileCrusher() {
     super(new SlotDefinition(2, 4));
@@ -51,6 +54,13 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     double res = super.usePower();
     if(gb != null) {
       currGbUse += res;
+      
+      int newScaled = getBallDurationScaled(16);
+      if(newScaled != lastSendGbScaled) {
+        PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
+        lastSendGbScaled = newScaled;
+      }
+      
       if(currGbUse > gb.getDurationMJ()) {
         currGbUse = 0;
         gb = null;
@@ -110,6 +120,8 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
       GrindingMultiplierNBT.writeToNBT(gb, nbtRoot);
     }
     nbtRoot.setInteger("currGbUse", currGbUse);
+    
+    lastSendGbScaled = getBallDurationScaled(16);
   }
 
   @Override

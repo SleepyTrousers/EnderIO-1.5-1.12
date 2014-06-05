@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
@@ -38,8 +39,11 @@ public class PacketPowerInfo extends MessageTileEntity<TilePowerMonitor> impleme
 
   @Override
   public IMessage onMessage(PacketPowerInfo message, MessageContext ctx) {
-    EntityPlayer player = ctx.getServerHandler().playerEntity;
-    message.getTileEntity(player.worldObj).readPowerInfoFromNBT(message.nbtRoot);
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    TilePowerMonitor te = message.getTileEntity(player.worldObj);
+    if(te != null) {
+      te.readPowerInfoFromNBT(message.nbtRoot);
+    }
     return null;
   }
 }
