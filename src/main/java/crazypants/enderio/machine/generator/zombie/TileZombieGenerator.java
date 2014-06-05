@@ -28,7 +28,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
 
   float outputPerTick = (float) Config.zombieGeneratorMjPerTick;
-  int tickPerMbFuel = Config.zombieGeneratorTicksPerMbFuel;
+  int tickPerMbFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
   private boolean active = false;
@@ -178,12 +178,12 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.9f) {      
       return false;
     }
-
     
-    ticksRemaingFuel--;
+    
+    ticksRemaingFuel--;    
     if(ticksRemaingFuel <= 0) {
       fuelTank.drain(1, true);
-      ticksRemaingFuel = tickPerMbFuel;    
+      ticksRemaingFuel = tickPerMbFuel/1000;    
       tanksDirty = true;
     }
     

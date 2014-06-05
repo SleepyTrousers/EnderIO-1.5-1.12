@@ -121,7 +121,7 @@ public final class Config {
   public static double maxPhotovoltaicAdvancedOutput = 4.0;
   
   public static double zombieGeneratorMjPerTick = 8.0;
-  public static int zombieGeneratorTicksPerMbFuel = 10000;
+  public static int zombieGeneratorTicksPerBucketFuel = 10000;
 
   
   public static boolean combustionGeneratorUseOpaqueModel = true;
@@ -401,8 +401,8 @@ public final class Config {
 
     zombieGeneratorMjPerTick = config.get("Power Settings", "zombieGeneratorMjPerTick", zombieGeneratorMjPerTick,
         "The amount of power generated per tick.").getDouble(zombieGeneratorMjPerTick);
-    zombieGeneratorTicksPerMbFuel = config.get("Power Settings", "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerMbFuel,
-        "The number of ticks one Mb of fuel lasts.").getInt(zombieGeneratorTicksPerMbFuel);
+    zombieGeneratorTicksPerBucketFuel = config.get("Power Settings", "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
+        "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
     
     addFuelTooltipsToAllFluidContainers = config.get("Personal Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
