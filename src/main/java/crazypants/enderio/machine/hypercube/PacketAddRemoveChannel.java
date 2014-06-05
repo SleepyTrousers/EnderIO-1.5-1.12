@@ -3,11 +3,15 @@ package crazypants.enderio.machine.hypercube;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.network.PacketHandler;
 
-public class PacketAddRemoveChannel implements IMessage {
+public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketAddRemoveChannel, IMessage> {
 
   private boolean isAdd;
   private Channel channel;
@@ -44,22 +48,22 @@ public class PacketAddRemoveChannel implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    if(isAdd) {
-      ClientChannelRegister.instance.channelAdded(channel);
+  public IMessage onMessage(PacketAddRemoveChannel message, MessageContext ctx) {
+    if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+      if(message.isAdd) {
+        HyperCubeRegister.instance.addChannel(message.channel);
+      } else {
+        HyperCubeRegister.instance.removeChannel(message.channel);
+      }
+      PacketHandler.INSTANCE.sendToAll(new PacketAddRemoveChannel(message.isAdd, message.channel));
     } else {
-      ClientChannelRegister.instance.channelRemoved(channel);
+      if(message.isAdd) {
+        ClientChannelRegister.instance.channelAdded(message.channel);
+      } else {
+        ClientChannelRegister.instance.channelRemoved(message.channel);
+      }
     }
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    if(isAdd) {
-      HyperCubeRegister.instance.addChannel(channel);
-    } else {
-      HyperCubeRegister.instance.removeChannel(channel);
-    }
-    PacketHandler.INSTANCE.sendToAll(new PacketAddRemoveChannel(isAdd, channel));
+    return null;
   }
 
 }

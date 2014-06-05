@@ -21,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
@@ -39,9 +40,10 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
 
   public static BlockHyperCube create() {
 
-    PacketHandler.INSTANCE.registerPacket(PacketChannelList.class);
-    PacketHandler.INSTANCE.registerPacket(PacketClientState.class);
-    PacketHandler.INSTANCE.registerPacket(PacketAddRemoveChannel.class);
+    PacketHandler.INSTANCE.registerMessage(PacketChannelList.class,PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class,PacketAddRemoveChannel.class,PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class,PacketAddRemoveChannel.class,PacketHandler.nextID(), Side.CLIENT);
 
     BlockHyperCube result = new BlockHyperCube();
     result.init();

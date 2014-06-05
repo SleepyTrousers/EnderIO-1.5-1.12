@@ -49,19 +49,15 @@ public class PacketRedstoneMode implements IMessage, IMessageHandler<PacketRedst
   }
 
   @Override
-  public IMessage onMessage(PacketRedstoneMode message, MessageContext ctx)
-  {
-    handle(ctx.getServerHandler().playerEntity);
-    return null;
-  }
-
-  private void handle(EntityPlayer player) {
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+  public IMessage onMessage(PacketRedstoneMode message, MessageContext ctx) {
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof IRedstoneModeControlable) {
       IRedstoneModeControlable me = (IRedstoneModeControlable) te;
-      me.setRedstoneControlMode(mode);
-      player.worldObj.markBlockForUpdate(x, y, z);
+      me.setRedstoneControlMode(message.mode);
+      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
     }
+    return null;
   }
 
 }

@@ -40,6 +40,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     buf.writeShort(dir.ordinal());
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
@@ -52,6 +53,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     dir = ForgeDirection.values()[buf.readShort()];
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
@@ -78,22 +80,12 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   private void applyFilter(ForgeDirection dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
-//    if(filter == null) {
-      if(isInput) {
-        conduit.setInputFilter(dir, filter);
-      } else {
-        conduit.setOutputFilter(dir, filter);
-      }
-      return;
-//    }
-
-//    ItemFilter itemFilter = isInput ? conduit.getInputFilter(dir) : conduit.getOutputFilter(dir);
-//    itemFilter.setBlacklist(filter.isBlacklist());
-//    itemFilter.setMatchMeta(filter.isMatchMeta());
-//    itemFilter.setMatchNBT(filter.isMatchNBT());
-//    itemFilter.setUseOreDict(filter.isUseOreDict());
-//    itemFilter.setSticky(filter.isSticky());
-
+    if(isInput) {
+      conduit.setInputFilter(dir, filter);
+    } else {
+      conduit.setOutputFilter(dir, filter);
+    }
+    return;
   }
 
 }

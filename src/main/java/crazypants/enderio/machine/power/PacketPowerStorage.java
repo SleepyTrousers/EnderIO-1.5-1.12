@@ -9,9 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
 import crazypants.util.BlockCoord;
 
-public class PacketPowerStorage implements IMessage {
+public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
   private int x;
   private int y;
@@ -27,13 +30,13 @@ public class PacketPowerStorage implements IMessage {
     z = ent.zCoord;
     storedEnergy = ent.storedEnergy;
   }
-  
+
   @Override
   public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeFloat(storedEnergy);    
+    buf.writeFloat(storedEnergy);
 
   }
 
@@ -46,34 +49,27 @@ public class PacketPowerStorage implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  private void handle(EntityPlayer player) {    
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+  public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileCapacitorBank) {
-      TileCapacitorBank me = (TileCapacitorBank) te;      
-      me.storedEnergy = storedEnergy;   
-      
-      float dif = Math.abs(me.lastRenderStoredRatio - me.getEnergyStoredRatio());      
+      TileCapacitorBank me = (TileCapacitorBank) te;
+      me.storedEnergy = message.storedEnergy;
+
+      float dif = Math.abs(me.lastRenderStoredRatio - me.getEnergyStoredRatio());
       if(dif > 0.025) { //update rendering at a 2.5% diff
         if(!me.isMultiblock()) {
-          player.worldObj.markBlockForUpdate(x, y, z);
+          player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
         } else {
           BlockCoord[] mb = me.multiblock;
-          for(BlockCoord bc : mb) {
+          for (BlockCoord bc : mb) {
             updateGaugeRender(player.worldObj, bc);
           }
         }
-        
+
       }
-    } 
+    }
+    return null;
   }
 
   private void updateGaugeRender(World worldObj, BlockCoord bc) {
@@ -85,8 +81,7 @@ public class PacketPowerStorage implements IMessage {
         worldObj.markBlockForUpdate(bc.x, bc.y, bc.z);
       }
     }
-    
-  }
 
+  }
 
 }

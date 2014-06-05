@@ -5,9 +5,12 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 
-public class PacketPowerMonitor implements IMessage {
+public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPowerMonitor, IMessage> {
 
   int x;
   int y;
@@ -15,7 +18,6 @@ public class PacketPowerMonitor implements IMessage {
   boolean engineControlEnabled;
   float startLevel;
   float stopLevel;
-
 
   public PacketPowerMonitor() {
   }
@@ -52,26 +54,19 @@ public class PacketPowerMonitor implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  public void handle(EntityPlayer player) {
+  public IMessage onMessage(PacketPowerMonitor message, MessageContext ctx) {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileEntity te = player.worldObj.getTileEntity(x, y, z);
     if(!(te instanceof TilePowerMonitor)) {
       Log.warn("createPowerMonitotPacket: Could not handle packet as TileEntity was not a TilePowerMonitor.");
-      return;
+      return null;
     }
     TilePowerMonitor pm = (TilePowerMonitor) te;
-    pm.engineControlEnabled = engineControlEnabled;
-    pm.startLevel = startLevel;
-    pm.stopLevel = stopLevel;
+    pm.engineControlEnabled = message.engineControlEnabled;
+    pm.startLevel = message.startLevel;
+    pm.stopLevel = message.stopLevel;
     player.worldObj.markBlockForUpdate(x, y, z);
+    return null;
   }
 
 }

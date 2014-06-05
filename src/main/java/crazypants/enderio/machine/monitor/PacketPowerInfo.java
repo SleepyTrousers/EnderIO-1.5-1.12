@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.monitor;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,7 +11,7 @@ import net.minecraft.world.World;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketPowerInfo extends MessageTileEntity<TilePowerMonitor> {
+public class PacketPowerInfo extends MessageTileEntity<TilePowerMonitor> implements IMessageHandler<PacketPowerInfo, IMessage>  {
 
   private NBTTagCompound nbtRoot;
 
@@ -23,18 +26,20 @@ public class PacketPowerInfo extends MessageTileEntity<TilePowerMonitor> {
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(ctx, buf);
+    super.toBytes(buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(ctx, buf);
+    super.fromBytes(buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 
   @Override
-  protected void handleClientSide(EntityPlayer player, World worldObj, TilePowerMonitor tile) {
-    tile.readPowerInfoFromNBT(nbtRoot);
+  public IMessage onMessage(PacketPowerInfo message, MessageContext ctx) {
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    message.getTileEntity(player.worldObj).readPowerInfoFromNBT(message.nbtRoot);
+    return null;
   }
 }

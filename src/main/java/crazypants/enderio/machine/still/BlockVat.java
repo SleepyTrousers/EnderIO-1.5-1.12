@@ -30,7 +30,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
   public static int renderId;
 
   public static BlockVat create() {
-    PacketHandler.INSTANCE.registerPacket(PacketTanks.class);
+    PacketHandler.INSTANCE.registerMessage(PacketTanks.class,PacketTanks.class,PacketHandler.nextID(), Side.CLIENT);
     BlockVat res = new BlockVat();
     res.init();
     return res;

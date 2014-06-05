@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -16,8 +17,8 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   public static BlockPowerMonitor create() {
 
-    PacketHandler.INSTANCE.registerPacket(PacketPowerMonitor.class);
-    PacketHandler.INSTANCE.registerPacket(PacketPowerInfo.class);
+    PacketHandler.INSTANCE.registerMessage(PacketPowerMonitor.class,PacketPowerMonitor.class,PacketHandler.nextID(),Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketPowerInfo.class,PacketPowerInfo.class,PacketHandler.nextID(),Side.CLIENT);
 
     BlockPowerMonitor result = new BlockPowerMonitor();
     result.init();

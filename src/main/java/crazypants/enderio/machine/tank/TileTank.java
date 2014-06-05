@@ -213,7 +213,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       return true;
     }
     if(tankDirty && worldObj.getWorldTime() % 10 == 0) {
-      PacketHandler.INSTANCE.sendToAllAround(new PacketTank(this), this);
+      PacketHandler.sendToAllAround(new PacketTank(this), this);
       tankDirty = false;
     }
     return res;

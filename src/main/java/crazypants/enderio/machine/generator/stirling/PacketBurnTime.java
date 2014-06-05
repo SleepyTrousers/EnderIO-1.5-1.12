@@ -23,12 +23,14 @@ public class PacketBurnTime extends MessageTileEntity<TileEntityStirlingGenerato
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     buf.writeInt(burnTime);
     buf.writeInt(totalBurnTime);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     burnTime = buf.readInt();
     totalBurnTime = buf.readInt();
   }

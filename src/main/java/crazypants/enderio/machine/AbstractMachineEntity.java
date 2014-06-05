@@ -337,7 +337,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       markDirty();
     } else if(powerChanged) {
       lastSyncPowerStored = storedEnergy;
-      PacketHandler.INSTANCE.sendToAllAround(new PacketPowerStorage(this), this);       
+      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);       
     }
 
     if(notifyNeighbours) {

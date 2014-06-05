@@ -11,7 +11,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage>{
+public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketOpenConduitUI, IMessage> {
 
   private ForgeDirection dir;
 
@@ -25,19 +25,22 @@ public class PacketOpenConduitUI extends MessageTileEntity<TileEntity> implement
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     buf.writeShort(dir.ordinal());
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     dir = ForgeDirection.values()[buf.readShort()];
   }
 
   public IMessage onMessage(PacketOpenConduitUI message, MessageContext ctx) {
-      EntityPlayer player = ctx.getServerHandler().playerEntity;
-      TileEntity tile = message.getWorld(ctx).getTileEntity(x, y, z);
-      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + message.dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
-      return null;
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    TileEntity tile = message.getWorld(ctx).getTileEntity(message.x, message.y, message.z);
+    player
+        .openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + message.dir.ordinal(), player.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+    return null;
   }
 
 }

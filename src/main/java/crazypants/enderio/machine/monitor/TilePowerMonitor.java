@@ -164,7 +164,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
       }
     }
     if(update) {
-      PacketHandler.INSTANCE.sendToAllAround(new PacketPowerInfo(this), this);
+      PacketHandler.sendToAllAround(new PacketPowerInfo(this), this);
     }    
     return false;
   }

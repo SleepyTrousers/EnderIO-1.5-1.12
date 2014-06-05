@@ -29,7 +29,7 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
 
   public static ItemConduitProbe create() {
 
-    PacketHandler.INSTANCE.registerPacket(PacketConduitProbe.class);
+    PacketHandler.INSTANCE.registerMessage(PacketConduitProbe.class,PacketConduitProbe.class,PacketHandler.nextID(),Side.SERVER);
 
     ItemConduitProbe result = new ItemConduitProbe();
     result.init();

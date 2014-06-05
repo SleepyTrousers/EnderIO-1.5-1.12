@@ -105,7 +105,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       startFailed = !started;
       //requiresClientSync |= started;
       if(started) {
-        PacketHandler.INSTANCE.sendToAllAround(new PacketCurrentTask(this), this);
+        PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
       }
     } else {
       startFailed = true;
@@ -127,7 +127,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       return false;
     }
     
-    PacketHandler.INSTANCE.sendToAllAround(new PacketCurrentTask(this), this);
+    PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
     
     return false;
   }
@@ -154,7 +154,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     markDirty();
     currentTask = null;
-    PacketHandler.INSTANCE.sendToAllAround(new PacketCurrentTask(this), this);
+    PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
   }
 
   protected void mergeResults(ResultStack[] results) {

@@ -37,7 +37,7 @@ import crazypants.util.Util;
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
-   PacketHandler.INSTANCE.registerPacket(PacketTank.class);
+   PacketHandler.INSTANCE.registerMessage(PacketTank.class, PacketTank.class, PacketHandler.nextID(), Side.CLIENT);
     BlockTank res = new BlockTank();
     res.init();
     return res;

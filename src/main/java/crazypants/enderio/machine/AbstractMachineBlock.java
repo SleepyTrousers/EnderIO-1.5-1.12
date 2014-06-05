@@ -54,9 +54,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   protected final Class<T> teClass;
 
   static {
-    PacketHandler.INSTANCE.registerPacket(PacketIoMode.class);
-    PacketHandler.INSTANCE.registerPacket(PacketPowerStorage.class);
-    PacketHandler.INSTANCE.registerPacket(PacketCurrentTask.class);
+    PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketCurrentTask.class,PacketCurrentTask.class,PacketHandler.nextID(),Side.CLIENT);
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {

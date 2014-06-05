@@ -10,10 +10,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 
-public class PacketClientState implements IMessage {
+public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage> {
 
   private int x;
   private int y;
@@ -85,12 +87,8 @@ public class PacketClientState implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-
+  public IMessage onMessage(PacketClientState message, MessageContext ctx) {
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity te = player.worldObj.getTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube hc = (TileHyperCube) te;
@@ -106,6 +104,7 @@ public class PacketClientState implements IMessage {
 
       player.worldObj.markBlockForUpdate(x, y, z);
     }
+    return null;
 
   }
 

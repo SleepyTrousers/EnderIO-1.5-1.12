@@ -2,6 +2,8 @@ package crazypants.enderio.machine.generator.zombie;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,7 +23,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   public static BlockZombieGenerator create() {
     
-    PacketHandler.INSTANCE.registerPacket(PacketZombieTank.class);
+    PacketHandler.INSTANCE.registerMessage(PacketZombieTank.class, PacketZombieTank.class, PacketHandler.nextID(), Side.CLIENT);
     
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();

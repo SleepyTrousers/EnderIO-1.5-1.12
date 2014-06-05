@@ -5,8 +5,11 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.EnderIO;
 
-public class PacketPowerStorage implements IMessage {
+public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
   private int x;
   private int y;
@@ -22,13 +25,13 @@ public class PacketPowerStorage implements IMessage {
     z = ent.zCoord;
     storedEnergy = ent.storedEnergy;
   }
-  
+
   @Override
   public void toBytes(ByteBuf buf) {
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeFloat(storedEnergy);    
+    buf.writeFloat(storedEnergy);
 
   }
 
@@ -41,23 +44,15 @@ public class PacketPowerStorage implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  private void handle(EntityPlayer player) {    
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+  public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity) te;      
-      me.storedEnergy = storedEnergy;
-      me.powerHandler.setEnergy(storedEnergy);
-    } 
+      AbstractMachineEntity me = (AbstractMachineEntity) te;
+      me.storedEnergy = message.storedEnergy;
+      me.powerHandler.setEnergy(message.storedEnergy);
+    }
+    return null;
   }
-
 
 }

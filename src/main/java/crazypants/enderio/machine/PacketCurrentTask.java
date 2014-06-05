@@ -1,13 +1,17 @@
 package crazypants.enderio.machine;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEntity> {
+public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEntity> implements IMessageHandler<PacketCurrentTask, IMessage>  {
 
   private NBTTagCompound nbtRoot;
 
@@ -37,12 +41,14 @@ public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEnti
   }
 
   @Override
-  protected void handleClientSide(EntityPlayer player, World worldObj, AbstractPoweredTaskEntity tile) {
-    if(nbtRoot.hasKey("currentTask")) {
-      NBTTagCompound tankRoot = nbtRoot.getCompoundTag("currentTask");
-      tile.currentTask = PoweredTask.readFromNBT(nbtRoot.getCompoundTag("currentTask"));
+  public IMessage onMessage(PacketCurrentTask message, MessageContext ctx) {
+    AbstractPoweredTaskEntity tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+    if(message.nbtRoot.hasKey("currentTask")) {
+      NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("currentTask");
+      tile.currentTask = PoweredTask.readFromNBT(message.nbtRoot.getCompoundTag("currentTask"));
     } else {
       tile.currentTask = null;
     }
+    return null;
   }
 }

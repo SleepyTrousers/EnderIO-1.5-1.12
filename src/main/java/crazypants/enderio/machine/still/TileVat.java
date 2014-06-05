@@ -174,7 +174,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   protected boolean processTasks(boolean redstoneChecksPassed) {
     boolean res = super.processTasks(redstoneChecksPassed);
     if(tanksDirty && worldObj.getWorldTime() % 10 == 0) {
-      PacketHandler.INSTANCE.sendToAllAround(new PacketTanks(this), this);
+      PacketHandler.sendToAllAround(new PacketTanks(this), this);
       tanksDirty = false;
     }    
     return res;

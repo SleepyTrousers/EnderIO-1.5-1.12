@@ -27,6 +27,7 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> impleme
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     buf.writeShort(dir.ordinal());
     buf.writeShort(mode.ordinal());
     buf.writeShort(color.ordinal());
@@ -34,6 +35,7 @@ public class PacketExtractMode extends AbstractConduitPacket<IExtractor> impleme
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     dir = ForgeDirection.values()[buf.readShort()];
     mode = RedstoneControlMode.values()[buf.readShort()];
     color = DyeColor.values()[buf.readShort()];

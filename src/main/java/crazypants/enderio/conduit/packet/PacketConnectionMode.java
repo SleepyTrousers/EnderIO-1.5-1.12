@@ -24,12 +24,14 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     buf.writeShort(dir.ordinal());
     buf.writeShort(mode.ordinal());
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     dir = ForgeDirection.values()[buf.readShort()];
     mode = ConnectionMode.values()[buf.readShort()];
 

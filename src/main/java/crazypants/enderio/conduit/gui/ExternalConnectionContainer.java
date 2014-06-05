@@ -135,6 +135,9 @@ public class ExternalConnectionContainer extends Container {
   }
 
   public void setInputSlotsVisible(boolean visible) {
+    if(itemConduit == null) {
+      return;
+    }
     setSlotsVisible(visible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
     setSlotsVisible(visible, speedUpgradeSlot, speedUpgradeSlot + 1);
 
@@ -149,6 +152,10 @@ public class ExternalConnectionContainer extends Container {
 
   public void setOutputSlotsVisible(boolean visible) {
 
+    if(itemConduit == null) {
+      return;
+    }
+    
     setSlotsVisible(visible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
 
     if(outputFilter == null) {

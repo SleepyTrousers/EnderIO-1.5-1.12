@@ -6,8 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.teleport.packet.PacketAccessMode;
 
-public class PacketIoMode implements IMessage {
+public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMessage> {
 
   private int x;
   private int y;
@@ -46,22 +49,19 @@ public class PacketIoMode implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
-    handle(player);
-  }
-
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-    handle(player);
+  public IMessage onMessage(PacketIoMode message, MessageContext ctx) {
+    EntityPlayer player = ctx.getServerHandler().playerEntity;
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
+    if(te instanceof IIoConfigurable) {
+      IIoConfigurable me = (IIoConfigurable) te;
+      me.setIoMode(message.face, message.mode);
+      player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
+    }
+    return null;
   }
 
   private void handle(EntityPlayer player) {
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
-    if(te instanceof IIoConfigurable) {
-      IIoConfigurable me = (IIoConfigurable) te;
-      me.setIoMode(face, mode);
-      player.worldObj.markBlockForUpdate(x, y, z);
-    }
+
   }
 
 }

@@ -252,7 +252,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
     if(lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0) {
       lastSyncPowerStored = storedEnergy;
-      PacketHandler.INSTANCE.sendToAllAround(new PacketPowerStorage(this), this, 64);      
+      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this, 64);      
     }
     
     if(notifyNeighbours) {

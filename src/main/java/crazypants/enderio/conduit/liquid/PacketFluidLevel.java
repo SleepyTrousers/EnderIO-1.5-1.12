@@ -25,18 +25,19 @@ public class PacketFluidLevel extends MessageTileEntity<TileEntity> implements I
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     ByteBufUtils.writeTag(buf, tc);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     tc = ByteBufUtils.readTag(buf);
   }
 
   
   @Override
-  public IMessage onMessage(PacketFluidLevel message, MessageContext ctx)
-  {
+  public IMessage onMessage(PacketFluidLevel message, MessageContext ctx) {
       ClientUtil.doFluidLevelUpdate(message.x, message.y, message.z, message);
       return null;
   }

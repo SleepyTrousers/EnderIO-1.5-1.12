@@ -9,8 +9,10 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketChannelList implements IMessage {
+public class PacketChannelList implements IMessage, IMessageHandler<PacketChannelList, IMessage>  {
 
   private boolean isPrivate;
   private List<Channel> channels;
@@ -74,17 +76,15 @@ public class PacketChannelList implements IMessage {
   }
 
   @Override
-  public void handleClientSide(EntityPlayer player) {
+  public IMessage onMessage(PacketChannelList message, MessageContext ctx) {
     if(isPrivate) {
-      ClientChannelRegister.instance.setPrivateChannels(channels);
+      ClientChannelRegister.instance.setPrivateChannels(message.channels);
     } else {
-      ClientChannelRegister.instance.setPublicChannels(channels);
+      ClientChannelRegister.instance.setPublicChannels(message.channels);
     }
+    return null;
   }
 
-  @Override
-  public void handleServerSide(EntityPlayer player) {
-
-  }
+  
 
 }

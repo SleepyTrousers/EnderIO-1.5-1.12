@@ -64,14 +64,10 @@ public class PacketOpenRemoteUi implements IMessage, IMessageHandler<PacketOpenR
     proxy.inventory = player.inventory;
     proxy.currentWindowId = player.currentWindowId;
     proxy.inventoryContainer = player.inventoryContainer;
-    //proxy.mcServer = player.mcServer;
     proxy.openContainer = player.openContainer;
-    //proxy.theItemInWorldManager = player.theItemInWorldManager;
     proxy.worldObj = player.worldObj;
 
-    System.out.println("PacketOpenRemoteUi.handleServerSide: " + x + "," + y + "," + z);
-
-    player.theItemInWorldManager.activateBlockOrUseItem(proxy, player.worldObj, null, x, y, z, 0, 0, 0, 0);
+    player.theItemInWorldManager.activateBlockOrUseItem(proxy, player.worldObj, null, message.x, message.y, message.z, 0, 0, 0, 0);
     player.theItemInWorldManager.thisPlayerMP = player;
     if(c != proxy.openContainer) {
       player.openContainer = proxy.openContainer;

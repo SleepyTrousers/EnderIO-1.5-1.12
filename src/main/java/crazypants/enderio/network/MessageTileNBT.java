@@ -53,8 +53,7 @@ public class MessageTileNBT implements IMessage, IMessageHandler<MessageTileNBT,
   }
 
   @Override
-  public IMessage onMessage(MessageTileNBT msg, MessageContext ctx) 
-  {
+  public IMessage onMessage(MessageTileNBT msg, MessageContext ctx) {
     te = handle(ctx.getServerHandler().playerEntity.worldObj);
     if(te != null && renderOnUpdate) {
       te.getWorldObj().markBlockForUpdate(x,y,z);
@@ -63,7 +62,6 @@ public class MessageTileNBT implements IMessage, IMessageHandler<MessageTileNBT,
   }
 
   private TileEntity handle(World world) {
-    System.out.println("crazypants.enderio.network.PacketTileEntity.handle");
     if(world == null) {
       Log.warn("PacketUtil.handleTileEntityPacket: TileEntity null world processing tile entity packet.");
       return null;

@@ -12,10 +12,7 @@ import crazypants.enderio.network.PacketHandler;
 
 public class ItemExtractSpeedUpgrade extends Item {
   
-  public static ItemExtractSpeedUpgrade create() {
-
-    PacketHandler.INSTANCE.registerMessage(PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
-
+  public static ItemExtractSpeedUpgrade create() {    
     ItemExtractSpeedUpgrade result = new ItemExtractSpeedUpgrade();
     result.init();
     return result;

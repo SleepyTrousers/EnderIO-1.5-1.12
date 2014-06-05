@@ -33,11 +33,13 @@ public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenera
 
   @Override
   public void toBytes(ByteBuf buf) {
+    super.toBytes(buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
+    super.fromBytes(buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
   @Override

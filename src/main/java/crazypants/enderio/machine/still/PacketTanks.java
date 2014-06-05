@@ -1,14 +1,19 @@
 package crazypants.enderio.machine.still;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.tank.PacketTank;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 
-public class PacketTanks extends MessageTileEntity<TileVat> {
+public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageHandler<PacketTanks, IMessage> {
 
   private NBTTagCompound nbtRoot;
 
@@ -32,30 +37,33 @@ public class PacketTanks extends MessageTileEntity<TileVat> {
 
   @Override
   public void toBytes(ByteBuf buf) {
-    super.toBytes(ctx, buf);
+    super.toBytes(buf);
     NetworkUtil.writeNBTTagCompound(nbtRoot, buf);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    super.fromBytes(ctx, buf);
+    super.fromBytes(buf);
     nbtRoot = NetworkUtil.readNBTTagCompound(buf);
   }
 
   @Override
-  protected void handleClientSide(EntityPlayer player, World worldObj, TileVat tile) {
-    if(nbtRoot.hasKey("inputTank")) {
-      NBTTagCompound tankRoot = nbtRoot.getCompoundTag("inputTank");
+  public IMessage onMessage(PacketTanks message, MessageContext ctx) {
+    EntityPlayer player = EnderIO.proxy.getClientPlayer();
+    TileVat tile = message.getTileEntity(player.worldObj);
+    if(message.nbtRoot.hasKey("inputTank")) {
+      NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("inputTank");
       tile.inputTank.readFromNBT(tankRoot);
     } else {
       tile.inputTank.setFluid(null);
     }
-    if(nbtRoot.hasKey("outputTank")) {
-      NBTTagCompound tankRoot = nbtRoot.getCompoundTag("outputTank");
+    if(message.nbtRoot.hasKey("outputTank")) {
+      NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("outputTank");
       tile.outputTank.readFromNBT(tankRoot);
     } else {
       tile.outputTank.setFluid(null);
     }
+    return null;
   }
 
 }
