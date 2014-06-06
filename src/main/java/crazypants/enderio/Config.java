@@ -147,6 +147,9 @@ public final class Config {
   
   public static int crafterMjPerCraft = 250;
   
+  public static int capacitorBankMaxIoMJ = 100;
+  public static int capacitorBankMaxStorageMJ = 500000;
+  
     
 
   public static void load(FMLPreInitializationEvent event) {
@@ -172,6 +175,11 @@ public final class Config {
   public static void processConfig(Configuration config) {
     useRfAsDefault = config.get("Power Settings", "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
         .getBoolean(useRfAsDefault);
+    
+    capacitorBankMaxIoMJ = config.get("Power Settings", "capacitorBankMaxIoMJ", capacitorBankMaxIoMJ, "The maximum IO for a single capacitor in MJ/t")
+        .getInt(capacitorBankMaxIoMJ);
+    capacitorBankMaxStorageMJ = config.get("Power Settings", "capacitorBankMaxStorageMJ", capacitorBankMaxStorageMJ, "The maximum storage for a single capacitor in MJ")
+        .getInt(capacitorBankMaxStorageMJ);
 
     useHardRecipes = config.get("Recipe Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
