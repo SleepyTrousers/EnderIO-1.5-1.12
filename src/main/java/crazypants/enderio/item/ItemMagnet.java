@@ -52,8 +52,8 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     return EnderIO.itemMagnet.getEnergyStored(itemStack) > 0;
   }
 
-  public static void drainPerTickPower(ItemStack itemStack) {
-    EnderIO.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerTickRF, false);    
+  public static void drainPerSecondPower(ItemStack itemStack) {
+    EnderIO.itemMagnet.extractEnergy(itemStack, Config.magnetPowerUsePerSecondRF, false);    
   }
 
   public static ItemMagnet create() {    

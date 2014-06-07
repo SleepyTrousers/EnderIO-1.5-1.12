@@ -20,6 +20,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -39,7 +40,7 @@ import crazypants.vecmath.VecmathUtil;
 
 public class TileCapacitorBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable {
 
-  static final BasicCapacitor BASE_CAP = new BasicCapacitor(100, 500000);
+  static final BasicCapacitor BASE_CAP = new BasicCapacitor(Config.capacitorBankMaxIoMJ, Config.capacitorBankMaxStorageMJ);
 
   BlockCoord[] multiblock = null;
 

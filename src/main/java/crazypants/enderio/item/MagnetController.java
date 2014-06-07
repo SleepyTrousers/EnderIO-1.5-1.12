@@ -21,8 +21,8 @@ public class MagnetController implements IEntitySelector {
     ActiveMagnet mag = getActiveMagnet(event.player);
     if(mag != null) {   
       doHoover(event.player);
-      if(event.side == Side.SERVER) {
-        ItemMagnet.drainPerTickPower(mag.item);
+      if(event.side == Side.SERVER && event.player.worldObj.getWorldTime() % 20 == 0) {
+        ItemMagnet.drainPerSecondPower(mag.item);
         event.player.inventory.setInventorySlotContents(mag.slot, mag.item);
         event.player.inventory.markDirty();
       }

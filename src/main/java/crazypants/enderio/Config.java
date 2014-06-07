@@ -139,7 +139,7 @@ public final class Config {
   public static float farmActionEnergyUse = 40;
   public static int farmDefaultSize = 3;
   
-  public static int magnetPowerUsePerTickRF = 1;
+  public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
   
@@ -432,8 +432,8 @@ public final class Config {
     combustionGeneratorUseOpaqueModel = config.get("Aesthetic Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);    
     
-    magnetPowerUsePerTickRF = config.get("Magnet Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerTickRF,
-        "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerTickRF);    
+    magnetPowerUsePerSecondRF = config.get("Magnet Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF,
+        "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerSecondRF);    
     magnetPowerCapacityRF = config.get("Magnet Settings", "magnetPowerCapacityRF", magnetPowerCapacityRF,
         "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);    
     magnetRange = config.get("Magnet Settings", "magnetRange", magnetRange,
