@@ -6,7 +6,7 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 
-enum ConTypeEnum {
+public enum ConTypeEnum {
 
   POWER(IPowerConduit.class),
   FLUID(ILiquidConduit.class),

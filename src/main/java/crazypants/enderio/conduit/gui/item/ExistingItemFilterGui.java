@@ -21,6 +21,10 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private static final int ID_META = GuiExternalConnection.nextButtonId();
   private static final int ID_ORE_DICT = GuiExternalConnection.nextButtonId();
   private static final int ID_STICKY = GuiExternalConnection.nextButtonId();
+  
+  private static final int ID_SNAPSHOT = GuiExternalConnection.nextButtonId();
+  private static final int ID_CLEAR = GuiExternalConnection.nextButtonId();
+  
 
   private IItemConduit itemConduit;
   private GuiExternalConnection gui;
@@ -29,6 +33,9 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private ToggleButtonEIO useNbtB;
   private ToggleButtonEIO useOreDictB;
   private ToggleButtonEIO stickyB;
+  
+  private GuiButton snapshotB;
+  private GuiButton clearB;
 
   boolean isInput;
 
@@ -75,6 +82,9 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
+    
+    
+    
   }
 
   public void updateButtons() {
@@ -94,6 +104,19 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     useMetaB.onGuiInit();
     useMetaB.setSelected(activeFilter.isMatchMeta());
+    
+    int x = gui.getGuiLeft() + 80;
+    int y = 77;
+    snapshotB = new GuiButton(ID_SNAPSHOT, x, y, 60, 20, "Snapshot");
+    
+    
+    y += 22;
+    clearB = new GuiButton(ID_CLEAR, x, y, 60, 20, "Clear");
+    gui.addButton(snapshotB);
+    gui.addButton(clearB);
+    
+    clearB.enabled = filter.getSnapshot() != null; 
+    
 
   }
 
@@ -111,13 +134,20 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     } else if(guiButton.id == ID_ORE_DICT) {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
-    } 
+    } else if(guiButton.id == ID_SNAPSHOT) {
+      sendSnapshotPacket(false);
+    } else if(guiButton.id == ID_CLEAR) {
+      sendSnapshotPacket(true);
+    }
+  }
+
+  private void sendSnapshotPacket(boolean isClear) {    
+    PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,isClear));
   }
 
   private void sendFilterChange() {
     updateButtons();
-    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));
-    System.out.println("ExistingItemFilterGui.enclosing_method: ");
+    PacketHandler.INSTANCE.sendToServer(new PacketItemConduitFilter(itemConduit, gui.getDir()));    
   }
 
   public void deactivate() {
@@ -125,6 +155,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useMetaB.detach();
     useOreDictB.detach();    
     stickyB.detach();
+    gui.removeButton(snapshotB);
+    gui.removeButton(clearB);
   }
 
   public void renderCustomOptions(int top, float par1, int par2, int par3) {

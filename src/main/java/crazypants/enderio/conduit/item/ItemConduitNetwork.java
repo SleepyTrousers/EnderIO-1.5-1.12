@@ -67,6 +67,15 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     getOrCreate(bc).add(inv);
     requiresSort = true;
   }
+  
+  public NetworkedInventory getInventory(IItemConduit conduit, ForgeDirection dir) {
+    for(NetworkedInventory inv : inventories) {
+      if(inv.con == conduit && inv.conDir == dir) {
+        return inv;
+      }
+    }
+    return null;
+  }
 
   private List<NetworkedInventory> getOrCreate(BlockCoord bc) {
     List<NetworkedInventory> res = invMap.get(bc);

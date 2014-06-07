@@ -52,7 +52,7 @@ enderio.itemConduitFilterUpgrade.configured=Configured
 
 item.itemExistingItemFilter.name=Existing Item Filter
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
-item.itemExistingItemFilter.tooltip.detailed.line1=in the inventory
+item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
 
 enderio.itemMeConduit.name=ME Conduit
 
