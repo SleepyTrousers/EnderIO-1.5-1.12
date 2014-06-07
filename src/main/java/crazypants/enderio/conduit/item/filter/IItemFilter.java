@@ -1,6 +1,8 @@
-package crazypants.enderio.conduit.item;
+package crazypants.enderio.conduit.item.filter;
 
 import java.util.List;
+
+import crazypants.enderio.conduit.item.NetworkedInventory;
 
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -12,9 +14,9 @@ public interface IItemFilter {
 
   void writeToNBT(NBTTagCompound nbtRoot);
 
-  boolean doesItemPassFilter(ItemStack item);
+  boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item);
 
-  boolean doesFilterCaptureStack(ItemStack item);
+  boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item);
 
   boolean isValid();
 

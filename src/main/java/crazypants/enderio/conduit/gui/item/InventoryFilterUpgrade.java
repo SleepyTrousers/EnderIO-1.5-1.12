@@ -1,11 +1,11 @@
-package crazypants.enderio.conduit.gui;
+package crazypants.enderio.conduit.gui.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.IItemFilterUpgrade;
+import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 
 public class InventoryFilterUpgrade implements IInventory {
 
@@ -13,7 +13,7 @@ public class InventoryFilterUpgrade implements IInventory {
   final ForgeDirection dir;
   final boolean isInput;
   
-  InventoryFilterUpgrade(IItemConduit itemConduit, ForgeDirection dir, boolean isInput) {
+  public InventoryFilterUpgrade(IItemConduit itemConduit, ForgeDirection dir, boolean isInput) {
     this.itemConduit = itemConduit;
     this.dir = dir;
     this.isInput = isInput;

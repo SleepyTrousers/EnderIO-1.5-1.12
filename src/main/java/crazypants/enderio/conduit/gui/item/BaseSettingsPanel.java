@@ -1,15 +1,18 @@
-package crazypants.enderio.conduit.gui;
+package crazypants.enderio.conduit.gui.item;
 
 import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.gui.GuiExternalConnection;
+import crazypants.enderio.conduit.gui.ISettingsPanel;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -76,7 +79,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     rightArrow.onGuiInit();
 
     FontRenderer fr = gui.getFontRenderer();
-    connectionModeChanged(con.getConectionMode(gui.dir));
+    connectionModeChanged(con.getConectionMode(gui.getDir()));
 
     initCustomOptions();
   }
@@ -96,14 +99,14 @@ public class BaseSettingsPanel implements ISettingsPanel {
   @Override
   public void actionPerformed(GuiButton guiButton) {
     if(guiButton.id == PREV_MODE_B) {
-      con.setConnectionMode(gui.dir, con.getPreviousConnectionMode(gui.dir));
-      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.dir));
-      connectionModeChanged(con.getConectionMode(gui.dir));
+      con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
+      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
+      connectionModeChanged(con.getConectionMode(gui.getDir()));
 
     } else if(guiButton.id == NEXT_MODE_B) {
-      con.setConnectionMode(gui.dir, con.getNextConnectionMode(gui.dir));
-      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.dir));
-      connectionModeChanged(con.getConectionMode(gui.dir));
+      con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
+      PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
+      connectionModeChanged(con.getConectionMode(gui.getDir()));
     }
   }
 
@@ -120,15 +123,16 @@ public class BaseSettingsPanel implements ISettingsPanel {
     //fr.drawString(getTypeName(), x, top, rgb);
 
     x = left;
-    int y = customTop + 8;//gap + fr.FONT_HEIGHT + gap;
+    
+    int y = gui.getGuiTop() + 13;//customTop + 8;//gap + fr.FONT_HEIGHT + gap;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
-    String modeString = con.getConectionMode(gui.dir).getLocalisedName();
+    String modeString = con.getConectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);
     IconEIO icon = new IconEIO(10, 60, 64, 20);
-    icon.renderIcon(x - gap, y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
+    icon.renderIcon(x - gap,  y - (fr.FONT_HEIGHT / 2) - 1, getLongestModeStringWidth() + gap * 2, leftArrow.getHeight(), 0, true);
 
     int move = (getLongestModeStringWidth() - fr.getStringWidth(modeString)) / 2;
     x += move;

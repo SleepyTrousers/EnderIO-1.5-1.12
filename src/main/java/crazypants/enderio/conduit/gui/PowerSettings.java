@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.gui.item.BaseSettingsPanel;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.gui.ColorButton;
@@ -15,9 +16,9 @@ import crazypants.util.Lang;
 
 public class PowerSettings extends BaseSettingsPanel {
 
-  private static final int ID_REDSTONE_BUTTON = 796;
+  private static final int ID_REDSTONE_BUTTON = GuiExternalConnection.nextButtonId();
 
-  private static final int ID_COLOR_BUTTON = 797;
+  private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
 
   private IPowerConduit conduit;
   private RedstoneModeButton rsB;
@@ -35,23 +36,23 @@ public class PowerSettings extends BaseSettingsPanel {
       @Override
       public void setRedstoneControlMode(RedstoneControlMode mode) {
         RedstoneControlMode curMode = getRedstoneControlMode();
-        conduit.setExtractionRedstoneMode(mode, gui.dir);
+        conduit.setExtractionRedstoneMode(mode, gui.getDir());
         if(curMode != mode) {
-          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.dir));
+          PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
         }
 
       }
 
       @Override
       public RedstoneControlMode getRedstoneControlMode() {
-        return conduit.getExtractionRedstoneMode(gui.dir);
+        return conduit.getExtractionRedstoneMode(gui.getDir());
       }
     });
 
     x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
-    colorB.setColorIndex(conduit.getExtractionSignalColor(gui.dir).ordinal());
+    colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
 
   }
 
@@ -59,8 +60,8 @@ public class PowerSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      conduit.setExtractionSignalColor(gui.dir, DyeColor.values()[colorB.getColorIndex()]);
-      PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.dir));
+      conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
+      PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
     }
   }
 

@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui;
+package crazypants.enderio.conduit.gui.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -7,12 +7,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.IItemConduit;
 
-class InventorySpeedUpgrades implements IInventory {
+public class InventorySpeedUpgrades implements IInventory {
 
   IItemConduit itemConduit;
   ForgeDirection dir;
   
-  InventorySpeedUpgrades(IItemConduit itemConduit, ForgeDirection dir) {
+  public InventorySpeedUpgrades(IItemConduit itemConduit, ForgeDirection dir) {
     this.itemConduit = itemConduit;
     this.dir = dir;
   }

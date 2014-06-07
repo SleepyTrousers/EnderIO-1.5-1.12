@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.item;
+package crazypants.enderio.conduit.item.filter;
 
 import net.minecraft.item.ItemStack;
 

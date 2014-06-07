@@ -50,6 +50,10 @@ enderio.filterUpgradeAdvanced.name=Advanced Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 enderio.itemConduitFilterUpgrade.configured=Configured
 
+item.itemExistingItemFilter.name=Existing Item Filter
+item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
+item.itemExistingItemFilter.tooltip.detailed.line1=in the inventory
+
 enderio.itemMeConduit.name=ME Conduit
 
 //Materials

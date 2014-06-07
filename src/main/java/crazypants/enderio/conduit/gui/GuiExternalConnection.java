@@ -29,6 +29,12 @@ public class GuiExternalConnection extends GuiContainerBase {
 
   private static final int TAB_HEIGHT = 24;
   
+  private static int nextButtonId = 1;
+  
+  public static int nextButtonId() {
+    return nextButtonId++;
+  }
+  
   private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER = new HashMap<Class<? extends IConduit>, Integer>();
   static {
     TAB_ORDER.put(IItemConduit.class, 0);
@@ -37,17 +43,17 @@ public class GuiExternalConnection extends GuiContainerBase {
     TAB_ORDER.put(IPowerConduit.class, 3);
   }
 
-  InventoryPlayer playerInv;
-  IConduitBundle bundle;
-  ForgeDirection dir;
+  final InventoryPlayer playerInv;
+  final IConduitBundle bundle;
+  private final ForgeDirection dir;
 
-  private List<IConduit> conduits = new ArrayList<IConduit>();
-  private List<ISettingsPanel> tabs = new ArrayList<ISettingsPanel>();
+  private final List<IConduit> conduits = new ArrayList<IConduit>();
+  private final List<ISettingsPanel> tabs = new ArrayList<ISettingsPanel>();
   private int activeTab = 0;
 
   private int tabYOffset = 4;
 
-  ExternalConnectionContainer container;
+  private final ExternalConnectionContainer container;
 
   public GuiExternalConnection(InventoryPlayer playerInv, IConduitBundle bundle, ForgeDirection dir) {
     super(new ExternalConnectionContainer(playerInv, bundle, dir));
@@ -59,9 +65,9 @@ public class GuiExternalConnection extends GuiContainerBase {
     ySize = 166 + 29;
     xSize = 206;
     
-    container.setInputSlotsVisible(false);
-    container.setOutputSlotsVisible(false);
-    container.setInventorySlotsVisible(false);
+    getContainer().setInputSlotsVisible(false);
+    getContainer().setOutputSlotsVisible(false);
+    getContainer().setInventorySlotsVisible(false);
     
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
@@ -184,6 +190,14 @@ public class GuiExternalConnection extends GuiContainerBase {
       tes.draw();
     }
 
+  }
+
+  public ForgeDirection getDir() {
+    return dir;
+  }
+
+  public ExternalConnectionContainer getContainer() {
+    return container;
   }
 
 }

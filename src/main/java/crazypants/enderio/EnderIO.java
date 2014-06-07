@@ -28,9 +28,10 @@ import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.item.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
+import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -142,6 +143,7 @@ public class EnderIO {
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
+  public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
 
   // Machines
@@ -253,7 +255,8 @@ public class EnderIO {
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
     
-    itemBasicFilterUpgrade = itemBasicFilterUpgrade.create();
+    itemBasicFilterUpgrade = ItemBasicItemFilter.create();
+    itemExistingItemFilter = ItemExistingItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);

@@ -7,7 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.IItemFilter;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.DyeColor;
 
 public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> implements IMessageHandler<PacketItemConduitFilter, IMessage> {

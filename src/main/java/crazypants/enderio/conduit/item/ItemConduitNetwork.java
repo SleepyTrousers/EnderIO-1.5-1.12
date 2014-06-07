@@ -16,6 +16,7 @@ import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory.Target;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
@@ -139,8 +140,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         if(source != null && source.sendPriority != null) {
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
-            if(input == null || f == null || f.doesItemPassFilter(input)) {
-              String s = Lang.localize(t.inv.inv.getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
+            if(input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
+              String s = Lang.localize(t.inv.getInventory().getInventoryName(), false) + " " + t.inv.location + " Distance [" + t.distance + "] ";
               result.add(s);
             }
           }
@@ -156,8 +157,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     for (NetworkedInventory inv : inventories) {
       if(inv.hasTarget(con, dir)) {
         IItemFilter f = inv.con.getInputFilter(inv.conDir);
-        if(input == null || f == null || f.doesItemPassFilter(input)) {
-          result.add(Lang.localize(inv.inv.getInventoryName(), false) + " " + inv.location);
+        if(input == null || f == null || f.doesItemPassFilter(inv, input)) {
+          result.add(Lang.localize(inv.getInventory().getInventoryName(), false) + " " + inv.location);
         }
       }
     }

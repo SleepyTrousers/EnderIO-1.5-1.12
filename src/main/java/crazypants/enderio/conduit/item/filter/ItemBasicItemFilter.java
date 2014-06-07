@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.item;
+package crazypants.enderio.conduit.item.filter;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.util.Lang;
 
 public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
@@ -50,7 +51,9 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     } else {
       filter = new ItemFilter(true);
     }
-    FilterRegister.loadFilterFromStack(filter, stack);
+    if(stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
+      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));      
+    }
     return filter;
   }
 

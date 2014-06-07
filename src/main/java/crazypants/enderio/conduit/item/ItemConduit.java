@@ -27,6 +27,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.monitor.PacketConduitProbe;
 import crazypants.render.IconUtil;
@@ -235,7 +237,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     inputFilters.put(dir, filter);
     if(network != null) {
       network.routesChanged();
-    }
+    }    
     setClientStateDirty();
   }
 
@@ -601,14 +603,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
-    //nbtRoot.setShort("metaData", (short) metaData);
-
     for (Entry<ForgeDirection, IItemFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
         IItemFilter f = entry.getValue();
         if(!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
-          f.writeToNBT(itemRoot);
+          FilterRegister.writeFilterToNbt(f, itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
         }
       }
@@ -628,7 +628,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         IItemFilter f = entry.getValue();
         if(!isDefault(f)) {
           NBTTagCompound itemRoot = new NBTTagCompound();
-          f.writeToNBT(itemRoot);
+          FilterRegister.writeFilterToNbt(f, itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
         }
       }
@@ -728,12 +728,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemFilter filter = new ItemFilter(metaData == 1);
-        if(metaData == 1) {
-          //need to force this for upgrades from old version
-          filterTag.setBoolean("isAdvanced", true);          
-        }
-        filter.readFromNBT(filterTag);
+        FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
+        IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);
         inputFilters.put(dir, filter);
       }
 
@@ -761,12 +757,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       key = "outFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        ItemFilter filter = new ItemFilter(metaData == 1);
-        if(metaData == 1) {
-          //need to force this for upgrades from old version
-          filterTag.setBoolean("isAdvanced", true);          
-        }
-        filter.readFromNBT(filterTag);
+        FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
+        IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);        
         outputFilters.put(dir, filter);
       }
 

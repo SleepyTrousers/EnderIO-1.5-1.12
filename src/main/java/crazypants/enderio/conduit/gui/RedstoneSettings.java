@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import net.minecraft.client.gui.GuiButton;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.gui.item.BaseSettingsPanel;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.gui.ColorButton;
@@ -15,7 +16,7 @@ import crazypants.util.Lang;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 
-  private static final int ID_COLOR_BUTTON = 163;
+  private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
   private ColorButton cb;
 
   private String signalColorStr = Lang.localize("gui.conduit.redstone.color");
@@ -30,7 +31,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
     cb.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
     if(con instanceof IInsulatedRedstoneConduit) {
       insCon = (IInsulatedRedstoneConduit) con;
-      DyeColor sigCol = insCon.getSignalColor(gui.dir);
+      DyeColor sigCol = insCon.getSignalColor(gui.getDir());
       cb.setColorIndex(sigCol.ordinal());
     }
   }
@@ -39,7 +40,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if(guiButton.id == ID_COLOR_BUTTON) {
-      PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.dir));
+      PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir()));
     }
   }
 

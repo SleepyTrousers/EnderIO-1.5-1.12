@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.item;
+package crazypants.enderio.conduit.item.filter;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -7,11 +7,13 @@ import java.util.List;
 
 import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
+import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.gui.TemplateSlot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,12 +59,12 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public boolean doesFilterCaptureStack(ItemStack item) {
+  public boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item) {
     return isSticky() && itemMatched(item);
   }
 
   @Override
-  public boolean doesItemPassFilter(ItemStack item) {
+  public boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item) {
     if(!isValid()) {
       return true;
     }
@@ -84,7 +86,7 @@ public class ItemFilter implements IInventory, IItemFilter {
           matched = true;
         }
       }
-      if(!matched && it != null && item.getItem() == it.getItem()) {
+      if(!matched && it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
         matched = true;
         if(matchMeta && item.getItemDamage() != it.getItemDamage()) {
           matched = false;
@@ -326,7 +328,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   public String toString() {
 //    return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT + ", useOreDict=" + useOreDict + ", sticky="
 //        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ", isAdvanced=" + isAdvanced + "]";
-    return "ItemFilter [isAdvanced=" + isAdvanced + "]";
+    return "ItemFilter [isAdvanced=" + isAdvanced + ", items=" + Arrays.toString(items)  + "]";
   }
   
   

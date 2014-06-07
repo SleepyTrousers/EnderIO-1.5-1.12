@@ -16,13 +16,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.Config;
 import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 
-class NetworkedInventory {
+public class NetworkedInventory {
 
-  ISidedInventory inv;
+  private ISidedInventory inv;
   IItemConduit con;
   ForgeDirection conDir;
   BlockCoord location;
@@ -126,7 +127,7 @@ class NetworkedInventory {
       updateInventory();
     }
 
-    int[] slotIndices = inv.getAccessibleSlotsFromSide(inventorySide);
+    int[] slotIndices = getInventory().getAccessibleSlotsFromSide(inventorySide);
     if(slotIndices == null) {
       return false;
     }
@@ -139,10 +140,10 @@ class NetworkedInventory {
     for (int i = 0; i < slotChecksPerTick; i++) {
       int index = nextSlot(numSlots);
       slot = slotIndices[index];
-      ItemStack item = inv.getStackInSlot(slot);
+      ItemStack item = getInventory().getStackInSlot(slot);
       if(canExtractItem(item)) {
         extractItem = item.copy();
-        if(inv.canExtractItem(slot, extractItem, inventorySide)) {
+        if(getInventory().canExtractItem(slot, extractItem, inventorySide)) {
           if(doTransfer(extractItem, slot, maxExtracted)) {
             setNextStartingSlot(slot);
             return true;
@@ -161,7 +162,7 @@ class NetworkedInventory {
     if(filter == null) {
       return true;
     }
-    return filter.doesItemPassFilter(itemStack);
+    return filter.doesItemPassFilter(this, itemStack);
   }
 
   private boolean doTransfer(ItemStack extractedItem, int slot, int maxExtract) {
@@ -175,16 +176,16 @@ class NetworkedInventory {
       return false;
     }
 
-    ItemStack curStack = inv.getStackInSlot(slot);
+    ItemStack curStack = getInventory().getStackInSlot(slot);
     if(curStack != null) {
       curStack = curStack.copy();
       curStack.stackSize -= numInserted;
       if(curStack.stackSize > 0) {
-        inv.setInventorySlotContents(slot, curStack);
-        inv.markDirty();
+        getInventory().setInventorySlotContents(slot, curStack);
+        getInventory().markDirty();
       } else {
-        inv.setInventorySlotContents(slot, null);
-        inv.markDirty();
+        getInventory().setInventorySlotContents(slot, null);
+        getInventory().markDirty();
       }
     }
     con.itemsExtracted(numInserted, slot);
@@ -208,7 +209,7 @@ class NetworkedInventory {
     for (Target target : targets) {
       if(target.stickyInput && !matchedStickyInput) {
         IItemFilter of = target.inv.con.getOutputFilter(target.inv.conDir);
-        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(toExtract);
+        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(this, toExtract);
       }
       if(target.stickyInput || !matchedStickyInput) {
         if(target.inv.recheckInv) {
@@ -238,7 +239,7 @@ class NetworkedInventory {
 
     TileEntity te = world.getTileEntity(location.x, location.y, location.z);
     if(te instanceof ISidedInventory) {
-      this.inv = (ISidedInventory) te;
+      inv = (ISidedInventory) te;
     } else if(te instanceof IInventory) {
       inv = new InventoryWrapper((IInventory) te);
     }
@@ -250,11 +251,11 @@ class NetworkedInventory {
     }
     IItemFilter filter = con.getOutputFilter(conDir);
     if(filter != null) {
-      if(!filter.doesItemPassFilter(item)) {
+      if(!filter.doesItemPassFilter(this, item)) {
         return 0;
       }
     }
-    return ItemUtil.doInsertItem(inv, item, ForgeDirection.values()[inventorySide]);
+    return ItemUtil.doInsertItem(getInventory(), item, ForgeDirection.values()[inventorySide]);
   }
 
   void updateInsertOrder() {
@@ -340,6 +341,20 @@ class NetworkedInventory {
   private int distanceTo(NetworkedInventory other) {
     return con.getLocation().distanceSquared(other.con.getLocation());
   }
+
+  public ISidedInventory getInventory() {
+    return inv;
+  }
+ 
+  public int getInventorySide() {
+    return inventorySide;
+  }
+
+  public void setInventorySide(int inventorySide) {
+    this.inventorySide = inventorySide;
+  }
+
+
 
   class RoundRobinIterable implements Iterable<Target>, Iterator<Target> {
 

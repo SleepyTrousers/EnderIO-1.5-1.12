@@ -13,10 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
+import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.IItemFilter;
-import crazypants.enderio.conduit.item.ItemFilter;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.gui.TemplateSlot;
 
 public class ExternalConnectionContainer extends Container {
@@ -80,7 +82,7 @@ public class ExternalConnectionContainer extends Container {
       slotLocations.add(new Point(x, y));
 
       x = 28;
-      y = 47;
+      y = 47;      
       final InventorySpeedUpgrades si = new InventorySpeedUpgrades(itemConduit, dir);
       addSlotToContainer(new Slot(si, 0, x, y) {
 
@@ -96,12 +98,16 @@ public class ExternalConnectionContainer extends Container {
     }
 
   }
+  
+  public void addFilterListener(FilterChangeListener list) {
+    filterListeners.add(list);
+  }
 
   private void addFilterSlots(ForgeDirection dir) {
 
     List<Slot> slots;
     inputFilter = itemConduit.getInputFilter(dir);
-    if(inputFilter != null) {
+    if(inputFilter != null && inputFilter.getSlotCount() > 0) {
       slots = inputFilter.getSlots();
       for (Slot slot : slots) {
         addSlotToContainer(slot);
@@ -110,7 +116,7 @@ public class ExternalConnectionContainer extends Container {
     }
 
     outputFilter = itemConduit.getOutputFilter(dir);
-    if(outputFilter != null) {
+    if(outputFilter != null && outputFilter.getSlotCount() > 0) {
       slots = outputFilter.getSlots();
       for (Slot slot : slots) {
         addSlotToContainer(slot);
@@ -141,7 +147,7 @@ public class ExternalConnectionContainer extends Container {
     setSlotsVisible(visible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
     setSlotsVisible(visible, speedUpgradeSlot, speedUpgradeSlot + 1);
 
-    if(inputFilter == null) {
+    if(inputFilter == null || inputFilter.getSlotCount() == 0) {
       return;
     }
     int startIndex = startFilterSlot;
@@ -158,7 +164,7 @@ public class ExternalConnectionContainer extends Container {
     
     setSlotsVisible(visible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
 
-    if(outputFilter == null) {
+    if(outputFilter == null || outputFilter.getSlotCount() == 0) {
       return;
     }
     int startIndex = startFilterSlot + (inputFilter == null ? 0 : inputFilter.getSlotCount());
