@@ -201,7 +201,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   @Override
   public boolean onItemUse(ItemStack item, EntityPlayer player, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
     int slot = player.inventory.currentItem + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null) {
+    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
       return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, par3World, par4, par5, par6, par7, par8,
           par9, par10);
     }
