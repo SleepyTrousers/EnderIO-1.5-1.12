@@ -45,11 +45,13 @@ public class PacketZombieTank extends MessageTileEntity<TileZombieGenerator> imp
   public IMessage onMessage(PacketZombieTank message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileZombieGenerator tile = message.getTileEntity(player.worldObj);
-    if(tile != null && message.nbtRoot.hasKey("tank")) {
-      NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("tank");
-      tile.fuelTank.readFromNBT(tankRoot);
-    } else {
-      tile.fuelTank.setFluid(null);
+    if (tile != null) {
+      if(message.nbtRoot.hasKey("tank")) {
+        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("tank");
+        tile.fuelTank.readFromNBT(tankRoot);
+      } else {
+        tile.fuelTank.setFluid(null);
+      }
     }
     return null;
   }
