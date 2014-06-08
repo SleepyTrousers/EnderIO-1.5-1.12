@@ -23,8 +23,13 @@ public class ColorButton extends IconButtonEIO {
   @Override
   public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3) {
     boolean result = super.mousePressed(par1Minecraft, par2, par3);
+    // If right click cycle forward.
     if(result) {
       nextColor();
+    }
+    // If left click cycle backward.
+    else {
+      previousColor();
     }
     return result;
   }
@@ -45,6 +50,14 @@ public class ColorButton extends IconButtonEIO {
     colorIndex++;
     if(colorIndex >= ItemDye.dyeColors.length) {
       colorIndex = 0;
+    }
+    setColorIndex(colorIndex);
+  }
+  
+  private void previousColor() {
+    colorIndex--; // Not exactly thread-safe, yet again this is Minecraft so who cares?
+    if(colorIndex < 0) {
+      colorIndex = ItemDye.dyeColors.length - 1;
     }
     setColorIndex(colorIndex);
   }
