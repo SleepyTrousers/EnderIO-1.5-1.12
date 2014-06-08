@@ -369,11 +369,14 @@ public class NetworkedInventory {
 
     @Override
     public boolean hasNext() {
-      return currentCount <= sendPriority.size();
+      return !sendPriority.isEmpty() && currentCount <= sendPriority.size();
     }
 
     @Override
     public Target next() {
+      if(sendPriority.isEmpty()) {
+        return null;
+      }
       currentCount++;
       index++;
       if(index >= sendPriority.size()) {
