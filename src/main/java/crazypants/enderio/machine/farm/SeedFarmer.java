@@ -66,7 +66,7 @@ public class SeedFarmer implements IFarmerJoe {
 
   @Override
   public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    if(!farm.isAir(bc)) {
+    if(!farm.isOpen(bc)) {
       return false;
     }
     if(requiresFarmland()) {

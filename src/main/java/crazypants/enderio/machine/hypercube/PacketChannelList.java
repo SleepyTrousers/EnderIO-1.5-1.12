@@ -77,7 +77,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
 
   @Override
   public IMessage onMessage(PacketChannelList message, MessageContext ctx) {
-    if(isPrivate) {
+    if(message.isPrivate) {
       ClientChannelRegister.instance.setPrivateChannels(message.channels);
     } else {
       ClientChannelRegister.instance.setPublicChannels(message.channels);

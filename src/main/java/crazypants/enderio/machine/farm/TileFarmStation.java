@@ -178,8 +178,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     return worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
   }
   
-  public boolean isAir(BlockCoord bc) {
-    return worldObj.isAirBlock(bc.x, bc.y, bc.z);
+  public boolean isOpen(BlockCoord bc) {
+    Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
+    return block.isAir(worldObj, bc.x, bc.y, bc.z) || block.isReplaceable(worldObj, bc.x, bc.y, bc.z);
   }
 
   @Override
@@ -229,11 +230,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     }
 
     
-    if(isAir(bc)) {
+    if(isOpen(bc)) {
       FarmersComune.instance.prepareBlock(this, bc, block, meta);
       block = worldObj.getBlock(bc.x, bc.y, bc.z);
     }
-    if(!isAir(bc) && hasPower()) {
+    if(!isOpen(bc) && hasPower()) {
       IHarvestResult harvest = FarmersComune.instance.harvestBlock(this, bc, block, meta);
       if(harvest != null) {
         if(harvest.getDrops() != null) {
