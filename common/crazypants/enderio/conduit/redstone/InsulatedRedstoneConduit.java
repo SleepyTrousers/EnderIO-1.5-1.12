@@ -39,6 +39,7 @@ import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
+import java.util.EnumMap;
 
 public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsulatedRedstoneConduit {
 
@@ -70,6 +71,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
   private Map<ForgeDirection, DyeColor> signalColors = new HashMap<ForgeDirection, DyeColor>();
+  
+  private EnumMap<ForgeDirection, Signal[]> rednetInputLevels;
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -201,14 +204,57 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     return IInsulatedRedstoneConduit.class;
   }
 
+  protected void allocateRednetInput() {
+    if(rednetInputLevels == null) {
+      rednetInputLevels = new EnumMap<ForgeDirection, Signal[]>(ForgeDirection.class);
+    }
+  }
+  
+  private Signal makeRednetSignal(ForgeDirection side, int value, int color) {
+    value = Math.max(Math.min(value-1, 15), 0);
+    if(value > 0) {
+      BlockCoord loc = getLocation().getLocation(side);
+      /* EnderIO and Rednet colors are reversed */
+      return new Signal(loc.x, loc.y, loc.z, side, value, DyeColor.fromIndex(15-color));
+    }
+    return null;
+  }
+  
   @Override
   public void onInputsChanged(ForgeDirection side, int[] inputValues) {
-    //System.out.println("InsulatedRedstoneConduit.onInputsChanged: ");
+    //System.out.println("InsulatedRedstoneConduit.onInputsChanged: " + side + ": " + Arrays.toString(inputValues));
+    if(side != null && acceptSignalsForDir(side) && inputValues != null && inputValues.length == 16) {
+      allocateRednetInput();
+      Signal[] toRemove = rednetInputLevels.get(side);
+      Signal[] toAdd = new Signal[16];
+      for(int i=0 ; i<16 ; i++) {
+        toAdd[i] = makeRednetSignal(side, inputValues[i], i);
+      }
+      rednetInputLevels.put(side, toAdd);
+      
+      if(network != null) {
+        network.replaceSignals(toRemove, toAdd);
+      }
+    }
   }
 
   @Override
   public void onInputChanged(ForgeDirection side, int inputValue) {
-    //System.out.println("InsulatedRedstoneConduit.onInputChanged: ");
+   // System.out.println("InsulatedRedstoneConduit.onInputChanged: " + side + ": " + inputValue);
+    if(side != null && acceptSignalsForDir(side)) {
+      allocateRednetInput();
+      Signal[] toRemove = rednetInputLevels.get(side);
+      Signal[] toAdd = new Signal[16];
+      if(toRemove != null) {
+        System.arraycopy(toRemove, 0, toAdd, 0, 16);
+      }
+      toAdd[0] = makeRednetSignal(side, inputValue, 0);
+      rednetInputLevels.put(side, toAdd);
+      
+      if(network != null) {
+        network.replaceSignals(toRemove, toAdd);
+      }
+    }
   }
 
   @Override
@@ -309,8 +355,37 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   public void externalConnectionRemoved(ForgeDirection fromDirection) {
     super.externalConnectionRemoved(fromDirection);
     setConnectionMode(fromDirection, ConnectionMode.NOT_SET);
+    if(rednetInputLevels != null) {
+      //System.out.println("Resetting rednetInputLevels for side " + fromDirection);
+      Signal[] toRemove = rednetInputLevels.remove(fromDirection);
+      if(toRemove != null && network != null) {
+        network.replaceSignals(toRemove, null);
+      }
+    }
   }
-
+  
+  @Override
+  public Set<Signal> getNetworkInputs(ForgeDirection side) {
+    Set<Signal> res = super.getNetworkInputs(side);
+    
+    if(rednetInputLevels != null) {
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if((side == null || dir == side) && acceptSignalsForDir(dir)) {
+          Signal[] signals = rednetInputLevels.get(dir);
+          if(signals != null) {
+            for(Signal s : signals) {
+              if(s != null) {
+                res.add(s);
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return res;
+  }
+  
   @Override
   public Set<Signal> getNetworkOutputs(ForgeDirection side) {
     if(side == null || side == ForgeDirection.UNKNOWN) {
@@ -335,6 +410,19 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     }
 
     return result;
+  }
+
+  @Override
+  protected Set<Signal> getNetworkOutputsForMFR(ForgeDirection side) {
+    if(side == null || side == ForgeDirection.UNKNOWN) {
+      return super.getNetworkOutputsForMFR(side);
+    }
+
+    ConnectionMode mode = getConectionMode(side);
+    if(network == null || mode != ConnectionMode.IN_OUT) {
+      return Collections.emptySet();
+    }
+    return network.getSignals();
   }
 
   @Override

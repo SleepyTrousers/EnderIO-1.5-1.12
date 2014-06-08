@@ -23,11 +23,12 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
+import java.util.Arrays;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
   static final Map<String, Icon> ICONS = new HashMap<String, Icon>();
-
+  
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
@@ -139,6 +140,10 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
     return network.getSignals();
   }
+  
+  protected Set<Signal> getNetworkOutputsForMFR(ForgeDirection side) {
+    return getNetworkOutputs(side);
+  }
 
   @Override
   public boolean onNeighborBlockChange(int blockId) {
@@ -221,26 +226,33 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   @Override
   public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
     int[] result = new int[16];
-    Set<Signal> outs = getNetworkOutputs(side);
+    Set<Signal> outs = getNetworkOutputsForMFR(side);
     if(outs != null) {
       for (Signal s : outs) {
-        result[s.color.ordinal()] = s.strength;
+        /* EnderIO and Rednet colors are reversed */
+        int idx = 15 - s.color.ordinal();
+        if(s.strength > result[idx]) {
+          result[idx] = s.strength;
+        }
       }
     }
+    System.out.println("getOutputValues() side="+side+": "+Arrays.toString(result));
     return result;
   }
 
   @Override
   public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
-    Set<Signal> outs = getNetworkOutputs(side);
+    int strength = 0;
+    Set<Signal> outs = getNetworkOutputsForMFR(side);
     if(outs != null) {
       for (Signal s : outs) {
-        if(subnet == s.color.ordinal()) {
-          return s.strength;
+        /* EnderIO and Rednet colors are reversed */
+        if(subnet == 15 - s.color.ordinal() && s.strength > strength) {
+          strength = s.strength;
         }
       }
     }
-    return 0;
+    return strength;
   }
 
 }
