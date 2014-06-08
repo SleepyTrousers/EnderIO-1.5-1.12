@@ -306,9 +306,6 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       return false; //can't empty the entire thing
     }
     fill(ForgeDirection.UP, fluid, true);
-    if(emptyItem == null) {
-      return true;
-    }
 
     fillFrom = fillFrom.copy();
     fillFrom.stackSize--;
@@ -318,6 +315,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       setInventorySlotContents(0, fillFrom);
     }
 
+    if(emptyItem == null) {
+        return true;
+    }
+    
     if(inventory[2] == null) {
       setInventorySlotContents(2, emptyItem);
     } else {

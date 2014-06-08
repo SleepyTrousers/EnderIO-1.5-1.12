@@ -85,7 +85,7 @@ public class CrusherRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSagMill.unlocalisedName, new CrusherMachineRecipe());
   }
 
-  public void addCustumRecipes(String xmlDef) {
+  public void addCustomRecipes(String xmlDef) {
     RecipeConfig config;
     try {
       config = RecipeConfigParser.parse(xmlDef, null);
