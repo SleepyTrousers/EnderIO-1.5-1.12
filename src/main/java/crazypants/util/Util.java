@@ -9,9 +9,11 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -36,6 +38,14 @@ public class Util {
   }
 
   public static ItemStack consumeItem(ItemStack stack) {
+    if (stack.getItem() instanceof ItemPotion) {
+      if(stack.stackSize == 1) {
+        return new ItemStack(Items.glass_bottle);
+      } else {
+        stack.splitStack(1);
+        return stack;
+      }
+    }
     if(stack.stackSize == 1) {
       if(stack.getItem().hasContainerItem(stack)) {
         return stack.getItem().getContainerItem(stack);

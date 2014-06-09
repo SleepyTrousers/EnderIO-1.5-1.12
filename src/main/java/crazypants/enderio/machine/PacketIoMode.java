@@ -59,9 +59,4 @@ public class PacketIoMode implements IMessage, IMessageHandler<PacketIoMode, IMe
     }
     return null;
   }
-
-  private void handle(EntityPlayer player) {
-
-  }
-
 }
