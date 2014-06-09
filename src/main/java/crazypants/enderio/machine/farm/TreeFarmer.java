@@ -100,9 +100,9 @@ public class TreeFarmer implements IFarmerJoe {
           res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
         }
       }
-      boolean isWood = false;
+      boolean isWood = true;
       if(blk != wood) { //leaves
-        isWood = true;
+        isWood = false;
         int leaveMeta = farm.getBlockMeta(coord);
         boolean canDropApple =
             (blk instanceof BlockOldLeaf && (leaveMeta == 0 || leaveMeta == 8)) || //oak

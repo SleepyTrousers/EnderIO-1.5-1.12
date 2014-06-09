@@ -1,14 +1,7 @@
 package crazypants.enderio.conduit.render;
 
-import static crazypants.render.CubeRenderer.addVecWithUV;
-import static crazypants.render.CubeRenderer.setupVertices;
-import static crazypants.render.CubeRenderer.verts;
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import static crazypants.render.CubeRenderer.*;
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.util.Collection;
 import java.util.List;

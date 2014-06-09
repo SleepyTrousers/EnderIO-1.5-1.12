@@ -131,7 +131,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
 
   }
-
+  
   @Override
   public float func_150893_a(ItemStack item, Block block) {
     if(block == Blocks.obsidian && getEnergyStored(item) > 0) {     

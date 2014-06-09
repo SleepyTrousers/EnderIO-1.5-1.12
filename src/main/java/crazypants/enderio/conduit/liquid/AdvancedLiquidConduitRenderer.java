@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.liquid;
 
-import static crazypants.render.CubeRenderer.addVecWithUV;
+import static crazypants.render.CubeRenderer.*;
 
 import java.util.List;
 

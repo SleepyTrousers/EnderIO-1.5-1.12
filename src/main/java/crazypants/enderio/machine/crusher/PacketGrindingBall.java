@@ -7,8 +7,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.PacketPowerStorage;
 
 public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrindingBall, IMessage> {
 

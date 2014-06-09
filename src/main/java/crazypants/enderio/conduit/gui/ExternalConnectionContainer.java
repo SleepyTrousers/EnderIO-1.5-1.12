@@ -11,15 +11,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
 import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
-import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
-import crazypants.gui.TemplateSlot;
 
 public class ExternalConnectionContainer extends Container {
 

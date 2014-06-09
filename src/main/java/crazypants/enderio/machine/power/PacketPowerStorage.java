@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.power;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.util.List;
 

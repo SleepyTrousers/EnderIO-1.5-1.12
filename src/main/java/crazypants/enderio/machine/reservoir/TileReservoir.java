@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.reservoir;
 
-import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
+import static net.minecraftforge.fluids.FluidContainerRegistry.*;
 
 import java.util.ArrayList;
 

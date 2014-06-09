@@ -1,6 +1,6 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+import static crazypants.enderio.EnderIO.*;
 
 import java.util.ArrayList;
 

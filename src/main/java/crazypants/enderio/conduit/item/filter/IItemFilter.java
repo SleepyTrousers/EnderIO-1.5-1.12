@@ -2,11 +2,10 @@ package crazypants.enderio.conduit.item.filter;
 
 import java.util.List;
 
-import crazypants.enderio.conduit.item.NetworkedInventory;
-
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public interface IItemFilter {
 

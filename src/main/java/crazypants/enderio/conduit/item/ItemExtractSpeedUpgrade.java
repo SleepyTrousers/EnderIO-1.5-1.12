@@ -7,8 +7,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.monitor.PacketConduitProbe;
-import crazypants.enderio.network.PacketHandler;
 
 public class ItemExtractSpeedUpgrade extends Item {
   

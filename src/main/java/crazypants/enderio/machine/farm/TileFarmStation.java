@@ -17,6 +17,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
@@ -152,11 +153,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   private void damageTool(Class<? extends Item> class1, int damage) {
     ItemStack tool = getTool(class1);
-    if(tool != null && tool.getItem().isDamageable()) {
+    if(tool == null) {
+      return;
+    }
+    if(tool.getItem() instanceof ItemDarkSteelAxe) {
+      ((ItemDarkSteelAxe) tool.getItem()).applyBasicDamage(tool, damage);
+    } else if(tool.getItem().isDamageable()) {
       tool.damageItem(damage, farmerJoe);
-      if(tool.getItemDamage() >= tool.getMaxDamage()) {
-        destroyTool(class1);
-      }
+    }
+
+    if(tool.getItemDamage() >= tool.getMaxDamage()) {
+      destroyTool(class1);
     }
   }
   

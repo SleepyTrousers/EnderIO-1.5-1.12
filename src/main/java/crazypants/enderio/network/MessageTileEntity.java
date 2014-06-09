@@ -5,11 +5,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.Log;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.machine.PacketPowerStorage;
 
 public abstract class MessageTileEntity<T extends TileEntity> implements IMessage {
 

@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
-import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
+import static crazypants.enderio.machine.power.PowerDisplayUtil.*;
 
 import java.awt.Color;
 import java.awt.Rectangle;

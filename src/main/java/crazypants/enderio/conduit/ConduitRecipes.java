@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.ModObject.blockPainter;
+import static crazypants.enderio.ModObject.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

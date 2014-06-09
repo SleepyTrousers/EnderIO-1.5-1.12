@@ -1,11 +1,6 @@
 package crazypants.render;
 
-import static net.minecraftforge.common.util.ForgeDirection.DOWN;
-import static net.minecraftforge.common.util.ForgeDirection.EAST;
-import static net.minecraftforge.common.util.ForgeDirection.NORTH;
-import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
-import static net.minecraftforge.common.util.ForgeDirection.UP;
-import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import static net.minecraftforge.common.util.ForgeDirection.*;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

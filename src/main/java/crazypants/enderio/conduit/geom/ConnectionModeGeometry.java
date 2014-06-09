@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.geom;
 
-import static crazypants.util.ForgeDirectionOffsets.offsetScaled;
+import static crazypants.util.ForgeDirectionOffsets.*;
 
 import java.util.ArrayList;
 import java.util.EnumMap;

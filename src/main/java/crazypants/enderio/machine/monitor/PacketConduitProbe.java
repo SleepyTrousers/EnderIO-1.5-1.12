@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.power.PowerInterfaceBC.fromRF;
+import static crazypants.enderio.power.PowerInterfaceBC.*;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;

@@ -1,19 +1,14 @@
 package crazypants.enderio.conduit.gui.item;
 
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.client.gui.GuiButton;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
-import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
-import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
-import net.minecraft.client.gui.GuiButton;
 
 public class ExistingItemFilterGui implements IItemFilterGui {
 

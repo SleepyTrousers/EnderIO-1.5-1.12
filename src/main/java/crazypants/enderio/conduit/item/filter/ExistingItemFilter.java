@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.item.filter;
 
-import io.netty.util.NetUtil;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

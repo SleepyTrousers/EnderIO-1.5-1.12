@@ -1,15 +1,14 @@
 package crazypants.enderio.conduit.item;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import net.minecraft.init.Items;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.network.NetworkUtil;
-import io.netty.buffer.ByteBuf;
 
 public class FilterRegister {
 

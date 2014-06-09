@@ -1,6 +1,6 @@
 package crazypants.enderio.machine.painter;
 
-import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
+import static crazypants.enderio.machine.MachineRecipeInput.*;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,8 +1,9 @@
 package crazypants.enderio.conduit.gui.item;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

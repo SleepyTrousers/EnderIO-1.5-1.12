@@ -1,13 +1,11 @@
 package crazypants.enderio.machine.power;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.RedstoneControlMode;
 
 public class PacketClientState implements IMessage, IMessageHandler<PacketClientState, IMessage>  {

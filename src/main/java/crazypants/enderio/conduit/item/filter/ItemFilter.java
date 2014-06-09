@@ -1,14 +1,8 @@
 package crazypants.enderio.conduit.item.filter;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
-import crazypants.enderio.conduit.item.NetworkedInventory;
-import crazypants.gui.TemplateSlot;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -18,6 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.gui.TemplateSlot;
 
 public class ItemFilter implements IInventory, IItemFilter {
 

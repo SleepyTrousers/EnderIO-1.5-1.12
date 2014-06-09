@@ -5,7 +5,6 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor;
 
 import org.lwjgl.opengl.GL11;
 
