@@ -44,6 +44,9 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   private static int IO_MB_TICK = 250;
 
+  private Fuel curFuel;
+  private Coolant curCoolant;
+
   public TileCombustionGenerator() {
     super(new SlotDefinition(-1, -1, -1, -1, -1, -1));
     powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
@@ -167,8 +170,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
       transmitEnergy();
     }
-    
-    if(tanksDirty) {     
+
+    if(tanksDirty) {
       PacketHandler.sendToAllAround(new PacketCombustionTank(this), this);
       tanksDirty = false;
     }
@@ -197,46 +200,63 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     generated = 0;
 
-    Fuel fuel = getFuelTank().getFluid() == null ? null : IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
-    if(fuel == null) {
-      return false;
-    }
-
-    if(getCoolantTank().getFluidAmount() <= 0 || storedEnergy >= powerHandler.getMaxEnergyStored()) {
+    if((ticksRemaingCoolant <= 0 && getCoolantTank().getFluidAmount() <= 0) ||
+        (ticksRemaingFuel <= 0 && getFuelTank().getFluidAmount() <= 0) ||
+        storedEnergy >= powerHandler.getMaxEnergyStored()) {
       return false;
     }
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (fuel.powerPerCycle * 200))) {
+    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (curFuel.powerPerCycle * 200))) {
       return false;
     }
     inPause = false;
 
-    Coolant coolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
-    if(coolant == null) {
-      return false;
-    }
-
     boolean res = false;
     ticksRemaingFuel--;
     if(ticksRemaingFuel <= 0) {
-      getFuelTank().drain(1, true);
-      ticksRemaingFuel = getNumTicksPerMbFuel(fuel);
+      curFuel = getFuelTank().getFluid() == null ? null : IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
+      if(curFuel == null) {
+        return false;
+      }
+      FluidStack drained = getFuelTank().drain(100, true);
+      if(drained == null) {
+        return false;
+      }
+      ticksRemaingFuel = getNumTicksPerMbFuel(curFuel) * drained.amount;
+      
       res = true;
       tanksDirty = true;
+    } else if(curFuel == null) {
+      curFuel = getFuelTank().getFluid() == null ? null : IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
+      if(curFuel == null) {
+        return false;
+      }
     }
+
     ticksRemaingCoolant--;
     if(ticksRemaingCoolant <= 0) {
-      getCoolantTank().drain(1, true);
-      ticksRemaingCoolant = getNumTicksPerMbCoolant(coolant, fuel);
+      curCoolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
+      if(curCoolant == null) {
+        return false;
+      }
+      FluidStack drained = getCoolantTank().drain(100, true);
+      if(drained == null) {
+        return false;
+      }
+      ticksRemaingCoolant = getNumTicksPerMbCoolant(curCoolant, curFuel) * drained.amount;
       res = true;
-      tanksDirty = true;
+    } else if(curCoolant == null) {
+      curCoolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
+      if(curCoolant == null) {
+        return false;
+      }
     }
 
     float oldVal = storedEnergy;
-    storedEnergy += fuel.powerPerCycle;
-    generated = fuel.powerPerCycle;
+    storedEnergy += curFuel.powerPerCycle;
+    generated = curFuel.powerPerCycle;
     storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
 
     return getFuelTank().getFluidAmount() > 0 && getCoolantTank().getFluidAmount() > 0;
@@ -253,9 +273,11 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
-    Fuel fuel = IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
-    Coolant coolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
-    return getNumTicksPerMbCoolant(coolant, fuel);
+    if(worldObj.isRemote) {
+      curFuel = IronEngineFuel.getFuelForFluid(getFuelTank().getFluid().getFluid());
+      curCoolant = IronEngineCoolant.getCoolant(getCoolantTank().getFluid());
+    }
+    return getNumTicksPerMbCoolant(curCoolant, curFuel);
   }
 
   static int getNumTicksPerMbFuel(Fuel fuel) {
