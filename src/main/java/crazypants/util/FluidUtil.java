@@ -1,6 +1,7 @@
 package crazypants.util;
 
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -50,7 +51,12 @@ public class FluidUtil {
     if(stack.getItem().hasContainerItem(stack)) {
       return stack.getItem().getContainerItem(stack);
     } 
-    return null;    
+    else if (stack.getItem() instanceof ItemPotion && stack.stackTagCompound == null) {
+        return new ItemStack(Items.glass_bottle);
+    }
+    else {
+      return null;
+    }
   }
 
 

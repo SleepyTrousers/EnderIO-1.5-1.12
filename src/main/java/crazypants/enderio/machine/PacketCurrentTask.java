@@ -43,11 +43,13 @@ public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEnti
   @Override
   public IMessage onMessage(PacketCurrentTask message, MessageContext ctx) {
     AbstractPoweredTaskEntity tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
-    if(tile != null && message.nbtRoot.hasKey("currentTask")) {
-      NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("currentTask");
-      tile.currentTask = PoweredTask.readFromNBT(message.nbtRoot.getCompoundTag("currentTask"));
-    } else {
-      tile.currentTask = null;
+    if (tile != null) {
+      if(message.nbtRoot.hasKey("currentTask")) {
+        NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("currentTask");
+        tile.currentTask = PoweredTask.readFromNBT(message.nbtRoot.getCompoundTag("currentTask"));
+      } else {
+        tile.currentTask = null;
+      } 
     }
     return null;
   }
