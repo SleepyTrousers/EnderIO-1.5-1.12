@@ -36,8 +36,7 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeBoolean(engineControlEnabled);
-    System.out.println("PacketPowerMonitor.toBytes: " + engineControlEnabled);
+    buf.writeBoolean(engineControlEnabled);    
     buf.writeFloat(startLevel);
     buf.writeFloat(stopLevel);
 
@@ -48,11 +47,9 @@ public class PacketPowerMonitor implements IMessage, IMessageHandler<PacketPower
     x = buffer.readInt();
     y = buffer.readInt();
     z = buffer.readInt();
-    engineControlEnabled = buffer.readBoolean();
-    System.out.println("PacketPowerMonitor.fromBytes: " + engineControlEnabled);
+    engineControlEnabled = buffer.readBoolean();    
     startLevel = buffer.readFloat();
     stopLevel = buffer.readFloat();
-
   }
 
   @Override
