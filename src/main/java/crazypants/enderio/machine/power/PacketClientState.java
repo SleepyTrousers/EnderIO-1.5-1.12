@@ -64,7 +64,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
   @Override
   public IMessage onMessage(PacketClientState message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
+    TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.setInputControlMode(message.inputMode);

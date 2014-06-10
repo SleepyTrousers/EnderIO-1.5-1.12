@@ -42,7 +42,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   public static int renderId = -1;
 
   public static BlockCapacitorBank create() {
-    PacketHandler.INSTANCE.registerMessage(PacketClientState.class,PacketClientState.class,PacketHandler.nextID(),Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketClientState.class,PacketClientState.class,PacketHandler.nextID(),Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class,PacketPowerStorage.class,PacketHandler.nextID(),Side.CLIENT);
 
     BlockCapacitorBank res = new BlockCapacitorBank();
