@@ -87,7 +87,7 @@ public class TreeFarmer implements IFarmerJoe {
     HarvestResult res = new HarvestResult();
     harvestUp(farm, bc, res);
     Collections.sort(res.harvestedBlocks, comp);
-    
+
     List<BlockCoord> actualHarvests = new ArrayList<BlockCoord>();
 
     for (int i = 0; i < res.harvestedBlocks.size() && farm.hasAxe(); i++) {
@@ -100,21 +100,24 @@ public class TreeFarmer implements IFarmerJoe {
           res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
         }
       }
-
+      boolean isWood = false;
       if(blk != wood) { //leaves
-        int leaveMeta = farm.getBlockMeta(coord);        
-        boolean canDropApple = 
+        isWood = true;
+        int leaveMeta = farm.getBlockMeta(coord);
+        boolean canDropApple =
             (blk instanceof BlockOldLeaf && (leaveMeta == 0 || leaveMeta == 8)) || //oak
-            (blk instanceof BlockNewLeaf && (leaveMeta == 1 || leaveMeta == 9)); //giant oak
+                (blk instanceof BlockNewLeaf && (leaveMeta == 1 || leaveMeta == 9)); //giant oak
 
-        if(canDropApple) {          
-          if(farm.getWorldObj().rand.nextInt(200) == 0) {            
+        if(canDropApple) {
+          if(farm.getWorldObj().rand.nextInt(200) == 0) {
             res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
           }
-        }               
+        }
       }
       farm.actionPerformed();
-      farm.damageAxe();
+      if(isWood) {
+        farm.damageAxe();
+      }
       farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
       actualHarvests.add(coord);
     }

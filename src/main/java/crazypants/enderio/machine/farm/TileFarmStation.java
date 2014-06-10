@@ -152,7 +152,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   private void damageTool(Class<? extends Item> class1, int damage) {
     ItemStack tool = getTool(class1);
-    if(tool != null) {
+    if(tool != null && tool.getItem().isDamageable()) {
       tool.damageItem(damage, farmerJoe);
       if(tool.getItemDamage() >= tool.getMaxDamage()) {
         destroyTool(class1);
