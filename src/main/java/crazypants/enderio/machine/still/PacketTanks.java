@@ -51,6 +51,9 @@ public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageH
   public IMessage onMessage(PacketTanks message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileVat tile = message.getTileEntity(player.worldObj);
+    if(tile == null) {
+      return null;
+    }
     if(message.nbtRoot.hasKey("inputTank")) {
       NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("inputTank");
       tile.inputTank.readFromNBT(tankRoot);
