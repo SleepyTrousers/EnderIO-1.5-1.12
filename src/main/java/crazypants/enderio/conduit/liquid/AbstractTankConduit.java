@@ -85,7 +85,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     } else if(player.getCurrentEquippedItem().getItem() == Items.bucket) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
-        long curTick = getBundle().getEntity().getWorldObj().getWorldTime();
+        long curTick = getBundle().getEntity().getWorldObj().getTotalWorldTime();
         if(curTick - lastEmptyTick < 20) {
           numEmptyEvents++;
         } else {

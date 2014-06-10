@@ -207,7 +207,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     if(!redstoneCheckPassed || !hasPower()) {
       return false;
     }
-    if(worldObj.getWorldTime() % 2 != 0) {
+    if(worldObj.getTotalWorldTime() % 2 != 0) {
       return false;
     }
 

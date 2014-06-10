@@ -212,8 +212,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
 
     if(!isContoller()) {
-      if(notifyNeighbours) {
-        worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+      if(notifyNeighbours) {        
+        worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
         notifyNeighbours = false;
       }
       return;
@@ -221,8 +221,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
     
     chargeItems();
-
-    boolean hasSignal = isRecievingRedstoneSignal();
+    
+    boolean hasSignal = isRecievingRedstoneSignal();    
     if(inputControlMode == RedstoneControlMode.IGNORE) {
       inputEnabled = true;
     } else if(inputControlMode == RedstoneControlMode.NEVER) {
@@ -256,8 +256,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this, 64);      
     }
     
-    if(notifyNeighbours) {
-      worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+    if(notifyNeighbours) {      
+      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
       notifyNeighbours = false;
     }
 

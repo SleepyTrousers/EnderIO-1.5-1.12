@@ -371,7 +371,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(slotDefinition.getNumOutputSlots() <= 0) {
       return false;
     }
-    if(worldObj.getWorldTime() % 20 != 0) {
+    if(worldObj.getTotalWorldTime() % 20 != 0) {
       return false;
     }
 
@@ -402,7 +402,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(slotDefinition.getNumInputSlots() <= 0) {
       return false;
     }
-    if(worldObj.getWorldTime() % 20 != 0) {
+    if(worldObj.getTotalWorldTime() % 20 != 0) {
       return false;
     }
 
