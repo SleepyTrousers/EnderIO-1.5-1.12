@@ -111,7 +111,7 @@ public class SeedFarmer implements IFarmerJoe {
     List<EntityItem> result = new ArrayList<EntityItem>();
 
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
-    farm.damageMaxLootingItem();
+    farm.damageMaxLootingItem(1, bc, block);
     farm.actionPerformed();
     boolean removed = false;
     if(drops != null) {
@@ -147,10 +147,10 @@ public class SeedFarmer implements IFarmerJoe {
     BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
     Block dirtBlock = farm.getBlock(dirtLoc);
     if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && farm.hasHoe()) {
+      farm.damageHoe(1, dirtLoc);
       worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
           (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
-      farm.damageHoe(1);
       farm.actionPerformed();
       return true;
     }

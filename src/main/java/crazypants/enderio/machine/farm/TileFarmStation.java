@@ -81,7 +81,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     return result;
   }
 
-  public void damageMaxLootingItem() {
+  public void damageMaxLootingItem(int damage, BlockCoord bc, Block block) {
     int maxLooting = -1;
     ItemStack toDamage = null;
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
@@ -94,7 +94,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       }
     }
     if(toDamage != null) {
-      damageTool(toDamage.getItem().getClass(), 1);
+      damageTool(toDamage.getItem().getClass(), block, bc, damage);
     }
   }
 
@@ -119,12 +119,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   }
 
   
-  public void damageAxe() {
-    damageTool(ItemAxe.class, 1);
+  public void damageAxe(Block blk, BlockCoord bc) {
+    damageTool(ItemAxe.class, blk, bc, 1);
   }
 
-  public void damageHoe(int i) {
-    damageTool(ItemHoe.class, i);
+  public void damageHoe(int i, BlockCoord bc) {
+    damageTool(ItemHoe.class, null, bc, i);
   }
 
   private boolean hasTool(Class<? extends Item> class1) {
@@ -151,15 +151,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   }
 
-  private void damageTool(Class<? extends Item> class1, int damage) {
+  private void damageTool(Class<? extends Item> class1, Block blk, BlockCoord bc, int damage) {
     ItemStack tool = getTool(class1);
     if(tool == null) {
       return;
     }
-    if(tool.getItem() instanceof ItemDarkSteelAxe) {
-      ((ItemDarkSteelAxe) tool.getItem()).applyBasicDamage(tool, damage);
-    } else if(tool.getItem().isDamageable()) {
-      tool.damageItem(damage, farmerJoe);
+    
+    if(tool.getItem() instanceof ItemAxe) {
+      tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.x, bc.y, bc.z, farmerJoe);
+    } else if(tool.getItem() instanceof ItemHoe) {
+      tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
     }
 
     if(tool.getItemDamage() >= tool.getMaxDamage()) {
@@ -167,7 +168,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     }
   }
   
-  private int getLooting(ItemStack stack) {
+  private int getLooting(ItemStack stack) {	
     return Math.max(
         EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack),
         EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, stack));

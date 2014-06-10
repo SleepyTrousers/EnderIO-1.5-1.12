@@ -35,7 +35,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
           res.getDrops().add(stack);
         }
         farm.actionPerformed();
-        farm.damageMaxLootingItem();
+        farm.damageMaxLootingItem(1, checkBlock, farm.getBlock(checkBlock));
       }
       checkBlock = checkBlock.getLocation(ForgeDirection.UP);
     }

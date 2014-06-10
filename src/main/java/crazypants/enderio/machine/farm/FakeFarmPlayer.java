@@ -2,6 +2,7 @@ package crazypants.enderio.machine.farm;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C15PacketClientSettings;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.stats.StatBase;
@@ -73,5 +74,10 @@ public class FakeFarmPlayer extends EntityPlayerMP {
   @Override
   public void func_147100_a(C15PacketClientSettings pkt) {
     return;
+  }
+  
+  @Override
+  public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack) {
+    return true;
   }
 }

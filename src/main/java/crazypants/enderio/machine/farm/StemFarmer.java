@@ -54,7 +54,7 @@ public class StemFarmer extends SeedFarmer {
           }
 
         }
-        farm.damageMaxLootingItem();
+        farm.damageMaxLootingItem(1, harvestCoord, farm.getBlock(harvestCoord));
         farm.actionPerformed();
         farm.getWorld().setBlockToAir(harvestCoord.x, harvestCoord.y, harvestCoord.z);
       } else {

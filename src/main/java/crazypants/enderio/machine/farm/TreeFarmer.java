@@ -116,7 +116,7 @@ public class TreeFarmer implements IFarmerJoe {
       }
       farm.actionPerformed();
       if(isWood) {
-        farm.damageAxe();
+        farm.damageAxe(blk, coord);
       }
       farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
       actualHarvests.add(coord);

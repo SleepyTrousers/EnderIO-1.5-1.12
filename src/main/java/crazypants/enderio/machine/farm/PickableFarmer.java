@@ -47,7 +47,7 @@ public class PickableFarmer extends SeedFarmer {
       }
     }
     farm.actionPerformed();
-    farm.damageMaxLootingItem();
+    farm.damageMaxLootingItem(1, bc, block);
     return new HarvestResult(drops, bc);
   }
   
