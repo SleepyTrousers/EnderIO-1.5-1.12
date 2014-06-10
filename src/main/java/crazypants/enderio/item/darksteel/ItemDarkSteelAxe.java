@@ -227,24 +227,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
       eu.writeToItem(item);
     }
   }
-  
-  public void applyBasicDamage(ItemStack stack, int damage) {
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
-      int powerUse = Config.darkSteelAxePowerUsePerDamagePoint;
-      eu.extractEnergy(damage * powerUse, false);
-    } else {
-      damage = stack.getItemDamage() + damage;
-      if(damage >= getMaxDamage()) {
-	stack.stackSize = 0;
-      }
-      stack.setItemDamage(damage);
-    }
-    if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
-      eu.writeToItem(stack);
-    }
-  }
 
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
