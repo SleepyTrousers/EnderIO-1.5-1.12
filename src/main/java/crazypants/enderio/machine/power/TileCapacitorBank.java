@@ -317,7 +317,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   public boolean isInputEnabled(ForgeDirection direction) {
     IoMode mode = getIoMode(direction);
-    return mode == IoMode.PUSH || mode == IoMode.NONE && isInputEnabled();
+    return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
   }
 
   private boolean transmitEnergy() {

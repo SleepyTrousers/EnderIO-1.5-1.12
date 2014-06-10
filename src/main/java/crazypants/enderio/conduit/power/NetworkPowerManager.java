@@ -381,9 +381,9 @@ public class NetworkPowerManager {
     receptors.clear();
     storageReceptors.clear();
     for (ReceptorEntry rec : network.getPowerReceptors()) {
-      if(rec.powerInterface.getDelegate() != null && 
-         rec.powerInterface.getDelegate().getClass() == TileCapacitorBank.class && 
-         !((TileCapacitorBank)rec.powerInterface.getDelegate()).isCreative()) {
+      if(rec.powerInterface.getDelegate() != null &&
+          rec.powerInterface.getDelegate().getClass() == TileCapacitorBank.class &&
+          !((TileCapacitorBank) rec.powerInterface.getDelegate()).isCreative()) {
         storageReceptors.add(rec);
       } else {
         receptors.add(rec);
@@ -447,35 +447,35 @@ public class NetworkPowerManager {
 
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
-        cb = cb.getController();
+        
 
-        boolean processed = capBanks.contains(cb);
+        boolean processed = capBanks.contains(cb.getController());
 
         if(!processed) {
           stored += cb.getEnergyStored();
           maxCap += cb.getMaxEnergyStored();
-          capBanks.add(cb);
-
-          if(rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
-            toBalance += cb.getEnergyStored();
-            maxToBalance += cb.getMaxEnergyStored();
-          }
-
-          float canGet = 0;
-
-          if(cb.isOutputEnabled(rec.direction.getOpposite())) {
-            canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
-            canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
-            canExtract += canGet;
-          }
-          float canFill = 0;
-          if(cb.isInputEnabled(rec.direction.getOpposite())) {
-            canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
-            canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
-            this.canFill += canFill;
-          }
-          enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter, rec.direction));
+          capBanks.add(cb.getController());          
         }
+        
+        if(rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
+          toBalance += cb.getEnergyStored();
+          maxToBalance += cb.getMaxEnergyStored();
+        }
+
+        float canGet = 0;
+
+        if(cb.isOutputEnabled(rec.direction.getOpposite())) {
+          canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
+          canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
+          canExtract += canGet;
+        }
+        float canFill = 0;
+        if(cb.isInputEnabled(rec.direction.getOpposite())) {
+          canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
+          canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
+          this.canFill += canFill;
+        }
+        enteries.add(new CapBankSupplyEntry(cb, canGet, canFill, rec.emmiter, rec.direction));
 
       }
 
