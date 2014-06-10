@@ -19,6 +19,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
   protected int ticksSinceCheckedRecipe = 0;
   protected boolean startFailed = false;
+  
+  protected int lastProgressScaled = -1;
 
   public AbstractPoweredTaskEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
@@ -127,7 +129,11 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
       return false;
     }
     
-    PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+    int curScaled = getProgressScaled(16);
+    if(curScaled != lastProgressScaled) {
+      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+      lastProgressScaled = curScaled;
+    }
     
     return false;
   }
@@ -154,6 +160,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     markDirty();
     currentTask = null;
+    lastProgressScaled = 0;
     PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
   }
 
