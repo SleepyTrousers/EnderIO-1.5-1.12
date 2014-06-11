@@ -198,6 +198,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     if(worldObj == null) { // sanity check
       return;
     }
+    
+    if(blockMetadata == -1) {
+      isCreative = getBlockMetadata() == 1;
+    }
+    
     if(worldObj.isRemote) {
       if(render) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
