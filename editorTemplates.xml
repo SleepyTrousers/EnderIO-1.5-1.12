@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="system.out.println with class / method name." enabled="true" name="sout">System.out.println("${enclosing_type}.${enclosing_method}: ");</template></templates>
