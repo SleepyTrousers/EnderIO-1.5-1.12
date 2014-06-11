@@ -6,15 +6,18 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.machine.recipe.CustomTagHandler;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 
-public class GrindingBallTagHandler implements CustomTagHandler{
+public class GrindingBallTagHandler implements CustomTagHandler {
 
   private static final String ELEMENT_ROOT = "grindingBalls";
 
   private static final String BALL_ROOT = "grindingBall";
+
+  private static final String EXCLUDES_ROOT = "excludes";
 
   private static final String AT_GM = "grindingMultiplier";
   private static final String AT_PM = "powerMultiplier";
@@ -22,8 +25,10 @@ public class GrindingBallTagHandler implements CustomTagHandler{
   private static final String AT_DMJ = "durationMJ";
 
   List<GrindingBall> balls = new ArrayList<GrindingBall>();
+  List<RecipeInput> excludes = new ArrayList<RecipeInput>();
 
   boolean processStack = false;
+  boolean processExclude = false;
 
   private float gm;
   private float pm;
@@ -43,10 +48,22 @@ public class GrindingBallTagHandler implements CustomTagHandler{
       processStack = true;
       return true;
     }
+    if(EXCLUDES_ROOT.equals(localName)) {
+      processExclude = true;
+      return true;
+    }
     if(processStack && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
       RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
-      GrindingBall gb = new GrindingBall(ri,gm,cm,pm,dmj);
-      balls.add(gb);
+      if(ri != null) {
+        GrindingBall gb = new GrindingBall(ri, gm, cm, pm, dmj);
+        balls.add(gb);
+      }
+    }
+    if(processExclude && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
+      RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
+      if(ri != null) {
+        excludes.add(ri);
+      }
     }
 
     return false;
@@ -54,8 +71,9 @@ public class GrindingBallTagHandler implements CustomTagHandler{
 
   @Override
   public boolean endElement(String uri, String localName, String qName) throws SAXException {
-    if(ELEMENT_ROOT.equals(localName) || BALL_ROOT.equals(localName)) {
+    if(ELEMENT_ROOT.equals(localName) || BALL_ROOT.equals(localName) || EXCLUDES_ROOT.equals(localName)) {
       processStack = false;
+      processExclude = false;
       return true;
     }
     return false;

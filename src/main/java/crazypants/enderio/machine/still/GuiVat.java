@@ -9,10 +9,11 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.PoweredTask;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
@@ -92,14 +93,14 @@ public class GuiVat extends GuiMachineBase {
       drawTexturedModalRect(guiLeft + 81, guiTop + 76 - scaled, 176, 12 - scaled, 14, scaled + 2);
 
       IIcon inputIcon = null;
-      PoweredTask task = (PoweredTask)vat.getCurrentTask();
+      IPoweredTask task = vat.getCurrentTask();
       for (MachineRecipeInput input : task.getInputs()) {
         if(input.fluid != null && input.fluid.getFluid() != null) {
           inputIcon = input.fluid.getFluid().getStillIcon();
           break;
         }
       }
-      VatMachineRecipe rec = (VatMachineRecipe) task.getRecipe();
+      IMachineRecipe rec = task.getRecipe();
       IIcon outputIcon = null;
       for (ResultStack res : rec.getCompletedResult(1.0f, task.getInputs())) {
         if(res.fluid != null && res.fluid.getFluid() != null) {

@@ -260,8 +260,7 @@
     </recipe>
 
     <recipe name="GlowStone" energyCost="240">
-      <input>
-      
+      <input>      
         <itemStack modID="minecraft" itemName="glowstone" />
       </input>
       <output>      
@@ -1628,6 +1627,12 @@
     <grindingBall grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationMJ="10000">
       <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="7" />
     </grindingBall>
+    
+    <excludes>
+      <itemStack modID="minecraft" itemName="glowstone" />
+      <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>
+    </excludes>
+    
   </grindingBalls>
 
 </SAGMillRecipes>

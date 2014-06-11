@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.Config;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.IRecipe;
@@ -36,6 +37,8 @@ public class CrusherRecipeManager {
   }
 
   private final List<Recipe> recipes = new ArrayList<Recipe>();
+  
+  private final List<RecipeInput> ballExcludes = new ArrayList<RecipeInput>();
 
   private final List<GrindingBall> balls = new ArrayList<GrindingBall>();
 
@@ -51,6 +54,19 @@ public class CrusherRecipeManager {
 
   public boolean isValidSagBall(ItemStack stack) {
     return getGrindballFromStack(stack) != null;
+  }
+  
+  public boolean isExcludedFromBallBonus(MachineRecipeInput[] inputs) {
+    if(inputs == null || inputs.length < 1) {
+      return true;
+    }
+    for(RecipeInput input : ballExcludes) {
+      if(input != null && input.isInput(inputs[0].item)) {        
+        return true;
+      }
+    }    
+    
+    return false;
   }
 
   public IGrindingMultiplier getGrindballFromStack(ItemStack stack) {
@@ -76,7 +92,9 @@ public class CrusherRecipeManager {
     GrindingBallTagHandler th = new GrindingBallTagHandler();
     RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, th);
     balls.addAll(th.balls);
+    ballExcludes.addAll(th.excludes);
     Log.info("Loaded " + balls.size() + " grinding balls from SAG Mill config.");
+    Log.info("Excluding " + ballExcludes.size() + " recipes from grinding balls bonus.");
     if(config != null) {
       processConfig(config);
     } else {
@@ -167,7 +185,5 @@ public class CrusherRecipeManager {
   public List<GrindingBall> getBalls() {
     return balls;
   }
-
-
 
 }

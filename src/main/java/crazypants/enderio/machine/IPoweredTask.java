@@ -21,4 +21,6 @@ public interface IPoweredTask {
 
   IMachineRecipe getRecipe();
 
+  public abstract MachineRecipeInput[] getInputs();
+
 }

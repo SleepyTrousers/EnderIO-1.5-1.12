@@ -82,6 +82,7 @@ public class PoweredTask implements IPoweredTask {
     return recipe.getCompletedResult(chance, inputs);
   }
 
+  @Override
   public MachineRecipeInput[] getInputs() {
     return inputs;
   }
@@ -136,7 +137,7 @@ public class PoweredTask implements IPoweredTask {
     nbtRoot.setFloat(KEY_CHANCE, chance);
   }
 
-  public static PoweredTask readFromNBT(NBTTagCompound nbtRoot) {
+  public static IPoweredTask readFromNBT(NBTTagCompound nbtRoot) {
     if(nbtRoot == null) {
       return null;
     }

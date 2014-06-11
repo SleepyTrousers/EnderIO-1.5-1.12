@@ -22,6 +22,7 @@ import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
@@ -466,6 +467,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     @Override
     public float getChance() {
       return 1;
+    }
+
+    @Override
+    public MachineRecipeInput[] getInputs() {
+      return new MachineRecipeInput[0];
     }
   }
 

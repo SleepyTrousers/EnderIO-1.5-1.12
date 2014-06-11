@@ -81,7 +81,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     IPoweredTask ct = currentTask;
     super.taskComplete();
     //run it again if the ball says so
-    if(gb != null) {
+    if(gb != null && !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(ct.getInputs())) {
       float chance = random.nextFloat();
       float mul = gb.getGrindingMultiplier() - 1;
       while(mul > 0) {
@@ -95,7 +95,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  protected PoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res;
     if(gb != null) {
       res = new PoweredTask(nextRecipe, chance * gb.getChanceMultiplier(), getInputs());

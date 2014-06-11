@@ -327,7 +327,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     return false;
   }
 
-  protected PoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
+  protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     return new PoweredTask(nextRecipe, chance, getInputs());
   }
 
