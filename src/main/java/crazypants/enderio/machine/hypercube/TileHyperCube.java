@@ -22,6 +22,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.machine.IRedstoneModeControlable;
@@ -132,6 +133,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   protected RedstoneControlMode redstoneControlMode = RedstoneControlMode.IGNORE;
   protected boolean redstoneCheckPassed;
   private boolean redstoneStateDirty = true;
+  private boolean isConnected = false;
 
   public TileHyperCube() {
     powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
@@ -186,11 +188,16 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     this.owner = owner;
   }
 
-  private boolean isConnected() {
+  private boolean canMaintainConnection() {
     if(channel == null || HyperCubeRegister.instance == null || !redstoneCheckPassed) {
       return false;
     }
     List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
+    for (TileHyperCube cube : cons) {
+      if(cube != this && cube.powerHandler.getEnergyStored() <= 0) {
+        return false;
+      }
+    }
     return cons != null && cons.size() > 1 && powerHandler.getEnergyStored() > 0;
   }
 
@@ -203,27 +210,16 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
     if(canSendPower()) {
 
-      boolean iWasConnected = isConnected();
-
       for (TileHyperCube cube : cubes) {
         double stored = powerHandler.getEnergyStored();
         if(stored > 0 && cube != null && cube != this && cube.canRecievePower()) {
-          boolean wasConnected = cube.isConnected();
-
           double curPower = cube.powerHandler.getEnergyStored();
           double requires = cube.powerHandler.getMaxEnergyStored() - curPower;
           double transfer = Math.min(requires, stored);
           transfer = Math.min(transfer, Config.transceiverMaxIO);
           cube.powerHandler.setEnergy(curPower + ((1 - ENERGY_LOSS) * transfer));
           powerHandler.setEnergy(powerHandler.getEnergyStored() - transfer);
-          if(wasConnected != cube.isConnected()) {
-            cube.fluidHandlersDirty = true;
-          }
         }
-      }
-
-      if(iWasConnected != isConnected()) {
-        fluidHandlersDirty = true;
       }
 
     }
@@ -264,8 +260,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     // power source as we rely on this
     // to make sure we dont both send and recieve to the same source
     powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
-
-    boolean wasConnected = isConnected();
+    powerHandler.setEnergy(stored);
 
     // Pay upkeep cost
     stored -= ENERGY_UPKEEP;
@@ -292,17 +287,23 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
     }
 
-    transmitEnergy();
-    sendEnergyToOtherNodes();
+    if(powerHandler.getEnergyStored() > 0) {
+      transmitEnergy();
+      sendEnergyToOtherNodes();
+    }
 
     updateInventories();
     pushRecieveBuffer();
 
     // check we are still connected (i.e. we haven't run out of power or started
     // receiving power)
-    boolean stillConnected = isConnected();
-    if(wasConnected != stillConnected) {
+    boolean requiresClientSync = false;
+
+    boolean stillConnected = canMaintainConnection();
+    if(isConnected != stillConnected) {
       fluidHandlersDirty = true;
+      isConnected = stillConnected;      
+      requiresClientSync = true;
     }
     updateFluidHandlers();
 
@@ -314,15 +315,20 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       registeredChannel = channel;
     }
 
-    boolean requiresClientSync = wasConnected != stillConnected;
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     float storedEnergy = (float) powerHandler.getEnergyStored();
     // Update if our power has changed by more than 0.5%
-    requiresClientSync |= lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
+    boolean powerChanged = lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
+    if(powerChanged) {
+      lastSyncPowerStored = storedEnergy;
+      if(!canSendPower()) {        
+        EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
+      }
+    }
 
     if(requiresClientSync) {
-      lastSyncPowerStored = storedEnergy;
+
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
@@ -606,7 +612,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       }
     }
     if(res.isEmpty()) {
-     return new FluidTankInfo[] {new FluidTankInfo(null, 0) };
+      return new FluidTankInfo[] { new FluidTankInfo(null, 0) };
     } else {
       return res.toArray(new FluidTankInfo[res.size()]);
     }
@@ -638,7 +644,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       return;
     }
     fluidHandlers.clear();
-    if(isConnected()) {
+    if(isConnected) {
       BlockCoord myLoc = new BlockCoord(this);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord checkLoc = myLoc.getLocation(dir);

@@ -30,6 +30,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
+import crazypants.enderio.machine.power.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Util;
@@ -44,6 +45,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     PacketHandler.INSTANCE.registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class,PacketAddRemoveChannel.class,PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketAddRemoveChannel.class,PacketAddRemoveChannel.class,PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketStoredPower.class,PacketStoredPower.class,PacketHandler.nextID(),Side.CLIENT);
 
     BlockHyperCube result = new BlockHyperCube();
     result.init();
