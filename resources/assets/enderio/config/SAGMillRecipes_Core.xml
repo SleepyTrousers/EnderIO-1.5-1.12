@@ -320,6 +320,16 @@
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
       </output>
     </recipe>
+    
+    <recipe name="DiamondOre" energyCost="300">
+      <input>
+        <itemStack modID="minecraft" itemName="diamond_ore" />        
+      </input>
+      <output>
+        <itemStack modID="minecraft" itemName="diamond" number="1"/>
+        <itemStack modID="minecraft" itemName="diamond" number="1" chance="0.25"/>                
+      </output>
+    </recipe>
 
     <recipe name="LapisLazuliOre" energyCost="300">
       <input>      

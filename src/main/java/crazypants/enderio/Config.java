@@ -73,7 +73,7 @@ public final class Config {
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
   public static int darkSteelPowerStorageLevelTwo = 250000;
-  public static int darkSteelPowerStorageLevelThree = 500000;
+  public static int darkSteelPowerStorageLevelThree = 1000000;
 
   public static float darkSteelSpeedOneWalkModifier = 0.1f;
   public static float darkSteelSpeedTwoWalkMultiplier = 0.2f;

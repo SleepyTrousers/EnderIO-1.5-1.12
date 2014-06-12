@@ -81,10 +81,8 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public void loadCraftingRecipes(String outputId, Object... results)
-  {
-    if(outputId.equals("EnderIOSagMill") && getClass() == SagMillRecipeHandler.class)
-    {
+  public void loadCraftingRecipes(String outputId, Object... results) {
+    if(outputId.equals("EnderIOSagMill") && getClass() == SagMillRecipeHandler.class) {
       List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.SAG_MILL_ID);
 
       for (IEnderIoRecipe recipe : recipes) {
