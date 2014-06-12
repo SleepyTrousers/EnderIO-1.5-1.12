@@ -50,6 +50,7 @@ public enum ModObject {
 
   blockElectricLight,
   blockLightNode,
+  blockLight,
 
   // Painter
   blockPainter,

@@ -177,16 +177,23 @@ public class MachineRecipes {
       GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', metal, 'c', activatedCapacitor, 'r', Blocks.redstone_block));
     }
 
-    //light
+    //powered light
     ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 0);
     ItemStack glowstone = new ItemStack(Items.glowstone_dust);
     if(Config.useHardRecipes) {
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
-
     } else {
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', "glass", 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
-
-    }
+    }    
+    ItemStack invPoweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 1);
+    GameRegistry.addShapelessRecipe(invPoweredLamp, poweredLamp, Blocks.redstone_torch);
+    
+    //light
+    ItemStack lamp = new ItemStack(EnderIO.blockElectricLight, 1, 2);
+    GameRegistry.addRecipe(new ShapedOreRecipe(lamp, "   ", "ggg", "isi", 'g', "glass", 's', Blocks.glowstone, 'i', Items.iron_ingot));
+    ItemStack invLamp = new ItemStack(EnderIO.blockElectricLight, 1, 3);
+    GameRegistry.addShapelessRecipe(invLamp, lamp, Blocks.redstone_torch);    
+    
 
     //MJ Reader
     ItemStack mJReader = new ItemStack(EnderIO.itemConduitProbe, 1, 0);

@@ -137,4 +137,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     world.removeTileEntity(x, y, z);
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {    
+    return getUnlocalizedName();
+  }
+  
+  
+
 }

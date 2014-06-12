@@ -17,13 +17,13 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.vecmath.Vector3f;
 
-public class BlockElectricLight extends BlockEio implements IResourceTooltipProvider {
+public class BlockElectricLight extends BlockEio {
 
-  private static final float BLOCK_HEIGHT = 0.05f;
-  private static final float BLOCK_WIDTH = 0.3f;
+  static final float BLOCK_HEIGHT = 0.05f;
+  static final float BLOCK_WIDTH = 0.3f;
 
-  private static final float BLOCK_EDGE_MAX = 0.5f + (BLOCK_WIDTH / 2);
-  private static final float BLOCK_EDGE_MIN = 0.5f - (BLOCK_WIDTH / 2);
+  static final float BLOCK_EDGE_MAX = 0.5f + (BLOCK_WIDTH / 2);
+  static final float BLOCK_EDGE_MIN = 0.5f - (BLOCK_WIDTH / 2);
 
   public static int renderId;
 
@@ -38,15 +38,13 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
 
   public BlockElectricLight() {
     super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class);
-
-    setLightOpacity(0);
-    
+    setLightOpacity(0);    
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, ModObject.blockElectricLight.unlocalisedName);
+    GameRegistry.registerBlock(this, BlockItemElectricLight.class, ModObject.blockElectricLight.unlocalisedName);
     GameRegistry.registerTileEntity(TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
   }
 
@@ -157,21 +155,6 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
   }
 
   @Override
-  public int onBlockPlaced(World world, int x, int y, int z, int side, float par6, float par7, float par8, int meta) {
-    return side;
-  }
-
-  @Override
-  public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
-    ForgeDirection onFace = ForgeDirection.values()[meta].getOpposite();
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileElectricLight) {
-      ((TileElectricLight) te).setFace(onFace);
-    }
-    world.setBlockMetadataWithNotify(x, y, z, 0, 0);
-  }
-
-  @Override
   public boolean isOpaqueCube() {
     return false;
   }
@@ -197,11 +180,6 @@ public class BlockElectricLight extends BlockEio implements IResourceTooltipProv
       world.removeTileEntity(x, y, z);
     }
 
-  }
-
-  @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    return getUnlocalizedName();
   }
 
 }

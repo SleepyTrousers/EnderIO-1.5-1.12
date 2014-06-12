@@ -158,9 +158,22 @@ tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of site to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
 enderio.maxSolorProduction=Max Output
 
-tile.blockElectricLight.name=Powered Light
-tile.blockElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
-tile.blockElectricLight.tooltip.detailed.line2=power and a redstone signal
+item.itemElectricLight.name=Powered Light
+item.itemElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
+item.itemElectricLight.tooltip.detailed.line2=power and a redstone signal
+
+item.itemElectricLightInverted.name=Powered Light (Inverted)
+item.itemElectricLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
+item.itemElectricLightInverted.tooltip.detailed.line2=power
+item.itemElectricLightInverted.tooltip.detailed.line3=Turn off with a redstone signal
+
+item.itemLight.name=Light
+item.itemLight.tooltip.detailed.line1=Emits light with a
+item.itemLight.tooltip.detailed.line2=redstone signal
+
+item.itemLightInverted.name=Light (Inverted)
+item.itemLightInverted.tooltip.detailed.line1=Emits light, disable with
+item.itemLightInverted.tooltip.detailed.line2=a redstone signal
 
 tile.blockCapacitorBank.name=Capacitor Bank
 tile.blockCapacitorBank.creative.name=Creative Capacitor Bank

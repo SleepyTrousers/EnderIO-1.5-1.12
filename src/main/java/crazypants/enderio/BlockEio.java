@@ -58,8 +58,4 @@ public abstract class BlockEio extends Block {
     blockIcon = iIconRegister.registerIcon("enderio:" + name);
   }
 
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    return getUnlocalizedName();
-  }
-
 }

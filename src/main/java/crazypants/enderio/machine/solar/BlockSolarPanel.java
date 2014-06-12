@@ -137,4 +137,11 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     world.removeTileEntity(x, y, z);
   }
 
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {    
+    return getUnlocalizedName();
+  }
+
+  
+  
 }
