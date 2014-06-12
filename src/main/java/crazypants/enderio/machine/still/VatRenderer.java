@@ -114,9 +114,9 @@ public class VatRenderer implements ISimpleBlockRenderingHandler, IItemRenderer 
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     tes.draw();
     
-    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-    GL11.glEnable(GL11.GL_TEXTURE_2D);    
-    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);    
+//    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+//    GL11.glEnable(GL11.GL_TEXTURE_2D);    
+//    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);    
     
     GL11.glEnable(GL11.GL_LIGHTING);
   }

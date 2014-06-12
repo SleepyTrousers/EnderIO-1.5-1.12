@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.crafting.IRecipeOutput;
@@ -39,7 +40,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockPaintedGlowstone extends Block implements ITileEntityProvider {
-
+ 
   
   public static BlockPaintedGlowstone create() {
     BlockPaintedGlowstone result = new BlockPaintedGlowstone();
@@ -72,6 +73,19 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
   @Override
   public int getLightValue() {  
     return 15;
+  }  
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      }
+    }    
+    return super.colorMultiplier(world, x, y, z);
   }
 
   @SideOnly(Side.CLIENT)
@@ -167,7 +181,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
     }
     return Blocks.anvil.getIcon(world, x, y, z, blockSide);
   }
-
+   
   @SideOnly(Side.CLIENT)
   @Override
   public void registerBlockIcons(IIconRegister IIconRegister) {
