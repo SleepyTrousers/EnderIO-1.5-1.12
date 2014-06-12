@@ -68,6 +68,7 @@ import crazypants.enderio.machine.monitor.BlockPowerMonitor;
 import crazypants.enderio.machine.monitor.ItemConduitProbe;
 import crazypants.enderio.machine.painter.BlockPaintedFence;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
+import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
 import crazypants.enderio.machine.painter.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.BlockPaintedStair;
 import crazypants.enderio.machine.painter.BlockPaintedWall;
@@ -133,6 +134,7 @@ public class EnderIO {
   public static BlockPaintedStair blockPaintedStair;
   public static BlockPaintedSlab blockPaintedSlab;
   public static BlockPaintedSlab blockPaintedDoubleSlab;
+  public static BlockPaintedGlowstone blockPaintedGlowstone;
 
   // Conduits
   public static BlockConduitBundle blockConduitBundle;
@@ -236,6 +238,7 @@ public class EnderIO {
     blockPaintedSlab.init();
     blockPaintedDoubleSlab.init();
     blockCrafter = BlockCrafter.create();
+    blockPaintedGlowstone = BlockPaintedGlowstone.create();
 
     blockHyperCube = BlockHyperCube.create();
     blockElectricLight = BlockElectricLight.create();

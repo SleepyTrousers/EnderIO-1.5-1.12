@@ -3,11 +3,17 @@ package crazypants.enderio.machine.still;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -26,7 +32,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
 
-public class VatRenderer implements ISimpleBlockRenderingHandler {
+public class VatRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private VertXForm xform = new VertXForm();
 
@@ -35,6 +41,21 @@ public class VatRenderer implements ISimpleBlockRenderingHandler {
   private OverlayRenderer overlayRenderer = new OverlayRenderer();
 
   private TileVat vat;
+  
+  @Override
+  public boolean handleRenderType(ItemStack item, ItemRenderType type) { 
+    return true;
+  }
+
+  @Override
+  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    return true;
+  }
+
+  @Override
+  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    renderInventoryBlock(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 0, (RenderBlocks)data[0]);    
+  }
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
@@ -82,11 +103,21 @@ public class VatRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-    Tessellator tes = Tessellator.instance;
-    GL11.glDisable(GL11.GL_LIGHTING);
-    tes.startDrawingQuads();
+    Tessellator tes = Tessellator.instance;    
+    GL11.glDisable(GL11.GL_LIGHTING);   
+    
+    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+    GL11.glDisable(GL11.GL_TEXTURE_2D);    
+    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+    
+    tes.startDrawingQuads();    
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
     tes.draw();
+    
+    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+    GL11.glEnable(GL11.GL_TEXTURE_2D);    
+    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);    
+    
     GL11.glEnable(GL11.GL_LIGHTING);
   }
 

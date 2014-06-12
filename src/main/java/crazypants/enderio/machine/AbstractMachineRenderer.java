@@ -2,12 +2,19 @@ package crazypants.enderio.machine;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.render.BoundingBox;
@@ -18,13 +25,28 @@ import crazypants.render.IRenderFace;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vertex;
 
-public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler {
+public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private OverlayRenderer overlayRenderer = new OverlayRenderer();
 
   private AbstractMachineEntity curEnt;
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
+
+  @Override
+  public boolean handleRenderType(ItemStack item, ItemRenderType type) { 
+    return true;
+  }
+
+  @Override
+  public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    return true;
+  }
+
+  @Override
+  public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    renderInventoryBlock(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 0, (RenderBlocks)data[0]);    
+  }
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
@@ -42,7 +64,11 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler {
 
     CubeRenderer.render(bb, textures, null, brightnessPerSide);
 
+//    GL11.glPushMatrix();
+//    GL11.glTranslatef(0, 0, 0);
     Tessellator.instance.draw();
+//    GL11.glPopMatrix();
+    
 
   }
 
