@@ -18,13 +18,11 @@ public class PacketHandler
         return ID++;
     }
 
-    public static void sendToAllAround(IMessage message, TileEntity te, int range)
-    {
+    public static void sendToAllAround(IMessage message, TileEntity te, int range) {
         INSTANCE.sendToAllAround(message, new TargetPoint(te.getWorldObj().provider.dimensionId, te.xCoord, te.yCoord, te.zCoord, range));
     }
 
-    public static void sendToAllAround(IMessage message, TileEntity te)
-    {
-        sendToAllAround(message, te, 16);
+    public static void sendToAllAround(IMessage message, TileEntity te) {
+        sendToAllAround(message, te, 64);
     }
 }

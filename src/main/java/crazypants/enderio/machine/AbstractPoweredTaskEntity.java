@@ -18,7 +18,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   protected final Random random = new Random();
 
   protected int ticksSinceCheckedRecipe = 0;
-  protected boolean startFailed = false;
+  protected boolean startFailed = false;  
   
   protected int lastProgressScaled = -1;
 
@@ -78,8 +78,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
-
-    if(!redstoneChecksPassed) {
+    
+    if(!redstoneChecksPassed) {      
       return false;
     }
 
@@ -104,15 +104,14 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
       boolean started = startNextTask(nextRecipe, chance);
-      startFailed = !started;
-      //requiresClientSync |= started;
-      if(started) {
-        PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+      if(started != startFailed) {
+        PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);  
       }
+      startFailed = !started;                        
     } else {
       startFailed = true;
     }
-
+    
     return requiresClientSync;
   }
 
