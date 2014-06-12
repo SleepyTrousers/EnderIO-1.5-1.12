@@ -85,7 +85,7 @@ enderio.fluid.millibucketsTick=mB/t
 
 //Materials
 enderio.itemMachinePart.name=Machine Parts
-enderio.machineChassi.name=Machine Chassi
+enderio.machineChassi.name=Machine Chassis
 enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
@@ -210,21 +210,21 @@ tile.blockCombustionGenerator.tooltip.detailed.line2=Requires a coolant (e.g. wa
 tile.blockCombustionGenerator.tooltip.detailed.line3=Output dependent on fuel
 
 tile.blockZombieGenerator.name=Zombie Generator
-tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation 
+tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
 tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
 enderio.zombieGenerator.fuelTank=Nutrient Tank
 
 tile.blockFarmStation.name=Farming Station
 tile.blockFarmStation.tooltip.detailed.line1=Plants and harvests crops
-tile.blockFarmStation.tooltip.detailed.line2=Requires power and  
+tile.blockFarmStation.tooltip.detailed.line2=Requires power and
 tile.blockFarmStation.tooltip.detailed.line3=appropriate tools (hoe, axe)
-tile.blockFarmStation.tooltip.detailed.line4=Looting / fortune on tools  
+tile.blockFarmStation.tooltip.detailed.line4=Looting / fortune on tools
 tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
 
 tile.blockTank.name=Fluid Tank
 tile.blockTank.advanced.name=Pressurized Fluid Tank
-tile.blockTank.tooltip.detailed.line1=Portable fluid tank 
-tile.blockTank.tooltip.detailed.line2=Can be used to empty and 
+tile.blockTank.tooltip.detailed.line1=Portable fluid tank
+tile.blockTank.tooltip.detailed.line2=Can be used to empty and
 tile.blockTank.tooltip.detailed.line3=fill fluid containers
 enderio.tank.tank=Tank
 
@@ -300,7 +300,6 @@ item.darkSteel_boots.name=Dark Boots
 item.darkSteel_sword.name=The Ender
 item.darkSteel_pickaxe.name=Dark Pick
 item.darkSteel_axe.name=Dark Axe
-
 
 enderio.item.tooltip.showDetails=<Hold Shift>
 enderio.item.darkSteel.tooltip.durability=Durability:

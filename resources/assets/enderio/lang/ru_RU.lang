@@ -45,6 +45,15 @@ enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=вязкости жид
 enderio.itemItemConduit.name=Предметная труба
 enderio.itemItemConduitEmpowered.name=Усиленная предметная труба
 
+enderio.filterUpgradeBasic.name=Основной предметный фильтр
+enderio.filterUpgradeAdvanced.name=Продвинутый предметный фильтр
+enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
+enderio.itemConduitFilterUpgrade.configured=Настроенный
+
+item.itemExistingItemFilter.name=Существующий предметный фильтр
+item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает только предметы
+item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
+
 enderio.itemMeConduit.name=МЭ труба
 
 //Materials
@@ -54,6 +63,9 @@ enderio.darkSteel.name=Тёмная сталь
 enderio.conduitBinder.name=Связующий элемент труб
 enderio.binderComposite.name=Составной связующий элемент
 enderio.phasedIronNugget.name=Пульсирующий железный самородок
+tile.blockDarkIronBars.name=Решётка из тёмного железа
+enderio.blastResistant=Взрывоустойчивая
+enderio.lightEmitter=Излучает свет
 
 //Fluids
 fluid.nutrient_distillation=Питательный дистиллят
@@ -74,7 +86,7 @@ enderio.fluid.millibucketsTick=мВ/т
 //Materials
 enderio.itemMachinePart.name=Детали механизма
 enderio.machineChassi.name=Шасси механизма
-enderio.basicGear.name=Обычная шестерня
+enderio.basicGear.name=Основная шестерня
 enderio.pulsatingCrystal.name=Пульсирующий кристалл
 enderio.vibrantCrystal.name=Вибрирующий кристалл
 enderio.darkGrindingBall.name=Шарик тёмной стали
@@ -88,6 +100,8 @@ enderio.darkGrindingBall.tooltip.detailed.line4=Снижение мощност�
 tile.blockFusedQuartz.name=Расплавленный кварц
 enderio.blockFusedQuartz.fusedQuartz.name=Расплавленный кварц
 enderio.blockFusedQuartz.fusedGlass.name=Почти прозрачное стекло
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Освещённый расплавленный кварц
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Освещённое прозрачное стекло
 
 item.enderio.itemFusedQuartzFrame.name=Рамка из расплавленного кварца
 enderio.itemPowderIngot=Порошки и слитки
@@ -138,13 +152,28 @@ tile.blockAlloySmelter.tooltip.detailed.line2=Может также исполь
 tile.blockAlloySmelter.tooltip.detailed.line3=питающаяся энергией
 
 tile.blockSolarPanel.name=Фотовольтовая ячейка
+tile.blockSolarPanel.advanced.name=Продвинутая фотовольтовая ячейка
 tile.blockSolarPanel.tooltip.detailed.line1=Производит энергию в светлое время суток
 tile.blockSolarPanel.tooltip.detailed.line2=Должна иметь чистое пространство
 tile.blockSolarPanel.tooltip.detailed.line3=к небу
+enderio.maxSolorProduction=Макс. вывод
 
-tile.blockElectricLight.name=Электрический светильник
-tile.blockElectricLight.tooltip.detailed.line1=Освещает большую площадь при подаче
-tile.blockElectricLight.tooltip.detailed.line2=энергии и сигнала красного камня
+item.itemElectricLight.name=Электрический светильник
+item.itemElectricLight.tooltip.detailed.line1=Освещает большую площадь при подаче
+item.itemElectricLight.tooltip.detailed.line2=энергии и сигнала красного камня
+
+item.itemElectricLightInverted.name=Электрический светильник (Перевёрнутый)
+item.itemElectricLightInverted.tooltip.detailed.line1=Освещает большую площадь при подаче
+item.itemElectricLightInverted.tooltip.detailed.line2=энергии
+item.itemElectricLightInverted.tooltip.detailed.line3=Выключается по сигналу красного камня
+
+item.itemLight.name=Светильник
+item.itemLight.tooltip.detailed.line1=Излучает свет по
+item.itemLight.tooltip.detailed.line2=сигналу красного камня
+
+item.itemLightInverted.name=Светильник (Перевёрнутый)
+item.itemLightInverted.tooltip.detailed.line1=Излучает свет, отключается по
+item.itemLightInverted.tooltip.detailed.line2=сигналу красного камня
 
 tile.blockCapacitorBank.name=Блок конденсаторов
 tile.blockCapacitorBank.creative.name=Творческий блок конденсаторов
@@ -180,8 +209,32 @@ tile.blockCombustionGenerator.tooltip.detailed.line1=Сжигает жидкое
 tile.blockCombustionGenerator.tooltip.detailed.line2=Требует охладитель (например воду)
 tile.blockCombustionGenerator.tooltip.detailed.line3=Выход зависит от топлива
 
+tile.blockZombieGenerator.name=Зомби генератор
+tile.blockZombieGenerator.tooltip.detailed.line1=Потребляет питательный дистиллят
+tile.blockZombieGenerator.tooltip.detailed.line2=для производства энергии
+enderio.zombieGenerator.fuelTank=Питательный резервуар
+
 tile.blockFarmStation.name=Фермерская станция
+tile.blockFarmStation.tooltip.detailed.line1=Сажает и собирает растения
+tile.blockFarmStation.tooltip.detailed.line2=Требует энергию и
+tile.blockFarmStation.tooltip.detailed.line3=надлежащие инструменты (мотыгу, топор)
+tile.blockFarmStation.tooltip.detailed.line4=Добыча / Удача на инструментах
+tile.blockFarmStation.tooltip.detailed.line5=применяется при сборе урожая
+
+tile.blockTank.name=Жидкостный резервуар
+tile.blockTank.advanced.name=Жидкостный резервуар под давлением
+tile.blockTank.tooltip.detailed.line1=Переносной жидкостный резервуар
+tile.blockTank.tooltip.detailed.line2=Может быть использован для опустошения и
+tile.blockTank.tooltip.detailed.line3=заполнения жидкостных контейнеров
+enderio.tank.tank=Резервуар
+
+tile.blockCrafter.name=Создатель
+
 enderio.machine.tooltip.configured=(Настроен)
+
+//Blocks
+tile.blockDarkSteelPressurePlate.name=Тёмная нажимная пластина
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Активируется только игроками
 
 //Travel
 tile.blockTravelAnchor.name=Якорь путешествия
@@ -195,11 +248,11 @@ enderio.blockTravelPlatform.invalidTarget=Место назначения заб
 enderio.blockTravelPlatform.outOfRange=Место назначения за пределами радиуса действия
 
 item.itemTravelStaff.name=Посох путешествия
-item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
-item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be
-item.itemTravelStaff.tooltip.detailed.line3=activated by <r-click>
-item.itemTravelStaff.tooltip.detailed.line4=<shift><r-click> will teleport the
-item.itemTravelStaff.tooltip.detailed.line5=player a short distance
+item.itemTravelStaff.tooltip.detailed.line1=Когда якори путешествия и EnderIO экипированы
+item.itemTravelStaff.tooltip.detailed.line2=блоки становятся видимыми и могут быть
+item.itemTravelStaff.tooltip.detailed.line3=активированы <r-click>
+item.itemTravelStaff.tooltip.detailed.line4=<shift><r-click> телепортирует
+item.itemTravelStaff.tooltip.detailed.line5=игрока на короткую дистанцию
 enderio.itemTravelStaff.notEnoughPower=Недостаточно энергии
 
 //Painter
@@ -211,6 +264,7 @@ tile.blockPaintedWall.name=Покрашенная стена
 tile.blockPaintedStair.name=Покрашенные ступени
 tile.blockPaintedSlab.name=Покрашенная плита
 tile.blockPaintedDoubleSlab.name=Покрашенная плита
+tile.blockPaintedGlowstone.name=Покрашенный светящийся камень
 
 tile.blockPainter.tooltip.detailed.line1=Используется для покраски:
 tile.blockPainter.tooltip.detailed.line2= Фасадов труб, лестниц, заборов
@@ -245,7 +299,7 @@ item.darkSteel_leggings.name=Тёмные поножи
 item.darkSteel_boots.name=Тёмные ботинки
 item.darkSteel_sword.name=Край
 item.darkSteel_pickaxe.name=Тёмная кирка
-
+item.darkSteel_axe.name=Тёмный топор
 
 enderio.item.tooltip.showDetails=<Зажмите Shift>
 enderio.item.darkSteel.tooltip.durability=Прочность:
@@ -253,9 +307,14 @@ enderio.item.darkSteel.tooltip.durability=Прочность:
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность при питании
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
 
+enderio.item.darkSteel_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
+
 enderio.item.darkSteel_sword.tooltip.line1=Увеличено выпадение черепов жемчуга Края.
 enderio.item.darkSteel_sword.tooltip.line2=Странник Края не может телепортироваться после удара.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Урон, при питании
+
+enderio.item.darkSteel_armor.tooltip.line1=Алмазный уровень защиты,
+enderio.item.darkSteel_armor.tooltip.line2=если есть питание
 
 enderio.darksteel.upgrade.empowered_one.name=Усиление
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Энергия: $P
@@ -415,8 +474,8 @@ enderio.gui.conduit.item.insertionFilter=Фильтр на помещение
 enderio.gui.conduit.item.extractionFilter=Фильтр на извлечение
 enderio.gui.conduit.item.sigCol=Цвет сигнала
 enderio.gui.conduit.item.channel=Канал
-enderio.gui.conduit.item.ignoreMetaData=Игнорировать Meta данные
-enderio.gui.conduit.item.matchMetaData=Соблюдать Meta данные
+enderio.gui.conduit.item.ignoreMetaData=Игнорировать метаданные
+enderio.gui.conduit.item.matchMetaData=Соблюдать метаданные
 enderio.gui.conduit.item.whitelist=Белый список
 enderio.gui.conduit.item.blacklist=Чёрный список
 enderio.gui.conduit.item.stickyEnabled=Включён "липкий" режим|Выбранные предметы будут|отправляться только на|"липкие" выводы.
@@ -427,6 +486,9 @@ enderio.gui.conduit.item.oreDicEnabled=Использовать Ore Dictionary
 enderio.gui.conduit.item.oreDicDisabled=Игнорировать Ore Dictionary
 enderio.gui.conduit.item.selfFeedEnabled=Авто-подача активна
 enderio.gui.conduit.item.selfFeedDisabled=Авто-подача отключена
+enderio.gui.conduit.item.roundRobinEnabled=Цикл включён
+enderio.gui.conduit.item.roundRobinDisabled=Цикл отключен
+enderio.gui.conduit.item.priority=Приоритет
 
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
