@@ -23,6 +23,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     setBlockName(ModObject.blockDarkSteelPressurePlate.unlocalisedName);
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setHardness(2.0f);
   }
   
   protected void init() {
