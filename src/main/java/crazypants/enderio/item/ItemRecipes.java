@@ -23,7 +23,6 @@ public class ItemRecipes {
     
     ItemStack magnet = new ItemStack(EnderIO.itemMagnet, 1, 0);    
     EnderIO.itemMagnet.setEnergy(magnet, 0);
-    //GameRegistry.addShapedRecipe(magnet, "s s", "c  c", "cvc", 's', electricalSteel, 'c', conductiveIron, 'v', vibCry);
     GameRegistry.addShapedRecipe(magnet, "scc", "  v", "scc", 's', electricalSteel, 'c', conductiveIron, 'v', vibCry);
 
     //Dark Steel        
@@ -32,6 +31,9 @@ public class ItemRecipes {
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelLeggings.createItemStack(), "sss", "s s", "s s", 's', darkSteel);
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "s s", "   ", 's', darkSteel);
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "s s", 's', darkSteel);
+    
+    ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
+    GameRegistry.addShapedRecipe(dspp, "ss ", "   ", "   ", 's', darkSteel); 
 
   }
   

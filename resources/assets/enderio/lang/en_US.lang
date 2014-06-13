@@ -232,6 +232,10 @@ tile.blockCrafter.name=Crafter
 
 enderio.machine.tooltip.configured=(Configured)
 
+//Blocks
+tile.blockDarkSteelPressurePlate.name=Dark Pressure Plate
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Only activated by players
+
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
 tile.blockTravelAnchor.tooltip.detailed.line1=Allows teleportation between anchors
