@@ -77,6 +77,19 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     requiresPower = isPowered;    
   }
 
+  public boolean isRequiresPower() {
+    return requiresPower;
+  }  
+
+  public boolean isInvereted() {
+    return isInvereted;
+  }
+
+  public void setInvereted(boolean isInvereted) {
+    this.isInvereted = isInvereted;
+  }
+
+
   @Override
   public void updateEntity() {
     if(worldObj.isRemote) {

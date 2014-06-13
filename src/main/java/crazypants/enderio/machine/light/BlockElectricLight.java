@@ -1,7 +1,12 @@
 package crazypants.enderio.machine.light;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -15,6 +20,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.machine.power.BlockItemCapacitorBank;
+import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.vecmath.Vector3f;
 
 public class BlockElectricLight extends BlockEio {
@@ -38,7 +45,7 @@ public class BlockElectricLight extends BlockEio {
 
   public BlockElectricLight() {
     super(ModObject.blockElectricLight.unlocalisedName, TileElectricLight.class);
-    setLightOpacity(0);    
+    setLightOpacity(0);
     setBlockBounds(BLOCK_EDGE_MIN, 0.0F, BLOCK_EDGE_MIN, BLOCK_EDGE_MAX, BLOCK_HEIGHT, BLOCK_EDGE_MAX);
   }
 
@@ -66,8 +73,8 @@ public class BlockElectricLight extends BlockEio {
 
     TileEntity te = blockAccess.getTileEntity(x, y, z);
     if(te instanceof TileElectricLight) {
-      ForgeDirection onFace = ((TileElectricLight) te).getFace();      
-      if(side == (onFace.getOpposite().ordinal())) {      
+      ForgeDirection onFace = ((TileElectricLight) te).getFace();
+      if(side == (onFace.getOpposite().ordinal())) {
         boolean on = blockAccess.getBlockMetadata(x, y, z) != 0;
         return on ? blockIcon : blockIconOff;
       }
@@ -180,6 +187,61 @@ public class BlockElectricLight extends BlockEio {
       world.removeTileEntity(x, y, z);
     }
 
+  }
+
+  @Override
+  public int quantityDropped(Random r) {
+    return 0;
+  }
+
+  @Override
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    
+    ArrayList<ItemStack> res = new ArrayList<ItemStack>();
+    if(!world.isRemote) {
+      TileEntity t = world.getTileEntity(x, y, z);
+      TileElectricLight te = null;
+      if(t instanceof TileElectricLight) {
+        te = (TileElectricLight) t;
+      }
+      if(t != null) {
+        System.out.println("BlockElectricLight.getDrops: ");
+        ItemStack st = createDrop(te);
+        res.add(st);
+
+      }
+    }
+    return res;
+  }
+
+  private ItemStack createDrop(TileElectricLight te) {
+    int meta = te.isInvereted() ? 1 : 0;
+    if(!te.isRequiresPower()) {
+      meta += 2;
+    }
+    ItemStack st = new ItemStack(this, 1, meta);
+    return st;
+  }
+
+  @Override
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileElectricLight) {
+        TileElectricLight cb = (TileElectricLight) te;                
+        if(!player.capabilities.isCreativeMode) {
+          ItemStack itemStack = createDrop(cb);
+          float f = 0.7F;
+          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+          entityitem.delayBeforeCanPickup = 10;
+          world.spawnEntityInWorld(entityitem);
+        }
+      }
+    }
+    return super.removedByPlayer(world, player, x, y, z);
   }
 
 }
