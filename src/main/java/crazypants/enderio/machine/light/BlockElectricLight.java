@@ -204,11 +204,9 @@ public class BlockElectricLight extends BlockEio {
       if(t instanceof TileElectricLight) {
         te = (TileElectricLight) t;
       }
-      if(t != null) {
-        System.out.println("BlockElectricLight.getDrops: ");
+      if(t != null) {        
         ItemStack st = createDrop(te);
         res.add(st);
-
       }
     }
     return res;
