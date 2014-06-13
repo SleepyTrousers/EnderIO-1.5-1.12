@@ -187,12 +187,14 @@ public class MachineRecipes {
     }    
     ItemStack invPoweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 1);
     GameRegistry.addShapelessRecipe(invPoweredLamp, poweredLamp, Blocks.redstone_torch);
+    GameRegistry.addShapelessRecipe(poweredLamp, invPoweredLamp, Blocks.redstone_torch);
     
     //light
     ItemStack lamp = new ItemStack(EnderIO.blockElectricLight, 1, 2);
     GameRegistry.addRecipe(new ShapedOreRecipe(lamp, "   ", "ggg", "isi", 'g', "glass", 's', Blocks.glowstone, 'i', Items.iron_ingot));
     ItemStack invLamp = new ItemStack(EnderIO.blockElectricLight, 1, 3);
-    GameRegistry.addShapelessRecipe(invLamp, lamp, Blocks.redstone_torch);    
+    GameRegistry.addShapelessRecipe(invLamp, lamp, Blocks.redstone_torch);
+    GameRegistry.addShapelessRecipe(lamp, invLamp, Blocks.redstone_torch); 
     
 
     //MJ Reader
