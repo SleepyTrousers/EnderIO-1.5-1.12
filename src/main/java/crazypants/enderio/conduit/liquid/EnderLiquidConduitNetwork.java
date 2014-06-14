@@ -16,6 +16,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
+import crazypants.util.RoundRobinIterator;
 
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
 
@@ -24,7 +25,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   List<NetworkTank> tanks = new ArrayList<NetworkTank>();
   
-  Map<NetworkTank, RoundRobinIterable> iterators;
+  Map<NetworkTank, RoundRobinIterator<NetworkTank>> iterators;
 
   public EnderLiquidConduitNetwork() {
     super(EnderLiquidConduit.class);
@@ -93,11 +94,11 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   private Iterable<NetworkTank> getIteratorForTank(NetworkTank tank) {
     if(iterators == null) {
-      iterators = new HashMap<NetworkTank, RoundRobinIterable>();
+      iterators = new HashMap<NetworkTank, RoundRobinIterator<NetworkTank>>();
     }
-    RoundRobinIterable res = iterators.get(tank);
+    RoundRobinIterator<NetworkTank> res = iterators.get(tank);
     if(res == null) {
-      res = new RoundRobinIterable();
+      res = new RoundRobinIterator<NetworkTank>(tanks);
       iterators.put(tank, res);
     }
     return res;
@@ -167,41 +168,6 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       return true;
     }
 
-  }
-  
-  class RoundRobinIterable implements Iterable<NetworkTank>, Iterator<NetworkTank> {
-
-    int index = -1;
-    int currentCount = 0;
-    
-    @Override
-    public Iterator<NetworkTank> iterator() {
-      currentCount = 0;
-      return this;
-    }
-
-    @Override
-    public boolean hasNext() {
-      return !tanks.isEmpty() && currentCount <= tanks.size();
-    }
-
-    @Override
-    public NetworkTank next() {
-      if(tanks.isEmpty()) {
-        return null;
-      }
-      currentCount++;
-      index++;
-      if(index >= tanks.size()) {
-        index = 0;
-      }
-      return tanks.get(index);
-    }
-
-    @Override
-    public void remove() {            
-    }
-    
   }
 
 }

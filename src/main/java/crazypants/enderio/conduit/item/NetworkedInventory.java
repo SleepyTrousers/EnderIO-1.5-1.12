@@ -20,6 +20,7 @@ import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
+import crazypants.util.RoundRobinIterator;
 
 public class NetworkedInventory {
 
@@ -30,7 +31,7 @@ public class NetworkedInventory {
   int inventorySide;
 
   List<Target> sendPriority = new ArrayList<Target>();
-  RoundRobinIterable rrIter = new RoundRobinIterable();
+  RoundRobinIterator<Target> rrIter = new RoundRobinIterator<Target>(sendPriority);
 
   private int extractFromSlot = -1;
 
@@ -352,43 +353,6 @@ public class NetworkedInventory {
 
   public void setInventorySide(int inventorySide) {
     this.inventorySide = inventorySide;
-  }
-
-
-
-  class RoundRobinIterable implements Iterable<Target>, Iterator<Target> {
-
-    int index = -1;
-    int currentCount = 0;
-    
-    @Override
-    public Iterator<Target> iterator() {
-      currentCount = 0;
-      return this;
-    }
-
-    @Override
-    public boolean hasNext() {
-      return !sendPriority.isEmpty() && currentCount <= sendPriority.size();
-    }
-
-    @Override
-    public Target next() {
-      if(sendPriority.isEmpty()) {
-        return null;
-      }
-      currentCount++;
-      index++;
-      if(index >= sendPriority.size()) {
-        index = 0;
-      }
-      return sendPriority.get(index);
-    }
-
-    @Override
-    public void remove() {            
-    }
-    
   }
   
   static class Target implements Comparable<Target> {
