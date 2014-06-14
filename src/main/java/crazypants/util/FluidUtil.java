@@ -1,5 +1,6 @@
 package crazypants.util;
 
+import crazypants.enderio.conduit.IConduitBundle;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,12 @@ import buildcraft.api.transport.IPipeTile.PipeType;
 
 public class FluidUtil {
 
+  
+  public static IFluidHandler getExternalFluidHandler(IBlockAccess world, BlockCoord bc) {
+    IFluidHandler con = getFluidHandler(world, bc);
+    return (con != null && !(con instanceof IConduitBundle)) ? con : null;
+  }  
+    
   public static IFluidHandler getFluidHandler(IBlockAccess world, BlockCoord bc) {
     return getFluidHandler(world, bc.x, bc.y, bc.z);
   }

@@ -46,6 +46,8 @@ public final class Config {
 
   public static boolean itemConduitUsePhyscialDistance = false;
 
+  public static int enderFluidConduitExtractRate = 200;
+  public static int enderFluidConduitMaxIoRate = 800;
   public static int advancedFluidConduitExtractRate = 100;
   public static int advancedFluidConduitMaxIoRate = 400;
   public static int fluidConduitExtractRate = 50;
@@ -214,11 +216,19 @@ public final class Config {
         "Number of millibuckects per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
 
     advancedFluidConduitExtractRate = config.get("Efficiency Settings", "advancedFluidConduitExtractRate", advancedFluidConduitExtractRate,
-        "Number of millibuckects per tick extracted by advanced fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
+        "Number of millibuckects per tick extracted by pressurised fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
 
     advancedFluidConduitMaxIoRate = config.get("Efficiency Settings", "advancedFluidConduitMaxIoRate", advancedFluidConduitMaxIoRate,
-        "Number of millibuckects per tick that can pass through a single connection to an advanced fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
+        "Number of millibuckects per tick that can pass through a single connection to an pressurised fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
 
+    enderFluidConduitExtractRate = config.get("Efficiency Settings", "enderFluidConduitExtractRate", enderFluidConduitExtractRate,
+        "Number of millibuckects per tick extracted by ender fluid conduits auto extracting").getInt(enderFluidConduitExtractRate);
+    
+    enderFluidConduitMaxIoRate = config.get("Efficiency Settings", "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
+        "Number of millibuckects per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
+
+    
+    
     useAlternateTesseractModel = config.get("Aesthetic Settings", "useAlternateTransceiverModel", useAlternateTesseractModel,
         "Use TheKazador's alternatice model for the Dimensional Transceiver")
         .getBoolean(false);

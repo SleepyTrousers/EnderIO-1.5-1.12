@@ -19,7 +19,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced")
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
 
   };
 
@@ -42,6 +43,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   public IConduit createConduit(ItemStack stack) {
     if(stack.getItemDamage() == 1) {
       return new AdvancedLiquidConduit();
+    } else if(stack.getItemDamage() == 2) {
+      return new EnderLiquidConduit();
     }
     return new LiquidConduit();
   }
@@ -66,9 +69,12 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     if(itemstack.getItemDamage() == 0) {
       extractRate = Config.fluidConduitExtractRate;
       maxIo = Config.fluidConduitMaxIoRate;
-    } else {
+    } else if(itemstack.getItemDamage() == 1){
       extractRate = Config.advancedFluidConduitExtractRate;
       maxIo = Config.advancedFluidConduitMaxIoRate;
+    } else {
+      extractRate = Config.enderFluidConduitExtractRate;
+      maxIo = Config.enderFluidConduitMaxIoRate;
     }
     String mbt = " " + Lang.localize("fluid.millibucketsTick");
     list.add(Lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);

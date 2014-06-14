@@ -28,6 +28,8 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
+import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -49,6 +51,8 @@ public class ConduitUtil {
       return new RedstoneConduitNetwork();
     } else if(IPowerConduit.class.isAssignableFrom(type)) {
       return new PowerConduitNetwork();
+    } else if(EnderLiquidConduit.class.isAssignableFrom(type)) {
+      return new EnderLiquidConduitNetwork();
     } else if(AdvancedLiquidConduit.class.isAssignableFrom(type)) {
       return new AdvancedLiquidConduitNetwork();
     } else if(ILiquidConduit.class.isAssignableFrom(type)) {

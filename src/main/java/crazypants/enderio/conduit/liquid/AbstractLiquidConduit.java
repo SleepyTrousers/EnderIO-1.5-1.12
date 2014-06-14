@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
@@ -21,6 +22,7 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
+import crazypants.util.FluidUtil;
 
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
@@ -31,25 +33,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected boolean redstoneStateDirty = true;
 
   public IFluidHandler getExternalHandler(ForgeDirection direction) {
-    IFluidHandler con = getTankContainer(getLocation().getLocation(direction));
+    IFluidHandler con = FluidUtil.getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
   public IFluidHandler getTankContainer(BlockCoord bc) {
-    return getTankContainer(bc.x, bc.y, bc.z);
-  }
-
-  public IFluidHandler getTankContainer(int x, int y, int z) {
-    TileEntity te = getBundle().getEntity().getWorldObj().getTileEntity(x, y, z);
-    if(te instanceof IFluidHandler) {
-      if(te instanceof IPipeTile) {
-        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
-          return null;
-        }
-      }
-      return (IFluidHandler) te;
-    }
-    return null;
+    return FluidUtil.getFluidHandler(getBundle().getWorld(), bc);
   }
 
   @Override

@@ -38,6 +38,7 @@ public class ConduitRecipes {
     int numConduits = Config.numConduitsPerRecipe;
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedGlass);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', fusedQuartz);
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 2), "bbb", "#p#", "bbb", 'b', conduitBinder, '#', fusedQuartz, 'p', phasedGold);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', energeticGold);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedGold);
@@ -49,9 +50,6 @@ public class ConduitRecipes {
 
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);
-
-//    ItemStack itemConduitAdvanced = new ItemStack(EnderIO.itemItemConduit, numConduits, 1);
-//    GameRegistry.addShapedRecipe(itemConduitAdvanced, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIron);
 
     MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
     
