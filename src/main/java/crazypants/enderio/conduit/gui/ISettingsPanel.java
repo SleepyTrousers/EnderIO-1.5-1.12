@@ -15,4 +15,6 @@ public interface ISettingsPanel {
 
   void actionPerformed(GuiButton guiButton);
 
+  void mouseClicked(int x, int y, int par3);
+
 }

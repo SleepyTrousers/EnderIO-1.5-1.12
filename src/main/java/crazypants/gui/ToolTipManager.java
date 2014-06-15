@@ -43,6 +43,9 @@ public class ToolTipManager {
 
   protected void drawTooltip(GuiToolTip toolTip, int mouseX, int mouseY, ToolTipRenderer renderer) {
     List<String> list = toolTip.getToolTipText();
+    if(list == null) {
+      return;
+    }
 
     List<String> formatted = new ArrayList<String>(list.size());
     for (int i = 0; i < list.size(); i++) {

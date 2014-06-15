@@ -2,7 +2,6 @@ package crazypants.enderio.conduit.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.gui.item.BaseSettingsPanel;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.gui.ColorButton;

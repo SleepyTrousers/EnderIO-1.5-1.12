@@ -1,14 +1,17 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,6 +26,8 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -57,6 +62,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
+
+  private final EnumMap<ForgeDirection, FluidFilter> outputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
+  private final EnumMap<ForgeDirection, FluidFilter> inputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
 
   @Override
   public ItemStack createItem() {
@@ -113,6 +121,21 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     return network;
   }
 
+  public FluidFilter getFilter(ForgeDirection dir, boolean isInput) {
+    if(isInput) {
+      return inputFilters.get(dir);
+    }
+    return outputFilters.get(dir);
+  }
+
+  public void setFilter(ForgeDirection dir, FluidFilter filter, boolean isInput) {
+    if(isInput) {
+      inputFilters.put(dir, filter);
+    } else {
+      outputFilters.put(dir, filter);
+    }
+  }
+
   @Override
   public boolean setNetwork(AbstractConduitNetwork<?, ?> network) {
     if(network == null) {
@@ -123,10 +146,10 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       return false;
     }
     this.network = (EnderLiquidConduitNetwork) network;
-    for(ForgeDirection dir : externalConnections) {
+    for (ForgeDirection dir : externalConnections) {
       this.network.connectionChanged(this, dir);
     }
-    
+
     return true;
   }
 
@@ -169,7 +192,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   private void refreshConnections(ForgeDirection dir) {
-    if(network == null) {      
+    if(network == null) {
       return;
     }
     network.connectionChanged(this, dir);
@@ -261,6 +284,59 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       return new FluidTankInfo[0];
     }
     return network.getTankInfo(this, from);
+  }
+
+  @Override
+  public void writeToNBT(NBTTagCompound nbtRoot) {
+    super.writeToNBT(nbtRoot);
+    for (Entry<ForgeDirection, FluidFilter> entry : inputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        FluidFilter f = entry.getValue();
+        if(f != null && !f.isEmpty()) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          f.writeToNBT(itemRoot);
+          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+    for (Entry<ForgeDirection, FluidFilter> entry : outputFilters.entrySet()) {
+      if(entry.getValue() != null) {
+        FluidFilter f = entry.getValue();
+        if(f != null && !f.isEmpty()) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          f.writeToNBT(itemRoot);
+          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
+  }
+
+  @Override
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      String key = "inFilts." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        FluidFilter f = new FluidFilter();
+        f.readFromNBT(filterTag);
+        if(!f.isEmpty()) {
+          inputFilters.put(dir, f);
+        }
+      }
+      
+      key = "outFilts." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        FluidFilter f = new FluidFilter();
+        f.readFromNBT(filterTag);
+        if(!f.isEmpty()) {
+          outputFilters.put(dir, f);
+        }
+      }
+    }
+
   }
 
 }

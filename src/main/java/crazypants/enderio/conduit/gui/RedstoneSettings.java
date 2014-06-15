@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import net.minecraft.client.gui.GuiButton;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.gui.item.BaseSettingsPanel;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.gui.ColorButton;

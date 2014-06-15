@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.gui.BaseSettingsPanel;
 import crazypants.enderio.conduit.gui.FilterChangeListener;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;

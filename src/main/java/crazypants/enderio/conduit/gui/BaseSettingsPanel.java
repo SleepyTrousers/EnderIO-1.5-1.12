@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit.gui.item;
+package crazypants.enderio.conduit.gui;
 
 import java.awt.Color;
 
@@ -10,8 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.gui.GuiExternalConnection;
-import crazypants.enderio.conduit.gui.ISettingsPanel;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -88,6 +86,10 @@ public class BaseSettingsPanel implements ISettingsPanel {
 
   @Override
   public void deactivate() {
+  }
+  
+  public void mouseClicked(int x, int y, int par3) {
+    
   }
 
   @Override

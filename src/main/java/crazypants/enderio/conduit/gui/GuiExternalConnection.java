@@ -138,6 +138,7 @@ public class GuiExternalConnection extends GuiContainerBase {
         return;
       }
     }
+    tabs.get(activeTab).mouseClicked(x,y,par3);
 
   }
 
