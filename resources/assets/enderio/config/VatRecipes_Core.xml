@@ -3,10 +3,12 @@ Vat recipes take two item inputs and one fluid input, and output a fluid.
 The various values are calulcated like this:
 
 For:
-input volume = 1000 (a bucket) * inputFluid.multiplier * slot0.multiplier
+ingredient multiplier (IM) = slot0.multiplier * slot1.multiplier; 
+
+input fluid volume (mb) = IM * 1000
 
 Produce:
-output fluid volume = 1000 (a bucket) * inputFluid.multiplier * slot0.multiplier * slot1.multiplier.
+output fluid volume (mb) = IM * inputFluid.multiplier * 1000.
 
 The vat always uses 1 MJ per tick, so energy cost also equates to duration.
  -->
@@ -40,14 +42,16 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
     
     <recipe name="Hootch" energyCost="1000">
       <input>
-        <itemStack modID="minecraft" itemName="poisonous_potato" slot="0" multiplier="2"/>
-        <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="2"/>                                               
-        <itemStack modID="minecraft" itemName="wheat" slot="0" multiplier="1.5"/>
-        <itemStack modID="minecraft" itemName="wheat_seeds" slot="0" multiplier="1"/>        
+
+        <itemStack modID="minecraft" itemName="poisonous_potato" slot="0" multiplier="8"/>
+        <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="4"/>                                               
+        <itemStack modID="minecraft" itemName="wheat" slot="0" multiplier="3"/>
+        <itemStack modID="minecraft" itemName="wheat_seeds" slot="0" multiplier="2"/>        
         
         <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1"/>
                 
         <fluidStack name="water" multiplier="0.25"/>
+                
       </input>      
       <output>
         <fluidStack name="hootch"/>        

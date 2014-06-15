@@ -112,7 +112,7 @@ public final class Config {
   public static float darkSteelAxeSpeedPenaltyMultiHarvest = 8;
 
   public static int hootchPowerPerCycle = 6;
-  public static int hootchPowerTotalBurnTime = 4000;
+  public static int hootchPowerTotalBurnTime = 6000;
   public static int rocketFuelPowerPerCycle = 16;
   public static int rocketFuelPowerTotalBurnTime = 7000;
   public static int fireWaterPowerPerCycle = 8;
@@ -137,8 +137,8 @@ public final class Config {
   public static int darkSteelUpgradePowerTwoCost = 20;
   public static int darkSteelUpgradePowerThreeCost = 30;
 
-  public static float farmContinuousEnergyUse = 1;
-  public static float farmActionEnergyUse = 40;
+  public static float farmContinuousEnergyUse = 4;
+  public static float farmActionEnergyUse = 50;
   public static int farmDefaultSize = 3;
   
   public static int magnetPowerUsePerSecondRF = 1;
@@ -151,8 +151,6 @@ public final class Config {
   
   public static int capacitorBankMaxIoMJ = 100;
   public static int capacitorBankMaxStorageMJ = 500000;
-  
-    
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");

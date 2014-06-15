@@ -226,6 +226,9 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   private boolean isFilterVisible() {
+    if(!isEnder) {
+      return false;
+    }
     ConnectionMode mode = conduit.getConectionMode(gui.getDir());
     return mode == ConnectionMode.INPUT || mode == ConnectionMode.OUTPUT;
   }
