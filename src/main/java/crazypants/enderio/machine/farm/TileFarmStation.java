@@ -164,7 +164,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
     }
 
-    if(tool.getItemDamage() >= tool.getMaxDamage()) {
+    if(tool.isItemStackDamageable() && tool.getItemDamage() >= tool.getMaxDamage()) {
       destroyTool(class1);
     }
   }
