@@ -37,14 +37,14 @@ import crazypants.util.Util;
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
   public static BlockTank create() {
-   PacketHandler.INSTANCE.registerMessage(PacketTank.class, PacketTank.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTank.class, PacketTank.class, PacketHandler.nextID(), Side.CLIENT);
     BlockTank res = new BlockTank();
     res.init();
     return res;
   }
 
   protected BlockTank() {
-    super(ModObject.blockTank, TileTank.class);      
+    super(ModObject.blockTank, TileTank.class);
     setStepSound(Block.soundTypeGlass);
   }
 
@@ -57,12 +57,12 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TANK, this);
     setLightOpacity(0);
   }
-  
+
   @Override
   public int damageDropped(int par1) {
     return par1;
   }
-  
+
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
 
@@ -131,8 +131,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
   }
 
-  
-  
   @Override
   public TileEntity createNewTileEntity(World var1, int var2) {
     return new TileTank(var2);
@@ -144,7 +142,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     if(!(te instanceof TileTank)) {
       return null;
     }
-    return new ContainerTank(player.inventory, (TileTank)te);
+    return new ContainerTank(player.inventory, (TileTank) te);
   }
 
   @Override
@@ -153,7 +151,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     if(!(te instanceof TileTank)) {
       return null;
     }
-    return new GuiTank(player.inventory, (TileTank)te);
+    return new GuiTank(player.inventory, (TileTank) te);
   }
 
   //Causes crashes in 1.7 on some machines
@@ -168,17 +166,16 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
   //  return pass == 1;
   //}
 
-@Override
-public boolean isOpaqueCube() {
-  return false;
-}
-  
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_TANK;
   }
-  
-  
+
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
 
@@ -203,7 +200,6 @@ public boolean isOpaqueCube() {
     int offset = MathHelper.clamp_int(blockMeta, 0, 1) == 0 ? 0 : 6;
     return iconBuffer[0][blockSide + offset];
   }
-  
 
   @Override
   protected String getMachineFrontIconKey(boolean pressurized) {
@@ -212,18 +208,18 @@ public boolean isOpaqueCube() {
     }
     return "enderio:blockTank";
   }
-  
+
   protected String getSideIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
-  
+
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
-    
+
   @Override
   protected String getTopIconKey(boolean pressurized) {
-    if(pressurized) { 
+    if(pressurized) {
       return "enderio:blockTankTopAdvanced";
     }
     return "enderio:machineTop";
@@ -244,17 +240,17 @@ public boolean isOpaqueCube() {
       return super.getExplosionResistance(par1Entity);
     }
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {    
-    if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {    
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    if(itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {
       FluidStack fl = FluidStack.loadFluidStackFromNBT((NBTTagCompound) itemstack.stackTagCompound.getTag("tankContents"));
       if(fl != null && fl.getFluid() != null) {
         String str = fl.amount + " " + Lang.localize("fluid.millibucket.abr") + " " + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getLocalizedName();
-        list.add(str);        
-      } 
-    }  
+        list.add(str);
+      }
+    }
   }
 
   @Override
@@ -265,11 +261,11 @@ public boolean isOpaqueCube() {
       list.add(EnumChatFormatting.ITALIC + Lang.localize("blastResistant"));
     }
   }
-  
+
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     System.out.println("BlockTank.getUnlocalizedNameForTooltip: ");
     return stack.getUnlocalizedName();
   }
-  
+
 }

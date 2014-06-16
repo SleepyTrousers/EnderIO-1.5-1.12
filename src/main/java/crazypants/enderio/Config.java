@@ -34,7 +34,7 @@ public final class Config {
   public static File configDirectory;
 
   public static boolean useHardRecipes = false;
-  
+
   public static boolean useSteelInChassi = false;
 
   public static boolean detailedPowerTrackingEnabled = false;
@@ -105,7 +105,7 @@ public final class Config {
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUsePerDamagePoint = 750;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
-  
+
   public static int darkSteelAxePowerUsePerDamagePoint = 750;
   public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;
   public static float darkSteelAxeEffeciencyBoostWhenPowered = 2;
@@ -118,14 +118,13 @@ public final class Config {
   public static int fireWaterPowerPerCycle = 8;
   public static int fireWaterPowerTotalBurnTime = 15000;
   public static float vatPowerUserPerTick = 2;
-  
+
   public static double maxPhotovoltaicOutput = 1.0;
   public static double maxPhotovoltaicAdvancedOutput = 4.0;
-  
+
   public static double zombieGeneratorMjPerTick = 8.0;
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
 
-  
   public static boolean combustionGeneratorUseOpaqueModel = true;
 
   public static boolean addFuelTooltipsToAllFluidContainers = true;
@@ -140,17 +139,25 @@ public final class Config {
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
   public static int farmDefaultSize = 3;
-  
+
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
   public static int magnetRange = 5;
-  
+
   public static boolean useCombustionGenModel = false;
-  
+
   public static int crafterMjPerCraft = 250;
-  
+
   public static int capacitorBankMaxIoMJ = 100;
   public static int capacitorBankMaxStorageMJ = 500000;
+
+  public static int poweredSpawnerMinDelayTicks = 200;
+  public static int poweredSpawnerMaxDelayTicks = 800;
+  public static float poweredSpawnerLevelOnePowerPerTick = 4;
+  public static float poweredSpawnerLevelTwoPowerPerTick = 16;
+  public static float poweredSpawnerLevelThreePowerPerTick = 64;
+  public static int poweredSpawnerMaxPlayerDistance = 0;
+  public static boolean poweredSpawnerUseVanillaSpawChecks = false;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -175,17 +182,18 @@ public final class Config {
   public static void processConfig(Configuration config) {
     useRfAsDefault = config.get("Power Settings", "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
         .getBoolean(useRfAsDefault);
-    
+
     capacitorBankMaxIoMJ = config.get("Power Settings", "capacitorBankMaxIoMJ", capacitorBankMaxIoMJ, "The maximum IO for a single capacitor in MJ/t")
         .getInt(capacitorBankMaxIoMJ);
-    capacitorBankMaxStorageMJ = config.get("Power Settings", "capacitorBankMaxStorageMJ", capacitorBankMaxStorageMJ, "The maximum storage for a single capacitor in MJ")
+    capacitorBankMaxStorageMJ = config.get("Power Settings", "capacitorBankMaxStorageMJ", capacitorBankMaxStorageMJ,
+        "The maximum storage for a single capacitor in MJ")
         .getInt(capacitorBankMaxStorageMJ);
 
     useHardRecipes = config.get("Recipe Settings", "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
-    
+
     useSteelInChassi = config.get("Recipe Settings", "useSteelInChassi", useSteelInChassi, "When enabled machine chassis will require steel instead of iron.")
-            .getBoolean(useSteelInChassi);
+        .getBoolean(useSteelInChassi);
 
     numConduitsPerRecipe = config.get("Recipe Settings", "numConduitsPerRecipe", numConduitsPerRecipe,
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
@@ -196,7 +204,7 @@ public final class Config {
 
     maxPhotovoltaicOutput = config.get("Power Settings", "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
         "Maximum output in MJ/t of the Photovoltaic Panels.").getDouble(maxPhotovoltaicOutput);
-    maxPhotovoltaicAdvancedOutput= config.get("Power Settings", "maxPhotovoltaicAdvancedOutput", maxPhotovoltaicAdvancedOutput,
+    maxPhotovoltaicAdvancedOutput = config.get("Power Settings", "maxPhotovoltaicAdvancedOutput", maxPhotovoltaicAdvancedOutput,
         "Maximum output in MJ/t of the Advanced Photovoltaic Panels.").getDouble(maxPhotovoltaicAdvancedOutput);
 
     useAlternateBinderRecipe = config.get("Recipe Settings", "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
@@ -221,12 +229,10 @@ public final class Config {
 
     enderFluidConduitExtractRate = config.get("Efficiency Settings", "enderFluidConduitExtractRate", enderFluidConduitExtractRate,
         "Number of millibuckects per tick extracted by ender fluid conduits auto extracting").getInt(enderFluidConduitExtractRate);
-    
+
     enderFluidConduitMaxIoRate = config.get("Efficiency Settings", "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
         "Number of millibuckects per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
 
-    
-    
     useAlternateTesseractModel = config.get("Aesthetic Settings", "useAlternateTransceiverModel", useAlternateTesseractModel,
         "Use TheKazador's alternatice model for the Dimensional Transceiver")
         .getBoolean(false);
@@ -288,7 +294,8 @@ public final class Config {
         "If set to false: the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
     travelStaffBlinkEnabled = config.get("Item Enabling", "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
         "If set to false: the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
-    travelStaffBlinkThroughSolidBlocksEnabled = config.get("Item Enabling", "travelStaffBlinkThroughSolidBlocksEnabled", travelStaffBlinkThroughSolidBlocksEnabled,
+    travelStaffBlinkThroughSolidBlocksEnabled = config.get("Item Enabling", "travelStaffBlinkThroughSolidBlocksEnabled",
+        travelStaffBlinkThroughSolidBlocksEnabled,
         "If set to false: the travel staff can be used to blink through any block.").getBoolean(travelStaffBlinkThroughSolidBlocksEnabled);
     travelStaffBlinkThroughClearBlocksEnabled = config
         .get("Item Enabling", "travelStaffBlinkThroughClearBlocksEnabled", travelStaffBlinkThroughClearBlocksEnabled,
@@ -357,7 +364,8 @@ public final class Config {
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
 
     darkSteelSwordSkullChance = (float) config.get("Dark Steel", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
-        "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(darkSteelSwordSkullChance);
+        "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
+        darkSteelSwordSkullChance);
     darkSteelSwordSkullLootingModifier = (float) config.get("Dark Steel", "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordSkullLootingModifier);
@@ -390,10 +398,11 @@ public final class Config {
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
     darkSteelPickEffeciencyBoostWhenPowered = (float) config.get("Dark Steel", "darkSteelPickEffeciencyBoostWhenPowered",
         darkSteelPickEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
-    
+
     darkSteelAxePowerUsePerDamagePoint = config.get("Dark Steel", "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);
-    darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get("Dark Steel", "darkSteelPickAxeUsePerDamagePointMultiHarvest", darkSteelAxePowerUsePerDamagePointMultiHarvest,
+    darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get("Dark Steel", "darkSteelPickAxeUsePerDamagePointMultiHarvest",
+        darkSteelAxePowerUsePerDamagePointMultiHarvest,
         "Power use (RF) per damage/durability point avoided when shift-harvesting multiple logs").getInt(darkSteelAxePowerUsePerDamagePointMultiHarvest);
     darkSteelAxeSpeedPenaltyMultiHarvest = (float) config.get("Dark Steel", "darkSteelAxeSpeedPenaltyMultiHarvest", darkSteelAxeSpeedPenaltyMultiHarvest,
         "How much slower shift-harvesting logs is.").getDouble(darkSteelAxeSpeedPenaltyMultiHarvest);
@@ -419,39 +428,54 @@ public final class Config {
         "The amount of power generated per tick.").getDouble(zombieGeneratorMjPerTick);
     zombieGeneratorTicksPerBucketFuel = config.get("Power Settings", "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
-    
+
     addFuelTooltipsToAllFluidContainers = config.get("Personal Settings", "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
-        addFuelTooltipsToAllFluidContainers);   
+        addFuelTooltipsToAllFluidContainers);
     addDurabilityTootip = config.get("Personal Settings", "addDurabilityTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds durability tooltips to tools and armor").getBoolean(
-            addDurabilityTootip);
+        addDurabilityTootip);
     addFurnaceFuelTootip = config.get("Personal Settings", "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
 
-
-    farmContinuousEnergyUse = (float)config.get("Farm Settings", "farmContinuousEnergyUse", farmContinuousEnergyUse,
+    farmContinuousEnergyUse = (float) config.get("Farm Settings", "farmContinuousEnergyUse", farmContinuousEnergyUse,
         "The amount of power used by a farm per tick ").getDouble(farmContinuousEnergyUse);
-    farmActionEnergyUse = (float)config.get("Farm Settings", "farmActionEnergyUse", farmActionEnergyUse,
+    farmActionEnergyUse = (float) config.get("Farm Settings", "farmActionEnergyUse", farmActionEnergyUse,
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
     farmDefaultSize = config.get("Farm Settings", "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
-    
+
     combustionGeneratorUseOpaqueModel = config.get("Aesthetic Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
-        "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);    
-    
+        "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
+
     magnetPowerUsePerSecondRF = config.get("Magnet Settings", "magnetPowerUsePerTickRF", magnetPowerUsePerSecondRF,
-        "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerSecondRF);    
+        "The amount of RF power used per tick when the magnet is active").getInt(magnetPowerUsePerSecondRF);
     magnetPowerCapacityRF = config.get("Magnet Settings", "magnetPowerCapacityRF", magnetPowerCapacityRF,
-        "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);    
+        "Amount of RF power stored in a fully charged magnet").getInt(magnetPowerCapacityRF);
     magnetRange = config.get("Magnet Settings", "magnetRange", magnetRange,
         "Range of the magnet in blocks.").getInt(magnetRange);
-    
+
     useCombustionGenModel = config.get("Aesthetic Settings", "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
-    
-    crafterMjPerCraft= config.get("AutoCrafter Settings", "crafterMjPerCraft", crafterMjPerCraft,
+
+    crafterMjPerCraft = config.get("AutoCrafter Settings", "crafterMjPerCraft", crafterMjPerCraft,
         "MJ used per autocrafted recipe").getInt(crafterMjPerCraft);
+
+    poweredSpawnerMinDelayTicks = config.get("PoweredSpawner Settings", "poweredSpawnerMinDelayTicks", poweredSpawnerMinDelayTicks,
+        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);    
+    poweredSpawnerMaxDelayTicks = config.get("PoweredSpawner Settings", "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks,
+        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);    
+    poweredSpawnerLevelOnePowerPerTick = (float)config.get("PoweredSpawner Settings", "poweredSpawnerLevelOnePowerPerTick", poweredSpawnerLevelOnePowerPerTick,
+        "MJ per tick for a level 1 (non-upgraded) spawner").getDouble(poweredSpawnerLevelOnePowerPerTick);
+    poweredSpawnerLevelTwoPowerPerTick = (float)config.get("PoweredSpawner Settings", "poweredSpawnerLevelTwoPowerPerTick", poweredSpawnerLevelTwoPowerPerTick,
+        "MJ per tick for a level 2 spawner").getDouble(poweredSpawnerLevelTwoPowerPerTick);
+    poweredSpawnerLevelThreePowerPerTick = (float)config.get("PoweredSpawner Settings", "poweredSpawnerLevelThreePowerPerTick", poweredSpawnerLevelThreePowerPerTick,
+        "MJ per tick for a level 3 spawner").getDouble(poweredSpawnerLevelThreePowerPerTick);
+    poweredSpawnerMaxPlayerDistance = config.get("PoweredSpawner Settings", "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
+        "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
+    poweredSpawnerUseVanillaSpawChecks = config.get("PoweredSpawner Settings", "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
+        "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
+
   }
 
   private Config() {

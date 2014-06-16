@@ -78,6 +78,7 @@ import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
@@ -166,6 +167,7 @@ public class EnderIO {
   public static BlockFarmStation blockFarmStation;
   public static BlockTank blockTank;
   public static BlockCrafter blockCrafter;
+  public static BlockPoweredSpawner blockPoweredSpawner;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -232,6 +234,7 @@ public class EnderIO {
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
     blockFarmStation = BlockFarmStation.create();
+    blockPoweredSpawner = BlockPoweredSpawner.create();
     blockCapacitorBank = BlockCapacitorBank.create();    
 
     blockPainter = BlockPainter.create();

@@ -103,10 +103,8 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     // Then see if we need to start a new one
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
-      boolean started = startNextTask(nextRecipe, chance);
-      if(started != startFailed) {
-        PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);  
-      }
+      boolean started = startNextTask(nextRecipe, chance);      
+      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);        
       startFailed = !started;                        
     } else {
       startFailed = true;

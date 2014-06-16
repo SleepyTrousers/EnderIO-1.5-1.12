@@ -148,7 +148,7 @@ public class PoweredTask implements IPoweredTask {
     float chance = nbtRoot.getFloat(KEY_CHANCE);
 
     NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUT_STACKS);
-    if(inputItems == null || inputItems.tagCount() < 1) {
+    if(inputItems == null) {
       return null;
     }
 
