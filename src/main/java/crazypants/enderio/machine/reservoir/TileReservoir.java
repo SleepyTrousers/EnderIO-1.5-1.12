@@ -97,11 +97,13 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
           source.amount = amountPerNeighbour;
           used += tc.container.fill(tc.fillFromDir, source, true);
         }
-        tank.drain(used, true);
-        tankDirty = true;
+        if(used > 0) {
+          tank.drain(used, true);
+          tankDirty = true;
+        }
       }
     }
-    if(tankDirty) {
+    if(tankDirty && worldObj.getTotalWorldTime() % 2 == 0) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       tankDirty = false;
     }

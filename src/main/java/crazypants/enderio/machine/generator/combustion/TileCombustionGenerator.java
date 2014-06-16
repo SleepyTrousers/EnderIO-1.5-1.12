@@ -118,14 +118,16 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
-    tanksDirty = true;
+    int res = 0;    
     if(IronEngineCoolant.isCoolant(resource.getFluid())) {
-      return getCoolantTank().fill(resource, doFill);
+      res = getCoolantTank().fill(resource, doFill);
+    } else if(IronEngineFuel.getFuelForFluid(resource.getFluid()) != null) {
+      res = getFuelTank().fill(resource, doFill);
     }
-    if(IronEngineFuel.getFuelForFluid(resource.getFluid()) != null) {
-      return getFuelTank().fill(resource, doFill);
+    if(res > 0) {
+      tanksDirty = true;
     }
-    return 0;
+    return res;
   }
 
   @Override
@@ -165,13 +167,13 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       }
 
       if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
-        inPause = true;
-      }
+        inPause = true;        
+      }       
 
       transmitEnergy();
     }
 
-    if(tanksDirty) {
+    if(tanksDirty && worldObj.getTotalWorldTime() % 10 == 0) {
       PacketHandler.sendToAllAround(new PacketCombustionTank(this), this);
       tanksDirty = false;
     }
@@ -197,7 +199,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   }
 
   private boolean generateEnergy() {
-
+   
     generated = 0;
 
     if((ticksRemaingCoolant <= 0 && getCoolantTank().getFluidAmount() <= 0) ||

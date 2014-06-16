@@ -145,8 +145,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     if(resource == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
-    tanksDirty = true;
-    return inputTank.fill(resource, doFill);
+    int res = inputTank.fill(resource, doFill);
+    if(res > 0 && doFill) {
+      tanksDirty = true;
+    }
+    return res;
   }
 
   @Override
@@ -157,8 +160,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     if(outputTank.getFluid() == null || resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
       return null;
     }
-    tanksDirty = true;
-    return outputTank.drain(resource.amount, doDrain);
+    FluidStack res = outputTank.drain(resource.amount, doDrain);
+    if(res != null && res.amount > 0 && doDrain) {
+      tanksDirty = true;
+    }
+    return res;
   }
 
   @Override
@@ -166,8 +172,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     if(isSideDisabled(from.ordinal())) {
       return null;
     }
-    tanksDirty = true;
-    return outputTank.drain(maxDrain, doDrain);
+    FluidStack res = outputTank.drain(maxDrain, doDrain);
+    if(res != null && res.amount > 0 && doDrain) {
+      tanksDirty = true;  
+    }    
+    return res;
   }
 
   @Override

@@ -319,7 +319,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
 
     
-    requiresClientSync |= doSideIo();    
+    if(worldObj.getTotalWorldTime() % 5 == 0) {
+      requiresClientSync |= doSideIo();
+    }
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
