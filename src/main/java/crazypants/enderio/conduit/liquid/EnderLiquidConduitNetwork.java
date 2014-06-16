@@ -55,17 +55,16 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
-    int amountAccepted = fillFrom(tank, drained, false);
+    int amountAccepted = fillFrom(tank, drained, true);
     if(amountAccepted <= 0) {
       return false;
     }
     drained = tank.externalTank.drain(conDir.getOpposite(), amountAccepted, true);
     if(drained == null || drained.amount <= 0) {
       return false;
-    }
-    int filled = fillFrom(tank, drained, true);
-    if(drained.amount != filled) {
-      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled=" + filled + " Fluid: " + drained + " Accepted=" + amountAccepted);
+    }    
+    if(drained.amount != amountAccepted) {
+      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled=" + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
     }
     return true;
   }
