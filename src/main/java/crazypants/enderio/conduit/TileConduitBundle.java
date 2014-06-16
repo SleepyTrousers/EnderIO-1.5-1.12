@@ -98,12 +98,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
     conduits.clear();
     NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
-    for (int i = 0; i < conduitTags.tagCount(); i++) {
-      NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
-      IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
-      if(conduit != null) {
-        conduit.setBundle(this);
-        conduits.add(conduit);
+    if(conduitTags != null) {
+      for (int i = 0; i < conduitTags.tagCount(); i++) {
+        NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
+        IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
+        if(conduit != null) {
+          conduit.setBundle(this);
+          conduits.add(conduit);
+        }
       }
     }
     String fs = nbtRoot.getString("facadeId");
@@ -637,7 +639,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     }
     return null;
   }
-
 
   @Override
   public World getWorld() {
