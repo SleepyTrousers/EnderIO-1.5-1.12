@@ -112,7 +112,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
     
-    if(evt.getPlayer().isSneaking() && isEquipped(evt.getPlayer()) && isLog(evt.block)) {
+    if(evt.getPlayer().isSneaking() && isEquipped(evt.getPlayer()) && isLog(evt.block, evt.blockMetadata)) {
       int powerStored = getStoredPower(evt.getPlayer());
     
       int maxBlocks = 50;
@@ -179,7 +179,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.block)) {
+    if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.block, evt.metadata)) {
       evt.newSpeed = evt.originalSpeed / Config.darkSteelAxeSpeedPenaltyMultiHarvest;
     }
   }
@@ -239,13 +239,14 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return super.getDigSpeed(stack, block, meta);
   }
 
-  private boolean isLog(Block block) {
+  private boolean isLog(Block block, int meta) {
     if(logOreId == -1) {
       logOreId = OreDictionary.getOreID("logWood");      
     }
-    int test = OreDictionary.getOreID(new ItemStack(Blocks.log, 1, Short.MAX_VALUE));
+    int targetOreId = OreDictionary.getOreID(new ItemStack(block, 1, meta));
     //NB: Specifying the wildcard as meta is a work around for forge issue #1103
-    return OreDictionary.getOreID(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE)) == logOreId;
+    int workAroundId = OreDictionary.getOreID(new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE));
+    return  targetOreId == logOreId || workAroundId == logOreId;
   }
 
   protected void init() {
