@@ -30,7 +30,7 @@ public class MachineRecipes {
     ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
     ItemStack silicon = new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal());
     ItemStack pulCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
-    ItemStack vidCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
+    ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
     ItemStack electricSteel = new ItemStack(EnderIO.itemAlloy,1,Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
     ItemStack phasedGold = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal());
@@ -56,6 +56,10 @@ public class MachineRecipes {
     //Crafter
     ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
     GameRegistry.addShapedRecipe(crafter, "iti", "imi", "ici", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'c', capacitor);
+    
+    //Powered Spawner
+    ItemStack poweredSpawner = new ItemStack(EnderIO.blockPoweredSpawner);
+    GameRegistry.addRecipe(new ShapedOreRecipe(poweredSpawner, "ese","eme","vcv",'e', electricSteel, 's', "itemSkull", 'v', vibCry,'m',machineChassi, 'c', capacitor));
     
     //reservoir    
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
@@ -112,7 +116,7 @@ public class MachineRecipes {
       } else {
         GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'p', silicon, 'e',
             energeticAlloy, 'c', electricSteel));
-        GameRegistry.addRecipe(new ShapedOreRecipe(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vidCry, 'e',
+        GameRegistry.addRecipe(new ShapedOreRecipe(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vibCry, 'e',
             phasedGold, 'c', phasedIron));
       }
     }

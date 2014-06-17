@@ -4,11 +4,13 @@ import static crazypants.enderio.ModObject.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.recipe.OreDictionaryRecipeInput;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.Material;
@@ -58,9 +60,10 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(basicFilter, " p ","php"," p ", 'p', Items.paper, 'h', Blocks.hopper);
     
     ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
-    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 0), 'r', Items.redstone);
-    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 2), 'r', Items.redstone);
-    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 4), 'r', Items.redstone);
+//    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 0), 'r', Items.redstone);
+//    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 2), 'r', Items.redstone);
+//    GameRegistry.addShapedRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', new ItemStack(Items.skull, 1, 4), 'r', Items.redstone);
+    GameRegistry.addRecipe(new ShapedOreRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', "itemSkull", 'r', Items.redstone));
 
     ItemStack exFilt = new ItemStack(EnderIO.itemExistingItemFilter);
     GameRegistry.addShapedRecipe(exFilt, "rpr","pcp","rpr", 'p', Items.paper, 'c', new ItemStack(Items.comparator, 1, 0), 'r', Items.redstone);

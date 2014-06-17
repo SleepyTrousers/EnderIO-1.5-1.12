@@ -45,6 +45,10 @@ public class MaterialRecipes {
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("glassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
+    
+    //Skulls
+    ItemStack skull = new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE);
+    OreDictionary.registerOre("itemSkull", skull);
 
     //Glass stuff for compatability
     GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane,16,0), "   ", "eee", "eee", 'e', pureGlass);
