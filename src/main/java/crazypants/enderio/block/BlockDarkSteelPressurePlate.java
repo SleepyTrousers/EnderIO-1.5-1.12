@@ -1,14 +1,14 @@
 package crazypants.enderio.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 
 public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider {
 

@@ -1,17 +1,12 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import crazypants.util.FluidUtil;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import crazypants.util.FluidUtil;
 
 public class FluidFilter {
 

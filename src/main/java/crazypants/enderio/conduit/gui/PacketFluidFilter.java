@@ -1,19 +1,17 @@
 package crazypants.enderio.conduit.gui;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
-import crazypants.enderio.conduit.packet.PacketExtractMode;
 
 public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> implements IMessageHandler<PacketFluidFilter, IMessage>{
 

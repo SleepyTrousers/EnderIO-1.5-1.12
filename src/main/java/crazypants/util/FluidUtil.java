@@ -1,6 +1,5 @@
 package crazypants.util;
 
-import crazypants.enderio.conduit.IConduitBundle;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -12,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
+import crazypants.enderio.conduit.IConduitBundle;
 
 public class FluidUtil {
 

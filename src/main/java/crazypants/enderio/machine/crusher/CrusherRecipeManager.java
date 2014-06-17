@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.Config;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.IRecipe;

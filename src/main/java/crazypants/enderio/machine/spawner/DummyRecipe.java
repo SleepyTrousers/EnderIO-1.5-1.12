@@ -8,8 +8,6 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.power.Capacitors;
 
 public class DummyRecipe implements IMachineRecipe {
 

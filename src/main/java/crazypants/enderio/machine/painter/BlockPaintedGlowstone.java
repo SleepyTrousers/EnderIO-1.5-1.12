@@ -4,25 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.painter.BlockPaintedStair.PainterTemplate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlowstone;
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
@@ -38,6 +21,19 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.crafting.IEnderIoRecipe;
+import crazypants.enderio.crafting.IRecipeInput;
+import crazypants.enderio.crafting.IRecipeOutput;
+import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.crafting.impl.RecipeInputClass;
+import crazypants.enderio.crafting.impl.RecipeOutput;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 
 public class BlockPaintedGlowstone extends Block implements ITileEntityProvider {
  

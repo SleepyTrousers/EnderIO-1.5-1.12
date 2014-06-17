@@ -5,14 +5,15 @@ import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;

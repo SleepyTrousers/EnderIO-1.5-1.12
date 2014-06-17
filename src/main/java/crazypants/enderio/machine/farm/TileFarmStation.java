@@ -17,7 +17,6 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;

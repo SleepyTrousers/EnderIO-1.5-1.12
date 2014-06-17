@@ -10,7 +10,6 @@ import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.recipe.OreDictionaryRecipeInput;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.Material;
