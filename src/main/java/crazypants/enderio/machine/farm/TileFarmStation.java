@@ -149,10 +149,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
         return;
       }
     }
-
   }
 
   private void damageTool(Class<? extends Item> class1, Block blk, BlockCoord bc, int damage) {
+    
+    float rand = worldObj.rand.nextFloat();
+    if (rand >= Config.farmToolTakeDamageChance)
+      return;
+    
     ItemStack tool = getTool(class1);
     if(tool == null) {
       return;
