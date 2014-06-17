@@ -31,7 +31,8 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable, IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable,
+    IIoConfigurable {
 
   public short facing;
 
@@ -73,7 +74,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     redstoneControlMode = RedstoneControlMode.IGNORE;
 
     allSlots = new int[slotDefinition.getNumSlots()];
-    for(int i=0;i<allSlots.length;i++) {
+    for (int i = 0; i < allSlots.length; i++) {
       allSlots[i] = i;
     }
   }
@@ -82,7 +83,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
     IoMode curMode = getIoMode(faceHit);
     IoMode mode = curMode.next();
-    while(!supportsMode(faceHit, mode)) {
+    while (!supportsMode(faceHit, mode)) {
       mode = mode.next();
     }
     setIoMode(faceHit, mode);
@@ -275,7 +276,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   public int getMaxEnergyStoredMJ() {
-    return (int)powerHandler.getMaxEnergyStored();
+    return (int) powerHandler.getMaxEnergyStored();
   }
 
   // --- Process Loop
@@ -306,7 +307,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       }
       return;
 
-
     } // else is server, do all logic only on the server
 
     updateStoredEnergyFromPowerHandler();
@@ -318,7 +318,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       redstoneStateDirty = false;
     }
 
-    
     if(worldObj.getTotalWorldTime() % 5 == 0) {
       requiresClientSync |= doSideIo();
     }
@@ -326,7 +325,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
-        
+
     boolean powerChanged = (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 5 == 0);
 
     if(requiresClientSync) {
@@ -339,7 +338,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       markDirty();
     } else if(powerChanged) {
       lastSyncPowerStored = storedEnergy;
-      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);       
+      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
 
     if(notifyNeighbours) {
@@ -353,10 +352,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(faceModes == null) {
       return false;
     }
-    
+
     boolean res = false;
     Set<Entry<ForgeDirection, IoMode>> ents = faceModes.entrySet();
-    for(Entry<ForgeDirection, IoMode> ent : ents) {
+    for (Entry<ForgeDirection, IoMode> ent : ents) {
       IoMode mode = ent.getValue();
       if(mode.pulls()) {
         res = res | doPull(ent.getKey());
@@ -381,8 +380,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
     if(te == null) {
       return false;
-    }    
-    for(int i=slotDefinition.minOutputSlot; i<= slotDefinition.maxOutputSlot;i++) {
+    }
+    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
       ItemStack item = inventory[i];
       if(item != null) {
         int num = ItemUtil.doInsertItem(te, item, dir.getOpposite());
@@ -392,7 +391,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
             item = null;
           }
           inventory[i] = item;
-          markDirty();    
+          markDirty();
         }
       }
     }
@@ -409,7 +408,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
 
     boolean hasSpace = false;
-    for(int slot=slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace;slot++) {
+    for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
       hasSpace = inventory[slot] == null ? true : inventory[slot].stackSize < inventory[slot].getMaxStackSize();
     }
     if(!hasSpace) {
@@ -421,14 +420,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(te == null) {
       return false;
     }
-    if( !(te instanceof IInventory)) {
+    if(!(te instanceof IInventory)) {
       return false;
     }
     ISidedInventory target;
     if(te instanceof ISidedInventory) {
-      target = (ISidedInventory)te;
+      target = (ISidedInventory) te;
     } else {
-      target = new InventoryWrapper((IInventory)te);
+      target = new InventoryWrapper((IInventory) te);
     }
 
     int[] targetSlots = target.getAccessibleSlotsFromSide(dir.getOpposite().ordinal());
@@ -436,7 +435,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       return false;
     }
 
-    for(int inputSlot=slotDefinition.minInputSlot; inputSlot <= slotDefinition.maxInputSlot;inputSlot++) {
+    for (int inputSlot = slotDefinition.minInputSlot; inputSlot <= slotDefinition.maxInputSlot; inputSlot++) {
       if(doPull(inputSlot, target, targetSlots, dir)) {
         return false;
       }
@@ -446,7 +445,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   protected boolean doPull(int inputSlot, ISidedInventory target, int[] targetSlots, ForgeDirection side) {
     ItemStack curStack = inventory[inputSlot];
-    for(int i=0;i<targetSlots.length;i++) {
+    for (int i = 0; i < targetSlots.length; i++) {
       int tSlot = targetSlots[i];
       ItemStack targetStack = target.getStackInSlot(tSlot);
       if(targetStack != null && target.canExtractItem(i, targetStack, side.getOpposite().ordinal())) {
@@ -496,11 +495,13 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     inventory = new ItemStack[slotDefinition.getNumSlots()];
 
     NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
-    for (int i = 0; i < itemList.tagCount(); i++) {
-      NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
-      byte slot = itemStack.getByte("Slot");
-      if(slot >= 0 && slot < inventory.length) {
-        inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
+    if(itemList != null) {
+      for (int i = 0; i < itemList.tagCount(); i++) {
+        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
+        byte slot = itemStack.getByte("Slot");
+        if(slot >= 0 && slot < inventory.length) {
+          inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
+        }
       }
     }
 
@@ -524,7 +525,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(stack == null || stack.stackTagCompound == null) {
       return;
     }
-    NBTTagCompound root = stack.stackTagCompound ;
+    NBTTagCompound root = stack.stackTagCompound;
     if(!root.hasKey("eio.abstractMachine")) {
       return;
     }
@@ -590,8 +591,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     name += " " + Lang.localize("machine.tooltip.configured");
     stack.setStackDisplayName(name);
   }
-
-
 
   // ---- Inventory
   // ------------------------------------------------------------------------------

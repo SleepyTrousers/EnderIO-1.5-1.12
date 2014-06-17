@@ -35,11 +35,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public static final boolean USE_VANILLA_SPAWN_CHECKS = Config.poweredSpawnerUseVanillaSpawChecks;
   
   private final MobSpawnerBaseLogic logic = new SpawnerLogic();
+  
+  private static final String NULL_ENTITY_NAME = "None";
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(0, 0));
     //logic.setEntityName("Zombie");
-    logic.setEntityName("Skeleton");
+    //logic.setEntityName("Skeleton");
+    logic.setEntityName(NULL_ENTITY_NAME);
   }
 
   @Override
@@ -60,6 +63,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
+    if(logic.getEntityNameToSpawn() == null || logic.getEntityNameToSpawn().equals(NULL_ENTITY_NAME)) {
+      return null;
+    }
     return new DummyRecipe();
   }
 
@@ -89,13 +95,35 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   }
 
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
-    logic.readFromNBT(nbtRoot);
+    super.readCustomNBT(nbtRoot);    
+    logic.readFromNBT(nbtRoot);      
   }
 
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     logic.writeToNBT(nbtRoot);
+    
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    String mobType = BlockPoweredSpawner.readMobTypeFromNBT(nbtRoot);
+    if(mobType == null) {
+      mobType = NULL_ENTITY_NAME;
+    }
+    logic.setEntityName(mobType);
+  }
+
+  @Override
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
+    String mobType = logic.getEntityNameToSpawn();
+    if(mobType == null || mobType.equals(NULL_ENTITY_NAME)) {
+      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null);
+    } else {
+      BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, mobType);
+    }    
   }
 
   public void updateEntity() {

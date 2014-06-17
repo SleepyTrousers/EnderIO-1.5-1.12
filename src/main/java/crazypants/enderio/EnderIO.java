@@ -79,6 +79,7 @@ import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
+import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
@@ -168,6 +169,7 @@ public class EnderIO {
   public static BlockTank blockTank;
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
+  public static ItemBrokenSpawner itemBrokenSpawner;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -233,8 +235,7 @@ public class EnderIO {
     blockAlloySmelter = BlockAlloySmelter.create();
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
-    blockFarmStation = BlockFarmStation.create();
-    blockPoweredSpawner = BlockPoweredSpawner.create();
+    blockFarmStation = BlockFarmStation.create();    
     blockCapacitorBank = BlockCapacitorBank.create();    
 
     blockPainter = BlockPainter.create();
@@ -264,6 +265,9 @@ public class EnderIO {
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
+    
+    blockPoweredSpawner = BlockPoweredSpawner.create();
+    itemBrokenSpawner = ItemBrokenSpawner.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();

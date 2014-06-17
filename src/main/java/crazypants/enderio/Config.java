@@ -153,11 +153,13 @@ public final class Config {
 
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
-  public static float poweredSpawnerLevelOnePowerPerTick = 4;
-  public static float poweredSpawnerLevelTwoPowerPerTick = 16;
-  public static float poweredSpawnerLevelThreePowerPerTick = 64;
+  public static float poweredSpawnerLevelOnePowerPerTick = 16;
+  public static float poweredSpawnerLevelTwoPowerPerTick = 48;
+  public static float poweredSpawnerLevelThreePowerPerTick = 96;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
+  public static double brokenSpawnerDropChance = 1;
+  public static int powerSpawnerAddSpawnerCost = 30;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -475,7 +477,11 @@ public final class Config {
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerUseVanillaSpawChecks = config.get("PoweredSpawner Settings", "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
-
+    brokenSpawnerDropChance = (float)config.get("PoweredSpawner Settings", "brokenSpawnerDropChance", brokenSpawnerDropChance,
+        "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
+    powerSpawnerAddSpawnerCost = config.get("PoweredSpawner Settings", "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
+        "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
+    
   }
 
   private Config() {

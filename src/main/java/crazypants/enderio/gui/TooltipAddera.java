@@ -71,13 +71,13 @@ public class TooltipAddera {
     }
 
     Block blk = Block.getBlockFromItem(evt.itemStack.getItem());
-    if(blk instanceof IResourceTooltipProvider) {
-      addInformation((IResourceTooltipProvider)blk, evt);
-      return;
-    } else if(blk instanceof IAdvancedTooltipProvider) {
+    if(blk instanceof IAdvancedTooltipProvider) {
       addInformation((IAdvancedTooltipProvider)blk, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
       return;
-    }
+    } else if(blk instanceof IResourceTooltipProvider) {
+      addInformation((IResourceTooltipProvider)blk, evt);
+      return;
+    } 
 
     if(Config.addFuelTooltipsToAllFluidContainers) {
       addTooltipForFluid(evt.toolTip, evt.itemStack);

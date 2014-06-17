@@ -64,6 +64,7 @@ import crazypants.enderio.machine.power.CapBankRenderer2;
 import crazypants.enderio.machine.power.CapacitorBankRenderer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
@@ -143,6 +144,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPowerMonitor), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);    
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
+    
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
     
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();

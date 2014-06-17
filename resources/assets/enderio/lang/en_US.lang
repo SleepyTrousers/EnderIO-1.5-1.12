@@ -231,6 +231,14 @@ enderio.tank.tank=Tank
 
 tile.blockCrafter.name=Crafter
 
+tile.blockPoweredSpawner.name=Powered Spawner
+tile.blockPoweredSpawner.tooltip.empty=Empty
+tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
+tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
+tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
+tile.blockPoweredSpawner.tooltip.detailed.line2=activate
+item.itemBrokenSpawner.name=Broken Spawner
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks
