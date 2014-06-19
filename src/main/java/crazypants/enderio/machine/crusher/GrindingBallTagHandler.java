@@ -6,7 +6,6 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import crazypants.enderio.crafting.IRecipeInput;
 import crazypants.enderio.machine.recipe.CustomTagHandler;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;

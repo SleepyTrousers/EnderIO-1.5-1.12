@@ -19,9 +19,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.power.BlockItemCapacitorBank;
-import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.vecmath.Vector3f;
 
 public class BlockElectricLight extends BlockEio {

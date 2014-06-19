@@ -4,25 +4,19 @@ package crazypants.enderio.machine.spawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.power.Capacitors;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 

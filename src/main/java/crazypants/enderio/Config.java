@@ -139,6 +139,8 @@ public final class Config {
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
   public static int farmDefaultSize = 3;
+  public static boolean farmAxeDamageOnLeafBreak = false;
+  public static float farmToolTakeDamageChance = 1;
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -446,6 +448,10 @@ public final class Config {
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
     farmDefaultSize = config.get("Farm Settings", "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
+    farmAxeDamageOnLeafBreak = config.get("Farm Settings", "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak, 
+	"Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
+    farmToolTakeDamageChance = (float) config.get("Farm Settings", "farmToolTakeDamageChance", farmToolTakeDamageChance, 
+	"The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
 
     combustionGeneratorUseOpaqueModel = config.get("Aesthetic Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);

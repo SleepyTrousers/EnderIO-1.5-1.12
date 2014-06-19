@@ -8,18 +8,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.material.ItemCapacitor;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.util.Lang;
 
 public class ItemBrokenSpawner extends Item {
   

@@ -1,11 +1,10 @@
 package crazypants.enderio.machine.spawner;
 
-import crazypants.enderio.EnderIO;
-import crazypants.render.IconUtil;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import crazypants.enderio.EnderIO;
 
 public class BrokenSpawnerRenderer implements IItemRenderer {
 

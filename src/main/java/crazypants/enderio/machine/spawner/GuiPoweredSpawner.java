@@ -1,10 +1,9 @@
 package crazypants.enderio.machine.spawner;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.render.RenderUtil;
 

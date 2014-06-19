@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.Config;
 import crazypants.util.BlockCoord;
 
 public class TreeFarmer implements IFarmerJoe {
@@ -102,7 +103,7 @@ public class TreeFarmer implements IFarmerJoe {
       }
       boolean isWood = true;
       if(blk != wood) { //leaves
-        isWood = false;
+        isWood = Config.farmAxeDamageOnLeafBreak;
         int leaveMeta = farm.getBlockMeta(coord);
         boolean canDropApple =
             (blk instanceof BlockOldLeaf && (leaveMeta == 0 || leaveMeta == 8)) || //oak

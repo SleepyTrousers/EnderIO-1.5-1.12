@@ -12,12 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.material.BlockFusedQuartz;
-import crazypants.util.Lang;
 
 public class BlockItemElectricLight extends ItemBlockWithMetadata implements IResourceTooltipProvider {
 

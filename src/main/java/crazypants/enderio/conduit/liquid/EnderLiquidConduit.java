@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,7 +16,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import crazypants.enderio.Config;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -26,8 +25,6 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 

@@ -126,6 +126,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister iIconRegister) {
 
     iconBuffer = new IIcon[1][12];
@@ -151,6 +152,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   }
 
+  @SideOnly(Side.CLIENT)
   protected void registerOverlayIcons(IIconRegister iIconRegister) {
     overlayIconPull = iIconRegister.registerIcon("enderio:machineOverlayPull");
     overlayIconPush = iIconRegister.registerIcon("enderio:machineOverlayPush");
@@ -160,6 +162,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     selectedFaceIcon= iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
   }
 
+  @SideOnly(Side.CLIENT)
   public IIcon getOverlayIconForMode(IoMode mode) {
     if(mode == null) {
       return null;
@@ -179,6 +182,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
 
     // used to render the block in the world
@@ -196,6 +200,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IIcon getIcon(int blockSide, int blockMeta) {
     // This is used to render the block as an item
     return iconBuffer[0][blockSide];

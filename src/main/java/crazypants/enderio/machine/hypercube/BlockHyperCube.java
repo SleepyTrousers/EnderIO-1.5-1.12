@@ -30,7 +30,6 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
-import crazypants.enderio.machine.power.PacketPowerStorage;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.Util;

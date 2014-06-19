@@ -1,16 +1,13 @@
 package crazypants.enderio.machine.hypercube;
 
-import buildcraft.api.power.PowerHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import buildcraft.api.power.PowerHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.power.PacketPowerStorage;
-import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.util.BlockCoord;
 
 public class PacketStoredPower implements IMessage, IMessageHandler<PacketStoredPower, IMessage> {
 
