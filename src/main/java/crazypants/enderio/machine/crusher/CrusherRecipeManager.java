@@ -2,9 +2,13 @@ package crazypants.enderio.machine.crusher;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.Config;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
@@ -41,6 +45,8 @@ public class CrusherRecipeManager {
   private final List<RecipeInput> ballExcludes = new ArrayList<RecipeInput>();
 
   private final List<GrindingBall> balls = new ArrayList<GrindingBall>();
+  
+  private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
 
   public CrusherRecipeManager() {
     //    GrindingBall gb = new GrindingBall(new ItemStack(Items.flint));
@@ -60,13 +66,41 @@ public class CrusherRecipeManager {
     if(inputs == null || inputs.length < 1) {
       return true;
     }
+    for(MachineRecipeInput input : inputs) {
+      if(input.item != null) {
+        if(isExcludedStack(input.item)){
+          return true;
+        }
+        int id = OreDictionary.getOreID(input.item);
+        if(id >= 0) {
+          String name = OreDictionary.getOreName(id);
+          if(name.startsWith("ingot")) {            
+            addExcludedStack(input.item);
+            return true;
+          }
+        }
+      }
+    }
     for(RecipeInput input : ballExcludes) {
-      if(input != null && input.isInput(inputs[0].item)) {        
+      if(input != null && input.isInput(inputs[0].item)) {
+        addExcludedStack(inputs[0].item);
         return true;
       }
     }    
     
     return false;
+  }
+
+  private void addExcludedStack(ItemStack item) {
+    item = item.copy();
+    item.stackSize = 1;
+    excludedStacks.add(item);    
+  }
+
+  private boolean isExcludedStack(ItemStack item) {
+    item = item.copy();
+    item.stackSize = 1;
+    return excludedStacks.contains(item);
   }
 
   public IGrindingMultiplier getGrindballFromStack(ItemStack stack) {
