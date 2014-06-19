@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.crafter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,14 +66,15 @@ public class TileCrafter extends AbstractMachineEntity {
     
     // process buffered container items
     if(!containerItems.isEmpty()) {
-      for(int i = 0; i < containerItems.size(); i++) {
-	ItemStack stack = containerItems.get(i);
+      Iterator<ItemStack> iter = containerItems.iterator();
+      while (iter.hasNext()) {
+	ItemStack stack = iter.next();
 	if(inventory[9] == null) {
 	  inventory[9] = stack;
-	  containerItems.remove(i);
+	  iter.remove();
 	} else if(ItemStack.areItemStacksEqual(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
 	  inventory[9].stackSize += stack.stackSize;
-	  containerItems.remove(i);
+	  iter.remove();
 	}
       }
       return false;
