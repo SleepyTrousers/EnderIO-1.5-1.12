@@ -45,19 +45,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   private int minSupSlot = maxToolSlot + 1;
   private int maxSupSlot = minSupSlot + 4;
+  
+  private final int upgradeBonusSize = 2;
 
   private static final DummyTask TASK = new DummyTask();
   
   private ICapacitor cap = new BasicCapacitor(200,25000);
 
   public TileFarmStation() {
-    super(new SlotDefinition(6, 4, 0));
+    super(new SlotDefinition(6, 4, 1));
     currentTask = TASK;
     powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
   }
 
   public int getFarmSize() {
-    return farmSize;
+    return farmSize + getUpgradeDist();
   }
 
   public void setFarmSize(int farmSize) {
@@ -65,7 +67,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   }
 
   public void actionPerformed() {
-    usePower(Config.farmActionEnergyUse);
+    usePower(Config.farmActionEnergyUse * (getUpgradeDist() * upgradeBonusSize));
   }
   
   public int getMaxLootingValue() {
@@ -79,6 +81,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       }
     }
     return result;
+  }
+  
+  private int getUpgradeDist() {
+    int upg = slotDefinition.getMaxUpgradeSlot();
+    if (inventory[upg] == null) {
+      return 0;
+    } else { 
+      return upgradeBonusSize * inventory[upg].getItemDamage();
+    }
   }
 
   public void damageMaxLootingItem(int damage, BlockCoord bc, Block block) {
@@ -363,18 +374,20 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   private BlockCoord getNextCoord() {
 
+    int size = getFarmSize();
+    
     BlockCoord loc = getLocation();
     if(lastScanned == null) {
-      lastScanned = new BlockCoord(loc.x - farmSize, loc.y, loc.z - farmSize);
+      lastScanned = new BlockCoord(loc.x - size, loc.y, loc.z - size);
       return lastScanned;
     }
 
     int nextX = lastScanned.x + 1;
     int nextZ = lastScanned.z;
-    if(nextX > loc.x + farmSize) {
-      nextX = loc.x - farmSize;
+    if(nextX > loc.x + size) {
+      nextX = loc.x - size;
       nextZ += 1;
-      if(nextZ > loc.z + farmSize) {
+      if(nextZ > loc.z + size) {
         lastScanned = null;
         return getNextCoord();
       }
@@ -404,13 +417,20 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    //no support for capacitor upgrades
-//    powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
-//    powerHandler.setEnergy(storedEnergy);    
+    switch(capacitorType.ordinal()) {
+    case 1:
+      cap = new BasicCapacitor(400,50000);
+      break;
+    case 2:
+      cap = new BasicCapacitor(1000,250000,20);
+      break;
+    default:
+      cap = new BasicCapacitor(200,25000,50);
+      break;
+    }
+    powerHandler.configure(cap.getMinEnergyReceived(), cap.getMaxEnergyReceived(), cap.getMinActivationEnergy(), cap.getMaxEnergyStored());
   }
   
-  
-
   @Override
   public ICapacitor getCapacitor() {  
     return cap;

@@ -1,9 +1,7 @@
 package crazypants.enderio.machine.crafter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -21,12 +19,12 @@ public class TileCrafter extends AbstractMachineEntity {
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
   
-  private Set<ItemStack> containerItems;
+  private List<ItemStack> containerItems;
   
   public TileCrafter() {
     super(new SlotDefinition(9, 1));
     
-    containerItems = new HashSet<ItemStack>();
+    containerItems = new ArrayList<ItemStack>();
   }
 
   @Override
@@ -67,12 +65,13 @@ public class TileCrafter extends AbstractMachineEntity {
     
     // process buffered container items
     if(!containerItems.isEmpty()) {
-      for(ItemStack i : containerItems) {
+      for(int i = 0; i < containerItems.size(); i++) {
+	ItemStack stack = containerItems.get(i);
 	if(inventory[9] == null) {
-	  inventory[9] = i;
+	  inventory[9] = stack;
 	  containerItems.remove(i);
-	} else if(ItemStack.areItemStacksEqual(inventory[9], i) && inventory[9].stackSize + i.stackSize <= inventory[9].getMaxStackSize()) {
-	  inventory[9].stackSize += i.stackSize;
+	} else if(ItemStack.areItemStacksEqual(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
+	  inventory[9].stackSize += stack.stackSize;
 	  containerItems.remove(i);
 	}
       }

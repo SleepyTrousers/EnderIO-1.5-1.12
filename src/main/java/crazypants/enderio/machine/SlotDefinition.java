@@ -16,8 +16,8 @@ public class SlotDefinition {
     this.maxInputSlot = numInputs - 1;
     this.minOutputSlot = numOutputs > 0 ? numInputs : -10;
     this.maxOutputSlot = minOutputSlot + (numOutputs - 1);
-    this.minUpgradeSlot = -1;
-    this.maxUpgradeSlot = -1;
+    this.minUpgradeSlot = numUpgradeSlots > 0 ? numInputs + numOutputs : -1;
+    this.maxUpgradeSlot = minUpgradeSlot + (numUpgradeSlots - 1);
   }
 
   public SlotDefinition(int numInputs, int numOutputs) {

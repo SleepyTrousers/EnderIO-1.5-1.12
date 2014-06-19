@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
@@ -211,7 +212,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public int getEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / capacitorType.capacitor.getMaxEnergyStored())), 0, scale);
+    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / getCapacitor().getMaxEnergyStored())), 0, scale);
   }
 
   public float getEnergyStored() {
@@ -242,7 +243,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   public float getPowerUsePerTick() {
-    return capacitorType.capacitor.getMaxEnergyExtracted();
+    return getCapacitor().getMaxEnergyExtracted();
   }
 
   // RF Power
