@@ -2,6 +2,7 @@ package crazypants.enderio.machine.crafter;
 
 import java.awt.Point;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -71,7 +72,18 @@ public class ContainerCrafter extends AbstractMachineContainer {
         return false;
       }
     });
-
+  }
+  
+  @Override
+  public ItemStack slotClick(int par1, int par2, int par3,
+      EntityPlayer par4EntityPlayer) {
+    if(par1 >= 0 && par1 < inventorySlots.size()) {
+      Slot slot = getSlot(par1);
+      if(slot.getHasStack() && slot instanceof DummySlot) {
+	slot.putStack(null);
+      }
+    }
+    return super.slotClick(par1, par2, par3, par4EntityPlayer);
   }
 
   private class InputSlot extends Slot {
@@ -89,7 +101,6 @@ public class ContainerCrafter extends AbstractMachineContainer {
       }
       return refStack.isItemEqual(itemStack);
     }
-
   }
 
   private class DummySlot extends TemplateSlot {
@@ -117,7 +128,10 @@ public class ContainerCrafter extends AbstractMachineContainer {
       super.onSlotChanged();
       crafter.updateCraftingOutput();    
     }
-
+    
+    @Override
+    public boolean canTakeStack(EntityPlayer player) {
+      return false;
+    }
   }
-
 }

@@ -80,7 +80,7 @@ public class TileCrafter extends AbstractMachineEntity {
           avail = avail.copy();
           avail.stackSize--;
           if(avail.stackSize <= 0) {
-            avail = null;
+            avail = avail.getItem().getContainerItem(avail);
           }
           setInventorySlotContents(i, avail);          
         }
