@@ -30,36 +30,47 @@ public class Recipe implements IRecipe {
   }
 
   @Override
-  public boolean isInputForRecipe(MachineRecipeInput... inputs) {
-    if(inputs == null || inputs.length == 0) {
+  public boolean isInputForRecipe(MachineRecipeInput... machineInputs) {
+    if(machineInputs == null || machineInputs.length == 0) {
       return false;
     }
 
-    int usedCount = 0;
-    for (MachineRecipeInput input : inputs) {
-      if(input != null) {
-        if(input.item != null) {
-          RecipeInput ri = getInputForStack(input.item);
-          if(ri == null || ri.getInput() == null) {
-            return false;
-          }
-          if(input.item.stackSize < ri.getInput().stackSize) {
-            return false;
-          }
-          usedCount++;
-        } else if(input.fluid != null) {
-          RecipeInput ri = getInputForStack(input.fluid);
-          if(ri == null || ri.getInput() == null) {
-            return false;
-          }
-          if(input.fluid.amount < ri.getFluidInput().amount) {
-            return false;
-          }
-          usedCount++;
-        }
+    List<RecipeInput> requiredInputs = new ArrayList<RecipeInput>();
+    for(RecipeInput input : inputs) { 
+      if(input.getFluidInput() != null || input.getInput() != null) {
+        requiredInputs.add(new RecipeInput(input));
       }
     }
-    return usedCount == getMinNumInputs();
+    
+    for (MachineRecipeInput input : machineInputs) {
+      if(input != null && (input.fluid != null || input.item != null)) {
+        RecipeInput required = null;        
+        for(int i=0;i<requiredInputs.size() && required == null;i++) {
+          RecipeInput tst = requiredInputs.get(i);
+          if(tst.isInput(input.item) || tst.isInput(input.fluid)) {
+             required = tst;
+          }
+        }        
+        if(required == null) {
+          return false;
+        }
+        //reduce the required input quantity by the available amount
+        if(input.isFluid()) {
+          required.getFluidInput().amount -= input.fluid.amount;
+        } else {
+          required.getInput().stackSize -= input.item.stackSize;
+        }        
+      }
+    }
+    
+    for(RecipeInput required : requiredInputs) {
+      if(required.isFluid() && required.getFluidInput().amount > 0) {
+        return false;
+      } else if(!required.isFluid() && required.getInput().stackSize > 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   protected int getMinNumInputs() {

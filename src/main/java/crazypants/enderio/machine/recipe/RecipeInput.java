@@ -11,7 +11,7 @@ public class RecipeInput {
 
   private final FluidStack fluid;
 
-  private final float mulitplier;
+  private final float multiplier;
 
   public RecipeInput(ItemStack input) {
     this(input, true);
@@ -37,8 +37,16 @@ public class RecipeInput {
     this.input = input;
     this.useMeta = useMeta;
     this.fluid = fluid;
-    this.mulitplier = mulitplier;
+    this.multiplier = mulitplier;
     this.slot = slot;
+  }
+
+  public RecipeInput(RecipeInput copyFrom) {
+    input = copyFrom.input == null ? null : copyFrom.input.copy();
+    fluid = copyFrom.fluid == null ? null : copyFrom.fluid.copy();
+    useMeta = copyFrom.useMeta;
+    multiplier = copyFrom.multiplier;
+    slot = copyFrom.slot;
   }
 
   public boolean isFluid() {
@@ -54,7 +62,7 @@ public class RecipeInput {
   }
 
   public float getMulitplier() {
-    return mulitplier;
+    return multiplier;
   }
 
   public int getSlotNumber() {
