@@ -207,6 +207,7 @@
       </input>
       <output>
         <itemStack modID="minecraft" itemName="sand"/>
+        <itemStack modID="minecraft" itemName="gravel" chance="0.1"/>
       </output>
     </recipe>
 
@@ -378,8 +379,8 @@
         <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />        
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2"/>
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25"/>
+        <itemStack modID="minecraft" itemName="quartz" number="1"/>
+        <itemStack modID="minecraft" itemName="quartz" number="1" chance="0.25"/>
       </output>
     </recipe>
 
