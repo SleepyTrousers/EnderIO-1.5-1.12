@@ -37,7 +37,7 @@ ore dictionary.
             </output>
         </recipe>
 
-        <recipe name="Alumite" energyCost="1000">
+        <recipe name="Alumite" energyCost="400">
             <input>
                 <itemStack oreDictionary="ingotAluminium" number="5" />
                 <itemStack oreDictionary="ingotIron" number="2" />
@@ -48,7 +48,7 @@ ore dictionary.
             </output>
         </recipe>
 
-        <recipe name="Alumite 2" energyCost="1000">
+        <recipe name="Alumite 2" energyCost="400">
             <input>
                 <itemStack oreDictionary="ingotAluminium" number="5" />
                 <itemStack oreDictionary="ingotIron" number="2" />
