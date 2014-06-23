@@ -33,6 +33,7 @@ enderio.itemRedstoneConduitInsulated.name=Isolierte Redstone-Leitung
 
 enderio.itemLiquidConduit.name=Flüssigkeitsleitung
 enderio.itemLiquidConduitAdvanced.name=Flüssigkeitsdruckleitung
+enderio.itemLiquidConduitEnder.name=Ender-Flüssigkeitsleitung
 enderio.itemLiquidConduit.lockedType.name=Flüssigkeitstyp gebunden an
 enderio.itemLiquidConduit.unlockedType.name=Flüssigkeitstyp nicht mehr gebunden
 
@@ -45,6 +46,15 @@ enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=der Flüssigkeit
 enderio.itemItemConduit.name=Item-Leitung
 enderio.itemItemConduitEmpowered.name=Verstärkte Item-Leitung
 
+enderio.filterUpgradeBasic.name=Basis-Item-Filter
+enderio.filterUpgradeAdvanced.name=Erweiterter Item-Filter
+enderio.itemConduitFilterUpgrade=Upgrade für Item-Leitungen
+enderio.itemConduitFilterUpgrade.configured=Konfiguriert
+
+item.itemExistingItemFilter.name=Existierender Item-Filter
+item.itemExistingItemFilter.tooltip.detailed.line1=Wählt nur Items, die bereits
+item.itemExistingItemFilter.tooltip.detailed.line2=im Inventar sind.
+
 enderio.itemMeConduit.name=ME-Leitung
 
 //Materials
@@ -54,6 +64,9 @@ enderio.darkSteel.name=Dunkelstahl
 enderio.conduitBinder.name=Leitungsbinder
 enderio.binderComposite.name=Bindegemisch
 enderio.phasedIronNugget.name=Pulsierender Eisennugget
+tile.blockDarkIronBars.name=Dunkeleisengitter
+enderio.blastResistant=Explosionssicher
+enderio.lightEmitter=Verbreitet Licht
 
 //Fluids
 fluid.nutrient_distillation=Nahrhaftes Destillat
@@ -85,11 +98,13 @@ enderio.darkGrindingBall.tooltip.detailed.line4=Energiereduktion
 
 
 //Quartz / Glass
-tile.blockFusedQuartz.name=Fusionsquarz
-enderio.blockFusedQuartz.fusedQuartz.name=Fusionsquarz
+tile.blockFusedQuartz.name=Quarzglas
+enderio.blockFusedQuartz.fusedQuartz.name=Quarzglas
 enderio.blockFusedQuartz.fusedGlass.name=Ziemlich Klares Glas
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Erleuchtetes Quarzglas
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=Erleuchtetes Klares Glas
 
-item.enderio.itemFusedQuartzFrame.name=Fusionsquarzrahmen
+item.enderio.itemFusedQuartzFrame.name=Quarzglasrahmen
 enderio.itemPowderIngot=Pulver & Barren
 
 //Alloys
@@ -138,13 +153,28 @@ tile.blockAlloySmelter.tooltip.detailed.line2=Kann auch als energiebetriebener
 tile.blockAlloySmelter.tooltip.detailed.line3=Ofen verwendet werden
 
 tile.blockSolarPanel.name=Photovoltaikzelle
+tile.blockSolarPanel.advanced.name=Fortgeschrittene Photovoltaikzelle
 tile.blockSolarPanel.tooltip.detailed.line1=Produziert Energie am Tag
 tile.blockSolarPanel.tooltip.detailed.line2=Braucht klare Sicht
 tile.blockSolarPanel.tooltip.detailed.line3=zum Himmel
+enderio.maxSolorProduction=Max.-Output
 
-tile.blockElectricLight.name=Energiebetriebenes Licht
-tile.blockElectricLight.tooltip.detailed.line1=Beleuchtet einen großen Bereich, wenn mit
-tile.blockElectricLight.tooltip.detailed.line2=Energie und einem Redstone-Signal versorgt
+item.itemElectricLight.name=Energiebetriebenes Licht
+item.itemElectricLight.tooltip.detailed.line1=Beleuchtet einen großen Bereich, wenn mit
+item.itemElectricLight.tooltip.detailed.line2=Energie und einem Redstone-Signal versorgt
+
+item.itemElectricLightInverted.name=Energiebetriebenes Licht (Invertiert)
+item.itemElectricLightInverted.tooltip.detailed.line1=Beleuchtet einen großen Bereich, wenn mit
+item.itemElectricLightInverted.tooltip.detailed.line2=Energie versorgt
+item.itemElectricLightInverted.tooltip.detailed.line3=Kann mit einem Redstone-Signal deaktiviert werden
+
+item.itemLight.name=Licht
+item.itemLight.tooltip.detailed.line1=Verbreitet Licht mit
+item.itemLight.tooltip.detailed.line2=einem Redstone-Signal
+
+item.itemLightInverted.name=Licht (Invertiert)
+item.itemLightInverted.tooltip.detailed.line1=Verbreitet Licht, kann mit einem
+item.itemLightInverted.tooltip.detailed.line2=Redstone-Signal deaktiviert werden
 
 tile.blockCapacitorBank.name=Kondensatorbank
 tile.blockCapacitorBank.creative.name=Kreative Kondensatorbank
@@ -180,8 +210,40 @@ tile.blockCombustionGenerator.tooltip.detailed.line1=Verbrennt flüssige Brennst
 tile.blockCombustionGenerator.tooltip.detailed.line2=Benötigt Kühlmittel (z.B. Wasser)
 tile.blockCombustionGenerator.tooltip.detailed.line3=Output abhängig vom Brennstoff
 
-tile.blockFarmStation.name=Ackerbaustation [WIP]
+tile.blockZombieGenerator.name=Zombie-Generator
+tile.blockZombieGenerator.tooltip.detailed.line1=Konsumiert Nahrhaftes Destillat,
+tile.blockZombieGenerator.tooltip.detailed.line2=um Energie zu erzeugen
+enderio.zombieGenerator.fuelTank=Nahrhafter Tank
+
+tile.blockFarmStation.name=Ackerbaustation
+tile.blockFarmStation.tooltip.detailed.line1=Pflanzt und erntet Feldfrüchte
+tile.blockFarmStation.tooltip.detailed.line2=Benötigt Energie und
+tile.blockFarmStation.tooltip.detailed.line3=passendes Werkzeug (Hacke, Axt)
+tile.blockFarmStation.tooltip.detailed.line4=Plünderung/Glück auf Werkzeug
+tile.blockFarmStation.tooltip.detailed.line5=wird bei Ernte angewandt
+
+tile.blockTank.name=Flüssigkeitstank
+tile.blockTank.advanced.name=Flüssigkeitsdrucktank
+tile.blockTank.tooltip.detailed.line1=Tragbarer Flüssigkeitstank
+tile.blockTank.tooltip.detailed.line2=Kann verwendet werden, um Flüssigkeitscontainer
+tile.blockTank.tooltip.detailed.line3=zu leeren und zu füllen
+enderio.tank.tank=Tank
+
+tile.blockCrafter.name=Fertigungsapparatur
+
+tile.blockPoweredSpawner.name=Energiebetriebener Spawner
+tile.blockPoweredSpawner.tooltip.empty=Leer
+tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Kombiniere mit einem zerstörten
+tile.blockPoweredSpawner.empty.tooltip.detailed.line2=Spawner in einem Amboss
+tile.blockPoweredSpawner.tooltip.detailed.line1=Gib Energie hinzu,
+tile.blockPoweredSpawner.tooltip.detailed.line2=um zu aktivieren
+item.itemBrokenSpawner.name=Zerstörter Spawner
+
 enderio.machine.tooltip.configured=(Konfiguriert)
+
+//Blocks
+tile.blockDarkSteelPressurePlate.name=Dunkeldruckplatte
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Wird nur von Spielern aktiviert
 
 //Travel
 tile.blockTravelAnchor.name=Reiseanker
@@ -211,6 +273,7 @@ tile.blockPaintedWall.name=Bemalte Wand
 tile.blockPaintedStair.name=Bemalte Treppe
 tile.blockPaintedSlab.name=Bemalte Stufe
 tile.blockPaintedDoubleSlab.name=Bemalte Stufe
+tile.blockPaintedGlowstone.name=Bemaltes Glowstone
 
 tile.blockPainter.tooltip.detailed.line1=Verwendet, um folgendes zu bemalen:
 tile.blockPainter.tooltip.detailed.line2= Leitungsfassaden, Treppen, Zäune
@@ -225,6 +288,13 @@ item.itemYetaWrench.tooltip.detailed.line3=sofort zu entfernen
 item.itemYetaWrench.tooltip.detailed.line4=Nutze Shift-Mausrad, um einen einzelnen
 item.itemYetaWrench.tooltip.detailed.line5=Leitungstypen zu zeigen
 
+item.itemMagnet.name=Elektromagnet
+item.itemMagnet.tooltip.detailed.line1=Zieht nahe Items zu dir
+item.itemMagnet.tooltip.detailed.line2=Shift+Rechtsklick zum (de)aktivieren
+item.itemMagnet.tooltip.detailed.line3=Muss mit Energie versorgt, aktiviert und
+item.itemMagnet.tooltip.detailed.line4=in der Hotbar sein, um zu funktionieren
+
+
 item.enderio.itemConduitProbe.name=Leitungssonde
 item.enderio.itemConduitProbe.tooltip.detailed.line1=Rechtsklicke auf eine Leitung, um
 item.enderio.itemConduitProbe.tooltip.detailed.line2=Details über ihr Netzwerk zu bekommen
@@ -238,7 +308,7 @@ item.darkSteel_leggings.name=Dunkelbeinschutz
 item.darkSteel_boots.name=Dunkelstiefel
 item.darkSteel_sword.name=Der Ender
 item.darkSteel_pickaxe.name=Dunkelspitzhacke
-
+item.darkSteel_axe.name=Dunkelaxt
 
 enderio.item.tooltip.showDetails=<Halte Shift>
 enderio.item.darkSteel.tooltip.durability=Haltbarkeit:
@@ -246,9 +316,14 @@ enderio.item.darkSteel.tooltip.durability=Haltbarkeit:
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Effizienz, wenn aktiviert
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Effizienz baut Obsidian ab
 
+enderio.item.darkSteel_axe.tooltip.multiHarvest=Schleiche, um Mehr Holz auf einmal abzubauen
+
 enderio.item.darkSteel_sword.tooltip.line1=Erhöht Schädel- und Enderperlen-Drops.
 enderio.item.darkSteel_sword.tooltip.line2=Endermen können sich nach einem Treffer nicht mehr teleportieren.
 enderio.item.darkSteel_sword.tooltip.line3=+1 Schaden, wenn aktiviert
+
+enderio.item.darkSteel_armor.tooltip.line1=Schutz auf Diamant-Level,
+enderio.item.darkSteel_armor.tooltip.line2=wenn mit Energie versorgt
 
 enderio.darksteel.upgrade.empowered_one.name=Verstärkt
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Energie: $P
@@ -420,8 +495,12 @@ enderio.gui.conduit.item.oreDicEnabled=Ore Dictionary Aktiviert
 enderio.gui.conduit.item.oreDicDisabled=Ore Dictionary Deaktiviert
 enderio.gui.conduit.item.selfFeedEnabled=Selbstfüttern Aktiviert
 enderio.gui.conduit.item.selfFeedDisabled=Selbstfüttern Deaktiviert
+enderio.gui.conduit.item.roundRobinEnabled=Round-Robin Aktiviert
+enderio.gui.conduit.item.roundRobinDisabled=Round-Robin Deaktiviert
+enderio.gui.conduit.item.priority=Priorität
 
 enderio.gui.conduit.redstone.signalColor=Signalfarbe
 enderio.gui.conduit.redstone.color=Farbe
 
 enderio.gui.conduit.fluid.autoExtract=Auto-Extrahieren
+enderio.gui.conduit.fluid.filter=Filter
