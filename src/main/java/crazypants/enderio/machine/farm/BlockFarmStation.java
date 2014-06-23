@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -66,6 +67,17 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
   @Override
   public int getRenderType() {
     return renderId;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    return true;
+  }
+  
+  @Override
+  public int getLightOpacity() {
+    return 7;
   }
 
   @Override
