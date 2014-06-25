@@ -1,7 +1,7 @@
 /bin
 /build
 /download
-/.settings/org.eclipse.jdt.core.prefs
+/.settings
 /.gradle
 /eclipse
 /eclipseBin
