@@ -17,6 +17,15 @@ public class OreDictionaryRecipeInput extends RecipeInput {
     super(stack, true, multiplier, slot);
     this.oreId = oreId;
   }
+  
+  public OreDictionaryRecipeInput(OreDictionaryRecipeInput copy) {
+    super(copy.getInput(), true, copy.getMulitplier(), copy.getSlotNumber());
+    oreId = copy.oreId;
+  }
+
+  public RecipeInput copy() {
+    return new OreDictionaryRecipeInput(this);
+  }
 
   @Override
   public boolean isInput(ItemStack test) {

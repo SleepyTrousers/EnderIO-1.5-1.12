@@ -15,18 +15,6 @@ public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
 
   RecipeInput ri;
 
-  //  public GrindingBall(ItemStack item, boolean useMeta, float multiplier, int slot) {
-  //    super(item, useMeta, multiplier, slot);
-  //  }
-  //
-  //  public GrindingBall(ItemStack input, boolean useMeta) {
-  //    super(input, useMeta);
-  //  }
-  //
-  //  public GrindingBall(ItemStack input) {
-  //    super(input);
-  //  }
-
   public GrindingBall(RecipeInput ri, float gm, float cm, float pm, int dmj) {
     super(ri.getInput());
     this.ri = ri;
@@ -34,6 +22,11 @@ public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
     chanceMultiplier = cm;
     powerMultiplier = pm;
     durationMJ = dmj;
+  }
+  
+  @Override
+  public RecipeInput copy() {    
+    return new GrindingBall(ri, grindingMultiplier, chanceMultiplier, powerMultiplier, durationMJ);
   }
 
   @Override
