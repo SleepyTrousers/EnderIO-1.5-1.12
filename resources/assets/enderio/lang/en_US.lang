@@ -348,6 +348,9 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
 enderio.darksteel.upgrade.jump_one.name=Jump
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
 
+enderio.darksteel.upgrade.glide.name=Glide
+enderio.darksteel.upgrade.glide.tooltip.detailed.line1=Enables gliding
+
 enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
