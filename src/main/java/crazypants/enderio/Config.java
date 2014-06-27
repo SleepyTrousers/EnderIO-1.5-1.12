@@ -135,6 +135,12 @@ public final class Config {
   public static int darkSteelUpgradePowerOneCost = 10;
   public static int darkSteelUpgradePowerTwoCost = 20;
   public static int darkSteelUpgradePowerThreeCost = 30;
+  
+  public static int darkSteelGliderCost = 15;
+  public static double darkSteelGliderHorizontalSpeed = 0.03;
+  public static double darkSteelGliderVerticalSpeed = -0.05;
+  public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
+  
 
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
@@ -161,7 +167,8 @@ public final class Config {
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
-  public static int powerSpawnerAddSpawnerCost = 30;
+  public static int powerSpawnerAddSpawnerCost = 30;  
+  
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -366,6 +373,15 @@ public final class Config {
 
     darkSteelBootsJumpPowerCost = config.get("Dark Steel", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
+    
+    darkSteelGliderCost = config.get("Dark Steel", "darkSteelGliderCost", darkSteelGliderCost,
+        "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);
+    darkSteelGliderHorizontalSpeed = config.get("Dark Steel", "darkSteelGliderHorizontalSpeed", darkSteelGliderHorizontalSpeed,
+        "Horizontal movement speed modifier when gliding.").getDouble(darkSteelGliderHorizontalSpeed);
+    darkSteelGliderVerticalSpeed = config.get("Dark Steel", "darkSteelGliderVerticalSpeed", darkSteelGliderVerticalSpeed,
+        "Rate of altitude loss when gliding.").getDouble(darkSteelGliderVerticalSpeed);
+    darkSteelGliderVerticalSpeedSprinting = config.get("Dark Steel", "darkSteelGliderVerticalSpeedSprinting", darkSteelGliderVerticalSpeedSprinting,
+        "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);   
 
     darkSteelSwordSkullChance = (float) config.get("Dark Steel", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
         "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(

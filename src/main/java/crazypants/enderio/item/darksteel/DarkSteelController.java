@@ -1,5 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
@@ -10,7 +12,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovementInput;
-import net.minecraft.util.Vec3;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -47,9 +48,26 @@ public class DarkSteelController {
   private boolean wasJumping;
   private int jumpCount;
   private int ticksSinceLastJump;
+  //private boolean isGlideActive = false;
+  private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>(); 
 
   private DarkSteelController() {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketGlideState.class, PacketGlideState.class, PacketHandler.nextID(), Side.SERVER);        
+  }
+
+  public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
+    if(player.getGameProfile().getName() != null) {
+      glideActiveMap.put(player.getGameProfile().getName(), isGlideActive);
+    }
+  }
+  
+  public boolean isGlideActive(EntityPlayer player) {
+    Boolean isActive = glideActiveMap.get(player.getGameProfile().getName());
+    if(isActive == null) {
+      return false;
+    }
+    return isActive.booleanValue();
   }
 
   @SubscribeEvent
@@ -66,24 +84,24 @@ public class DarkSteelController {
     //sword
     updateSword(player);
 
-    if(event.phase == Phase.END) {
+    if(event.phase == Phase.END) {      
       updateGlide(player);
     }
 
   }
 
   private void updateGlide(EntityPlayer player) {
-    
-    ItemStack chestPlate = player.getEquipmentInSlot(3);
-    GlideUpgrade glideUpgrade = GlideUpgrade.loadFromItem(chestPlate);
-    if(glideUpgrade == null) {
+    if(!isGlideActive(player) || !isGliderUpgradeEquipped(player)) {
       return;
     }
    
     if(!player.onGround && player.motionY < 0 && !player.isSneaking()) {
-      
-      double horizontalSpeed = 0.03;
-      double verticalSpeed = -0.02;
+            
+      double horizontalSpeed = Config.darkSteelGliderHorizontalSpeed;
+      double verticalSpeed = Config.darkSteelGliderVerticalSpeed; 
+      if(player.isSprinting()) {
+        verticalSpeed = Config.darkSteelGliderVerticalSpeedSprinting; 
+      }      
 
       Vector3d look = Util.getLookVecEio(player);
       Vector3d side = new Vector3d();
@@ -116,6 +134,15 @@ public class DarkSteelController {
 
     }
 
+  }
+
+  public boolean isGliderUpgradeEquipped(EntityPlayer player) {
+    ItemStack chestPlate = player.getEquipmentInSlot(3);
+    GliderUpgrade glideUpgrade = GliderUpgrade.loadFromItem(chestPlate);
+    if(glideUpgrade == null) {
+      return false;
+    }
+    return true;
   }
   
   private void updateSword(EntityPlayer player) {
@@ -228,7 +255,7 @@ public class DarkSteelController {
       if(!wasJumping) {
         jumpCount = 0;
       }
-      ticksSinceLastJump++;
+      ticksSinceLastJump++;           
     }
   }
 

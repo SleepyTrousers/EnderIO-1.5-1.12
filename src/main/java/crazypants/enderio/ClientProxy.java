@@ -41,6 +41,7 @@ import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
+import crazypants.enderio.item.darksteel.KeyTracker;
 import crazypants.enderio.item.darksteel.PoweredItemRenderer;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
@@ -255,6 +256,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelSword, dsr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelPickaxe, dsr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelAxe, dsr);
+    //Ensure it is loaded and registered
+    KeyTracker.instance.isGlideActive();
 
   }
 

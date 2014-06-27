@@ -1,18 +1,19 @@
 package crazypants.enderio.item.darksteel;
 
+import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GlideUpgrade extends AbstractUpgrade {
+public class GliderUpgrade extends AbstractUpgrade {
 
   private static String UPGRADE_NAME = "glide";
   
-  public static final GlideUpgrade INSTANCE = new GlideUpgrade();
+  public static final GliderUpgrade INSTANCE = new GliderUpgrade();
   
-  public static GlideUpgrade loadFromItem(ItemStack stack) {
+  public static GliderUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
     }
@@ -22,24 +23,24 @@ public class GlideUpgrade extends AbstractUpgrade {
     if(!stack.stackTagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
       return null;
     }
-    return new GlideUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+    return new GliderUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
   
   
-  public GlideUpgrade(NBTTagCompound tag) {
+  public GliderUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);    
   }
 
-  public GlideUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glide", new ItemStack(Items.feather), 15);
+  public GliderUpgrade() {
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(Items.feather), Config.darkSteelGliderCost);
   }  
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelChestplate|| !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelChestplate) {
       return false;
     }
-    GlideUpgrade up = loadFromItem(stack);
+    GliderUpgrade up = loadFromItem(stack);
     if(up == null) {
       return true;
     }

@@ -34,7 +34,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(SpeedUpgrade.SPEED_ONE);
     upgrades.add(SpeedUpgrade.SPEED_TWO);
     upgrades.add(SpeedUpgrade.SPEED_THREE);
-    upgrades.add(GlideUpgrade.INSTANCE);
+    upgrades.add(GliderUpgrade.INSTANCE);
   }
 
   @SubscribeEvent
