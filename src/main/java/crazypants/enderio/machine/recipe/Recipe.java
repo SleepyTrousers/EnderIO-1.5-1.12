@@ -38,7 +38,7 @@ public class Recipe implements IRecipe {
     List<RecipeInput> requiredInputs = new ArrayList<RecipeInput>();
     for(RecipeInput input : inputs) { 
       if(input.getFluidInput() != null || input.getInput() != null) {
-        requiredInputs.add(new RecipeInput(input));
+        requiredInputs.add(input.copy());
       }
     }
     

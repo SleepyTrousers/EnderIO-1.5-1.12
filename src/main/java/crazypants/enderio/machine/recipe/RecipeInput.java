@@ -48,6 +48,10 @@ public class RecipeInput {
     multiplier = copyFrom.multiplier;
     slot = copyFrom.slot;
   }
+  
+  public RecipeInput copy() {
+    return new RecipeInput(this);
+  }
 
   public boolean isFluid() {
     return fluid != null;
