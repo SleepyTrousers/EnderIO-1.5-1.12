@@ -329,6 +329,9 @@ enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection 
 enderio.item.darkSteel_armor.tooltip.line2=when powered
 
+enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
+enderio.item.darkSteel_boots.tooltip.line2=when powered
+
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Half durability damage absorbed

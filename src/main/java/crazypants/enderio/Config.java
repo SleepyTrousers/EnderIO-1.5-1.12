@@ -91,6 +91,7 @@ public final class Config {
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = false;
   public static int darkSteelBootsJumpPowerCost = 250;
+  public static int darkSteelFallDistanceCost = 100;
 
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.167f / 3f; //at looting 3, have a 1 in 6 chance of getting a skull
@@ -167,7 +168,8 @@ public final class Config {
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
-  public static int powerSpawnerAddSpawnerCost = 30;  
+  public static int powerSpawnerAddSpawnerCost = 30;
+    
   
 
   public static void load(FMLPreInitializationEvent event) {
@@ -373,6 +375,9 @@ public final class Config {
 
     darkSteelBootsJumpPowerCost = config.get("Dark Steel", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
+    
+    darkSteelFallDistanceCost = config.get("Dark Steel", "darkSteelFallDistanceCost", darkSteelFallDistanceCost,
+        "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
     
     darkSteelGliderCost = config.get("Dark Steel", "darkSteelGliderCost", darkSteelGliderCost,
         "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);

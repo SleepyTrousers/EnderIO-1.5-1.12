@@ -149,6 +149,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2")); 
+      if(itemstack.getItem() == EnderIO.itemDarkSteelBoots) {
+        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line1"));
+        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line2"));
+      }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

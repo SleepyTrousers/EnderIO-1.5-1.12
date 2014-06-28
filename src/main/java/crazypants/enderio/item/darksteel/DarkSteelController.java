@@ -49,11 +49,11 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
   //private boolean isGlideActive = false;
-  private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>(); 
+  private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();
 
   private DarkSteelController() {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketGlideState.class, PacketGlideState.class, PacketHandler.nextID(), Side.SERVER);        
+    PacketHandler.INSTANCE.registerMessage(PacketGlideState.class, PacketGlideState.class, PacketHandler.nextID(), Side.SERVER);
   }
 
   public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
@@ -61,7 +61,7 @@ public class DarkSteelController {
       glideActiveMap.put(player.getGameProfile().getName(), isGlideActive);
     }
   }
-  
+
   public boolean isGlideActive(EntityPlayer player) {
     Boolean isActive = glideActiveMap.get(player.getGameProfile().getName());
     if(isActive == null) {
@@ -76,7 +76,7 @@ public class DarkSteelController {
 
     //TODO: I am doing this at Phase.START and Phase.END
     //boots step height
-    updateStepHeight(player);
+    updateStepHeightAndFallDistance(player);
 
     //leggings
     updateSpeed(player);
@@ -84,7 +84,7 @@ public class DarkSteelController {
     //sword
     updateSword(player);
 
-    if(event.phase == Phase.END) {      
+    if(event.phase == Phase.END) {
       updateGlide(player);
     }
 
@@ -94,14 +94,14 @@ public class DarkSteelController {
     if(!isGlideActive(player) || !isGliderUpgradeEquipped(player)) {
       return;
     }
-   
+
     if(!player.onGround && player.motionY < 0 && !player.isSneaking()) {
-            
+
       double horizontalSpeed = Config.darkSteelGliderHorizontalSpeed;
-      double verticalSpeed = Config.darkSteelGliderVerticalSpeed; 
+      double verticalSpeed = Config.darkSteelGliderVerticalSpeed;
       if(player.isSprinting()) {
-        verticalSpeed = Config.darkSteelGliderVerticalSpeedSprinting; 
-      }      
+        verticalSpeed = Config.darkSteelGliderVerticalSpeedSprinting;
+      }
 
       Vector3d look = Util.getLookVecEio(player);
       Vector3d side = new Vector3d();
@@ -115,12 +115,12 @@ public class DarkSteelController {
       VecmathUtil.computePlaneEquation(playerPos, b, c, plane);
       double dist = Math.abs(VecmathUtil.distanceFromPointToPlane(plane, new Vector3d(player.posX, player.posY, player.posZ)));
       double minDist = 0.15;
-      if(dist < minDist) {         
-        double dropRate = (minDist * 10) - (dist * 10);        
-        verticalSpeed = verticalSpeed + (verticalSpeed * dropRate * 8);           
-        horizontalSpeed -= (0.02 * dropRate);                
+      if(dist < minDist) {
+        double dropRate = (minDist * 10) - (dist * 10);
+        verticalSpeed = verticalSpeed + (verticalSpeed * dropRate * 8);
+        horizontalSpeed -= (0.02 * dropRate);
       }
-            
+
       double x = Math.cos(Math.toRadians(player.rotationYawHead + 90))
           * horizontalSpeed;
       double z = Math.sin(Math.toRadians(player.rotationYawHead + 90))
@@ -144,7 +144,7 @@ public class DarkSteelController {
     }
     return true;
   }
-  
+
   private void updateSword(EntityPlayer player) {
     if(ItemDarkSteelSword.isEquipped(player)) {
       IAttributeInstance attackInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
@@ -183,8 +183,21 @@ public class DarkSteelController {
     }
   }
 
-  private void updateStepHeight(EntityPlayer player) {
+  private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);
+    
+    if(boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
+      int costedDistance = (int) player.fallDistance;
+      if(costedDistance > 0) {
+        int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
+        int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelBoots);
+        if(totalEnergy > 0 && totalEnergy >= energyCost) {
+          usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, energyCost);
+          player.fallDistance -= costedDistance;
+        }
+      }
+    }
+
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
     if(jumpUpgrade != null && boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
       player.stepHeight = 1.0023F;
@@ -214,6 +227,7 @@ public class DarkSteelController {
       ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
       if(stack != null) {
         armor.extractEnergy(stack, remaining, false);
+        player.inventory.markDirty();
       }
     }
   }
@@ -255,7 +269,7 @@ public class DarkSteelController {
       if(!wasJumping) {
         jumpCount = 0;
       }
-      ticksSinceLastJump++;           
+      ticksSinceLastJump++;
     }
   }
 
