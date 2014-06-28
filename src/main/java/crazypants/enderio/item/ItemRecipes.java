@@ -1,5 +1,6 @@
 package crazypants.enderio.item;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -31,6 +32,9 @@ public class ItemRecipes {
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelLeggings.createItemStack(), "sss", "s s", "s s", 's', darkSteel);
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "s s", "s s", "   ", 's', darkSteel);
     GameRegistry.addShapedRecipe(EnderIO.itemDarkSteelBoots.createItemStack(), "   ", "s s", "s s", 's', darkSteel);
+    ItemStack wing = new ItemStack(EnderIO.itemGliderWing,1,0);
+    GameRegistry.addShapedRecipe(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.leather);
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemGliderWing,1,1), " s ", "wsw", "   ", 's', darkSteel, 'w', wing);
     
     ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
     GameRegistry.addShapedRecipe(dspp, "ss ", "   ", "   ", 's', darkSteel); 

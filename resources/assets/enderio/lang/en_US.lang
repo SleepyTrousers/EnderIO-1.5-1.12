@@ -357,6 +357,9 @@ enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
 enderio.darksteel.upgrade.glider.enabled=Glider Active
 enderio.darksteel.upgrade.glider.disabled=Glider Disabled
 
+item.itemGliderWing.name=Glider Wing
+item.itemGliderWings.name=Glider Wings
+
 enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps

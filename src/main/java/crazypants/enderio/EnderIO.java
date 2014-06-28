@@ -49,6 +49,7 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
+import crazypants.enderio.item.darksteel.ItemGliderWing;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -206,6 +207,7 @@ public class EnderIO {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
+  public static ItemGliderWing itemGliderWing;
 
   
 
@@ -332,6 +334,8 @@ public class EnderIO {
     
     blockDarkIronBars = BlockDarkIronBars.create();
 
+    itemGliderWing = ItemGliderWing.create();
+    
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
     itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
@@ -340,6 +344,8 @@ public class EnderIO {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
+    
+    
     
     MaterialRecipes.registerOresInDictionary();
   }

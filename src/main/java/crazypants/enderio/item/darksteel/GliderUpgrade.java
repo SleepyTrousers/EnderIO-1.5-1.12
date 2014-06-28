@@ -32,7 +32,7 @@ public class GliderUpgrade extends AbstractUpgrade {
   }
 
   public GliderUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(Items.feather), Config.darkSteelGliderCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(EnderIO.itemGliderWing,1,1), Config.darkSteelGliderCost);
   }  
   
   @Override
