@@ -18,8 +18,8 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.io.IOUtils;
 
-import crazypants.enderio.Config;
 import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
 
 public class RecipeConfig {
 

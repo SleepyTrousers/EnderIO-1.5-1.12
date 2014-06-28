@@ -28,8 +28,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;

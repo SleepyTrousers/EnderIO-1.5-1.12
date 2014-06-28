@@ -15,8 +15,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 
 public class DarkSteelController {

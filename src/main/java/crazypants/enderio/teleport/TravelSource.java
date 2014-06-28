@@ -1,6 +1,6 @@
 package crazypants.enderio.teleport;
 
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 
 public enum TravelSource {
 

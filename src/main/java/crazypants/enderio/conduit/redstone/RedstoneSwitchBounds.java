@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.render.VertexRotation;
 import crazypants.render.VertexTransform;

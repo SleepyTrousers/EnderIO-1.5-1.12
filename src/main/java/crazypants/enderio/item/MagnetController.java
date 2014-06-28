@@ -11,7 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 
 public class MagnetController implements IEntitySelector {
 

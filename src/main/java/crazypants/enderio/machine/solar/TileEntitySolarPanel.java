@@ -13,7 +13,7 @@ import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;

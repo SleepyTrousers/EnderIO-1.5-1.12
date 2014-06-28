@@ -4,25 +4,26 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import static crazypants.enderio.EnderIO.*;
 
 public class EnderIOTab extends CreativeTabs {
 
   public static final CreativeTabs tabEnderIO = new EnderIOTab();
 
   public EnderIOTab() {
-    super("EnderIO");
+    super(MODID);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public String getTabLabel() {
-    return "EnderIO";
+    return MODID;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public String getTranslatedTabLabel() {
-    return "EnderIO";
+    return MODID;
   }
 
     @Override

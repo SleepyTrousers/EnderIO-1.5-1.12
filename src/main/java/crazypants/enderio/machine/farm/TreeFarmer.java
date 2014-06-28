@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
 
 public class TreeFarmer implements IFarmerJoe {

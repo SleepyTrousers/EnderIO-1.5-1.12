@@ -16,9 +16,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.BlockEio;
-import crazypants.enderio.Config;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.util.Util;
 
