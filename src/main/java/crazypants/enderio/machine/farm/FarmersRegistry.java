@@ -11,14 +11,14 @@ public final class FarmersRegistry {
 
   public static void addFarmers() {
     //vanilla
-    FarmersComune.instance.joinComune(new SeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
-    FarmersComune.instance.joinComune(new SeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
-    FarmersComune.instance.joinComune(new SeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
-    FarmersComune.instance.joinComune(new NetherWartFarmer());
-    FarmersComune.instance.joinComune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
-    FarmersComune.instance.joinComune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
-    FarmersComune.instance.joinComune(new TreeFarmer(Blocks.sapling, Blocks.log));
-    FarmersComune.instance.joinComune(new TreeFarmer(Blocks.sapling, Blocks.log2));
+    FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
+    FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
+    FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
+    FarmersCommune.instance.joinCommune(new NetherWartFarmer());
+    FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
+    FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
+    FarmersCommune.instance.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
+    FarmersCommune.instance.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
 
     addExtraUtilities();
     addNutura();
@@ -45,7 +45,7 @@ public final class FarmersRegistry {
     if(cropBlock != null) {
       Item seedItem = GameRegistry.findItem(mod, itemName);
       if(seedItem != null) {
-        FarmersComune.instance.joinComune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
+        FarmersCommune.instance.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
       }
     }
   }
@@ -55,7 +55,7 @@ public final class FarmersRegistry {
     if(cropBlock != null) {
       Item seedItem = GameRegistry.findItem(mod, itemName);
       if(seedItem != null) {
-        FarmersComune.instance.joinComune(new SeedFarmer(cropBlock, new ItemStack(seedItem)));
+        FarmersCommune.instance.joinCommune(new SeedFarmer(cropBlock, new ItemStack(seedItem)));
       }
     }
   }
@@ -71,7 +71,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 2; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
-          FarmersComune.instance.joinComune(farmer);
+          FarmersCommune.instance.joinCommune(farmer);
         }
       }
     }
@@ -84,7 +84,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
-          FarmersComune.instance.joinComune(farmer);
+          FarmersCommune.instance.joinCommune(farmer);
         }
       }
     }
@@ -100,9 +100,9 @@ public final class FarmersRegistry {
       Item seedItem = GameRegistry.findItem(mod, "barley.seed");
       if(seedItem != null) {
         //barley
-        FarmersComune.instance.joinComune(new SeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
+        FarmersCommune.instance.joinCommune(new SeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
         // cotton
-        FarmersComune.instance.joinComune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
+        FarmersCommune.instance.joinCommune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
       }
     }
 
@@ -114,7 +114,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 12 + i));
           farmer.setRequiresFarmland(false);
-          FarmersComune.instance.joinComune(farmer);
+          FarmersCommune.instance.joinCommune(farmer);
         }
       }
     }

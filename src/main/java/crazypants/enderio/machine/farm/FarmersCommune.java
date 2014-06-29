@@ -7,16 +7,16 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import crazypants.util.BlockCoord;
 
-public class FarmersComune implements IFarmerJoe {
+public class FarmersCommune implements IFarmerJoe {
 
-  public static FarmersComune instance = new FarmersComune();
+  public static FarmersCommune instance = new FarmersCommune();
 
-  public static void joinComune(IFarmerJoe joe) {
+  public static void joinCommune(IFarmerJoe joe) {
     instance.farmers.add(joe);
   }
 
-  public static void leaveComune(IFarmerJoe joe) {    
-    throw new UnsupportedOperationException("As if this would be implemented. The comune is for life!");
+  public static void leaveCommune(IFarmerJoe joe) {    
+    throw new UnsupportedOperationException("As if this would be implemented. The commune is for life!");
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();

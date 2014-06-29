@@ -217,7 +217,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
           (Util.isType(stack, ItemAxe.class) && !hasAxe()) || 
           (getTool(stack.getItem().getClass()) == null && getLooting(stack) > 0);
     }
-    return FarmersComune.instance.canPlant(stack);
+    return FarmersCommune.instance.canPlant(stack);
   }
 
   @Override
@@ -254,11 +254,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
     
     if(isOpen(bc)) {
-      FarmersComune.instance.prepareBlock(this, bc, block, meta);
+      FarmersCommune.instance.prepareBlock(this, bc, block, meta);
       block = worldObj.getBlock(bc.x, bc.y, bc.z);
     }
     if(!isOpen(bc) && hasPower()) {
-      IHarvestResult harvest = FarmersComune.instance.harvestBlock(this, bc, block, meta);
+      IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
       if(harvest != null) {
         if(harvest.getDrops() != null) {
           PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());

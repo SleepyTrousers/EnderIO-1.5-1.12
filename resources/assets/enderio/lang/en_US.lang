@@ -504,3 +504,46 @@ enderio.gui.conduit.redstone.color=Color
 
 enderio.gui.conduit.fluid.autoExtract=Auto Extract
 enderio.gui.conduit.fluid.filter=Filter
+
+
+//Configuration
+enderio.config.title=Ender IO Configuration
+
+enderio.config.power=Power Settings
+enderio.config.power.tooltip=So many numbers to change...
+
+enderio.config.recipe=Recipe Settings
+enderio.config.recipe.tooltip=Config ALL the things!
+
+enderio.config.item=Item Enabling
+enderio.config.item.tooltip=If you don't like some of my amazing items :(
+
+enderio.config.efficiency=Efficiency Settings
+enderio.config.efficiency.tooltip=Where do the numbers end?
+
+enderio.config.personal=Personal Settings
+enderio.config.personal.tooltip=I won't tell anyone, I promise.
+
+enderio.config.anchor=Anchor Settings
+enderio.config.anchor.tooltip=Anchors away!
+
+enderio.config.staff=Staff Settings
+enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
+
+enderio.config.darksteel=Dark Steel
+enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
+
+enderio.config.farm=Farm Settings
+enderio.config.farm.tooltip="The commune is for life!"
+
+enderio.config.aesthetic=Aesthetic Settings
+enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
+
+enderio.config.advanced=Advanced Settings
+enderio.config.advanced.tooltip=For those who can't have enough configs.
+
+enderio.config.magnet=Magnet Settings
+enderio.config.magnet.tooltip=How do they work?
+
+enderio.config.spawner=PoweredSpawner Settings
+enderio.config.spawner.tooltip=I ran out of witty tooltips.
