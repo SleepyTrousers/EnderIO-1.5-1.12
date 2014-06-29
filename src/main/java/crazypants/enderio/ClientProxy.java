@@ -71,6 +71,8 @@ import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TankItemRenderer;
 import crazypants.enderio.machine.tank.TileTank;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
@@ -189,6 +191,11 @@ public class ClientProxy extends CommonProxy {
     BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
     CapBankRenderer2 cbr2 = new CapBankRenderer2();
     RenderingRegistry.registerBlockHandler(cbr2);
+    
+    BlockVacuumChest.renderId = RenderingRegistry.getNextAvailableRenderId();
+    VacuumChestRenderer vcr = new VacuumChestRenderer();
+    RenderingRegistry.registerBlockHandler(vcr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), vcr);
 
     ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);

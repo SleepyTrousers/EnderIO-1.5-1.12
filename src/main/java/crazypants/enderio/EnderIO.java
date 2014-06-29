@@ -84,6 +84,7 @@ import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -171,6 +172,7 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
+  public static BlockVacuumChest blockVacuumChest;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -258,6 +260,7 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
+    blockVacuumChest = BlockVacuumChest.create();
     
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 

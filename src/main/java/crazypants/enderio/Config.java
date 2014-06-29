@@ -136,12 +136,11 @@ public final class Config {
   public static int darkSteelUpgradePowerOneCost = 10;
   public static int darkSteelUpgradePowerTwoCost = 20;
   public static int darkSteelUpgradePowerThreeCost = 30;
-  
+
   public static int darkSteelGliderCost = 15;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
   public static double darkSteelGliderVerticalSpeed = -0.05;
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
-  
 
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
@@ -169,8 +168,8 @@ public final class Config {
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
   public static int powerSpawnerAddSpawnerCost = 30;
-    
-  
+
+  public static double vacuumChestRange = 6;
 
   public static void load(FMLPreInitializationEvent event) {
     configDirectory = new File(event.getModConfigurationDirectory(), "enderio");
@@ -281,6 +280,8 @@ public final class Config {
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
 
+    vacuumChestRange = config.get("Efficiency Settings", "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getDouble(vacuumChestRange);
+
     if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
       useSneakMouseWheelYetaWrench = true;
@@ -375,10 +376,10 @@ public final class Config {
 
     darkSteelBootsJumpPowerCost = config.get("Dark Steel", "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
-    
+
     darkSteelFallDistanceCost = config.get("Dark Steel", "darkSteelFallDistanceCost", darkSteelFallDistanceCost,
         "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
-    
+
     darkSteelGliderCost = config.get("Dark Steel", "darkSteelGliderCost", darkSteelGliderCost,
         "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);
     darkSteelGliderHorizontalSpeed = config.get("Dark Steel", "darkSteelGliderHorizontalSpeed", darkSteelGliderHorizontalSpeed,
@@ -386,7 +387,7 @@ public final class Config {
     darkSteelGliderVerticalSpeed = config.get("Dark Steel", "darkSteelGliderVerticalSpeed", darkSteelGliderVerticalSpeed,
         "Rate of altitude loss when gliding.").getDouble(darkSteelGliderVerticalSpeed);
     darkSteelGliderVerticalSpeedSprinting = config.get("Dark Steel", "darkSteelGliderVerticalSpeedSprinting", darkSteelGliderVerticalSpeedSprinting,
-        "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);   
+        "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);
 
     darkSteelSwordSkullChance = (float) config.get("Dark Steel", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
         "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
@@ -469,10 +470,10 @@ public final class Config {
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
     farmDefaultSize = config.get("Farm Settings", "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
-    farmAxeDamageOnLeafBreak = config.get("Farm Settings", "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak, 
-	"Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
-    farmToolTakeDamageChance = (float) config.get("Farm Settings", "farmToolTakeDamageChance", farmToolTakeDamageChance, 
-	"The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
+    farmAxeDamageOnLeafBreak = config.get("Farm Settings", "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak,
+        "Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
+    farmToolTakeDamageChance = (float) config.get("Farm Settings", "farmToolTakeDamageChance", farmToolTakeDamageChance,
+        "The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
 
     combustionGeneratorUseOpaqueModel = config.get("Aesthetic Settings", "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
@@ -491,24 +492,27 @@ public final class Config {
         "MJ used per autocrafted recipe").getInt(crafterMjPerCraft);
 
     poweredSpawnerMinDelayTicks = config.get("PoweredSpawner Settings", "poweredSpawnerMinDelayTicks", poweredSpawnerMinDelayTicks,
-        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);    
+        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);
     poweredSpawnerMaxDelayTicks = config.get("PoweredSpawner Settings", "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks,
-        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);    
-    poweredSpawnerLevelOnePowerPerTick = (float)config.get("PoweredSpawner Settings", "poweredSpawnerLevelOnePowerPerTick", poweredSpawnerLevelOnePowerPerTick,
+        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);
+    poweredSpawnerLevelOnePowerPerTick = (float) config.get("PoweredSpawner Settings", "poweredSpawnerLevelOnePowerPerTick",
+        poweredSpawnerLevelOnePowerPerTick,
         "MJ per tick for a level 1 (non-upgraded) spawner").getDouble(poweredSpawnerLevelOnePowerPerTick);
-    poweredSpawnerLevelTwoPowerPerTick = (float)config.get("PoweredSpawner Settings", "poweredSpawnerLevelTwoPowerPerTick", poweredSpawnerLevelTwoPowerPerTick,
+    poweredSpawnerLevelTwoPowerPerTick = (float) config.get("PoweredSpawner Settings", "poweredSpawnerLevelTwoPowerPerTick",
+        poweredSpawnerLevelTwoPowerPerTick,
         "MJ per tick for a level 2 spawner").getDouble(poweredSpawnerLevelTwoPowerPerTick);
-    poweredSpawnerLevelThreePowerPerTick = (float)config.get("PoweredSpawner Settings", "poweredSpawnerLevelThreePowerPerTick", poweredSpawnerLevelThreePowerPerTick,
+    poweredSpawnerLevelThreePowerPerTick = (float) config.get("PoweredSpawner Settings", "poweredSpawnerLevelThreePowerPerTick",
+        poweredSpawnerLevelThreePowerPerTick,
         "MJ per tick for a level 3 spawner").getDouble(poweredSpawnerLevelThreePowerPerTick);
     poweredSpawnerMaxPlayerDistance = config.get("PoweredSpawner Settings", "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerUseVanillaSpawChecks = config.get("PoweredSpawner Settings", "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
-    brokenSpawnerDropChance = (float)config.get("PoweredSpawner Settings", "brokenSpawnerDropChance", brokenSpawnerDropChance,
+    brokenSpawnerDropChance = (float) config.get("PoweredSpawner Settings", "brokenSpawnerDropChance", brokenSpawnerDropChance,
         "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
     powerSpawnerAddSpawnerCost = config.get("PoweredSpawner Settings", "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
-    
+
   }
 
   private Config() {

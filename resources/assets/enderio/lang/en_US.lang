@@ -232,6 +232,8 @@ enderio.tank.tank=Tank
 
 tile.blockCrafter.name=Crafter
 
+tile.blockVacuumChest.name=Vacuum Chest
+
 tile.blockPoweredSpawner.name=Powered Spawner
 tile.blockPoweredSpawner.tooltip.empty=Empty
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
