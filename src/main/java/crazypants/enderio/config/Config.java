@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -238,7 +238,7 @@ public final class Config {
   }
   
   @SubscribeEvent
-  public void onConfigChanged(ConfigChangedEvent event) {
+  public void onConfigChanged(OnConfigChangedEvent event) {
     if (event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig();
