@@ -107,8 +107,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       SpeedUpgrade.SPEED_THREE.writeToItem(is);
     } else if(armorType == 3) {
       JumpUpgrade.JUMP_THREE.writeToItem(is);
-    } else if(armorType == 1) {
-      GliderUpgrade.INSTANCE.writeToItem(is);
     }
     
     par3List.add(is);
@@ -149,10 +147,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line1"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_armor.tooltip.line2")); 
-      if(itemstack.getItem() == EnderIO.itemDarkSteelBoots) {
-        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line1"));
-        list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_boots.tooltip.line2"));
-      }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

@@ -2,7 +2,6 @@ package crazypants.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3Pool;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,11 +29,6 @@ public class IBlockAccessWrapper implements IBlockAccess {
   @Override
   public boolean isAirBlock(int var1, int var2, int var3) {
     return wrapped.isAirBlock(var1, var2, var3);
-  }
-
-  @Override
-  public Vec3Pool getWorldVec3Pool() {
-    return wrapped.getWorldVec3Pool();
   }
 
   @Override

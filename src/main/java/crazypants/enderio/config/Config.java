@@ -140,7 +140,6 @@ public final class Config {
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = false;
   public static int darkSteelBootsJumpPowerCost = 250;
-  public static int darkSteelFallDistanceCost = 100;
 
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.167f / 3f; //at looting 3, have a 1 in 6 chance of getting a skull
@@ -186,11 +185,6 @@ public final class Config {
   public static int darkSteelUpgradePowerTwoCost = 20;
   public static int darkSteelUpgradePowerThreeCost = 30;
 
-  public static int darkSteelGliderCost = 15;
-  public static double darkSteelGliderHorizontalSpeed = 0.03;
-  public static double darkSteelGliderVerticalSpeed = -0.05;
-  public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
-
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
   public static int farmDefaultSize = 3;
@@ -217,8 +211,6 @@ public final class Config {
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
   public static int powerSpawnerAddSpawnerCost = 30;
-
-  public static double vacuumChestRange = 6;
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -342,8 +334,6 @@ public final class Config {
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
         .getBoolean(itemConduitUsePhyscialDistance);
 
-    vacuumChestRange = config.get("Efficiency Settings", "vacumChestRange", vacuumChestRange, "The range of the vacuum chest").getDouble(vacuumChestRange);
-
     if(!useSneakMouseWheelYetaWrench && !useSneakRightClickYetaWrench) {
       Log.warn("Both useSneakMouseWheelYetaWrench and useSneakRightClickYetaWrench are set to false. Enabling mouse wheel.");
       useSneakMouseWheelYetaWrench = true;
@@ -439,19 +429,7 @@ public final class Config {
     darkSteelBootsJumpPowerCost = config.get(sectionDarkSteel.name, "darkSteelBootsJumpPowerCost", darkSteelBootsJumpPowerCost,
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
 
-    darkSteelFallDistanceCost = config.get("Dark Steel", "darkSteelFallDistanceCost", darkSteelFallDistanceCost,
-        "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
-
-    darkSteelGliderCost = config.get("Dark Steel", "darkSteelGliderCost", darkSteelGliderCost,
-        "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);
-    darkSteelGliderHorizontalSpeed = config.get("Dark Steel", "darkSteelGliderHorizontalSpeed", darkSteelGliderHorizontalSpeed,
-        "Horizontal movement speed modifier when gliding.").getDouble(darkSteelGliderHorizontalSpeed);
-    darkSteelGliderVerticalSpeed = config.get("Dark Steel", "darkSteelGliderVerticalSpeed", darkSteelGliderVerticalSpeed,
-        "Rate of altitude loss when gliding.").getDouble(darkSteelGliderVerticalSpeed);
-    darkSteelGliderVerticalSpeedSprinting = config.get("Dark Steel", "darkSteelGliderVerticalSpeedSprinting", darkSteelGliderVerticalSpeedSprinting,
-        "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);
-
-    darkSteelSwordSkullChance = (float) config.get("Dark Steel", "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
+    darkSteelSwordSkullChance = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
         "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordSkullChance);
     darkSteelSwordSkullLootingModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
@@ -571,7 +549,7 @@ public final class Config {
         "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
-
+    
   }
 
   private Config() {

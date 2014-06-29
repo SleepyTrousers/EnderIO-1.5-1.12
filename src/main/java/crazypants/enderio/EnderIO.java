@@ -51,7 +51,6 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
-import crazypants.enderio.item.darksteel.ItemGliderWing;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -86,7 +85,6 @@ import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
-import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -178,7 +176,6 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
-  public static BlockVacuumChest blockVacuumChest;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -215,7 +212,6 @@ public class EnderIO {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
-  public static ItemGliderWing itemGliderWing;
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -265,8 +261,6 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
 
-    blockVacuumChest = BlockVacuumChest.create();
-    
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();
@@ -340,8 +334,6 @@ public class EnderIO {
 
     blockDarkIronBars = BlockDarkIronBars.create();
 
-    itemGliderWing = ItemGliderWing.create();
-    
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
     itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);

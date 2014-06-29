@@ -130,10 +130,6 @@ public class MachineRecipes {
     .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
         'r', redstoneConduit, 'c', capacitor);
 
-    //Vacuum Chest
-    ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
-    GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
-    
   }
 
   public static void addOreDictionaryRecipes() {

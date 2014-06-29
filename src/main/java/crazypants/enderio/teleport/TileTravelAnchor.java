@@ -2,6 +2,7 @@ package crazypants.enderio.teleport;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,9 +29,9 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   
   private ItemStack itemLabel;
 
-  private String placedBy;
+  private UUID placedBy;
 
-  private List<String> authorisedUsers = new ArrayList<String>();
+  private List<UUID> authorisedUsers = new ArrayList<UUID>();
 
   @Override
   public boolean canBlockBeAccessed(EntityPlayer playerName) {
@@ -131,7 +132,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
-  public String getPlacedBy() {
+  public UUID getPlacedBy() {
     return placedBy;
   }
 
@@ -165,10 +166,10 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(root.hasKey("accessMode")) {
       accessMode = AccessMode.values()[root.getShort("accessMode")];
     } else {
-      //keep behaviour the same for blocks placed prior to this update
+      //keep behavior the same for blocks placed prior to this update
       accessMode = AccessMode.PUBLIC;
     }
-    placedBy = root.getString("placedBy");
+    placedBy = UUID.fromString(root.getString("placedBy"));
     for (int i = 0; i < password.length; i++) {
       if(root.hasKey("password" + i)) {
         NBTTagCompound stackRoot = (NBTTagCompound) root.getTag("password" + i);
@@ -185,7 +186,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
         if(user != null) {
           user = user.trim();
           if(user.length() > 0) {
-            authorisedUsers.add(user);
+            authorisedUsers.add(UUID.fromString(user));
           }
         }
       }
@@ -202,8 +203,8 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   protected void writeCustomNBT(NBTTagCompound root) {
     root.setShort("accessMode", (short) accessMode.ordinal());
-    if(placedBy != null && placedBy.trim().length() > 0) {
-      root.setString("placedBy", placedBy);
+    if(placedBy != null) {
+      root.setString("placedBy", placedBy.toString());
     }
     for (int i = 0; i < password.length; i++) {
       ItemStack stack = password[i];
@@ -214,9 +215,9 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       }
     }
     StringBuffer userStr = new StringBuffer();
-    for (String user : authorisedUsers) {
-      if(user != null && user.trim().length() > 0) {
-        userStr.append(user);
+    for (UUID user : authorisedUsers) {
+      if(user != null) {
+        userStr.append(user.toString());
         userStr.append(",");
       }
     }

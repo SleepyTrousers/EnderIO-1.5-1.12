@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
@@ -29,7 +31,7 @@ public interface ITravelAccessable {
   
   void setItemLabel(ItemStack lableIcon);
 
-  String getPlacedBy();
+  UUID getPlacedBy();
 
 //  void setPlacedBy(String placedBy);
 

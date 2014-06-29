@@ -39,7 +39,6 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_CRAFTER = 87;
   public static final int GUI_ID_ZOMBIE_GEN = 71;
   public static final int GUI_ID_POWERED_SPAWNER = 88;
-  public static final int GUI_ID_VACUUM_CHEST = 89;
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

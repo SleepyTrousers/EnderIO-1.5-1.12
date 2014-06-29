@@ -21,8 +21,6 @@ New
 - Enlighted Glass and Fused Quartz
 - Blast resistent Dark Steel Bars
 - Powered Magnet
-- Powered Spawner
-- Vacuum Chest
 
 Changes
 - Removed advanced item conduits and added upgrades to the basic conduits
