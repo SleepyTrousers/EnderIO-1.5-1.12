@@ -21,7 +21,7 @@ public class IconToggleButton extends IconButton {
   }
 
   @Override
-  public int getHoverState(boolean par1) {
+  protected int getHoverState(boolean par1) {
     int result = 1;
     if(!enabled || selected) {
       result = 0;
@@ -30,4 +30,5 @@ public class IconToggleButton extends IconButton {
     }
     return result;
   }
+
 }

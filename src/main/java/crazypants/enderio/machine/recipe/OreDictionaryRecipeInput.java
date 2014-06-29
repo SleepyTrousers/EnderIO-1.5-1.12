@@ -19,7 +19,7 @@ public class OreDictionaryRecipeInput extends RecipeInput {
   }
   
   public OreDictionaryRecipeInput(OreDictionaryRecipeInput copy) {
-    super(copy.getInput(), true, copy.getMulitplier(), copy.getSlotNumber());
+    super(copy);
     oreId = copy.oreId;
   }
 

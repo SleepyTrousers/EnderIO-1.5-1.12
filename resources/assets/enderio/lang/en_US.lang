@@ -21,7 +21,8 @@ enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=Right click on a conduit to place
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench is equipped
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit 
+item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
 
 enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
@@ -231,13 +232,18 @@ enderio.tank.tank=Tank
 
 tile.blockCrafter.name=Crafter
 
+tile.blockVacuumChest.name=Vacuum Chest
+
 tile.blockPoweredSpawner.name=Powered Spawner
 tile.blockPoweredSpawner.tooltip.empty=Empty
 tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
 tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
 tile.blockPoweredSpawner.tooltip.detailed.line2=activate
+
 item.itemBrokenSpawner.name=Broken Spawner
+item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
+item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
 
 enderio.machine.tooltip.configured=(Configured)
 
@@ -325,6 +331,9 @@ enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection 
 enderio.item.darkSteel_armor.tooltip.line2=when powered
 
+enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
+enderio.item.darkSteel_boots.tooltip.line2=when powered
+
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Half durability damage absorbed
@@ -347,6 +356,14 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.jump_one.name=Jump
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
+
+enderio.darksteel.upgrade.glider.name=Glider
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
+enderio.darksteel.upgrade.glider.enabled=Glider Active
+enderio.darksteel.upgrade.glider.disabled=Glider Disabled
+
+item.itemGliderWing.name=Glider Wing
+item.itemGliderWings.name=Glider Wings
 
 enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height

@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -16,7 +15,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
 
   private boolean isPrivate;
   private List<Channel> channels;
-  private UUID userId;
+  private String userId;
 
   public PacketChannelList() {
   }
@@ -25,16 +24,16 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
     this(player.getGameProfile().getId(), isPrivate);
   }
 
-  public PacketChannelList(UUID uuid, boolean isPrivate) {
-    this.userId = uuid;
+  public PacketChannelList(String userId, boolean isPrivate) {
+    this.userId = userId;
     this.isPrivate = isPrivate;
-    if(isPrivate && uuid == null) {
+    if(isPrivate && userId == null || userId.trim().length() == 0) {
       throw new RuntimeException("Null user ID.");
     }
 
     List<Channel> res;
     if(isPrivate) {
-      res = HyperCubeRegister.instance.getChannelsForUser(uuid);
+      res = HyperCubeRegister.instance.getChannelsForUser(userId);
     } else {
       res = HyperCubeRegister.instance.getPublicChannels();
     }
@@ -50,7 +49,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void toBytes(ByteBuf buffer) {
     buffer.writeBoolean(isPrivate);
     if(isPrivate) {
-      ByteBufUtils.writeUTF8String(buffer, userId.toString());
+      ByteBufUtils.writeUTF8String(buffer, userId);
     }
     buffer.writeInt(channels.size());
     for (Channel channel : channels) {
@@ -63,7 +62,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void fromBytes(ByteBuf buffer) {
     isPrivate = buffer.readBoolean();
     if(isPrivate) {
-      userId = UUID.fromString(ByteBufUtils.readUTF8String(buffer));
+      userId = ByteBufUtils.readUTF8String(buffer);
     } else {
       userId = null;
     }
@@ -72,6 +71,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
     for (int i = 0; i < numChannels; i++) {
       channels.add(new Channel(ByteBufUtils.readUTF8String(buffer), userId));
     }
+
   }
 
   @Override

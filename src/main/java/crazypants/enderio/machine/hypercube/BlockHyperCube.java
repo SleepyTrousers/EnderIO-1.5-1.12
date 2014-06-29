@@ -3,7 +3,6 @@ package crazypants.enderio.machine.hypercube;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -159,7 +158,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       tag.setString("channelName", chan.name);
       tag.setBoolean("channelIsPublic", chan.isPublic());
       if(!chan.isPublic()) {
-        tag.setString("channelUser", chan.user.toString());
+        tag.setString("channelUser", chan.user);
       }
     }
   }
@@ -198,9 +197,9 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       return null;
     }
 
-    UUID user = null;
+    String user = null;
     if(!tag.getBoolean("channelIsPublic")) {
-      user = UUID.fromString(tag.getString("channelUser"));
+      user = tag.getString("channelUser");
     }
     return new Channel(channelName, user);
 

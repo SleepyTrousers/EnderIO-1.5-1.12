@@ -68,7 +68,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
     RenderUtil.renderQuad2D(bounds.x, bounds.y, 0, bounds.width, bounds.height, ColorUtil.getRGB(Color.black));
     Minecraft mc = Minecraft.getMinecraft();
-    ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+    ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
 
     int vpx = ( (screen.getGuiLeft() + bounds.x)* scaledresolution.getScaleFactor());
     int vpy = (screen.getGuiTop() + 4) * scaledresolution.getScaleFactor();

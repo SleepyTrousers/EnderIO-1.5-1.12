@@ -2,7 +2,6 @@ package crazypants.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -16,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -40,7 +38,7 @@ public class Util {
   }
 
   public static ItemStack consumeItem(ItemStack stack) {
-    if(stack.getItem() instanceof ItemPotion) {
+    if (stack.getItem() instanceof ItemPotion) {
       if(stack.stackSize == 1) {
         return new ItemStack(Items.glass_bottle);
       } else {
@@ -78,11 +76,11 @@ public class Util {
 
   // derived from ItemBlock.onItemUse
   public static BlockCoord canPlaceItem(ItemStack itemUsed, Block blockIdToBePlaced, EntityPlayer player, World world, int x, int y, int z, int side) {
-
+    
     if(blockIdToBePlaced == null) {
       return null;
     }
-
+    
     Block block = world.getBlock(x, y, z);
 
     if(block == Blocks.snow_layer && (world.getBlockMetadata(x, y, z) & 7) < 1) {
@@ -165,7 +163,7 @@ public class Util {
   }
 
   public static void dropItems(World world, ItemStack stack, int x, int y, int z, boolean doRandomSpread) {
-    if(stack.stackSize <= 0) {
+    if(stack == null || stack.stackSize <= 0) {
       return;
     }
 
@@ -291,11 +289,12 @@ public class Util {
 
   public static boolean isEquipped(EntityPlayer player, Class<? extends Item> class1) {
     if(player == null || player.inventory == null || player.inventory.getCurrentItem() == null) {
-      return false;
+    return false;
     }
     //player.inventory.getCurrentItem().getClass().getItem().isAssignableFrom(class1)
     return class1.isAssignableFrom(player.inventory.getCurrentItem().getItem().getClass());
   }
+
 
   public static boolean isType(ItemStack stack, Class<? extends Item> class1) {
     if(stack == null || class1 == null) {
@@ -303,4 +302,6 @@ public class Util {
     }
     return class1.isAssignableFrom(stack.getItem().getClass());
   }
+
+
 }

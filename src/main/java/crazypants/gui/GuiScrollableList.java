@@ -177,7 +177,7 @@ public abstract class GuiScrollableList<T> {
     GL11.glDisable(GL11.GL_LIGHTING);
     GL11.glDisable(GL11.GL_FOG);
 
-    ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+    ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
     int sx = minX * sr.getScaleFactor();
     int sw = width * sr.getScaleFactor();
     int sy = mc.displayHeight - (maxY * sr.getScaleFactor());

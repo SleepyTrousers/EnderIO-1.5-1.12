@@ -1,7 +1,6 @@
 package crazypants.enderio.teleport;
 
 import java.awt.Color;
-import java.util.UUID;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -22,7 +21,7 @@ public class GuiTravelAuth extends GuiContainerBase {
 
   private final String title;
   private final ITravelAccessable ta;
-  private final UUID username;
+  private final String username;
   private boolean failed = false;
   private final EntityPlayer player;
 

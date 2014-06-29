@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -51,7 +50,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
       if(selectedChannel.isPublic()) {
         ByteBufUtils.writeUTF8String(buf, "");
       } else {
-        ByteBufUtils.writeUTF8String(buf, selectedChannel.user.toString());
+        ByteBufUtils.writeUTF8String(buf, selectedChannel.user);
       }
     }
 
@@ -71,7 +70,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
     selectedChannel = null;
     if(name != null && name.trim().length() > 0) {
       if(user != null && user.trim().length() > 0) {
-        selectedChannel = new Channel(name, UUID.fromString(user));
+        selectedChannel = new Channel(name, user);
       } else {
         selectedChannel = new Channel(name, null);
       }

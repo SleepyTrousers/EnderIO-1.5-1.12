@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import java.io.IOException;
 
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -22,8 +21,7 @@ public class NetworkUtil {
       } else {
         byte[] buffer = new byte[size];
         dataIn.readBytes(buffer);
-        // TODO I have no idea what I'm doing (byte = 8 bits = buffer.length * 8 ???)
-        return CompressedStreamTools.func_152457_a(buffer, new NBTSizeTracker(buffer.length * 8));
+        return CompressedStreamTools.decompress(buffer);
       }
     } catch (IOException e) {
       FMLCommonHandler.instance().raiseException(e, "Custom Packet", true);

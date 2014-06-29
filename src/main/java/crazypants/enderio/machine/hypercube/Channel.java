@@ -1,15 +1,13 @@
 package crazypants.enderio.machine.hypercube;
 
-import java.util.UUID;
-
 public class Channel {
 
   final String name;
-  final UUID user;
+  final String user;
 
-  Channel(String name, UUID uuid) {
+  Channel(String name, String user) {
     this.name = trim(name);
-    this.user = uuid;
+    this.user = trim(user);
   }
 
   public boolean isPublic() {

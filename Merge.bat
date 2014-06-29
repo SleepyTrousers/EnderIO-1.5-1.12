@@ -1,5 +1,6 @@
+git checkout 1.7.10
+git pull
 git checkout master
 git pull
-git checkout 1.7
-git merge master --no-ff --no-commit
+git merge 1.7.10 --no-ff --no-commit
 pause

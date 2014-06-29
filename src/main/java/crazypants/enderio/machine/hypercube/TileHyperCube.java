@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -35,7 +34,6 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
-import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntityEio implements IInternalPowerReceptor, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
@@ -122,7 +120,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   private Channel channel = null;
   private Channel registeredChannel = null;
-  private UUID owner;
+  private String owner;
 
   private boolean init = true;
 
@@ -186,7 +184,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     HyperCubeRegister.instance.register(this);
   }
 
-  public void setOwner(UUID owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
   }
 
@@ -841,12 +839,12 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : UUID.fromString(channelUser));
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
     } else {
       channel = null;
     }
 
-    owner = UUID.fromString(nbtRoot.getString("owner"));
+    owner = nbtRoot.getString("owner");
 
     for (SubChannel subChannel : SubChannel.values()) {
       String key = "subChannel" + subChannel.ordinal();
@@ -870,11 +868,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     if(channel != null) {
       nbtRoot.setString("channelName", channel.name);
       if(channel.user != null) {
-        nbtRoot.setString("channelUser", channel.user.toString());
+        nbtRoot.setString("channelUser", channel.user);
       }
     }
-    if(owner != null) {
-      nbtRoot.setString("owner", owner.toString());
+    if(owner != null && !(owner.isEmpty())) {
+      nbtRoot.setString("owner", owner);
     }
 
     for (SubChannel subChannel : SubChannel.values()) {

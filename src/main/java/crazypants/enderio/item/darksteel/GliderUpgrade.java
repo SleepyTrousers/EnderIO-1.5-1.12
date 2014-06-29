@@ -1,0 +1,54 @@
+package crazypants.enderio.item.darksteel;
+
+import crazypants.enderio.Config;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.material.Material;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+public class GliderUpgrade extends AbstractUpgrade {
+
+  private static String UPGRADE_NAME = "glide";
+  
+  public static final GliderUpgrade INSTANCE = new GliderUpgrade();
+  
+  public static GliderUpgrade loadFromItem(ItemStack stack) {
+    if(stack == null) {
+      return null;
+    }
+    if(stack.stackTagCompound == null) {
+      return null;
+    }
+    if(!stack.stackTagCompound.hasKey(KEY_UPGRADE_PREFIX + UPGRADE_NAME)) {
+      return null;
+    }
+    return new GliderUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+  }
+  
+  
+  public GliderUpgrade(NBTTagCompound tag) {
+    super(UPGRADE_NAME, tag);    
+  }
+
+  public GliderUpgrade() {
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(EnderIO.itemGliderWing,1,1), Config.darkSteelGliderCost);
+  }  
+  
+  @Override
+  public boolean canAddToItem(ItemStack stack) {
+    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelChestplate) {
+      return false;
+    }
+    GliderUpgrade up = loadFromItem(stack);
+    if(up == null) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {    
+  }
+
+}

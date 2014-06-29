@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -19,10 +17,8 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class FakeFarmPlayer extends EntityPlayerMP {
-  
-  private static final UUID uuid = UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d");
-  
-  private static GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioFarmer]");
+
+  private static GameProfile DUMMY_PROFILE = new GameProfile("EioFarmerID", "[EioFarmer]");
   
   public FakeFarmPlayer(WorldServer world) {
     super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, DUMMY_PROFILE, new ItemInWorldManager(world));
