@@ -2,8 +2,8 @@ package crazypants.enderio.item.darksteel;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.material.Material;
 
 public class SpeedUpgrade extends AbstractUpgrade {

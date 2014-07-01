@@ -26,7 +26,7 @@ import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 import crazypants.enderio.machine.power.PowerDisplayUtil;

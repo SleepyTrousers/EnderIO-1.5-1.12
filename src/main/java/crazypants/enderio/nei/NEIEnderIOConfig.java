@@ -3,8 +3,8 @@ package crazypants.enderio.nei;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
 

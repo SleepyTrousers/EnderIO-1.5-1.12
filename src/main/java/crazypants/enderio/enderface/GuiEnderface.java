@@ -28,8 +28,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.render.RenderUtil;
@@ -346,7 +346,7 @@ public class GuiEnderface extends GuiScreen {
   }
 
   private boolean updateCamera(float partialTick) {
-    ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+    ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
     int vpx = guiLeft * scaledresolution.getScaleFactor();
     int vpy = guiTop * scaledresolution.getScaleFactor();
     int vpw = (int) ((float) gw / width * mc.displayWidth);
@@ -389,7 +389,7 @@ public class GuiEnderface extends GuiScreen {
   private float portalFade = 1;
 
   private void drawEffectOverlay(float partialTick) {
-    ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+    ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
     GL11.glMatrixMode(GL11.GL_PROJECTION);
     GL11.glLoadIdentity();
     GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);

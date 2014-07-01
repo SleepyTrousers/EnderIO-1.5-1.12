@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -21,10 +22,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
@@ -34,6 +35,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
+import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileHyperCube extends TileEntityEio implements IInternalPowerReceptor, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
@@ -120,7 +122,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   private Channel channel = null;
   private Channel registeredChannel = null;
-  private String owner;
+  private UUID owner;
 
   private boolean init = true;
 
@@ -184,7 +186,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     HyperCubeRegister.instance.register(this);
   }
 
-  public void setOwner(String owner) {
+  public void setOwner(UUID owner) {
     this.owner = owner;
   }
 
@@ -839,12 +841,12 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : UUID.fromString(channelUser));
     } else {
       channel = null;
     }
 
-    owner = nbtRoot.getString("owner");
+    owner = UUID.fromString(nbtRoot.getString("owner"));
 
     for (SubChannel subChannel : SubChannel.values()) {
       String key = "subChannel" + subChannel.ordinal();
@@ -868,11 +870,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     if(channel != null) {
       nbtRoot.setString("channelName", channel.name);
       if(channel.user != null) {
-        nbtRoot.setString("channelUser", channel.user);
+        nbtRoot.setString("channelUser", channel.user.toString());
       }
     }
-    if(owner != null && !(owner.isEmpty())) {
-      nbtRoot.setString("owner", owner);
+    if(owner != null) {
+      nbtRoot.setString("owner", owner.toString());
     }
 
     for (SubChannel subChannel : SubChannel.values()) {

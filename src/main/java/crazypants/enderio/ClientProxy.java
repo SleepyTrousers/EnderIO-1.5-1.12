@@ -36,6 +36,7 @@ import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.ConduitRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.enderio.conduit.render.ItemConduitRenderer;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipAddera;
@@ -191,7 +192,7 @@ public class ClientProxy extends CommonProxy {
     BlockCapacitorBank.renderId = RenderingRegistry.getNextAvailableRenderId();
     CapBankRenderer2 cbr2 = new CapBankRenderer2();
     RenderingRegistry.registerBlockHandler(cbr2);
-    
+
     BlockVacuumChest.renderId = RenderingRegistry.getNextAvailableRenderId();
     VacuumChestRenderer vcr = new VacuumChestRenderer();
     RenderingRegistry.registerBlockHandler(vcr);

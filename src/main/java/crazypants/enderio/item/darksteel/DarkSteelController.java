@@ -18,8 +18,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.Config;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
@@ -167,7 +167,7 @@ public class DarkSteelController {
     if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
 
       double horzMovement = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
-      double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
+      double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost  : Config.darkSteelWalkPowerCost;
       costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
       int cost = (int) (horzMovement * costModifier);
 
@@ -185,7 +185,7 @@ public class DarkSteelController {
 
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);
-    
+
     if(boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
       int costedDistance = (int) player.fallDistance;
       if(costedDistance > 0) {
@@ -194,8 +194,8 @@ public class DarkSteelController {
         if(totalEnergy > 0 && totalEnergy >= energyCost) {
           usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, energyCost);
           player.fallDistance -= costedDistance;
-        }
       }
+    }
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
@@ -203,8 +203,9 @@ public class DarkSteelController {
       player.stepHeight = 1.0023F;
     } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
-    }
   }
+  }
+ 
 
   void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
     if(cost == 0) {

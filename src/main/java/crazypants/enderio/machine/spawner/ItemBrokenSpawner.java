@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemBrokenSpawner extends Item {
   
@@ -56,7 +55,7 @@ public class ItemBrokenSpawner extends Item {
     setUnlocalizedName(ModObject.itemBrokenSpawner.unlocalisedName);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setMaxStackSize(8);    
+    setMaxStackSize(1);    
   }
 
   @Override
@@ -92,11 +91,7 @@ public class ItemBrokenSpawner extends Item {
         par3List.add(mobName);
       }
     }
-    if(TooltipAddera.showAdvancedTooltips()) {
-      TooltipAddera.addDetailedTooltipFromResources(par3List, par1ItemStack);
-    } else {
-      TooltipAddera.addShowDetailsTooltip(par3List);
-    }
+
   }
 
 }

@@ -1,11 +1,9 @@
 package crazypants.enderio.item.darksteel;
 
-import crazypants.enderio.Config;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.material.Material;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 
 public class GliderUpgrade extends AbstractUpgrade {
 

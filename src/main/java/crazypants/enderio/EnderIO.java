@@ -1,5 +1,6 @@
 package crazypants.enderio;
 
+import static crazypants.enderio.EnderIO.*;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Items;
@@ -36,6 +37,7 @@ import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
@@ -101,10 +103,14 @@ import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 
-@Mod(modid = "EnderIO", name = "Ender IO", version = "2.0_beta", dependencies = "required-after:Forge@[10.12.1.1090,);required-after:FML@[5.0.5,)")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
-  @Instance("EnderIO")
+  public static final String MODID = "EnderIO";
+  public static final String MOD_NAME = "Ender IO";
+  public static final String VERSION = "2.0_beta";
+
+  @Instance(MODID)
   public static EnderIO instance;
 
   @SidedProxy(clientSide = "crazypants.enderio.ClientProxy", serverSide = "crazypants.enderio.CommonProxy")
@@ -172,11 +178,10 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
-  public static BlockVacuumChest blockVacuumChest;
 
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
-  
+
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
 
@@ -209,9 +214,8 @@ public class EnderIO {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
+  public static BlockVacuumChest blockVacuumChest;
   public static ItemGliderWing itemGliderWing;
-
-  
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -223,7 +227,7 @@ public class EnderIO {
   public void preInit(FMLPreInitializationEvent event) {
 
     Config.load(event);
-    
+
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
     blockEnderIo = BlockEnderIO.create();
@@ -239,8 +243,8 @@ public class EnderIO {
     blockAlloySmelter = BlockAlloySmelter.create();
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
-    blockFarmStation = BlockFarmStation.create();    
-    blockCapacitorBank = BlockCapacitorBank.create();    
+    blockFarmStation = BlockFarmStation.create();
+    blockCapacitorBank = BlockCapacitorBank.create();
 
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
@@ -261,7 +265,7 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
-    
+
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 
     blockFusedQuartz = BlockFusedQuartz.create();
@@ -270,7 +274,7 @@ public class EnderIO {
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
-    
+
     blockPoweredSpawner = BlockPoweredSpawner.create();
     itemBrokenSpawner = ItemBrokenSpawner.create();
 
@@ -278,7 +282,7 @@ public class EnderIO {
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
-    
+
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
@@ -288,7 +292,6 @@ public class EnderIO {
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
     blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));
 
-
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
@@ -296,26 +299,25 @@ public class EnderIO {
     IronEngineFuel.addFuel(Fluids.HOOTCH_NAME, Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycle * Config.hootchPowerTotalBurnTime));
 
-
     f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
     blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, new MaterialLiquid(MapColor.grayColor));
     IronEngineFuel.addFuel(Fluids.ROCKET_FUEL_NAME, Config.rocketFuelPowerPerCycle, Config.rocketFuelPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@" + (Config.rocketFuelPowerPerCycle * Config.rocketFuelPowerTotalBurnTime));
-
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
+        + (Config.rocketFuelPowerPerCycle * Config.rocketFuelPowerTotalBurnTime));
 
     f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
     blockFireWater = BlockFluidEio.create(fluidFireWater, new MaterialLiquid(MapColor.grayColor));
     IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@" + (Config.fireWaterPowerPerCycle * Config.fireWaterPowerTotalBurnTime));
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
+        + (Config.fireWaterPowerPerCycle * Config.fireWaterPowerTotalBurnTime));
 
     if(!IronEngineCoolant.isCoolant(FluidRegistry.getFluid("water"))) {
       IronEngineCoolant.addCoolant(FluidRegistry.getFluid("water"), 0.0023F);
     }
-
 
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();
@@ -332,9 +334,9 @@ public class EnderIO {
     itemEnderface = ItemEnderface.create();
     itemTravelStaff = ItemTravelStaff.create();
     itemConduitProbe = ItemConduitProbe.create();
-    
+
     itemMagnet = ItemMagnet.create();
-    
+
     blockDarkIronBars = BlockDarkIronBars.create();
 
     itemGliderWing = ItemGliderWing.create();
@@ -347,9 +349,7 @@ public class EnderIO {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
-    
-    
-    
+
     MaterialRecipes.registerOresInDictionary();
   }
 
@@ -368,7 +368,7 @@ public class EnderIO {
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 30));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
-    .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
+        .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
 
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 40));

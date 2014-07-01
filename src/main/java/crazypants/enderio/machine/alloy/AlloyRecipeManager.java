@@ -9,9 +9,9 @@ import net.minecraft.item.ItemStack;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import crazypants.enderio.Config;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.recipe.CustomTagHandler;

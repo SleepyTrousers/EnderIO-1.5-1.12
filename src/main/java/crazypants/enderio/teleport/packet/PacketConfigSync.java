@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 
 public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigSync, IMessage> {
 

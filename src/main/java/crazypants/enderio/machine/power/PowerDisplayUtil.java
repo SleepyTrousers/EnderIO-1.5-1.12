@@ -4,7 +4,7 @@ import java.text.NumberFormat;
 
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.Config;
+import crazypants.enderio.config.Config;
 import crazypants.util.Lang;
 
 public class PowerDisplayUtil {

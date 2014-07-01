@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
 
@@ -32,7 +33,7 @@ public class HyperCubeConfig {
 
   private final List<Channel> publicChannels = new ArrayList<Channel>();
 
-  private final Map<String, List<Channel>> userChannels = new HashMap<String, List<Channel>>();
+  private final Map<UUID, List<Channel>> userChannels = new HashMap<UUID, List<Channel>>();
 
   private final File file;
 
@@ -52,11 +53,11 @@ public class HyperCubeConfig {
     publicChannels.addAll(chans);
   }
 
-  public Map<String, List<Channel>> getUserChannels() {
+  public Map<UUID, List<Channel>> getUserChannels() {
     return userChannels;
   }
 
-  public void setUserChannels(Map<String, List<Channel>> channels) {
+  public void setUserChannels(Map<UUID, List<Channel>> channels) {
     userChannels.clear();
     userChannels.putAll(channels);
   }
@@ -67,16 +68,14 @@ public class HyperCubeConfig {
     setChannelListProperty(KEY_PUBLIC_CHANNELS, publicChannels);
 
     StringBuilder userListStr = new StringBuilder();
-    Iterator<Entry<String, List<Channel>>> itr = userChannels.entrySet().iterator();
+    Iterator<Entry<UUID, List<Channel>>> itr = userChannels.entrySet().iterator();
     while (itr.hasNext()) {
-      Entry<String, List<Channel>> entry = itr.next();
-      String user = entry.getKey();
-      if(user != null) {
-        user = user.trim();
-      }
+      Entry<UUID, List<Channel>> entry = itr.next();
+      UUID user = entry.getKey();
+
       List<Channel> channels = entry.getValue();
       if(user != null && channels != null && !channels.isEmpty()) {
-        userListStr.append(user);
+        userListStr.append(user.toString());
         setChannelListProperty(user + KEY_USER_CHANNEL, channels);
       }
       if(itr.hasNext()) {
@@ -135,18 +134,15 @@ public class HyperCubeConfig {
     loadChannelList(KEY_PUBLIC_CHANNELS, null, publicChannels);
 
     userChannels.clear();
-    List<String> users = new ArrayList<String>();
+    List<UUID> users = new ArrayList<UUID>();
     String usersStr = props.getProperty(KEY_USERS, "");
     String[] usersSplit = usersStr.split(DELIM);
     for (String user : usersSplit) {
       if(user != null) {
-        user = user.trim();
-        if(!user.isEmpty()) {
-          users.add(user);
-        }
+        users.add(UUID.fromString(user));
       }
     }
-    for (String user : users) {
+    for (UUID user : users) {
       List<Channel> channels = new ArrayList<Channel>();
       loadChannelList(user + KEY_USER_CHANNEL, user, channels);
       if(!channels.isEmpty()) {
@@ -156,7 +152,7 @@ public class HyperCubeConfig {
 
   }
 
-  private void loadChannelList(String key, String user, List<Channel> channels) {
+  private void loadChannelList(String key, UUID user, List<Channel> channels) {
     String chans = props.getProperty(key, "");
     //chans = chans.replaceAll(DELIM_ESC, DELIM);
     String[] chanSplit = chans.split(DELIM);

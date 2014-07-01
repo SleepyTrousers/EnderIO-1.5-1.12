@@ -355,7 +355,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       min.z = Math.min(min.z, bc.z);
       max.z = Math.max(max.z, bc.z + 1);
     }
-    return AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x, max.y, max.z);
+    return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
   }
 
 }
