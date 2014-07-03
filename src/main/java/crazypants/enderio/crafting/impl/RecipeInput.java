@@ -26,12 +26,12 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
   }
 
   public RecipeInput(ItemStack input) {
-    this(input, input.getItemDamage() == 0);
+    this(input, input == null ? false : input.getItemDamage() == 0);
   }
 
   public RecipeInput(ItemStack input, boolean addSubtypes) {
     super(input, -1);
-    Item inputItem = input.getItem();
+    Item inputItem = input == null ? null : input.getItem();
     if(addSubtypes && inputItem != null && inputItem.getHasSubtypes()) {
       equivelents = new ArrayList<ItemStack>();
       ArrayList<ItemStack> sublist = new ArrayList<ItemStack>();

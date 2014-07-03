@@ -363,7 +363,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler {
 
   protected float doGetFilledRatio() {
     float result = tank.getFilledRatio();
-    if(isMaster()) {
+    if(isMaster() && regenTank != null) {
       result = regenTank.getFilledRatio() * 0.5f + result * 0.5f;
     }
     return result;
