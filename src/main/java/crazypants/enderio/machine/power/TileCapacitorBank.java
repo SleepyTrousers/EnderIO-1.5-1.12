@@ -81,7 +81,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   private List<Receptor> localReceptors;
   private boolean receptorsDirty = true;
 
-  private final ItemStack[] inventory;
+  private final ItemStack[] inventory;    
 
   private List<GaugeBounds> gaugeBounds;
 
@@ -99,6 +99,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   float lastRenderStoredRatio;
 
+//  private boolean registered = false;
+
   public TileCapacitorBank() {
     inventory = new ItemStack[4];
     storedEnergy = 0;
@@ -109,6 +111,15 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     maxInput = maxIO;
     maxOutput = maxIO;
     updatePowerHandler();
+  }  
+
+  @Override
+  public void invalidate() {  
+    super.invalidate();
+//    if(registered) {
+//      WirelessChargerController.instance.deregisterCharger(this);
+//      registered = false;
+//    }
   }
 
   @Override
@@ -132,8 +143,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     setIoMode(faceHit, IoMode.PULL, true);
     return IoMode.PULL;
   }
-
-
 
   @Override
   public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
@@ -191,18 +200,16 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return null;
   }
 
-
-
   @Override
   public void updateEntity() {
     if(worldObj == null) { // sanity check
       return;
     }
-    
+
     if(blockMetadata == -1) {
       isCreative = getBlockMetadata() == 1;
     }
-    
+
     if(worldObj.isRemote) {
       if(render) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -217,17 +224,24 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
 
     if(!isContoller()) {
-      if(notifyNeighbours) {        
+//      if(registered) {
+//        WirelessChargerController.instance.deregisterCharger(this);
+//        registered = false;
+//      }
+      if(notifyNeighbours) {
         worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
         notifyNeighbours = false;
       }
       return;
     }
+//    if(!registered) {
+//      WirelessChargerController.instance.registerCharger(this);
+//      registered = true;
+//    }
 
-    
     chargeItems();
-    
-    boolean hasSignal = isRecievingRedstoneSignal();    
+
+    boolean hasSignal = isRecievingRedstoneSignal();
     if(inputControlMode == RedstoneControlMode.IGNORE) {
       inputEnabled = true;
     } else if(inputControlMode == RedstoneControlMode.NEVER) {
@@ -253,15 +267,15 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       powerHandler.setEnergy(0);
     }
     if(isCreative) {
-      storedEnergy = getMaxEnergyStored()/2;
+      storedEnergy = getMaxEnergyStored() / 2;
     }
 
     if(lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 10 == 0) {
       lastSyncPowerStored = storedEnergy;
-      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this, 64);      
+      PacketHandler.sendToAllAround(new PacketPowerStorage(this), this, 64);
     }
-    
-    if(notifyNeighbours) {      
+
+    if(notifyNeighbours) {
       worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
       notifyNeighbours = false;
     }
@@ -275,10 +289,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return gaugeBounds;
   }
 
-  private void chargeItems() {
+  public boolean chargeItems(ItemStack[] items) {
     boolean chargedItem = false;
     float available = Math.min(maxIO, storedEnergy);
-    for (ItemStack item : inventory) {
+    for (ItemStack item : items) {
       if(item != null && available > 0) {
         float used = 0;
         if(item.getItem() instanceof IEnergyContainerItem) {
@@ -294,7 +308,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
             used = (chargable.getEnergyStored(item) - cur) / 10;
           }
 
-        } 
+        }
         if(used > 0) {
           storedEnergy = storedEnergy - used;
           chargedItem = true;
@@ -302,9 +316,14 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
         }
       }
     }
+    return chargedItem;
+  }
+
+  private void chargeItems() {
+    boolean chargedItem = chargeItems(inventory);
     if(chargedItem) {
       markDirty();
-    }    
+    }
   }
 
   public boolean isOutputEnabled() {
@@ -357,7 +376,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           } else {
             used = 0;
           }
-        } else {          
+        } else {
           used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         }
 
@@ -728,6 +747,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   }
 
   public void onBreakBlock() {
+//    if(registered) {
+//      WirelessChargerController.instance.deregisterCharger(this);
+//      registered = false;
+//    }
     TileCapacitorBank controller = getController();
     controller.clearCurrentMultiblock();
   }
@@ -748,39 +771,43 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   }
 
   private void formMultiblock() {
-    if(isCreative) {
-      return;
-    }
-    List<TileCapacitorBank> blocks = new ArrayList<TileCapacitorBank>();
-    blocks.add(this);
-    findNighbouringBanks(this, blocks);
+//    try {
+      if(isCreative) {
+        return;
+      }
+      List<TileCapacitorBank> blocks = new ArrayList<TileCapacitorBank>();
+      blocks.add(this);
+      findNighbouringBanks(this, blocks);
 
-    if(blocks.size() < 2) {
-      return;
-    }
-    for (TileCapacitorBank cb : blocks) {
-      cb.clearCurrentMultiblock();
-    }
+      if(blocks.size() < 2) {
+        return;
+      }
+      for (TileCapacitorBank cb : blocks) {
+        cb.clearCurrentMultiblock();
+      }
 
-    BlockCoord[] mb = new BlockCoord[blocks.size()];
-    for (int i = 0; i < blocks.size(); i++) {
-      mb[i] = new BlockCoord(blocks.get(i));
-    }
+      BlockCoord[] mb = new BlockCoord[blocks.size()];
+      for (int i = 0; i < blocks.size(); i++) {
+        mb[i] = new BlockCoord(blocks.get(i));
+      }
 
-    TileCapacitorBank secondary = blocks.get(1);
-    maxInput = maxOutput = -1;
+      TileCapacitorBank secondary = blocks.get(1);
+      maxInput = maxOutput = -1;
 
-    if (secondary.maxInput != secondary.maxIO) {
-      maxInput = secondary.maxInput;
-    }
+      if(secondary.maxInput != secondary.maxIO) {
+        maxInput = secondary.maxInput;
+      }
 
-    if (secondary.maxOutput != secondary.maxIO) {
-      maxOutput = secondary.maxOutput;
-    }
+      if(secondary.maxOutput != secondary.maxIO) {
+        maxOutput = secondary.maxOutput;
+      }
 
-    for (TileCapacitorBank cb : blocks) {
-      cb.setMultiblock(mb);
-    }
+      for (TileCapacitorBank cb : blocks) {
+        cb.setMultiblock(mb);
+      }
+//    } finally {
+//      WirelessChargerController.instance.registerCharger(getController());
+//    }
   }
 
   private void findNighbouringBanks(TileCapacitorBank tileCapacitorBank, List<TileCapacitorBank> blocks) {
@@ -800,6 +827,9 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   private void setMultiblock(BlockCoord[] mb) {
 
     if(multiblock != null && isMaster()) {
+
+      //WirelessChargerController.instance.deregisterCharger(this);
+
       // split up current multiblock and reconfigure all the internal capacitors
       float powerPerBlock = storedEnergy / multiblock.length;
       for (BlockCoord bc : multiblock) {
@@ -818,6 +848,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
     multiblock = mb;
     if(isMaster()) {
+
+      //WirelessChargerController.instance.registerCharger(this);
 
       List<ItemStack> invItems = new ArrayList<ItemStack>();
 
@@ -841,7 +873,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       storedEnergy = totalStored;
       maxStoredEnergy = totalCap;
       maxIO = totalIO;
-      maxInput = maxInput < 0 ? maxIO : Math.min(maxInput,  maxIO);
+      maxInput = maxInput < 0 ? maxIO : Math.min(maxInput, maxIO);
       maxOutput = maxOutput < 0 ? maxIO : Math.min(maxOutput, maxIO);
       for (BlockCoord bc : multiblock) {
         TileCapacitorBank cb = getCapBank(bc);
@@ -1153,7 +1185,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public boolean hasCustomInventoryName() {
-    
+
     return false;
   }
 
@@ -1161,7 +1193,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     this.isCreative = true;
     maxIO = maxIO * 1000;
     maxInput = maxIO;
-    maxOutput = maxIO;    
+    maxOutput = maxIO;
     updatePowerHandler();
   }
 

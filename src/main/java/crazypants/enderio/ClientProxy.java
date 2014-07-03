@@ -157,6 +157,9 @@ public class ClientProxy extends CommonProxy {
 
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
+        
+//    BlockWirelessCharger.renderId = RenderingRegistry.getNextAvailableRenderId();
+//    RenderingRegistry.registerBlockHandler(new WirelessChargerRenderer());
 
     if(Config.useCombustionGenModel) {
       CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();

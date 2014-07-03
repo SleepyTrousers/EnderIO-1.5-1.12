@@ -182,6 +182,8 @@ tile.blockCapacitorBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
+tile.blockWirelessCharger.name=Wireless Charger
+
 tile.blockSagMill.name=SAG Mill
 tile.blockSagMill.tooltip.detailed.line1=Grinds ore and other items
 tile.blockSagMill.tooltip.detailed.line2=Can be upgraded to increase speed

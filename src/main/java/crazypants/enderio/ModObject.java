@@ -47,6 +47,8 @@ public enum ModObject {
   blockFarmStation,
   blockTank,
   blockCrafter,
+  blockVacuumChest, 
+  blockWirelessCharger,
   
   blockPoweredSpawner,
   itemBrokenSpawner,
@@ -74,7 +76,8 @@ public enum ModObject {
 
   blockTravelAnchor,
   itemTravelStaff, 
-  itemMagnet, itemGliderWing, blockVacuumChest;
+  itemMagnet, 
+  itemGliderWing;
 
   public final String unlocalisedName;
 
