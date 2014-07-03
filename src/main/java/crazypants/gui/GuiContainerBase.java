@@ -272,4 +272,11 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     buttonList.remove(button);
   }
 
+  @Override
+  public int getOverlayOffsetX() {  
+    return 0;
+  }
+  
+  
+
 }

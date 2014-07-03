@@ -149,6 +149,11 @@ public class GuiPowerMonitor extends GuiScreenBase {
   }
 
   @Override
+  public int getOverlayOffsetX() {  
+    return 0;
+  }
+
+  @Override
   protected void mouseClicked(int x, int y, int par3) {
     super.mouseClicked(x, y, par3);
 

@@ -433,4 +433,11 @@ public class GuiHyperCube extends GuiScreenBase {
     return Minecraft.getMinecraft().fontRenderer;
   }
 
+  @Override
+  public int getOverlayOffsetX() {  
+    return 0;
+  }
+
+  
+  
 }
