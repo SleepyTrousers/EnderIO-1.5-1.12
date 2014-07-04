@@ -55,7 +55,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     if(stored > 0) {
       storedEnergy += stored;
       storedEnergy = Math.min(storedEnergy, MAX_ENERGY_STORED_MJ);
-      if(stored == MAX_ENERGY_STORED_MJ) {
+      if(stored > (MAX_ENERGY_STORED_MJ - 2)) {
         powerHandler.configure(0, 0, 0, 0);
       } else {
         powerHandler.configure(0, MAX_ENERGY_IN, 0, MAX_ENERGY_IN);
@@ -129,13 +129,12 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {    
     double maxMj = Math.min(maxReceive / 10, MAX_ENERGY_IN);
     double canRecieve = Math.min(MAX_ENERGY_STORED_MJ - storedEnergy, maxMj);
     int canRecieveRF = (int)(canRecieve * 10);
     if(!simulate) {
-      storedEnergy += (canRecieveRF / 10);
+      storedEnergy += (canRecieveRF / 10f);
     }    
     return canRecieveRF;
   }

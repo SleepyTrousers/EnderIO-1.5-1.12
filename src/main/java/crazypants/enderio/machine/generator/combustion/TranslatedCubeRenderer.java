@@ -57,9 +57,9 @@ public class TranslatedCubeRenderer {
           v.xyz.sub(xyz);
           xform.apply(v);
           if(!enableLighting) {
-            v.brightness = -1;
+            v.brightness = 15 << 20 | 15 << 4;
             float col = RenderUtil.getColorMultiplierForFace(face);
-            v.color = new Vector4f(col,col,col,1);
+            v.color = new Vector4f(col,col,col,1);            
             v.normal = null;
           }
         }

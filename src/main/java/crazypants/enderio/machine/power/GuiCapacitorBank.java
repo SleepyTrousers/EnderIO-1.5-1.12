@@ -36,7 +36,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   protected static final int CONFIG_ID = 377996104;
 
-  private static final int POWER_X = 8 + 21;
+  private static final int POWER_X = 8;
   private static final int POWER_Y = 9;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
