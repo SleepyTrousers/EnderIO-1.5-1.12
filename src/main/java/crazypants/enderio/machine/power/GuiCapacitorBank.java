@@ -36,7 +36,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   protected static final int CONFIG_ID = 377996104;
 
-  private static final int POWER_X = 8;
+  private static final int POWER_X = 8 + 21;
   private static final int POWER_Y = 9;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
@@ -67,7 +67,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     xSize = 176 + 42;
     
-    addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
+    addToolTip(new GuiToolTip(new Rectangle(POWER_X - 21, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
       protected void updateText() {
