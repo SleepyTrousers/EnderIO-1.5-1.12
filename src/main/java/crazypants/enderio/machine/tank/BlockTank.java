@@ -154,18 +154,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return new GuiTank(player.inventory, (TileTank) te);
   }
 
-  //Causes crashes in 1.7 on some machines
-  //@Override
-  //@SideOnly(Side.CLIENT)
-  //public int getRenderBlockPass() {
-  //  return 1;
-  //}
-  //
-  //@Override
-  //public boolean canRenderInPass(int pass) {
-  //  return pass == 1;
-  //}
-
   @Override
   public boolean isOpaqueCube() {
     return false;

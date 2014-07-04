@@ -25,6 +25,10 @@ public class TranslatedCubeRenderer {
 
   private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
+  public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, boolean enableLighting) {
+    renderBoundingBox(x, y, z, block, bb, vt, null, enableLighting);
+  }
+  
   public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt) {
     renderBoundingBox(x, y, z, block, bb, vt, null);
   }
