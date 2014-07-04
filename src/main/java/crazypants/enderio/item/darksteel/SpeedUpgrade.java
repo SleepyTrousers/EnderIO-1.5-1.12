@@ -1,10 +1,14 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.material.Material;
+import crazypants.util.Util;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -15,15 +19,15 @@ public class SpeedUpgrade extends AbstractUpgrade {
   private static String UPGRADE_NAME = "speedBoost";
 
   public static float[] WALK_MULTIPLIERS = new float[] {
-    Config.darkSteelSpeedOneWalkModifier,
-    Config.darkSteelSpeedTwoWalkMultiplier,
-    Config.darkSteelSpeedThreeWalkMultiplier
+      Config.darkSteelSpeedOneWalkModifier,
+      Config.darkSteelSpeedTwoWalkMultiplier,
+      Config.darkSteelSpeedThreeWalkMultiplier
   };
 
   public static float[] SPRINT_MULTIPLIERS = new float[] {
-    Config.darkSteelSpeedOneSprintModifier,
-    Config.darkSteelSpeedTwoSprintMultiplier,
-    Config.darkSteelSpeedThreeSprintMultiplier
+      Config.darkSteelSpeedOneSprintModifier,
+      Config.darkSteelSpeedTwoSprintMultiplier,
+      Config.darkSteelSpeedThreeSprintMultiplier
   };
 
   public static SpeedUpgrade SPEED_ONE = new SpeedUpgrade("enderio.darksteel.upgrade.speed_one", 1, 15);
@@ -47,14 +51,22 @@ public class SpeedUpgrade extends AbstractUpgrade {
     return new SpeedUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
 
+  private static ItemStack createUpgradeItem() {
+    ItemStack pot = new ItemStack(Items.potionitem, 1, 0);
+    int res = PotionHelper.applyIngredient(0, Items.nether_wart.getPotionEffect(new ItemStack(Items.nether_wart)));
+    res = PotionHelper.applyIngredient(res, PotionHelper.sugarEffect);    
+    pot.setItemDamage(res);
+    return pot;
+  }
+
   public SpeedUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
     level = tag.getShort(KEY_LEVEL);
   }
 
-  public SpeedUpgrade(String unlocName,int level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal()), levelCost);
-    this.level = (short)level;
+  public SpeedUpgrade(String unlocName, int level, int levelCost) {
+    super(UPGRADE_NAME, unlocName, createUpgradeItem(), levelCost);
+    this.level = (short) level;
   }
 
   @Override
@@ -68,7 +80,6 @@ public class SpeedUpgrade extends AbstractUpgrade {
     }
     return up.level == level - 1;
   }
-
 
   @Override
   public boolean hasUpgrade(ItemStack stack) {

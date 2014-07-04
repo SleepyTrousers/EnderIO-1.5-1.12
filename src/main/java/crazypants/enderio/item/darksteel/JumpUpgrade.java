@@ -1,5 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.EnderIO;
@@ -37,7 +39,7 @@ public class JumpUpgrade extends AbstractUpgrade {
   }
 
   public JumpUpgrade(String unlocName,int level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal()), levelCost);
+    super(UPGRADE_NAME, unlocName, new ItemStack(Blocks.piston), levelCost);
     this.level = (short)level;
   }
 
