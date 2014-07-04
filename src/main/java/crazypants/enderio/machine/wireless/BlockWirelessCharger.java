@@ -3,6 +3,7 @@ package crazypants.enderio.machine.wireless;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -16,6 +17,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.power.PacketPowerStorage;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.ContainerVacuumChest;
@@ -23,7 +25,7 @@ import crazypants.enderio.machine.vacuum.GuiVacuumChest;
 import crazypants.enderio.machine.vacuum.TileVacuumChest;
 import crazypants.enderio.network.PacketHandler;
 
-public class BlockWirelessCharger extends BlockEio /*implements IGuiHandler*/ {
+public class BlockWirelessCharger extends BlockEio implements IResourceTooltipProvider /*IGuiHandler*/ {
 
   public static BlockWirelessCharger create() {
     
@@ -140,5 +142,10 @@ public class BlockWirelessCharger extends BlockEio /*implements IGuiHandler*/ {
     super.breakBlock(world, x, y, z, block, p_149749_6_);
     world.removeTileEntity(x, y, z);
   }
+
+@Override
+public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+  return getUnlocalizedName();
+}
 
 }

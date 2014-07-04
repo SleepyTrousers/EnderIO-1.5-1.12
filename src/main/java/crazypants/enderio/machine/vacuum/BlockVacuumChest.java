@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,12 +15,13 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.power.ContainerCapacitorBank;
 import crazypants.enderio.machine.power.GuiCapacitorBank;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 
-public class BlockVacuumChest extends BlockEio implements IGuiHandler {
+public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 
   public static BlockVacuumChest create() {
     BlockVacuumChest res = new BlockVacuumChest();
@@ -93,6 +95,11 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler {
   public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
     super.breakBlock(world, x, y, z, block, p_149749_6_);
     world.removeTileEntity(x, y, z);
+  }
+
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    return getUnlocalizedName();
   }
 
 }

@@ -183,6 +183,8 @@ tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
 tile.blockWirelessCharger.name=Wireless Charger
+tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby 
+tile.blockWirelessCharger.tooltip.detailed.line2=players inventories
 
 tile.blockSagMill.name=SAG Mill
 tile.blockSagMill.tooltip.detailed.line1=Grinds ore and other items
@@ -232,8 +234,11 @@ tile.blockTank.tooltip.detailed.line3=fill fluid containers
 enderio.tank.tank=Tank
 
 tile.blockCrafter.name=Crafter
+tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
 
 tile.blockVacuumChest.name=Vacuum Chest
+tile.blockVacuumChest.tooltip.detailed.line1=Pulls nearby items
+tile.blockVacuumChest.tooltip.detailed.line2=into its inventory
 
 tile.blockPoweredSpawner.name=Powered Spawner
 tile.blockPoweredSpawner.tooltip.empty=Empty
@@ -283,9 +288,9 @@ tile.blockPaintedDoubleSlab.name=Painted Slab
 tile.blockPaintedGlowstone.name=Painted Glowstone
 
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
-tile.blockPainter.tooltip.detailed.line2= Conduit Facades, Stairs, Fences
-tile.blockPainter.tooltip.detailed.line3= Gates, Slabs, Cobblestone Walls
-tile.blockPainter.tooltip.detailed.line3= Glass Frames
+tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
+tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
+tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone and Carpets
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench
