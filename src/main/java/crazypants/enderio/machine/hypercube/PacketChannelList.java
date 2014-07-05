@@ -16,16 +16,16 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
 
   private boolean isPrivate;
   private List<Channel> channels;
-  private UUID userId;
+  private String userId;
 
   public PacketChannelList() {
   }
 
   public PacketChannelList(EntityPlayer player, boolean isPrivate) {
-    this(player.getGameProfile().getId(), isPrivate);
+    this(player.getGameProfile().getName(), isPrivate);
   }
 
-  public PacketChannelList(UUID uuid, boolean isPrivate) {
+  public PacketChannelList(String uuid, boolean isPrivate) {
     this.userId = uuid;
     this.isPrivate = isPrivate;
     if(isPrivate && uuid == null) {
@@ -63,7 +63,7 @@ public class PacketChannelList implements IMessage, IMessageHandler<PacketChanne
   public void fromBytes(ByteBuf buffer) {
     isPrivate = buffer.readBoolean();
     if(isPrivate) {
-      userId = UUID.fromString(ByteBufUtils.readUTF8String(buffer));
+      userId = ByteBufUtils.readUTF8String(buffer);
     } else {
       userId = null;
     }

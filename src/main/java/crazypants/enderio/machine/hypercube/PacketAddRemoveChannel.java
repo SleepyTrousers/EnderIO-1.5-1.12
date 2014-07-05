@@ -44,7 +44,7 @@ public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketA
     if(!isPublic) {
       user = ByteBufUtils.readUTF8String(data);
     }
-    channel = new Channel(name, user == null ? null : UUID.fromString(user));
+    channel = new Channel(name, user == null ? null : user);
   }
 
   @Override

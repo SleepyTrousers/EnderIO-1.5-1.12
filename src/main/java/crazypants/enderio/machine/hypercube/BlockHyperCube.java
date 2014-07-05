@@ -198,9 +198,9 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       return null;
     }
 
-    UUID user = null;
+    String user = null;
     if(!tag.getBoolean("channelIsPublic")) {
-      user = UUID.fromString(tag.getString("channelUser"));
+      user = tag.getString("channelUser");
     }
     return new Channel(channelName, user);
 

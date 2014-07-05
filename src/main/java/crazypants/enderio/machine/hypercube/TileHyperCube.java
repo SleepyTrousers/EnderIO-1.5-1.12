@@ -841,7 +841,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : UUID.fromString(channelUser));
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
     } else {
       channel = null;
     }

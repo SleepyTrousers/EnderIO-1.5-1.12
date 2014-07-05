@@ -71,7 +71,7 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
     selectedChannel = null;
     if(name != null && name.trim().length() > 0) {
       if(user != null && user.trim().length() > 0) {
-        selectedChannel = new Channel(name, UUID.fromString(user));
+        selectedChannel = new Channel(name, user);
       } else {
         selectedChannel = new Channel(name, null);
       }
