@@ -74,17 +74,18 @@ public class DarkSteelController {
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
 
-    //TODO: I am doing this at Phase.START and Phase.END
-    //boots step height
-    updateStepHeightAndFallDistance(player);
 
-    //leggings
-    updateSpeed(player);
+     
+    if(event.phase == Phase.START) {
+      //boots
+      updateStepHeightAndFallDistance(player);
 
-    //sword
-    updateSword(player);
+      //leggings
+      updateSpeed(player);
 
-    if(event.phase == Phase.END) {
+      //sword
+      updateSword(player);
+
       updateGlide(player);
     }
 
@@ -158,21 +159,28 @@ public class DarkSteelController {
   }
 
   private void updateSpeed(EntityPlayer player) {
+    if(player.worldObj.isRemote) {
+      return;
+    }
+
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
-    moveInst.removeModifier(walkModifiers[0]); //any will so as they all have the same UID
-    moveInst.removeModifier(sprintModifiers[0]);
+    if(moveInst.getModifier(walkModifiers[0].getID()) != null) {      
+      moveInst.removeModifier(walkModifiers[0]); //any will so as they all have the same UID
+    } else if(moveInst.getModifier(sprintModifiers[0].getID()) != null) {      
+      moveInst.removeModifier(sprintModifiers[0]);
+    } 
 
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
 
-      double horzMovement = Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ);
-      double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost  : Config.darkSteelWalkPowerCost;
+      double horzMovement = Math.abs(player.distanceWalkedOnStepModified - player.prevDistanceWalkedModified);
+      double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
       costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
       int cost = (int) (horzMovement * costModifier);
-
       int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelLeggings);
-      if(totalEnergy > 0 && totalEnergy >= cost) {
+      
+      if(totalEnergy > 0) {        
         usePlayerEnergy(player, EnderIO.itemDarkSteelLeggings, cost);
         if(player.isSprinting()) {
           moveInst.applyModifier(sprintModifiers[speedUpgrade.level - 1]);
@@ -194,8 +202,8 @@ public class DarkSteelController {
         if(totalEnergy > 0 && totalEnergy >= energyCost) {
           usePlayerEnergy(player, EnderIO.itemDarkSteelBoots, energyCost);
           player.fallDistance -= costedDistance;
+        }
       }
-    }
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
@@ -203,33 +211,38 @@ public class DarkSteelController {
       player.stepHeight = 1.0023F;
     } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
+    }
   }
-  }
- 
 
   void usePlayerEnergy(EntityPlayer player, ItemDarkSteelArmor armor, int cost) {
     if(cost == 0) {
       return;
     }
+    boolean extracted = false;
     int remaining = cost;
     if(Config.darkSteelDrainPowerFromInventory) {
       for (ItemStack stack : player.inventory.mainInventory) {
         if(stack != null && stack.getItem() instanceof IEnergyContainerItem) {
           IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
-          remaining -= cont.extractEnergy(stack, remaining, false);
+          int used = cont.extractEnergy(stack, remaining, false);
+          remaining -= used;
+          extracted |= used > 0;
           if(remaining <= 0) {
+            player.inventory.markDirty();
             return;
           }
         }
       }
     }
-
-    if(armor != null) {
+    if(armor != null && remaining > 0) {
       ItemStack stack = player.inventory.armorInventory[3 - armor.armorType];
       if(stack != null) {
-        armor.extractEnergy(stack, remaining, false);
-        player.inventory.markDirty();
+        int used = armor.extractEnergy(stack, remaining, false);
+        extracted |= used > 0;
       }
+    }
+    if(extracted) {
+      player.inventory.markDirty();
     }
   }
 
