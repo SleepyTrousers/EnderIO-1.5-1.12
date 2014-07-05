@@ -196,6 +196,10 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     super.readFromNBT(nbtRoot);    
+    readContentsFromNBT(nbtRoot);
+  }
+  
+  public void readContentsFromNBT(NBTTagCompound nbtRoot) {
     NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
     if(itemList != null) {
       for (int i = 0; i < itemList.tagCount(); i++) {
@@ -211,6 +215,10 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {    
     super.writeToNBT(nbtRoot);
+    writeContentsToNBT(nbtRoot);
+  } 
+  
+  public void writeContentsToNBT(NBTTagCompound nbtRoot) {
     NBTTagList itemList = new NBTTagList();
     for (int i = 0; i < inv.length; i++) {
       if(inv[i] != null) {
@@ -221,6 +229,6 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
       }
     }
     nbtRoot.setTag("Items", itemList);
-  } 
+  }
     
 }

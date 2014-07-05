@@ -1,12 +1,17 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.util.Random;
+
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,6 +22,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.power.BlockItemCapacitorBank;
 import crazypants.enderio.machine.power.ContainerCapacitorBank;
 import crazypants.enderio.machine.power.GuiCapacitorBank;
 import crazypants.enderio.machine.power.TileCapacitorBank;
@@ -62,6 +68,50 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
     }
     entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, x, y, z);
     return true;
+  }
+  
+  @Override
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvested) {
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileVacuumChest) {
+        TileVacuumChest cb = (TileVacuumChest) te;
+        if(!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
+          ItemStack itemStack = createItemStackWithInventory(cb);          
+          float f = 0.7F;
+          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+          entityitem.delayBeforeCanPickup = 10;
+          world.spawnEntityInWorld(entityitem);
+        }
+      }
+    }
+    return super.removedByPlayer(world, player, x, y, z, harvested);
+  }
+
+  @Override
+  public int quantityDropped(Random p_149745_1_) {    
+    return 0;
+  }
+
+  private ItemStack createItemStackWithInventory(TileVacuumChest cb) {
+    ItemStack stack = new ItemStack(this);
+    stack.stackTagCompound = new NBTTagCompound();
+    cb.writeContentsToNBT(stack.stackTagCompound);
+    return stack;
+  }
+
+  @Override
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placedBy, ItemStack stack) {
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(stack != null && stack.stackTagCompound != null && te instanceof TileVacuumChest) {  
+        ((TileVacuumChest)te).readContentsFromNBT(stack.stackTagCompound);
+        world.markBlockForUpdate(x, y, z);
+      }
+    }
   }
 
   @Override
