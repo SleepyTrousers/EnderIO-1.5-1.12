@@ -99,17 +99,18 @@ public class BlockFusedQuartz extends BlockEio {
     return renderId;
   }
 
-  @Override
-  @SideOnly(Side.CLIENT)
-  public int getRenderBlockPass() {
-    return 1;
-  }
-
-  @Override
-  public boolean canRenderInPass(int pass) {
-    FusedQuartzRenderer.renderPass = pass;
-    return true;
-  }
+  //TODO:1.7 this makes it go splat
+  //  @Override
+  //  @SideOnly(Side.CLIENT)
+  //  public int getRenderBlockPass() {
+  //    return 1;
+  //  }
+  //
+  //  @Override
+  //  public boolean canRenderInPass(int pass) {
+  //    FusedQuartzRenderer.renderPass = pass;
+  //    return true;
+  //  }
 
   @Override
   public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
