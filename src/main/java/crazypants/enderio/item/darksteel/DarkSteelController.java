@@ -145,6 +145,15 @@ public class DarkSteelController {
     }
     return true;
   }
+  
+  public boolean isSoundDetectorUpgradeEquipped(EntityClientPlayerMP player) {
+    ItemStack helmet = player.getEquipmentInSlot(4);
+    SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
+    if(upgrade == null) {
+      return false;
+    }
+    return true;
+  }
 
   private void updateSword(EntityPlayer player) {
     if(ItemDarkSteelSword.isEquipped(player)) {

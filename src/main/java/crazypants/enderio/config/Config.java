@@ -160,6 +160,19 @@ public final class Config {
   public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;
   public static float darkSteelAxeEffeciencyBoostWhenPowered = 2;
   public static float darkSteelAxeSpeedPenaltyMultiHarvest = 8;
+  
+  public static int darkSteelUpgradeVibrantCost = 20;
+  public static int darkSteelUpgradePowerOneCost = 10;
+  public static int darkSteelUpgradePowerTwoCost = 20;
+  public static int darkSteelUpgradePowerThreeCost = 30;
+
+  public static int darkSteelGliderCost = 15;
+  public static double darkSteelGliderHorizontalSpeed = 0.03;
+  public static double darkSteelGliderVerticalSpeed = -0.05;
+  public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
+  
+  public static int darkSteelSoundLocatorCost = 10;
+  public static int darkSteelSoundLocatorRange = 40;
 
   public static int hootchPowerPerCycle = 6;
   public static int hootchPowerTotalBurnTime = 6000;
@@ -180,16 +193,6 @@ public final class Config {
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
   public static boolean addDurabilityTootip = true;
-
-  public static int darkSteelUpgradeVibrantCost = 20;
-  public static int darkSteelUpgradePowerOneCost = 10;
-  public static int darkSteelUpgradePowerTwoCost = 20;
-  public static int darkSteelUpgradePowerThreeCost = 30;
-
-  public static int darkSteelGliderCost = 15;
-  public static double darkSteelGliderHorizontalSpeed = 0.03;
-  public static double darkSteelGliderVerticalSpeed = -0.05;
-  public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
 
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
@@ -219,6 +222,8 @@ public final class Config {
   public static int powerSpawnerAddSpawnerCost = 30;
 
   public static double vacuumChestRange = 6;
+
+  
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -451,6 +456,11 @@ public final class Config {
     darkSteelGliderVerticalSpeedSprinting = config.get(sectionDarkSteel.name, "darkSteelGliderVerticalSpeedSprinting", darkSteelGliderVerticalSpeedSprinting,
         "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);    
         
+    darkSteelSoundLocatorCost = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorCost", darkSteelSoundLocatorCost,
+        "Number of levels required for the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorCost);
+    darkSteelSoundLocatorRange = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorRange", darkSteelSoundLocatorRange,
+        "Range of the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorRange);
+    
     darkSteelSwordSkullLootingModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordSkullLootingModifier);

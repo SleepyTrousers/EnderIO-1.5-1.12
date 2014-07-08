@@ -76,22 +76,21 @@ public final class IconEIO {
 
   public static final IconEIO LOOP = new IconEIO(217, 236, 20, 20);
   public static final IconEIO LOOP_OFF = new IconEIO(236, 236, 20, 20);
-  
+
   public static final IconEIO ROUND_ROBIN = new IconEIO(86, 236, 20, 20);
   public static final IconEIO ROUND_ROBIN_OFF = new IconEIO(106, 236, 20, 20);
 
   public static final IconEIO IO_CONFIG_UP = new IconEIO(80, 116, 24, 24);
-  public static final IconEIO IO_CONFIG_DOWN  = new IconEIO(104, 116, 24, 24);
+  public static final IconEIO IO_CONFIG_DOWN = new IconEIO(104, 116, 24, 24);
 
-  public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13,13);
+  public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13, 13);
 
-  public static final IconEIO RECIPE = new IconEIO(128, 116, 24,24);
-  
-  public static final IconEIO ADD_BUT = new IconEIO(139, 246, 10,10);
-  public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10,10);
-  
+  public static final IconEIO RECIPE = new IconEIO(128, 116, 24, 24);
 
+  public static final IconEIO ADD_BUT = new IconEIO(139, 246, 10, 10);
+  public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10, 10);
 
+  public static final IconEIO SOUND = new IconEIO(209, 172, 22, 22);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
@@ -131,16 +130,27 @@ public final class IconEIO {
   }
 
   public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw) {
+    renderIcon(x, y, width, height, zLevel, doDraw, false);
+  }
+
+  public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw, boolean flipY) {
 
     Tessellator tessellator = Tessellator.instance;
     if(doDraw) {
       RenderUtil.bindTexture(TEXTURE);
       tessellator.startDrawingQuads();
     }
-    tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
-    tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
-    tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
-    tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
+    if(flipY) {
+      tessellator.addVertexWithUV(x, y + height, zLevel, minU, minV);
+      tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, minV);
+      tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, maxV);
+      tessellator.addVertexWithUV(x, y + 0, zLevel, minU, maxV);
+    } else {
+      tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
+      tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
+      tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
+      tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
+    }
     if(doDraw) {
       tessellator.draw();
     }

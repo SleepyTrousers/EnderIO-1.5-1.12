@@ -368,6 +368,12 @@ enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding
 enderio.darksteel.upgrade.glider.enabled=Glider Active
 enderio.darksteel.upgrade.glider.disabled=Glider Disabled
 
+enderio.darksteel.upgrade.sound.name=Sound Locator
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Displays the location of
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nearby sounds
+enderio.darksteel.upgrade.sound.enabled=Sound Locator Active
+enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
+
 item.itemGliderWing.name=Glider Wing
 item.itemGliderWings.name=Glider Wings
 

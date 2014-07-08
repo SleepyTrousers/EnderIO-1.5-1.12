@@ -20,18 +20,45 @@ public class KeyTracker {
     FMLCommonHandler.instance().bus().register(instance);
   }
   
-  private KeyBinding glideKey;
-  private boolean wasGlideKeyPressed = false;
-  
+  private KeyBinding glideKey;  
   private boolean isGlideActive = false;
+  
+  private KeyBinding soundDetectorKey;  
+  private boolean isSoundDectorActive = false;
   
   public KeyTracker() {
     glideKey = new KeyBinding("Glider Toggle", Keyboard.KEY_G, "Dark Steel Armor");
-    ClientRegistry.registerKeyBinding(glideKey);    
+    ClientRegistry.registerKeyBinding(glideKey);
+    soundDetectorKey = new KeyBinding("Sound Locator", Keyboard.KEY_L, "Dark Steel Armor");
+    ClientRegistry.registerKeyBinding(soundDetectorKey);        
   }
   
   @SubscribeEvent
   public void onKeyInput(KeyInputEvent event) {   
+    handleGlide();
+    handleSoundDetector();
+  }
+
+  private void handleSoundDetector() {
+    if(!DarkSteelController.instance.isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      SoundDetector.instance.enabled = false;
+      return;
+    }
+    if(soundDetectorKey.getIsKeyPressed()) {      
+      isSoundDectorActive = !isSoundDectorActive;
+      String message;
+      if(isSoundDectorActive) {
+        message = Lang.localize("darksteel.upgrade.sound.enabled");
+      } else {
+        message = Lang.localize("darksteel.upgrade.sound.disabled");
+      }
+      Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
+      SoundDetector.instance.enabled = isSoundDectorActive;
+    }
+    
+  }
+
+  private void handleGlide() {
     if(!DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
       return;
     }

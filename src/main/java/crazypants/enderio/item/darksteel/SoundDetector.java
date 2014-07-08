@@ -16,9 +16,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.sound.PlaySoundEvent17;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.client.event.sound.SoundEvent;
@@ -30,6 +32,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
@@ -53,13 +56,24 @@ public class SoundDetector {
   
   boolean enabled = false;
   
+  double maxRangeSq = Config.darkSteelSoundLocatorRange * Config.darkSteelSoundLocatorRange;
+  
   @SubscribeEvent
   public void onSound(PlaySoundAtEntityEvent evt) {
     if(enabled && evt.entity != null && evt.entity != Minecraft.getMinecraft().thePlayer) {
       synchronized (soundQueue) {        
-        soundQueue.add(new SoundSource(evt.entity));  
+        soundQueue.add(new SoundSource(evt.entity, evt.volume));  
       }     
-    }    
+    }     
+  }
+  
+  @SubscribeEvent
+  public void onSound(PlaySoundSourceEvent evt) {    
+    if(enabled) {
+      synchronized (soundQueue) {            
+        soundQueue.add(new SoundSource(evt.sound.getXPosF(),evt.sound.getYPosF(),evt.sound.getZPosF(), evt.sound.getVolume()));  
+      }     
+    }     
   }
   
   @SideOnly(Side.CLIENT)
@@ -74,31 +88,38 @@ public class SoundDetector {
       sounds.addAll(soundQueue);
       soundQueue.clear();
     }
-    
+        
     if(mc.thePlayer == null || mc.thePlayer.worldObj == null) {
       return;
     }
-    
+    Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     for(SoundSource ss : sounds) {
-      mc.thePlayer.worldObj.spawnEntityInWorld(new SoundEntity(mc.thePlayer.worldObj, ss.pos)); 
+      if(ss.pos.distanceSquared(eye) <= maxRangeSq) {
+        mc.thePlayer.worldObj.spawnEntityInWorld(new SoundEntity(mc.thePlayer.worldObj, ss.pos, ss.volume));  
+      }       
     }    
     sounds.clear();
     
   }
 
   private static class SoundSource {
-    
-    int expiresTicks;
+        
     Vector3d pos;
+    float volume;
     
-    public SoundSource(Entity ent) {
+    public SoundSource(Entity ent, float volume) {
       AxisAlignedBB bb = ent.boundingBox;
       if(bb != null) {        
         pos = new Vector3d(bb.minX + (bb.maxX - bb.minX)/2, bb.minY + (bb.maxY - bb.minY)/2,bb.minZ + (bb.maxZ - bb.minZ)/2);
       } else {        
         pos = new Vector3d(ent.posX, ent.posY,ent.posZ);
-      }
-      expiresTicks = 40;
+      }    
+      this.volume = volume;
+    }
+    
+    public SoundSource(double x, double y, double z, float volume) {
+      pos = new Vector3d(x,y,z);
+      this.volume = volume;
     }
     
   }

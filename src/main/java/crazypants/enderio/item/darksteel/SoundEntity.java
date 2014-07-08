@@ -9,10 +9,12 @@ import net.minecraft.world.World;
 public class SoundEntity extends Entity {
 
   int lifeSpan = 20;
+  float volume;
 
-  public SoundEntity(World world, Vector3d pos) {
+  public SoundEntity(World world, Vector3d pos, float volume) {
     super(world);
     setPosition(pos.x, pos.y, pos.z);
+    this.volume = volume;
   }
 
   @Override
