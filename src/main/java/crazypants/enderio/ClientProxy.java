@@ -14,6 +14,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -42,8 +43,12 @@ import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
+import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.KeyTracker;
 import crazypants.enderio.item.darksteel.PoweredItemRenderer;
+import crazypants.enderio.item.darksteel.SoundEntity;
+import crazypants.enderio.item.darksteel.SoundRenderer;
+import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -269,7 +274,14 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelAxe, dsr);
     //Ensure it is loaded and registered
     KeyTracker.instance.isGlideActive();
+    
+    
+    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", EntityRegistry.findGlobalUniqueEntityId());
+    RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
 
+    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);   
+    FMLCommonHandler.instance().bus().register(SoundDetector.instance);
+    
   }
 
   @Override
