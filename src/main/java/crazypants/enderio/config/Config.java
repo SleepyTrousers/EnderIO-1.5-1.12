@@ -173,6 +173,7 @@ public final class Config {
   
   public static int darkSteelSoundLocatorCost = 10;
   public static int darkSteelSoundLocatorRange = 40;
+  public static int darkSteelSoundLocatorLifespan = 40;
 
   public static int hootchPowerPerCycle = 6;
   public static int hootchPowerTotalBurnTime = 6000;
@@ -460,6 +461,8 @@ public final class Config {
         "Number of levels required for the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorCost);
     darkSteelSoundLocatorRange = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorRange", darkSteelSoundLocatorRange,
         "Range of the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorRange);
+    darkSteelSoundLocatorLifespan = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorLifespan", darkSteelSoundLocatorLifespan,
+        "Number of ticks the 'Sound Locator' icons are displayed for.").getInt(darkSteelSoundLocatorLifespan);
     
     darkSteelSwordSkullLootingModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(

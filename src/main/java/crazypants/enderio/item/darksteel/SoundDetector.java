@@ -60,19 +60,15 @@ public class SoundDetector {
   
   @SubscribeEvent
   public void onSound(PlaySoundAtEntityEvent evt) {
-    if(enabled && evt.entity != null && evt.entity != Minecraft.getMinecraft().thePlayer) {
-      synchronized (soundQueue) {        
-        soundQueue.add(new SoundSource(evt.entity, evt.volume));  
-      }     
+    if(enabled && evt.entity != null && evt.entity != Minecraft.getMinecraft().thePlayer) {        
+      soundQueue.add(new SoundSource(evt.entity, evt.volume));  
     }     
   }
   
   @SubscribeEvent
   public void onSound(PlaySoundSourceEvent evt) {    
     if(enabled) {
-      synchronized (soundQueue) {            
-        soundQueue.add(new SoundSource(evt.sound.getXPosF(),evt.sound.getYPosF(),evt.sound.getZPosF(), evt.sound.getVolume()));  
-      }     
+      soundQueue.add(new SoundSource(evt.sound.getXPosF(),evt.sound.getYPosF(),evt.sound.getZPosF(), evt.sound.getVolume()));  
     }     
   }
   
@@ -80,18 +76,14 @@ public class SoundDetector {
   @SubscribeEvent
   public void onClientTick(TickEvent.ClientTickEvent event) {
     
-    if(!enabled) {
+    if(!enabled || mc.thePlayer == null || mc.thePlayer.worldObj == null) {
       return;
-    }
-    
-    synchronized (soundQueue) {
-      sounds.addAll(soundQueue);
-      soundQueue.clear();
     }
         
-    if(mc.thePlayer == null || mc.thePlayer.worldObj == null) {
-      return;
-    }
+    List<SoundSource> tmp = soundQueue;    
+    soundQueue = sounds;
+    sounds = tmp;
+
     Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     for(SoundSource ss : sounds) {
       if(ss.pos.distanceSquared(eye) <= maxRangeSq) {
