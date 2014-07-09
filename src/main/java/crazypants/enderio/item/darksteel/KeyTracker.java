@@ -6,10 +6,14 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class KeyTracker {
@@ -40,7 +44,7 @@ public class KeyTracker {
   }
 
   private void handleSoundDetector() {
-    if(!DarkSteelController.instance.isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+    if(!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
       SoundDetector.instance.enabled = false;
       return;
     }
@@ -79,5 +83,14 @@ public class KeyTracker {
   public boolean isGlideActive() {
     return isGlideActive;
   }   
+    
+  public boolean isSoundDetectorUpgradeEquipped(EntityClientPlayerMP player) {
+    ItemStack helmet = player.getEquipmentInSlot(4);
+    SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
+    if(upgrade == null) {
+      return false;
+    }
+    return true;
+  }
   
 }
