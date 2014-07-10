@@ -146,16 +146,18 @@ public class ItemUtil {
   public static IInventory getInventory(IInventory inv) {
     if(inv instanceof TileEntityChest) {
       TileEntityChest chest = (TileEntityChest) inv;
-      TileEntityChest neigbour = null;
+      TileEntityChest neighbour = null;
       if(chest.adjacentChestXNeg != null) {
-        neigbour = chest.adjacentChestXNeg;
+        neighbour = chest.adjacentChestXNeg;
       } else if(chest.adjacentChestXPos != null) {
-        neigbour = chest.adjacentChestXPos;
+        neighbour = chest.adjacentChestXPos;
       } else if(chest.adjacentChestZNeg != null) {
-        neigbour = chest.adjacentChestZNeg;
+        neighbour = chest.adjacentChestZNeg;
+      } else if(chest.adjacentChestZPos != null) {
+        neighbour = chest.adjacentChestZPos;
       }
-      if(neigbour != null) {
-        return new InventoryLargeChest("", inv, neigbour);
+      if(neighbour != null) {
+        return new InventoryLargeChest("", inv, neighbour);
       }
       return inv;
     }
