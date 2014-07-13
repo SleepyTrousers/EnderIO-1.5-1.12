@@ -41,20 +41,20 @@ public class PowerHandlerUtil {
 
   }
 
-  public static float getStoredEnergyForItem(ItemStack item) {
+  public static double getStoredEnergyForItem(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
     if(tag == null) {
       return 0;
     }
-    return tag.getFloat("storedEnergy");
+    return tag.getDouble("storedEnergy");
   }
 
-  public static void setStoredEnergyForItem(ItemStack item, float storedEnergy) {
+  public static void setStoredEnergyForItem(ItemStack item, double storedEnergy) {
     NBTTagCompound tag = item.getTagCompound();
     if(tag == null) {
       tag = new NBTTagCompound();
     }
-    tag.setFloat("storedEnergy", storedEnergy);
+    tag.setDouble("storedEnergy", storedEnergy);
     item.setTagCompound(tag);
   }
 

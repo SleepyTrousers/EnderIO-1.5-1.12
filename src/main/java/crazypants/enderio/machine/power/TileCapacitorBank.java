@@ -93,11 +93,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   private boolean notifyNeighbours = false;
 
-  float energyAtLastRender = -1;
+  double energyAtLastRender = -1;
 
   private boolean isCreative = false;
 
-  float lastRenderStoredRatio;
+  double lastRenderStoredRatio;
 
 //  private boolean registered = false;
 
@@ -575,7 +575,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   // end rf power
 
-  public void addEnergy(float add) {
+  public void addEnergy(double add) {
     getController().doAddEnergy(add);
   }
 
@@ -679,7 +679,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return storedEnergy / maxStoredEnergy;
   }
 
-  void doAddEnergy(float add) {
+  void doAddEnergy(double add) {
     storedEnergy = Math.max(0, Math.min(maxStoredEnergy, storedEnergy + add));
   }
 
@@ -1052,7 +1052,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 
     double oldEnergy = storedEnergy;
-    if(nbtRoot.hasKey("")) {
+    if(nbtRoot.hasKey("storedEnergy")) {
       storedEnergy = nbtRoot.getFloat("storedEnergy");
     } else {
       storedEnergy = nbtRoot.getDouble("storedEnergyD");

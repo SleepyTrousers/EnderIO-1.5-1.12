@@ -13,7 +13,7 @@ import crazypants.enderio.power.PowerHandlerUtil;
 
 public class BlockItemCapacitorBank extends ItemBlock {
 
-  public static ItemStack createItemStackWithPower(float storedEnergy) {
+  public static ItemStack createItemStackWithPower(double storedEnergy) {
     ItemStack res = new ItemStack(EnderIO.blockCapacitorBank);
     PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
     return res;
