@@ -109,6 +109,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       JumpUpgrade.JUMP_THREE.writeToItem(is);
     } else if(armorType == 1) {
       GliderUpgrade.INSTANCE.writeToItem(is);
+    } else if(armorType == 0) {
+      SoundDetectorUpgrade.INSTANCE.writeToItem(is);
     }
     
     par3List.add(is);
@@ -141,7 +143,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(!Config.addDurabilityTootip) {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+    }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
     if(str != null) {
       list.add(str);

@@ -28,7 +28,7 @@ public class SoundEntity extends Entity {
 
   @Override
   public AxisAlignedBB getBoundingBox() {
-    return AxisAlignedBB.getBoundingBox(posX - 0.5, posY - 0.5, posZ - 0.5, posX + 0.5, posY + 0.5, posZ + 0.5);
+    return null;
   }
 
   @Override

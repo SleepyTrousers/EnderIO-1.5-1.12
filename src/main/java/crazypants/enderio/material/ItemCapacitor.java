@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -83,7 +84,12 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
     if(par1ItemStack != null && par1ItemStack.getItemDamage() > 0) {
-      par3List.add(Lang.localize("machine.tooltip.upgrade"));
+      par3List.add(Lang.localize("machine.tooltip.upgrade"));      
+      if(TooltipAddera.instance.showAdvancedTooltips()) {
+        TooltipAddera.instance.addDetailedTooltipFromResources(par3List, "enderio.machine.tooltip.upgrade");
+      } else {
+        TooltipAddera.addShowDetailsTooltip(par3List);
+      }
     }
 
   }

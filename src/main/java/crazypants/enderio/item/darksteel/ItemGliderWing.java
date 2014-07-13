@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
@@ -20,7 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 
-public class ItemGliderWing extends Item {
+public class ItemGliderWing extends Item implements IResourceTooltipProvider {
 
   private static final BasicCapacitor CAP = new BasicCapacitor();
 
@@ -74,6 +75,11 @@ public class ItemGliderWing extends Item {
     for (int j = 0; j < 2; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
     }
+  }
+
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    return getUnlocalizedName(itemStack);
   }
 
  

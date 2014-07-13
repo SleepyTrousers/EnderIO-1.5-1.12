@@ -162,7 +162,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     } else {
       fromLooting = Config.vanillaSwordSkullLootingModifier * evt.lootingLevel;
     }
-    return fromWeapon + fromLooting;
+    return Math.min(fromWeapon + fromLooting, 0.025);
   }
 
   private boolean containsDrop(LivingDropsEvent evt, ItemStack skull) {
@@ -269,7 +269,9 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(!Config.addDurabilityTootip) {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+    }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
     if(str != null) {
       list.add(str);

@@ -81,7 +81,9 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     list.add(Lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
 
     if(itemstack.getItemDamage() == 0) {
-      TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
+      TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
+    } else if(itemstack.getItemDamage() == 2) {
+      TooltipAddera.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
     }
 
   }

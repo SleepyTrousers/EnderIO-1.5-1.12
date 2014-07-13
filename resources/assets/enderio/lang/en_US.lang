@@ -21,7 +21,8 @@ enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=Right click on a conduit to place
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench is equipped
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit 
+item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
 
 enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
@@ -39,12 +40,15 @@ enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
 
 enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
 enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line1=Fluids will not flow upwards
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line2=Flow rate dependent on fluid
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=viscosity
+enderio.itemLiquidConduit.tooltip.detailed.line1=Fluid flow respects gravity
+enderio.itemLiquidConduit.tooltip.detailed.line2=Flow rate dependent on fluid
+enderio.itemLiquidConduit.tooltip.detailed.line3=viscosity
+
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Instant fluid teleportation
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=allows multiple fluids to be
+enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transported on the same line
 
 enderio.itemItemConduit.name=Item Conduit
-enderio.itemItemConduitEmpowered.name=Empowered Item Conduit
 
 enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
@@ -54,6 +58,11 @@ enderio.itemConduitFilterUpgrade.configured=Configured
 item.itemExistingItemFilter.name=Existing Item Filter
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
 item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
+
+item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
+item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
+item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
+item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
 
 enderio.itemMeConduit.name=ME Conduit
 
@@ -132,18 +141,20 @@ enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and 
+enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
 
 //Machines
 tile.blockStirlingGenerator.name=Stirling Generator
 tile.blockStirlingGenerator.tooltip.detailed.line1=Burns solid fuel to generate power
 tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase output
-tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency
+tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency with capacitors
 
 tile.blockReservoir.name=Reservoir
 tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
 tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
 tile.blockReservoir.tooltip.detailed.line3=an infinite water source
-tile.blockReservoir.tooltip.detailed.line4=Produces one bucket in a second
+tile.blockReservoir.tooltip.detailed.line4=Produces one bucket per second
 tile.blockReservoir.tooltip.detailed.line5=Right click with a wrench to
 tile.blockReservoir.tooltip.detailed.line6=enable auto-output
 
@@ -151,6 +162,8 @@ tile.blockAlloySmelter.name=Alloy Smelter
 tile.blockAlloySmelter.tooltip.detailed.line1=Used to create EnderIO alloys
 tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
 tile.blockAlloySmelter.tooltip.detailed.line3=furnace
+tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase 
+tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage 
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
@@ -188,9 +201,10 @@ tile.blockWirelessCharger.tooltip.detailed.line2=players inventories
 
 tile.blockSagMill.name=SAG Mill
 tile.blockSagMill.tooltip.detailed.line1=Grinds ore and other items
-tile.blockSagMill.tooltip.detailed.line2=Can be upgraded to increase speed
-tile.blockSagMill.tooltip.detailed.line3=Add grinding balls to increase output
-tile.blockSagMill.tooltip.detailed.line4=and efficiency
+tile.blockSagMill.tooltip.detailed.line2=Add grinding balls to increase output
+tile.blockSagMill.tooltip.detailed.line3=and efficiency
+tile.blockSagMill.tooltip.detailed.line4=Upgrade with capacitors to increase
+tile.blockSagMill.tooltip.detailed.line5=speed and energy storage
 tile.blockSagMill.tooltipPrefix=Contains
 
 tile.blockHyperCube.name=Dimensional Transceiver
@@ -225,6 +239,8 @@ tile.blockFarmStation.tooltip.detailed.line2=Requires power and
 tile.blockFarmStation.tooltip.detailed.line3=appropriate tools (hoe, axe)
 tile.blockFarmStation.tooltip.detailed.line4=Looting / fortune on tools
 tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
+tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
+tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
 tile.blockTank.name=Fluid Tank
 tile.blockTank.advanced.name=Pressurized Fluid Tank
@@ -235,6 +251,9 @@ enderio.tank.tank=Tank
 
 tile.blockCrafter.name=Crafter
 tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter
+tile.blockCrafter.tooltip.detailed.line2=Consumes power per operation
+tile.blockCrafter.tooltip.detailed.line3=Can be upgraded to increase speed
+tile.blockCrafter.tooltip.detailed.line4=and energy storage with capacitors
 
 tile.blockVacuumChest.name=Vacuum Chest
 tile.blockVacuumChest.tooltip.detailed.line1=Pulls nearby items
@@ -246,6 +265,8 @@ tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Combine with a broken
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
 tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
 tile.blockPoweredSpawner.tooltip.detailed.line2=activate
+tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
+tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage 
 
 item.itemBrokenSpawner.name=Broken Spawner
 item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
@@ -305,7 +326,6 @@ item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
 item.itemMagnet.tooltip.detailed.line2=Shift+R-Click to enable / disable
 item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.tooltip.detailed.line4=hot bar to function 
-
 
 item.enderio.itemConduitProbe.name=Conduit Probe
 item.enderio.itemConduitProbe.tooltip.detailed.line1=Right-Click on a conduit to display
@@ -376,6 +396,8 @@ enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 
 item.itemGliderWing.name=Glider Wing
 item.itemGliderWings.name=Glider Wings
+item.itemGliderWings.tooltip.detailed.line1=Upgrade for Dark Steel
+item.itemGliderWings.tooltip.detailed.line2=chestplate
 
 enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
