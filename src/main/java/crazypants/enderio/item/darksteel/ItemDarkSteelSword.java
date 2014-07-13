@@ -274,8 +274,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(str != null) {
       list.add(str);
     }
-    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line1"));
+    list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line1"));
+    if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {      
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line2"));
       list.add(EnumChatFormatting.WHITE + Lang.localize("item.darkSteel_sword.tooltip.line3"));
     }

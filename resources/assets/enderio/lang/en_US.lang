@@ -328,7 +328,7 @@ enderio.item.darkSteel.tooltip.durability=Durability:
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
 
-enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple log
+enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
 enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
