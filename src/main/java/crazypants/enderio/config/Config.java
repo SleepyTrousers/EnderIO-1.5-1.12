@@ -223,8 +223,8 @@ public final class Config {
   public static int powerSpawnerAddSpawnerCost = 30;
 
   public static double vacuumChestRange = 6;
-
   
+  public static boolean useModMetals = true;
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -581,6 +581,9 @@ public final class Config {
         "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
+    
+    useModMetals = config.get(sectionRecipe.name, "useModMetals", useModMetals,
+        "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);
     
   }
 

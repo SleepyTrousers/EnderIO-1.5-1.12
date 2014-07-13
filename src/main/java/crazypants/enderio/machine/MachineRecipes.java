@@ -148,7 +148,7 @@ public class MachineRecipes {
           Blocks.nether_brick);
     } else {
       ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
-      if(copperIngots != null && !copperIngots.isEmpty()) {
+      if(copperIngots != null && !copperIngots.isEmpty() && Config.useModMetals) {
         GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "cmc", "cCc", 'c', "ingotCopper", 'm', machineChassi, 'b', Blocks.stonebrick, 'f',
             Blocks.furnace, 'C', capacitor));
       } else {
@@ -159,7 +159,7 @@ public class MachineRecipes {
 
     ArrayList<ItemStack> tinIngots = OreDictionary.getOres("ingotTin");
     Object metal;
-    if(tinIngots != null && !tinIngots.isEmpty()) {
+    if(tinIngots != null && !tinIngots.isEmpty() && Config.useModMetals) {
       metal = "ingotTin";
     } else {
       metal = Items.iron_ingot;

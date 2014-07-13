@@ -23,9 +23,9 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
     OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
     OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
-    
+
     OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
-    
+
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
     OreDictionary.registerOre("ingotConductiveIron", new ItemStack(EnderIO.itemMaterial, 1, Alloy.CONDUCTIVE_IRON.ordinal()));
     OreDictionary.registerOre("ingotElectricalSteel", new ItemStack(EnderIO.itemMaterial, 1, Alloy.ELECTRICAL_STEEL.ordinal()));
@@ -33,27 +33,26 @@ public class MaterialRecipes {
     OreDictionary.registerOre("ingotVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Alloy.PHASED_GOLD.ordinal()));
     OreDictionary.registerOre("ingotPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Alloy.PHASED_IRON.ordinal()));
     OreDictionary.registerOre("ingotDarkSteel", new ItemStack(EnderIO.itemMaterial, 1, Alloy.DARK_STEEL.ordinal()));
-    
 
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
     OreDictionary.registerOre("woodStick", Items.stick);
     OreDictionary.registerOre("sand", Blocks.sand);
     OreDictionary.registerOre("ingotIron", Items.iron_ingot);
-    OreDictionary.registerOre("ingotGold", Items.gold_ingot);    
-    
+    OreDictionary.registerOre("ingotGold", Items.gold_ingot);
+
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("glassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
-    
+
     //Skulls
     ItemStack skull = new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE);
     OreDictionary.registerOre("itemSkull", skull);
 
     //Glass stuff for compatability
-    GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane,16,0), "   ", "eee", "eee", 'e', pureGlass);
+    GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane, 16, 0), "   ", "eee", "eee", 'e', pureGlass);
     GameRegistry.addShapelessRecipe(new ItemStack(Blocks.glass), pureGlass);
-    GameRegistry.addShapedRecipe(new ItemStack(Items.glass_bottle,3,0), "   ", "g g", " g ", 'g', pureGlass);
+    GameRegistry.addShapedRecipe(new ItemStack(Items.glass_bottle, 3, 0), "   ", "g g", " g ", 'g', pureGlass);
 
   }
 
@@ -106,7 +105,6 @@ public class MaterialRecipes {
     ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DRAK_GRINDING_BALL.ordinal());
     GameRegistry.addShapedRecipe(darkBall, " s ", "sss", " s ", 's', darkSteel);
 
-
     //Smelting
     FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()), new ItemStack(Items.iron_ingot), 0);
     FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()), new ItemStack(Items.gold_ingot), 0);
@@ -118,7 +116,7 @@ public class MaterialRecipes {
     //Dark Iron Bars
     ItemStack diBars = new ItemStack(EnderIO.blockDarkIronBars, 16, 0);
     GameRegistry.addShapedRecipe(diBars, "ddd", "ddd", "   ", 'd', darkSteel);
-    
+
     // Fused Quartz Frame
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
@@ -126,14 +124,12 @@ public class MaterialRecipes {
     // Machine Chassi
 
     ArrayList<ItemStack> steelIngots = OreDictionary.getOres("ingotSteel");
-    
-    if(Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty()) {
-    GameRegistry.addRecipe(new ShapedOreRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', "ingotSteel"));
-    }
-    else {
-    GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', Items.iron_ingot);
-    }
 
+    if(Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty()) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', "ingotSteel"));
+    } else {
+      GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', Items.iron_ingot);
+    }
 
     // Basic Gear
     GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "stickWood", 'c', Blocks.cobblestone));
@@ -170,11 +166,11 @@ public class MaterialRecipes {
     } else {
       gold = Items.gold_nugget;
     }
-    if(copperIngots != null && !copperIngots.isEmpty()) {
+    if(copperIngots != null && !copperIngots.isEmpty() && Config.useModMetals) {
       GameRegistry.addRecipe(new ShapedOreRecipe(capacitor, " gr", "gcg", "rg ", 'r', Items.redstone, 'g', gold, 'c', "ingotCopper"));
     } else {
       GameRegistry.
-      addShapedRecipe(capacitor, " gr", "gig", "rg ", 'r', Items.redstone, 'g', gold, 'i', Items.iron_ingot);
+          addShapedRecipe(capacitor, " gr", "gig", "rg ", 'r', Items.redstone, 'g', gold, 'i', Items.iron_ingot);
     }
 
     int dustCoal = OreDictionary.getOreID("dustCoal");
