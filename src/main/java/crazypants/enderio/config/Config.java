@@ -226,6 +226,8 @@ public final class Config {
   
   public static boolean useModMetals = true;
 
+  public static int wirelessChargerRange = 24;
+
   public static void load(FMLPreInitializationEvent event) {
     
     FMLCommonHandler.instance().bus().register(new Config());
@@ -295,6 +297,9 @@ public final class Config {
             "In SMP, all clients must be using the same value as the server.").getDouble(DEFAULT_CONDUIT_SCALE);
     conduitScale = VecmathUtil.clamp(conduitScale, 0, 1);
 
+    wirelessChargerRange = config.get(sectionEfficiency.name, "wirelessChargerRange", wirelessChargerRange,
+        "The range of the wireless charger").getInt(wirelessChargerRange);
+    
     fluidConduitExtractRate = config.get(sectionEfficiency.name, "fluidConduitExtractRate", fluidConduitExtractRate,
         "Number of millibuckects per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
 

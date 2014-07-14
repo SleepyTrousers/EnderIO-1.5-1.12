@@ -16,6 +16,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.util.BlockCoord;
@@ -24,7 +25,7 @@ public class WirelessChargerController {
 
   public static WirelessChargerController instance = new WirelessChargerController();
 
-  public static final int RANGE = 24;
+  public static final int RANGE = Config.wirelessChargerRange;
   public static final int RANGE_SQ = RANGE * RANGE;
 
   static {
