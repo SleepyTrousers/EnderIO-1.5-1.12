@@ -141,7 +141,7 @@ public class Util {
   }
 
   public static void dropItems(World world, ItemStack stack, double x, double y, double z, boolean doRandomSpread) {
-    if(stack.stackSize <= 0) {
+    if(stack == null || stack.stackSize <= 0) {
       return;
     }
 
@@ -165,7 +165,7 @@ public class Util {
   }
 
   public static void dropItems(World world, ItemStack stack, int x, int y, int z, boolean doRandomSpread) {
-    if(stack.stackSize <= 0) {
+    if(stack == null || stack.stackSize <= 0) {
       return;
     }
 
