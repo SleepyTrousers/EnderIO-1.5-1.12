@@ -59,6 +59,7 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
@@ -181,6 +182,8 @@ public class EnderIO {
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
 
+  public static BlockEnchanter blockEncahnter;
+  
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
@@ -268,6 +271,8 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
+    
+    blockEncahnter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 
