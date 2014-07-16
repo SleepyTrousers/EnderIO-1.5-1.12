@@ -1,0 +1,99 @@
+<enchaterRecipes>
+
+  <enchantment name="enchantment.protect.all">
+    <itemStack oreDictionary="ingotSteel"/>
+  </enchantment>
+
+  <enchantment name="enchantment.protect.fire">
+    <itemStack modID="minecraft" itemName="blaze_powder"/>
+  </enchantment>
+
+  <enchantment name="enchantment.protect.fall">
+    <itemStack modID="minecraft" itemName="feather"/>
+  </enchantment>
+
+  <enchantment name="enchantment.protect.explosion">
+    <itemStack modID="minecraft" itemName="gunpowder"/>
+  </enchantment>
+
+  <enchantment name="enchantment.protect.projectile">
+    <itemStack modID="minecraft" itemName="arrow"/>
+  </enchantment>
+
+  <enchantment name="enchantment.oxygen">
+    <itemStack modID="minecraft" itemName="glass_bottle"/>
+  </enchantment>
+
+  <enchantment name="enchantment.waterWorker">
+    <itemStack modID="minecraft" itemName="waterlily"/>
+  </enchantment>
+
+  <enchantment name="enchantment.thorns">
+    <itemStack modID="minecraft" itemName="double_plant" itemMeta="4"/>
+  </enchantment>
+
+  <enchantment name="enchantment.damage.all">
+    <itemStack modID="minecraft" itemName="quartz"/>
+  </enchantment>
+
+  <enchantment name="enchantment.damage.undead">
+    <itemStack modID="minecraft" itemName="rotten_flesh"/>
+  </enchantment>
+
+  <enchantment name="enchantment.damage.arthropods">
+    <itemStack modID="minecraft" itemName="spider_eye"/>
+  </enchantment>
+
+  <enchantment name="enchantment.knockback">
+    <itemStack modID="minecraft" itemName="piston"/>
+  </enchantment>
+
+  <enchantment name="enchantment.fire">
+    <itemStack modID="minecraft" itemName="blaze_rod"/>
+  </enchantment>
+
+  <enchantment name="enchantment.lootBonus">  
+    <itemStack oreDictionary="itemSkull"/>    
+  </enchantment>
+
+  <enchantment name="enchantment.digging">
+    <itemStack modID="minecraft" itemName="redstone"/>
+  </enchantment>
+
+  <enchantment name="enchantment.untouching">
+    <itemStack modID="minecraft" itemName="sticky_piston"/>
+  </enchantment>
+
+  <enchantment name="enchantment.durability">
+    <itemStack modID="minecraft" itemName="diamond"/>
+  </enchantment>
+
+  <enchantment name="enchantment.lootBonusDigger">
+    <itemStack modID="minecraft" itemName="emerald"/>
+  </enchantment>
+
+  <enchantment name="enchantment.arrowDamage">
+    <itemStack modID="minecraft" itemName="flint"/>
+  </enchantment>
+
+  <enchantment name="enchantment.arrowKnockback">
+    <itemStack modID="minecraft" itemName="string"/>
+  </enchantment>
+
+  <enchantment name="enchantment.arrowFire">
+    <itemStack modID="minecraft" itemName="netherrack"/>
+  </enchantment>
+
+  <enchantment name="enchantment.arrowInfinite">
+    <itemStack modID="minecraft" itemName="ender_pearl"/>    
+  </enchantment>
+
+  <enchantment name="enchantment.lootBonusFishing">
+    <itemStack modID="minecraft" itemName="dye" itemMeta="4"/>
+  </enchantment>
+
+  <enchantment name="enchantment.fishingSpeed">
+    <itemStack modID="minecraft" itemName="fish"/>
+  </enchantment>
+
+</enchaterRecipes>
