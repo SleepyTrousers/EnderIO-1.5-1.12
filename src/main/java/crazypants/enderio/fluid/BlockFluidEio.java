@@ -22,9 +22,7 @@ import crazypants.enderio.EnderIO;
 
 public class BlockFluidEio extends BlockFluidClassic {
 
-  private int color;
-
-  public static BlockFluidEio create(Fluid fluid, Material material, int color) {
+  public static BlockFluidEio create(Fluid fluid, Material material) {
     BlockFluidEio res = new BlockFluidEio(fluid, material);
     res.init();
     fluid.setBlock(res);
@@ -40,11 +38,6 @@ public class BlockFluidEio extends BlockFluidClassic {
 
   protected void init() {
     GameRegistry.registerBlock(this, "block" + StringUtils.capitalize(fluidName));
-    this.fluid.setDensity(10);
-  }
-
-  protected void setColor(int color) {
-    this.color = color;
   }
 
   @SideOnly(Side.CLIENT)
@@ -78,11 +71,6 @@ public class BlockFluidEio extends BlockFluidClassic {
       return false;
     }
     return super.displaceIfPossible(world, x, y, z);
-  }
-
-  @Override
-  public int getBlockColor() {
-    return color;
   }
 
   @Override

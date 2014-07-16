@@ -300,19 +300,19 @@ public class EnderIO {
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
-    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water, 0x449944);
+    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water);
 
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
-    blockHootch = BlockFluidEio.create(fluidHootch, Material.water, 0x779977);
+    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
     IronEngineFuel.addFuel(Fluids.HOOTCH_NAME, Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycle * Config.hootchPowerTotalBurnTime));
 
     f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
-    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water, 0x99CC99);
+    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
     IronEngineFuel.addFuel(Fluids.ROCKET_FUEL_NAME, Config.rocketFuelPowerPerCycle, Config.rocketFuelPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
         + (Config.rocketFuelPowerPerCycle * Config.rocketFuelPowerTotalBurnTime));
@@ -320,7 +320,7 @@ public class EnderIO {
     f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
-    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava, 0x994400);
+    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
     IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
         + (Config.fireWaterPowerPerCycle * Config.fireWaterPowerTotalBurnTime));
