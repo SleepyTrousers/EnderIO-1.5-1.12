@@ -122,7 +122,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   private Channel channel = null;
   private Channel registeredChannel = null;
-  private UUID owner;
+  private String owner;
 
   private boolean init = true;
 
@@ -186,7 +186,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     HyperCubeRegister.instance.register(this);
   }
 
-  public void setOwner(UUID owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
   }
 
@@ -846,7 +846,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       channel = null;
     }
 
-    owner = UUID.fromString(nbtRoot.getString("owner"));
+    owner = nbtRoot.getString("owner");
 
     for (SubChannel subChannel : SubChannel.values()) {
       String key = "subChannel" + subChannel.ordinal();

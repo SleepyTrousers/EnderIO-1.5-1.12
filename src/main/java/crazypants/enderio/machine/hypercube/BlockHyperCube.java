@@ -243,7 +243,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       TileHyperCube cb = (TileHyperCube) te;
       cb.getInternalPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
-        cb.setOwner(((EntityPlayerMP) player).getGameProfile().getId());
+        cb.setOwner(((EntityPlayerMP) player).getGameProfile().getName());
       }
       cb.setChannel(getChannelFromItem(stack));
       setIoOnTransciever(cb, stack);
