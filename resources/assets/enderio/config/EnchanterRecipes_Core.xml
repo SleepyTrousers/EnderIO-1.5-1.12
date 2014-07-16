@@ -1,7 +1,7 @@
 <enchaterRecipes>
 
   <enchantment name="enchantment.protect.all">
-    <itemStack oreDictionary="ingotSteel"/>
+    <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="6"/> 
   </enchantment>
 
   <enchantment name="enchantment.protect.fire">

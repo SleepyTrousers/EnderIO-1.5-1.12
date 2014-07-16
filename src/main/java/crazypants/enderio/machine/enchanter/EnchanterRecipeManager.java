@@ -3,6 +3,9 @@ package crazypants.enderio.machine.enchanter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 
@@ -22,6 +25,18 @@ public class EnchanterRecipeManager {
       recipes.addAll(res);
     }
     Log.info("Loaded " + recipes.size() + " recipes for Enchanter");
+  }
+
+  public Enchantment getEnchantmentForInput(ItemStack itemStack) {
+    if(itemStack == null) {
+      return null;
+    }
+    for(EnchanterRecipe recipe : recipes) {
+      if(recipe.isInput(itemStack)) {
+        return recipe.getEnchantment();
+      }
+    }
+    return null;
   }
 
   

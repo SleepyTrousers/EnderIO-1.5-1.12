@@ -111,7 +111,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   @Override
   public int getInventoryStackLimit() {
-    return 5;
+    return 64;
   }
 
   @Override
@@ -137,8 +137,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return Items.writable_book == stack.getItem();
     }
     if(slot == 1) {
-      //TODO:
-      return true;
+      return EnchanterRecipeManager.getInstance().getEnchantmentForInput(stack) != null;
     }
     return false;
   }
@@ -150,7 +149,11 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if(inv[1] == null) {
       return null;
     }
-    return new EnchantmentData(Enchantment.looting, inv[1].stackSize);
+    Enchantment ench = EnchanterRecipeManager.getInstance().getEnchantmentForInput(inv[1]);
+    if(ench == null) {
+      return null;
+    }
+    return new EnchantmentData(ench, Math.min(inv[1].stackSize, ench.getMaxLevel()));
   }
 
   public int getCurrentEnchantmentCost() {
@@ -187,7 +190,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       costPerLevel = 1;
     }
 
-    int res = 0;
+    int res = 4;
     for (int i = 0; i < level; i++) {
       res += costPerLevel * level;
     }

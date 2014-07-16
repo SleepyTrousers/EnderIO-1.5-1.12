@@ -46,11 +46,6 @@ public class ContainerEnchanter extends Container {
     addSlotToContainer(new Slot(te, 1, 76, 35) {
 
       @Override
-      public int getSlotStackLimit() {
-        return 5;
-      }
-
-      @Override
       public boolean isItemValid(ItemStack itemStack) {
         return enchanter.isItemValidForSlot(1, itemStack);
       }
@@ -78,15 +73,26 @@ public class ContainerEnchanter extends Container {
         if(!player.capabilities.isCreativeMode) {
           player.addExperienceLevel(-enchanter.getCurrentEnchantmentCost());
         }
+        EnchantmentData enchData = enchanter.getCurrentEnchantment();
+        ItemStack curStack = enchanter.getStackInSlot(1);
+        if(enchData == null || curStack == null || enchData.enchantmentLevel >= curStack.stackSize) {
+          enchanter.setInventorySlotContents(1, (ItemStack) null);
+        } else {
+          curStack = curStack.copy();
+          curStack.stackSize -= enchData.enchantmentLevel;
+          enchanter.setInventorySlotContents(1, curStack);
+          enchanter.markDirty();
+        }
+
         enchanter.setInventorySlotContents(0, (ItemStack) null);
-        enchanter.setInventorySlotContents(1, (ItemStack) null);
+        //TODO: Sound
         //          if (!p_i1800_2_.isRemote) {
         //              p_i1800_2_.playAuxSFX(1021, p_i1800_3_, p_i1800_4_, p_i1800_5_, 0);
         //          }
       }
 
       @Override
-      public boolean canTakeStack(EntityPlayer player) {        
+      public boolean canTakeStack(EntityPlayer player) {
         return playerHasEnoughLevels(player);
       }
 
@@ -110,8 +116,8 @@ public class ContainerEnchanter extends Container {
   public boolean canInteractWith(EntityPlayer p_75145_1_) {
     return true;
   }
-  
-  public boolean playerHasEnoughLevels(EntityPlayer player) {  
+
+  public boolean playerHasEnoughLevels(EntityPlayer player) {
     if(player.capabilities.isCreativeMode) {
       return true;
     }
