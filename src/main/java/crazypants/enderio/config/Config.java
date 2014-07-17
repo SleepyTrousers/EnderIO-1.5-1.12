@@ -319,7 +319,7 @@ public final class Config {
         "Number of millibuckects per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
 
     useAlternateTesseractModel = config.get(sectionAesthetic.name, "useAlternateTransceiverModel", useAlternateTesseractModel,
-        "Use TheKazador's alternatice model for the Dimensional Transceiver")
+        "Use TheKazador's alternative model for the Dimensional Transceiver")
         .getBoolean(false);
     transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
         "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
@@ -395,7 +395,7 @@ public final class Config {
         "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);
 
     enderIoMeAccessEnabled = config.get(sectionPersonal.name, "enderIoMeAccessEnabled", enderIoMeAccessEnabled,
-        "If false: you will not be able to access a ME acess or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
+        "If false: you will not be able to access a ME access or crafting terminal using the Ender IO.").getBoolean(enderIoMeAccessEnabled);
 
     updateLightingWhenHidingFacades = config.get(sectionEfficiency.name, "updateLightingWhenHidingFacades", updateLightingWhenHidingFacades,
         "When true: correct lighting is recalculated (client side) for conduit bundles when transitioning to"
