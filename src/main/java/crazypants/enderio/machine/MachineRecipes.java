@@ -137,6 +137,11 @@ public class MachineRecipes {
     //Enchanter
     ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
     GameRegistry.addShapedRecipe(enchanter, "dbd", "sss", " s ", 'd', Items.diamond, 'b', Items.book, 's', darkSteel);
+    
+    //Vacuum Chest
+    ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
+    GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
+    
 
   }
 
