@@ -42,6 +42,10 @@ public class EnchanterRecipe {
   public Enchantment getEnchantment() {
     return enchantment;
   }
+
+  public RecipeInput getInput() {
+    return input;
+  }
   
   
   

@@ -168,10 +168,8 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     }
     return new EnchantmentData(ench, Math.min(inv[1].stackSize, ench.getMaxLevel()));
   }
-
-  public int getCurrentEnchantmentCost() {
-
-    EnchantmentData enchData = getCurrentEnchantment();
+  
+  public static int getEnchantmentCost(EnchantmentData enchData) {
     if(enchData == null) {      
       return 0;
     }
@@ -181,10 +179,15 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if(level > enchantment.getMaxLevel()) {
       level = enchantment.getMaxLevel();
     }
+    
     int costPerLevel = 0;
     switch (enchantment.getWeight()) {
     case 1:
       costPerLevel = 8;
+      //Stops silk touch and infinity being too cheap
+      if(enchantment.getMaxLevel() == 1) {
+        level = 2;
+      }
       break;
     case 2:
       costPerLevel = 4;
@@ -208,6 +211,10 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       res += costPerLevel * level;
     }
     return res;
+  }
+
+  public int getCurrentEnchantmentCost() {
+    return getEnchantmentCost(getCurrentEnchantment());    
   }
 
   public void setOutput(ItemStack output) {

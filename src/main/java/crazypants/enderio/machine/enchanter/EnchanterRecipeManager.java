@@ -39,6 +39,9 @@ public class EnchanterRecipeManager {
     return null;
   }
 
-  
-  
+  public List<EnchanterRecipe> getRecipes() {
+    return recipes;
+    
+  }
+
 }

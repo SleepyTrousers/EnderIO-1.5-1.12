@@ -118,10 +118,28 @@ public class ClientProxy extends CommonProxy {
   private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
   private ConduitBundleRenderer cbr;
+  
+  private boolean checkedNei = false;
+  private boolean neiInstalled = false;
 
   @Override
   public World getClientWorld() {
     return FMLClientHandler.instance().getClient().theWorld;
+  }
+  
+  @Override
+  public boolean isNeiInstalled() {    
+    if(checkedNei) {
+      return neiInstalled;
+    }
+    try{
+      Class.forName("crazypants.enderio.nei.EnchanterRecipeHandler");
+      neiInstalled = true;
+    } catch(Exception e) {
+      neiInstalled = false;
+    }
+    checkedNei = true;
+    return false;
   }
 
   @Override

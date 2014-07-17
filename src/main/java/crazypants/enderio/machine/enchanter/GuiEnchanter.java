@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.vacuum.ContainerVacuumChest;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -32,8 +34,11 @@ public class GuiEnchanter extends GuiContainer {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     
-    int curCost = te.getCurrentEnchantmentCost();
+    if(EnderIO.proxy.isNeiInstalled()) {
+      IconEIO.RECIPE.renderIcon(sx + 155, sy + 8, 16, 16, 0, true);
+    }
     
+    int curCost = te.getCurrentEnchantmentCost();    
     if(curCost > 0) {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       

@@ -133,6 +133,10 @@ public class MachineRecipes {
     GameRegistry
     .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
         'r', redstoneConduit, 'c', capacitor);
+    
+    //Enchanter
+    ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
+    GameRegistry.addShapedRecipe(enchanter, "dbd", "sss", " s ", 'd', Items.diamond, 'b', Items.book, 's', darkSteel);
 
   }
 

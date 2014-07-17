@@ -8,6 +8,7 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
@@ -81,7 +82,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   }
 
   protected boolean showRecipeButton() {
-    return true;
+    return EnderIO.proxy.isNeiInstalled();
   }
 
   public void renderSlotHighlights(IoMode mode) {

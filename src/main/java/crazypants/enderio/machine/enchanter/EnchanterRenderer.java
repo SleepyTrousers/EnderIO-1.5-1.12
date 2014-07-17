@@ -102,9 +102,6 @@ public class EnchanterRenderer implements ISimpleBlockRenderingHandler, IItemRen
       }
     }
     boolean flip = facing == ForgeDirection.EAST.ordinal() || facing == ForgeDirection.WEST.ordinal(); 
-    
-//    float xOff = flip ? 0 : 0.1f;
-//    float zOff = flip ? 0.1f : 0f;
     float xOff = 0.1f;
     float zOff = 0f;
     

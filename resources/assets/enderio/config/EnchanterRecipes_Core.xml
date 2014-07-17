@@ -61,7 +61,7 @@
   </enchantment>
 
   <enchantment name="enchantment.untouching">
-    <itemStack modID="minecraft" itemName="sticky_piston"/>
+    <itemStack modID="minecraft" itemName="slime_ball"/>
   </enchantment>
 
   <enchantment name="enchantment.durability">
