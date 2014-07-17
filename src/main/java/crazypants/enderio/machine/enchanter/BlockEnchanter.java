@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -18,6 +19,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.ContainerVacuumChest;
 import crazypants.enderio.machine.vacuum.GuiVacuumChest;
@@ -43,6 +45,33 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   protected void init() {  
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
+  }
+  
+  @Override
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+    super.onBlockPlacedBy(world, x, y, z, player, stack);
+    int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+    TileEnchanter te = (TileEnchanter) world.getTileEntity(x, y, z);
+    switch (heading) {
+    case 0:
+      te.setFacing((short) 2);
+      break;
+    case 1:
+      te.setFacing((short) 5);
+      break;
+    case 2:
+      te.setFacing((short) 3);
+      break;
+    case 3:
+      te.setFacing((short) 4);
+      break;
+    default:
+      break;
+    }    
+    if(world.isRemote) {
+      return;
+    }
+    world.markBlockForUpdate(x, y, z);
   }
 
   @Override

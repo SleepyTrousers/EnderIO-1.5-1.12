@@ -65,7 +65,7 @@
   </enchantment>
 
   <enchantment name="enchantment.durability">
-    <itemStack modID="minecraft" itemName="diamond"/>
+    <itemStack modID="minecraft" itemName="obsidian"/>
   </enchantment>
 
   <enchantment name="enchantment.lootBonusDigger">

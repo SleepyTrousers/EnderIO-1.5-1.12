@@ -12,6 +12,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.enderface.TileEnderIO;
@@ -19,6 +20,16 @@ import crazypants.enderio.enderface.TileEnderIO;
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   private ItemStack[] inv = new ItemStack[3];
+  
+  private short facing = (short)ForgeDirection.NORTH.ordinal();
+  
+  public void setFacing(short s) {
+    facing = s;    
+  }
+
+  public short getFacing() {
+    return facing;
+  }
 
   @Override
   protected void writeCustomNBT(NBTTagCompound root) {
@@ -32,6 +43,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       }
     }
     root.setTag("Items", itemList);
+    root.setShort("facing", facing);
   }
 
   @Override
@@ -46,6 +58,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
         }
       }
     }
+    facing = root.getShort("facing");
   }
 
   @Override

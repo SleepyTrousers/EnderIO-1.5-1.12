@@ -183,7 +183,7 @@ public class EnderIO {
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
 
-  public static BlockEnchanter blockEncahnter;
+  public static BlockEnchanter blockEnchanter;
   
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
@@ -273,7 +273,7 @@ public class EnderIO {
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
     
-    blockEncahnter = BlockEnchanter.create();
+    blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 

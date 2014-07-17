@@ -51,6 +51,8 @@ import crazypants.enderio.item.darksteel.SoundRenderer;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
+import crazypants.enderio.machine.enchanter.BlockEnchanter;
+import crazypants.enderio.machine.enchanter.EnchanterRenderer;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
@@ -155,6 +157,11 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
     
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
+    
+    BlockEnchanter.renderId = RenderingRegistry.getNextAvailableRenderId();
+    EnchanterRenderer enchRen = new EnchanterRenderer();
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), enchRen);
+    RenderingRegistry.registerBlockHandler(enchRen);
     
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
