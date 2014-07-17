@@ -48,6 +48,11 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
   
   @Override
+  public int getLightOpacity() {
+    return 4;
+  }
+  
+  @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
