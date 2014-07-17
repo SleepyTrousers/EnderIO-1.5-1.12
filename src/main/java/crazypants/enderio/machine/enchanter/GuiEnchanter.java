@@ -47,6 +47,7 @@ public class GuiEnchanter extends GuiContainer {
         col = 8453920; //all good
       } else {
         col  = 16736352; //not enough levels
+        RenderUtil.bindTexture("enderio:textures/gui/enchanter.png");
         drawTexturedModalRect(sx + 99, sy + 33, 176, 0, 28, 21);
       }            
       String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(curCost)});

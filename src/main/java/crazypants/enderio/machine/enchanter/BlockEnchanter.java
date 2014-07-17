@@ -100,8 +100,8 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvested) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof TileVacuumChest) {
-        TileEnchanter cb = (TileEnchanter) te;
+      if(te instanceof TileEnchanter) {
+        TileEnchanter enchanter = (TileEnchanter) te;
         if(!player.capabilities.isCreativeMode) {
           ItemStack itemStack = new ItemStack(this);          
           float f = 0.7F;
@@ -112,7 +112,12 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
           entityitem.delayBeforeCanPickup = 10;
           world.spawnEntityInWorld(entityitem);
           
-          Util.dropItems(world, cb, x, y, z, true);
+          if(enchanter.getStackInSlot(0) != null) {
+            Util.dropItems(world, enchanter.getStackInSlot(0), x, y, z, true);
+          }
+          if(enchanter.getStackInSlot(1) != null) {
+            Util.dropItems(world, enchanter.getStackInSlot(1), x, y, z, true);
+          }
         }
       }
     }
