@@ -601,5 +601,8 @@ enderio.config.advanced.tooltip=For those who can't have enough configs.
 enderio.config.magnet=Magnet Settings
 enderio.config.magnet.tooltip=How do they work?
 
+enderio.config.fluid=Fluid Settings
+enderio.config.fluid.tooltip=Pure liquid energy!
+
 enderio.config.spawner=PoweredSpawner Settings
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
