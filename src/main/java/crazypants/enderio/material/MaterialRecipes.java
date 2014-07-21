@@ -27,12 +27,15 @@ public class MaterialRecipes {
     OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
 
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
-    OreDictionary.registerOre("ingotConductiveIron", new ItemStack(EnderIO.itemMaterial, 1, Alloy.CONDUCTIVE_IRON.ordinal()));
-    OreDictionary.registerOre("ingotElectricalSteel", new ItemStack(EnderIO.itemMaterial, 1, Alloy.ELECTRICAL_STEEL.ordinal()));
-    OreDictionary.registerOre("ingotEnergeticAlloy", new ItemStack(EnderIO.itemMaterial, 1, Alloy.ENERGETIC_ALLOY.ordinal()));
-    OreDictionary.registerOre("ingotVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Alloy.PHASED_GOLD.ordinal()));
-    OreDictionary.registerOre("ingotPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Alloy.PHASED_IRON.ordinal()));
-    OreDictionary.registerOre("ingotDarkSteel", new ItemStack(EnderIO.itemMaterial, 1, Alloy.DARK_STEEL.ordinal()));
+
+    OreDictionary.registerOre("ingotConductiveIron", new ItemStack(EnderIO.itemAlloy, 1, Alloy.CONDUCTIVE_IRON.ordinal()));
+    OreDictionary.registerOre("ingotElectricalSteel", new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()));
+    OreDictionary.registerOre("ingotEnergeticAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal()));
+    OreDictionary.registerOre("ingotRedstoneAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()));
+    OreDictionary.registerOre("ingotRedAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()));
+    OreDictionary.registerOre("ingotVibrantAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()));
+    OreDictionary.registerOre("ingotPulsatingIron", new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()));
+    OreDictionary.registerOre("ingotDarkSteel", new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()));
 
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
