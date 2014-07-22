@@ -44,12 +44,28 @@ configurations {
     compile.extendsFrom exportedCompile
 }
 
+repositories {
+	mavenCentral()
+	maven {
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+	maven {
+		name = "chickenbones"
+		url = "http://chickenbones.net/maven/"
+	}
+}
+
 dependencies {
-    compile files('lib/cglib-nodep-2.2.3.jar')
-    compile files('lib/NotEnoughItems-1.7.2-1.0.1-universal.jar')
-    compile files('lib/CodeChickenCore-1.7.2-1.0.0-universal.jar')
-    compile files('lib/CodeChickenLib-1.7.2-1.1.0.76-dev.jar')
-    exportedCompile 'com.mod-buildcraft:buildcraft:6.0.11:api'
+	compile 'cglib:cglib:3.1'
+
+	compile "mcp.mobius.waila:Waila:1.5.3_1.7.10"
+	// These will be included automatically
+	//compile "codechicken:NotEnoughItems:1.7.10-1.0.2.31:dev"
+    //compile "codechicken:CodeChickenLib:1.7.10-1.1.1.95:dev"
+    //compile "codechicken:CodeChickenCore:1.7.10-1.0.2.11:dev"
+
+    exportedCompile 'com.mod-buildcraft:buildcraft:6.0.17:api'
 }
 
 // configure  the source folders
@@ -71,9 +87,9 @@ sourceSets {
 
 processResources
 {
-    processResources{
-       from(zipTree("lib/cglib-nodep-2.2.3.jar"))
-    }
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
