@@ -57,11 +57,11 @@ repositories {
 }
 
 dependencies {
-	compile 'cglib:cglib:3.1'
+    exportedCompile 'cglib:cglib-nodep:3.1'
 
-	compile "mcp.mobius.waila:Waila:1.5.3_1.7.10"
-	// These will be included automatically
-	//compile "codechicken:NotEnoughItems:1.7.10-1.0.2.31:dev"
+    compile "mcp.mobius.waila:Waila:1.5.3_1.7.10"
+    // These will be included automatically
+    //compile "codechicken:NotEnoughItems:1.7.10-1.0.2.31:dev"
     //compile "codechicken:CodeChickenLib:1.7.10-1.1.1.95:dev"
     //compile "codechicken:CodeChickenCore:1.7.10-1.0.2.11:dev"
 
@@ -73,7 +73,7 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-	    exclude '**/enderio/trigger/**' 	    
+	    exclude '**/enderio/trigger/**'
             // exclude 'some exclusion'
             // include 'some inclusion'
         }
