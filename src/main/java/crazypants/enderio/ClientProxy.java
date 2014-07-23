@@ -299,15 +299,15 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelAxe, dsr);
     //Ensure it is loaded and registered
     KeyTracker.instance.isGlideActive();
-    
-    
-    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", EntityRegistry.findGlobalUniqueEntityId());
-    RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
 
+    
+    RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
+    
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);   
     FMLCommonHandler.instance().bus().register(SoundDetector.instance);
     
   }
+
 
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {

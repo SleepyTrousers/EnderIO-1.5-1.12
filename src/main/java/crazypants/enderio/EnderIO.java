@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import buildcraft.api.fuels.IronEngineCoolant;
 import buildcraft.api.fuels.IronEngineFuel;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -53,6 +55,8 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.item.darksteel.ItemGliderWing;
+import crazypants.enderio.item.darksteel.SoundEntity;
+import crazypants.enderio.item.darksteel.SoundRenderer;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -361,6 +365,12 @@ public class EnderIO {
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
     MaterialRecipes.registerOresInDictionary();
+    
+    
+    int entityID = EntityRegistry.findGlobalUniqueEntityId();    
+    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
+    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);        
+    
   }
 
   @EventHandler
