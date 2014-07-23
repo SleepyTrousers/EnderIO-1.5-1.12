@@ -8,6 +8,7 @@ public class EnchanterRecipe {
 
   private final RecipeInput input;
   private final Enchantment enchantment;
+  private final int costPerLevel;
   
   public static Enchantment getEnchantmentFromName(String enchantmentName) {    
     for(Enchantment ench : Enchantment.enchantmentsList) {
@@ -18,14 +19,16 @@ public class EnchanterRecipe {
     return null;
   }
   
-  public EnchanterRecipe(crazypants.enderio.machine.recipe.RecipeInput curInput, String enchantmentName) {
+  public EnchanterRecipe(RecipeInput curInput, String enchantmentName, int costPerLevel) {
     this.input = curInput;
     enchantment = getEnchantmentFromName(enchantmentName);
+    this.costPerLevel = costPerLevel;
   }
 
-  public EnchanterRecipe(crazypants.enderio.machine.recipe.RecipeInput input, Enchantment enchantment) {  
+  public EnchanterRecipe(RecipeInput input, Enchantment enchantment, int costPerLevel) {  
     this.input = input;
     this.enchantment = enchantment;
+    this.costPerLevel = costPerLevel;
   }
   
   public boolean isInput(ItemStack stack) {
@@ -36,7 +39,7 @@ public class EnchanterRecipe {
   }
   
   public boolean isValid() {
-    return enchantment != null && input != null && input.getInput() != null;
+    return enchantment != null && input != null && input.getInput() != null && costPerLevel > -1;
   }
 
   public Enchantment getEnchantment() {
@@ -45,6 +48,10 @@ public class EnchanterRecipe {
 
   public RecipeInput getInput() {
     return input;
+  }
+
+  public int getCostPerLevel() {
+    return costPerLevel;
   }
   
   

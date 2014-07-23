@@ -73,7 +73,7 @@ public class ContainerEnchanter extends Container {
         if(!player.capabilities.isCreativeMode) {
           player.addExperienceLevel(-enchanter.getCurrentEnchantmentCost());
         }
-        EnchantmentData enchData = enchanter.getCurrentEnchantment();
+        EnchantmentData enchData = enchanter.getCurrentEnchantmentData();
         ItemStack curStack = enchanter.getStackInSlot(1);
         if(enchData == null || curStack == null || enchData.enchantmentLevel >= curStack.stackSize) {
           enchanter.setInventorySlotContents(1, (ItemStack) null);
@@ -126,7 +126,7 @@ public class ContainerEnchanter extends Container {
 
   private void updateOutput() {
     ItemStack output = null;
-    EnchantmentData enchantment = enchanter.getCurrentEnchantment();
+    EnchantmentData enchantment = enchanter.getCurrentEnchantmentData();
     if(enchantment != null) {
       output = new ItemStack(Items.enchanted_book);
       Items.enchanted_book.addEnchantment(output, enchantment);

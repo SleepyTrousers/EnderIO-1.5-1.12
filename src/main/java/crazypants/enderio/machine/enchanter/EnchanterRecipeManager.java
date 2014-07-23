@@ -27,13 +27,13 @@ public class EnchanterRecipeManager {
     Log.info("Loaded " + recipes.size() + " recipes for Enchanter");
   }
 
-  public Enchantment getEnchantmentForInput(ItemStack itemStack) {
+  public EnchanterRecipe getEnchantmentRecipeForInput(ItemStack itemStack) {
     if(itemStack == null) {
       return null;
     }
     for(EnchanterRecipe recipe : recipes) {
       if(recipe.isInput(itemStack)) {
-        return recipe.getEnchantment();
+        return recipe;
       }
     }
     return null;

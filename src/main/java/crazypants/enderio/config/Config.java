@@ -230,6 +230,8 @@ public final class Config {
 
   public static long nutrientFoodBoostDelay = 400;
 
+  public static int enchanterBaseLevelCost = 4;
+
   public static void load(FMLPreInitializationEvent event) {
     
     FMLCommonHandler.instance().bus().register(new Config());
@@ -281,6 +283,9 @@ public final class Config {
 
     numConduitsPerRecipe = config.get(sectionRecipe.name, "numConduitsPerRecipe", numConduitsPerRecipe,
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
+    
+    enchanterBaseLevelCost= config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
+        "Base level cost added to all recipes in the enchanter.").getInt(enchanterBaseLevelCost);
 
     photovoltaicCellEnabled = config.get(sectionItems.name, "photovoltaicCellEnabled", photovoltaicCellEnabled,
         "If set to false: Photovoltaic Cells will not be craftable.")

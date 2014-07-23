@@ -164,10 +164,12 @@ public class EnchanterRecipeParser extends DefaultHandler {
   public static final String ELEMENT_ENCHANTMENT = "enchantment";
   public static final String ELEMENT_ITEM_STACK = "itemStack";
   public static final String AT_NAME = "name";
+  private static final String AT_LEVEL = "costPerLevel";
 
   private List<EnchanterRecipe> result = new ArrayList<EnchanterRecipe>();
 
   private Enchantment curEnchantment = null;
+  private int curLevelCost = -1;
   private boolean enchantmentFound = true;
   private RecipeInput curInput = null;
 
@@ -179,7 +181,11 @@ public class EnchanterRecipeParser extends DefaultHandler {
   public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
     if(ELEMENT_ENCHANTMENT.equals(localName)) {
       curEnchantment = EnchanterRecipe.getEnchantmentFromName(attributes.getValue(AT_NAME));
-      if(curEnchantment == null) {
+      curLevelCost = RecipeConfigParser.getIntValue(AT_LEVEL, attributes, -1);
+      if(curLevelCost == -1) {
+        Log.warn("Cost per level not found for enchantment with name " + attributes.getValue(AT_NAME) + " when parsing enchanter recipes.");
+        curEnchantment = null;
+      } else if(curEnchantment == null) {
         Log.warn("Could not find enchantment with name " + attributes.getValue(AT_NAME) + " when parsing enchanter recipes.");
         enchantmentFound = false;
       } else {
@@ -205,7 +211,7 @@ public class EnchanterRecipeParser extends DefaultHandler {
         if(curInput == null) {
           Log.error("Valid input found for enchantment " + curEnchantment.getName() + " not found.");
         } else {          
-          EnchanterRecipe rec = new EnchanterRecipe(curInput, curEnchantment);
+          EnchanterRecipe rec = new EnchanterRecipe(curInput, curEnchantment, curLevelCost);
           if(rec.isValid()) {
             result.add(rec);
           }

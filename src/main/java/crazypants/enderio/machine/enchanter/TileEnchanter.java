@@ -15,16 +15,17 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.TileEnderIO;
 
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
   private ItemStack[] inv = new ItemStack[3];
-  
-  private short facing = (short)ForgeDirection.NORTH.ordinal();
-  
+
+  private short facing = (short) ForgeDirection.NORTH.ordinal();
+
   public void setFacing(short s) {
-    facing = s;    
+    facing = s;
   }
 
   public short getFacing() {
@@ -150,71 +151,101 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return Items.writable_book == stack.getItem();
     }
     if(slot == 1) {
-      return EnchanterRecipeManager.getInstance().getEnchantmentForInput(stack) != null;
+      return EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(stack) != null;
     }
     return false;
   }
 
-  public EnchantmentData getCurrentEnchantment() {
+  public EnchanterRecipe getCurrentEnchantmentRecipe() {
     if(inv[0] == null) {
       return null;
     }
     if(inv[1] == null) {
       return null;
     }
-    Enchantment ench = EnchanterRecipeManager.getInstance().getEnchantmentForInput(inv[1]);
+    EnchanterRecipe ench = EnchanterRecipeManager.getInstance().getEnchantmentRecipeForInput(inv[1]);
     if(ench == null) {
       return null;
     }
-    return new EnchantmentData(ench, Math.min(inv[1].stackSize, ench.getMaxLevel()));
+    return ench;
   }
   
-  public static int getEnchantmentCost(EnchantmentData enchData) {
-    if(enchData == null) {      
+  public EnchantmentData getCurrentEnchantmentData() {
+    EnchanterRecipe rec = getCurrentEnchantmentRecipe();
+    if(rec == null || inv[1] == null) {
+      return null;
+    }
+    return new EnchantmentData(rec.getEnchantment(), Math.min(inv[1].stackSize, rec.getEnchantment().getMaxLevel()));
+  }
+
+  //  public static int getEnchantmentCost(EnchantmentData enchData) {
+  //    if(enchData == null) {      
+  //      return 0;
+  //    }
+  //    int level = enchData.enchantmentLevel;
+  //    Enchantment enchantment = enchData.enchantmentobj;
+  //
+  //    if(level > enchantment.getMaxLevel()) {
+  //      level = enchantment.getMaxLevel();
+  //    }
+  //    
+  //    int costPerLevel = 0;
+  //    switch (enchantment.getWeight()) {
+  //    case 1:
+  //      costPerLevel = 8;
+  //      //Stops silk touch and infinity being too cheap
+  //      if(enchantment.getMaxLevel() == 1) {
+  //        level = 2;
+  //      }
+  //      break;
+  //    case 2:
+  //      costPerLevel = 4;
+  //    case 3:
+  //    case 4:
+  //    case 6:
+  //    case 7:
+  //    case 8:
+  //    case 9:
+  //    default:
+  //      break;
+  //    case 5:
+  //      costPerLevel = 2;
+  //      break;
+  //    case 10:
+  //      costPerLevel = 1;
+  //    }
+  //
+  //    int res = 4;
+  //    for (int i = 0; i < level; i++) {
+  //      res += costPerLevel * level;
+  //    }
+  //    return res;
+  //  }
+
+  public int getCurrentEnchantmentCost() {
+    return getEnchantmentCost(getCurrentEnchantmentRecipe());
+  }
+
+  private int getEnchantmentCost(EnchanterRecipe currentEnchantment) {
+    ItemStack item = inv[1];
+    if(item == null) {
       return 0;
     }
-    int level = enchData.enchantmentLevel;
-    Enchantment enchantment = enchData.enchantmentobj;
-
-    if(level > enchantment.getMaxLevel()) {
-      level = enchantment.getMaxLevel();
+    Enchantment enchantment = currentEnchantment.getEnchantment();
+    int level = item.stackSize;
+    return getEnchantmentCost(currentEnchantment, level);
+  }
+  
+  public static int getEnchantmentCost(EnchanterRecipe recipe, int level) {
+    if(level > recipe.getEnchantment().getMaxLevel()) {
+      level = recipe.getEnchantment().getMaxLevel();
     }
-    
-    int costPerLevel = 0;
-    switch (enchantment.getWeight()) {
-    case 1:
-      costPerLevel = 8;
-      //Stops silk touch and infinity being too cheap
-      if(enchantment.getMaxLevel() == 1) {
-        level = 2;
-      }
-      break;
-    case 2:
-      costPerLevel = 4;
-    case 3:
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-    case 9:
-    default:
-      break;
-    case 5:
-      costPerLevel = 2;
-      break;
-    case 10:
-      costPerLevel = 1;
-    }
-
-    int res = 4;
+    int costPerLevel = recipe.getCostPerLevel();
+    int res = Config.enchanterBaseLevelCost;
     for (int i = 0; i < level; i++) {
       res += costPerLevel * level;
     }
     return res;
-  }
-
-  public int getCurrentEnchantmentCost() {
-    return getEnchantmentCost(getCurrentEnchantment());    
   }
 
   public void setOutput(ItemStack output) {

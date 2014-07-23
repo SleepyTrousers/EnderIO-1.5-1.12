@@ -77,7 +77,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
               EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
               ItemStack output = new ItemStack(Items.enchanted_book);
               Items.enchanted_book.addEnchantment(output, enchantment);
-              EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe.getInput(), output, enchantment);
+              EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
               arecipes.add(rec);
             }
           }          
@@ -98,7 +98,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
           EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
           ItemStack output = new ItemStack(Items.enchanted_book);
           Items.enchanted_book.addEnchantment(output, enchantment);
-          EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe.getInput(), output, enchantment);
+          EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
           arecipes.add(rec);
         }
       }
@@ -115,7 +115,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
         EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
         ItemStack output = new ItemStack(Items.enchanted_book);
         Items.enchanted_book.addEnchantment(output, enchantment);
-        EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe.getInput(), output, enchantment);
+        EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
         arecipes.add(rec);
       }
     }
@@ -124,7 +124,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void drawExtras(int recipeIndex) {    
     EnchanterRecipeNEI recipe = (EnchanterRecipeNEI) arecipes.get(recipeIndex);
-    int cost = TileEnchanter.getEnchantmentCost(recipe.enchData);
+    int cost = TileEnchanter.getEnchantmentCost(recipe.recipe, 1);
     if(cost > 0) {
       String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(cost)});      
       FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
@@ -148,6 +148,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
     private ArrayList<PositionedStack> input;
     private PositionedStack output;
     private EnchantmentData enchData;
+    private EnchanterRecipe recipe;
 
     @Override
     public List<PositionedStack> getIngredients() {
@@ -159,10 +160,11 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
       return output;
     }
 
-    public EnchanterRecipeNEI(RecipeInput ingredient, ItemStack result, EnchantmentData enchData) {
+    public EnchanterRecipeNEI(EnchanterRecipe recipe, ItemStack result, EnchantmentData enchData) {
+      this.recipe = recipe;
       input = new ArrayList<PositionedStack>();
       input.add(new PositionedStack(new ItemStack(Items.writable_book), 22, 24));
-      input.add(new PositionedStack(getInputs(ingredient), 71, 24));
+      input.add(new PositionedStack(getInputs(recipe.getInput()), 71, 24));
       output = new PositionedStack(result, 129, 24);
       this.enchData = enchData;
     }
