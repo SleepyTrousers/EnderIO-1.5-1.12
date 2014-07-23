@@ -12,6 +12,8 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
@@ -52,6 +54,15 @@ public class EnchanterRenderer implements ISimpleBlockRenderingHandler, IItemRen
     Tessellator tes = Tessellator.instance;
     tes.addTranslation(x, y, z);
     tes.setColorOpaque_F(1, 1, 1);
+    
+    int brightness;
+    if(world == null) {
+      brightness = 15 << 20 | 15 << 4;
+    } else {
+      brightness = world.getLightBrightnessForSkyBlocks(x, y, z, 0);
+    }
+    tes.setBrightness(brightness);
+    
 
     IIcon[] icons = new IIcon[6];
     for(int i=0;i<icons.length;i++) {

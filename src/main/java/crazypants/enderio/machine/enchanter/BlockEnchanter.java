@@ -39,17 +39,13 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   protected BlockEnchanter() {
     super(ModObject.blockEnchanter.unlocalisedName, TileEnchanter.class);
     setBlockTextureName("enderio:blockEnchanter");
+    setLightOpacity(4);
   }
   
   @Override
   protected void init() {  
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
-  }
-  
-  @Override
-  public int getLightOpacity() {
-    return 4;
   }
   
   @Override
