@@ -132,11 +132,6 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     return res;
   }
 
-  void extractInternal(ItemStack item, int powerUse) {
-    int res = Math.max(0, getEnergyStored(item) - powerUse);
-    setEnergy(item, res);
-  }
-
   void setEnergy(ItemStack container, int energy) {
     if(container.stackTagCompound == null) {
       container.stackTagCompound = new NBTTagCompound();

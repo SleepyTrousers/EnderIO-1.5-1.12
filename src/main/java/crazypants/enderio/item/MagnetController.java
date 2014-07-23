@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -45,9 +46,13 @@ public class MagnetController implements IEntitySelector {
         player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
         player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
         
-    List<EntityItem> interestingItems = player.worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);
+    List<Entity> interestingItems = player.worldObj.selectEntitiesWithinAABB(EntityItem.class, aabb, this);        
+    List<Entity> xp = player.worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, this);
+    if(xp != null) {
+      interestingItems.addAll(xp);
+    }
 
-    for (EntityItem entity : interestingItems) {
+    for (Entity entity : interestingItems) {
       double x = player.posX + 0.5D - entity.posX;
       double y = player.posY + 1D - entity.posY;
       double z = player.posZ + 0.5D - entity.posZ;
