@@ -41,7 +41,6 @@ public class PoweredItemRenderer implements IItemRenderer {
     Minecraft mc = Minecraft.getMinecraft();
     ri.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
 
-    IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
     if(isJustCrafted(item)) {
       return;
     }
@@ -57,14 +56,18 @@ public class PoweredItemRenderer implements IItemRenderer {
     int y = 14;
     renderBar(y, maxDam, dispDamage, Color.green, Color.red);
 
-    maxDam = armor.getMaxEnergyStored(item);
-    dispDamage = armor.getEnergyStored(item);
+    boolean hasEnergyUpgrade = EnergyUpgrade.loadFromItem(item) != null;
+    if(hasEnergyUpgrade) {
+      IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
+      maxDam = armor.getMaxEnergyStored(item);
+      dispDamage = armor.getEnergyStored(item);
 
-    r = 0.4f;
-    g = 0.4f;
-    b = 1f;
-    y = 13;
-    renderBar(y, maxDam, maxDam - dispDamage, new Color(200, 100, 10), Color.red);
+      r = 0.4f;
+      g = 0.4f;
+      b = 1f;
+      y = 13;
+      renderBar(y, maxDam, maxDam - dispDamage, new Color(200, 100, 10), Color.red);
+    }
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
