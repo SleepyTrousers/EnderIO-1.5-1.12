@@ -178,6 +178,17 @@ public final class CubeRenderer {
     
   }
   
+  public static void render(BoundingBox bb, IIcon[] icons, VertexTransform xForm, boolean tintSides) {
+    float[] brightnessPerSide = null;
+    if(tintSides) {
+      brightnessPerSide = new float[6];
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        brightnessPerSide[dir.ordinal()] = RenderUtil.getColorMultiplierForFace(dir);
+      }
+    }
+    render(bb, icons, xForm, brightnessPerSide);
+  }
+  
   public static void render(BoundingBox bb, IIcon[] faceTextures, VertexTransform xForm, float[] brightnessPerSide) {
     setupVertices(bb, xForm);
     float minU;
@@ -307,6 +318,8 @@ public final class CubeRenderer {
 
   private CubeRenderer() {
   }
+
+  
 
   
 

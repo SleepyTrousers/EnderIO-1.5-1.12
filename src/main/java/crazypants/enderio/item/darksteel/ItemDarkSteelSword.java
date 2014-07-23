@@ -106,9 +106,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
     if(evt.source.getEntity() instanceof EntityPlayer) {
       EntityPlayer player = (EntityPlayer) evt.source.getEntity();
-
-      double skullDropChance = getSkullDropChance(player, evt);
-      if(Math.random() <= skullDropChance) {
+      double skullDropChance = getSkullDropChance(player, evt);      
+      if(Math.random() <= skullDropChance) {        
         ItemStack skull = getSkullForEntity(evt.entityLiving);
         if(skull != null && !containsDrop(evt, skull)) {
           //TODO: Shouldn't I add this to the list in the event?
@@ -151,7 +150,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       if(isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
         return Config.darkSteelSwordWitherSkullChance + (Config.darkSteelSwordWitherSkullLootingModifier * evt.lootingLevel);
       } else {
-        return 0;
+        return 0.01;
       }
     }
     float fromWeapon = 0;
@@ -160,9 +159,10 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       fromWeapon = Config.darkSteelSwordSkullChance;
       fromLooting = Config.darkSteelSwordSkullLootingModifier * evt.lootingLevel;
     } else {
+      fromWeapon = Config.vanillaSwordSkullChance;
       fromLooting = Config.vanillaSwordSkullLootingModifier * evt.lootingLevel;
     }
-    return Math.min(fromWeapon + fromLooting, 0.025);
+    return fromWeapon + fromLooting;
   }
 
   private boolean containsDrop(LivingDropsEvent evt, ItemStack skull) {
@@ -187,6 +187,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       return new ItemStack(Items.skull, 1, 2);
     } else if(entityLiving instanceof EntityCreeper) {
       return new ItemStack(Items.skull, 1, 4);
+    } else if(entityLiving instanceof EntityEnderman) {
+      return new ItemStack(EnderIO.blockEndermanSkull);
     }
 
     return null;

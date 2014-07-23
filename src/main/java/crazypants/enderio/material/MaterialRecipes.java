@@ -51,6 +51,7 @@ public class MaterialRecipes {
     //Skulls
     ItemStack skull = new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE);
     OreDictionary.registerOre("itemSkull", skull);
+    OreDictionary.registerOre("itemSkull", new ItemStack(EnderIO.blockEndermanSkull));
 
     //Glass stuff for compatability
     GameRegistry.addShapedRecipe(new ItemStack(Blocks.glass_pane, 16, 0), "   ", "eee", "eee", 'e', pureGlass);

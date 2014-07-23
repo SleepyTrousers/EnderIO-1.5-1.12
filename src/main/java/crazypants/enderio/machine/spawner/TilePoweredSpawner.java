@@ -16,14 +16,26 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.PowerHandlerUtil;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   public static final int MIN_SPAWN_DELAY_BASE = Config.poweredSpawnerMinDelayTicks;
   public static final int MAX_SPAWN_DELAY_BASE = Config.poweredSpawnerMaxDelayTicks;
+
   public static final float POWER_PER_TICK_ONE = Config.poweredSpawnerLevelOnePowerPerTick;
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor((int) (POWER_PER_TICK_ONE * 1.25), Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
+
   public static final float POWER_PER_TICK_TWO = Config.poweredSpawnerLevelTwoPowerPerTick;
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor((int) (POWER_PER_TICK_TWO * 1.25),
+      Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
+
   public static final float POWER_PER_TICK_THREE = Config.poweredSpawnerLevelThreePowerPerTick;
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor((int) (POWER_PER_TICK_THREE * 1.25),
+      Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
+
   public static final int MIN_PLAYER_DISTANCE = Config.poweredSpawnerMaxPlayerDistance;
   public static final boolean USE_VANILLA_SPAWN_CHECKS = Config.poweredSpawnerUseVanillaSpawChecks;
 
@@ -42,6 +54,25 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   protected void taskComplete() {
     super.taskComplete();
     logic.spawnDelay = 0;
+  }
+
+  public void setCapacitor(Capacitors capacitorType) {
+    this.capacitorType = capacitorType;
+    switch (capacitorType) {
+    case BASIC_CAPACITOR:
+      PowerHandlerUtil.configure(powerHandler, CAP_ONE);
+      break;
+    case ACTIVATED_CAPACITOR:
+      PowerHandlerUtil.configure(powerHandler, CAP_TWO);
+      break;
+    case ENDER_CAPACITOR:
+      PowerHandlerUtil.configure(powerHandler, CAP_THREE);
+      break;
+    default:
+      PowerHandlerUtil.configure(powerHandler, CAP_ONE);
+      break;
+    }
+    forceClientUpdate = true;
   }
 
   @Override
