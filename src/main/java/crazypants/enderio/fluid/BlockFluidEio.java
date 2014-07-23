@@ -19,6 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 
 public class BlockFluidEio extends BlockFluidClassic {
 
@@ -87,7 +88,7 @@ public class BlockFluidEio extends BlockFluidClassic {
     } else if(this == EnderIO.blockNutrientDistillation && entity instanceof EntityPlayerMP) {
       long time = entity.worldObj.getTotalWorldTime();
       EntityPlayerMP player = (EntityPlayerMP) entity;
-      if(time % 200 == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time)
+      if(time % Config.nutrientFoodBoostDelay == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time)
       {
         int food = player.getFoodStats().getFoodLevel();
         float sat = player.getFoodStats().getSaturationLevel();

@@ -54,8 +54,8 @@ public final class Config {
   public static final Section sectionAesthetic = new Section("Aesthetic Settings", "aesthetic");
   public static final Section sectionAdvanced = new Section("Advanced Settings", "advanced");
   public static final Section sectionMagnet = new Section("Magnet Settings", "magnet");
+  public static final Section sectionFluid = new Section("Fluid Settings", "fluid");
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
-  
   
   static int BID = 700;
   static int IID = 8524;
@@ -227,6 +227,8 @@ public final class Config {
   public static boolean useModMetals = true;
 
   public static int wirelessChargerRange = 24;
+
+  public static long nutrientFoodBoostDelay = 400;
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -590,6 +592,7 @@ public final class Config {
     useModMetals = config.get(sectionRecipe.name, "useModMetals", useModMetals,
         "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);
     
+    nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay, "The delay in ticks between when nutrient distillation boosts your food value.").getInt();
   }
 
   private Config() {
