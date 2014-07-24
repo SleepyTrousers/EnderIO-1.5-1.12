@@ -196,7 +196,7 @@ public class EnderIO {
 
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
-  public static BlockEndermanSkull blockCustomSkull;
+  public static BlockEndermanSkull blockEndermanSkull;
 
   //Fluids
   public static Fluid fluidNutrientDistillation;
@@ -366,7 +366,7 @@ public class EnderIO {
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
-    blockCustomSkull = BlockEndermanSkull.create();
+    blockEndermanSkull = BlockEndermanSkull.create();
     
     MaterialRecipes.registerOresInDictionary();
     
