@@ -57,6 +57,7 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.item.darksteel.ItemGliderWing;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.darksteel.SoundRenderer;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -195,6 +196,7 @@ public class EnderIO {
 
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
+  public static BlockEndermanSkull blockCustomSkull;
 
   //Fluids
   public static Fluid fluidNutrientDistillation;
@@ -364,6 +366,8 @@ public class EnderIO {
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
+    blockCustomSkull = BlockEndermanSkull.create();
+    
     MaterialRecipes.registerOresInDictionary();
     
     

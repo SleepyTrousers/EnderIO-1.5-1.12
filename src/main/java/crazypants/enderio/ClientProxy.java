@@ -49,6 +49,9 @@ import crazypants.enderio.item.darksteel.PoweredItemRenderer;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.darksteel.SoundRenderer;
 import crazypants.enderio.item.darksteel.SoundDetector;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.item.skull.EndermanSkullRenderer;
+import crazypants.enderio.item.skull.TileEndermanSkull;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
 import crazypants.enderio.machine.enchanter.BlockEnchanter;
@@ -259,6 +262,9 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
+    
+    BlockEndermanSkull.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new EndermanSkullRenderer());    
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
