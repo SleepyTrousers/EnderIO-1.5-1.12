@@ -237,12 +237,15 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(world.isRemote) {
       return;
     }
-    TileCapacitorBank tr = (TileCapacitorBank) world.getTileEntity(x, y, z);
-    int meta = world.getBlockMetadata(x, y, z);
-    if(meta == 1) {
-      tr.setCreativeMode();
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCapacitorBank) {
+      TileCapacitorBank tr = (TileCapacitorBank) te;
+      int meta = world.getBlockMetadata(x, y, z);
+      if(meta == 1) {
+        tr.setCreativeMode();
+      }
+      tr.onBlockAdded();
     }
-    tr.onBlockAdded();
   }
 
   @Override

@@ -64,12 +64,12 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
     if(result == null || result.getItem() != Items.enchanted_book) {
       return;
     }
-    Map<Short, Short> enchants = EnchantmentHelper.getEnchantments(result);
+    Map<Number, Number> enchants = EnchantmentHelper.getEnchantments(result);
     List<EnchanterRecipe> recipes = EnchanterRecipeManager.getInstance().getRecipes();
     
-    for(Short id : enchants.keySet()) {
-      if(id != null && id >= 0 && id < Enchantment.enchantmentsList.length) {
-        Enchantment ench = Enchantment.enchantmentsList[id];
+    for(Number id : enchants.keySet()) {
+      if(id != null && id.intValue() >= 0 && id.intValue() < Enchantment.enchantmentsList.length) {
+        Enchantment ench = Enchantment.enchantmentsList[id.intValue()];
         if(ench != null && ench.getName() != null) {
     
           for (EnchanterRecipe recipe : recipes) {
