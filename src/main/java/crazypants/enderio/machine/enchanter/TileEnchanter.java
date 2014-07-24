@@ -231,6 +231,9 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if(item == null) {
       return 0;
     }
+    if(currentEnchantment == null) {
+      return 0;
+    }
     Enchantment enchantment = currentEnchantment.getEnchantment();
     int level = item.stackSize;
     return getEnchantmentCost(currentEnchantment, level);
