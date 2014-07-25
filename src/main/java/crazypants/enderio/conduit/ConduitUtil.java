@@ -334,6 +334,8 @@ public class ConduitUtil {
       return true;
     } else if(mode == RedstoneControlMode.NEVER) {
       return false;
+    } else if(mode == null) {
+      return false;
     }
 
     int signalStrength = getInternalSignalForColor(bundle, col);
