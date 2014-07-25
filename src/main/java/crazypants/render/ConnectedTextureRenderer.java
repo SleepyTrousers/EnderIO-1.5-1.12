@@ -147,7 +147,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
           }
           Vertex vertex = new Vertex();
           vertex.xyz.set(corner);
-          vertex.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.001));
+          //vertex.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.00005));
           vertex.uv = new Vector2f(uv);
           applyLighting(vertex, corner, refVertices);
           finalVerts.add(vertex);
@@ -164,10 +164,10 @@ public class ConnectedTextureRenderer implements IRenderFace {
           v.xyz.set(ForgeDirectionOffsets.forDir(dir));
           v.xyz.add(ForgeDirectionOffsets.forDir(dir2));
           //TODO: dodgy hack to just move the corner forward a bit          
-          v.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.002f));
-          v.xyz.x = Math.max(-0.002, v.xyz.x);
-          v.xyz.y = Math.max(-0.002, v.xyz.y);
-          v.xyz.z = Math.max(-0.002, v.xyz.z);
+          v.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.001f));
+          v.xyz.x = Math.max(-0.001, v.xyz.x);
+          v.xyz.y = Math.max(-0.001, v.xyz.y);
+          v.xyz.z = Math.max(-0.001, v.xyz.z);
 
           if(ForgeDirectionOffsets.isPositiveOffset(face)) {
             v.xyz.add(ForgeDirectionOffsets.forDir(face));
