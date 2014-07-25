@@ -43,7 +43,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length);
+    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
     return Type.values()[meta].unlocName;
   }
 
