@@ -134,6 +134,21 @@ public final class FarmersRegistry {
         }
       }
     }
+    
+    blockName = "florasapling";
+    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    if(saplingBlock != null) {                 
+      FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock, 
+          GameRegistry.findBlock(mod, "tree"), 
+          GameRegistry.findBlock(mod, "willow"),
+          GameRegistry.findBlock(mod, "Dark Tree")));                
+    }
+    blockName = "Rare Sapling";
+    saplingBlock = GameRegistry.findBlock(mod, blockName);
+    if(saplingBlock != null) {                 
+      FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "Rare Tree")));                
+    }
+       
   }
 
   private FarmersRegistry() {
