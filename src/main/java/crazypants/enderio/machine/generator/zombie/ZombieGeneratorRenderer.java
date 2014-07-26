@@ -66,6 +66,14 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
       Vector3d offset = ForgeDirectionOffsets.offsetScaled(ForgeDirection.values()[gen.facing], -0.075);
       bb = bb.translate((float)offset.x, ty, (float)offset.z);
       
+      int brightness;
+      if(gen.getWorldObj() == null) {
+        brightness = 15 << 20 | 15 << 4;
+      } else {
+        brightness = gen.getWorldObj().getLightBrightnessForSkyBlocks(gen.xCoord, gen.yCoord, gen.zCoord, 0);
+      }
+      tes.setBrightness(brightness);
+      
       CubeRenderer.render(bb, icon);
 
       GL11.glEnable(GL11.GL_BLEND);
