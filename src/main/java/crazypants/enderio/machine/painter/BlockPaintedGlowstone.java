@@ -57,7 +57,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
   private void init() {
     GameRegistry.registerBlock(this, BlockItemPaintedGlowstone.class, ModObject.blockPaintedGlowstone.unlocalisedName);
     GameRegistry.registerTileEntity(TileEntityPaintedBlock.class, ModObject.blockPaintedGlowstone.unlocalisedName + "TileEntity");
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
   }
 
   public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
@@ -238,8 +238,8 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
 
   public static final class PainterTemplate extends BasicPainterTemplate {
 
-    public PainterTemplate() {
-      super(Blocks.glowstone);
+    public PainterTemplate(Block paintedGlowstone) {
+      super(Blocks.glowstone, paintedGlowstone);
     }
 
     @Override
