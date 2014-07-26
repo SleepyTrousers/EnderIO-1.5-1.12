@@ -37,7 +37,11 @@ public final class FarmersRegistry {
   private static void addExtraUtilities() {
     String mod = "ExtraUtilities";
     String name = "plant/ender_lilly";
-    addSeed(mod, name, name);
+    
+    SeedFarmer farmer = addSeed(mod, name, name, Blocks.end_stone, GameRegistry.findBlock(mod, "decorativeBlock1"));
+    if(farmer != null) {
+      farmer.setIgnoreGroundCanSustainCheck(true);
+    }
   }
   
   private static void addPickable(String mod, String blockName, String itemName) {
@@ -50,14 +54,24 @@ public final class FarmersRegistry {
     }
   }
   
-  private static void addSeed(String mod, String blockName, String itemName) {
+  private static SeedFarmer addSeed(String mod, String blockName, String itemName, Block... extraFarmland) {
     Block cropBlock = GameRegistry.findBlock(mod, blockName);
     if(cropBlock != null) {
       Item seedItem = GameRegistry.findItem(mod, itemName);
       if(seedItem != null) {
-        FarmersCommune.instance.joinCommune(new SeedFarmer(cropBlock, new ItemStack(seedItem)));
+        SeedFarmer farmer = new SeedFarmer(cropBlock, new ItemStack(seedItem));
+        if(extraFarmland != null) {
+          for(Block farmland : extraFarmland) {
+            if(farmland != null) {
+              farmer.addTilledBlock(farmland);
+            }
+          }
+        }
+        FarmersCommune.instance.joinCommune(farmer);
+        return farmer;
       }
     }
+    return null;
   }
 
   private static void addTiC() {
