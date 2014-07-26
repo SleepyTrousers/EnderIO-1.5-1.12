@@ -319,14 +319,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
-    float storedEnergy = (float) powerHandler.getEnergyStored();
-    // Update if our power has changed by more than 0.5%
+    float storedEnergy = (float) powerHandler.getEnergyStored();    
     boolean powerChanged = lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
     if(powerChanged) {
-      lastSyncPowerStored = storedEnergy;
-      if(!canSendPower()) {        
-        EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
-      }
+      lastSyncPowerStored = storedEnergy;        
+      EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
     }
 
     if(requiresClientSync) {
