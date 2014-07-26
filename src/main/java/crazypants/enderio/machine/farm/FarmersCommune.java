@@ -1,9 +1,13 @@
 package crazypants.enderio.machine.farm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import crazypants.util.BlockCoord;
 
@@ -20,7 +24,18 @@ public class FarmersCommune implements IFarmerJoe {
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();
-
+  
+  private Set<Class<?>> toolTypes = new HashSet<Class<?>>();
+  
+  private FarmersCommune() {
+    registerToolType(ItemHoe.class);
+    registerToolType(ItemAxe.class);
+  }
+  
+  public void registerToolType(Class<?> clz) {
+    toolTypes.add(clz);
+  }
+  
   @Override
   public boolean canHarvest(TileFarmStation farm,  BlockCoord bc, Block block, int meta) {
     for (IFarmerJoe joe : farmers) {
@@ -33,9 +48,6 @@ public class FarmersCommune implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-//    if(!block.canHarvestBlock(farm.getFakePlayer(), meta)) {
-//      return null;
-//    }
     for (IFarmerJoe joe : farmers) {
       if(joe.canHarvest(farm, bc, block, meta)) {
         return joe.harvestBlock(farm, bc, block, meta);
@@ -62,6 +74,10 @@ public class FarmersCommune implements IFarmerJoe {
       }
     }
     return false;
+  }
+
+  public Set<Class<?>> getToolTypes() {
+    return toolTypes;
   }
 
 

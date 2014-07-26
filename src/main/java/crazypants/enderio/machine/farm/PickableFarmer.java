@@ -27,7 +27,7 @@ public class PickableFarmer extends SeedFarmer {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     
-    if(!canHarvest(farm, bc, block, meta) || !farm.hasHarvestTool()) {
+    if(!canHarvest(farm, bc, block, meta) || !farm.hasDefaultHarvestTool()) {
       return null;
     }
     EntityPlayerMP player = farm.getFakePlayer();

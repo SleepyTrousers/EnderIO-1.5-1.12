@@ -29,7 +29,9 @@ public class TreeFarmer implements IFarmerJoe {
 
   public TreeFarmer(Block sapling, Block... wood) {
     this.sapling = sapling;
-    saplingItem = new ItemStack(sapling);
+    if(sapling != null) {
+      saplingItem = new ItemStack(sapling);
+    }
     this.woods = wood;
   }
 

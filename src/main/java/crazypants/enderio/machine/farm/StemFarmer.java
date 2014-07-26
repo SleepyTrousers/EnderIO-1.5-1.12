@@ -45,7 +45,7 @@ public class StemFarmer extends SeedFarmer {
     boolean done = false;
     do{
       harvestCoord = harvestCoord.getLocation(ForgeDirection.UP);
-      if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasHarvestTool()) {
+      if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasDefaultHarvestTool()) {
         res.harvestedBlocks.add(harvestCoord);
         ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorld(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
         if(drops != null) {

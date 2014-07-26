@@ -297,7 +297,7 @@ public class Util {
     return class1.isAssignableFrom(player.inventory.getCurrentItem().getItem().getClass());
   }
 
-  public static boolean isType(ItemStack stack, Class<? extends Item> class1) {
+  public static boolean isType(ItemStack stack, Class<?> class1) {
     if(stack == null || class1 == null) {
       return false;
     }

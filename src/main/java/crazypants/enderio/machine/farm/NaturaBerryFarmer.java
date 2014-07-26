@@ -17,14 +17,14 @@ public class NaturaBerryFarmer extends PickableFarmer {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     
-    if(block != getPlantedBlock() || !farm.hasHarvestTool()) {
+    if(block != getPlantedBlock() || !farm.hasDefaultHarvestTool()) {
       return null;
     }
     
     IHarvestResult res = new HarvestResult();    
     
     BlockCoord checkBlock = bc;
-    for(int i=0; i < 5 && farm.hasHarvestTool(); i++) {
+    for(int i=0; i < 5 && farm.hasDefaultHarvestTool(); i++) {
       meta = farm.getBlockMeta(checkBlock);
       IHarvestResult blockRes = super.harvestBlock(farm, checkBlock, block, meta);
     

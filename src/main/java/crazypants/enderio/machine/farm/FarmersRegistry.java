@@ -26,6 +26,14 @@ public final class FarmersRegistry {
     addNutura();
     addTiC();
     addStillHungry();
+    addIC2();
+  }
+
+  private static void addIC2() {
+    RubberTreeFarmerIC2 rtf = new RubberTreeFarmerIC2();
+    if(rtf.isValid()) {
+      FarmersCommune.instance.joinCommune(rtf);
+    }    
   }
 
   private static void addStillHungry() {
