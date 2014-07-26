@@ -11,6 +11,8 @@ public final class FarmersRegistry {
 
   public static void addFarmers() {
     //vanilla
+    FarmersCommune.instance.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
+    FarmersCommune.instance.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));
     FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.potatoes, new ItemStack(Items.potato)));
     FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.wheat, new ItemStack(Items.wheat_seeds)));
     FarmersCommune.instance.joinCommune(new SeedFarmer(Blocks.carrots, new ItemStack(Items.carrot)));
