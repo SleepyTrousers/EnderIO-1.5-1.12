@@ -35,6 +35,19 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
   }
 
   @Override
+  public boolean prepareBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+    for(int x=-1;x<2;x++) {
+      for(int z=-1;z<2;z++) {
+       Block blk = farm.getBlock(bc.x + x, bc.y, bc.z + z);
+       if(isWood(blk) || sapling == blk) {
+         return false;
+       }
+      }      
+    }
+    return super.prepareBlock(farm, bc, block, meta);
+  }
+  
+  @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     HarvestResult res = new HarvestResult();
     int y = bc.y;

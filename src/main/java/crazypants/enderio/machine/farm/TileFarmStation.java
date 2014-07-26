@@ -202,6 +202,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   public Block getBlock(BlockCoord bc) {
     return worldObj.getBlock(bc.x, bc.y, bc.z);
   }
+  
+  public Block getBlock(int x, int y, int z) {
+    return worldObj.getBlock(x, y, z);
+  }
 
   public int getBlockMeta(BlockCoord bc) {
     return worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
