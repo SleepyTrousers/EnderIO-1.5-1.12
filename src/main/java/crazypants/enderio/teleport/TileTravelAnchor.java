@@ -39,12 +39,12 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       return true;
     }
     if(accessMode == AccessMode.PRIVATE) {
-      return placedBy != null && placedBy.equals(playerName.getGameProfile().getId());
+      return placedBy != null && placedBy.equals(playerName.getGameProfile().getName());
     }
-    if(placedBy != null && placedBy.equals(playerName.getGameProfile().getId())) {
+    if(placedBy != null && placedBy.equals(playerName.getGameProfile().getName())) {
       return true;
     }
-    return authorisedUsers.contains(playerName.getGameProfile().getId());
+    return authorisedUsers.contains(playerName.getGameProfile().getName());
   }
 
   @Override
@@ -78,7 +78,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
   @Override
   public boolean getRequiresPassword(EntityPlayer username) {
-    return getAccessMode() != AccessMode.PUBLIC && !canUiBeAccessed(username) && !authorisedUsers.contains(username.getGameProfile().getId());
+    return getAccessMode() != AccessMode.PUBLIC && !canUiBeAccessed(username) && !authorisedUsers.contains(username.getGameProfile().getName());
   }
 
   @Override
@@ -92,7 +92,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
   @Override
   public boolean canUiBeAccessed(EntityPlayer playerName) {
-    return placedBy != null && placedBy.equals(playerName.getGameProfile().getId());
+    return placedBy != null && placedBy.equals(playerName.getGameProfile().getName());
   }
 
   @Override
@@ -100,7 +100,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(accessMode != AccessMode.PRIVATE) {
       return true;
     }
-    return placedBy != null && placedBy.equals(playerName.getGameProfile().getId());
+    return placedBy != null && placedBy.equals(playerName.getGameProfile().getName());
   }
 
   @Override
