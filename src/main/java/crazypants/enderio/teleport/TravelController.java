@@ -387,7 +387,7 @@ public class TravelController {
       Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
       mid.scale(0.5);
       double ratio = sp.distance(mid) / Minecraft.getMinecraft().displayWidth;
-      if(ratio > 0.05) {
+      if(ratio > 0.2) {
         selectedCoord = null;
       }
 
