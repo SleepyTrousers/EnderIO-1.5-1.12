@@ -9,12 +9,15 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
@@ -72,6 +75,22 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
 
   public void actionPerformed() {
     usePower(Config.farmActionEnergyUse * (getUpgradeDist() * upgradeBonusSize));
+  }
+  
+  public boolean tillBlock(BlockCoord plantingLocation) {    
+    BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
+    Block dirtBlock = getBlock(dirtLoc);
+    if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && hasHoe()) {
+      damageHoe(1, dirtLoc);
+      worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
+      worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
+          (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
+      actionPerformed();
+      return true;
+    } else if(dirtBlock == Blocks.farmland) {
+      return true;
+    }
+    return false;
   }
   
   public int getMaxLootingValue() {
@@ -298,11 +317,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
     return false;
   }
 
-  public ItemStack getSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
-    return getSeedFromSupplies(stack, forBlock, true);
+  public ItemStack takeSeedFromSupplies(ItemStack stack, BlockCoord forBlock) {
+    return takeSeedFromSupplies(stack, forBlock, true);
   }
 
-  public ItemStack getSeedFromSupplies(ItemStack stack, BlockCoord forBlock, boolean matchMetadata) {
+  public ItemStack takeSeedFromSupplies(ItemStack stack, BlockCoord forBlock, boolean matchMetadata) {
     if(stack == null || forBlock == null) {
       return null;
     }
@@ -320,6 +339,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
         setInventorySlotContents(slot, inv);
         return result;
       }
+    }
+    return null;
+  }
+  
+  public ItemStack takeSeedFromSupplies(BlockCoord bc) {
+    return takeSeedFromSupplies(getSeedTypeInSuppliesFor(bc), bc);
+  }
+  
+  public ItemStack getSeedTypeInSuppliesFor(BlockCoord bc) {
+    int slot = getSupplySlotForCoord(bc);
+    ItemStack inv = inventory[slot];
+    if(inv != null) {
+      return inv.copy();
     }
     return null;
   }

@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 
-public class NetherWartFarmer extends SeedFarmer {
+public class NetherWartFarmer extends CustomSeedFarmer {
 
   public NetherWartFarmer() {
     super(Blocks.nether_wart, 3, new ItemStack(Items.nether_wart));

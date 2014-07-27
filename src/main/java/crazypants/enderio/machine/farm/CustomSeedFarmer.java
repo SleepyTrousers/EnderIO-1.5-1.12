@@ -12,7 +12,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 
-public class SeedFarmer implements IFarmerJoe {
+public class CustomSeedFarmer implements IFarmerJoe {
 
   protected Block plantedBlock;
   protected int plantedBlockMeta;  
@@ -22,15 +22,15 @@ public class SeedFarmer implements IFarmerJoe {
   protected List<Block> tilledBlocks = new ArrayList<Block>();
   protected boolean ignoreSustainCheck = false;
 
-  public SeedFarmer(Block plantedBlock, ItemStack seeds) {
+  public CustomSeedFarmer(Block plantedBlock, ItemStack seeds) {
     this(plantedBlock, 0, 7, seeds);
   }
 
-  public SeedFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
+  public CustomSeedFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
     this(plantedBlock, 0, grownBlockMeta, seeds);
   }
 
-  public SeedFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
+  public CustomSeedFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
     this.plantedBlock = plantedBlock;
     this.plantedBlockMeta = plantedBlockMeta;
     this.grownBlockMeta = grownBlockMeta;
@@ -109,7 +109,7 @@ public class SeedFarmer implements IFarmerJoe {
 
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
-    if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(getSeeds(), bc) != null) {
+    if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(getSeeds(), bc) != null) {
       return plant(farm, worldObj, bc);
     }
     return false;

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 
-public class StemFarmer extends SeedFarmer {
+public class StemFarmer extends CustomSeedFarmer {
 
 
   public StemFarmer(Block plantedBlock, ItemStack seeds) {
@@ -68,7 +68,7 @@ public class StemFarmer extends SeedFarmer {
   @Override
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
-    if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(seeds, bc) != null) {
+    if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(seeds, bc) != null) {
       return plant(farm, worldObj, bc);
     }
     return false;

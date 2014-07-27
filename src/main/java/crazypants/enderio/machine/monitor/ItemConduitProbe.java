@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -46,6 +47,11 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
 
+    Block blk = world.getBlock(x, y, z);
+    if(blk != null) {
+      System.out.println("ItemConduitProbe.onItemUse: " + blk.getUnlocalizedName());
+    }
+    
     if(player.isSneaking()) {
 
       TileEntity te = world.getTileEntity(x, y, z);

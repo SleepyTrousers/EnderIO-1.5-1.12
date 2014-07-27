@@ -5,7 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class MelonFarmer extends SeedFarmer {
+public class MelonFarmer extends CustomSeedFarmer {
 
   private Block grownBlock;
 
@@ -19,7 +19,9 @@ public class MelonFarmer extends SeedFarmer {
     int xVal = farm.getLocation().x % 2; 
     int zVal = farm.getLocation().z % 2;
     if(bc.x % 2 != xVal || bc.z % 2 != zVal) {
-      return false;
+      //if we have melon seeds, we still want ot return true here so they are not planted by the default plantable
+      //handlers
+      return canPlant(farm.getSeedTypeInSuppliesFor(bc));
     }
     return super.prepareBlock(farm, bc, block, meta);
   }

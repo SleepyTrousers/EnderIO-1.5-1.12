@@ -249,8 +249,9 @@ public final class Config {
   public static void syncConfig() {
     try {
       Config.processConfig(config);
-    } catch (Exception e) {
+    } catch (Exception e) {      
       Log.error("EnderIO has a problem loading it's configuration");
+      e.printStackTrace();
     } finally {
       if(config.hasChanged()) {
         config.save();
@@ -609,7 +610,7 @@ public final class Config {
     useModMetals = config.get(sectionRecipe.name, "useModMetals", useModMetals,
         "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);
     
-    nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay, "The delay in ticks between when nutrient distillation boosts your food value.").getInt();
+    nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay, "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int)nutrientFoodBoostDelay);
   }
 
   private Config() {

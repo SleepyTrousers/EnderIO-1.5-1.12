@@ -65,7 +65,7 @@ public class TreeFarmer implements IFarmerJoe {
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     World worldObj = farm.getWorldObj();
     if(canPlant(worldObj, bc)) {
-      ItemStack seed = farm.getSeedFromSupplies(saplingItem, bc, false);
+      ItemStack seed = farm.takeSeedFromSupplies(saplingItem, bc, false);
       if(seed != null) {
         return plant(farm, worldObj, bc, seed);
       }
