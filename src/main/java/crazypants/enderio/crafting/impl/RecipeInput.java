@@ -26,7 +26,7 @@ public class RecipeInput extends RecipeComponent implements IRecipeInput {
   }
 
   public RecipeInput(ItemStack input) {
-    this(input, input == null ? false : input.getItemDamage() == 0);
+    this(input, input == null ? false : (input.getItem() == null ? false : input.getItemDamage() == 0));
   }
 
   public RecipeInput(ItemStack input, boolean addSubtypes) {
