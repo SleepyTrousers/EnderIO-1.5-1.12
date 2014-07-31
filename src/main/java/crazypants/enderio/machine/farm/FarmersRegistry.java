@@ -27,6 +27,8 @@ public final class FarmersRegistry {
     //special case of plantables to get spacing correct
     FarmersCommune.instance.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
     FarmersCommune.instance.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));
+    //'BlockNetherWart' is not an IGrowable
+    FarmersCommune.instance.joinCommune(new NetherWartFarmer());    
     //Handles all 'vanilla' style crops
     FarmersCommune.instance.joinCommune(new PlantableFarmer());
   }
