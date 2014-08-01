@@ -1,13 +1,13 @@
 //***  Ender IO *****//
 
 //Power
-enderio.power.mj=МДж
-enderio.power.rf=РФ
+enderio.power.mj=MJ
+enderio.power.rf=RF
 enderio.power.tick=/тик
-enderio.power.maxOutput=Макс. вывод
+enderio.power.maxOutput=Макс. вход
 
 //Ender IO / Enderface
-tile.blockEnderIo.name=Ввод/вывод Края
+tile.blockEnderIo.name=Вход/выход Края
 tile.blockEnderIo.tooltip.detailed.line1=Даёт удалённый доступ к ближайшим
 tile.blockEnderIo.tooltip.detailed.line2=блокам
 tile.blockEnderIo.tooltip.detailed.line3=Используется с якорями путешествия или
@@ -39,7 +39,7 @@ enderio.itemLiquidConduit.lockedType=Тип жидкости установле�
 enderio.itemLiquidConduit.unlockedType=Тип жидкости не установлен
 
 enderio.itemLiquidConduit.tooltip.maxExtract=Макс. извлечение:
-enderio.itemLiquidConduit.tooltip.maxIo=Макс. ввод/вывод:
+enderio.itemLiquidConduit.tooltip.maxIo=Макс. вход/выход:
 enderio.itemLiquidConduit.tooltip.detailed.line1=Жидкости не будут течь вверх
 enderio.itemLiquidConduit.tooltip.detailed.line2=Скорость потока зависит от
 enderio.itemLiquidConduit.tooltip.detailed.line3=вязкости жидкости
@@ -436,7 +436,7 @@ enderio.gui.tooltip.redstoneControlMode.on=Активен по сигналу
 enderio.gui.tooltip.redstoneControlMode.off=Активен без сигнала
 enderio.gui.tooltip.redstoneControlMode.never=Всегда выключен
 
-enderio.gui.machine.ioMode.overlay.tooltip=Настроить ввод/вывод
+enderio.gui.machine.ioMode.overlay.tooltip=Настроить вход/выход
 enderio.gui.machine.ioMode.none=Нет
 enderio.gui.machine.ioMode.pull=Тянуть
 enderio.gui.machine.ioMode.push=Толкать
@@ -455,8 +455,8 @@ enderio.gui.powerMonitor.of=на
 enderio.gui.powerMonitor.monHeading1=Энергия в трубе
 enderio.gui.powerMonitor.monHeading2=Энергия в блоке конденсаторов
 enderio.gui.powerMonitor.monHeading3=Энергия в механизме
-enderio.gui.powerMonitor.monHeading4=Средний вывод за 5 секунд
-enderio.gui.powerMonitor.monHeading5=Средний ввод за 5 секунд
+enderio.gui.powerMonitor.monHeading4=Средний выход за 5 секунд
+enderio.gui.powerMonitor.monHeading5=Средний вход за 5 секунд
 
 //MJ Reader
 enderio.gui.mjReader.networkHeading=Силовая сеть
@@ -478,13 +478,13 @@ enderio.gui.mjReader.receiveItem1=Может получать
 enderio.gui.mjReader.receiveItem2=от:
 
 //CapactorBank
-enderio.gui.capBank.inputRs=Режим красного камня на вводе
-enderio.gui.capBank.outputRs=Режим красного камня на выводе
-enderio.gui.capBank.maxIo=Макс. ввод/вывод
-enderio.gui.capBank.maxInput=Макс. ввод
-enderio.gui.capBank.maxOutput=Макс. вывод
-enderio.gui.capBank.inputMode=Ввод
-enderio.gui.capBank.outputMode=Вывод
+enderio.gui.capBank.inputRs=Режим красного камня на входе
+enderio.gui.capBank.outputRs=Режим красного камня на выходе
+enderio.gui.capBank.maxIo=Макс. вход/выход
+enderio.gui.capBank.maxInput=Макс. вход
+enderio.gui.capBank.maxOutput=Макс. выход
+enderio.gui.capBank.inputMode=Вход
+enderio.gui.capBank.outputMode=Выход
 
 //Transceiver
 enderio.gui.trans.publicChannel=Общедоступный канал
@@ -505,8 +505,8 @@ enderio.gui.alloy.mode.alloy=Только сплавы
 enderio.gui.alloy.mode.furnace=Только обычные рецепты
 
 //Vat
-enderio.vat.outputTank=Вывод чана
-enderio.vat.inputTank=Ввод чана
+enderio.vat.outputTank=Выход чана
+enderio.vat.inputTank=Вход чана
 
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Охладитель
@@ -529,7 +529,7 @@ enderio.gui.travelAccessable.ok=Авторизироваться
 
 //conduits
 enderio.gui.conduit.ioMode=Режим
-enderio.gui.conduit.ioMode.inOut=Ввод / Вывод
+enderio.gui.conduit.ioMode.inOut=Вход / Выход
 enderio.gui.conduit.ioMode.input=Извлекать
 enderio.gui.conduit.ioMode.output=Помещать
 enderio.gui.conduit.ioMode.disabled=Отключен
