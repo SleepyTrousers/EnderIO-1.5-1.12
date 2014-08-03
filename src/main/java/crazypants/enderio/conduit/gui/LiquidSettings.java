@@ -123,8 +123,8 @@ public class LiquidSettings extends BaseSettingsPanel {
       rsB.onGuiInit();
       colorB.onGuiInit();
     } else {
-      gui.removeButton(rsB);
-      gui.removeButton(colorB);
+      rsB.detach();
+      colorB.detach();
     }
 
     if(isEnder && isFilterVisible()) {
