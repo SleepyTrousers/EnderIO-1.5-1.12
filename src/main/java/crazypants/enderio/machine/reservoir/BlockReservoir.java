@@ -24,6 +24,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
+import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
@@ -244,11 +245,9 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
     if(tr.front == side || tr.front == side.getOpposite()) { // 2x2 area
 
       boolean isRight;
-      if(tr.isVertical()) { // to to flip right and left for back faces of
-        // vertical multiblocks
-        isRight = !pos.isRight;
-      } else {
-        isRight = pos.isRight;
+      isRight = tr.front == side.getOpposite() ? !pos.isRight : pos.isRight;
+      if(!tr.isVertical() && tr.front == side.getOpposite() ) { 
+        isRight = !isRight;
       }
       if(pos.isTop) {
         return isRight ? mbIcons[MbFace.TR.ordinal()] : mbIcons[MbFace.TL.ordinal()];
@@ -276,12 +275,13 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       if(tr.isVertical()) {
         return pos.isTop ? mbIcons[MbFace.T.ordinal()] : mbIcons[MbFace.B.ordinal()];
       } else {
-        if(tr.right == side || tr.right.getOpposite() == side) {
-          return pos.isTop ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
-        } else {
+        if(tr.right == side) {          
           return pos.isTop ? mbIcons[MbFace.R.ordinal()] : mbIcons[MbFace.L.ordinal()];
+        } else {
+          return pos.isTop ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
         }
       }
+      
     }
 
   }
