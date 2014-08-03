@@ -96,7 +96,7 @@ public class DarkSteelController {
       return;
     }
 
-    if(!player.onGround && player.motionY < 0 && !player.isSneaking()) {
+    if(!player.onGround && player.motionY < 0 && !player.isSneaking() && !player.isInWater()) {
 
       double horizontalSpeed = Config.darkSteelGliderHorizontalSpeed;
       double verticalSpeed = Config.darkSteelGliderVerticalSpeed;
