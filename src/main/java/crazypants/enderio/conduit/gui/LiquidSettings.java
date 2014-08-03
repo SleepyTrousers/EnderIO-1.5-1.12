@@ -51,7 +51,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private EnderLiquidConduit eConduit;
   private boolean isEnder;
   private int filterX = 59;
-  private int filterY = 59;
+  private int filterY = 63;
   private Rectangle filterBounds = new Rectangle(filterX, filterY, 90, 18);
   private GuiToolTip[] filterToolTips;
 
@@ -194,7 +194,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       fr.drawString(filterStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
 
       x = gui.getGuiLeft() + filterX;
-      y = customTop + filterY;
+      y = gui.getGuiTop() + filterY;
       GL11.glColor3f(1, 1, 1);
       RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
       gui.drawTexturedModalRect(x, y, 24, 238, 90, 18);
