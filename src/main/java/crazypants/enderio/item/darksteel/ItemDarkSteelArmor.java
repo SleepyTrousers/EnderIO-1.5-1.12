@@ -107,6 +107,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       SpeedUpgrade.SPEED_THREE.writeToItem(is);
     } else if(armorType == 3) {
       JumpUpgrade.JUMP_THREE.writeToItem(is);
+      SwimUpgrade.INSTANCE.writeToItem(is);
     } else if(armorType == 1) {
       GliderUpgrade.INSTANCE.writeToItem(is);
     } else if(armorType == 0) {

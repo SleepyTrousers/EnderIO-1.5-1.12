@@ -87,8 +87,22 @@ public class DarkSteelController {
       updateSword(player);
 
       updateGlide(player);
+      
+      updateSwim(player);
     }
 
+  }
+
+  private void updateSwim(EntityPlayer player) {
+    ItemStack boots = player.getEquipmentInSlot(1);
+    SwimUpgrade upgrade = SwimUpgrade.loadFromItem(boots);
+    if(upgrade == null) {
+      return;
+    }
+    if(player.isInWater()) {      
+      player.motionX *= 1.1;
+      player.motionZ *= 1.1;
+    }    
   }
 
   private void updateGlide(EntityPlayer player) {
@@ -169,7 +183,7 @@ public class DarkSteelController {
     } else if(moveInst.getModifier(sprintModifiers[0].getID()) != null) {      
       moveInst.removeModifier(sprintModifiers[0]);
     } 
-
+       
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
