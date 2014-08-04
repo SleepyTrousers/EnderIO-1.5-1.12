@@ -173,8 +173,8 @@ public class DarkSteelController {
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
-
-      double horzMovement = Math.abs(player.distanceWalkedOnStepModified - player.prevDistanceWalkedModified);
+      
+      double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
       double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
       costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
       int cost = (int) (horzMovement * costModifier);
