@@ -174,6 +174,8 @@ public final class Config {
   
   public static int darkSteelSwimCost = 15;
   
+  public static int darkSteelNightVisionCost = 15;
+  
   public static int darkSteelSoundLocatorCost = 10;
   public static int darkSteelSoundLocatorRange = 40;
   public static int darkSteelSoundLocatorLifespan = 40;
@@ -464,8 +466,11 @@ public final class Config {
     darkSteelFallDistanceCost = config.get(sectionDarkSteel.name, "darkSteelFallDistanceCost", darkSteelFallDistanceCost,
             "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
 
-    darkSteelSwimCost = config.get(sectionDarkSteel.name, "darkSteelGliderCost", darkSteelGliderCost,
-        "Number of levels required for the 'Swim' upgrade.").getInt(darkSteelGliderCost);
+    darkSteelSwimCost = config.get(sectionDarkSteel.name, "darkSteelSwimCost", darkSteelSwimCost,
+        "Number of levels required for the 'Swim' upgrade.").getInt(darkSteelSwimCost);
+    
+    darkSteelNightVisionCost = config.get(sectionDarkSteel.name, "darkSteelNightVisionCost", darkSteelNightVisionCost,
+        "Number of levels required for the 'Night Vision' upgrade.").getInt(darkSteelNightVisionCost);
     
    darkSteelGliderCost = config.get(sectionDarkSteel.name, "darkSteelGliderCost", darkSteelGliderCost,
         "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);

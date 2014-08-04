@@ -112,6 +112,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       GliderUpgrade.INSTANCE.writeToItem(is);
     } else if(armorType == 0) {
       SoundDetectorUpgrade.INSTANCE.writeToItem(is);
+      NightVisionUpgrade.INSTANCE.writeToItem(is);
     }
     
     par3List.add(is);

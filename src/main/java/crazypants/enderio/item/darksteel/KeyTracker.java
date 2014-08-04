@@ -30,17 +30,23 @@ public class KeyTracker {
   private KeyBinding soundDetectorKey;  
   private boolean isSoundDectorActive = false;
   
+  private KeyBinding nightVisionKey;  
+  private boolean isNightVisionActive = false;
+  
   public KeyTracker() {
     glideKey = new KeyBinding("Glider Toggle", Keyboard.KEY_G, "Dark Steel Armor");
     ClientRegistry.registerKeyBinding(glideKey);
     soundDetectorKey = new KeyBinding("Sound Locator", Keyboard.KEY_L, "Dark Steel Armor");
     ClientRegistry.registerKeyBinding(soundDetectorKey);        
+    nightVisionKey = new KeyBinding("Night Vision", Keyboard.KEY_P, "Dark Steel Armor");
+    ClientRegistry.registerKeyBinding(nightVisionKey);
   }
   
   @SubscribeEvent
   public void onKeyInput(KeyInputEvent event) {   
     handleGlide();
     handleSoundDetector();
+    handleNightVision();
   }
 
   private void handleSoundDetector() {
@@ -77,6 +83,24 @@ public class KeyTracker {
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       DarkSteelController.instance.setGlideActive(Minecraft.getMinecraft().thePlayer, isGlideActive);
       PacketHandler.INSTANCE.sendToServer(new PacketGlideState(isGlideActive));
+    }
+  }
+  
+  private void handleNightVision() {
+    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+      isNightVisionActive = false;
+      return;
+    }
+    if(nightVisionKey.getIsKeyPressed()) {      
+      isNightVisionActive = !isNightVisionActive;
+      String message;
+      if(isNightVisionActive) {
+        message = Lang.localize("darksteel.upgrade.nightVision.enabled");
+      } else {
+        message = Lang.localize("darksteel.upgrade.nightVision.disabled");
+      }
+      Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
+      DarkSteelController.instance.setNightVisionActive(isNightVisionActive);      
     }
   }
 

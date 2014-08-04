@@ -11,6 +11,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovementInput;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -48,8 +50,11 @@ public class DarkSteelController {
   private boolean wasJumping;
   private int jumpCount;
   private int ticksSinceLastJump;
-  //private boolean isGlideActive = false;
+
   private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();
+  
+  private boolean nightVisionActive = false;
+  private boolean removeNightvision = false;
 
   private DarkSteelController() {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
@@ -74,8 +79,6 @@ public class DarkSteelController {
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
 
-
-     
     if(event.phase == Phase.START) {
       //boots
       updateStepHeightAndFallDistance(player);
@@ -87,8 +90,9 @@ public class DarkSteelController {
       updateSword(player);
 
       updateGlide(player);
-      
+
       updateSwim(player);
+      
     }
 
   }
@@ -99,10 +103,10 @@ public class DarkSteelController {
     if(upgrade == null) {
       return;
     }
-    if(player.isInWater()) {      
+    if(player.isInWater()) {
       player.motionX *= 1.1;
       player.motionZ *= 1.1;
-    }    
+    }
   }
 
   private void updateGlide(EntityPlayer player) {
@@ -178,23 +182,23 @@ public class DarkSteelController {
     }
 
     IAttributeInstance moveInst = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
-    if(moveInst.getModifier(walkModifiers[0].getID()) != null) {      
+    if(moveInst.getModifier(walkModifiers[0].getID()) != null) {
       moveInst.removeModifier(walkModifiers[0]); //any will so as they all have the same UID
-    } else if(moveInst.getModifier(sprintModifiers[0].getID()) != null) {      
+    } else if(moveInst.getModifier(sprintModifiers[0].getID()) != null) {
       moveInst.removeModifier(sprintModifiers[0]);
-    } 
-       
+    }
+
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
     if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
-      
+
       double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
       double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
       costModifier = costModifier + (costModifier * speedUpgrade.walkMultiplier);
       int cost = (int) (horzMovement * costModifier);
       int totalEnergy = getPlayerEnergy(player, EnderIO.itemDarkSteelLeggings);
-      
-      if(totalEnergy > 0) {        
+
+      if(totalEnergy > 0) {
         usePlayerEnergy(player, EnderIO.itemDarkSteelLeggings, cost);
         if(player.isSprinting()) {
           moveInst.applyModifier(sprintModifiers[speedUpgrade.level - 1]);
@@ -298,7 +302,11 @@ public class DarkSteelController {
         jumpCount = 0;
       }
       ticksSinceLastJump++;
+            
+      updateNightvision(player);
     }
+    
+    
   }
 
   @SideOnly(Side.CLIENT)
@@ -321,6 +329,33 @@ public class DarkSteelController {
       PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EnderIO.itemDarkSteelBoots.armorType));
     }
 
+  }
+  
+  
+  private void updateNightvision(EntityPlayer player) {
+    if(isNightVisionUpgradeEquipped(player) && nightVisionActive) {
+      player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 210, 0, true));
+    } 
+    if(!isNightVisionUpgradeEquipped(player) && nightVisionActive) {
+      nightVisionActive = false;
+      removeNightvision = true;
+    }
+    if(removeNightvision) {
+      player.removePotionEffect(Potion.nightVision.getId());
+      removeNightvision = false;
+    }
+  }
+
+  public boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
+    ItemStack helmet = player.getEquipmentInSlot(4);    
+    return NightVisionUpgrade.loadFromItem(helmet) != null;    
+  }
+
+  public void setNightVisionActive(boolean isNightVisionActive) {
+    if(nightVisionActive && !isNightVisionActive) {
+      removeNightvision = true;
+    }
+    this.nightVisionActive = isNightVisionActive;    
   }
 
 }
