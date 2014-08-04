@@ -99,7 +99,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
         FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
         for (FluidContainerData data : datas) {
-          if(data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
+          if(data != null && data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
             res = data.filledContainer.copy();
             filled = FluidContainerRegistry.getFluidForFilledItem(res);
           }
@@ -153,18 +153,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     }
     return new GuiTank(player.inventory, (TileTank) te);
   }
-
-  //Causes crashes in 1.7 on some machines
-  //@Override
-  //@SideOnly(Side.CLIENT)
-  //public int getRenderBlockPass() {
-  //  return 1;
-  //}
-  //
-  //@Override
-  //public boolean canRenderInPass(int pass) {
-  //  return pass == 1;
-  //}
 
   @Override
   public boolean isOpaqueCube() {

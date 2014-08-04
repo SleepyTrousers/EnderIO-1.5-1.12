@@ -49,7 +49,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     int butLeft = 37;
     int x = butLeft;
-    int y = 58;
+    int y = 68;
 
     useMetaB = new ToggleButtonEIO(gui, ID_META, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(Lang.localize("gui.conduit.item.matchMetaData"));
@@ -101,7 +101,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useMetaB.setSelected(activeFilter.isMatchMeta());
     
     int x = gui.getGuiLeft() + 80;
-    int y = 77;
+    int y = gui.getGuiTop() + 65;
     snapshotB = new GuiButton(ID_SNAPSHOT, x, y, 60, 20, "Snapshot");
     
     

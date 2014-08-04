@@ -58,8 +58,11 @@ public final class PainterUtil {
       tag = new NBTTagCompound();
       item.setTagCompound(tag);
     }
-    tag.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(source));
-    tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
+    String name = Block.blockRegistry.getNameForObject(source);
+    if(name != null && !name.trim().isEmpty()) {
+      tag.setString(BlockPainter.KEY_SOURCE_BLOCK_ID, name);
+      tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
+    }
   }
 
 }

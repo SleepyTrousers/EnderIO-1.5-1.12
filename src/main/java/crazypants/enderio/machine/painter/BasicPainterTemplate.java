@@ -98,8 +98,8 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     if(target == null) {
       return false;
     }
-
-    Block blk = Util.getBlockFromItemId(target);
+    
+    Block blk = Block.getBlockFromItem(target.getItem());
     if(blk == null) {
       return false;
     }
@@ -109,12 +109,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
         return true;
       }
     }
-
-    for (int i = 0; i < validTargets.length; i++) {
-      if(validTargets[i] == blk) {
-        return true;
-      }
-    }
+    
     return false;
   }
 

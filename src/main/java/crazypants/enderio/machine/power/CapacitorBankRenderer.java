@@ -69,7 +69,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
 
   }
 
-  private void renderBlock(TileCapacitorBank te, float filledRatio, int meta) {
+  private void renderBlock(TileCapacitorBank te, double filledRatio, int meta) {
     RenderUtil.bindBlockTexture();
     Tessellator tes = Tessellator.instance;
 
@@ -181,7 +181,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
   }
 
-  private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, float filledRatio) {
+  private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, double filledRatio) {
 
     int totalPixels;
     if(gb.vInfo.verticalHeight == 1) {
@@ -190,7 +190,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
     }
 
-    int targetPixelCount = Math.max(0, Math.round(totalPixels * filledRatio));
+    int targetPixelCount = (int)Math.max(0, Math.round(totalPixels * filledRatio));
     int pixelsBellowFace;
     if(gb.vInfo.index < 2) {
       // either none or a bottom section

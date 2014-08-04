@@ -31,9 +31,7 @@ public interface ITravelAccessable {
   
   void setItemLabel(ItemStack lableIcon);
 
-  UUID getPlacedBy();
-
-//  void setPlacedBy(String placedBy);
+  String getPlacedBy();
 
   void setPlacedBy(EntityPlayer player);
 

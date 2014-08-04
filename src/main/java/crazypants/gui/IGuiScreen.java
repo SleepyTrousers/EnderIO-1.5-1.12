@@ -20,8 +20,7 @@ public interface IGuiScreen {
 
   void removeButton(GuiButton button);
 
-
-
+  int getOverlayOffsetX();
 
 
 }

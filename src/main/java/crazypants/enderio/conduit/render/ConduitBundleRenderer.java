@@ -21,6 +21,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -28,6 +30,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -37,6 +40,7 @@ import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.IBlockAccessWrapper;
 
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
@@ -97,30 +101,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-    boolean renderConduit = true;
-    if(bundle.hasFacade()) {
-
-      Block facadeId = bundle.getFacadeId();
-      if(ConduitUtil.isFacadeHidden(bundle, player)) {
-        bundle.setFacadeId(null, false);
-        bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
-      } else {
-        bundle.setFacadeRenderAs(FacadeRenderState.FULL);
-        renderConduit = false;
-      }
-
-      BlockConduitFacade facb = EnderIO.blockConduitFacade;
-      facb.setBlockOverride(bundle);
-      facb.setBlockBounds(0, 0, 0, 1, 1, 1);
-      rb.setRenderBoundsFromBlock(facb);
-      rb.renderStandardBlock(facb, x, y, z);
-      facb.setBlockOverride(null);
-
-      bundle.setFacadeId(facadeId, false);
-
-    } else {
-      bundle.setFacadeRenderAs(FacadeRenderState.NONE);
-    }
+    boolean renderConduit = renderFacade(x, y, z, rb, bundle, player);    
 
     if(renderConduit) {
       BlockCoord loc = bundle.getBlockCoord();
@@ -134,6 +115,54 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     }
 
     return true;
+  }
+
+  private boolean renderFacade(int x, int y, int z, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
+    boolean res = true;
+    if(bundle.hasFacade()) {
+
+      Block facadeId = bundle.getFacadeId();
+      if(ConduitUtil.isFacadeHidden(bundle, player)) {
+        bundle.setFacadeId(null, false);
+        bundle.setFacadeRenderAs(FacadeRenderState.WIRE_FRAME);
+        
+        BlockConduitFacade facb = EnderIO.blockConduitFacade;
+        facb.setBlockOverride(bundle);
+        facb.setBlockBounds(0, 0, 0, 1, 1, 1);
+        rb.setRenderBoundsFromBlock(facb);
+        rb.renderStandardBlock(facb, x, y, z);
+        facb.setBlockOverride(null);
+        
+        bundle.setFacadeId(facadeId, false);
+
+        
+      } else if(facadeId != null){
+        bundle.setFacadeRenderAs(FacadeRenderState.FULL);
+        res = false;
+        
+        IBlockAccess origBa = rb.blockAccess;
+        rb.blockAccess = new FacadeAccessWrapper(origBa);
+        
+//        BlockConduitFacade facb = EnderIO.blockConduitFacade;
+//        facb.setBlockOverride(bundle);
+//        facb.setBlockBounds(0, 0, 0, 1, 1, 1);
+//        rb.setRenderBoundsFromBlock(facb);
+//        rb.renderStandardBlock(facb, x, y, z);
+//        facb.setBlockOverride(null);
+        
+        //rb.renderStandardBlock(facadeId, x, y, z);
+        rb.renderBlockByRenderType(facadeId, x, y, z);
+        
+        
+        rb.blockAccess = origBa;
+        
+      }
+
+
+    } else {
+      bundle.setFacadeRenderAs(FacadeRenderState.NONE);
+    }
+    return res;
   }
 
   public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
@@ -224,6 +253,52 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   @Override
   public int getRenderId() {
     return BlockConduitBundle.rendererId;
+  }
+  
+  private class FacadeAccessWrapper extends IBlockAccessWrapper {
+
+    public FacadeAccessWrapper(IBlockAccess ba) {
+      super(ba);
+    }
+
+    @Override
+    public Block getBlock(int x, int y, int z) {
+      Block res = super.getBlock(x, y, z);
+      if(res == EnderIO.blockConduitBundle) {
+        TileEntity te = getTileEntity(x, y, z);
+        if(te instanceof TileConduitBundle) {
+          TileConduitBundle tcb = (TileConduitBundle)te;
+          Block fac = tcb.getFacadeId();
+          if(fac != null) {            
+            res = fac;
+          }
+        }
+      }
+      return res; 
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getLightBrightnessForSkyBlocks(int var1, int var2, int var3, int var4) {
+      return wrapped.getLightBrightnessForSkyBlocks(var1 , var2, var3, var4);
+    }
+
+    @Override
+    public int getBlockMetadata(int x, int y, int z) {
+      Block block = super.getBlock(x, y, z);
+      if(block == EnderIO.blockConduitBundle) {
+        TileEntity te = getTileEntity(x, y, z);
+        if(te instanceof TileConduitBundle) {
+          TileConduitBundle tcb = (TileConduitBundle)te;
+          Block fac = tcb.getFacadeId();
+          if(fac != null) {            
+            return tcb.getFacadeMetadata();
+          }
+        }
+      }
+      return super.getBlockMetadata(x, y, z);
+    }
+    
   }
 
 }

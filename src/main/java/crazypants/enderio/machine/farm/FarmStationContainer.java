@@ -39,27 +39,18 @@ public class FarmStationContainer extends AbstractMachineContainer {
         public boolean isItemValid(ItemStack itemStack) {
           return tileEntity.isItemValidForSlot(slot, itemStack);
         }
+
+        @Override
+        public int getSlotStackLimit() {             
+          if(slot > 1 && slot < 6) {
+            return 16;
+          }
+          return 64;
+        }
+        
+        
       });
     }
-
-//    addSlotToContainer(new Slot(tileEntity, 0, 54, 17) {
-//      @Override
-//      public boolean isItemValid(ItemStack itemStack) {
-//        return tileEntity.isItemValidForSlot(0, itemStack);
-//      }
-//    });
-//    addSlotToContainer(new Slot(tileEntity, 1, 79, 7) {
-//      @Override
-//      public boolean isItemValid(ItemStack itemStack) {
-//        return tileEntity.isItemValidForSlot(1, itemStack);
-//      }
-//    });
-//    addSlotToContainer(new Slot(tileEntity, 2, 103, 17) {
-//      @Override
-//      public boolean isItemValid(ItemStack itemStack) {
-//        return tileEntity.isItemValidForSlot(2, itemStack);
-//      }
-//    });
 
   }
 

@@ -31,7 +31,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
         <itemStack modID="minecraft" itemName="fermented_spider_eye" slot="1" multiplier="2"/>
         
         
-        <fluidStack name="water" multiplier="0.5"/>
+        <fluidStack name="water" multiplier="0.25"/>
       </input>      
       <output>
         <fluidStack name="nutrient_distillation"/>        

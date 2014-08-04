@@ -2,6 +2,7 @@ package crazypants.enderio;
 
 import static crazypants.enderio.EnderIO.*;
 import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import buildcraft.api.fuels.IronEngineCoolant;
 import buildcraft.api.fuels.IronEngineFuel;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -23,6 +25,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -51,6 +54,10 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
+import crazypants.enderio.item.darksteel.ItemGliderWing;
+import crazypants.enderio.item.darksteel.SoundEntity;
+import crazypants.enderio.item.darksteel.SoundRenderer;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -58,6 +65,8 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.enchanter.BlockEnchanter;
+import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
@@ -85,6 +94,8 @@ import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -167,6 +178,7 @@ public class EnderIO {
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
   public static BlockCapacitorBank blockCapacitorBank;
+  public static BlockWirelessCharger blockWirelessCharger;
   public static BlockCrusher blockCrusher;
   public static BlockHyperCube blockHyperCube;
   public static BlockPowerMonitor blockPowerMonitor;
@@ -177,11 +189,14 @@ public class EnderIO {
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
 
+  public static BlockEnchanter blockEnchanter;
+  
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
+  public static BlockEndermanSkull blockEndermanSkull;
 
   //Fluids
   public static Fluid fluidNutrientDistillation;
@@ -189,7 +204,7 @@ public class EnderIO {
   public static ItemBucketEio itemBucketNutrientDistillation;
 
   public static Fluid fluidHootch;
-  public static BlockFluidEio blocHootch;
+  public static BlockFluidEio blockHootch;
   public static ItemBucketEio itemBucketHootch;
 
   public static Fluid fluidRocketFuel;
@@ -212,6 +227,8 @@ public class EnderIO {
   public static ItemDarkSteelSword itemDarkSteelSword;
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
+  public static BlockVacuumChest blockVacuumChest;
+  public static ItemGliderWing itemGliderWing;
 
   //  public static ITrigger triggerNoEnergy;
   //  public static ITrigger triggerHasEnergy;
@@ -241,6 +258,7 @@ public class EnderIO {
     blockPowerMonitor = BlockPowerMonitor.create();
     blockFarmStation = BlockFarmStation.create();
     blockCapacitorBank = BlockCapacitorBank.create();
+    blockWirelessCharger = BlockWirelessCharger.create();
 
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
@@ -260,6 +278,9 @@ public class EnderIO {
     blockLightNode = BlockLightNode.create();
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
+    blockVacuumChest = BlockVacuumChest.create();
+    
+    blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 
@@ -285,19 +306,19 @@ public class EnderIO {
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
-    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, new MaterialLiquid(MapColor.brownColor));
+    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water);
 
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
-    blocHootch = BlockFluidEio.create(fluidHootch, new MaterialLiquid(MapColor.grayColor));
+    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
     IronEngineFuel.addFuel(Fluids.HOOTCH_NAME, Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycle * Config.hootchPowerTotalBurnTime));
 
     f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
-    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, new MaterialLiquid(MapColor.grayColor));
+    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
     IronEngineFuel.addFuel(Fluids.ROCKET_FUEL_NAME, Config.rocketFuelPowerPerCycle, Config.rocketFuelPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
         + (Config.rocketFuelPowerPerCycle * Config.rocketFuelPowerTotalBurnTime));
@@ -305,7 +326,7 @@ public class EnderIO {
     f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
-    blockFireWater = BlockFluidEio.create(fluidFireWater, new MaterialLiquid(MapColor.grayColor));
+    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
     IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
         + (Config.fireWaterPowerPerCycle * Config.fireWaterPowerTotalBurnTime));
@@ -334,6 +355,8 @@ public class EnderIO {
 
     blockDarkIronBars = BlockDarkIronBars.create();
 
+    itemGliderWing = ItemGliderWing.create();
+    
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
     itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
@@ -343,7 +366,15 @@ public class EnderIO {
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
+    blockEndermanSkull = BlockEndermanSkull.create();
+    
     MaterialRecipes.registerOresInDictionary();
+    
+    
+    int entityID = EntityRegistry.findGlobalUniqueEntityId();    
+    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
+    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);        
+    
   }
 
   @EventHandler
@@ -359,17 +390,15 @@ public class EnderIO {
 
     //Register Custom Dungeon Loot here
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 30));
-    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
-        .addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemYetaWench, 1, 0), 1, 1, 15));
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));   
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
 
-    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 40));
-    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 30));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 20));
+    ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 10));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
 
     ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 40));
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
     ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
     ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
@@ -380,15 +409,14 @@ public class EnderIO {
         new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
 
     ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
-    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
-    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
-    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 5));
+    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
+    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
 
     ItemStack sword = new ItemStack(EnderIO.itemDarkSteelSword, 1, 0);
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
-    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(sword, 1, 1, 10));
-    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
-    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
+    ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
+    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
+    ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
 
     ItemStack boots = new ItemStack(EnderIO.itemDarkSteelBoots, 1, 0);
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
@@ -422,6 +450,7 @@ public class EnderIO {
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
+    EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();
   }
 

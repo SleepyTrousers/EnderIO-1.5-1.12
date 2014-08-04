@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import crazypants.util.BlockCoord;
 
-public class PickableFarmer extends SeedFarmer {
+public class PickableFarmer extends CustomSeedFarmer {
   
   public PickableFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
     super(plantedBlock, plantedBlockMeta, grownBlockMeta, seeds);
@@ -27,7 +27,7 @@ public class PickableFarmer extends SeedFarmer {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     
-    if(!canHarvest(farm, bc, block, meta) || !farm.hasHarvestTool()) {
+    if(!canHarvest(farm, bc, block, meta) || !farm.hasDefaultHarvestTool()) {
       return null;
     }
     EntityPlayerMP player = farm.getFakePlayer();

@@ -12,27 +12,42 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 
-public class SeedFarmer implements IFarmerJoe {
+public class CustomSeedFarmer implements IFarmerJoe {
 
   protected Block plantedBlock;
   protected int plantedBlockMeta;  
   protected int grownBlockMeta;
   protected ItemStack seeds;
   protected boolean requiresFarmland = true;
+  protected List<Block> tilledBlocks = new ArrayList<Block>();
+  protected boolean ignoreSustainCheck = false;
 
-  public SeedFarmer(Block plantedBlock, ItemStack seeds) {
+  public CustomSeedFarmer(Block plantedBlock, ItemStack seeds) {
     this(plantedBlock, 0, 7, seeds);
   }
 
-  public SeedFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
+  public CustomSeedFarmer(Block plantedBlock, int grownBlockMeta, ItemStack seeds) {
     this(plantedBlock, 0, grownBlockMeta, seeds);
   }
 
-  public SeedFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
+  public CustomSeedFarmer(Block plantedBlock, int plantedBlockMeta, int grownBlockMeta, ItemStack seeds) {
     this.plantedBlock = plantedBlock;
     this.plantedBlockMeta = plantedBlockMeta;
     this.grownBlockMeta = grownBlockMeta;
     this.seeds = seeds;
+    addTilledBlock(Blocks.farmland);   
+  }
+  
+  public void addTilledBlock(Block block) {
+    tilledBlocks.add(block);
+  }
+
+  public boolean isIgnoreGroundCanSustainCheck() {
+    return ignoreSustainCheck;
+  }
+
+  public void setIgnoreGroundCanSustainCheck(boolean ignoreSustainCheck) {
+    this.ignoreSustainCheck = ignoreSustainCheck;
   }
 
   public int getPlantedBlockMeta() {
@@ -94,7 +109,7 @@ public class SeedFarmer implements IFarmerJoe {
 
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc) {
     World worldObj = farm.getWorldObj();
-    if(canPlant(worldObj, bc) && farm.getSeedFromSupplies(getSeeds(), bc) != null) {
+    if(canPlant(worldObj, bc) && farm.takeSeedFromSupplies(getSeeds(), bc) != null) {
       return plant(farm, worldObj, bc);
     }
     return false;
@@ -103,7 +118,7 @@ public class SeedFarmer implements IFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
 
-    if(!canHarvest(farm, bc, block, meta) || !farm.hasHarvestTool()) {
+    if(!canHarvest(farm, bc, block, meta) || !farm.hasDefaultHarvestTool()) {
       return null;
     }
 
@@ -158,7 +173,13 @@ public class SeedFarmer implements IFarmerJoe {
   }
 
   protected boolean isGroundTilled(TileFarmStation farm, BlockCoord plantingLocation) {
-    return farm.getBlock(plantingLocation.getLocation(ForgeDirection.DOWN)) == Blocks.farmland;
+    Block target = farm.getBlock(plantingLocation.getLocation(ForgeDirection.DOWN));    
+    for(Block tst : tilledBlocks) {      
+      if(tst == target) {
+        return true;
+      }
+    }
+    return false;
   }
 
   protected boolean canPlant(World worldObj, BlockCoord bc) {
@@ -167,7 +188,7 @@ public class SeedFarmer implements IFarmerJoe {
     IPlantable plantable = (IPlantable) getPlantedBlock();
     if(target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) &&
         target.canBlockStay(worldObj, bc.x, bc.y, bc.z) &&
-        ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable)) {
+        (ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable) || ignoreSustainCheck)) {
       return true;
     }
     return false;

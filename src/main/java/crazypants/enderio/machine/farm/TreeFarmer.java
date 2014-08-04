@@ -25,17 +25,28 @@ public class TreeFarmer implements IFarmerJoe {
 
   protected Block sapling;
   protected ItemStack saplingItem;
-  protected Block wood;
+  protected Block[] woods;
 
-  public TreeFarmer(Block sapling, Block wood) {
+  public TreeFarmer(Block sapling, Block... wood) {
     this.sapling = sapling;
-    saplingItem = new ItemStack(sapling);
-    this.wood = wood;
+    if(sapling != null) {
+      saplingItem = new ItemStack(sapling);
+    }
+    this.woods = wood;
   }
 
   @Override
   public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    return block == wood;
+    return isWood(block);
+  }
+  
+  protected boolean isWood(Block block) {
+    for(Block wood : woods) {
+      if(block == wood) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
@@ -54,7 +65,7 @@ public class TreeFarmer implements IFarmerJoe {
   protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     World worldObj = farm.getWorldObj();
     if(canPlant(worldObj, bc)) {
-      ItemStack seed = farm.getSeedFromSupplies(saplingItem, bc, false);
+      ItemStack seed = farm.takeSeedFromSupplies(saplingItem, bc, false);
       if(seed != null) {
         return plant(farm, worldObj, bc, seed);
       }
@@ -102,7 +113,7 @@ public class TreeFarmer implements IFarmerJoe {
         }
       }
       boolean isWood = true;
-      if(blk != wood) { //leaves
+      if(!isWood(blk)) { //leaves
         isWood = Config.farmAxeDamageOnLeafBreak;
         int leaveMeta = farm.getBlockMeta(coord);
         boolean canDropApple =
@@ -136,7 +147,7 @@ public class TreeFarmer implements IFarmerJoe {
 
     Block blk = farm.getBlock(bc);
     boolean isLeaves = blk instanceof BlockLeaves;
-    if(wood == blk || isLeaves) {
+    if(isWood(blk) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir != ForgeDirection.DOWN) {
@@ -163,7 +174,7 @@ public class TreeFarmer implements IFarmerJoe {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if(dir.offsetY == 0) {
         Block targetBlock = farm.getBlock(bc.getLocation(dir));
-        if(wood == targetBlock) {
+        if(isWood(targetBlock)) {
           harvestUp(farm, bc.getLocation(dir), res);
         }
       }

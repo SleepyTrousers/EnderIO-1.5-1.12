@@ -53,6 +53,10 @@ public class MachineRecipes {
     ItemStack zg = new ItemStack(EnderIO.blockZombieGenerator, 1, 0);
     GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qcq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(Items.skull, 1, 2),'c', capacitor);
     
+    ItemStack wirelessCharger = new ItemStack(EnderIO.blockWirelessCharger);
+    GameRegistry.addShapedRecipe(wirelessCharger, "svs", "imi", "scs", 's', electricSteel, 'i', silicon, 'm', machineChassi, 'c', capacitor3, 'v', vibCry);
+    
+    
     //Crafter
     ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
     GameRegistry.addShapedRecipe(crafter, "iti", "imi", "ici", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'c', capacitor);
@@ -129,6 +133,15 @@ public class MachineRecipes {
     GameRegistry
     .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
         'r', redstoneConduit, 'c', capacitor);
+    
+    //Enchanter
+    ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
+    GameRegistry.addShapedRecipe(enchanter, "dbd", "sss", " s ", 'd', Items.diamond, 'b', Items.book, 's', darkSteel);
+    
+    //Vacuum Chest
+    ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
+    GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
+    
 
   }
 
@@ -144,7 +157,7 @@ public class MachineRecipes {
           Blocks.nether_brick);
     } else {
       ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
-      if(copperIngots != null && !copperIngots.isEmpty()) {
+      if(copperIngots != null && !copperIngots.isEmpty() && Config.useModMetals) {
         GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "cmc", "cCc", 'c', "ingotCopper", 'm', machineChassi, 'b', Blocks.stonebrick, 'f',
             Blocks.furnace, 'C', capacitor));
       } else {
@@ -155,7 +168,7 @@ public class MachineRecipes {
 
     ArrayList<ItemStack> tinIngots = OreDictionary.getOres("ingotTin");
     Object metal;
-    if(tinIngots != null && !tinIngots.isEmpty()) {
+    if(tinIngots != null && !tinIngots.isEmpty() && Config.useModMetals) {
       metal = "ingotTin";
     } else {
       metal = Items.iron_ingot;

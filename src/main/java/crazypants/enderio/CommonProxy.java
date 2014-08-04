@@ -34,4 +34,8 @@ public class CommonProxy {
   public void load() {
   }
 
+  public boolean isNeiInstalled() {    
+    return false;
+  }
+
 }

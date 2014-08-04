@@ -198,9 +198,9 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       return null;
     }
 
-    UUID user = null;
+    String user = null;
     if(!tag.getBoolean("channelIsPublic")) {
-      user = UUID.fromString(tag.getString("channelUser"));
+      user = tag.getString("channelUser");
     }
     return new Channel(channelName, user);
 
@@ -243,7 +243,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
       TileHyperCube cb = (TileHyperCube) te;
       cb.getInternalPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
-        cb.setOwner(((EntityPlayerMP) player).getGameProfile().getId());
+        cb.setOwner(((EntityPlayerMP) player).getGameProfile().getName());
       }
       cb.setChannel(getChannelFromItem(stack));
       setIoOnTransciever(cb, stack);

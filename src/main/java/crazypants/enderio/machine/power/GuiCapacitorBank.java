@@ -36,19 +36,19 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   protected static final int CONFIG_ID = 377996104;
 
-  private static final int POWER_X = 8;
+  private static final int POWER_X = 8 + 21;
   private static final int POWER_Y = 9;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  private int inputX = 78;
+  private int inputX = 78 + 24;
   private int inputY = 18;
 
-  private int outputX = 78;
+  private int outputX = 78 + 24;
   private int outputY = 36;
 
-  private int rightMargin = 8;
+  private int rightMargin = 8 + 24;
 
   private final TileCapacitorBank capBank;
 
@@ -65,7 +65,9 @@ public class GuiCapacitorBank extends GuiContainerBase {
     super(new ContainerCapacitorBank(player, playerInv, te));
     this.capBank = te;
 
-    addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
+    xSize = 176 + 42;
+    
+    addToolTip(new GuiToolTip(new Rectangle(POWER_X - 21, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
       protected void updateText() {
@@ -76,7 +78,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     });
 
-    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
+    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE - 21;
     int y = inputY;
     inputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
@@ -93,7 +95,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
     });
     inputRsButton.setTooltipKey("enderio.gui.capBank.inputRs");
 
-    y += 20;
+    y += 18;
     outputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
       @Override
@@ -261,15 +263,15 @@ public class GuiCapacitorBank extends GuiContainerBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, this.xSize - 21, this.ySize);
 
     //armor slots
-    drawTexturedModalRect(sx - 21, sy + 24, 232, 0, 24, 81);
+    //drawTexturedModalRect(sx - 21, sy + 24, 232, 0, 24, 81);
 
 
 
     int i1 = capBank.getEnergyStoredScaled(POWER_HEIGHT);
-    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176, 0, POWER_WIDTH, i1);
+    drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);
@@ -315,7 +317,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   @Override
   public int getGuiLeft() {
-    return guiLeft;
+    return guiLeft + 24;
   }
 
   @Override
@@ -325,7 +327,12 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   @Override
   public int getXSize() {
-    return xSize;
+    return xSize - 42;
+  }
+
+  @Override
+  public int getOverlayOffsetX() {
+    return 21;
   }
 
   @Override

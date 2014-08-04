@@ -56,7 +56,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
 
     };
     renderer.init();
-    bounds = new Rectangle(5, screen.getYSize() - height -5, screen.getXSize() - 10, height);
+    bounds = new Rectangle(screen.getOverlayOffsetX() + 5, screen.getYSize() - height -5, screen.getXSize() - 10, height);
   }
 
   protected String getLabelForMode(IoMode mode) {
@@ -70,7 +70,7 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
     Minecraft mc = Minecraft.getMinecraft();
     ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
 
-    int vpx = ( (screen.getGuiLeft() + bounds.x)* scaledresolution.getScaleFactor());
+    int vpx = ( (screen.getGuiLeft() + bounds.x - screen.getOverlayOffsetX())* scaledresolution.getScaleFactor());
     int vpy = (screen.getGuiTop() + 4) * scaledresolution.getScaleFactor();
     int w = bounds.width * scaledresolution.getScaleFactor();
     int h = bounds.height * scaledresolution.getScaleFactor();

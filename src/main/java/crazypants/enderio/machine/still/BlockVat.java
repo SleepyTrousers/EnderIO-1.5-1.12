@@ -139,7 +139,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
       if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
         FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
         for (FluidContainerData data : datas) {
-          if(data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
+          if(data != null && data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
             res = data.filledContainer.copy();
             filled = FluidContainerRegistry.getFluidForFilledItem(res);
           }

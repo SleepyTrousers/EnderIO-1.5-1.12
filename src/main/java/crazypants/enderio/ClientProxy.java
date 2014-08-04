@@ -14,6 +14,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -42,9 +43,19 @@ import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
+import crazypants.enderio.item.darksteel.DarkSteelController;
+import crazypants.enderio.item.darksteel.KeyTracker;
 import crazypants.enderio.item.darksteel.PoweredItemRenderer;
+import crazypants.enderio.item.darksteel.SoundEntity;
+import crazypants.enderio.item.darksteel.SoundRenderer;
+import crazypants.enderio.item.darksteel.SoundDetector;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.item.skull.EndermanSkullRenderer;
+import crazypants.enderio.item.skull.TileEndermanSkull;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
+import crazypants.enderio.machine.enchanter.BlockEnchanter;
+import crazypants.enderio.machine.enchanter.EnchanterRenderer;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
@@ -71,6 +82,8 @@ import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TankItemRenderer;
 import crazypants.enderio.machine.tank.TileTank;
+import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
@@ -108,10 +121,28 @@ public class ClientProxy extends CommonProxy {
   private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
   private ConduitBundleRenderer cbr;
+  
+  private boolean checkedNei = false;
+  private boolean neiInstalled = false;
 
   @Override
   public World getClientWorld() {
     return FMLClientHandler.instance().getClient().theWorld;
+  }
+  
+  @Override
+  public boolean isNeiInstalled() {    
+    if(checkedNei) {
+      return neiInstalled;
+    }
+    try{
+      Class.forName("crazypants.enderio.nei.EnchanterRecipeHandler");
+      neiInstalled = true;
+    } catch(Exception e) {
+      neiInstalled = false;
+    }
+    checkedNei = true;
+    return false;
   }
 
   @Override
@@ -148,12 +179,20 @@ public class ClientProxy extends CommonProxy {
     
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
     
+    BlockEnchanter.renderId = RenderingRegistry.getNextAvailableRenderId();
+    EnchanterRenderer enchRen = new EnchanterRenderer();
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), enchRen);
+    RenderingRegistry.registerBlockHandler(enchRen);
+    
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
 
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
+        
+//    BlockWirelessCharger.renderId = RenderingRegistry.getNextAvailableRenderId();
+//    RenderingRegistry.registerBlockHandler(new WirelessChargerRenderer());
 
     if(Config.useCombustionGenModel) {
       CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
@@ -190,6 +229,11 @@ public class ClientProxy extends CommonProxy {
     CapBankRenderer2 cbr2 = new CapBankRenderer2();
     RenderingRegistry.registerBlockHandler(cbr2);
 
+    BlockVacuumChest.renderId = RenderingRegistry.getNextAvailableRenderId();
+    VacuumChestRenderer vcr = new VacuumChestRenderer();
+    RenderingRegistry.registerBlockHandler(vcr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockVacuumChest), vcr);
+
     ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
@@ -218,6 +262,9 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
+    
+    BlockEndermanSkull.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new EndermanSkullRenderer());    
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
@@ -256,8 +303,17 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelSword, dsr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelPickaxe, dsr);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemDarkSteelAxe, dsr);
+    //Ensure it is loaded and registered
+    KeyTracker.instance.isGlideActive();
 
+    
+    RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
+    
+    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);   
+    FMLCommonHandler.instance().bus().register(SoundDetector.instance);
+    
   }
+
 
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {

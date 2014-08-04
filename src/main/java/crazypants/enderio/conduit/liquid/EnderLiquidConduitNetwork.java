@@ -61,9 +61,10 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     drained = tank.externalTank.drain(conDir.getOpposite(), amountAccepted, true);
     if(drained == null || drained.amount <= 0) {
       return false;
-    }    
+    }
     if(drained.amount != amountAccepted) {
-      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled=" + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
+      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
+          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
     }
     return true;
   }
@@ -85,7 +86,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     int filled = 0;
     int remaining = resource.amount;
     //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
-    
+
     for (NetworkTank target : getIteratorForTank(tank)) {
       if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
         int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
@@ -129,8 +130,10 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     for (NetworkTank target : tanks) {
       if(!target.equals(tank) && target.isValid()) {
         FluidTankInfo[] tTanks = target.externalTank.getTankInfo(target.tankDir);
-        for (FluidTankInfo info : tTanks) {
-          res.add(info);
+        if(tTanks != null) {
+          for (FluidTankInfo info : tTanks) {
+            res.add(info);
+          }
         }
       }
     }

@@ -290,7 +290,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(!Config.addDurabilityTootip) {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+    }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
     if(str != null) {
       list.add(str);

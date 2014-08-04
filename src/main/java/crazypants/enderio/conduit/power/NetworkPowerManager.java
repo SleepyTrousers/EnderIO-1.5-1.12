@@ -411,7 +411,7 @@ public class NetworkPowerManager {
 
   }
 
-  private float minAbs(float amount, float limit) {
+  private double minAbs(double amount, double limit) {
     if(amount < 0) {
       return Math.max(amount, -limit);
     } else {
@@ -462,14 +462,14 @@ public class NetworkPowerManager {
           maxToBalance += cb.getMaxEnergyStored();
         }
 
-        float canGet = 0;
+        double canGet = 0;
 
         if(cb.isOutputEnabled(rec.direction.getOpposite())) {
           canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
           canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
           canExtract += canGet;
         }
-        float canFill = 0;
+        double canFill = 0;
         if(cb.isInputEnabled(rec.direction.getOpposite())) {
           canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
           canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
@@ -509,16 +509,16 @@ public class NetworkPowerManager {
         CapBankSupplyEntry from = enteries.get(i);
         if(from.emmiter.getConectionMode(from.direction) == ConnectionMode.IN_OUT) {
 
-          float amount = from.toBalance;
+          double amount = from.toBalance;
           amount = minAbs(amount, toalTransferAmount);
           from.capBank.addEnergy(amount);
           toalTransferAmount -= Math.abs(amount);
-          float toTranfser = Math.abs(amount);
+          double toTranfser = Math.abs(amount);
 
           for (int j = i + 1; j < enteries.size() && toTranfser > 0; j++) {
             CapBankSupplyEntry to = enteries.get(j);
             if(Math.signum(amount) != Math.signum(to.toBalance)) {
-              float toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
+              double toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
               to.capBank.addEnergy(toAmount * Math.signum(to.toBalance));
               toTranfser -= toAmount;
             }
@@ -571,13 +571,13 @@ public class NetworkPowerManager {
   private static class CapBankSupplyEntry {
 
     final TileCapacitorBank capBank;
-    final float canExtract;
-    final float canFill;
-    float toBalance;
+    final double canExtract;
+    final double canFill;
+    double toBalance;
     IPowerConduit emmiter;
     ForgeDirection direction;
 
-    private CapBankSupplyEntry(TileCapacitorBank capBank, float available, float canFill, IPowerConduit emmiter, ForgeDirection direction) {
+    private CapBankSupplyEntry(TileCapacitorBank capBank, double available, double canFill, IPowerConduit emmiter, ForgeDirection direction) {
       this.capBank = capBank;
       this.canExtract = available;
       this.canFill = canFill;

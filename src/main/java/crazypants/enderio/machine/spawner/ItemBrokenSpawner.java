@@ -55,14 +55,13 @@ public class ItemBrokenSpawner extends Item {
     setUnlocalizedName(ModObject.itemBrokenSpawner.unlocalisedName);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setMaxStackSize(1);    
+    setMaxStackSize(1);  
   }
 
   @Override
   public boolean isDamageable() {  
     return false;
   }
-
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemBrokenSpawner.unlocalisedName);

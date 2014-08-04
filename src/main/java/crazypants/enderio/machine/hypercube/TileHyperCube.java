@@ -122,7 +122,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   private Channel channel = null;
   private Channel registeredChannel = null;
-  private UUID owner;
+  private String owner;
 
   private boolean init = true;
 
@@ -186,7 +186,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     HyperCubeRegister.instance.register(this);
   }
 
-  public void setOwner(UUID owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
   }
 
@@ -319,14 +319,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
-    float storedEnergy = (float) powerHandler.getEnergyStored();
-    // Update if our power has changed by more than 0.5%
+    float storedEnergy = (float) powerHandler.getEnergyStored();    
     boolean powerChanged = lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
     if(powerChanged) {
-      lastSyncPowerStored = storedEnergy;
-      if(!canSendPower()) {        
-        EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
-      }
+      lastSyncPowerStored = storedEnergy;        
+      EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
     }
 
     if(requiresClientSync) {
@@ -841,12 +838,12 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : UUID.fromString(channelUser));
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
     } else {
       channel = null;
     }
 
-    owner = UUID.fromString(nbtRoot.getString("owner"));
+    owner = nbtRoot.getString("owner");
 
     for (SubChannel subChannel : SubChannel.values()) {
       String key = "subChannel" + subChannel.ordinal();

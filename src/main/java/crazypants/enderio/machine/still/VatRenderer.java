@@ -75,14 +75,14 @@ public class VatRenderer implements ISimpleBlockRenderingHandler, IItemRenderer 
     //-x side
     BoundingBox bb = BoundingBox.UNIT_CUBE.scale(0.334, fudge,fudge);
     bb = bb.translate(0.5f - (0.334f/2),0,0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, world != null);
 
     bb = BoundingBox.UNIT_CUBE.scale(0.334, fudge,fudge);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, world != null);
 
     bb = BoundingBox.UNIT_CUBE.scale(0.334, fudge,fudge);
     bb = bb.translate(-0.5f + (0.334f/2),0,0);
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform);
+    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, world != null);
 
     if(vat != null) {
       ccr.renderBlock(world, block, x, y, z, overlayRenderer);
@@ -100,21 +100,12 @@ public class VatRenderer implements ISimpleBlockRenderingHandler, IItemRenderer 
 
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-    Tessellator tes = Tessellator.instance;    
+           
     GL11.glDisable(GL11.GL_LIGHTING);   
-    
-    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-    GL11.glDisable(GL11.GL_TEXTURE_2D);    
-    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-    
-    tes.startDrawingQuads();    
+    Tessellator tes = Tessellator.instance;
+    tes.startDrawingQuads();
     renderWorldBlock(null, 0, 0, 0, block, 0, renderer);
-    tes.draw();
-    
-//    OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-//    GL11.glEnable(GL11.GL_TEXTURE_2D);    
-//    OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);    
-    
+    tes.draw();    
     GL11.glEnable(GL11.GL_LIGHTING);
   }
 

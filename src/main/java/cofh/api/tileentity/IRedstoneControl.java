@@ -50,8 +50,8 @@ public interface IRedstoneControl extends IRedstoneCache {
 		}
 	}
 
-	public void setControl(ControlMode control);
+	void setControl(ControlMode control);
 
-	public ControlMode getControl();
+	ControlMode getControl();
 
 }

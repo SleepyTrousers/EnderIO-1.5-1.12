@@ -270,7 +270,7 @@ public class GuiHyperCube extends GuiScreenBase {
 
       Channel c;
       if(privateButton.isSelected()) {
-        c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
+        c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getName());
       } else {
         c = new Channel(newChannelTF.getText(), null);
       }
@@ -433,4 +433,11 @@ public class GuiHyperCube extends GuiScreenBase {
     return Minecraft.getMinecraft().fontRenderer;
   }
 
+  @Override
+  public int getOverlayOffsetX() {  
+    return 0;
+  }
+
+  
+  
 }

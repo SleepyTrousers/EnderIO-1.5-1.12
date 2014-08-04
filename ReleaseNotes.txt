@@ -21,6 +21,8 @@ New
 - Enlighted Glass and Fused Quartz
 - Blast resistent Dark Steel Bars
 - Powered Magnet
+- Wireless Charger
+- Enchanter
 
 Changes
 - Removed advanced item conduits and added upgrades to the basic conduits
