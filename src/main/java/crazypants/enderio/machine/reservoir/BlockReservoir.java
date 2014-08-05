@@ -246,9 +246,9 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       boolean isRight;
       if(tr.isVertical()) { // to to flip right and left for back faces of
         // vertical multiblocks
-        isRight = !pos.isRight;
+        isRight = !pos.isRight(side);
       } else {
-        isRight = pos.isRight;
+        isRight = pos.isRight(side);
       }
       if(pos.isTop) {
         return isRight ? mbIcons[MbFace.TR.ordinal()] : mbIcons[MbFace.TL.ordinal()];
@@ -276,11 +276,7 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       if(tr.isVertical()) {
         return pos.isTop ? mbIcons[MbFace.T.ordinal()] : mbIcons[MbFace.B.ordinal()];
       } else {
-        if(tr.right == side || tr.right.getOpposite() == side) {
-          return pos.isTop ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
-        } else {
-          return pos.isTop ? mbIcons[MbFace.R.ordinal()] : mbIcons[MbFace.L.ordinal()];
-        }
+        return pos.isTop(side) ? mbIcons[MbFace.L.ordinal()] : mbIcons[MbFace.R.ordinal()];
       }
     }
 
