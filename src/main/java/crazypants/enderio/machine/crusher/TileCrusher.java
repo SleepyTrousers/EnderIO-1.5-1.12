@@ -15,8 +15,9 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
 
   protected IGrindingMultiplier gb;
   protected int currGbUse = 0;
-  
+
   protected int lastSendGbScaled = 0;
+  private boolean useGrindingBall;
 
   public TileCrusher() {
     super(new SlotDefinition(2, 4));
@@ -44,29 +45,28 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     if(gb == null) {
       return 0;
     }
-    float res = 1 - (float)currGbUse / (float)gb.getDurationMJ();
-    return (int)(res * scale);
+    float res = 1 - (float) currGbUse / (float) gb.getDurationMJ();
+    return (int) (res * scale);
   }
-
 
   @Override
   protected double usePower() {
     double res = super.usePower();
-    if(gb != null) {
+    if(gb != null && useGrindingBall) {
       currGbUse += res;
-      
+
       int newScaled = getBallDurationScaled(16);
       if(newScaled != lastSendGbScaled) {
         PacketHandler.sendToAllAround(new PacketGrindingBall(this), this);
         lastSendGbScaled = newScaled;
       }
-      
+
       if(currGbUse > gb.getDurationMJ()) {
         currGbUse = 0;
         gb = null;
       }
     }
-    if(gb == null ) {
+    if(gb == null) {
       gb = CrusherRecipeManager.getInstance().getGrindballFromStack(inventory[1]);
       if(gb != null) {
         decrStackSize(1, 1);
@@ -81,11 +81,11 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     IPoweredTask ct = currentTask;
     super.taskComplete();
     //run it again if the ball says so
-    if(gb != null && !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(ct.getInputs())) {
+    if(gb != null && useGrindingBall) {
       float chance = random.nextFloat();
       float mul = gb.getGrindingMultiplier() - 1;
-      while(mul > 0) {
-        if(chance <= mul){
+      while (mul > 0) {
+        if(chance <= mul) {
           currentTask = ct;
           super.taskComplete();
         }
@@ -97,9 +97,15 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   @Override
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res;
+    useGrindingBall = false;
     if(gb != null) {
-      res = new PoweredTask(nextRecipe, chance * gb.getChanceMultiplier(), getInputs());
-      res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
+      useGrindingBall = !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(getInputs());
+      if(useGrindingBall) {
+        res = new PoweredTask(nextRecipe, chance * gb.getChanceMultiplier(), getInputs());
+        res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
+      } else {
+        res = new PoweredTask(nextRecipe, chance, getInputs());
+      }
     } else {
       res = new PoweredTask(nextRecipe, chance, getInputs());
     }
@@ -120,7 +126,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
       GrindingMultiplierNBT.writeToNBT(gb, nbtRoot);
     }
     nbtRoot.setInteger("currGbUse", currGbUse);
-    
+
     lastSendGbScaled = getBallDurationScaled(16);
   }
 

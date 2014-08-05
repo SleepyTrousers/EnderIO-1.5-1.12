@@ -421,6 +421,12 @@ enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Increases movement sp
 enderio.darksteel.upgrade.speed_three.name=Speed III
 enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Increases movement speed
 
+enderio.darksteel.upgrade.swim.name=Flippers
+
+enderio.darksteel.upgrade.nightVision.name=Night Vision
+enderio.darksteel.upgrade.nightVision.enabled=Night Vision Enabled
+enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
+
 //------GUI
 
 enderio.gui.enabled=Enabled
