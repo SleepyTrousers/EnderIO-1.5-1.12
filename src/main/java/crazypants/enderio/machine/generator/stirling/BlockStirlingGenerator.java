@@ -2,8 +2,6 @@ package crazypants.enderio.machine.generator.stirling;
 
 import java.util.Random;
 
-import com.sun.org.apache.xml.internal.resolver.readers.XCatalogReader;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
