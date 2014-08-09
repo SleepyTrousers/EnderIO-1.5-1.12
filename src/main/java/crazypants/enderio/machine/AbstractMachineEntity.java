@@ -71,6 +71,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @SideOnly(Side.CLIENT)
   private MachineSound sound;
+  
+  protected static ResourceLocation getSoundFor(String sound) {
+    return new ResourceLocation(EnderIO.MODID + ":" + sound);
+  }
 
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition;
@@ -213,12 +217,16 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public float getVolume() {
     return 0.75f;
   }
+  
+  public float getPitch() {
+    return 1.0f;
+  }
 
   @SideOnly(Side.CLIENT)
   private void updateSound() {
     if(isActive() && !isInvalid()) {
       if(sound == null) {
-        sound = new MachineSound(getSound(), xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume());
+        sound = new MachineSound(getSound(), xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
         FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
       }
     } else if(sound != null) {
@@ -516,7 +524,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   @Override
   public void invalidate() {
     super.invalidate();
-    updateSound();
+    if (worldObj.isRemote) {
+      updateSound();
+    }
   }
   
   @Override

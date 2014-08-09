@@ -8,12 +8,13 @@ public class MachineSound extends PositionedSound implements ITickableSound{
 
   private boolean donePlaying;
   
-  public MachineSound(ResourceLocation sound, float x, float y, float z, float volume) {
+  public MachineSound(ResourceLocation sound, float x, float y, float z, float volume, float pitch) {
     super(sound);
     this.xPosF = x;
     this.yPosF = y;
     this.zPosF = z;
     this.volume = volume;
+    this.field_147663_c = pitch;
     this.repeat = true;
   }
 

@@ -10,5 +10,11 @@
 	"sounds": [
 	  "generator/stirling/burn"
 	]
+  },
+  "machine.vat": {
+    "category": "block",
+	"sounds": [
+	  "machine/vat/gurgle"
+	]
   }
 }

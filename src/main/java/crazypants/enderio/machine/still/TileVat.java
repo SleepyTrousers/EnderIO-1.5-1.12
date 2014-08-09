@@ -2,6 +2,7 @@ package crazypants.enderio.machine.still;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -10,6 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -29,6 +32,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
 
   private static int IO_MB_TICK = 100;
+  
+  private static final ResourceLocation sound = getSoundFor("machine.vat");
 
   boolean tanksDirty = false;
 
@@ -295,7 +300,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
       outputTank.writeToNBT(tankRoot);
       nbtRoot.setTag("outputTank", tankRoot);
     }
-
   }
 
   public IPoweredTask getCurrentTask() {
@@ -307,4 +311,14 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     return Config.vatPowerUserPerTick;
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
+  public ResourceLocation getSound() {
+    return sound;
+  }
+  
+  @Override
+  public float getPitch() {
+    return 0.3f;
+  }
 }
