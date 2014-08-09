@@ -13,12 +13,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetGrassColor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
@@ -65,6 +68,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   private int[] allSlots;
 
   protected boolean notifyNeighbours = false;
+
+  @SideOnly(Side.CLIENT)
+  private MachineSound sound;
 
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
     this.slotDefinition = slotDefinition;
@@ -194,6 +200,33 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public abstract float getProgress();
 
+  @SideOnly(Side.CLIENT)
+  public ResourceLocation getSound() {
+    return null;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public boolean hasSound() {
+    return getSound() != null;
+  }
+  
+  public float getVolume() {
+    return 0.75f;
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void updateSound() {
+    if(isActive() && !isInvalid()) {
+      if(sound == null) {
+        sound = new MachineSound(getSound(), xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume());
+        FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
+      }
+    } else if(sound != null) {
+      sound.endPlaying();
+      sound = null;
+    }
+  }
+
   public int getProgressScaled(int scale) {
     int result = (int) (getProgress() * scale);
     return result;
@@ -302,10 +335,16 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
         }
       }
 
-      if(forceClientUpdate) {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        forceClientUpdate = false;
+      if(hasSound()) {
+        updateSound();
       }
+
+      if(worldObj.isRemote && isActive())
+
+        if(forceClientUpdate) {
+          worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+          forceClientUpdate = false;
+        }
       return;
 
     } // else is server, do all logic only on the server
@@ -474,6 +513,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   // ---- Tile Entity
   // ------------------------------------------------------------------------------
 
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    updateSound();
+  }
+  
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 

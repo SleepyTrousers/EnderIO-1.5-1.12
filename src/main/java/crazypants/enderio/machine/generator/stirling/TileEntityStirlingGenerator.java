@@ -1,13 +1,17 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -27,9 +31,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   private PowerDistributor powerDis;
 
+  private static final ResourceLocation sound = new ResourceLocation(EnderIO.MODID + ":generator.stirling");
+  
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0), Type.ENGINE);
     configurePowerHandler();
+    
   }
 
   @Override
@@ -100,6 +107,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     return (float) burnTime / (float) totalBurnTime;
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public ResourceLocation getSound() {
+    return sound;
+  }
+  
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);

@@ -4,5 +4,11 @@
     "sounds": [
       "generator/zombie/bubble"
     ]
+  },
+  "generator.stirling": {
+    "category": "block",
+	"sounds": [
+	  "generator/stirling/burn"
+	]
   }
 }
