@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -21,9 +22,9 @@ import crazypants.util.Util;
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
   public static BlockZombieGenerator create() {
-    
+
     PacketHandler.INSTANCE.registerMessage(PacketZombieTank.class, PacketZombieTank.class, PacketHandler.nextID(), Side.CLIENT);
-    
+
     BlockZombieGenerator gen = new BlockZombieGenerator();
     gen.init();
     return gen;
@@ -32,10 +33,10 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   protected BlockZombieGenerator() {
     super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.water);
   }
-  
+
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
-  
+
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileZombieGenerator)) {
       return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
@@ -61,8 +62,8 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     }
 
     return super.onBlockActivated(world, x, y, z, entityPlayer, par6, par7, par8, par9);
-  }  
-  
+  }
+
   @Override
   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
     return true;
@@ -117,18 +118,20 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-    
+
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileZombieGenerator && ((TileZombieGenerator)te).isActive()) {
-     //see RenderGlobal.doSpawnParticle
+    if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
+      //see RenderGlobal.doSpawnParticle
       for (int i = 0; i < 1; i++) {
         float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
         float yOffset = 0.1f;
         float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
         world.spawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
       }
+      if (world.rand.nextInt(1) == 0) {
+        world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.MODID + ":generator.zombie.bubble", world.rand.nextFloat() * 0.05f + 0.025f, world.rand.nextFloat() * 0.5f + 0.5f, false);
+      }
     }
-    
   }
 
 }

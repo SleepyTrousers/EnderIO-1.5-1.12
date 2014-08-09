@@ -1,0 +1,8 @@
+{
+  "generator.zombie.bubble": {
+    "category": "block",
+    "sounds": [
+      "generator/zombie/bubble"
+    ]
+  }
+}
