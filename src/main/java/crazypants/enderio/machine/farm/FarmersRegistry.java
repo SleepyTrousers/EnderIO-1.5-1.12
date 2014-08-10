@@ -12,6 +12,8 @@ import crazypants.enderio.Log;
 
 public final class FarmersRegistry {
 
+  public static final PlantableFarmer DEFAULT_FARMER = new PlantableFarmer();
+  
   public static void addFarmers() {
 
     addExtraUtilities();
@@ -30,7 +32,7 @@ public final class FarmersRegistry {
     //'BlockNetherWart' is not an IGrowable
     FarmersCommune.instance.joinCommune(new NetherWartFarmer());    
     //Handles all 'vanilla' style crops
-    FarmersCommune.instance.joinCommune(new PlantableFarmer());
+    FarmersCommune.instance.joinCommune(DEFAULT_FARMER);
   }
 
   public static void addPickable(String mod, String blockName, String itemName) {
@@ -100,6 +102,7 @@ public final class FarmersRegistry {
 
     Block cropBlock = GameRegistry.findBlock(mod, blockName);
     if(cropBlock != null) {
+      DEFAULT_FARMER.addHarvestExlude(cropBlock);
       Item seedItem = GameRegistry.findItem(mod, "barley.seed");
       if(seedItem != null) {
         //barley

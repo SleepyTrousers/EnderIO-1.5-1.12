@@ -8,7 +8,9 @@ import static net.minecraftforge.common.EnumPlantType.Plains;
 import static net.minecraftforge.common.EnumPlantType.Water;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
@@ -25,6 +27,12 @@ import crazypants.util.BlockCoord;
 
 public class PlantableFarmer implements IFarmerJoe {
 
+  private Set<Block> harvestExcludes = new HashSet<Block>();
+  
+  public void addHarvestExlude(Block block) {
+    harvestExcludes.add(block);
+  }
+  
   @Override
   public boolean canPlant(ItemStack stack) {
     if(stack == null) {
@@ -121,7 +129,7 @@ public class PlantableFarmer implements IFarmerJoe {
 
   @Override
   public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    if(block instanceof IGrowable && !(block instanceof BlockStem)) {
+    if(!harvestExcludes.contains(block) && block instanceof IGrowable && !(block instanceof BlockStem)) {
       return !((IGrowable)block).func_149851_a(farm.getWorldObj(), bc.x, bc.y, bc.z, true);
     }
     return false;
