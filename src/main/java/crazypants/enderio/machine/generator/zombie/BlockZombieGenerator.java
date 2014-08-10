@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.FluidUtil;
@@ -119,17 +120,20 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
 
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
-      //see RenderGlobal.doSpawnParticle
-      for (int i = 0; i < 1; i++) {
-        float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
-        float yOffset = 0.1f;
-        float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
-        world.spawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
-      }
-      if (world.rand.nextInt(1) == 0) {
-        world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.MODID + ":generator.zombie.bubble", world.rand.nextFloat() * 0.05f + 0.025f, world.rand.nextFloat() * 0.5f + 0.5f, false);
+    if(rand.nextInt(3) == 0) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
+        //see RenderGlobal.doSpawnParticle
+        for (int i = 0; i < 1; i++) {
+          float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
+          float yOffset = 0.1f;
+          float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
+          world.spawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
+        }
+        if(Config.machineSoundsEnabled) {
+          float volume = (Config.machineSoundVolume * 0.045f);
+          world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.MODID + ":generator.zombie.bubble", volume, world.rand.nextFloat() * 0.75f, false);
+        }
       }
     }
   }

@@ -315,4 +315,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   public float getPitch() {
     return 0.3f;
   }
+  
+  public float getVolume() {
+    return super.getVolume() * 0.3f;
+  }
 }

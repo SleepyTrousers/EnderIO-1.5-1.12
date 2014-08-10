@@ -33,7 +33,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   @Override
   public String getMachineName() {
     return ModObject.blockSagMill.unlocalisedName;
-  }
+  }  
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
@@ -144,6 +144,6 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
   }
   
   public float getVolume() {
-    return 0.5f;
+    return super.getVolume() * 0.125f;
   }
 }

@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -71,10 +72,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @SideOnly(Side.CLIENT)
   private MachineSound sound;
-  
+
   @SideOnly(Side.CLIENT)
   private final ResourceLocation soundRes;
-  
+
   protected static ResourceLocation getSoundFor(String sound) {
     return new ResourceLocation(EnderIO.MODID + ":" + sound);
   }
@@ -217,18 +218,18 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public boolean hasSound() {
     return getSoundName() != null;
   }
-  
+
   public float getVolume() {
-    return 0.75f;
+    return Config.machineSoundVolume;
   }
-  
+
   public float getPitch() {
     return 1.0f;
   }
 
   @SideOnly(Side.CLIENT)
   private void updateSound() {
-    if(isActive() && !isInvalid()) {
+    if(Config.machineSoundsEnabled & isActive() && !isInvalid()) {
       if(sound == null) {
         sound = new MachineSound(soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
         FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
@@ -351,12 +352,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
         updateSound();
       }
 
-      if(worldObj.isRemote && isActive())
-
-        if(forceClientUpdate) {
-          worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-          forceClientUpdate = false;
-        }
+      if(forceClientUpdate) {
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        forceClientUpdate = false;
+      }
       return;
 
     } // else is server, do all logic only on the server
@@ -528,11 +527,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   @Override
   public void invalidate() {
     super.invalidate();
-    if (worldObj.isRemote) {
+    if(worldObj.isRemote) {
       updateSound();
     }
   }
-  
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 

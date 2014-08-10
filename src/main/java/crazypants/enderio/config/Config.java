@@ -236,6 +236,10 @@ public final class Config {
   public static long nutrientFoodBoostDelay = 400;
 
   public static int enchanterBaseLevelCost = 4;
+  
+  public static boolean machineSoundsEnabled = true;
+
+  public static float machineSoundVolume  = 0.75f;
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -361,6 +365,12 @@ public final class Config {
     useSneakRightClickYetaWrench = config.get(sectionPersonal.name, "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
         "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
         .getBoolean(useSneakRightClickYetaWrench);
+    
+    machineSoundsEnabled = config.get(sectionPersonal.name, "useMachineSounds", machineSoundsEnabled,
+        "If true, machines will make sounds.")
+        .getBoolean(machineSoundsEnabled);
+    
+    machineSoundVolume= (float)config.get(sectionPersonal.name, "machineSoundVolume", machineSoundVolume,"Volume of machine sounds.").getDouble(machineSoundVolume);
 
     itemConduitUsePhyscialDistance = config.get(sectionEfficiency.name, "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
