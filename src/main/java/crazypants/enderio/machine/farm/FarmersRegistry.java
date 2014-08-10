@@ -21,6 +21,7 @@ public final class FarmersRegistry {
     addTiC();
     addStillHungry();
     addIC2();
+    addMFR();
 
     FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -139,6 +140,16 @@ public final class FarmersRegistry {
       FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "Rare Tree")));
     }
 
+  }
+  
+  private static void addMFR() {
+    String mod = "MineFactoryReloaded";
+    String blockName = "tile.mfr.rubberwood.sapling";    
+    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    if(saplingBlock != null) {
+      FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "tile.mfr.rubberwood.log")));
+    }
+    
   }
 
   private static void addIC2() {
