@@ -61,7 +61,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
   @Override
   public boolean isActive() {
-    return currentTask == null ? false : currentTask.getProgress() > 0 && hasPower() && redstoneCheckPassed;
+    return currentTask == null ? false : currentTask.getProgress() >= 0 && hasPower() && redstoneCheckPassed;
   }
 
   @Override

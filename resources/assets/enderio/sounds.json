@@ -1,20 +1,38 @@
 {
   "generator.zombie.bubble": {
-    "category": "block",
+    "category": "ambient",
     "sounds": [
       "generator/zombie/bubble"
     ]
   },
   "generator.stirling": {
-    "category": "block",
+    "category": "ambient",
 	"sounds": [
 	  "generator/stirling/burn"
 	]
   },
   "machine.vat": {
-    "category": "block",
+    "category": "ambient",
 	"sounds": [
 	  "machine/vat/gurgle"
+	]
+  },
+  "machine.sagmill": {
+    "category": "ambient",
+	"sounds": [
+	  "machine/sagmill/tumble"
+	]
+  },
+  "ds.nightvision.on": {
+    "category": "master",
+	"sounds": [
+	  "darksteel/modules/nightvision/on"
+	]
+  },
+  "ds.nightvision.off": {
+    "category": "master",
+	"sounds": [
+	  "darksteel/modules/nightvision/off"
 	]
   }
 }

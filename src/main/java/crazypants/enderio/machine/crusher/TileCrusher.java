@@ -2,6 +2,9 @@ package crazypants.enderio.machine.crusher;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -18,6 +21,8 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
 
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
+  
+  private static final ResourceLocation sound = getSoundFor("machine.sagmill");
 
   public TileCrusher() {
     super(new SlotDefinition(2, 4));
@@ -135,4 +140,13 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     return false;
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
+  public ResourceLocation getSound() {
+    return sound;
+  }
+  
+  public float getVolume() {
+    return 0.5f;
+  }
 }

@@ -1,20 +1,21 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
+
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
 
 public class KeyTracker {
 
@@ -87,19 +88,18 @@ public class KeyTracker {
   }
   
   private void handleNightVision() {
-    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
+    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)){
       isNightVisionActive = false;
       return;
     }
     if(nightVisionKey.getIsKeyPressed()) {      
       isNightVisionActive = !isNightVisionActive;
-      String message;
       if(isNightVisionActive) {
-        message = Lang.localize("darksteel.upgrade.nightVision.enabled");
+        player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.nightvision.on", 0.1f, player.worldObj.rand.nextFloat() * 0.4f - 0.2f + 1.0f, false);
       } else {
-        message = Lang.localize("darksteel.upgrade.nightVision.disabled");
+        player.worldObj.playSound(player.posX, player.posY, player.posZ, EnderIO.MODID + ":ds.nightvision.off", 0.1f, 1.0f, false);
       }
-      Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       DarkSteelController.instance.setNightVisionActive(isNightVisionActive);      
     }
   }
