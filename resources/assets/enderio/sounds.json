@@ -34,5 +34,15 @@
 	"sounds": [
 	  "darksteel/modules/nightvision/off"
 	]
+  },
+  "ds.jump": {
+    "category": "master",
+	"sounds": [
+	  "darksteel/modules/jump/jump1",
+	  "darksteel/modules/jump/jump2",
+	  "darksteel/modules/jump/jump3",
+	  "darksteel/modules/jump/jump4",
+	  "darksteel/modules/jump/jump5"
+	]
   }
 }
