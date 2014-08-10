@@ -2,11 +2,9 @@ package crazypants.enderio.machine.still;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -26,15 +24,11 @@ import crazypants.util.FluidUtil;
 
 public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler {
 
-  private static final FluidStack WATER = new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
-
   final FluidTank inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
 
   private static int IO_MB_TICK = 100;
   
-  private static final ResourceLocation sound = getSoundFor("machine.vat");
-
   boolean tanksDirty = false;
 
   public TileVat() {
@@ -313,8 +307,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @SideOnly(Side.CLIENT)
   @Override
-  public ResourceLocation getSound() {
-    return sound;
+  public String getSoundName() {
+    return "machine.vat";
   }
   
   @Override

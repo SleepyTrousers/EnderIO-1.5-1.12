@@ -5,7 +5,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
@@ -29,8 +28,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public int totalBurnTime;
 
   private PowerDistributor powerDis;
-
-  private static final ResourceLocation sound = getSoundFor("generator.stirling");
   
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0), Type.ENGINE);
@@ -108,8 +105,8 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   @SideOnly(Side.CLIENT)
-  public ResourceLocation getSound() {
-    return sound;
+  public String getSoundName() {
+    return "generator.stirling";
   }
   
   @Override
