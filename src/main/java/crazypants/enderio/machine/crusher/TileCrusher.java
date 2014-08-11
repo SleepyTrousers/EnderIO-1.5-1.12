@@ -137,7 +137,6 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     return false;
   }
 
-  @SideOnly(Side.CLIENT)
   @Override
   public String getSoundName() {
     return "machine.sagmill";

@@ -8,8 +8,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.PowerHandler.Type;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -104,7 +102,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public String getSoundName() {
     return "generator.stirling";
   }
@@ -225,7 +222,4 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   public boolean hasCustomInventoryName() {
     return false;
   }
-
-
-
 }

@@ -73,11 +73,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   @SideOnly(Side.CLIENT)
   private MachineSound sound;
 
-  @SideOnly(Side.CLIENT)
   private final ResourceLocation soundRes;
 
   protected static ResourceLocation getSoundFor(String sound) {
-    return new ResourceLocation(EnderIO.MODID + ":" + sound);
+    return sound == null ? null : new ResourceLocation(EnderIO.MODID + ":" + sound);
   }
 
   public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
@@ -209,12 +208,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public abstract float getProgress();
 
-  @SideOnly(Side.CLIENT)
   public String getSoundName() {
     return null;
   }
 
-  @SideOnly(Side.CLIENT)
   public boolean hasSound() {
     return getSoundName() != null;
   }
@@ -229,14 +226,16 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @SideOnly(Side.CLIENT)
   private void updateSound() {
-    if(Config.machineSoundsEnabled && isActive() && !isInvalid()) {
-      if(sound == null) {
-        sound = new MachineSound(soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
-        FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
+    if(Config.machineSoundsEnabled && hasSound()) {
+      if(isActive() && !isInvalid()) {
+        if(sound == null) {
+          sound = new MachineSound(soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
+          FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
+        }
+      } else if(sound != null) {
+        sound.endPlaying();
+        sound = null;
       }
-    } else if(sound != null) {
-      sound.endPlaying();
-      sound = null;
     }
   }
 

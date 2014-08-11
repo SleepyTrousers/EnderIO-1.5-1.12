@@ -9,8 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -305,7 +303,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     return Config.vatPowerUserPerTick;
   }
 
-  @SideOnly(Side.CLIENT)
   @Override
   public String getSoundName() {
     return "machine.vat";
