@@ -53,6 +53,8 @@ public enum ModObject {
   
   blockPoweredSpawner,
   itemBrokenSpawner,
+  
+  blockKillerJoe,
 
   blockElectricLight,
   blockLightNode,

@@ -74,6 +74,7 @@ import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.hypercube.HyperCubeRegister;
+import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
@@ -188,6 +189,8 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
+  
+  public static BlockKillerJoe blockKillerJoe;
 
   public static BlockEnchanter blockEnchanter;
   
@@ -281,6 +284,8 @@ public class EnderIO {
     blockVacuumChest = BlockVacuumChest.create();
     
     blockEnchanter = BlockEnchanter.create();
+    
+    blockKillerJoe = BlockKillerJoe.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
 
