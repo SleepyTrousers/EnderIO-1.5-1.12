@@ -330,8 +330,15 @@ public class NetworkedInventory {
   }
 
   private Target getTarget(List<Target> targets, IItemConduit con, ForgeDirection dir) {
+    if(targets == null || con == null || con.getLocation() == null) {
+      return null;
+    }
     for (Target target : targets) {
-      if(target.inv.conDir == dir && target.inv.con.getLocation().equals(con.getLocation())) {
+      BlockCoord targetConLoc = null;
+      if(target != null && target.inv != null && target.inv.con != null) {
+        targetConLoc = target.inv.con.getLocation();
+      }      
+      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
         return target;
       }
     }
