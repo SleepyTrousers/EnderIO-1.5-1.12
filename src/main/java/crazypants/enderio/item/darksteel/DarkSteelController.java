@@ -297,7 +297,7 @@ public class DarkSteelController {
         doJump(player);
       }
 
-      wasJumping = !player.isCollidedVertically;
+      wasJumping = !player.onGround;
       if(!wasJumping) {
         jumpCount = 0;
       }
