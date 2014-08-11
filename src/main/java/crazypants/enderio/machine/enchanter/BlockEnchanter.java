@@ -34,7 +34,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     return res;
   }
 
-  public static int renderId;
+  public static int renderId = -1;
 
   protected BlockEnchanter() {
     super(ModObject.blockEnchanter.unlocalisedName, TileEnchanter.class);
@@ -137,6 +137,11 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
 
   @Override
   public boolean isOpaqueCube() {
+    return false;
+  }
+  
+  @Override
+  public boolean renderAsNormalBlock() {
     return false;
   }
 

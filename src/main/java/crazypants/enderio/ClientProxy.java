@@ -14,7 +14,6 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -43,19 +42,17 @@ import crazypants.enderio.enderface.TileEnderIO;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.YetaWrenchOverlayRenderer;
 import crazypants.enderio.item.YetaWrenchTickHandler;
-import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.KeyTracker;
 import crazypants.enderio.item.darksteel.PoweredItemRenderer;
+import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundEntity;
 import crazypants.enderio.item.darksteel.SoundRenderer;
-import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.item.skull.EndermanSkullRenderer;
-import crazypants.enderio.item.skull.TileEndermanSkull;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
-import crazypants.enderio.machine.enchanter.BlockEnchanter;
-import crazypants.enderio.machine.enchanter.EnchanterRenderer;
+import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
+import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmingStationRenderer;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
@@ -179,10 +176,9 @@ public class ClientProxy extends CommonProxy {
     
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
     
-    BlockEnchanter.renderId = RenderingRegistry.getNextAvailableRenderId();
-    EnchanterRenderer enchRen = new EnchanterRenderer();
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), enchRen);
-    RenderingRegistry.registerBlockHandler(enchRen);
+    EnchanterModelRenderer emr = new EnchanterModelRenderer();
+    ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), emr);
     
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
