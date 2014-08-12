@@ -9,13 +9,17 @@ import com.mojang.authlib.GameProfile;
 
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -48,9 +52,10 @@ import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ForgeDirectionOffsets;
+import crazypants.util.ItemUtil;
 import crazypants.vecmath.Vector3d;
 
-public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler {
+public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector {
 
   private static int IO_MB_TICK = 250;
 
@@ -118,6 +123,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   public void updateEntity() {
     updateArmSwingProgress();
+    hooverXP();
     super.updateEntity();
   }
 
@@ -175,10 +181,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   public void addExperience(int xpToAdd) {
     int j = Integer.MAX_VALUE - this.experienceTotal;
-    if (xpToAdd > j) {
+    if(xpToAdd > j) {
       xpToAdd = j;
     }
-    
+
     experience += (float) xpToAdd / (float) getXpBarCapacity();
     experienceTotal += xpToAdd;
     for (; experience >= 1.0F; experience /= (float) getXpBarCapacity()) {
@@ -189,9 +195,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private int getXpBarCapacity(int level) {
-    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);    
+    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);
   }
-  
+
   private int getXpBarCapacity() {
     return getXpBarCapacity(experienceLevel);
   }
@@ -204,14 +210,54 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   public void givePlayerXp(EntityPlayer player) {
     int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
-    player.addExperience(takeXp); 
-    
+    player.addExperience(takeXp);
+
     int newXp = experienceTotal - takeXp;
     experience = 0;
     experienceLevel = 0;
     experienceTotal = 0;
     addExperience(newXp);
-    
+  }
+
+  private void hooverXP() {
+    //TODO: Make a proper bounding box
+    BoundingBox bb = new BoundingBox(getLocation());
+    AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    aabb = aabb.expand(10, 10, 10);
+    List<EntityXPOrb> xp = worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, this);
+
+    for (EntityXPOrb entity : xp) {
+      double x = (xCoord + 0.5D - entity.posX);
+      double y = (yCoord + 0.5D - entity.posY);
+      double z = (zCoord + 0.5D - entity.posZ);
+
+      double distance = Math.sqrt(x * x + y * y + z * z);
+      if(distance < 1.5) {
+        hooverXP(entity);
+      } else {
+        double speed = 0.1;
+        entity.motionX = x / distance * speed;
+        //entity.motionY = y * speed;
+//        if(y > 0) {
+//          entity.motionY = 0.12;
+//        }
+        entity.motionZ = z / distance * speed;
+      }
+    }
+  }
+
+  private void hooverXP(EntityXPOrb entity) {
+    if(!worldObj.isRemote) {
+      if(!entity.isDead) {
+        addExperience(entity.getXpValue());
+        entity.setDead();
+      }
+    }
+  }
+
+  @Override
+  public boolean isEntityApplicable(Entity arg0) {
+    return true;
   }
 
   //------------------------------- Weapon stuffs
@@ -457,7 +503,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     nbtRoot.setInteger("experienceLevel", experienceLevel);
     nbtRoot.setInteger("experienceTotal", experienceTotal);
     nbtRoot.setFloat("experience", experience);
-    
+
   }
 
 }
