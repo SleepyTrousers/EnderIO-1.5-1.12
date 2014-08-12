@@ -56,6 +56,7 @@ public final class Config {
   public static final Section sectionMagnet = new Section("Magnet Settings", "magnet");
   public static final Section sectionFluid = new Section("Fluid Settings", "fluid");
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
+  public static final Section sectionKiller = new Section("Killer Joe Settings", "spawner");
   
   static int BID = 700;
   static int IID = 8524;
@@ -240,6 +241,8 @@ public final class Config {
   public static boolean machineSoundsEnabled = true;
 
   public static float machineSoundVolume  = 0.75f;
+
+  public static int killerJoeNutrientUsePerAttackMb = 10;  
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -631,6 +634,9 @@ public final class Config {
         "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);
     
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay, "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int)nutrientFoodBoostDelay);
+    
+    killerJoeNutrientUsePerAttackMb = config.get(sectionKiller.name, "killerJoeNutrientUsePerAttackMb", killerJoeNutrientUsePerAttackMb,
+        "The number of millibuckets of nutrient fluid used per attack.").getInt(killerJoeNutrientUsePerAttackMb);
   }
 
   private Config() {

@@ -210,8 +210,11 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
-    tanksDirty = true;
-    return fuelTank.fill(resource, doFill);
+    int res = fuelTank.fill(resource, doFill);
+    if(res > 0 && doFill) {
+      tanksDirty = true;
+    }
+    return res;
   }
 
   @Override
