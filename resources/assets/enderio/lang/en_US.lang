@@ -21,7 +21,7 @@ enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=Right click on a conduit to place
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit 
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
 item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
 
 enderio.itemPowerConduit.name=Energy Conduit
@@ -141,7 +141,7 @@ enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and 
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
 
 //Machines
@@ -162,8 +162,8 @@ tile.blockAlloySmelter.name=Alloy Smelter
 tile.blockAlloySmelter.tooltip.detailed.line1=Used to create EnderIO alloys
 tile.blockAlloySmelter.tooltip.detailed.line2=Can also be used as a powered
 tile.blockAlloySmelter.tooltip.detailed.line3=furnace
-tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase 
-tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage 
+tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase
+tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
@@ -196,7 +196,7 @@ tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
 tile.blockWirelessCharger.name=Wireless Charger
-tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby 
+tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby
 tile.blockWirelessCharger.tooltip.detailed.line2=players inventories
 
 tile.blockSagMill.name=SAG Mill
@@ -271,7 +271,7 @@ tile.blockPoweredSpawner.empty.tooltip.detailed.line2=spawner in an anvil
 tile.blockPoweredSpawner.tooltip.detailed.line1=Supply with power to
 tile.blockPoweredSpawner.tooltip.detailed.line2=activate
 tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
-tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage 
+tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
 
 item.itemBrokenSpawner.name=Broken Spawner
 item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
@@ -330,7 +330,7 @@ item.itemMagnet.name=Electromagnet
 item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
 item.itemMagnet.tooltip.detailed.line2=Shift+R-Click to enable / disable
 item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
-item.itemMagnet.tooltip.detailed.line4=hot bar to function 
+item.itemMagnet.tooltip.detailed.line4=hot bar to function
 
 item.enderio.itemConduitProbe.name=Conduit Probe
 item.enderio.itemConduitProbe.tooltip.detailed.line1=Right-Click on a conduit to display
@@ -359,7 +359,7 @@ enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
 enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
 
-enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection 
+enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
 enderio.item.darkSteel_armor.tooltip.line2=when powered
 
 enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
