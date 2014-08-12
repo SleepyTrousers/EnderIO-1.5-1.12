@@ -1,14 +1,24 @@
 package crazypants.enderio.machine.killera;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityMultiPart;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -47,8 +57,10 @@ public class TileKillerJoe extends AbstractMachineEntity /*
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    // TODO Auto-generated method stub
-    return false;
+    if(itemstack == null) {
+      return false;
+    }
+    return itemstack.getItem() instanceof ItemSword;
   }
 
   @Override
@@ -67,29 +79,76 @@ public class TileKillerJoe extends AbstractMachineEntity /*
     if(worldObj.getTotalWorldTime() % 10 != 0) {
       return false;
     }
-    
-    FakePlayer fakee = getAttackera();
+
+    float baseDamage = getBaseDamage();
+    if(baseDamage <= 0) {
+      return false;
+    }
+
     List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     if(!entsInBounds.isEmpty()) {
-      for (EntityLivingBase ent : entsInBounds) {   
-        DamageSource ds = DamageSource.causePlayerDamage(fakee);
-        float damageAmount = 2;
-        boolean res = ent.attackEntityFrom(ds, damageAmount);
+      FakePlayer fakee = getAttackera();
+      DamageSource ds = DamageSource.causePlayerDamage(fakee);
+      for (EntityLivingBase ent : entsInBounds) {
+        float enchDamage = getEnchantmentDamage(ent);
+        boolean res = ent.attackEntityFrom(ds, baseDamage + enchDamage);
         if(res) {
+          damageWeapon(ent);
           return false;
         }
-      }      
+      }
     }
     return false;
   }
 
+  private float getEnchantmentDamage(EntityLivingBase ent) {
+    ItemStack weaponStack = getStackInSlot(0);
+    if(weaponStack == null) {
+      return 0;
+    }    
+    return EnchantmentHelper.func_152377_a(weaponStack, ent.getCreatureAttribute());
+  }
+
+  private float getBaseDamage() {
+    ItemStack weaponStack = getStackInSlot(0);
+    if(weaponStack == null) {
+      return 0;
+    }
+    Multimap atMods = weaponStack.getAttributeModifiers();    
+    Collection ad = atMods.get("generic.attackDamage");
+    if(ad.isEmpty()) {
+      return 0;
+    }
+    
+    float res = 0;
+    for (Object obj : ad) {
+      if(obj instanceof AttributeModifier) {
+        AttributeModifier am = (AttributeModifier) obj;
+        res += am.getAmount();        
+      }
+    }
+    return res;
+  }
+  
+  private void damageWeapon(EntityLivingBase ent) {
+    ItemStack weaponStack = getStackInSlot(0);
+    if(weaponStack == null) {
+      return;
+    }
+    weaponStack.hitEntity(ent, getAttackera());
+    if(weaponStack.stackSize <= 0) {
+      setInventorySlotContents(0, null); 
+    }    
+  }
+
   private FakePlayer getAttackera() {
     if(attackera == null) {
-      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null, "KillerJoe" + getLocation()));      
+      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null, "KillerJoe"
+          + getLocation()));
       attackera.posX = xCoord + 0.5;
       attackera.posY = yCoord + 0.5;
-      attackera.posZ = zCoord + 0.5;      
-    }     
+      attackera.posZ = zCoord + 0.5;
+    }
     return attackera;
   }
 
@@ -108,7 +167,7 @@ public class TileKillerJoe extends AbstractMachineEntity /*
       } else {
         min.add(ForgeDirectionOffsets.offsetScaled(facingDir, 4));
         max.add(ForgeDirectionOffsets.forDir(facingDir));
-        
+
       }
       if(facingDir.offsetX == 0) {
         min.x -= 2;
