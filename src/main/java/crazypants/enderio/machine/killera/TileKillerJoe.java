@@ -61,7 +61,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
-    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.MACHINE);
+    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.MACHINE);    
   }
 
   @Override
@@ -87,9 +87,23 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return 0;
   }
 
+  
+  
+  @Override
+  public void setInventorySlotContents(int slot, ItemStack contents) {    
+    super.setInventorySlotContents(slot, contents);
+    if(slot == 0) {
+      getAttackera().inventory.setInventorySlotContents(0, contents);
+    }
+  }
+
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
+    if(!redstoneCheckPassed) {
+      return false;
+    }
+    
     if(worldObj.getTotalWorldTime() % 10 != 0) {
       return false;
     }

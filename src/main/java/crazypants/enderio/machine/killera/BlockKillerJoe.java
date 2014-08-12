@@ -8,8 +8,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.generator.zombie.ContainerZombieGenerator;
+import crazypants.enderio.machine.generator.zombie.GuiZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.PacketZombieTank;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machine.tank.BlockTank;
@@ -68,17 +72,17 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return null;
+    return new ContainerKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(x, y, z));
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return null;
+    return new GuiKillerJoe(player.inventory, (TileKillerJoe) world.getTileEntity(x, y, z));
   }
 
   @Override
   protected int getGuiId() {
-    return 0;
+    return GuiHandler.GUI_ID_KILLER_JOE;
   }
 
   @Override
@@ -86,6 +90,16 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return "enderio:blankMachinePanel";
   }
   
+  @Override
+  public int getRenderType() {
+    return -1;
+  }
+
+  @Override
+  public boolean renderAsNormalBlock() {
+    return false;
+  }
+
   @Override
   public boolean isOpaqueCube() {
     return false;

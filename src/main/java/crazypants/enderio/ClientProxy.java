@@ -63,6 +63,8 @@ import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.ZombieGeneratorRenderer;
 import crazypants.enderio.machine.hypercube.HyperCubeRenderer;
 import crazypants.enderio.machine.hypercube.TileHyperCube;
+import crazypants.enderio.machine.killera.KillerJoeRenderer;
+import crazypants.enderio.machine.killera.TileKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
@@ -206,6 +208,10 @@ public class ClientProxy extends CommonProxy {
     ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), zgr);
+    
+    KillerJoeRenderer kjr = new KillerJoeRenderer();
+    ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), kjr);
 
     BlockVat.renderId = RenderingRegistry.getNextAvailableRenderId();
     VatRenderer vr = new VatRenderer();
