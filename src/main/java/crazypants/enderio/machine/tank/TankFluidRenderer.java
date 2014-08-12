@@ -30,9 +30,9 @@ public class TankFluidRenderer extends TileEntitySpecialRenderer {
     IIcon icon = tank.getFluid().getFluid().getStillIcon();
     if(icon != null) {
       float fullness = tank.getFilledRatio();
-      
-      float scale = 0.97f;
-      float yScale = 0.97f * fullness;
+      y += 0.01f; // prevent bottom side z-fighting
+      float scale = 0.98f;
+      float yScale = 0.98f * fullness;
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(scale, yScale , scale);
       bb = bb.translate(0, -(1 - yScale)/2, 0);
 
