@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -142,7 +143,9 @@ public class MachineRecipes {
     ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
     GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
     
-
+    ClearConfigRecipe inst = new ClearConfigRecipe();
+    MinecraftForge.EVENT_BUS.register(inst);
+    GameRegistry.addRecipe(inst);
   }
 
   public static void addOreDictionaryRecipes() {

@@ -143,6 +143,7 @@ enderio.enderCapacitor.name=Octadic Capacitor
 enderio.machine.tooltip.upgrade=Machine Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and 
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
+enderio.machine.tooltip.clearConfig=This will clear all stored info!
 
 //Machines
 tile.blockStirlingGenerator.name=Stirling Generator
