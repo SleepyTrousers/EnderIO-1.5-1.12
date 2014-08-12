@@ -14,7 +14,7 @@ public class ContainerKillerJoe extends AbstractMachineContainer {
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    addSlotToContainer(new Slot(tileEntity, 0, 80, 35) {
+    addSlotToContainer(new Slot(tileEntity, 0, 80, 25) {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isItemValidForSlot(0, itemStack);

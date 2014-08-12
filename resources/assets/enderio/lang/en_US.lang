@@ -244,6 +244,7 @@ tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and 
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
 enderio.killerJoe.fuelTank=Nutrient Tank
+enderio.killerJoe.giveXp.tooltip=Use XP
 
 tile.blockFarmStation.name=Farming Station
 tile.blockFarmStation.tooltip.detailed.line1=Plants and harvests crops

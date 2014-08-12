@@ -91,6 +91,8 @@ public final class IconEIO {
   public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10, 10);
 
   public static final IconEIO SOUND = new IconEIO(209, 172, 22, 22);
+  
+  public static final IconEIO XP = new IconEIO(235, 60, 22, 22);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;

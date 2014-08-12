@@ -31,6 +31,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketNutrientLevel.class, PacketNutrientLevel.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketExperianceTotal.class, PacketExperianceTotal.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketUseXP.class, PacketUseXP.class, PacketHandler.nextID(), Side.SERVER);
     BlockKillerJoe res = new BlockKillerJoe();
     res.init();
     return res;

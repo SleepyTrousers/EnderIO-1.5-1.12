@@ -16,6 +16,7 @@ import net.minecraft.entity.IEntityMultiPart;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.EntityDragonPart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -70,6 +71,14 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private float prevSwingProgress;
 
+  int experienceLevel;
+
+  float experience;
+
+  private boolean xpDirty;
+
+  private int experienceTotal;
+
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
     powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.MACHINE);
@@ -107,6 +116,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
+  public void updateEntity() {
+    updateArmSwingProgress();
+    super.updateEntity();
+  }
+
+  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
     if(!redstoneCheckPassed) {
@@ -117,9 +132,15 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       return false;
     }
 
+    //addExperience(1);
+
     if(tanksDirty) {
       PacketHandler.sendToAllAround(new PacketNutrientLevel(this), this);
       tanksDirty = false;
+    }
+    if(xpDirty) {
+      PacketHandler.sendToAllAround(new PacketExperianceTotal(this), this);
+      xpDirty = false;
     }
 
     if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
@@ -149,46 +170,79 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
     return false;
   }
-  
-  @Override
-  public void updateEntity() {
-    updateArmSwingProgress();
-    super.updateEntity();
+
+  //-------------------------------  XP
+
+  public void addExperience(int xpToAdd) {
+    int j = Integer.MAX_VALUE - this.experienceTotal;
+    if (xpToAdd > j) {
+      xpToAdd = j;
+    }
+    
+    experience += (float) xpToAdd / (float) getXpBarCapacity();
+    experienceTotal += xpToAdd;
+    for (; experience >= 1.0F; experience /= (float) getXpBarCapacity()) {
+      experience = (experience - 1.0F) * (float) getXpBarCapacity();
+      experienceLevel++;
+    }
+    xpDirty = true;
   }
 
-  void swingWeapon() {
+  private int getXpBarCapacity(int level) {
+    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);    
+  }
+  
+  private int getXpBarCapacity() {
+    return getXpBarCapacity(experienceLevel);
+  }
 
+  public int getXpBarScaled(int scale) {
+    int result = (int) (experience * scale);
+    return result;
+
+  }
+
+  public void givePlayerXp(EntityPlayer player) {
+    int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
+    player.addExperience(takeXp); 
+    
+    int newXp = experienceTotal - takeXp;
+    experience = 0;
+    experienceLevel = 0;
+    experienceTotal = 0;
+    addExperience(newXp);
+    
+  }
+
+  //------------------------------- Weapon stuffs
+
+  void swingWeapon() {
     if(getStackInSlot(0) == null) {
       return;
-    }    
-
+    }
     if(!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
       swingProgressInt = -1;
       isSwingInProgress = true;
       if(worldObj instanceof WorldServer) {
-        System.out.println("TileKillerJoe.swingWeapon: sending packet");
         PacketHandler.sendToAllAround(new PacketSwing(this), this);
-      } else {
-        System.out.println("TileKillerJoe.swingWeapon: Swing start on client");
       }
     }
   }
-  
+
   float getSwingProgress(float p_70678_1_) {
-      float f1 = swingProgress - prevSwingProgress;
+    float f1 = swingProgress - prevSwingProgress;
 
-      if (f1 < 0.0F) {
-          ++f1;
-      }
+    if(f1 < 0.0F) {
+      ++f1;
+    }
 
-      return prevSwingProgress + f1 * p_70678_1_;
+    return prevSwingProgress + f1 * p_70678_1_;
   }
 
   private void updateArmSwingProgress() {
-    
-    //TODO:
+
     prevSwingProgress = swingProgress;
-    
+
     int i = getArmSwingAnimationEnd();
     if(isSwingInProgress) {
       ++swingProgressInt;
@@ -204,11 +258,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private int getArmSwingAnimationEnd() {
     return 6;
-  }
-
-  private void useNutrient() {
-    fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
-    tanksDirty = true;
   }
 
   private float getEnchantmentDamage(EntityLivingBase ent) {
@@ -291,6 +340,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return killBounds;
   }
 
+  //------------------------------- Power
+
   public PowerReceiver getPowerReceiver(ForgeDirection side) {
     return null;
   }
@@ -299,7 +350,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return false;
   }
 
-  // Fluid Stuff
+  //-------------------------------  Fluid Stuff
+
+  private void useNutrient() {
+    fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
+    tanksDirty = true;
+  }
 
   @Override
   protected boolean doPull(ForgeDirection dir) {
@@ -368,6 +424,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return false;
   }
 
+  //-------------------------------  Save / Load
+
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
@@ -382,6 +440,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       fuelTank.setFluid(null);
     }
 
+    experienceLevel = nbtRoot.getInteger("experienceLevel");
+    experienceTotal = nbtRoot.getInteger("experienceTotal");
+    experience = nbtRoot.getFloat("experience");
   }
 
   @Override
@@ -392,6 +453,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       fuelTank.writeToNBT(tankRoot);
       nbtRoot.setTag("fuelTank", tankRoot);
     }
+
+    nbtRoot.setInteger("experienceLevel", experienceLevel);
+    nbtRoot.setInteger("experienceTotal", experienceTotal);
+    nbtRoot.setFloat("experience", experience);
+    
   }
 
 }
