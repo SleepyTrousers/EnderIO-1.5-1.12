@@ -21,7 +21,8 @@ enderio.blockConduitFacade=Leitungsfassade
 item.enderio.itemConduitFacade.name=Leitungsfassade
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Bemalt in der Färbemaschine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=Rechtsklicke auf eine Leitung zum platzieren
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Versteckt, wenn ein Scraubenschlüssel ausgerüstet ist
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Versteckt, wenn ein Scraubenschlüssel
+item.enderio.itemConduitFacade.tooltip.detailed.line4=ausgerüstet ist
 
 enderio.itemPowerConduit.name=Energieleitung
 enderio.itemPowerConduitEnhanced.name=Verbesserte Energieleitung
@@ -43,8 +44,11 @@ enderio.itemLiquidConduit.tooltip.tooltip.detailed.line1=Flüssigkeiten werden n
 enderio.itemLiquidConduit.tooltip.tooltip.detailed.line2=Fließrate abhängig von Viskosität
 enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=der Flüssigkeit
 
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Sofortiger Flüssigkeitsteleport
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=Ermöglicht es, verschiedene Flüssigkeiten
+enderio.itemLiquidConduitEnder.tooltip.detailed.line3=durch die selbe Leitung zu transportieren
+
 enderio.itemItemConduit.name=Item-Leitung
-enderio.itemItemConduitEmpowered.name=Verstärkte Item-Leitung
 
 enderio.filterUpgradeBasic.name=Basis-Item-Filter
 enderio.filterUpgradeAdvanced.name=Erweiterter Item-Filter
@@ -54,6 +58,11 @@ enderio.itemConduitFilterUpgrade.configured=Konfiguriert
 item.itemExistingItemFilter.name=Existierender Item-Filter
 item.itemExistingItemFilter.tooltip.detailed.line1=Wählt nur Items, die bereits
 item.itemExistingItemFilter.tooltip.detailed.line2=im Inventar sind.
+
+item.itemExtractSpeedUpgrade.name=Item-Leitungsgeschwindigkeits-Upgrade
+item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Erhöht Geschwindigkeit um 4
+item.itemExtractSpeedUpgrade.tooltip.detailed.line2=Items pro Extraktion
+item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Maximum der Upgrades ist 15
 
 enderio.itemMeConduit.name=ME-Leitung
 
@@ -132,6 +141,8 @@ enderio.activatedCapacitor.name=Doppelschichtkondensator
 enderio.enderCapacitor.name=Oktadischer Kondensator
 
 enderio.machine.tooltip.upgrade=Maschinen-Upgrade
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Erhöht Energiespeicher sowie
+enderio.machine.tooltip.upgrade.tooltip.detailed.line2=Geschw./Reichweite von Maschinen
 
 //Machines
 tile.blockStirlingGenerator.name=Stirling-Generator
@@ -151,6 +162,8 @@ tile.blockAlloySmelter.name=Legierungsschmelze
 tile.blockAlloySmelter.tooltip.detailed.line1=Produziert EnderIO-Legierungen
 tile.blockAlloySmelter.tooltip.detailed.line2=Kann auch als energiebetriebener
 tile.blockAlloySmelter.tooltip.detailed.line3=Ofen verwendet werden
+tile.blockAlloySmelter.tooltip.detailed.line4=Ein Upgrade mit Kondensatoren wird
+tile.blockAlloySmelter.tooltip.detailed.line5=Geschw. und Energiespeicher erhöhen
 
 tile.blockSolarPanel.name=Photovoltaikzelle
 tile.blockSolarPanel.advanced.name=Fortgeschrittene Photovoltaikzelle
@@ -182,11 +195,16 @@ tile.blockCapacitorBank.tooltip.detailed.line1=Multi-block-Energiespeicher.
 tile.blockCapacitorBank.tooltip.detailed.line2=Kann RF-betriebene Items aufladen.
 tile.blockCapacitorBank.tooltipPrefix=Enthält
 
+tile.blockWirelessCharger.name=Drahtlos-Ladegerät
+tile.blockWirelessCharger.tooltip.detailed.line1=Lädt Items in Inventaren
+tile.blockWirelessCharger.tooltip.detailed.line2=von Spielern in der Nähe
+
 tile.blockSagMill.name=SAG-Mahlwerk
 tile.blockSagMill.tooltip.detailed.line1=Mahlt Erze und andere Items
-tile.blockSagMill.tooltip.detailed.line2=Kann mit Upgrades versehen und so schneller gemacht werden
-tile.blockSagMill.tooltip.detailed.line3=Gibt Mahlkugeln hinzu, um effizienter
-tile.blockSagMill.tooltip.detailed.line4=und besser zu produzieren
+tile.blockSagMill.tooltip.detailed.line2=Gibt Mahlkugeln hinzu, um effizienter
+tile.blockSagMill.tooltip.detailed.line3=und besser zu produzieren
+tile.blockSagMill.tooltip.detailed.line4=Ein Upgrade mit Kondensatoren wird
+tile.blockSagMill.tooltip.detailed.line5=Geschw. und Energiespeicher erhöhen
 tile.blockSagMill.tooltipPrefix=Enthält
 
 tile.blockHyperCube.name=Dimensional-Transceiver
@@ -205,6 +223,11 @@ tile.blockPowerMonitor.tooltip.detailed.line6=angebracht werden
 tile.blockVat.name=Der Bottich
 tile.blockVat.tooltip.detailed.line1=Damit braut man EnderIO-Flüssigkeiten
 
+tile.blockEnchanter.name=Verzauberer
+tile.blockEnchanter.tooltip.detailed.line1=Verwendet XP, um Items zu kombinieren
+tile.blockEnchanter.tooltip.detailed.line2=sowie Buch und Feder, um
+tile.blockEnchanter.tooltip.detailed.line2=Verzauberte Bücher zu kreieren
+
 tile.blockCombustionGenerator.name=Verbrennungsgenerator
 tile.blockCombustionGenerator.tooltip.detailed.line1=Verbrennt flüssige Brennstoffe zur Energieerzeugung
 tile.blockCombustionGenerator.tooltip.detailed.line2=Benötigt Kühlmittel (z.B. Wasser)
@@ -221,6 +244,8 @@ tile.blockFarmStation.tooltip.detailed.line2=Benötigt Energie und
 tile.blockFarmStation.tooltip.detailed.line3=passendes Werkzeug (Hacke, Axt)
 tile.blockFarmStation.tooltip.detailed.line4=Plünderung/Glück auf Werkzeug
 tile.blockFarmStation.tooltip.detailed.line5=wird bei Ernte angewandt
+tile.blockFarmStation.tooltip.detailed.line6=Ein Upgrade mit Kondensatoren wird
+tile.blockFarmStation.tooltip.detailed.line7=Reichweite sowie Energieverbrauch erhöhen
 
 tile.blockTank.name=Flüssigkeitstank
 tile.blockTank.advanced.name=Flüssigkeitsdrucktank
@@ -230,6 +255,14 @@ tile.blockTank.tooltip.detailed.line3=zu leeren und zu füllen
 enderio.tank.tank=Tank
 
 tile.blockCrafter.name=Fertigungsapparatur
+tile.blockCrafter.tooltip.detailed.line1=Ein energiebetriebener Fertigungsapparat
+tile.blockCrafter.tooltip.detailed.line2=Verbraucht Energie pro Operation
+tile.blockCrafter.tooltip.detailed.line3=Ein Upgrade mit Kondensatoren wird
+tile.blockCrafter.tooltip.detailed.line4=Geschw. und Energiespeicher erhöhen
+
+tile.blockVacuumChest.name=Vacuumtruhe
+tile.blockVacuumChest.tooltip.detailed.line1=Zieht Items in der Nähe
+tile.blockVacuumChest.tooltip.detailed.line2=in ihr Inventar
 
 tile.blockPoweredSpawner.name=Energiebetriebener Spawner
 tile.blockPoweredSpawner.tooltip.empty=Leer
@@ -237,7 +270,12 @@ tile.blockPoweredSpawner.empty.tooltip.detailed.line1=Kombiniere mit einem zerst
 tile.blockPoweredSpawner.empty.tooltip.detailed.line2=Spawner in einem Amboss
 tile.blockPoweredSpawner.tooltip.detailed.line1=Gib Energie hinzu,
 tile.blockPoweredSpawner.tooltip.detailed.line2=um zu aktivieren
+tile.blockPoweredSpawner.tooltip.detailed.line3=Ein Upgrade mit Kondensatoren wird
+tile.blockPoweredSpawner.tooltip.detailed.line4=Geschw. und Energiespeicher erhöhen
+
 item.itemBrokenSpawner.name=Zerstörter Spawner
+item.itemBrokenSpawner.tooltip.detailed.line1=Kombiniere mit Energiebetriebenem Spawner
+item.itemBrokenSpawner.tooltip.detailed.line2=in einem Amboss, um Spawn-Typ einzustellen
 
 enderio.machine.tooltip.configured=(Konfiguriert)
 
@@ -294,7 +332,6 @@ item.itemMagnet.tooltip.detailed.line2=Shift+Rechtsklick zum (de)aktivieren
 item.itemMagnet.tooltip.detailed.line3=Muss mit Energie versorgt, aktiviert und
 item.itemMagnet.tooltip.detailed.line4=in der Hotbar sein, um zu funktionieren
 
-
 item.enderio.itemConduitProbe.name=Leitungssonde
 item.enderio.itemConduitProbe.tooltip.detailed.line1=Rechtsklicke auf eine Leitung, um
 item.enderio.itemConduitProbe.tooltip.detailed.line2=Details über ihr Netzwerk zu bekommen
@@ -303,7 +340,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line4=ihre Verbindungseinstellung
 
 //Dark Steel
 item.darkSteel_helmet.name=Dunkelhelm
-item.darkSteel_chestplate.name=Dunkelpanzer
+item.darkSteel_chestplate.name=Dunkelbrustpanzer
 item.darkSteel_leggings.name=Dunkelbeinschutz
 item.darkSteel_boots.name=Dunkelstiefel
 item.darkSteel_sword.name=Der Ender
@@ -324,6 +361,9 @@ enderio.item.darkSteel_sword.tooltip.line3=+1 Schaden, wenn aktiviert
 
 enderio.item.darkSteel_armor.tooltip.line1=Schutz auf Diamant-Level,
 enderio.item.darkSteel_armor.tooltip.line2=wenn mit Energie versorgt
+
+enderio.item.darkSteel_boots.tooltip.line1=Negiert Fallschaden,
+enderio.item.darkSteel_boots.tooltip.line2=wenn mit Energie versorgt
 
 enderio.darksteel.upgrade.empowered_one.name=Verstärkt
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Energie: $P
@@ -348,6 +388,22 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=von Energie abso
 enderio.darksteel.upgrade.jump_one.name=Springen
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
 
+enderio.darksteel.upgrade.glider.name=Gleiter
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Ermöglicht Gleiten
+enderio.darksteel.upgrade.glider.enabled=Gleiter Aktiv
+enderio.darksteel.upgrade.glider.disabled=Gleiter Inaktiv
+
+enderio.darksteel.upgrade.sound.name=Schalldetektor
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Zeigt die Position von
+enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nahen Geräuschquellen
+enderio.darksteel.upgrade.sound.enabled=Schalldetektor Aktiv
+enderio.darksteel.upgrade.sound.disabled=Schalldetektor Inaktiv
+
+item.itemGliderWing.name=Gleiterflügel
+item.itemGliderWings.name=Gleiterflügelpaar
+item.itemGliderWings.tooltip.detailed.line1=Upgrade für den
+item.itemGliderWings.tooltip.detailed.line2=Dunkelbrustpanzer
+
 enderio.darksteel.upgrade.jump_two.name=Springen II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Erlaubt Doppelsprünge
@@ -364,6 +420,12 @@ enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Erhöht Bewegungsgesc
 
 enderio.darksteel.upgrade.speed_three.name=Schnelligkeit III
 enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
+
+enderio.darksteel.upgrade.swim.name=Schwimmflossen
+
+enderio.darksteel.upgrade.nightVision.name=Nachtsicht
+enderio.darksteel.upgrade.nightVision.enabled=Nachtsicht Aktiv
+enderio.darksteel.upgrade.nightVision.disabled=Nachtsicht Inaktiv
 
 //------GUI
 
@@ -504,3 +566,49 @@ enderio.gui.conduit.redstone.color=Farbe
 
 enderio.gui.conduit.fluid.autoExtract=Auto-Extrahieren
 enderio.gui.conduit.fluid.filter=Filter
+
+
+//Configuration
+enderio.config.title=Ender IO Configuration
+
+enderio.config.power=Power Settings
+enderio.config.power.tooltip=So many numbers to change...
+
+enderio.config.recipe=Recipe Settings
+enderio.config.recipe.tooltip=Config ALL the things!
+
+enderio.config.item=Item Enabling
+enderio.config.item.tooltip=If you don't like some of my amazing items :(
+
+enderio.config.efficiency=Efficiency Settings
+enderio.config.efficiency.tooltip=Where do the numbers end?
+
+enderio.config.personal=Personal Settings
+enderio.config.personal.tooltip=I won't tell anyone, I promise.
+
+enderio.config.anchor=Anchor Settings
+enderio.config.anchor.tooltip=Anchors away!
+
+enderio.config.staff=Staff Settings
+enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
+
+enderio.config.darksteel=Dark Steel
+enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
+
+enderio.config.farm=Farm Settings
+enderio.config.farm.tooltip="The commune is for life!"
+
+enderio.config.aesthetic=Aesthetic Settings
+enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
+
+enderio.config.advanced=Advanced Settings
+enderio.config.advanced.tooltip=For those who can't have enough configs.
+
+enderio.config.magnet=Magnet Settings
+enderio.config.magnet.tooltip=How do they work?
+
+enderio.config.fluid=Fluid Settings
+enderio.config.fluid.tooltip=Pure liquid energy!
+
+enderio.config.spawner=PoweredSpawner Settings
+enderio.config.spawner.tooltip=I ran out of witty tooltips.
