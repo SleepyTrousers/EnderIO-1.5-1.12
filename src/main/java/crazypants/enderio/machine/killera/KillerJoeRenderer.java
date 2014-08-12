@@ -11,8 +11,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -29,6 +31,8 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
 
   private static final String TEXTURE = "enderio:models/ZombieJar.png";
 
+  private static final ItemStack DEFAULT_SWORD = new ItemStack(Items.iron_sword);
+
   private ModelZombieJar model = new ModelZombieJar();
 
   @Override
@@ -36,6 +40,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
 
     World world = te.getWorldObj();
     TileKillerJoe gen = (TileKillerJoe) te;
+    float swingProg = gen.getSwingProgress(tick);
 
     float f = world.getBlockLightValue(te.xCoord, te.yCoord, te.zCoord);
     int l = world.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
@@ -43,11 +48,61 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     int l2 = l / 65536;
     Tessellator.instance.setColorOpaque_F(f, f, f);
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
-    
+
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
-    renderModel(gen.facing, gen.getStackInSlot(0));
+    renderModel(gen.facing);
+    renderSword(gen.facing, gen.getStackInSlot(0), gen.getSwingProgress(tick));
     renderFluid(gen);
+    GL11.glPopMatrix();
+
+  }
+
+  private void renderSword(int facing, ItemStack sword, float swingProgress) {
+
+    if(sword == null || sword.getIconIndex() == null) {
+      return;
+    }
+
+    ForgeDirection dir = ForgeDirection.getOrientation(facing);
+    if(dir == ForgeDirection.SOUTH) {
+      facing = 0;
+    } else if(dir == ForgeDirection.WEST) {
+      facing = -1;
+    }
+
+    //Sword
+    GL11.glPushMatrix();
+
+    GL11.glTranslatef(0.5f, 0, 0.5f);
+    float offset = 90f;
+    if(dir.offsetX != 0) {
+      offset *= -1;
+    }
+
+    GL11.glRotatef((facing * -90F) + offset, 0F, 1F, 0F);
+    GL11.glTranslatef(-0.5f, 0, -0.5F);
+
+    GL11.glPushMatrix();
+    if(swingProgress > 0) {
+      float f6 = MathHelper.sin(swingProgress * swingProgress * (float) Math.PI);
+      float f7 = MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI);
+      GL11.glRotatef(f7 * 5.0F, 1.0F, 0.0F, 0.0F);
+      GL11.glRotatef(f7 * 50.0F, 0.0F, 0.0F, 1.0F);
+    }
+    GL11.glTranslatef(-0.25f, 0.2f, 0.05f);
+
+    RenderUtil.bindItemTexture();
+
+    IIcon icon = sword.getIconIndex();
+    float f9 = 0.0625F;
+    float minU = icon.getMinU();
+    float maxU = icon.getMaxU();
+    float minV = icon.getMinV();
+    float maxV = icon.getMaxV();
+    ItemRenderer.renderItemIn2D(Tessellator.instance, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), f9);
+
+    GL11.glPopMatrix();
     GL11.glPopMatrix();
 
   }
@@ -83,7 +138,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
       CubeRenderer.render(bb, icon);
 
       GL11.glEnable(GL11.GL_BLEND);
-      GL11.glDepthMask(false);      
+      GL11.glDepthMask(false);
       tes.draw();
       GL11.glDepthMask(true);
       GL11.glDisable(GL11.GL_BLEND);
@@ -91,7 +146,7 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     }
   }
 
-  private void renderModel(int facing, ItemStack sword) {
+  private void renderModel(int facing) {
 
     GL11.glPushMatrix();
 
@@ -102,7 +157,6 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     ForgeDirection dir = ForgeDirection.getOrientation(facing);
     if(dir == ForgeDirection.SOUTH) {
       facing = 0;
-
     } else if(dir == ForgeDirection.WEST) {
       facing = -1;
     }
@@ -113,35 +167,6 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
 
     GL11.glTranslatef(-0.5F, 0, -0.5F);
     GL11.glPopMatrix();
-
-    if(sword != null && sword.getIconIndex() != null) {
-      //Sword
-      GL11.glPushMatrix();
-
-      GL11.glTranslatef(0.5f, 0, 0.5f);
-      float offset = 90f;
-      if(dir.offsetX != 0) {
-        offset *= -1;
-      }
-      GL11.glRotatef((facing * -90F) + offset, 0F, 1F, 0F);
-      GL11.glTranslatef(-0.5f, 0, -0.5F);
-
-      GL11.glPushMatrix();
-      GL11.glTranslatef(-0.25f, 0.2f, 0.05f);
-
-      RenderUtil.bindItemTexture();
-
-      IIcon icon = sword.getIconIndex();
-      float f9 = 0.0625F;
-      float minU = icon.getMinU();
-      float maxU = icon.getMaxU();
-      float minV = icon.getMinV();
-      float maxV = icon.getMaxV();
-      ItemRenderer.renderItemIn2D(Tessellator.instance, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), f9);
-
-      GL11.glPopMatrix();
-      GL11.glPopMatrix();
-    }
 
   }
 
@@ -164,7 +189,8 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     GL11.glPushMatrix();
     GL11.glTranslatef(x, y, z);
     GL11.glEnable(GL11.GL_BLEND);
-    renderModel(ForgeDirection.NORTH.ordinal(), new ItemStack(Items.iron_sword));
+    renderModel(ForgeDirection.NORTH.ordinal());
+    renderSword(ForgeDirection.NORTH.ordinal(), DEFAULT_SWORD, 0);
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glPopMatrix();
   }

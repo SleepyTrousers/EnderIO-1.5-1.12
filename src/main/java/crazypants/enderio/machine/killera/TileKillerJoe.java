@@ -17,12 +17,15 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S0BPacketAnimation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -49,19 +52,27 @@ import crazypants.vecmath.Vector3d;
 public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler {
 
   private static int IO_MB_TICK = 250;
-  
+
   protected AxisAlignedBB killBounds;
   protected FakePlayer attackera;
 
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
-  
+
   int lastFluidLevelUpdate;
 
   private boolean tanksDirty;
-  
+
+  private boolean isSwingInProgress;
+
+  private int swingProgressInt;
+
+  private float swingProgress;
+
+  private float prevSwingProgress;
+
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
-    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.MACHINE);    
+    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.MACHINE);
   }
 
   @Override
@@ -87,10 +98,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return 0;
   }
 
-  
-  
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {    
+  public void setInventorySlotContents(int slot, ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
     if(slot == 0) {
       getAttackera().inventory.setInventorySlotContents(0, contents);
@@ -103,17 +112,17 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(!redstoneCheckPassed) {
       return false;
     }
-    
+
     if(worldObj.getTotalWorldTime() % 10 != 0) {
       return false;
     }
-    
+
     if(tanksDirty) {
       PacketHandler.sendToAllAround(new PacketNutrientLevel(this), this);
       tanksDirty = false;
     }
-    
-    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {      
+
+    if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
       return false;
     }
 
@@ -125,6 +134,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     if(!entsInBounds.isEmpty()) {
       FakePlayer fakee = getAttackera();
+      fakee.swingItem();
       DamageSource ds = DamageSource.causePlayerDamage(fakee);
       for (EntityLivingBase ent : entsInBounds) {
         float enchDamage = getEnchantmentDamage(ent);
@@ -132,15 +142,72 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         if(res) {
           damageWeapon(ent);
           useNutrient();
+          swingWeapon();
           return false;
         }
       }
     }
     return false;
   }
+  
+  @Override
+  public void updateEntity() {
+    updateArmSwingProgress();
+    super.updateEntity();
+  }
+
+  void swingWeapon() {
+
+    if(getStackInSlot(0) == null) {
+      return;
+    }    
+
+    if(!isSwingInProgress || swingProgressInt >= getArmSwingAnimationEnd() / 2 || swingProgressInt < 0) {
+      swingProgressInt = -1;
+      isSwingInProgress = true;
+      if(worldObj instanceof WorldServer) {
+        System.out.println("TileKillerJoe.swingWeapon: sending packet");
+        PacketHandler.sendToAllAround(new PacketSwing(this), this);
+      } else {
+        System.out.println("TileKillerJoe.swingWeapon: Swing start on client");
+      }
+    }
+  }
+  
+  float getSwingProgress(float p_70678_1_) {
+      float f1 = swingProgress - prevSwingProgress;
+
+      if (f1 < 0.0F) {
+          ++f1;
+      }
+
+      return prevSwingProgress + f1 * p_70678_1_;
+  }
+
+  private void updateArmSwingProgress() {
+    
+    //TODO:
+    prevSwingProgress = swingProgress;
+    
+    int i = getArmSwingAnimationEnd();
+    if(isSwingInProgress) {
+      ++swingProgressInt;
+      if(swingProgressInt >= i) {
+        swingProgressInt = 0;
+        isSwingInProgress = false;
+      }
+    } else {
+      swingProgressInt = 0;
+    }
+    swingProgress = (float) swingProgressInt / (float) i;
+  }
+
+  private int getArmSwingAnimationEnd() {
+    return 6;
+  }
 
   private void useNutrient() {
-    fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);   
+    fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
     tanksDirty = true;
   }
 
@@ -184,7 +251,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
   }
 
-  private FakePlayer getAttackera() {
+  FakePlayer getAttackera() {
     if(attackera == null) {
       attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null, "KillerJoe"
           + getLocation()));
@@ -231,9 +298,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public boolean canConnectEnergy(ForgeDirection from) {
     return false;
   }
-  
+
   // Fluid Stuff
-  
+
   @Override
   protected boolean doPull(ForgeDirection dir) {
     boolean res = super.doPull(dir);
@@ -276,7 +343,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return res;
   }
 
-  
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
     return fluid != null && fluid.getID() == EnderIO.fluidNutrientDistillation.getID();
@@ -286,7 +352,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     return new FluidTankInfo[] { fuelTank.getInfo() };
   }
-  
+
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
     return null;
@@ -296,12 +362,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
     return null;
   }
-  
+
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
     return false;
   }
-  
+
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
