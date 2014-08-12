@@ -21,7 +21,7 @@ enderio.blockConduitFacade=Leitungsfassade
 item.enderio.itemConduitFacade.name=Leitungsfassade
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Bemalt in der Färbemaschine
 item.enderio.itemConduitFacade.tooltip.detailed.line2=Rechtsklicke auf eine Leitung zum platzieren
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Versteckt, wenn ein Scraubenschlüssel
+item.enderio.itemConduitFacade.tooltip.detailed.line3=Versteckt, wenn ein Schraubenschlüssel
 item.enderio.itemConduitFacade.tooltip.detailed.line4=ausgerüstet ist
 
 enderio.itemPowerConduit.name=Energieleitung
