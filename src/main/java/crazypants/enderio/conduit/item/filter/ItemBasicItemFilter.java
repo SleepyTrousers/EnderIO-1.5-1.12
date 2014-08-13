@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.util.Lang;
 
 public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
@@ -87,12 +88,18 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {    
-    par3List.add(Lang.localize("itemConduitFilterUpgrade"));  
-    if(FilterRegister.isFilterSet(par1ItemStack)) {
-      par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {          
+    if(FilterRegister.isFilterSet(par1ItemStack)) {      
+      if(!TooltipAddera.instance.showAdvancedTooltips()) {
+        par3List.add(Lang.localize("itemConduitFilterUpgrade"));
+        TooltipAddera.instance.addShowDetailsTooltip(par3List);
+      } else {
+        par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
+        par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
+      }      
+    } else {
+      par3List.add(Lang.localize("itemConduitFilterUpgrade"));
     }
-
   }
   
 }

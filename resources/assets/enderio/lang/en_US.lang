@@ -53,9 +53,14 @@ enderio.itemItemConduit.name=Item Conduit
 enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+
+
 enderio.itemConduitFilterUpgrade.configured=Configured
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to clear
+enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
 
 item.itemExistingItemFilter.name=Existing Item Filter
+item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
 item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
 
@@ -63,6 +68,8 @@ item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
+
+
 
 enderio.itemMeConduit.name=ME Conduit
 
