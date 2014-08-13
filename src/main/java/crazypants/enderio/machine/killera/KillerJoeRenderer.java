@@ -29,7 +29,7 @@ import crazypants.vecmath.Vector3d;
 
 public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
-  private static final String TEXTURE = "enderio:models/ZombieJar.png";
+  private static final String TEXTURE = "enderio:models/KillerJoe.png";
 
   private static final ItemStack DEFAULT_SWORD = new ItemStack(Items.iron_sword);
 
@@ -137,12 +137,16 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
 
       CubeRenderer.render(bb, icon);
 
+      GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
       GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GL11.glDisable(GL11.GL_LIGHTING);     
       GL11.glDepthMask(false);
+      GL11.glColor3f(1, 1, 1);      
+      
       tes.draw();
       GL11.glDepthMask(true);
-      GL11.glDisable(GL11.GL_BLEND);
-
+      GL11.glPopAttrib();
     }
   }
 
