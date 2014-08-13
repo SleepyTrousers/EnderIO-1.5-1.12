@@ -10,6 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
+import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.ClearConfigRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -70,6 +71,9 @@ public class ConduitRecipes {
     ClearFilterRecipe clearRec = new ClearFilterRecipe();
     MinecraftForge.EVENT_BUS.register(clearRec);
     GameRegistry.addRecipe(clearRec);
+    
+    CopyFilterRecipe copyRec = new CopyFilterRecipe();
+    GameRegistry.addRecipe(copyRec);
     
     ItemStack speedUpgrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0);
     GameRegistry.addShapedRecipe(speedUpgrade, "iii","epe","ere", 'p', Blocks.piston, 'e', electricalSteel, 'r', Blocks.redstone_torch, 'i', Items.iron_ingot);
