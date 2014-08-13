@@ -9,7 +9,6 @@ public interface IGuiOverlay {
 
   void init(IGuiScreen screen);
 
-  IIcon getIcon();
 
   Rectangle getBounds();
 
