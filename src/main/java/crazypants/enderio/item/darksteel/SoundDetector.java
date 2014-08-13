@@ -96,9 +96,10 @@ public class SoundDetector {
         }
       }
       sounds.clear();
-    } catch (ConcurrentModificationException ex) {
-      //very small chance of this happening, despite the list swapping above. Just catching and ignoring this is
-      //the lesser of the two evils compared to the cost of syncronizing the lists
+    } catch (Exception ex) {
+      //very small chance of getting an exception here due to non synchronized swapping of the lists 
+      //Just catching and ignoring this is the lesser of the two evils compared to the cost of syncronizing the lists
+      //TODO: Maybe look at the impact of using atomic references
     }
 
   }
