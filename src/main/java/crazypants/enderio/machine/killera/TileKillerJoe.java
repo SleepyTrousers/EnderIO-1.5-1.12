@@ -60,6 +60,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private static int IO_MB_TICK = 250;
 
   protected AxisAlignedBB killBounds;
+  
+  protected AxisAlignedBB hooverBounds;
+  
   protected FakePlayer attackera;
 
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
@@ -220,28 +223,31 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private void hooverXP() {
-    //TODO: Make a proper bounding box
-    BoundingBox bb = new BoundingBox(getLocation());
-    AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
-    aabb = aabb.expand(10, 10, 10);
-    List<EntityXPOrb> xp = worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, aabb, this);
+
+    double maxDist = Config.killerJoeAttackLength * 2;
+    
+    List<EntityXPOrb> xp = worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), this);
 
     for (EntityXPOrb entity : xp) {
-      double x = (xCoord + 0.5D - entity.posX);
-      double y = (yCoord + 0.5D - entity.posY);
-      double z = (zCoord + 0.5D - entity.posZ);
+      double xDist = (xCoord + 0.5D - entity.posX);
+      double yDist = (yCoord + 0.5D - entity.posY);
+      double zDist = (zCoord + 0.5D - entity.posZ);
 
-      double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance < 1.5) {
+      double totalDistance = Math.sqrt(xDist * xDist + yDist * yDist + zDist * zDist);
+
+      if(totalDistance < 1.5) {
         hooverXP(entity);
       } else {
-        double speed = 0.1;
-        entity.motionX = x / distance * speed;
-        //entity.motionY = y * speed;
-//        if(y > 0) {
-//          entity.motionY = 0.12;
-//        }
-        entity.motionZ = z / distance * speed;
+        double d = 1 - (Math.max(0.1, totalDistance) / maxDist);        
+        double speed = 0.0025 + (d * 0.02);
+        
+        entity.motionX += xDist / totalDistance * speed;
+        entity.motionZ += zDist / totalDistance * speed;
+        entity.motionY += yDist / totalDistance * speed;
+        if(yDist > 0.5) {
+          entity.motionY = 0.12;
+        }
+
       }
     }
   }
@@ -362,28 +368,57 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       BoundingBox bb = new BoundingBox(getLocation());
       Vector3d min = bb.getMin();
       Vector3d max = bb.getMax();
-      max.y += 2;
-      min.y -= 2;
+      max.y += Config.killerJoeAttackHeight;
+      min.y -= Config.killerJoeAttackHeight;
 
       ForgeDirection facingDir = ForgeDirection.getOrientation(facing);
       if(ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
-        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, 4));
+        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
-        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, 4));
+        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength));
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
       if(facingDir.offsetX == 0) {
-        min.x -= 2;
-        max.x += 2;
+        min.x -= Config.killerJoeAttackWidth;
+        max.x += Config.killerJoeAttackWidth;
       } else {
-        min.z -= 2;
-        max.z += 2;
+        min.z -= Config.killerJoeAttackWidth;
+        max.z += Config.killerJoeAttackWidth;
       }
       killBounds = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
     }
     return killBounds;
+  }
+  
+  private AxisAlignedBB getHooverBounds() {
+    if(hooverBounds == null) {
+      BoundingBox bb = new BoundingBox(getLocation());
+      Vector3d min = bb.getMin();
+      Vector3d max = bb.getMax();
+      max.y += Config.killerJoeAttackHeight;
+      min.y -= Config.killerJoeAttackHeight;
+
+      ForgeDirection facingDir = ForgeDirection.getOrientation(facing);
+      if(ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
+        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength * 2));
+        min.add(ForgeDirectionOffsets.forDir(facingDir));
+      } else {
+        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength * 2));
+        max.add(ForgeDirectionOffsets.forDir(facingDir));
+
+      }
+      if(facingDir.offsetX == 0) {
+        min.x -= Config.killerJoeAttackWidth * 2;
+        max.x += Config.killerJoeAttackWidth * 2;
+      } else {
+        min.z -= Config.killerJoeAttackWidth * 2;
+        max.z += Config.killerJoeAttackWidth * 2;
+      }
+      hooverBounds = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
+    }
+    return hooverBounds;
   }
 
   //------------------------------- Power
