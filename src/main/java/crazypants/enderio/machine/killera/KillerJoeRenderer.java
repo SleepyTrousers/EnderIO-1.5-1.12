@@ -189,8 +189,8 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
     GL11.glPushMatrix();
     GL11.glTranslatef(x, y, z);
     GL11.glEnable(GL11.GL_BLEND);
-    renderModel(ForgeDirection.NORTH.ordinal());
-    renderSword(ForgeDirection.NORTH.ordinal(), DEFAULT_SWORD, 0);
+    renderModel(ForgeDirection.EAST.ordinal());
+    renderSword(ForgeDirection.EAST.ordinal(), DEFAULT_SWORD, 0);
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glPopMatrix();
   }

@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemBrokenSpawner extends Item {
   
@@ -88,6 +89,11 @@ public class ItemBrokenSpawner extends Item {
       String mobName = getMobTypeFromStack(par1ItemStack);
       if(mobName != null) {
         par3List.add(mobName);
+      }
+      if(!TooltipAddera.instance.showAdvancedTooltips()) {
+        TooltipAddera.instance.addShowDetailsTooltip(par3List);
+      } else {
+        TooltipAddera.instance.addDetailedTooltipFromResources(par3List, par1ItemStack);
       }
     }
 

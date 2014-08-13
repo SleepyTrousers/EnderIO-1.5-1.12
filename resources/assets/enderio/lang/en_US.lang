@@ -74,6 +74,7 @@ enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 tile.blockDarkIronBars.name=Dark Iron Bars
+tile.blockEndermanSkull.name=Enderman Skull
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 
