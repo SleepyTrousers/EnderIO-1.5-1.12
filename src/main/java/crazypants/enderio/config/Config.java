@@ -58,9 +58,6 @@ public final class Config {
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
   public static final Section sectionKiller = new Section("Killer Joe Settings", "spawner");
   
-  static int BID = 700;
-  static int IID = 8524;
-
   public static final double DEFAULT_CONDUIT_SCALE = 0.5;
 
   public static boolean useAlternateBinderRecipe;

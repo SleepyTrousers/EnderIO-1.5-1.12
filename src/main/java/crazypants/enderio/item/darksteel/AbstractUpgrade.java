@@ -60,20 +60,20 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    TooltipAddera.instance.addCommonTooltipFromResources(list, unlocName);
+    TooltipAddera.instance.addCommonTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName + ".name", false));
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(unlocName + ".name", false));
-    TooltipAddera.instance.addDetailedTooltipFromResources(list, unlocName);
+    list.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
+    TooltipAddera.instance.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
 
   @Override
@@ -104,7 +104,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     }
     NBTTagCompound upgradeRoot = new NBTTagCompound();
     upgradeRoot.setInteger(KEY_LEVEL_COST, levelCost);
-    upgradeRoot.setString(KEY_UNLOC_NAME, unlocName);
+    upgradeRoot.setString(KEY_UNLOC_NAME, getUnlocalizedName());
 
     if(upgradeItem != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();

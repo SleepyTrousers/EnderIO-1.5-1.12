@@ -57,6 +57,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
   private static final DummyTask TASK = new DummyTask();
   
   private ICapacitor cap = new BasicCapacitor(200,25000);
+  
+  public int tier = 1;
 
   public TileFarmStation() {
     super(new SlotDefinition(6, 4, 1));
@@ -472,6 +474,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       cap = new BasicCapacitor(200,25000,50);
       break;
     }
+    tier = capacitorType.ordinal();
     powerHandler.configure(cap.getMinEnergyReceived(), cap.getMaxEnergyReceived(), cap.getMinActivationEnergy(), cap.getMaxEnergyStored());
   }
   
