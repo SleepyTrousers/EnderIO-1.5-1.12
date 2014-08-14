@@ -56,7 +56,7 @@ public final class Config {
   public static final Section sectionMagnet = new Section("Magnet Settings", "magnet");
   public static final Section sectionFluid = new Section("Fluid Settings", "fluid");
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
-  public static final Section sectionKiller = new Section("Killer Joe Settings", "spawner");
+  public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   
   public static final double DEFAULT_CONDUIT_SCALE = 0.5;
 

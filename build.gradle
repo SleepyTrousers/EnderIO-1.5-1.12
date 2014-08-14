@@ -35,9 +35,8 @@ minecraft {
     //assetDir = "run/assets" // the place for ForgeGradle to download the assets. The assets that the launcher gets and stuff
 
     // replacing stuff in the source
-    //replace '@VERSION@', project.version
-    //replace '@MC_VERSION@', version
-    //replace '@BUILD_NUMBER@', project.buildnumber
+    replace "@VERSION@", project.version
+    replaceIn "EnderIO.java"
 }
 
 configurations {

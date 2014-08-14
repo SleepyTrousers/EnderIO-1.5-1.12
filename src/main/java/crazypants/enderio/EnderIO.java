@@ -1,9 +1,7 @@
 package crazypants.enderio;
 
 import static crazypants.enderio.EnderIO.*;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
@@ -13,7 +11,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import buildcraft.api.fuels.IronEngineCoolant;
 import buildcraft.api.fuels.IronEngineFuel;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,7 +54,6 @@ import crazypants.enderio.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.item.darksteel.ItemGliderWing;
 import crazypants.enderio.item.darksteel.SoundEntity;
-import crazypants.enderio.item.darksteel.SoundRenderer;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
@@ -119,7 +115,7 @@ public class EnderIO {
 
   public static final String MODID = "EnderIO";
   public static final String MOD_NAME = "Ender IO";
-  public static final String VERSION = "2.0_beta";
+  public static final String VERSION = "@VERSION@";
 
   @Instance(MODID)
   public static EnderIO instance;
