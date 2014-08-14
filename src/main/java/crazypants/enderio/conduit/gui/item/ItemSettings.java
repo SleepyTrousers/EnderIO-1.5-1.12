@@ -17,6 +17,7 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.ColorButton;
@@ -265,6 +266,8 @@ public class ItemSettings extends BaseSettingsPanel {
       return new BasicItemFilterGui(gui, itemConduit, isInput);
     } else if(filter instanceof ExistingItemFilter) {
       return new ExistingItemFilterGui(gui, itemConduit, isInput);      
+    } else if(filter instanceof ModItemFilter) {
+      return new ModItemFilterGui(gui, itemConduit, isInput);
     }
     return null;
   }
@@ -355,6 +358,16 @@ public class ItemSettings extends BaseSettingsPanel {
 
     if(filterGui != null) {
       filterGui.actionPerformed(guiButton);
+    }
+  }
+  
+  
+
+  @Override
+  public void mouseClicked(int x, int y, int par3) {    
+    super.mouseClicked(x, y, par3);
+    if(filterGui != null) {
+      filterGui.mouseClicked(x, y, par3);
     }
   }
 

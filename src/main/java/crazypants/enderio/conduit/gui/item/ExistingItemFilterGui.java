@@ -105,7 +105,12 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     
     
   }
+  
+  @Override
+  public void mouseClicked(int x, int y, int par3) {      
+  }
 
+  @Override
   public void updateButtons() {
 
     ExistingItemFilter activeFilter = filter;

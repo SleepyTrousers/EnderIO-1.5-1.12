@@ -64,6 +64,11 @@ item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
 item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
 
+item.itemModItemFilter.name=Mod Item Filter
+item.itemModItemFilter.tooltip.basic.line1=Upgrade for item conduits
+item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
+item.itemModItemFilter.tooltip.detailed.line2=mod/s
+
 item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
