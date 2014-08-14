@@ -103,7 +103,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if(evt.left == null || evt.left.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner) ||
+    if(evt.left == null || evt.left.stackSize != 1 || evt.left.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner) ||
        evt.right == null || ItemBrokenSpawner.getMobTypeFromStack(evt.right) == null) {
       return;
     }    

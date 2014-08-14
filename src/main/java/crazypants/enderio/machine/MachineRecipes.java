@@ -54,6 +54,10 @@ public class MachineRecipes {
     ItemStack zg = new ItemStack(EnderIO.blockZombieGenerator, 1, 0);
     GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qcq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(Items.skull, 1, 2),'c', capacitor);
     
+    //KillerJoe
+    ItemStack kj = new ItemStack(EnderIO.blockKillerJoe, 1, 0);
+    GameRegistry.addShapedRecipe(kj, "sss", "qzq", "qqq", 's', darkSteel, 'q', fusedQuartz, 'z', new ItemStack(Items.skull, 1, 2));
+    
     ItemStack wirelessCharger = new ItemStack(EnderIO.blockWirelessCharger);
     GameRegistry.addShapedRecipe(wirelessCharger, "svs", "imi", "scs", 's', electricSteel, 'i', silicon, 'm', machineChassi, 'c', capacitor3, 'v', vibCry);
     

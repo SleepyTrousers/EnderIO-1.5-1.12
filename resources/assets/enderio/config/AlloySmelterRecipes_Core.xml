@@ -33,8 +33,8 @@ sand/cobble/wood=0.1
     
     <recipe name="Electrical Steel" energyCost="1000">
       <input>
-        <itemStack modID="minecraft" itemName="iron_ingot"/>
-        <itemStack modID="minecraft" itemName="coal"/>        
+        <itemStack modID="minecraft" itemName="iron_ingot"/>      
+        <itemStack oreDictionary="dustCoal" />  
         <itemStack oreDictionary="itemSilicon"/>
       </input>
       <output>
@@ -96,7 +96,7 @@ sand/cobble/wood=0.1
     <recipe name="Dark Steel" energyCost="2000">
       <input>
         <itemStack modID="minecraft" itemName="iron_ingot"/>         
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" /> <!--  coal dust -->
+        <itemStack oreDictionary="dustCoal" />
         <itemStack modID="minecraft" itemName="obsidian"/>
       </input>
       <output>

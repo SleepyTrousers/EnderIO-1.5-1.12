@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.killera;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -40,7 +41,12 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
   protected BlockKillerJoe() {
     super(ModObject.blockKillerJoe, TileKillerJoe.class);
-    setStepSound(Block.soundTypeGlass);
+    setStepSound(Block.soundTypeGlass);    
+  }
+  
+  @Override
+  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+    return 2000;
   }
   
   @Override

@@ -84,6 +84,11 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useOreDictB.setPaintSelectedBorder(false);
   }
   
+  @Override
+  public void mouseClicked(int x, int y, int par3) {      
+  }
+  
+  @Override
   public void updateButtons() {
     
     ItemFilter activeFilter = (ItemFilter)filter;

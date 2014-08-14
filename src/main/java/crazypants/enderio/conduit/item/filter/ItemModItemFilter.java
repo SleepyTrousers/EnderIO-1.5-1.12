@@ -17,29 +17,28 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.util.Lang;
 
-public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
+public class ItemModItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
-  public static ItemExistingItemFilter create() {
-    ItemExistingItemFilter result = new ItemExistingItemFilter();
+  public static ItemModItemFilter create() {
+    ItemModItemFilter result = new ItemModItemFilter();
     result.init();
     return result;
   }
 
-  protected ItemExistingItemFilter() {
+  protected ItemModItemFilter() {
     setCreativeTab(EnderIOTab.tabEnderIO);
-    setUnlocalizedName(ModObject.itemExistingItemFilter.unlocalisedName);
-    setHasSubtypes(true);
+    setUnlocalizedName(ModObject.itemModItemFilter.unlocalisedName);    
     setMaxDamage(0);
     setMaxStackSize(64);
   }
 
   protected void init() {
-    GameRegistry.registerItem(this, ModObject.itemExistingItemFilter.unlocalisedName);
+    GameRegistry.registerItem(this, ModObject.itemModItemFilter.unlocalisedName);
   }
 
   @Override
   public IItemFilter createFilterFromStack(ItemStack stack) {
-    IItemFilter filter = new ExistingItemFilter();
+    IItemFilter filter = new ModItemFilter();
     if(stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
       filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));
     }
@@ -48,7 +47,7 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
 
   @Override
   public void registerIcons(IIconRegister IIconRegister) {
-    itemIcon = IIconRegister.registerIcon("enderio:existingItemFilter");
+    itemIcon = IIconRegister.registerIcon("enderio:modItemFilter");
   }
 
   @Override
@@ -66,7 +65,5 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
       }      
     }
   }
-  
-  //par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
 
 }

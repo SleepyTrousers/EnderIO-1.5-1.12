@@ -40,11 +40,6 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   }
 
   @Override
-  public IIcon getIcon() {
-    return EnderIOTab.tabEnderIO.getIconItemStack().getIconIndex();
-  }
-
-  @Override
   public void init(IGuiScreen screen) {
     this.screen = screen;
     renderer = new IoConfigRenderer(coords) {

@@ -239,7 +239,10 @@ public final class Config {
 
   public static float machineSoundVolume  = 0.75f;
 
-  public static int killerJoeNutrientUsePerAttackMb = 10;  
+  public static int killerJoeNutrientUsePerAttackMb = 5;  
+  public static double killerJoeAttackHeight = 2;
+  public static double killerJoeAttackWidth = 2;
+  public static double killerJoeAttackLength = 4;
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -634,6 +637,13 @@ public final class Config {
     
     killerJoeNutrientUsePerAttackMb = config.get(sectionKiller.name, "killerJoeNutrientUsePerAttackMb", killerJoeNutrientUsePerAttackMb,
         "The number of millibuckets of nutrient fluid used per attack.").getInt(killerJoeNutrientUsePerAttackMb);
+    
+    killerJoeAttackHeight = config.get(sectionKiller.name, "killerJoeAttackHeight", killerJoeAttackHeight,
+        "The reach of attacks above and bellow Joe.").getDouble(killerJoeAttackHeight);
+    killerJoeAttackWidth = config.get(sectionKiller.name, "killerJoeAttackWidth", killerJoeAttackWidth,
+        "The reach of attacks to each side of Joe.").getDouble(killerJoeAttackWidth);
+    killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength,
+        "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);
   }
 
   private Config() {
