@@ -308,7 +308,7 @@ public class EnderIO {
 
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
-    itemModItemFilter = ItemModItemFilter .create();
+    itemModItemFilter = ItemModItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);

@@ -28,25 +28,37 @@ public class ModItemFilterGui implements IItemFilterGui {
 
   private ModItemFilter filter;
   
-  private Rectangle[] inputBounds = new Rectangle[] {
-    new Rectangle(50,48,16,16),
-    new Rectangle(50,69,16,16),
-    new Rectangle(50,90,16,16)
-  };
+  private Rectangle[] inputBounds;
   
-  private IconButtonEIO[] deleteButs = new IconButtonEIO[inputBounds.length];
+  private IconButtonEIO[] deleteButs;
+  
+  private int inputOffsetX;
+  private int tfWidth;
   
   public ModItemFilterGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
     this.gui = gui;
     this.itemConduit = itemConduit;
     this.isInput = isInput;
 
+    
     if(isInput) {
       filter = (ModItemFilter) itemConduit.getInputFilter(gui.getDir());
+      inputOffsetX = 50;
+      tfWidth = 86;
     } else {
       filter = (ModItemFilter) itemConduit.getOutputFilter(gui.getDir());
+      inputOffsetX = 32;
+      tfWidth = 104;
     }
     
+    
+    inputBounds = new Rectangle[] {
+        new Rectangle(inputOffsetX,48,16,16),
+        new Rectangle(inputOffsetX,69,16,16),
+        new Rectangle(inputOffsetX,90,16,16)
+      };
+    
+    deleteButs = new IconButtonEIO[inputBounds.length];    
     for(int i=0; i < deleteButs.length; i++) {
       Rectangle r = inputBounds[i];
       IconButtonEIO but = new IconButtonEIO(gui, GuiExternalConnection.nextButtonId(),  r.x + 19, r.y, IconEIO.MINUS);
@@ -89,8 +101,8 @@ public class ModItemFilterGui implements IItemFilterGui {
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 238, 18, 18);
       //text box
       gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, 24, 238, 4, 18);
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 42, gui.getGuiTop() + r.y - 1, 120, 238, 86, 18);
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 128, gui.getGuiTop() + r.y - 1, 38, 238, 4, 18);      
+      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 42, gui.getGuiTop() + r.y - 1, 120, 238, tfWidth, 18);
+      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 42 + tfWidth, gui.getGuiTop() + r.y - 1, 38, 238, 4, 18);      
     }    
     
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
@@ -103,9 +115,10 @@ public class ModItemFilterGui implements IItemFilterGui {
     }
     
     RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");    
-    gui.drawTexturedModalRect(gui.getGuiLeft() + inputBounds[0].x + 131, gui.getGuiTop() + inputBounds[0].y, 181, 20, 30, 60);
+    int edge = inputBounds[0].x + tfWidth + 46;
+    gui.drawTexturedModalRect(gui.getGuiLeft() + edge, gui.getGuiTop() + inputBounds[0].y, edge, 20, 30, 60);
     for(Rectangle r : inputBounds) {
-      gui.drawTexturedModalRect(gui.getGuiLeft() + r.x + 131, gui.getGuiTop() + r.y - 1, 41, 238, 1, 18);
+      gui.drawTexturedModalRect(gui.getGuiLeft() + edge - 1, gui.getGuiTop() + r.y - 1, 41, 238, 1, 18);
     }
     
   }

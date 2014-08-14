@@ -65,6 +65,9 @@ public class ConduitRecipes {
     ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
     GameRegistry.addRecipe(new ShapedOreRecipe(advFilter, "rpr","php","rpr", 'p', Items.paper, 'h', "itemSkull", 'r', Items.redstone));
 
+    ItemStack modFilter = new ItemStack(EnderIO.itemModItemFilter, 1, 0);
+    GameRegistry.addShapedRecipe(modFilter, " p ","pwp"," p ", 'p', Items.paper, 'w', EnderIO.itemYetaWench);
+    
     ItemStack exFilt = new ItemStack(EnderIO.itemExistingItemFilter);
     GameRegistry.addShapedRecipe(exFilt, "rpr","pcp","rpr", 'p', Items.paper, 'c', new ItemStack(Items.comparator, 1, 0), 'r', Items.redstone);
     
