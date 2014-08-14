@@ -172,7 +172,7 @@ public class DarkSteelRecipeManager {
       list.add(EnumChatFormatting.YELLOW + "Anvil Upgrades: ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
         list.add(EnumChatFormatting.DARK_AQUA + "" + "" + Lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
-        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItem().getDisplayName() + " + " + up.getLevelCost()
+        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
             + " lvs");
       }
     }

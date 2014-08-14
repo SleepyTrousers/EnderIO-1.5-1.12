@@ -56,6 +56,11 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
   public ItemStack getUpgradeItem() {
     return upgradeItem;
   }
+  
+  @Override
+  public String getUpgradeItemName() {
+    return getUpgradeItem().getDisplayName();
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
