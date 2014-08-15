@@ -175,18 +175,10 @@ public class NetworkedInventory {
     if(numInserted <= 0) {
       return false;
     }
-
     ItemStack curStack = getInventory().getStackInSlot(slot);
     if(curStack != null) {
-      curStack = curStack.copy();
-      curStack.stackSize -= numInserted;
-      if(curStack.stackSize > 0) {
-        getInventory().setInventorySlotContents(slot, curStack);
-        getInventory().markDirty();
-      } else {
-        getInventory().setInventorySlotContents(slot, null);
-        getInventory().markDirty();
-      }
+      getInventory().decrStackSize(slot, numInserted);
+      getInventory().markDirty();
     }
     con.itemsExtracted(numInserted, slot);
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
