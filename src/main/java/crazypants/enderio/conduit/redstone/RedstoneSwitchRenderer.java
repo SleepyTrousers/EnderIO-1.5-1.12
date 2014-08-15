@@ -55,8 +55,7 @@ public class RedstoneSwitchRenderer extends DefaultConduitRenderer {
     for (int i = 0; i < icons.length; i++) {
       icons[i] = EnderIO.blockConduitBundle.getConnectorIcon();
     }
-    icons[1] = sw.getSwitchIcon();
-    ;
+    icons[3] = sw.getSwitchIcon();    
 
     Vector3d trans = ConduitGeometryUtil.instance.getTranslation(ForgeDirection.UNKNOWN, bundle.getOffset(IRedstoneConduit.class, ForgeDirection.UNKNOWN));
     BoundingBox bb = switchBounds.translate(trans);
