@@ -15,6 +15,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.BlockCoord;
@@ -28,7 +29,17 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     this.cb = cb;
     cons = new HashSet<ForgeDirection>();
     for (IConduit con : cb.getConduits()) {
-      cons.addAll(con.getExternalConnections());
+      if(con instanceof IInsulatedRedstoneConduit) {
+        Set<ForgeDirection> conCons = con.getConduitConnections();
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+          if(!conCons.contains(dir)) {
+            cons.add(dir);
+          }
+        }
+        
+      } else {        
+        cons.addAll(con.getExternalConnections());
+      }
     }
   }
 

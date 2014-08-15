@@ -21,6 +21,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 
@@ -46,11 +47,6 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
   @Override
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
-
-    Block blk = world.getBlock(x, y, z);
-    if(blk != null) {
-      System.out.println("ItemConduitProbe.onItemUse: " + blk.getUnlocalizedName());
-    }
     
     if(player.isSneaking()) {
 
@@ -58,11 +54,14 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
       if(te instanceof IConduitBundle) {
         IConduitBundle cb = (IConduitBundle) te;
         Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
+        boolean hasInsulated = false;
         for (IConduit con : cb.getConduits()) {
           cons.addAll(con.getExternalConnections());
+          if(con instanceof IInsulatedRedstoneConduit) {
+            hasInsulated = true;
+          }
         }
-
-        if(cons.isEmpty()) {
+        if(cons.isEmpty() && !hasInsulated) {
           return false;
         }
         if(cons.size() == 1) {
