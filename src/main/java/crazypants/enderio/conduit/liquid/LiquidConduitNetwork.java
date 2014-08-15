@@ -24,6 +24,8 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
   private long timeAtLastApply;
 
+  private int ticksEmpty = 0;
+
   private int maxFlowsPerTick = 10;
   private int lastFlowIndex = 0;
 
@@ -65,7 +67,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     if(curTime > 0 && curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
       ConduitNetworkTickHandler.instance.addListener(tickHandler);
-      //doTick(curTime);
     }
   }
 
@@ -76,10 +77,22 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
       return;
     }
 
+    if(isEmpty()) {
+      if(!fluidTypeLocked && liquidType != null) {
+        ticksEmpty++;
+        if(ticksEmpty > 40) {
+          setFluidType(null);
+          ticksEmpty = 0;
+        }
+      }
+      return;
+    }
+
+    ticksEmpty = 0;
     long curTime = cons.get(0).getBundle().getEntity().getWorldObj().getTotalWorldTime();
 
     // 1000 water, 6000 lava
-    if(liquidType != null && liquidType.getFluid() != null) {
+    if(liquidType != null && liquidType.getFluid() != null && !isEmpty()) {
       int visc = Math.max(1000, liquidType.getFluid().getViscosity());
       if(curTime % (visc / 500) == 0) {
         long start = System.nanoTime();
@@ -89,9 +102,6 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
           System.out.println("LiquidConduitNetwork.onUpdateEntity: took " + secs + " secs, " + (secs * 1000) + " millis");
         }
       }
-    }
-    if(!fluidTypeLocked && isEmpty()) {
-      setFluidType(null);
     }
   }
 
