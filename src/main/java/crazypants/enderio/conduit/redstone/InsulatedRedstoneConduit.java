@@ -59,18 +59,19 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       }
 
     });
-  }
+  }  
 
   private static List<Block> VANILLA_CONECTABLES = Arrays.asList(Blocks.redstone_lamp, Blocks.redstone_torch, Blocks.redstone_wire, Blocks.redstone_block,
       Blocks.dispenser, Blocks.lever, Blocks.wooden_button, Blocks.stone_button, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate,
-      Blocks.dropper, Blocks.daylight_detector, Blocks.command_block, Blocks.golden_rail);
-  //TODO:1.7  need to map all these
-  //    23, 25, 27, 28, 29, 33, 46, 55, 64, 69, 70, 71, 72, 75, 76, 77, 93, 94,
-  //    96, 107, 123, 124, 131, 143, 147, 148, 149, 150, 151, 152, 154, 157, 158);
+      Blocks.dropper, Blocks.daylight_detector, Blocks.command_block, Blocks.golden_rail, Blocks.trapped_chest);
+  
 
+  private static Set<Class<?>> CONNECTABLE_CLASSES = null;
+  
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
   private Map<ForgeDirection, DyeColor> signalColors = new HashMap<ForgeDirection, DyeColor>();
+  
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -270,11 +271,31 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
     World world = getBundle().getEntity().getWorldObj();
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
-    if(te instanceof IPowerEmitter || te instanceof IRedstoneControl || te instanceof AbstractMachineEntity) {
-      return true;
-    }
+
+    Collection<Class<?>> conectableInterfaces = getConectableInterfaces();
+    for(Class<?> conectable : conectableInterfaces) {
+      if( (te != null && conectable.isAssignableFrom(te.getClass()) ) || (block != null && conectable.isAssignableFrom(block.getClass()))) {
+        return true;
+      }
+    }    
 
     return false;
+  }
+
+  private static Collection<Class<?>> getConectableInterfaces() {
+    if(CONNECTABLE_CLASSES == null) {
+      CONNECTABLE_CLASSES = new HashSet<Class<?>>();
+      CONNECTABLE_CLASSES.add(IPowerEmitter.class);
+      CONNECTABLE_CLASSES.add(IRedstoneControl.class);
+      CONNECTABLE_CLASSES.add(AbstractMachineEntity.class);      
+      try{
+        Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
+        CONNECTABLE_CLASSES.add(conInterface);        
+      } catch(Throwable e) {        
+      }
+           
+    }
+    return CONNECTABLE_CLASSES;
   }
 
   @Override

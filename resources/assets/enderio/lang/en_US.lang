@@ -70,6 +70,7 @@ item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
 item.itemModItemFilter.tooltip.detailed.line2=mod/s
 
 item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
