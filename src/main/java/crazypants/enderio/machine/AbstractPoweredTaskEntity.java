@@ -262,12 +262,21 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getInputs());
     List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
     if(slotDefinition.getNumOutputSlots() > 0) {
+      boolean allFull = true;
       for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
         ItemStack st = inventory[i];
         if(st != null) {
           st = st.copy();
+          if(allFull && st.stackSize < st.getMaxStackSize()) {
+            allFull = false;
+          }
+        } else {
+          allFull = false;
         }
         outputStacks.add(st);
+      }
+      if(allFull) {
+        return false;
       }
     }
 
