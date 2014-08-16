@@ -192,6 +192,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     stickyB.detach();
     gui.removeButton(snapshotB);
     gui.removeButton(clearB);
+    gui.removeButton(showB);
   }
 
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
