@@ -116,14 +116,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  public void setInventorySlotContents(int slot, ItemStack contents) {
-    super.setInventorySlotContents(slot, contents);
-    if(slot == 0) {
-      getAttackera().inventory.setInventorySlotContents(0, contents);
-    }
-  }
-
-  @Override
   public void updateEntity() {
     updateArmSwingProgress();
     hooverXP();
@@ -140,8 +132,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(worldObj.getTotalWorldTime() % 10 != 0) {
       return false;
     }
-
-    //addExperience(1);
 
     if(tanksDirty) {
       PacketHandler.sendToAllAround(new PacketNutrientLevel(this), this);
