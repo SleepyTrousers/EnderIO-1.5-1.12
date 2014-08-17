@@ -7,6 +7,8 @@ import java.util.Map;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import net.minecraft.command.IEntitySelector;
@@ -33,6 +35,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -344,11 +347,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   FakePlayer getAttackera() {
     if(attackera == null) {
-      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null, "KillerJoe"
-          + getLocation()));
+      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null, BlockKillerJoe.USERNAME + ":" + getLocation()));
       attackera.posX = xCoord + 0.5;
       attackera.posY = yCoord + 0.5;
-      attackera.posZ = zCoord + 0.5;
+      attackera.posZ = zCoord + 0.5;      
     }
     return attackera;
   }
