@@ -263,7 +263,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
     //input any BC energy, yes, after output to avoid losing energy if we can
     if(powerHandler != null && powerHandler.getEnergyStored() > 0) {
-      storedEnergy += powerHandler.getEnergyStored();
+      storedEnergy += powerHandler.getEnergyStored();      
       powerHandler.setEnergy(0);
     }
     if(isCreative) {
@@ -652,7 +652,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       int canAccept = (int) Math.min(space, maxInput);
       if(powerHandler == null || canAccept != mjBuf) {
         mjBuf = canAccept;
-        powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxInput, mjBuf, maxOutput), this, Type.STORAGE);
+        powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(maxInput, mjBuf, maxOutput), this, Type.PIPE);
       }
       return powerHandler;
     }
