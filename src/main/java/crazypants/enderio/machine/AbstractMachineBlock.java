@@ -253,28 +253,27 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(x, y, z);
-    switch (heading) {
-    case 0:
-      te.setFacing((short) 2);
-      break;
-    case 1:
-      te.setFacing((short) 5);
-      break;
-    case 2:
-      te.setFacing((short) 3);
-      break;
-    case 3:
-      te.setFacing((short) 4);
-      break;
-    default:
-      break;
-    }
+    AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(x, y, z);    
+    te.setFacing(getFacingForHeading(heading));
     te.readFromItemStack(stack);
     if(world.isRemote) {
       return;
     }
     world.markBlockForUpdate(x, y, z);
+  }
+
+  protected short getFacingForHeading(int heading) {
+    switch (heading) {
+    case 0:
+      return 2;
+    case 1:
+      return 5;
+    case 2:
+      return 3;      
+    case 3:
+    default:
+      return 4;    
+    }
   }
 
   @Override

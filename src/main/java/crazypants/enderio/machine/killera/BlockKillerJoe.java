@@ -128,4 +128,18 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     return false;
   }
   
+  protected short getFacingForHeading(int heading) {
+    switch (heading) {
+    case 0:
+      return 3;
+    case 1:
+      return 4;
+    case 2:
+      return 2;      
+    case 3:
+    default:
+      return 5;    
+    }
+  }
+  
 }
