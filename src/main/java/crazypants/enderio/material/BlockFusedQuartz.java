@@ -154,7 +154,15 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
-  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {    
+    if(side == ForgeDirection.UP) { //stop drips
+      return false;  
+    }
+    return true;    
+  }
+  
+  @Override
+  public boolean canPlaceTorchOnTop(World arg0, int arg1, int arg2, int arg3) {
     return true;
   }
 
