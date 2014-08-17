@@ -290,6 +290,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       FarmersCommune.instance.prepareBlock(this, bc, block, meta);
       block = worldObj.getBlock(bc.x, bc.y, bc.z);
     }
+    
+    if(isOutputFull()) {
+      return false;
+    }
+    
     if(!isOpen(bc) && hasPower()) {
       IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
       if(harvest != null) {
@@ -308,6 +313,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*implements IEnt
       }
     }
     return false;
+  }
+
+  private boolean isOutputFull() {
+    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+      ItemStack curStack = inventory[i];
+      if(curStack == null || curStack.stackSize < curStack.getMaxStackSize()) {
+        return false;
+      }
+    }    
+    return true;
   }
 
   public boolean hasSeed(ItemStack seeds, BlockCoord bc) {
