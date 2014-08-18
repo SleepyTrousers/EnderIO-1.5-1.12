@@ -116,6 +116,9 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
       GL14.glBlendColor(1.0f, 1.0f, 1.0f, 0.5f);
       
       IIcon tex = itemLabel.getIconIndex();
+      if(tex == null) {
+        return;
+      }
       if(itemLabel.getItemSpriteNumber() == 0) {
         RenderUtil.bindBlockTexture();  
       } else {
