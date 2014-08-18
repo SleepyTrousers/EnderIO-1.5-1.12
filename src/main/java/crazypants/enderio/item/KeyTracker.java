@@ -1,4 +1,4 @@
-package crazypants.enderio.item.darksteel;
+package crazypants.enderio.item;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -14,6 +14,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.item.darksteel.DarkSteelController;
+import crazypants.enderio.item.darksteel.PacketGlideState;
+import crazypants.enderio.item.darksteel.SoundDetector;
+import crazypants.enderio.item.darksteel.SoundDetectorUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
 
@@ -34,6 +39,9 @@ public class KeyTracker {
   private KeyBinding nightVisionKey;  
   private boolean isNightVisionActive = false;
   
+  private KeyBinding yetaWrenchMode;  
+  
+  
   public KeyTracker() {
     glideKey = new KeyBinding("Glider Toggle", Keyboard.KEY_G, "Dark Steel Armor");
     ClientRegistry.registerKeyBinding(glideKey);
@@ -41,6 +49,9 @@ public class KeyTracker {
     ClientRegistry.registerKeyBinding(soundDetectorKey);        
     nightVisionKey = new KeyBinding("Night Vision", Keyboard.KEY_P, "Dark Steel Armor");
     ClientRegistry.registerKeyBinding(nightVisionKey);
+    
+    yetaWrenchMode = new KeyBinding("Yeta Wrench Mode", Keyboard.KEY_Y, "Tools");
+    ClientRegistry.registerKeyBinding(yetaWrenchMode);
   }
   
   @SubscribeEvent
@@ -48,11 +59,31 @@ public class KeyTracker {
     handleGlide();
     handleSoundDetector();
     handleNightVision();
+    handleYetaWrench();
+  }
+
+  private void handleYetaWrench() {
+    if(!yetaWrenchMode.isPressed()) {
+      return;
+    }
+    EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+    ItemStack equipped = player.getCurrentEquippedItem();
+    if(equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
+      return;
+    }
+    
+    ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
+    if(curMode == null) {
+      curMode = ConduitDisplayMode.ALL;
+    }
+    ConduitDisplayMode newMode = curMode.next();
+    ConduitDisplayMode.setDisplayMode(equipped, newMode);
+    PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));    
   }
 
   private void handleSoundDetector() {
     if(!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-      SoundDetector.instance.enabled = false;
+      SoundDetector.instance.setEnabled(false);
       return;
     }
     if(soundDetectorKey.getIsKeyPressed()) {      
@@ -64,7 +95,7 @@ public class KeyTracker {
         message = Lang.localize("darksteel.upgrade.sound.disabled");
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
-      SoundDetector.instance.enabled = isSoundDectorActive;
+      SoundDetector.instance.setEnabled(isSoundDectorActive);
     }
     
   }

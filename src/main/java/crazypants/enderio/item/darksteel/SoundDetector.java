@@ -104,6 +104,14 @@ public class SoundDetector {
 
   }
 
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
   private static class SoundSource {
 
     Vector3d pos;
