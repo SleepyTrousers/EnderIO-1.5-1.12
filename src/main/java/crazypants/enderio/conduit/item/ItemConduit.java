@@ -130,20 +130,20 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     }
 
     Map<ForgeDirection, ItemStack> converted = new HashMap<ForgeDirection, ItemStack>();
-    
-    convertToItemUpgrades(filterMeta, converted, inputFilters);    
+
+    convertToItemUpgrades(filterMeta, converted, inputFilters);
     for (Entry<ForgeDirection, ItemStack> entry : converted.entrySet()) {
       setInputFilter(entry.getKey(), null);
       setInputFilterUpgrade(entry.getKey(), entry.getValue());
     }
-        
+
     converted.clear();
     convertToItemUpgrades(filterMeta, converted, outputFilters);
     for (Entry<ForgeDirection, ItemStack> entry : converted.entrySet()) {
       setOutputFilter(entry.getKey(), null);
       setOutputFilterUpgrade(entry.getKey(), entry.getValue());
     }
-    
+
 
   }
 
@@ -236,7 +236,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     inputFilters.put(dir, filter);
     if(network != null) {
       network.routesChanged();
-    }    
+    }
     setClientStateDirty();
   }
 
@@ -432,7 +432,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public void externalConnectionRemoved(ForgeDirection direction) {
-    super.externalConnectionRemoved(direction);
+    externalConnections.remove(direction);
+    connectionsChanged();
     if(network != null) {
       TileEntity te = bundle.getEntity();
       network.inventoryRemoved(this, te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
@@ -523,7 +524,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       //TODO: The MFR thing is a horrible hack. Blocks like the harvester make no slots accessible but will push into a connected
       //conduit. I could just return true for sided inventories but this will lead to confusing connections in some cases.
       //Therefore, bad hack for now.
-      return (slots != null && slots.length != 0) || inv.getClass().getName().startsWith("powercrystals.minefactoryreloaded");      
+      return (slots != null && slots.length != 0) || inv.getClass().getName().startsWith("powercrystals.minefactoryreloaded");
     } else {
       return inv != null;
     }
@@ -720,7 +721,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
     super.readFromNBT(nbtRoot, nbtVersion);
 
     if(nbtRoot.hasKey("metaData")) {
-      metaData = nbtRoot.getShort("metaData");      
+      metaData = nbtRoot.getShort("metaData");
     } else {
       metaData = 0;
     }
@@ -760,7 +761,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
         FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
-        IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);        
+        IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
 
@@ -813,10 +814,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       }
     }
 
-    if(nbtRoot.hasKey("metaData")) {      
+    if(nbtRoot.hasKey("metaData")) {
       updateFromNonUpgradeableVersion();
     }
-    
+
     if(nbtVersion == 0 && !nbtRoot.hasKey("conModes")) {
       //all externals where on default so need to switch them to the old default
       for (ForgeDirection dir : externalConnections) {
