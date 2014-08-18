@@ -70,6 +70,7 @@ item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
 item.itemModItemFilter.tooltip.detailed.line2=mod/s
 
 item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
@@ -253,7 +254,7 @@ tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
 enderio.zombieGenerator.fuelTank=Nutrient Tank
 
 
-tile.blockKillerJoe.name=Caged Killer
+tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and 
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation

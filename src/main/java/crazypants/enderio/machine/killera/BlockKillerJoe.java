@@ -6,8 +6,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fluids.FluidStack;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -29,12 +32,16 @@ import crazypants.util.Util;
  */
 public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
 
+  static final String USERNAME = "KillerJoe";
+  
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketNutrientLevel.class, PacketNutrientLevel.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketExperianceTotal.class, PacketExperianceTotal.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketUseXP.class, PacketUseXP.class, PacketHandler.nextID(), Side.SERVER);
+    
     BlockKillerJoe res = new BlockKillerJoe();
+    MinecraftForge.EVENT_BUS.register(res);
     res.init();
     return res;
   }
@@ -47,6 +54,13 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     return 2000;
+  }
+  
+  @SubscribeEvent
+  public void getKillDisplayName(PlayerEvent.NameFormat nameEvt)  {
+    if(nameEvt.username != null && nameEvt.username.startsWith(USERNAME)) {
+      nameEvt.displayname = getLocalizedName();
+    }
   }
   
   @Override
@@ -112,6 +126,20 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   @Override
   public boolean isOpaqueCube() {
     return false;
+  }
+  
+  protected short getFacingForHeading(int heading) {
+    switch (heading) {
+    case 0:
+      return 3;
+    case 1:
+      return 4;
+    case 2:
+      return 2;      
+    case 3:
+    default:
+      return 5;    
+    }
   }
   
 }

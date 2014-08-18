@@ -45,8 +45,6 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(0, 0));
-    //logic.setEntityName("Zombie");
-    //logic.setEntityName("Skeleton");
     logic.setEntityName(NULL_ENTITY_NAME);
   }
 

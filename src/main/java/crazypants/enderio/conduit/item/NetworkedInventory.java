@@ -38,6 +38,9 @@ public class NetworkedInventory {
 
   //work around for a vanilla chest changing into a double chest without doing unneeded checks all the time 
   boolean recheckInv = false;
+  //Hack for TiC crafting station not working correctly when setting output slot to null
+  boolean ticHack = false;
+
   World world;
   ItemConduitNetwork network;
 
@@ -51,7 +54,9 @@ public class NetworkedInventory {
     world = con.getBundle().getWorld();
 
     TileEntity te = world.getTileEntity(location.x, location.y, location.z);
-    if(te.getClass().getName().contains("cpw.mods.ironchest")) {
+    if(te.getClass().getName().equals("tconstruct.tools.logic.CraftingStationLogic")) {
+      ticHack = true;
+    } else if(te.getClass().getName().contains("cpw.mods.ironchest")) {
       recheckInv = true;
     } else if(te instanceof TileEntityChest) {
       recheckInv = true;
@@ -81,8 +86,8 @@ public class NetworkedInventory {
   boolean isSticky() {
     return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid() && con.getOutputFilter(conDir).isSticky();
   }
-  
-  int getPriority() {    
+
+  int getPriority() {
     return con.getOutputPriority(conDir);
   }
 
@@ -175,17 +180,21 @@ public class NetworkedInventory {
     if(numInserted <= 0) {
       return false;
     }
-
     ItemStack curStack = getInventory().getStackInSlot(slot);
     if(curStack != null) {
-      curStack = curStack.copy();
-      curStack.stackSize -= numInserted;
-      if(curStack.stackSize > 0) {
-        getInventory().setInventorySlotContents(slot, curStack);
+      if(ticHack) {
+        getInventory().decrStackSize(slot, numInserted);
         getInventory().markDirty();
       } else {
-        getInventory().setInventorySlotContents(slot, null);
-        getInventory().markDirty();
+        curStack = curStack.copy();
+        curStack.stackSize -= numInserted;
+        if(curStack.stackSize > 0) {
+          getInventory().setInventorySlotContents(slot, curStack);
+          getInventory().markDirty();          
+        } else {
+          getInventory().setInventorySlotContents(slot, null);
+          getInventory().markDirty();
+        }
       }
     }
     con.itemsExtracted(numInserted, slot);
@@ -337,7 +346,7 @@ public class NetworkedInventory {
       BlockCoord targetConLoc = null;
       if(target != null && target.inv != null && target.inv.con != null) {
         targetConLoc = target.inv.con.getLocation();
-      }      
+      }
       if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
         return target;
       }
@@ -352,7 +361,7 @@ public class NetworkedInventory {
   public ISidedInventory getInventory() {
     return inv;
   }
- 
+
   public int getInventorySide() {
     return inventorySide;
   }
@@ -360,7 +369,7 @@ public class NetworkedInventory {
   public void setInventorySide(int inventorySide) {
     this.inventorySide = inventorySide;
   }
-  
+
   static class Target implements Comparable<Target> {
     NetworkedInventory inv;
     int distance;
@@ -383,7 +392,7 @@ public class NetworkedInventory {
         return 1;
       }
       if(priority != o.priority) {
-        return ItemConduitNetwork.compare(o.priority,priority);
+        return ItemConduitNetwork.compare(o.priority, priority);
       }
       return ItemConduitNetwork.compare(distance, o.distance);
     }
