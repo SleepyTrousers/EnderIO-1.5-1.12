@@ -125,7 +125,7 @@ public class IoConfigRenderer {
     }
 
     world = mc.thePlayer.worldObj;
-    RB.blockAccess = new InnerBA();
+    RB.blockAccess = new InnerBA();    
   }
 
   public void init() {
@@ -400,7 +400,12 @@ public class IoConfigRenderer {
           RB.renderAllFaces = true;
           RB.setRenderAllFaces(true);
           RB.setRenderBounds(0, 0, 0, 1, 1, 1);
-          RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          try {
+            RB.renderBlockByRenderType(block, bc.x, bc.y, bc.z);
+          } catch (Exception e) {
+            //Ignore, things might blow up in rendering due to the modified block access
+            //but this is about as good as we can do
+          }
         }
       }
     }
