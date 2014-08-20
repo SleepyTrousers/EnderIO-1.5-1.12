@@ -90,7 +90,6 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
     classifier = 'javadoc'
 }
-[javadocJar, javadoc]*.enabled = false; // TODO: Remove when javadocs are fixed
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
