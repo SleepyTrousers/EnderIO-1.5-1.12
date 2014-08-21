@@ -1,20 +1,23 @@
 package crazypants.enderio.conduit.item.filter;
 
-import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.conduit.item.FilterRegister;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.util.Lang;
 
 public class ClearFilterRecipe implements IRecipe{
 
+  static {
+    RecipeSorter.register("EnderIO:clearFilter", ClearFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+  }
+  
   private ItemStack output;
   
   @Override
