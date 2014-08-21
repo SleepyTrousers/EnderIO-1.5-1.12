@@ -69,6 +69,8 @@ import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
+import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
+import crazypants.enderio.machine.painter.BlockPaintedGlowstoneRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.power.CapBankRenderer2;
@@ -254,6 +256,9 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedSlab), pir);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedGlowstone), pir);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedCarpet), pir);
+    
+    BlockPaintedGlowstone.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new BlockPaintedGlowstoneRenderer());
     
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());

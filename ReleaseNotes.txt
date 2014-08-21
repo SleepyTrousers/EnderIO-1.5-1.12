@@ -23,6 +23,8 @@ New
 - Powered Magnet
 - Wireless Charger
 - Enchanter
+- Killer Joe
+- Reinforced Obsidian
 
 Changes
 - Removed advanced item conduits and added upgrades to the basic conduits

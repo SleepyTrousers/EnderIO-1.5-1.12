@@ -142,20 +142,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         
         IBlockAccess origBa = rb.blockAccess;
         rb.blockAccess = new FacadeAccessWrapper(origBa);
-        
-//        BlockConduitFacade facb = EnderIO.blockConduitFacade;
-//        facb.setBlockOverride(bundle);
-//        facb.setBlockBounds(0, 0, 0, 1, 1, 1);
-//        rb.setRenderBoundsFromBlock(facb);
-//        rb.renderStandardBlock(facb, x, y, z);
-//        facb.setBlockOverride(null);
-        
-        //rb.renderStandardBlock(facadeId, x, y, z);
-        rb.renderBlockByRenderType(facadeId, x, y, z);
-        
-        
-        rb.blockAccess = origBa;
-        
+        rb.renderBlockByRenderType(facadeId, x, y, z);        
+        rb.blockAccess = origBa;        
       }
 
 
