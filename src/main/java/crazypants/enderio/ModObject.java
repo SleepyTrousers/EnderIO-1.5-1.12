@@ -63,6 +63,7 @@ public enum ModObject {
   
   //Blocks
   blockDarkSteelPressurePlate,
+  blockReinforcedObsidian,
 
   // Painter
   blockPainter,

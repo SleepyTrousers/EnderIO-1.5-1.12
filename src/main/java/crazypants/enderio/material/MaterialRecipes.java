@@ -147,6 +147,9 @@ public class MaterialRecipes {
     } else {
       GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', Blocks.glowstone);
     }
+    
+    ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);
+    GameRegistry.addShapedRecipe(reinfObs , "dbd", "bob", "dbd", 'd', darkSteel, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
 
   }
 
