@@ -600,10 +600,10 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
   }
 
   @Override
-  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {    
     TileEntity conduit = world.getTileEntity(x, y, z);
     if(conduit instanceof IConduitBundle) {
-      ((IConduitBundle) conduit).onNeighborBlockChange(world.getBlock(x, y, z));
+      ((IConduitBundle) conduit).onNeighborBlockChange(world.getBlock(tileX, tileY, tileZ));
     }
   }
 
