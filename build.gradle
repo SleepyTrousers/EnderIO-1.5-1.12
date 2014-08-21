@@ -1,40 +1,32 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
+    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
 }
 
-apply plugin: 'forge' // adds the forge dependency
+apply plugin: 'forge'
+apply plugin: 'maven-publish'
 
-// grab buildNumber
-ext.buildnumber = 0 // this will be referenced as simply project.buildnumber from now on.
-
-if (System.getenv().BUILD_NUMBER)
-    project.buildnumber = System.getenv().BUILD_NUMBER
+ext.buildnumber = 0
+if (System.getenv('BUILD_NUMBER') != null)
+    project.buildnumber = System.getenv('BUILD_NUMBER')
 else
-    logger.lifecycle "SETTING BUILDNUMBER TO 0"
+    logger.lifecycle "No build number detected, setting to 0"
 
-version = "2.0_beta"
-group= "com.enderio"
-archivesBaseName = "enderio" // the name that all artifacts will use as a base. artifacts names follow this pattern: [baseName]-[appendix]-[version]-[classifier].[extension]
+group = "com.enderio"
+archivesBaseName = "EnderIO"
+version = "${minecraft_version}-${mod_version}.${buildnumber}"
+
+if (project.hasProperty('mod_appendix'))
+    version += "_${project.mod_appendix}"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = "${minecraft_version}-${forge_version}"
+    runDir = 'run'
 
-    //assetDir = "run/assets" // the place for ForgeGradle to download the assets. The assets that the launcher gets and stuff
-
-    // replacing stuff in the source
     replace "@VERSION@", project.version
     replaceIn "EnderIO.java"
 }
@@ -44,90 +36,84 @@ configurations {
 }
 
 repositories {
-	mavenCentral()
-	maven {
-        name "Mobius Repo"
-        url "http://mobiusstrip.eu/maven"
-    }
-	maven {
-		name = "chickenbones"
-		url = "http://chickenbones.net/maven/"
-	}
+    mavenCentral()
+    maven { url "http://mobiusstrip.eu/maven" }
+    maven { url = "http://chickenbones.net/maven/" }
 }
 
 dependencies {
     exportedCompile 'cglib:cglib-nodep:3.1'
+    exportedCompile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
 
-    compile "mcp.mobius.waila:Waila:1.5.3_1.7.10"
-    // These will be included automatically
-    //compile "codechicken:NotEnoughItems:1.7.10-1.0.2.31:dev"
-    //compile "codechicken:CodeChickenLib:1.7.10-1.1.1.95:dev"
-    //compile "codechicken:CodeChickenCore:1.7.10-1.0.2.11:dev"
-
-    exportedCompile 'com.mod-buildcraft:buildcraft:6.0.17:api'
+    compile "mcp.mobius.waila:Waila:${waila_version}"
 }
 
-// configure  the source folders
 sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-	    exclude '**/enderio/trigger/**'
-            // exclude 'some exclusion'
-            // include 'some inclusion'
+            exclude '**/enderio/trigger/**'
         }
         resources {
-            srcDir 'resources'            
-            // exclude 'some exclusion'
-            // include 'some inclusion'
+            srcDir 'resources'
         }
     }
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        // ${version}   and    ${mcversion}    are the exact strings being replaced
-        expand 'version':project.version, 'mcversion':project.minecraft.version, 'buildnumber':project.buildnumber
+        include '**/*.info'
+        include '**/*.properties'
+
+        expand 'version': project.version, 'mcversion': project.minecraft.version, 'buildnumber': project.buildnumber
     }
-        
-    // copy everything else, that's not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '**/*.info'
+        exclude '**/*.properties'
     }
-}
-
-// --------------------
-// extra jar section
-// -------------------
-
-// for the benefit of the jars, we will now now add the buildnumber to the jars
-project.version += '.' + project.buildnumber
-
-// add a source jar
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
-    classifier = 'sources'
-}
-
-// because the normal output has been made to be obfuscated
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    classifier = 'dev'
 }
 
 jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
-// make sure all of these happen when we run build
-build.dependsOn sourceJar, deobfJar
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
+    classifier = 'dev'
+}
+
+build.dependsOn sourceJar, deobfJar, javadocJar
+
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourceJar
+            artifact javadocJar
+            artifact deobfJar
+        }
+    }
+
+    repositories {
+        if (project.hasProperty('mavendir')) {
+            maven { url mavendir }
+        }
+    }
+}

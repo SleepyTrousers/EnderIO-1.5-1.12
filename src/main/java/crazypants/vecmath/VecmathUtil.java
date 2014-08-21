@@ -136,8 +136,6 @@ public class VecmathUtil {
    * This function computes the ray that goes from the eye, through the
    * specified pixel.
    * 
-   * @param camera
-   *          the camera.
    * @param x
    *          the x pixel location (x = 0 is the left most pixel)
    * @param y
