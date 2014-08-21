@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -26,6 +27,10 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
     setHardness(50.0F);
     setResistance(2000.0F);
     setStepSound(soundTypePiston);
+    
+    if(!Config.reinforcedObsidianEnabled) {
+      setCreativeTab(null);
+    }
   }
   
   public boolean canEntityDestroy(IBlockAccess world, int x, int y, int z, Entity entity) {
