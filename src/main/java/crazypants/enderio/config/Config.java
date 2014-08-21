@@ -214,7 +214,7 @@ public final class Config {
 
   public static int crafterMjPerCraft = 250;
 
-  public static int capacitorBankMaxIoMJ = 100;
+  public static int capacitorBankMaxIoMJ = 500;
   public static int capacitorBankMaxStorageMJ = 500000;
 
   public static int poweredSpawnerMinDelayTicks = 200;
