@@ -119,6 +119,8 @@ enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
 enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
 enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
 
+tile.blockReinforcedObsidian.name=Reinforced Obsidian
+tile.blockReinforcedObsidian.tooltip.common.line1=Wither Proof
 
 //Quartz / Glass
 tile.blockFusedQuartz.name=Fused Quartz

@@ -36,8 +36,9 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
 public class BlockPaintedGlowstone extends Block implements ITileEntityProvider {
- 
-  
+   
+  public static int renderId = -1;
+
   public static BlockPaintedGlowstone create() {
     BlockPaintedGlowstone result = new BlockPaintedGlowstone();
     result.init();
@@ -207,7 +208,6 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
    */
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-
     if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
       TileEntity te = world.getTileEntity(x, y, z);
 
@@ -223,17 +223,19 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
-
       } 
-
     }
-
     world.removeTileEntity(x, y, z);
   }
 
   @Override
   public int quantityDropped(Random par1Random) {
     return 0; // need to do custom dropping to maintain source metadata
+  }
+
+  @Override
+  public int getRenderType() {    
+    return renderId;
   }
 
   public static final class PainterTemplate extends BasicPainterTemplate {

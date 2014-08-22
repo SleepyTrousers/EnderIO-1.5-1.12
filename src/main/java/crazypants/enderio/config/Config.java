@@ -60,6 +60,8 @@ public final class Config {
   
   public static final double DEFAULT_CONDUIT_SCALE = 0.5;
 
+  public static boolean reinforcedObsidianEnabled = true; 
+  
   public static boolean useAlternateBinderRecipe;
 
   public static boolean useAlternateTesseractModel;
@@ -212,7 +214,7 @@ public final class Config {
 
   public static int crafterMjPerCraft = 250;
 
-  public static int capacitorBankMaxIoMJ = 100;
+  public static int capacitorBankMaxIoMJ = 500;
   public static int capacitorBankMaxStorageMJ = 500000;
 
   public static int poweredSpawnerMinDelayTicks = 200;
@@ -386,6 +388,9 @@ public final class Config {
       useSneakMouseWheelYetaWrench = true;
     }
 
+    reinforcedObsidianEnabled = config.get(sectionItems.name, "reinforcedObsidianEnabled", reinforcedObsidianEnabled,
+        "When set to false reinforced obsidian is not craftable.").getBoolean(reinforcedObsidianEnabled);
+    
     travelAnchorEnabled = config.get(sectionItems.name, "travelAnchorEnabled", travelAnchorEnabled,
         "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
 
