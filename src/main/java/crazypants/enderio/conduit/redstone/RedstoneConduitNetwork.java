@@ -9,7 +9,6 @@ import java.util.Set;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
 
@@ -183,28 +182,18 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     TileEntity te = con.getBundle().getEntity();
 
     World worldObj = te.getWorldObj();
-    worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
+    worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord));
 
-    // Need to notify neighbours neighbours for changes to  signals
-    if(signal != null /*&& signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord*/) {
-      if(worldObj.getBlock(te.xCoord + 1, te.yCoord, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord,  EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord - 1, te.yCoord, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord + 1, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord - 1, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord + 1).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord - 1).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, EnderIO.blockConduitBundle);
-      }
+    // Need to notify neighbours neighbours for changes to string signals
+    if(signal != null && signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord) {
+
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord + 1, te.yCoord, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, worldObj.getBlock(te.xCoord - 1, te.yCoord, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord + 1, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, worldObj.getBlock(te.xCoord, te.yCoord - 1, te.zCoord));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord + 1));
+      worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord - 1));
+
     }
 
   }

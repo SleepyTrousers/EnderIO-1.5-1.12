@@ -303,14 +303,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     if(getConectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
       return 0;
     }
-    return super.isProvidingWeakPower(toDirection);    
-  }
-  
-  
-
-  @Override
-  public int isProvidingStrongPower(ForgeDirection toDirection) {
-    return isProvidingWeakPower(toDirection);
+    return super.isProvidingWeakPower(toDirection);
   }
 
   @Override
