@@ -84,7 +84,7 @@ public class GuiZombieGenerator extends GuiMachineBase {
       RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), gen.fuelTank.getCapacity(), gen.fuelTank.getFluidAmount(), x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
-        txt = gen.tickPerMbFuel + " t/Mb";
+        txt = gen.tickPerBucketOfFuel / 1000 + " t/Mb";
         sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
       }      
