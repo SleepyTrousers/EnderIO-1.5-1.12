@@ -56,10 +56,15 @@ public class FacadeRenderer implements IItemRenderer {
       // Render the facade block
 
       RenderUtil.bindBlockTexture();
-      renderBlocks.renderBlockAsItem(block, PainterUtil.getSourceBlockMetadata(item), 1.0F);
+      if("appeng.block.solids.BlockSkyStone".equals(block.getClass().getName())) {
+        //Yes, this is a horrible hack, but stumped as to why it is rendered invisible if this isn't done.
+        renderBlocks.setOverrideBlockTexture(block.getIcon(0, PainterUtil.getSourceBlockMetadata(item)));
+        renderBlocks.renderBlockAsItem(Blocks.stone, 0, 1.0F);
+      } else {
+        renderBlocks.renderBlockAsItem(block, PainterUtil.getSourceBlockMetadata(item), 1.0F);
+      }
 
       // then the 'overlay' that marks it as a facade
-      // GL11.glDepthFunc(GL11.GL_ALWAYS);
       GL11.glDepthFunc(GL11.GL_LEQUAL);
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDepthMask(false);
@@ -71,7 +76,7 @@ public class FacadeRenderer implements IItemRenderer {
 
       RenderUtil.bindItemTexture();
       renderBlocks.setOverrideBlockTexture(EnderIO.itemConduitFacade.getOverlayIcon());
-      renderBlocks.renderBlockAsItem(block, item.getItemDamage(), 1.0F);
+      renderBlocks.renderBlockAsItem(Blocks.stone, item.getItemDamage(), 1.0F);
 
       GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
 
