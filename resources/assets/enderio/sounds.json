@@ -1,24 +1,24 @@
 {
   "generator.zombie.bubble": {
-    "category": "ambient",
+    "category": "block",
     "sounds": [
       "generator/zombie/bubble"
     ]
   },
   "generator.stirling": {
-    "category": "ambient",
+    "category": "block",
 	"sounds": [
 	  "generator/stirling/burn"
 	]
   },
   "machine.vat": {
-    "category": "ambient",
+    "category": "block",
 	"sounds": [
 	  "machine/vat/gurgle"
 	]
   },
   "machine.sagmill": {
-    "category": "ambient",
+    "category": "block",
 	"sounds": [
 	  "machine/sagmill/tumble"
 	]

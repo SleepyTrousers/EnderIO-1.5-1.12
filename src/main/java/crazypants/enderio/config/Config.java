@@ -237,7 +237,7 @@ public final class Config {
   
   public static boolean machineSoundsEnabled = true;
 
-  public static float machineSoundVolume  = 0.75f;
+  public static float machineSoundVolume  = 1.0f;
 
   public static int killerJoeNutrientUsePerAttackMb = 5;  
   public static double killerJoeAttackHeight = 2;
