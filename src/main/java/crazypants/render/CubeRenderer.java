@@ -1,5 +1,6 @@
 package crazypants.render;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -14,6 +15,14 @@ public final class CubeRenderer {
     }
   }
 
+  public static void render(Block block, int meta) {
+    IIcon[] icons = new IIcon[6];
+    for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      icons[dir.ordinal()] = block.getIcon(dir.ordinal(), meta);
+    }
+    render(BoundingBox.UNIT_CUBE, icons, true);
+  }
+  
   public static void render(BoundingBox bb, IIcon tex) {
     render(bb, tex, null, false);
   }

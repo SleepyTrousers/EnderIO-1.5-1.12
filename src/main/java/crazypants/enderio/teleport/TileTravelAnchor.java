@@ -4,24 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.machine.painter.IPaintableTileEntity;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.util.BlockCoord;
 
-public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable {
+public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
 
   public enum AccessMode {
     PUBLIC,
     PRIVATE,
     PROTECTED
   }
+  
+  private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
+  private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
+  
+  private Block sourceBlock;
+  private int sourceBlockMetadata;
 
   private AccessMode accessMode = AccessMode.PUBLIC;
 
@@ -160,6 +171,26 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   public boolean shouldRenderInPass(int pass) {
     return pass == 1;
   }
+  
+  @Override
+  public Block getSourceBlock() {
+    return sourceBlock;
+  }
+
+  @Override
+  public void setSourceBlock(Block sourceBlock) {
+    this.sourceBlock = sourceBlock;
+  }
+
+  @Override
+  public int getSourceBlockMetadata() {
+    return sourceBlockMetadata;
+  }
+
+  @Override
+  public void setSourceBlockMetadata(int sourceBlockMetadata) {
+    this.sourceBlockMetadata = sourceBlockMetadata;
+  }
 
   @Override
   protected void readCustomNBT(NBTTagCompound root) {
@@ -198,6 +229,10 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       itemLabel = null;
     }
     
+    String sourceBlockStr = root.getString(KEY_SOURCE_BLOCK_ID);
+    sourceBlock = Block.getBlockFromName(sourceBlockStr);
+    sourceBlockMetadata = root.getInteger(KEY_SOURCE_BLOCK_META);
+    
   }
 
   @Override
@@ -229,6 +264,11 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       itemLabel.writeToNBT(labelRoot);
       root.setTag("itemLabel", labelRoot);
     }
+    
+    if(sourceBlock != null) {
+      root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock));
+    }
+    root.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
   }
   
   @Override

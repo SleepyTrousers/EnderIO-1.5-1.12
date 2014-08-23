@@ -309,7 +309,7 @@ tile.blockDarkSteelPressurePlate.name=Dark Pressure Plate
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Only activated by players
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Can be painted in painting machine,
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=invisible when painted with Quite
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=Clear Glass
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=Clear Glass
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
@@ -318,6 +318,7 @@ tile.blockTravelAnchor.tooltip.detailed.line2=Stand on one Anchor, look at
 tile.blockTravelAnchor.tooltip.detailed.line3=another and jump to travel
 tile.blockTravelAnchor.tooltip.detailed.line4=Can also be used with the Staff
 tile.blockTravelAnchor.tooltip.detailed.line5=of Travel
+tile.blockTravelAnchor.tooltip.detailed.line6=Can be painted in the Painting Machine
 
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
@@ -344,8 +345,9 @@ tile.blockPaintedGlowstone.name=Painted Glowstone
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
 tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
 tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
-tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone, Carpets
-tile.blockPainter.tooltip.detailed.line4=Dark Steel Pressure Plates
+tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone, Carpet,
+tile.blockPainter.tooltip.detailed.line5=Dark Steel Pressure Plates,
+tile.blockPainter.tooltip.detailed.line6=Travel Anchors
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench

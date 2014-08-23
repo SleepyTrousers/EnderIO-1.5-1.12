@@ -144,7 +144,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
     @Override
     public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockGlowstone>(new ItemStack(Blocks.glowstone), BlockGlowstone.class);
+      IRecipeInput input = new RecipeInputClass<BlockDarkSteelPressurePlate>(new ItemStack(EnderIO.blockDarkSteelPressurePlate), BlockDarkSteelPressurePlate.class);
       IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 0));
       IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
       return Collections.singletonList(recipe);

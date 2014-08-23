@@ -47,11 +47,13 @@ public class PaintedItemRenderer implements IItemRenderer {
   }
 
   public void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
-    if(item.getItem() == Item.getItemFromBlock(EnderIO.blockPaintedGlowstone)) {
+    if(item.getItem() == Item.getItemFromBlock(EnderIO.blockPaintedGlowstone) || item.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform) ) {
       Block block = PainterUtil.getSourceBlock(item);
-      if(block != null) {
-        RenderUtil.bindBlockTexture();
+      RenderUtil.bindBlockTexture();
+      if(block != null) {        
         renderBlocks.renderBlockAsItem(block, PainterUtil.getSourceBlockMetadata(item), 1.0F);
+      } else {        
+        renderBlocks.renderBlockAsItem(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 1.0F);
       }
     } else {
       Block block = PainterUtil.getSourceBlock(item);
