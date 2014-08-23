@@ -96,7 +96,6 @@ public class BlockFluidEio extends BlockFluidClassic {
         player.getFoodStats().setFoodSaturationLevel(sat + 0.1f);
         player.getEntityData().setLong("eioLastFoodBoost", time);
       }
-      System.out.println(time);
     } else if (this == EnderIO.blockHootch && entity instanceof EntityLivingBase) {
       ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 150, 0, true));
     }
