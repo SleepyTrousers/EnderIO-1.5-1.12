@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -31,6 +32,9 @@ public class BlockPaintedGlowstoneRenderer implements ISimpleBlockRenderingHandl
     }
     TileEntityPaintedBlock te = (TileEntityPaintedBlock) tile;
     Block srcBlk = te.getSourceBlock();
+    if(srcBlk == null) {
+      srcBlk = Blocks.glowstone;
+    }
 
     IBlockAccess origBa = rb.blockAccess;
     rb.blockAccess = new PaintedAccessWrapper(origBa);
