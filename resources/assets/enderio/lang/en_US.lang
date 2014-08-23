@@ -307,6 +307,9 @@ enderio.machine.tooltip.configured=(Configured)
 //Blocks
 tile.blockDarkSteelPressurePlate.name=Dark Pressure Plate
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Only activated by players
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Can be painted in painting machine,
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=invisible when painted with Quite
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=Clear Glass
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
@@ -341,7 +344,8 @@ tile.blockPaintedGlowstone.name=Painted Glowstone
 tile.blockPainter.tooltip.detailed.line1=Used to paint:
 tile.blockPainter.tooltip.detailed.line2=Conduit Facades, Stairs, Fences,
 tile.blockPainter.tooltip.detailed.line3=Gates, Slabs, Cobblestone Walls,
-tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone and Carpets
+tile.blockPainter.tooltip.detailed.line4=Glass Frames, Glowstone, Carpets
+tile.blockPainter.tooltip.detailed.line4=Dark Steel Pressure Plates
 
 //Items
 item.itemYetaWrench.name=Yeta Wrench

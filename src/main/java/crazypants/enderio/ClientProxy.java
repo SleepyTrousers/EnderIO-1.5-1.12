@@ -256,6 +256,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedSlab), pir);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedGlowstone), pir);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedCarpet), pir);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelPressurePlate), pir);
     
     BlockPaintedGlowstone.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new BlockPaintedGlowstoneRenderer());
