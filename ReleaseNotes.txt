@@ -1,5 +1,16 @@
-2.0.0
-- Ported 1.0.6 for MC 1.6.4 to MC 1.7.2
+Version 2.0.1
+
+Changes
+- Dark Steel pressure plates can be painted in the Painting Machine. Quite clear glass can be used to make them invisible.
+- Travel Anchors can be painted in the Painting Machine.
+- Updated RF API (no functional change)
+
+Bugs
+- #918 Painted Glowstone Client Side Crash  bug
+
+
+Version  2.0.0
+- Ported 1.0.6 for MC 1.6.4 to MC 1.7.10
 
 New
 - Dark Steel powered armor
