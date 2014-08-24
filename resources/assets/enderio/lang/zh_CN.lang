@@ -307,6 +307,9 @@ enderio.machine.tooltip.configured=(已配置)
 //Blocks
 tile.blockDarkSteelPressurePlate.name=深色压力板
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=只能被玩家激活
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=能在粉刷机里面粉刷,
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=当使用纯净玻璃粉刷
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=时,深色压力板能隐身
 
 //Travel
 tile.blockTravelAnchor.name=旅行锚
@@ -315,6 +318,7 @@ tile.blockTravelAnchor.tooltip.detailed.line2=站在一个锚上, 看着
 tile.blockTravelAnchor.tooltip.detailed.line3=另外一个,然后跳跃即可传送
 tile.blockTravelAnchor.tooltip.detailed.line4=也可以使用旅行权杖
 tile.blockTravelAnchor.tooltip.detailed.line5=来使用旅行锚
+tile.blockTravelAnchor.tooltip.detailed.line6=能在粉刷机里面粉刷
 
 enderio.blockTravelPlatform.invalidTarget=目标受阻
 enderio.blockTravelPlatform.outOfRange=目标太远
@@ -341,7 +345,9 @@ tile.blockPaintedGlowstone.name=彩绘萤石
 tile.blockPainter.tooltip.detailed.line1=用于粉刷:
 tile.blockPainter.tooltip.detailed.line2=导管框架, 楼梯, 栅栏,
 tile.blockPainter.tooltip.detailed.line3=门, 台阶, 圆石墙,
-tile.blockPainter.tooltip.detailed.line4=玻璃框, 萤石与地毯
+tile.blockPainter.tooltip.detailed.line4=玻璃框, 萤石, 地毯
+tile.blockPainter.tooltip.detailed.line5=深色压力板
+tile.blockPainter.tooltip.detailed.line6=旅行锚
 
 //Items
 item.itemYetaWrench.name=以太扳手
