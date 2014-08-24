@@ -24,6 +24,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.gas.GasConduitNetwork;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
@@ -59,6 +61,8 @@ public class ConduitUtil {
       return new LiquidConduitNetwork();
     } else if(IItemConduit.class.isAssignableFrom(type)) {
       return new ItemConduitNetwork();
+    } else if(IGasConduit.class.isAssignableFrom(type)) {
+      return new GasConduitNetwork();
     }
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
     return null;
@@ -206,14 +210,16 @@ public class ConduitUtil {
     switch (mode) {
     case ALL:
       return true;
-    case FLUID:
-      return conduitType == ILiquidConduit.class;
-    case ITEM:
-      return conduitType == IItemConduit.class;
     case POWER:
       return conduitType == IPowerConduit.class;
     case REDSTONE:
       return conduitType == IRedstoneConduit.class || conduitType == IInsulatedRedstoneConduit.class;
+    case FLUID:
+      return conduitType == ILiquidConduit.class;
+    case ITEM:
+      return conduitType == IItemConduit.class;
+    case GAS:
+      return conduitType == IGasConduit.class;
     default:
       break;
     }

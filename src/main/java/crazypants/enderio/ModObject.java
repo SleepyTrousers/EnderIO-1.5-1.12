@@ -11,7 +11,7 @@ public enum ModObject {
   itemConduitFacade,
   itemRedstoneConduit,
   itemItemConduit,
-  itemMeConduit,
+  itemGasConduit,
   itemBasicFilterUpgrade,
   itemExistingItemFilter,
   itemModItemFilter,
@@ -48,19 +48,19 @@ public enum ModObject {
   blockFarmStation,
   blockTank,
   blockCrafter,
-  blockVacuumChest, 
+  blockVacuumChest,
   blockWirelessCharger,
   blockEnchanter,
-  
+
   blockPoweredSpawner,
   itemBrokenSpawner,
-  
+
   blockKillerJoe,
 
   blockElectricLight,
   blockLightNode,
   blockLight,
-  
+
   //Blocks
   blockDarkSteelPressurePlate,
   blockReinforcedObsidian,
@@ -80,9 +80,9 @@ public enum ModObject {
   itemYetaWrench,
 
   blockTravelAnchor,
-  itemTravelStaff, 
-  itemMagnet, 
-  itemGliderWing, 
+  itemTravelStaff,
+  itemMagnet,
+  itemGliderWing,
   blockEndermanSkull;
 
   public final String unlocalisedName;

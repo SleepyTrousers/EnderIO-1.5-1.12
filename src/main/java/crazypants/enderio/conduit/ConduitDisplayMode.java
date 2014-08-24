@@ -8,8 +8,9 @@ public enum ConduitDisplayMode {
   ALL,
   POWER,
   REDSTONE,
+  FLUID,
   ITEM,
-  FLUID;
+  GAS;
 
   public static ConduitDisplayMode next(ConduitDisplayMode mode) {
     int index = mode.ordinal() + 1;

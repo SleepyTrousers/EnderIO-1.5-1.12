@@ -14,21 +14,21 @@ import crazypants.enderio.Log;
 import crazypants.vecmath.VecmathUtil;
 
 public final class Config {
-  
+
   public static class Section {
     public final String name;
     public final String lang;
-    
+
     public Section(String name, String lang) {
       this.name = name;
       this.lang = lang;
       register();
     }
-    
+
     private void register() {
       sections.add(this);
     }
-    
+
     public String lc() {
       return name.toLowerCase();
     }
@@ -41,7 +41,7 @@ public final class Config {
   }
 
   public static Configuration config;
-  
+
   public static final Section sectionPower = new Section("Power Settings", "power");
   public static final Section sectionRecipe = new Section("Recipe Settings", "recipe");
   public static final Section sectionItems = new Section("Item Enabling", "item");
@@ -57,11 +57,11 @@ public final class Config {
   public static final Section sectionFluid = new Section("Fluid Settings", "fluid");
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
   public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
-  
+
   public static final double DEFAULT_CONDUIT_SCALE = 0.5;
 
-  public static boolean reinforcedObsidianEnabled = true; 
-  
+  public static boolean reinforcedObsidianEnabled = true;
+
   public static boolean useAlternateBinderRecipe;
 
   public static boolean useAlternateTesseractModel;
@@ -101,6 +101,9 @@ public final class Config {
   public static int advancedFluidConduitMaxIoRate = 400;
   public static int fluidConduitExtractRate = 50;
   public static int fluidConduitMaxIoRate = 200;
+
+  public static int gasConduitExtractRate = 100;
+  public static int gasConduitMaxIoRate = 400;
 
   public static boolean updateLightingWhenHidingFacades = false;
 
@@ -161,7 +164,7 @@ public final class Config {
   public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;
   public static float darkSteelAxeEffeciencyBoostWhenPowered = 2;
   public static float darkSteelAxeSpeedPenaltyMultiHarvest = 8;
-  
+
   public static int darkSteelUpgradeVibrantCost = 20;
   public static int darkSteelUpgradePowerOneCost = 10;
   public static int darkSteelUpgradePowerTwoCost = 20;
@@ -171,11 +174,11 @@ public final class Config {
   public static double darkSteelGliderHorizontalSpeed = 0.03;
   public static double darkSteelGliderVerticalSpeed = -0.05;
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
-  
+
   public static int darkSteelSwimCost = 15;
-  
+
   public static int darkSteelNightVisionCost = 15;
-  
+
   public static int darkSteelSoundLocatorCost = 10;
   public static int darkSteelSoundLocatorRange = 40;
   public static int darkSteelSoundLocatorLifespan = 40;
@@ -228,7 +231,7 @@ public final class Config {
   public static int powerSpawnerAddSpawnerCost = 30;
 
   public static double vacuumChestRange = 6;
-  
+
   public static boolean useModMetals = true;
 
   public static int wirelessChargerRange = 24;
@@ -236,18 +239,18 @@ public final class Config {
   public static long nutrientFoodBoostDelay = 400;
 
   public static int enchanterBaseLevelCost = 4;
-  
+
   public static boolean machineSoundsEnabled = true;
 
-  public static float machineSoundVolume  = 1.0f;
+  public static float machineSoundVolume = 1.0f;
 
-  public static int killerJoeNutrientUsePerAttackMb = 5;  
+  public static int killerJoeNutrientUsePerAttackMb = 5;
   public static double killerJoeAttackHeight = 2;
   public static double killerJoeAttackWidth = 2;
   public static double killerJoeAttackLength = 4;
 
   public static void load(FMLPreInitializationEvent event) {
-    
+
     FMLCommonHandler.instance().bus().register(new Config());
     configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.MODID.toLowerCase());
     if(!configDirectory.exists()) {
@@ -258,11 +261,11 @@ public final class Config {
     config = new Configuration(configFile);
     syncConfig();
   }
-  
+
   public static void syncConfig() {
     try {
       Config.processConfig(config);
-    } catch (Exception e) {      
+    } catch (Exception e) {
       Log.error("EnderIO has a problem loading it's configuration");
       e.printStackTrace();
     } finally {
@@ -271,17 +274,18 @@ public final class Config {
       }
     }
   }
-  
+
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {
-    if (event.modID.equals(EnderIO.MODID)) {
+    if(event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig();
     }
   }
 
   public static void processConfig(Configuration config) {
-    useRfAsDefault = config.get(sectionPower.name, "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
+    useRfAsDefault = config
+        .get(sectionPower.name, "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
         .getBoolean(useRfAsDefault);
 
     capacitorBankMaxIoMJ = config.get(sectionPower.name, "capacitorBankMaxIoMJ", capacitorBankMaxIoMJ, "The maximum IO for a single capacitor in MJ/t")
@@ -298,8 +302,8 @@ public final class Config {
 
     numConduitsPerRecipe = config.get(sectionRecipe.name, "numConduitsPerRecipe", numConduitsPerRecipe,
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
-    
-    enchanterBaseLevelCost= config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
+
+    enchanterBaseLevelCost = config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
         "Base level cost added to all recipes in the enchanter.").getInt(enchanterBaseLevelCost);
 
     photovoltaicCellEnabled = config.get(sectionItems.name, "photovoltaicCellEnabled", photovoltaicCellEnabled,
@@ -321,7 +325,7 @@ public final class Config {
 
     wirelessChargerRange = config.get(sectionEfficiency.name, "wirelessChargerRange", wirelessChargerRange,
         "The range of the wireless charger").getInt(wirelessChargerRange);
-    
+
     fluidConduitExtractRate = config.get(sectionEfficiency.name, "fluidConduitExtractRate", fluidConduitExtractRate,
         "Number of millibuckects per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
 
@@ -339,6 +343,12 @@ public final class Config {
 
     enderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
         "Number of millibuckects per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
+
+    gasConduitExtractRate = config.get(sectionEfficiency.name, "gasConduitExtractRate", gasConduitExtractRate,
+        "Amount of gas per tick extracted by gas conduits auto extracting").getInt(gasConduitExtractRate);
+
+    gasConduitMaxIoRate = config.get(sectionEfficiency.name, "gasConduitMaxIoRate", gasConduitMaxIoRate,
+        "Amount of gas per tick that can pass through a single connection to a gas conduit.").getInt(gasConduitMaxIoRate);
 
     useAlternateTesseractModel = config.get(sectionAesthetic.name, "useAlternateTransceiverModel", useAlternateTesseractModel,
         "Use TheKazador's alternative model for the Dimensional Transceiver")
@@ -370,12 +380,13 @@ public final class Config {
     useSneakRightClickYetaWrench = config.get(sectionPersonal.name, "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
         "If true, shift-clicking the YetaWrench on a null or non wrenchable object will change the conduit display mode.")
         .getBoolean(useSneakRightClickYetaWrench);
-    
+
     machineSoundsEnabled = config.get(sectionPersonal.name, "useMachineSounds", machineSoundsEnabled,
         "If true, machines will make sounds.")
         .getBoolean(machineSoundsEnabled);
-    
-    machineSoundVolume= (float)config.get(sectionPersonal.name, "machineSoundVolume", machineSoundVolume,"Volume of machine sounds.").getDouble(machineSoundVolume);
+
+    machineSoundVolume = (float) config.get(sectionPersonal.name, "machineSoundVolume", machineSoundVolume, "Volume of machine sounds.").getDouble(
+        machineSoundVolume);
 
     itemConduitUsePhyscialDistance = config.get(sectionEfficiency.name, "itemConduitUsePhyscialDistance", itemConduitUsePhyscialDistance, "If true, " +
         "'line of sight' distance rather than conduit path distance is used to calculate priorities.")
@@ -390,7 +401,7 @@ public final class Config {
 
     reinforcedObsidianEnabled = config.get(sectionItems.name, "reinforcedObsidianEnabled", reinforcedObsidianEnabled,
         "When set to false reinforced obsidian is not craftable.").getBoolean(reinforcedObsidianEnabled);
-    
+
     travelAnchorEnabled = config.get(sectionItems.name, "travelAnchorEnabled", travelAnchorEnabled,
         "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
 
@@ -482,54 +493,52 @@ public final class Config {
         "Base amount of power used per jump (RF) dark steel boots. The second jump in a 'double jump' uses 2x this etc").getInt(darkSteelBootsJumpPowerCost);
 
     darkSteelFallDistanceCost = config.get(sectionDarkSteel.name, "darkSteelFallDistanceCost", darkSteelFallDistanceCost,
-            "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
+        "Amount of power used (RF) per block height of fall distance damage negated.").getInt(darkSteelFallDistanceCost);
 
     darkSteelSwimCost = config.get(sectionDarkSteel.name, "darkSteelSwimCost", darkSteelSwimCost,
         "Number of levels required for the 'Swim' upgrade.").getInt(darkSteelSwimCost);
-    
+
     darkSteelNightVisionCost = config.get(sectionDarkSteel.name, "darkSteelNightVisionCost", darkSteelNightVisionCost,
         "Number of levels required for the 'Night Vision' upgrade.").getInt(darkSteelNightVisionCost);
-    
-   darkSteelGliderCost = config.get(sectionDarkSteel.name, "darkSteelGliderCost", darkSteelGliderCost,
+
+    darkSteelGliderCost = config.get(sectionDarkSteel.name, "darkSteelGliderCost", darkSteelGliderCost,
         "Number of levels required for the 'Glider' upgrade.").getInt(darkSteelGliderCost);
     darkSteelGliderHorizontalSpeed = config.get(sectionDarkSteel.name, "darkSteelGliderHorizontalSpeed", darkSteelGliderHorizontalSpeed,
         "Horizontal movement speed modifier when gliding.").getDouble(darkSteelGliderHorizontalSpeed);
     darkSteelGliderVerticalSpeed = config.get(sectionDarkSteel.name, "darkSteelGliderVerticalSpeed", darkSteelGliderVerticalSpeed,
         "Rate of altitude loss when gliding.").getDouble(darkSteelGliderVerticalSpeed);
     darkSteelGliderVerticalSpeedSprinting = config.get(sectionDarkSteel.name, "darkSteelGliderVerticalSpeedSprinting", darkSteelGliderVerticalSpeedSprinting,
-        "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);    
-        
+        "Rate of altitude loss when sprinting and gliding.").getDouble(darkSteelGliderVerticalSpeedSprinting);
+
     darkSteelSoundLocatorCost = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorCost", darkSteelSoundLocatorCost,
         "Number of levels required for the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorCost);
     darkSteelSoundLocatorRange = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorRange", darkSteelSoundLocatorRange,
         "Range of the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorRange);
     darkSteelSoundLocatorLifespan = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorLifespan", darkSteelSoundLocatorLifespan,
         "Number of ticks the 'Sound Locator' icons are displayed for.").getInt(darkSteelSoundLocatorLifespan);
-    
-    
+
     darkSteelSwordSkullChance = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
         "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-            darkSteelSwordSkullChance);    
+        darkSteelSwordSkullChance);
     darkSteelSwordSkullLootingModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullLootingModifier", darkSteelSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         darkSteelSwordSkullLootingModifier);
-    
+
     darkSteelSwordWitherSkullChance = (float) config.get(sectionDarkSteel.name, "darkSteelSwordWitherSkullChance", darkSteelSwordWitherSkullChance,
         "The base chance that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        darkSteelSwordWitherSkullChance);    
+        darkSteelSwordWitherSkullChance);
     darkSteelSwordWitherSkullLootingModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSwordWitherSkullLootingModifie",
         darkSteelSwordWitherSkullLootingModifier,
         "The chance per looting level that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-        darkSteelSwordWitherSkullLootingModifier);    
-    
-    
-    vanillaSwordSkullChance  = (float) config.get(sectionDarkSteel.name, "vanillaSwordSkullChance", vanillaSwordSkullChance,
+        darkSteelSwordWitherSkullLootingModifier);
+
+    vanillaSwordSkullChance = (float) config.get(sectionDarkSteel.name, "vanillaSwordSkullChance", vanillaSwordSkullChance,
         "The base chance that a skull will be dropped when using a non dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
-            vanillaSwordSkullChance);    
+        vanillaSwordSkullChance);
     vanillaSwordSkullLootingModifier = (float) config.get(sectionPersonal.name, "vanillaSwordSkullLootingModifier", vanillaSwordSkullLootingModifier,
         "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         vanillaSwordSkullLootingModifier);
-    
+
     darkSteelSwordPowerUsePerHit = config.get(sectionDarkSteel.name, "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
         "The amount of power (RF) used per hit.").getInt(darkSteelSwordPowerUsePerHit);
     darkSteelSwordEnderPearlDropChance = config.get(sectionDarkSteel.name, "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
@@ -555,7 +564,8 @@ public final class Config {
     darkSteelAxePowerUsePerDamagePointMultiHarvest = config.get(sectionDarkSteel.name, "darkSteelPickAxeUsePerDamagePointMultiHarvest",
         darkSteelAxePowerUsePerDamagePointMultiHarvest,
         "Power use (RF) per damage/durability point avoided when shift-harvesting multiple logs").getInt(darkSteelAxePowerUsePerDamagePointMultiHarvest);
-    darkSteelAxeSpeedPenaltyMultiHarvest = (float) config.get(sectionDarkSteel.name, "darkSteelAxeSpeedPenaltyMultiHarvest", darkSteelAxeSpeedPenaltyMultiHarvest,
+    darkSteelAxeSpeedPenaltyMultiHarvest = (float) config.get(sectionDarkSteel.name, "darkSteelAxeSpeedPenaltyMultiHarvest",
+        darkSteelAxeSpeedPenaltyMultiHarvest,
         "How much slower shift-harvesting logs is.").getDouble(darkSteelAxeSpeedPenaltyMultiHarvest);
     darkSteelAxeEffeciencyBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelAxeEffeciencyBoostWhenPowered",
         darkSteelAxeEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelAxeEffeciencyBoostWhenPowered);
@@ -595,10 +605,10 @@ public final class Config {
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
     farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
-    farmAxeDamageOnLeafBreak = config.get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak, 
-	"Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
-    farmToolTakeDamageChance = (float) config.get(sectionFarm.name, "farmToolTakeDamageChance", farmToolTakeDamageChance, 
-	"The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
+    farmAxeDamageOnLeafBreak = config.get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak,
+        "Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
+    farmToolTakeDamageChance = (float) config.get(sectionFarm.name, "farmToolTakeDamageChance", farmToolTakeDamageChance,
+        "The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
 
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
@@ -617,32 +627,34 @@ public final class Config {
         "MJ used per autocrafted recipe").getInt(crafterMjPerCraft);
 
     poweredSpawnerMinDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMinDelayTicks", poweredSpawnerMinDelayTicks,
-        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);    
+        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);
     poweredSpawnerMaxDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks,
-        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);    
-    poweredSpawnerLevelOnePowerPerTick = (float)config.get(sectionSpawner.name, "poweredSpawnerLevelOnePowerPerTick", poweredSpawnerLevelOnePowerPerTick,
+        "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);
+    poweredSpawnerLevelOnePowerPerTick = (float) config.get(sectionSpawner.name, "poweredSpawnerLevelOnePowerPerTick", poweredSpawnerLevelOnePowerPerTick,
         "MJ per tick for a level 1 (non-upgraded) spawner").getDouble(poweredSpawnerLevelOnePowerPerTick);
-    poweredSpawnerLevelTwoPowerPerTick = (float)config.get(sectionSpawner.name, "poweredSpawnerLevelTwoPowerPerTick", poweredSpawnerLevelTwoPowerPerTick,
+    poweredSpawnerLevelTwoPowerPerTick = (float) config.get(sectionSpawner.name, "poweredSpawnerLevelTwoPowerPerTick", poweredSpawnerLevelTwoPowerPerTick,
         "MJ per tick for a level 2 spawner").getDouble(poweredSpawnerLevelTwoPowerPerTick);
-    poweredSpawnerLevelThreePowerPerTick = (float)config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTick", poweredSpawnerLevelThreePowerPerTick,
+    poweredSpawnerLevelThreePowerPerTick = (float) config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTick",
+        poweredSpawnerLevelThreePowerPerTick,
         "MJ per tick for a level 3 spawner").getDouble(poweredSpawnerLevelThreePowerPerTick);
     poweredSpawnerMaxPlayerDistance = config.get(sectionSpawner.name, "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
-    brokenSpawnerDropChance = (float)config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
+    brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
         "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
-    
+
     useModMetals = config.get(sectionRecipe.name, "useModMetals", useModMetals,
         "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);
-    
-    nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay, "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int)nutrientFoodBoostDelay);
-    
+
+    nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
+        "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
+
     killerJoeNutrientUsePerAttackMb = config.get(sectionKiller.name, "killerJoeNutrientUsePerAttackMb", killerJoeNutrientUsePerAttackMb,
         "The number of millibuckets of nutrient fluid used per attack.").getInt(killerJoeNutrientUsePerAttackMb);
-    
+
     killerJoeAttackHeight = config.get(sectionKiller.name, "killerJoeAttackHeight", killerJoeAttackHeight,
         "The reach of attacks above and bellow Joe.").getDouble(killerJoeAttackHeight);
     killerJoeAttackWidth = config.get(sectionKiller.name, "killerJoeAttackWidth", killerJoeAttackWidth,

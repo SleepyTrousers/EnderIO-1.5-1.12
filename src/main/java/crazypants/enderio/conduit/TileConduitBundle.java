@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,10 +19,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.geom.CollidableCache;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitConnectorType;
@@ -755,6 +759,48 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       return ic.insertItem(from, item);
     }
     return item;
+  }
+
+  // ---- Mekanism Gas Tubes
+
+  @Optional.Method(modid = "Mekanism")
+  @Override
+  public int receiveGas(ForgeDirection side, GasStack stack) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.receiveGas(side, stack);
+    }
+    return 0;
+  }
+
+  @Optional.Method(modid = "Mekanism")
+  @Override
+  public GasStack drawGas(ForgeDirection side, int amount) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.drawGas(side, amount);
+    }
+    return null;
+  }
+
+  @Optional.Method(modid = "Mekanism")
+  @Override
+  public boolean canReceiveGas(ForgeDirection side, Gas type) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.canReceiveGas(side, type);
+    }
+    return false;
+  }
+
+  @Optional.Method(modid = "Mekanism")
+  @Override
+  public boolean canDrawGas(ForgeDirection side, Gas type) {
+    IGasConduit gc = getConduit(IGasConduit.class);
+    if(gc != null) {
+      return gc.canDrawGas(side, type);
+    }
+    return false;
   }
 
 }

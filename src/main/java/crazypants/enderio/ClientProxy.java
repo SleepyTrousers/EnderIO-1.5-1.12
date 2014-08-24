@@ -19,6 +19,8 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.facade.FacadeRenderer;
+import crazypants.enderio.conduit.gas.GasConduit;
+import crazypants.enderio.conduit.gas.GasConduitRenderer;
 import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitRenderer;
@@ -71,7 +73,6 @@ import crazypants.enderio.machine.light.ElectricLightRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGateRenderer;
 import crazypants.enderio.machine.painter.BlockPaintedGlowstone;
-import crazypants.enderio.machine.painter.BlockPaintedGlowstoneRenderer;
 import crazypants.enderio.machine.painter.PaintedBlockRenderer;
 import crazypants.enderio.machine.painter.PaintedItemRenderer;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
@@ -118,6 +119,7 @@ public class ClientProxy extends CommonProxy {
     AdvancedLiquidConduit.initIcons();
     EnderLiquidConduit.initIcons();
     ItemConduit.initIcons();
+    GasConduit.initIcons();
   }
 
   private List<ConduitRenderer> conduitRenderers = new ArrayList<ConduitRenderer>();
@@ -125,7 +127,7 @@ public class ClientProxy extends CommonProxy {
   private DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
   private ConduitBundleRenderer cbr;
-  
+
   private boolean checkedNei = false;
   private boolean neiInstalled = false;
 
@@ -133,16 +135,16 @@ public class ClientProxy extends CommonProxy {
   public World getClientWorld() {
     return FMLClientHandler.instance().getClient().theWorld;
   }
-  
+
   @Override
-  public boolean isNeiInstalled() {    
+  public boolean isNeiInstalled() {
     if(checkedNei) {
       return neiInstalled;
     }
-    try{
+    try {
       Class.forName("crazypants.enderio.nei.EnchanterRecipeHandler");
       neiInstalled = true;
-    } catch(Exception e) {
+    } catch (Exception e) {
       neiInstalled = false;
     }
     checkedNei = true;
@@ -176,44 +178,43 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockStirlingGenerator), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrusher), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAlloySmelter), machRen);   
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAlloySmelter), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPowerMonitor), machRen);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);    
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
-    
+
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
-    
+
     EnchanterModelRenderer emr = new EnchanterModelRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), emr);
-    
 
     BlockFusedQuartz.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FusedQuartzRenderer());
 
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
-        
-//    BlockWirelessCharger.renderId = RenderingRegistry.getNextAvailableRenderId();
-//    RenderingRegistry.registerBlockHandler(new WirelessChargerRenderer());
+
+    //    BlockWirelessCharger.renderId = RenderingRegistry.getNextAvailableRenderId();
+    //    RenderingRegistry.registerBlockHandler(new WirelessChargerRenderer());
 
     if(Config.useCombustionGenModel) {
       CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);
       MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCombustionGenerator), cgmr);
-    } else {      
+    } else {
       BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
       CombustionGeneratorRenderer cr = new CombustionGeneratorRenderer();
       RenderingRegistry.registerBlockHandler(cr);
       if(!Config.combustionGeneratorUseOpaqueModel) {
         ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cr);
-      }      
+      }
     }
-    
+
     ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), zgr);
-    
+
     KillerJoeRenderer kjr = new KillerJoeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockKillerJoe), kjr);
@@ -246,6 +247,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemGasConduit, itemConRenderer);
 
     BlockPaintedFenceGateRenderer bcfgr = new BlockPaintedFenceGateRenderer();
     BlockPaintedFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
@@ -261,14 +263,13 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPaintedCarpet), pir);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockDarkSteelPressurePlate), pir);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTravelPlatform), pir);
-    
+
     BlockPaintedGlowstone.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockPaintedGlowstone.renderId, Blocks.glowstone));
-    
+
     BlockTravelAnchor.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new PaintedBlockRenderer(BlockTravelAnchor.renderId, EnderIO.blockTravelPlatform));
-    
-    
+
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemMachinePart, new MachinePartRenderer());
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemConduitFacade, new FacadeRenderer());
 
@@ -278,9 +279,9 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileConduitBundle.class, cbr);
 
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
-    
+
     BlockEndermanSkull.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new EndermanSkullRenderer());    
+    RenderingRegistry.registerBlockHandler(new EndermanSkullRenderer());
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
@@ -289,6 +290,7 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new InsulatedRedstoneConduitRenderer());
     conduitRenderers.add(new EnderLiquidConduitRenderer());
     conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
+    conduitRenderers.add(new GasConduitRenderer());
 
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
@@ -322,14 +324,12 @@ public class ClientProxy extends CommonProxy {
     //Ensure it is loaded and registered
     KeyTracker.instance.isGlideActive();
 
-    
     RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
-    
-    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);   
-    FMLCommonHandler.instance().bus().register(SoundDetector.instance);
-    
-  }
 
+    MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
+    FMLCommonHandler.instance().bus().register(SoundDetector.instance);
+
+  }
 
   @Override
   public ConduitRenderer getRendererForConduit(IConduit conduit) {

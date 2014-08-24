@@ -1,6 +1,8 @@
 package crazypants.enderio;
 
-import static crazypants.enderio.EnderIO.*;
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.EnderIO.MOD_NAME;
+import static crazypants.enderio.EnderIO.VERSION;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -30,6 +32,7 @@ import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
 import crazypants.enderio.conduit.facade.ItemConduitFacade;
+import crazypants.enderio.conduit.gas.ItemGasConduit;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
@@ -165,6 +168,7 @@ public class EnderIO {
   public static ItemPowerConduit itemPowerConduit;
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
+  public static ItemGasConduit itemGasConduit;
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
   public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemModItemFilter itemModItemFilter;
@@ -188,11 +192,11 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
-  
+
   public static BlockKillerJoe blockKillerJoe;
 
   public static BlockEnchanter blockEnchanter;
-  
+
   public static BlockElectricLight blockElectricLight;
   public static BlockLightNode blockLightNode;
 
@@ -282,9 +286,9 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
-    
+
     blockEnchanter = BlockEnchanter.create();
-    
+
     blockKillerJoe = BlockKillerJoe.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
@@ -304,6 +308,7 @@ public class EnderIO {
     itemPowerConduit = ItemPowerConduit.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
+    itemGasConduit = ItemGasConduit.create();
 
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
@@ -363,7 +368,7 @@ public class EnderIO {
     blockDarkIronBars = BlockDarkIronBars.create();
 
     itemGliderWing = ItemGliderWing.create();
-    
+
     itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
     itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
     itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
@@ -374,14 +379,13 @@ public class EnderIO {
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
     blockEndermanSkull = BlockEndermanSkull.create();
-    
+
     MaterialRecipes.registerOresInDictionary();
-    
-    
-    int entityID = EntityRegistry.findGlobalUniqueEntityId();    
+
+    int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
-    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);        
-    
+    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
+
   }
 
   @EventHandler
@@ -397,7 +401,7 @@ public class EnderIO {
 
     //Register Custom Dungeon Loot here
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));   
+        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
 
     ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 20));
