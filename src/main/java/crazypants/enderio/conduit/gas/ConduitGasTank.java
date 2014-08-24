@@ -56,11 +56,11 @@ public class ConduitGasTank extends GasTank {
 
   @Override
   public int receive(GasStack resource, boolean doReceive) {
-    if(resource == null || resource.getGas().getID() <= 0) {
+    if(resource == null || resource.getGas().getID() < 0) {
       return 0;
     }
 
-    if(stored == null || stored.getGas().getID() <= 0) {
+    if(stored == null || stored.getGas().getID() < 0) {
       if(resource.amount <= capacity) {
         if(doReceive) {
           setGas(resource.copy());
@@ -96,7 +96,7 @@ public class ConduitGasTank extends GasTank {
 
   @Override
   public GasStack draw(int maxDrain, boolean doDraw) {
-    if(stored == null || stored.getGas().getID() <= 0) {
+    if(stored == null || stored.getGas().getID() < 0) {
       return null;
     }
     if(stored.amount <= 0) {

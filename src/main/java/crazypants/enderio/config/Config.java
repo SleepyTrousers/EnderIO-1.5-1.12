@@ -102,8 +102,8 @@ public final class Config {
   public static int fluidConduitExtractRate = 50;
   public static int fluidConduitMaxIoRate = 200;
 
-  public static int gasConduitExtractRate = 100;
-  public static int gasConduitMaxIoRate = 400;
+  public static int gasConduitExtractRate = 200;
+  public static int gasConduitMaxIoRate = 800;
 
   public static boolean updateLightingWhenHidingFacades = false;
 

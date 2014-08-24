@@ -174,9 +174,9 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
       return 0;
     }
     resource.amount = Math.min(resource.amount, GasConduit.MAX_IO_PER_TICK);
-    boolean gasWasValid = !tank.containsValidGas();
+    boolean gasWasValid = tank.containsValidGas();
     int res = tank.receive(resource, doFill);
-    if(doFill && res > 0 && !gasWasValid) {
+    if(doFill && res > 0 && gasWasValid) {
       int vol = tank.getStored();
       setGasType(resource);
       tank.setAmount(vol);
