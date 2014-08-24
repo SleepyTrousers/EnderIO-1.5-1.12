@@ -6,7 +6,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
@@ -53,11 +52,8 @@ public class ConduitRecipes {
         Blocks.lever);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#',
         redstoneAlloy);
-
-    if(Loader.isModLoaded("Mekanism")) {
-      GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', conduitBinder, '#',
-          electricalSteel, 'g', fusedGlass);
-    }
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', conduitBinder, '#',
+        electricalSteel, 'g', fusedGlass);
 
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);

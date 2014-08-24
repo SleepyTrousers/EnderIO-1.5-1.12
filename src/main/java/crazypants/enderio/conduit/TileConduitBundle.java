@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -763,7 +762,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   // ---- Mekanism Gas Tubes
 
-  @Optional.Method(modid = "Mekanism")
   @Override
   public int receiveGas(ForgeDirection side, GasStack stack) {
     IGasConduit gc = getConduit(IGasConduit.class);
@@ -773,7 +771,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return 0;
   }
 
-  @Optional.Method(modid = "Mekanism")
   @Override
   public GasStack drawGas(ForgeDirection side, int amount) {
     IGasConduit gc = getConduit(IGasConduit.class);
@@ -783,7 +780,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return null;
   }
 
-  @Optional.Method(modid = "Mekanism")
   @Override
   public boolean canReceiveGas(ForgeDirection side, Gas type) {
     IGasConduit gc = getConduit(IGasConduit.class);
@@ -793,7 +789,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return false;
   }
 
-  @Optional.Method(modid = "Mekanism")
   @Override
   public boolean canDrawGas(ForgeDirection side, Gas type) {
     IGasConduit gc = getConduit(IGasConduit.class);

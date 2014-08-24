@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import cofh.api.transport.IItemDuct;
-import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.geom.CollidableComponent;
@@ -18,7 +17,6 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
-@Optional.Interface(iface = "mekanism.api.gas.IGasHandler", modid = "Mekanism")
 public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler {
 
   TileEntity getEntity();
