@@ -2,16 +2,15 @@ package crazypants.enderio.block;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCarpet;
-import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -32,11 +31,9 @@ import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-import crazypants.enderio.machine.painter.BlockPaintedGlowstone.PainterTemplate;
 import crazypants.util.Util;
 
 public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements IResourceTooltipProvider, ITileEntityProvider {
@@ -80,6 +77,29 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       }
     }
     return super.getIcon(world, x, y, z, blockSide);
+  }
+  
+  @Override
+  public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tepb = (TileEntityPaintedBlock) te;
+      ItemStack stack = new ItemStack(this);
+      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+
+      float f = 0.7F;
+      double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+      double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+      double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+      EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, stack);
+      entityitem.delayBeforeCanPickup = 10;
+      world.spawnEntityInWorld(entityitem);
+    }
+  }
+  
+  @Override
+  public int quantityDropped(int meta, int fortune, Random random) {
+    return 0; // for custom drops
   }
 
   @Override
