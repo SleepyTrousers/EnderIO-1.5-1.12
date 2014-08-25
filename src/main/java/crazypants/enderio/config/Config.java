@@ -139,8 +139,8 @@ public final class Config {
   public static int darkSteelWalkPowerCost = darkSteelPowerStorageLevelTwo / 3000;
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = false;
-  public static int darkSteelBootsJumpPowerCost = 250;
-  public static int darkSteelFallDistanceCost = 100;
+  public static int darkSteelBootsJumpPowerCost = 150;
+  public static int darkSteelFallDistanceCost = 75;
 
   public static float darkSteelSwordWitherSkullChance = 0.05f;
   public static float darkSteelSwordWitherSkullLootingModifier = 0.167f / 3f; //at looting 3, have a 1 in 6 chance of getting a skull
