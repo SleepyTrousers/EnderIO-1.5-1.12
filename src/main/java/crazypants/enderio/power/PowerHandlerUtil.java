@@ -113,17 +113,17 @@ public class PowerHandlerUtil {
   }
 
   public static int recieveRedstoneFlux(ForgeDirection from, PowerHandler powerHandler, int maxReceive, boolean simulate, boolean tickPH) {
-    int canRecieve = (int) getMaxEnergyRecievedMj(powerHandler, maxReceive / 10, from);
+    double canRecieve = getMaxEnergyRecievedMj(powerHandler, maxReceive / 10d, from);
     if(!simulate) {
       if(tickPH) {
         doBuildCraftEnergyTick(powerHandler, from);
       }
       powerHandler.setEnergy(powerHandler.getEnergyStored() + canRecieve);
     }
-    return canRecieve * 10;
+    return (int)(canRecieve * 10);
   }
 
-  public static float getMaxEnergyRecievedMj(PowerHandler ph, float max, ForgeDirection from) {
+  public static double getMaxEnergyRecievedMj(PowerHandler ph, double max, ForgeDirection from) {
     if(ph == null) {
       return 0;
     }
@@ -133,7 +133,7 @@ public class PowerHandlerUtil {
     if(canRecieve <= ph.getMinEnergyReceived()) {
       return 0;
     }
-    return (float) canRecieve;
+    return canRecieve;
   }
 
   public static void doBuildCraftEnergyTick(PowerHandler ph, ForgeDirection from) {
