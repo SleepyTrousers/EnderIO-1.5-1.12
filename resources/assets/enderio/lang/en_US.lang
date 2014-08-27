@@ -82,7 +82,6 @@ enderio.itemMeConduit.name=ME Conduit
 //Materials
 enderio.itemMaterial.name=Materials
 enderio.silicon.name=Silicon
-enderio.darkSteel.name=Dark Steel
 enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
@@ -140,7 +139,18 @@ enderio.phasedGold.name=Vibrant Alloy
 enderio.redstoneAlloy.name=Redstone Alloy
 enderio.conductiveIron.name=Conductive Iron
 enderio.phasedIron.name=Pulsating Iron
-enderio.vibrantNugget.name=Vibrant Nugget
+enderio.vibrantNugget.name=Vibrant Alloy Nugget
+enderio.darkSteel.name=Dark Steel
+
+tile.blockIngotStorage.name=Ingot Storage
+tile.enderio.electricalSteel.name=Electrical Steel Block
+tile.enderio.energeticAlloy.name=Energetic Alloy Block
+tile.enderio.phasedGold.name=Vibrant Alloy Block
+tile.enderio.redstoneAlloy.name=Redstone Alloy Block
+tile.enderio.conductiveIron.name=Conductive Iron Block
+tile.enderio.phasedIron.name=Pulsating Iron Block
+tile.enderio.vibrantNugget.name=Vibrant Nugget Block
+tile.enderio.darkSteel.name=Dark Steel Block
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder

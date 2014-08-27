@@ -2,6 +2,8 @@ package crazypants.enderio.material;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -28,14 +30,12 @@ public class MaterialRecipes {
 
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
 
-    OreDictionary.registerOre("ingotConductiveIron", new ItemStack(EnderIO.itemAlloy, 1, Alloy.CONDUCTIVE_IRON.ordinal()));
-    OreDictionary.registerOre("ingotElectricalSteel", new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()));
-    OreDictionary.registerOre("ingotEnergeticAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal()));
-    OreDictionary.registerOre("ingotRedstoneAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()));
-    OreDictionary.registerOre("ingotRedAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()));
-    OreDictionary.registerOre("ingotVibrantAlloy", new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()));
-    OreDictionary.registerOre("ingotPulsatingIron", new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()));
-    OreDictionary.registerOre("ingotDarkSteel", new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()));
+    for (Alloy alloy : Alloy.values()) {
+      OreDictionary.registerOre(alloy.oredictName, new ItemStack(EnderIO.itemAlloy, 1, alloy.ordinal()));
+    }
+    
+    OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
+    OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
 
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
@@ -46,6 +46,7 @@ public class MaterialRecipes {
 
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
+    OreDictionary.registerOre("blockGlass", pureGlass);
     OreDictionary.registerOre("glassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
 
     //Skulls
@@ -152,7 +153,10 @@ public class MaterialRecipes {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);
       GameRegistry.addShapedRecipe(reinfObs , "dbd", "bob", "dbd", 'd', darkSteel, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
     }
-
+    
+    for (Alloy alloy : Alloy.values()) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictName));
+    }
   }
 
   public static void addOreDictionaryRecipes() {

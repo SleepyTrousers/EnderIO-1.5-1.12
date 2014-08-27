@@ -98,6 +98,7 @@ import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
+import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
@@ -136,6 +137,7 @@ public class EnderIO {
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
+  public static BlockIngotStorage blockIngotStorage;
   public static BlockDarkIronBars blockDarkIronBars;
 
   // Enderface
@@ -359,6 +361,8 @@ public class EnderIO {
     itemConduitProbe = ItemConduitProbe.create();
 
     itemMagnet = ItemMagnet.create();
+    
+    blockIngotStorage = BlockIngotStorage.create();
 
     blockDarkIronBars = BlockDarkIronBars.create();
 
