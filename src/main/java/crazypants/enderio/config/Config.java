@@ -78,7 +78,7 @@ public final class Config {
 
   public static double transceiverBucketTransmissionCost = 1;
 
-  public static int transceiverMaxIO = 256;
+  public static int transceiverMaxIO = 2048;
 
   public static File configDirectory;
 

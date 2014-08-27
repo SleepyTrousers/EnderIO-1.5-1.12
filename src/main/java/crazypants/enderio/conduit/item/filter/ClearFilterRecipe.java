@@ -35,6 +35,7 @@ public class ClearFilterRecipe implements IRecipe{
     
     if (count == 1 && FilterRegister.isFilterSet(input)) {
       ItemStack out = input.copy();
+      out.stackSize = 1;
       out.stackTagCompound = null;
       this.output = out;
     } else {
