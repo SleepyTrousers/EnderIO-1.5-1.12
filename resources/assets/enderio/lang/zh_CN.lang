@@ -82,7 +82,6 @@ enderio.itemMeConduit.name=ME导管
 //Materials
 enderio.itemMaterial.name=材料
 enderio.silicon.name=硅
-enderio.darkSteel.name=玄铁钢
 enderio.conduitBinder.name=管道箍
 enderio.binderComposite.name=复合管道箍
 enderio.phasedIronNugget.name=脉冲铁合金粒
@@ -136,11 +135,22 @@ enderio.itemPowderIngot=粉和粒
 enderio.itemAlloy.name=合金
 enderio.electricalSteel.name=磁钢
 enderio.energeticAlloy.name=充能合金
-enderio.phasedGold.name=脉冲金合金
+enderio.phasedGold.name=脉冲合金
 enderio.redstoneAlloy.name=红石合金
-enderio.conductiveIron.name=铁导体
+enderio.conductiveIron.name=导电铁
 enderio.phasedIron.name=脉冲铁合金
-enderio.vibrantNugget.name=脉冲金合金粒
+enderio.vibrantNugget.name=脉冲合金粒
+enderio.darkSteel.name=玄铁钢
+
+tile.blockIngotStorage.name=金属块
+tile.enderio.electricalSteel.name=磁钢块
+tile.enderio.energeticAlloy.name=充能合金块
+tile.enderio.phasedGold.name=脉冲合金块
+tile.enderio.redstoneAlloy.name=红石合金块
+tile.enderio.conductiveIron.name=导电铁块
+tile.enderio.phasedIron.name=脉冲铁合金块
+tile.enderio.vibrantNugget.name=脉冲合金粒块
+tile.enderio.darkSteel.name=玄铁钢块
 
 //Powder / Ingot
 enderio.powderCoal.name=煤粉
