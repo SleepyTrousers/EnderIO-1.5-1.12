@@ -4,7 +4,7 @@
 enderio.power.mj=MJ
 enderio.power.rf=RF
 enderio.power.tick=/тик
-enderio.power.maxOutput=Макс. вход
+enderio.power.maxOutput=Макс. выход
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Вход/выход Края
@@ -53,27 +53,40 @@ enderio.itemItemConduit.name=Предметная труба
 enderio.filterUpgradeBasic.name=Основной предметный фильтр
 enderio.filterUpgradeAdvanced.name=Продвинутый предметный фильтр
 enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
+
+
 enderio.itemConduitFilterUpgrade.configured=Настроенный
+enderio.itemConduitFilterUpgrade.clearConfigMethod=Положите в сетку создания, чтобы очистить
+enderio.itemConduitFilterUpgrade.clearConfigWarning=Это очистит все сохранённые настройки фильтра!
 
 item.itemExistingItemFilter.name=Существующий предметный фильтр
-item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает только предметы
+item.itemExistingItemFilter.tooltip.basic.line1=Улучшение для предметных труб
+item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает предметы только
 item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
 
+item.itemModItemFilter.name=Фильтр по предметам модификаций
+item.itemModItemFilter.tooltip.basic.line1=Улучшение для предметных труб
+item.itemModItemFilter.tooltip.detailed.line1=Выбирает предметы только для определённой(-ых)
+item.itemModItemFilter.tooltip.detailed.line2=модификации/модификаций
+
 item.itemExtractSpeedUpgrade.name=Улучшение скорости для предметной трубы
+item.itemExtractSpeedUpgrade.tooltip.basic.line1=Улучшение для предметных труб
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Увеличивает скорость на 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=предметов за извлечение
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Макс. улучшений - 15
+
+
 
 enderio.itemMeConduit.name=МЭ труба
 
 //Materials
 enderio.itemMaterial.name=Материалы
 enderio.silicon.name=Кремний
-enderio.darkSteel.name=Тёмная сталь
 enderio.conduitBinder.name=Связующий элемент труб
 enderio.binderComposite.name=Составной связующий элемент
 enderio.phasedIronNugget.name=Пульсирующий железный самородок
 tile.blockDarkIronBars.name=Решётка из тёмного железа
+tile.blockEndermanSkull.name=Череп странника Края
 enderio.blastResistant=Взрывоустойчивая
 enderio.lightEmitter=Излучает свет
 
@@ -105,6 +118,8 @@ enderio.darkGrindingBall.tooltip.detailed.line2=Основной вывод
 enderio.darkGrindingBall.tooltip.detailed.line3=Бонусный вывод
 enderio.darkGrindingBall.tooltip.detailed.line4=Снижение мощности
 
+tile.blockReinforcedObsidian.name=Укреплённый обсидиан
+tile.blockReinforcedObsidian.tooltip.common.line1=Защищён от иссушителей
 
 //Quartz / Glass
 tile.blockFusedQuartz.name=Расплавленный кварц
@@ -124,7 +139,18 @@ enderio.phasedGold.name=Вибрирующий сплав
 enderio.redstoneAlloy.name=Сплав из красного камня
 enderio.conductiveIron.name=Проводящее железо
 enderio.phasedIron.name=Пульсирующее железо
-enderio.vibrantNugget.name=Вибрирующий самородок
+enderio.vibrantNugget.name=Самородок вибрирующего сплава
+enderio.darkSteel.name=Тёмная сталь
+
+tile.blockIngotStorage.name=Хранилище слитков
+tile.enderio.electricalSteel.name=Блок наэлектризованной стали
+tile.enderio.energeticAlloy.name=Блок энергетического сплава
+tile.enderio.phasedGold.name=Блок вибрирующего сплава
+tile.enderio.redstoneAlloy.name=Блок сплава из красного камня
+tile.enderio.conductiveIron.name=Блок проводящего железа
+tile.enderio.phasedIron.name=Блок пульсирующего железа
+tile.enderio.vibrantNugget.name=Блок самородка вибрирующего сплава
+tile.enderio.darkSteel.name=Блок тёмной стали
 
 //Powder / Ingot
 enderio.powderCoal.name=Угольный порошок
@@ -143,6 +169,7 @@ enderio.enderCapacitor.name=Восьмислойный конденсатор
 enderio.machine.tooltip.upgrade=Улучшение механизма
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Увеличивает хранилище энергии и
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=скорость / радиус механизмов
+enderio.machine.tooltip.clearConfig=Это очистит всю хранящуюся информацию!
 
 //Machines
 tile.blockStirlingGenerator.name=Генератор Стирлинга
@@ -238,6 +265,14 @@ tile.blockZombieGenerator.tooltip.detailed.line1=Потребляет питат
 tile.blockZombieGenerator.tooltip.detailed.line2=для производства энергии
 enderio.zombieGenerator.fuelTank=Питательный резервуар
 
+
+tile.blockKillerJoe.name=Киллер Джо
+tile.blockKillerJoe.tooltip.detailed.line1=Атакует ближайших существ, если
+tile.blockKillerJoe.tooltip.detailed.line2=снабжён мечом и
+tile.blockKillerJoe.tooltip.detailed.line3=питательным дистиллятом
+enderio.killerJoe.fuelTank=Питательный резервуар
+enderio.killerJoe.giveXp.tooltip=Использует опыт
+
 tile.blockFarmStation.name=Фермерская станция
 tile.blockFarmStation.tooltip.detailed.line1=Сажает и собирает растения
 tile.blockFarmStation.tooltip.detailed.line2=Требует энергию и
@@ -282,6 +317,9 @@ enderio.machine.tooltip.configured=(Настроен)
 //Blocks
 tile.blockDarkSteelPressurePlate.name=Тёмная нажимная пластина
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Активируется только игроками
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Может быть покрашена в покрасочном механизме,
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=невидима, когда покрашена в почти
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=прозрачное стекло
 
 //Travel
 tile.blockTravelAnchor.name=Якорь путешествия
@@ -290,6 +328,7 @@ tile.blockTravelAnchor.tooltip.detailed.line2=Встаньте на один я�
 tile.blockTravelAnchor.tooltip.detailed.line3=на другой и прыгните для путешествия
 tile.blockTravelAnchor.tooltip.detailed.line4=Может также использоваться с посохом
 tile.blockTravelAnchor.tooltip.detailed.line5=путешествия
+tile.blockTravelAnchor.tooltip.detailed.line6=Может быть покрашен в покрасочном механизме
 
 enderio.blockTravelPlatform.invalidTarget=Место назначения заблокировано
 enderio.blockTravelPlatform.outOfRange=Место назначения за пределами радиуса действия
@@ -314,9 +353,11 @@ tile.blockPaintedDoubleSlab.name=Покрашенная плита
 tile.blockPaintedGlowstone.name=Покрашенный светящийся камень
 
 tile.blockPainter.tooltip.detailed.line1=Используется для покраски:
-tile.blockPainter.tooltip.detailed.line2= Фасадов труб, лестниц, заборов
-tile.blockPainter.tooltip.detailed.line3= гейтов, плит, булыжниковых стен
-tile.blockPainter.tooltip.detailed.line3= стеклянных рамок
+tile.blockPainter.tooltip.detailed.line2=Фасадов труб, ступенек, заборов,
+tile.blockPainter.tooltip.detailed.line3=гейтов, плит, булыжниковых стен,
+tile.blockPainter.tooltip.detailed.line4=стеклянных рамок, светящегося камня, коврика,
+tile.blockPainter.tooltip.detailed.line5=тёмных нажимных пластин,
+tile.blockPainter.tooltip.detailed.line6=якорей путешествия
 
 //Items
 item.itemYetaWrench.name=Гаечный ключ Yeta
@@ -399,8 +440,8 @@ enderio.darksteel.upgrade.sound.tooltip.detailed.line2=ближайших зву
 enderio.darksteel.upgrade.sound.enabled=Звуколокатор включен
 enderio.darksteel.upgrade.sound.disabled=Звуколокатор отключен
 
-item.itemGliderWing.name=Крыло планера
-item.itemGliderWings.name=Крылья планера
+item.itemGliderWing.name=Крыло планёра
+item.itemGliderWings.name=Крылья планёра
 item.itemGliderWings.tooltip.detailed.line1=Улучшите кирасой
 item.itemGliderWings.tooltip.detailed.line2=из чёрной стали
 
@@ -420,6 +461,12 @@ enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Увеличивае�
 
 enderio.darksteel.upgrade.speed_three.name=Скорость III
 enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Увеличивает скорость передвижения
+
+enderio.darksteel.upgrade.swim.name=Ласты
+
+enderio.darksteel.upgrade.nightVision.name=Ночное видение
+enderio.darksteel.upgrade.nightVision.enabled=Ночное видение включено
+enderio.darksteel.upgrade.nightVision.disabled=Ночное видение выключено
 
 //------GUI
 
