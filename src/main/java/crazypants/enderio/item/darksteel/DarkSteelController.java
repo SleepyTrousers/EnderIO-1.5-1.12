@@ -245,8 +245,7 @@ public class DarkSteelController {
           int used = cont.extractEnergy(stack, remaining, false);
           remaining -= used;
           extracted |= used > 0;
-          if(remaining <= 0) {
-            player.inventory.markDirty();
+          if(remaining <= 0) {    
             return;
           }
         }
@@ -258,9 +257,6 @@ public class DarkSteelController {
         int used = armor.extractEnergy(stack, remaining, false);
         extracted |= used > 0;
       }
-    }
-    if(extracted) {
-      player.inventory.markDirty();
     }
   }
 
