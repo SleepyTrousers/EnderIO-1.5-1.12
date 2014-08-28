@@ -20,11 +20,11 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.RecipeReigistry;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.still.GuiVat;
+import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
@@ -73,35 +73,31 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     if(result == null) {
       return;
     }
-
     if(FluidContainerRegistry.isFilledContainer(result)) {
       FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(result);
       if(fluid != null) {
-        List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.VAT_ID, fluid);
-        for (IEnderIoRecipe recipe : recipes) {
-          InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-          arecipes.add(res);
+        List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+        for (IRecipe recipe : recipes) {
+          FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+          if(output.isFluidEqual(fluid)) {
+            InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+            arecipes.add(res);
+          }
         }
-
       }
-    }
-
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.VAT_ID, result);
-    for (IEnderIoRecipe recipe : recipes) {
-      InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-      arecipes.add(res);
     }
   }
 
   @Override
   public void loadCraftingRecipes(String outputId, Object... results) {
     if(outputId.equals("EnderIOVat") && getClass() == VatRecipeHandler.class) {
-      List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
-      for (IEnderIoRecipe recipe : recipes) {
-        InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
+      List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+      for (IRecipe recipe : recipes) {
+        FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
-
       }
+
     } else {
       super.loadCraftingRecipes(outputId, results);
     }
@@ -109,15 +105,34 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void loadUsageRecipes(ItemStack ingredient) {
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
-
-    for (IEnderIoRecipe recipe : recipes) {
-      if(recipe.isInput(ingredient)) {
-        InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-        res.setIngredientPermutation(res.inputs, ingredient);
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+    for (IRecipe recipe : recipes) {
+      boolean addRecipe = false;
+      if(recipe.isValidInput(0, ingredient) || recipe.isValidInput(1, ingredient)) {
+        addRecipe = true;
+      } else if(FluidContainerRegistry.isFilledContainer(ingredient)) {
+        FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(ingredient);
+        if(fluid != null) {
+          if(recipe.isValidInput(fluid)) {
+            addRecipe = true;
+          }          
+        }
+      }
+      if(addRecipe) {
+        FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
     }
+    
+//    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
+//    for (IEnderIoRecipe recipe : recipes) {
+//      if(recipe.isInput(ingredient)) {
+//        InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
+//        res.setIngredientPermutation(res.inputs, ingredient);
+//        arecipes.add(res);
+//      }
+//    }
   }
 
   @Override
@@ -214,10 +229,15 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     super.drawProgressBar(87 - 13, 37 - 16, 200, 0, 17, 24, completion, 1);
   }
 
-  public List<ItemStack> getInputs(IRecipeInput input) {
+  public List<ItemStack> getInputs(RecipeInput input) {
     List<ItemStack> result = new ArrayList<ItemStack>();
-    result.add(input.getItem());
-    result.addAll(input.getEquivelentInputs());
+    result.add(input.getInput());
+    ItemStack[] eq = input.getEquivelentInputs();
+    if(eq != null) {
+      for (ItemStack st : eq) {
+        result.add(st);
+      }
+    }
     return result;
   }
 
@@ -242,19 +262,19 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       return null;
     }
 
-    public InnerVatRecipe(float energy, List<IRecipeInput> ingredients, FluidStack result) {
+    public InnerVatRecipe(float energy, RecipeInput[] ingredients, FluidStack result) {
       ArrayList<ItemStack> inputsOne = new ArrayList<ItemStack>();
       ArrayList<ItemStack> inputsTwo = new ArrayList<ItemStack>();
-      for (IRecipeInput input : ingredients) {
-        if(input.getItem() != null) {
+      for (RecipeInput input : ingredients) {
+        if(input.getInput() != null) {
           List<ItemStack> equivs = getInputs(input);
-          if(input.getSlot() == 0) {
+          if(input.getSlotNumber() == 0) {
             inputsOne.addAll(equivs);
-          } else if(input.getSlot() == 1) {
+          } else if(input.getSlotNumber() == 1) {
             inputsTwo.addAll(equivs);
           }
-        } else if(input.getFluid() != null) {
-          inFluid = input.getFluid();
+        } else if(input.getFluidInput() != null) {
+          inFluid = input.getFluidInput();
         }
       }
 

@@ -1,17 +1,13 @@
 package crazypants.enderio.teleport;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -26,21 +22,12 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.block.BlockDarkSteelPressurePlate.PainterTemplate;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketConfigSync;
@@ -48,7 +35,6 @@ import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.Lang;
-import crazypants.util.Util;
 
 public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider {
 
@@ -253,15 +239,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockTravelAnchor>(new ItemStack(EnderIO.blockTravelPlatform), BlockTravelAnchor.class);
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockTravelPlatform, 1, 0));
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
-    }
-    
+   
   }
 
 }

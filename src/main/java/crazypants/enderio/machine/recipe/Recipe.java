@@ -145,6 +145,19 @@ public class Recipe implements IRecipe {
     return outputs;
   }
 
+  public boolean hasOuput(ItemStack result) {
+    if(result == null) {
+      return false;
+    }
+    for(RecipeOutput output : outputs) {
+      ItemStack os = output.getOutput();
+      if(os != null && os.isItemEqual(result)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   @Override
   public float getEnergyRequired() {
     return energyRequired;
@@ -159,5 +172,7 @@ public class Recipe implements IRecipe {
   public String toString() {
     return "Recipe [input=" + Arrays.toString(inputs) + ", output=" + Arrays.toString(outputs) + ", energyRequired=" + energyRequired + "]";
   }
+
+  
 
 }

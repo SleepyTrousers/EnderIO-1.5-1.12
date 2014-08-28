@@ -11,11 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.recipe.RecipeOutput;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
@@ -155,16 +156,16 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     }
     return result;
   }
-
-  @Override
-  public List<IEnderIoRecipe> getAllRecipes() {
+  
+  
+  public List<IRecipe> getAllRecipes() {
     if(!enabled) {
       return Collections.emptyList();
     }
-    List<IEnderIoRecipe> result = new ArrayList<IEnderIoRecipe>();
+    List<IRecipe> result = new ArrayList<IRecipe>();
     Map<ItemStack, ItemStack> metaList = FurnaceRecipes.smelting().getSmeltingList();
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
-      result.add(new EnderIoRecipe(IEnderIoRecipe.ALLOY_SMELTER_ID, MJ_PER_ITEM, entry.getKey(), entry.getValue()));
+      result.add(new Recipe(new RecipeInput(entry.getKey()), MJ_PER_ITEM, new RecipeOutput(entry.getValue())));
     }
     return result;
   }

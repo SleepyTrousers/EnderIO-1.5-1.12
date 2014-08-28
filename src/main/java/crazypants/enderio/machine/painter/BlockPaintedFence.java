@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -26,8 +24,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
@@ -269,14 +265,7 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, new ItemStack(Blocks.fence), new ItemStack(
-          EnderIO.blockPaintedFence, 1, 0));
-      return Collections.singletonList(recipe);
-    }
-
+    
   }
 
 }

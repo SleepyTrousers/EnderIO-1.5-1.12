@@ -40,6 +40,16 @@ public class AlloyRecipeManager {
   public AlloyRecipeManager() {
   }
 
+  public VanillaSmeltingRecipe getVanillaRecipe() {
+    return vanillaRecipe;
+  }
+
+  public void setVanillaRecipe(VanillaSmeltingRecipe vanillaRecipe) {
+    this.vanillaRecipe = vanillaRecipe;
+  }
+
+
+
   public void loadRecipesFromConfig() {
 
     VanillaFurnaceTagHandler tagHandler = new VanillaFurnaceTagHandler();

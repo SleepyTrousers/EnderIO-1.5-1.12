@@ -7,14 +7,16 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.RecipeReigistry;
+import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.GuiAlloySmelter;
+import crazypants.enderio.machine.alloy.IAlloyRecipe;
+import crazypants.enderio.machine.alloy.VanillaSmeltingRecipe;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.recipe.IRecipe;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
@@ -27,7 +29,6 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
   public String getGuiTexture() {
     return "enderio:textures/gui/alloySmelter.png";
   }
-
 
   @Override
   public Class<? extends GuiContainer> getGuiClass() {
@@ -51,24 +52,26 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       return;
     }
 
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForOutput(IEnderIoRecipe.ALLOY_SMELTER_ID, result);
-
-    for (IEnderIoRecipe recipe : recipes) {
-      for (IRecipeOutput output : recipe.getOutputs()) {
-        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
+    List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+    recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+    for (IRecipe recipe : recipes) {
+      ItemStack output = recipe.getOutputs()[0].getOutput();
+      if(result.getItem() == output.getItem() && result.getItemDamage() == output.getItemDamage()) {
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
     }
+
   }
 
   @Override
-  public void loadCraftingRecipes(String outputId, Object... results)
-  {
-    if(outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class)
-    {
-      List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
-      for (IEnderIoRecipe recipe : recipes) {
-        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getItem());
+  public void loadCraftingRecipes(String outputId, Object... results) {
+    if(outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class) {
+      List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+      recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+      for (IRecipe recipe : recipes) {
+        ItemStack output = recipe.getOutputs()[0].getOutput();
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
     } else {
@@ -78,16 +81,13 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void loadUsageRecipes(ItemStack ingredient) {
-
-    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.ALLOY_SMELTER_ID);
-
-    for (IEnderIoRecipe recipe : recipes) {
-      if(recipe.isInput(ingredient)) {
-        for (IRecipeOutput output : recipe.getOutputs()) {
-          AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), output.getItem());
-          res.setIngredientPermutation(res.input, ingredient);
-          arecipes.add(res);
-        }
+    List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+    recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
+    for (IRecipe recipe : recipes) {
+      if(recipe.isValidInput(0, ingredient)) {
+        ItemStack output = recipe.getOutputs()[0].getOutput();
+        AlloySmelterRecipe res = new AlloySmelterRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        arecipes.add(res);
       }
     }
   }
@@ -101,10 +101,15 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     Minecraft.getMinecraft().fontRenderer.drawString(energyString, 100, 50, 0xFFFFFFFF);
   }
 
-  public List<ItemStack> getInputs(IRecipeInput input) {
+  public List<ItemStack> getInputs(RecipeInput input) {
     List<ItemStack> result = new ArrayList<ItemStack>();
-    result.add(input.getItem());
-    result.addAll(input.getEquivelentInputs());
+    result.add(input.getInput());
+    ItemStack[] equivs = input.getEquivelentInputs();
+    if(equivs != null) {
+      for (ItemStack st : equivs) {
+        result.add(st);
+      }
+    }
     return result;
   }
 
@@ -129,18 +134,18 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       return output;
     }
 
-    public AlloySmelterRecipe(float energy, List<IRecipeInput> ingredients, ItemStack result) {
-      int recipeSize = ingredients.size();
+    public AlloySmelterRecipe(float energy, RecipeInput[] ingredients, ItemStack result) {
+      int recipeSize = ingredients.length;
       this.input = new ArrayList<PositionedStack>();
       int yOff = 8;
       if(recipeSize > 0) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(0)), 49, 14 - yOff));
+        this.input.add(new PositionedStack(getInputs(ingredients[0]), 49, 14 - yOff));
       }
       if(recipeSize > 1) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(1)), 73, 4 - yOff));
+        this.input.add(new PositionedStack(getInputs(ingredients[1]), 73, 4 - yOff));
       }
       if(recipeSize > 2) {
-        this.input.add(new PositionedStack(getInputs(ingredients.get(2)), 98, 14 - yOff));
+        this.input.add(new PositionedStack(getInputs(ingredients[2]), 98, 14 - yOff));
       }
       if(result != null) {
         this.output = new PositionedStack(result, 74, 54 - yOff);

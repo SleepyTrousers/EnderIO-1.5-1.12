@@ -1,6 +1,5 @@
 package crazypants.enderio.material;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,8 +13,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
@@ -93,12 +90,6 @@ public class ItemFusedQuartzFrame extends Item {
     public boolean isValidTarget(ItemStack target) {
       return target != null && target.getItem() == i;
     }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      ItemStack is = new ItemStack(i, 1, 0);
-      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
-      return Collections.singletonList(recipe);
-    }
+    
   }
 }

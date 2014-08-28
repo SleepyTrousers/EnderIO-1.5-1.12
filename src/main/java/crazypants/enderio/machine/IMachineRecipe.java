@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import crazypants.enderio.crafting.IEnderIoRecipe;
 
 /**
  * A MachineRecipe implementation must be stateless, always returning the same
@@ -93,13 +92,6 @@ public interface IMachineRecipe {
    * @return
    */
   List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs);
-
-  /**
-   * Returns all possible outputs from the recipe.
-   * 
-   * @return
-   */
-  List<IEnderIoRecipe> getAllRecipes();
 
   public static class ResultStack {
 

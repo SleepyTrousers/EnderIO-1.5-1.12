@@ -10,9 +10,10 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
   @Override
   public void loadConfig() {
-    API.registerRecipeHandler(new AlloySmelterRecipeHandler());
-    API.registerRecipeHandler(new SagMillRecipeHandler());
+    API.registerRecipeHandler(new AlloySmelterRecipeHandler());    
     API.registerUsageHandler(new AlloySmelterRecipeHandler());
+    
+    API.registerRecipeHandler(new SagMillRecipeHandler());
     API.registerUsageHandler(new SagMillRecipeHandler());
 
     API.registerRecipeHandler(new VatRecipeHandler());
@@ -23,6 +24,13 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedCarpet));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedDoubleSlab));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedFence));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedFenceGate));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedSlab));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedStair));
+    API.hideItem(new ItemStack(EnderIO.blockPaintedWall));
 
     if(!Config.photovoltaicCellEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockSolarPanel));
@@ -46,3 +54,4 @@ public class NEIEnderIOConfig implements IConfigureNEI {
   }
 
 }
+

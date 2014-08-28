@@ -1,7 +1,5 @@
 package crazypants.enderio.block;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -22,12 +20,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -160,14 +152,6 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
         return new ResultStack[0];
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
-    }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockDarkSteelPressurePlate>(new ItemStack(EnderIO.blockDarkSteelPressurePlate), BlockDarkSteelPressurePlate.class);
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 0));
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
     }
 
     public static ItemStack createItemStackForSourceBlock(Block block, int damage) {

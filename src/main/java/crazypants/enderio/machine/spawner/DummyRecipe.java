@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 
@@ -49,11 +48,6 @@ public class DummyRecipe implements IMachineRecipe {
 
   @Override
   public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
-    return Collections.emptyList();
-  }
-
-  @Override
-  public List<IEnderIoRecipe> getAllRecipes() {
     return Collections.emptyList();
   }
 

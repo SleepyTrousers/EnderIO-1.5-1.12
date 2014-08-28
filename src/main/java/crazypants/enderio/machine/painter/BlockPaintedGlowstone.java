@@ -1,11 +1,8 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGlowstone;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
@@ -26,12 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
@@ -252,14 +243,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockGlowstone>(new ItemStack(Blocks.glowstone), BlockGlowstone.class);
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockPaintedGlowstone, 1, 0));
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
-    }
+   
   }
 
   

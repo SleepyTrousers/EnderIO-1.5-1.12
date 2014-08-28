@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -25,12 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
-import crazypants.enderio.crafting.impl.RecipeInputClass;
-import crazypants.enderio.crafting.impl.RecipeOutput;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
@@ -257,16 +249,7 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
       Block blk = Block.getBlockFromItem(target.getItem());
       return blk instanceof BlockStairs;
     }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      IRecipeInput input = new RecipeInputClass<BlockStairs>(new ItemStack(Blocks.oak_stairs), BlockStairs.class, new ItemStack(Blocks.stone_stairs),
-          new ItemStack(Blocks.stone_stairs));
-      IRecipeOutput output = new RecipeOutput(new ItemStack(EnderIO.blockPaintedStair, 1, 0));
-
-      IEnderIoRecipe recipe = new EnderIoRecipe(getMachineName(), DEFAULT_ENERGY_PER_TASK, input, output);
-      return Collections.singletonList(recipe);
-    }
+    
   }
 
 }

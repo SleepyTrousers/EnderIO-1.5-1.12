@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,18 +17,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.IRecipeInput;
-import crazypants.enderio.crafting.IRecipeOutput;
-import crazypants.enderio.crafting.RecipeReigistry;
-import crazypants.enderio.machine.alloy.GuiAlloySmelter;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.enchanter.GuiEnchanter;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.nei.AlloySmelterRecipeHandler.AlloySmelterRecipe;
 
 public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
