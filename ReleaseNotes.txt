@@ -1,5 +1,30 @@
-Version 2.0.1
+------------------------------------------------------
+Version 2.0.2
+------------------------------------------------------
+Changes
+- Added basic farm notifications, never wonder why your farm is stuck again! (tterrag)
+- Added storage blocks for alloys and other metals (tterrag)
+- Added ore dictionary registration for all nuggets (tterrag)
+- #926 Increased the default dim. trans. power transmit limit so it can support the top tier conduits
+- #933 Removed SAG Mill grinding ball bonuses for AE Fluix and Certus Quartz Crystals
+- Using block with a Tile Entity as a paint source can be disabled in the config
+- Updated ru_RU.lang (Anton)
+- Lowered default power use of DS boots.
 
+Bugs
+- #909 Dark Leggings Speed Upgrade cause mouse wheel issues.
+- #923 Item Filter Dupe Bug
+- #925 EnderIO Machines will not accept power from Mekanism Universal Cables 
+- #929 Reinforced Obsidian not actually wither-proof
+- #930 Crash painting facades as machines from TE/other stuff
+- Stopped sending block updates when a conduits neighbor changes
+- Register quite clear glass as "blockGlass" as well for compatability
+- Fix DS Pressure Plate not dropping with painted data
+
+
+------------------------------------------------------
+Version 2.0.1
+------------------------------------------------------
 Changes
 - Dark Steel pressure plates can be painted in the Painting Machine. Quite clear glass can be used to make them invisible.
 - Travel Anchors can be painted in the Painting Machine.
@@ -9,7 +34,10 @@ Bugs
 - #918 Painted Glowstone Client Side Crash  bug
 
 
+
+------------------------------------------------------
 Version  2.0.0
+------------------------------------------------------
 - Ported 1.0.6 for MC 1.6.4 to MC 1.7.10
 
 New
