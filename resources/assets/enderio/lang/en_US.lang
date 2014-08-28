@@ -282,6 +282,11 @@ tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
 tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
+enderio.farm.note.outputFull=Output Full
+enderio.farm.note.noSeeds=No Seeds
+enderio.farm.note.noAxe=No Axe
+enderio.farm.note.noHoe=No Hoe
+
 tile.blockTank.name=Fluid Tank
 tile.blockTank.advanced.name=Pressurized Fluid Tank
 tile.blockTank.tooltip.detailed.line1=Portable fluid tank

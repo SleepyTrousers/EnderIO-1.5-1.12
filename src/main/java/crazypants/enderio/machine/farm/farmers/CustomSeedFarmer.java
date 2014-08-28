@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.machine.farm.farmers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.BlockCoord;
 
 public class CustomSeedFarmer implements IFarmerJoe {

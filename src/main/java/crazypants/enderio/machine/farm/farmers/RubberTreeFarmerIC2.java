@@ -1,9 +1,10 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.machine.farm.farmers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;

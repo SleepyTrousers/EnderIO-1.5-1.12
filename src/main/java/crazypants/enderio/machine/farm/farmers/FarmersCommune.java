@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.machine.farm.farmers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,7 +9,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.BlockCoord;
+import crazypants.util.Lang;
 
 public class FarmersCommune implements IFarmerJoe {
 

@@ -205,6 +205,7 @@ public final class Config {
   public static int farmDefaultSize = 3;
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
+  public static boolean disableFarmNotification = false;
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -599,7 +600,8 @@ public final class Config {
 	"Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
     farmToolTakeDamageChance = (float) config.get(sectionFarm.name, "farmToolTakeDamageChance", farmToolTakeDamageChance, 
 	"The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
-
+    disableFarmNotification = config.get(sectionFarm.name, "disableFarmNotifications", disableFarmNotification, "Disable the notification text above the farm block.").getBoolean();
+    
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
 

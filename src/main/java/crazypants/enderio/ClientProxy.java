@@ -56,6 +56,8 @@ import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
 import crazypants.enderio.machine.farm.FarmingStationRenderer;
+import crazypants.enderio.machine.farm.FarmingStationSpecialRenderer;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.combustion.CombustionGeneratorModelRenderer;
 import crazypants.enderio.machine.generator.combustion.CombustionGeneratorRenderer;
@@ -193,6 +195,7 @@ public class ClientProxy extends CommonProxy {
 
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
+    ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
         
 //    BlockWirelessCharger.renderId = RenderingRegistry.getNextAvailableRenderId();
 //    RenderingRegistry.registerBlockHandler(new WirelessChargerRenderer());

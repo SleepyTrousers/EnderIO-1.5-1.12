@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.machine.farm.farmers;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.BlockCoord;
 
 public class NaturaBerryFarmer extends PickableFarmer {

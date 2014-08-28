@@ -9,6 +9,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IPlantable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.Log;
+import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
+import crazypants.enderio.machine.farm.farmers.FarmersCommune;
+import crazypants.enderio.machine.farm.farmers.MelonFarmer;
+import crazypants.enderio.machine.farm.farmers.NaturaBerryFarmer;
+import crazypants.enderio.machine.farm.farmers.NetherWartFarmer;
+import crazypants.enderio.machine.farm.farmers.PickableFarmer;
+import crazypants.enderio.machine.farm.farmers.PlantableFarmer;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.farm.farmers.StemFarmer;
+import crazypants.enderio.machine.farm.farmers.TreeFarmer;
 
 public final class FarmersRegistry {
 
@@ -23,17 +33,17 @@ public final class FarmersRegistry {
     addIC2();
     addMFR();
 
-    FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
-    FarmersCommune.instance.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
-    FarmersCommune.instance.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
-    FarmersCommune.instance.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
+    FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
+    FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
+    FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
+    FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
     //special case of plantables to get spacing correct
-    FarmersCommune.instance.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
-    FarmersCommune.instance.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));
+    FarmersCommune.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
+    FarmersCommune.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));
     //'BlockNetherWart' is not an IGrowable
-    FarmersCommune.instance.joinCommune(new NetherWartFarmer());    
+    FarmersCommune.joinCommune(new NetherWartFarmer());    
     //Handles all 'vanilla' style crops
-    FarmersCommune.instance.joinCommune(DEFAULT_FARMER);
+    FarmersCommune.joinCommune(DEFAULT_FARMER);
   }
 
   public static void addPickable(String mod, String blockName, String itemName) {
@@ -41,7 +51,7 @@ public final class FarmersRegistry {
     if(cropBlock != null) {
       Item seedItem = GameRegistry.findItem(mod, itemName);
       if(seedItem != null) {
-        FarmersCommune.instance.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
+        FarmersCommune.joinCommune(new PickableFarmer(cropBlock, new ItemStack(seedItem)));
       }
     }
   }
@@ -59,7 +69,7 @@ public final class FarmersRegistry {
             }
           }
         }
-        FarmersCommune.instance.joinCommune(farmer);
+        FarmersCommune.joinCommune(farmer);
         return farmer;
       }
     }
@@ -77,7 +87,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 2; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
-          FarmersCommune.instance.joinCommune(farmer);
+          FarmersCommune.joinCommune(farmer);
         }
       }
     }
@@ -90,7 +100,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 8 + i));
           farmer.setRequiresFarmland(false);
-          FarmersCommune.instance.joinCommune(farmer);
+          FarmersCommune.joinCommune(farmer);
         }
       }
     }
@@ -107,9 +117,9 @@ public final class FarmersRegistry {
       Item seedItem = GameRegistry.findItem(mod, "barley.seed");
       if(seedItem != null) {
         //barley
-        FarmersCommune.instance.joinCommune(new CustomSeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
+        FarmersCommune.joinCommune(new CustomSeedFarmer(cropBlock, 3, new ItemStack(seedItem)));
         // cotton
-        FarmersCommune.instance.joinCommune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
+        FarmersCommune.joinCommune(new PickableFarmer(cropBlock, 4, 8, new ItemStack(seedItem, 1, 1)));
       }
     }
 
@@ -121,7 +131,7 @@ public final class FarmersRegistry {
         for (int i = 0; i < 4; i++) {
           PickableFarmer farmer = new NaturaBerryFarmer(cropBlock, i, 12 + i, new ItemStack(seedItem, 1, 12 + i));
           farmer.setRequiresFarmland(false);
-          FarmersCommune.instance.joinCommune(farmer);
+          FarmersCommune.joinCommune(farmer);
         }
       }
     }
@@ -129,7 +139,7 @@ public final class FarmersRegistry {
     blockName = "florasapling";
     Block saplingBlock = GameRegistry.findBlock(mod, blockName);
     if(saplingBlock != null) {
-      FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock,
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock,
           GameRegistry.findBlock(mod, "tree"),
           GameRegistry.findBlock(mod, "willow"),
           GameRegistry.findBlock(mod, "Dark Tree")));
@@ -137,7 +147,7 @@ public final class FarmersRegistry {
     blockName = "Rare Sapling";
     saplingBlock = GameRegistry.findBlock(mod, blockName);
     if(saplingBlock != null) {
-      FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "Rare Tree")));
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "Rare Tree")));
     }
 
   }
@@ -147,7 +157,7 @@ public final class FarmersRegistry {
     String blockName = "tile.mfr.rubberwood.sapling";    
     Block saplingBlock = GameRegistry.findBlock(mod, blockName);
     if(saplingBlock != null) {
-      FarmersCommune.instance.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "tile.mfr.rubberwood.log")));
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "tile.mfr.rubberwood.log")));
     }
     
   }
@@ -155,7 +165,7 @@ public final class FarmersRegistry {
   private static void addIC2() {
     RubberTreeFarmerIC2 rtf = new RubberTreeFarmerIC2();
     if(rtf.isValid()) {
-      FarmersCommune.instance.joinCommune(rtf);
+      FarmersCommune.joinCommune(rtf);
     }
   }
 

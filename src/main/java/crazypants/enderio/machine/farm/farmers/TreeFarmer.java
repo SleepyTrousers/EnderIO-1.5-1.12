@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.farm;
+package crazypants.enderio.machine.farm.farmers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.BlockCoord;
 
 public class TreeFarmer implements IFarmerJoe {
@@ -133,6 +134,11 @@ public class TreeFarmer implements IFarmerJoe {
       farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
       actualHarvests.add(coord);
     }
+    
+    if (!farm.hasAxe()) {
+      farm.setNotification("noAxe");
+    }
+    
     res.harvestedBlocks.clear();
     res.harvestedBlocks.addAll(actualHarvests);
 
