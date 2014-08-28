@@ -1641,7 +1641,9 @@
     
     <excludes>
       <itemStack modID="minecraft" itemName="glowstone" />
-      <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>      
+      <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>   
+      <itemStack oreDictionary="crystalCertusQuartz" />
+      <itemStack oreDictionary="crystalFluix" />   
     </excludes>
     
   </grindingBalls>
