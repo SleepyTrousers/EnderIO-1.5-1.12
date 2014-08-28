@@ -445,9 +445,7 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public boolean onNeighborBlockChange(Block block) {
-    // Check for changes to external connections, connections to conduits are
-    // handled by the bundle
-
+    
     // NB: No need to check externals if the neighbour that changed was a
     // conduit bundle as this
     // can't effect external connections.
@@ -455,9 +453,29 @@ public abstract class AbstractConduit implements IConduit {
       return false;
     }
 
-    connectionsDirty = true;
-
-    return true;
+    // Check for changes to external connections, connections to conduits are
+    // handled by the bundle
+    Set<ForgeDirection> newCons = new HashSet<ForgeDirection>();
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      if(!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
+        newCons.add(dir);
+      }
+    }
+    if(newCons.size() != externalConnections.size()) {
+      connectionsDirty = true;
+      return true;
+    }
+    for(ForgeDirection dir : externalConnections) {      
+      if(!newCons.remove(dir)) {
+        connectionsDirty = true;
+        return true;
+      }
+    }
+    if(!newCons.isEmpty()) {
+      connectionsDirty = true;
+      return true;
+    }
+    return false;
   }
 
   @Override
