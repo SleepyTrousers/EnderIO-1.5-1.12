@@ -25,7 +25,6 @@ public abstract class BlockEio extends Block {
     setBlockName(name);
     setStepSound(Block.soundTypeMetal);
     setCreativeTab(EnderIOTab.tabEnderIO);
-
   }
 
   protected void init() {

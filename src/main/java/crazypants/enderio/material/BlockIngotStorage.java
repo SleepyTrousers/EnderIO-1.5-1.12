@@ -15,7 +15,7 @@ import crazypants.enderio.ModObject;
 public class BlockIngotStorage extends BlockEio {
   
   @SideOnly(Side.CLIENT)
-  private IIcon[] icons = new IIcon[Alloy.values().length];
+  private IIcon[] icons;
 
   public static BlockIngotStorage create() {
     BlockIngotStorage res = new BlockIngotStorage();
@@ -36,6 +36,7 @@ public class BlockIngotStorage extends BlockEio {
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register) {
+    icons = new IIcon[Alloy.values().length];
     for (Alloy alloy : Alloy.values()) {
       icons[alloy.ordinal()] = register.registerIcon(alloy.iconKey + "Block");
     }
