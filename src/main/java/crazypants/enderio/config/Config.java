@@ -246,6 +246,8 @@ public final class Config {
   public static double killerJoeAttackHeight = 2;
   public static double killerJoeAttackWidth = 2;
   public static double killerJoeAttackLength = 4;
+  
+  public static boolean allowTileEntitiesAsPaintSource = true;
 
   public static void load(FMLPreInitializationEvent event) {
     
@@ -293,6 +295,9 @@ public final class Config {
 
     useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
+    
+    allowTileEntitiesAsPaintSource= config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource, "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
+        .getBoolean(allowTileEntitiesAsPaintSource);
 
     useSteelInChassi = config.get(sectionRecipe.name, "useSteelInChassi", useSteelInChassi, "When enabled machine chassis will require steel instead of iron.")
         .getBoolean(useSteelInChassi);

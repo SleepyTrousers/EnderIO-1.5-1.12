@@ -6,10 +6,12 @@ import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.util.Util;
@@ -27,14 +29,14 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
     if(block == null) {
       return false;
     }
+    if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
+      return false;
+    }
+    
     return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock()) || block == Blocks.glass;
   }
 
   protected final Block[] validTargets;
-
-  //  protected BasicPainterTemplate(String... validTargetBlocksIds) {
-  //    this.validIds = validTargetBlocksIds;
-  //  }
 
   protected BasicPainterTemplate(Block... validTargetBlocks) {
     this.validTargets = validTargetBlocks;

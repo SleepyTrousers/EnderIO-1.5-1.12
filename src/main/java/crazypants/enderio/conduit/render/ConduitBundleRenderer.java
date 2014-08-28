@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -38,6 +39,7 @@ import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
+import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.IBlockAccessWrapper;
@@ -142,7 +144,15 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         
         IBlockAccess origBa = rb.blockAccess;
         rb.blockAccess = new FacadeAccessWrapper(origBa);
-        rb.renderBlockByRenderType(facadeId, x, y, z);        
+        try {
+          rb.renderBlockByRenderType(facadeId, x, y, z);
+        } catch(Exception e) {
+          //just in case the paint source wont render safely in this way
+          rb.setOverrideBlockTexture(IconUtil.errorTexture);
+          rb.renderStandardBlock(Blocks.stone, x, y, z);
+          rb.setOverrideBlockTexture(null);
+        }
+        
         rb.blockAccess = origBa;        
       }
 
