@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.gui;
 
 import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
@@ -24,6 +25,8 @@ public class TabFactory {
       return new ItemSettings(gui, con);
     } else if(baseType.isAssignableFrom(IRedstoneConduit.class)) {
       return new RedstoneSettings(gui, con);
+    } else if(baseType.isAssignableFrom(IGasConduit.class)) {
+      return new GasSettings(gui, con);
     }
     return null;
   }

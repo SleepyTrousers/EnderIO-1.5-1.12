@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import mekanism.api.gas.IGasHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,7 +17,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct {
+public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler {
 
   TileEntity getEntity();
 

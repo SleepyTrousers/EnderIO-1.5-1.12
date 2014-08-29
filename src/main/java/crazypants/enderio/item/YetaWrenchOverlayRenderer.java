@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.gui.IconEIO;
 
 public class YetaWrenchOverlayRenderer {
@@ -44,25 +45,28 @@ public class YetaWrenchOverlayRenderer {
 
     double offsetX = 16;
     double offsetY = res.getScaledHeight() - 16;
+    int width = GasUtil.isGasConduitEnabled() ? 48 : 32;    
 
     if(mode == ConduitDisplayMode.ALL) {
       GL11.glColor4f(1, 1, 1, 0.75f);
-      IconEIO.WRENCH_OVERLAY_ALL_ON.renderIcon(offsetX, offsetY - 32, 32, 32, 0, true);
+      IconEIO.WRENCH_OVERLAY_ALL_ON.renderIcon(offsetX, offsetY - 32, width, 32, 0, true);
       return;
     }
 
     float c = 0.6f;
     GL11.glColor4f(c, c, c, 0.33f);
-    IconEIO.WRENCH_OVERLAY_ALL_OFF.renderIcon(offsetX, offsetY - 32, 32, 32, 0, true);
+    IconEIO.WRENCH_OVERLAY_ALL_OFF.renderIcon(offsetX, offsetY - 32, width, 32, 0, true);
     GL11.glColor4f(1, 1, 1, 0.75f);
     if(mode == ConduitDisplayMode.POWER) {
       IconEIO.WRENCH_OVERLAY_POWER.renderIcon(offsetX, offsetY - 32, 16, 16, 0, true);
-    } else if(mode == ConduitDisplayMode.FLUID) {
-      IconEIO.WRENCH_OVERLAY_FLUID.renderIcon(offsetX , offsetY - 16, 16, 16, 0, true);
-    } else if(mode == ConduitDisplayMode.ITEM) {
-      IconEIO.WRENCH_OVERLAY_ITEM.renderIcon(offsetX + 16, offsetY - 16, 16, 16, 0, true);
     } else if(mode == ConduitDisplayMode.REDSTONE) {
       IconEIO.WRENCH_OVERLAY_REDSTONE.renderIcon(offsetX + 16, offsetY - 32, 16, 16, 0, true);
+    } else if(mode == ConduitDisplayMode.FLUID) {
+      IconEIO.WRENCH_OVERLAY_FLUID.renderIcon(offsetX, offsetY - 16, 16, 16, 0, true);
+    } else if(mode == ConduitDisplayMode.ITEM) {
+      IconEIO.WRENCH_OVERLAY_ITEM.renderIcon(offsetX + 16, offsetY - 16, 16, 16, 0, true);
+    } else if(mode == ConduitDisplayMode.GAS) {
+      IconEIO.WRENCH_OVERLAY_GAS.renderIcon(offsetX + 32, offsetY - 24, 16, 16, 0, true);
     }
 
   }
