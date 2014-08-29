@@ -84,7 +84,8 @@ public enum ModObject {
   itemTravelStaff,
   itemMagnet,
   itemGliderWing,
-  blockEndermanSkull;
+  blockEndermanSkull, 
+  itemSoulVessel;
 
   public final String unlocalisedName;
 

@@ -51,6 +51,7 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemMagnet;
 import crazypants.enderio.item.ItemRecipes;
+import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.item.ItemYetaWrench;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
@@ -228,6 +229,8 @@ public class EnderIO {
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
   public static ItemMagnet itemMagnet;
+  
+  public static ItemSoulVessel itemSoulVessel;
 
   public static ItemDarkSteelArmor itemDarkSteelHelmet;
   public static ItemDarkSteelArmor itemDarkSteelChestplate;
@@ -366,6 +369,8 @@ public class EnderIO {
     itemConduitProbe = ItemConduitProbe.create();
 
     itemMagnet = ItemMagnet.create();
+    
+    itemSoulVessel = ItemSoulVessel.create();
     
     blockIngotStorage = BlockIngotStorage.create();
 
