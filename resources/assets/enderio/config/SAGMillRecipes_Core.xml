@@ -1642,6 +1642,11 @@
     <excludes>
       <itemStack modID="minecraft" itemName="glowstone" />
       <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>   
+      <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*"/>
+      <itemStack modID="minecraft" itemName="quartz_stairs"/>
+      <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" /> 
+      
+      <itemStack modID="minecraft" itemName="quartz" />         
       <itemStack oreDictionary="crystalCertusQuartz" />
       <itemStack oreDictionary="crystalFluix" />   
     </excludes>
