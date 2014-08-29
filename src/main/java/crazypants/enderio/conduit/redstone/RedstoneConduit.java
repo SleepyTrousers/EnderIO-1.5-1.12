@@ -151,7 +151,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    neighbourDirty = res;
+    neighbourDirty = blockId != EnderIO.blockConduitBundle;
     return res;
   }
 
