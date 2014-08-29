@@ -3,6 +3,7 @@ package crazypants.enderio.nei;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 
@@ -18,7 +19,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.registerRecipeHandler(new VatRecipeHandler());
     API.registerUsageHandler(new VatRecipeHandler());
-    
+
     API.registerRecipeHandler(new EnchanterRecipeHandler());
     API.registerUsageHandler(new EnchanterRecipeHandler());
 
@@ -40,6 +41,10 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     }
     if(!Config.reinforcedObsidianEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockReinforcedObsidian));
+    }
+
+    if(!Loader.isModLoaded("Mekanism")) {
+      API.hideItem(new ItemStack(EnderIO.itemGasConduit));
     }
   }
 

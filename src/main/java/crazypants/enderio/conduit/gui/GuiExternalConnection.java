@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -27,19 +28,20 @@ import crazypants.render.RenderUtil;
 public class GuiExternalConnection extends GuiContainerBase {
 
   private static final int TAB_HEIGHT = 24;
-  
+
   private static int nextButtonId = 1;
-  
+
   public static int nextButtonId() {
     return nextButtonId++;
   }
-  
+
   private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER = new HashMap<Class<? extends IConduit>, Integer>();
   static {
     TAB_ORDER.put(IItemConduit.class, 0);
     TAB_ORDER.put(ILiquidConduit.class, 1);
     TAB_ORDER.put(IRedstoneConduit.class, 2);
     TAB_ORDER.put(IPowerConduit.class, 3);
+    TAB_ORDER.put(IGasConduit.class, 4);
   }
 
   final InventoryPlayer playerInv;
@@ -60,14 +62,14 @@ public class GuiExternalConnection extends GuiContainerBase {
     this.playerInv = playerInv;
     this.bundle = bundle;
     this.dir = dir;
-    
+
     ySize = 166 + 29;
     xSize = 206;
-    
+
     getContainer().setInputSlotsVisible(false);
     getContainer().setOutputSlotsVisible(false);
     getContainer().setInventorySlotsVisible(false);
-    
+
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
 
@@ -83,10 +85,10 @@ public class GuiExternalConnection extends GuiContainerBase {
         }
         //NB: using Double.comp instead of Integer.comp as the int version is only from Java 1.7+
         return Double.compare(int1, int2);
-        
+
       }
     });
-    
+
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
         ISettingsPanel tab = TabFactory.instance.createPanelForConduit(this, con);
@@ -96,7 +98,7 @@ public class GuiExternalConnection extends GuiContainerBase {
         }
       }
     }
-    
+
   }
 
   @Override
@@ -138,7 +140,7 @@ public class GuiExternalConnection extends GuiContainerBase {
         return;
       }
     }
-    tabs.get(activeTab).mouseClicked(x,y,par3);
+    tabs.get(activeTab).mouseClicked(x, y, par3);
 
   }
 

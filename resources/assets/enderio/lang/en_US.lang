@@ -75,9 +75,11 @@ item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=items per extraction
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
 
+enderio.itemGasConduit.name=Gas Conduit
 
-
-enderio.itemMeConduit.name=ME Conduit
+enderio.itemGasConduit.tooltip.maxExtract=Max Extract:
+enderio.itemGasConduit.tooltip.maxIo=Max IO:
+enderio.itemGasConduit.tooltip.detailed.line1=Transfers Mekanism-compatible gases
 
 //Materials
 enderio.itemMaterial.name=Materials
@@ -104,6 +106,7 @@ enderio.fluid.millibucket.abr=mB
 enderio.fuel.tooltip.heading=Fuel Details
 enderio.fuel.tooltip.burnTime=burn time
 enderio.fluid.millibucketsTick=mB/t
+enderio.gas.gasTick=Gas/t
 
 
 //Materials
@@ -612,6 +615,8 @@ enderio.gui.conduit.redstone.color=Color
 
 enderio.gui.conduit.fluid.autoExtract=Auto Extract
 enderio.gui.conduit.fluid.filter=Filter
+
+enderio.gui.conduit.gas.autoExtract=Auto Extract
 
 
 //Configuration

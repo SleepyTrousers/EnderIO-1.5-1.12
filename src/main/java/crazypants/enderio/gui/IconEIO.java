@@ -20,19 +20,23 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 64, 64);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, 64, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 96, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, 96, 64);
 
-  public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(96, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(16, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(16 + 96, 148, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(32, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(48, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_REDSTONE_OFF = new IconEIO(48 + 96, 148, 32, 32);
+
+  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(0, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(96, 180, 32, 32);
 
   public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(32, 180, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(32 + 96, 180, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(0, 180, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(96, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_GAS = new IconEIO(64, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_GAS_OFF = new IconEIO(64 + 96, 180, 32, 32);
 
   public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);
@@ -89,7 +93,7 @@ public final class IconEIO {
   public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10, 10);
 
   public static final IconEIO SOUND = new IconEIO(209, 172, 22, 22);
-  
+
   public static final IconEIO XP = new IconEIO(235, 60, 22, 22);
 
   private static final int TEX_SIZE = 256;
