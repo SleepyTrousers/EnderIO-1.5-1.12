@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.gas;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
@@ -7,9 +9,28 @@ import net.minecraft.world.IBlockAccess;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
 
-public class GasUtil {
+public final class GasUtil {
+
+  private static boolean useCheckPerformed = false;
+  private static boolean isGasConduitEnabled = false;
+
+  public static boolean isGasConduitEnabled() {
+    if(!useCheckPerformed) {
+      String configOption = Config.isGasConduitEnabled;
+      if(configOption.equalsIgnoreCase("auto")) {
+        isGasConduitEnabled = Loader.isModLoaded("Mekanism");        
+      } else if(configOption.equalsIgnoreCase("true")) {
+        isGasConduitEnabled = true;
+      } else {
+        isGasConduitEnabled = false;
+      }
+      useCheckPerformed = true;
+    }
+    return isGasConduitEnabled;
+  }
 
   public static IGasHandler getExternalGasHandler(IBlockAccess world, BlockCoord bc) {
     IGasHandler con = getGasHandler(world, bc);
@@ -45,6 +66,9 @@ public class GasUtil {
       }
     }
     return false;
+  }
+
+  private GasUtil() {
   }
 
 }

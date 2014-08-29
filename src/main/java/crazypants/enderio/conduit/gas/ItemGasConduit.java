@@ -29,6 +29,9 @@ public class ItemGasConduit extends AbstractItemConduit implements IAdvancedTool
 
   protected ItemGasConduit() {
     super(ModObject.itemGasConduit);
+    if(!GasUtil.isGasConduitEnabled()) {
+      setCreativeTab(null);
+    }
   }
 
   @Override

@@ -5,6 +5,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.config.Config;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
@@ -32,6 +33,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     API.hideItem(new ItemStack(EnderIO.blockPaintedSlab));
     API.hideItem(new ItemStack(EnderIO.blockPaintedStair));
     API.hideItem(new ItemStack(EnderIO.blockPaintedWall));
+    API.hideItem(new ItemStack(EnderIO.blockConduitBundle));
 
     if(!Config.photovoltaicCellEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockSolarPanel));
@@ -43,7 +45,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
       API.hideItem(new ItemStack(EnderIO.blockReinforcedObsidian));
     }
 
-    if(!Loader.isModLoaded("Mekanism")) {
+    if(!GasUtil.isGasConduitEnabled()) {
       API.hideItem(new ItemStack(EnderIO.itemGasConduit));
     }
   }

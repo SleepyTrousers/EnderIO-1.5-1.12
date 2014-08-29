@@ -252,6 +252,8 @@ public final class Config {
   
   public static boolean allowTileEntitiesAsPaintSource = true;
 
+  public static String isGasConduitEnabled = "auto";
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -672,6 +674,9 @@ public final class Config {
         "The reach of attacks to each side of Joe.").getDouble(killerJoeAttackWidth);
     killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength,
         "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);
+    
+    isGasConduitEnabled = config.getString(sectionItems.name, "isGasConduitEnabled", isGasConduitEnabled, 
+        "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
   }
 
   private Config() {
