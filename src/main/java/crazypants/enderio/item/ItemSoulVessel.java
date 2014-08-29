@@ -159,9 +159,13 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       return false;
     }
     
-    //TODO: Black list
+    String entityId = EntityList.getEntityString(entity);
+    if(isBlackListed(entityId)) {
+      return false;
+    }
+    
     NBTTagCompound root = new NBTTagCompound();
-    root.setString("id", EntityList.getEntityString(entity));    
+    root.setString("id", entityId);    
     entity.writeToNBT(root);
     
     if(!isCreative) {
@@ -174,6 +178,15 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       item.setTagCompound(root);
       player.setCurrentItemOrArmor(0, item);
       return true;
+    }
+    return false;
+  }
+
+  private boolean isBlackListed(String entityId) {
+    for(String str : Config.soulVesselBlackList) {
+      if(str != null && str.equals(entityId)) {
+        return true;
+      }
     }
     return false;
   }

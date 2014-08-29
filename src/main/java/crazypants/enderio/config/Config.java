@@ -254,6 +254,8 @@ public final class Config {
 
   public static String isGasConduitEnabled = "auto";
 
+  public static String[] soulVesselBlackList = new String[0];
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -675,8 +677,10 @@ public final class Config {
     killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength,
         "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);
     
-    isGasConduitEnabled = config.getString(sectionItems.name, "isGasConduitEnabled", isGasConduitEnabled, 
+    isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled, 
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
+    
+    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionItems.name, soulVesselBlackList, "Entities listed here will can not be captured in a 'Vessel of Souls'");
   }
 
   private Config() {
