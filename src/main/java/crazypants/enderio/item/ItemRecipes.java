@@ -17,6 +17,7 @@ public class ItemRecipes {
     ItemStack conductiveIron = new ItemStack(EnderIO.itemAlloy, 1, Alloy.CONDUCTIVE_IRON.ordinal());
     ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
+    ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
 
     // Wrench
     ItemStack wrench = new ItemStack(EnderIO.itemYetaWench, 1, 0);
@@ -40,6 +41,9 @@ public class ItemRecipes {
     
     ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
     GameRegistry.addShapedRecipe(dspp, "ss ", "   ", "   ", 's', darkSteel); 
+    
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemSoulVessel), " s ", "q q", " q ", 's', soularium, 'q', new ItemStack(EnderIO.blockFusedQuartz,1,0));
+     
 
   }
   
