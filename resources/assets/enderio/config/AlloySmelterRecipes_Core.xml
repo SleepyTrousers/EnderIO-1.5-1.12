@@ -107,8 +107,7 @@ sand/cobble/wood=0.1
     <recipe name="Soularium" energyCost="1000">
       <input>
         <itemStack modID="minecraft" itemName="soul_sand"/>
-        <itemStack modID="minecraft" itemName="gold_ingot"/>
-        <itemStack modID="minecraft" itemName="glowstone_dust"/>        
+        <itemStack modID="minecraft" itemName="gold_ingot"/>     
       </input>                  
       <output>
         <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" exp="0.7"/> 

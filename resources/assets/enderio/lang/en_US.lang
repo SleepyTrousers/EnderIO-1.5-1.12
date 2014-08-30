@@ -389,7 +389,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line2=details about its network
 item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift Right-Click on a conduit to
 item.enderio.itemConduitProbe.tooltip.detailed.line4=to access its connection settings
 
-item.itemSoulVessel.name=Vessel of Souls
+item.itemSoulVessel.name=Soul Vial
 item.itemSoulVessel.tooltip.detailed.line1=Right-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=Click again to release it

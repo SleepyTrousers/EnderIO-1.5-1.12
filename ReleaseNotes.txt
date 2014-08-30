@@ -1,4 +1,21 @@
 ------------------------------------------------------
+Version 2.0.3
+------------------------------------------------------
+Changes
+- Added 'Gas Conduit' to transport Mekanism gases (Tonius)
+- Added new alloy 'Soularium'
+- Added 'Soul Vial' item to capture and move mobs
+- Nerfed default skull drop chances (requires Config reset)
+- Updated zh_CN.lang (sb023612)
+
+Bugs
+- #933 Removed SAG Mill bonuses from quartz blocks / stairs etc to prevent item dupes.
+- #938 Insulated Redstone Conduit with Multiple Colored Endpoints Not Working  
+- Added recipe to convert storage blocks back to ingots
+- Added optimisation to conduit rendering
+- Fixed crash when a power network is destroyed before being initialized.
+
+------------------------------------------------------
 Version 2.0.2
 ------------------------------------------------------
 Changes
