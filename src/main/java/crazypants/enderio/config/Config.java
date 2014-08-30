@@ -146,10 +146,10 @@ public final class Config {
   public static int darkSteelFallDistanceCost = 75;
 
   public static float darkSteelSwordWitherSkullChance = 0.05f;
-  public static float darkSteelSwordWitherSkullLootingModifier = 0.167f / 3f; //at looting 3, have a 1 in 6 chance of getting a skull
-  public static float darkSteelSwordSkullChance = 0.2f;
-  public static float darkSteelSwordSkullLootingModifier = 0.15f;
-  public static float vanillaSwordSkullLootingModifier = 0.1f;
+  public static float darkSteelSwordWitherSkullLootingModifier = 0.05f; 
+  public static float darkSteelSwordSkullChance = 0.1f;
+  public static float darkSteelSwordSkullLootingModifier = 0.075f;
+  public static float vanillaSwordSkullLootingModifier = 0.05f;
   public static float vanillaSwordSkullChance = 0.05f;
   public static int darkSteelSwordPowerUsePerHit = 750;
   public static double darkSteelSwordEnderPearlDropChance = 1;
