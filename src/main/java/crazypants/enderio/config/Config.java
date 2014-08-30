@@ -255,6 +255,7 @@ public final class Config {
   public static String isGasConduitEnabled = "auto";
 
   public static String[] soulVesselBlackList = new String[0];
+  public static boolean soulVesselCapturesBosses = false;
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -680,7 +681,11 @@ public final class Config {
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled, 
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
     
-    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionItems.name, soulVesselBlackList, "Entities listed here will can not be captured in a 'Vessel of Souls'");
+    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionItems.name, soulVesselBlackList, 
+        "Entities listed here will can not be captured in a 'Vessel of Souls'");
+    
+    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionItems.name, soulVesselCapturesBosses, 
+        "When set to false, any mob with a 'boss bar' won't be able to be captured in the 'Vessel of Souls'");
   }
 
   private Config() {
