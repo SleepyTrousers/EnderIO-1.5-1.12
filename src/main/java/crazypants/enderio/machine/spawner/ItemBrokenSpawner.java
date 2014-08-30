@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -88,7 +89,7 @@ public class ItemBrokenSpawner extends Item {
     if(par1ItemStack != null && par1ItemStack.stackTagCompound != null) {
       String mobName = getMobTypeFromStack(par1ItemStack);
       if(mobName != null) {
-        par3List.add(mobName);
+        par3List.add(StatCollector.translateToLocal("entity." + mobName + ".name"));
       }
       if(!TooltipAddera.instance.showAdvancedTooltips()) {
         TooltipAddera.instance.addShowDetailsTooltip(par3List);

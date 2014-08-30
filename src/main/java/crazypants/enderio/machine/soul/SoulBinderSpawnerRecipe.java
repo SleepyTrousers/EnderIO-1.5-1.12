@@ -10,9 +10,9 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 
-public class SoulFuserSpawnerRecipe implements IMachineRecipe {
+public class SoulBinderSpawnerRecipe implements IMachineRecipe {
 
-  public static SoulFuserSpawnerRecipe instance = new SoulFuserSpawnerRecipe();
+  public static SoulBinderSpawnerRecipe instance = new SoulBinderSpawnerRecipe();
   
   @Override
   public String getUid() {
@@ -21,7 +21,7 @@ public class SoulFuserSpawnerRecipe implements IMachineRecipe {
 
   @Override
   public float getEnergyRequired(MachineRecipeInput... inputs) {
-    return Config.soulFuserMjForBrokenSpawner;
+    return Config.soulBinderMjForBrokenSpawner;
   }
 
   @Override
@@ -79,7 +79,7 @@ public class SoulFuserSpawnerRecipe implements IMachineRecipe {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockSoulFuser.unlocalisedName;
+    return ModObject.blockSoulBinder.unlocalisedName;
   }
 
   @Override

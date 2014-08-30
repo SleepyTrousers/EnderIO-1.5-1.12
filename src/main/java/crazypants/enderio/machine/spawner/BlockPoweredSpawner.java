@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -157,7 +158,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     String type = getSpawnerTypeFromItemStack(itemstack);
     if(type != null) {
-      list.add(type);
+      list.add(StatCollector.translateToLocal("entity." + type + ".name"));
     } else {
       list.add(Lang.localize("tile.blockPoweredSpawner.tooltip.empty", false));
     }

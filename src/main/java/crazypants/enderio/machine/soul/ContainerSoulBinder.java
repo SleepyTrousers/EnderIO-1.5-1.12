@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.AbstractMachineContainer;
 import crazypants.enderio.machine.AbstractMachineEntity;
 
-public class ContainerSoulFuser  extends AbstractMachineContainer {
+public class ContainerSoulBinder  extends AbstractMachineContainer {
 
-  public ContainerSoulFuser(InventoryPlayer playerInv, AbstractMachineEntity te) {
+  public ContainerSoulBinder(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);
   }
 

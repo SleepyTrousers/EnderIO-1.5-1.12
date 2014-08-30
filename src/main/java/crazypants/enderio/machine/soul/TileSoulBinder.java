@@ -11,32 +11,32 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerHandlerUtil;
 
-public class TileSoulFuser extends AbstractPoweredTaskEntity {
+public class TileSoulBinder extends AbstractPoweredTaskEntity {
 
-  public static final float POWER_PER_TICK_ONE = (float)Config.soulFuserLevelOnePowerPerTick;
+  public static final float POWER_PER_TICK_ONE = (float)Config.soulBinderLevelOnePowerPerTick;
   private static final BasicCapacitor CAP_ONE = new BasicCapacitor((int) (POWER_PER_TICK_ONE * 1.25), 
       Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
-  public static final float POWER_PER_TICK_TWO = (float)Config.soulFuserLevelTwoPowerPerTick;
+  public static final float POWER_PER_TICK_TWO = (float)Config.soulBinderLevelTwoPowerPerTick;
   private static final BasicCapacitor CAP_TWO = new BasicCapacitor((int) (POWER_PER_TICK_TWO * 1.25),
       Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
 
-  public static final float POWER_PER_TICK_THREE = (float)Config.soulFuserLevelThreePowerPerTick;
+  public static final float POWER_PER_TICK_THREE = (float)Config.soulBinderLevelThreePowerPerTick;
   private static final BasicCapacitor CAP_THREE = new BasicCapacitor((int) (POWER_PER_TICK_THREE * 1.25),
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
   
-  public TileSoulFuser() {
+  public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));
   }
 
   @Override
   public String getMachineName() {    
-    return ModObject.blockSoulFuser.unlocalisedName;
+    return ModObject.blockSoulBinder.unlocalisedName;
   }
 
   @Override
   protected boolean isMachineItemValidForSlot(int slot, ItemStack item) {
-    return SoulFuserSpawnerRecipe.instance.isValidInput(new MachineRecipeInput(slot, item));
+    return SoulBinderSpawnerRecipe.instance.isValidInput(new MachineRecipeInput(slot, item));
   }
 
   public void setCapacitor(Capacitors capacitorType) {

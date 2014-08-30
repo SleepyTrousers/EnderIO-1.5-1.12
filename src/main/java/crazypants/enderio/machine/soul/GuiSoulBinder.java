@@ -10,12 +10,12 @@ import crazypants.enderio.machine.painter.PainterContainer;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;
 
-public class GuiSoulFuser extends GuiMachineBase {
+public class GuiSoulBinder extends GuiMachineBase {
 
   private AbstractMachineEntity tileEntity;
 
-  public GuiSoulFuser(InventoryPlayer par1InventoryPlayer, AbstractMachineEntity te) {
-    super(te, new ContainerSoulFuser(par1InventoryPlayer, te));
+  public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, AbstractMachineEntity te) {
+    super(te, new ContainerSoulBinder(par1InventoryPlayer, te));
     tileEntity = te;
   }
 

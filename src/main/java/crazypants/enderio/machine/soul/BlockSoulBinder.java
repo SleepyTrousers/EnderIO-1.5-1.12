@@ -18,30 +18,30 @@ import crazypants.enderio.machine.painter.PainterContainer;
 import crazypants.enderio.machine.painter.TileEntityPainter;
 import crazypants.enderio.network.PacketHandler;
 
-public class BlockSoulFuser extends AbstractMachineBlock<TileSoulFuser> {
+public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
 
   
-  public static BlockSoulFuser create() {    
-    BlockSoulFuser result = new BlockSoulFuser();
+  public static BlockSoulBinder create() {    
+    BlockSoulBinder result = new BlockSoulBinder();
     result.init();
     return result;
   }
 
-  protected BlockSoulFuser() {
-    super(ModObject.blockSoulFuser, TileSoulFuser.class);
+  protected BlockSoulBinder() {
+    super(ModObject.blockSoulBinder, TileSoulBinder.class);
   }
   
   @Override
   protected void init() {    
     super.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulFuser.unlocalisedName, SoulFuserSpawnerRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
   }
   
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSoulFuser) {
-      return new ContainerSoulFuser(player.inventory, (AbstractMachineEntity) te);
+    if(te instanceof TileSoulBinder) {
+      return new ContainerSoulBinder(player.inventory, (AbstractMachineEntity) te);
     }
     return null;
   }
@@ -49,22 +49,22 @@ public class BlockSoulFuser extends AbstractMachineBlock<TileSoulFuser> {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileSoulFuser) {
-      return new GuiSoulFuser(player.inventory, (AbstractMachineEntity) te);
+    if(te instanceof TileSoulBinder) {
+      return new GuiSoulBinder(player.inventory, (AbstractMachineEntity) te);
     }
     return null;
   }
 
   @Override
   protected int getGuiId() {
-    return GuiHandler.GUI_ID_SOUL_FUSER;
+    return GuiHandler.GUI_ID_SOUL_BINDER;
   }
 
   @Override
   protected String getMachineFrontIconKey(boolean active) {
     if(active) {
-      return "enderio:blockSoulFuserOn";
+      return "enderio:blockSoulBinderOn";
     }
-    return "enderio:blockSoulFuser";
+    return "enderio:blockSoulBinder";
   }
 }

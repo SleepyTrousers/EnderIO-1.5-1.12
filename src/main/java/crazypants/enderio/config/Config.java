@@ -57,6 +57,7 @@ public final class Config {
   public static final Section sectionFluid = new Section("Fluid Settings", "fluid");
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
   public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
+  public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.5;
 
@@ -257,10 +258,10 @@ public final class Config {
   public static String[] soulVesselBlackList = new String[0];
   public static boolean soulVesselCapturesBosses = false;
 
-  public static double soulFuserLevelOnePowerPerTick = 50;
-  public static double soulFuserLevelTwoPowerPerTick = 100;
-  public static double soulFuserLevelThreePowerPerTick = 200;
-  public static int soulFuserMjForBrokenSpawner = 250000;
+  public static double soulBinderLevelOnePowerPerTick = 50;
+  public static double soulBinderLevelTwoPowerPerTick = 100;
+  public static double soulBinderLevelThreePowerPerTick = 200;
+  public static int soulBinderMjForBrokenSpawner = 250000;
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -686,11 +687,21 @@ public final class Config {
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled, 
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
     
-    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionItems.name, soulVesselBlackList, 
-        "Entities listed here will can not be captured in a 'Vessel of Souls'");
+    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList, 
+        "Entities listed here will can not be captured in a Soul Vial");
     
-    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionItems.name, soulVesselCapturesBosses, 
-        "When set to false, any mob with a 'boss bar' won't be able to be captured in the 'Vessel of Souls'");
+    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses, 
+        "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial");
+    
+    soulBinderLevelOnePowerPerTick = config.get(sectionSoulBinder.name, "soulBinderLevelOnePowerPerTick", soulBinderLevelOnePowerPerTick,
+        "The number of MJ/t consumed by an unupgraded soul binder.").getDouble(soulBinderLevelOnePowerPerTick);
+    
+    soulBinderLevelTwoPowerPerTick = config.get(sectionSoulBinder.name, "soulBinderLevelTwoPowerPerTick", soulBinderLevelTwoPowerPerTick,
+        "The number of MJ/t consumed by a soul binder with a double layer capacitor upgrade.").getDouble(soulBinderLevelTwoPowerPerTick);
+    soulBinderLevelThreePowerPerTick = config.get(sectionSoulBinder.name, "soulBinderLevelThreePowerPerTick", soulBinderLevelThreePowerPerTick,
+        "The number of MJ/t consumed by a soul binder with an octadic capacitor upgrade.").getDouble(soulBinderLevelThreePowerPerTick);    
+    soulBinderMjForBrokenSpawner = config.get(sectionSoulBinder.name, "soulBinderMjForBrokenSpawner", soulBinderMjForBrokenSpawner,
+        "The number of MJ required to change the type of a broken spawner.").getInt(soulBinderMjForBrokenSpawner);
   }
 
   private Config() {

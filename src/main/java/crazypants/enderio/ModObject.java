@@ -51,7 +51,7 @@ public enum ModObject {
   blockVacuumChest,
   blockWirelessCharger,
   blockEnchanter,
-  blockSoulFuser,
+  blockSoulBinder,
 
   blockPoweredSpawner,
   itemBrokenSpawner,

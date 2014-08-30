@@ -93,7 +93,7 @@ import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
-import crazypants.enderio.machine.soul.BlockSoulFuser;
+import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.still.BlockVat;
@@ -197,7 +197,7 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
-  public static BlockSoulFuser blockSoulFuser; 
+  public static BlockSoulBinder blockSoulFuser; 
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -306,7 +306,7 @@ public class EnderIO {
     blockPoweredSpawner = BlockPoweredSpawner.create();
     itemBrokenSpawner = ItemBrokenSpawner.create();
     
-    blockSoulFuser = BlockSoulFuser.create();
+    blockSoulFuser = BlockSoulBinder.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();

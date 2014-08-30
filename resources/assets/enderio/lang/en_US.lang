@@ -322,6 +322,11 @@ item.itemBrokenSpawner.name=Broken Spawner
 item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
 item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
 
+tile.blockSoulBinder.name=Soul Binder
+tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
+tile.blockSoulBinder.tooltip.detailed.line2=a broken spawner
+
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks
