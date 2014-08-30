@@ -10,7 +10,8 @@ public enum Alloy {
   REDSTONE_ALLOY("redstoneAlloy", 1.0f),
   CONDUCTIVE_IRON("conductiveIron", 5.2f),
   PHASED_IRON("phasedIron", 7.0f),
-  DARK_STEEL("darkSteel", 10.0f);
+  DARK_STEEL("darkSteel", 10.0f),
+  SOULARIUM("soularium", 10.0f);
 
   public final String unlocalisedName;
   public final String iconKey;

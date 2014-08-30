@@ -144,6 +144,7 @@ enderio.conductiveIron.name=Conductive Iron
 enderio.phasedIron.name=Pulsating Iron
 enderio.vibrantNugget.name=Vibrant Alloy Nugget
 enderio.darkSteel.name=Dark Steel
+enderio.soularium.name=Soularium
 
 tile.blockIngotStorage.name=Ingot Storage
 tile.enderio.electricalSteel.name=Electrical Steel Block
@@ -154,6 +155,7 @@ tile.enderio.conductiveIron.name=Conductive Iron Block
 tile.enderio.phasedIron.name=Pulsating Iron Block
 tile.enderio.vibrantNugget.name=Vibrant Nugget Block
 tile.enderio.darkSteel.name=Dark Steel Block
+tile.enderio.soularium.name=Soularium Block
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder
