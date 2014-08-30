@@ -257,6 +257,11 @@ public final class Config {
   public static String[] soulVesselBlackList = new String[0];
   public static boolean soulVesselCapturesBosses = false;
 
+  public static double soulFuserLevelOnePowerPerTick = 50;
+  public static double soulFuserLevelTwoPowerPerTick = 100;
+  public static double soulFuserLevelThreePowerPerTick = 200;
+  public static int soulFuserMjForBrokenSpawner = 250000;
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());

@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitDisplayMode;
@@ -186,6 +187,26 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
     return false;
   }
+  
+  public boolean containsSoul(ItemStack item) {
+    if(item == null) {
+      return false;
+    }
+    if(item.getItem() != this) {
+      return false;
+    }    
+    return item.stackTagCompound != null && item.stackTagCompound.hasKey("id");    
+  }
+  
+  public String getMobTypeFromStack(ItemStack item) {
+    if(!containsSoul(item)) {
+      return null;
+    }
+    if(item == null || item.stackTagCompound == null || !item.stackTagCompound.hasKey("id")) {
+      return null;
+    }
+    return item.stackTagCompound.getString("id");
+  }
 
   private boolean isBlackListed(String entityId) {
     for(String str : Config.soulVesselBlackList) {
@@ -194,16 +215,6 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
       }
     }
     return false;
-  }
-
-  private boolean containsSoul(ItemStack item) {
-    if(item == null) {
-      return false;
-    }
-    if(item.getItem() != this) {
-      return false;
-    }    
-    return item.stackTagCompound != null && item.stackTagCompound.hasKey("id");    
   }
 
   @Override
@@ -224,11 +235,6 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
   }
 
-  private String getMobTypeFromStack(ItemStack item) {
-    if(item == null || item.stackTagCompound == null || !item.stackTagCompound.hasKey("id")) {
-      return null;
-    }
-    return item.stackTagCompound.getString("id");
-  }
+  
 
 }

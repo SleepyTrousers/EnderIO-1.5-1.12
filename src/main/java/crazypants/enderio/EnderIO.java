@@ -92,6 +92,7 @@ import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.soul.BlockSoulFuser;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.still.BlockVat;
@@ -195,6 +196,7 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
+  public static BlockSoulFuser blockSoulFuser; 
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -241,13 +243,7 @@ public class EnderIO {
   public static ItemDarkSteelAxe itemDarkSteelAxe;
   public static BlockVacuumChest blockVacuumChest;
   public static ItemGliderWing itemGliderWing;
-
-  //  public static ITrigger triggerNoEnergy;
-  //  public static ITrigger triggerHasEnergy;
-  //  public static ITrigger triggerFullEnergy;
-  //  public static ITrigger triggerIsCharging;
-  //  public static ITrigger triggerFinishedCharging;
-
+    
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
@@ -308,6 +304,8 @@ public class EnderIO {
 
     blockPoweredSpawner = BlockPoweredSpawner.create();
     itemBrokenSpawner = ItemBrokenSpawner.create();
+    
+    blockSoulFuser = BlockSoulFuser.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
