@@ -163,7 +163,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
       if(burnTime <= 0 && storedEnergy < powerHandler.getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
-          burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) * getBurnTimeMultiplier());
+          burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) / getBurnTimeMultiplier());
           if(burnTime > 0) {
             totalBurnTime = burnTime;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
@@ -195,11 +195,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   public float getBurnTimeMultiplier() {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      //burn for 62.5% of the time to produce 2x the power, i.e. 1.25 the effecientcy
-      return 1.25f;
+      return 1.5f;
     } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      //burn for half as long to produce 4x the power, i.e. twice the effecientcy
-      return 1;
+      return 1.5f;
     }
     return 2;
   }
