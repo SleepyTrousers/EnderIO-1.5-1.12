@@ -1,22 +1,21 @@
 package crazypants.enderio.block;
 
-import net.minecraft.block.Block;
+import java.util.List;
+
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
-import crazypants.enderio.material.BlockFusedQuartz;
 
-public class BlockReinforcedObsidian extends BlockEio implements IResourceTooltipProvider {
+public class BlockReinforcedObsidian extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
   public static BlockReinforcedObsidian create() {
     BlockReinforcedObsidian result = new BlockReinforcedObsidian();
@@ -56,5 +55,13 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {}
+
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return IWailaInfoProvider.BIT_BASIC;
   }
 }

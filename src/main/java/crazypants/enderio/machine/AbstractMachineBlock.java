@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -28,11 +29,13 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider {
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider, IWailaInfoProvider {
 
   public static int renderId;
 
@@ -335,5 +338,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
+  
+  @Override
+  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {}
+  
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return IWailaInfoProvider.ALL_BITS;
+  }
 }

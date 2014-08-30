@@ -11,13 +11,17 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,6 +29,8 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.util.Lang;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockPaintedGlowstone extends Block implements ITileEntityProvider {
    
@@ -233,6 +239,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
 
     public PainterTemplate(Block paintedGlowstone) {
       super(Blocks.glowstone, paintedGlowstone);
+      MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -241,10 +248,25 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider 
       if(paintSource == null) {
         return new ResultStack[0];
       }
+      
+      if (paintSource.getItem() == Item.getItemFromBlock(Blocks.glowstone)) {
+        ItemStack stack = new ItemStack(Blocks.glowstone);
+        stack.stackTagCompound = new NBTTagCompound();
+        String tagName = "wasPainted";
+        stack.stackTagCompound.setBoolean(tagName, true);
+        return new ResultStack[] { new ResultStack(stack) };
+      }
+      
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-   
+    
+    @SubscribeEvent
+    public void onTooltip(ItemTooltipEvent event) {
+      if (event.itemStack != null && Block.getBlockFromItem(event.itemStack.getItem()) == Blocks.glowstone && event.itemStack.stackTagCompound != null) {
+        if (event.itemStack.stackTagCompound.getBoolean("wasPainted")) {
+          event.toolTip.add(Lang.localize("painter.tooltip.wasPainted"));
+        }
+      }
+    }
   }
-
-  
 }

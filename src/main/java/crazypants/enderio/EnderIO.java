@@ -28,6 +28,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
+import crazypants.enderio.compat.waila.WailaCompat;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
@@ -393,6 +394,7 @@ public class EnderIO {
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
     EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
 
+    FMLInterModComms.sendMessage("Waila", "register", WailaCompat.class.getName() + ".load");
   }
 
   @EventHandler
