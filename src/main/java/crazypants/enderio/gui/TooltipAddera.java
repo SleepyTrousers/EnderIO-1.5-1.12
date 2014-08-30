@@ -125,16 +125,19 @@ public class TooltipAddera {
   }
 
   public static void addInformation(IResourceTooltipProvider item, ItemTooltipEvent evt) {
-    String name = item.getUnlocalizedNameForTooltip(evt.itemStack);
+    addInformation(item, evt.itemStack, evt.entityPlayer, evt.toolTip);
+  }
+  
+  public static void addInformation(IResourceTooltipProvider tt, ItemStack itemstack, EntityPlayer entityplayer, List list) {
+    String name = tt.getUnlocalizedNameForTooltip(itemstack);
     if(showAdvancedTooltips()) {
-      addCommonTooltipFromResources(evt.toolTip, name);
-      addDetailedTooltipFromResources(evt.toolTip, name);
+      addCommonTooltipFromResources(list, name);
+      addDetailedTooltipFromResources(list, name);
     } else {    
-      addBasicTooltipFromResources(evt.toolTip, name);
-      addCommonTooltipFromResources(evt.toolTip, name);
-      addShowDetailsTooltip(evt.toolTip);
+      addBasicTooltipFromResources(list, name);
+      addCommonTooltipFromResources(list, name);
+      addShowDetailsTooltip(list);
     }
-
   }
 
   public static void addInformation(IAdvancedTooltipProvider tt, ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {

@@ -27,6 +27,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -37,7 +38,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider {
+public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
 
   public static int renderId = -1;
 
@@ -362,6 +363,14 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       max.z = Math.max(max.z, bc.z + 1);
     }
     return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
+  }
+
+  @Override
+  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {}
+
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return IWailaInfoProvider.BIT_DETAILED;
   }
 
 }
