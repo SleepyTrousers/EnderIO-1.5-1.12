@@ -42,7 +42,9 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     for (IPowerConduit con : conduits) {
       con.setActive(false);
     }
-    powerManager.onNetworkDestroyed();
+    if(powerManager != null) {
+      powerManager.onNetworkDestroyed();
+    }
     super.destroyNetwork();
   }
 
