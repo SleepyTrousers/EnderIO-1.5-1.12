@@ -117,7 +117,6 @@ public class MaterialRecipes {
 
     // Fused Quartz Frame
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
 
     // Machine Chassi
 
@@ -131,7 +130,6 @@ public class MaterialRecipes {
 
     // Basic Gear
     GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "stickWood", 'c', Blocks.cobblestone));
-    GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "woodStick", 'c', Blocks.cobblestone));
 
     //Ender Capacitor
     ItemStack enderCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 2);
