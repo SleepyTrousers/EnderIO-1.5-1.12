@@ -9,7 +9,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,11 +43,11 @@ public class WailaCompat implements IWailaDataProvider {
 
     Block block = accessor.getBlock();
     Item item = Item.getItemFromBlock(block);
-    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    EntityPlayer player = accessor.getPlayer();
+    World world = player.worldObj;
 
     if(block instanceof IWailaInfoProvider) {
       IWailaInfoProvider info = (IWailaInfoProvider) block;
-      World world = Minecraft.getMinecraft().theWorld;
       MovingObjectPosition pos = accessor.getPosition();
 
       if(block instanceof IAdvancedTooltipProvider) {
@@ -73,7 +72,7 @@ public class WailaCompat implements IWailaDataProvider {
           adv.addBasicEntries(itemStack, player, currenttip, false);
         }
       } else if(block instanceof IResourceTooltipProvider) {
-        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, Minecraft.getMinecraft().thePlayer, currenttip);
+        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
 
       info.getWailaInfo(currenttip, world, pos.blockX, pos.blockY, pos.blockZ);
@@ -82,11 +81,11 @@ public class WailaCompat implements IWailaDataProvider {
     else {
 
       if(block instanceof IAdvancedTooltipProvider) {
-        TooltipAddera.addInformation((IAdvancedTooltipProvider) block, itemStack, Minecraft.getMinecraft().thePlayer, currenttip, false);
+        TooltipAddera.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
       } else if(item instanceof IAdvancedTooltipProvider) {
-        TooltipAddera.addInformation((IAdvancedTooltipProvider) item, itemStack, Minecraft.getMinecraft().thePlayer, currenttip, false);
+        TooltipAddera.addInformation((IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
       } else if(block instanceof IResourceTooltipProvider) {
-        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, Minecraft.getMinecraft().thePlayer, currenttip);
+        TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
     }
     return currenttip;
