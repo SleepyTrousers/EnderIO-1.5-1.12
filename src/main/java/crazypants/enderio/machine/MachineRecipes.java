@@ -74,7 +74,7 @@ public class MachineRecipes {
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
     Object glassSides;
     if(Config.useHardRecipes) {
-      glassSides = "glassHardened";
+      glassSides = "blockGlassHardened";
     } else {
       glassSides = "glass";
     }
@@ -85,7 +85,7 @@ public class MachineRecipes {
     GameRegistry.addRecipe(new ShapedOreRecipe(basicTank, "ibi", "bgb", "ibi", 'g', "glass", 'i', Items.iron_ingot, 'b', Blocks.iron_bars));
     
     ItemStack advTank = new ItemStack(EnderIO.blockTank,1,1);
-    GameRegistry.addRecipe(new ShapedOreRecipe(advTank, "ibi", "bgb", "ibi", 'g', "glassHardened", 'i', darkSteel, 'b', EnderIO.blockDarkIronBars));
+    GameRegistry.addRecipe(new ShapedOreRecipe(advTank, "ibi", "bgb", "ibi", 'g', "blockGlassHardened", 'i', darkSteel, 'b', EnderIO.blockDarkIronBars));
     
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);
@@ -118,12 +118,12 @@ public class MachineRecipes {
       ItemStack solarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 0);
       ItemStack advSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 1);
       if(Config.useHardRecipes) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'c', capacitor, 'e',
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'c', capacitor, 'e',
             energeticAlloy, 'p', phasedGold));
         GameRegistry.addRecipe(new ShapedOreRecipe(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e',
             phasedIron, 'p', phasedGold));
       } else {
-        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "glassHardened", 'p', silicon, 'e',
+        GameRegistry.addRecipe(new ShapedOreRecipe(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'p', silicon, 'e',
             energeticAlloy, 'c', electricSteel));
         GameRegistry.addRecipe(new ShapedOreRecipe(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vibCry, 'e',
             phasedGold, 'c', phasedIron));
