@@ -31,9 +31,10 @@ public class MaterialRecipes {
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
 
     for (Alloy alloy : Alloy.values()) {
-      OreDictionary.registerOre(alloy.oredictName, new ItemStack(EnderIO.itemAlloy, 1, alloy.ordinal()));
+      OreDictionary.registerOre(alloy.oredictIngotName, new ItemStack(EnderIO.itemAlloy, 1, alloy.ordinal()));
+      OreDictionary.registerOre(alloy.oredictBlockName, new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));
     }
-    
+
     OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
     OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
 
@@ -148,15 +149,15 @@ public class MaterialRecipes {
     } else {
       GameRegistry.addShapedRecipe(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', Blocks.glowstone);
     }
-    
+
     if(Config.reinforcedObsidianEnabled) {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);
       GameRegistry.addShapedRecipe(reinfObs , "dbd", "bob", "dbd", 'd', darkSteel, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
     }
-    
+
     for (Alloy alloy : Alloy.values()) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictName));
-      GameRegistry.addShapelessRecipe(new ItemStack(EnderIO.itemAlloy, 9, alloy.ordinal()), new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));      
+      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictIngotName));
+      GameRegistry.addShapelessRecipe(new ItemStack(EnderIO.itemAlloy, 9, alloy.ordinal()), new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));
     }
   }
 
