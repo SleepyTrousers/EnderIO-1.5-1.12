@@ -86,14 +86,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
   public boolean isFull3D() {
     return true;
   }
-
-  @Override
-  public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-    if(PainterUtil.getSourceBlock(itemStack) == null) {
-      PainterUtil.setSourceBlock(itemStack, EnderIO.blockConduitFacade, 0);
-    }
-  }
-
+ 
   public ItemStack createItemStackForSourceBlock(Block id, int itemDamage) {
     if(id == null) {
       id = EnderIO.blockConduitFacade;
