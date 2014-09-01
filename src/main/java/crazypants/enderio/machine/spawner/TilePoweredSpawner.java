@@ -54,6 +54,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     logic.spawnDelay = 0;
   }
 
+  @Override
   public void setCapacitor(Capacitors capacitorType) {
     this.capacitorType = capacitorType;
     switch (capacitorType) {
@@ -116,11 +117,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     return true;
   }
 
+  @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     logic.readFromNBT(nbtRoot);
   }
 
+  @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     logic.writeToNBT(nbtRoot);
@@ -148,6 +151,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
   }
 
+  @Override
   public void updateEntity() {
     logic.updateSpawner();
     super.updateEntity();
@@ -157,10 +161,12 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
    * Called when a client event is received with the event number and argument,
    * see World.sendClientEvent
    */
+  @Override
   public boolean receiveClientEvent(int p_145842_1_, int p_145842_2_) {
     return logic.setDelayToMin(p_145842_1_) ? true : super.receiveClientEvent(p_145842_1_, p_145842_2_);
   }
 
+  @Override
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res = new PoweredTask(nextRecipe, chance, getInputs());
 
@@ -185,6 +191,10 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
     return spaceClear;
   }
+  
+  public String getEntityName() {
+    return logic.getEntityNameToSpawn();
+  }
 
   class SpawnerLogic extends MobSpawnerBaseLogic {
 
@@ -192,26 +202,32 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     private int maxNearbyEntities = 6;
     private int spawnRange = 4;
 
+    @Override
     public void func_98267_a(int par1) {
       worldObj.addBlockEvent(xCoord, yCoord, zCoord, EnderIO.blockPoweredSpawner, par1, 0);
     }
 
+    @Override
     public World getSpawnerWorld() {
       return worldObj;
     }
 
+    @Override
     public int getSpawnerX() {
       return xCoord;
     }
 
+    @Override
     public int getSpawnerY() {
       return yCoord;
     }
 
+    @Override
     public int getSpawnerZ() {
       return zCoord;
     }
 
+    @Override
     public void setRandomEntity(MobSpawnerBaseLogic.WeightedRandomMinecart par1WeightedRandomMinecart) {
       super.setRandomEntity(par1WeightedRandomMinecart);
       if(getSpawnerWorld() != null) {
@@ -223,11 +239,12 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
      * Returns true if there's a player close enough to this mob spawner to
      * activate it.
      */
+    @Override
     public boolean isActivated() {
       if(MIN_PLAYER_DISTANCE > 0) {
         //TODO: Add this to main 'hasPower' like check so turn of the machine if the player is out of range?
-        boolean playerInRange = worldObj.getClosestPlayer((double) getSpawnerX() + 0.5D, (double) getSpawnerY() + 0.5D, (double) getSpawnerZ() + 0.5D,
-            (double) MIN_PLAYER_DISTANCE) != null;
+        boolean playerInRange = worldObj.getClosestPlayer(getSpawnerX() + 0.5D, getSpawnerY() + 0.5D, getSpawnerZ() + 0.5D,
+            MIN_PLAYER_DISTANCE) != null;
         if(!playerInRange) {
           return false;
         }
@@ -235,15 +252,16 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       return isActive();
     }
 
+    @Override
     public void updateSpawner() {
 
       if(isActivated()) {
         double d2;
 
         if(getSpawnerWorld().isRemote) {
-          double d0 = (double) ((float) getSpawnerX() + getSpawnerWorld().rand.nextFloat());
-          double d1 = (double) ((float) getSpawnerY() + getSpawnerWorld().rand.nextFloat());
-          d2 = (double) ((float) getSpawnerZ() + getSpawnerWorld().rand.nextFloat());
+          double d0 = getSpawnerX() + getSpawnerWorld().rand.nextFloat();
+          double d1 = getSpawnerY() + getSpawnerWorld().rand.nextFloat();
+          d2 = getSpawnerZ() + getSpawnerWorld().rand.nextFloat();
           getSpawnerWorld().spawnParticle("smoke", d0, d1, d2, 0.0D, 0.0D, 0.0D);
           getSpawnerWorld().spawnParticle("flame", d0, d1, d2, 0.0D, 0.0D, 0.0D);
 
@@ -253,7 +271,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
           }
 
           field_98284_d = field_98287_c;
-          field_98287_c = (field_98287_c + (double) (1000.0F / ((float) spawnDelay + 200.0F))) % 360.0D;
+          field_98287_c = (field_98287_c + 1000.0F / (spawnDelay + 200.0F)) % 360.0D;
         } else {
 
           if(spawnDelay == -1) {
@@ -276,17 +294,17 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
             int j = getSpawnerWorld().getEntitiesWithinAABB(
                 entity.getClass(),
-                AxisAlignedBB.getBoundingBox((double) getSpawnerX(), (double) getSpawnerY(), (double) getSpawnerZ(), (double) (getSpawnerX() + 1),
-                    (double) (getSpawnerY() + 1), (double) (getSpawnerZ() + 1)).expand((double) (spawnRange * 2), 4.0D, (double) (spawnRange * 2))).size();
+                AxisAlignedBB.getBoundingBox(getSpawnerX(), getSpawnerY(), getSpawnerZ(), getSpawnerX() + 1,
+                    getSpawnerY() + 1, getSpawnerZ() + 1).expand(spawnRange * 2, 4.0D, spawnRange * 2)).size();
 
             if(j >= maxNearbyEntities) {
               resetTimer();
               return;
             }
 
-            d2 = (double) getSpawnerX() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * (double) spawnRange;
-            double d3 = (double) (getSpawnerY() + getSpawnerWorld().rand.nextInt(3) - 1);
-            double d4 = (double) getSpawnerZ() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * (double) spawnRange;
+            d2 = getSpawnerX() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * spawnRange;
+            double d3 = getSpawnerY() + getSpawnerWorld().rand.nextInt(3) - 1;
+            double d4 = getSpawnerZ() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * spawnRange;
             EntityLiving entityliving = entity instanceof EntityLiving ? (EntityLiving) entity : null;
             entity.setLocationAndAngles(d2, d3, d4, getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
 

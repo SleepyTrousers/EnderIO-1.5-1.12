@@ -15,13 +15,15 @@ public enum Alloy {
 
   public final String unlocalisedName;
   public final String iconKey;
-  public final String oredictName;
+  public final String oredictIngotName;
+  public final String oredictBlockName;
   private final float hardness;
 
   private Alloy(String baseName, float hardness) {
     this.unlocalisedName = "enderio." + baseName;
     this.iconKey = "enderio:" + baseName;
-    this.oredictName = "ingot" + StringUtils.capitalize(baseName);
+    this.oredictIngotName = "ingot" + StringUtils.capitalize(baseName);
+    this.oredictBlockName = "block" + StringUtils.capitalize(baseName);
     this.hardness = hardness;
   }
 

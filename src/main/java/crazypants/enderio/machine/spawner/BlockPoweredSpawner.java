@@ -19,6 +19,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -178,6 +179,14 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
   }
   
-  
+  @Override
+  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {
+    TilePoweredSpawner te = (TilePoweredSpawner) world.getTileEntity(x, y, z);
+    tooltip.add(te.getEntityName());
+  }
 
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return IWailaInfoProvider.BIT_DETAILED;
+  }
 }
