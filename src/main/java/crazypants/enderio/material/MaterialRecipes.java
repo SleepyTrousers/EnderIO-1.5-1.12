@@ -38,15 +38,7 @@ public class MaterialRecipes {
     OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
     OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
 
-    OreDictionary.registerOre("glass", Blocks.glass);
-    OreDictionary.registerOre("stickWood", Items.stick);
-    OreDictionary.registerOre("woodStick", Items.stick);
-    OreDictionary.registerOre("sand", Blocks.sand);
-    OreDictionary.registerOre("ingotIron", Items.iron_ingot);
-    OreDictionary.registerOre("ingotGold", Items.gold_ingot);
-
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
-    OreDictionary.registerOre("glass", pureGlass);
     OreDictionary.registerOre("blockGlass", pureGlass);
     OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
     OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()));
@@ -126,7 +118,6 @@ public class MaterialRecipes {
 
     // Fused Quartz Frame
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
-    GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick"));
 
     // Machine Chassi
 
@@ -140,7 +131,6 @@ public class MaterialRecipes {
 
     // Basic Gear
     GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "stickWood", 'c', Blocks.cobblestone));
-    GameRegistry.addRecipe(new ShapedOreRecipe(basicGear, "scs", "c c", "scs", 's', "woodStick", 'c', Blocks.cobblestone));
 
     //Ender Capacitor
     ItemStack enderCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 2);

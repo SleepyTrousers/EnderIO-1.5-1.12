@@ -76,13 +76,13 @@ public class MachineRecipes {
     if(Config.useHardRecipes) {
       glassSides = "blockGlassHardened";
     } else {
-      glassSides = "glass";
+      glassSides = "blockGlass";
     }
     GameRegistry.addRecipe(new ShapedOreRecipe(reservoir, "gfg", "gcg", "gfg", 'g', glassSides, 'c', Items.cauldron, 'f', fusedQuartz));
 
     //Tanks
     ItemStack basicTank = new ItemStack(EnderIO.blockTank,1,0);
-    GameRegistry.addRecipe(new ShapedOreRecipe(basicTank, "ibi", "bgb", "ibi", 'g', "glass", 'i', Items.iron_ingot, 'b', Blocks.iron_bars));
+    GameRegistry.addRecipe(new ShapedOreRecipe(basicTank, "ibi", "bgb", "ibi", 'g', "blockGlass", 'i', Items.iron_ingot, 'b', Blocks.iron_bars));
     
     ItemStack advTank = new ItemStack(EnderIO.blockTank,1,1);
     GameRegistry.addRecipe(new ShapedOreRecipe(advTank, "ibi", "bgb", "ibi", 'g', "blockGlassHardened", 'i', darkSteel, 'b', EnderIO.blockDarkIronBars));
@@ -207,7 +207,7 @@ public class MachineRecipes {
     if(Config.useHardRecipes) {
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
     } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', "glass", 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
+      GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', "blockGlass", 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
     }    
     ItemStack invPoweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 1);
     GameRegistry.addShapelessRecipe(invPoweredLamp, poweredLamp, Blocks.redstone_torch);
@@ -215,7 +215,7 @@ public class MachineRecipes {
     
     //light
     ItemStack lamp = new ItemStack(EnderIO.blockElectricLight, 1, 2);
-    GameRegistry.addRecipe(new ShapedOreRecipe(lamp, "   ", "ggg", "isi", 'g', "glass", 's', Blocks.glowstone, 'i', Items.iron_ingot));
+    GameRegistry.addRecipe(new ShapedOreRecipe(lamp, "   ", "ggg", "isi", 'g', "blockGlass", 's', Blocks.glowstone, 'i', Items.iron_ingot));
     ItemStack invLamp = new ItemStack(EnderIO.blockElectricLight, 1, 3);
     GameRegistry.addShapelessRecipe(invLamp, lamp, Blocks.redstone_torch);
     GameRegistry.addShapelessRecipe(lamp, invLamp, Blocks.redstone_torch); 
