@@ -104,6 +104,8 @@ public class RecipeConfigParser extends DefaultHandler {
   private boolean inputTagOpen = false;
 
   private boolean debug = false;
+  
+  private boolean inCustomHandler = false;
 
   private CustomTagHandler customHandler = null;
 
@@ -183,6 +185,7 @@ public class RecipeConfigParser extends DefaultHandler {
     // Custom tag handling
     if(customHandler != null) {
       if(customHandler.endElement(uri, localName, qName)) {
+        inCustomHandler = false;
         return;
       }
     }
@@ -253,12 +256,15 @@ public class RecipeConfigParser extends DefaultHandler {
     // Custom tag handling
     if(customHandler != null) {
       if(customHandler.startElement(uri, localName, qName, attributes)) {
+        inCustomHandler = true;
         return;
       }
     }
 
     if(recipe == null) {
-      Log.warn(LP + "Found element <" + localName + "> with no recipe decleration.");
+      if(!inCustomHandler) {
+        Log.warn(LP + "Found element <" + localName + "> with no recipe decleration.");
+      }
       return;
     }
 
@@ -383,12 +389,13 @@ public class RecipeConfigParser extends DefaultHandler {
     }
 
     boolean useMeta = true;
+    int itemMeta = 0;
     String metaString = getStringValue(AT_ITEM_META, attributes, "0");
     if("*".equals(metaString)) {
       useMeta = false;
+    } else {
+      itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
     }
-    int itemMeta = getIntValue(AT_ITEM_META, attributes, 0);
-
     ItemStack res = null;
 
     String modId = getStringValue(AT_MOD_ID, attributes, null);
