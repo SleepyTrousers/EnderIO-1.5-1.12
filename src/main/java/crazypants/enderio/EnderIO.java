@@ -394,7 +394,7 @@ public class EnderIO {
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
     EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
 
-    FMLInterModComms.sendMessage("Waila", "register", WailaCompat.class.getName() + ".load");
+    FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.compat.waila.WailaCompat.load");    
   }
 
   @EventHandler
