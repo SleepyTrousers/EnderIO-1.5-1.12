@@ -421,6 +421,14 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
     }
     world.removeTileEntity(x, y, z);
   }
+  
+  public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+    ItemStack equipped = player.getCurrentEquippedItem();
+    if(!player.isSneaking() || equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
+      return;
+    }
+    ConduitUtil.openConduitGui(world, x, y, z, player);
+  }
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z,
@@ -477,7 +485,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
 
     // Break conduit with tool
     if(ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
-      if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+      if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {                        
         IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
         if(wrench.canWrench(player, x, y, z)) {
           if(!world.isRemote) {

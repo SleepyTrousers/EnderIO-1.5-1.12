@@ -6,6 +6,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -47,30 +49,9 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider {
   @Override
   public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float par8,
       float par9, float par10) {
-    
+        
     if(player.isSneaking()) {
-
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof IConduitBundle) {
-        IConduitBundle cb = (IConduitBundle) te;
-        Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
-        boolean hasInsulated = false;
-        for (IConduit con : cb.getConduits()) {
-          cons.addAll(con.getExternalConnections());
-          if(con instanceof IInsulatedRedstoneConduit) {
-            hasInsulated = true;
-          }
-        }
-        if(cons.isEmpty() && !hasInsulated) {
-          return false;
-        }
-        if(cons.size() == 1) {
-          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
-          return true;
-        }
-        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
-
-      }
+      ConduitUtil.openConduitGui(world, x, y, z, player);
       return false;
     }
 

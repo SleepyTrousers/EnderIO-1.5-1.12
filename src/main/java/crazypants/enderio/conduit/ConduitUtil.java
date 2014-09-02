@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -22,6 +23,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
@@ -379,6 +381,30 @@ public class ConduitUtil {
       }
     }
     return false;
+  }
+  
+  public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {    
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(! (te instanceof TileConduitBundle) ) {
+      return;
+    }
+    IConduitBundle cb = (IConduitBundle) te;
+    Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
+    boolean hasInsulated = false;
+    for (IConduit con : cb.getConduits()) {
+      cons.addAll(con.getExternalConnections());
+      if(con instanceof IInsulatedRedstoneConduit) {
+        hasInsulated = true;
+      }
+    }
+    if(cons.isEmpty() && !hasInsulated) {
+      return;
+    }
+    if(cons.size() == 1) {
+      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
+      return;
+    }
+    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
   }
 
 }
