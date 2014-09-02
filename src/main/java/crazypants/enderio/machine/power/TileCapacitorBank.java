@@ -558,11 +558,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public int doReceiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     double freeSpace = maxStoredEnergy - storedEnergy;
     freeSpace = Math.min(freeSpace, getMaxInput());
-    int result = (int) Math.min(maxReceive / 10, freeSpace);
+    double result = Math.min((double)maxReceive / 10d, freeSpace);
     if(!simulate) {
       doAddEnergy(result);
     }
-    return result * 10;
+    return (int)(result * 10);
   }
 
   public double doGetEnergyStored(ForgeDirection from) {
