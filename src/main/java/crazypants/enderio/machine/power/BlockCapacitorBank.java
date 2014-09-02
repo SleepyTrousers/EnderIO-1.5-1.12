@@ -153,7 +153,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       return true;
     }
 
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
+    if(!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
+    }
     return true;
   }
 

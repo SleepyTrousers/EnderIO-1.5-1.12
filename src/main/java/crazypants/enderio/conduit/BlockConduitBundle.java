@@ -517,7 +517,9 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
           return true;
         }
       } else {
-        player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
+        if(!world.isRemote) {
+          player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + closest.component.dir.ordinal(), world, x, y, z);
+        }
         return true;
       }
     }

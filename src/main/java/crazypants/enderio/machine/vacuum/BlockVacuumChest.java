@@ -66,7 +66,9 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, x, y, z);
+    if(!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_VACUUM_CHEST, world, x, y, z);
+    }
     return true;
   }
   

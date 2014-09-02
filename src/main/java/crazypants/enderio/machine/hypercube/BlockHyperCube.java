@@ -277,13 +277,15 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     if(!(te instanceof TileHyperCube)) {
       return false;
     }
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
+    if(!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_HYPER_CUBE, world, x, y, z);
+    }
     return true;
   }
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return null;
+    return new ContainerHyperCube();
   }
 
   @Override

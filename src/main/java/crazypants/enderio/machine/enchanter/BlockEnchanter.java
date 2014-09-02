@@ -93,7 +93,9 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, x, y, z);
+    if(!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_ENCHANTER, world, x, y, z);
+    }
     return true;
   }
   
