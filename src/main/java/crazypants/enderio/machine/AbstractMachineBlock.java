@@ -119,7 +119,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);
+    if(!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, getGuiId(), world, x, y, z);
+    }
     return true;
   }
 
