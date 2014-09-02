@@ -224,9 +224,9 @@ public final class Config {
 
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
-  public static float poweredSpawnerLevelOnePowerPerTick = 16;
-  public static float poweredSpawnerLevelTwoPowerPerTick = 48;
-  public static float poweredSpawnerLevelThreePowerPerTick = 96;
+  public static float poweredSpawnerLevelOnePowerPerTick = 25;
+  public static float poweredSpawnerLevelTwoPowerPerTick = 75;
+  public static float poweredSpawnerLevelThreePowerPerTick = 150;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
