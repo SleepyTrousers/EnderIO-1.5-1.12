@@ -1,5 +1,6 @@
 package crazypants.enderio.block;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -7,8 +8,10 @@ import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -46,6 +49,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
   protected void init() {
     GameRegistry.registerBlock(this, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
+    GameRegistry.registerTileEntity(TileEntityDarkSteelPressurePlate.class, ModObject.blockDarkSteelPressurePlate.unlocalisedName + "TileEntity");
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
   }
 
@@ -56,6 +60,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    if(itemStack != null && itemStack.getItemDamage() == 1) {
+      return getUnlocalizedName() + ".silent";
+    }
     return getUnlocalizedName();
   }
 
@@ -70,13 +77,13 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }
     return super.getIcon(world, x, y, z, blockSide);
   }
-  
+
   @Override
   public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityPaintedBlock) {
-      TileEntityPaintedBlock tepb = (TileEntityPaintedBlock) te;
-      ItemStack stack = new ItemStack(this);
+    if(te instanceof TileEntityDarkSteelPressurePlate) {
+      TileEntityDarkSteelPressurePlate tepb = (TileEntityDarkSteelPressurePlate) te;
+      ItemStack stack = new ItemStack(this, 1, tepb.isSilent() ? 1 : 0);
       if(tepb.getSourceBlock() != null) {
         PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
       }
@@ -90,7 +97,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       world.spawnEntityInWorld(entityitem);
     }
   }
-  
+
   @Override
   public int quantityDropped(int meta, int fortune, Random random) {
     return 0; // for custom drops
@@ -100,10 +107,11 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     Block b = PainterUtil.getSourceBlock(stack);
     TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileEntityPaintedBlock) {
-      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+    if(te instanceof TileEntityDarkSteelPressurePlate) {
+      TileEntityDarkSteelPressurePlate tef = (TileEntityDarkSteelPressurePlate) te;
       tef.setSourceBlock(b);
       tef.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(stack));
+      tef.setSilent(stack.getItemDamage() == 1);
     }
     world.markBlockForUpdate(x, y, z);
     super.onBlockPlacedBy(world, x, y, z, player, stack);
@@ -111,7 +119,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
 
   @Override
   public TileEntity createNewTileEntity(World world, int metadata) {
-    return new TileEntityPaintedBlock();
+    return new TileEntityDarkSteelPressurePlate();
   }
 
   @Override
@@ -125,6 +133,42 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       }
     }
     return super.colorMultiplier(world, x, y, z);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item arg0, CreativeTabs arg1, List items) {
+    items.add(new ItemStack(this, 1, 0));
+    items.add(new ItemStack(this, 1, 1));
+  }
+
+  protected void func_150062_a(World world, int x, int y, int z, int p_150062_5_) {
+    int i1 = this.func_150065_e(world, x, y, z);
+    boolean flag = p_150062_5_ > 0;
+    boolean flag1 = i1 > 0;
+
+    if(p_150062_5_ != i1) {
+      world.setBlockMetadataWithNotify(x, y, z, this.func_150066_d(i1), 2);
+      func_150064_a_(world, x, y, z);
+      world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+    }
+
+    boolean playSound = true;
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityDarkSteelPressurePlate && ((TileEntityDarkSteelPressurePlate)te).isSilent()) {
+      playSound = false;
+    }
+    if(playSound) {
+      if(!flag1 && flag) {
+        world.playSoundEffect((double) x + 0.5D, (double) y + 0.1D, (double) z + 0.5D, "random.click", 0.3F, 0.5F);
+      } else if(flag1 && !flag) {
+        world.playSoundEffect((double) x + 0.5D, (double) y + 0.1D, (double) z + 0.5D, "random.click", 0.3F, 0.6F);
+      }
+    }
+
+    if(flag1) {
+      world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+    }
   }
 
   public static final class PainterTemplate extends BasicPainterTemplate {
@@ -153,7 +197,10 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       if(paintSource == null) {
         return new ResultStack[0];
       }
-      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
+      ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);
+      ItemStack resultStack = createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage());
+      resultStack.setItemDamage(target.getItemDamage());
+      return new ResultStack[] { new ResultStack(resultStack) };
     }
 
     public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
