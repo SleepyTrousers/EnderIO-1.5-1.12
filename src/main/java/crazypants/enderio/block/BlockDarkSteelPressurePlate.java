@@ -77,7 +77,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tepb = (TileEntityPaintedBlock) te;
       ItemStack stack = new ItemStack(this);
-      PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+      if(tepb.getSourceBlock() != null) {
+        PainterUtil.setSourceBlock(stack, tepb.getSourceBlock(), tepb.getSourceBlockMetadata());
+      }
 
       float f = 0.7F;
       double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
