@@ -206,6 +206,8 @@ public final class Config {
 
   public static float farmContinuousEnergyUse = 4;
   public static float farmActionEnergyUse = 50;
+  public static float farmAxeActionEnergyUse = 100;
+  
   public static int farmDefaultSize = 3;
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
@@ -620,6 +622,10 @@ public final class Config {
         "The amount of power used by a farm per tick ").getDouble(farmContinuousEnergyUse);
     farmActionEnergyUse = (float) config.get(sectionFarm.name, "farmActionEnergyUse", farmActionEnergyUse,
         "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
+    
+    farmAxeActionEnergyUse= (float) config.get(sectionFarm.name, "farmAxeActionEnergyUse", farmAxeActionEnergyUse,
+        "The amount of power used by a farm per wood block 'chopped'").getDouble(farmAxeActionEnergyUse);
+    
     farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
 

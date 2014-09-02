@@ -89,7 +89,7 @@ public class TreeFarmer implements IFarmerJoe {
     worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
     if(canPlant(worldObj, bc)) {
       worldObj.setBlock(bc.x, bc.y, bc.z, sapling, seed.getItemDamage(), 1 | 2);
-      farm.actionPerformed();
+      farm.actionPerformed(false);
       return true;
     }
     return false;
@@ -125,9 +125,9 @@ public class TreeFarmer implements IFarmerJoe {
           if(farm.getWorldObj().rand.nextInt(200) == 0) {
             res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
           }
-        }
-      }
-      farm.actionPerformed();
+        }        
+      } 
+      farm.actionPerformed(isWood);      
       if(isWood) {
         farm.damageAxe(blk, coord);
       }

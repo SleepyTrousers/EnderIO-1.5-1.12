@@ -47,7 +47,7 @@ public class PickableFarmer extends CustomSeedFarmer {
         drops.add(entityitem);
       }
     }
-    farm.actionPerformed();
+    farm.actionPerformed(false);
     farm.damageMaxLootingItem(1, bc, block);
     return new HarvestResult(drops, bc);
   }

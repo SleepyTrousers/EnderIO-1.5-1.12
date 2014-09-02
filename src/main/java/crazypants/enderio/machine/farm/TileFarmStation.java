@@ -40,7 +40,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
                                                                 * IEntitySelector
                                                                 */{
 
-  private static final float ENERGY_PER_TICK = Config.farmContinuousEnergyUse;
+//  private static final float ENERGY_PER_TICK = Config.farmContinuousEnergyUse;
 
   private BlockCoord lastScanned;
   private EntityPlayerMP farmerJoe;
@@ -55,8 +55,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   private final int upgradeBonusSize = 2;
 
-  private static final DummyTask TASK = new DummyTask();
-
   private ICapacitor cap = new BasicCapacitor(200, 25000);
 
   public int tier = 1;
@@ -66,7 +64,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   public TileFarmStation() {
     super(new SlotDefinition(6, 4, 1));
-    currentTask = TASK;
+    currentTask = createTask();
     powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
 
   }
@@ -75,12 +73,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
     return farmSize + getUpgradeDist();
   }
 
-  public void setFarmSize(int farmSize) {
-    this.farmSize = farmSize;
-  }
-
-  public void actionPerformed() {
-    usePower(Config.farmActionEnergyUse * (getUpgradeDist() * upgradeBonusSize));
+  public void actionPerformed(boolean isAxe) {
+    if(isAxe) {
+      usePower(Config.farmAxeActionEnergyUse);
+    } else {
+      usePower(Config.farmActionEnergyUse);
+    }
   }
 
   public boolean tillBlock(BlockCoord plantingLocation) {
@@ -91,7 +89,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
       worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
           (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
-      actionPerformed();
+      actionPerformed(false);
       return true;
     } else if(dirtBlock == Blocks.farmland) {
       return true;
@@ -510,6 +508,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
+    this.capacitorType = capacitorType;
     switch (capacitorType.ordinal()) {
     case 1:
       cap = new BasicCapacitor(400, 50000);
@@ -523,6 +522,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
     }
     tier = capacitorType.ordinal();
     powerHandler.configure(cap.getMinEnergyReceived(), cap.getMaxEnergyReceived(), cap.getMinActivationEnergy(), cap.getMaxEnergyStored());
+    currentTask = createTask();
   }
 
   @Override
@@ -532,13 +532,18 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   @Override
   public float getPowerUsePerTick() {
-    return ENERGY_PER_TICK;
+    return Math.round(Config.farmContinuousEnergyUse * (getFarmSize()/(float)Config.farmDefaultSize ));
   }
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-    currentTask = TASK;
+    currentTask = createTask();
+    
+  }
+  
+  IPoweredTask createTask() {
+    return new DummyTask(getPowerUsePerTick());
   }
 
   @Override
@@ -548,6 +553,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
   }
 
   private static class DummyTask implements IPoweredTask {
+    
+    float powerUserPerTick;
+    
+    public DummyTask(float powerUsePerTick) {
+      this.powerUserPerTick = powerUsePerTick;
+    }
+    
     @Override
     public void writeToNBT(NBTTagCompound nbtRoot) {
     }
@@ -563,7 +575,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
     @Override
     public float getRequiredEnergy() {
-      return ENERGY_PER_TICK;
+      return powerUserPerTick;
     }
 
     @Override

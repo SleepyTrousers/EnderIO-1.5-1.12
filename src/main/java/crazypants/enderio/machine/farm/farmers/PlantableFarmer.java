@@ -119,7 +119,7 @@ public class PlantableFarmer implements IFarmerJoe {
     Block target = plantable.getPlant(null, 0, 0, 0);
     int meta = plantable.getPlantMetadata(null, 0, 0, 0);
     worldObj.setBlock(bc.x, bc.y, bc.z, target, meta, 1 | 2);
-    farm.actionPerformed();
+    farm.actionPerformed(false);
     return true;
   }
 
@@ -155,7 +155,7 @@ public class PlantableFarmer implements IFarmerJoe {
 
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
     farm.damageMaxLootingItem(1, bc, block);
-    farm.actionPerformed();
+    farm.actionPerformed(false);
     boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {

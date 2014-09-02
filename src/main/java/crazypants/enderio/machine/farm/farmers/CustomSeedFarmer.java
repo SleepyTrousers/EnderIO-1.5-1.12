@@ -128,7 +128,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
     farm.damageMaxLootingItem(1, bc, block);
-    farm.actionPerformed();
+    farm.actionPerformed(false);
     boolean removed = false;
     if(drops != null) {
       for (ItemStack stack : drops) {
@@ -167,7 +167,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
       worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
           (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F, Blocks.farmland.stepSound.getPitch() * 0.8F);
-      farm.actionPerformed();
+      farm.actionPerformed(false);
       return true;
     }
     return false;
@@ -199,7 +199,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
     if(canPlant(worldObj, bc)) {
       worldObj.setBlock(bc.x, bc.y, bc.z, getPlantedBlock(), getPlantedBlockMeta(), 1 | 2);
-      farm.actionPerformed();
+      farm.actionPerformed(false);
       return true;
     }
     return false;
