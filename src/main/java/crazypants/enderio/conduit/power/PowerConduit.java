@@ -28,6 +28,7 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.monitor.PacketConduitProbe;
 import crazypants.enderio.power.BasicCapacitor;
@@ -44,9 +45,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-    new BasicCapacitor(640, 640, 640),
-    new BasicCapacitor(5120, 5120, 5120),
-    new BasicCapacitor(20480, 20480, 20480)
+    new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
+    new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
+    new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF)
   };
 
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };

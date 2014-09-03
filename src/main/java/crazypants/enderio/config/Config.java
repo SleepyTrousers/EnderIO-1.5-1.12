@@ -267,6 +267,10 @@ public final class Config {
   public static int soulBinderLevelThreePowerPerTickRF = 2000;
   public static int soulBinderBrokenSpawnerRF = 2500000;
 
+  public static int powerConduitTierOneRF = 640;
+  public static int powerConduitTierTwoRF = 5120;
+  public static int powerConduitTierThreeRF = 20480;
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -308,6 +312,14 @@ public final class Config {
     capacitorBankMaxStorageRF = config.get(sectionPower.name, "capacitorBankMaxStorageRF", capacitorBankMaxStorageRF,
         "The maximum storage for a single capacitor in RF")
         .getInt(capacitorBankMaxStorageRF);
+    
+    powerConduitTierOneRF = config.get(sectionPower.name, "powerConduitTierOneRF", powerConduitTierOneRF, "The maximum IO for the tier 1 power conduit")
+        .getInt(powerConduitTierOneRF);
+    powerConduitTierTwoRF = config.get(sectionPower.name, "powerConduitTierTwoRF", powerConduitTierTwoRF, "The maximum IO for the tier 2 power conduit")
+        .getInt(powerConduitTierTwoRF);
+    powerConduitTierThreeRF = config.get(sectionPower.name, "powerConduitTierThreeRF", powerConduitTierTwoRF, "The maximum IO for the tier 3 power conduit")
+        .getInt(powerConduitTierThreeRF);
+
     
     painterEnergyPerTaskRF = config.get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF, "The total amount of RF required to paint one block")
         .getInt(painterEnergyPerTaskRF);
