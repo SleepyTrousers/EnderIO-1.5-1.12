@@ -39,7 +39,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
 
   private boolean inPause = false;
 
-  private int maxOutputTick = 128;
+  private int maxOutputTick = 1280;
 
   private static int IO_MB_TICK = 250;
 
