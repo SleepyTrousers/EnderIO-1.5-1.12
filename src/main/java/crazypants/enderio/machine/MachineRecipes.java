@@ -40,6 +40,7 @@ public class MachineRecipes {
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
     ItemStack enlightedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 2);
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
+    ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
@@ -146,6 +147,10 @@ public class MachineRecipes {
     //Vacuum Chest
     ItemStack vacuumChest = new ItemStack(EnderIO.blockVacuumChest);
     GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
+    
+    //Soul Binder
+    ItemStack soulBinder = new ItemStack(EnderIO.blockSoulFuser);
+    GameRegistry.addShapedRecipe(soulBinder, "sss", "sms","ece", 's', soularium, 'm', machineChassi, 'c', capacitor, 'e', new ItemStack(EnderIO.blockEndermanSkull));
     
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);

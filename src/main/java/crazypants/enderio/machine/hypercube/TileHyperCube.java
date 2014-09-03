@@ -165,7 +165,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   }
 
   int getEnergyStoredScaled(int scale) {
-    return (int) VecmathUtil.clamp(Math.round(scale * (getEnergyStored() / getMaxEnergyStored())), 0, scale);
+    return (int) VecmathUtil.clamp(Math.round(scale * ((double)getEnergyStored() / getMaxEnergyStored())), 0, scale);
   }
 
   public void onBreakBlock() {

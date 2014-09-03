@@ -10,6 +10,7 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -43,7 +44,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   private int energyStoredRF;
 
   public TileElectricLight() {
-    capacitor = Capacitors.BASIC_CAPACITOR.capacitor;
+    capacitor = new BasicCapacitor(Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyReceived(), 100);
     energyStoredRF = 0;
   }
 

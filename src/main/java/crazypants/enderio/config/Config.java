@@ -59,7 +59,7 @@ public final class Config {
   public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
 
-  public static final double DEFAULT_CONDUIT_SCALE = 0.5;
+  public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
   public static boolean reinforcedObsidianEnabled = true;
 

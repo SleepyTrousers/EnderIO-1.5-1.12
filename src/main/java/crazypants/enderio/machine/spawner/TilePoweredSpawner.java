@@ -66,10 +66,10 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       capacitor = CAP_ONE;
       break;
     case ACTIVATED_CAPACITOR:
-      capacitor = CAP_ONE;
+      capacitor = CAP_TWO;
       break;
     case ENDER_CAPACITOR:
-      capacitor = CAP_ONE;
+      capacitor = CAP_THREE;
       break;
     default:
       capacitor = CAP_ONE;
