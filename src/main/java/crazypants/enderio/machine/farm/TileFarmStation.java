@@ -33,12 +33,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class TileFarmStation extends AbstractPoweredTaskEntity /*
-                                                                * implements
-                                                                * IEntitySelector
-                                                                */{
-
-//  private static final float ENERGY_PER_TICK = Config.farmContinuousEnergyUse;
+public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private BlockCoord lastScanned;
   private EntityPlayerMP farmerJoe;
@@ -62,7 +57,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   public TileFarmStation() {
     super(new SlotDefinition(6, 4, 1));
-    currentTask = createTask();    
+    setCapacitor(Capacitors.BASIC_CAPACITOR);    
   }
 
   public int getFarmSize() {
@@ -75,12 +70,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
     } else {
       usePower(Config.farmActionEnergyUseRF);
     }
+    clearNotification();
   }
 
   public boolean tillBlock(BlockCoord plantingLocation) {
     BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);
     Block dirtBlock = getBlock(dirtLoc);
-    if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass) && hasHoe()) {
+    if((dirtBlock == Blocks.dirt || dirtBlock == Blocks.grass)) {
+      if(!hasHoe()) {
+        setNotification("noHoe");
+        return false;
+      }
       damageHoe(1, dirtLoc);
       worldObj.setBlock(dirtLoc.x, dirtLoc.y, dirtLoc.z, Blocks.farmland);
       worldObj.playSoundEffect(dirtLoc.x + 0.5F, dirtLoc.y + 0.5F, dirtLoc.z + 0.5F, Blocks.farmland.stepSound.getStepResourcePath(),
@@ -234,7 +234,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
     return block.isAir(worldObj, bc.x, bc.y, bc.z) || block.isReplaceable(worldObj, bc.x, bc.y, bc.z);
   }
 
-  public void setNotification(String unloc) {
+  public void setNotification(String unloc) {        
     String newNote = Lang.localize("farm.note." + unloc);
     if(!newNote.equals(notification)) {
       notification = newNote;
@@ -280,19 +280,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   protected boolean doTick(boolean redstoneCheckPassed) {
 
-    if (sendNotification) {
-      sendNotification = false;
-      sendNotification();
-    }
-        
-    if(!redstoneCheckPassed || !hasPower()) {
-      return false;
-    }
     if(worldObj.getTotalWorldTime() % 2 != 0) {
       return false;
     }
     
-    clearNotification();
+    if (sendNotification) {
+      sendNotification = false;
+      sendNotification();
+    }       
+    if(!redstoneCheckPassed) {
+      return false;
+    }
+    if(!hasPower()) {
+      setNotification("noPower");
+      return false;
+    }
 
     BlockCoord bc = getNextCoord();
     if(bc != null && bc.equals(getLocation())) { //don't try and harvest ourselves
@@ -312,6 +314,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
       farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
     }
 
+//    clearNotification();
+    
     if(isOpen(bc)) {
       FarmersCommune.instance.prepareBlock(this, bc, block, meta);
       block = worldObj.getBlock(bc.x, bc.y, bc.z);
@@ -321,8 +325,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
       setNotification("outputFull");
       return false;
     }
+    
+    if(!hasPower()) {
+      setNotification("noPower");
+      return false;
+    }
 
-    if(!isOpen(bc) && hasPower()) {
+    if(!isOpen(bc)) {
       IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
       if(harvest != null) {
         if(harvest.getDrops() != null) {
@@ -375,7 +384,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
       if(matchMetadata ? inv.isItemEqual(stack) : inv.getItem() == stack.getItem()) {
         ItemStack result = inv.copy();
         result.stackSize = 1;
-
+        
+        inv = inv.copy();
         inv.stackSize--;
         if(inv.stackSize == 0) {
           inv = null;
@@ -504,20 +514,23 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;
-    switch (capacitorType.ordinal()) {
-    case 1:
-      cap = new BasicCapacitor(400, 50000);
-      break;
-    case 2:
-      cap = new BasicCapacitor(1000, 250000, 20);
-      break;
-    default:
-      cap = new BasicCapacitor(200, 25000, 50);
-      break;
-    }
+    this.capacitorType = capacitorType;    
     tier = capacitorType.ordinal();
     currentTask = createTask();
+    
+    int ppt = getPowerUsePerTick();
+    switch (capacitorType.ordinal()) {
+    case 1:
+      cap = new BasicCapacitor(ppt * 4, 500000);
+      break;
+    case 2:
+      cap = new BasicCapacitor(ppt * 4, 1000000);
+      break;
+    default:
+      cap = new BasicCapacitor(ppt * 4, 250000);
+      break;
+    }
+    
   }
 
   @Override

@@ -44,4 +44,8 @@ public class GuiFarmStation extends GuiMachineBase {
   protected boolean showRecipeButton() {
     return false;
   }
+  
+  protected String getPowerOutputText() {
+    return "Base Use: ";
+  }
 }
