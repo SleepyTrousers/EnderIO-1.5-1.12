@@ -7,14 +7,11 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
@@ -25,9 +22,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private ForgeDirection face = ForgeDirection.DOWN;
 
-  public static final float MJ_USE_PER_TICK = 0.05f;
-
-  protected PowerHandler powerHandler;
+  public static final int RF_USE_PER_TICK = 1;
 
   private boolean init = true;
 
@@ -43,8 +38,13 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   private boolean requiresPower = true;
 
+  private ICapacitor capacitor;
+
+  private int energyStoredRF;
+
   public TileElectricLight() {
-    powerHandler = PowerHandlerUtil.createHandler(Capacitors.BASIC_CAPACITOR.capacitor, this, Type.MACHINE);
+    capacitor = Capacitors.BASIC_CAPACITOR.capacitor;
+    energyStoredRF = 0;
   }
 
   public void onNeighborBlockChange(Block blockID) {
@@ -72,14 +72,14 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   public void setInverted(boolean inverted) {
     isInvereted = inverted;
   }
-  
+
   public void setRequiresPower(boolean isPowered) {
-    requiresPower = isPowered;    
+    requiresPower = isPowered;
   }
 
   public boolean isRequiresPower() {
     return requiresPower;
-  }  
+  }
 
   public boolean isInvereted() {
     return isInvereted;
@@ -89,7 +89,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     this.isInvereted = isInvereted;
   }
 
-
   @Override
   public void updateEntity() {
     if(worldObj.isRemote) {
@@ -97,15 +96,10 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     }
 
     boolean hasRedstone = hasRedstoneSignal();
-    if(requiresPower) {
-      double stored = powerHandler.getEnergyStored();
-      powerHandler.update();
-      powerHandler.setEnergy(stored);
-    }
 
     boolean isActivated = (requiresPower ? hasPower() : true) && (hasRedstone && !isInvereted || !hasRedstone && isInvereted);
     if(isActivated && requiresPower) {
-      powerHandler.setEnergy(Math.max(0, powerHandler.getEnergyStored() - MJ_USE_PER_TICK));
+      setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
     }
     if(!hasPower() && requiresPower) {
       isActivated = false;
@@ -338,8 +332,13 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     isInvereted = root.getBoolean("isInverted");
     requiresPower = root.getBoolean("requiresPower");
 
-    float storedEnergy = root.getFloat("storedEnergy");
-    powerHandler.setEnergy(storedEnergy);
+    if(root.hasKey("storedEnergy")) {
+      float se = root.getFloat("storedEnergy");
+      energyStoredRF = (int) (se * 10);
+    } else {
+      energyStoredRF = root.getInteger("storedEnergyRF");
+    }
+
     lightNodeCoords = root.getIntArray("lightNodes");
   }
 
@@ -347,7 +346,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   public void writeCustomNBT(NBTTagCompound root) {
 
     root.setShort("face", (short) face.ordinal());
-    root.setFloat("storedEnergy", (float) powerHandler.getEnergyStored());
+    root.setInteger("storedEnergyRF", energyStoredRF);
     root.setBoolean("isInverted", isInvereted);
     root.setBoolean("requiresPower", requiresPower);
 
@@ -364,28 +363,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
 
   public boolean hasPower() {
-    return powerHandler.getEnergyStored() > MJ_USE_PER_TICK;
+    return energyStoredRF > RF_USE_PER_TICK;
   }
 
   private boolean hasRedstoneSignal() {
     return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    if(!requiresPower) {
-      return null;
-    }
-    return powerHandler.getPowerReceiver();
-  }
-
-  @Override
-  public void doWork(PowerHandler workProvider) {
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
   }
 
   // RF Power
@@ -395,7 +377,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     if(!requiresPower) {
       return 0;
     }
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+    return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
   @Override
@@ -413,18 +395,41 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    if(!requiresPower) {
-      return 0;
-    }
-    return (int) (powerHandler.getEnergyStored() * 10);
+    return getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
+    return getMaxEnergyStored();
+  }
+
+  @Override
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
     if(!requiresPower) {
       return 0;
     }
-    return (int) (powerHandler.getMaxEnergyStored() * 10);
+    return capacitor.getMaxEnergyReceived();
+  }
+
+  @Override
+  public int getEnergyStored() {
+    if(!requiresPower) {
+      return 0;
+    }
+    return energyStoredRF;
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    if(!requiresPower) {
+      return 0;
+    }
+    return capacitor.getMaxEnergyStored();
+  }
+
+  @Override
+  public void setEnergyStored(int stored) {
+    energyStoredRF = stored;
   }
 
   static class NodeEntry {

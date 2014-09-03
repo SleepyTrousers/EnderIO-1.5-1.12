@@ -1,12 +1,16 @@
 package crazypants.enderio.power;
 
-import buildcraft.api.power.IPowerReceptor;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyHandler;
 
-public interface IInternalPowerReceptor extends IPowerReceptor, IEnergyHandler {
+public interface IInternalPowerReceptor extends IEnergyHandler {
 
-  //  PowerHandler getPowerHandler();
-  //
-  //  void applyPerdition();
-
+  int getMaxEnergyRecieved(ForgeDirection dir);
+  
+  int getEnergyStored();
+  
+  int getMaxEnergyStored();
+  
+  void setEnergyStored(int stored);
+  
 }

@@ -24,46 +24,46 @@ public class PowerInterfaceRF implements IPowerInterface {
   }
 
   @Override
-  public float getEnergyStored(ForgeDirection dir) {
+  public int getEnergyStored(ForgeDirection dir) {
     if(rfPower != null && dir != null) {
-      return rfPower.getEnergyStored(dir) / 10f;
+      return rfPower.getEnergyStored(dir);
     }
     return 0;
   }
 
   @Override
-  public float getMaxEnergyStored(ForgeDirection dir) {
+  public int getMaxEnergyStored(ForgeDirection dir) {
     if(rfPower != null && dir != null) {
-      return rfPower.getMaxEnergyStored(dir) / 10f;
+      return rfPower.getMaxEnergyStored(dir);
     }
     return 0;
   }
 
   @Override
-  public float getPowerRequest(ForgeDirection dir) {
+  public int getPowerRequest(ForgeDirection dir) {
     if(rfPower != null && dir != null && rfPower.canConnectEnergy(dir)) {
-      return rfPower.receiveEnergy(dir, 99999999, true) / 10f;
+      return rfPower.receiveEnergy(dir, 99999999, true);
     }
     return 0;
   }
 
 
-  public static float getPowerRequestMJ(ForgeDirection dir, IEnergyHandler handler) {
+  public static int getPowerRequest(ForgeDirection dir, IEnergyHandler handler) {
     if(handler != null && dir != null && handler.canConnectEnergy(dir)) {
-      return handler.receiveEnergy(dir, 99999999, true) / 10f;
+      return handler.receiveEnergy(dir, 99999999, true);
     }
     return 0;
   }
 
   @Override
-  public float getMinEnergyReceived(ForgeDirection dir) {
+  public int getMinEnergyReceived(ForgeDirection dir) {
     return 0;
   }
 
   @Override
-  public float recieveEnergy(ForgeDirection opposite, float canOffer) {
+  public int recieveEnergy(ForgeDirection opposite, float canOffer) {
     if(rfPower != null && opposite != null) {
-      return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false) / 10f;
+      return rfPower.receiveEnergy(opposite, (int) (canOffer * 10), false);
     }
     return 0;
   }

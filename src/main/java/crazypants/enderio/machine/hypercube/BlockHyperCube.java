@@ -131,7 +131,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
-        PowerHandlerUtil.setStoredEnergyForItem(itemStack, (float) hc.getInternalPowerHandler().getEnergyStored());
+        PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getEnergyStored());
         setChannelOnItem(hc, itemStack);
         setIoOnItem(hc, itemStack);
         ret.add(itemStack);
@@ -214,7 +214,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
         TileHyperCube hc = (TileHyperCube) te;
         hc.onBreakBlock();
         ItemStack itemStack = new ItemStack(this);
-        PowerHandlerUtil.setStoredEnergyForItem(itemStack, (float) hc.getInternalPowerHandler().getEnergyStored());
+        PowerHandlerUtil.setStoredEnergyForItem(itemStack, hc.getEnergyStored());
         setChannelOnItem(hc, itemStack);
         setIoOnItem(hc, itemStack);
         float f = 0.7F;
@@ -241,7 +241,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileHyperCube) {
       TileHyperCube cb = (TileHyperCube) te;
-      cb.getInternalPowerHandler().setEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
+      cb.setEnergyStored(PowerHandlerUtil.getStoredEnergyForItem(stack));
       if(player instanceof EntityPlayerMP) {
         cb.setOwner(((EntityPlayerMP) player).getGameProfile().getName());
       }

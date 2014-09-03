@@ -9,24 +9,28 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class TileSoulBinder extends AbstractPoweredTaskEntity {
 
-  public static final float POWER_PER_TICK_ONE = (float)Config.soulBinderLevelOnePowerPerTick;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor((int) (POWER_PER_TICK_ONE * 1.25), 
+  public static final int POWER_PER_TICK_ONE = Config.soulBinderLevelOnePowerPerTickRF;
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor((int) (POWER_PER_TICK_ONE * 2), 
       Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
-  public static final float POWER_PER_TICK_TWO = (float)Config.soulBinderLevelTwoPowerPerTick;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor((int) (POWER_PER_TICK_TWO * 1.25),
+  public static final int POWER_PER_TICK_TWO = Config.soulBinderLevelTwoPowerPerTickRF;
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor((int) (POWER_PER_TICK_TWO * 2),
       Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
 
-  public static final float POWER_PER_TICK_THREE = (float)Config.soulBinderLevelThreePowerPerTick;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor((int) (POWER_PER_TICK_THREE * 1.25),
+  public static final int  POWER_PER_TICK_THREE = Config.soulBinderLevelThreePowerPerTickRF;
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor((int) (POWER_PER_TICK_THREE * 2),
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
+  
+  private ICapacitor capacitor;
   
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));
+    capacitor = CAP_ONE;
   }
 
   @Override
@@ -43,23 +47,30 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
     this.capacitorType = capacitorType;
     switch (capacitorType) {
     case BASIC_CAPACITOR:
-      PowerHandlerUtil.configure(powerHandler, CAP_ONE);
+      capacitor = CAP_ONE;
       break;
     case ACTIVATED_CAPACITOR:
-      PowerHandlerUtil.configure(powerHandler, CAP_TWO);
+      capacitor = CAP_TWO;
       break;
     case ENDER_CAPACITOR:
-      PowerHandlerUtil.configure(powerHandler, CAP_THREE);
+      capacitor = CAP_THREE;
       break;
     default:
-      PowerHandlerUtil.configure(powerHandler, CAP_ONE);
+      capacitor = CAP_ONE;
       break;
     }
     forceClientUpdate = true;
   }
   
+  
+  
   @Override
-  public float getPowerUsePerTick() {
+  public ICapacitor getCapacitor() {
+    return capacitor;
+  }
+
+  @Override
+  public int getPowerUsePerTick() {
     if(capacitorType.ordinal() == 0) {
       return POWER_PER_TICK_ONE;
     } else if(capacitorType.ordinal() == 1) {

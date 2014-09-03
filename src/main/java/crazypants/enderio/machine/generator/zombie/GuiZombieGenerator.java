@@ -69,7 +69,7 @@ public class GuiZombieGenerator extends GuiMachineBase {
     int scaled;
 
     FontRenderer fr = getFontRenderer();
-    double output = 0;
+    int output = 0;
     if(gen.isActive()) {
       output = gen.outputPerTick;
     }

@@ -1,7 +1,6 @@
 //***  Ender IO *****//
 
 //Power
-enderio.power.mj=MJ
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output

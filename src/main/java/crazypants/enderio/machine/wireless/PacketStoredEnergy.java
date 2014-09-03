@@ -16,7 +16,7 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
   private int x;
   private int y;
   private int z;
-  private double storedEnergy;
+  private int storedEnergy;
 
   public PacketStoredEnergy() {
   }
@@ -25,7 +25,7 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
     x = ent.xCoord;
     y = ent.yCoord;
     z = ent.zCoord;
-    storedEnergy = ent.storedEnergy;
+    storedEnergy = ent.storedEnergyRF;
   }
 
   @Override
@@ -33,7 +33,7 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeDouble(storedEnergy);
+    buf.writeInt(storedEnergy);
 
   }
 
@@ -42,7 +42,7 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    storedEnergy = buf.readDouble();
+    storedEnergy = buf.readInt();
   }
 
   @Override
@@ -51,13 +51,12 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileWirelessCharger) {
       TileWirelessCharger me = (TileWirelessCharger) te;
-      boolean doRender = (me.storedEnergy <= 0 && message.storedEnergy > 0) ||
-          (me.storedEnergy > 0 && message.storedEnergy <= 0);
-      me.storedEnergy = message.storedEnergy;
+      boolean doRender = (me.storedEnergyRF <= 0 && message.storedEnergy > 0) ||
+          (me.storedEnergyRF > 0 && message.storedEnergy <= 0);
+      me.storedEnergyRF = message.storedEnergy;
       if(doRender) {        
         System.out.println("PacketStoredEnergy.onMessage: ");
         player.worldObj.markBlockRangeForRenderUpdate(message.x, message.y, message.z, message.x, message.y, message.z);
-        //player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
       }
 
     }

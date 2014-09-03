@@ -18,8 +18,7 @@ import crazypants.util.Util;
 
 public abstract class BasicPainterTemplate implements IMachineRecipe {
 
-  // 5 seconds at the default energy use of 2 mj per tick.
-  public static float DEFAULT_ENERGY_PER_TASK = 200;
+  public static int DEFAULT_ENERGY_PER_TASK = Config.painterEnergyPerTaskRF;
 
   public static boolean isValidSourceDefault(ItemStack paintSource) {
     if(paintSource == null) {
@@ -43,7 +42,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
+  public int getEnergyRequired(MachineRecipeInput... inputs) {
     return DEFAULT_ENERGY_PER_TASK;
   }
 

@@ -16,7 +16,7 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
+  public int getEnergyRequired(MachineRecipeInput... inputs) {
     //NB: This value is not actually used, see createTask in the tile
    return TilePoweredSpawner.POWER_PER_TICK_ONE * 800;
   }

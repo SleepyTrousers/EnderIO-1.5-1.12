@@ -1,13 +1,10 @@
 package crazypants.enderio.machine.wireless;
 
-import cofh.api.energy.IEnergyContainerItem;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -16,20 +13,17 @@ import crazypants.util.BlockCoord;
 
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceptor, IWirelessCharger {
 
-  public static final int MAX_ENERGY_STORED_MJ = 100000;
-  public static final int MAX_ENERGY_IN = 1000;
-  public static final int MAX_ENERGY_OUT = 1000;
+  public static final int MAX_ENERGY_STORED = 1000000;
+  public static final int MAX_ENERGY_IN = 10000;
+  public static final int MAX_ENERGY_OUT = 10000;
   
-  double storedEnergy;
-  private PowerHandler powerHandler;
+  int storedEnergyRF; 
   
   private double lastPowerUpdate = -1;
   
   private boolean registered = false;
   
-  public TileWirelessCharger() {
-    powerHandler = new PowerHandler(this, Type.STORAGE);
-    powerHandler.configure(0, MAX_ENERGY_IN, 0, MAX_ENERGY_IN);
+  public TileWirelessCharger() {    
   }
  
   @Override
@@ -51,24 +45,12 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
       registered = true;
     }
     
-    double stored = powerHandler.getEnergyStored();
-    if(stored > 0) {
-      storedEnergy += stored;
-      storedEnergy = Math.min(storedEnergy, MAX_ENERGY_STORED_MJ);
-      if(stored > (MAX_ENERGY_STORED_MJ - 2)) {
-        powerHandler.configure(0, 0, 0, 0);
-      } else {
-        powerHandler.configure(0, MAX_ENERGY_IN, 0, MAX_ENERGY_IN);
-      }
-      powerHandler.setEnergy(0);
-    }
-    
     if( (lastPowerUpdate == -1) || 
-        (lastPowerUpdate == 0 && storedEnergy > 0) ||
-        (lastPowerUpdate > 0 && storedEnergy == 0) ||
-        (lastPowerUpdate != storedEnergy && worldObj.getTotalWorldTime() % 20 == 0)
+        (lastPowerUpdate == 0 && storedEnergyRF > 0) ||
+        (lastPowerUpdate > 0 && storedEnergyRF == 0) ||
+        (lastPowerUpdate != storedEnergyRF && worldObj.getTotalWorldTime() % 20 == 0)
         ) {
-      lastPowerUpdate = storedEnergy;
+      lastPowerUpdate = storedEnergyRF;
       EnderIO.packetPipeline.sendToAllAround(new PacketStoredEnergy(this), this);
     }
 
@@ -76,26 +58,22 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   
   public boolean chargeItems(ItemStack[] items) {    
     boolean chargedItem = false;
-    double available = Math.min(MAX_ENERGY_OUT, storedEnergy);
+    int available = Math.min(MAX_ENERGY_OUT, storedEnergyRF);
     for (ItemStack item : items) {
       if(item != null && available > 0) {
-        float used = 0;
+        int used = 0;
         if(item.getItem() instanceof IEnergyContainerItem) {
           IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
 
-          float max = chargable.getMaxEnergyStored(item);
-          float cur = chargable.getEnergyStored(item);
-          double canUse = Math.min(available * 10, max - cur);
+          int max = chargable.getMaxEnergyStored(item);
+          int cur = chargable.getEnergyStored(item);
+          int canUse = Math.min(available, max - cur);
           if(cur < max) {
-            used = chargable.receiveEnergy(item, (int) canUse, false) / 10;
-            // TODO: I should be able to use 'used' but it is always returning 0
-            // ATM.
-            used = (chargable.getEnergyStored(item) - cur) / 10;
+            used = chargable.receiveEnergy(item, (int) canUse, false);
           }
-
         }
         if(used > 0) {
-          storedEnergy = storedEnergy - used;
+          storedEnergyRF = storedEnergyRF - used;
           chargedItem = true;
           available -= used;
         }
@@ -106,37 +84,42 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
 
   @Override
   protected void writeCustomNBT(NBTTagCompound root) {
-    root.setDouble("storedEnergy", storedEnergy);
+    root.setInteger("storedEnergyRF", storedEnergyRF);
   }
 
   @Override
   protected void readCustomNBT(NBTTagCompound root) {
-    storedEnergy = root.getDouble("storedEnergy");
+    if(root.hasKey("storedEnergy")) {
+      double storedMJ = root.getDouble("storedEnergy");
+      storedEnergyRF = (int)(storedMJ * 10);
+    } else {
+      storedEnergyRF = root.getInteger("storedEnergy");
+    }
   }
 
   @Override
-  public void doWork(PowerHandler arg0) {
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
+    return MAX_ENERGY_IN;
   }
 
   @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection arg0) {
-    return powerHandler.getPowerReceiver();
+  public int getEnergyStored() {
+    return storedEnergyRF;
   }
 
   @Override
-  public World getWorld() {
-    return getWorldObj();
+  public int getMaxEnergyStored() {
+    return MAX_ENERGY_STORED;
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {    
-    double maxMj = Math.min(maxReceive / 10, MAX_ENERGY_IN);
-    double canRecieve = Math.min(MAX_ENERGY_STORED_MJ - storedEnergy, maxMj);
-    int canRecieveRF = (int)(canRecieve * 10);
-    if(!simulate) {
-      storedEnergy += (canRecieveRF / 10f);
-    }    
-    return canRecieveRF;
+  public void setEnergyStored(int stored) {
+    storedEnergyRF = stored;    
+  }
+
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {        
+    return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
   @Override
@@ -146,12 +129,12 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int)(storedEnergy * 10);
+    return storedEnergyRF;
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return MAX_ENERGY_STORED_MJ * 10;
+    return MAX_ENERGY_STORED;
   }
 
   @Override

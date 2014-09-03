@@ -21,16 +21,16 @@ import crazypants.util.DyeColor;
 
 public class TilePowerMonitor extends AbstractMachineEntity implements IInternalPowerReceptor {
 
-  float energyPerTick = 0.05f;
+  int energyPerTick = 1;
 
-  float powerInConduits;
-  float maxPowerInCoduits;
-  float powerInCapBanks;
-  float maxPowerInCapBanks;
-  float powerInMachines;
-  float maxPowerInMachines;
-  float aveMjSent;
-  float aveMjRecieved;
+  int powerInConduits;
+  int maxPowerInCoduits;
+  int  powerInCapBanks;
+  int  maxPowerInCapBanks;
+  int  powerInMachines;
+  int  maxPowerInMachines;
+  float aveRfSent;
+  float aveRfRecieved;
 
   boolean engineControlEnabled = false;
   float startLevel = 0.75f;
@@ -126,17 +126,18 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     return maxPowerInMachines;
   }
 
-  public float getAveMjSent() {
-    return aveMjSent;
+  public float getAveRfSent() {
+    return aveRfSent;
   }
 
-  public float getAveMjRecieved() {
-    return aveMjRecieved;
+  public float getAveRfRecieved() {
+    return aveRfRecieved;
   }
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    powerHandler.setEnergy(powerHandler.getEnergyStored() - energyPerTick);
+    setEnergyStored(getEnergyStored() - energyPerTick);
+    
     boolean update = worldObj.getWorldInfo().getWorldTotalTime() % 10 == 0;
     NetworkPowerManager pm = getPowerManager();
     if(pm != null && update) {
@@ -186,8 +187,8 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
     powerInMachines = pm.getPowerInReceptors();
     maxPowerInMachines = pm.getMaxPowerInReceptors();
     PowerTracker tracker = pm.getNetworkPowerTracker();
-    aveMjSent = tracker.getAverageMjTickSent();
-    aveMjRecieved = tracker.getAverageMjTickRecieved();
+    aveRfSent = tracker.getAverageRfTickSent();
+    aveRfRecieved = tracker.getAverageRfTickRecieved();
   }
 
   private NetworkPowerManager getPowerManager() {
@@ -213,14 +214,14 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   public void readPowerInfoFromNBT(NBTTagCompound nbtRoot) {
-    powerInConduits = nbtRoot.getFloat("powerInConduits");
-    maxPowerInCoduits = nbtRoot.getFloat("maxPowerInCoduits");
-    powerInCapBanks = nbtRoot.getFloat("powerInCapBanks");
-    maxPowerInCapBanks = nbtRoot.getFloat("maxPowerInCapBanks");
-    powerInMachines = nbtRoot.getFloat("powerInMachines");
-    maxPowerInMachines = nbtRoot.getFloat("maxPowerInMachines");
-    aveMjSent = nbtRoot.getFloat("aveMjSent");
-    aveMjRecieved = nbtRoot.getFloat("aveMjRecieved");
+    powerInConduits = nbtRoot.getInteger("powerInConduits");
+    maxPowerInCoduits = nbtRoot.getInteger("maxPowerInCoduits");
+    powerInCapBanks = nbtRoot.getInteger("powerInCapBanks");
+    maxPowerInCapBanks = nbtRoot.getInteger("maxPowerInCapBanks");
+    powerInMachines = nbtRoot.getInteger("powerInMachines");
+    maxPowerInMachines = nbtRoot.getInteger("maxPowerInMachines");
+    aveRfSent = nbtRoot.getFloat("aveRfSent");
+    aveRfRecieved = nbtRoot.getFloat("aveRfRecieved");
 
     engineControlEnabled = nbtRoot.getBoolean("engineControlEnabled");
     startLevel = nbtRoot.getFloat("startLevel");
@@ -234,14 +235,14 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   public void writePowerInfoToNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setFloat("powerInConduits", powerInConduits);
-    nbtRoot.setFloat("maxPowerInCoduits", maxPowerInCoduits);
-    nbtRoot.setFloat("powerInCapBanks", powerInCapBanks);
-    nbtRoot.setFloat("maxPowerInCapBanks", maxPowerInCapBanks);
-    nbtRoot.setFloat("powerInMachines", powerInMachines);
-    nbtRoot.setFloat("maxPowerInMachines", maxPowerInMachines);
-    nbtRoot.setFloat("aveMjSent", aveMjSent);
-    nbtRoot.setFloat("aveMjRecieved", aveMjRecieved);
+    nbtRoot.setInteger("powerInConduits", powerInConduits);
+    nbtRoot.setInteger("maxPowerInCoduits", maxPowerInCoduits);
+    nbtRoot.setInteger("powerInCapBanks", powerInCapBanks);
+    nbtRoot.setInteger("maxPowerInCapBanks", maxPowerInCapBanks);
+    nbtRoot.setInteger("powerInMachines", powerInMachines);
+    nbtRoot.setInteger("maxPowerInMachines", maxPowerInMachines);
+    nbtRoot.setFloat("aveRfSent", aveRfSent);
+    nbtRoot.setFloat("aveRfRecieved", aveRfRecieved);
 
     nbtRoot.setBoolean("engineControlEnabled", engineControlEnabled);
     nbtRoot.setFloat("startLevel", startLevel);

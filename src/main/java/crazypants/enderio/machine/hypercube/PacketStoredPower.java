@@ -3,7 +3,6 @@ package crazypants.enderio.machine.hypercube;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import buildcraft.api.power.PowerHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -14,7 +13,7 @@ public class PacketStoredPower implements IMessage, IMessageHandler<PacketStored
   private int x;
   private int y;
   private int z;
-  private double storedEnergy;
+  private int storedEnergy;
 
   public PacketStoredPower() {
   }
@@ -23,7 +22,7 @@ public class PacketStoredPower implements IMessage, IMessageHandler<PacketStored
     x = ent.xCoord;
     y = ent.yCoord;
     z = ent.zCoord;
-    storedEnergy = ent.powerHandler.getEnergyStored();    
+    storedEnergy = ent.getEnergyStored();    
   }
 
   @Override
@@ -31,7 +30,7 @@ public class PacketStoredPower implements IMessage, IMessageHandler<PacketStored
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeDouble(storedEnergy);
+    buf.writeInt(storedEnergy);
 
   }
 
@@ -40,7 +39,7 @@ public class PacketStoredPower implements IMessage, IMessageHandler<PacketStored
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    storedEnergy = buf.readDouble();
+    storedEnergy = buf.readInt();
   }
 
   @Override
@@ -48,10 +47,8 @@ public class PacketStoredPower implements IMessage, IMessageHandler<PacketStored
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileHyperCube) {
-      TileHyperCube me = (TileHyperCube) te;
-      PowerHandler ph = me.powerHandler;
-      ph.update();
-      ph.setEnergy(message.storedEnergy);      
+      TileHyperCube me = (TileHyperCube) te;      
+      me.setEnergyStored(message.storedEnergy);      
     }
     return null;
   }

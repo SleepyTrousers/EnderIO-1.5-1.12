@@ -4,15 +4,15 @@ Version 2.0.4
 Changes
 - Added silent dark steel pressure plates
 - Add basic WAILA plugin (tterrag)
-- Re-balanced/reduced Stirling Generator output 
-- Updated zh_TW.lang (mymagadsl)
-- Register ingot storage blocks to Ore Dictionary (Alexander Hess)
-- Added enlightened fused quartz to the oredict as hardened glass (Tonius)
+- Re-balanced/reduced Stirling Generator output
 - Increased default power use of powered spawner
 - Hootch can now be made with apples
 - Nutrient Distillation can be made with skulls (highest output), other sources output reduced
 - Upgraded farms now have a higher continuous power use 
-- Farmer harvesting logs now uses more power than harvesting other crops (values in config)
+- Farmer harvesting logs now uses more power than harvesting other crops (values in config) 
+- Updated zh_TW.lang (mymagadsl)
+- Register ingot storage blocks to Ore Dictionary (Alexander Hess)
+- Added enlightened fused quartz to the oredict as hardened glass (Tonius)
 
 Bugs
 - #935 Machines can be accessed and modified regardless of cauldron world guard settings

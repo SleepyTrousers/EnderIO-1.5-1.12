@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.monitor;
 
-import static crazypants.enderio.power.PowerInterfaceBC.*;
 import io.netty.buffer.ByteBuf;
 
 import java.util.List;
@@ -10,11 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -29,7 +25,6 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerInterfaceBC;
 import crazypants.enderio.power.PowerInterfaceRF;
 import crazypants.util.Lang;
 
@@ -64,10 +59,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     }
     if(te instanceof IInternalPowerReceptor) {
       return true;
-    }
-    if(te instanceof IPowerReceptor) {
-      return true;
-    }
+    }   
     return false;
   }
 
@@ -125,32 +117,12 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
       sendInfoMessage(player, (TileConduitBundle) te);
 
-    } else
+    } else if(te instanceof IInternalPowerReceptor) {
+        IInternalPowerReceptor pr = (IInternalPowerReceptor) te;        
+        sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,
+            0, PowerInterfaceRF.getPowerRequest(ForgeDirection.NORTH, pr));
 
-      if(te instanceof IInternalPowerReceptor) {
-
-        IInternalPowerReceptor pr = (IInternalPowerReceptor) te;
-
-        PowerInterfaceBC.fromRF(pr.getEnergyStored(null));
-
-        pr.getEnergyStored(null);
-
-        sendPowerReciptorInfo(player, block, fromRF(pr.getEnergyStored(null)), fromRF(pr.getMaxEnergyStored(null)), 0,
-            0, PowerInterfaceRF.getPowerRequestMJ(ForgeDirection.NORTH, pr));
-
-      } else if(te instanceof IPowerReceptor) {
-
-        IPowerReceptor pr = (IPowerReceptor) te;
-        PowerReceiver rec = pr.getPowerReceiver(message.side);
-        if(rec == null) {
-          player.addChatComponentMessage(new ChatComponentTranslation(block.getLocalizedName() + " " + Lang.localize("gui.mjReader.noPowerFromSide")));
-        } else {
-          sendPowerReciptorInfo(player, block, (float) rec.getEnergyStored(), (float) rec.getMaxEnergyStored(), (float) rec.getMinEnergyReceived(),
-              (float) rec.getMaxEnergyReceived(),
-              (float) rec.powerRequest());
-        }
-
-      }
+    } 
     return null;
   }
 
@@ -301,10 +273,10 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
     sb.append(AVE_OUT);
-    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickSent()));
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageRfTickSent()));
     sb.append("\n");
     sb.append(AVE_IN);
-    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickRecieved()));
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageRfTickRecieved()));
     
     String[] lines = sb.toString().split("\n");
     for(String line : lines) {
@@ -330,10 +302,10 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     sb.append(PowerDisplayUtil.abrevation());
     sb.append("\n");
     sb.append(AVE_OUT);
-    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickSent()));
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageRfTickSent()));
     sb.append("\n");
     sb.append(AVE_IN);
-    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageMjTickRecieved()));
+    sb.append(PowerDisplayUtil.formatPowerFloat(tracker.getAverageRfTickRecieved()));
     
     String[] lines = sb.toString().split("\n");
     for(String line : lines) {
@@ -342,7 +314,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
   }
 
-  private void sendPowerReciptorInfo(EntityPlayer player, Block block, float stored, float maxStored, float minRec, float maxRec, float request) {
+  private void sendPowerReciptorInfo(EntityPlayer player, Block block, int stored, int maxStored, int minRec, int maxRec, int request) {
     String color = "\u00A7a ";
     StringBuilder sb = new StringBuilder();
     sb.append(color);

@@ -18,6 +18,7 @@ import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
@@ -25,14 +26,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public static final int MIN_SPAWN_DELAY_BASE = Config.poweredSpawnerMinDelayTicks;
   public static final int MAX_SPAWN_DELAY_BASE = Config.poweredSpawnerMaxDelayTicks;
 
-  public static final float POWER_PER_TICK_ONE = Config.poweredSpawnerLevelOnePowerPerTick;
+  public static final int POWER_PER_TICK_ONE = Config.poweredSpawnerLevelOnePowerPerTickRF;
   private static final BasicCapacitor CAP_ONE = new BasicCapacitor((int) (POWER_PER_TICK_ONE * 1.25), Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
-  public static final float POWER_PER_TICK_TWO = Config.poweredSpawnerLevelTwoPowerPerTick;
+  public static final int POWER_PER_TICK_TWO = Config.poweredSpawnerLevelTwoPowerPerTickRF;
   private static final BasicCapacitor CAP_TWO = new BasicCapacitor((int) (POWER_PER_TICK_TWO * 1.25),
       Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
 
-  public static final float POWER_PER_TICK_THREE = Config.poweredSpawnerLevelThreePowerPerTick;
+  public static final int POWER_PER_TICK_THREE = Config.poweredSpawnerLevelThreePowerPerTickRF;
   private static final BasicCapacitor CAP_THREE = new BasicCapacitor((int) (POWER_PER_TICK_THREE * 1.25),
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
 
@@ -42,10 +43,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   private final MobSpawnerBaseLogic logic = new SpawnerLogic();
 
   private static final String NULL_ENTITY_NAME = "None";
+  
+  private ICapacitor capacitor;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(0, 0));
     logic.setEntityName(NULL_ENTITY_NAME);
+    capacitor = CAP_ONE;
   }
 
   @Override
@@ -59,19 +63,24 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     this.capacitorType = capacitorType;
     switch (capacitorType) {
     case BASIC_CAPACITOR:
-      PowerHandlerUtil.configure(powerHandler, CAP_ONE);
+      capacitor = CAP_ONE;
       break;
     case ACTIVATED_CAPACITOR:
-      PowerHandlerUtil.configure(powerHandler, CAP_TWO);
+      capacitor = CAP_ONE;
       break;
     case ENDER_CAPACITOR:
-      PowerHandlerUtil.configure(powerHandler, CAP_THREE);
+      capacitor = CAP_ONE;
       break;
     default:
-      PowerHandlerUtil.configure(powerHandler, CAP_ONE);
+      capacitor = CAP_ONE;
       break;
     }
     forceClientUpdate = true;
+  }
+
+  @Override
+  public ICapacitor getCapacitor() {
+    return capacitor;
   }
 
   @Override
@@ -98,7 +107,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public float getPowerUsePerTick() {
+  public int getPowerUsePerTick() {
     if(capacitorType.ordinal() == 0) {
       return POWER_PER_TICK_ONE;
     } else if(capacitorType.ordinal() == 1) {

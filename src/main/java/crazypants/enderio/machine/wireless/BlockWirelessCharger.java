@@ -37,12 +37,6 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
     super(ModObject.blockWirelessCharger.unlocalisedName, TileWirelessCharger.class);    
     setLightOpacity(1);
   }
-  
-//  @Override
-//  protected void init() {  
-//    super.init();
-//    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_WIRELESS_CHARGER, this);
-//  }
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
@@ -63,11 +57,6 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
         }
       } 
     }
-//    if(entityPlayer.isSneaking()) {
-//      return false;
-//    }
-//    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_WIRELESS_CHARGER, world, x, y, z);
-//    return true;
     return false;
   }
   
@@ -85,7 +74,7 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileWirelessCharger) {
       TileWirelessCharger twc = (TileWirelessCharger)te;
-      if(twc.storedEnergy > 0) {
+      if(twc.getEnergyStored() > 0) {
         return centerOn;
       }
     }

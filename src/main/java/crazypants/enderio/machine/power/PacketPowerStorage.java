@@ -18,7 +18,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   private int x;
   private int y;
   private int z;
-  private double storedEnergy;
+  private int storedEnergy;
 
   public PacketPowerStorage() {
   }
@@ -27,7 +27,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     x = ent.xCoord;
     y = ent.yCoord;
     z = ent.zCoord;
-    storedEnergy = ent.storedEnergy;
+    storedEnergy = ent.storedEnergyRF;
   }
 
   @Override
@@ -35,7 +35,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeDouble(storedEnergy);
+    buf.writeInt(storedEnergy);
 
   }
 
@@ -44,7 +44,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    storedEnergy = buf.readDouble();
+    storedEnergy = buf.readInt();
   }
 
   @Override
@@ -53,7 +53,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank me = (TileCapacitorBank) te;
-      me.storedEnergy = message.storedEnergy;
+      me.storedEnergyRF = message.storedEnergy;
 
       double dif = Math.abs(me.lastRenderStoredRatio - me.getEnergyStoredRatio());
       if(dif > 0.025) { //update rendering at a 2.5% diff

@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.power.IPowerEmitter;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -21,13 +20,13 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
-public class TileZombieGenerator extends AbstractMachineEntity implements IPowerEmitter, IFluidHandler {
+public class TileZombieGenerator extends AbstractMachineEntity implements IFluidHandler {
 
   private static int IO_MB_TICK = 250;
 
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
 
-  float outputPerTick = (float) Config.zombieGeneratorMjPerTick;
+  int outputPerTick = Config.zombieGeneratorRfPerTick;
   int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
@@ -38,8 +37,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0));
-    powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
+    super(new SlotDefinition(0, 0, 0));    
   }
 
   @Override
@@ -47,10 +45,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     return ModObject.blockZombieGenerator.unlocalisedName;
   }
 
-  @Override
-  public boolean canEmitPowerFrom(ForgeDirection side) {
-    return !isSideDisabled(side.ordinal());
-  }
+  
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
@@ -93,7 +88,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   }
 
   @Override
-  public float getPowerUsePerTick() {
+  public int getPowerUsePerTick() {
     return outputPerTick;
   }
 
@@ -119,16 +114,10 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
       powerDis.neighboursChanged();
     }
   }
-
-  @Override
-  protected void updateStoredEnergyFromPowerHandler() {
-    //no-op as we don't actually need a BC power handler for a generator
-    //Need to clean this up
-  }
-
+ 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (storedEnergy * 10);
+    return storedEnergyRF;
   }
 
   @Override
@@ -149,7 +138,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
         res = true;
       }
 
-      if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(storedEnergyRF >= capacitorType.capacitor.getMaxEnergyStored()) {
         inPause = true;
       }
 
@@ -170,7 +159,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (outputPerTick * 200))) {
+    if(inPause && storedEnergyRF >= (getMaxEnergyStored() - (outputPerTick * 200))) {
       return false;
     }
     inPause = false;
@@ -187,21 +176,21 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
       tanksDirty = true;
     }
     
-    float oldVal = storedEnergy;
-    storedEnergy += outputPerTick;
-    storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
+    float oldVal = storedEnergyRF;
+    storedEnergyRF += outputPerTick;
+    storedEnergyRF = Math.min(storedEnergyRF, capacitorType.capacitor.getMaxEnergyStored());
     return true;
   }
 
   private boolean transmitEnergy() {
-    if(storedEnergy <= 0) {
+    if(storedEnergyRF <= 0) {
       return false;
     }
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, storedEnergy));
-    storedEnergy -= transmitted;
+    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, storedEnergyRF));
+    storedEnergyRF -= transmitted;
     return transmitted > 0;
   }
 

@@ -32,7 +32,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  float getEnergyRequired(MachineRecipeInput... inputs);
+  int getEnergyRequired(MachineRecipeInput... inputs);
 
   /**
    * Only returns true if output can be generated using these inputs. If

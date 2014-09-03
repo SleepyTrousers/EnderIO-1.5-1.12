@@ -75,11 +75,11 @@ public final class Config {
 
   public static double transceiverEnergyLoss = 0.1;
 
-  public static double transceiverUpkeepCost = 0.25;
+  public static int transceiverUpkeepCostRF = 2;
 
-  public static double transceiverBucketTransmissionCost = 1;
+  public static int transceiverBucketTransmissionCostRF = 10;
 
-  public static int transceiverMaxIO = 2048;
+  public static int transceiverMaxIoRF = 20480;
 
   public static File configDirectory;
 
@@ -91,8 +91,6 @@ public final class Config {
 
   public static boolean useSneakMouseWheelYetaWrench = true;
   public static boolean useSneakRightClickYetaWrench = false;
-
-  public static boolean useRfAsDefault = true;
 
   public static boolean itemConduitUsePhyscialDistance = false;
 
@@ -190,13 +188,15 @@ public final class Config {
   public static int rocketFuelPowerTotalBurnTime = 7000;
   public static int fireWaterPowerPerCycle = 8;
   public static int fireWaterPowerTotalBurnTime = 15000;
-  public static float vatPowerUserPerTick = 2;
+  public static int vatPowerUserPerTickRF = 20;
 
-  public static double maxPhotovoltaicOutput = 1.0;
-  public static double maxPhotovoltaicAdvancedOutput = 4.0;
+  public static int maxPhotovoltaicOutputRF = 10;
+  public static int maxPhotovoltaicAdvancedOutputRF = 40;
 
-  public static double zombieGeneratorMjPerTick = 8.0;
+  public static int zombieGeneratorRfPerTick = 80;
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
+  
+  public static int stirlingGeneratorBaseRfPerTick = 20;
 
   public static boolean combustionGeneratorUseOpaqueModel = true;
 
@@ -221,19 +221,21 @@ public final class Config {
 
   public static int crafterMjPerCraft = 250;
 
-  public static int capacitorBankMaxIoMJ = 500;
-  public static int capacitorBankMaxStorageMJ = 500000;
+  public static int capacitorBankMaxIoRF = 5000;
+  public static int capacitorBankMaxStorageRF = 5000000;
 
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
-  public static float poweredSpawnerLevelOnePowerPerTick = 25;
-  public static float poweredSpawnerLevelTwoPowerPerTick = 75;
-  public static float poweredSpawnerLevelThreePowerPerTick = 150;
+  public static int poweredSpawnerLevelOnePowerPerTickRF = 250;
+  public static int poweredSpawnerLevelTwoPowerPerTickRF = 750;
+  public static int poweredSpawnerLevelThreePowerPerTickRF = 1500;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
   public static int powerSpawnerAddSpawnerCost = 30;
 
+  public static int painterEnergyPerTaskRF = 2000;
+  
   public static double vacuumChestRange = 6;
 
   public static boolean useModMetals = true;
@@ -260,10 +262,10 @@ public final class Config {
   public static String[] soulVesselBlackList = new String[0];
   public static boolean soulVesselCapturesBosses = false;
 
-  public static double soulBinderLevelOnePowerPerTick = 50;
-  public static double soulBinderLevelTwoPowerPerTick = 100;
-  public static double soulBinderLevelThreePowerPerTick = 200;
-  public static int soulBinderMjForBrokenSpawner = 250000;
+  public static int soulBinderLevelOnePowerPerTickRF = 500;
+  public static int soulBinderLevelTwoPowerPerTickRF = 1000;
+  public static int soulBinderLevelThreePowerPerTickRF = 2000;
+  public static int soulBinderBrokenSpawnerRF = 2500000;
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -300,15 +302,15 @@ public final class Config {
   }
 
   public static void processConfig(Configuration config) {
-    useRfAsDefault = config
-        .get(sectionPower.name, "displayPowerAsRedstoneFlux", useRfAsDefault, "If true, all power is displayed in RF, otherwise MJ is used.")
-        .getBoolean(useRfAsDefault);
-
-    capacitorBankMaxIoMJ = config.get(sectionPower.name, "capacitorBankMaxIoMJ", capacitorBankMaxIoMJ, "The maximum IO for a single capacitor in MJ/t")
-        .getInt(capacitorBankMaxIoMJ);
-    capacitorBankMaxStorageMJ = config.get(sectionPower.name, "capacitorBankMaxStorageMJ", capacitorBankMaxStorageMJ,
-        "The maximum storage for a single capacitor in MJ")
-        .getInt(capacitorBankMaxStorageMJ);
+   
+    capacitorBankMaxIoRF = config.get(sectionPower.name, "capacitorBankMaxIoRF", capacitorBankMaxIoRF, "The maximum IO for a single capacitor in RF/t")
+        .getInt(capacitorBankMaxIoRF);
+    capacitorBankMaxStorageRF = config.get(sectionPower.name, "capacitorBankMaxStorageRF", capacitorBankMaxStorageRF,
+        "The maximum storage for a single capacitor in RF")
+        .getInt(capacitorBankMaxStorageRF);
+    
+    painterEnergyPerTaskRF = config.get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF, "The total amount of RF required to paint one block")
+        .getInt(painterEnergyPerTaskRF);
 
     useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
@@ -329,10 +331,10 @@ public final class Config {
         "If set to false: Photovoltaic Cells will not be craftable.")
         .getBoolean(photovoltaicCellEnabled);
 
-    maxPhotovoltaicOutput = config.get(sectionPower.name, "maxPhotovoltaicOutput", maxPhotovoltaicOutput,
-        "Maximum output in MJ/t of the Photovoltaic Panels.").getDouble(maxPhotovoltaicOutput);
-    maxPhotovoltaicAdvancedOutput = config.get(sectionPower.name, "maxPhotovoltaicAdvancedOutput", maxPhotovoltaicAdvancedOutput,
-        "Maximum output in MJ/t of the Advanced Photovoltaic Panels.").getDouble(maxPhotovoltaicAdvancedOutput);
+    maxPhotovoltaicOutputRF = config.get(sectionPower.name, "maxPhotovoltaicOutputRF", maxPhotovoltaicOutputRF,
+        "Maximum output in RF/t of the Photovoltaic Panels.").getInt(maxPhotovoltaicOutputRF);
+    maxPhotovoltaicAdvancedOutputRF = config.get(sectionPower.name, "maxPhotovoltaicAdvancedOutputRF", maxPhotovoltaicAdvancedOutputRF,
+        "Maximum output in RF/t of the Advanced Photovoltaic Panels.").getInt(maxPhotovoltaicAdvancedOutputRF);
 
     useAlternateBinderRecipe = config.get(sectionRecipe.name, "useAlternateBinderRecipe", false, "Create conduit binder in crafting table instead of furnace")
         .getBoolean(useAlternateBinderRecipe);
@@ -374,15 +376,15 @@ public final class Config {
         .getBoolean(false);
     transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
         "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
-    transceiverUpkeepCost = config.get(sectionPower.name, "transceiverUpkeepCost", transceiverUpkeepCost,
-        "Number of MJ/t required to keep a Dimensional Transceiver connection open").getDouble(transceiverUpkeepCost);
-    transceiverMaxIO = config.get(sectionPower.name, "transceiverMaxIO", transceiverMaxIO,
-        "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIO);
-    transceiverBucketTransmissionCost = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCost", transceiverBucketTransmissionCost,
-        "The cost in MJ of transporting a bucket of fluid via a Dimensional Transceiver.").getDouble(transceiverBucketTransmissionCost);
+    transceiverUpkeepCostRF = config.get(sectionPower.name, "transceiverUpkeepCostRF", transceiverUpkeepCostRF,
+        "Number of RF/t required to keep a Dimensional Transceiver connection open").getInt(transceiverUpkeepCostRF);
+    transceiverMaxIoRF = config.get(sectionPower.name, "transceiverMaxIoRF", transceiverMaxIoRF,
+        "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIoRF);
+    transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
+        "The cost in MJ of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
 
-    vatPowerUserPerTick = (float) config.get(sectionPower.name, "vatPowerUserPerTick", vatPowerUserPerTick,
-        "Power use (MJ/t) used by the vat.").getDouble(vatPowerUserPerTick);
+    vatPowerUserPerTickRF = config.get(sectionPower.name, "vatPowerUserPerTickRF", vatPowerUserPerTickRF,
+        "Power use (RF/t) used by the vat.").getInt(vatPowerUserPerTickRF);
 
     detailedPowerTrackingEnabled = config
         .get(
@@ -604,10 +606,14 @@ public final class Config {
     fireWaterPowerTotalBurnTime = config.get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(fireWaterPowerTotalBurnTime);
 
-    zombieGeneratorMjPerTick = config.get(sectionPower.name, "zombieGeneratorMjPerTick", zombieGeneratorMjPerTick,
-        "The amount of power generated per tick.").getDouble(zombieGeneratorMjPerTick);
+    zombieGeneratorRfPerTick = config.get(sectionPower.name, "zombieGeneratorRfPerTick", zombieGeneratorRfPerTick,
+        "The amount of power generated per tick.").getInt(zombieGeneratorRfPerTick);
     zombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
+    
+    stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
+        "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
+    
 
     addFuelTooltipsToAllFluidContainers = config.get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
@@ -658,13 +664,13 @@ public final class Config {
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);
     poweredSpawnerMaxDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks,
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);
-    poweredSpawnerLevelOnePowerPerTick = (float) config.get(sectionSpawner.name, "poweredSpawnerLevelOnePowerPerTick", poweredSpawnerLevelOnePowerPerTick,
-        "MJ per tick for a level 1 (non-upgraded) spawner").getDouble(poweredSpawnerLevelOnePowerPerTick);
-    poweredSpawnerLevelTwoPowerPerTick = (float) config.get(sectionSpawner.name, "poweredSpawnerLevelTwoPowerPerTick", poweredSpawnerLevelTwoPowerPerTick,
-        "MJ per tick for a level 2 spawner").getDouble(poweredSpawnerLevelTwoPowerPerTick);
-    poweredSpawnerLevelThreePowerPerTick = (float) config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTick",
-        poweredSpawnerLevelThreePowerPerTick,
-        "MJ per tick for a level 3 spawner").getDouble(poweredSpawnerLevelThreePowerPerTick);
+    poweredSpawnerLevelOnePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelOnePowerPerTickRF", poweredSpawnerLevelOnePowerPerTickRF,
+        "RF per tick for a level 1 (non-upgraded) spawner").getInt(poweredSpawnerLevelOnePowerPerTickRF);
+    poweredSpawnerLevelTwoPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelTwoPowerPerTickRF", poweredSpawnerLevelTwoPowerPerTickRF,
+        "RF per tick for a level 2 spawner").getInt(poweredSpawnerLevelTwoPowerPerTickRF);
+    poweredSpawnerLevelThreePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTickRF",
+        poweredSpawnerLevelThreePowerPerTickRF,
+        "RF per tick for a level 3 spawner").getInt(poweredSpawnerLevelThreePowerPerTickRF);
     poweredSpawnerMaxPlayerDistance = config.get(sectionSpawner.name, "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
@@ -699,15 +705,14 @@ public final class Config {
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses, 
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial");
     
-    soulBinderLevelOnePowerPerTick = config.get(sectionSoulBinder.name, "soulBinderLevelOnePowerPerTick", soulBinderLevelOnePowerPerTick,
-        "The number of MJ/t consumed by an unupgraded soul binder.").getDouble(soulBinderLevelOnePowerPerTick);
-    
-    soulBinderLevelTwoPowerPerTick = config.get(sectionSoulBinder.name, "soulBinderLevelTwoPowerPerTick", soulBinderLevelTwoPowerPerTick,
-        "The number of MJ/t consumed by a soul binder with a double layer capacitor upgrade.").getDouble(soulBinderLevelTwoPowerPerTick);
-    soulBinderLevelThreePowerPerTick = config.get(sectionSoulBinder.name, "soulBinderLevelThreePowerPerTick", soulBinderLevelThreePowerPerTick,
-        "The number of MJ/t consumed by a soul binder with an octadic capacitor upgrade.").getDouble(soulBinderLevelThreePowerPerTick);    
-    soulBinderMjForBrokenSpawner = config.get(sectionSoulBinder.name, "soulBinderMjForBrokenSpawner", soulBinderMjForBrokenSpawner,
-        "The number of MJ required to change the type of a broken spawner.").getInt(soulBinderMjForBrokenSpawner);
+    soulBinderLevelOnePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelOnePowerPerTickRF", soulBinderLevelOnePowerPerTickRF,
+        "The number of RF/t consumed by an unupgraded soul binder.").getInt(soulBinderLevelOnePowerPerTickRF);    
+    soulBinderLevelTwoPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelTwoPowerPerTickRF", soulBinderLevelTwoPowerPerTickRF,
+        "The number of RF/t consumed by a soul binder with a double layer capacitor upgrade.").getInt(soulBinderLevelTwoPowerPerTickRF);
+    soulBinderLevelThreePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelThreePowerPerTickRF", soulBinderLevelThreePowerPerTickRF,
+        "The number of RF/t consumed by a soul binder with an octadic capacitor upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);    
+    soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
+        "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
   }
 
   private Config() {

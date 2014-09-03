@@ -19,7 +19,7 @@ public class VatRecipe implements IRecipe {
 
   protected final RecipeInput[] inputs;
   protected final RecipeOutput[] output;
-  protected final float energyRequired;
+  protected final int energyRequired;
 
   public VatRecipe(IRecipe recipe) {
     List<FluidStack> fluids = recipe.getInputFluidStacks();
@@ -52,7 +52,7 @@ public class VatRecipe implements IRecipe {
   }
 
   @Override
-  public float getEnergyRequired() {
+  public int getEnergyRequired() {
     return energyRequired;
   }
 

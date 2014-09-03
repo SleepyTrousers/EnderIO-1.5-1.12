@@ -177,10 +177,10 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     private PositionedStack output;
     private ArrayList<PositionedStack> otherOutputs;
     private float[] outputChance;
-    private double energy;
+    private int energy;
 
     // Possible energy cost in the future?
-    public double getEnergy() {
+    public int getEnergy() {
       return energy;
     }
 
@@ -215,11 +215,11 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
       return otherOutputs;
     }
 
-    public MillRecipe(float energy, RecipeInput ingredient, RecipeOutput[] outputs) {
+    public MillRecipe(int energy, RecipeInput ingredient, RecipeOutput[] outputs) {
       this(null, energy, ingredient, outputs);
     }
 
-    public MillRecipe(ItemStack targetedResult, float energy, RecipeInput ingredient, RecipeOutput[] outputs) {
+    public MillRecipe(ItemStack targetedResult, int energy, RecipeInput ingredient, RecipeOutput[] outputs) {
       this.energy = energy;
 
       input = new ArrayList<PositionedStack>(2);

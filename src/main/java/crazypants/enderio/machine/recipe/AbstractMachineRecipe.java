@@ -10,7 +10,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
+  public int getEnergyRequired(MachineRecipeInput... inputs) {
     if(inputs == null || inputs.length <= 0) {
       return 0;
     }

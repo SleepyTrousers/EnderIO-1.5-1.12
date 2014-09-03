@@ -22,9 +22,9 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
 
   ICapacitor getCapacitor();
 
-  float getMaxEnergyExtracted(ForgeDirection dir);
+  int getMaxEnergyExtracted(ForgeDirection dir);
 
-  float getMaxEnergyRecieved(ForgeDirection dir);
+  int getMaxEnergyRecieved(ForgeDirection dir);
 
   IIcon getTextureForInputMode();
 
@@ -33,13 +33,13 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
   //called from NetworkPowerManager
   void onTick();
 
-  //mj
-  float getEnergyStored();
+  
+  int getEnergyStored();
 
   void setEnergyStored(float give);
 
   boolean getConnectionsDirty();
 
-  double getMaxEnergyStored();
+  int getMaxEnergyStored();
 
 }

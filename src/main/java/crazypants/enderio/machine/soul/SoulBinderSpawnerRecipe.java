@@ -20,8 +20,8 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getEnergyRequired(MachineRecipeInput... inputs) {
-    return Config.soulBinderMjForBrokenSpawner;
+  public int getEnergyRequired(MachineRecipeInput... inputs) {
+    return Config.soulBinderBrokenSpawnerRF;
   }
 
   @Override

@@ -60,9 +60,9 @@ public class BlockItemSolorPanel extends ItemBlockWithMetadata implements IAdvan
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     TooltipAddera.addDetailedTooltipFromResources(list, itemstack); 
-    float prod = (float)Config.maxPhotovoltaicOutput;
+    int prod = Config.maxPhotovoltaicOutputRF;
     if(itemstack.getItemDamage() == 1) {
-      prod = (float)Config.maxPhotovoltaicAdvancedOutput;
+      prod = Config.maxPhotovoltaicAdvancedOutputRF;
     }
     list.add(Lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
   }

@@ -117,10 +117,10 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
     private ArrayList<PositionedStack> input;
     private PositionedStack output;
-    private double energy;
+    private int energy;
 
     // Possible energy cost in the future?
-    public double getEnergy() {
+    public int getEnergy() {
       return energy;
     }
 
@@ -134,7 +134,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       return output;
     }
 
-    public AlloySmelterRecipe(float energy, RecipeInput[] ingredients, ItemStack result) {
+    public AlloySmelterRecipe(int energy, RecipeInput[] ingredients, ItemStack result) {
       int recipeSize = ingredients.length;
       this.input = new ArrayList<PositionedStack>();
       int yOff = 8;
@@ -150,7 +150,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
       if(result != null) {
         this.output = new PositionedStack(result, 74, 54 - yOff);
       }
-      this.energy = energy; //If we wanted to do an energy cost
+      this.energy = energy; 
     }
   }
 }

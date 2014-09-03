@@ -244,11 +244,11 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   public class InnerVatRecipe extends TemplateRecipeHandler.CachedRecipe {
 
     private ArrayList<PositionedStack> inputs;
-    private double energy;
+    private int energy;
     private FluidStack result;
     private FluidStack inFluid;
 
-    public double getEnergy() {
+    public int getEnergy() {
       return energy;
     }
 
@@ -262,7 +262,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       return null;
     }
 
-    public InnerVatRecipe(float energy, RecipeInput[] ingredients, FluidStack result) {
+    public InnerVatRecipe(int energy, RecipeInput[] ingredients, FluidStack result) {
       ArrayList<ItemStack> inputsOne = new ArrayList<ItemStack>();
       ArrayList<ItemStack> inputsTwo = new ArrayList<ItemStack>();
       for (RecipeInput input : ingredients) {

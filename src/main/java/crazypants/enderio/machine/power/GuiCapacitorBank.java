@@ -232,7 +232,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   private int parsePower(GuiTextField tf) {
     String txt = tf.getText();
     try {
-      Float power = PowerDisplayUtil.parsePower(txt);
+      Integer power = PowerDisplayUtil.parsePower(txt);
       if(power == null) {
         return -1;
       }

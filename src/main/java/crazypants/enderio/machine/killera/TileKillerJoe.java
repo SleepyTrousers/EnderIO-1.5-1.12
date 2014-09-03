@@ -2,60 +2,43 @@ package crazypants.enderio.machine.killera;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import com.google.common.collect.Multimap;
-import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S0BPacketAnimation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.google.common.collect.Multimap;
+import com.mojang.authlib.GameProfile;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
-import crazypants.enderio.machine.generator.zombie.PacketZombieTank;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ForgeDirectionOffsets;
-import crazypants.util.ItemUtil;
 import crazypants.vecmath.Vector3d;
 
 public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector {
@@ -91,8 +74,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private int experienceTotal;
 
   public TileKillerJoe() {
-    super(new SlotDefinition(1, 0, 0));
-    powerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.MACHINE);
+    super(new SlotDefinition(1, 0, 0));    
   }
 
   @Override
@@ -415,10 +397,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   //------------------------------- Power
 
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    return null;
-  }
-
+  @Override
   public boolean canConnectEnergy(ForgeDirection from) {
     return false;
   }

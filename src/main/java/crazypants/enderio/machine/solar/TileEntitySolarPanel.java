@@ -7,12 +7,7 @@ import java.util.ListIterator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -20,9 +15,8 @@ import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
-public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor, IPowerEmitter {
-
-  protected PowerHandler powerHandler;
+public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor {
+  
   private BasicCapacitor capacitor;
 
   private final List<Receptor> receptors = new ArrayList<Receptor>();
@@ -32,32 +26,15 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private float lastCollectionValue = -1;
   private int checkOffset;
   private static final int CHECK_INTERVAL = 100;
+  
+  private int storedEnergyRF;
 
   public TileEntitySolarPanel() {
     checkOffset = (int) (Math.random() * 20);
     capacitor = new BasicCapacitor(0, 10000, 10);
-    powerHandler = PowerHandlerUtil.createHandler(capacitor, this, Type.ENGINE);
   }
 
-  @Override
-  public boolean canEmitPowerFrom(ForgeDirection side) {
-    return side == ForgeDirection.DOWN;
-  }
-
-  @Override
-  public void doWork(PowerHandler workProvider) {
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    return powerHandler.getPowerReceiver();
-  }
-
+  
   public void onNeighborBlockChange() {
     receptorsDirty = true;
   }
@@ -66,7 +43,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+    return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
   @Override
@@ -81,13 +58,38 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getEnergyStored() * 10);
+    return getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getMaxEnergyStored() * 10);
+    return getMaxEnergyStored();
   }
+  
+  
+
+  @Override
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
+    return capacitor.getMaxEnergyReceived();
+  }
+
+
+  @Override
+  public int getEnergyStored() {
+    return storedEnergyRF;
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    return capacitor.getMaxEnergyStored();
+  }
+
+
+  @Override
+  public void setEnergyStored(int stored) {
+    storedEnergyRF = stored;    
+  }
+
 
   @Override
   public void updateEntity() {
@@ -108,15 +110,15 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       lastCollectionValue = getEnergyPerTick() * fromSun;
     }
     float collected = lastCollectionValue;
-    powerHandler.setEnergy(Math.min(powerHandler.getMaxEnergyStored(), powerHandler.getEnergyStored() + collected));
+    storedEnergyRF += collected;    
   }
 
-  private float getEnergyPerTick() {
+  private int getEnergyPerTick() {
     int meta = getBlockMetadata();
     if(meta == 0) {
-      return (float)Config.maxPhotovoltaicOutput;
+      return Config.maxPhotovoltaicOutputRF;
     }
-    return (float)Config.maxPhotovoltaicAdvancedOutput;
+    return Config.maxPhotovoltaicAdvancedOutputRF;
   }
 
   private float calculateLightRatio() {
@@ -137,18 +139,9 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
 
   private boolean transmitEnergy() {
 
-    if(powerHandler.getEnergyStored() <= 0) {
-      powerHandler.update();
-      return false;
-    }
 
-    // Mandatory power handler update
-    double stored = powerHandler.getEnergyStored();
-    powerHandler.update();
-    powerHandler.setEnergy(stored);
-
-    double canTransmit = Math.min(powerHandler.getEnergyStored(), capacitor.getMaxEnergyExtracted());
-    float transmitted = 0;
+    int canTransmit = Math.min(getEnergyStored(), capacitor.getMaxEnergyExtracted());
+    int transmitted = 0;
 
     checkReceptors();
 
@@ -163,7 +156,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       Receptor receptor = receptorIterator.next();
       IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
-        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), (float) canTransmit);
+        int used = pp.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
         transmitted += used;
         canTransmit -= used;
       }
@@ -178,7 +171,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       appliedCount++;
     }
 
-    powerHandler.setEnergy(powerHandler.getEnergyStored() - transmitted);
+    setEnergyStored(getEnergyStored() - transmitted);    
 
     return transmitted > 0;
 

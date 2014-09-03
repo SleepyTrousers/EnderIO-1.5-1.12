@@ -13,7 +13,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   private int x;
   private int y;
   private int z;
-  private float storedEnergy;
+  private int storedEnergy;
 
   public PacketPowerStorage() {
   }
@@ -22,7 +22,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     x = ent.xCoord;
     y = ent.yCoord;
     z = ent.zCoord;
-    storedEnergy = ent.storedEnergy;
+    storedEnergy = ent.storedEnergyRF;
   }
 
   @Override
@@ -30,7 +30,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeFloat(storedEnergy);
+    buf.writeInt(storedEnergy);
 
   }
 
@@ -39,7 +39,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    storedEnergy = buf.readFloat();
+    storedEnergy = buf.readInt();
   }
 
   @Override
@@ -48,8 +48,8 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof AbstractMachineEntity) {
       AbstractMachineEntity me = (AbstractMachineEntity) te;
-      me.storedEnergy = message.storedEnergy;
-      me.powerHandler.setEnergy(message.storedEnergy);
+      me.storedEnergyRF = message.storedEnergy;
+      me.setEnergyStored(message.storedEnergy);
     }
     return null;
   }

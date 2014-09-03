@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import cofh.api.energy.EnergyStorage;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,9 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -51,12 +50,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   // Power
   protected Capacitors capacitorType;
 
-  protected float storedEnergy;
+  protected int storedEnergyRF;
 
   protected ItemStack[] inventory;
   protected final SlotDefinition slotDefinition;
-
-  protected PowerHandler powerHandler;
 
   protected RedstoneControlMode redstoneControlMode;
 
@@ -79,11 +76,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return sound == null ? null : new ResourceLocation(EnderIO.MODID + ":" + sound);
   }
 
-  public AbstractMachineEntity(SlotDefinition slotDefinition, Type powerType) {
+  public AbstractMachineEntity(SlotDefinition slotDefinition) {
     this.slotDefinition = slotDefinition;
     facing = 3;
     capacitorType = Capacitors.BASIC_CAPACITOR;
-    powerHandler = PowerHandlerUtil.createHandler(capacitorType.capacitor, this, powerType);
+    
     inventory = new ItemStack[slotDefinition.getNumSlots()];
     redstoneControlMode = RedstoneControlMode.IGNORE;
     soundRes = getSoundFor(getSoundName());
@@ -181,10 +178,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   protected abstract boolean isMachineItemValidForSlot(int i, ItemStack itemstack);
 
-  public AbstractMachineEntity(SlotDefinition slotDefinition) {
-    this(slotDefinition, Type.MACHINE);
-  }
-
   @Override
   public RedstoneControlMode getRedstoneControlMode() {
     return redstoneControlMode;
@@ -247,8 +240,27 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   // --- Power
   // --------------------------------------------------------------------------------------
 
+  
+  @Override
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
+    if(isSideDisabled(dir.ordinal())) {
+      return 0;
+    }    
+    return getCapacitor().getMaxEnergyReceived();
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    return  getCapacitor().getMaxEnergyStored();
+  }
+
+  @Override
+  public void setEnergyStored(int stored) {
+    storedEnergyRF = stored;    
+  }
+  
   public boolean hasPower() {
-    return storedEnergy > 0;
+    return storedEnergyRF > 0;
   }
 
   public ICapacitor getCapacitor() {
@@ -257,48 +269,30 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public int getEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return VecmathUtil.clamp(Math.round(scale * (storedEnergy / getCapacitor().getMaxEnergyStored())), 0, scale);
+    return VecmathUtil.clamp(Math.round(scale * (storedEnergyRF / getMaxEnergyStored())), 0, scale);
   }
 
-  public float getEnergyStored() {
-    return storedEnergy;
+  public int getEnergyStored() {
+    return storedEnergyRF;
   }
 
   public void setCapacitor(Capacitors capacitorType) {
     this.capacitorType = capacitorType;
-    PowerHandlerUtil.configure(powerHandler, capacitorType.capacitor);
     forceClientUpdate = true;
   }
-
-  @Override
-  public void doWork(PowerHandler workProvider) {
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    if(isSideDisabled(side.ordinal())) {
-      return null;
-    }
-    return powerHandler.getPowerReceiver();
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
-
-  public float getPowerUsePerTick() {
+  
+  public int getPowerUsePerTick() {
     return getCapacitor().getMaxEnergyExtracted();
   }
 
-  // RF Power
+  // RF API Power
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     if(isSideDisabled(from.ordinal())) {
       return 0;
     }
-    return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+    return PowerHandlerUtil.recieveInternal(this, maxReceive,from, simulate);
   }
 
   @Override
@@ -313,16 +307,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getEnergyStored() * 10);
+    return getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getMaxEnergyStored() * 10);
-  }
-
-  public int getMaxEnergyStoredMJ() {
-    return (int) powerHandler.getMaxEnergyStored();
+    return getMaxEnergyStored();
   }
 
   // --- Process Loop
@@ -359,8 +349,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     } // else is server, do all logic only on the server
 
-    updateStoredEnergyFromPowerHandler();
-
     boolean requiresClientSync = forceClientUpdate;
     boolean prevRedCheck = redstoneCheckPassed;
     if(redstoneStateDirty) {
@@ -376,10 +364,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
 
-    boolean powerChanged = (lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 5 == 0);
+    boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && worldObj.getTotalWorldTime() % 5 == 0);
 
     if(requiresClientSync) {
-      lastSyncPowerStored = storedEnergy;
+      lastSyncPowerStored = storedEnergyRF;
       // this will cause 'getPacketDescription()' to be called and its result
       // will be sent to the PacketHandler on the other end of
       // client/server connection
@@ -387,7 +375,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       // And this will make sure our current tile entity state is saved
       markDirty();
     } else if(powerChanged) {
-      lastSyncPowerStored = storedEnergy;
+      lastSyncPowerStored = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
 
@@ -514,10 +502,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return false;
   }
 
-  protected void updateStoredEnergyFromPowerHandler() {
-    storedEnergy = (float) powerHandler.getEnergyStored();
-  }
-
   protected abstract boolean processTasks(boolean redstoneCheckPassed);
 
   // ---- Tile Entity
@@ -544,10 +528,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
 
-    float storedEnergy = nbtRoot.getFloat("storedEnergy");
-    powerHandler.setEnergy(storedEnergy);
-    // For the client as provider is not saved to NBT
-    this.storedEnergy = storedEnergy;
+    if(nbtRoot.hasKey("storedEnergy")) {
+      float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
+      storedEnergyRF = (int)(storedEnergyMJ * 10);
+    } else {
+      storedEnergyRF = nbtRoot.getInteger("storedEnergyRF");  
+    }
 
     // read in the inventories contents
     inventory = new ItemStack[slotDefinition.getNumSlots()];
@@ -602,7 +588,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   }
 
   public void writeCommon(NBTTagCompound nbtRoot) {
-    nbtRoot.setFloat("storedEnergy", storedEnergy);
+    nbtRoot.setInteger("storedEnergyRF", storedEnergyRF);
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
 
     // write inventory list

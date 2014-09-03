@@ -13,17 +13,17 @@ public class Recipe implements IRecipe {
 
   private final RecipeInput[] inputs;
   private final RecipeOutput[] outputs;
-  private final float energyRequired;
+  private final int energyRequired;
 
-  public Recipe(RecipeOutput output, float energyRequired, RecipeInput... input) {
+  public Recipe(RecipeOutput output, int energyRequired, RecipeInput... input) {
     this(input, new RecipeOutput[] { output }, energyRequired);
   }
 
-  public Recipe(RecipeInput input, float energyRequired, RecipeOutput... output) {
+  public Recipe(RecipeInput input, int energyRequired, RecipeOutput... output) {
     this(new RecipeInput[] { input }, output, energyRequired);
   }
 
-  public Recipe(RecipeInput[] input, RecipeOutput[] output, float energyRequired) {
+  public Recipe(RecipeInput[] input, RecipeOutput[] output, int energyRequired) {
     this.inputs = input;
     this.outputs = output;
     this.energyRequired = energyRequired;
@@ -159,7 +159,7 @@ public class Recipe implements IRecipe {
   }
   
   @Override
-  public float getEnergyRequired() {
+  public int getEnergyRequired() {
     return energyRequired;
   }
 

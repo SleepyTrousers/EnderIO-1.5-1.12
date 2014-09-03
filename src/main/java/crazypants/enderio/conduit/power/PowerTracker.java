@@ -10,9 +10,9 @@ public class PowerTracker {
 
   private final TickTracker sentTracker = new TickTracker();
 
-  private float sentThisTick = 0;
+  private int sentThisTick = 0;
 
-  private float recievedThisTick = 0;
+  private int recievedThisTick = 0;
 
   public void tickStart(float storedEnergy) {
     double curStorage = storedEnergy;
@@ -24,15 +24,15 @@ public class PowerTracker {
     }
   }
 
-  public void powerRecieved(float power) {
+  public void powerRecieved(int power) {
     recievedThisTick += power;
   }
 
-  public void powerSent(float power) {
+  public void powerSent(int power) {
     sentThisTick += power;
   }
 
-  public void tickEnd(float storedEnergy) {
+  public void tickEnd(int storedEnergy) {
     previousStorageLevel = storedEnergy;
     sentTracker.tick(sentThisTick);
     recTracker.tick(recievedThisTick);
@@ -40,12 +40,12 @@ public class PowerTracker {
     sentThisTick = 0;
   }
 
-  public float getAverageMjTickRecieved() {
-    return recTracker.getMJT();
+  public float getAverageRfTickRecieved() {
+    return recTracker.getRFT();
   }
 
-  public float getAverageMjTickSent() {
-    return sentTracker.getMJT();
+  public float getAverageRfTickSent() {
+    return sentTracker.getRFT();
   }
 
   private static class TickTracker {
@@ -54,7 +54,7 @@ public class PowerTracker {
     private int index = 0;
     private LimitedQueue<Float> lastFiveSeconds = new LimitedQueue<Float>(5);
 
-    float getMJT() {
+    float getRFT() {
       int numTicks = index + (lastFiveSeconds.size() * 20);
       if(numTicks == 0) {
         return 0;
@@ -66,7 +66,7 @@ public class PowerTracker {
       return totalPower / numTicks;
     }
 
-    void tick(float power) {
+    void tick(int power) {
       lastSecondTotal += power;
       index++;
       if(index == 20) {

@@ -83,8 +83,8 @@ public class GuiHyperCube extends GuiScreenBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(PowerDisplayUtil.formatPower(cube.powerHandler.getEnergyStored()) + " / "
-            + PowerDisplayUtil.formatPower(cube.powerHandler.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
+        text.add(PowerDisplayUtil.formatPower(cube.getEnergyStored()) + " / "
+            + PowerDisplayUtil.formatPower(cube.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
       }
 
     });

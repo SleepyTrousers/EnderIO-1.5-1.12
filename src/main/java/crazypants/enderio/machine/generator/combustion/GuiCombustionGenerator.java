@@ -88,9 +88,9 @@ public class GuiCombustionGenerator extends GuiMachineBase {
     int scaled;
 
     FontRenderer fr = getFontRenderer();
-    double output = 0;
-    if(gen.isActive()) {
-      output = gen.getMjGeneratedLastTick();
+    int output = 0;
+    if(gen.isActive()) {      
+      output = gen.getGeneratedLastTick();
     }
     String txt =  Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);

@@ -11,7 +11,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
@@ -328,10 +327,6 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     }
     markDirty();
     return false;
-  }
-
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    return null;
   }
 
   public boolean canConnectEnergy(ForgeDirection from) {

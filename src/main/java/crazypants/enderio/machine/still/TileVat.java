@@ -299,8 +299,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   }
 
   @Override
-  public float getPowerUsePerTick() {
-    return Config.vatPowerUserPerTick;
+  public int getPowerUsePerTick() {
+    return Config.vatPowerUserPerTickRF;
   }
 
   @Override

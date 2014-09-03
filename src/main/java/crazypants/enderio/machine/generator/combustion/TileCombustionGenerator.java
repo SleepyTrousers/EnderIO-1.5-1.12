@@ -14,7 +14,6 @@ import buildcraft.api.fuels.IronEngineCoolant;
 import buildcraft.api.fuels.IronEngineCoolant.Coolant;
 import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.fuels.IronEngineFuel.Fuel;
-import buildcraft.api.power.IPowerEmitter;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
@@ -24,7 +23,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
-public class TileCombustionGenerator extends AbstractMachineEntity implements IPowerEmitter, IFluidHandler {
+public class TileCombustionGenerator extends AbstractMachineEntity implements IFluidHandler {
 
   private final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
   private final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
@@ -36,7 +35,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
   private PowerDistributor powerDis;
 
-  private float generated;
+  private int generated;
 
   private boolean inPause = false;
 
@@ -48,8 +47,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   private Coolant curCoolant;
 
   public TileCombustionGenerator() {
-    super(new SlotDefinition(-1, -1, -1, -1, -1, -1));
-    powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
+    super(new SlotDefinition(-1, -1, -1, -1, -1, -1));    
   }
 
   @Override
@@ -91,11 +89,6 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   @Override
   public String getMachineName() {
     return ModObject.blockCombustionGenerator.unlocalisedName;
-  }
-
-  @Override
-  public boolean canEmitPowerFrom(ForgeDirection side) {
-    return !isSideDisabled(side.ordinal());
   }
 
   @Override
@@ -166,7 +159,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
         res = true;
       }
 
-      if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(storedEnergyRF >= capacitorType.capacitor.getMaxEnergyStored()) {
         inPause = true;        
       }       
 
@@ -187,14 +180,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   }
 
   private boolean transmitEnergy() {
-    if(storedEnergy <= 0) {
+    if(storedEnergyRF <= 0) {
       return false;
     }
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, storedEnergy));
-    storedEnergy -= transmitted;
+    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, storedEnergyRF));
+    storedEnergyRF -= transmitted;
     return transmitted > 0;
   }
 
@@ -204,15 +197,15 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
 
     if((ticksRemaingCoolant <= 0 && getCoolantTank().getFluidAmount() <= 0) ||
         (ticksRemaingFuel <= 0 && getFuelTank().getFluidAmount() <= 0) ||
-        storedEnergy >= powerHandler.getMaxEnergyStored()) {
+        storedEnergyRF >= getMaxEnergyStored()) {
       return false;
     }
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
     if(inPause) {
-      double powerPerCycle = curFuel == null ? 0 : curFuel.powerPerCycle;
-      if(storedEnergy >= (powerHandler.getMaxEnergyStored() - (powerPerCycle * 200))) {
+      int powerPerCycle = getPowerPerCycle();
+      if(storedEnergyRF >= (getMaxEnergyStored() - (powerPerCycle * 200))) {
         return false;
       }
     }
@@ -259,12 +252,16 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
       }
     }
 
-    float oldVal = storedEnergy;
-    storedEnergy += curFuel.powerPerCycle;
-    generated = curFuel.powerPerCycle;
-    storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
+    float oldVal = storedEnergyRF;
+    generated = getPowerPerCycle();
+    storedEnergyRF += generated;    
+    storedEnergyRF = Math.min(storedEnergyRF, getMaxEnergyStored());
 
     return getFuelTank().getFluidAmount() > 0 && getCoolantTank().getFluidAmount() > 0;
+  }
+
+  private int getPowerPerCycle() {
+    return curFuel == null ? 0 : (int)(curFuel.powerPerCycle * 10);    
   }
 
   public int getNumTicksPerMbFuel() {
@@ -304,14 +301,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   }
 
   @Override
-  protected void updateStoredEnergyFromPowerHandler() {
-    //no-op as we don't actually need a BC power handler for a generator
-    //Need to clean this up
-  }
-
-  @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (storedEnergy * 10);
+    return (int) (storedEnergyRF * 10);
   }
 
   @Override
@@ -339,7 +330,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     active = nbtRoot.getBoolean("active");
-    generated = nbtRoot.getFloat("generated");
+    generated = nbtRoot.getInteger("generatedRF");
   }
 
   @Override
@@ -392,10 +383,10 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("active", active);
-    nbtRoot.setFloat("generated", generated);
+    nbtRoot.setInteger("generatedRF", generated);
   }
 
-  public double getMjGeneratedLastTick() {
+  public int getGeneratedLastTick() {
     if(!active) {
       return 0;
     }
@@ -403,7 +394,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
   }
 
   @Override
-  public float getPowerUsePerTick() {
+  public int getPowerUsePerTick() {
     if(getFuelTank().getFluidAmount() <= 0) {
       return 0;
     }
@@ -411,7 +402,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IP
     if(fuel == null) {
       return 0;
     }
-    return fuel.powerPerCycle;
+    return (int)fuel.powerPerCycle;
   }
 
   public FluidTank getCoolantTank() {

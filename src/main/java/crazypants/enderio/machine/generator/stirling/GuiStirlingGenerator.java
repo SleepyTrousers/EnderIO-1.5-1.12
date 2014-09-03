@@ -50,7 +50,7 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     FontRenderer fr = getFontRenderer();
     int y = guiTop + fr.FONT_HEIGHT / 2 + 3;
 
-    double output = 0;
+    int output = 0;
     if(entity.isActive()) {
       output = entity.getPowerUsePerTick();
     }

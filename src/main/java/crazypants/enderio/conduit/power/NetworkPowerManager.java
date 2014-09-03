@@ -10,7 +10,6 @@ import java.util.Set;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.Log;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
@@ -28,8 +27,8 @@ public class NetworkPowerManager {
   private PowerConduitNetwork network;
 
   int maxEnergyStored;
-  float energyStored;
-  private float reserved;
+  int energyStored;
+  private int reserved;
 
   private int updateRenderTicks = 10;
   private int inactiveTicks = 100;
@@ -67,35 +66,35 @@ public class NetworkPowerManager {
     return networkPowerTracker;
   }
 
-  public float getPowerInConduits() {
+  public int getPowerInConduits() {
     return energyStored;
   }
 
-  public float getMaxPowerInConduits() {
+  public int getMaxPowerInConduits() {
     return maxEnergyStored;
   }
 
-  public float getPowerInCapacitorBanks() {
+  public int getPowerInCapacitorBanks() {
     if(capSupply == null) {
       return 0;
     }
     return capSupply.stored;
   }
 
-  public float getMaxPowerInCapacitorBanks() {
+  public int getMaxPowerInCapacitorBanks() {
     if(capSupply == null) {
       return 0;
     }
     return capSupply.maxCap;
   }
 
-  public float getPowerInReceptors() {
-    float result = 0;
+  public int getPowerInReceptors() {
+    int result = 0;
     Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
         IPowerInterface powerReceptor = re.powerInterface;
-        if(!done.contains(powerReceptor.getDelegate()) && !(powerReceptor.getDelegate() instanceof IPowerEmitter)) {
+        if(!done.contains(powerReceptor.getDelegate())) {
           done.add(powerReceptor.getDelegate());
           result += powerReceptor.getEnergyStored(re.direction);
         }
@@ -104,13 +103,13 @@ public class NetworkPowerManager {
     return result;
   }
 
-  public float getMaxPowerInReceptors() {
-    float result = 0;
+  public int getMaxPowerInReceptors() {
+    int result = 0;
     Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
         IPowerInterface powerReceptor = re.powerInterface;
-        if(!done.contains(powerReceptor.getDelegate()) && !(powerReceptor.getDelegate() instanceof IPowerEmitter)) {
+        if(!done.contains(powerReceptor.getDelegate())) {
           done.add(powerReceptor.getDelegate());
           result += powerReceptor.getMaxEnergyStored(re.direction);
         }
@@ -141,8 +140,8 @@ public class NetworkPowerManager {
 
     int appliedCount = 0;
     int numReceptors = receptors.size();
-    float available = energyStored + capSupply.canExtract;
-    float wasAvailable = available;
+    int available = energyStored + capSupply.canExtract;
+    int wasAvailable = available;
 
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
       trackerEndTick();
@@ -159,19 +158,19 @@ public class NetworkPowerManager {
       IPowerInterface pp = r.powerInterface;
       if(pp != null) {
 
-        float used = 0;
+        int used = 0;
         if(pp.getClass() == PowerInterfaceRF.class) {
 
-          float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+          int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
           used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
           trackerSend(r.emmiter, used, false);
 
         } else {
 
-          float reservedForEntry = removeReservedEnergy(r);
+          int reservedForEntry = removeReservedEnergy(r);
           available += reservedForEntry;
-          float canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-          float requested = pp.getPowerRequest(r.direction.getOpposite());
+          int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+          int requested = pp.getPowerRequest(r.direction.getOpposite());
 
           // If it is possible to supply the minimum amount of energy
           if(pp.getMinEnergyReceived(r.direction) <= r.emmiter.getMaxEnergyExtracted(r.direction) && requested > 0) {
@@ -193,12 +192,12 @@ public class NetworkPowerManager {
       appliedCount++;
     }
 
-    float used = wasAvailable - available;
+    int used = wasAvailable - available;
     // use all the capacator storage first
     energyStored -= used;
 
     if(!capSupply.capBanks.isEmpty()) {
-      float capBankChange = 0;
+      int capBankChange = 0;
       if(energyStored < 0) {
         // not enough so get the rest from the capacitor bank
         capBankChange = energyStored;
@@ -298,17 +297,17 @@ public class NetworkPowerManager {
     }
   }
 
-  private float removeReservedEnergy(ReceptorEntry r) {
+  private int removeReservedEnergy(ReceptorEntry r) {
     StarveBuffer starveBuf = starveBuffers.remove(r.coord);
     if(starveBuf == null) {
       return 0;
     }
-    float result = starveBuf.stored;
+    int result = starveBuf.stored;
     reserved -= result;
     return result;
   }
 
-  private void reserveEnergy(ReceptorEntry r, float amount) {
+  private void reserveEnergy(ReceptorEntry r, int amount) {
     starveBuffers.put(r.coord, new StarveBuffer(amount));
     reserved += amount;
   }
@@ -399,9 +398,9 @@ public class NetworkPowerManager {
 
   private static class StarveBuffer {
 
-    float stored;
+    int stored;
 
-    public StarveBuffer(float stored) {
+    public StarveBuffer(int stored) {
       this.stored = stored;
     }
 
@@ -411,7 +410,7 @@ public class NetworkPowerManager {
 
   }
 
-  private double minAbs(double amount, double limit) {
+  private int minAbs(int amount, int limit) {
     if(amount < 0) {
       return Math.max(amount, -limit);
     } else {
@@ -421,13 +420,13 @@ public class NetworkPowerManager {
 
   private class CapBankSupply {
 
-    float canExtract;
-    float canFill;
+    int canExtract;
+    int canFill;
     Set<TileCapacitorBank> capBanks = new HashSet<TileCapacitorBank>();
 
     float filledRatio;
-    float stored = 0;
-    float maxCap = 0;
+    int stored = 0;
+    int maxCap = 0;
 
     List<CapBankSupplyEntry> enteries = new ArrayList<NetworkPowerManager.CapBankSupplyEntry>();
 
@@ -462,14 +461,13 @@ public class NetworkPowerManager {
           maxToBalance += cb.getMaxEnergyStored();
         }
 
-        double canGet = 0;
-
+        int canGet = 0;
         if(cb.isOutputEnabled(rec.direction.getOpposite())) {
           canGet = Math.min(cb.getEnergyStored(), cb.getMaxOutput());
           canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
           canExtract += canGet;
         }
-        double canFill = 0;
+        int canFill = 0;
         if(cb.isInputEnabled(rec.direction.getOpposite())) {
           canFill = Math.min(cb.getMaxEnergyStored() - cb.getEnergyStored(), cb.getMaxInput());
           canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
@@ -481,7 +479,7 @@ public class NetworkPowerManager {
 
       filledRatio = 0;
       if(maxToBalance > 0) {
-        filledRatio = toBalance / maxToBalance;
+        filledRatio = (float)toBalance / maxToBalance;
       }
     }
 
@@ -503,23 +501,23 @@ public class NetworkPowerManager {
         }
       }
 
-      float toalTransferAmount = Math.min(canAdd, canRemove);
+      int toalTransferAmount = Math.min(canAdd, canRemove);
 
       for (int i = 0; i < enteries.size() && toalTransferAmount > 0; i++) {
         CapBankSupplyEntry from = enteries.get(i);
         if(from.emmiter.getConectionMode(from.direction) == ConnectionMode.IN_OUT) {
 
-          double amount = from.toBalance;
+          int amount = from.toBalance;
           amount = minAbs(amount, toalTransferAmount);
           from.capBank.addEnergy(amount);
           toalTransferAmount -= Math.abs(amount);
-          double toTranfser = Math.abs(amount);
+          int toTranfser = Math.abs(amount);
 
           for (int j = i + 1; j < enteries.size() && toTranfser > 0; j++) {
             CapBankSupplyEntry to = enteries.get(j);
             if(Math.signum(amount) != Math.signum(to.toBalance)) {
-              double toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
-              to.capBank.addEnergy(toAmount * Math.signum(to.toBalance));
+              int toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
+              to.capBank.addEnergy(toAmount * (int)Math.signum(to.toBalance));
               toTranfser -= toAmount;
             }
           }
@@ -528,17 +526,17 @@ public class NetworkPowerManager {
 
     }
 
-    void remove(float amount) {
+    void remove(int amount) {
       if(canExtract <= 0 || amount <= 0) {
         return;
       }
       float ratio = amount / canExtract;
 
       for (CapBankSupplyEntry entry : enteries) {
-        double use = Math.ceil(ratio * entry.canExtract);
+        int use = (int)Math.ceil(ratio * entry.canExtract);
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
-        entry.capBank.addEnergy(-(float) use);
+        entry.capBank.addEnergy(-use);
         trackerRecieve(entry.emmiter, (float) use, true);
         amount -= use;
         if(amount == 0) {
@@ -547,18 +545,18 @@ public class NetworkPowerManager {
       }
     }
 
-    void add(float amount) {
+    void add(int amount) {
       if(canFill <= 0 || amount <= 0) {
         return;
       }
       float ratio = amount / canFill;
 
       for (CapBankSupplyEntry entry : enteries) {
-        double add = (int) Math.ceil(ratio * entry.canFill);
+        int add = (int) Math.ceil(ratio * entry.canFill);
         add = Math.min(add, entry.canFill);
         add = Math.min(add, amount);
-        entry.capBank.addEnergy((float) add);
-        trackerSend(entry.emmiter, (float) add, true);
+        entry.capBank.addEnergy(add);
+        trackerSend(entry.emmiter, add, true);
         amount -= add;
         if(amount == 0) {
           return;
@@ -571,13 +569,13 @@ public class NetworkPowerManager {
   private static class CapBankSupplyEntry {
 
     final TileCapacitorBank capBank;
-    final double canExtract;
-    final double canFill;
-    double toBalance;
+    final int canExtract;
+    final int canFill;
+    int toBalance;
     IPowerConduit emmiter;
     ForgeDirection direction;
 
-    private CapBankSupplyEntry(TileCapacitorBank capBank, double available, double canFill, IPowerConduit emmiter, ForgeDirection direction) {
+    private CapBankSupplyEntry(TileCapacitorBank capBank, int available, int canFill, IPowerConduit emmiter, ForgeDirection direction) {
       this.capBank = capBank;
       this.canExtract = available;
       this.canFill = canFill;
@@ -586,7 +584,7 @@ public class NetworkPowerManager {
     }
 
     void calcToBalance(float targetRatio) {
-      float targetAmount = capBank.getMaxEnergyStored() * targetRatio;
+      int targetAmount = (int)Math.floor(capBank.getMaxEnergyStored() * targetRatio);
       toBalance = targetAmount - capBank.getEnergyStored();
       if(toBalance < 0) {
         toBalance = Math.max(toBalance, -canExtract);

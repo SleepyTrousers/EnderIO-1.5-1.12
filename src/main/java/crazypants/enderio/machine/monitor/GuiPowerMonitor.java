@@ -89,7 +89,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStoredMJ()) + " "
+        text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStored()) + " "
             + PowerDisplayUtil.abrevation());
       }
 
@@ -368,7 +368,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveMjSent));
+    sb.append(formatPowerFloat(te.aveRfSent));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append(PowerDisplayUtil.perTickStr());
@@ -383,7 +383,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveMjRecieved));
+    sb.append(formatPowerFloat(te.aveRfRecieved));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append(PowerDisplayUtil.perTickStr());
