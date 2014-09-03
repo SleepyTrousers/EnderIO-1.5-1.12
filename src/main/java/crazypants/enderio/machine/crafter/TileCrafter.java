@@ -14,17 +14,34 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 
 public class TileCrafter extends AbstractMachineEntity {
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
-  
+
   private List<ItemStack> containerItems;
+
+  private ICapacitor capacitor;
   
   public TileCrafter() {
-    super(new SlotDefinition(9, 1));    
+    super(new SlotDefinition(9, 1));
     containerItems = new ArrayList<ItemStack>();
+    setCapacitor(Capacitors.BASIC_CAPACITOR);
+  }
+
+  @Override
+  public ICapacitor getCapacitor() {
+    return capacitor;
+  }
+
+  @Override
+  public void setCapacitor(Capacitors capacitorType) {
+    super.setCapacitor(capacitorType);
+    ICapacitor refCap = super.getCapacitor();    
+    capacitor = new BasicCapacitor(refCap.getMaxEnergyReceived() * 2, refCap.getMaxEnergyStored(), refCap.getMaxEnergyExtracted());    
   }
 
   @Override
@@ -51,8 +68,8 @@ public class TileCrafter extends AbstractMachineEntity {
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheckPassed) {  
-    if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasPower()) {      
+  protected boolean processTasks(boolean redstoneCheckPassed) {
+    if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasPower()) {
       return false;
     }
     if(capacitorType == Capacitors.BASIC_CAPACITOR && worldObj.getTotalWorldTime() % 20 != 0) {
@@ -62,38 +79,38 @@ public class TileCrafter extends AbstractMachineEntity {
     } else if(worldObj.getTotalWorldTime() % 2 != 0) {
       return false;
     }
-    
+
     // process buffered container items
     if(!containerItems.isEmpty()) {
       Iterator<ItemStack> iter = containerItems.iterator();
       while (iter.hasNext()) {
-	ItemStack stack = iter.next();
-	if(inventory[9] == null) {
-	  inventory[9] = stack;
-	  iter.remove();
-	} else if(ItemStack.areItemStacksEqual(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
-	  inventory[9].stackSize += stack.stackSize;
-	  iter.remove();
-	}
+        ItemStack stack = iter.next();
+        if(inventory[9] == null) {
+          inventory[9] = stack;
+          iter.remove();
+        } else if(ItemStack.areItemStacksEqual(inventory[9], stack) && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
+          inventory[9].stackSize += stack.stackSize;
+          iter.remove();
+        }
       }
       return false;
     }
-    
+
     List<ItemStack> required = new ArrayList<ItemStack>();
     craftingGrid.copyRequiredInputs(required);
-    if(hasRequiredInput(required)) {      
+    if(hasRequiredInput(required)) {
       craftRecipe();
-      int used = Math.min(getEnergyStored(), Config.crafterRfPerCraft);    
+      int used = Math.min(getEnergyStored(), Config.crafterRfPerCraft);
       setEnergyStored(getEnergyStored() - used);
-    }     
+    }
     return false;
   }
 
-  private void craftRecipe() {    
+  private void craftRecipe() {
     List<ItemStack> required = new ArrayList<ItemStack>();
     craftingGrid.copyRequiredInputs(required);
-    for(ItemStack req : required) {
-      for(int i=0;i<9 && req.stackSize > 0; i++) {
+    for (ItemStack req : required) {
+      for (int i = 0; i < 9 && req.stackSize > 0; i++) {
         ItemStack avail = inventory[i];
         if(avail != null && avail.stackSize > 0 && avail.isItemEqual(req)) {
           req.stackSize--;
@@ -101,23 +118,23 @@ public class TileCrafter extends AbstractMachineEntity {
           avail.stackSize--;
           if(avail.stackSize <= 0) {
             avail = avail.getItem().getContainerItem(avail);
-            if (avail != null) {
+            if(avail != null) {
               containerItems.add(avail.copy());
               avail = null;
             }
           }
-          setInventorySlotContents(i, avail);          
+          setInventorySlotContents(i, avail);
         }
       }
     }
     ItemStack output = craftingGrid.getOutput().copy();
-    if(inventory[9] == null) {      
+    if(inventory[9] == null) {
       setInventorySlotContents(9, output);
     } else {
       ItemStack cur = inventory[9].copy();
       cur.stackSize += output.stackSize;
       setInventorySlotContents(9, cur);
-    }    
+    }
   }
 
   private boolean canMergeOutput() {
@@ -125,23 +142,23 @@ public class TileCrafter extends AbstractMachineEntity {
       return true;
     }
     ItemStack output = craftingGrid.getOutput();
-    if(!inventory[9].isItemEqual(output)) {      
+    if(!inventory[9].isItemEqual(output)) {
       return false;
-    }        
+    }
     return output.getMaxStackSize() >= (inventory[9].stackSize + output.stackSize);
   }
 
   private boolean hasRequiredInput(List<ItemStack> required) {
     List<ItemStack> available = new ArrayList<ItemStack>();
-    for(int i=0;i<9;i++) {
+    for (int i = 0; i < 9; i++) {
       ItemStack is = inventory[i];
       if(is != null) {
         available.add(is.copy());
-      }      
-    }    
-    for(ItemStack req : required) {
+      }
+    }
+    for (ItemStack req : required) {
       boolean foundReq = false;
-      for(ItemStack avail : available) {
+      for (ItemStack avail : available) {
         if(req.isItemEqual(avail) && avail.stackSize > 0) {
           avail.stackSize--;
           foundReq = true;
@@ -151,7 +168,7 @@ public class TileCrafter extends AbstractMachineEntity {
       if(!foundReq) {
         return false;
       }
-    }    
+    }
     return true;
   }
 
@@ -164,7 +181,7 @@ public class TileCrafter extends AbstractMachineEntity {
 
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);    
+    super.writeCommon(nbtRoot);
     NBTTagCompound craftingRoot = new NBTTagCompound();
     craftingGrid.writeToNBT(craftingRoot);
     nbtRoot.setTag("craftingGrid", craftingRoot);
@@ -172,22 +189,20 @@ public class TileCrafter extends AbstractMachineEntity {
 
   public void updateCraftingOutput() {
     InventoryCrafting inv = new InventoryCrafting(new Container() {
-      
+
       @Override
-      public boolean canInteractWith(EntityPlayer var1) {        
+      public boolean canInteractWith(EntityPlayer var1) {
         return false;
       }
     }, 3, 3);
-    
-    for(int i=0;i<9;i++) {
+
+    for (int i = 0; i < 9; i++) {
       inv.setInventorySlotContents(i, craftingGrid.getStackInSlot(i));
     }
     ItemStack matches = CraftingManager.getInstance().findMatchingRecipe(inv, worldObj);
     craftingGrid.setInventorySlotContents(9, matches);
     markDirty();
-    
+
   }
-  
-  
 
 }
