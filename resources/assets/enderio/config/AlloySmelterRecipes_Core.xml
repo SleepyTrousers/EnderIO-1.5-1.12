@@ -93,7 +93,7 @@ sand/cobble/wood=0.1
       </output>
     </recipe>
     
-    <recipe name="Dark Steel" energyCost="2000">
+    <recipe name="Dark Steel" energyCost="20000">
       <input>
         <itemStack modID="minecraft" itemName="iron_ingot"/>         
         <itemStack oreDictionary="dustCoal" />

@@ -44,9 +44,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-    new BasicCapacitor(500, 1500, 128),
-    new BasicCapacitor(512, 3000, 512),
-    new BasicCapacitor(2048, 5000, 2048)
+    new BasicCapacitor(640, 640, 640),
+    new BasicCapacitor(5120, 5120, 5120),
+    new BasicCapacitor(20480, 20480, 20480)
   };
 
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
@@ -215,7 +215,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     subtype = nbtRoot.getShort("subtype");
 
     if(nbtRoot.hasKey("energyStored")) {
-      nbtRoot.setInteger("energyStored", (int)(nbtRoot.getFloat("energyStored") * 10));
+      nbtRoot.setInteger("energyStoredRF", (int)(nbtRoot.getFloat("energyStored") * 10));
       
     }
     energyStoredRF = Math.min(getCapacitor().getMaxEnergyStored(), nbtRoot.getInteger("energyStoredRF"));
@@ -350,7 +350,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(getMaxEnergyRecieved(from) == 0 || maxReceive <= 0) {
       return 0;
     }
-    float freeSpace = getCapacitor().getMaxEnergyStored() - energyStoredRF;
+    int freeSpace = getCapacitor().getMaxEnergyStored() - energyStoredRF;
     int result = (int) Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
       energyStoredRF += result;
@@ -378,12 +378,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return energyStoredRF;
+    return getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return getCapacitor().getMaxEnergyStored() * 10;
+    return getMaxEnergyStored();
   }
 
   @Override

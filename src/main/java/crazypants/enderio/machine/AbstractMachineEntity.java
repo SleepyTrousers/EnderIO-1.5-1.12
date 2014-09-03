@@ -256,7 +256,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = stored;    
+    storedEnergyRF = Math.max(stored, 0);     
   }
   
   public boolean hasPower() {
@@ -269,7 +269,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public int getEnergyStoredScaled(int scale) {
     // NB: called on the client so can't use the power provider
-    return VecmathUtil.clamp(Math.round(scale * (storedEnergyRF / getMaxEnergyStored())), 0, scale);
+    return VecmathUtil.clamp(Math.round(scale * ((float)storedEnergyRF / getMaxEnergyStored())), 0, scale);
   }
 
   public int getEnergyStored() {

@@ -144,7 +144,11 @@ public class NetworkPowerManager {
     int wasAvailable = available;
 
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
+      if(available > 0) {
+        distributeStorageToConduits();
+      }
       trackerEndTick();
+      networkPowerTracker.tickEnd(energyStored);
       return;
     }
 
@@ -330,7 +334,7 @@ public class NetworkPowerManager {
       energyStored = maxEnergyStored;
     }
 
-    float filledRatio = energyStored / maxEnergyStored;
+    float filledRatio = (float)energyStored / maxEnergyStored;
     int energyLeft = energyStored;
     int given = 0;
     for (IPowerConduit con : network.getConduits()) {
@@ -365,8 +369,7 @@ public class NetworkPowerManager {
 
     if(energyStored > maxEnergyStored) {
       energyStored = maxEnergyStored;
-    }
-
+    }    
   }
 
   public void receptorsChanged() {
@@ -530,7 +533,7 @@ public class NetworkPowerManager {
       if(canExtract <= 0 || amount <= 0) {
         return;
       }
-      float ratio = amount / canExtract;
+      double ratio = (double)amount / canExtract;
 
       for (CapBankSupplyEntry entry : enteries) {
         int use = (int)Math.ceil(ratio * entry.canExtract);
@@ -549,7 +552,7 @@ public class NetworkPowerManager {
       if(canFill <= 0 || amount <= 0) {
         return;
       }
-      float ratio = amount / canFill;
+      double ratio = (double)amount / canFill;
 
       for (CapBankSupplyEntry entry : enteries) {
         int add = (int) Math.ceil(ratio * entry.canFill);

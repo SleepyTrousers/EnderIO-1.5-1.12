@@ -23,8 +23,7 @@ public class TileCrafter extends AbstractMachineEntity {
   private List<ItemStack> containerItems;
   
   public TileCrafter() {
-    super(new SlotDefinition(9, 1));
-    
+    super(new SlotDefinition(9, 1));    
     containerItems = new ArrayList<ItemStack>();
   }
 

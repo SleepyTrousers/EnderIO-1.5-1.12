@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.soul;
 
+import scala.xml.persistent.SetStorage;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -58,6 +59,9 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
     default:
       capacitor = CAP_ONE;
       break;
+    }
+    if(storedEnergyRF > getMaxEnergyStored()) {
+      setEnergyStored(getMaxEnergyStored());
     }
     forceClientUpdate = true;
   }

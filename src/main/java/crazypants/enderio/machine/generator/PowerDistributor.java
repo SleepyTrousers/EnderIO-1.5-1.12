@@ -30,9 +30,9 @@ public class PowerDistributor {
     receptorsDirty = true;
   }
 
-  public float transmitEnergy(World worldObj, float available) {
+  public int transmitEnergy(World worldObj, int available) {
 
-    float transmitted = 0;
+    int transmitted = 0;
     checkReceptors(worldObj);
     if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
       receptorIterator = receptors.listIterator();
@@ -44,7 +44,7 @@ public class PowerDistributor {
       Receptor receptor = receptorIterator.next();
       IPowerInterface pp = receptor.receptor;
       if(pp != null && pp.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= available) {
-        double used = pp.recieveEnergy(receptor.fromDir.getOpposite(), available);
+        int used = pp.recieveEnergy(receptor.fromDir.getOpposite(), available);
         transmitted += used;
         available -= used;
       }

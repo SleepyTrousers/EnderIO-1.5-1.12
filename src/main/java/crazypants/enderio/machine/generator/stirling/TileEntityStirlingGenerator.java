@@ -26,8 +26,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   private PowerDistributor powerDis;
   
-  private int storedEnergyRF;  
-  
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0));        
   }
@@ -113,11 +111,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   }
 
   @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return (int)(storedEnergyRF * 10);
-  }
-
-  @Override
   public int getPowerUsePerTick() {
     return (int)Math.round(ENERGY_PER_TICK * getEnergyMultiplier());
   }
@@ -185,11 +178,11 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    double canTransmit = Math.min(storedEnergyRF, capacitorType.capacitor.getMaxEnergyExtracted());
+    int canTransmit = Math.min(storedEnergyRF, capacitorType.capacitor.getMaxEnergyExtracted());
     if(canTransmit <= 0) {
       return false;
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, (float)canTransmit);
+    int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
     storedEnergyRF -= transmitted;
     return transmitted > 0;
   }

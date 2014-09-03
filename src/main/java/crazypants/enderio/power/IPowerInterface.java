@@ -16,6 +16,6 @@ public interface IPowerInterface {
 
   int getMinEnergyReceived(ForgeDirection dir);
 
-  int recieveEnergy(ForgeDirection opposite, float canOffer);
+  int recieveEnergy(ForgeDirection opposite, int canOffer);
 
 }

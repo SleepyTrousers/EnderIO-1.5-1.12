@@ -78,7 +78,7 @@
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
 
     <!-- Sand to Silicon -->
-    <recipe name="Silicon" energyCost="7200">
+    <recipe name="Silicon" energyCost="720">
       <input>
         <itemStack modID="minecraft" itemName="sand"/>
       </input>
@@ -109,7 +109,7 @@
       </output>
     </recipe>
 
-    <recipe name="IronOre">
+    <recipe name="IronOre" energyCost="3600">
       <input>
         <itemStack oreDictionary="oreIron" />
       </input>
@@ -299,7 +299,7 @@
       </output>
     </recipe>
 
-    <recipe name="Wheat" energyCost="8000">
+    <recipe name="Wheat" energyCost="800">
       <input>      
         <itemStack modID="minecraft" itemName="wheat" />        
       </input>
