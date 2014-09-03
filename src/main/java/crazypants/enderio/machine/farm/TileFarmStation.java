@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -30,7 +29,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.util.Util;
@@ -64,9 +62,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   public TileFarmStation() {
     super(new SlotDefinition(6, 4, 1));
-    currentTask = createTask();
-    powerHandler = PowerHandlerUtil.createHandler(cap, this, Type.MACHINE);
-
+    currentTask = createTask();    
   }
 
   public int getFarmSize() {
@@ -75,9 +71,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
 
   public void actionPerformed(boolean isAxe) {
     if(isAxe) {
-      usePower(Config.farmAxeActionEnergyUse);
+      usePower(Config.farmAxeActionEnergyUseRF);
     } else {
-      usePower(Config.farmActionEnergyUse);
+      usePower(Config.farmActionEnergyUseRF);
     }
   }
 
@@ -521,7 +517,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
       break;
     }
     tier = capacitorType.ordinal();
-    powerHandler.configure(cap.getMinEnergyReceived(), cap.getMaxEnergyReceived(), cap.getMinActivationEnergy(), cap.getMaxEnergyStored());
     currentTask = createTask();
   }
 
@@ -531,8 +526,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity /*
   }
 
   @Override
-  public float getPowerUsePerTick() {
-    return Math.round(Config.farmContinuousEnergyUse * (getFarmSize()/(float)Config.farmDefaultSize ));
+  public int getPowerUsePerTick() {
+    return Math.round(Config.farmContinuousEnergyUseRF * (getFarmSize()/(float)Config.farmDefaultSize ));
   }
 
   @Override

@@ -59,7 +59,7 @@ public class PlantableFarmer implements IFarmerJoe {
     }
 
     IPlantable plantable = (IPlantable) seedStack.getItem();
-    EnumPlantType type = plantable.getPlantType(farm.getWorld(), bc.x, bc.y, bc.z);
+    EnumPlantType type = plantable.getPlantType(farm.getWorldObj(), bc.x, bc.y, bc.z);
     if(type == null) {
       return false;
     }

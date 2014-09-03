@@ -84,8 +84,8 @@ public class TileCrafter extends AbstractMachineEntity {
     craftingGrid.copyRequiredInputs(required);
     if(hasRequiredInput(required)) {      
       craftRecipe();
-      double used = Math.min(powerHandler.getEnergyStored(), Config.crafterMjPerCraft);    
-      powerHandler.setEnergy(powerHandler.getEnergyStored() - used);
+      int used = Math.min(getEnergyStored(), Config.crafterRfPerCraft);    
+      setEnergyStored(getEnergyStored() - used);
     }     
     return false;
   }

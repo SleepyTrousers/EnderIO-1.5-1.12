@@ -280,7 +280,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
     if(conduits.isEmpty()) {
       return null;
     }
-    return conduits.get(0).getBundle().getWorld();
+    return conduits.get(0).getBundle().getWorldObj();
   }
 
   public void removeInput(GasOutput lo) {

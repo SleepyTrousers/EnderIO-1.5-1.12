@@ -7,6 +7,7 @@ import java.util.Set;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import cofh.api.transport.IItemDuct;
@@ -90,5 +91,7 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
   void setFacadeMetadata(int meta);
 
   int getFacadeMetadata();
+  
+  World getWorldObj();
 
 }

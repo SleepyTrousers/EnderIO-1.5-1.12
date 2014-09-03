@@ -198,7 +198,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       this.conDir = conDir;
       conduitLoc = con.getLocation();
       tankDir = conDir.getOpposite();
-      externalTank = FluidUtil.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
+      externalTank = FluidUtil.getExternalFluidHandler(con.getBundle().getWorldObj(), conduitLoc.getLocation(conDir));
       acceptsOuput = con.getConectionMode(conDir).acceptsOutput();
     }
 

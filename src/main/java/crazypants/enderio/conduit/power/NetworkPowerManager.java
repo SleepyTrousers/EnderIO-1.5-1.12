@@ -237,7 +237,7 @@ public class NetworkPowerManager {
     }
   }
 
-  private void trackerSend(IPowerConduit con, float sent, boolean fromBank) {
+  private void trackerSend(IPowerConduit con, int sent, boolean fromBank) {
     if(!fromBank) {
       networkPowerTracker.powerSent(sent);
     }
@@ -247,7 +247,7 @@ public class NetworkPowerManager {
     getOrCreateTracker(con).powerSent(sent);
   }
 
-  private void trackerRecieve(IPowerConduit con, float recieved, boolean fromBank) {
+  private void trackerRecieve(IPowerConduit con, int recieved, boolean fromBank) {
     if(!fromBank) {
       networkPowerTracker.powerRecieved(recieved);
     }
@@ -331,14 +331,14 @@ public class NetworkPowerManager {
     }
 
     float filledRatio = energyStored / maxEnergyStored;
-    float energyLeft = energyStored;
-    float given = 0;
+    int energyLeft = energyStored;
+    int given = 0;
     for (IPowerConduit con : network.getConduits()) {
       if(energyLeft >= 0) {
         // NB: use ceil to ensure we dont through away any energy due to
         // rounding
         // errors
-        float give = (float) Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
+        int give = (int)Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
         give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
         give = Math.min(give, energyLeft);
         con.setEnergyStored(give);
@@ -537,7 +537,7 @@ public class NetworkPowerManager {
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
         entry.capBank.addEnergy(-use);
-        trackerRecieve(entry.emmiter, (float) use, true);
+        trackerRecieve(entry.emmiter, use, true);
         amount -= use;
         if(amount == 0) {
           return;

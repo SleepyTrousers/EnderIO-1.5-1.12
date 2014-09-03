@@ -48,16 +48,16 @@ public class StemFarmer extends CustomSeedFarmer {
       harvestCoord = harvestCoord.getLocation(ForgeDirection.UP);
       if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasDefaultHarvestTool()) {
         res.harvestedBlocks.add(harvestCoord);
-        ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorld(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
+        ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorldObj(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
         if(drops != null) {
           for(ItemStack drop : drops) {
-            res.drops.add(new EntityItem(farm.getWorld(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
+            res.drops.add(new EntityItem(farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, drop.copy()));
           }
 
         }
         farm.damageMaxLootingItem(1, harvestCoord, farm.getBlock(harvestCoord));
         farm.actionPerformed(false);
-        farm.getWorld().setBlockToAir(harvestCoord.x, harvestCoord.y, harvestCoord.z);
+        farm.getWorldObj().setBlockToAir(harvestCoord.x, harvestCoord.y, harvestCoord.z);
       } else {
         done = true;
       }

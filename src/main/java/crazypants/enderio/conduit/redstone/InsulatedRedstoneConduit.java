@@ -20,7 +20,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.IPowerEmitter;
 import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -284,8 +283,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   private static Collection<Class<?>> getConectableInterfaces() {
     if(CONNECTABLE_CLASSES == null) {
-      CONNECTABLE_CLASSES = new HashSet<Class<?>>();
-      CONNECTABLE_CLASSES.add(IPowerEmitter.class);
+      CONNECTABLE_CLASSES = new HashSet<Class<?>>();      
       CONNECTABLE_CLASSES.add(IRedstoneControl.class);
       CONNECTABLE_CLASSES.add(AbstractMachineEntity.class);      
       try{

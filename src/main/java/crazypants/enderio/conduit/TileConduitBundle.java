@@ -12,13 +12,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -635,27 +632,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   // ------------ Power -----------------------------
 
-  @Override
-  public void doWork(PowerHandler workProvider) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      pc.doWork(workProvider);
-    }
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    IPowerConduit pc = getConduit(IPowerConduit.class);
-    if(pc != null) {
-      return pc.getPowerReceiver(side);
-    }
-    return null;
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
@@ -702,8 +678,44 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return 0;
   }
 
-  // ------- Liquids -----------------------------
+  @Override
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getMaxEnergyRecieved(dir);
+    }
+    return 0;
+  }
 
+  @Override
+  public int getEnergyStored() {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getEnergyStored();
+    }
+    return 0;
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      return pc.getMaxEnergyStored();
+    }
+    return 0;
+  }
+
+  @Override
+  public void setEnergyStored(int stored) {
+    IPowerConduit pc = getConduit(IPowerConduit.class);
+    if(pc != null) {
+      pc.setEnergyStored(stored);
+    }
+    
+  }
+
+//------- Liquids -----------------------------
+  
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     ILiquidConduit lc = getConduit(ILiquidConduit.class);

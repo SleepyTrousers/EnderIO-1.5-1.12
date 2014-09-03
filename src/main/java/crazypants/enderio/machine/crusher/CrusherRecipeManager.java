@@ -180,11 +180,11 @@ public class CrusherRecipeManager {
     Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
   }
 
-  public void addRecipe(ItemStack input, float energyCost, ItemStack output) {
+  public void addRecipe(ItemStack input, int energyCost, ItemStack output) {
     addRecipe(input, energyCost, new RecipeOutput(output, 1));
   }
 
-  public void addRecipe(ItemStack input, float energyCost, RecipeOutput... output) {
+  public void addRecipe(ItemStack input, int energyCost, RecipeOutput... output) {
     if(input == null || output == null) {
       return;
     }

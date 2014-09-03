@@ -17,7 +17,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
 
   public static final int DEFAULT_ENERGY_USE = 1200;
 
-  private float energyRequired = DEFAULT_ENERGY_USE;
+  private int energyRequired = DEFAULT_ENERGY_USE;
   private ItemStack output;
 
   private float expPerItem;
@@ -196,7 +196,7 @@ public class BasicAlloyRecipe implements IAlloyRecipe {
   }
 
   @Override
-  public float getEnergyRequired() {
+  public int getEnergyRequired() {
     return energyRequired;
   }
 

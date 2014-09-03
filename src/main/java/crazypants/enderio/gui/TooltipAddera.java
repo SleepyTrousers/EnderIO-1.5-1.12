@@ -115,7 +115,7 @@ public class TooltipAddera {
       if(fuel != null) {
         if(showAdvancedTooltips()) {
           list.add(Lang.localize("fuel.tooltip.heading"));
-          list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.powerPerCycle));
+          list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick( (int)(fuel.powerPerCycle * 10) ));
           list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " + Lang.localize("fuel.tooltip.burnTime"));
         } else {
           addShowDetailsTooltip(list);

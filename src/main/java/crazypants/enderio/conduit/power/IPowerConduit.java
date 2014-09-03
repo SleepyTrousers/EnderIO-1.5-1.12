@@ -32,14 +32,8 @@ public interface IPowerConduit extends IConduit, IInternalPowerReceptor, IExtrac
 
   //called from NetworkPowerManager
   void onTick();
-
   
-  int getEnergyStored();
-
-  void setEnergyStored(float give);
-
   boolean getConnectionsDirty();
 
-  int getMaxEnergyStored();
 
 }

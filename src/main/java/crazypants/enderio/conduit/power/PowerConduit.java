@@ -17,9 +17,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -91,10 +88,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   protected PowerConduitNetwork network;
 
-  private PowerHandler powerHandler;
-  private PowerHandler noInputPH;
-
-  private float energyStored;
+  private int energyStoredRF;
 
   private int subtype;
 
@@ -112,7 +106,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   public PowerConduit(int meta) {
     this.subtype = meta;
-    //powerHandler = createPowerHandlerForType();
   }
 
   @Override
@@ -165,10 +158,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return CAPACITORS[subtype];
   }
 
-  private PowerHandler createPowerHandlerForType() {
-    return PowerHandlerUtil.createHandler(CAPACITORS[subtype], this, Type.PIPE);
-  }
-
   @Override
   public void setExtractionRedstoneMode(RedstoneControlMode mode, ForgeDirection dir) {
     rsModes.put(dir, mode);
@@ -203,7 +192,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
     nbtRoot.setShort("subtype", (short) subtype);
-    nbtRoot.setFloat("energyStored", energyStored);
+    nbtRoot.setInteger("energyStoredRF", energyStoredRF);
 
     for (Entry<ForgeDirection, RedstoneControlMode> entry : rsModes.entrySet()) {
       if(entry.getValue() != null) {
@@ -225,7 +214,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     super.readFromNBT(nbtRoot, nbtVersion);
     subtype = nbtRoot.getShort("subtype");
 
-    energyStored = Math.min(getCapacitor().getMaxEnergyStored(), nbtRoot.getFloat("energyStored"));
+    if(nbtRoot.hasKey("energyStored")) {
+      nbtRoot.setInteger("energyStored", (int)(nbtRoot.getFloat("energyStored") * 10));
+      
+    }
+    energyStoredRF = Math.min(getCapacitor().getMaxEnergyStored(), nbtRoot.getInteger("energyStoredRF"));
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "pRsMode." + dir.name();
@@ -246,43 +239,20 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public void onTick() {
-    if(powerHandler != null && powerHandler.getEnergyStored() > 0) {
-      energyStored = (float) Math.min(energyStored + powerHandler.getEnergyStored(), getCapacitor().getMaxEnergyStored());
-      powerHandler.setEnergy(0);
-    }
+  public void onTick() {   
   }
 
   @Override
-  public float getEnergyStored() {
-    return energyStored;
+  public int getEnergyStored() {
+    return energyStoredRF;
   }
 
   @Override
-  public void setEnergyStored(float energyStored) {
-    this.energyStored = energyStored;
+  public void setEnergyStored(int energyStored) {
+    this.energyStoredRF = energyStored;
   }
 
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    ConnectionMode mode = getConectionMode(side);
-    if(side == null || mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(side)) {
-      if(noInputPH == null) {
-        noInputPH = new PowerHandler(this, Type.PIPE);
-        noInputPH.configure(0, 0, 0, getOrCreatePowerHandler().getMaxEnergyStored());
-      }
-      return noInputPH.getPowerReceiver();
-    }
-    return getOrCreatePowerHandler().getPowerReceiver();
-  }
-
-  private PowerHandler getOrCreatePowerHandler() {
-    if(powerHandler == null) {
-      powerHandler = createPowerHandlerForType();
-    }
-    return powerHandler;
-  }
-
+ 
   private boolean isRedstoneEnabled(ForgeDirection dir) {
     boolean result;
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
@@ -327,7 +297,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public float getMaxEnergyRecieved(ForgeDirection dir) {
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
     ConnectionMode mode = getConectionMode(dir);
     if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
@@ -336,7 +306,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public float getMaxEnergyExtracted(ForgeDirection dir) {
+  public int getMaxEnergyExtracted(ForgeDirection dir) {
     ConnectionMode mode = getConectionMode(dir);
     if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
@@ -348,25 +318,16 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   private boolean recievedRfThisTick(ForgeDirection dir) {
-    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getWorld() == null) {
+    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getWorldObj() == null) {
       return false;
     }
 
-    long curTick = getBundle().getWorld().getTotalWorldTime();
+    long curTick = getBundle().getWorldObj().getTotalWorldTime();
     long recT = recievedTicks.get(dir);
     if(curTick - recT <= 5) {
       return true;
     }
     return false;
-  }
-
-  @Override
-  public void doWork(PowerHandler workProvider) {
-  }
-
-  @Override
-  public World getWorld() {
-    return getBundle().getEntity().getWorldObj();
   }
 
   @Override
@@ -389,20 +350,20 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(getMaxEnergyRecieved(from) == 0 || maxReceive <= 0) {
       return 0;
     }
-    float freeSpace = getCapacitor().getMaxEnergyStored() - energyStored;
-    int result = (int) Math.min(maxReceive / 10, freeSpace);
+    float freeSpace = getCapacitor().getMaxEnergyStored() - energyStoredRF;
+    int result = (int) Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
-      energyStored += result;
+      energyStoredRF += result;
 
       if(getBundle() != null) {
         if(recievedTicks == null) {
           recievedTicks = new EnumMap<ForgeDirection, Long>(ForgeDirection.class);
         }
-        recievedTicks.put(from, getBundle().getWorld().getTotalWorldTime());
+        recievedTicks.put(from, getBundle().getWorldObj().getTotalWorldTime());
       }
 
     }
-    return result * 10;
+    return result;
   }
 
   @Override
@@ -417,7 +378,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (energyStored * 10);
+    return energyStoredRF;
   }
 
   @Override
@@ -533,7 +494,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public double getMaxEnergyStored() {
+  public int getMaxEnergyStored() {
     return CAPACITORS[subtype].getMaxEnergyStored();
   }
 

@@ -204,9 +204,9 @@ public final class Config {
   public static boolean addFurnaceFuelTootip = true;
   public static boolean addDurabilityTootip = true;
 
-  public static float farmContinuousEnergyUse = 4;
-  public static float farmActionEnergyUse = 50;
-  public static float farmAxeActionEnergyUse = 100;
+  public static int farmContinuousEnergyUseRF = 40;
+  public static int farmActionEnergyUseRF = 500;
+  public static int farmAxeActionEnergyUseRF = 1000;
   
   public static int farmDefaultSize = 3;
   public static boolean farmAxeDamageOnLeafBreak = false;
@@ -219,7 +219,7 @@ public final class Config {
 
   public static boolean useCombustionGenModel = false;
 
-  public static int crafterMjPerCraft = 250;
+  public static int crafterRfPerCraft = 2500;
 
   public static int capacitorBankMaxIoRF = 5000;
   public static int capacitorBankMaxStorageRF = 5000000;
@@ -624,13 +624,12 @@ public final class Config {
     addFurnaceFuelTootip = config.get(sectionPersonal.name, "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
 
-    farmContinuousEnergyUse = (float) config.get(sectionFarm.name, "farmContinuousEnergyUse", farmContinuousEnergyUse,
-        "The amount of power used by a farm per tick ").getDouble(farmContinuousEnergyUse);
-    farmActionEnergyUse = (float) config.get(sectionFarm.name, "farmActionEnergyUse", farmActionEnergyUse,
-        "The amount of power used by a farm per action (eg plant, till, harvest) ").getDouble(farmActionEnergyUse);
-    
-    farmAxeActionEnergyUse= (float) config.get(sectionFarm.name, "farmAxeActionEnergyUse", farmAxeActionEnergyUse,
-        "The amount of power used by a farm per wood block 'chopped'").getDouble(farmAxeActionEnergyUse);
+    farmContinuousEnergyUseRF = config.get(sectionFarm.name, "farmContinuousEnergyUseRF", farmContinuousEnergyUseRF,
+        "The amount of power used by a farm per tick ").getInt(farmContinuousEnergyUseRF);
+    farmActionEnergyUseRF = config.get(sectionFarm.name, "farmActionEnergyUseRF", farmActionEnergyUseRF,
+        "The amount of power used by a farm per action (eg plant, till, harvest) ").getInt(farmActionEnergyUseRF);    
+    farmAxeActionEnergyUseRF= config.get(sectionFarm.name, "farmAxeActionEnergyUseRF", farmAxeActionEnergyUseRF,
+        "The amount of power used by a farm per wood block 'chopped'").getInt(farmAxeActionEnergyUseRF);
     
     farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
@@ -657,8 +656,8 @@ public final class Config {
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
 
-    crafterMjPerCraft = config.get("AutoCrafter Settings", "crafterMjPerCraft", crafterMjPerCraft,
-        "MJ used per autocrafted recipe").getInt(crafterMjPerCraft);
+    crafterRfPerCraft = config.get("AutoCrafter Settings", "crafterRfPerCraft", crafterRfPerCraft,
+        "RF used per autocrafted recipe").getInt(crafterRfPerCraft);
 
     poweredSpawnerMinDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMinDelayTicks", poweredSpawnerMinDelayTicks,
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMinDelayTicks);
