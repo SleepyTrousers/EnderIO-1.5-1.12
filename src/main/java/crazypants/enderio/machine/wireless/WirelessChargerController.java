@@ -38,19 +38,19 @@ public class WirelessChargerController {
   private WirelessChargerController() {
   }
 
-  public void registerCharger(IWirelessCharger capBank) {
-    if(capBank == null) {
+  public void registerCharger(IWirelessCharger charger) {
+    if(charger == null) {
       return;
     }    
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorldObj());
-    chargers.put(capBank.getLocation(), capBank);
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(charger.getWorld());
+    chargers.put(charger.getLocation(), charger);
   }
 
   public void deregisterCharger(IWirelessCharger capBank) {
     if(capBank == null) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorldObj());
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(capBank.getWorld());
     chargers.remove(capBank.getLocation());
   }
 

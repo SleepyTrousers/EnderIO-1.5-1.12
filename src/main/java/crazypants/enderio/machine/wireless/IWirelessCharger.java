@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public interface IWirelessCharger {
 
-  World getWorldObj();
+  World getWorld();
 
   BlockCoord getLocation();
 
