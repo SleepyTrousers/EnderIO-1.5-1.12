@@ -3,6 +3,8 @@ package crazypants.enderio.machine.generator.zombie;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -124,11 +126,16 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
         //see RenderGlobal.doSpawnParticle
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
           float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
           float yOffset = 0.1f;
           float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
-          world.spawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
+          
+          EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
+          if(fx != null) {            
+            fx.setRBGColorF(0.4f, 0.4f, 0.1f);
+          }
+          
         }
         if(Config.machineSoundsEnabled) {
           float volume = (Config.machineSoundVolume * 0.045f);
