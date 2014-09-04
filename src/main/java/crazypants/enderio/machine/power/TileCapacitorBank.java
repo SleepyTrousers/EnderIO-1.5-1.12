@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.EnderIO;
@@ -51,8 +52,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   private int maxInput;
 
   private int maxOutput;
-
-  //private int mjBuf = 0;
 
   private boolean multiblockDirty = false;
 
@@ -236,11 +235,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
   
     if(isCreative) {
-      storedEnergyRF = getMaxEnergyStored() / 2;
+      setEnergyStored(getMaxEnergyStored() / 2);      
     }
 
-    if(lastSyncPowerStored != storedEnergyRF && worldObj.getTotalWorldTime() % 10 == 0) {
-      lastSyncPowerStored = storedEnergyRF;
+    if(lastSyncPowerStored != getEnergyStored() && worldObj.getTotalWorldTime() % 10 == 0) {
+      lastSyncPowerStored = getEnergyStored();
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this, 64);
     }
 
@@ -260,7 +259,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   public boolean chargeItems(ItemStack[] items) {
     boolean chargedItem = false;
-    int available = Math.min(maxIO, storedEnergyRF);
+    int available = Math.min(maxIO, getEnergyStored());
     for (ItemStack item : items) {
       if(item != null && available > 0) {
         int used = 0;
@@ -276,7 +275,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
         }
         if(used > 0) {
-          storedEnergyRF = storedEnergyRF - used;
+          setEnergyStored(getEnergyStored() - used);          
           chargedItem = true;
           available -= used;
         }
@@ -312,10 +311,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   private boolean transmitEnergy() {
 
-    if(storedEnergyRF <= 0) {
+    if(getEnergyStored() <= 0) {
       return false;
     }
-    int canTransmit = Math.min(storedEnergyRF, maxOutput);
+    int canTransmit = Math.min(getEnergyStored(), maxOutput);
     int transmitted = 0;
 
     if(!masterReceptors.isEmpty() && !receptorIterator.hasNext()) {
@@ -359,7 +358,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       }
       appliedCount++;
     }
-    storedEnergyRF = storedEnergyRF - transmitted;
+    setEnergyStored(getEnergyStored() - transmitted);    
 
     return transmitted > 0;
 
@@ -521,11 +520,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   }
 
   public int doGetEnergyStored(ForgeDirection from) {
-    return storedEnergyRF;
+    return doGetEnergyStored();
   }
 
   public int doGetMaxEnergyStored(ForgeDirection from) {
-    return maxStoredEnergy;
+    return doGetMaxEnergyStored();
   }
 
   // end rf power
@@ -601,26 +600,25 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return maxStoredEnergy;
   }
 
-  int doGetEnergyStoredScaled(int scale) {
-    // NB: called on the client so can't use the power provider
-    return (int)VecmathUtil.clamp(Math.round(scale * (storedEnergyRF / maxStoredEnergy)), 0, scale);
+  int doGetEnergyStoredScaled(int scale) {    
+    return (int)VecmathUtil.clamp(Math.round(scale * doGetEnergyStoredRatio()), 0, scale);
   }
 
   int doGetEnergyStored() {
     return storedEnergyRF;
   }
   
-  void doSetEnergyStored(int stored) {
-    storedEnergyRF = stored;    
+  void doSetEnergyStored(int stored) {    
+    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());    
   }
 
 
   double doGetEnergyStoredRatio() {
-    return (double)storedEnergyRF / maxStoredEnergy;
+    return (double)doGetEnergyStored() / maxStoredEnergy;
   }
 
   void doAddEnergy(int add) {
-    storedEnergyRF = Math.max(0, Math.min(maxStoredEnergy, storedEnergyRF + add));
+    doSetEnergyStored(doGetEnergyStored() + add);    
   }
 
   void doSetMaxInput(int in) {
@@ -754,11 +752,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           cb.maxIO = BASE_CAP.getMaxEnergyExtracted();
           cb.maxInput = Math.min(cb.maxInput, cb.maxIO);
           cb.maxOutput = Math.min(cb.maxOutput, cb.maxIO);
-          cb.storedEnergyRF = powerPerBlock;
+          cb.doSetEnergyStored(powerPerBlock);
           cb.multiblockDirty = true;
         }
       }
-      storedEnergyRF += remaining;
+      doAddEnergy(remaining);
 
     }
     multiblock = mb;
@@ -772,7 +770,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       for (BlockCoord bc : multiblock) {
         TileCapacitorBank cb = getCapBank(bc);
         if(cb != null) {
-          totalStored += cb.storedEnergyRF;
+          totalStored += cb.doGetEnergyStored();
         }
         ItemStack[] inv = cb.inventory;
         for (int i = 0; i < inv.length; i++) {
@@ -783,7 +781,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
         }
         cb.multiblockDirty = false;
       }
-      storedEnergyRF = totalStored;
+      doSetEnergyStored(totalStored);
       maxStoredEnergy = totalCap;
       maxIO = totalIO;
       maxInput = maxInput < 0 ? maxIO : Math.min(maxInput, maxIO);
@@ -964,10 +962,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
     double oldEnergy = storedEnergyRF;
     if(nbtRoot.hasKey("storedEnergyD")) {     
-      storedEnergyRF = (int)nbtRoot.getDouble("storedEnergyD") * 10;
-    } else {
-      storedEnergyRF = nbtRoot.getInteger("storedEnergyRF");
-    }
+      nbtRoot.setInteger("storedEnergyRF", (int)(nbtRoot.getDouble("storedEnergyD") * 10));
+    } 
+    
+    doSetEnergyStored(nbtRoot.getInteger("storedEnergyRF"));
+    
     maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergy");
 
     double newEnergy = storedEnergyRF;

@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
@@ -42,8 +43,6 @@ public class NetworkPowerManager {
 
   private boolean lastActiveValue = false;
   private int ticksWithNoPower = 0;
-
-  private final Map<BlockCoord, StarveBuffer> starveBuffers = new HashMap<BlockCoord, NetworkPowerManager.StarveBuffer>();
 
   private final Map<IPowerConduit, PowerTracker> powerTrackers = new HashMap<IPowerConduit, PowerTracker>();
 
@@ -133,7 +132,6 @@ public class NetworkPowerManager {
     updateNetorkStorage();
     networkPowerTracker.tickStart(energyStored);
 
-    checkReserves();
     updateActiveState();
 
     capSupply.init();
@@ -144,9 +142,6 @@ public class NetworkPowerManager {
     int wasAvailable = available;
 
     if(available <= 0 || (receptors.isEmpty() && storageReceptors.isEmpty())) {
-      if(available > 0) {
-        distributeStorageToConduits();
-      }
       trackerEndTick();
       networkPowerTracker.tickEnd(energyStored);
       return;
@@ -157,37 +152,12 @@ public class NetworkPowerManager {
       if(!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = receptors.listIterator();
       }
-
       ReceptorEntry r = receptorIterator.next();
       IPowerInterface pp = r.powerInterface;
-      if(pp != null) {
-
-        int used = 0;
-        if(pp.getClass() == PowerInterfaceRF.class) {
-
-          int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-          used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
-          trackerSend(r.emmiter, used, false);
-
-        } else {
-
-          int reservedForEntry = removeReservedEnergy(r);
-          available += reservedForEntry;
-          int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
-          int requested = pp.getPowerRequest(r.direction.getOpposite());
-
-          // If it is possible to supply the minimum amount of energy
-          if(pp.getMinEnergyReceived(r.direction) <= r.emmiter.getMaxEnergyExtracted(r.direction) && requested > 0) {
-            // Buffer energy if we can't meet it now
-            if(pp.getMinEnergyReceived(r.direction) > canOffer) {
-              reserveEnergy(r, canOffer);
-              used += canOffer;
-            } else {
-              used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
-              trackerSend(r.emmiter, used, false);
-            }
-          }
-        }
+      if(pp != null) {        
+        int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
+        int used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+        trackerSend(r.emmiter, used, false);
         available -= used;
         if(available <= 0) {
           break;
@@ -301,28 +271,6 @@ public class NetworkPowerManager {
     }
   }
 
-  private int removeReservedEnergy(ReceptorEntry r) {
-    StarveBuffer starveBuf = starveBuffers.remove(r.coord);
-    if(starveBuf == null) {
-      return 0;
-    }
-    int result = starveBuf.stored;
-    reserved -= result;
-    return result;
-  }
-
-  private void reserveEnergy(ReceptorEntry r, int amount) {
-    starveBuffers.put(r.coord, new StarveBuffer(amount));
-    reserved += amount;
-  }
-
-  private void checkReserves() {
-    if(reserved > maxEnergyStored * 0.9) {
-      starveBuffers.clear();
-      reserved = 0;
-    }
-  }
-
   private void distributeStorageToConduits() {
     if(maxEnergyStored <= 0 || energyStored <= 0) {
       for (IPowerConduit con : network.getConduits()) {
@@ -330,20 +278,18 @@ public class NetworkPowerManager {
       }
       return;
     }
-    if(energyStored > maxEnergyStored) {
-      energyStored = maxEnergyStored;
-    }
+    energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);
 
-    float filledRatio = (float)energyStored / maxEnergyStored;
+    float filledRatio = (float) energyStored / maxEnergyStored;
     int energyLeft = energyStored;
     int given = 0;
     for (IPowerConduit con : network.getConduits()) {
-      if(energyLeft >= 0) {
+      if(energyLeft > 0) {
         // NB: use ceil to ensure we dont through away any energy due to
         // rounding
         // errors
-        int give = (int)Math.ceil(con.getCapacitor().getMaxEnergyStored() * filledRatio);
-        give = Math.min(give, con.getCapacitor().getMaxEnergyStored());
+        int give = (int) Math.ceil(con.getMaxEnergyStored() * filledRatio);
+        give = Math.min(give, con.getMaxEnergyStored());
         give = Math.min(give, energyLeft);
         con.setEnergyStored(give);
         given += give;
@@ -362,14 +308,11 @@ public class NetworkPowerManager {
     maxEnergyStored = 0;
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
-      maxEnergyStored += con.getCapacitor().getMaxEnergyStored();
+      maxEnergyStored += con.getMaxEnergyStored();
       con.onTick();
       energyStored += con.getEnergyStored();
     }
-
-    if(energyStored > maxEnergyStored) {
-      energyStored = maxEnergyStored;
-    }    
+    energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);    
   }
 
   public void receptorsChanged() {
@@ -449,16 +392,15 @@ public class NetworkPowerManager {
 
       for (ReceptorEntry rec : storageReceptors) {
         TileCapacitorBank cb = (TileCapacitorBank) rec.powerInterface.getDelegate();
-        
 
         boolean processed = capBanks.contains(cb.getController());
 
         if(!processed) {
           stored += cb.getEnergyStored();
           maxCap += cb.getMaxEnergyStored();
-          capBanks.add(cb.getController());          
+          capBanks.add(cb.getController());
         }
-        
+
         if(rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
           toBalance += cb.getEnergyStored();
           maxToBalance += cb.getMaxEnergyStored();
@@ -482,7 +424,7 @@ public class NetworkPowerManager {
 
       filledRatio = 0;
       if(maxToBalance > 0) {
-        filledRatio = (float)toBalance / maxToBalance;
+        filledRatio = (float) toBalance / maxToBalance;
       }
     }
 
@@ -520,7 +462,7 @@ public class NetworkPowerManager {
             CapBankSupplyEntry to = enteries.get(j);
             if(Math.signum(amount) != Math.signum(to.toBalance)) {
               int toAmount = Math.min(toTranfser, Math.abs(to.toBalance));
-              to.capBank.addEnergy(toAmount * (int)Math.signum(to.toBalance));
+              to.capBank.addEnergy(toAmount * (int) Math.signum(to.toBalance));
               toTranfser -= toAmount;
             }
           }
@@ -533,10 +475,10 @@ public class NetworkPowerManager {
       if(canExtract <= 0 || amount <= 0) {
         return;
       }
-      double ratio = (double)amount / canExtract;
+      double ratio = (double) amount / canExtract;
 
       for (CapBankSupplyEntry entry : enteries) {
-        int use = (int)Math.ceil(ratio * entry.canExtract);
+        int use = (int) Math.ceil(ratio * entry.canExtract);
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
         entry.capBank.addEnergy(-use);
@@ -552,7 +494,7 @@ public class NetworkPowerManager {
       if(canFill <= 0 || amount <= 0) {
         return;
       }
-      double ratio = (double)amount / canFill;
+      double ratio = (double) amount / canFill;
 
       for (CapBankSupplyEntry entry : enteries) {
         int add = (int) Math.ceil(ratio * entry.canFill);
@@ -587,7 +529,7 @@ public class NetworkPowerManager {
     }
 
     void calcToBalance(float targetRatio) {
-      int targetAmount = (int)Math.floor(capBank.getMaxEnergyStored() * targetRatio);
+      int targetAmount = (int) Math.floor(capBank.getMaxEnergyStored() * targetRatio);
       toBalance = targetAmount - capBank.getEnergyStored();
       if(toBalance < 0) {
         toBalance = Math.max(toBalance, -canExtract);
