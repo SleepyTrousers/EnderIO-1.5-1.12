@@ -242,7 +242,7 @@ public class MachineRecipes {
     
     //Slice'N'Splice
     ItemStack sns = new ItemStack(EnderIO.blockSliceAndSplice);
-    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "isi", "ams","ici", 'i', Items.iron_ingot, 'm', machineChassi, 's', "itemSkull", 'a', Items.iron_axe, 's', Items.shears, 'c', capacitor));
+    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams","ici", 'i', Items.iron_ingot, 'm', machineChassi, 'k', "itemSkull", 'a', Items.iron_axe, 's', Items.shears, 'c', capacitor));
     
   }
 }
