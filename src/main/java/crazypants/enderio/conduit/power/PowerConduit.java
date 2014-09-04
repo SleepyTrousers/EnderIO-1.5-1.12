@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
@@ -219,7 +220,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       nbtRoot.setInteger("energyStoredRF", (int)(nbtRoot.getFloat("energyStored") * 10));
       
     }
-    energyStoredRF = Math.min(getCapacitor().getMaxEnergyStored(), nbtRoot.getInteger("energyStoredRF"));
+    setEnergyStored(nbtRoot.getInteger("energyStoredRF"));    
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "pRsMode." + dir.name();
@@ -250,7 +251,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public void setEnergyStored(int energyStored) {
-    this.energyStoredRF = energyStored;
+    storedEnergyRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored());     
   }
 
  
@@ -351,10 +352,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if(getMaxEnergyRecieved(from) == 0 || maxReceive <= 0) {
       return 0;
     }
-    int freeSpace = getCapacitor().getMaxEnergyStored() - energyStoredRF;
+    int freeSpace = getMaxEnergyStored() - getEnergyStored();
     int result = (int) Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
-      energyStoredRF += result;
+      setEnergyStored(getEnergyStored() + result);      
 
       if(getBundle() != null) {
         if(recievedTicks == null) {
