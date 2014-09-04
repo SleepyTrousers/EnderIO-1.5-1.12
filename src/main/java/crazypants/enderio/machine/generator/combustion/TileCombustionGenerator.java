@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import scala.xml.persistent.SetStorage;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -159,7 +160,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
         res = true;
       }
 
-      if(storedEnergyRF >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(getEnergyStored() >= capacitorType.capacitor.getMaxEnergyStored()) {
         inPause = true;        
       }       
 
@@ -180,14 +181,14 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
   }
 
   private boolean transmitEnergy() {
-    if(storedEnergyRF <= 0) {
+    if(getEnergyStored() <= 0) {
       return false;
     }
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, storedEnergyRF));
-    storedEnergyRF -= transmitted;
+    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(maxOutputTick, getEnergyStored()));
+    setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
   }
 
@@ -197,7 +198,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
 
     if((ticksRemaingCoolant <= 0 && getCoolantTank().getFluidAmount() <= 0) ||
         (ticksRemaingFuel <= 0 && getFuelTank().getFluidAmount() <= 0) ||
-        storedEnergyRF >= getMaxEnergyStored()) {
+        getEnergyStored() >= getMaxEnergyStored()) {
       return false;
     }
 
@@ -205,7 +206,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
     //flickering on and off constantly when powering a machine that draws less than this produces
     if(inPause) {
       int powerPerCycle = getPowerPerCycle();
-      if(storedEnergyRF >= (getMaxEnergyStored() - (powerPerCycle * 200))) {
+      if(getEnergyStored() >= (getMaxEnergyStored() - (powerPerCycle * 200))) {
         return false;
       }
     }
@@ -252,10 +253,9 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
       }
     }
 
-    float oldVal = storedEnergyRF;
+    
     generated = getPowerPerCycle();
-    storedEnergyRF += generated;    
-    storedEnergyRF = Math.min(storedEnergyRF, getMaxEnergyStored());
+    setEnergyStored(getEnergyStored() + generated);    
 
     return getFuelTank().getFluidAmount() > 0 && getCoolantTank().getFluidAmount() > 0;
   }
@@ -298,11 +298,6 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
     double toCool = 1d / (0.027 * power);
     int numTicks = (int) Math.round(toCool / (cooling * 1000));
     return numTicks;
-  }
-
-  @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return (int) (storedEnergyRF * 10);
   }
 
   @Override

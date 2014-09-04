@@ -60,9 +60,8 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
       capacitor = CAP_ONE;
       break;
     }
-    if(storedEnergyRF > getMaxEnergyStored()) {
-      setEnergyStored(getMaxEnergyStored());
-    }
+    //Force a check that the new value is in bounds
+    setEnergyStored(getEnergyStored());
     forceClientUpdate = true;
   }
   

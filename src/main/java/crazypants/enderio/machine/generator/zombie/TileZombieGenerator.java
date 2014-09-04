@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import scala.xml.persistent.SetStorage;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -114,11 +115,6 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IFluid
       powerDis.neighboursChanged();
     }
   }
- 
-  @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return storedEnergyRF;
-  }
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
@@ -138,7 +134,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IFluid
         res = true;
       }
 
-      if(storedEnergyRF >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(getEnergyStored() >= capacitorType.capacitor.getMaxEnergyStored()) {
         inPause = true;
       }
 
@@ -159,7 +155,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IFluid
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && storedEnergyRF >= (getMaxEnergyStored() - (outputPerTick * 200))) {
+    if(inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200))) {
       return false;
     }
     inPause = false;
@@ -174,23 +170,20 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IFluid
       fuelTank.drain(1, true);
       ticksRemaingFuel = tickPerBucketOfFuel/1000;    
       tanksDirty = true;
-    }
-    
-    float oldVal = storedEnergyRF;
-    storedEnergyRF += outputPerTick;
-    storedEnergyRF = Math.min(storedEnergyRF, capacitorType.capacitor.getMaxEnergyStored());
+    }    
+    setEnergyStored(getEnergyStored() + outputPerTick);     
     return true;
   }
 
   private boolean transmitEnergy() {
-    if(storedEnergyRF <= 0) {
+    if(getEnergyStored() <= 0) {
       return false;
     }
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, storedEnergyRF));
-    storedEnergyRF -= transmitted;
+    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
+    setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
   }
 

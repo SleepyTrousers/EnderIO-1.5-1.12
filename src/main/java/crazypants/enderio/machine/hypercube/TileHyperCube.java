@@ -12,6 +12,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -435,7 +436,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = stored;    
+    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());    
   }
 
   @Override
@@ -807,11 +808,14 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     
+    int energy; 
     if(nbtRoot.hasKey("storedEnergy")) {
-      storedEnergyRF = (int)(nbtRoot.getFloat("storedEnergy") * 10);
+      energy = (int)(nbtRoot.getFloat("storedEnergy") * 10);
     } else {
-      storedEnergyRF = nbtRoot.getInteger("storedEnergyRF");
+      energy = nbtRoot.getInteger("storedEnergyRF");
     }
+    setEnergyStored(energy);
+    
     
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");

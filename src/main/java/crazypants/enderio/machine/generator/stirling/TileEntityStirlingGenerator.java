@@ -121,8 +121,8 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     boolean sendBurnTimePacket = false;
     
     if(burnTime > 0) {
-      if(storedEnergyRF < getMaxEnergyStored()) {
-        storedEnergyRF += getPowerUsePerTick();
+      if(getEnergyStored() < getMaxEnergyStored()) {
+        setEnergyStored(getEnergyStored() + getPowerUsePerTick());        
       }
       burnTime--;
       sendBurnTimePacket = worldObj.getTotalWorldTime() % 20 == 1 || burnTime == 0;    
@@ -132,7 +132,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
     if(redstoneCheckPassed) {
 
-      if(burnTime <= 0 && storedEnergyRF < getMaxEnergyStored()) {
+      if(burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
           burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) / getBurnTimeMultiplier());
           if(burnTime > 0) {
@@ -178,12 +178,12 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    int canTransmit = Math.min(storedEnergyRF, capacitorType.capacitor.getMaxEnergyExtracted());
+    int canTransmit = Math.min(getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
     if(canTransmit <= 0) {
       return false;
     }
     int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
-    storedEnergyRF -= transmitted;
+    setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
   }
 

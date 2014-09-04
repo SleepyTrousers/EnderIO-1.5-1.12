@@ -22,7 +22,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     x = ent.xCoord;
     y = ent.yCoord;
     z = ent.zCoord;
-    storedEnergy = ent.storedEnergyRF;
+    storedEnergy = ent.getEnergyStored();
   }
 
   @Override
@@ -47,8 +47,7 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity) te;
-      me.storedEnergyRF = message.storedEnergy;
+      AbstractMachineEntity me = (AbstractMachineEntity) te;      
       me.setEnergyStored(message.storedEnergy);
     }
     return null;

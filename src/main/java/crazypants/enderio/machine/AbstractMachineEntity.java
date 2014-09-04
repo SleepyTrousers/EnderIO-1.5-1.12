@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -50,7 +51,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   // Power
   protected Capacitors capacitorType;
 
-  protected int storedEnergyRF;
+  private int storedEnergyRF;
 
   protected ItemStack[] inventory;
   protected final SlotDefinition slotDefinition;
@@ -256,7 +257,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = Math.max(stored, 0);     
+    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored()); 
   }
   
   public boolean hasPower() {
@@ -528,12 +529,14 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
 
+    int energy;
     if(nbtRoot.hasKey("storedEnergy")) {
       float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
-      storedEnergyRF = (int)(storedEnergyMJ * 10);
+      energy = (int)(storedEnergyMJ * 10);
     } else {
-      storedEnergyRF = nbtRoot.getInteger("storedEnergyRF");  
+      energy = nbtRoot.getInteger("storedEnergyRF");  
     }
+    setEnergyStored(energy);
 
     // read in the inventories contents
     inventory = new ItemStack[slotDefinition.getNumSlots()];
