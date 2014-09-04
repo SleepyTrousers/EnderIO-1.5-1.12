@@ -23,11 +23,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   @Override
   public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
     IRecipe rec = getRecipeForInputs(inputs);
-    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();    
+    List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (RecipeInput ri : rec.getInputs()) {
       for (MachineRecipeInput input : inputs) {
         if(input != null && (input.item != null || input.fluid != null)) {
-          if(ri.isInput(input.item)) {
+          if(ri.isInput(input.item) && (ri.getSlotNumber() == -1 || ri.getSlotNumber() == input.slotNumber)) {
             result.add(new MachineRecipeInput(input.slotNumber, ri.getInput().copy()));
             break;
           } else if(ri.isInput(input.fluid)) {

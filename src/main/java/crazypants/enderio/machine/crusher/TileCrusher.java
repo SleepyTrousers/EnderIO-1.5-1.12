@@ -101,15 +101,15 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     PoweredTask res;
     useGrindingBall = false;
     if(gb != null) {
-      useGrindingBall = !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(getInputs());
+      useGrindingBall = !CrusherRecipeManager.getInstance().isExcludedFromBallBonus(getRecipeInputs());
       if(useGrindingBall) {
-        res = new PoweredTask(nextRecipe, chance * gb.getChanceMultiplier(), getInputs());
+        res = new PoweredTask(nextRecipe, chance * gb.getChanceMultiplier(), getRecipeInputs());
         res.setRequiredEnergy(res.getRequiredEnergy() * gb.getPowerMultiplier());
       } else {
-        res = new PoweredTask(nextRecipe, chance, getInputs());
+        res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
       }
     } else {
-      res = new PoweredTask(nextRecipe, chance, getInputs());
+      res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
     }
     return res;
   }

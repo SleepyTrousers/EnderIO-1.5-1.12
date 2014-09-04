@@ -92,6 +92,8 @@ import crazypants.enderio.machine.painter.BlockPaintedWall;
 import crazypants.enderio.machine.painter.BlockPainter;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
+import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
@@ -197,6 +199,7 @@ public class EnderIO {
   public static BlockCrafter blockCrafter;
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
+  public static BlockSliceAndSplice blockSliceAndSplice;
   public static BlockSoulBinder blockSoulFuser; 
 
   public static BlockKillerJoe blockKillerJoe;
@@ -252,23 +255,15 @@ public class EnderIO {
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
 
-    blockEnderIo = BlockEnderIO.create();
-
-    blockTravelPlatform = BlockTravelAnchor.create();
-
-    blockSolarPanel = BlockSolarPanel.create();
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockCombustionGenerator = BlockCombustionGenerator.create();
     blockZombieGenerator = BlockZombieGenerator.create();
+    blockSolarPanel = BlockSolarPanel.create();
 
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();
-    blockVat = BlockVat.create();
-    blockPowerMonitor = BlockPowerMonitor.create();
-    blockFarmStation = BlockFarmStation.create();
     blockCapacitorBank = BlockCapacitorBank.create();
-    blockWirelessCharger = BlockWirelessCharger.create();
-
+    
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
     blockPaintedFenceGate = BlockPaintedFenceGate.create();
@@ -281,32 +276,40 @@ public class EnderIO {
     blockCrafter = BlockCrafter.create();
     blockPaintedGlowstone = BlockPaintedGlowstone.create();
     blockPaintedCarpet = BlockPaintedCarpet.create();
-
+    
+    blockVat = BlockVat.create();
+    blockPowerMonitor = BlockPowerMonitor.create();
+    blockFarmStation = BlockFarmStation.create();
+    
+    blockWirelessCharger = BlockWirelessCharger.create();
     blockHyperCube = BlockHyperCube.create();
-    blockElectricLight = BlockElectricLight.create();
-    blockLightNode = BlockLightNode.create();
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
+    
+    blockEnderIo = BlockEnderIO.create();
+    blockTravelPlatform = BlockTravelAnchor.create();
 
-    blockEnchanter = BlockEnchanter.create();
-
+    blockSliceAndSplice = BlockSliceAndSplice.create();
+    blockSoulFuser = BlockSoulBinder.create();
+    blockPoweredSpawner = BlockPoweredSpawner.create();
     blockKillerJoe = BlockKillerJoe.create();
-
+    blockEnchanter = BlockEnchanter.create();
+    
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
+    blockElectricLight = BlockElectricLight.create();
+    blockLightNode = BlockLightNode.create();
+    
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
-
+    
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
-
-    blockPoweredSpawner = BlockPoweredSpawner.create();
-    itemBrokenSpawner = ItemBrokenSpawner.create();
     
-    blockSoulFuser = BlockSoulBinder.create();
+    itemBrokenSpawner = ItemBrokenSpawner.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
@@ -469,6 +472,7 @@ public class EnderIO {
 
     CrusherRecipeManager.getInstance().loadRecipesFromConfig();
     AlloyRecipeManager.getInstance().loadRecipesFromConfig();
+    SliceAndSpliceRecipeManager.getInstance().loadRecipesFromConfig();
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();

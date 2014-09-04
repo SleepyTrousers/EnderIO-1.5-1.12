@@ -177,7 +177,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
-    PoweredTask res = new PoweredTask(nextRecipe, chance, getInputs());
+    PoweredTask res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
 
     int ticksDelay = TilePoweredSpawner.MIN_SPAWN_DELAY_BASE
         + (int) Math.round((TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE) * Math.random());

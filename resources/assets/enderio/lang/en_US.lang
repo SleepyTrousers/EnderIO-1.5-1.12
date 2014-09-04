@@ -269,13 +269,16 @@ tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
 tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
 enderio.zombieGenerator.fuelTank=Nutrient Tank
 
-
 tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and 
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
 enderio.killerJoe.fuelTank=Nutrient Tank
 enderio.killerJoe.giveXp.tooltip=Use XP
+
+tile.blockSliceAndSplice.name=Slice'N'Splice
+tile.blockSliceAndSplice.tooltip.detailed.line1=Slices heads and splices in
+tile.blockSliceAndSplice.tooltip.detailed.line2=all sorts of useful things
 
 tile.blockFarmStation.name=Farming Station
 tile.blockFarmStation.tooltip.detailed.line1=Plants and harvests crops

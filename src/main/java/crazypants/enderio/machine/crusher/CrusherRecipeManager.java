@@ -33,8 +33,6 @@ public class CrusherRecipeManager {
 
   static final CrusherRecipeManager instance = new CrusherRecipeManager();
 
-
-
   public static CrusherRecipeManager getInstance() {
     return instance;
   }
@@ -47,14 +45,7 @@ public class CrusherRecipeManager {
   
   private Set<ItemStack> excludedStacks = new HashSet<ItemStack>();
 
-  public CrusherRecipeManager() {
-    //    GrindingBall gb = new GrindingBall(new ItemStack(Items.flint));
-    //    gb.setGrindingMultiplier(1.25f);
-    //    gb.setChanceMultiplier(1.25f);
-    //    gb.setPowerMultiplier(0.75f);
-    //    gb.setDurationMJ(ORE_ENERGY_COST * 6);
-    //
-    //    balls.add(gb);
+  public CrusherRecipeManager() {   
   }
 
   public boolean isValidSagBall(ItemStack stack) {

@@ -34,7 +34,6 @@ import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
 
 public class RecipeConfigParser extends DefaultHandler {
 
-  //public static final String ELEMENT_ROOT = "SAGMillRecipes";
   public static final String ELEMENT_RECIPE_GROUP = "recipeGroup";
   public static final String ELEMENT_RECIPE = "recipe";
   public static final String ELEMENT_INPUT = "input";
@@ -322,7 +321,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
   //TODO: What a hack!
   private boolean isElementRoot(String str) {
-    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "VatRecipes".equals(str);
+    return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str) || "VatRecipes".equals(str) || "SliceAndSpliceRecipes".equals(str);
   }
 
   private void addOutputStack(Attributes attributes) {

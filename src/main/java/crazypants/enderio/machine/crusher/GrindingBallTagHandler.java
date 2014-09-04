@@ -78,4 +78,10 @@ public class GrindingBallTagHandler implements CustomTagHandler {
     return false;
   }
 
+  @Override
+  public void configProcessed() {   
+  }
+  
+  
+
 }

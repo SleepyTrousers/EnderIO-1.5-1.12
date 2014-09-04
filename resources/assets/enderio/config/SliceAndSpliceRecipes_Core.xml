@@ -1,0 +1,21 @@
+<SliceAndSpliceRecipes>
+
+  <recipeGroup name="EnderIO">
+
+    <recipe name="Electrode Skull" energyCost="200">
+      <input>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" slot="0"/>      
+        <itemStack oreDictionary="itemSkull" slot="1"/>  
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" slot="2"/>
+        <itemStack oreDictionary="itemSilicon" slot="3"/>
+        <itemStack modID="EnderIO" itemName="itemBasicCapacitor" itemMeta="0" slot="4"/>        
+        <itemStack oreDictionary="itemSilicon" slot="5"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="0" exp="0.5"/> 
+      </output>
+    </recipe>
+
+  </recipeGroup>
+
+</SliceAndSpliceRecipes>

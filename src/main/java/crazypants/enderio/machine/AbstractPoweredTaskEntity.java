@@ -237,19 +237,18 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     return 0;
   }
 
-  protected MachineRecipeInput[] getInputs() {
+  protected MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots()];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length; i++) {
       res[i] = new MachineRecipeInput(fromSlot, inventory[fromSlot]);
       fromSlot++;
     }
-
     return res;
   }
 
   protected IMachineRecipe canStartNextTask(float chance) {
-    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getInputs());
+    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
     if(nextRecipe == null) {
       return null; // no template
     }
@@ -259,7 +258,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
 
   protected boolean canInsertResult(float chance, IMachineRecipe nextRecipe) {
 
-    ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getInputs());
+    ResultStack[] nextResults = nextRecipe.getCompletedResult(chance, getRecipeInputs());
     List<ItemStack> outputStacks = new ArrayList<ItemStack>(slotDefinition.getNumOutputSlots());
     if(slotDefinition.getNumOutputSlots() > 0) {
       boolean allFull = true;
@@ -314,10 +313,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   }
 
   protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
-    if(hasPower() && nextRecipe.isRecipe(getInputs())) {
+    if(hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
       // then get our recipe and take away the source items
       currentTask = createTask(nextRecipe, chance);
-      List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getInputs());
+      List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getRecipeInputs());
       for (MachineRecipeInput item : consumed) {
         if(item != null) {
           if(item.item != null && item.item.stackSize > 0) {
@@ -334,7 +333,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   }
 
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
-    return new PoweredTask(nextRecipe, chance, getInputs());
+    return new PoweredTask(nextRecipe, chance, getRecipeInputs());
   }
 
   @Override

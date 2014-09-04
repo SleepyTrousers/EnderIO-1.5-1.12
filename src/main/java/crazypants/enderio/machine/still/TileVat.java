@@ -50,7 +50,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    MachineRecipeInput[] inputs = getInputs();
+    MachineRecipeInput[] inputs = getRecipeInputs();
     inputs[i] = new MachineRecipeInput(i, itemstack);
     return VatRecipeManager.getInstance().isValidInput(inputs);
   }
@@ -205,7 +205,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   }
 
   @Override
-  protected MachineRecipeInput[] getInputs() {
+  protected MachineRecipeInput[] getRecipeInputs() {
     MachineRecipeInput[] res = new MachineRecipeInput[slotDefinition.getNumInputSlots() + 1];
     int fromSlot = slotDefinition.minInputSlot;
     for (int i = 0; i < res.length - 1; i++) {
@@ -227,7 +227,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
       return false;
     }
 
-    MachineRecipeInput[] inputs = getInputs();
+    MachineRecipeInput[] inputs = getRecipeInputs();
     if(inputTank.getFluidAmount() <= 0) {
       inputs[inputs.length - 1] = new MachineRecipeInput(0, new FluidStack(fluid, 1));
     }

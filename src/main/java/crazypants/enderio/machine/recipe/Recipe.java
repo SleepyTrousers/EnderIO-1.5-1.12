@@ -47,7 +47,7 @@ public class Recipe implements IRecipe {
         RecipeInput required = null;        
         for(int i=0;i<requiredInputs.size() && required == null;i++) {
           RecipeInput tst = requiredInputs.get(i);
-          if(tst.isInput(input.item) || tst.isInput(input.fluid)) {
+          if( (tst.isInput(input.item) && tst.getInput().stackSize > 0) || tst.isInput(input.fluid)) {
              required = tst;
           }
         }        
