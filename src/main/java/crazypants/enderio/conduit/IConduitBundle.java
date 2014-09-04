@@ -92,6 +92,6 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
 
   int getFacadeMetadata();
   
-  World getWorldObj();
+  World getWorld();
 
 }

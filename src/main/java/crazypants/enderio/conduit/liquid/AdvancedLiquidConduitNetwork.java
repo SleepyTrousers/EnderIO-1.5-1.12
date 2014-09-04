@@ -303,7 +303,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if(conduits.isEmpty()) {
       return null;
     }
-    return conduits.get(0).getBundle().getWorldObj();
+    return conduits.get(0).getBundle().getWorld();
   }
 
   public void removeInput(LiquidOutput lo) {

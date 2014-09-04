@@ -418,7 +418,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   @Override
   public IInventory getExternalInventory(ForgeDirection direction) {
-    World world = getBundle().getWorldObj();
+    World world = getBundle().getWorld();
     if(world == null) {
       return null;
     }

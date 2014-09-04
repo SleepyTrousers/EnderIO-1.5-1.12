@@ -319,11 +319,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   private boolean recievedRfThisTick(ForgeDirection dir) {
-    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getWorldObj() == null) {
+    if(recievedTicks == null || dir == null || recievedTicks.get(dir) == null || getBundle() == null || getBundle().getWorld() == null) {
       return false;
     }
 
-    long curTick = getBundle().getWorldObj().getTotalWorldTime();
+    long curTick = getBundle().getWorld().getTotalWorldTime();
     long recT = recievedTicks.get(dir);
     if(curTick - recT <= 5) {
       return true;
@@ -360,7 +360,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
         if(recievedTicks == null) {
           recievedTicks = new EnumMap<ForgeDirection, Long>(ForgeDirection.class);
         }
-        recievedTicks.put(from, getBundle().getWorldObj().getTotalWorldTime());
+        recievedTicks.put(from, getBundle().getWorld().getTotalWorldTime());
       }
 
     }

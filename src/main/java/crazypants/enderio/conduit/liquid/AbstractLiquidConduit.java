@@ -30,12 +30,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected boolean redstoneStateDirty = true;
 
   public IFluidHandler getExternalHandler(ForgeDirection direction) {
-    IFluidHandler con = FluidUtil.getExternalFluidHandler(getBundle().getWorldObj(), getLocation().getLocation(direction));
+    IFluidHandler con = FluidUtil.getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 
   public IFluidHandler getTankContainer(BlockCoord bc) {
-    return FluidUtil.getFluidHandler(getBundle().getWorldObj(), bc);
+    return FluidUtil.getFluidHandler(getBundle().getWorld(), bc);
   }
 
   @Override
