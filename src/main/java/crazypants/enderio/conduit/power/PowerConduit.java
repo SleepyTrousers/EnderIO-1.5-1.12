@@ -251,7 +251,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public void setEnergyStored(int energyStored) {
-    storedEnergyRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored());     
+    energyStoredRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored());     
   }
 
  
