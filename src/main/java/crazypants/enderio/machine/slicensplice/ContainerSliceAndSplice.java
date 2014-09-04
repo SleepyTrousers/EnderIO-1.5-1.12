@@ -10,7 +10,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer {
 
-  private static final Point[] inputLocs = new Point[] {      
+  public static final Point[] INPUT_SLOTS = new Point[] {      
       new Point(44,40),
       new Point(62,40),
       new Point(80,40),
@@ -21,6 +21,8 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer {
       new Point(72,16)
   };
   
+  public static final Point OUTPUT_SLOT = new Point(134, 48); 
+  
   public ContainerSliceAndSplice(InventoryPlayer playerInv, AbstractMachineEntity te) {
     super(playerInv, te);
   }
@@ -28,8 +30,8 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer {
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) { 
     
-    for(int i=0;i<inputLocs.length;i++) {
-      Point p = inputLocs[i];
+    for(int i=0;i<INPUT_SLOTS.length;i++) {
+      Point p = INPUT_SLOTS[i];
       final int slot = i; 
       addSlotToContainer(new Slot(tileEntity, i, p.x, p.y) {
         @Override
@@ -40,7 +42,7 @@ public class ContainerSliceAndSplice extends AbstractMachineContainer {
     }
     
     
-    addSlotToContainer(new Slot(tileEntity, 8, 134, 48) {
+    addSlotToContainer(new Slot(tileEntity, 8, OUTPUT_SLOT.x, OUTPUT_SLOT.y) {
       @Override
       public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
