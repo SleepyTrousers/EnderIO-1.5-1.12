@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -18,15 +19,36 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.alloy.VanillaSmeltingRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
+
+  public static final int POWER_PER_TICK_ONE = Config.sliceAndSpliceLevelOnePowerPerTickRF;
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2,
+      Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(),
+      POWER_PER_TICK_ONE);
+
+  public static final int POWER_PER_TICK_TWO = Config.sliceAndSpliceLevelTwoPowerPerTickRF;
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(POWER_PER_TICK_TWO * 2,
+      Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored(),
+      POWER_PER_TICK_TWO);
+
+  public static final int POWER_PER_TICK_THREE = Config.sliceAndSpliceLevelThreePowerPerTickRF;
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(POWER_PER_TICK_THREE * 2,
+      Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(),
+      POWER_PER_TICK_THREE);
 
   private int axeIndex = 6;
   private int shearsIndex = 7;
   private EntityLivingBase fakePlayer;
 
+  private ICapacitor capacitor;
+
   public TileSliceAndSplice() {
     super(new SlotDefinition(8, 1));
+    capacitor = CAP_ONE;
   }
 
   @Override
@@ -35,8 +57,50 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
   }
 
   @Override
-  public int getInventoryStackLimit() {  
+  public int getInventoryStackLimit() {
     return 1;
+  }
+
+  public void setCapacitor(Capacitors capacitorType) {
+    switch (capacitorType) {
+    case BASIC_CAPACITOR:
+      capacitor = CAP_ONE;
+      break;
+    case ACTIVATED_CAPACITOR:
+      capacitor = CAP_TWO;
+      break;
+    case ENDER_CAPACITOR:
+      capacitor = CAP_THREE;
+      break;
+    default:
+      capacitor = CAP_ONE;
+      break;
+    }
+    super.setCapacitor(capacitorType);
+  }
+
+  @Override
+  public ICapacitor getCapacitor() {
+    return capacitor;
+  }
+
+  @Override
+  public int getPowerUsePerTick() {
+    if(capacitorType.ordinal() == 0) {
+      return POWER_PER_TICK_ONE;
+    } else if(capacitorType.ordinal() == 1) {
+      return POWER_PER_TICK_TWO;
+    }
+    return POWER_PER_TICK_THREE;
+  }
+
+  @Override
+  public int getProgressScaled(int scale) {
+    int res = super.getProgressScaled(scale);
+    if(currentTask != null) {
+      res = Math.max(1, res);
+    }
+    return res;
   }
 
   @Override
@@ -45,21 +109,21 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
       return null;
     }
     return super.canStartNextTask(chance);
-  }  
+  }
 
   private ItemStack getAxe() {
     return inventory[axeIndex];
   }
-  
+
   private ItemStack getShears() {
     return inventory[shearsIndex];
   }
 
   @Override
-  protected void taskComplete() {    
-    super.taskComplete();    
+  protected void taskComplete() {
+    super.taskComplete();
     damageTool(getAxe(), axeIndex);
-    damageTool(getShears(), shearsIndex);        
+    damageTool(getShears(), shearsIndex);
   }
 
   private void damageTool(ItemStack tool, int toolIndex) {
@@ -87,7 +151,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     }
     return res;
   }
-  
+
   @Override
   protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
     if(itemstack == null || itemstack.getItem() == null) {
@@ -95,19 +159,19 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     }
     if(!slotDefinition.isInputSlot(slot)) {
       return false;
-    }    
+    }
     if(slot == axeIndex) {
       return itemstack.getItem() instanceof ItemAxe;
     }
     if(slot == shearsIndex) {
       return itemstack.getItem() instanceof ItemShears;
     }
-    
+
     ItemStack currentStackInSlot = inventory[slot];
     if(currentStackInSlot != null) {
       return currentStackInSlot.isItemEqual(itemstack);
     }
-    
+
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if(i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
@@ -119,12 +183,12 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
     if(numSlotsFilled == 0 && !recipes.isEmpty()) {
       return true;
-    }    
+    }
     return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
   }
 
   private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
-    
+
     ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
       if(i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
@@ -135,17 +199,17 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
         }
       }
     }
-    
+
     for (IMachineRecipe recipe : recipes) {
-      if(recipe instanceof ManyToOneMachineRecipe) {        
+      if(recipe instanceof ManyToOneMachineRecipe) {
         if(((ManyToOneMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
           return true;
         }
-      } 
+      }
     }
     return false;
   }
-  
+
   private boolean isItemAlreadyInASlot(ItemStack itemstack) {
     ItemStack currentStackType = null;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {

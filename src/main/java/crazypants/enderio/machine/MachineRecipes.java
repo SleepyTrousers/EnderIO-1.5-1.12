@@ -53,11 +53,11 @@ public class MachineRecipes {
 
     //ZombieGen
     ItemStack zg = new ItemStack(EnderIO.blockZombieGenerator, 1, 0);
-    GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qcq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(Items.skull, 1, 2),'c', capacitor);
+    GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qqq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 0),'c', capacitor);
     
     //KillerJoe
     ItemStack kj = new ItemStack(EnderIO.blockKillerJoe, 1, 0);
-    GameRegistry.addShapedRecipe(kj, "sss", "qzq", "qqq", 's', darkSteel, 'q', fusedQuartz, 'z', new ItemStack(Items.skull, 1, 2));
+    GameRegistry.addShapedRecipe(kj, "sss", "qzq", "qqq", 's', darkSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 1));
     
     ItemStack wirelessCharger = new ItemStack(EnderIO.blockWirelessCharger);
     GameRegistry.addShapedRecipe(wirelessCharger, "svs", "imi", "scs", 's', electricSteel, 'i', silicon, 'm', machineChassi, 'c', capacitor3, 'v', vibCry);
@@ -239,5 +239,10 @@ public class MachineRecipes {
     GameRegistry.addRecipe(new ShapedOreRecipe(mJReader, "epe", "gcg", "srs", 'p', powerConduit, 'r', redstoneConduit, 'c', Items.comparator, 'g',
         Blocks.glass_pane, 's', "itemSilicon", 'e',
         electricalSteel));
+    
+    //Slice'N'Splice
+    ItemStack sns = new ItemStack(EnderIO.blockSliceAndSplice);
+    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "isi", "ams","ici", 'i', Items.iron_ingot, 'm', machineChassi, 's', "itemSkull", 'a', Items.iron_axe, 's', Items.shears, 'c', capacitor));
+    
   }
 }

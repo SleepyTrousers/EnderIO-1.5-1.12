@@ -410,6 +410,9 @@ item.itemSoulVessel.tooltip.detailed.line1=Right-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=Click again to release it
 
+skullZombieElectrode.name=Zombie Electrode
+skullZombieController.name=Zombie Controller
+
 //Dark Steel
 item.darkSteel_helmet.name=Dark Helm
 item.darkSteel_chestplate.name=Dark Plate

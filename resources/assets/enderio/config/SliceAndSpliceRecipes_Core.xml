@@ -2,7 +2,7 @@
 
   <recipeGroup name="EnderIO">
 
-    <recipe name="Electrode Skull" energyCost="200">
+    <recipe name="Electrode Skull" energyCost="20000">
       <input>
         <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" slot="0"/>      
         <itemStack oreDictionary="itemSkull" slot="1"/>  
@@ -12,10 +12,24 @@
         <itemStack oreDictionary="itemSilicon" slot="5"/>
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="0" exp="0.5"/> 
+        <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="0"/> 
       </output>
     </recipe>
 
-  </recipeGroup>
+    <recipe name="Controller Skull" energyCost="20000">
+      <input>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="0"/>      
+        <itemStack oreDictionary="itemSkull" slot="1"/>  
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="2"/>
+        <itemStack oreDictionary="itemSilicon" slot="3"/>
+        <itemStack modID="minecraft" itemName="redstone" slot="4"/>        
+        <itemStack oreDictionary="itemSilicon" slot="5"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="1"/> 
+      </output>
+    </recipe>
+
+  </recipeGroup>  
 
 </SliceAndSpliceRecipes>

@@ -280,6 +280,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public void setCapacitor(Capacitors capacitorType) {
     this.capacitorType = capacitorType;
     forceClientUpdate = true;
+    //Force a check that the new value is in bounds
+    setEnergyStored(getEnergyStored());
   }
   
   public int getPowerUsePerTick() {

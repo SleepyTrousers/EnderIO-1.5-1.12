@@ -14,7 +14,7 @@ public enum Capacitors {
       "activatedCapacitor"),
 
   ENDER_CAPACITOR(
-      new BasicCapacitor(400, 1000000, 100),
+      new BasicCapacitor(400, 500000, 100),
       "enderCapacitor");
 
   public final ICapacitor capacitor;

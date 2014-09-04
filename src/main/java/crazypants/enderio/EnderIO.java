@@ -109,6 +109,7 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
+import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
@@ -237,6 +238,7 @@ public class EnderIO {
   public static ItemMagnet itemMagnet;
   
   public static ItemSoulVessel itemSoulVessel;
+  public static ItemFrankenSkull itemFrankenSkull;
 
   public static ItemDarkSteelArmor itemDarkSteelHelmet;
   public static ItemDarkSteelArmor itemDarkSteelChestplate;
@@ -310,6 +312,9 @@ public class EnderIO {
     itemConduitFacade = ItemConduitFacade.create();
     
     itemBrokenSpawner = ItemBrokenSpawner.create();
+    
+    blockEndermanSkull = BlockEndermanSkull.create();
+    itemFrankenSkull = ItemFrankenSkull.create();
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
@@ -388,8 +393,6 @@ public class EnderIO {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
-
-    blockEndermanSkull = BlockEndermanSkull.create();
 
     MaterialRecipes.registerOresInDictionary();
 

@@ -32,8 +32,8 @@ public class GuiSliceAndSplice extends GuiMachineBase {
     drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     int i1;
 
-//    i1 = tileEntity.getProgressScaled(24);
-//    drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);
+    i1 = tileEntity.getProgressScaled(24);
+    drawTexturedModalRect(k + 101, l + 47, 176, 14, i1 + 1, 16);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
