@@ -82,6 +82,8 @@ import crazypants.enderio.machine.power.CapBankRenderer2;
 import crazypants.enderio.machine.power.CapacitorBankRenderer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.soul.BlockSoulBinder;
+import crazypants.enderio.machine.soul.SoulBinderRenderer;
 import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRenderer;
@@ -197,6 +199,9 @@ public class ClientProxy extends CommonProxy {
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
     ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
+    
+    BlockSoulBinder.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
 
 
     if(Config.useCombustionGenModel) {

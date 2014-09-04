@@ -149,8 +149,12 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
     
     //Soul Binder
+    ItemStack endermanSkull = new ItemStack(EnderIO.blockEndermanSkull);
+    ItemStack creeperSkull = new ItemStack(Items.skull, 1, 2);
+    ItemStack zombieSkull = new ItemStack(Items.skull, 1, 4);
+    ItemStack skeletonSkull = new ItemStack(Items.skull, 1, 0);
     ItemStack soulBinder = new ItemStack(EnderIO.blockSoulFuser);
-    GameRegistry.addShapedRecipe(soulBinder, "sss", "sms","ece", 's', soularium, 'm', machineChassi, 'c', capacitor, 'e', new ItemStack(EnderIO.blockEndermanSkull));
+    GameRegistry.addShapedRecipe(soulBinder, "ses", "zmc","sks", 's', soularium, 'm', machineChassi, 'e', endermanSkull, 'z', zombieSkull, 'c', creeperSkull, 'k', skeletonSkull);
     
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
