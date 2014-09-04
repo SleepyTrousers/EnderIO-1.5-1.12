@@ -1,4 +1,18 @@
 ------------------------------------------------------
+Version 2.1.0_beta
+------------------------------------------------------
+Changes
+- Removed MJ support
+- Updated all config entries to use RF
+- Reduced default IO for tier 1 power conduits
+- Added config option for power conduit IO values
+- Added config option for stirling gen output
+- Added config option for painter power use
+
+Bugs
+- Farm 'error messages' flickering on and off
+
+------------------------------------------------------
 Version 2.0.4
 ------------------------------------------------------
 Changes
