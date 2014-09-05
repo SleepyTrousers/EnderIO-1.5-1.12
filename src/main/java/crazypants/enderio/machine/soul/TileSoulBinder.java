@@ -1,12 +1,16 @@
 package crazypants.enderio.machine.soul;
 
+import java.util.List;
+
 import scala.xml.persistent.SetStorage;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
@@ -38,10 +42,38 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
   public String getMachineName() {    
     return ModObject.blockSoulBinder.unlocalisedName;
   }
+    
+  @Override
+  public int getInventoryStackLimit() {
+    return 1;
+  }
 
   @Override
   protected boolean isMachineItemValidForSlot(int slot, ItemStack item) {
-    return SoulBinderSpawnerRecipe.instance.isValidInput(new MachineRecipeInput(slot, item));
+    if(!slotDefinition.isInputSlot(slot)) {
+      return false;
+    }
+    MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
+    int otherSlot = slot == 0 ? 1 : 0;    
+    if(inventory[otherSlot] == null) {
+      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), newInput);
+      if(recipes.isEmpty()) {
+        return false;
+      }    
+      for(IMachineRecipe rec : recipes) {
+        if(rec != null && rec.isValidInput(newInput)) {
+          return true;
+        }
+      }  
+    } else {
+      MachineRecipeInput[] inputs = new MachineRecipeInput[] {
+          newInput,
+          new MachineRecipeInput(otherSlot, inventory[otherSlot])
+      };
+      return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
+    }
+    return false;
+    //return SoulBinderSpawnerRecipe.instance.isValidInput(new MachineRecipeInput(slot, item));
   }
 
   public void setCapacitor(Capacitors capacitorType) {    

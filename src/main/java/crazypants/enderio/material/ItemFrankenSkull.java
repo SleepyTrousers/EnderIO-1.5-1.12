@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 
@@ -60,5 +62,14 @@ public class ItemFrankenSkull extends Item {
       par3List.add(new ItemStack(par1, 1, j));
     }
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean hasEffect(ItemStack par1ItemStack, int pass) {
+    int meta = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, FrankenSkull.values().length - 1); 
+    return FrankenSkull.values()[meta].isAnimated;
+  }
+  
+  
 
 }

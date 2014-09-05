@@ -412,6 +412,7 @@ item.itemSoulVessel.tooltip.detailed.line3=Click again to release it
 
 skullZombieElectrode.name=Zombie Electrode
 skullZombieController.name=Zombie Controller
+skullZombieFrankenstien.name=Frank'N'Zombie
 
 //Dark Steel
 item.darkSteel_helmet.name=Dark Helm

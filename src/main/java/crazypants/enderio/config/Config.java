@@ -266,6 +266,7 @@ public final class Config {
   public static int soulBinderLevelTwoPowerPerTickRF = 1000;
   public static int soulBinderLevelThreePowerPerTickRF = 2000;
   public static int soulBinderBrokenSpawnerRF = 2500000;
+  public static int soulBinderReanimationRF = 100000;
 
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
@@ -274,6 +275,8 @@ public final class Config {
   public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
+
+  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -728,6 +731,9 @@ public final class Config {
         "The number of RF/t consumed by a soul binder with an octadic capacitor upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);    
     soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
         "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
+    soulBinderReanimationRF = config.get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF,
+        "The number of RF required to to re-animated a mob head.").getInt(soulBinderReanimationRF);
+    
     
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);    

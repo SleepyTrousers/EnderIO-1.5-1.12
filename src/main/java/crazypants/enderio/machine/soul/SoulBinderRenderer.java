@@ -58,7 +58,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
     float slabWidth = 0.15f;
     bb= BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
     bb = bb.translate(0, 0.5f - (slabWidth/2), 0);
-    setIcons(EnderIO.blockSoulFuser.getIcon(ForgeDirection.SOUTH.ordinal(), 0), ForgeDirection.UP);
+    setIcons(EnderIO.blockSoulFuser.getIcon(ForgeDirection.UP.ordinal(), 0), ForgeDirection.UP);
     CubeRenderer.render(bb, icons, true);
     
     bb= BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);

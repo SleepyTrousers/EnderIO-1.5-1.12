@@ -49,6 +49,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   protected void init() {    
     super.init();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderReanimationRecipe.instance);
   }
   
   @Override
@@ -101,18 +102,17 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   }
 
   @Override
-  protected String getMachineFrontIconKey(boolean active) {
-    if(active) {
-      return "enderio:blockSoulBinderOn";
-    }
-    return "enderio:blockSoulBinder";
+  protected String getMachineFrontIconKey(boolean active) {   
+    return "enderio:blockSoulMachineBlank";
   }
-  
-  
 
   @Override
   protected String getSideIconKey(boolean active) {
-    return "enderio:blockSoulBinderSide";
+    return "enderio:blockSoulMachineBlank";
+  }
+  
+  protected String getTopIconKey(boolean active) {
+    return "enderio:blockSoulMachineTop";
   }
 
   @Override
