@@ -93,7 +93,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           MobSpawnerBaseLogic logic = spawner.func_145881_a();
           if(logic != null) {
             String name = logic.getEntityNameToSpawn();
-            if(name != null) {
+            if(name != null && !isBlackListed(name)) {
               ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);
               Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);
             }
@@ -109,14 +109,29 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
        evt.right == null || ItemBrokenSpawner.getMobTypeFromStack(evt.right) == null) {
       return;
     }    
+    
+    String spawnerType = ItemBrokenSpawner.getMobTypeFromStack(evt.right);
+    if(isBlackListed(spawnerType)) {
+      return;
+    }
+    
     evt.cost = Config.powerSpawnerAddSpawnerCost;   
     evt.output = evt.left.copy();
     if(evt.output.stackTagCompound == null) {
       evt.output.stackTagCompound = new NBTTagCompound();
     }
     evt.output.stackTagCompound.setBoolean("eio.abstractMachine", true);
-    writeMobTypeToNBT(evt.output.stackTagCompound, ItemBrokenSpawner.getMobTypeFromStack(evt.right));
+    writeMobTypeToNBT(evt.output.stackTagCompound, spawnerType);
     
+  }
+  
+  public boolean isBlackListed(String entityId) {
+    for(String str : Config.poweredSpawnerBlackList) {
+      if(str != null && str.equals(entityId)) {
+        return true;
+      }
+    }
+    return false;
   }
   
   @Override

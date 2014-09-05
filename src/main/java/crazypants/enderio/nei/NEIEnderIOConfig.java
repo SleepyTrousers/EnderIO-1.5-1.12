@@ -26,6 +26,9 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     
     API.registerRecipeHandler(new SliceAndSpliceRecipeHandler());
     API.registerUsageHandler(new SliceAndSpliceRecipeHandler());
+    
+    API.registerRecipeHandler(new SoulBinderRecipeHandler());
+    API.registerUsageHandler(new SoulBinderRecipeHandler());
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));

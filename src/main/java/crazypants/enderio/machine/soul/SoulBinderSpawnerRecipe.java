@@ -2,15 +2,20 @@ package crazypants.enderio.machine.soul;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.util.EntityUtil;
 
-public class SoulBinderSpawnerRecipe implements IMachineRecipe {
+public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
   public static SoulBinderSpawnerRecipe instance = new SoulBinderSpawnerRecipe();
   
@@ -69,7 +74,8 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe {
     int slot = input.slotNumber;
     ItemStack item = input.item;
     if(slot == 0) {
-      return EnderIO.itemSoulVessel.containsSoul(item);
+      String mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(item);
+      return mobType != null && !EnderIO.blockPoweredSpawner.isBlackListed(mobType);
     } 
     if(slot == 1) {
       return item.getItem() == EnderIO.itemBrokenSpawner;
@@ -77,6 +83,15 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe {
     return false;    
   }
 
+  private boolean isBlackListed(String entityId) {
+    for(String str : Config.poweredSpawnerBlackList) {
+      if(str != null && str.equals(entityId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   @Override
   public String getMachineName() {
     return ModObject.blockSoulBinder.unlocalisedName;
@@ -96,4 +111,25 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe {
     return result;
   }
 
+  @Override
+  public ItemStack getInputStack() {    
+    return new ItemStack(EnderIO.itemBrokenSpawner);
+  }
+
+  @Override
+  public ItemStack getOutputStack() {
+    return new ItemStack(EnderIO.itemBrokenSpawner);
+  }
+
+  @Override
+  public List<String> getSupportedSouls() {    
+    return EntityUtil.getAllRegisteredMobNames(!Config.soulVesselCapturesBosses);
+  }
+
+  @Override
+  public int getEnergyRequired() {
+    return Config.soulBinderBrokenSpawnerRF;
+  }
+  
+  
 }

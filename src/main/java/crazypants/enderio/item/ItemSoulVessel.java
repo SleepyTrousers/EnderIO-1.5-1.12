@@ -14,6 +14,7 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.EntityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
@@ -162,6 +163,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
     
     String entityId = EntityList.getEntityString(entity);
+    System.out.println("ItemSoulVessel.itemInteractionForEntity: " + entityId);
     if(isBlackListed(entityId)) {
       return false;
     }
@@ -228,7 +230,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(par1ItemStack != null) {
       String mobName = getMobTypeFromStack(par1ItemStack);
       if(mobName != null) {
-        par3List.add(StatCollector.translateToLocal("entity." + mobName + ".name"));
+        par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
       } else {
         par3List.add("Empty");
       }

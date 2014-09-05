@@ -57,6 +57,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void loadTransferRects() {
+    System.out.println("SagMillRecipeHandler.loadTransferRects: ");
     //Set this up later to show all alloy recipes
     transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(149, 32, 16, 16), "EnderIOSagMill", new Object[0]));
   }
@@ -81,13 +82,11 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
   @Override
   public void loadCraftingRecipes(String outputId, Object... results) {
     if(outputId.equals("EnderIOSagMill") && getClass() == SagMillRecipeHandler.class) {
-
       List<Recipe> recipes = CrusherRecipeManager.getInstance().getRecipes();
       for (Recipe recipe : recipes) {
         MillRecipe res = new MillRecipe(recipe.getEnergyRequired(), recipe.getInputs()[0], recipe.getOutputs());
         arecipes.add(res);
       }
-
     } else {
       super.loadCraftingRecipes(outputId, results);
     }
@@ -178,8 +177,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     private ArrayList<PositionedStack> otherOutputs;
     private float[] outputChance;
     private int energy;
-
-    // Possible energy cost in the future?
+    
     public int getEnergy() {
       return energy;
     }
