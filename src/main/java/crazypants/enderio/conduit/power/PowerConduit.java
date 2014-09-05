@@ -402,7 +402,24 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IPowerInterface rec = getExternalPowerReceptor(direction);
+    
     return rec != null && rec.canConduitConnect(direction);
+  }
+  
+  @Override
+  public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
+    boolean res = super.canConnectToConduit(direction, conduit);
+    if(!res) {
+      return false;
+    }
+    if(Config.powerConduitCanDifferentTiersConnect) {
+      return res;
+    }
+    if( !(conduit instanceof IPowerConduit)) {
+      return false;
+    }
+    IPowerConduit pc = (IPowerConduit)conduit;    
+    return pc.getMaxEnergyStored() == getMaxEnergyStored();
   }
 
   @Override

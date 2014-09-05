@@ -145,7 +145,7 @@ public final class Config {
   public static int darkSteelFallDistanceCost = 75;
 
   public static float darkSteelSwordWitherSkullChance = 0.05f;
-  public static float darkSteelSwordWitherSkullLootingModifier = 0.05f; 
+  public static float darkSteelSwordWitherSkullLootingModifier = 0.05f;
   public static float darkSteelSwordSkullChance = 0.1f;
   public static float darkSteelSwordSkullLootingModifier = 0.075f;
   public static float vanillaSwordSkullLootingModifier = 0.05f;
@@ -195,7 +195,7 @@ public final class Config {
 
   public static int zombieGeneratorRfPerTick = 80;
   public static int zombieGeneratorTicksPerBucketFuel = 10000;
-  
+
   public static int stirlingGeneratorBaseRfPerTick = 20;
 
   public static boolean combustionGeneratorUseOpaqueModel = true;
@@ -207,7 +207,7 @@ public final class Config {
   public static int farmContinuousEnergyUseRF = 40;
   public static int farmActionEnergyUseRF = 500;
   public static int farmAxeActionEnergyUseRF = 1000;
-  
+
   public static int farmDefaultSize = 3;
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
@@ -225,7 +225,7 @@ public final class Config {
   public static int capacitorBankMaxStorageRF = 5000000;
 
   public static String[] poweredSpawnerBlackList = new String[] {
-    "VillagerGolem"
+      "VillagerGolem"
   };
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
@@ -238,7 +238,7 @@ public final class Config {
   public static int powerSpawnerAddSpawnerCost = 30;
 
   public static int painterEnergyPerTaskRF = 2000;
-  
+
   public static double vacuumChestRange = 6;
 
   public static boolean useModMetals = true;
@@ -257,7 +257,7 @@ public final class Config {
   public static double killerJoeAttackHeight = 2;
   public static double killerJoeAttackWidth = 2;
   public static double killerJoeAttackLength = 4;
-  
+
   public static boolean allowTileEntitiesAsPaintSource = true;
 
   public static String isGasConduitEnabled = "auto";
@@ -271,6 +271,7 @@ public final class Config {
   public static int soulBinderBrokenSpawnerRF = 2500000;
   public static int soulBinderReanimationRF = 100000;
 
+  public static boolean powerConduitCanDifferentTiersConnect = true;
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
   public static int powerConduitTierThreeRF = 20480;
@@ -278,8 +279,6 @@ public final class Config {
   public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
-
-  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -316,28 +315,32 @@ public final class Config {
   }
 
   public static void processConfig(Configuration config) {
-   
+
     capacitorBankMaxIoRF = config.get(sectionPower.name, "capacitorBankMaxIoRF", capacitorBankMaxIoRF, "The maximum IO for a single capacitor in RF/t")
         .getInt(capacitorBankMaxIoRF);
     capacitorBankMaxStorageRF = config.get(sectionPower.name, "capacitorBankMaxStorageRF", capacitorBankMaxStorageRF,
         "The maximum storage for a single capacitor in RF")
         .getInt(capacitorBankMaxStorageRF);
-    
+
     powerConduitTierOneRF = config.get(sectionPower.name, "powerConduitTierOneRF", powerConduitTierOneRF, "The maximum IO for the tier 1 power conduit")
         .getInt(powerConduitTierOneRF);
     powerConduitTierTwoRF = config.get(sectionPower.name, "powerConduitTierTwoRF", powerConduitTierTwoRF, "The maximum IO for the tier 2 power conduit")
         .getInt(powerConduitTierTwoRF);
     powerConduitTierThreeRF = config.get(sectionPower.name, "powerConduitTierThreeRF", powerConduitTierTwoRF, "The maximum IO for the tier 3 power conduit")
         .getInt(powerConduitTierThreeRF);
+    powerConduitCanDifferentTiersConnect = config
+        .getBoolean("powerConduitCanDifferentTiersConnect", sectionPower.name, powerConduitCanDifferentTiersConnect,
+            "If set to false power conduits of different tiers cannot be connected. in this case a block such as a cap. bank is needed to bridge different tiered networks.");
 
-    
-    painterEnergyPerTaskRF = config.get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF, "The total amount of RF required to paint one block")
+    painterEnergyPerTaskRF = config.get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF,
+        "The total amount of RF required to paint one block")
         .getInt(painterEnergyPerTaskRF);
 
     useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
-    
-    allowTileEntitiesAsPaintSource= config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource, "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
+
+    allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
+        "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
         .getBoolean(allowTileEntitiesAsPaintSource);
 
     useSteelInChassi = config.get(sectionRecipe.name, "useSteelInChassi", useSteelInChassi, "When enabled machine chassis will require steel instead of iron.")
@@ -632,10 +635,9 @@ public final class Config {
         "The amount of power generated per tick.").getInt(zombieGeneratorRfPerTick);
     zombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
-    
+
     stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
-    
 
     addFuelTooltipsToAllFluidContainers = config.get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
@@ -649,21 +651,20 @@ public final class Config {
     farmContinuousEnergyUseRF = config.get(sectionFarm.name, "farmContinuousEnergyUseRF", farmContinuousEnergyUseRF,
         "The amount of power used by a farm per tick ").getInt(farmContinuousEnergyUseRF);
     farmActionEnergyUseRF = config.get(sectionFarm.name, "farmActionEnergyUseRF", farmActionEnergyUseRF,
-        "The amount of power used by a farm per action (eg plant, till, harvest) ").getInt(farmActionEnergyUseRF);    
-    farmAxeActionEnergyUseRF= config.get(sectionFarm.name, "farmAxeActionEnergyUseRF", farmAxeActionEnergyUseRF,
+        "The amount of power used by a farm per action (eg plant, till, harvest) ").getInt(farmActionEnergyUseRF);
+    farmAxeActionEnergyUseRF = config.get(sectionFarm.name, "farmAxeActionEnergyUseRF", farmAxeActionEnergyUseRF,
         "The amount of power used by a farm per wood block 'chopped'").getInt(farmAxeActionEnergyUseRF);
-    
+
     farmDefaultSize = config.get(sectionFarm.name, "farmDefaultSize", farmDefaultSize,
         "The number of blocks a farm will extend from its center").getInt(farmDefaultSize);
 
-    farmAxeDamageOnLeafBreak = config.get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak, 
-	       "Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
-    farmToolTakeDamageChance = (float) config.get(sectionFarm.name, "farmToolTakeDamageChance", farmToolTakeDamageChance, 
-	       "The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
-    
-    disableFarmNotification = config.get(sectionFarm.name, "disableFarmNotifications", disableFarmNotification, 
+    farmAxeDamageOnLeafBreak = config.get(sectionFarm.name, "farmAxeDamageOnLeafBreak", farmAxeDamageOnLeafBreak,
+        "Should axes in a farm take damage when breaking leaves?").getBoolean(farmAxeDamageOnLeafBreak);
+    farmToolTakeDamageChance = (float) config.get(sectionFarm.name, "farmToolTakeDamageChance", farmToolTakeDamageChance,
+        "The chance that a tool in the farm will take damage.").getDouble(farmToolTakeDamageChance);
+
+    disableFarmNotification = config.get(sectionFarm.name, "disableFarmNotifications", disableFarmNotification,
         "Disable the notification text above the farm block.").getBoolean();
-    
 
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
@@ -718,30 +719,29 @@ public final class Config {
         "The reach of attacks to each side of Joe.").getDouble(killerJoeAttackWidth);
     killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength,
         "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);
-    
-    isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled, 
+
+    isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
-    
-    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList, 
+
+    soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");
-    
-    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses, 
+
+    soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulBinder.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial");
-    
+
     soulBinderLevelOnePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelOnePowerPerTickRF", soulBinderLevelOnePowerPerTickRF,
-        "The number of RF/t consumed by an unupgraded soul binder.").getInt(soulBinderLevelOnePowerPerTickRF);    
+        "The number of RF/t consumed by an unupgraded soul binder.").getInt(soulBinderLevelOnePowerPerTickRF);
     soulBinderLevelTwoPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelTwoPowerPerTickRF", soulBinderLevelTwoPowerPerTickRF,
         "The number of RF/t consumed by a soul binder with a double layer capacitor upgrade.").getInt(soulBinderLevelTwoPowerPerTickRF);
     soulBinderLevelThreePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelThreePowerPerTickRF", soulBinderLevelThreePowerPerTickRF,
-        "The number of RF/t consumed by a soul binder with an octadic capacitor upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);    
+        "The number of RF/t consumed by a soul binder with an octadic capacitor upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);
     soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
         "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
     soulBinderReanimationRF = config.get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF,
         "The number of RF required to to re-animated a mob head.").getInt(soulBinderReanimationRF);
-    
-    
+
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
-        "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);    
+        "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);
     sliceAndSpliceLevelTwoPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelTwoPowerPerTickRF", sliceAndSpliceLevelTwoPowerPerTickRF,
         "The number of RF/t consumed by a Slice'N'Splice with a double layer capacitor upgrade.").getInt(sliceAndSpliceLevelTwoPowerPerTickRF);
     sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
