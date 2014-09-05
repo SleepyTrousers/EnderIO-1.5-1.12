@@ -242,8 +242,9 @@ public class MachineRecipes {
         electricalSteel));
     
     //Slice'N'Splice
+    ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
     ItemStack sns = new ItemStack(EnderIO.blockSliceAndSplice);
-    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams","ici", 'i', Items.iron_ingot, 'm', machineChassi, 'k', "itemSkull", 'a', Items.iron_axe, 's', Items.shears, 'c', capacitor));
+    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams","ici", 'i', soularium, 'm', machineChassi, 'k', "itemSkull", 'a', Items.iron_axe, 's', Items.shears, 'c', capacitor));
     
   }
 }
