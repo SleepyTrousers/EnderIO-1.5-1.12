@@ -28,7 +28,11 @@ public class PickableFarmer extends CustomSeedFarmer {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     
-    if(!canHarvest(farm, bc, block, meta) || !farm.hasDefaultHarvestTool()) {
+    if(!canHarvest(farm, bc, block, meta)) {
+      return null;
+    }
+    if(!farm.hasHoe()) {
+      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
       return null;
     }
     EntityPlayerMP player = farm.getFakePlayer();
@@ -48,7 +52,7 @@ public class PickableFarmer extends CustomSeedFarmer {
       }
     }
     farm.actionPerformed(false);
-    farm.damageMaxLootingItem(1, bc, block);
+    farm.damageHoe(1, bc);
     return new HarvestResult(drops, bc);
   }
   

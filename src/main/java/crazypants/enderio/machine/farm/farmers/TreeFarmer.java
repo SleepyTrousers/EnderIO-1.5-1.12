@@ -136,7 +136,7 @@ public class TreeFarmer implements IFarmerJoe {
     }
     
     if (!farm.hasAxe()) {
-      farm.setNotification("noAxe");
+      farm.setNotification(TileFarmStation.NOTIFICATION_NO_AXE);
     }
     
     res.harvestedBlocks.clear();

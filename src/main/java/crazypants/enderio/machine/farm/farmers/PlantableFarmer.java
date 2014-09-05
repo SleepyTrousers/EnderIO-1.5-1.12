@@ -50,7 +50,7 @@ public class PlantableFarmer implements IFarmerJoe {
 
     ItemStack seedStack = farm.getSeedTypeInSuppliesFor(bc);
     if(seedStack == null) {
-      farm.setNotification("noSeeds");
+      farm.setNotification(TileFarmStation.NOTIFICATION_NO_SEEDS);
       return false;
     }
 
@@ -72,10 +72,7 @@ public class PlantableFarmer implements IFarmerJoe {
     }
 
     if(type == EnumPlantType.Crop) {
-      if(!farm.tillBlock(bc)) {
-        if(!farm.hasHoe()) {
-          farm.setNotification("noHoe");
-        }
+      if(!farm.tillBlock(bc)) {        
         return false;
       }
       return plantFromInventory(farm, bc, plantable);
@@ -144,7 +141,11 @@ public class PlantableFarmer implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-    if(!canHarvest(farm, bc, block, meta) || !farm.hasDefaultHarvestTool()) {
+    if(!canHarvest(farm, bc, block, meta)) {
+      return null;
+    }
+    if(!farm.hasHoe()) {
+      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
       return null;
     }
 
@@ -154,7 +155,7 @@ public class PlantableFarmer implements IFarmerJoe {
     ItemStack removedPlantable = null;
 
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
-    farm.damageMaxLootingItem(1, bc, block);
+    farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     boolean removed = false;
     if(drops != null) {

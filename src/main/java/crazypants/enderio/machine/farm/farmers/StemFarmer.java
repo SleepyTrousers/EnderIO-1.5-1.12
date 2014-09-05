@@ -46,7 +46,7 @@ public class StemFarmer extends CustomSeedFarmer {
     boolean done = false;
     do{
       harvestCoord = harvestCoord.getLocation(ForgeDirection.UP);
-      if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasDefaultHarvestTool()) {
+      if(plantedBlock == farm.getBlock(harvestCoord) && farm.hasHoe()) {
         res.harvestedBlocks.add(harvestCoord);
         ArrayList<ItemStack> drops = plantedBlock.getDrops(farm.getWorldObj(), harvestCoord.x, harvestCoord.y, harvestCoord.z, meta, farm.getMaxLootingValue());
         if(drops != null) {
@@ -55,7 +55,7 @@ public class StemFarmer extends CustomSeedFarmer {
           }
 
         }
-        farm.damageMaxLootingItem(1, harvestCoord, farm.getBlock(harvestCoord));
+        farm.damageHoe(1, harvestCoord);
         farm.actionPerformed(false);
         farm.getWorldObj().setBlockToAir(harvestCoord.x, harvestCoord.y, harvestCoord.z);
       } else {

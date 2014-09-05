@@ -18,14 +18,18 @@ public class NaturaBerryFarmer extends PickableFarmer {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     
-    if(block != getPlantedBlock() || !farm.hasDefaultHarvestTool()) {
+    if(block != getPlantedBlock()) {
+      return null;
+    }
+    if(!farm.hasHoe()) {
+      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
       return null;
     }
     
     IHarvestResult res = new HarvestResult();    
     
     BlockCoord checkBlock = bc;
-    for(int i=0; i < 5 && farm.hasDefaultHarvestTool(); i++) {
+    for(int i=0; i < 5 && farm.hasHoe(); i++) {
       meta = farm.getBlockMeta(checkBlock);
       IHarvestResult blockRes = super.harvestBlock(farm, checkBlock, block, meta);
     
@@ -36,7 +40,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
           res.getDrops().add(stack);
         }
         farm.actionPerformed(false);
-        farm.damageMaxLootingItem(1, checkBlock, farm.getBlock(checkBlock));
+        farm.damageHoe(1, checkBlock);
       }
       checkBlock = checkBlock.getLocation(ForgeDirection.UP);
     }

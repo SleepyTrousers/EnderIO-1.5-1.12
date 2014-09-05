@@ -1,5 +1,9 @@
 package crazypants.enderio.machine.spawner;
 
+import java.lang.reflect.Field;
+
+import cpw.mods.fml.common.asm.transformers.AccessTransformer;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -296,7 +300,6 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
           for (int i = 0; i < spawnCount; ++i) {
 
             Entity entity = EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());
-
             if(entity == null) {
               return;
             }

@@ -119,7 +119,11 @@ public class CustomSeedFarmer implements IFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
 
-    if(!canHarvest(farm, bc, block, meta) || !farm.hasDefaultHarvestTool()) {
+    if(!canHarvest(farm, bc, block, meta)) {
+      return null;
+    }
+    if(!farm.hasHoe()) {
+      farm.setNotification(TileFarmStation.NOTIFICATION_NO_HOE);
       return null;
     }
 
@@ -127,7 +131,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
     List<EntityItem> result = new ArrayList<EntityItem>();
 
     ArrayList<ItemStack> drops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, farm.getMaxLootingValue());
-    farm.damageMaxLootingItem(1, bc, block);
+    farm.damageHoe(1, bc);
     farm.actionPerformed(false);
     boolean removed = false;
     if(drops != null) {
