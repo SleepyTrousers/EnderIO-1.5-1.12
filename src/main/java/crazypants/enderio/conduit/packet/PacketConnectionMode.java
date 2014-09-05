@@ -41,6 +41,9 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
   @Override
   public IMessage onMessage(PacketConnectionMode message, MessageContext ctx) {
     IConduit conduit = message.getTileCasted(ctx);
+    if(conduit == null) {
+      return null;
+    }
     if(conduit instanceof IInsulatedRedstoneConduit) {
       ((IInsulatedRedstoneConduit)conduit).forceConnectionMode(message.dir, message.mode);
     } else {
