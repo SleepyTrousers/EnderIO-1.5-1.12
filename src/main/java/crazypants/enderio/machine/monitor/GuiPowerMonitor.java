@@ -15,13 +15,14 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiPowerMonitor extends GuiScreenBase {
+public class GuiPowerMonitor extends GuiContainerBase {
 
   private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
 
@@ -66,9 +67,11 @@ public class GuiPowerMonitor extends GuiScreenBase {
   private String monHeading5;
 
   public GuiPowerMonitor(final TilePowerMonitor te) {
-    super(WIDTH, HEIGHT);
+    super(new ContainerPowerMonitor());
     this.te = te;
-    drawButtons = false;
+    
+    xSize = WIDTH;
+    ySize = WIDTH;
 
     titleStr = Lang.localize("gui.powerMonitor.engineControl");
     engineTxt1 = Lang.localize("gui.powerMonitor.engineSection1");
@@ -108,8 +111,7 @@ public class GuiPowerMonitor extends GuiScreenBase {
   public void initGui() {
     super.initGui();
 
-    buttonList.clear();
-    enabledB.onGuiInit();
+    buttonList.clear();    
 
     int x = guiLeft + MARGIN + getFontRenderer().getStringWidth(engineTxt2) + 4;
     int y = guiTop + MARGIN + ICON_SIZE + ICON_SIZE + getFontRenderer().FONT_HEIGHT;
@@ -165,15 +167,18 @@ public class GuiPowerMonitor extends GuiScreenBase {
     if(x > 200 && x < 220) {
       if(y > 9 && y < 27) {
         isRedstoneMode = false;
+        enabledB.detach();
       } else if(y > 34 && y < 53) {
         isRedstoneMode = true;
+        enabledB.onGuiInit();
       }
     }
 
   }
 
   @Override
-  protected void drawBackgroundLayer(float par3, int par1, int par2) {
+  protected void drawGuiContainerBackgroundLayer(float pTick, int mouseX, int mouseY) {
+
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/powerMonitor.png");
     int sx = (width - xSize) / 2;
