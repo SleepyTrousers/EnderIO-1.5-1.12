@@ -225,7 +225,8 @@ public final class Config {
   public static int capacitorBankMaxStorageRF = 5000000;
 
   public static String[] poweredSpawnerBlackList = new String[] {
-      "VillagerGolem"
+      "VillagerGolem",
+      "Slime"
   };
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
