@@ -19,6 +19,7 @@ import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.gui.GuiContainerBase;
 import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.GuiToolTip;
@@ -28,7 +29,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 
-public class GuiHyperCube extends GuiScreenBase {
+public class GuiHyperCube extends GuiContainerBase {
 
   protected static final int POWER_INPUT_BUTTON_ID = 1;
   protected static final int POWER_OUTPUT_BUTTON_ID = 2;
@@ -75,9 +76,12 @@ public class GuiHyperCube extends GuiScreenBase {
   private RedstoneModeButton rsB;
 
   public GuiHyperCube(TileHyperCube te) {
-    super(245, 145);
+    super(new ContainerHyperCube());
     this.cube = te;
 
+    xSize = 245;
+    ySize = 145;
+    
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
@@ -334,8 +338,10 @@ public class GuiHyperCube extends GuiScreenBase {
     newChannelTF.updateCursorCounter();
   }
 
+  
+  
   @Override
-  protected void drawBackgroundLayer(float partialTick, int mouseX, int mouseY) {
+  protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture("enderio:textures/gui/hyperCube.png");
