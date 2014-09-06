@@ -2,17 +2,14 @@ package crazypants.enderio.machine.soul;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
-
-import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.util.EntityUtil;
 
 public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
@@ -84,12 +81,7 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   }
 
   private boolean isBlackListed(String entityId) {
-    for(String str : Config.poweredSpawnerBlackList) {
-      if(str != null && str.equals(entityId)) {
-        return true;
-      }
-    }
-    return false;
+    return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
   }
   
   @Override
@@ -122,8 +114,12 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   }
 
   @Override
-  public List<String> getSupportedSouls() {    
-    return EntityUtil.getAllRegisteredMobNames(!Config.soulVesselCapturesBosses);
+  public List<String> getSupportedSouls() {
+    List<String> res = EntityUtil.getAllRegisteredMobNames(!Config.soulVesselCapturesBosses);
+    for(String str : res) {
+      System.out.println(" \"" + str + "\" : \"100\"");
+    }
+    return res;
   }
 
   @Override

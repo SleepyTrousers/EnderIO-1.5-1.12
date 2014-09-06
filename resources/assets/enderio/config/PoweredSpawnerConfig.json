@@ -1,0 +1,42 @@
+{
+  "costs": {
+    "default" : "1000",    
+    
+    "Zombie" : "1000",
+    "Creeper" : "1000",     
+    "Skeleton" : "1000",
+    "Spider" : "1000",
+    "CaveSpider" : "1000",
+    "Silverfish" : "1000",    
+    "Witch" : "5000",                                      
+    "Slime" : "1000",           
+    "Enderman" : "5000",
+    
+    "LavaSlime" : "2000",
+    "PigZombie" : "5000",
+    "Ghast" : "10000",
+    "Blaze" : "5000",
+    
+    "SnowMan" : "1000",
+    "VillagerGolem" : "1000",
+    "Villager" : "1000",
+    
+    "Wolf" : "1000",
+    "Ozelot" : "1000",
+    "EntityHorse" : "1000",
+    "Bat" : "500",
+    
+    "Squid" : "500",    
+    "Chicken" : "500",    
+    "Sheep" : "500",
+    "Cow" : "500",
+    "Pig" : "500",    
+    "MushroomCow" : "1000"
+  },
+  
+  "blackList": [
+    "VillagerGolem",
+    "Villager",
+    "Slime"
+  ]
+}

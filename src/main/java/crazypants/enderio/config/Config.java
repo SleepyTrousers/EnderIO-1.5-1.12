@@ -223,11 +223,7 @@ public final class Config {
 
   public static int capacitorBankMaxIoRF = 5000;
   public static int capacitorBankMaxStorageRF = 5000000;
-
-  public static String[] poweredSpawnerBlackList = new String[] {
-      "VillagerGolem",
-      "Slime"
-  };
+  
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
   public static int poweredSpawnerLevelOnePowerPerTickRF = 250;
@@ -701,9 +697,7 @@ public final class Config {
     brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
         "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
-        "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);
-    poweredSpawnerBlackList = config.getStringList("poweredSpawnerBlackList", sectionSpawner.name, poweredSpawnerBlackList,
-        "Lists mobs that can not be used to create a powered spawner");
+        "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);    
 
     useModMetals = config.get(sectionRecipe.name, "useModMetals", useModMetals,
         "If true copper and tin will be used in recipes when registered in the ore dictionary").getBoolean(useModMetals);

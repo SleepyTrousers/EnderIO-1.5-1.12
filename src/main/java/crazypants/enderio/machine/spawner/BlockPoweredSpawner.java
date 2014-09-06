@@ -29,13 +29,6 @@ import crazypants.util.Lang;
 import crazypants.util.Util;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
-
-//  public static ItemStack createItemStackForSpawnerType(String type) {
-//    ItemStack res = new ItemStack(EnderIO.blockPoweredSpawner);
-//    res.stackTagCompound = new NBTTagCompound();
-//    res.stackTagCompound.setString("mobType", type);
-//    return res;    
-//  }
   
   public static void writeMobTypeToNBT(NBTTagCompound nbt, String type) {
     if(nbt == null) {
@@ -67,6 +60,9 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   
   public static BlockPoweredSpawner create() {       
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.unlocalisedName, new DummyRecipe());
+    
+    //Ensure costs are loaded at startup
+    PoweredSpawnerConfig.getInstance();
     
     BlockPoweredSpawner res = new BlockPoweredSpawner();
     MinecraftForge.EVENT_BUS.register(res);
@@ -125,13 +121,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     
   }
   
-  public boolean isBlackListed(String entityId) {
-    for(String str : Config.poweredSpawnerBlackList) {
-      if(str != null && str.equals(entityId)) {
-        return true;
-      }
-    }
-    return false;
+  public boolean isBlackListed(String entityId) {   
+    return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
   }
   
   @Override

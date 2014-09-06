@@ -4,13 +4,31 @@ Version 2.1.0_beta
 Changes
 - Removed MJ support
 - Updated all config entries to use RF
+- Added Slice'N'Splice
+- Added Soul Binder
+- Added black list for Soul Vial and Powered Spawners
 - Reduced default IO for tier 1 power conduits
 - Added config option for power conduit IO values
+- Added config option to stop power conduits of different tiers connecting
 - Added config option for stirling gen output
 - Added config option for painter power use
+- FarmStation: crops other than trees now require a hoe to be harvested, and the hoe takes 1 damage point per harvest
 
 Bugs
 - Farm 'error messages' flickering on and off
+
+
+------------------------------------------------------
+Version 2.0.5
+------------------------------------------------------
+Changes
+- Shift+Left Click with Yeta Wrench on conduits now opens conduit GUI (you dont need to see the 'connection plate' anymore!)
+
+Bugs
+- #967 Crash opening conduit GUI
+- Fixed update issue with wireless charger causing player inventory update isses with Mine and Blade: Battle Gear 2  
+- Fixed player inventory de-sync when opening Dim. Trans Gui
+
 
 ------------------------------------------------------
 Version 2.0.4

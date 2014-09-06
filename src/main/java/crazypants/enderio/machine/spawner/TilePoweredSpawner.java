@@ -49,6 +49,8 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   private static final String NULL_ENTITY_NAME = "None";
   
   private ICapacitor capacitor;
+  
+  private int costPerSpawnRF;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(0, 0));
@@ -151,6 +153,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       mobType = NULL_ENTITY_NAME;
     }
     logic.setEntityName(mobType);
+    costPerSpawnRF = PoweredSpawnerConfig.getInstance().getCostToSpawn(mobType);
   }
 
   @Override
@@ -203,6 +206,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       spaceClear = entityliving.getCanSpawnHere();
     }
     return spaceClear;
+  }
+  
+  private boolean useSpawnPower() {
+    if(getEnergyStored() < costPerSpawnRF) {
+      return false;
+    }
+    usePower(costPerSpawnRF);
+    return true;
   }
   
   public String getEntityName() {
@@ -320,7 +331,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
             EntityLiving entityliving = entity instanceof EntityLiving ? (EntityLiving) entity : null;
             entity.setLocationAndAngles(d2, d3, d4, getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
 
-            if(entityliving == null || canSpawnEntity(entityliving)) {
+            if(entityliving != null && canSpawnEntity(entityliving) && useSpawnPower()) {
               func_98265_a(entity);
               getSpawnerWorld().playAuxSFX(2004, getSpawnerX(), getSpawnerY(), getSpawnerZ(), 0);
 
