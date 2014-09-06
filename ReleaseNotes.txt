@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 2.0.5
+------------------------------------------------------
+Changes
+- Shift+Left Click now with Yeta Wrench on conduits now opens conduit GUI (you dont need to see the 'connection plate' anymore!)
+
+Bugs
+- #967 Crash opening conduit GUI
+- Fixed update issue with wireless charger causing player inventory update isses with Mine and Blade: Battle Gear 2  
+- Fixed player inventory de-sync when opening Dim. Trans Gui
+
+------------------------------------------------------
 Version 2.0.4
 ------------------------------------------------------
 Changes
