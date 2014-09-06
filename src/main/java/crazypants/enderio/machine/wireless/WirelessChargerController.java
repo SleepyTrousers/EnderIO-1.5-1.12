@@ -76,10 +76,7 @@ public class WirelessChargerController {
 
   private boolean chargeFromCapBank(EntityPlayer player, IWirelessCharger capBank) {
     boolean res = capBank.chargeItems(player.inventory.armorInventory);
-    res |= capBank.chargeItems(player.inventory.mainInventory);
-    if(res) {
-      player.inventory.markDirty();
-    }
+    res |= capBank.chargeItems(player.inventory.mainInventory);    
     return res;
   }
 
