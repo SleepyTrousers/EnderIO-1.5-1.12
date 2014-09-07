@@ -684,7 +684,7 @@ public final class Config {
     poweredSpawnerMaxDelayTicks = config.get(sectionSpawner.name, "poweredSpawnerMaxDelayTicks", poweredSpawnerMaxDelayTicks,
         "Min tick delay between spawns for a non-upgraded spawner").getInt(poweredSpawnerMaxDelayTicks);
     poweredSpawnerLevelOnePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelOnePowerPerTickRF", poweredSpawnerLevelOnePowerPerTickRF,
-        "RF per tick for a level 1 (non-upgraded) spawner").getInt(poweredSpawnerLevelOnePowerPerTickRF);
+        "RF per tick for a level 1 (non-upgraded) spawner. See PoweredSpanerConfig_Core.json for mob type multipliers").getInt(poweredSpawnerLevelOnePowerPerTickRF);
     poweredSpawnerLevelTwoPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelTwoPowerPerTickRF", poweredSpawnerLevelTwoPowerPerTickRF,
         "RF per tick for a level 2 spawner").getInt(poweredSpawnerLevelTwoPowerPerTickRF);
     poweredSpawnerLevelThreePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTickRF",

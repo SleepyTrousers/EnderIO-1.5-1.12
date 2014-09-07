@@ -551,9 +551,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
         }
       }
     }
-
     return isRecievingRedstoneSignal;
-
   }
 
   public RedstoneControlMode getInputControlMode() {
@@ -739,9 +737,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   private void setMultiblock(BlockCoord[] mb) {
 
     if(multiblock != null && isMaster()) {
-
-      //WirelessChargerController.instance.deregisterCharger(this);
-
+      
       // split up current multiblock and reconfigure all the internal capacitors
       int powerPerBlock = storedEnergyRF / multiblock.length;
       int remaining = storedEnergyRF % multiblock.length;
@@ -781,8 +777,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
         }
         cb.multiblockDirty = false;
       }
-      doSetEnergyStored(totalStored);
       maxStoredEnergy = totalCap;
+      doSetEnergyStored(totalStored);      
       maxIO = totalIO;
       maxInput = maxInput < 0 ? maxIO : Math.min(maxInput, maxIO);
       maxOutput = maxOutput < 0 ? maxIO : Math.min(maxOutput, maxIO);
@@ -963,11 +959,13 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     double oldEnergy = storedEnergyRF;
     if(nbtRoot.hasKey("storedEnergyD")) {     
       nbtRoot.setInteger("storedEnergyRF", (int)(nbtRoot.getDouble("storedEnergyD") * 10));
-    } 
-    
+    }     
     doSetEnergyStored(nbtRoot.getInteger("storedEnergyRF"));
     
-    maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergy");
+    if(nbtRoot.hasKey("maxStoredEnergy")) {
+      nbtRoot.setInteger("maxStoredEnergyRF", nbtRoot.getInteger("maxStoredEnergy") * 10);
+    }    
+    maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergyRF");
 
     double newEnergy = storedEnergyRF;
     if(maxStoredEnergy != 0 && Math.abs(oldEnergy - newEnergy) / (double)maxStoredEnergy > 0.05 || nbtRoot.hasKey("render")) {
@@ -981,22 +979,27 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     }
 
     if(nbtRoot.hasKey("maxIO")) {
-      maxIO = nbtRoot.getInteger("maxIO") * 10;  
-    } else {
-      maxIO = nbtRoot.getInteger("maxIoRF");
-    }
+      nbtRoot.setInteger("maxIoRF", nbtRoot.getInteger("maxIO") * 10);  
+    } 
+    maxIO = nbtRoot.getInteger("maxIoRF");
+    
     
     if(nbtRoot.hasKey("maxInput")) {
-      nbtRoot.setInteger("maxInputRF", nbtRoot.getInteger("maxInput") * 10);
-      nbtRoot.setInteger("maxOuputRF", nbtRoot.getInteger("maxOuput") * 10);
+      nbtRoot.setInteger("maxInputRF", nbtRoot.getInteger("maxInput") * 10);      
+    }        
+    if(nbtRoot.hasKey("maxInputRF")) {
+      maxInput = nbtRoot.getInteger("maxInputRF");      
+    } else {      
+      maxOutput = maxIO;
     }
     
-    if(nbtRoot.hasKey("maxInputRF")) {
-      maxInput = nbtRoot.getInteger("maxInputRF");
+    if(nbtRoot.hasKey("maxOutput")) {
+      nbtRoot.setInteger("maxOuputRF", nbtRoot.getInteger("maxOuput") * 10);
+    }
+    if(nbtRoot.hasKey("maxOutputRF")) {
       maxOutput = nbtRoot.getInteger("maxOutputRF");
     } else {
       maxInput = maxIO;
-      maxOutput = maxIO;
     }
 
     inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
@@ -1043,7 +1046,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
 
     nbtRoot.setDouble("storedEnergyRF", storedEnergyRF);
-    nbtRoot.setInteger("maxStoredEnergy", maxStoredEnergy);
+    nbtRoot.setInteger("maxStoredEnergyRF", maxStoredEnergy);
     nbtRoot.setInteger("maxIoRF", maxIO);
     nbtRoot.setInteger("maxInputRF", maxInput);
     nbtRoot.setInteger("maxOutputRF", maxOutput);
