@@ -7,6 +7,8 @@ Changes
 - Added Slice'N'Splice
 - Added Soul Binder
 - Added black list for Soul Vial and Powered Spawners
+- Added Spoon upgrade for Dark Steel Pick
+- Added Travel upgrade for Dark Steel Pick and The Ender
 - Reduced default IO for tier 1 power conduits
 - Added config option for power conduit IO values
 - Added config option to stop power conduits of different tiers connecting
