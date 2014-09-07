@@ -613,7 +613,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
   public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {    
     TileEntity conduit = world.getTileEntity(x, y, z);
     if(conduit instanceof IConduitBundle) {
-      ((IConduitBundle) conduit).onNeighborBlockChange(world.getBlock(tileX, tileY, tileZ));
+      ((IConduitBundle) conduit).onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
     }
   }
 
