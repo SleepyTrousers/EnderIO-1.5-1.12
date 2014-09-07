@@ -955,18 +955,18 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-
+       
+    if(nbtRoot.hasKey("maxStoredEnergy")) {
+      nbtRoot.setInteger("maxStoredEnergyRF", nbtRoot.getInteger("maxStoredEnergy") * 10);
+    }    
+    maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergyRF");
+    
     double oldEnergy = storedEnergyRF;
     if(nbtRoot.hasKey("storedEnergyD")) {     
       nbtRoot.setInteger("storedEnergyRF", (int)(nbtRoot.getDouble("storedEnergyD") * 10));
     }     
     doSetEnergyStored(nbtRoot.getInteger("storedEnergyRF"));
     
-    if(nbtRoot.hasKey("maxStoredEnergy")) {
-      nbtRoot.setInteger("maxStoredEnergyRF", nbtRoot.getInteger("maxStoredEnergy") * 10);
-    }    
-    maxStoredEnergy = nbtRoot.getInteger("maxStoredEnergyRF");
-
     double newEnergy = storedEnergyRF;
     if(maxStoredEnergy != 0 && Math.abs(oldEnergy - newEnergy) / (double)maxStoredEnergy > 0.05 || nbtRoot.hasKey("render")) {
       render = true;
