@@ -38,7 +38,7 @@ public class TravelUpgrade extends AbstractUpgrade {
   
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelSword || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || (stack.getItem() != EnderIO.itemDarkSteelSword && stack.getItem() != EnderIO.itemDarkSteelPickaxe) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     TravelUpgrade up = loadFromItem(stack);

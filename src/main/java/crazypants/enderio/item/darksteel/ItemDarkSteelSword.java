@@ -85,7 +85,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
-    EnergyUpgrade.setPowerFull(is);    
+    EnergyUpgrade.setPowerFull(is);
+    TravelUpgrade.INSTANCE.writeToItem(is);        
     par3List.add(is);
   }
   

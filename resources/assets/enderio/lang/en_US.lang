@@ -466,6 +466,8 @@ enderio.darksteel.upgrade.jump_one.name=Jump
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
 
 enderio.darksteel.upgrade.travel.name=Travel
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and r-click to teleport or
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor or Ender IO
 
 enderio.darksteel.upgrade.glider.name=Glider
 enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding

@@ -23,10 +23,13 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.teleport.IItemOfTravel;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.TravelSource;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -53,6 +56,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return res;
   }
 
+  private long lastBlickTick = -1;
+
   public ItemDarkSteelPickaxe() {
     super(ItemDarkSteelSword.MATERIAL);
     setCreativeTab(EnderIOTab.tabEnderIO);
@@ -70,6 +75,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     is = new ItemStack(this);    
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
     EnergyUpgrade.setPowerFull(is);    
+    TravelUpgrade.INSTANCE.writeToItem(is);
     par3List.add(is);
   }
   
@@ -215,4 +221,44 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return new ItemStack(this);
   }
 
+  @Override
+  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
+    return isTravelUpgradeActive(ep, equipped);
+  }
+
+  @Override
+  public void extractInternal(ItemStack equipped, int power) {
+    extractEnergy(equipped, power, false);
+  }
+  
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
+    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {   
+    if(isTravelUpgradeActive(player, stack)) {
+      if(world.isRemote) {
+        if(TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
+          player.swingItem();
+          return stack;
+        }
+      }
+      
+      long ticksSinceBlink = player.worldObj.getTotalWorldTime() - lastBlickTick;
+      if(ticksSinceBlink < 0) {
+        lastBlickTick = -1;
+      }
+      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if(TravelController.instance.doBlink(stack, player)) {
+          player.swingItem();
+          lastBlickTick = player.worldObj.getTotalWorldTime();
+        }
+      }            
+      return stack;
+    }
+    
+    return super.onItemRightClick(stack, world, player);
+  }
+  
 }
