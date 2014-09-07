@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
@@ -122,5 +123,7 @@ public interface IConduit {
   void updateEntity(World worldObj);
 
   boolean onNeighborBlockChange(Block blockId);
+  
+  boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
 
 }

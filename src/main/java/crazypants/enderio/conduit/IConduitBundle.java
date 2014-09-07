@@ -7,6 +7,7 @@ import java.util.Set;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -57,6 +58,8 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
   // events
 
   void onNeighborBlockChange(Block blockId);
+  
+  void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
 
   void onBlockRemoved();
 

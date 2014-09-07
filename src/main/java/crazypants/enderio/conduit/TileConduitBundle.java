@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -284,6 +285,17 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(needsUpdate) {
       dirty();
     }
+  }
+  
+  @Override
+  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+    boolean needsUpdate = false;
+    for (IConduit conduit : conduits) {
+      needsUpdate |= conduit.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+    }
+    if(needsUpdate) {
+      dirty();
+    }   
   }
 
   @Override
