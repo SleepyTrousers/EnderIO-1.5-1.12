@@ -163,7 +163,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
     
     String entityId = EntityList.getEntityString(entity);
-    System.out.println("ItemSoulVessel.itemInteractionForEntity: " + entityId);
+//    System.out.println("ItemSoulVessel.itemInteractionForEntity: " + entityId);
     if(isBlackListed(entityId)) {
       return false;
     }

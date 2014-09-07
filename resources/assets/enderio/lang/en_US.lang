@@ -114,6 +114,7 @@ enderio.machineChassi.name=Machine Chassis
 enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
+enderio.enderCrystal.name=Ender Crystal
 enderio.darkGrindingBall.name=Dark Steel Ball
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output

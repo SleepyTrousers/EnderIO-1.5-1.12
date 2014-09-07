@@ -267,6 +267,7 @@ public final class Config {
   public static int soulBinderLevelThreePowerPerTickRF = 2000;
   public static int soulBinderBrokenSpawnerRF = 2500000;
   public static int soulBinderReanimationRF = 100000;
+  public static int soulBinderEnderCystalRF = 100000;
 
   public static boolean powerConduitCanDifferentTiersConnect = true;
   public static int powerConduitTierOneRF = 640;
@@ -737,6 +738,8 @@ public final class Config {
         "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
     soulBinderReanimationRF = config.get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF,
         "The number of RF required to to re-animated a mob head.").getInt(soulBinderReanimationRF);
+    soulBinderEnderCystalRF = config.get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF,
+        "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
 
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);

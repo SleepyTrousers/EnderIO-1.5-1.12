@@ -24,6 +24,7 @@ public class ItemRecipes {
     ItemStack wrench = new ItemStack(EnderIO.itemYetaWench, 1, 0);
     GameRegistry.addShapedRecipe(wrench, "s s", " b ", " s ", 's', electricalSteel, 'b', basicGear);
     
+    //Magnet
     ItemStack magnet = new ItemStack(EnderIO.itemMagnet, 1, 0);    
     EnderIO.itemMagnet.setEnergy(magnet, 0);
     GameRegistry.addShapedRecipe(magnet, "scc", "  v", "scc", 's', electricalSteel, 'c', conductiveIron, 'v', vibCry);
@@ -46,6 +47,7 @@ public class ItemRecipes {
     ItemStack dsppSilent = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 1);
     GameRegistry.addShapedRecipe(dsppSilent, "   ", " p ", " w ", 'p', dspp, 'w', Blocks.wool);
     
+    //Soul Vessel
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemSoulVessel), " s ", "q q", " q ", 's', soularium, 'q', new ItemStack(EnderIO.blockFusedQuartz,1,0));
      
 
