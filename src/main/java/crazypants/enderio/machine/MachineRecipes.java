@@ -42,35 +42,43 @@ public class MachineRecipes {
     ItemStack enlightedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 2);
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
     ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
+    ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+    ItemStack frankenZombie = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
     GameRegistry.addShapedRecipe(stirlingGen, "bbb", "bfb", "gpg", 'b', Blocks.stonebrick, 'f', Blocks.furnace, 'p', Blocks.piston, 'g', basicGear);
 
     //Combustion Gen
-    ItemStack res = new ItemStack(EnderIO.blockReservoir, 1, 0);
+    ItemStack res = new ItemStack(EnderIO.blockTank, 1, 0);
     ItemStack comGen = new ItemStack(EnderIO.blockCombustionGenerator, 1, 0);
-    GameRegistry.addShapedRecipe(comGen, "eee", "rmr", "gcg", 'e', electricSteel, 'r', EnderIO.blockReservoir, 'm', machineChassi, 'g', basicGear,'c', capacitor);
+    GameRegistry.addShapedRecipe(comGen, "eee", "rmr", "gpg", 'e', electricSteel, 'r', res, 'm', machineChassi, 'g', basicGear,'p', Blocks.piston);
 
     //ZombieGen
     ItemStack zg = new ItemStack(EnderIO.blockZombieGenerator, 1, 0);
-    GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qqq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 0),'c', capacitor);
+    GameRegistry.addShapedRecipe(zg, "eee", "qzq", "qqq", 'e', electricSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 0));
     
     //KillerJoe
-    ItemStack kj = new ItemStack(EnderIO.blockKillerJoe, 1, 0);
-    GameRegistry.addShapedRecipe(kj, "sss", "qzq", "qqq", 's', darkSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal()));
+    ItemStack kj = new ItemStack(EnderIO.blockKillerJoe, 1, 0);    
+    GameRegistry.addShapedRecipe(kj, "sss", "qzq", "qqq", 's', darkSteel, 'q', fusedQuartz, 'z', frankenZombie);
     
+    //Wireless charger
     ItemStack wirelessCharger = new ItemStack(EnderIO.blockWirelessCharger);
     GameRegistry.addShapedRecipe(wirelessCharger, "svs", "imi", "scs", 's', electricSteel, 'i', silicon, 'm', machineChassi, 'c', capacitor3, 'v', vibCry);
-    
-    
+        
     //Crafter
     ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
-    GameRegistry.addShapedRecipe(crafter, "iti", "imi", "ici", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'c', capacitor);
+    GameRegistry.addShapedRecipe(crafter, "iti", "imi", "izi", 'i', Items.iron_ingot, 't', Blocks.crafting_table, 'm', machineChassi, 'z', zombieController);
     
     //Powered Spawner
     ItemStack poweredSpawner = new ItemStack(EnderIO.blockPoweredSpawner);
-    GameRegistry.addRecipe(new ShapedOreRecipe(poweredSpawner, "ese","eme","vcv",'e', electricSteel, 's', "itemSkull", 'v', vibCry,'m',machineChassi, 'c', capacitor));
+    ItemStack zombieBit;
+    if(Config.useHardRecipes) {
+      zombieBit = frankenZombie;
+    } else {      
+      zombieBit = zombieController;
+    }
+    GameRegistry.addRecipe(new ShapedOreRecipe(poweredSpawner, "ese","eme","vzv",'e', electricSteel, 's', "itemSkull", 'v', vibCry,'m',machineChassi, 'z', zombieBit));
     
     //reservoir    
     ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
@@ -92,20 +100,56 @@ public class MachineRecipes {
     //mill
     ItemStack crusher = new ItemStack(EnderIO.blockCrusher, 1, 0);
     if(Config.useHardRecipes) {
-      GameRegistry.addShapedRecipe(crusher, "ooo", "fpf", "cmc", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'c', capacitor, 'p',
+      GameRegistry.addShapedRecipe(crusher, "ooo", "fmf", "pip", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'p',
           Blocks.piston,
           'o', Blocks.obsidian);
     } else {
-      GameRegistry.addShapedRecipe(crusher, "fff", "imi", "ici", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'c', capacitor);
+      GameRegistry.addShapedRecipe(crusher, "fff", "imi", "ipi", 'f', Items.flint, 'm', machineChassi, 'i', Items.iron_ingot, 'p', Blocks.piston);
+    }
+    
+    //alloy smelter
+    ItemStack alloySmelter = new ItemStack(EnderIO.blockAlloySmelter, 1, 0);
+    if(Config.useHardRecipes) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bcb", "cmc", "bfb", 'c', Items.cauldron, 'm', machineChassi, 'b', Blocks.nether_brick, 'f',
+          Blocks.furnace));
+    } else {      
+        GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bcb", "cmc", "bfb", 'c', Items.cauldron, 'm', machineChassi, 'b', Blocks.brick_block, 'f',
+            Blocks.furnace));
+      
     }
 
-    //Still
+    //Vat
     ItemStack still = new ItemStack(EnderIO.blockVat, 1, 0);
-    GameRegistry.addShapedRecipe(still, "eve", "eme", "ece", 'v', Items.cauldron, 'm', machineChassi, 'e', electricSteel, 'c', capacitor);
+    GameRegistry.addShapedRecipe(still, "eve", "tmt", "efe", 'v', Items.cauldron, 'm', machineChassi, 'e', electricSteel, 'f', Blocks.furnace, 't', basicTank);
 
+    
+    //capacitor bank
+    ItemStack capacitorBank = new ItemStack(EnderIO.blockCapacitorBank, 1, 0);          
+    if(Config.useHardRecipes) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block, 'M',
+          machineChassi));
+    } else {
+      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block));
+    }
+    
+    //painter
+    ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
+    if(Config.useHardRecipes) {
+      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qqq", "mdm", "mMm", 'm', electricSteel, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond,
+          'd', Items.diamond));
+    } else {
+      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "mMm", "mmm", 'm', electricSteel, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond,
+          'd', Items.diamond));
+    }
+    
     //Farm
-    ItemStack farm = new ItemStack(EnderIO.blockFarmStation, 1, 0);
-    GameRegistry.addShapedRecipe(farm, "ehe", "eme", "pcp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricSteel, 'c', capacitor, 'p', pulCry);
+    ItemStack farm = new ItemStack(EnderIO.blockFarmStation, 1, 0);    
+    if(Config.useHardRecipes) {
+      zombieBit = frankenZombie;
+    } else {      
+      zombieBit = zombieController;
+    }
+    GameRegistry.addShapedRecipe(farm, "ehe", "eme", "pzp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricSteel, 'z', zombieController, 'p', pulCry);
 
     //transceiver
     ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
@@ -138,8 +182,8 @@ public class MachineRecipes {
     ItemStack redstoneConduit = new ItemStack(EnderIO.itemRedstoneConduit, 1, 2);
     ItemStack mJMonitor = new ItemStack(EnderIO.blockPowerMonitor, 1, 0);
     GameRegistry
-    .addShapedRecipe(mJMonitor, "bmb", "bMb", "bcb", 'b', Blocks.stonebrick, 'e', Items.ender_eye, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
-        'r', redstoneConduit, 'c', capacitor);
+    .addShapedRecipe(mJMonitor, "sms", "sMs", "sps", 's', electricSteel, 'M', machineChassi, 'm', mJReader, 'p', powerConduit,
+        'r', redstoneConduit);
     
     //Enchanter
     ItemStack enchanter = new ItemStack(EnderIO.blockEnchanter);
@@ -150,12 +194,17 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(vacuumChest, "iii", "ici","ipi", 'i', Items.iron_ingot, 'c', Blocks.chest, 'p', pulCry);
     
     //Soul Binder
-    ItemStack endermanSkull = new ItemStack(EnderIO.blockEndermanSkull);
+    ItemStack enderBit;
+    if(Config.soulBinderRequiresEndermanSkull) {
+      enderBit = new ItemStack(EnderIO.blockEndermanSkull);
+    } else {
+      enderBit = pulCry;
+    }
     ItemStack creeperSkull = new ItemStack(Items.skull, 1, 2);
     ItemStack zombieSkull = new ItemStack(Items.skull, 1, 4);
     ItemStack skeletonSkull = new ItemStack(Items.skull, 1, 0);
     ItemStack soulBinder = new ItemStack(EnderIO.blockSoulFuser);
-    GameRegistry.addShapedRecipe(soulBinder, "ses", "zmc","sks", 's', soularium, 'm', machineChassi, 'e', endermanSkull, 'z', zombieSkull, 'c', creeperSkull, 'k', skeletonSkull);
+    GameRegistry.addShapedRecipe(soulBinder, "ses", "zmc","sks", 's', soularium, 'm', machineChassi, 'e', enderBit, 'z', zombieSkull, 'c', creeperSkull, 'k', skeletonSkull);
     
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
@@ -163,53 +212,10 @@ public class MachineRecipes {
   }
 
   public static void addOreDictionaryRecipes() {
-    ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
-    ItemStack alloySmelter = new ItemStack(EnderIO.blockAlloySmelter, 1, 0);
+    ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);    
     ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
 
-    //alloy smelter
-    if(Config.useHardRecipes) {
-      GameRegistry.addShapedRecipe(alloySmelter, "nnn", "nfn", "CmC", 'o', Blocks.nether_brick, 'm', machineChassi, 'f', Blocks.furnace, 'C', capacitor, 'n',
-          Blocks.nether_brick);
-    } else {
-      ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
-      if(copperIngots != null && !copperIngots.isEmpty() && Config.useModMetals) {
-        GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "cmc", "cCc", 'c', "ingotCopper", 'm', machineChassi, 'b', Blocks.stonebrick, 'f',
-            Blocks.furnace, 'C', capacitor));
-      } else {
-        GameRegistry.addShapedRecipe(alloySmelter, "bfb", "imi", "iCi", 'i', Items.iron_ingot, 'm', machineChassi, 'b', Blocks.stonebrick, 'f',
-            Blocks.furnace, 'C', capacitor);
-      }
-    }
-
-    ArrayList<ItemStack> tinIngots = OreDictionary.getOres("ingotTin");
-    Object metal;
-    if(tinIngots != null && !tinIngots.isEmpty() && Config.useModMetals) {
-      metal = "ingotTin";
-    } else {
-      metal = Items.iron_ingot;
-    }
-
-    //painter
-    ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
-    if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qqq", "mdm", "CMC", 'm', metal, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond,
-          'C', capacitor, 'q', Items.quartz, 'd', Items.diamond));
-    } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(painter, "qdq", "mMm", "mCm", 'm', metal, 'M', machineChassi, 'q', Items.quartz, 'd', Items.diamond,
-          'C', capacitor, 'q', Items.quartz, 'd', Items.diamond));
-    }
-
-    //capacitor bank
-    ItemStack capacitorBank = new ItemStack(EnderIO.blockCapacitorBank, 1, 0);
-    ItemStack activatedCapacitor = new ItemStack(itemBasicCapacitor, 1, 1);
-    if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', metal, 'c', activatedCapacitor, 'r', Blocks.redstone_block, 'M',
-          machineChassi));
-    } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', metal, 'c', activatedCapacitor, 'r', Blocks.redstone_block));
-    }
 
     //powered light
     ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 0);
@@ -244,7 +250,7 @@ public class MachineRecipes {
     //Slice'N'Splice
     ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
     ItemStack sns = new ItemStack(EnderIO.blockSliceAndSplice);
-    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams","ici", 'i', soularium, 'm', machineChassi, 'k', "itemSkull", 'a', Items.iron_axe, 's', Items.shears, 'c', capacitor));
+    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams","iii", 'i', soularium, 'm', machineChassi, 'k', "itemSkull", 'a', Items.iron_axe, 's', Items.shears));
     
   }
 }

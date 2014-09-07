@@ -277,6 +277,8 @@ public final class Config {
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
 
+  public static boolean soulBinderRequiresEndermanSkull = true;
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -335,7 +337,8 @@ public final class Config {
 
     useHardRecipes = config.get(sectionRecipe.name, "useHardRecipes", useHardRecipes, "When enabled machines cost significantly more.")
         .getBoolean(useHardRecipes);
-
+    soulBinderRequiresEndermanSkull = config.getBoolean("soulBinderRequiresEndermanSkull", sectionRecipe.name, soulBinderRequiresEndermanSkull, 
+        "When true the Soul Binder requires an Enderman Skull to craft");
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
         "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
         .getBoolean(allowTileEntitiesAsPaintSource);

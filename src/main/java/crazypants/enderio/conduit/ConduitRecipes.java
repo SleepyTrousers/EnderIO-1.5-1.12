@@ -15,6 +15,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockFusedQuartz;
+import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
 
 public class ConduitRecipes {
@@ -35,6 +36,7 @@ public class ConduitRecipes {
     ItemStack phasedIronNugget = new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal());
     ItemStack redstoneAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal());
     ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
 
     //Recipes
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemConduitFacade, 1, 0), "bbb", "b b", "bbb", 'b', conduitBinder);
@@ -64,13 +66,13 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(basicFilter, " p ", "php", " p ", 'p', Items.paper, 'h', Blocks.hopper);
 
     ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
-    GameRegistry.addRecipe(new ShapedOreRecipe(advFilter, "rpr", "php", "rpr", 'p', Items.paper, 'h', "itemSkull", 'r', Items.redstone));
+    GameRegistry.addRecipe(new ShapedOreRecipe(advFilter, "rpr", "pzp", "rpr", 'p', Items.paper, 'z', zombieController, 'r', Items.redstone));
 
     ItemStack modFilter = new ItemStack(EnderIO.itemModItemFilter, 1, 0);
     GameRegistry.addShapedRecipe(modFilter, " p ", "pwp", " p ", 'p', Items.paper, 'w', EnderIO.itemYetaWench);
 
     ItemStack exFilt = new ItemStack(EnderIO.itemExistingItemFilter);
-    GameRegistry.addShapedRecipe(exFilt, "rpr", "pcp", "rpr", 'p', Items.paper, 'c', new ItemStack(Items.comparator, 1, 0), 'r', Items.redstone);
+    GameRegistry.addShapedRecipe(exFilt, " r ", "rfr", " c ", 'c', new ItemStack(Items.comparator, 1, 0), 'r', Items.redstone, 'f', advFilter);
 
     ClearFilterRecipe clearRec = new ClearFilterRecipe();
     MinecraftForge.EVENT_BUS.register(clearRec);

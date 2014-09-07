@@ -1,5 +1,7 @@
 package crazypants.enderio.material;
 
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
@@ -78,6 +80,8 @@ public class MaterialRecipes {
     ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
 
+    ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
+    
     //Conduit Binder
     ItemStack cbc = binderComposite.copy();
     cbc.stackSize = 8;
@@ -133,9 +137,9 @@ public class MaterialRecipes {
     ArrayList<ItemStack> steelIngots = OreDictionary.getOres("ingotSteel");
 
     if(Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty()) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', "ingotSteel"));
+      GameRegistry.addRecipe(new ShapedOreRecipe(machineChassi, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', "ingotSteel", 'c', capacitor));
     } else {
-      GameRegistry.addShapedRecipe(machineChassi, "fif", "i i", "fif", 'f', Blocks.iron_bars, 'i', Items.iron_ingot);
+      GameRegistry.addShapedRecipe(machineChassi, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', Items.iron_ingot, 'c', capacitor);
     }
 
     // Basic Gear
@@ -191,11 +195,11 @@ public class MaterialRecipes {
 
     int dustCoal = OreDictionary.getOreID("dustCoal");
     ItemStack activatedCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 1);
-    ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+    ItemStack energeticAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal());
     if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, "eee", "cCc", "eee", 'e', electricalSteel, 'c', capacitor, 'C', "dustCoal"));
+      GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, "eee", "cCc", "eee", 'e', energeticAlloy, 'c', capacitor, 'C', "dustCoal"));
     } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, " e ", "cCc", " e ", 'e', electricalSteel, 'c', capacitor, 'C', "dustCoal"));
+      GameRegistry.addRecipe(new ShapedOreRecipe(activatedCapacitor, " e ", "cCc", " e ", 'e', energeticAlloy, 'c', capacitor, 'C', "dustCoal"));
     }
   }
 }
