@@ -41,6 +41,7 @@ public class FarmingStationSpecialRenderer extends TileEntitySpecialRenderer{
     glTranslatef(0.5f, 0.5f, 0.1f);
     fnt.drawString(toRender, 0, 0, 0x555555); // manual shadow
     
+    glEnable(GL_LIGHTING);
     glPopMatrix();
     glPopMatrix();
   }
