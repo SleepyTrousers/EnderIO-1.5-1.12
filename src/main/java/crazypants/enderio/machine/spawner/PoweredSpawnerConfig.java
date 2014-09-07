@@ -21,68 +21,89 @@ import crazypants.util.IoUtil;
 public class PoweredSpawnerConfig {
 
   static final PoweredSpawnerConfig instance = new PoweredSpawnerConfig();
-  private static final String FILE_NAME = "PoweredSpawnerConfig.json";
+  private static final String CORE_FILE_NAME = "PoweredSpawnerConfig_Core.json";
+  private static final String USER_FILE_NAME = "PoweredSpawnerConfig_User.json";
 
   public static PoweredSpawnerConfig getInstance() {
     return instance;
   }
 
-  private final Map<String, Integer> costs = new HashMap<String, Integer>();
-  private final int defaultCost;
-  
-  private final List<String> blackList = new ArrayList<String>(); 
-  
-  public int getCostToSpawn(String entity) {
-    Integer val = costs.get(entity);
+  private final Map<String, Double> costs = new HashMap<String, Double>();
+
+  private final List<String> blackList = new ArrayList<String>();
+
+  public double getCostMultiplierFor(String entity) {
+    Double val = costs.get(entity);
     if(val == null) {
-      return defaultCost;
+      return 1;
     }
-    return val.intValue();
+    return val.doubleValue();
   }
-  
+
   public boolean isBlackListed(String entity) {
     if(entity == null) {
       return true;
     }
     return blackList.contains(entity);
   }
-  
+
   private PoweredSpawnerConfig() {
 
+    String configText;
+    JsonElement root;
+    JsonObject rootObj;
+    JsonObject costsObj;
+    JsonArray blkList;
     try {
-      String configText = IoUtil.copyConfigFromJar(FILE_NAME, false);
-
-      JsonParser p = new JsonParser();
-      JsonElement root = p.parse(configText);
-      JsonObject rootObj = root.getAsJsonObject();
-      
-      JsonObject costsObj = rootObj.getAsJsonObject("costs");
-      Set<Entry<String, JsonElement>> entries = costsObj.entrySet();
-      for (Entry<String, JsonElement> entry : entries) {
-        costs.put(entry.getKey(), Integer.valueOf(entry.getValue().getAsInt()));
+      //Core
+      configText = IoUtil.copyConfigFromJar(CORE_FILE_NAME, true);
+      root = new JsonParser().parse(configText);
+      rootObj = root.getAsJsonObject();
+      costsObj = rootObj.getAsJsonObject("costMultiplier");      
+      for (Entry<String, JsonElement> entry : costsObj.entrySet()) {
+        costs.put(entry.getKey(), Double.valueOf(entry.getValue().getAsDouble()));
       }
 
-      JsonArray blkList = rootObj.getAsJsonArray("blackList");
+      blkList = rootObj.getAsJsonArray("blackList");
       if(blkList != null) {
         for (int i = 0; i < blkList.size(); i++) {
           String s = blkList.get(i).getAsString();
           blackList.add(s);
         }
       } else {
-        Log.warn("No black list for powered spawner found in " + IoUtil.getConfigFile(FILE_NAME).getAbsolutePath());
+        Log.warn("No black list for powered spawner found in " + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
       }
 
     } catch (Exception e) {
-      Log.error("Could not load Powered Spawner costs from " + IoUtil.getConfigFile(FILE_NAME).getAbsolutePath());
+      Log.error("Could not load Powered Spawner costs from " + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
       e.printStackTrace();
     }
 
-    Integer def = costs.get("default");
-    if(def != null) {
-      defaultCost = def.intValue();
-    } else {
-      defaultCost = 100;
+    try {
+      //User
+      configText = IoUtil.copyConfigFromJar(USER_FILE_NAME, false);
+      root = new JsonParser().parse(configText);
+      rootObj = root.getAsJsonObject();
+      costsObj = rootObj.getAsJsonObject("costMultiplier");
+      for (Entry<String, JsonElement> entry : costsObj.entrySet()) {
+        costs.put(entry.getKey(), Double.valueOf(entry.getValue().getAsDouble()));
+      }
+
+      blkList = rootObj.getAsJsonArray("blackList");
+      if(blkList != null) {
+        blackList.clear();
+        Log.info("Replacing default Powered Spawner blacklist with user supplied values.");
+        for (int i = 0; i < blkList.size(); i++) {
+          String s = blkList.get(i).getAsString();
+          blackList.add(s);
+        }
+      }
+
+    } catch (Exception e) {
+      Log.error("Could not load user defined Powered Spawner costs from " + IoUtil.getConfigFile(USER_FILE_NAME).getAbsolutePath());
+      e.printStackTrace();
     }
+
   }
 
 }

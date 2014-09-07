@@ -49,8 +49,6 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   private static final String NULL_ENTITY_NAME = "None";
   
   private ICapacitor capacitor;
-  
-  private int costPerSpawnRF;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(0, 0));
@@ -114,12 +112,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public int getPowerUsePerTick() {
+    double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
     if(capacitorType.ordinal() == 0) {
-      return POWER_PER_TICK_ONE;
+      return (int)Math.round(POWER_PER_TICK_ONE * multuplier);
     } else if(capacitorType.ordinal() == 1) {
-      return POWER_PER_TICK_TWO;
+      return (int)Math.round(POWER_PER_TICK_TWO * multuplier);
     }
-    return POWER_PER_TICK_THREE;
+    return (int)Math.round(POWER_PER_TICK_THREE * multuplier);
   }
 
   @Override
@@ -153,7 +152,6 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       mobType = NULL_ENTITY_NAME;
     }
     logic.setEntityName(mobType);
-    costPerSpawnRF = PoweredSpawnerConfig.getInstance().getCostToSpawn(mobType);
   }
 
   @Override
@@ -207,15 +205,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
     return spaceClear;
   }
-  
-  private boolean useSpawnPower() {
-    if(getEnergyStored() < costPerSpawnRF) {
-      return false;
-    }
-    usePower(costPerSpawnRF);
-    return true;
-  }
-  
+    
   public String getEntityName() {
     return logic.getEntityNameToSpawn();
   }
@@ -331,7 +321,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
             EntityLiving entityliving = entity instanceof EntityLiving ? (EntityLiving) entity : null;
             entity.setLocationAndAngles(d2, d3, d4, getSpawnerWorld().rand.nextFloat() * 360.0F, 0.0F);
 
-            if(entityliving != null && canSpawnEntity(entityliving) && useSpawnPower()) {
+            if(entityliving != null && canSpawnEntity(entityliving)) {
               func_98265_a(entity);
               getSpawnerWorld().playAuxSFX(2004, getSpawnerX(), getSpawnerY(), getSpawnerZ(), 0);
 
