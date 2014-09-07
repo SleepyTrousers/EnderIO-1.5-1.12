@@ -28,7 +28,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class ItemTravelStaff extends ItemEnergyContainer implements IResourceTooltipProvider {
+public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {
 
   public static boolean isEquipped(EntityPlayer ep) {
     if(ep == null || ep.getCurrentEquippedItem() == null) {
@@ -76,126 +76,20 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IResourceToo
       if(ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
-      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {             
-        Vector3d eye = Util.getEyePositionEio(player);
-        Vector3d look = Util.getLookVecEio(player);
-
-
-        Vector3d sample = new Vector3d(look);
-        sample.scale(Config.travelStaffMaxBlinkDistance);
-        sample.add(eye);
-        Vec3 eye3 = Vec3.createVectorHelper(eye.x,eye.y,eye.z);
-        Vec3 end = Vec3.createVectorHelper(sample.x,sample.y,sample.z);
-
-        double playerHeight = player.yOffset;
-        //if you looking at you feet, and your player height to the max distance, or part there of
-        double lookComp = -look.y * playerHeight;
-        double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
-
-        MovingObjectPosition p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
-        if(p == null) {
-
-          //go as far as possible
-          for (double i = maxDistance; i > 1; i--) {
-
-            sample.set(look);
-            sample.scale(i);
-            sample.add(eye);
-            //we test against our feets location
-            sample.y -= playerHeight;
-
-            //if(doBlink(player, eye, look, sample, i)) {
-            if(doBlinkAround(player, sample)) {
-              return equipped;
-            }
-          }
-        } else {
-
-          eye3 = Vec3.createVectorHelper(eye.x,eye.y,eye.z);
-
-          Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
-          double sampleDistance = 1.5;
-          double teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
-          while(teleDistance < maxDistance) {
-            sample.set(look);
-            sample.scale(sampleDistance);
-            sample.add(targetBc);
-            //we test against our feets location
-            sample.y -= playerHeight;
-
-            if(doBlinkAround(player, sample)) {
-              return equipped;
-            }
-            teleDistance++;
-            sampleDistance++;
-          }
-          sampleDistance = -0.5;
-          teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
-          while(teleDistance > 1) {
-            sample.set(look);
-            sample.scale(sampleDistance);
-            sample.add(targetBc);
-            //we test against our feets location
-            sample.y -= playerHeight;
-
-            if(doBlinkAround(player, sample)) {
-              return equipped;
-            }
-            sampleDistance--;
-            teleDistance--;
-          }
+      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if(TravelController.instance.doBlink(equipped, player)) {
+          player.swingItem();
+          lastBlickTick = player.worldObj.getTotalWorldTime();
         }
       }
       return equipped;
     }
 
     if(world.isRemote) {
-      if(TravelController.instance.hasTarget()) {
-        BlockCoord target = TravelController.instance.selectedCoord;
-        TileEntity te = world.getTileEntity(target.x, target.y, target.z);
-        if(te instanceof ITravelAccessable) {
-          ITravelAccessable ta = (ITravelAccessable) te;
-          if(ta.getRequiresPassword(player)) {
-            PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
-            PacketHandler.INSTANCE.sendToServer(p);
-            return equipped;
-          }
-        }
-
-        if(TravelController.instance.isTargetEnderIO()) {
-          TravelController.instance.openEnderIO(equipped, world, player);
-        } else if(Config.travelAnchorEnabled) {
-          TravelController.instance.travelToSelectedTarget(player, TravelSource.STAFF);
-        }
-      }
-
+      TravelController.instance.activateTravelAccessable(equipped, world, player, TravelSource.STAFF);
     }
     player.swingItem();
     return equipped;
-  }
-
-  private boolean doBlinkAround(EntityPlayer player, Vector3d sample) {
-    if(doBlink(player, new BlockCoord((int)Math.round(sample.x),(int)Math.round(sample.y) - 1,(int)Math.round(sample.z)))) {
-      return true;
-    }
-    if(doBlink(player, new BlockCoord((int)Math.round(sample.x),(int)Math.round(sample.y),(int)Math.round(sample.z)))) {
-      return true;
-    }
-    if(doBlink(player, new BlockCoord((int)Math.round(sample.x),(int)Math.round(sample.y) + 1,(int)Math.round(sample.z)))) {
-      return true;
-    }
-    return false;
-  }
-
-  private boolean doBlink(EntityPlayer player, BlockCoord coord) {
-
-    if(TravelController.instance.travelToLocation(player, TravelSource.STAFF_BLINK, coord)) {
-      player.swingItem();
-      lastBlickTick = player.worldObj.getTotalWorldTime();
-      return true;
-    }
-
-    return false;
   }
 
   @Override
@@ -263,6 +157,11 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IResourceToo
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
+  }
+
+  @Override
+  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
+    return isEquipped(ep);
   }
 
 }

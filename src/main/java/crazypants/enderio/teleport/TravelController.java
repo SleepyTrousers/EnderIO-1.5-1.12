@@ -67,6 +67,117 @@ public class TravelController {
 
   private TravelController() {
   }
+  
+  public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
+    if(!hasTarget()) {
+      return false;
+    }
+    BlockCoord target = selectedCoord;
+    TileEntity te = world.getTileEntity(target.x, target.y, target.z);
+    if(te instanceof ITravelAccessable) {
+      ITravelAccessable ta = (ITravelAccessable) te;
+      if(ta.getRequiresPassword(player)) {
+        PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
+        PacketHandler.INSTANCE.sendToServer(p);
+        return true;
+      }
+    }
+    if(isTargetEnderIO()) {
+      openEnderIO(equipped, world, player);
+    } else if(Config.travelAnchorEnabled) {
+      travelToSelectedTarget(player, source);
+    }
+    return true;
+  }
+  
+  public boolean doBlink(ItemStack equipped, EntityPlayer player) {
+    Vector3d eye = Util.getEyePositionEio(player);
+    Vector3d look = Util.getLookVecEio(player);
+
+    Vector3d sample = new Vector3d(look);
+    sample.scale(Config.travelStaffMaxBlinkDistance);
+    sample.add(eye);
+    Vec3 eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
+    Vec3 end = Vec3.createVectorHelper(sample.x, sample.y, sample.z);
+
+    double playerHeight = player.yOffset;
+    //if you looking at you feet, and your player height to the max distance, or part there of
+    double lookComp = -look.y * playerHeight;
+    double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
+
+    MovingObjectPosition p = player.worldObj.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    if(p == null) {
+
+      //go as far as possible
+      for (double i = maxDistance; i > 1; i--) {
+
+        sample.set(look);
+        sample.scale(i);
+        sample.add(eye);
+        //we test against our feets location
+        sample.y -= playerHeight;
+
+        //if(doBlink(player, eye, look, sample, i)) {
+        if(doBlinkAround(player, sample)) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+
+      eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
+
+      Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
+      double sampleDistance = 1.5;
+      double teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
+      while (teleDistance < maxDistance) {
+        sample.set(look);
+        sample.scale(sampleDistance);
+        sample.add(targetBc);
+        //we test against our feets location
+        sample.y -= playerHeight;
+
+        if(doBlinkAround(player, sample)) {
+          return true;
+        }
+        teleDistance++;
+        sampleDistance++;
+      }
+      sampleDistance = -0.5;
+      teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
+      while (teleDistance > 1) {
+        sample.set(look);
+        sample.scale(sampleDistance);
+        sample.add(targetBc);
+        //we test against our feets location
+        sample.y -= playerHeight;
+
+        if(doBlinkAround(player, sample)) {
+          return true;
+        }
+        sampleDistance--;
+        teleDistance--;
+      }
+    }
+    return false;
+  }
+
+  private boolean doBlinkAround(EntityPlayer player, Vector3d sample) {
+    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y) - 1, (int) Math.round(sample.z)))) {
+      return true;
+    }
+    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y), (int) Math.round(sample.z)))) {
+      return true;
+    }
+    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y) + 1, (int) Math.round(sample.z)))) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean doBlink(EntityPlayer player, BlockCoord coord) {
+    return travelToLocation(player, TravelSource.STAFF_BLINK, coord);
+  }
 
   public boolean showTargets() {
     return showTargets && selectionEnabled;
@@ -132,7 +243,7 @@ public class TravelController {
       }
       onBlockCoord = getActiveTravelBlock(player);
       boolean onBlock = onBlockCoord != null;
-      showTargets = onBlock || ItemTravelStaff.isEquipped(player);
+      showTargets = onBlock || isTravelItemActive(player);
       if(showTargets) {
         updateSelectedTarget(player);
       } else {
@@ -177,8 +288,8 @@ public class TravelController {
     TileEnderIO eio = (TileEnderIO) te;
     if(eio.canBlockBeAccessed(player)) {
 
-      int requiredPower = ItemTravelStaff.isEquipped(player) ? TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target) : 0; 
-      if(requiredPower <= 0 || requiredPower <= EnderIO.itemTravelStaff.getEnergyStored(equipped)) {
+      int requiredPower = ItemTravelStaff.isEquipped(player) ? TravelController.instance.getRequiredPower(player, TravelSource.STAFF, target) : 0;
+      if(requiredPower <= 0 || requiredPower <= getEnergyInTravelItem(equipped)) {
         if(requiredPower > 0) {
           PacketDrainStaff p = new PacketDrainStaff(requiredPower);
           PacketHandler.INSTANCE.sendToServer(p);
@@ -189,6 +300,31 @@ public class TravelController {
     } else {
       player.addChatComponentMessage(new ChatComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
     }
+  }
+
+  public int getEnergyInTravelItem(ItemStack equipped) {
+    if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
+      return 0;
+    }
+    return ((IItemOfTravel)equipped.getItem()).getEnergyStored(equipped);     
+  }
+
+  public boolean isTravelItemActive(EntityPlayer ep) {
+    if(ep == null || ep.getCurrentEquippedItem() == null) {
+      return false;
+    }
+    ItemStack equipped = ep.getCurrentEquippedItem();
+    if(equipped.getItem() instanceof IItemOfTravel) {
+      return ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
+    }
+    return false;
+  }
+
+  public void usePowerFromTravelItem(ItemStack equipped, int powerUse) {
+    if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
+      return;
+    }
+    ((IItemOfTravel)equipped.getItem()).extractInternal(equipped, powerUse);    
   }
 
   public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
@@ -243,7 +379,7 @@ public class TravelController {
     int requiredPower;
     ItemStack staff = player.getCurrentEquippedItem();
     requiredPower = (int) (getDistance(player, coord) * source.powerCostPerBlockTraveledRF);
-    int canUsePower = EnderIO.itemTravelStaff.getEnergyStored(staff);
+    int canUsePower = getEnergyInTravelItem(staff);
     if(requiredPower > canUsePower) {
       player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
       return -1;
@@ -434,7 +570,7 @@ public class TravelController {
   }
 
   private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
-    if(ItemTravelStaff.isEquipped(player)) {
+    if(isTravelItemActive(player)) {
       return TravelSource.STAFF.maxDistanceTravelledSq;
     }
     return TravelSource.BLOCK.maxDistanceTravelledSq;
@@ -456,10 +592,6 @@ public class TravelController {
       }
     }
     return null;
-  }
-
-  public boolean isStaffEquipped(EntityPlayer player) {
-    return player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff;
   }
 
 }

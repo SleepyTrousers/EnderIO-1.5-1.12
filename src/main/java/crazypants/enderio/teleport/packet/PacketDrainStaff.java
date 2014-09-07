@@ -7,6 +7,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.teleport.ItemTravelStaff;
+import crazypants.enderio.teleport.TravelController;
 
 public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainStaff, IMessage> {
 
@@ -31,11 +32,8 @@ public class PacketDrainStaff implements IMessage, IMessageHandler<PacketDrainSt
 
   @Override
   public IMessage onMessage(PacketDrainStaff message, MessageContext ctx) {
-    EntityPlayer ep = ctx.getServerHandler().playerEntity;
-  
-    if(ItemTravelStaff.isEquipped(ep)) {
-      EnderIO.itemTravelStaff.extractInternal(ep.getCurrentEquippedItem(), message.powerUse);
-    }
+    EntityPlayer ep = ctx.getServerHandler().playerEntity;  
+    TravelController.instance.usePowerFromTravelItem(ep.getCurrentEquippedItem(), message.powerUse);    
     return null;
   }
 

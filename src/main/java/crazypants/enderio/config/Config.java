@@ -181,6 +181,8 @@ public final class Config {
   public static int darkSteelSoundLocatorCost = 10;
   public static int darkSteelSoundLocatorRange = 40;
   public static int darkSteelSoundLocatorLifespan = 40;
+  
+  public static int darkSteelTravelCost = 30;
 
   public static int hootchPowerPerCycle = 6;
   public static int hootchPowerTotalBurnTime = 6000;
@@ -279,6 +281,7 @@ public final class Config {
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
 
   public static boolean soulBinderRequiresEndermanSkull = true;
+
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -563,6 +566,9 @@ public final class Config {
         "Range of the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorRange);
     darkSteelSoundLocatorLifespan = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorLifespan", darkSteelSoundLocatorLifespan,
         "Number of ticks the 'Sound Locator' icons are displayed for.").getInt(darkSteelSoundLocatorLifespan);
+    
+    darkSteelTravelCost= config.get(sectionDarkSteel.name, "darkSteelTravelCost", darkSteelTravelCost,
+        "Number of levels required for the 'Travel' upgrade.").getInt(darkSteelTravelCost);
 
     darkSteelSwordSkullChance = (float) config.get(sectionDarkSteel.name, "darkSteelSwordSkullChance", darkSteelSwordSkullChance,
         "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(

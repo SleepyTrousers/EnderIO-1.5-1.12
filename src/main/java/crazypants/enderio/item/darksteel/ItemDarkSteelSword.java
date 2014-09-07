@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -28,11 +29,14 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.teleport.IItemOfTravel;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.TravelSource;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
+public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", 3, 1561, 7, 2, 25);
 
@@ -62,6 +66,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   }
 
   private int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
+  private long lastBlickTick = -1;
 
   public ItemDarkSteelSword() {
     super(MATERIAL);
@@ -289,5 +294,47 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   public ItemStack createItemStack() {
     return new ItemStack(this);
   }
+
+  @Override
+  public boolean isActive(EntityPlayer ep, ItemStack equipped) {
+    return isTravelUpgradeActive(ep, equipped);
+  }
+
+  @Override
+  public void extractInternal(ItemStack equipped, int power) {
+    extractEnergy(equipped, power, false);
+  }
+  
+  private boolean isTravelUpgradeActive(EntityPlayer ep, ItemStack equipped) {
+    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.loadFromItem(equipped) != null;
+  }
+
+  @Override
+  public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {   
+    if(isTravelUpgradeActive(player, stack)) {
+      if(world.isRemote) {
+        if(TravelController.instance.activateTravelAccessable(stack, world, player, TravelSource.STAFF)) {
+          player.swingItem();
+          return stack;
+        }
+      }
+      
+      long ticksSinceBlink = player.worldObj.getTotalWorldTime() - lastBlickTick;
+      if(ticksSinceBlink < 0) {
+        lastBlickTick = -1;
+      }
+      if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if(TravelController.instance.doBlink(stack, player)) {
+          player.swingItem();
+          lastBlickTick = player.worldObj.getTotalWorldTime();
+        }
+      }            
+      return stack;
+    }
+    
+    return super.onItemRightClick(stack, world, player);
+  }
+  
+  
 
 }

@@ -38,6 +38,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(SoundDetectorUpgrade.INSTANCE);
     upgrades.add(SwimUpgrade.INSTANCE);
     upgrades.add(NightVisionUpgrade.INSTANCE);
+    upgrades.add(TravelUpgrade.INSTANCE);
   }
 
   @SubscribeEvent
