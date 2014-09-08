@@ -91,5 +91,9 @@ public class ItemYetaWrench extends Item implements IToolWrench, IResourceToolti
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-
+  
+  @Override
+  public boolean isFull3D() {
+    return true;
+  }
 }
