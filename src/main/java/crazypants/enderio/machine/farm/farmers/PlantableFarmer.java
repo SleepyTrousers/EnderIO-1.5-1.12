@@ -72,12 +72,7 @@ public class PlantableFarmer implements IFarmerJoe {
     }
 
     if(type == EnumPlantType.Crop) {
-      if(!farm.tillBlock(bc)) {
-        if(!farm.hasHoe()) {
-          farm.setNotification("noHoe");
-        }
-        return false;
-      }
+      farm.tillBlock(bc);                
       return plantFromInventory(farm, bc, plantable);
     }
 
