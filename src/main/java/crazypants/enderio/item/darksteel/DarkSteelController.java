@@ -177,7 +177,7 @@ public class DarkSteelController {
   }
 
   private void updateSpeed(EntityPlayer player) {
-    if(player.worldObj.isRemote) {
+    if(player.worldObj.isRemote || !player.onGround) {
       return;
     }
 

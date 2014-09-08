@@ -46,9 +46,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private static int IO_MB_TICK = 250;
 
   protected AxisAlignedBB killBounds;
-  
+
   protected AxisAlignedBB hooverBounds;
-  
+
   protected FakePlayer attackera;
 
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
@@ -74,7 +74,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private int experienceTotal;
 
   public TileKillerJoe() {
-    super(new SlotDefinition(1, 0, 0));    
+    super(new SlotDefinition(1, 0, 0));
   }
 
   @Override
@@ -173,7 +173,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private int getXpBarCapacity(int level) {
-    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);
+    return getExperienceForLevel(level);
   }
 
   private int getXpBarCapacity() {
@@ -187,20 +187,53 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   public void givePlayerXp(EntityPlayer player) {
-    int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
-    player.addExperience(takeXp);
+    if(Config.killerJoeGivePlayerLevelXP) {
+      int currentXP = getPlayerXP(player);
+      int nextLevelXP = getExperienceForLevel(player.experienceLevel + 1) + 1;
+      int requiredXP = nextLevelXP - currentXP;
 
-    int newXp = experienceTotal - takeXp;
-    experience = 0;
-    experienceLevel = 0;
-    experienceTotal = 0;
-    addExperience(newXp);
+      requiredXP = Math.min(experienceTotal, requiredXP);
+
+      player.addExperience(requiredXP);
+
+      int newXp = experienceTotal - requiredXP;
+      experience = 0;
+      experienceLevel = 0;
+      experienceTotal = 0;
+      addExperience(newXp);
+    } else {
+      int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
+      player.addExperience(takeXp);
+
+      int newXp = experienceTotal - takeXp;
+      experience = 0;
+      experienceLevel = 0;
+      experienceTotal = 0;
+      addExperience(newXp);
+    }
+  }
+
+  private int getPlayerXP(EntityPlayer player) {
+    return (int) (getExperienceForLevel(player.experienceLevel) + (player.experience * player.xpBarCap()));
+  }
+
+  private int getExperienceForLevel(int level) {
+    if(level == 0) {
+      return 0;
+    }
+    if(level > 0 && level < 16) {
+      return level * 17;
+    } else if(level > 15 && level < 31) {
+      return (int) (1.5 * Math.pow(level, 2) - 29.5 * level + 360);
+    } else {
+      return (int) (3.5 * Math.pow(level, 2) - 151.5 * level + 2220);
+    }
   }
 
   private void hooverXP() {
 
     double maxDist = Config.killerJoeAttackLength * 2;
-    
+
     List<EntityXPOrb> xp = worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), this);
 
     for (EntityXPOrb entity : xp) {
@@ -213,9 +246,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       if(totalDistance < 1.5) {
         hooverXP(entity);
       } else {
-        double d = 1 - (Math.max(0.1, totalDistance) / maxDist);        
+        double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
         double speed = 0.0025 + (d * 0.02);
-        
+
         entity.motionX += xDist / totalDistance * speed;
         entity.motionZ += zDist / totalDistance * speed;
         entity.motionY += yDist / totalDistance * speed;
@@ -329,10 +362,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   FakePlayer getAttackera() {
     if(attackera == null) {
-      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null, BlockKillerJoe.USERNAME + ":" + getLocation()));
+      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null,
+          BlockKillerJoe.USERNAME + ":" + getLocation()));
       attackera.posX = xCoord + 0.5;
       attackera.posY = yCoord + 0.5;
-      attackera.posZ = zCoord + 0.5;      
+      attackera.posZ = zCoord + 0.5;
     }
     return attackera;
   }
@@ -365,7 +399,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
     return killBounds;
   }
-  
+
   private AxisAlignedBB getHooverBounds() {
     if(hooverBounds == null) {
       BoundingBox bb = new BoundingBox(getLocation());
