@@ -241,6 +241,10 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     return new FluidTankInfo[] { fuelTank.getInfo() };
   }
+  
+  public int getFluidStored(ForgeDirection from) {
+    return fuelTank.getFluidAmount();
+  }
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
