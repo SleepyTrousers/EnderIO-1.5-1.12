@@ -2,7 +2,8 @@
 Version 2.1.0_beta
 ------------------------------------------------------
 Changes
-- Removed MJ support
+- Removed MJ support from machines
+- Power conduits can output but longer recieve MJ 
 - Updated all config entries to use RF
 - Added Slice'N'Splice
 - Added Soul Binder

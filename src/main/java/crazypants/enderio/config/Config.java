@@ -276,6 +276,7 @@ public final class Config {
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
   public static int powerConduitTierThreeRF = 20480;
+  public static boolean powerConduitOutputMJ = true;
 
   public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
@@ -334,8 +335,10 @@ public final class Config {
         .getInt(powerConduitTierThreeRF);
     powerConduitCanDifferentTiersConnect = config
         .getBoolean("powerConduitCanDifferentTiersConnect", sectionPower.name, powerConduitCanDifferentTiersConnect,
-            "If set to false power conduits of different tiers cannot be connected. in this case a block such as a cap. bank is needed to bridge different tiered networks.");
-
+            "If set to false power conduits of different tiers cannot be connected. in this case a block such as a cap. bank is needed to bridge different tiered networks");
+    powerConduitOutputMJ = config.getBoolean("powerConduitOutputMJ", sectionPower.name, powerConduitOutputMJ, "When set to true power conduits will output MJ if RF is not supported");
+    
+    
     painterEnergyPerTaskRF = config.get(sectionPower.name, "painterEnergyPerTaskRF", painterEnergyPerTaskRF,
         "The total amount of RF required to paint one block")
         .getInt(painterEnergyPerTaskRF);
