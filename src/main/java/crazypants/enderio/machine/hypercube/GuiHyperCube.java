@@ -11,17 +11,16 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiScrollableList;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.ListSelectionListener;
@@ -79,7 +78,7 @@ public class GuiHyperCube extends GuiContainerBase {
   public GuiHyperCube(TileHyperCube te) {
     super(new ContainerHyperCube());
     this.cube = te;
-    
+
     xSize = 245;
     ySize = 145;
 
@@ -165,7 +164,7 @@ public class GuiHyperCube extends GuiContainerBase {
     publicChannelList.addSelectionListener(selectionListener);
     privateChannelList.addSelectionListener(selectionListener);
 
-  } 
+  }
 
   private void updateIoButtons() {
     IoMode mode = cube.getModeForChannel(SubChannel.POWER);
@@ -322,10 +321,16 @@ public class GuiHyperCube extends GuiContainerBase {
 
   @Override
   protected void keyTyped(char par1, int par2) {
-    super.keyTyped(par1, par2);
+    if(par2 == 1) {
+      for (IGuiOverlay overlay : overlays) {
+        if(overlay.isVisible()) {
+          overlay.setVisible(false);
+          return;
+        }
+      }
+    }
     newChannelTF.textboxKeyTyped(par1, par2);
     addButton.enabled = newChannelTF.getText().trim().length() > 0;
-    super.keyTyped(par1, par2);
   }
 
   @Override
@@ -439,7 +444,7 @@ public class GuiHyperCube extends GuiContainerBase {
   }
 
   @Override
-  public int getOverlayOffsetX() {  
+  public int getOverlayOffsetX() {
     return 0;
   }
 
