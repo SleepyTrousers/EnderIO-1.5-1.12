@@ -28,8 +28,8 @@ public class TileCrafter extends AbstractMachineEntity {
   
   public TileCrafter() {
     super(new SlotDefinition(9, 1));
-    containerItems = new ArrayList<ItemStack>();
-    setCapacitor(Capacitors.BASIC_CAPACITOR);
+    containerItems = new ArrayList<ItemStack>();    
+    setCapacitor(Capacitors.BASIC_CAPACITOR);    
   }
 
   @Override
@@ -39,9 +39,9 @@ public class TileCrafter extends AbstractMachineEntity {
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    super.setCapacitor(capacitorType);
-    ICapacitor refCap = super.getCapacitor();    
-    capacitor = new BasicCapacitor(refCap.getMaxEnergyReceived() * 2, refCap.getMaxEnergyStored(), refCap.getMaxEnergyExtracted());    
+    ICapacitor refCap = capacitorType.capacitor;    
+    capacitor = new BasicCapacitor(refCap.getMaxEnergyReceived() * 2, refCap.getMaxEnergyStored(), refCap.getMaxEnergyExtracted());
+    super.setCapacitor(capacitorType);       
   }
 
   @Override
