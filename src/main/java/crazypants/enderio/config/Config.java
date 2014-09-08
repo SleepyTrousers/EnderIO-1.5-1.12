@@ -252,6 +252,7 @@ public final class Config {
   public static double killerJoeAttackHeight = 2;
   public static double killerJoeAttackWidth = 2;
   public static double killerJoeAttackLength = 4;
+  public static boolean killerJoeGivePlayerLevelXP = true;
   
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -689,6 +690,7 @@ public final class Config {
         "The reach of attacks to each side of Joe.").getDouble(killerJoeAttackWidth);
     killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength,
         "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);
+    killerJoeGivePlayerLevelXP = config.get(sectionKiller.name, "killerJoeGivePlayerLevelXP", killerJoeGivePlayerLevelXP, "If true, will give the player one xp of HIS current level. If false, will give the player one level of the killer joe's xp.").getBoolean();
     
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled, 
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");

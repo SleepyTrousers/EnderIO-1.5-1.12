@@ -8,7 +8,6 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
 import net.minecraft.command.IEntitySelector;
@@ -23,6 +22,7 @@ import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -191,7 +191,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private int getXpBarCapacity(int level) {
-    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);
+    return getExperienceForLevel(level);
   }
 
   private int getXpBarCapacity() {
@@ -205,14 +205,47 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   public void givePlayerXp(EntityPlayer player) {
-    int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
-    player.addExperience(takeXp);
+    if(Config.killerJoeGivePlayerLevelXP) {
+      int currentXP = getPlayerXP(player);
+      int nextLevelXP = getExperienceForLevel(player.experienceLevel + 1) + 1;
+      int requiredXP = nextLevelXP - currentXP;
 
-    int newXp = experienceTotal - takeXp;
-    experience = 0;
-    experienceLevel = 0;
-    experienceTotal = 0;
-    addExperience(newXp);
+      requiredXP = Math.min(experienceTotal, requiredXP);
+
+      player.addExperience(requiredXP);
+
+      int newXp = experienceTotal - requiredXP;
+      experience = 0;
+      experienceLevel = 0;
+      experienceTotal = 0;
+      addExperience(newXp);
+    } else {
+      int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
+      player.addExperience(takeXp);
+
+      int newXp = experienceTotal - takeXp;
+      experience = 0;
+      experienceLevel = 0;
+      experienceTotal = 0;
+      addExperience(newXp);
+    }
+  }
+
+  private int getPlayerXP(EntityPlayer player) {
+    return (int) (getExperienceForLevel(player.experienceLevel) + (player.experience * player.xpBarCap()));
+  }
+
+  private int getExperienceForLevel(int level) {
+    if(level == 0) {
+      return 0;
+    }
+    if(level > 0 && level < 16) {
+      return level * 17;
+    } else if(level > 15 && level < 31) {
+      return (int) (1.5 * Math.pow(level, 2) - 29.5 * level + 360);
+    } else {
+      return (int) (3.5 * Math.pow(level, 2) - 151.5 * level + 2220);
+    }
   }
 
   private void hooverXP() {
