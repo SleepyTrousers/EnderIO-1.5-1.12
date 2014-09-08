@@ -21,7 +21,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
   private static final String AT_GM = "grindingMultiplier";
   private static final String AT_PM = "powerMultiplier";
   private static final String AT_CM = "chanceMultiplier";
-  private static final String AT_DMJ = "durationMJ";
+  private static final String AT_DMJ = "durationRF";
 
   List<GrindingBall> balls = new ArrayList<GrindingBall>();
   List<RecipeInput> excludes = new ArrayList<RecipeInput>();
@@ -32,7 +32,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
   private float gm;
   private float pm;
   private float cm;
-  private int dmj;
+  private int drf;
 
   @Override
   public boolean startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -43,7 +43,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
       gm = RecipeConfigParser.getFloatValue(AT_GM, attributes, 1);
       cm = RecipeConfigParser.getFloatValue(AT_CM, attributes, 1);
       pm = RecipeConfigParser.getFloatValue(AT_PM, attributes, 1);
-      dmj = RecipeConfigParser.getIntValue(AT_DMJ, attributes, 2400);
+      drf = RecipeConfigParser.getIntValue(AT_DMJ, attributes, 24000);
       processStack = true;
       return true;
     }
@@ -54,7 +54,7 @@ public class GrindingBallTagHandler implements CustomTagHandler {
     if(processStack && RecipeConfigParser.ELEMENT_ITEM_STACK.equals(localName)) {
       RecipeInput ri = RecipeConfigParser.getItemStack(attributes);
       if(ri != null) {
-        GrindingBall gb = new GrindingBall(ri, gm, cm, pm, dmj);
+        GrindingBall gb = new GrindingBall(ri, gm, cm, pm, drf);
         balls.add(gb);
       }
     }

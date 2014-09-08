@@ -1630,10 +1630,10 @@
   </recipeGroup>
 
   <grindingBalls>  
-    <grindingBall grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationMJ="2400">
+    <grindingBall grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000">
       <itemStack modID="minecraft" itemName="flint"/>
     </grindingBall>
-    <grindingBall grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationMJ="10000">
+    <grindingBall grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000">
       <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="7" />
     </grindingBall>
     
