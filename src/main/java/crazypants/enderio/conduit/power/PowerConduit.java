@@ -44,15 +44,22 @@ import crazypants.vecmath.Vector3d;
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
-
-  static final ICapacitor[] CAPACITORS = new BasicCapacitor[] {
-    new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
-    new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
-    new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF)
-  };
+  
+  private static ICapacitor[] capacitors;
 
   static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
 
+  static ICapacitor[] getCapacitors() {
+    if(capacitors == null) {
+      capacitors = new BasicCapacitor[] {
+        new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
+        new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
+        new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF)
+      };
+    }
+    return capacitors;
+  }
+  
   static ItemStack createItemStackForSubtype(int subtype) {
     ItemStack result = new ItemStack(EnderIO.itemPowerConduit, 1, subtype);
     return result;
@@ -157,7 +164,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public ICapacitor getCapacitor() {
-    return CAPACITORS[subtype];
+    return getCapacitors()[subtype];
   }
 
   @Override
@@ -514,7 +521,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getMaxEnergyStored() {
-    return CAPACITORS[subtype].getMaxEnergyStored();
+    return getCapacitors()[subtype].getMaxEnergyStored();
   }
 
 }

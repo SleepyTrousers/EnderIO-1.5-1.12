@@ -330,7 +330,7 @@ public final class Config {
         .getInt(powerConduitTierOneRF);
     powerConduitTierTwoRF = config.get(sectionPower.name, "powerConduitTierTwoRF", powerConduitTierTwoRF, "The maximum IO for the tier 2 power conduit")
         .getInt(powerConduitTierTwoRF);
-    powerConduitTierThreeRF = config.get(sectionPower.name, "powerConduitTierThreeRF", powerConduitTierTwoRF, "The maximum IO for the tier 3 power conduit")
+    powerConduitTierThreeRF = config.get(sectionPower.name, "powerConduitTierThreeRF", powerConduitTierThreeRF, "The maximum IO for the tier 3 power conduit")
         .getInt(powerConduitTierThreeRF);
     powerConduitCanDifferentTiersConnect = config
         .getBoolean("powerConduitCanDifferentTiersConnect", sectionPower.name, powerConduitCanDifferentTiersConnect,
@@ -409,9 +409,9 @@ public final class Config {
     transceiverUpkeepCostRF = config.get(sectionPower.name, "transceiverUpkeepCostRF", transceiverUpkeepCostRF,
         "Number of RF/t required to keep a Dimensional Transceiver connection open").getInt(transceiverUpkeepCostRF);
     transceiverMaxIoRF = config.get(sectionPower.name, "transceiverMaxIoRF", transceiverMaxIoRF,
-        "Maximum MJ/t sent and recieved by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIoRF);
+        "Maximum RF/t sent and recieved by a Dimensional Transceiver per tick. Input and output limits are not cumulative").getInt(transceiverMaxIoRF);
     transceiverBucketTransmissionCostRF = config.get(sectionEfficiency.name, "transceiverBucketTransmissionCostRF", transceiverBucketTransmissionCostRF,
-        "The cost in MJ of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
+        "The cost in RF of transporting a bucket of fluid via a Dimensional Transceiver.").getInt(transceiverBucketTransmissionCostRF);
 
     vatPowerUserPerTickRF = config.get(sectionPower.name, "vatPowerUserPerTickRF", vatPowerUserPerTickRF,
         "Power use (RF/t) used by the vat.").getInt(vatPowerUserPerTickRF);
@@ -421,7 +421,7 @@ public final class Config {
             sectionAdvanced.name,
             "perInterfacePowerTrackingEnabled",
             detailedPowerTrackingEnabled,
-            "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the MJ Reader but has a negative impact on server performance.")
+            "Enable per tick sampling on individual power inputs and outputs. This allows slightly more detailed messages from the RF Reader but has a negative impact on server performance.")
         .getBoolean(detailedPowerTrackingEnabled);
 
     useSneakMouseWheelYetaWrench = config.get(sectionPersonal.name, "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
@@ -462,7 +462,7 @@ public final class Config {
     travelStaffMaxDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaxDistance,
         "Maximum number of blocks that can be traveled using the Staff of the Traveling.").getInt(travelStaffMaxDistance);
     travelStaffPowerPerBlockRF = (float) config.get(sectionStaff.name, "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
-        "Number of MJ required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlockRF);
+        "Number of RF required per block travelled using the Staff of the Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
     travelStaffMaxBlinkDistance = config.get(sectionStaff.name, "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance,
         "Max number of blocks teleported when shift clicking the staff.").getInt(travelStaffMaxBlinkDistance);
@@ -651,7 +651,7 @@ public final class Config {
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
 
     addFuelTooltipsToAllFluidContainers = config.get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
-        "If true, the MJ/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
+        "If true, the RF/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(
         addFuelTooltipsToAllFluidContainers);
     addDurabilityTootip = config.get(sectionPersonal.name, "addDurabilityTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds durability tooltips to tools and armor").getBoolean(
