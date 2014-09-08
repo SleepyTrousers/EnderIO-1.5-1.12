@@ -49,7 +49,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super.keyTyped(par1, par2);
   }
 
-
   @Override
   public void addToolTip(GuiToolTip toolTip) {
     ttMan.addToolTip(toolTip);

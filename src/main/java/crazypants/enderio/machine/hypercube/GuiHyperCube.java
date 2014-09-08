@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiTextField;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -81,7 +82,7 @@ public class GuiHyperCube extends GuiContainerBase {
 
     xSize = 245;
     ySize = 145;
-    
+
     addToolTip(new GuiToolTip(new Rectangle(POWER_X, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
@@ -321,10 +322,16 @@ public class GuiHyperCube extends GuiContainerBase {
 
   @Override
   protected void keyTyped(char par1, int par2) {
-    super.keyTyped(par1, par2);
+    if(par2 == 1) {
+      for (IGuiOverlay overlay : overlays) {
+        if(overlay.isVisible()) {
+          overlay.setVisible(false);
+          return;
+        }
+      }
+    }
     newChannelTF.textboxKeyTyped(par1, par2);
     addButton.enabled = newChannelTF.getText().trim().length() > 0;
-    super.keyTyped(par1, par2);
   }
 
   @Override
@@ -338,8 +345,6 @@ public class GuiHyperCube extends GuiContainerBase {
     newChannelTF.updateCursorCounter();
   }
 
-  
-  
   @Override
   protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY) {
 
@@ -440,10 +445,8 @@ public class GuiHyperCube extends GuiContainerBase {
   }
 
   @Override
-  public int getOverlayOffsetX() {  
+  public int getOverlayOffsetX() {
     return 0;
   }
 
-  
-  
 }
