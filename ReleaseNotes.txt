@@ -16,6 +16,8 @@ Changes
 - Added config option for stirling gen output
 - Added config option for painter power use
 - FarmStation: crops other than trees now require a hoe to be harvested, and the hoe takes 1 damage point per harvest
+- Many changes to recipes
+- Farm now supports fertilized dirt
 
 Bugs
 - Farm 'error messages' flickering on and off
