@@ -329,6 +329,7 @@ public class GuiHyperCube extends GuiContainerBase {
           return;
         }
       }
+      this.mc.thePlayer.closeScreen();
     }
     newChannelTF.textboxKeyTyped(par1, par2);
     addButton.enabled = newChannelTF.getText().trim().length() > 0;
