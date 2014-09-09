@@ -126,4 +126,9 @@ public interface IConduit {
   
   boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
 
+  //For Copy/Paste of connection settings
+  boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt);
+
+  boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt);
+
 }

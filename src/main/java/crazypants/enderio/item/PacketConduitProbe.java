@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.monitor;
+package crazypants.enderio.item;
 
 import io.netty.buffer.ByteBuf;
 

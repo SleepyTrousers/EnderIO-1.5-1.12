@@ -68,17 +68,27 @@ public class KeyTracker {
     }
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
     ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
+    if(equipped == null) {
       return;
     }
-    
-    ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
-    if(curMode == null) {
-      curMode = ConduitDisplayMode.ALL;
+    if(equipped.getItem() == EnderIO.itemYetaWench) {
+      ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
+      if(curMode == null) {
+        curMode = ConduitDisplayMode.ALL;
+      }
+      ConduitDisplayMode newMode = curMode.next();
+      ConduitDisplayMode.setDisplayMode(equipped, newMode);
+      PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
+    } else if(equipped.getItem() == EnderIO.itemConduitProbe) {
+      
+      int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
+      equipped.setItemDamage(newMeta);
+      PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());   
+      player.swingItem();
+      
     }
-    ConduitDisplayMode newMode = curMode.next();
-    ConduitDisplayMode.setDisplayMode(equipped, newMode);
-    PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));    
+    
+        
   }
 
   private void handleSoundDetector() {

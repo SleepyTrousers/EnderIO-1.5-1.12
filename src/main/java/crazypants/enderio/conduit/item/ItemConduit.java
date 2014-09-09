@@ -28,8 +28,8 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
+import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.monitor.PacketConduitProbe;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
@@ -147,6 +147,28 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
   }
 
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);    
+    setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
+    setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
+    setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
+    setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
+    setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
+  }
+  
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
+    dataRoot.setShort("inputColor", (short)getInputColor(dir).ordinal());
+    dataRoot.setShort("outputColor", (short)getOutputColor(dir).ordinal());
+    dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
+    dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
+    dataRoot.setInteger("outputPriority", getOutputPriority(dir));    
+  }
+  
   protected void convertToItemUpgrades(int filterMeta, Map<ForgeDirection, ItemStack> converted, EnumMap<ForgeDirection, IItemFilter> sourceFilters) {
     for (Entry<ForgeDirection, IItemFilter> entry : sourceFilters.entrySet()) {
       if(entry.getValue() != null) {

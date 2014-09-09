@@ -32,6 +32,7 @@ import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -147,6 +148,16 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       }
     }
     return false;
+  }
+  
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+    setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);    
+  }
+  
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    dataRoot.setShort("signalColor", (short)getSignalColor(dir).ordinal());    
   }
 
   @Override

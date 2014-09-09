@@ -60,6 +60,55 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
+  public boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt) {
+    if(!getExternalConnections().contains(dir)) {
+      return false;
+    }
+    NBTTagCompound dataRoot = getNbtRootForType(nbt, true);     
+    dataRoot.setShort("connectionMode", (short)getConectionMode(dir).ordinal());
+    writeTypeSettingsToNbt(dir, dataRoot);    
+    return true;
+  }
+
+  @Override
+  public boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt) {
+    if(!getExternalConnections().contains(dir)) {
+      return false;
+    }
+    NBTTagCompound dataRoot = getNbtRootForType(nbt, false);
+    if(dataRoot == null) {
+      return false;
+    }    
+    if(dataRoot.hasKey("connectionMode")) {
+      ConnectionMode mode = ConnectionMode.values()[dataRoot.getShort("connectionMode")];
+      setConnectionMode(dir, mode);
+    }    
+    readTypeSettings(dir, dataRoot);
+    return true;
+  }
+  
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+  }
+  
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {    
+  }
+
+  protected NBTTagCompound getNbtRootForType(NBTTagCompound nbt, boolean createIfNull) {
+    Class<? extends IConduit> bt = getBaseConduitType();
+    String dataRootName = bt.getSimpleName();
+    NBTTagCompound dataRoot = null;
+    if(nbt.hasKey(dataRootName)) {
+      dataRoot = nbt.getCompoundTag(dataRootName);
+    }    
+    if(dataRoot == null && createIfNull) {
+      dataRoot = new NBTTagCompound();
+      nbt.setTag(dataRootName, dataRoot);
+    }
+    return dataRoot;
+  }
+
+
+  @Override
   public ConnectionMode getConectionMode(ForgeDirection dir) {
     ConnectionMode res = conectionModes.get(dir);
     if(res == null) {

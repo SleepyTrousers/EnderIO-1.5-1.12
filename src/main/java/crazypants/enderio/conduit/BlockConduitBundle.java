@@ -46,6 +46,7 @@ import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.BoundingBox;
@@ -440,62 +441,28 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
     }
 
     ItemStack stack = player.getCurrentEquippedItem();
-    if(stack != null && stack.getItem() == EnderIO.itemConduitFacade
-        && !bundle.hasFacade()) {
-      // Add facade
+    if(stack != null && stack.getItem() == EnderIO.itemConduitFacade && !bundle.hasFacade()) {
+      //add facade
+      return handleFacadeClick(world, x, y, z, player, bundle, stack);
+
+    } else if(ConduitUtil.isConduitEquipped(player)) { 
+     // Add conduit
       if(player.isSneaking()) {
         return false;
       }
-
-      if(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()) == null) {
-        return false;
-      }
-
-      bundle.setFacadeId(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()));
-      bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
-      if(!player.capabilities.isCreativeMode) {
-        stack.stackSize--;
-      }
-      world.markBlockForUpdate(x, y, z);
-      bundle.getEntity().markDirty();
-      return true;
-
-    } else if(ConduitUtil.isConduitEquipped(player)) {
-      // Add conduit
-      if(player.isSneaking()) {
-        return false;
-      }
-
-      IConduitItem equipped = (IConduitItem) stack.getItem();
-      if(!bundle.hasType(equipped.getBaseConduitType())) {
-        bundle.addConduit(equipped.createConduit(stack));
-        if(!player.capabilities.isCreativeMode) {
-          world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
-              (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
-          player.getCurrentEquippedItem().stackSize--;
-        }
+      if(handleConduitClick(world, x, y, z, player, bundle, stack)) {
         return true;
       }
 
     } else if(ConduitUtil.isProbeEquipped(player)) {
-      if(player.isSneaking()) {
-        return false;
+      //Handle copy / paste of settings
+      if(handleConduitProbeClick(world, x, y, z, player, bundle, stack)) {
+        return true;
       }
-    }
-
-    // Break conduit with tool
-    if(ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
-      if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {                        
-        IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(player, x, y, z)) {
-          if(!world.isRemote) {
-            removedByPlayer(world, player, x, y, z);
-            if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-              ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
-            }
-          }
-          return true;
-        }
+    } else if(ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
+       // Break conduit with tool
+      if(handleWrenchClick(world, x, y, z, player)) {
+        return true;
       }
     }
 
@@ -563,6 +530,67 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
     }
     return false;
 
+  }
+
+  private boolean handleWrenchClick(World world, int x, int y, int z, EntityPlayer player) {
+    if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {                        
+      IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
+      if(wrench.canWrench(player, x, y, z)) {
+        if(!world.isRemote) {
+          removedByPlayer(world, player, x, y, z);
+          if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
+            ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
+          }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean handleConduitProbeClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {   
+    if(stack.getItemDamage() != 1) {
+      return false; //not in copy paste mode
+    }    
+    RaytraceResult rr = doRayTrace(world, x, y, z, player);
+    if(rr.component == null) {
+      return false;
+    }        
+    return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
+  }
+
+  private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+    IConduitItem equipped = (IConduitItem) stack.getItem();
+    if(!bundle.hasType(equipped.getBaseConduitType())) {
+      bundle.addConduit(equipped.createConduit(stack));
+      if(!player.capabilities.isCreativeMode) {
+        world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, stepSound.getStepResourcePath(),
+            (stepSound.getVolume() + 1.0F) / 2.0F, stepSound.getPitch() * 0.8F);
+        player.getCurrentEquippedItem().stackSize--;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+    // Add facade
+    if(player.isSneaking()) {
+      return false;
+    }
+
+    if(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()) == null) {
+      return false;
+    }
+
+    bundle.setFacadeId(PainterUtil.getSourceBlock(player.getCurrentEquippedItem()));
+    bundle.setFacadeMetadata(PainterUtil.getSourceBlockMetadata(player.getCurrentEquippedItem()));
+    if(!player.capabilities.isCreativeMode) {
+      stack.stackSize--;
+    }
+    world.markBlockForUpdate(x, y, z);
+    bundle.getEntity().markDirty();
+    return true;
   }
 
   @Override

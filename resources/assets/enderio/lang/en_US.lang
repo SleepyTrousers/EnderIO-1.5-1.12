@@ -401,10 +401,13 @@ item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.tooltip.detailed.line4=hot bar to function
 
 item.enderio.itemConduitProbe.name=Conduit Probe
-item.enderio.itemConduitProbe.tooltip.detailed.line1=Right-Click on a conduit to display
-item.enderio.itemConduitProbe.tooltip.detailed.line2=details about its network
-item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift Right-Click on a conduit to
-item.enderio.itemConduitProbe.tooltip.detailed.line4=to access its connection settings
+item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit   
+item.enderio.itemConduitProbe.tooltip.detailed.line2=to display details about its network
+item.enderio.itemConduitProbe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
+item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles connection settings 
+item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
+item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
+
 
 item.itemSoulVessel.name=Soul Vial
 item.itemSoulVessel.tooltip.detailed.line1=Right-Click on a mob to
