@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -227,6 +228,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     return result;
   }
   
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+  
   public static final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate(Block ta) {
@@ -238,10 +244,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if(paintSource == null) {
         return new ResultStack[0];
+      } else if(paintSource.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform)) {
+        return new ResultStack[] { new ResultStack(new ItemStack(EnderIO.blockTravelPlatform)) };
+      } else {
+        return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
       }
-      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-   
   }
-
 }
