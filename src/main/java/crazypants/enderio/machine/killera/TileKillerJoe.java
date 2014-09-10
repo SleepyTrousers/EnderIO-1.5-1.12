@@ -7,6 +7,7 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -130,26 +131,27 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
       return false;
     }
-
-    float baseDamage = getBaseDamage();
-    if(baseDamage <= 0) {
+    
+    if(getStackInSlot(0) == null) {
       return false;
     }
 
     List<EntityLivingBase> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     if(!entsInBounds.isEmpty()) {
-      FakePlayer fakee = getAttackera();
-      fakee.swingItem();
-      DamageSource ds = DamageSource.causePlayerDamage(fakee);
+
       for (EntityLivingBase ent : entsInBounds) {
-        float enchDamage = getEnchantmentDamage(ent);
-        boolean res = ent.attackEntityFrom(ds, baseDamage + enchDamage);
-        if(res) {
-          damageWeapon(ent);
+        if(!ent.isDead) {
+          FakePlayer fakee = getAttackera();
+          fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
+          fakee.onUpdate();
+          fakee.attackTargetEntityWithCurrentItem(ent);
           useNutrient();
           swingWeapon();
-          return false;
+          if(getStackInSlot(0).stackSize <= 0) {
+            setInventorySlotContents(0, null);
+          }
         }
+        return false;
       }
     }
     return false;
@@ -193,7 +195,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       int requiredXP = nextLevelXP - currentXP;
 
       requiredXP = Math.min(experienceTotal, requiredXP);
-
       player.addExperience(requiredXP);
 
       int newXp = experienceTotal - requiredXP;
@@ -320,53 +321,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return 6;
   }
 
-  private float getEnchantmentDamage(EntityLivingBase ent) {
-    ItemStack weaponStack = getStackInSlot(0);
-    if(weaponStack == null) {
-      return 0;
-    }
-    return EnchantmentHelper.func_152377_a(weaponStack, ent.getCreatureAttribute());
-  }
-
-  private float getBaseDamage() {
-    ItemStack weaponStack = getStackInSlot(0);
-    if(weaponStack == null) {
-      return 0;
-    }
-    Multimap atMods = weaponStack.getAttributeModifiers();
-    Collection ad = atMods.get("generic.attackDamage");
-    if(ad.isEmpty()) {
-      return 0;
-    }
-
-    float res = 0;
-    for (Object obj : ad) {
-      if(obj instanceof AttributeModifier) {
-        AttributeModifier am = (AttributeModifier) obj;
-        res += am.getAmount();
-      }
-    }
-    return res;
-  }
-
-  private void damageWeapon(EntityLivingBase ent) {
-    ItemStack weaponStack = getStackInSlot(0);
-    if(weaponStack == null) {
-      return;
-    }
-    weaponStack.hitEntity(ent, getAttackera());
-    if(weaponStack.stackSize <= 0) {
-      setInventorySlotContents(0, null);
-    }
-  }
-
   FakePlayer getAttackera() {
-    if(attackera == null) {
-      attackera = new FakePlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId), new GameProfile(null,
-          BlockKillerJoe.USERNAME + ":" + getLocation()));
-      attackera.posX = xCoord + 0.5;
-      attackera.posY = yCoord + 0.5;
-      attackera.posZ = zCoord + 0.5;
+    if(attackera == null) {  
+      attackera = new Attackera();
     }
     return attackera;
   }
@@ -543,6 +500,36 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     nbtRoot.setInteger("experienceLevel", experienceLevel);
     nbtRoot.setInteger("experienceTotal", experienceTotal);
     nbtRoot.setFloat("experience", experience);
+
+  }
+
+  private class Attackera extends FakePlayer {
+
+    ItemStack prevWeapon;
+
+    public Attackera() {
+      super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), new GameProfile(null,
+          BlockKillerJoe.USERNAME + ":" + getLocation()));
+      posX = xCoord + 0.5;
+      posY = yCoord + 0.5;
+      posZ = zCoord + 0.5;
+    }
+
+    @Override
+    public void onUpdate() {
+      ItemStack prev = prevWeapon;
+      ItemStack cur = getCurrentEquippedItem();
+      if(!ItemStack.areItemStacksEqual(cur, prev)) {
+        if(prev != null) {
+          getAttributeMap().removeAttributeModifiers(prev.getAttributeModifiers());
+        }
+
+        if(cur != null) {
+          getAttributeMap().applyAttributeModifiers(cur.getAttributeModifiers());
+        }
+        prevWeapon = cur == null ? null : cur.copy();
+      }
+    }
 
   }
 
