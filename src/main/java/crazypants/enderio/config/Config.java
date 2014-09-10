@@ -63,9 +63,9 @@ public final class Config {
 
   public static boolean reinforcedObsidianEnabled = true;
 
-  public static boolean useAlternateBinderRecipe;
+  public static boolean useAlternateBinderRecipe = false;
 
-  public static boolean useAlternateTesseractModel;
+  public static boolean useAlternateTesseractModel = false;
 
   public static boolean photovoltaicCellEnabled = true;
 
@@ -109,7 +109,7 @@ public final class Config {
   public static boolean travelAnchorEnabled = true;
   public static int travelAnchorMaxDistance = 48;
 
-  public static int travelStaffMaxDistance = 96;
+  public static int travelStaffMaxDistance = 128;
   public static float travelStaffPowerPerBlockRF = 250;
 
   public static int travelStaffMaxBlinkDistance = 16;
@@ -215,6 +215,8 @@ public final class Config {
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
   public static boolean disableFarmNotification = false;
+  public static boolean farmEssenceBerriesEnabled = true;
+  
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -273,7 +275,7 @@ public final class Config {
   public static int soulBinderReanimationRF = 100000;
   public static int soulBinderEnderCystalRF = 100000;
 
-  public static boolean powerConduitCanDifferentTiersConnect = true;
+  public static boolean powerConduitCanDifferentTiersConnect = false;
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
   public static int powerConduitTierThreeRF = 20480;
@@ -680,6 +682,9 @@ public final class Config {
 
     disableFarmNotification = config.get(sectionFarm.name, "disableFarmNotifications", disableFarmNotification,
         "Disable the notification text above the farm block.").getBoolean();
+    
+    farmEssenceBerriesEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmEssenceBerriesEnabled,
+        "This setting controls wether essence berry bushes from TiC can be harvested by the farm.").getBoolean();
 
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
