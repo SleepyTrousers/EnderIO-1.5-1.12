@@ -53,6 +53,7 @@ public enum ModObject {
   blockEnchanter,
   blockSoulBinder,
   blockSliceAndSplice,
+  blockAttrator,
 
   blockPoweredSpawner,
   itemBrokenSpawner,

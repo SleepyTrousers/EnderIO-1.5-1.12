@@ -45,6 +45,7 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_KILLER_JOE = 92;
   public static final int GUI_ID_SOUL_BINDER = 93;
   public static final int GUI_ID_SLICE_N_SPLICE = 94;
+  public static final int GUI_ID_ATTRACTOR = 95;
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

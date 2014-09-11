@@ -22,6 +22,22 @@ Changes
 Bugs
 - Farm 'error messages' flickering on and off
 
+------------------------------------------------------
+Version 2.0.7
+------------------------------------------------------
+Changes
+- #815 #972 Added support for fertilized dirt to farm station
+- Ingot blocks now useable as beacon bases (tterrag)
+- Add config option for killer joe to give one level of the PLAYER'S xp, rather than 1 lvl of Joe's (tterrag)
+
+Bugs
+- #997 Cannot edit machine IO in custom Mystcraft ages
+- Staff of Travelling and Yeta Wrench now rendered correctly as tools (tterrag)
+- Fix Speed upgrade draining power while flying (tterrag)
+- Fix ds axe recipe (tterrag)
+- Fix zombie gen WAILA tooltip (tterrag)
+- Fix Dim. Trans. GUI closing when 'e' is typed (tterrag)
+- Fix infinite recursion when painting travel anchor as itself (tterrag)
 
 ------------------------------------------------------
 Version 2.0.6

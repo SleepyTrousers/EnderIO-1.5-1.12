@@ -66,6 +66,7 @@ import crazypants.enderio.machine.MachineRecipes;
 import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
+import crazypants.enderio.machine.attractor.BlockAttractor;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
@@ -201,7 +202,8 @@ public class EnderIO {
   public static BlockPoweredSpawner blockPoweredSpawner;
   public static ItemBrokenSpawner itemBrokenSpawner;
   public static BlockSliceAndSplice blockSliceAndSplice;
-  public static BlockSoulBinder blockSoulFuser; 
+  public static BlockSoulBinder blockSoulFuser;
+  public static BlockAttractor blockAttractor; 
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -296,6 +298,7 @@ public class EnderIO {
     blockSoulFuser = BlockSoulBinder.create();
     blockPoweredSpawner = BlockPoweredSpawner.create();
     blockKillerJoe = BlockKillerJoe.create();
+    blockAttractor = BlockAttractor.create();
     blockEnchanter = BlockEnchanter.create();
     
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
