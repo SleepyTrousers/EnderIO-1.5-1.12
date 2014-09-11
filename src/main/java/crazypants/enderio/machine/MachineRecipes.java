@@ -206,6 +206,12 @@ public class MachineRecipes {
     ItemStack soulBinder = new ItemStack(EnderIO.blockSoulFuser);
     GameRegistry.addShapedRecipe(soulBinder, "ses", "zmc","sks", 's', soularium, 'm', machineChassi, 'e', enderBit, 'z', zombieSkull, 'c', creeperSkull, 'k', skeletonSkull);
     
+    ItemStack attractor = new ItemStack(EnderIO.blockAttractor);
+    ItemStack attractorCrystal = new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal());
+    GameRegistry
+    .addShapedRecipe(attractor, " c ", "sss", "sms", 's', soularium, 'm', machineChassi, 'c', attractorCrystal);
+    
+    
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
     GameRegistry.addRecipe(inst);

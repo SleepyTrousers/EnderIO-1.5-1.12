@@ -115,10 +115,7 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
 
   @Override
   public List<String> getSupportedSouls() {
-    List<String> res = EntityUtil.getAllRegisteredMobNames(!Config.soulVesselCapturesBosses);
-    for(String str : res) {
-      System.out.println(" \"" + str + "\" : \"100\"");
-    }
+    List<String> res = EntityUtil.getAllRegisteredMobNames(!Config.soulVesselCapturesBosses);    
     return res;
   }
 

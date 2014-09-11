@@ -52,7 +52,7 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
 
     GL11.glPopMatrix();
 
-    EntityItem ei = new EntityItem(world, x, y, z, new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal()));
+    EntityItem ei = new EntityItem(world, x, y, z, new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()));
     ei.age = (int) world.getTotalWorldTime();
 
     //Remove the bob
@@ -96,11 +96,7 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
     xform2.isX = true;
     CubeRenderer.render(bb, icon, xform2);
 
-    Tessellator.instance.addTranslation(-x, -y, -z);
-
-    //    
-    //    CubeRenderer.render(block, 0, xform);
-    //    
+    Tessellator.instance.addTranslation(-x, -y, -z); 
 
     return true;
   }

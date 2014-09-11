@@ -25,7 +25,5 @@ public class SoulBinderEnderCystalRecipe extends AbstractSoulBinderRecipe {
   public ItemStack getOutputStack() {
     return new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal());
   }
-  
-  
 
 }

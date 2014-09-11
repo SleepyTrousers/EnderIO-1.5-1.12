@@ -275,6 +275,7 @@ public final class Config {
   public static int soulBinderBrokenSpawnerRF = 2500000;
   public static int soulBinderReanimationRF = 100000;
   public static int soulBinderEnderCystalRF = 100000;
+  public static int soulBinderAttractorCystalRF = 100000;
 
   public static boolean powerConduitCanDifferentTiersConnect = false;
   public static int powerConduitTierOneRF = 640;
@@ -293,7 +294,9 @@ public final class Config {
   public static int attractorRangeLevelTwo = 32;
   public static int attractorPowerPerTickLevelTwo = 80;
   public static int attractorRangeLevelThree = 64;
-  public static int attractorPowerPerTickLevelThree = 320;
+  public static int attractorPowerPerTickLevelThree = 160;
+
+  
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -770,6 +773,8 @@ public final class Config {
         "The number of RF required to to re-animated a mob head.").getInt(soulBinderReanimationRF);
     soulBinderEnderCystalRF = config.get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF,
         "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
+    soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
+        "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
 
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);

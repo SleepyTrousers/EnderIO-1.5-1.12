@@ -83,7 +83,7 @@ public class TileAttractor extends AbstractMachineEntity {
 
   @Override
   public String getMachineName() {
-    return ModObject.blockAttrator.unlocalisedName;
+    return ModObject.blockAttractor.unlocalisedName;
   }
 
   @Override
@@ -204,7 +204,7 @@ public class TileAttractor extends AbstractMachineEntity {
 
     public Target() {
       super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), new GameProfile(null,
-          ModObject.blockAttrator.unlocalisedName + ":" + getLocation()));
+          ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
       posX = xCoord + 0.5;
       posY = yCoord + 0.5;
       posZ = zCoord + 0.5;

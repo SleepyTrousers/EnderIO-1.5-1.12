@@ -115,6 +115,7 @@ enderio.basicGear.name=Basic Gear
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.enderCrystal.name=Ender Crystal
+enderio.attractorCrystal.name=Enticing Crystal
 enderio.darkGrindingBall.name=Dark Steel Ball
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
@@ -294,6 +295,7 @@ enderio.farm.note.outputFull=Output Full
 enderio.farm.note.noSeeds=No Seeds
 enderio.farm.note.noAxe=No Axe
 enderio.farm.note.noHoe=No Hoe
+enderio.farm.note.noPower=No Power
 
 tile.blockTank.name=Fluid Tank
 tile.blockTank.advanced.name=Pressurized Fluid Tank
@@ -328,6 +330,12 @@ item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
 tile.blockSoulBinder.name=Soul Binder
 tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
 tile.blockSoulBinder.tooltip.detailed.line2=a broken spawner
+
+tile.blockAttractor.name=Attractor
+tile.blockAttractor.tooltip.detailed.line1=Draws mobs towards it
+tile.blockAttractor.tooltip.detailed.line2=Specify the mobs to effect
+tile.blockAttractor.tooltip.detailed.line3=by placing their souls
+tile.blockAttractor.tooltip.detailed.line4=within the device
 
 
 enderio.machine.tooltip.configured=(Configured)

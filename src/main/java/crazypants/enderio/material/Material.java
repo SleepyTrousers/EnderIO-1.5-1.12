@@ -10,7 +10,8 @@ public enum Material {
   PULSATING_CYSTAL("pulsatingCrystal", true),
   VIBRANT_CYSTAL("vibrantCrystal", true),
   DRAK_GRINDING_BALL("darkGrindingBall"),
-  ENDER_CRYSTAL("enderCrystal", true);
+  ENDER_CRYSTAL("enderCrystal", true),
+  ATTRACTOR_CRYSTAL("attractorCrystal", true);
 
   public final String unlocalisedName;
   public final String iconKey;

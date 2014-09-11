@@ -24,7 +24,7 @@ public class BlockAttractor extends AbstractMachineBlock<TileAttractor> {
   }
   
   protected BlockAttractor() {
-    super(ModObject.blockAttrator, TileAttractor.class);
+    super(ModObject.blockAttractor, TileAttractor.class);
   }
 
   @Override
