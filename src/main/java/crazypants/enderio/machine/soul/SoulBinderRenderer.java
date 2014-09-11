@@ -19,7 +19,11 @@ import crazypants.enderio.material.Alloy;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
+import crazypants.render.VertexTransform;
 import crazypants.util.ForgeDirectionOffsets;
+import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vector3f;
+import crazypants.vecmath.Vertex;
 
 public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 
@@ -117,5 +121,6 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public int getRenderId() {
     return BlockSoulBinder.renderId;
-  }
+  }    
+
 }

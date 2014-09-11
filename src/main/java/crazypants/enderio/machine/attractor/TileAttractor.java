@@ -19,9 +19,12 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
@@ -36,33 +39,46 @@ public class TileAttractor extends AbstractMachineEntity {
   private final Set<EntityLiving> tracking = new HashSet<EntityLiving>();
   private int tickCounter = 0;
 
+  private ICapacitor capacitor;
+  
   public TileAttractor() {
     super(new SlotDefinition(12, 0));
-    updateRange();
+    setUpdrade(Capacitors.BASIC_CAPACITOR);
   }
 
-  private void updateRange() {
-    //  //TODO: Config
+  @Override
+  public void setCapacitor(Capacitors capacitorType) {
+    setUpdrade(capacitorType);
+    super.setCapacitor(capacitorType);        
+  }
+  
+  @Override
+  public ICapacitor getCapacitor() {
+    return capacitor;
+  }
+
+  private void setUpdrade(Capacitors capacitorType) {
     switch (capacitorType) {
     case ACTIVATED_CAPACITOR:
-      range = 32;
-      powerPerTick = 60;
+      range = Config.attractorRangeLevelTwo;
+      powerPerTick = Config.attractorPowerPerTickLevelTwo;
       break;
     case ENDER_CAPACITOR:
-      range = 64;
-      powerPerTick = 180;
+      range = Config.attractorRangeLevelThree;
+      powerPerTick = Config.attractorPowerPerTickLevelThree;
       break;
     case BASIC_CAPACITOR:
     default:
-      range = 16;
-      powerPerTick = 20;
+      range = Config.attractorRangeLevelOne;
+      powerPerTick = Config.attractorPowerPerTickLevelOne;
       break;
     }
     rangeSqu = range * range;
 
     BoundingBox bb = new BoundingBox(new BlockCoord(this));
     bb = bb.scale(range, range, range);
-    attractorBounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+    attractorBounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);    
+    capacitor = new BasicCapacitor(powerPerTick * 8, capacitorType.capacitor.getMaxEnergyStored(), powerPerTick);
   }
 
   @Override
@@ -135,13 +151,6 @@ public class TileAttractor extends AbstractMachineEntity {
     return powerPerTick;
   }
 
-  @Override
-  public void setCapacitor(Capacitors capacitorType) {
-    super.setCapacitor(capacitorType);
-    attractorBounds = null;
-    updateRange();
-  }
-
   FakePlayer getTarget() {
     if(target == null) {
       target = new Target();
@@ -156,14 +165,13 @@ public class TileAttractor extends AbstractMachineEntity {
   private boolean isMobInRange(EntityLiving mob) {
     return isMobInRange(mob, rangeSqu);
   }
-  
+
   private boolean isMobInRange(EntityLiving mob, int range) {
     if(mob == null) {
       return false;
     }
     return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= range;
   }
-  
 
   private boolean isMobInFilter(EntityLiving ent) {
     return isMobInFilter(EntityList.getEntityString(ent));
@@ -180,14 +188,14 @@ public class TileAttractor extends AbstractMachineEntity {
     }
     return false;
   }
-  
-  private void trackMob(EntityLiving ent) {               
-    if(ent instanceof EntityEnderman) {      
+
+  private void trackMob(EntityLiving ent) {
+    if(ent instanceof EntityEnderman) {
       ((EntityEnderman) ent).setTarget(getTarget());
     } else {
       tracking.add(ent);
       ent.tasks.addTask(0, new AttractTask(ent, getTarget(), new BlockCoord(this)));
-    }    
+    }
   }
 
   private class Target extends FakePlayer {
@@ -211,7 +219,7 @@ public class TileAttractor extends AbstractMachineEntity {
     private String entityId;
 
     private boolean keepGoing = true;
-    
+
     private AttractTask(EntityLiving mob, FakePlayer target, BlockCoord coord) {
       this.mob = mob;
       this.coord = coord;
@@ -230,11 +238,11 @@ public class TileAttractor extends AbstractMachineEntity {
       TileEntity te = mob.worldObj.getTileEntity(coord.x, coord.y, coord.z);
       if(te instanceof TileAttractor) {
         TileAttractor attractor = (TileAttractor) te;
-        res = attractor.canAttract(entityId, mob);    
-        if(attractor.isMobInRange(mob, 2)) {          
+        res = attractor.canAttract(entityId, mob);
+        if(attractor.isMobInRange(mob, 2)) {
           res = false;
         }
-      }            
+      }
       return res;
     }
 
@@ -247,7 +255,7 @@ public class TileAttractor extends AbstractMachineEntity {
     public void updateTask() {
       int speed = 1;
       mob.getNavigator().setAvoidsWater(false);
-      mob.getNavigator().tryMoveToEntityLiving(target, speed);      
+      mob.getNavigator().tryMoveToEntityLiving(target, speed);
     }
 
   }

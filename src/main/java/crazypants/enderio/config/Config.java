@@ -58,6 +58,7 @@ public final class Config {
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
   public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
+  public static final Section sectionAttarctor = new Section("Mob Attractor Settings", "attractor");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -286,6 +287,13 @@ public final class Config {
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
 
   public static boolean soulBinderRequiresEndermanSkull = true;
+
+  public static int attractorRangeLevelOne = 16;
+  public static int attractorPowerPerTickLevelOne = 20;
+  public static int attractorRangeLevelTwo = 32;
+  public static int attractorPowerPerTickLevelTwo = 80;
+  public static int attractorRangeLevelThree = 64;
+  public static int attractorPowerPerTickLevelThree = 320;
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -769,6 +777,19 @@ public final class Config {
         "The number of RF/t consumed by a Slice'N'Splice with a double layer capacitor upgrade.").getInt(sliceAndSpliceLevelTwoPowerPerTickRF);
     sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
         "The number of RF/t consumed by a Slice'N'Splice with an octadic capacitor upgrade.").getInt(sliceAndSpliceLevelThreePowerPerTickRF);
+    
+    attractorRangeLevelOne = config.get(sectionAttarctor.name, "attractorRangeLevelOne", attractorRangeLevelOne, 
+        "The range of the mob attractor with no upgrades").getInt(attractorRangeLevelOne);
+    attractorRangeLevelTwo = config.get(sectionAttarctor.name, "attractorRangeLevelTwo", attractorRangeLevelTwo, 
+        "The range of the mob attractor with a double layer capacitor upgrade").getInt(attractorRangeLevelTwo);
+    attractorRangeLevelThree = config.get(sectionAttarctor.name, "attractorRangeLevelThree", attractorRangeLevelThree, 
+        "The range of the mob attractor with an octadic capacitor upgrade").getInt(attractorRangeLevelThree);    
+    attractorPowerPerTickLevelOne = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelOne", attractorPowerPerTickLevelOne, 
+        "The RF/t  power use of a levele 1 mob attractor").getInt(attractorPowerPerTickLevelOne);
+    attractorPowerPerTickLevelTwo = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelTwo", attractorPowerPerTickLevelTwo, 
+        "The RF/t  power use of a levele 2 mob attractor").getInt(attractorPowerPerTickLevelTwo);
+    attractorPowerPerTickLevelThree = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelThree", attractorPowerPerTickLevelThree, 
+        "The RF/t  power use of a levele 3 mob attractor").getInt(attractorPowerPerTickLevelThree);
 
   }
 

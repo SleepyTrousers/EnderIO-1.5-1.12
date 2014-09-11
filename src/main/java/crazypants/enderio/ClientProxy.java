@@ -55,6 +55,9 @@ import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.item.skull.EndermanSkullRenderer;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
+import crazypants.enderio.machine.attractor.AttractorRenderer;
+import crazypants.enderio.machine.attractor.BlockAttractor;
+import crazypants.enderio.machine.attractor.TileAttractor;
 import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -203,6 +206,11 @@ public class ClientProxy extends CommonProxy {
     
     BlockSoulBinder.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
+    
+    BlockAttractor.renderId = RenderingRegistry.getNextAvailableRenderId();
+    AttractorRenderer attRen = new AttractorRenderer();
+    RenderingRegistry.registerBlockHandler(attRen);
+    ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
 
 
     if(Config.useCombustionGenModel) {

@@ -16,11 +16,15 @@ public final class CubeRenderer {
   }
 
   public static void render(Block block, int meta) {
+    render(block, meta, null);
+  }
+  
+  public static void render(Block block, int meta, VertexTransform xForm) {
     IIcon[] icons = new IIcon[6];
     for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       icons[dir.ordinal()] = block.getIcon(dir.ordinal(), meta);
     }
-    render(BoundingBox.UNIT_CUBE, icons, true);
+    render(BoundingBox.UNIT_CUBE, icons, xForm, true);
   }
   
   public static void render(BoundingBox bb, IIcon tex) {
@@ -206,7 +210,7 @@ public final class CubeRenderer {
     float maxV;
     IIcon tex;
 
-    Tessellator tessellator = Tessellator.instance;
+    Tessellator tessellator = Tessellator.instance;    
 
     tessellator.setNormal(0, 0, -1);
     if(brightnessPerSide != null) {
