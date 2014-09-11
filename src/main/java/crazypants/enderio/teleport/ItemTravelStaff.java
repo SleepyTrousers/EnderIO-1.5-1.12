@@ -163,5 +163,10 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   public boolean isActive(EntityPlayer ep, ItemStack equipped) {
     return isEquipped(ep);
   }
+  
+  @Override
+  public boolean isFull3D() {
+    return true;
+  }
 
 }
