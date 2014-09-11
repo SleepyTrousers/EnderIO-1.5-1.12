@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -80,7 +81,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     highlightOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorHighlight");
     selectedOverlayIcon = iIconRegister.registerIcon("enderio:blockTravelAnchorSelected");
   }
-  
+
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -103,7 +104,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     if(entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileTravelAnchor) {
-        TileTravelAnchor ta = (TileTravelAnchor) te; 
+        TileTravelAnchor ta = (TileTravelAnchor) te;
         ta.setPlacedBy((EntityPlayer) entity);
         Block b = PainterUtil.getSourceBlock(par6ItemStack);
         ta.setSourceBlock(b);
@@ -188,11 +189,11 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
-      } 
+      }
     }
     world.removeTileEntity(x, y, z);
   }
-  
+
   @Override
   public int quantityDropped(Random par1Random) {
     return 0; // need to do custom dropping to maintain source metadata
@@ -210,23 +211,28 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     }
     return super.colorMultiplier(world, x, y, z);
   }
-  
+
   @Override
-  public int getRenderType() {    
+  public int getRenderType() {
     return renderId;
   }
-  
+
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {    
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
   }
-  
+
   public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
     ItemStack result = new ItemStack(EnderIO.blockTravelPlatform, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }
-  
+
+  @Override
+  public boolean isOpaqueCube() {
+    return false;
+  }
+
   public static final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate(Block ta) {
@@ -238,10 +244,12 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if(paintSource == null) {
         return new ResultStack[0];
+      } else if(paintSource.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform)) {
+        return new ResultStack[] { new ResultStack(new ItemStack(EnderIO.blockTravelPlatform)) };
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-   
+
   }
 
 }
