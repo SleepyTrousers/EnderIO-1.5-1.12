@@ -129,7 +129,7 @@ public class IoConfigRenderer {
   }
 
   public void init() {
-    initTime = world.getTotalWorldTime();
+    initTime = System.currentTimeMillis();
   }
 
   public SelectedFace getSelection() {
@@ -158,7 +158,7 @@ public class IoConfigRenderer {
     distance -= Mouse.getEventDWheel() * 0.01;
     distance = VecmathUtil.clamp(distance, 0.01, 200);
 
-    long elapsed = world.getTotalWorldTime() - initTime;
+    long elapsed = System.currentTimeMillis() - initTime;
     int x = Mouse.getEventX();
     int y = Mouse.getEventY();
     Vector3d start = new Vector3d();
@@ -169,7 +169,7 @@ public class IoConfigRenderer {
       updateSelection(start, end);
     }
 
-    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
+    if(!Mouse.getEventButtonState() && camera.isValid() && elapsed > 500) {
       if(Mouse.getEventButton() == 1) {
         if(selection != null) {
           selection.config.toggleIoModeForFace(selection.face);
