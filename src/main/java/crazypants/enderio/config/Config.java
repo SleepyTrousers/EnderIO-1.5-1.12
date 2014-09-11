@@ -211,7 +211,7 @@ public final class Config {
   public static int farmDefaultSize = 3;
   public static boolean farmAxeDamageOnLeafBreak = false;
   public static float farmToolTakeDamageChance = 1;
-  public static boolean disableFarmNotification = false;
+  public static boolean disableFarmNotification = true;
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
