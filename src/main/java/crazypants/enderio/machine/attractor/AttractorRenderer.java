@@ -90,11 +90,11 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
     float width = 0.5f;
     bb = BoundingBox.UNIT_CUBE.scale(width, height, 1).translate(0, -0.5f + height / 2, 0);
     xform2.isX = false;
-    CubeRenderer.render(bb, icon, xform2);
+    CubeRenderer.render(bb, icon, xform2, true);
 
     bb = BoundingBox.UNIT_CUBE.scale(1, height, width).translate(0, -0.5f + height / 2, 0);
     xform2.isX = true;
-    CubeRenderer.render(bb, icon, xform2);
+    CubeRenderer.render(bb, icon, xform2, true);
 
     Tessellator.instance.addTranslation(-x, -y, -z); 
 

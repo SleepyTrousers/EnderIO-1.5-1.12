@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLeashKnot;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
@@ -36,11 +37,12 @@ public class TileAttractor extends AbstractMachineEntity {
   private int rangeSqu;
   private int range;
   private int powerPerTick;
-  private final Set<EntityLiving> tracking = new HashSet<EntityLiving>();
+  private Set<EntityLiving> tracking = new HashSet<EntityLiving>();
   private int tickCounter = 0;
+  private int maxMobsAttracted = 10;
 
   private ICapacitor capacitor;
-  
+
   public TileAttractor() {
     super(new SlotDefinition(12, 0));
     setUpdrade(Capacitors.BASIC_CAPACITOR);
@@ -49,9 +51,9 @@ public class TileAttractor extends AbstractMachineEntity {
   @Override
   public void setCapacitor(Capacitors capacitorType) {
     setUpdrade(capacitorType);
-    super.setCapacitor(capacitorType);        
+    super.setCapacitor(capacitorType);
   }
-  
+
   @Override
   public ICapacitor getCapacitor() {
     return capacitor;
@@ -77,7 +79,7 @@ public class TileAttractor extends AbstractMachineEntity {
 
     BoundingBox bb = new BoundingBox(new BlockCoord(this));
     bb = bb.scale(range, range, range);
-    attractorBounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);    
+    attractorBounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
     capacitor = new BasicCapacitor(powerPerTick * 8, capacitorType.capacitor.getMaxEnergyStored(), powerPerTick);
   }
 
@@ -125,14 +127,25 @@ public class TileAttractor extends AbstractMachineEntity {
     }
     tickCounter = 0;
 
+    Set<EntityLiving> trackingThisTick = new HashSet<EntityLiving>();
+    
     List<EntityLiving> entsInBounds = worldObj.getEntitiesWithinAABB(EntityLiving.class, attractorBounds);
-    if(!entsInBounds.isEmpty()) {
-      for (EntityLiving ent : entsInBounds) {
-        if(!ent.isDead && !tracking.contains(ent) && isMobInFilter(ent)) {
-          trackMob(ent);
+
+    int candidates = 0;
+    for (EntityLiving ent : entsInBounds) {
+      if(!ent.isDead && isMobInFilter(ent)) {
+        candidates++;
+        if(tracking.contains(ent)) {
+          trackingThisTick.add(ent);
+        } else if(tracking.size() < maxMobsAttracted && trackMob(ent)) {          
+          trackingThisTick.add(ent);          
         }
       }
-    }
+    }    
+    tracking.clear();
+    tracking = trackingThisTick;
+//    System.out.println("TileAttractor.processTasks: " + tracking.size() + " of " + candidates + " " + new BlockCoord(this));
+
     return false;
   }
 
@@ -189,12 +202,35 @@ public class TileAttractor extends AbstractMachineEntity {
     return false;
   }
 
-  private void trackMob(EntityLiving ent) {
+  private boolean trackMob(EntityLiving ent) {
     if(ent instanceof EntityEnderman) {
       ((EntityEnderman) ent).setTarget(getTarget());
-    } else {
+      return true;
+    } else {      
       tracking.add(ent);
+      List<EntityAITaskEntry> entries = ent.tasks.taskEntries;
+      boolean hasTask = false;
+      EntityAIBase remove = null;
+      boolean isTracked;
+      for(EntityAITaskEntry entry : entries) {
+        if(entry.action instanceof AttractTask) {
+          AttractTask at = (AttractTask)entry.action;          
+          if(at.coord.equals(new BlockCoord(this)) || !at.continueExecuting()) {
+            //System.out.println("TileAttractor.trackMob: Removing stale tracking task");
+            remove = entry.action;
+          } else {
+//            System.out.println("TileAttractor.trackMob: Already tracked");
+            return false;
+          }
+        }        
+      }
+      if(remove != null) {
+        ent.tasks.removeTask(remove);
+//        System.out.println("TileAttractor.trackMob: Removed task so we dont have 2");
+      }
+      
       ent.tasks.addTask(0, new AttractTask(ent, getTarget(), new BlockCoord(this)));
+      return true;
     }
   }
 
@@ -217,8 +253,9 @@ public class TileAttractor extends AbstractMachineEntity {
     private BlockCoord coord;
     private FakePlayer target;
     private String entityId;
+    private int updatesSincePathing;
 
-    private boolean keepGoing = true;
+    private boolean started = false;
 
     private AttractTask(EntityLiving mob, FakePlayer target, BlockCoord coord) {
       this.mob = mob;
@@ -233,15 +270,21 @@ public class TileAttractor extends AbstractMachineEntity {
     }
 
     @Override
+    public void resetTask() {
+      started = false;
+      updatesSincePathing = 0;
+    }
+
+    @Override
     public boolean continueExecuting() {
       boolean res = false;
       TileEntity te = mob.worldObj.getTileEntity(coord.x, coord.y, coord.z);
       if(te instanceof TileAttractor) {
         TileAttractor attractor = (TileAttractor) te;
         res = attractor.canAttract(entityId, mob);
-        if(attractor.isMobInRange(mob, 2)) {
-          res = false;
-        }
+//        if(attractor.isMobInRange(mob, 2)) {
+//          res = false;
+//        }
       }
       return res;
     }
@@ -253,9 +296,15 @@ public class TileAttractor extends AbstractMachineEntity {
 
     @Override
     public void updateTask() {
-      int speed = 1;
-      mob.getNavigator().setAvoidsWater(false);
-      mob.getNavigator().tryMoveToEntityLiving(target, speed);
+      if(!started || updatesSincePathing > 20) {
+        started = true;
+        int speed = 1;
+        mob.getNavigator().setAvoidsWater(false);
+        mob.getNavigator().tryMoveToEntityLiving(target, speed);
+        updatesSincePathing = 0;
+      } else {
+        updatesSincePathing++;
+      }
     }
 
   }
