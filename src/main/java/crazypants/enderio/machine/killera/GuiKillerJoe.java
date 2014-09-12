@@ -28,10 +28,12 @@ import crazypants.util.Lang;
 public class GuiKillerJoe extends GuiMachineBase {
 
   private static final int XP_ID = 3489;
+  private static final int XP10_ID = 34892;
 
   private TileKillerJoe joe;
   
   private IconButtonEIO xpB;
+  private IconButtonEIO xp10B;
 
   public GuiKillerJoe(InventoryPlayer inventory, TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
@@ -52,19 +54,25 @@ public class GuiKillerJoe extends GuiMachineBase {
     xpB = new IconButtonEIO(this, XP_ID, 128, 56, IconEIO.XP);    
     xpB.setToolTip(Lang.localize("killerJoe.giveXp.tooltip"));
     
+    xp10B = new IconButtonEIO(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);    
+    xp10B.setToolTip(Lang.localize("killerJoe.giveXp10.tooltip"));
+    
   }
   
   @Override
   public void initGui() {
     super.initGui();    
     xpB.onGuiInit();
+    xp10B.onGuiInit();
   }
   
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == XP_ID) {
-      PacketHandler.INSTANCE.sendToServer(new PacketUseXP(joe));
+      PacketHandler.INSTANCE.sendToServer(new PacketUseXP(joe, 1));
+    } else if(b.id == XP10_ID) {
+      PacketHandler.INSTANCE.sendToServer(new PacketUseXP(joe, 10));
     }
   }
   

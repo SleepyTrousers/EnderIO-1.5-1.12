@@ -175,7 +175,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   private int getXpBarCapacity(int level) {
-    return getExperienceForLevel(level);
+    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);
   }
 
   private int getXpBarCapacity() {
@@ -187,6 +187,12 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return result;
 
   }
+  
+  public void givePlayerXp(EntityPlayer player, int levels) {
+    for(int i=0;i<levels && experienceTotal > 0; i++) {
+      givePlayerXp(player);
+    }    
+  }
 
   public void givePlayerXp(EntityPlayer player) {
     if(Config.killerJoeGivePlayerLevelXP) {
@@ -194,7 +200,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       int nextLevelXP = getExperienceForLevel(player.experienceLevel + 1) + 1;
       int requiredXP = nextLevelXP - currentXP;
 
-      requiredXP = Math.min(experienceTotal, requiredXP);
+      requiredXP = Math.min(experienceTotal, requiredXP);      
       player.addExperience(requiredXP);
 
       int newXp = experienceTotal - requiredXP;

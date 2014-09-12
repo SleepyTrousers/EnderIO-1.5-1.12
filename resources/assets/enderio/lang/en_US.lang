@@ -279,7 +279,8 @@ tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and 
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
 enderio.killerJoe.fuelTank=Nutrient Tank
-enderio.killerJoe.giveXp.tooltip=Use XP
+enderio.killerJoe.giveXp.tooltip=Take XP
+enderio.killerJoe.giveXp10.tooltip=Take 10 Levels of XP
 
 tile.blockSliceAndSplice.name=Slice'N'Splice
 tile.blockSliceAndSplice.tooltip.detailed.line1=Slices heads and splices in

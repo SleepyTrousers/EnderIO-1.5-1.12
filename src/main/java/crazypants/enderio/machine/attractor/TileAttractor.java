@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -198,17 +199,17 @@ public class TileAttractor extends AbstractMachineEntity {
     for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
       if(inventory[i] != null) {
         String mob = EnderIO.itemSoulVessel.getMobTypeFromStack(inventory[i]);
-        if(mob != null && mob.equals(entityId)) {
+        if(mob != null && mob.equals(entityId)) {          
           return true;
         }
       }
-    }
+    }    
     return false;
   }
 
   private boolean trackMob(EntityLiving ent) {
-    if(ent instanceof EntityEnderman) {
-      ((EntityEnderman) ent).setTarget(getTarget());
+    if(ent instanceof EntityEnderman) {      
+      ((EntityMob) ent).setTarget(getTarget());
       return true;
     } else {      
       tracking.add(ent);
@@ -286,9 +287,6 @@ public class TileAttractor extends AbstractMachineEntity {
       if(te instanceof TileAttractor) {
         TileAttractor attractor = (TileAttractor) te;
         res = attractor.canAttract(entityId, mob);
-//        if(attractor.isMobInRange(mob, 2)) {
-//          res = false;
-//        }
       }
       return res;
     }
