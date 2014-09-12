@@ -1,8 +1,10 @@
 package crazypants.enderio.item.skull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
@@ -12,6 +14,7 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -30,6 +33,23 @@ public class BlockEndermanSkull extends BlockEio {
 
   public static int renderId = -1;
 
+  public enum SkullType {
+    
+    BASE("base",false),
+    REANIMATED("reanimated",true),
+    TORMENTED("tormented",false),
+    REANIMATED_TORMENTED("reanimatedTormented",true);
+    
+    final String name;
+    final boolean showEyes;
+    
+    
+    SkullType(String name, boolean showEyes) {
+      this.name = name;
+      this.showEyes = showEyes;
+    }
+  }
+  
   public static BlockEndermanSkull create() {
     BlockEndermanSkull res = new BlockEndermanSkull();
     res.init();
@@ -45,6 +65,16 @@ public class BlockEndermanSkull extends BlockEio {
     super(ModObject.blockEndermanSkull.unlocalisedName, TileEndermanSkull.class, Material.circuits);
     setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
   }
+  
+  
+
+  @Override
+  protected void init() {
+    GameRegistry.registerBlock(this, ItemEndermanSkull.class, name);    
+    GameRegistry.registerTileEntity(teClass, name + "TileEntity");    
+  }
+
+
 
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
@@ -59,7 +89,8 @@ public class BlockEndermanSkull extends BlockEio {
   public IIcon getIcon(int side, int meta) {
     ForgeDirection orint = ForgeDirection.getOrientation(side);
     if(orint == ForgeDirection.NORTH) {
-      return meta == 0 ? frontIcon : frontIconEyes;
+      meta = MathHelper.clamp_int(meta, 0, SkullType.values().length - 1);
+      return SkullType.values()[meta].showEyes ? frontIconEyes : frontIcon;
     }
     if(orint == ForgeDirection.UP || orint == ForgeDirection.DOWN || orint == ForgeDirection.SOUTH) {
       return topIcon;
@@ -94,7 +125,9 @@ public class BlockEndermanSkull extends BlockEio {
     if(world.isRemote) {
       return;
     }
+    world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 2);
     world.markBlockForUpdate(x, y, z);
   }
+
    
 }

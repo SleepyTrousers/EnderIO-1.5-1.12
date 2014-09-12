@@ -296,9 +296,9 @@ public final class Config {
   public static int attractorRangeLevelThree = 64;
   public static int attractorPowerPerTickLevelThree = 80;
    
-  public static int spawnGuardRangeLevelOne = 32;
+  public static int spawnGuardRangeLevelOne = 48;
   public static int spawnGuardPowerPerTickLevelOne = 80;
-  public static int spawnGuardRangeLevelTwo = 64;
+  public static int spawnGuardRangeLevelTwo = 76;
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;

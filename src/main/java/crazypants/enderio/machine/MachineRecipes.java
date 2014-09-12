@@ -13,6 +13,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
@@ -206,11 +207,17 @@ public class MachineRecipes {
     ItemStack soulBinder = new ItemStack(EnderIO.blockSoulFuser);
     GameRegistry.addShapedRecipe(soulBinder, "ses", "zmc","sks", 's', soularium, 'm', machineChassi, 'e', enderBit, 'z', zombieSkull, 'c', creeperSkull, 'k', skeletonSkull);
     
+    //Attractor
     ItemStack attractor = new ItemStack(EnderIO.blockAttractor);
     ItemStack attractorCrystal = new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal());
     GameRegistry
-    .addShapedRecipe(attractor, " c ", "sss", "sms", 's', soularium, 'm', machineChassi, 'c', attractorCrystal);
+    .addShapedRecipe(attractor, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', attractorCrystal, 'e', energeticAlloy);
     
+    //Aversion
+    ItemStack aversion = new ItemStack(EnderIO.blockSpawnGuard);
+    ItemStack tormentedEnderman = new ItemStack(EnderIO.blockEndermanSkull, 1, BlockEndermanSkull.SkullType.TORMENTED.ordinal());
+    GameRegistry
+    .addShapedRecipe(aversion, " c ", "ese", "sms", 's', soularium, 'm', machineChassi, 'c', tormentedEnderman, 'e', energeticAlloy);
     
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);

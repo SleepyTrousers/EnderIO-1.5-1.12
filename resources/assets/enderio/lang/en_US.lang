@@ -88,6 +88,9 @@ enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 tile.blockDarkIronBars.name=Dark Iron Bars
 tile.blockEndermanSkull.name=Enderman Skull
+tile.blockEndermanSkull.base.name=Enderman Head
+tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
+tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 
@@ -331,13 +334,13 @@ tile.blockSoulBinder.name=Soul Binder
 tile.blockSoulBinder.tooltip.detailed.line1=Used to convert the type of
 tile.blockSoulBinder.tooltip.detailed.line2=a broken spawner
 
-tile.blockAttractor.name=Attractor
+tile.blockAttractor.name=Attractor Obelisk
 tile.blockAttractor.tooltip.detailed.line1=Draws mobs towards it
 tile.blockAttractor.tooltip.detailed.line2=Specify the mobs to effect
 tile.blockAttractor.tooltip.detailed.line3=by placing their souls
 tile.blockAttractor.tooltip.detailed.line4=within the device
 
-tile.blockSpawnGuard.name=Aversion
+tile.blockSpawnGuard.name=Aversion Obelisk
 tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
 tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
 

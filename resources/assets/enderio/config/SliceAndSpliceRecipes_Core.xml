@@ -29,6 +29,20 @@
         <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="1"/> 
       </output>
     </recipe>
+    
+    <recipe name="Tormented Enderman Head" energyCost="20000">
+      <input>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="0"/>      
+        <itemStack modID="EnderIO" itemName="blockEndermanSkull" itemMeta="0" slot="1"/>  
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="2"/>
+        <itemStack modID="minecraft" itemName="potion" slot="3"/>        
+        <itemStack modID="EnderIO" itemName="itemBasicCapacitor" itemMeta="0" slot="4"/>        
+        <itemStack modID="minecraft" itemName="potion" slot="5"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="blockEndermanSkull" itemMeta="2"/> 
+      </output>
+    </recipe>
 
   </recipeGroup>  
 

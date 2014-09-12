@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -89,8 +90,11 @@ import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRenderer;
 import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
+import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
 import crazypants.enderio.machine.spawnguard.RangeEntity;
 import crazypants.enderio.machine.spawnguard.RangeRenerer;
+import crazypants.enderio.machine.spawnguard.SpawnGuardRenderer;
+import crazypants.enderio.machine.spawnguard.TileSpawnGuard;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
@@ -102,6 +106,7 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.enderio.material.MachinePartRenderer;
+import crazypants.enderio.material.Material;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.TileTravelAnchor;
 import crazypants.enderio.teleport.TravelController;
@@ -213,6 +218,13 @@ public class ClientProxy extends CommonProxy {
     AttractorRenderer attRen = new AttractorRenderer();
     RenderingRegistry.registerBlockHandler(attRen);
     ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAttractor), attRen);
+    
+    
+    SpawnGuardRenderer sgr = new SpawnGuardRenderer();
+    BlockSpawnGuard.renderId = BlockAttractor.renderId;
+    ClientRegistry.bindTileEntitySpecialRenderer(TileSpawnGuard.class, sgr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
 
 
     if(Config.useCombustionGenModel) {
@@ -298,7 +310,9 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileTravelAnchor.class, new TravelEntitySpecialRenderer());
 
     BlockEndermanSkull.renderId = RenderingRegistry.getNextAvailableRenderId();
-    RenderingRegistry.registerBlockHandler(new EndermanSkullRenderer());
+    EndermanSkullRenderer esk = new EndermanSkullRenderer();
+    RenderingRegistry.registerBlockHandler(esk);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEndermanSkull), esk);
 
     conduitRenderers.add(RedstoneSwitchRenderer.getInstance());
     conduitRenderers.add(new AdvancedLiquidConduitRenderer());
