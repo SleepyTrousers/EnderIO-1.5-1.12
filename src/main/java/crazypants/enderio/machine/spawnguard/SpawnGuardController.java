@@ -18,10 +18,8 @@ import crazypants.util.BlockCoord;
 public class SpawnGuardController {
 
   public static SpawnGuardController instance = new SpawnGuardController();
-
   
   static {
-    FMLCommonHandler.instance().bus().register(SpawnGuardController.instance);
     MinecraftForge.EVENT_BUS.register(SpawnGuardController.instance);
   }
 
@@ -50,7 +48,7 @@ public class SpawnGuardController {
   public void onEntitySpawn(LivingSpawnEvent evt) {
     Map<BlockCoord, TileSpawnGuard> guards = getGuardsForWorld(evt.world);
     for(TileSpawnGuard guard : guards.values()) {
-      if(guard.isSpawnPrevented(evt.entityLiving)) {        
+      if(guard.isSpawnPrevented(evt.entityLiving)) {   
         evt.setResult(Result.DENY);
         return;
       }

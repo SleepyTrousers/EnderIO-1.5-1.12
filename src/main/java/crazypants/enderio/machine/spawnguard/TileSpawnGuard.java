@@ -4,16 +4,19 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.wireless.WirelessChargerController;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.vecmath.Vector3d;
+import crazypants.render.BoundingBox;
 
 public class TileSpawnGuard extends AbstractMachineEntity {
 
@@ -22,10 +25,29 @@ public class TileSpawnGuard extends AbstractMachineEntity {
   private int range;
   private int rangeSqu;
   private boolean registered = false;
+  private AxisAlignedBB bounds;
+  
+  private boolean showingRange;
   
   public TileSpawnGuard() {
     super(new SlotDefinition(12, 0));
-    setUpdrade(Capacitors.BASIC_CAPACITOR);
+    setUpdrade(Capacitors.BASIC_CAPACITOR);    
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if(showingRange == showRange) {
+      return;
+    }
+    this.showingRange = showRange;
+    if(showingRange) {
+      worldObj.spawnEntityInWorld(new RangeEntity(this));
+    }
   }
   
   @Override
@@ -33,6 +55,10 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     super.invalidate();    
     SpawnGuardController.instance.deregisterGuard(this);
     registered = false;
+  }
+  
+  public int getRange() {
+    return range;    
   }
 
   @Override
@@ -64,6 +90,10 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     }
     rangeSqu = range * range;    
     capacitor = new BasicCapacitor(powerPerTick * 8, capacitorType.capacitor.getMaxEnergyStored(), powerPerTick);
+    
+    BoundingBox bb = new BoundingBox(getLocation());
+    bb = bb.scale(range + 0.5f, range + 0.5f, range + 0.5f).translate(0.5f, 0.5f, 0.5f);    
+    bounds = AxisAlignedBB.getBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
   }
 
   @Override
@@ -132,7 +162,8 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     if(mob == null) {
       return false;
     }    
-    return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= rangeSqu;
+    //return new Vector3d(mob.posX, mob.posY, mob.posZ).distanceSquared(new Vector3d(xCoord, yCoord, zCoord)) <= rangeSqu;
+    return bounds.isVecInside(Vec3.createVectorHelper(mob.posX, mob.posY, mob.posZ));
   }
 
   private boolean isMobInFilter(EntityLivingBase ent) {
@@ -151,5 +182,4 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     return false;
   }
 
-  
 }

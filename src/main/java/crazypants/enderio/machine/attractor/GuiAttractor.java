@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.attractor;
 
+import java.awt.Color;
+
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
@@ -7,12 +9,17 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.spawner.ContainerPoweredSpawner;
 import crazypants.enderio.machine.spawner.TilePoweredSpawner;
+import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
+import crazypants.util.Lang;
 
 public class GuiAttractor extends GuiMachineBase {
 
+  private TileAttractor ta;
+  
   public GuiAttractor(InventoryPlayer par1InventoryPlayer, TileAttractor te) {
     super(te, new ContainerAttractor(par1InventoryPlayer, te));
+    ta = te;
   }
   
   @Override
@@ -25,6 +32,9 @@ public class GuiAttractor extends GuiMachineBase {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    
+    int range = ta.getRange();
+    drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
   }
 
   @Override

@@ -100,6 +100,7 @@ import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
+import crazypants.enderio.machine.spawnguard.RangeEntity;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
@@ -405,6 +406,10 @@ public class EnderIO {
     int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
     EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
+    
+    entityID = EntityRegistry.findGlobalUniqueEntityId();
+    EntityRegistry.registerGlobalEntityID(RangeEntity.class, "rangeEntity", entityID);
+    EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", entityID, this, 0, 0, false);
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.compat.waila.WailaCompat.load");    
   }

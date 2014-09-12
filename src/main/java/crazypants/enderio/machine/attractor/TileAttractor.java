@@ -58,6 +58,10 @@ public class TileAttractor extends AbstractMachineEntity {
   public ICapacitor getCapacitor() {
     return capacitor;
   }
+  
+  public int getRange() {
+    return range;    
+  }
 
   private void setUpdrade(Capacitors capacitorType) {
     switch (capacitorType) {

@@ -89,6 +89,8 @@ import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRenderer;
 import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
+import crazypants.enderio.machine.spawnguard.RangeEntity;
+import crazypants.enderio.machine.spawnguard.RangeRenerer;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
@@ -341,6 +343,7 @@ public class ClientProxy extends CommonProxy {
     KeyTracker.instance.isGlideActive();
 
     RenderingRegistry.registerEntityRenderingHandler(SoundEntity.class, new SoundRenderer());
+    RenderingRegistry.registerEntityRenderingHandler(RangeEntity.class, new RangeRenerer());
 
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
     FMLCommonHandler.instance().bus().register(SoundDetector.instance);
