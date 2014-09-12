@@ -99,6 +99,7 @@ import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
+import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
@@ -203,7 +204,8 @@ public class EnderIO {
   public static ItemBrokenSpawner itemBrokenSpawner;
   public static BlockSliceAndSplice blockSliceAndSplice;
   public static BlockSoulBinder blockSoulFuser;
-  public static BlockAttractor blockAttractor; 
+  public static BlockAttractor blockAttractor;
+  public static BlockSpawnGuard blockSpawnGuard; 
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -299,6 +301,7 @@ public class EnderIO {
     blockPoweredSpawner = BlockPoweredSpawner.create();
     blockKillerJoe = BlockKillerJoe.create();
     blockAttractor = BlockAttractor.create();
+    blockSpawnGuard = BlockSpawnGuard.create();
     blockEnchanter = BlockEnchanter.create();
     
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();

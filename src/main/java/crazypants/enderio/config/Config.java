@@ -292,11 +292,16 @@ public final class Config {
   public static int attractorRangeLevelOne = 16;
   public static int attractorPowerPerTickLevelOne = 20;
   public static int attractorRangeLevelTwo = 32;
-  public static int attractorPowerPerTickLevelTwo = 80;
+  public static int attractorPowerPerTickLevelTwo = 40;
   public static int attractorRangeLevelThree = 64;
-  public static int attractorPowerPerTickLevelThree = 160;
-
-  
+  public static int attractorPowerPerTickLevelThree = 80;
+   
+  public static int spawnGuardRangeLevelOne = 32;
+  public static int spawnGuardPowerPerTickLevelOne = 80;
+  public static int spawnGuardRangeLevelTwo = 64;
+  public static int spawnGuardPowerPerTickLevelTwo = 300;
+  public static int spawnGuardRangeLevelThree = 128;
+  public static int spawnGuardPowerPerTickLevelThree = 1000;
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -795,6 +800,21 @@ public final class Config {
         "The RF/t  power use of a levele 2 mob attractor").getInt(attractorPowerPerTickLevelTwo);
     attractorPowerPerTickLevelThree = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelThree", attractorPowerPerTickLevelThree, 
         "The RF/t  power use of a levele 3 mob attractor").getInt(attractorPowerPerTickLevelThree);
+    
+    
+    spawnGuardRangeLevelOne = config.get(sectionAttarctor.name, "spawnGuardRangeLevelOne", spawnGuardRangeLevelOne, 
+        "The range of the spawn guard with no upgrades").getInt(spawnGuardRangeLevelOne);
+    spawnGuardRangeLevelTwo = config.get(sectionAttarctor.name, "spawnGuardRangeLevelTwo", spawnGuardRangeLevelTwo, 
+        "The range of the spawn guard with a double layer capacitor upgrade").getInt(spawnGuardRangeLevelTwo);
+    spawnGuardRangeLevelThree = config.get(sectionAttarctor.name, "spawnGuardRangeLevelThree", spawnGuardRangeLevelThree, 
+        "The range of the spawn guard with an octadic capacitor upgrade").getInt(spawnGuardRangeLevelThree);    
+    spawnGuardPowerPerTickLevelOne = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelOne", spawnGuardPowerPerTickLevelOne, 
+        "The RF/t  power use of a levele 1 spawn guard").getInt(spawnGuardPowerPerTickLevelOne);
+    spawnGuardPowerPerTickLevelTwo = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelTwo", spawnGuardPowerPerTickLevelTwo, 
+        "The RF/t  power use of a levele 2 spawn guard").getInt(spawnGuardPowerPerTickLevelTwo);
+    spawnGuardPowerPerTickLevelThree = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree, 
+        "The RF/t  power use of a levele 3 spawn guard").getInt(spawnGuardPowerPerTickLevelThree);
+    
 
   }
 

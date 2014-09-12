@@ -54,6 +54,7 @@ public enum ModObject {
   blockSoulBinder,
   blockSliceAndSplice,
   blockAttractor,
+  blockSpawnGuard,
 
   blockPoweredSpawner,
   itemBrokenSpawner,
