@@ -32,6 +32,7 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.LiquidXpUtil;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
@@ -460,17 +461,29 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    return null;
+    if(resource == null || !canDrain(from, resource.getFluid())) {
+      return null;
+    }    
+    return drain(from, resource.amount, doDrain);
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    return null;
+    int available = LiquidXpUtil.XPToLiquidRatio(experienceTotal);
+    int canDrain = Math.min(available, maxDrain);
+    if(doDrain) {      
+      int newXp = experienceTotal - LiquidXpUtil.liquidToXPRatio(canDrain);
+      experience = 0;
+      experienceLevel = 0;
+      experienceTotal = 0;
+      addExperience(newXp);      
+    }        
+    return new FluidStack(EnderIO.fluidXpJuice, canDrain);
   }
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    return false;
+    return fluid != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
   }
 
   //-------------------------------  Save / Load

@@ -121,7 +121,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     int res = tank.fill(resource, doFill);
     if(res > 0 && doFill) {
-      tankDirty = true;
+      tankDirty = true;      
     }
     return res;
   }

@@ -283,6 +283,9 @@ tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
 tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and 
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
+tile.blockKillerJoe.tooltip.detailed.line4=Experience can be drained as
+tile.blockKillerJoe.tooltip.detailed.line5=Liquid XP using fluid conduits
+
 enderio.killerJoe.fuelTank=Nutrient Tank
 enderio.killerJoe.giveXp.tooltip=Take XP
 enderio.killerJoe.giveXp10.tooltip=Take 10 Levels of XP
