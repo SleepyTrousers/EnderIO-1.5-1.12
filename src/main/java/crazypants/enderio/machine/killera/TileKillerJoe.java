@@ -32,18 +32,21 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.fluid.LiquidXpUtil;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.ExperienceContainer;
+import crazypants.enderio.xp.IHaveExperience;
+import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.XpUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 
-public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector {
+public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandler, IEntitySelector, IHaveExperience {
 
   private static int IO_MB_TICK = 250;
 
@@ -66,14 +69,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private float swingProgress;
 
   private float prevSwingProgress;
-
-  int experienceLevel;
-
-  float experience;
-
-  private boolean xpDirty;
-
-  private int experienceTotal;
+  
+  private ExperienceContainer xpCon = new ExperienceContainer();
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
@@ -110,6 +107,11 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
+  public ExperienceContainer getContainer() {  
+    return xpCon;
+  }
+
+  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
     if(!redstoneCheckPassed) {
@@ -124,9 +126,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       PacketHandler.sendToAllAround(new PacketNutrientLevel(this), this);
       tanksDirty = false;
     }
-    if(xpDirty) {
-      PacketHandler.sendToAllAround(new PacketExperianceTotal(this), this);
-      xpDirty = false;
+    if(xpCon.isDirty()) {
+      PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
+      xpCon.setDirty(false);
     }
 
     if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
@@ -160,82 +162,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   //-------------------------------  XP
 
-  public void addExperience(int xpToAdd) {
-    int j = Integer.MAX_VALUE - this.experienceTotal;
-    if(xpToAdd > j) {
-      xpToAdd = j;
-    }
-
-    experience += (float) xpToAdd / (float) getXpBarCapacity();
-    experienceTotal += xpToAdd;
-    for (; experience >= 1.0F; experience /= (float) getXpBarCapacity()) {
-      experience = (experience - 1.0F) * (float) getXpBarCapacity();
-      experienceLevel++;
-    }
-    xpDirty = true;
-  }
-
-  private int getXpBarCapacity(int level) {
-    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);
-  }
-
-  private int getXpBarCapacity() {
-    return getXpBarCapacity(experienceLevel);
-  }
-
-  public int getXpBarScaled(int scale) {
-    int result = (int) (experience * scale);
-    return result;
-
-  }
-  
-  public void givePlayerXp(EntityPlayer player, int levels) {
-    for(int i=0;i<levels && experienceTotal > 0; i++) {
-      givePlayerXp(player);
-    }    
-  }
-
-  public void givePlayerXp(EntityPlayer player) {
-    if(Config.killerJoeGivePlayerLevelXP) {
-      int currentXP = getPlayerXP(player);
-      int nextLevelXP = getExperienceForLevel(player.experienceLevel + 1) + 1;
-      int requiredXP = nextLevelXP - currentXP;
-
-      requiredXP = Math.min(experienceTotal, requiredXP);      
-      player.addExperience(requiredXP);
-
-      int newXp = experienceTotal - requiredXP;
-      experience = 0;
-      experienceLevel = 0;
-      experienceTotal = 0;
-      addExperience(newXp);
-    } else {
-      int takeXp = Math.min(getXpBarCapacity(), experienceTotal);
-      player.addExperience(takeXp);
-
-      int newXp = experienceTotal - takeXp;
-      experience = 0;
-      experienceLevel = 0;
-      experienceTotal = 0;
-      addExperience(newXp);
-    }
-  }
-
-  private int getPlayerXP(EntityPlayer player) {
-    return (int) (getExperienceForLevel(player.experienceLevel) + (player.experience * player.xpBarCap()));
-  }
-
-  private int getExperienceForLevel(int level) {
-    if(level == 0) {
-      return 0;
-    }
-    if(level > 0 && level < 16) {
-      return level * 17;
-    } else if(level > 15 && level < 31) {
-      return (int) (1.5 * Math.pow(level, 2) - 29.5 * level + 360);
-    } else {
-      return (int) (3.5 * Math.pow(level, 2) - 151.5 * level + 2220);
-    }
+  public ExperienceContainer getXpContainer() {
+    return xpCon;
   }
 
   private void hooverXP() {
@@ -271,7 +199,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private void hooverXP(EntityXPOrb entity) {
     if(!worldObj.isRemote) {
       if(!entity.isDead) {
-        addExperience(entity.getXpValue());
+        xpCon.addExperience(entity.getXpValue());
         entity.setDead();
       }
     }
@@ -461,29 +389,17 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(resource == null || !canDrain(from, resource.getFluid())) {
-      return null;
-    }    
-    return drain(from, resource.amount, doDrain);
+    return xpCon.drain(from, resource, doDrain);
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    int available = LiquidXpUtil.XPToLiquidRatio(experienceTotal);
-    int canDrain = Math.min(available, maxDrain);
-    if(doDrain) {      
-      int newXp = experienceTotal - LiquidXpUtil.liquidToXPRatio(canDrain);
-      experience = 0;
-      experienceLevel = 0;
-      experienceTotal = 0;
-      addExperience(newXp);      
-    }        
-    return new FluidStack(EnderIO.fluidXpJuice, canDrain);
+    return xpCon.drain(from, maxDrain, doDrain);
   }
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    return fluid != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return xpCon.canDrain(from, fluid);
   }
 
   //-------------------------------  Save / Load
@@ -502,9 +418,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       fuelTank.setFluid(null);
     }
 
-    experienceLevel = nbtRoot.getInteger("experienceLevel");
-    experienceTotal = nbtRoot.getInteger("experienceTotal");
-    experience = nbtRoot.getFloat("experience");
+//    experienceLevel = nbtRoot.getInteger("experienceLevel");
+//    experienceTotal = nbtRoot.getInteger("experienceTotal");
+//    experience = nbtRoot.getFloat("experience");
+    xpCon.readFromNBT(nbtRoot);
   }
 
   @Override
@@ -516,9 +433,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       nbtRoot.setTag("fuelTank", tankRoot);
     }
 
-    nbtRoot.setInteger("experienceLevel", experienceLevel);
-    nbtRoot.setInteger("experienceTotal", experienceTotal);
-    nbtRoot.setFloat("experience", experience);
+//    nbtRoot.setInteger("experienceLevel", experienceLevel);
+//    nbtRoot.setInteger("experienceTotal", experienceTotal);
+//    nbtRoot.setFloat("experience", experience);
+    xpCon.writeToNBT(nbtRoot);
 
   }
 

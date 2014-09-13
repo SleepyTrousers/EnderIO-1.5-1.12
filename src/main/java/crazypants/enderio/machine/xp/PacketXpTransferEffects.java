@@ -11,21 +11,21 @@ import crazypants.enderio.EnderIO;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class PacketXpTransfer implements IMessage, IMessageHandler<PacketXpTransfer, IMessage> {
+public class PacketXpTransferEffects implements IMessage, IMessageHandler<PacketXpTransferEffects, IMessage> {
 
   boolean swing;
   double x;
   double y;
   double z;
 
-  public PacketXpTransfer(boolean swing, double x, double y, double z) {
+  public PacketXpTransferEffects(boolean swing, double x, double y, double z) {
     this.swing = swing;
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  public PacketXpTransfer() {
+  public PacketXpTransferEffects() {
   }
 
   @Override
@@ -45,7 +45,7 @@ public class PacketXpTransfer implements IMessage, IMessageHandler<PacketXpTrans
   }
 
   @Override
-  public IMessage onMessage(PacketXpTransfer message, MessageContext ctx) {
+  public IMessage onMessage(PacketXpTransferEffects message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if(player != null) {
       int particleCount = 1;

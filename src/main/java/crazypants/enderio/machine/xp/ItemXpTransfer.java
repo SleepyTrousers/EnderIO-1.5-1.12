@@ -17,17 +17,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.LiquidXpUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.XpUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
   public static ItemXpTransfer create() {
-    PacketHandler.INSTANCE.registerMessage(PacketXpTransfer.class, PacketXpTransfer.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketXpTransferEffects.class, PacketXpTransferEffects.class, PacketHandler.nextID(), Side.CLIENT);
 
     ItemXpTransfer result = new ItemXpTransfer();
     result.init();
@@ -61,7 +61,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       double yP = player.posY + 1.5;
       double zP = player.posZ + look.z;              
       TargetPoint tp = new TargetPoint(player.dimension, x, y, z, 32);
-      EnderIO.packetPipeline.INSTANCE.sendTo(new PacketXpTransfer(swing, xP, yP, zP), (EntityPlayerMP)player);
+      EnderIO.packetPipeline.INSTANCE.sendTo(new PacketXpTransferEffects(swing, xP, yP, zP), (EntityPlayerMP)player);
       world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
     }
     return res;
@@ -77,18 +77,18 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     if(!fh.canDrain(dir, EnderIO.fluidXpJuice)) {
       return false;
     }
-    int currentXP = LiquidXpUtil.getPlayerXP(player);
-    int nextLevelXP = LiquidXpUtil.getExperienceForLevel(player.experienceLevel + 1) + 1;
+    int currentXP = XpUtil.getPlayerXP(player);
+    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1) + 1;
     int requiredXP = nextLevelXP - currentXP;
 
-    int fluidVolume = LiquidXpUtil.XPToLiquidRatio(requiredXP);
+    int fluidVolume = XpUtil.experianceToLiquid(requiredXP);
     FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
     FluidStack res = fh.drain(dir, fs, true);
     if(res == null || res.amount <= 0) {
       return false;
     }
 
-    int xpToGive = LiquidXpUtil.liquidToXPRatio(res.amount);
+    int xpToGive = XpUtil.liquidToExperiance(res.amount);
     player.addExperience(xpToGive);
 
     return true;
@@ -109,14 +109,14 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       return false;
     }
 
-    int fluidVolume = LiquidXpUtil.XPToLiquidRatio(LiquidXpUtil.getPlayerXP(player));
+    int fluidVolume = XpUtil.experianceToLiquid(XpUtil.getPlayerXP(player));
     FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
     int takenVolume = fh.fill(dir, fs, true);
     if(takenVolume <= 0) {
       return false;
     }
-    int xpToTake = LiquidXpUtil.liquidToXPRatio(takenVolume);
-    LiquidXpUtil.addPlayerXP(player, -xpToTake);
+    int xpToTake = XpUtil.liquidToExperiance(takenVolume);
+    XpUtil.addPlayerXP(player, -xpToTake);
     return true;
   }
 

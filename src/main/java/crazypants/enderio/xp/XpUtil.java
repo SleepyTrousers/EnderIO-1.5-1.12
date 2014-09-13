@@ -1,4 +1,4 @@
-package crazypants.enderio.fluid;
+package crazypants.enderio.xp;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
  * @see {@link https://github.com/OpenMods/OpenModsLib/blob/master/src/main/java/openmods/utils/EnchantmentUtils.java}
  *
  */
-public class LiquidXpUtil {
+public class XpUtil {
 
   //Values taken from OpenBlocks to ensure compatibility
   
@@ -16,16 +16,16 @@ public class LiquidXpUtil {
   public static final int LIQUID_PER_XP_BOTTLE = XP_PER_BOTTLE * RATIO;
   
   
-  public static int liquidToXPRatio(int liquid) {
+  public static int liquidToExperiance(int liquid) {
     return liquid / RATIO;
   }
 
-  public static int XPToLiquidRatio(int xp) {
+  public static int experianceToLiquid(int xp) {
     return xp * RATIO;
   }
 
   public static int getLiquidForLevel(int level) {
-    return XPToLiquidRatio(getExperienceForLevel(level));
+    return experianceToLiquid(getExperienceForLevel(level));
   }
   
   public static int getExperienceForLevel(int level) {
@@ -37,6 +37,18 @@ public class LiquidXpUtil {
     } else {
       return (int)(3.5 * Math.pow(level, 2) - 151.5 * level + 2220);
     }
+  }
+  
+  public static int getXpBarCapacity(int level) {
+    return level >= 30 ? 62 + (level - 30) * 7 : (level >= 15 ? 17 + (level - 15) * 3 : 17);
+  }
+  
+  public static int getLevelForExperience(int experience) {
+    int i = 0;
+    while (getExperienceForLevel(i) <= experience) {
+      i++;
+    }
+    return i - 1;
   }
 
   public static int getPlayerXP(EntityPlayer player) {
@@ -51,12 +63,6 @@ public class LiquidXpUtil {
     player.experience = (float)(experience - expForLevel) / (float)player.xpBarCap();
   }
   
-  public static int getLevelForExperience(int experience) {
-    int i = 0;
-    while (getExperienceForLevel(i) <= experience) {
-      i++;
-    }
-    return i - 1;
-  }
+  
   
 }

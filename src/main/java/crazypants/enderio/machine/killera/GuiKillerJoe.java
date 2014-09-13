@@ -20,6 +20,7 @@ import crazypants.enderio.machine.generator.zombie.ContainerZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.PacketGiveXP;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -70,9 +71,9 @@ public class GuiKillerJoe extends GuiMachineBase {
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == XP_ID) {
-      PacketHandler.INSTANCE.sendToServer(new PacketUseXP(joe, 1));
+      PacketHandler.INSTANCE.sendToServer(new PacketGiveXP(joe, 1));
     } else if(b.id == XP10_ID) {
-      PacketHandler.INSTANCE.sendToServer(new PacketUseXP(joe, 10));
+      PacketHandler.INSTANCE.sendToServer(new PacketGiveXP(joe, 10));
     }
   }
   
@@ -114,12 +115,12 @@ public class GuiKillerJoe extends GuiMachineBase {
       RenderUtil.renderGuiTank(joe.fuelTank.getFluid(), joe.fuelTank.getCapacity(), joe.fuelTank.getFluidAmount(), x, y, zLevel, 15, 47);           
     }
     
-    String s = joe.experienceLevel + "";
+    String s = joe.getContainer().getExperienceLevel() + "";
     drawCenteredString(Minecraft.getMinecraft().fontRenderer, s, sx + xSize/2, sy + 50, 8453920);
     
     RenderUtil.bindTexture("enderio:textures/gui/killerJoe.png");
     GL11.glColor3f(1, 1, 1);
-    int xpScaled = joe.getXpBarScaled(63);    
+    int xpScaled = joe.getContainer().getXpBarScaled(63);    
     drawTexturedModalRect(sx + 56, sy + 62, 192, 0, xpScaled, 3);
 
     
