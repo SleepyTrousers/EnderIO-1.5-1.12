@@ -96,13 +96,18 @@ enderio.lightEmitter=Emits Light
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
-fluid.hootch=Hootch
-fluid.fire_water=Fire Water
-fluid.rocket_fuel=Rocket Fuel
 item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
+
+fluid.hootch=Hootch
 item.bucketHootch.name=Hootch Bucket
-item.bucketRocket_fuel.name=Rocket Fuel Bucket
+fluid.fire_water=Fire Water
 item.bucketFire_water.name=Fire Water Bucket
+fluid.rocket_fuel=Rocket Fuel
+item.bucketRocket_fuel.name=Rocket Fuel Bucket
+fluid.eio.xpjuice=Liquid XP
+item.bucketXpjuice.name=XP Bucket
+
+
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Fuel Details
@@ -424,11 +429,16 @@ item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles conn
 item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
 item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
 
-
 item.itemSoulVessel.name=Soul Vial
 item.itemSoulVessel.tooltip.detailed.line1=Right-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=Click again to release it
+
+item.itemXpTransfer.name=Experience Rod
+item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing 
+item.itemXpTransfer.tooltip.detailed.line2=liquid XP to gain levels
+item.itemXpTransfer.tooltip.detailed.line3=Shift R-Click to transfer levels to
+item.itemXpTransfer.tooltip.detailed.line4=the tank
 
 skullZombieElectrode.name=Zombie Electrode
 skullZombieController.name=Zombie Controller

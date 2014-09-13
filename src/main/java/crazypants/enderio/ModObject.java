@@ -83,6 +83,7 @@ public enum ModObject {
 
   itemConduitProbe,
   itemYetaWrench,
+  itemXpTransfer,
 
   blockTravelAnchor,
   itemTravelStaff,

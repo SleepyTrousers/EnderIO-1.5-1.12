@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import buildcraft.api.fuels.IronEngineCoolant;
 import buildcraft.api.fuels.IronEngineFuel;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -28,7 +29,6 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
-import crazypants.enderio.compat.waila.WailaCompat;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitRecipes;
 import crazypants.enderio.conduit.facade.BlockConduitFacade;
@@ -106,6 +106,7 @@ import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
+import crazypants.enderio.machine.xp.ItemXpTransfer;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -206,7 +207,7 @@ public class EnderIO {
   public static BlockSliceAndSplice blockSliceAndSplice;
   public static BlockSoulBinder blockSoulFuser;
   public static BlockAttractor blockAttractor;
-  public static BlockSpawnGuard blockSpawnGuard; 
+  public static BlockSpawnGuard blockSpawnGuard;
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -237,11 +238,16 @@ public class EnderIO {
   public static BlockFluidEio blockFireWater;
   public static ItemBucketEio itemBucketFireWater;
 
+  //Open block compatable liquid XP
+  public static Fluid fluidXpJuice;
+  public static ItemBucketEio itemBucketXpJuice;
+
   // Items
   public static ItemYetaWrench itemYetaWench;
   public static ItemConduitProbe itemConduitProbe;
   public static ItemMagnet itemMagnet;
-  
+  public static ItemXpTransfer itemXpTransfer;
+
   public static ItemSoulVessel itemSoulVessel;
   public static ItemFrankenSkull itemFrankenSkull;
 
@@ -254,7 +260,7 @@ public class EnderIO {
   public static ItemDarkSteelAxe itemDarkSteelAxe;
   public static BlockVacuumChest blockVacuumChest;
   public static ItemGliderWing itemGliderWing;
-    
+
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
@@ -270,7 +276,7 @@ public class EnderIO {
     blockCrusher = BlockCrusher.create();
     blockAlloySmelter = BlockAlloySmelter.create();
     blockCapacitorBank = BlockCapacitorBank.create();
-    
+
     blockPainter = BlockPainter.create();
     blockPaintedFence = BlockPaintedFence.create();
     blockPaintedFenceGate = BlockPaintedFenceGate.create();
@@ -283,17 +289,17 @@ public class EnderIO {
     blockCrafter = BlockCrafter.create();
     blockPaintedGlowstone = BlockPaintedGlowstone.create();
     blockPaintedCarpet = BlockPaintedCarpet.create();
-    
+
     blockVat = BlockVat.create();
     blockPowerMonitor = BlockPowerMonitor.create();
     blockFarmStation = BlockFarmStation.create();
-    
+
     blockWirelessCharger = BlockWirelessCharger.create();
     blockHyperCube = BlockHyperCube.create();
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
-    
+
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
 
@@ -304,22 +310,22 @@ public class EnderIO {
     blockAttractor = BlockAttractor.create();
     blockSpawnGuard = BlockSpawnGuard.create();
     blockEnchanter = BlockEnchanter.create();
-    
+
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
-    
+
     blockReinforcedObsidian = BlockReinforcedObsidian.create();
-    
+
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
-    
+
     itemBrokenSpawner = ItemBrokenSpawner.create();
-    
+
     blockEndermanSkull = BlockEndermanSkull.create();
     itemFrankenSkull = ItemFrankenSkull.create();
 
@@ -334,6 +340,55 @@ public class EnderIO {
     itemModItemFilter = ItemModItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
+    
+    
+    itemBasicCapacitor = ItemCapacitor.create();
+    itemMachinePart = ItemMachinePart.create();
+    itemMaterial = ItemMaterial.create();
+    itemAlloy = ItemAlloy.create();
+    itemPowderIngot = ItemPowderIngot.create();
+    
+    registerFluids();
+
+    itemYetaWench = ItemYetaWrench.create();
+    itemEnderface = ItemEnderface.create();
+    itemTravelStaff = ItemTravelStaff.create();
+    itemConduitProbe = ItemConduitProbe.create();
+
+    itemMagnet = ItemMagnet.create();
+    itemXpTransfer = ItemXpTransfer.create();
+
+    itemSoulVessel = ItemSoulVessel.create();
+
+    blockIngotStorage = BlockIngotStorage.create();
+
+    blockDarkIronBars = BlockDarkIronBars.create();
+
+    itemGliderWing = ItemGliderWing.create();
+
+    itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
+    itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
+    itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
+    itemDarkSteelBoots = ItemDarkSteelArmor.create(3);
+
+    itemDarkSteelSword = ItemDarkSteelSword.create();
+    itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
+    itemDarkSteelAxe = ItemDarkSteelAxe.create();
+
+    MaterialRecipes.registerOresInDictionary();
+
+    int entityID = EntityRegistry.findGlobalUniqueEntityId();
+    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
+    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
+
+    entityID = EntityRegistry.findGlobalUniqueEntityId();
+    EntityRegistry.registerGlobalEntityID(RangeEntity.class, "rangeEntity", entityID);
+    EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", entityID, this, 0, 0, false);
+
+    FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.compat.waila.WailaCompat.load");
+  }
+
+  private void registerFluids() {
     Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
@@ -365,53 +420,21 @@ public class EnderIO {
     if(!IronEngineCoolant.isCoolant(FluidRegistry.getFluid("water"))) {
       IronEngineCoolant.addCoolant(FluidRegistry.getFluid("water"), 0.0023F);
     }
-
-    itemBasicCapacitor = ItemCapacitor.create();
-    itemMachinePart = ItemMachinePart.create();
-    itemMaterial = ItemMaterial.create();
-    itemAlloy = ItemAlloy.create();
-    itemPowderIngot = ItemPowderIngot.create();
+    
+    
+    fluidXpJuice = FluidRegistry.getFluid("xpjuice");
+    if(!Loader.isModLoaded("OpenBlocks")) {
+      Log.info("XP Juice registered by Ender IO.");
+      fluidXpJuice = new Fluid("xpjuice").setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+      itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
+    } else {
+      Log.info("XP Juice regististration left to Open Blocks.");
+    }
 
     itemBucketNutrientDistillation = ItemBucketEio.create(fluidNutrientDistillation);
     itemBucketHootch = ItemBucketEio.create(fluidHootch);
     itemBucketRocketFuel = ItemBucketEio.create(fluidRocketFuel);
     itemBucketFireWater = ItemBucketEio.create(fluidFireWater);
-
-    itemYetaWench = ItemYetaWrench.create();
-    itemEnderface = ItemEnderface.create();
-    itemTravelStaff = ItemTravelStaff.create();
-    itemConduitProbe = ItemConduitProbe.create();
-
-    itemMagnet = ItemMagnet.create();
-    
-    itemSoulVessel = ItemSoulVessel.create();
-    
-    blockIngotStorage = BlockIngotStorage.create();
-
-    blockDarkIronBars = BlockDarkIronBars.create();
-
-    itemGliderWing = ItemGliderWing.create();
-
-    itemDarkSteelHelmet = ItemDarkSteelArmor.create(0);
-    itemDarkSteelChestplate = ItemDarkSteelArmor.create(1);
-    itemDarkSteelLeggings = ItemDarkSteelArmor.create(2);
-    itemDarkSteelBoots = ItemDarkSteelArmor.create(3);
-
-    itemDarkSteelSword = ItemDarkSteelSword.create();
-    itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
-    itemDarkSteelAxe = ItemDarkSteelAxe.create();
-
-    MaterialRecipes.registerOresInDictionary();
-
-    int entityID = EntityRegistry.findGlobalUniqueEntityId();
-    EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
-    EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
-    
-    entityID = EntityRegistry.findGlobalUniqueEntityId();
-    EntityRegistry.registerGlobalEntityID(RangeEntity.class, "rangeEntity", entityID);
-    EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", entityID, this, 0, 0, false);
-
-    FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.compat.waila.WailaCompat.load");    
   }
 
   @EventHandler
@@ -466,13 +489,6 @@ public class EnderIO {
     ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();
 
-    //    triggerNoEnergy = new TriggerEnderIO("enderIO.trigger.noEnergy", 0);
-    //    triggerHasEnergy = new TriggerEnderIO("enderIO.trigger.hasEnergy", 1);
-    //    triggerFullEnergy = new TriggerEnderIO("enderIO.trigger.fullEnergy", 2);
-    //    triggerIsCharging = new TriggerEnderIO("enderIO.trigger.isCharging", 3);
-    //    triggerFinishedCharging = new TriggerEnderIO("enderIO.trigger.finishedCharging", 4);
-    //    ActionManager.registerTriggerProvider(new TriggerProviderEIO());
-
     proxy.load();
 
   }
@@ -490,6 +506,13 @@ public class EnderIO {
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();
+    
+    if(fluidXpJuice == null) { //should have been registered by open blocks 
+      fluidXpJuice = FluidRegistry.getFluid("xpjuice");      
+      if(fluidXpJuice == null) {
+        Log.error("Liquid XP registration left to open blocks but could not be found.");
+      }
+    }
   }
 
   @EventHandler

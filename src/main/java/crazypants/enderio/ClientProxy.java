@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,6 +17,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -106,11 +108,11 @@ import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.enderio.material.MachinePartRenderer;
-import crazypants.enderio.material.Material;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.TileTravelAnchor;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.TravelEntitySpecialRenderer;
+import crazypants.render.IconUtil;
 
 public class ClientProxy extends CommonProxy {
 
@@ -361,6 +363,26 @@ public class ClientProxy extends CommonProxy {
 
     MinecraftForge.EVENT_BUS.register(SoundDetector.instance);
     FMLCommonHandler.instance().bus().register(SoundDetector.instance);
+
+    if(!Loader.isModLoaded("OpenBlocks")) {
+      //We have registered liquid XP so we need to give it textures
+      IconUtil.addIconProvider(new IconUtil.IIconProvider() {
+
+        @Override
+        public void registerIcons(IIconRegister register) {
+          //NB: textures re-used with permission from OpenBlocks to maintain look
+          IIcon flowing = register.registerIcon("enderio:xpjuiceflowing");
+          IIcon still = register.registerIcon("enderio:xpjuicestill");
+          EnderIO.fluidXpJuice.setIcons(still, flowing);
+        }
+
+        @Override
+        public int getTextureType() {
+          return 0;
+        }
+
+      });
+    }    
 
   }
 
