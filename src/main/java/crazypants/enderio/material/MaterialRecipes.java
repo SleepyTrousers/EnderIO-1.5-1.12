@@ -157,7 +157,11 @@ public class MaterialRecipes {
 
     if(Config.reinforcedObsidianEnabled) {
       ItemStack reinfObs = new ItemStack(EnderIO.blockReinforcedObsidian);
-      GameRegistry.addShapedRecipe(reinfObs , "dbd", "bob", "dbd", 'd', darkSteel, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
+      ItemStack corners = darkSteel;
+      if(Config.reinforcedObsidianUseDarkSteelBlocks) {
+        corners = new ItemStack(EnderIO.blockIngotStorage, 1, Alloy.DARK_STEEL.ordinal());
+      }
+      GameRegistry.addShapedRecipe(reinfObs , "dbd", "bob", "dbd", 'd', corners, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
     }
 
     for (Alloy alloy : Alloy.values()) {

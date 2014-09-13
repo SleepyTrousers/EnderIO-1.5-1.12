@@ -63,6 +63,7 @@ public final class Config {
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
   public static boolean reinforcedObsidianEnabled = true;
+  public static boolean reinforcedObsidianUseDarkSteelBlocks = false;
 
   public static boolean useAlternateBinderRecipe = false;
 
@@ -474,6 +475,8 @@ public final class Config {
 
     reinforcedObsidianEnabled = config.get(sectionItems.name, "reinforcedObsidianEnabled", reinforcedObsidianEnabled,
         "When set to false reinforced obsidian is not craftable.").getBoolean(reinforcedObsidianEnabled);
+    reinforcedObsidianUseDarkSteelBlocks = config.get(sectionRecipe.name, "reinforcedObsidianUseDarkSteelBlocks", reinforcedObsidianUseDarkSteelBlocks,
+        "When set to true four dark steel blocks are required instead of ingots when making reinforced obsidian.").getBoolean(reinforcedObsidianUseDarkSteelBlocks);
 
     travelAnchorEnabled = config.get(sectionItems.name, "travelAnchorEnabled", travelAnchorEnabled,
         "When set to false: the travel anchor will not be craftable.").getBoolean(travelAnchorEnabled);
