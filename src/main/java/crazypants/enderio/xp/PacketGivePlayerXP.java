@@ -10,13 +10,13 @@ import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.PacketHandler;
 
-public class PacketGiveXP extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketGiveXP, IMessage> {
+public class PacketGivePlayerXP extends MessageTileEntity<TileEntity> implements IMessageHandler<PacketGivePlayerXP, IMessage> {
 
   private static boolean isRegistered = false;
   
   public static void register() {
     if(!isRegistered) {
-      PacketHandler.INSTANCE.registerMessage(PacketGiveXP.class, PacketGiveXP.class, PacketHandler.nextID(), Side.SERVER);
+      PacketHandler.INSTANCE.registerMessage(PacketGivePlayerXP.class, PacketGivePlayerXP.class, PacketHandler.nextID(), Side.SERVER);
       isRegistered = true;
     }
   }
@@ -24,10 +24,10 @@ public class PacketGiveXP extends MessageTileEntity<TileEntity> implements IMess
   
   int levels;
   
-  public PacketGiveXP() {
+  public PacketGivePlayerXP() {
   }
 
-  public PacketGiveXP(TileEntity tile, int levels) {
+  public PacketGivePlayerXP(TileEntity tile, int levels) {
     super(tile);
     this.levels = levels;
   }
@@ -45,7 +45,7 @@ public class PacketGiveXP extends MessageTileEntity<TileEntity> implements IMess
   }
 
   @Override
-  public IMessage onMessage(PacketGiveXP message, MessageContext ctx) {
+  public IMessage onMessage(PacketGivePlayerXP message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity tile = message.getTileEntity(player.worldObj);
     if (tile instanceof IHaveExperience) {      

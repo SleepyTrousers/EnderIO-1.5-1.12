@@ -274,9 +274,14 @@ public final class Config {
   public static int soulBinderLevelTwoPowerPerTickRF = 1000;
   public static int soulBinderLevelThreePowerPerTickRF = 2000;
   public static int soulBinderBrokenSpawnerRF = 2500000;
+  public static int soulBinderBrokenSpawnerLevels = 15;
   public static int soulBinderReanimationRF = 100000;
+  public static int soulBinderReanimationLevels = 10;
   public static int soulBinderEnderCystalRF = 100000;
+  public static int soulBinderEnderCystalLevels = 10;
   public static int soulBinderAttractorCystalRF = 100000;
+  public static int soulBinderAttractorCystalLevels = 10;
+  
 
   public static boolean powerConduitCanDifferentTiersConnect = false;
   public static int powerConduitTierOneRF = 640;
@@ -303,7 +308,6 @@ public final class Config {
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
-
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -783,6 +787,15 @@ public final class Config {
         "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
     soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
         "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
+    
+    soulBinderAttractorCystalLevels = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalLevels", soulBinderAttractorCystalLevels,
+        "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
+    soulBinderEnderCystalLevels = config.get(sectionSoulBinder.name, "soulBinderEnderCystalLevels", soulBinderEnderCystalLevels,
+        "The number of levels required to create an ender crystal.").getInt(soulBinderEnderCystalLevels);
+    soulBinderReanimationLevels = config.get(sectionSoulBinder.name, "soulBinderReanimationLevels", soulBinderReanimationLevels,
+        "The number of levels required to re-animate a mob head.").getInt(soulBinderReanimationLevels);
+    soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,
+        "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
 
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);

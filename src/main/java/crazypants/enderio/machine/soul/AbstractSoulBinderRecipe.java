@@ -20,10 +20,12 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   private int energyRequired;
   private String uid;
   private Class<?> entityClass;
+  private int xpRequired;
   
   
-  protected AbstractSoulBinderRecipe(int energyRequired, String uid, Class<?> entityClass) {  
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpRequired, String uid, Class<?> entityClass) {  
     this.energyRequired = energyRequired;
+    this.xpRequired = xpRequired;
     this.uid = uid;
     this.entityClass = entityClass;    
   }
@@ -31,6 +33,11 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public String getUid() {
     return uid;
+  }
+    
+  @Override
+  public int getExperienceRequired() {  
+    return xpRequired;
   }
 
   @Override

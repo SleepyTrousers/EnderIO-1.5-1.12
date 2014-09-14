@@ -24,12 +24,16 @@ import crazypants.enderio.machine.painter.GuiPainter;
 import crazypants.enderio.machine.painter.PainterContainer;
 import crazypants.enderio.machine.painter.TileEntityPainter;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.PacketDrainPlayerXP;
+import crazypants.enderio.xp.PacketExperianceContainer;
 
 public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   
   public static int renderId;
   
-  public static BlockSoulBinder create() {    
+  public static BlockSoulBinder create() {
+    PacketDrainPlayerXP.register();
+    PacketExperianceContainer.register();
     BlockSoulBinder result = new BlockSoulBinder();
     result.init();
     return result;
@@ -67,7 +71,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileSoulBinder) {
-      return new GuiSoulBinder(player.inventory, (AbstractMachineEntity) te);
+      return new GuiSoulBinder(player.inventory, (TileSoulBinder) te);
     }
     return null;
   }

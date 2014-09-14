@@ -19,7 +19,7 @@ public class SoulBinderReanimationRecipe extends AbstractSoulBinderRecipe {
   public static SoulBinderReanimationRecipe instance = new SoulBinderReanimationRecipe();
 
   private SoulBinderReanimationRecipe() {
-    super(Config.soulBinderReanimationRF, "SoulBinderReanimationRecipe", EntityZombie.class);
+    super(Config.soulBinderReanimationRF, Config.soulBinderReanimationLevels, "SoulBinderReanimationRecipe", EntityZombie.class);
   }
 
   @Override

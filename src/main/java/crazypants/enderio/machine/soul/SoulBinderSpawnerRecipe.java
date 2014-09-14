@@ -27,6 +27,11 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   }
 
   @Override
+  public int getExperienceRequired() {   
+    return Config.soulBinderBrokenSpawnerLevels;
+  }
+
+  @Override
   public boolean isRecipe(MachineRecipeInput... inputs) {
     int validCount = 0;
     for(MachineRecipeInput input : inputs) {

@@ -6,6 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 
@@ -23,6 +25,10 @@ public class ExperienceContainer {
   
   public ExperienceContainer(int maxStored) {
     maxXp = maxStored;
+  }
+  
+  public int getMaximumExperiance() {    
+    return maxXp;
   }
 
   public int getExperienceLevel() {
@@ -78,11 +84,11 @@ public class ExperienceContainer {
 
   public void givePlayerXp(EntityPlayer player, int levels) {
     for (int i = 0; i < levels && experienceTotal > 0; i++) {
-      givePlayerXp(player);
+      givePlayerXpLevel(player);
     }
   }
 
-  public void givePlayerXp(EntityPlayer player) {
+  public void givePlayerXpLevel(EntityPlayer player) {
     int currentXP = XpUtil.getPlayerXP(player);
     int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1) + 1;
     int requiredXP = nextLevelXP - currentXP;
@@ -97,6 +103,18 @@ public class ExperienceContainer {
     addExperience(newXp);
   }
   
+    
+  public void drainPlayerXpToReachLevel(EntityPlayer player, int level) {    
+    int targetXP = XpUtil.getExperienceForLevel(level);
+    int requiredXP = targetXP - experienceTotal;
+    if(requiredXP <= 0) {
+      return;
+    }
+    int drainXP = Math.min(requiredXP, XpUtil.getPlayerXP(player));
+    addExperience(drainXP);
+    XpUtil.addPlayerXP(player, -drainXP);    
+  }
+  
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
     if(resource == null || !canDrain(from, resource.getFluid())) {
       return null;
@@ -106,7 +124,7 @@ public class ExperienceContainer {
 
   
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    int available = XpUtil.experianceToLiquid(experienceTotal);
+    int available = getFluidAmount();
     int canDrain = Math.min(available, maxDrain);
     if(doDrain) {      
       int newXp = experienceTotal - XpUtil.liquidToExperiance(canDrain);
@@ -118,9 +136,40 @@ public class ExperienceContainer {
     return new FluidStack(EnderIO.fluidXpJuice, canDrain);
   }
 
+  public boolean canFill(ForgeDirection from, Fluid fluid) {
+    return fluid != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+  }
+  
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    if(resource == null) {
+      return 0;
+    }
+    if(!canFill(from, resource.getFluid())) {
+      return 0;
+    }
+    int canFill = Math.min(resource.amount, getMaxFluidAmount() - getFluidAmount());
+    if(doFill) {
+      addExperience(XpUtil.liquidToExperiance(canFill));
+    }
+    return canFill;
+  }
   
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
     return fluid != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+  }
+  
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {    
+    return new FluidTankInfo[] {
+      new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getMaxFluidAmount())  
+    };
+  }
+
+  private int getMaxFluidAmount() {
+    return XpUtil.experianceToLiquid(maxXp);
+  }
+
+  private int getFluidAmount() {
+   return XpUtil.experianceToLiquid(experienceTotal);
   }
   
   public void readFromNBT(NBTTagCompound nbtRoot) {

@@ -4,6 +4,12 @@ import java.util.List;
 
 import scala.xml.persistent.SetStorage;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -12,12 +18,17 @@ import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.xp.ExperienceContainer;
+import crazypants.enderio.xp.IHaveExperience;
+import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.XpUtil;
 
-public class TileSoulBinder extends AbstractPoweredTaskEntity {
+public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler {
 
   public static final int POWER_PER_TICK_ONE = Config.soulBinderLevelOnePowerPerTickRF;
   private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2, 
@@ -33,9 +44,16 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
   
   private ICapacitor capacitor;
   
+  private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(40));
+  
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));
     capacitor = CAP_ONE;
+  }
+
+  @Override
+  public ExperienceContainer getContainer() {  
+    return xpCont;
   }
 
   @Override
@@ -46,6 +64,53 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
   @Override
   public int getInventoryStackLimit() {
     return 1;
+  }
+  
+  @Override
+  protected boolean processTasks(boolean redstoneChecksPassed) {
+    if(xpCont.isDirty()) {
+      PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
+      xpCont.setDirty(false);
+    }
+    return super.processTasks(redstoneChecksPassed);
+  }
+
+  @Override
+  protected IMachineRecipe canStartNextTask(float chance) {
+    IMachineRecipe recipe = super.canStartNextTask(chance);
+    if(recipe == null) {
+      return null;
+    }
+    int xpRequired = ((ISoulBinderRecipe)recipe).getExperienceRequired();
+    if(xpCont.getExperienceTotal() >= xpRequired) {
+      return recipe;
+    }
+    return null;
+  }
+  
+  public int getCurrentlyRequiredLevel() {
+    if(currentTask != null) {
+      return -1;
+    }
+    IMachineRecipe nextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+    if(! (nextRecipe instanceof ISoulBinderRecipe)) {
+      return -1;
+    }
+    return ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();    
+  }
+  
+
+  @Override
+  protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
+    int xpRequired = ((ISoulBinderRecipe)nextRecipe).getExperienceRequired();
+    if(xpCont.getExperienceLevel() < xpRequired) {
+      return false;
+    }        
+    if(super.startNextTask(nextRecipe, chance)) {           
+      xpCont.drain(ForgeDirection.UNKNOWN, XpUtil.getLiquidForLevel(xpRequired), true);
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -73,7 +138,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
     }
     return false;
-    //return SoulBinderSpawnerRecipe.instance.isValidInput(new MachineRecipeInput(slot, item));
   }
 
   public void setCapacitor(Capacitors capacitorType) {    
@@ -117,8 +181,49 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity {
     }
     return res;
   }
-  
-  
-  
 
+  @Override
+  public boolean canFill(ForgeDirection from, Fluid fluid) {    
+    return xpCont.canFill(from, fluid);
+  }
+  
+  @Override
+  public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {   
+    return xpCont.fill(from, resource,doFill);
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {    
+    return xpCont.drain(from, resource, doDrain);
+  }
+
+  @Override
+  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {    
+    return xpCont.drain(from, maxDrain, doDrain);
+  }
+
+  @Override
+  public boolean canDrain(ForgeDirection from, Fluid fluid) {    
+    return xpCont.canDrain(from, fluid);
+  }
+
+  @Override
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {    
+    return xpCont.getTankInfo(from);
+  }
+
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);
+    xpCont.readFromNBT(nbtRoot);
+  }
+
+  @Override
+  public void writeCommon(NBTTagCompound nbtRoot) { 
+    super.writeCommon(nbtRoot);
+    xpCont.writeToNBT(nbtRoot);
+  }
+  
+  
+  
 }

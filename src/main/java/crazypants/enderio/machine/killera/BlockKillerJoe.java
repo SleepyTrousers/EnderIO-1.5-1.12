@@ -25,7 +25,7 @@ import crazypants.enderio.machine.tank.PacketTank;
 import crazypants.enderio.machine.tank.TileTank;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.PacketExperianceContainer;
-import crazypants.enderio.xp.PacketGiveXP;
+import crazypants.enderio.xp.PacketGivePlayerXP;
 import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 
@@ -39,7 +39,7 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
   public static BlockKillerJoe create() {
     PacketHandler.INSTANCE.registerMessage(PacketNutrientLevel.class, PacketNutrientLevel.class, PacketHandler.nextID(), Side.CLIENT);
     PacketHandler.INSTANCE.registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);    
-    PacketGiveXP.register();
+    PacketGivePlayerXP.register();
     PacketExperianceContainer.register();
     
     BlockKillerJoe res = new BlockKillerJoe();

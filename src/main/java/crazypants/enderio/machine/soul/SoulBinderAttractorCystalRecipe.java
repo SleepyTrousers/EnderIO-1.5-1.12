@@ -13,7 +13,7 @@ public class SoulBinderAttractorCystalRecipe extends AbstractSoulBinderRecipe {
   public static SoulBinderAttractorCystalRecipe instance = new SoulBinderAttractorCystalRecipe();
 
   private SoulBinderAttractorCystalRecipe() {
-    super(Config.soulBinderAttractorCystalRF, "SoulBinderAttractorCystalRecipe", EntityVillager.class);
+    super(Config.soulBinderAttractorCystalRF, Config.soulBinderAttractorCystalLevels, "SoulBinderAttractorCystalRecipe", EntityVillager.class);
   }
 
   @Override

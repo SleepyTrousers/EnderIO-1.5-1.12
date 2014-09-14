@@ -24,7 +24,7 @@ public class ContainerSoulBinder  extends AbstractMachineContainer {
       @Override
       public boolean isItemValid(ItemStack itemStack) {
         return tileEntity.isItemValidForSlot(1, itemStack);
-      }
+      }      
     });    
     addSlotToContainer(new Slot(tileEntity, 2, 112, 34) {
       @Override

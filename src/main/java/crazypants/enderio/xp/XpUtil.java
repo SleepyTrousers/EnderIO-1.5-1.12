@@ -28,6 +28,14 @@ public class XpUtil {
     return experianceToLiquid(getExperienceForLevel(level));
   }
   
+//  public static int getTotalExperienceForLevel(int level) {
+//    int res = 0;
+//    for(int i=0;i<level;i++) {
+//      res += getExperienceForLevel(i+1);
+//    }
+//    return res;
+//  }
+  
   public static int getExperienceForLevel(int level) {
     if (level == 0) { return 0; }
     if (level > 0 && level < 16) {
