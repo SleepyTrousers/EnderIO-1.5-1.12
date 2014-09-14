@@ -111,10 +111,10 @@ public class MachineRecipes {
     //alloy smelter
     ItemStack alloySmelter = new ItemStack(EnderIO.blockAlloySmelter, 1, 0);
     if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bcb", "cmc", "bfb", 'c', Items.cauldron, 'm', machineChassi, 'b', Blocks.brick_block, 'f',
+      GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', Blocks.iron_block, 'f',
           Blocks.furnace));
     } else {      
-        GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bcb", "fmf", "bfb", 'c', Items.cauldron, 'm', machineChassi, 'b', Blocks.brick_block, 'f',
+        GameRegistry.addRecipe(new ShapedOreRecipe(alloySmelter, "bfb", "fmf", "bcb", 'c', Items.cauldron, 'm', machineChassi, 'b', Items.iron_ingot, 'f',
             Blocks.furnace));
       
     }
