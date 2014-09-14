@@ -1,23 +1,36 @@
 ------------------------------------------------------
 Version 2.1.0_beta
 ------------------------------------------------------
+
 Changes
 - Removed MJ support from machines
-- Power conduits can output but longer recieve MJ 
+- Power conduits can output but longer recieve MJ
+- Reduced default IO for tier 1 power conduits 
 - Updated all config entries to use RF
 - Added Slice'N'Splice
 - Added Soul Binder
-- Added black list for Soul Vial and Powered Spawners
+- Added Attractor Obelisk
+- Added Aversion Oblisk
+- Added Experience Obelisk
+- Added Experience Rod
+- Added Liquid XP (Open Blocks compatible)
 - Added Spoon upgrade for Dark Steel Pick
 - Added Travel upgrade for Dark Steel Pick and The Ender
-- Reduced default IO for tier 1 power conduits
+- Conduit probe now has a 'copy/paste' mode to copy conduit settings.
+- Improved Staff of Travelling and Yeta Wrench rendering
+- FarmStation: crops other than trees now require a hoe to be harvested, and the hoe takes 1 damage point per harvest
+- Farm now supports fertilized dirt
+- Many changes to recipes
+- Right mouse button now goes 'back' on the color and redstone mode buttons.
+
+
+Config
 - Added config option for power conduit IO values
 - Added config option to stop power conduits of different tiers connecting
 - Added config option for stirling gen output
 - Added config option for painter power use
-- FarmStation: crops other than trees now require a hoe to be harvested, and the hoe takes 1 damage point per harvest
-- Many changes to recipes
-- Farm now supports fertilized dirt
+- Added config option to disable tinker's XP bushes in farming station
+- Added black list for Soul Vial and Powered Spawners
 
 Bugs
 - Farm 'error messages' flickering on and off
