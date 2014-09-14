@@ -43,6 +43,10 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
   @Override
   public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+    return onActivated(player, world, x, y, z, side);
+  }
+
+  public static boolean onActivated(EntityPlayer player, World world, int x, int y, int z, int side) {
     if(world.isRemote) {
       return false;
     }
@@ -67,7 +71,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     return res;
   }
 
-  private boolean tranferFromBlockToPlayer(EntityPlayer player, World world, int x, int y, int z, int side) {
+  public static boolean tranferFromBlockToPlayer(EntityPlayer player, World world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof IFluidHandler)) {
       return false;
@@ -94,7 +98,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     return true;
   }
 
-  private boolean tranferFromPlayerToBlock(EntityPlayer player, World world, int x, int y, int z, int side) {
+  public static boolean tranferFromPlayerToBlock(EntityPlayer player, World world, int x, int y, int z, int side) {
 
     if(player.experienceTotal <= 0) {
       return false;

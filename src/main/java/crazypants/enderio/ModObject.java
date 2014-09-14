@@ -55,6 +55,7 @@ public enum ModObject {
   blockSliceAndSplice,
   blockAttractor,
   blockSpawnGuard,
+  blockExperienceObelisk,
 
   blockPoweredSpawner,
   itemBrokenSpawner,

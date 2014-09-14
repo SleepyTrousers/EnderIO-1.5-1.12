@@ -19,7 +19,7 @@ enderio.blockConduitBundle=Conduit Bundle
 enderio.blockConduitFacade=Conduit Facade
 item.enderio.itemConduitFacade.name=Conduit Facade
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Painted in the Painting Machine
-item.enderio.itemConduitFacade.tooltip.detailed.line2=Right click on a conduit to place
+item.enderio.itemConduitFacade.tooltip.detailed.line2=R-Click on a conduit to place
 item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
 item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
 
@@ -196,7 +196,7 @@ tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
 tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
 tile.blockReservoir.tooltip.detailed.line3=an infinite water source
 tile.blockReservoir.tooltip.detailed.line4=Produces one bucket per second
-tile.blockReservoir.tooltip.detailed.line5=Right click with a wrench to
+tile.blockReservoir.tooltip.detailed.line5=R-Click with a wrench to
 tile.blockReservoir.tooltip.detailed.line6=enable auto-output
 
 tile.blockAlloySmelter.name=Alloy Smelter
@@ -353,6 +353,11 @@ tile.blockSpawnGuard.name=Aversion Obelisk
 tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
 tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
 
+tile.blockExperienceObelisk.name=Experience Obelisk
+tile.blockExperienceObelisk.tooltip.detailed.line1=When placed on a fluid tank
+tile.blockExperienceObelisk.tooltip.detailed.line2=R-Click to use stored Liquid XP
+tile.blockExperienceObelisk.tooltip.detailed.line3=Shift-R-Click with an empty hand
+tile.blockExperienceObelisk.tooltip.detailed.line4=to drain player XP into the tank 
 
 enderio.machine.tooltip.configured=(Configured)
 
@@ -384,8 +389,8 @@ enderio.blockTravelPlatform.outOfRange=Destination out of range
 item.itemTravelStaff.name=Staff of Traveling
 item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
 item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be
-item.itemTravelStaff.tooltip.detailed.line3=activated by <r-click>
-item.itemTravelStaff.tooltip.detailed.line4=<shift><r-click> will teleport the
+item.itemTravelStaff.tooltip.detailed.line3=activated by R-Click
+item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
@@ -420,7 +425,7 @@ item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
 
 item.itemMagnet.name=Electromagnet
 item.itemMagnet.tooltip.detailed.line1=Pulls nearby item towards you
-item.itemMagnet.tooltip.detailed.line2=Shift+R-Click to enable / disable
+item.itemMagnet.tooltip.detailed.line2=Shift-R-Click to enable / disable
 item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.tooltip.detailed.line4=hot bar to function
 
@@ -433,14 +438,14 @@ item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
 item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
 
 item.itemSoulVessel.name=Soul Vial
-item.itemSoulVessel.tooltip.detailed.line1=Right-Click on a mob to
+item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
-item.itemSoulVessel.tooltip.detailed.line3=Click again to release it
+item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
 
 item.itemXpTransfer.name=Experience Rod
 item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing 
 item.itemXpTransfer.tooltip.detailed.line2=liquid XP to gain levels
-item.itemXpTransfer.tooltip.detailed.line3=Shift R-Click to transfer levels to
+item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 item.itemXpTransfer.tooltip.detailed.line4=the tank
 
 skullZombieElectrode.name=Zombie Electrode
@@ -498,7 +503,7 @@ enderio.darksteel.upgrade.jump_one.name=Jump
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
 
 enderio.darksteel.upgrade.travel.name=Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and r-click to teleport or
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
 enderio.darksteel.upgrade.travel.tooltip.detailed.line2=activate a travel anchor or Ender IO
 
 enderio.darksteel.upgrade.spoon.name=Spoon
