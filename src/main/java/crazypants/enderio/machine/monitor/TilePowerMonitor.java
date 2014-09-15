@@ -146,7 +146,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
       if(!engineControlEnabled) {
         sig = null;
       } else {
-        float percentFull = getPercentFull();
+        float percentFull = getPercentFull();        
         if(currentlyEmmittedSignal == null) {
           if(percentFull <= startLevel) {
             sig = new Signal(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
@@ -176,7 +176,7 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   }
 
   private float getPercentFull() {
-    return (powerInConduits + powerInCapBanks) / (maxPowerInCoduits + maxPowerInCapBanks);
+    return (float)(powerInConduits + powerInCapBanks) / (maxPowerInCoduits + maxPowerInCapBanks);
   }
 
   private void update(NetworkPowerManager pm) {

@@ -166,7 +166,7 @@ public final class Config {
   public static float darkSteelAxeEffeciencyBoostWhenPowered = 2;
   public static float darkSteelAxeSpeedPenaltyMultiHarvest = 8;
 
-  public static int darkSteelUpgradeVibrantCost = 20;
+  public static int darkSteelUpgradeVibrantCost = 10;
   public static int darkSteelUpgradePowerOneCost = 10;
   public static int darkSteelUpgradePowerTwoCost = 20;
   public static int darkSteelUpgradePowerThreeCost = 30;
