@@ -47,6 +47,7 @@ public class MaterialRecipes {
 
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
     OreDictionary.registerOre("glass", pureGlass);
+    OreDictionary.registerOre("glass", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_GLASS.ordinal()));
     OreDictionary.registerOre("blockGlass", pureGlass);
     OreDictionary.registerOre("blockGlass", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.ENLIGHTENED_GLASS.ordinal()));
     OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
