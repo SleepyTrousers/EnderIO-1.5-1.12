@@ -91,6 +91,7 @@ tile.blockDarkIronBars.name=Dark Iron Bars
 tile.blockEndermanSkull.name=Enderman Skull
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
+enderio.tooltip.isBeaconBase=Can be used as beacon base
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
