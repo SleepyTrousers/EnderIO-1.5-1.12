@@ -137,8 +137,16 @@ public final class Config {
   public static float darkSteelSpeedOneSprintModifier = 0.1f;
   public static float darkSteelSpeedTwoSprintMultiplier = 0.3f;
   public static float darkSteelSpeedThreeSprintMultiplier = 0.5f;
+  
+  public static int darkSteelSpeedOneCost = 10;
+  public static int darkSteelSpeedTwoCost = 15;
+  public static int darkSteelSpeedThreeCost = 20;
 
-  public static double darkSteelBootsJumpModifier = 1.5;
+  
+  public static double darkSteelBootsJumpModifier = 1.5;  
+  public static int darkSteelJumpOneCost = 10;
+  public static int darkSteelJumpTwoCost = 15;
+  public static int darkSteelJumpThreeCost = 20;  
 
   public static int darkSteelWalkPowerCost = darkSteelPowerStorageLevelTwo / 3000;
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
@@ -168,24 +176,24 @@ public final class Config {
 
   public static int darkSteelUpgradeVibrantCost = 10;
   public static int darkSteelUpgradePowerOneCost = 10;
-  public static int darkSteelUpgradePowerTwoCost = 20;
-  public static int darkSteelUpgradePowerThreeCost = 30;
+  public static int darkSteelUpgradePowerTwoCost = 15;
+  public static int darkSteelUpgradePowerThreeCost = 20;
 
-  public static int darkSteelGliderCost = 15;
+  public static int darkSteelGliderCost = 10;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
   public static double darkSteelGliderVerticalSpeed = -0.05;
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
 
-  public static int darkSteelSwimCost = 15;
+  public static int darkSteelSwimCost = 10;
 
-  public static int darkSteelNightVisionCost = 15;
+  public static int darkSteelNightVisionCost = 10;
 
   public static int darkSteelSoundLocatorCost = 10;
   public static int darkSteelSoundLocatorRange = 40;
   public static int darkSteelSoundLocatorLifespan = 40;
   
   public static int darkSteelTravelCost = 30;  
-  public static int darkSteelSpoonCost = 15;
+  public static int darkSteelSpoonCost = 10;
 
   public static int hootchPowerPerCycle = 6;
   public static int hootchPowerTotalBurnTime = 6000;
@@ -308,7 +316,7 @@ public final class Config {
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
-
+  
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -535,14 +543,28 @@ public final class Config {
         "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
 
     darkSteelUpgradeVibrantCost = config.get(sectionDarkSteel.name, "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost,
-        "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradeVibrantCost);
+        "Number of levels required for the 'Empowered.").getInt(darkSteelUpgradeVibrantCost);
     darkSteelUpgradePowerOneCost = config.get(sectionDarkSteel.name, "darkSteelUpgradePowerOneCost", darkSteelUpgradePowerOneCost,
-        "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerOneCost);
+        "Number of levels required for the 'Power 1.").getInt(darkSteelUpgradePowerOneCost);
     darkSteelUpgradePowerTwoCost = config.get(sectionDarkSteel.name, "darkSteelUpgradePowerTwoCost", darkSteelUpgradePowerTwoCost,
-        "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerTwoCost);
+        "Number of levels required for the 'Power 2.").getInt(darkSteelUpgradePowerTwoCost);
     darkSteelUpgradePowerThreeCost = config.get(sectionDarkSteel.name, "darkSteelUpgradePowerThreeCost", darkSteelUpgradePowerThreeCost,
-        "Number of levels required for the 'Vibrant' upgrade.").getInt(darkSteelUpgradePowerThreeCost);
+        "Number of levels required for the 'Power 3' upgrade.").getInt(darkSteelUpgradePowerThreeCost);
 
+    darkSteelJumpOneCost = config.get(sectionDarkSteel.name, "darkSteelJumpOneCost", darkSteelJumpOneCost,
+        "Number of levels required for the 'Jump 1' upgrade.").getInt(darkSteelJumpOneCost);
+    darkSteelJumpTwoCost = config.get(sectionDarkSteel.name, "darkSteelJumpTwoCost", darkSteelJumpTwoCost,
+        "Number of levels required for the 'Jump 2' upgrade.").getInt(darkSteelJumpTwoCost);
+    darkSteelJumpThreeCost = config.get(sectionDarkSteel.name, "darkSteelJumpThreeCost", darkSteelJumpThreeCost,
+        "Number of levels required for the 'Jump 3' upgrade.").getInt(darkSteelJumpThreeCost);
+    
+    darkSteelSpeedOneCost = config.get(sectionDarkSteel.name, "darkSteelSpeedOneCost", darkSteelSpeedOneCost,
+        "Number of levels required for the 'Speed 1' upgrade.").getInt(darkSteelSpeedOneCost);
+    darkSteelSpeedTwoCost = config.get(sectionDarkSteel.name, "darkSteelSpeedTwoCost", darkSteelSpeedTwoCost,
+        "Number of levels required for the 'Speed 2' upgrade.").getInt(darkSteelSpeedTwoCost);
+    darkSteelSpeedThreeCost = config.get(sectionDarkSteel.name, "darkSteelSpeedThreeCost", darkSteelSpeedThreeCost,
+        "Number of levels required for the 'Speed 3' upgrade.").getInt(darkSteelSpeedThreeCost);
+    
     darkSteelSpeedOneWalkModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneWalkModifier);
     darkSteelSpeedTwoWalkMultiplier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedTwoWalkMultiplier", darkSteelSpeedTwoWalkMultiplier,

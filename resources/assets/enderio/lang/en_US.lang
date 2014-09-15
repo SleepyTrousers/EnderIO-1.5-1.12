@@ -471,7 +471,7 @@ enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
 enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
-enderio.item.darkSteel_sword.tooltip.line3=+1 Damage when Powered
+enderio.item.darkSteel_sword.tooltip.line3=+2 Damage when Powered
 
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
 enderio.item.darkSteel_armor.tooltip.line2=when powered
