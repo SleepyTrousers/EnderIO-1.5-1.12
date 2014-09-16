@@ -93,6 +93,7 @@ public class RedstoneModeButton extends IconButtonEIO {
     if(r.contains(mouseX, mouseY)) {
       if(rightMouseDown && Mouse.getEventButton() == 1 && !Mouse.getEventButtonState()) {
         prevMode();
+        gui.doActionPerformed(this);
       }
       rightMouseDown = Mouse.getEventButton() == 1 && Mouse.getEventButtonState();
     } else {

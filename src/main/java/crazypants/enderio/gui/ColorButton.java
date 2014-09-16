@@ -59,7 +59,7 @@ public class ColorButton extends IconButtonEIO {
     if(colorIndex < 0) {
       colorIndex = ItemDye.field_150923_a.length - 1;
     }
-    setColorIndex(colorIndex);
+    setColorIndex(colorIndex);    
   }
 
   public int getColorIndex() {
@@ -85,6 +85,7 @@ public class ColorButton extends IconButtonEIO {
       if(r.contains(mouseX, mouseY)) {
         if(rightMouseDown && Mouse.getEventButton() == 1 && !Mouse.getEventButtonState()) {
           prevColor();
+          gui.doActionPerformed(this);
         }
         rightMouseDown = Mouse.getEventButton() == 1 && Mouse.getEventButtonState();
       } else {
