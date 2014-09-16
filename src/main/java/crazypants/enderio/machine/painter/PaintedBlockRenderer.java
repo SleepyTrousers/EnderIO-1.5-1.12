@@ -3,10 +3,12 @@ package crazypants.enderio.machine.painter;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.render.CubeRenderer;
+import crazypants.render.IconUtil;
 
 public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -17,7 +19,7 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
     this.renderId = renderId;
     this.defaultBlock = defaultBlock;
   }
-  
+
   @Override
   public int getRenderId() {
     return renderId;
@@ -42,15 +44,23 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
     if(srcBlk == null) {
       srcBlk = defaultBlock;
     }
-    
+
     IBlockAccess origBa = rb.blockAccess;
-    rb.blockAccess = new PaintedBlockAccessWrapper(origBa);
-    if(srcBlk == block) {
-      rb.renderStandardBlock(srcBlk, x, y, z);
-    } else {
-      rb.renderBlockByRenderType(srcBlk, x, y, z);
+    try {      
+      rb.blockAccess = new PaintedBlockAccessWrapper(origBa);
+      if(srcBlk == block) {
+        rb.renderStandardBlock(srcBlk, x, y, z);
+      } else {
+        rb.renderBlockByRenderType(srcBlk, x, y, z);
+      }      
+    } catch (Exception e) {
+      //just in case the paint source wont render safely in this way
+      rb.setOverrideBlockTexture(IconUtil.errorTexture);
+      rb.renderStandardBlock(Blocks.stone, x, y, z);
+      rb.setOverrideBlockTexture(null);
+    } finally {
+      rb.blockAccess = origBa;
     }
-    rb.blockAccess = origBa;
 
     return true;
   }
