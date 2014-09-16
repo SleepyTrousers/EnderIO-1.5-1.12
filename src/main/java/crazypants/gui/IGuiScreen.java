@@ -21,6 +21,8 @@ public interface IGuiScreen {
   void removeButton(GuiButton button);
 
   int getOverlayOffsetX();
+  
+  void doActionPerformed(GuiButton but);
 
 
 }

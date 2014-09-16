@@ -271,6 +271,9 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     return 0;
   }
   
-  
+  @Override
+  public void doActionPerformed(GuiButton guiButton) {
+    actionPerformed(guiButton); 
+  }
 
 }

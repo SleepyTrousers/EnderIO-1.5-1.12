@@ -93,6 +93,7 @@ tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
 tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
+enderio.tooltip.isBeaconBase=Can be used as beacon base
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation

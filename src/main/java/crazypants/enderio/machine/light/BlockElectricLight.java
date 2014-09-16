@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -237,6 +238,15 @@ public class BlockElectricLight extends BlockEio {
       }
     }
     return super.removedByPlayer(world, player, x, y, z);
+  }
+  
+  @Override
+  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te != null && te instanceof TileElectricLight) {
+      return createDrop((TileElectricLight) te);
+    }
+    return new ItemStack(this);
   }
 
 }
