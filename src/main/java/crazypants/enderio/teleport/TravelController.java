@@ -1,5 +1,6 @@
 package crazypants.enderio.teleport;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -22,6 +23,8 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -66,8 +69,14 @@ public class TravelController {
   private double tanFovRad;
 
   private Minecraft mc = Minecraft.getMinecraft();
+  
+  private final List<UniqueIdentifier> blackList = new ArrayList<GameRegistry.UniqueIdentifier>();
 
   private TravelController() {
+    String[] blackListNames = Config.travelStaffBlinkBlackList;
+    for(String name : blackListNames) {
+      blackList.add(new UniqueIdentifier(name));  
+    }    
   }
 
   public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
@@ -129,7 +138,7 @@ public class TravelController {
       for (MovingObjectPosition pos : res) {
         if(pos != null) {
           Block hitBlock = player.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-          if(hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0) {
+          if(isBlackListedBlock(player, pos, hitBlock)) {
             maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(pos.blockX + 0.5, pos.blockY + 0.5, pos.blockZ + 0.5)) - 1.5 - lookComp);            
           }
         }
@@ -171,6 +180,15 @@ public class TravelController {
       }
     }
     return false;
+  }
+
+  private boolean isBlackListedBlock(EntityPlayer player, MovingObjectPosition pos, Block hitBlock) {
+    UniqueIdentifier ui = GameRegistry.findUniqueIdentifierFor(hitBlock);
+    if(ui == null) {
+      return false;
+    }
+    //hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0;
+    return blackList.contains(ui);
   }
 
   private boolean doBlinkAround(EntityPlayer player, Vector3d sample) {

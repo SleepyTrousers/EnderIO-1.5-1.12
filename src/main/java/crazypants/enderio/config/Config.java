@@ -121,6 +121,9 @@ public final class Config {
   public static boolean travelStaffBlinkEnabled = true;
   public static boolean travelStaffBlinkThroughSolidBlocksEnabled = true;
   public static boolean travelStaffBlinkThroughClearBlocksEnabled = true;
+  public static String[] travelStaffBlinkBlackList = new String[] {
+    "minecraft:bedrock"
+  };
 
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
@@ -316,7 +319,7 @@ public final class Config {
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
-  
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -507,11 +510,11 @@ public final class Config {
     travelStaffBlinkPauseTicks = config.get(sectionStaff.name, "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
 
-    travelStaffEnabled = config.get(sectionItems.name, "travelStaffEnabled", travelAnchorEnabled,
+    travelStaffEnabled = config.get(sectionStaff.name, "travelStaffEnabled", travelAnchorEnabled,
         "If set to false: the travel staff will not be craftable.").getBoolean(travelStaffEnabled);
-    travelStaffBlinkEnabled = config.get(sectionItems.name, "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
+    travelStaffBlinkEnabled = config.get(sectionStaff.name, "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
         "If set to false: the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
-    travelStaffBlinkThroughSolidBlocksEnabled = config.get(sectionItems.name, "travelStaffBlinkThroughSolidBlocksEnabled",
+    travelStaffBlinkThroughSolidBlocksEnabled = config.get(sectionStaff.name, "travelStaffBlinkThroughSolidBlocksEnabled",
         travelStaffBlinkThroughSolidBlocksEnabled,
         "If set to false: the travel staff can be used to blink through any block.").getBoolean(travelStaffBlinkThroughSolidBlocksEnabled);
     travelStaffBlinkThroughClearBlocksEnabled = config
@@ -520,6 +523,8 @@ public final class Config {
                 "staff can only be used to blink through transparent or partial blocks (e.g. torches). " +
                 "If both are false: only air blocks may be teleported through.")
         .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
+    travelStaffBlinkBlackList = config.getStringList("travelStaffBlinkBlackList", sectionStaff.name, travelStaffBlinkBlackList, 
+        "Lists the blocks that cannot be teleported through in the form 'modID:blockName'");
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,
         "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);

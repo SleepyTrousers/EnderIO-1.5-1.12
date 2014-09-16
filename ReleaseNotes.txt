@@ -31,6 +31,7 @@ Config
 - Added config option for painter power use
 - Added config option to disable tinker's XP bushes in farming station
 - Added black list for Soul Vial and Powered Spawners
+- Added block black list for teleporting using staff / travel upgrade
 
 Bugs
 - Farm 'error messages' flickering on and off
