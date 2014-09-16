@@ -81,7 +81,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
     if(evt.block instanceof BlockMobSpawner) {
-      if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode) {
+      if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().worldObj.isRemote) {
         TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.x, evt.y, evt.z);
         if(tile instanceof TileEntityMobSpawner) {
           
