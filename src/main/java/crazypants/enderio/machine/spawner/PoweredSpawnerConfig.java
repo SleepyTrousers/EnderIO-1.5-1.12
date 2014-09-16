@@ -31,7 +31,7 @@ public class PoweredSpawnerConfig {
   private final Map<String, Double> costs = new HashMap<String, Double>();
 
   private final List<String> blackList = new ArrayList<String>();
-
+  
   public double getCostMultiplierFor(String entity) {
     Double val = costs.get(entity);
     if(val == null) {
@@ -78,7 +78,7 @@ public class PoweredSpawnerConfig {
       Log.error("Could not load Powered Spawner costs from " + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
       e.printStackTrace();
     }
-
+    
     try {
       //User
       configText = IoUtil.copyConfigFromJar(USER_FILE_NAME, false);
@@ -86,7 +86,8 @@ public class PoweredSpawnerConfig {
       rootObj = root.getAsJsonObject();
       costsObj = rootObj.getAsJsonObject("costMultiplier");
       for (Entry<String, JsonElement> entry : costsObj.entrySet()) {
-        costs.put(entry.getKey(), Double.valueOf(entry.getValue().getAsDouble()));
+        double val = Double.valueOf(entry.getValue().getAsDouble());
+        costs.put(entry.getKey(), val);
       }
 
       blkList = rootObj.getAsJsonArray("blackList");
@@ -103,7 +104,7 @@ public class PoweredSpawnerConfig {
       Log.error("Could not load user defined Powered Spawner costs from " + IoUtil.getConfigFile(USER_FILE_NAME).getAbsolutePath());
       e.printStackTrace();
     }
-
+    
   }
 
 }

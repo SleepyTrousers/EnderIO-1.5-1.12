@@ -64,21 +64,24 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;
+    this.capacitorType = capacitorType;    
+    ICapacitor refCap;
     switch (capacitorType) {
     case BASIC_CAPACITOR:
-      capacitor = CAP_ONE;
+      refCap = CAP_ONE;      
       break;
     case ACTIVATED_CAPACITOR:
-      capacitor = CAP_TWO;
+      refCap = CAP_TWO;     
       break;
     case ENDER_CAPACITOR:
-      capacitor = CAP_THREE;
+      refCap = CAP_THREE;      
       break;
     default:
-      capacitor = CAP_ONE;
+      refCap = CAP_ONE;
       break;
-    }
+    }    
+    double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
+    capacitor = new BasicCapacitor((int)(refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored());
     forceClientUpdate = true;
   }
 
@@ -133,36 +136,38 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    super.readCustomNBT(nbtRoot);
     logic.readFromNBT(nbtRoot);
+    super.readCustomNBT(nbtRoot);
+    
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
     logic.writeToNBT(nbtRoot);
+    super.writeCustomNBT(nbtRoot);    
 
   }
 
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);
+    //Must read the mob type first so we no the multiplier to be used when calculating input/output power
     String mobType = BlockPoweredSpawner.readMobTypeFromNBT(nbtRoot);
     if(mobType == null) {
       mobType = NULL_ENTITY_NAME;
     }
     logic.setEntityName(mobType);
+    super.readCommon(nbtRoot);    
   }
 
   @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
+  public void writeCommon(NBTTagCompound nbtRoot) {    
     String mobType = logic.getEntityNameToSpawn();
     if(mobType == null || mobType.equals(NULL_ENTITY_NAME)) {
       BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null);
     } else {
       BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, mobType);
     }
+    super.writeCommon(nbtRoot);
   }
 
   @Override

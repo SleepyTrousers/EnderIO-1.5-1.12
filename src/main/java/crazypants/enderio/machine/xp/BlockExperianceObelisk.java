@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.xp;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -67,6 +68,12 @@ public class BlockExperianceObelisk extends BlockEio implements IResourceTooltip
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+  
+  @Override
+  public void registerBlockIcons(IIconRegister iIconRegister) {
+    //Not actualy used, but give it something so it doesn't print an error
+    blockIcon = iIconRegister.registerIcon("enderio:blockAttractorSide");
   }
   
 }
