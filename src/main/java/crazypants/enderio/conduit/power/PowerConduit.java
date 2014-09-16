@@ -285,19 +285,17 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     }
 
     DyeColor col = getExtractionSignalColor(dir);
-    // internal signal
     int signal = ConduitUtil.getInternalSignalForColor(getBundle(), col);
-    if(mode.isConditionMet(mode, signal)) {
-      return true;
+    int exSig = getExternalRedstoneSignalForDir(dir);
+    boolean res;
+    if(mode == RedstoneControlMode.OFF) {
+      //if checking for no signal, must be no signal from both
+      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || mode.isConditionMet(mode, exSig));     
+    } else {      
+      //if checking for a signal, either is fine
+      res = mode.isConditionMet(mode, signal) || (col == DyeColor.RED && mode.isConditionMet(mode, exSig));
     }
-
-    // external signal
-    if(col != DyeColor.RED) {
-      //can't get a non-red signal externally at this stage so no go
-      return false;
-    }
-    int val = getExternalRedstoneSignalForDir(dir);
-    return mode.isConditionMet(mode, val);
+    return res;
   }
 
   private int getExternalRedstoneSignalForDir(ForgeDirection dir) {
