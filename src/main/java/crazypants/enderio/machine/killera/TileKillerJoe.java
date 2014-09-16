@@ -302,19 +302,19 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
       ForgeDirection facingDir = ForgeDirection.getOrientation(facing);
       if(ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
-        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength * 2));
+        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength * 2));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
-        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeAttackLength * 2));
+        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength * 2));
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
       if(facingDir.offsetX == 0) {
-        min.x -= Config.killerJoeAttackWidth * 2;
-        max.x += Config.killerJoeAttackWidth * 2;
+        min.x -= Config.killerJoeHooverXpWidth * 2;
+        max.x += Config.killerJoeHooverXpWidth * 2;
       } else {
-        min.z -= Config.killerJoeAttackWidth * 2;
-        max.z += Config.killerJoeAttackWidth * 2;
+        min.z -= Config.killerJoeHooverXpWidth * 2;
+        max.z += Config.killerJoeHooverXpWidth * 2;
       }
       hooverBounds = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
     }

@@ -271,8 +271,9 @@ public final class Config {
   public static int killerJoeNutrientUsePerAttackMb = 5;
   public static double killerJoeAttackHeight = 2;
   public static double killerJoeAttackWidth = 2;
-  public static double killerJoeAttackLength = 4;
-  public static boolean killerJoeGivePlayerLevelXP = true;
+  public static double killerJoeAttackLength = 4;  
+  public static double killerJoeHooverXpWidth = 5;
+  public static double killerJoeHooverXpLength = 10;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -786,9 +787,11 @@ public final class Config {
     killerJoeAttackWidth = config.get(sectionKiller.name, "killerJoeAttackWidth", killerJoeAttackWidth,
         "The reach of attacks to each side of Joe.").getDouble(killerJoeAttackWidth);
     killerJoeAttackLength = config.get(sectionKiller.name, "killerJoeAttackLength", killerJoeAttackLength,
-        "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);
-    killerJoeGivePlayerLevelXP = config.get(sectionKiller.name, "killerJoeGivePlayerLevelXP", killerJoeGivePlayerLevelXP, 
-        "If true, will give the player one xp of HIS current level. If false, will give the player one level of the killer joe's xp.").getBoolean();
+        "The reach of attacks in front of Joe.").getDouble(killerJoeAttackLength);   
+    killerJoeHooverXpLength = config.get(sectionKiller.name, "killerJoeHooverXpLength", killerJoeHooverXpLength,
+        "The distance from which XP will be gathered to each side of Joe.").getDouble(killerJoeHooverXpLength);
+    killerJoeHooverXpWidth = config.get(sectionKiller.name, "killerJoeHooverXpWidth", killerJoeHooverXpWidth,
+        "The distance from which XP will be gathered in front of Joe.").getDouble(killerJoeHooverXpWidth);
     
 
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
