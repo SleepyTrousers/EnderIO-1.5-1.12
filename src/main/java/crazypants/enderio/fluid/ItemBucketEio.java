@@ -62,9 +62,4 @@ public class ItemBucketEio extends ItemBucket implements IAdvancedTooltipProvide
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     TooltipAddera.instance.addTooltipForFluid(list, itemstack);
   }
-
-
-
-
-
 }
