@@ -1,12 +1,14 @@
 package crazypants.enderio.teleport;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -67,7 +69,7 @@ public class TravelController {
 
   private TravelController() {
   }
-  
+
   public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
     if(!hasTarget()) {
       return false;
@@ -89,7 +91,7 @@ public class TravelController {
     }
     return true;
   }
-  
+
   public boolean doBlink(ItemStack equipped, EntityPlayer player) {
     Vector3d eye = Util.getEyePositionEio(player);
     Vector3d look = Util.getLookVecEio(player);
@@ -116,8 +118,6 @@ public class TravelController {
         sample.add(eye);
         //we test against our feets location
         sample.y -= playerHeight;
-
-        //if(doBlink(player, eye, look, sample, i)) {
         if(doBlinkAround(player, sample)) {
           return true;
         }
@@ -125,11 +125,22 @@ public class TravelController {
       return false;
     } else {
 
+      List<MovingObjectPosition> res = Util.raytraceAll(player.worldObj, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+      for (MovingObjectPosition pos : res) {
+        if(pos != null) {
+          Block hitBlock = player.worldObj.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+          if(hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0) {
+            maxDistance = Math.min(maxDistance, VecmathUtil.distance(eye, new Vector3d(pos.blockX + 0.5, pos.blockY + 0.5, pos.blockZ + 0.5)) - 1.5 - lookComp);            
+          }
+        }
+      }
+
       eye3 = Vec3.createVectorHelper(eye.x, eye.y, eye.z);
 
       Vector3d targetBc = new Vector3d(p.blockX, p.blockY, p.blockZ);
-      double sampleDistance = 1.5;
-      double teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
+      double sampleDistance = 1.5;      
+      double teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance; 
+      
       while (teleDistance < maxDistance) {
         sample.set(look);
         sample.scale(sampleDistance);
@@ -144,7 +155,7 @@ public class TravelController {
         sampleDistance++;
       }
       sampleDistance = -0.5;
-      teleDistance = p.hitVec.distanceTo(eye3) + sampleDistance;
+      teleDistance = VecmathUtil.distance(eye, new Vector3d(p.blockX + 0.5, p.blockY + 0.5, p.blockZ + 0.5)) + sampleDistance;
       while (teleDistance > 1) {
         sample.set(look);
         sample.scale(sampleDistance);
@@ -305,7 +316,7 @@ public class TravelController {
     if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
       return 0;
     }
-    return ((IItemOfTravel)equipped.getItem()).getEnergyStored(equipped);     
+    return ((IItemOfTravel) equipped.getItem()).getEnergyStored(equipped);
   }
 
   public boolean isTravelItemActive(EntityPlayer ep) {
@@ -323,7 +334,7 @@ public class TravelController {
     if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
       return;
     }
-    ((IItemOfTravel)equipped.getItem()).extractInternal(equipped, powerUse);    
+    ((IItemOfTravel) equipped.getItem()).extractInternal(equipped, powerUse);
   }
 
   public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
@@ -419,18 +430,21 @@ public class TravelController {
   }
 
   private boolean canTeleportTo(EntityPlayer player, TravelSource source, BlockCoord bc, World w) {
+    if(bc.y < 1) {
+      return false;
+    }
     if(source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
       Vec3 start = Util.getEyePosition(player);
       Vec3 target = Vec3.createVectorHelper(bc.x + 0.5f, bc.y + 0.5f, bc.z + 0.5f);
       if(!canBlinkTo(bc, w, start, target)) {
         return false;
       }
-    }
+    }   
 
     Block block = w.getBlock(bc.x, bc.y, bc.z);
     if(block == null || block.isAir(w, bc.x, bc.y, bc.z)) {
       return true;
-    }
+    }    
     final AxisAlignedBB aabb = block.getCollisionBoundingBoxFromPool(w, bc.x, bc.y, bc.z);
     return aabb == null || aabb.getAverageEdgeLength() < 0.7;
   }
