@@ -96,7 +96,7 @@ public class TravelController {
     if(isTargetEnderIO()) {
       openEnderIO(equipped, world, player);
     } else if(Config.travelAnchorEnabled) {
-      travelToSelectedTarget(player, source);
+      travelToSelectedTarget(player, source, false);
     }
     return true;
   }
@@ -127,7 +127,7 @@ public class TravelController {
         sample.add(eye);
         //we test against our feets location
         sample.y -= playerHeight;
-        if(doBlinkAround(player, sample)) {
+        if(doBlinkAround(player, sample, true)) {
           return true;
         }
       }
@@ -157,7 +157,7 @@ public class TravelController {
         //we test against our feets location
         sample.y -= playerHeight;
 
-        if(doBlinkAround(player, sample)) {
+        if(doBlinkAround(player, sample, false)) {
           return true;
         }
         teleDistance++;
@@ -172,7 +172,7 @@ public class TravelController {
         //we test against our feets location
         sample.y -= playerHeight;
 
-        if(doBlinkAround(player, sample)) {
+        if(doBlinkAround(player, sample, false)) {
           return true;
         }
         sampleDistance--;
@@ -187,25 +187,24 @@ public class TravelController {
     if(ui == null) {
       return false;
     }
-    //hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0;
     return blackList.contains(ui);
   }
 
-  private boolean doBlinkAround(EntityPlayer player, Vector3d sample) {
-    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y) - 1, (int) Math.round(sample.z)))) {
+  private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
+    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y) - 1, (int) Math.round(sample.z)), conserveMomentum)) {
       return true;
     }
-    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y), (int) Math.round(sample.z)))) {
+    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y), (int) Math.round(sample.z)), conserveMomentum)) {
       return true;
     }
-    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y) + 1, (int) Math.round(sample.z)))) {
+    if(doBlink(player, new BlockCoord((int) Math.round(sample.x), (int) Math.round(sample.y) + 1, (int) Math.round(sample.z)), conserveMomentum)) {
       return true;
     }
     return false;
   }
 
-  private boolean doBlink(EntityPlayer player, BlockCoord coord) {
-    return travelToLocation(player, TravelSource.STAFF_BLINK, coord);
+  private boolean doBlink(EntityPlayer player, BlockCoord coord, boolean conserveMomentum) {
+    return travelToLocation(player, TravelSource.STAFF_BLINK, coord, conserveMomentum);
   }
 
   public boolean showTargets() {
@@ -294,7 +293,7 @@ public class TravelController {
 
         if(isTargetEnderIO()) {
           openEnderIO(null, player.worldObj, player);
-        } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK)) {
+        } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
           input.jump = false;
         }
 
@@ -355,11 +354,11 @@ public class TravelController {
     ((IItemOfTravel) equipped.getItem()).extractInternal(equipped, powerUse);
   }
 
-  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source) {
-    return travelToLocation(player, source, selectedCoord);
+  public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source,boolean conserveMomentum) {
+    return travelToLocation(player, source, selectedCoord, conserveMomentum);
   }
 
-  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord) {
+  public boolean travelToLocation(EntityPlayer player, TravelSource source, BlockCoord coord, boolean conserveMomentum) {
 
     if(source != TravelSource.STAFF_BLINK) {
       TileEntity te = player.worldObj.getTileEntity(coord.x, coord.y, coord.z);
@@ -390,7 +389,7 @@ public class TravelController {
       }
       return false;
     }
-    sendTravelEvent(coord, source, requiredPower);
+    sendTravelEvent(coord, source, requiredPower, conserveMomentum);
     for (int i = 0; i < 6; ++i) {
       player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
           player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
@@ -607,8 +606,8 @@ public class TravelController {
     return TravelSource.BLOCK.maxDistanceTravelledSq;
   }
 
-  private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse) {
-    PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, source.getConserveMomentum());
+  private void sendTravelEvent(BlockCoord bc, TravelSource source, int powerUse, boolean conserveMomentum) {
+    PacketTravelEvent p = new PacketTravelEvent(bc.x, bc.y, bc.z, powerUse, conserveMomentum);
     PacketHandler.INSTANCE.sendToServer(p);
   }
 
