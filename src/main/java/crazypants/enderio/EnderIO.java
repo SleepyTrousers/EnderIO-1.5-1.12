@@ -242,7 +242,6 @@ public class EnderIO {
 
   //Open block compatable liquid XP
   public static Fluid fluidXpJuice;
-  public static BlockFluidEio blockXpJuice;
   public static ItemBucketEio itemBucketXpJuice;
 
   // Items
@@ -431,8 +430,6 @@ public class EnderIO {
       Log.info("XP Juice registered by Ender IO.");
       fluidXpJuice = new Fluid("xpjuice").setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
-      blockXpJuice = BlockFluidEio.create(fluidXpJuice, Material.water);
-      fluidXpJuice.setBlock(blockXpJuice);
       itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
     } else {
       Log.info("XP Juice regististration left to Open Blocks.");

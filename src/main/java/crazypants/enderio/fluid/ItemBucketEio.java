@@ -4,9 +4,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -22,7 +24,7 @@ import crazypants.enderio.gui.TooltipAddera;
 public class ItemBucketEio extends ItemBucket implements IAdvancedTooltipProvider{
 
   public static ItemBucketEio create(Fluid fluid) {
-    ItemBucketEio b = new ItemBucketEio(fluid.getBlock(), fluid.getName());
+    ItemBucketEio b = new ItemBucketEio(fluid.getBlock() != null ? fluid.getBlock() : Blocks.air, fluid.getName());
     b.init();
 
     FluidContainerRegistry.registerFluidContainer(fluid, new ItemStack(b), new ItemStack(Items.bucket));
@@ -62,4 +64,5 @@ public class ItemBucketEio extends ItemBucket implements IAdvancedTooltipProvide
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     TooltipAddera.instance.addTooltipForFluid(list, itemstack);
   }
+   
 }
