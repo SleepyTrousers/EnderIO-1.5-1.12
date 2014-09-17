@@ -110,7 +110,7 @@ public class TreeHarvestUtil {
     if(dist > horizontalRange) {
       return false;
     }
-    dist = Math.abs(bc.y - horizontalRange);
+    dist = Math.abs(origin.y - bc.y);
     if(dist > verticalRange) {
       return false;
     }
