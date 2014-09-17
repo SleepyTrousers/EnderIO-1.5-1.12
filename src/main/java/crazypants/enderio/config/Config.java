@@ -175,7 +175,7 @@ public final class Config {
   public static int darkSteelAxePowerUsePerDamagePoint = 750;
   public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;
   public static float darkSteelAxeEffeciencyBoostWhenPowered = 2;
-  public static float darkSteelAxeSpeedPenaltyMultiHarvest = 8;
+  public static float darkSteelAxeSpeedPenaltyMultiHarvest = 4;
 
   public static int darkSteelUpgradeVibrantCost = 10;
   public static int darkSteelUpgradePowerOneCost = 10;

@@ -19,6 +19,12 @@ public final class BlockCoord {
     this(tile.xCoord, tile.yCoord, tile.zCoord);
   }
 
+  public BlockCoord(BlockCoord bc) {
+    x = bc.x;
+    y = bc.y;
+    z = bc.z;
+  }
+
   public BlockCoord getLocation(ForgeDirection dir) {
     return new BlockCoord(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
   }

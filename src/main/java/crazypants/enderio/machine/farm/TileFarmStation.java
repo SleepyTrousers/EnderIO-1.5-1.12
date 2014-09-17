@@ -287,6 +287,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       setNotification("noPower");
       return false;
     }
+    if("noPower".equals(notification)) {
+      clearNotification();
+    }
 
     BlockCoord bc = getNextCoord();
     if(bc != null && bc.equals(getLocation())) { //don't try and harvest ourselves
