@@ -212,8 +212,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       }
       stack.setItemDamage(damage);
     }
-    if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
+    if(eu != null) {      
       eu.writeToItem(stack);
     }
   }

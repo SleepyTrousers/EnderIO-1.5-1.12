@@ -1,6 +1,8 @@
 package crazypants.enderio.item.darksteel;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,6 +48,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
   private static final String KEY_MAX_OUT = "maxOuput";
 
 
+  private static final Random RANDOM = new Random();
+  
   public static EnergyUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -144,8 +148,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   protected int capacity;
-  protected int energy;
-  protected boolean absorbDamageWithPower;
+  protected int energy;  
 
   protected int maxInRF;
   protected int maxOutRF;
@@ -161,8 +164,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public EnergyUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
     capacity = tag.getInteger(KEY_CAPACITY);
-    energy = tag.getInteger(KEY_ENERGY);
-    absorbDamageWithPower = tag.getBoolean(KEY_ABS_WITH_POWER);
+    energy = tag.getInteger(KEY_ENERGY);    
     maxInRF = tag.getInteger(KEY_MAX_IN);
     maxOutRF = tag.getInteger(KEY_MAX_OUT);
   }
@@ -198,10 +200,12 @@ public class EnergyUpgrade extends AbstractUpgrade {
     super.addDetailedEntries(itemstack, entityplayer, list, flag);
     int endIndex = list.size();
     int cap = capacity;
+    String percDamage = (int)Math.round(Config.darkSteelPowerDamgeAbsorptionRatio * 100) + "";
     String capString = PowerDisplayUtil.formatPower(cap/10) + " " + PowerDisplayUtil.abrevation();
     for(int i=startIndex;i<endIndex;i++) {
       String str = (String)list.get(i);
       str = str.replaceAll("\\$P", capString);
+      str = str.replaceAll("\\$D", percDamage);
       list.set(i, str);
     }
   }
@@ -210,18 +214,17 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
     upgradeRoot.setInteger(KEY_CAPACITY, capacity);
     upgradeRoot.setInteger(KEY_ENERGY, energy);
-    upgradeRoot.setBoolean(KEY_ABS_WITH_POWER, absorbDamageWithPower);
+    
     upgradeRoot.setInteger(KEY_MAX_IN, maxInRF);
     upgradeRoot.setInteger(KEY_MAX_OUT, maxOutRF);
   }
 
   public boolean isAbsorbDamageWithPower() {
-    return absorbDamageWithPower;
+    boolean res= RANDOM.nextFloat() < Config.darkSteelPowerDamgeAbsorptionRatio;
+    System.out.println("EnergyUpgrade.isAbsorbDamageWithPower: "+ res);
+    return res;
   }
 
-  public void setAbsorbDamageWithPower(boolean val) {
-    absorbDamageWithPower = val;
-  }
 
   public int getEnergy() {
     return energy;

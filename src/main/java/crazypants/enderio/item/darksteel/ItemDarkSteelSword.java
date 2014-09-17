@@ -223,7 +223,6 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
       //sword hit
       if(eu != null) {
-        eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
         eu.writeToItem(sword);
 
         if(eu.energy > Config.darkSteelSwordPowerUsePerHit) {

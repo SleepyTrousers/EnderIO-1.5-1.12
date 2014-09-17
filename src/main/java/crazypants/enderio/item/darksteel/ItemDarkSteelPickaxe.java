@@ -139,8 +139,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       }
       item.setItemDamage(damage);
     }
-    if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
+    if(eu != null) {      
       eu.writeToItem(item);
     }
 

@@ -482,22 +482,22 @@ enderio.item.darkSteel_boots.tooltip.line2=when powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.empowered_two.name=Empowered II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.empowered_three.name=Empowered III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Half durability damage absorbed
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.jump_one.name=Jump

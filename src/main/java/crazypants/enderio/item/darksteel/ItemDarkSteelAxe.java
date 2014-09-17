@@ -207,8 +207,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
       }
       item.setItemDamage(damage);
     }
-    if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
+    if(eu != null) {      
       eu.writeToItem(item);
     }
   }
