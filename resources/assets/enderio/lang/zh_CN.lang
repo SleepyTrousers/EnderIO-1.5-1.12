@@ -91,6 +91,7 @@ tile.blockDarkIronBars.name=玄铁栅栏
 tile.blockEndermanSkull.name=末影人头颅
 enderio.blastResistant=爆炸免疫
 enderio.lightEmitter=发光
+enderio.tooltip.isBeaconBase=可用于当作新标底座
 
 //Fluids
 fluid.nutrient_distillation=营养精华液
@@ -144,6 +145,7 @@ enderio.conductiveIron.name=导电铁
 enderio.phasedIron.name=脉冲铁合金
 enderio.vibrantNugget.name=脉冲合金粒
 enderio.darkSteel.name=玄铁钢
+enderio.soularium.name=灵魂合金
 
 tile.blockIngotStorage.name=金属块
 tile.enderio.electricalSteel.name=磁钢块
@@ -154,6 +156,7 @@ tile.enderio.conductiveIron.name=导电铁块
 tile.enderio.phasedIron.name=脉冲铁合金块
 tile.enderio.vibrantNugget.name=脉冲合金粒块
 tile.enderio.darkSteel.name=玄铁钢块
+tile.enderio.soularium.name=灵魂合金块
 
 //Powder / Ingot
 enderio.powderCoal.name=煤粉
@@ -320,6 +323,11 @@ item.itemBrokenSpawner.name=破损的刷怪笼
 item.itemBrokenSpawner.tooltip.detailed.line1=与一个破损的刷怪笼
 item.itemBrokenSpawner.tooltip.detailed.line2=在铁砧里结合设置刷怪类型
 
+tile.blockSoulBinder.name=灵魂绑定器
+tile.blockSoulBinder.tooltip.detailed.line1=用于转变破损的
+tile.blockSoulBinder.tooltip.detailed.line2=刷怪笼刷怪类型
+
+
 enderio.machine.tooltip.configured=(已配置)
 
 //Blocks
@@ -327,7 +335,13 @@ tile.blockDarkSteelPressurePlate.name=深色压力板
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=只能被玩家激活
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=能在粉刷机里面粉刷,
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=当使用纯净玻璃粉刷
-tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=时,深色压力板能隐身
+tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=时,深色压力板能隐形
+tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=无声
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=只能被玩家激活
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=能在粉刷机里面粉刷,
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=当使用纯净玻璃粉刷时,
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=无声深色压力板能隐形
+
 
 //Travel
 tile.blockTravelAnchor.name=旅行锚
@@ -359,6 +373,7 @@ tile.blockPaintedStair.name=彩绘楼梯
 tile.blockPaintedSlab.name=彩绘台阶
 tile.blockPaintedDoubleSlab.name=彩绘台阶
 tile.blockPaintedGlowstone.name=彩绘萤石
+enderio.painter.tooltip.wasPainted=§o你认为这是干嘛用的?
 
 tile.blockPainter.tooltip.detailed.line1=用于粉刷:
 tile.blockPainter.tooltip.detailed.line2=导管框架, 楼梯, 栅栏,
@@ -370,10 +385,12 @@ tile.blockPainter.tooltip.detailed.line6=旅行锚
 //Items
 item.itemYetaWrench.name=以太扳手
 item.itemYetaWrench.tooltip.detailed.line1=手持时隐藏导管框架
-item.itemYetaWrench.tooltip.detailed.line2=Shift点击可立即
-item.itemYetaWrench.tooltip.detailed.line3=破坏机器与管道
-item.itemYetaWrench.tooltip.detailed.line4=使用Shift鼠标滚轮或者按
-item.itemYetaWrench.tooltip.detailed.line5='Y'键可渲染单个导管的类型
+item.itemYetaWrench.tooltip.detailed.line2=右击可立即
+item.itemYetaWrench.tooltip.detailed.line3=拆除机器与管道
+item.itemYetaWrench.tooltip.detailed.line4=Shift左击一个导管
+item.itemYetaWrench.tooltip.detailed.line5=可打开导管设置GUI
+item.itemYetaWrench.tooltip.detailed.line6=使用Shift鼠标滚轮或者按
+item.itemYetaWrench.tooltip.detailed.line7='Y'键可渲染单种类型导管
 
 item.itemMagnet.name=电磁铁
 item.itemMagnet.tooltip.detailed.line1=吸引附近的物品
@@ -386,6 +403,11 @@ item.enderio.itemConduitProbe.tooltip.detailed.line1=右击一个导管显示
 item.enderio.itemConduitProbe.tooltip.detailed.line2=管网的详情
 item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift右击一个管道
 item.enderio.itemConduitProbe.tooltip.detailed.line4=访问其连接设置
+
+item.itemSoulVessel.name=灵魂瓶
+item.itemSoulVessel.tooltip.detailed.line1=右击一个怪物
+item.itemSoulVessel.tooltip.detailed.line2=可捕获其灵魂
+item.itemSoulVessel.tooltip.detailed.line3=再次右击则释放其灵魂
 
 //Dark Steel
 item.darkSteel_helmet.name=深色头盔
