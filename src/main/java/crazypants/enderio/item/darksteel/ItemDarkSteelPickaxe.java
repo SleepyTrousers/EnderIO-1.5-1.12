@@ -13,10 +13,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +31,8 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.IItemOfTravel;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.TravelSource;
+import crazypants.render.BoundingBox;
+import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
@@ -115,15 +119,21 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
 
     int slot = player.inventory.currentItem + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, par3World, par4, par5, par6, par7, par8,
+    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {      
+      BlockCoord bc = new BlockCoord(x,y,z).getLocation(ForgeDirection.getOrientation(side));
+      BoundingBox bb = new BoundingBox(bc);
+      AxisAlignedBB aabb = bb.getAxisAlignedBB();           
+      if(aabb.intersectsWith(player.boundingBox)) {
+        return false;
+      }            
+      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
           par9, par10);
     }
 
-    return super.onItemUse(item, player, par3World, par4, par5, par6, par7, par8, par9, par10);
+    return false;
   }
 
   private void applyDamage(EntityLivingBase entity, ItemStack item, int damage) {

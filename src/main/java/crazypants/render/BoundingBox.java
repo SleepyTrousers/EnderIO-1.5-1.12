@@ -3,6 +3,7 @@ package crazypants.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector2f;
@@ -329,6 +330,10 @@ public final class BoundingBox {
       return this;
     }
     return new BoundingBox(mnX, mnY, mnZ, mxX, mxY, mxZ);
+  }
+
+  public AxisAlignedBB getAxisAlignedBB() {    
+    return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
 }
