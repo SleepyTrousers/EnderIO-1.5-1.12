@@ -38,6 +38,7 @@ public class ClearConfigRecipe implements IRecipe{
       ItemStack out = input.copy();
       out.stackTagCompound = new NBTTagCompound();
       out.stackTagCompound.setBoolean("clearedConfig", true);
+      out.stackSize = 1;
       this.output = out;
     } else {
       this.output = null;
