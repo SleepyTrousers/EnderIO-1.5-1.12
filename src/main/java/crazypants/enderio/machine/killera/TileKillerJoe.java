@@ -168,7 +168,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private void hooverXP() {
 
-    double maxDist = Config.killerJoeAttackLength * 2;
+    double maxDist = Config.killerJoeHooverXpLength;
 
     List<EntityXPOrb> xp = worldObj.selectEntitiesWithinAABB(EntityXPOrb.class, getHooverBounds(), this);
 
@@ -183,7 +183,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         hooverXP(entity);
       } else {
         double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
-        double speed = 0.0025 + (d * 0.02);
+        double speed = 0.005 + (d * 0.02);
 
         entity.motionX += xDist / totalDistance * speed;
         entity.motionZ += zDist / totalDistance * speed;
@@ -302,10 +302,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
       ForgeDirection facingDir = ForgeDirection.getOrientation(facing);
       if(ForgeDirectionOffsets.isPositiveOffset(facingDir)) {
-        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength * 2));
+        max.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength));
         min.add(ForgeDirectionOffsets.forDir(facingDir));
       } else {
-        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength * 2));
+        min.add(ForgeDirectionOffsets.offsetScaled(facingDir, Config.killerJoeHooverXpLength));
         max.add(ForgeDirectionOffsets.forDir(facingDir));
 
       }
