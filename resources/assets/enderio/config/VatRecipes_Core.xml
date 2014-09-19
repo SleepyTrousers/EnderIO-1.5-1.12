@@ -11,6 +11,22 @@ Produce:
 output fluid volume (mb) = IM * inputFluid.multiplier * 1000.
 
 The vat always uses 1 MJ per tick, so energy cost also equates to duration.
+
+Recipes can also be added using forge IMC messages. For example, in the init method of a mod:
+String recipe = 
+       "<recipeGroup name=\"cheaty\">" +
+         "<recipe name=\"foo\" energyCost=\"2400\">" +
+           "<input>" +
+            "<itemStack modID=\"minecraft\" itemName=\"dirt\" slot=\"0\"/>" +
+            "<fluidStack name=\"water\" multiplier=\"1\"/>" +
+           "</input>" +
+           "<output>" +
+             "<fluidStack name=\"lava\"/>" +
+           "</output>" +
+          "</recipe>" +
+        "</recipeGroup>";
+FMLInterModComms.sendMessage("EnderIO", "recipe:vat", recipe);
+
  -->
 <VatRecipes>
   

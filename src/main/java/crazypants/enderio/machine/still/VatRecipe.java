@@ -20,6 +20,7 @@ public class VatRecipe implements IRecipe {
   protected final RecipeInput[] inputs;
   protected final RecipeOutput[] output;
   protected final int energyRequired;
+  private int requiredItems;
 
   public VatRecipe(IRecipe recipe) {
     List<FluidStack> fluids = recipe.getInputFluidStacks();
@@ -43,6 +44,13 @@ public class VatRecipe implements IRecipe {
 
     output = new RecipeOutput[] { new RecipeOutput(outputFluidStack) };
     energyRequired = recipe.getEnergyRequired();
+    
+    requiredItems = 1;
+    for (RecipeInput ri : inputs) {
+      if(!ri.isFluid() && ri.getSlotNumber() == 1) {
+        requiredItems = 2;
+      }
+    }
 
   }
 
@@ -118,8 +126,7 @@ public class VatRecipe implements IRecipe {
         }
       }
     }
-
-    return found == 3;
+    return found == requiredItems + 1;
 
   }
 

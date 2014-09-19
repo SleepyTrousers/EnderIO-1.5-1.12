@@ -25,6 +25,22 @@ iron=0.7
 food=0.35
 sand/cobble/wood=0.1
 
+
+Recipes can also be added using forge IMC messages. For example, in the init method of a mod:
+
+String recipe = 
+       "<recipeGroup name=\"cheaty\">" +
+         "<recipe name=\"foo\" energyCost=\"2400\">" +
+           "<input>" +
+            "<itemStack modID=\"minecraft\" itemName=\"dirt\"/>" +
+           "</input>" +
+           "<output>" +
+            "<itemStack modID=\"minecraft\" itemName=\"diamond\"/>" +
+           "</output>" +
+          "</recipe>" +
+        "</recipeGroup>";
+FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe); 
+
 -->
 
 <AlloySmelterRecipes>

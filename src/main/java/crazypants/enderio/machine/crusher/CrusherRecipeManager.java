@@ -24,6 +24,8 @@ import crazypants.util.Util;
 
 public class CrusherRecipeManager {
 
+  public static final String IMC_KEY = "recipe:sagmill";
+  
   public static final int ORE_ENERGY_COST = 400;
 
   public static final int INGOT_ENERGY_COST = 240;
