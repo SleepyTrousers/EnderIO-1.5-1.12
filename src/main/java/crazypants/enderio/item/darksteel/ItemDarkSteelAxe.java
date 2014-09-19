@@ -11,6 +11,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -168,6 +169,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
     if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.block, evt.metadata)) {
       evt.newSpeed = evt.originalSpeed / Config.darkSteelAxeSpeedPenaltyMultiHarvest;
+    }
+    if(evt.block.getMaterial() == Material.leaves) {
+      evt.newSpeed = 6;
     }
   }
 
