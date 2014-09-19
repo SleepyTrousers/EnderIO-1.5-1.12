@@ -3,6 +3,9 @@ package crazypants.enderio.machine.still;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -11,6 +14,8 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
+import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.recipe.RecipeOutput;
 
 public class VatRecipeManager {
 
@@ -120,6 +125,20 @@ public class VatRecipeManager {
       }
     }
     return false;
+  }
+  
+  public float getMultiplierForInput(ItemStack input, Fluid output) {
+    for (IRecipe recipe : recipes) {
+      RecipeOutput out = recipe.getOutputs()[0];
+      if(out.getFluidOutput().getFluid().getID() == output.getID()) {
+        for(RecipeInput ri : recipe.getInputs()) {
+          if(ri.isInput(input)) {
+            return ri.getMulitplier();
+          }
+        }
+      }
+    }
+    return 0;
   }
 
 }
