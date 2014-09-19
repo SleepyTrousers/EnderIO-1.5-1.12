@@ -191,18 +191,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @Override
   public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    int slot = player.inventory.currentItem + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-      BlockCoord bc = new BlockCoord(x,y,z).getLocation(ForgeDirection.getOrientation(side));
-      BoundingBox bb = new BoundingBox(bc);
-      AxisAlignedBB aabb = bb.getAxisAlignedBB();           
-      if(aabb.intersectsWith(player.boundingBox)) {
-        return false;
-      }
-      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
-          par9, par10);
-    }
-    return false;
+    return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
   }
 
   private void applyDamage(EntityLivingBase entity, ItemStack item, int damage, boolean isMultiharvest) {
