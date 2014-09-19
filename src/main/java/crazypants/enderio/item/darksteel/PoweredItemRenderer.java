@@ -66,7 +66,7 @@ public class PoweredItemRenderer implements IItemRenderer {
       g = 0.4f;
       b = 1f;
       y = 13;
-      renderBar(y, maxDam, maxDam - dispDamage, new Color(200, 100, 10), Color.red);
+      renderBar2(y, maxDam, maxDam - dispDamage, new Color(200, 100, 10), Color.red);
     }
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -77,6 +77,16 @@ public class PoweredItemRenderer implements IItemRenderer {
     return EnergyUpgrade.loadFromItem(item) == null && item.getItemDamageForDisplay() == 0;
   }
 
+  private void renderBar2(int y, double maxDam, double dispDamage, Color full, Color empty) {
+    double ratio = dispDamage / maxDam;
+    Vector4f fg = ColorUtil.toFloat(full);
+    Vector4f ec = ColorUtil.toFloat(empty);
+    fg.interpolate(ec, (float) ratio);
+    int barLength = (int) Math.round(12.0 * (1 - ratio));    
+    RenderUtil.renderQuad2D(2, y, 0, barLength, 1, fg);
+  }
+
+  
   private void renderBar(int y, double maxDam, double dispDamage, Color full, Color empty) {
     double ratio = dispDamage / maxDam;
     Vector4f fg = ColorUtil.toFloat(full);
