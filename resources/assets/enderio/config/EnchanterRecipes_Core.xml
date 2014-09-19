@@ -22,7 +22,7 @@ for (int i = 0; i < level; i++) {
     <itemStack modID="minecraft" itemName="feather"/>
   </enchantment>
 
-  <enchantment name="enchantment.protect.explosion" costPerLevel="4">
+  <enchantment name="enchantment.protect.explosion" costPerLevel="2">
     <itemStack modID="minecraft" itemName="gunpowder"/>
   </enchantment>
 
