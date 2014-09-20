@@ -45,7 +45,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
     result.add(new MachineRecipeInput(0, inputFluidStack));
 
     for (MachineRecipeInput ri : inputs) {
-      if(!ri.isFluid()) {
+      if(!ri.isFluid() && ri.item != null) {
         ItemStack st = ri.item.copy();
         st.stackSize = rec.getNumConsumed(ri.item);
         result.add(new MachineRecipeInput(ri.slotNumber, st));

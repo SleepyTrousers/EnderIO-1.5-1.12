@@ -3,6 +3,9 @@ package crazypants.enderio;
 import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
+
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,10 +23,12 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -120,6 +125,7 @@ import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
+import crazypants.enderio.nei.SagMillRecipeHandler;
 import crazypants.enderio.network.MessageTileNBT;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.BlockTravelAnchor;
@@ -515,6 +521,24 @@ public class EnderIO {
       fluidXpJuice = FluidRegistry.getFluid("xpjuice");      
       if(fluidXpJuice == null) {
         Log.error("Liquid XP registration left to open blocks but could not be found.");
+      }
+    }
+  }
+  
+  @EventHandler
+  public void onImc(IMCEvent evt) {       
+    ImmutableList<IMCMessage> messages = evt.getMessages();
+    for(IMCMessage msg : messages) {
+      if(msg.isStringMessage()) {
+        String key = msg.key;
+        String value = msg.getStringValue();
+        if(VatRecipeManager.IMC_KEY.equals(key)) {
+          VatRecipeManager.getInstance().addCustumRecipes(value);
+        } else if(CrusherRecipeManager.IMC_KEY.equals(key)) {
+          CrusherRecipeManager.getInstance().addCustomRecipes(value);
+        } else if(AlloyRecipeManager.IMC_KEY.equals(key)) {
+          AlloyRecipeManager.getInstance().addCustumRecipes(value);
+        }        
       }
     }
   }

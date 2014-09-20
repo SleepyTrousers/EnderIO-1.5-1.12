@@ -1,9 +1,13 @@
 package crazypants.enderio.machine.still;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,6 +19,7 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.gui.GuiToolTip;
+import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
@@ -67,14 +72,13 @@ public class GuiVat extends GuiMachineBase {
     int x = 30;
     int y = 12;
     if(mode == IoMode.PULL || mode == IoMode.PUSH_PULL) {
-      renderSlotHighlight(PULL_COLOR,x-2,y-2,15+4,47+4);
+      renderSlotHighlight(PULL_COLOR, x - 2, y - 2, 15 + 4, 47 + 4);
     }
     if(mode == IoMode.PUSH || mode == IoMode.PUSH_PULL) {
       x = 132;
-      renderSlotHighlight(PUSH_COLOR,x-2,y-2,15+4,47+4);
+      renderSlotHighlight(PUSH_COLOR, x - 2, y - 2, 15 + 4, 47 + 4);
     }
   }
-
 
   /**
    * Draw the background layer for the GuiContainer (everything behind the
@@ -116,9 +120,36 @@ public class GuiVat extends GuiMachineBase {
 
     int x = guiLeft + 30;
     int y = guiTop + 12;
-    RenderUtil.renderGuiTank(vat.inputTank, x, y, zLevel, 15,47);
+    RenderUtil.renderGuiTank(vat.inputTank, x, y, zLevel, 15, 47);
     x = guiLeft + 132;
-    RenderUtil.renderGuiTank(vat.outputTank, x, y, zLevel, 15,47);
+    RenderUtil.renderGuiTank(vat.outputTank, x, y, zLevel, 15, 47);
+
+    if(vat.getCurrentTask() != null || vat.outputTank.getFluidAmount() > 0) {
+
+      Fluid outputFluid;
+      if(vat.outputTank.getFluidAmount() > 0) {
+        outputFluid = vat.outputTank.getFluid().getFluid();
+      } else {
+        ResultStack[] res = vat.getCurrentTask().getRecipe().getCompletedResult(1, vat.getCurrentTask().getInputs());
+        outputFluid = res[0].fluid.getFluid();
+      }
+
+      float mult;
+      ItemStack inStack = vat.getStackInSlot(0);
+      if(inStack != null) {
+        mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+        String str = "x" + mult;
+        x = guiLeft + 63 - fontRendererObj.getStringWidth(str)/2;
+        fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
+      }
+      inStack = vat.getStackInSlot(1);
+      if(inStack != null) {
+        mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
+        String str = "x" + mult;
+        x = guiLeft + 113 - fontRendererObj.getStringWidth(str)/2;
+        fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
+      }
+    }
 
     RenderUtil.bindTexture(GUI_TEXTURE);
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -143,7 +174,6 @@ public class GuiVat extends GuiMachineBase {
     RenderUtil.bindTexture(GUI_TEXTURE);
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }
-
 
   @Override
   protected int getPowerX() {

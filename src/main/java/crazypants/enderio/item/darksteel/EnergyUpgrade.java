@@ -221,7 +221,6 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public boolean isAbsorbDamageWithPower() {
     boolean res= RANDOM.nextFloat() < Config.darkSteelPowerDamgeAbsorptionRatio;
-    System.out.println("EnergyUpgrade.isAbsorbDamageWithPower: "+ res);
     return res;
   }
 

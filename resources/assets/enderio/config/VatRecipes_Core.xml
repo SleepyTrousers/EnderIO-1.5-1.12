@@ -11,15 +11,32 @@ Produce:
 output fluid volume (mb) = IM * inputFluid.multiplier * 1000.
 
 The vat always uses 1 MJ per tick, so energy cost also equates to duration.
+
+Recipes can also be added using forge IMC messages. For example, in the init method of a mod:
+String recipe = 
+       "<recipeGroup name=\"cheaty\">" +
+         "<recipe name=\"foo\" energyCost=\"2400\">" +
+           "<input>" +
+            "<itemStack modID=\"minecraft\" itemName=\"dirt\" slot=\"0\"/>" +
+            "<fluidStack name=\"water\" multiplier=\"1\"/>" +
+           "</input>" +
+           "<output>" +
+             "<fluidStack name=\"lava\"/>" +
+           "</output>" +
+          "</recipe>" +
+        "</recipeGroup>";
+FMLInterModComms.sendMessage("EnderIO", "recipe:vat", recipe);
+
  -->
 <VatRecipes>
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
      
     <recipe name="Nutrient Distilation" energyCost="10000">
-      <input>
-        <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="1.5"/>
+      <input>      
+        <itemStack modID="Thaumcraft" itemName="ItemZombieBrain" slot="0" multiplier="2"/>
         <itemStack oreDictionary="itemSkull" slot="0" multiplier="2"/>
+        <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="1.5"/>        
         <itemStack modID="minecraft" itemName="chicken" slot="0" multiplier="0.75"/>
         <itemStack modID="minecraft" itemName="beef" slot="0" multiplier="0.75"/>
         <itemStack modID="minecraft" itemName="porkchop" slot="0" multiplier="0.75"/>

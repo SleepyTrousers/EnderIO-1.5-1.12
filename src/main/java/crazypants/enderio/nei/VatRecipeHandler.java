@@ -1,15 +1,18 @@
 package crazypants.enderio.nei;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -115,7 +118,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
         if(fluid != null) {
           if(recipe.isValidInput(fluid)) {
             addRecipe = true;
-          }          
+          }
         }
       }
       if(addRecipe) {
@@ -124,15 +127,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
         arecipes.add(res);
       }
     }
-    
-//    List<IEnderIoRecipe> recipes = RecipeReigistry.instance.getRecipesForCrafter(IEnderIoRecipe.VAT_ID);
-//    for (IEnderIoRecipe recipe : recipes) {
-//      if(recipe.isInput(ingredient)) {
-//        InnerVatRecipe res = new InnerVatRecipe(recipe.getRequiredEnergy(), recipe.getInputs(), recipe.getOutputs().get(0).getFluid());
-//        res.setIngredientPermutation(res.inputs, ingredient);
-//        arecipes.add(res);
-//      }
-//    }
+
   }
 
   @Override
@@ -147,19 +142,25 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
           .renderGuiTank(rec.result, rec.result.amount, rec.result.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
     }
 
-    //    drawProgressBar(98, 33, 176, 0, 22, 13, 48, 3);
-    //    drawProgressBar(50, 33, 176, 0, 22, 13, 48, 3);
-
+    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     String energyString = PowerDisplayUtil.formatPower(rec.energy) + " " + PowerDisplayUtil.abrevation();
-    int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(energyString);
+    int width = fr.getStringWidth(energyString);
 
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     int col = ColorUtil.getRGBA(0.75f, 1.0f, 1.0f, 1.0f);
-    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 86 - width / 2, 55, col, true);
+    fr.drawString(energyString, 86 - width / 2, 55, col, true);
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glColor4f(1, 1, 1, 1);
 
+    Fluid outputFluid = rec.result.getFluid();
+    List<PositionedStack> stacks = rec.getIngredients();
+    for (PositionedStack ps : stacks) {
+      float mult = VatRecipeManager.getInstance().getMultiplierForInput(ps.item, outputFluid);
+      String str = "x" + mult;
+      fr.drawString(str, ps.relx + 8 - fr.getStringWidth(str) / 2, ps.rely + 19, ColorUtil.getRGB(Color.gray), false);
+
+    }
   }
 
   @Override
@@ -254,7 +255,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public List<PositionedStack> getIngredients() {
-      return getCycledIngredients(cycleticks / 20, inputs);
+      return getCycledIngredients(cycleticks / 30, inputs);
     }
 
     @Override

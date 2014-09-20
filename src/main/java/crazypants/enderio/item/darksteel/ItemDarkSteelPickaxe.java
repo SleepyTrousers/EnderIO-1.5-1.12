@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -38,7 +39,7 @@ import crazypants.util.Lang;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
-  private static final Set SHOVEL_BLOCKS = Sets.newHashSet(new Block[] { 
+  private static final Set SHOVEL_BLOCKS = Sets.newHashSet(new Block[] {
       Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, Blocks.snow_layer, Blocks.snow,
       Blocks.clay, Blocks.farmland, Blocks.soul_sand, Blocks.mycelium });
 
@@ -120,20 +121,37 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    return doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+  }
 
+  static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
     int slot = player.inventory.currentItem + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {      
-      BlockCoord bc = new BlockCoord(x,y,z).getLocation(ForgeDirection.getOrientation(side));
-      BoundingBox bb = new BoundingBox(bc);
-      AxisAlignedBB aabb = bb.getAxisAlignedBB();           
-      if(aabb.intersectsWith(player.boundingBox)) {
+    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
+
+      if(!canPlaceBlockOnRightClick(player, world, x, y, z, side, slot)) {
         return false;
-      }            
+      }
       return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
           par9, par10);
     }
-
     return false;
+  }
+
+  static boolean canPlaceBlockOnRightClick(EntityPlayer player, World world, int x, int y, int z, int side, int slot) {
+    BlockCoord placeCoord = new BlockCoord(x, y, z).getLocation(ForgeDirection.getOrientation(side));
+    ItemStack toUse = player.inventory.mainInventory[slot];
+    AxisAlignedBB aabb;
+    Block blk = Block.getBlockFromItem(toUse.getItem());
+    if(blk != null) {
+      aabb = blk.getCollisionBoundingBoxFromPool(world, placeCoord.x, placeCoord.y, placeCoord.z);
+    } else {
+      BoundingBox bb = new BoundingBox(placeCoord);
+      aabb = bb.getAxisAlignedBB();
+    }      
+    if(aabb != null && aabb.intersectsWith(player.boundingBox)) {
+      return false;
+    }
+    return true;
   }
 
   private void applyDamage(EntityLivingBase entity, ItemStack item, int damage) {
@@ -149,7 +167,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       }
       item.setItemDamage(damage);
     }
-    if(eu != null) {      
+    if(eu != null) {
       eu.writeToItem(item);
     }
 

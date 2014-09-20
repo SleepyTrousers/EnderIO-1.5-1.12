@@ -28,6 +28,8 @@ import crazypants.util.Util;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 
+  public static final String IMC_KEY = "recipe:alloysmelter";
+  
   private static final String CORE_FILE_NAME = "AlloySmelterRecipes_Core.xml";
   private static final String CUSTOM_FILE_NAME = "AlloySmelterRecipes_User.xml";
 
