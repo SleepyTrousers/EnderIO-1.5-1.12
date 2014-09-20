@@ -19,12 +19,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 

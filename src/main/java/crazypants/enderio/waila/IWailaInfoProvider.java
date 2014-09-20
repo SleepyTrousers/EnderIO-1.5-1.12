@@ -1,4 +1,4 @@
-package crazypants.enderio.compat.waila;
+package crazypants.enderio.waila;
 
 import java.util.List;
 

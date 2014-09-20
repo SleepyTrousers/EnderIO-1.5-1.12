@@ -11,9 +11,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockReinforcedObsidian extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 

@@ -571,6 +571,16 @@ enderio.gui.machine.ioMode.pull=Pull
 enderio.gui.machine.ioMode.push=Push
 enderio.gui.machine.ioMode.disabled=Disabled
 enderio.gui.machine.ioMode.pullPush=Push / Pull
+enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
+enderio.gui.machine.ioMode=Mode: %s
+enderio.gui.machine.side=Side: %s
+enderio.gui.machine.side.north=North
+enderio.gui.machine.side.south=South
+enderio.gui.machine.side.west=West
+enderio.gui.machine.side.east=East
+enderio.gui.machine.side.up=Up
+enderio.gui.machine.side.down=Down
+
 
 //Power Monitor
 enderio.gui.powerMonitor.engineControl=Engine Control
