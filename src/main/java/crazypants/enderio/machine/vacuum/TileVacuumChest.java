@@ -64,13 +64,13 @@ public class TileVacuumChest extends TileEntity implements  IEntitySelector, IIn
       if(distance < 1.25) {
         hooverEntity(entity);
       } else {
-        double speed = 0.035;
-        entity.motionX += x / distance * speed;
-        entity.motionY += y * speed;
-        if(y > 0) {
-          entity.motionY = 0.12;
-        }
-        entity.motionZ += z / distance * speed;
+        double speed = 0.06;
+        double distScale =  1.0 - Math.min(0.9, distance / (RANGE*RANGE));
+        distScale *= distScale;
+        
+        entity.motionX += x / distance * distScale * speed;
+        entity.motionY += y / distance * distScale * 0.2;
+        entity.motionZ += z / distance * distScale * speed;
       }
 
     }
