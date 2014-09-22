@@ -125,14 +125,19 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    int slot = player.inventory.currentItem + 1;
+    int current = player.inventory.currentItem;
+    int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
     if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
 
       if(!canPlaceBlockOnRightClick(player, world, x, y, z, side, slot)) {
         return false;
       }
-      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
+      boolean ret = player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
           par9, par10);
+      if(player.inventory.mainInventory[slot].stackSize <= 0) {
+        player.inventory.mainInventory[slot] = null;
+      }
+      return ret;
     }
     return false;
   }

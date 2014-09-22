@@ -1,8 +1,10 @@
-package crazypants.enderio.compat.waila;
+package crazypants.enderio.waila;
 
-import static crazypants.enderio.compat.waila.IWailaInfoProvider.*;
+import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -12,11 +14,18 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
+import crazypants.util.Lang;
 
 public class WailaCompat implements IWailaDataProvider {
 
@@ -45,10 +54,22 @@ public class WailaCompat implements IWailaDataProvider {
     Item item = Item.getItemFromBlock(block);
     EntityPlayer player = accessor.getPlayer();
     World world = player.worldObj;
+    MovingObjectPosition pos = accessor.getPosition();
+    int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
+    
+    if(block instanceof AbstractMachineBlock<?>) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if (te != null && te instanceof AbstractMachineEntity) {
+        AbstractMachineEntity machine = (AbstractMachineEntity) te;
+        ForgeDirection side = accessor.getSide();
+        IoMode mode = machine.getIoMode(side);
+        currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
+        currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
+      }
+    }
 
     if(block instanceof IWailaInfoProvider) {
       IWailaInfoProvider info = (IWailaInfoProvider) block;
-      MovingObjectPosition pos = accessor.getPosition();
 
       if(block instanceof IAdvancedTooltipProvider) {
         int mask = info.getDefaultDisplayMask(world, pos.blockX, pos.blockY, pos.blockZ);

@@ -29,11 +29,11 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider, IWailaInfoProvider {
 

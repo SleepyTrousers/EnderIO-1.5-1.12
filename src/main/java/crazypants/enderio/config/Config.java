@@ -152,6 +152,8 @@ public final class Config {
   public static int darkSteelJumpTwoCost = 15;
   public static int darkSteelJumpThreeCost = 20;  
 
+  public static boolean slotZeroPlacesEight = true;
+
   public static int darkSteelWalkPowerCost = darkSteelPowerStorageLevelTwo / 3000;
   public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = false;
@@ -573,6 +575,8 @@ public final class Config {
         "Number of levels required for the 'Speed 2' upgrade.").getInt(darkSteelSpeedTwoCost);
     darkSteelSpeedThreeCost = config.get(sectionDarkSteel.name, "darkSteelSpeedThreeCost", darkSteelSpeedThreeCost,
         "Number of levels required for the 'Speed 3' upgrade.").getInt(darkSteelSpeedThreeCost);
+    
+    slotZeroPlacesEight = config.get(sectionDarkSteel.name, "shouldSlotZeroWrap", slotZeroPlacesEight, "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.").getBoolean();
     
     darkSteelSpeedOneWalkModifier = (float) config.get(sectionDarkSteel.name, "darkSteelSpeedOneWalkModifier", darkSteelSpeedOneWalkModifier,
         "Speed modifier applied when walking in the Dark Steel Boots with Speed I.").getDouble(darkSteelSpeedOneWalkModifier);
