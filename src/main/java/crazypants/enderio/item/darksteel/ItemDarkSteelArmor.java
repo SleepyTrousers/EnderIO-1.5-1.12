@@ -3,6 +3,8 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 
 import thaumcraft.api.IGoggles;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,7 +31,7 @@ import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles, IRevealer {
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles, IRevealer, IVisDiscountGear {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
@@ -268,6 +270,14 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     }    
     return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
   }
+  
+  @Override
+  public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
+    if(stack == null || stack.getItem() != EnderIO.itemDarkSteelHelmet) {
+      return 0;
+    }
+    return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
+  }
 
   public boolean isGogglesUgradeActive() {
     return gogglesUgradeActive;
@@ -276,6 +286,10 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public void setGogglesUgradeActive(boolean gogglesUgradeActive) {
     this.gogglesUgradeActive = gogglesUgradeActive;
   }
+
+  
+  
+  
 
   //Idea from Mekanism
   //  @ForgeSubscribe

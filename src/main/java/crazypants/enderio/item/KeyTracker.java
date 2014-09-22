@@ -16,6 +16,7 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
+import crazypants.enderio.item.darksteel.GogglesOfRevealingUpgrade;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.PacketGlideState;
 import crazypants.enderio.item.darksteel.SoundDetector;
@@ -70,7 +71,7 @@ public class KeyTracker {
 
   private void handleGoggles() {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!DarkSteelController.instance.areGogglesOfRevealingUpgradeEquipped(player)){
+    if(!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)){
       return;
     }
     if(gogglesKey.getIsKeyPressed()) {      

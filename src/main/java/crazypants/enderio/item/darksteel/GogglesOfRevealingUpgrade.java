@@ -1,6 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,11 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
       return null;
     }
     return new GogglesOfRevealingUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
+  }
+  
+  public static boolean isUpgradeEquipped(EntityPlayer player) {
+    ItemStack helmet = player.getEquipmentInSlot(4);    
+    return GogglesOfRevealingUpgrade.loadFromItem(helmet) != null;  
   }
 
   public GogglesOfRevealingUpgrade(NBTTagCompound tag) {
