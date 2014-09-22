@@ -129,6 +129,13 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int getRenderType() {
     return renderId;
   }
+  
+  
+
+  @Override
+  public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
+    return false;
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
