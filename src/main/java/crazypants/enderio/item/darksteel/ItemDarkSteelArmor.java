@@ -2,6 +2,9 @@ package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
+import thaumcraft.api.IGoggles;
+import thaumcraft.api.nodes.IRevealer;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +29,7 @@ import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem {
+public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles, IRevealer {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
@@ -38,6 +41,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       Config.darkSteelPowerStorageBase * 2 };
 
   public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
+
+  boolean gogglesUgradeActive = true;
 
   static {
     FMLCommonHandler.instance().bus().register(DarkSteelController.instance);
@@ -113,6 +118,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     } else if(armorType == 0) {
       SoundDetectorUpgrade.INSTANCE.writeToItem(is);
       NightVisionUpgrade.INSTANCE.writeToItem(is);
+      if(GogglesOfRevealingUpgrade.getGoggles() != null) {
+        GogglesOfRevealingUpgrade.INSTANCE.writeToItem(is);
+      }
     }
     
     par3List.add(is);
@@ -240,6 +248,33 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   public int getMaxEnergyStored(ItemStack container) {
     return EnergyUpgrade.getMaxEnergyStored(container);
+  }
+
+  //Thaumcraft
+  
+  @Override
+  public boolean showNodes(ItemStack itemstack, EntityLivingBase player) {
+    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+      return false;  
+    }        
+    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+    
+  }
+
+  @Override
+  public boolean showIngamePopups(ItemStack itemstack, EntityLivingBase player) {
+    if(itemstack == null || itemstack.getItem() == null || !gogglesUgradeActive) {
+      return false;  
+    }    
+    return GogglesOfRevealingUpgrade.loadFromItem(itemstack) != null;
+  }
+
+  public boolean isGogglesUgradeActive() {
+    return gogglesUgradeActive;
+  }
+
+  public void setGogglesUgradeActive(boolean gogglesUgradeActive) {
+    this.gogglesUgradeActive = gogglesUgradeActive;
   }
 
   //Idea from Mekanism

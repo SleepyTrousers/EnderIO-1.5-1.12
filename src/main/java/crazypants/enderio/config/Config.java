@@ -189,6 +189,8 @@ public final class Config {
   public static double darkSteelGliderHorizontalSpeed = 0.03;
   public static double darkSteelGliderVerticalSpeed = -0.05;
   public static double darkSteelGliderVerticalSpeedSprinting = -0.15;
+  
+  public static int darkSteelGogglesOfRevealingCost = 10;
 
   public static int darkSteelSwimCost = 10;
 
@@ -323,6 +325,8 @@ public final class Config {
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
+
+  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -631,6 +635,9 @@ public final class Config {
         "Range of the 'Sound Locator' upgrade.").getInt(darkSteelSoundLocatorRange);
     darkSteelSoundLocatorLifespan = config.get(sectionDarkSteel.name, "darkSteelSoundLocatorLifespan", darkSteelSoundLocatorLifespan,
         "Number of ticks the 'Sound Locator' icons are displayed for.").getInt(darkSteelSoundLocatorLifespan);
+    
+    darkSteelGogglesOfRevealingCost= config.get(sectionDarkSteel.name, "darkSteelGogglesOfRevealingCost", darkSteelGogglesOfRevealingCost,
+        "Number of levels required for the Goggles of Revealing upgrade.").getInt(darkSteelGogglesOfRevealingCost);
     
     darkSteelTravelCost = config.get(sectionDarkSteel.name, "darkSteelTravelCost", darkSteelTravelCost,
         "Number of levels required for the 'Travel' upgrade.").getInt(darkSteelTravelCost);

@@ -40,6 +40,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(NightVisionUpgrade.INSTANCE);
     upgrades.add(TravelUpgrade.INSTANCE);
     upgrades.add(SpoonUpgrade.INSTANCE);
+    upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
   }
 
   @SubscribeEvent

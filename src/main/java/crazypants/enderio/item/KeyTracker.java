@@ -16,6 +16,7 @@ import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
+import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.PacketGlideState;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundDetectorUpgrade;
@@ -39,6 +40,8 @@ public class KeyTracker {
   private KeyBinding nightVisionKey;  
   private boolean isNightVisionActive = false;
   
+  private KeyBinding gogglesKey;  
+  
   private KeyBinding yetaWrenchMode;  
   
   
@@ -49,6 +52,8 @@ public class KeyTracker {
     ClientRegistry.registerKeyBinding(soundDetectorKey);        
     nightVisionKey = new KeyBinding("Night Vision", Keyboard.KEY_P, "Dark Steel Armor");
     ClientRegistry.registerKeyBinding(nightVisionKey);
+    gogglesKey = new KeyBinding("Goggles of Revealing", Keyboard.KEY_R, "Dark Steel Armor");
+    ClientRegistry.registerKeyBinding(gogglesKey);
     
     yetaWrenchMode = new KeyBinding("Yeta Wrench Mode", Keyboard.KEY_Y, "Tools");
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
@@ -60,6 +65,18 @@ public class KeyTracker {
     handleSoundDetector();
     handleNightVision();
     handleYetaWrench();
+    handleGoggles();
+  }
+
+  private void handleGoggles() {
+    EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+    if(!DarkSteelController.instance.areGogglesOfRevealingUpgradeEquipped(player)){
+      return;
+    }
+    if(gogglesKey.getIsKeyPressed()) {      
+      EnderIO.itemDarkSteelHelmet.setGogglesUgradeActive(!EnderIO.itemDarkSteelHelmet.isGogglesUgradeActive());
+    }
+    
   }
 
   private void handleYetaWrench() {

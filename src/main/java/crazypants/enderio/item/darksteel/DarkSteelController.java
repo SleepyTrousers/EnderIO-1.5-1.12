@@ -355,4 +355,9 @@ public class DarkSteelController {
     this.nightVisionActive = isNightVisionActive;    
   }
 
+  public boolean areGogglesOfRevealingUpgradeEquipped(EntityPlayer player) {
+    ItemStack helmet = player.getEquipmentInSlot(4);    
+    return GogglesOfRevealingUpgrade.loadFromItem(helmet) != null;  
+  }
+
 }

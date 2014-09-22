@@ -522,6 +522,8 @@ enderio.darksteel.upgrade.sound.tooltip.detailed.line2=nearby sounds
 enderio.darksteel.upgrade.sound.enabled=Sound Locator Active
 enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
+
 item.itemGliderWing.name=Glider Wing
 item.itemGliderWings.name=Glider Wings
 item.itemGliderWings.tooltip.detailed.line1=Upgrade for Dark Steel
