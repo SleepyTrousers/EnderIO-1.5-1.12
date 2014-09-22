@@ -9,11 +9,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -29,6 +31,7 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.compat.waila.IWailaInfoProvider;
 import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
@@ -319,6 +322,20 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
+      if(player instanceof EntityPlayer) {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+          BlockCoord bc = new BlockCoord(x, y, z);
+          bc = bc.getLocation(dir);
+          te = world.getTileEntity(bc.x, bc.y, bc.z);
+          if(te instanceof TileCapacitorBank) {
+            if(((TileCapacitorBank)te).isMaxSize()) {
+              ((EntityPlayer)player).addChatComponentMessage(new ChatComponentText("Capacitor bank is at maximum size"));
+            }            
+          }          
+        }
+        
+      }
+      
     }
     world.markBlockForUpdate(x, y, z);
   }
@@ -368,7 +385,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   }
 
   @Override
-  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {}
+  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {
+  }
 
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
