@@ -549,11 +549,24 @@ public class TravelController {
     }
 
     if(selectedCoord != null) {
-      Vector2d sp = currentView.getScreenPoint(new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5));
-      Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-      mid.scale(0.5);
-      double ratio = sp.distance(mid) / Minecraft.getMinecraft().displayWidth;
-      if(ratio > 0.2) {
+      
+      Vector3d blockCenter = new Vector3d(selectedCoord.x + 0.5, selectedCoord.y + 0.5, selectedCoord.z + 0.5);
+      Vector2d blockCenterPixel = currentView.getScreenPoint(blockCenter);            
+      
+      Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+      screenMidPixel.scale(0.5);
+      double ratio = blockCenterPixel.distance(screenMidPixel) / Minecraft.getMinecraft().displayWidth;
+      
+      Vector3d blockLeft = new Vector3d();
+      blockLeft.cross(currentView.getEyePoint(), new Vector3d(0,1,0));
+      blockLeft.normalize();
+      blockLeft.scale(0.5);
+      blockLeft.add(blockCenter);
+      
+      Vector2d blockLeftPixel = currentView.getScreenPoint(blockLeft);
+      double blockSizeRatio = blockCenterPixel.distance(blockLeftPixel)/ Minecraft.getMinecraft().displayWidth;
+      double maxRatio = Math.max(0.2, blockSizeRatio);
+      if(ratio > maxRatio) {
         selectedCoord = null;
       }
 
