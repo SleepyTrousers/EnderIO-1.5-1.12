@@ -510,28 +510,10 @@ public class TravelController {
       return;
     }
 
-    Vector3d eye = Util.getEyePositionEio(player);
-    Vec3 look = player.getLookVec();
-
-    Vector3d b = new Vector3d(eye);
-    b.add(look.xCoord, look.yCoord, look.zCoord);
-
-    Vector3d c = new Vector3d(eye);
-    c.add(0, 1, 0);
-
-    Vector4d leftPlane = new Vector4d();
-    VecmathUtil.computePlaneEquation(eye, b, c, leftPlane);
-
-    c.set(eye);
-    c.add(leftPlane.x, leftPlane.y, leftPlane.z);
-
-    Vector4d upPlane = new Vector4d();
-    VecmathUtil.computePlaneEquation(eye, b, c, upPlane);
-
     double closestDistance = Double.MAX_VALUE;
     Vector3d point = new Vector3d();
     for (BlockCoord bc : candidates.keySet()) {
-      if(!bc.equals(onBlockCoord)) {
+      if(!bc.equals(onBlockCoord)) {        
         point.set(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
 
         Vector2d sp = currentView.getScreenPoint(new Vector3d(point.x, point.y, point.z));
@@ -539,7 +521,12 @@ public class TravelController {
         mid.scale(0.5);
 
         double d = sp.distance(mid);
+        if(d != d) {
+          d = 0f;  
+         }
         float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
+        
+        
         candidates.put(bc, ratio);
         if(d < closestDistance) {
           selectedCoord = bc;
@@ -558,7 +545,9 @@ public class TravelController {
       double ratio = blockCenterPixel.distance(screenMidPixel) / Minecraft.getMinecraft().displayWidth;
       
       Vector3d blockLeft = new Vector3d();
-      blockLeft.cross(currentView.getEyePoint(), new Vector3d(0,1,0));
+      Vector3d up = new Vector3d(0,1,0);
+      up.add(currentView.getEyePoint());
+      blockLeft.cross(currentView.getEyePoint(), up);
       blockLeft.normalize();
       blockLeft.scale(0.5);
       blockLeft.add(blockCenter);
@@ -568,7 +557,7 @@ public class TravelController {
       double maxRatio = Math.max(0.2, blockSizeRatio);
       if(ratio > maxRatio) {
         selectedCoord = null;
-      }
+      } 
 
     }
   }
