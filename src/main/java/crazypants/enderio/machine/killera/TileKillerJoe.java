@@ -69,7 +69,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private float swingProgress;
 
   private float prevSwingProgress;
-  
+
   private ExperienceContainer xpCon = new ExperienceContainer();
 
   public TileKillerJoe() {
@@ -107,7 +107,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
-  public ExperienceContainer getContainer() {  
+  public ExperienceContainer getContainer() {
     return xpCon;
   }
 
@@ -134,7 +134,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
       return false;
     }
-    
+
     if(getStackInSlot(0) == null) {
       return false;
     }
@@ -257,7 +257,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   FakePlayer getAttackera() {
-    if(attackera == null) {  
+    if(attackera == null) {
       attackera = new Attackera();
     }
     return attackera;
@@ -366,6 +366,23 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   }
 
   @Override
+  protected boolean doPush(ForgeDirection dir) {
+    boolean res = super.doPush(dir);
+    BlockCoord loc = getLocation().getLocation(dir);
+    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+    if(target != null) {
+      FluidStack canDrain = drain(dir, IO_MB_TICK, false);
+      if(canDrain != null && canDrain.amount > 0) {
+        int drained = target.fill(dir.getOpposite(), canDrain, true);
+        if(drained > 0) {
+          drain(dir, drained, true);
+        }
+      }
+    }
+    return res;
+  }
+
+  @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
@@ -418,9 +435,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       fuelTank.setFluid(null);
     }
 
-//    experienceLevel = nbtRoot.getInteger("experienceLevel");
-//    experienceTotal = nbtRoot.getInteger("experienceTotal");
-//    experience = nbtRoot.getFloat("experience");
+    //    experienceLevel = nbtRoot.getInteger("experienceLevel");
+    //    experienceTotal = nbtRoot.getInteger("experienceTotal");
+    //    experience = nbtRoot.getFloat("experience");
     xpCon.readFromNBT(nbtRoot);
   }
 
@@ -433,9 +450,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       nbtRoot.setTag("fuelTank", tankRoot);
     }
 
-//    nbtRoot.setInteger("experienceLevel", experienceLevel);
-//    nbtRoot.setInteger("experienceTotal", experienceTotal);
-//    nbtRoot.setFloat("experience", experience);
+    //    nbtRoot.setInteger("experienceLevel", experienceLevel);
+    //    nbtRoot.setInteger("experienceTotal", experienceTotal);
+    //    nbtRoot.setFloat("experience", experience);
     xpCon.writeToNBT(nbtRoot);
 
   }
