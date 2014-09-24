@@ -135,6 +135,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
       RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
       drawTexturedModalRect(43, 72, 5, 35, 90, 18);
       GL11.glDisable(GL11.GL_BLEND);
