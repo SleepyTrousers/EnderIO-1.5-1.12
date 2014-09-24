@@ -89,10 +89,7 @@ public class BlockFluidEio extends BlockFluidClassic {
       long time = entity.worldObj.getTotalWorldTime();
       EntityPlayerMP player = (EntityPlayerMP) entity;
       if(time % Config.nutrientFoodBoostDelay == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time) {
-        int food = player.getFoodStats().getFoodLevel();
-        float sat = player.getFoodStats().getSaturationLevel();
-        player.getFoodStats().setFoodLevel(food + 1);
-        player.getFoodStats().setFoodSaturationLevel(sat + 0.1f);
+        player.getFoodStats().addStats(1, 0.1f);
         player.getEntityData().setLong("eioLastFoodBoost", time);
       }
     } else if (this == EnderIO.blockHootch && entity instanceof EntityLivingBase) {
