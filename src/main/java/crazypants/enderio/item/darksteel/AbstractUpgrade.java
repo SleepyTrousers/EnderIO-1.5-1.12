@@ -46,7 +46,7 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   @Override
   public boolean isUpgradeItem(ItemStack stack) {
-    if(stack == null || stack.getItem() == null) {
+    if(stack == null || stack.getItem() == null || upgradeItem == null) {
       return false;
     }
     return stack.isItemEqual(upgradeItem) && stack.stackSize == upgradeItem.stackSize;
