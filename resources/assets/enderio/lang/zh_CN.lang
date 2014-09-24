@@ -525,11 +525,11 @@ enderio.gui.machine.ioMode.pullPush=推 / 拉
 //Power Monitor
 enderio.gui.powerMonitor.engineControl=引擎控制
 enderio.gui.powerMonitor.emit=发送
-enderio.gui.powerMonitor.engineSection1=当存储能量少
-enderio.gui.powerMonitor.engineSection2=于
-enderio.gui.powerMonitor.engineSection3=%时输出信号.
-enderio.gui.powerMonitor.engineSection4=当存储能量多
-enderio.gui.powerMonitor.engineSection5=或等于
+enderio.gui.powerMonitor.engineSection1=输出信号条件:当存储
+enderio.gui.powerMonitor.engineSection2=能量少于
+enderio.gui.powerMonitor.engineSection3=%时.
+enderio.gui.powerMonitor.engineSection4=停止条件:当存储能量
+enderio.gui.powerMonitor.engineSection5=多或等于
 enderio.gui.powerMonitor.of=占
 enderio.gui.powerMonitor.monHeading1=导管缓冲
 enderio.gui.powerMonitor.monHeading2=储能库储量
