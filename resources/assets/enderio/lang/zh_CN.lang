@@ -137,16 +137,16 @@ item.enderio.itemFusedQuartzFrame.name=石英玻璃框
 enderio.itemPowderIngot=粉和粒
 
 //Alloys
-enderio.itemAlloy.name=合金
-enderio.electricalSteel.name=磁钢
-enderio.energeticAlloy.name=充能合金
-enderio.phasedGold.name=脉冲合金
-enderio.redstoneAlloy.name=红石合金
-enderio.conductiveIron.name=导电铁
-enderio.phasedIron.name=脉冲铁
+enderio.itemAlloy.name=合金锭
+enderio.electricalSteel.name=磁钢锭
+enderio.energeticAlloy.name=充能合金锭
+enderio.phasedGold.name=脉冲合金锭
+enderio.redstoneAlloy.name=红石合金锭
+enderio.conductiveIron.name=导电铁锭
+enderio.phasedIron.name=脉冲铁锭
 enderio.vibrantNugget.name=脉冲合金粒
-enderio.darkSteel.name=玄钢
-enderio.soularium.name=灵魂合金
+enderio.darkSteel.name=玄钢锭
+enderio.soularium.name=灵魂合金锭
 
 tile.blockIngotStorage.name=金属块
 tile.enderio.electricalSteel.name=磁钢块
