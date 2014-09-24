@@ -500,7 +500,8 @@ enderio.darksteel.upgrade.nightVision.enabled=夜视已启用
 enderio.darksteel.upgrade.nightVision.disabled=夜视已禁用
 
 //------GUI
-
+enderio.enderio.gui.enabled=启用
+enderio.enderio.gui.disabled=禁用
 enderio.gui.enabled=启用
 enderio.gui.disabled=禁用
 enderio.gui.send=发送
