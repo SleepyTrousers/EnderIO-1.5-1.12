@@ -59,6 +59,7 @@ public final class Config {
   public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   public static final Section sectionAttarctor = new Section("Mob Attractor Settings", "attractor");
+  public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -325,8 +326,20 @@ public final class Config {
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
-
   
+  //Loot Defaults
+  public static boolean lootDarkSteel = true;
+  public static boolean lootItemConduitProbe = true;
+  public static boolean lootQuartz = true;
+  public static boolean lootNetherWart = true;
+  public static boolean lootEnderPearl = true;
+  public static boolean lootElectricSteel = true;
+  public static boolean lootRedstoneAlloy = true;
+  public static boolean lootPhasedIron = true;
+  public static boolean lootPhasedGold = true;
+  public static boolean lootTravelStaff = true;
+  public static boolean lootTheEnder = true;
+  public static boolean lootDarkSteelBoots = true;
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -875,7 +888,19 @@ public final class Config {
     spawnGuardPowerPerTickLevelThree = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree, 
         "The RF/t  power use of a levele 3 spawn guard").getInt(spawnGuardPowerPerTickLevelThree);
     
-
+    // Loot Config
+    lootDarkSteel = config.getBoolean("lootDarkSteel", sectionLootConfig.name, lootDarkSteel, "Adds Darksteel Ingots to loot tables");
+    lootItemConduitProbe = config.getBoolean("lootItemConduitProbe", sectionLootConfig.name, lootItemConduitProbe, "Adds ItemConduitProbe to loot tables");
+    lootQuartz = config.getBoolean("lootQuartz", sectionLootConfig.name, lootQuartz, "Adds quartz to loot tables");
+    lootNetherWart = config.getBoolean("lootNetherWart", sectionLootConfig.name, lootNetherWart, "Adds nether wart to loot tables");
+    lootEnderPearl = config.getBoolean("lootEnderPearl", sectionLootConfig.name, lootEnderPearl, "Adds ender pearls to loot tables");
+    lootElectricSteel = config.getBoolean("lootElectricSteel", sectionLootConfig.name, lootElectricSteel, "Adds Electric Steel Ingots to loot tables");
+    lootRedstoneAlloy = config.getBoolean("lootRedstoneAlloy", sectionLootConfig.name, lootRedstoneAlloy, "Adds Redstone Alloy Ingots to loot tables");
+    lootPhasedIron = config.getBoolean("lootPhasedIron", sectionLootConfig.name, lootPhasedIron, "Adds Phased Iron Ingots to loot tables");
+    lootPhasedGold = config.getBoolean("lootPhasedGold", sectionLootConfig.name, lootPhasedGold, "Adds Phased Gold Ingots to loot tables");
+    lootTravelStaff = config.getBoolean("lootTravelStaff", sectionLootConfig.name, lootTravelStaff, "Adds Travel Staff to loot tables");
+    lootTheEnder = config.getBoolean("lootTheEnder", sectionLootConfig.name, lootTheEnder, "Adds The Ender to loot tables");
+    lootDarkSteelBoots = config.getBoolean("lootDarkSteelBoots", sectionLootConfig.name, lootDarkSteelBoots, "Adds Darksteel Boots to loot tables");
   }
 
   private Config() {
