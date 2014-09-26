@@ -223,7 +223,7 @@ public class MachineRecipes {
     ItemStack xp = new ItemStack(EnderIO.blockExperianceOblisk);
     ItemStack xpItem = new ItemStack(EnderIO.itemXpTransfer);
     GameRegistry
-    .addShapedRecipe(aversion, " x ", " s ", "sms", 's', soularium, 'm', machineChassi, 'x', xpItem);
+    .addShapedRecipe(xp, " x ", " s ", "sms", 's', soularium, 'm', machineChassi, 'x', xpItem);
     
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
