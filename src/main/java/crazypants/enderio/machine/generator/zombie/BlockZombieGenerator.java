@@ -35,7 +35,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.water);
+    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
   }
 
   @Override
