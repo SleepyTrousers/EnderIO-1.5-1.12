@@ -23,7 +23,7 @@ public class PowerInterfaceBC implements IPowerInterface {
   public boolean canConduitConnect(ForgeDirection direction) {
     if(bcPower != null) {
       if(bcPower instanceof IPowerEmitter) {
-        return ((IPowerEmitter) bcPower).canEmitPowerFrom(direction.getOpposite());
+        if ((IPowerEmitter) bcPower).canEmitPowerFrom(direction.getOpposite()) return true;
       }
       return PowerHandlerUtil.canConnectRecievePower(bcPower);
     }
