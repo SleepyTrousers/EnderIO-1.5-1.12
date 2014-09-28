@@ -484,7 +484,7 @@ public final class Config {
         .getBoolean(detailedPowerTrackingEnabled);
 
     useSneakMouseWheelYetaWrench = config.get(sectionPersonal.name, "useSneakMouseWheelYetaWrench", useSneakMouseWheelYetaWrench,
-        "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is eqipped.")
+        "If true, shift-mouse wheel will change the conduit display mode when the YetaWrench is equipped.")
         .getBoolean(useSneakMouseWheelYetaWrench);
 
     useSneakRightClickYetaWrench = config.get(sectionPersonal.name, "useSneakRightClickYetaWrench", useSneakRightClickYetaWrench,
@@ -796,7 +796,7 @@ public final class Config {
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
     brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
-        "The chance a brokne spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
+        "The chance a broken spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);    
 
