@@ -170,7 +170,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.block, evt.metadata)) {
       evt.newSpeed = evt.originalSpeed / Config.darkSteelAxeSpeedPenaltyMultiHarvest;
     }
-    if(evt.block.getMaterial() == Material.leaves) {
+    if(isEquipped(evt.entityPlayer) && evt.block.getMaterial() == Material.leaves) {
       evt.newSpeed = 6;
     }
   }
