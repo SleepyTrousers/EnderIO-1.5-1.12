@@ -1,7 +1,9 @@
 package crazypants.enderio.item;
 
+import cofh.api.item.IToolHammer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +20,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 
-public class ItemYetaWrench extends Item implements IToolWrench, IResourceTooltipProvider {
+public class ItemYetaWrench extends Item implements IYetaWrench, IResourceTooltipProvider {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
@@ -71,7 +73,14 @@ public class ItemYetaWrench extends Item implements IToolWrench, IResourceToolti
     ConduitDisplayMode.setDisplayMode(equipped, newMode);
     return equipped;
   }
+  
+  @Override
+  public boolean isFull3D() {
+    return true;
+  }
 
+  /* IYetaWrench */
+  
   @Override
   public boolean canWrench(EntityPlayer player, int x, int y, int z) {
     return true;
@@ -86,15 +95,20 @@ public class ItemYetaWrench extends Item implements IToolWrench, IResourceToolti
   public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
     return true;
   }
+  
+  @Override
+  public boolean isUsable(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+    return true;
+  }
+  
+  @Override
+  public void toolUsed(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+    ;
+  }
 
+  /* IResourceTooltipProvider */
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-  
-  @Override
-  public boolean isFull3D() {
-    return true;
-  }
-
 }
