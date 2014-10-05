@@ -1,5 +1,5 @@
 ------------------------------------------------------
-Version 2.1.0_beta
+Version 2.1.0
 ------------------------------------------------------
 
 Changes
@@ -36,8 +36,31 @@ Config
 - Added per mob type power use config for powered spawner
 - Added block black list for teleporting using staff / travel upgrade
 
+
+------------------------------------------------------
+Version 2.0.9
+------------------------------------------------------
+Changes
+- Added config options to disable certain items from being added to loot tables (Cades)
+- Updated zh_CN.lang (Mrkwtkr, sb023612)
+
 Bugs
-- Farm 'error messages' flickering on and off
+- #1026 Machine dupe
+
+------------------------------------------------------
+Version 2.0.8
+------------------------------------------------------
+Changes
+- Register Enlightened Clear Glass in the Ore Dictionary as "glass" and "blockGlass" (ChatFawkes)
+- Localize the beacon base tooltip (tterrag)
+
+Bugs
+- Fix NPE when opening Ender IO via travel anchor with staff in hand (tterrag)
+- Fix server kick bug in nutrient distillation (tterrag)
+- Fix pick block on electric light (tterrag)
+- #1012 Crash with TE Texture
+- #961 #1010 Fluid and Energy conduits not behaving correctly in "without redstone signal" mode
+- Fix bug with Tcon where two broken spawners would drop from one spawner
 
 ------------------------------------------------------
 Version 2.0.7
