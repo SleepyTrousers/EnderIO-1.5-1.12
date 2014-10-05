@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.item.filter;
 
+import java.io.FilterInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   ItemStack[] items;
 
-  int[] oreIds;
+  final List<int[]> oreIds;
 
   private boolean isAdvanced; 
 
@@ -50,8 +51,10 @@ public class ItemFilter implements IInventory, IItemFilter {
   private ItemFilter(int numItems, boolean isAdvanced) {
     this.isAdvanced = isAdvanced;
     items = new ItemStack[numItems];
-    oreIds = new int[numItems];
-    Arrays.fill(oreIds, -99);
+    oreIds = new ArrayList<int[]>(numItems);
+    for(int i=0;i<numItems;i++) {
+      oreIds.add(null);
+    }
   }
 
   @Override
@@ -72,23 +75,19 @@ public class ItemFilter implements IInventory, IItemFilter {
     if(item == null) {
       return false;
     }
-
-    int oreId = OreDictionary.getOreID(item);
     boolean matched = false;
     int i = 0;
     for (ItemStack it : items) {
-      if(useOreDict && oreId > 0) {
-        if(getOreIdForStack(i) == oreId) {
-          matched = true;
-        }
-      }
-      if(!matched && it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
+      if(it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
         matched = true;
         if(matchMeta && item.getItemDamage() != it.getItemDamage()) {
           matched = false;
         } else if(matchNBT && !ItemStack.areItemStackTagsEqual(item, it)) {
           matched = false;
-        }
+        }        
+      }
+      if(!matched && isOreDicMatch(i, item)) {
+        matched = true;
       }
       if(matched) {
         break;
@@ -98,15 +97,41 @@ public class ItemFilter implements IInventory, IItemFilter {
     return matched;
   }
 
-  private int getOreIdForStack(int i) {
-    ItemStack item = items[i];
-    if(item == null) {
-      return -1;
+  private boolean isOreDicMatch(int filterItemIndex, ItemStack item) {    
+    if(!useOreDict || item == null) {
+      return false;
     }
-    int res = oreIds[i];
-    if(res == -99) {
-      res = OreDictionary.getOreID(item);
-      oreIds[i] = res;
+    int[] ids1 = getCachedIds(filterItemIndex);
+    if(ids1 == null || ids1.length == 0) {
+      return false;
+    }
+    int[] ids2 = OreDictionary.getOreIDs(item);
+    if(ids2 == null || ids2.length == 0) {
+      return false;
+    }
+    for(int id1 : ids1) {
+      for(int id2 : ids2) {
+        if(id1 == id2) {
+          return true;
+        }
+      }
+    }    
+    return false;
+  }
+
+  private int[] getCachedIds(int filterItemIndex) {   
+    int[] res = oreIds.get(filterItemIndex);
+    if(res == null) {
+      ItemStack item = items[filterItemIndex];
+      if(item == null) {
+        res = new int[0];
+      } else {
+        res = OreDictionary.getOreIDs(item);
+        if(res == null) {
+          res = new int[0];
+        }
+      }
+      oreIds.set(filterItemIndex, res);
     }
     return res;
   }
@@ -194,9 +219,11 @@ public class ItemFilter implements IInventory, IItemFilter {
 
     int numItems = isAdvanced ? 10 : 5;
     items = new ItemStack[numItems];
-    oreIds = new int[numItems];
-    for (int i = 0; i < numItems; i++) {
-      oreIds[i] = -99;
+    oreIds.clear();
+    for(int i=0;i<numItems;i++) {
+      oreIds.add(null);
+    }
+    for (int i = 0; i < numItems; i++) {      
       NBTBase tag = nbtRoot.getTag("item" + i);
       if(tag instanceof NBTTagCompound) {
         items[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
@@ -221,7 +248,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
-    oreIds[fromSlot] = -99;
+    oreIds.set(fromSlot, null);
     ItemStack item = items[fromSlot];
     items[fromSlot] = null;
     if(item == null) {
@@ -244,7 +271,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     } else {
       items[i] = null;
     }
-    oreIds[i] = -99;
+    oreIds.set(i, null);
   }
 
   @Override
