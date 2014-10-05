@@ -143,7 +143,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   @Override
-  public boolean onNeighborBlockChange(Block blockId) {
+  public boolean onNeighborBlockChange(Block blockId) {    
     World world = getBundle().getEntity().getWorldObj();
     if(world.isRemote) {
       return false;
@@ -152,7 +152,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     if(network == null || network.updatingNetwork) {
       return false;
     }
-    neighbourDirty = blockId != EnderIO.blockConduitBundle;
+    neighbourDirty |= blockId != EnderIO.blockConduitBundle;
     return res;
   }
 
