@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 2.0.9
+------------------------------------------------------
+Changes
+- Added config options to disable certain items from being added to loot tables (Cades)
+- Updated zh_CN.lang (Mrkwtkr, sb023612)
+
+Bugs
+- #1026 Machine dupe
+
+------------------------------------------------------
 Version 2.0.8
 ------------------------------------------------------
 Changes
