@@ -1,6 +1,7 @@
 package crazypants.enderio.item;
 
-import cofh.api.item.IToolHammer;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
+import cofh.api.block.IDismantleable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -83,12 +84,12 @@ public class ItemYetaWrench extends Item implements IYetaWrench, IResourceToolti
   
   @Override
   public boolean canWrench(EntityPlayer player, int x, int y, int z) {
-    return true;
+    return isUsable(player.getCurrentEquippedItem(), player, x, y, z);
   }
 
   @Override
   public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
-    player.swingItem();
+    toolUsed(player.getCurrentEquippedItem(), player, x, y, z);
   }
 
   @Override
@@ -103,7 +104,14 @@ public class ItemYetaWrench extends Item implements IYetaWrench, IResourceToolti
   
   @Override
   public void toolUsed(ItemStack item, EntityLivingBase user, int x, int y, int z) {
-    ;
+    Block block = user.worldObj.getBlock(x, y, z);
+    if (block instanceof IDismantleable && user instanceof EntityPlayer) {
+      EntityPlayer player = (EntityPlayer) user;
+      IDismantleable machine = (IDismantleable) block;
+      if (machine.canDismantle(player, player.worldObj, x, y, z) && !player.worldObj.isRemote) {
+          machine.dismantleBlock(player, player.worldObj, x, y, z, false);
+      }
+    }
   }
 
   /* IResourceTooltipProvider */
