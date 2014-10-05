@@ -97,8 +97,8 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
       } else {
         // Handle empty containers
 
-        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-        if(available != null) {
+        FluidStack available = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;        
+        if(available != null && available.amount > 0) {          
           ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
           if(current.getItem() == Items.bucket) {
             filled = new ItemStack(Items.water_bucket);
