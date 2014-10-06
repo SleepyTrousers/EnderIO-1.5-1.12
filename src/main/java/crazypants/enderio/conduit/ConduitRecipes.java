@@ -48,7 +48,7 @@ public class ConduitRecipes {
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 0), "bbb", "###", "bbb", 'b', conduitBinder, '#', conductiveIron);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "bbb", "###", "bbb", 'b', conduitBinder, '#', energeticGold);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedGold);
-    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 0), "   ", "###", "   ", 'b', conduitBinder, '#', redstoneAlloy);
+    GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 0), "###", '#', redstoneAlloy);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', conduitBinder, 'c', redstoneConduit, 'l',
         Blocks.lever);
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', conduitBinder, '#',

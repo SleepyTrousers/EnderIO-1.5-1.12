@@ -125,7 +125,7 @@ public class MaterialRecipes {
 
     //Dark Iron Bars
     ItemStack diBars = new ItemStack(EnderIO.blockDarkIronBars, 16, 0);
-    GameRegistry.addShapedRecipe(diBars, "ddd", "ddd", "   ", 'd', darkSteel);
+    GameRegistry.addShapedRecipe(diBars, "ddd", "ddd", 'd', darkSteel);
 
     // Fused Quartz Frame
     GameRegistry.addRecipe(new ShapedOreRecipe(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood"));
