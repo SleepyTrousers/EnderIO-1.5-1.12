@@ -71,6 +71,8 @@ public final class Config {
   public static boolean useAlternateTesseractModel = false;
 
   public static boolean photovoltaicCellEnabled = true;
+  
+  public static boolean reservoirEnabled = true;
 
   public static double conduitScale = DEFAULT_CONDUIT_SCALE;
 
@@ -420,6 +422,10 @@ public final class Config {
         "If set to false: Photovoltaic Cells will not be craftable.")
         .getBoolean(photovoltaicCellEnabled);
 
+    reservoirEnabled= config.get(sectionItems.name, "reservoirEnabled", reservoirEnabled,
+        "If set to false reservoirs will not be craftable.")
+        .getBoolean(reservoirEnabled);
+    
     maxPhotovoltaicOutputRF = config.get(sectionPower.name, "maxPhotovoltaicOutputRF", maxPhotovoltaicOutputRF,
         "Maximum output in RF/t of the Photovoltaic Panels.").getInt(maxPhotovoltaicOutputRF);
     maxPhotovoltaicAdvancedOutputRF = config.get(sectionPower.name, "maxPhotovoltaicAdvancedOutputRF", maxPhotovoltaicAdvancedOutputRF,

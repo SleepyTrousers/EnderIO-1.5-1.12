@@ -500,8 +500,6 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
 
-enderio.darksteel.upgrade.jump_one.name=Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
@@ -530,6 +528,11 @@ item.itemGliderWings.name=Glider Wings
 item.itemGliderWings.tooltip.detailed.line1=Upgrade for Dark Steel
 item.itemGliderWings.tooltip.detailed.line2=chestplate
 
+enderio.darksteel.upgrade.jump_one.name=Jump
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jump height
+enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
+enderio.darksteel.upgrade.stepAssist.disabled=Step Assist Disabled
+
 enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
@@ -540,6 +543,8 @@ enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Allows triple jumps
 
 enderio.darksteel.upgrade.speed_one.name=Speed
 enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Increases movement speed
+enderio.darksteel.upgrade.speed.enabled=Speed Active
+enderio.darksteel.upgrade.speed.disabled=Speed Disabled
 
 enderio.darksteel.upgrade.speed_two.name=Speed II
 enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Increases movement speed

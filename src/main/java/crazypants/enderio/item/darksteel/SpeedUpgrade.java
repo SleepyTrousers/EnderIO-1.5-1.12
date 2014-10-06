@@ -1,5 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +39,11 @@ public class SpeedUpgrade extends AbstractUpgrade {
   protected float walkMultiplier;
   protected float sprintMultiplier;
 
+  public static boolean isEquipped(EntityPlayer player) {
+    ItemStack legs = player.getEquipmentInSlot(2);    
+    return loadFromItem(legs) != null;
+  }
+  
   public static SpeedUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;

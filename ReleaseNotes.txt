@@ -6,7 +6,6 @@ Changes
 - Removed MJ support from machines
 - Power conduits can output but longer recieve MJ
 - Reduced default IO for tier 1 power conduits 
-- Updated all config entries to use RF
 - Added Slice'N'Splice
 - Added Soul Binder
 - Added Attractor Obelisk
@@ -27,6 +26,7 @@ Changes
 
 
 Config
+- Updated all config entries to use RF
 - Added config option for power conduit IO values
 - Added config option to stop power conduits of different tiers connecting
 - Added config option for stirling gen output
