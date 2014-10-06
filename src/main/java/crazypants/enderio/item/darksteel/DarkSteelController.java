@@ -51,14 +51,16 @@ public class DarkSteelController {
   private int jumpCount;
   private int ticksSinceLastJump;
 
-  private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();
+  private Map<String, Boolean> glideActiveMap = new HashMap<String, Boolean>();  
+  private Map<String, Boolean> speedActiveMap = new HashMap<String, Boolean>();
+  private Map<String, Boolean> stepAssistActiveMap = new HashMap<String, Boolean>();
   
   private boolean nightVisionActive = false;
   private boolean removeNightvision = false;
 
   private DarkSteelController() {
     PacketHandler.INSTANCE.registerMessage(PacketDarkSteelPowerPacket.class, PacketDarkSteelPowerPacket.class, PacketHandler.nextID(), Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketGlideState.class, PacketGlideState.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
   }
 
   public void setGlideActive(EntityPlayer player, boolean isGlideActive) {
@@ -71,6 +73,34 @@ public class DarkSteelController {
     Boolean isActive = glideActiveMap.get(player.getGameProfile().getName());
     if(isActive == null) {
       return false;
+    }
+    return isActive.booleanValue();
+  }
+  
+  public void setSpeedActive(EntityPlayer player, boolean isSpeedActive) {
+    if(player.getGameProfile().getName() != null) {
+      speedActiveMap.put(player.getGameProfile().getName(), isSpeedActive);
+    }    
+  }
+  
+  public boolean isSpeedActive(EntityPlayer player) {
+    Boolean isActive = speedActiveMap.get(player.getGameProfile().getName());
+    if(isActive == null) {
+      return true;
+    }
+    return isActive.booleanValue();
+  }
+  
+  public void setStepAssistActive(EntityPlayer player, boolean isActive) {
+    if(player.getGameProfile().getName() != null) {
+      stepAssistActiveMap.put(player.getGameProfile().getName(), isActive);
+    }    
+  }
+  
+  public boolean isStepAssistActive(EntityPlayer player) {
+    Boolean isActive = stepAssistActiveMap.get(player.getGameProfile().getName());
+    if(isActive == null) {
+      return true;
     }
     return isActive.booleanValue();
   }
@@ -190,7 +220,7 @@ public class DarkSteelController {
 
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
-    if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null) {
+    if(leggings != null && leggings.getItem() == EnderIO.itemDarkSteelLeggings && speedUpgrade != null && isSpeedActive(player)) {
 
       double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
       double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
@@ -225,7 +255,7 @@ public class DarkSteelController {
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if(jumpUpgrade != null && boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots) {
+    if(jumpUpgrade != null && boots != null && boots.getItem() == EnderIO.itemDarkSteelBoots && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
@@ -353,6 +383,6 @@ public class DarkSteelController {
       removeNightvision = true;
     }
     this.nightVisionActive = isNightVisionActive;    
-  }  
+  }
 
 }

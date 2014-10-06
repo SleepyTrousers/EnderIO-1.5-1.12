@@ -18,9 +18,11 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.GogglesOfRevealingUpgrade;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
-import crazypants.enderio.item.darksteel.PacketGlideState;
+import crazypants.enderio.item.darksteel.JumpUpgrade;
+import crazypants.enderio.item.darksteel.PacketUpgradeState;
 import crazypants.enderio.item.darksteel.SoundDetector;
 import crazypants.enderio.item.darksteel.SoundDetectorUpgrade;
+import crazypants.enderio.item.darksteel.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.Lang;
 
@@ -41,6 +43,13 @@ public class KeyTracker {
   private KeyBinding nightVisionKey;  
   private boolean isNightVisionActive = false;
   
+  private KeyBinding stepAssistKey;  
+  private boolean isStepAssistActive = true;
+  
+  private KeyBinding speedKey;  
+  private boolean isSpeedActive = true;
+  
+  
   private KeyBinding gogglesKey;  
   
   private KeyBinding yetaWrenchMode;  
@@ -56,6 +65,12 @@ public class KeyTracker {
     gogglesKey = new KeyBinding("Goggles of Revealing", Keyboard.KEY_R, "Dark Steel Armor");
     ClientRegistry.registerKeyBinding(gogglesKey);
     
+    stepAssistKey = new KeyBinding("Step Assist", Keyboard.KEY_NONE, "Dark Steel Armor");
+    ClientRegistry.registerKeyBinding(stepAssistKey);
+    
+    speedKey = new KeyBinding("Speed", Keyboard.KEY_NONE, "Dark Steel Armor");
+    ClientRegistry.registerKeyBinding(speedKey);
+    
     yetaWrenchMode = new KeyBinding("Yeta Wrench Mode", Keyboard.KEY_Y, "Tools");
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
   }
@@ -67,6 +82,45 @@ public class KeyTracker {
     handleNightVision();
     handleYetaWrench();
     handleGoggles();
+    handleStepAssist();
+    handleSpeed();
+  }
+
+  private void handleSpeed() {
+    if(!SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+      return;
+    }
+    if(speedKey.getIsKeyPressed()) {      
+      isSpeedActive = !isSpeedActive;
+      String message;
+      if(isSpeedActive) {
+        message = Lang.localize("darksteel.upgrade.speed.enabled");
+      } else {
+        message = Lang.localize("darksteel.upgrade.speed.disabled");
+      }
+      Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
+      DarkSteelController.instance.setSpeedActive(Minecraft.getMinecraft().thePlayer, isSpeedActive);
+      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(PacketUpgradeState.Type.SPEED, isSpeedActive));
+    }
+  }
+
+  private void handleStepAssist() {
+    if(!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+      return;
+    }
+    if(stepAssistKey.getIsKeyPressed()) {      
+      isStepAssistActive = !isStepAssistActive;
+      String message;
+      if(isStepAssistActive) {
+        message = Lang.localize("darksteel.upgrade.stepAssist.enabled");
+      } else {
+        message = Lang.localize("darksteel.upgrade.stepAssist.disabled");
+      }
+      Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
+      DarkSteelController.instance.setSpeedActive(Minecraft.getMinecraft().thePlayer, isStepAssistActive);
+      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(PacketUpgradeState.Type.STEP_ASSIST, isStepAssistActive));
+    }
+    
   }
 
   private void handleGoggles() {
@@ -142,7 +196,7 @@ public class KeyTracker {
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
       DarkSteelController.instance.setGlideActive(Minecraft.getMinecraft().thePlayer, isGlideActive);
-      PacketHandler.INSTANCE.sendToServer(new PacketGlideState(isGlideActive));
+      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(PacketUpgradeState.Type.GLIDE, isGlideActive));
     }
   }
   
