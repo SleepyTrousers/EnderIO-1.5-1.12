@@ -32,7 +32,9 @@
     "Sheep" : "0.5",
     "Cow" : "0.5",
     "Pig" : "0.5",    
-    "MushroomCow" : "1"
+    "MushroomCow" : "1",
+    
+    "EnderIO.Enderminy" : "10"
   },
   
   "blackList": [
