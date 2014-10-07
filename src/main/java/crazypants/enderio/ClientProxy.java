@@ -45,6 +45,8 @@ import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.entity.EntityEnderminy;
+import crazypants.enderio.entity.RenderEnderminy;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.ConduitProbeOverlayRenderer;
 import crazypants.enderio.item.KeyTracker;
@@ -389,6 +391,9 @@ public class ClientProxy extends CommonProxy {
 
       });
     }    
+    
+    
+    RenderingRegistry.registerEntityRenderingHandler(EntityEnderminy.class, new RenderEnderminy());
 
   }
 

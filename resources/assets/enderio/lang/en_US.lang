@@ -453,6 +453,8 @@ skullZombieElectrode.name=Zombie Electrode
 skullZombieController.name=Zombie Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 
+item.itemSpawnEggEnderIO.name=Spawn
+
 //Dark Steel
 item.darkSteel_helmet.name=Dark Helm
 item.darkSteel_chestplate.name=Dark Plate
@@ -759,3 +761,7 @@ enderio.config.fluid.tooltip=Pure liquid energy!
 
 enderio.config.spawner=PoweredSpawner Settings
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
+
+
+//Mobs
+entity.EnderIO.Enderminy.name=Enderminy

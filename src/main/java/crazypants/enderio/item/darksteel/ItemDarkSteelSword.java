@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.entity.EntityEnderminy;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.teleport.IItemOfTravel;
 import crazypants.enderio.teleport.TravelController;
@@ -121,7 +122,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
         }
       }
       if(isEquipped(player)) {
-        if(evt.entityLiving instanceof EntityEnderman) {
+        if(evt.entityLiving instanceof EntityEnderman || evt.entityLiving instanceof EntityEnderminy) {
           int numPearls = 0;
           if(Math.random() <= Config.darkSteelSwordEnderPearlDropChance) {
             numPearls++;
@@ -227,7 +228,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
         if(eu.energy > Config.darkSteelSwordPowerUsePerHit) {
           extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelSwordPowerUsePerHit, false);
-          if(entity instanceof EntityEnderman) {
+          if(entity instanceof EntityEnderman || entity instanceof EntityEnderminy) {
             entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
           }
         }

@@ -7,9 +7,12 @@ import static crazypants.enderio.EnderIO.VERSION;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -52,6 +55,8 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.entity.EntityEnderminy;
+import crazypants.enderio.entity.ItemSpawnEgg;
 import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
@@ -269,6 +274,8 @@ public class EnderIO {
   public static BlockVacuumChest blockVacuumChest;
   public static ItemGliderWing itemGliderWing;
 
+  public static ItemSpawnEgg itemSpawnEgg;
+
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
@@ -349,14 +356,12 @@ public class EnderIO {
     itemModItemFilter = ItemModItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
-    
-    
     itemBasicCapacitor = ItemCapacitor.create();
     itemMachinePart = ItemMachinePart.create();
     itemMaterial = ItemMaterial.create();
     itemAlloy = ItemAlloy.create();
     itemPowderIngot = ItemPowderIngot.create();
-    
+
     registerFluids();
 
     itemYetaWench = ItemYetaWrench.create();
@@ -383,6 +388,20 @@ public class EnderIO {
     itemDarkSteelSword = ItemDarkSteelSword.create();
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
+
+    
+    if(Config.enderminyEnabled) {
+      itemSpawnEgg = ItemSpawnEgg.create();      
+      int rate = Config.enderminySpawnRate;
+      EntityRegistry.registerModEntity(EntityEnderminy.class, EntityEnderminy.NAME, 0, this, 32, 1, true);
+      BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST);
+      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
+      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.SWAMP);
+      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
+      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.JUNGLE);
+      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
+    }
+    
 
     MaterialRecipes.registerOresInDictionary();
 
@@ -429,8 +448,7 @@ public class EnderIO {
     if(!IronEngineCoolant.isCoolant(FluidRegistry.getFluid("water"))) {
       IronEngineCoolant.addCoolant(FluidRegistry.getFluid("water"), 0.0023F);
     }
-    
-    
+
     fluidXpJuice = FluidRegistry.getFluid("xpjuice");
     if(!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
@@ -459,59 +477,59 @@ public class EnderIO {
     MinecraftForge.EVENT_BUS.register(this);
 
     //Register Custom Dungeon Loot here
-    if(Config.lootDarkSteel){
+    if(Config.lootDarkSteel) {
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
     }
-    
-    if(Config.lootItemConduitProbe){
+
+    if(Config.lootItemConduitProbe) {
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(EnderIO.itemConduitProbe, 1, 0), 1, 1, 10));
     }
 
-    if(Config.lootQuartz){
+    if(Config.lootQuartz) {
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.quartz), 3, 16, 20));
     }
 
-    if(Config.lootNetherWart){
+    if(Config.lootNetherWart) {
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.nether_wart), 1, 4, 10));
     }
 
-    if(Config.lootEnderPearl){
+    if(Config.lootEnderPearl) {
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(Items.ender_pearl), 1, 2, 30));
     }
 
-    if(Config.lootElectricSteel){
+    if(Config.lootElectricSteel) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
     }
 
-    if(Config.lootRedstoneAlloy){
+    if(Config.lootRedstoneAlloy) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
     }
 
-    if(Config.lootDarkSteel){
+    if(Config.lootDarkSteel) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 3, 6, 35));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 3, 6, 35));
     }
 
-    if(Config.lootPhasedIron){
+    if(Config.lootPhasedIron) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()), 1, 2, 10));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()), 1, 2, 10));
     }
 
-    if(Config.lootPhasedGold){
+    if(Config.lootPhasedGold) {
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
-        new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
+          new WeightedRandomChestContent(new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
     }
 
-    if(Config.lootTravelStaff){
+    if(Config.lootTravelStaff) {
       ItemStack staff = new ItemStack(EnderIO.itemTravelStaff, 1, 0);
       ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
       ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(staff, 1, 1, 3));
     }
 
-    if(Config.lootTheEnder){
+    if(Config.lootTheEnder) {
       ItemStack sword = new ItemStack(EnderIO.itemDarkSteelSword, 1, 0);
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(sword, 1, 1, 5));
@@ -519,7 +537,7 @@ public class EnderIO {
       ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(sword, 1, 1, 4));
     }
 
-    if(Config.lootDarkSteelBoots){
+    if(Config.lootDarkSteelBoots) {
       ItemStack boots = new ItemStack(EnderIO.itemDarkSteelBoots, 1, 0);
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
@@ -549,19 +567,19 @@ public class EnderIO {
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();
-    
+
     if(fluidXpJuice == null) { //should have been registered by open blocks 
-      fluidXpJuice = FluidRegistry.getFluid("xpjuice");      
+      fluidXpJuice = FluidRegistry.getFluid("xpjuice");
       if(fluidXpJuice == null) {
         Log.error("Liquid XP registration left to open blocks but could not be found.");
       }
     }
   }
-  
+
   @EventHandler
-  public void onImc(IMCEvent evt) {       
+  public void onImc(IMCEvent evt) {
     ImmutableList<IMCMessage> messages = evt.getMessages();
-    for(IMCMessage msg : messages) {
+    for (IMCMessage msg : messages) {
       if(msg.isStringMessage()) {
         String key = msg.key;
         String value = msg.getStringValue();
@@ -571,7 +589,7 @@ public class EnderIO {
           CrusherRecipeManager.getInstance().addCustomRecipes(value);
         } else if(AlloyRecipeManager.IMC_KEY.equals(key)) {
           AlloyRecipeManager.getInstance().addCustumRecipes(value);
-        }        
+        }
       }
     }
   }

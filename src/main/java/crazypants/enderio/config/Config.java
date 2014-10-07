@@ -60,6 +60,7 @@ public final class Config {
   public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   public static final Section sectionAttarctor = new Section("Mob Attractor Settings", "attractor");
   public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
+  public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -342,6 +343,16 @@ public final class Config {
   public static boolean lootTravelStaff = true;
   public static boolean lootTheEnder = true;
   public static boolean lootDarkSteelBoots = true;
+
+  public static boolean enderminyEnabled = true;
+  public static int enderminySpawnRate = 60;
+  public static boolean enderminyAttacksPlayerOnSight = false;
+  public static boolean enderminyAttacksCreepers = true;
+  public static int enderminyAttackDamage = 10;
+  public static int enderminyHealth = 20;
+  public static boolean enderminyGroupAgro = true;
+  public static int enderminyMaxGroupSize = 3;
+  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -907,6 +918,23 @@ public final class Config {
     lootTravelStaff = config.getBoolean("lootTravelStaff", sectionLootConfig.name, lootTravelStaff, "Adds Travel Staff to loot tables");
     lootTheEnder = config.getBoolean("lootTheEnder", sectionLootConfig.name, lootTheEnder, "Adds The Ender to loot tables");
     lootDarkSteelBoots = config.getBoolean("lootDarkSteelBoots", sectionLootConfig.name, lootDarkSteelBoots, "Adds Darksteel Boots to loot tables");
+    
+    
+    enderminyEnabled = config.getBoolean("enderminyEnabled", sectionMobConfig.name, enderminyEnabled, "Wether Enderminies are enabled");
+    enderminySpawnRate = config.get(sectionMobConfig.name, "enderminySpawnRate", enderminySpawnRate, 
+        "Sets the spawn rate of Enderminies. 10=Enderman spawn rate, 100=Zombie spawn rate").getInt(enderminySpawnRate);
+    enderminyAttacksPlayerOnSight = config.getBoolean("enderminyAttacksPlayerOnSight", sectionMobConfig.name, enderminyAttacksPlayerOnSight, 
+        "When true an Enderminy will attack a player if it looks at them, otherwise they are neutral mobs.");
+    enderminyAttacksCreepers = config.getBoolean("enderminyAttacksCreepers", sectionMobConfig.name, enderminyAttacksCreepers, 
+        "When true Enderminies will attack creepers");
+    enderminyAttackDamage = config.get(sectionMobConfig.name, "enderminyAttackDamage", enderminyAttackDamage, 
+        "Attack damage of Enderminies. 7=Enderman damage, 3=Zombie damage").getInt(enderminyAttackDamage);
+    enderminyHealth = config.get(sectionMobConfig.name, "enderminyHealth", enderminyHealth, 
+        "Health of Enderminies. 40=Enderman health, 20=Zombie health").getInt(enderminyHealth);
+    enderminyGroupAgro = config.getBoolean("enderminyGroupAgro", sectionMobConfig.name, enderminyGroupAgro, 
+        "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well");
+    enderminyMaxGroupSize= config.get(sectionMobConfig.name, "enderminyMaxGroupSize", enderminyMaxGroupSize, 
+        "Maximum number of Enderminies that will spawn in a single group").getInt(enderminyMaxGroupSize);
   }
 
   private Config() {
