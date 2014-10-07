@@ -87,7 +87,7 @@ public class EntityEnderminy extends EntityMob {
   @Override
   @SideOnly(Side.CLIENT)
   public float getShadowSize() {
-    return 0.1F;
+    return 0.01F;
   }
 
   @Override
@@ -396,7 +396,7 @@ public class EntityEnderminy extends EntityMob {
     if(minies != null && !minies.isEmpty()) {
       
       for (EntityEnderminy miny : minies) {
-        if(miny.entityToAttack == null && miny.canEntityBeSeen(this)) {
+        if(miny.entityToAttack == null) { //&& miny.canEntityBeSeen(this)) {
           miny.entityToAttack = entityToAttack;
         }
       }

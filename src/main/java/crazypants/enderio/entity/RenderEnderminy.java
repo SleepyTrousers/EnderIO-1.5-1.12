@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderEnderminy extends RenderLiving {
   
-  private static final ResourceLocation endermanEyesTexture = new ResourceLocation("textures/entity/enderman/enderminy_eyes.png");
+  private static final ResourceLocation endermanEyesTexture = new ResourceLocation("enderio:entity/enderminy_eyes.png");
   private static final ResourceLocation endermanTextures = new ResourceLocation("enderio:entity/enderminy.png");
   
   private ModelEnderman endermanModel;
