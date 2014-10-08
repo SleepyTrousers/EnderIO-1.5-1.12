@@ -7,6 +7,8 @@ Changes
 
 Bugs
 - #1076 Recipes for Slice'N'Splice not showing axe and shears in NEI 
+- #1070 Alloy smelter produces normal Glass with 2-3 Stacks of Sand
+
 
 
 ------------------------------------------------------
