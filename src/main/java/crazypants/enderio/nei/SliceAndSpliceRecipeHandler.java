@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
@@ -51,7 +52,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
       return;
     }
 
-    List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());    
+    List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
     for (IRecipe recipe : recipes) {
       ItemStack output = recipe.getOutputs()[0].getOutput();
       if(result.getItem() == output.getItem() && result.getItemDamage() == output.getItemDamage()) {
@@ -66,7 +67,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
   public void loadCraftingRecipes(String outputId, Object... results) {
     if(outputId.equals("EnderIOSliceAndSplice") && getClass() == SliceAndSpliceRecipeHandler.class) {
       List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
-      for (IRecipe recipe : recipes) {        
+      for (IRecipe recipe : recipes) {
         SliceAndSpliceRecipe res = new SliceAndSpliceRecipe(recipe);
         arecipes.add(res);
       }
@@ -77,9 +78,9 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void loadUsageRecipes(ItemStack ingredient) {
-    List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());    
+    List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
     for (IRecipe recipe : recipes) {
-      if(recipe.isValidInput(0, ingredient)) {        
+      if(recipe.isValidInput(0, ingredient)) {
         SliceAndSpliceRecipe res = new SliceAndSpliceRecipe(recipe);
         arecipes.add(res);
       }
@@ -130,18 +131,24 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
       input = new ArrayList<PositionedStack>();
       int yOff = 11;
       int xOff = 5;
-      
-      for(RecipeInput recipeInput : recipe.getInputs()) {
+
+      Point pos;
+      for (RecipeInput recipeInput : recipe.getInputs()) {
         if(recipeInput != null) {
-          Point pos = ContainerSliceAndSplice.INPUT_SLOTS[recipeInput.getSlotNumber()];
+          pos = ContainerSliceAndSplice.INPUT_SLOTS[recipeInput.getSlotNumber()];
           input.add(new PositionedStack(getInputs(recipeInput), pos.x - xOff, pos.y - yOff));
-        }        
+        }
       }
-      
+      pos = ContainerSliceAndSplice.INPUT_SLOTS[6];
+      input.add(new PositionedStack(new ItemStack(Items.iron_axe), pos.x - xOff, pos.y - yOff));
+      pos = ContainerSliceAndSplice.INPUT_SLOTS[7];
+      input.add(new PositionedStack(new ItemStack(Items.shears), pos.x - xOff, pos.y - yOff));
+
       if(recipe.getOutputs()[0] != null) {
-        output = new PositionedStack(recipe.getOutputs()[0].getOutput(), ContainerSliceAndSplice.OUTPUT_SLOT.x - xOff, ContainerSliceAndSplice.OUTPUT_SLOT.y - yOff);
+        output = new PositionedStack(recipe.getOutputs()[0].getOutput(), ContainerSliceAndSplice.OUTPUT_SLOT.x - xOff, ContainerSliceAndSplice.OUTPUT_SLOT.y
+            - yOff);
       }
-      energy = recipe.getEnergyRequired(); 
+      energy = recipe.getEnergyRequired();
     }
   }
 
