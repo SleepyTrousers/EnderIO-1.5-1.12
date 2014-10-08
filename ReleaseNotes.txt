@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 2.1.1
+------------------------------------------------------
+Changes
+- Added Enderminy Mob 
+- #1071 Added recipes to make fused quartz and enlightened glass using quartz blocks and glowstone blocks (MatthiasMann)
+
+Bugs
+- #1076 Recipes for Slice'N'Splice not showing axe and shears in NEI 
+
+
+------------------------------------------------------
 Version 2.1.0
 ------------------------------------------------------
 

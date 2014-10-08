@@ -188,6 +188,54 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
       </output>
     </recipe>
   
+   <recipe name="Fused Quartz from Block" energyCost="500">
+        <input>        
+            <itemStack modID="minecraft" itemName="quartz_block" number="1"/>
+        </input>
+        <output>
+            <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0" exp="0.5"/> 
+        </output>
+    </recipe>
+
+    <recipe name="Enlightened Fused Quartz from Block" energyCost="500">
+        <input>
+            <itemStack modID="minecraft" itemName="quartz_block" number="1"/>
+            <itemStack modID="minecraft" itemName="glowstone_dust" number="4"/>
+        </input>
+        <output>
+            <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="2" exp="0.5"/>
+        </output>
+    </recipe>
+
+    <recipe name="Enlightened Fused Quartz from Block 2" energyCost="500">
+        <input>
+            <itemStack modID="minecraft" itemName="quartz_block" number="1"/>
+            <itemStack modID="minecraft" itemName="glowstone" number="1"/>
+        </input>
+        <output>
+            <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="2" exp="0.5"/>
+        </output>
+    </recipe>
+
+    <recipe name="Enlightened Fused Quartz from Block 3" energyCost="500">
+        <input>
+            <itemStack modID="minecraft" itemName="quartz" number="4"/>
+            <itemStack modID="minecraft" itemName="glowstone" number="1"/>
+        </input>
+        <output>
+            <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="2" exp="0.5"/>
+        </output>
+    </recipe>
+
+    <recipe name="Enlightened Fused Quartz from Block 4" energyCost="500">
+        <input>
+            <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0"/>
+            <itemStack modID="minecraft" itemName="glowstone" number="1"/>
+        </input>
+        <output>
+            <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="2" exp="0.5"/>
+        </output>
+    </recipe>
    
   </recipeGroup>
   
