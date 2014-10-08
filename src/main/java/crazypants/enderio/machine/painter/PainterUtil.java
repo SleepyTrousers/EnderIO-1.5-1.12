@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -41,12 +42,11 @@ public final class PainterUtil {
   public static String getTooltTipText(ItemStack item) {
     String sourceName = "";
     Block sourceId = PainterUtil.getSourceBlock(item);
-    int meta = PainterUtil.getSourceBlockMetadata(item);
+    int meta = PainterUtil.getSourceBlockMetadata(item);    
     if(sourceId != null) {
       if(sourceId != null) {
-        sourceName = sourceId.getUnlocalizedName();
-        //sourceName = sourceId.getUnlocalizedName(new ItemStack(sourceId, 1, meta));
-        sourceName = StatCollector.translateToLocal(sourceName + ".name");
+        ItemStack is = new ItemStack(Item.getItemFromBlock(sourceId), 1, meta);
+        sourceName = is.getDisplayName();
       }
     }
     return Lang.localize("blockPainter.paintedWith") + " " + sourceName;
