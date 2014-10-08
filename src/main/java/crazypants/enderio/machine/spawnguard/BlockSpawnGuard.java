@@ -24,6 +24,10 @@ public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
   public static BlockSpawnGuard create() {
     BlockSpawnGuard res = new BlockSpawnGuard();
     res.init();
+    
+    //Just making sure its loaded
+    SpawnGuardController.instance.toString();
+    
     return res;
   }
   

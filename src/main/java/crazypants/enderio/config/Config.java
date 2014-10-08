@@ -329,6 +329,7 @@ public final class Config {
   public static int spawnGuardPowerPerTickLevelTwo = 300;
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
+  public static boolean spawnGuardStopAllSlimesDebug = false;
   
   //Loot Defaults
   public static boolean lootDarkSteel = true;
@@ -904,6 +905,9 @@ public final class Config {
         "The RF/t  power use of a levele 2 spawn guard").getInt(spawnGuardPowerPerTickLevelTwo);
     spawnGuardPowerPerTickLevelThree = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree, 
         "The RF/t  power use of a levele 3 spawn guard").getInt(spawnGuardPowerPerTickLevelThree);
+    spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttarctor.name, spawnGuardStopAllSlimesDebug, 
+        "When true slimes wont be alowed to spawn at all. Only added to aid testing in super flat worlds.");
+    
     
     // Loot Config
     lootDarkSteel = config.getBoolean("lootDarkSteel", sectionLootConfig.name, lootDarkSteel, "Adds Darksteel Ingots to loot tables");

@@ -3,6 +3,7 @@ package crazypants.enderio.machine.spawnguard;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -46,6 +47,12 @@ public class SpawnGuardController {
   
   @SubscribeEvent
   public void onEntitySpawn(LivingSpawnEvent evt) {
+    
+    if(Config.spawnGuardStopAllSlimesDebug && evt.entity instanceof EntitySlime) {
+      evt.setResult(Result.DENY);
+      return;
+    }
+    
     Map<BlockCoord, TileSpawnGuard> guards = getGuardsForWorld(evt.world);
     for(TileSpawnGuard guard : guards.values()) {
       if(guard.isSpawnPrevented(evt.entityLiving)) {   
