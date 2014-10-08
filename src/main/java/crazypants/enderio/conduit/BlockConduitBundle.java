@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit;
 
+import info.jbcs.minecraft.chisel.api.IFacade;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,7 +54,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
 
-public class BlockConduitBundle extends BlockEio implements IGuiHandler {
+public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
 
@@ -811,6 +813,30 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler {
     setBlockBounds(0, 0, 0, 1, 1, 1);
 
     return hits;
+  }
+
+  @Override
+  public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return 0;
+    }
+    IConduitBundle cb = (IConduitBundle)te;
+    return cb.getFacadeMetadata();
+  }
+
+  @Override
+  public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return this;
+    }
+    IConduitBundle cb = (IConduitBundle)te;
+    Block res = cb.getFacadeId();
+    if(res == null) {
+      return this;
+    }
+    return res;
   }
 
 }
