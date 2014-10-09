@@ -37,11 +37,11 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
   private AbstractMachineEntity tileEntity;
 
-  private RedstoneModeButton redstoneButton;
+  protected RedstoneModeButton redstoneButton;
 
   private GuiOverlayIoConfig configOverlay;
 
-  private IconButtonEIO configB;
+  protected IconButtonEIO configB;
 
   public GuiMachineBase(AbstractMachineEntity machine, Container container) {
     super(container);
@@ -52,15 +52,18 @@ public abstract class GuiMachineBase extends GuiContainerBase {
         @Override
         protected void updateText() {
           text.clear();
-          text.add(getPowerOutputText() + PowerDisplayUtil.formatPower(tileEntity.getPowerUsePerTick()) + " " + PowerDisplayUtil.abrevation()
-              + PowerDisplayUtil.perTickStr());
-          //text.add()
-          text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
-
+          if(renderPowerBar()) {
+            text.add(getPowerOutputText() + PowerDisplayUtil.formatPower(tileEntity.getPowerUsePerTick()) + " " + PowerDisplayUtil.abrevation()
+                + PowerDisplayUtil.perTickStr());
+            //text.add()
+            text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
+          }
         }
 
       });
     }
+    xSize = getXSize();
+    ySize = getYSize();
     int x = getXSize() - 5 - BUTTON_SIZE;
     int y = 5;
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
@@ -84,7 +87,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   protected boolean showRecipeButton() {
     return EnderIO.proxy.isNeiInstalled();
   }
-  
+
   protected String getPowerOutputText() {
     return "Max: ";
   }
@@ -152,8 +155,8 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
     int k = (width - xSize) / 2;
     int l = (height - ySize) / 2;
-    if(renderPowerBar()) {
-      int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());
+    if(renderPowerBar()) {      
+      int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());      
       // x, y, u, v, width, height
       drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
     }

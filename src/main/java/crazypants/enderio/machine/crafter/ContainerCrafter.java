@@ -41,11 +41,11 @@ public class ContainerCrafter extends AbstractMachineContainer {
   }
 
   @Override
-  protected Point getPlayerInventoryOffset() {
+  public Point getPlayerInventoryOffset() {
     return new Point(30, 84);
   }
 
-  protected Point getUpgradeOffset() {
+  public Point getUpgradeOffset() {
     return new Point(6, 60);
   }
 

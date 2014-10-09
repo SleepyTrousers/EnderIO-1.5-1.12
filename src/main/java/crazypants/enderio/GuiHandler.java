@@ -47,6 +47,7 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_SLICE_N_SPLICE = 94;
   public static final int GUI_ID_ATTRACTOR = 95;
   public static final int GUI_ID_SPAWN_GUARD = 96;
+  public static final int GUI_ID_TRANSCEIVER = 97;
 
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 

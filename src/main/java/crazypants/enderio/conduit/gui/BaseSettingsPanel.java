@@ -11,13 +11,14 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
+import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.Lang;
 
-public class BaseSettingsPanel implements ISettingsPanel {
+public class BaseSettingsPanel implements ITabPanel {
 
   static final int PREV_MODE_B = 327;
   static final int NEXT_MODE_B = 328;
@@ -88,8 +89,15 @@ public class BaseSettingsPanel implements ISettingsPanel {
   public void deactivate() {
   }
   
-  public void mouseClicked(int x, int y, int par3) {
-    
+  public void mouseClicked(int x, int y, int par3) {    
+  }
+
+  @Override
+  public void keyTyped(char par1, int par2) {
+  }
+
+  @Override
+  public void updateScreen() {    
   }
 
   @Override

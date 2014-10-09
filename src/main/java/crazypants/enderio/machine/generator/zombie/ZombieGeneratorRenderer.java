@@ -132,6 +132,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     GL11.glPushMatrix();
     GL11.glTranslatef(x, y, z);
     GL11.glEnable(GL11.GL_BLEND);
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     renderModel(ForgeDirection.SOUTH.ordinal());
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glPopMatrix();

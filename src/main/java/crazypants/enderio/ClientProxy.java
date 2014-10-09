@@ -104,6 +104,8 @@ import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TankItemRenderer;
 import crazypants.enderio.machine.tank.TileTank;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
 import crazypants.enderio.machine.xp.BlockExperianceObelisk;
@@ -344,6 +346,10 @@ public class ClientProxy extends CommonProxy {
     HyperCubeRenderer hcr = new HyperCubeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
+    
+    TransceiverRenderer tr = new TransceiverRenderer();
+    ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTransceiver), tr);
 
     new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
     new ConduitProbeOverlayRenderer();

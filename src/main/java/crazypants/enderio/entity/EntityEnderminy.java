@@ -40,17 +40,7 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class EntityEnderminy extends EntityMob {
 
-  private final class ClosestEntityComparator implements Comparator<EntityCreeper> {
-    Vector3d pos = new Vector3d(posX, posY, posZ);
-
-    @Override
-    public int compare(EntityCreeper o1, EntityCreeper o2) {
-      double d1 = new Vector3d(o1.posX, o1.posY, o1.posZ).distanceSquared(pos);
-      double d2 = new Vector3d(o2.posX, o2.posY, o2.posZ).distanceSquared(pos);
-      return Double.compare(d1, d2);
-    }
-  }
-
+  
   public static String NAME = "Enderminy";
 
   private static final int MAX_RND_TP_DISTANCE = 32;
@@ -390,6 +380,10 @@ public class EntityEnderminy extends EntityMob {
     if(!groupAgroEnabled) {
       return;
     }
+    if(! (entityToAttack instanceof EntityPlayer)) {
+      return;
+    }
+    System.out.println("EntityEnderminy.doGroupArgo: ");
     int range = 16;
     AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
     List<EntityEnderminy> minies = worldObj.getEntitiesWithinAABB(EntityEnderminy.class, bb);
@@ -410,5 +404,18 @@ public class EntityEnderminy extends EntityMob {
   public void setScreaming(boolean p_70819_1_) {
     dataWatcher.updateObject(18, Byte.valueOf((byte) (p_70819_1_ ? 1 : 0)));
   }
+  
+  private final class ClosestEntityComparator implements Comparator<EntityCreeper> {
+    Vector3d pos = new Vector3d();
+
+    @Override
+    public int compare(EntityCreeper o1, EntityCreeper o2) {
+      pos.set(posX,posY,posZ);
+      double d1 = new Vector3d(o1.posX, o1.posY, o1.posZ).distanceSquared(pos);
+      double d2 = new Vector3d(o2.posX, o2.posY, o2.posZ).distanceSquared(pos);
+      return Double.compare(d1, d2);
+    }
+  }
+
 
 }

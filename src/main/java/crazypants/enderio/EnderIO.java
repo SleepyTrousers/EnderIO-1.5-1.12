@@ -114,6 +114,8 @@ import crazypants.enderio.machine.spawnguard.RangeEntity;
 import crazypants.enderio.machine.still.BlockVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
+import crazypants.enderio.machine.transceiver.BlockTransceiver;
+import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.machine.xp.BlockExperianceObelisk;
@@ -221,6 +223,7 @@ public class EnderIO {
   public static BlockAttractor blockAttractor;
   public static BlockSpawnGuard blockSpawnGuard;
   public static BlockExperianceObelisk blockExperianceOblisk;
+  public static BlockTransceiver blockTransceiver;
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -314,6 +317,8 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
+    
+    blockTransceiver = BlockTransceiver.create();
 
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();
@@ -597,10 +602,12 @@ public class EnderIO {
   @EventHandler
   public void serverStarted(FMLServerStartedEvent event) {
     HyperCubeRegister.load();
+    ServerChannelRegister.load();
   }
 
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
     HyperCubeRegister.unload();
+    ServerChannelRegister.store();
   }
 }

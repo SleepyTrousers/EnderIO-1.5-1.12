@@ -7,6 +7,7 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.gui.ITabPanel;
 
 public class TabFactory {
 
@@ -15,7 +16,7 @@ public class TabFactory {
   private TabFactory() {
   }
 
-  public ISettingsPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
+  public ITabPanel createPanelForConduit(GuiExternalConnection gui, IConduit con) {
     Class<? extends IConduit> baseType = con.getBaseConduitType();
     if(baseType.isAssignableFrom(IPowerConduit.class)) {
       return new PowerSettings(gui, con);

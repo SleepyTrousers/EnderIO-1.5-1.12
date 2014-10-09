@@ -14,6 +14,7 @@ public final class IconEIO {
   public static final IconEIO PRIVATE = new IconEIO(48, 100);
   public static final IconEIO CROSS = new IconEIO(64, 100);
   public static final IconEIO PLUS = new IconEIO(80, 100);
+  public static final IconEIO ARROWS = new IconEIO(178, 100);
 
   public static final IconEIO BUTTON = new IconEIO(0, 116);
   public static final IconEIO CHECKED_BUTTON = new IconEIO(0, 132);

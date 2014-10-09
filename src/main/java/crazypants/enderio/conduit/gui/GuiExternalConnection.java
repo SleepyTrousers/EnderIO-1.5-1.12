@@ -21,6 +21,7 @@ import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.RenderUtil;
@@ -49,7 +50,7 @@ public class GuiExternalConnection extends GuiContainerBase {
   private final ForgeDirection dir;
 
   private final List<IConduit> conduits = new ArrayList<IConduit>();
-  private final List<ISettingsPanel> tabs = new ArrayList<ISettingsPanel>();
+  private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int activeTab = 0;
 
   private int tabYOffset = 4;
@@ -91,7 +92,7 @@ public class GuiExternalConnection extends GuiContainerBase {
 
     for (IConduit con : cons) {
       if(con.containsExternalConnection(dir) || con.canConnectToExternal(dir, true)) {
-        ISettingsPanel tab = TabFactory.instance.createPanelForConduit(this, con);
+        ITabPanel tab = TabFactory.instance.createPanelForConduit(this, con);
         if(tab != null) {
           conduits.add(con);
           tabs.add(tab);

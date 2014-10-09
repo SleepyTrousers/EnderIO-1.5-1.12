@@ -1,6 +1,10 @@
 package crazypants.enderio.machine;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,6 +15,8 @@ import net.minecraft.item.ItemStack;
 public abstract class AbstractMachineContainer extends Container {
 
   protected final AbstractMachineEntity tileEntity;
+  
+  protected Map<Slot, Point> playerSlotLocations = new HashMap<Slot, Point>();
 
   public AbstractMachineContainer(InventoryPlayer playerInv, AbstractMachineEntity te) {
     this.tileEntity = te;
@@ -33,17 +39,26 @@ public abstract class AbstractMachineContainer extends Container {
     }
 
     int x = getPlayerInventoryOffset().x;
-    int y = getPlayerInventoryOffset().y;
+    int y = getPlayerInventoryOffset().y;        
+    
     // add players inventory
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, x + j * 18, y + i * 18));
+        Point loc = new Point(x + j * 18, y + i * 18);
+        Slot slot = new Slot(playerInv, j + i * 9 + 9, loc.x, loc.y);
+        addSlotToContainer(slot);
+        playerSlotLocations.put(slot, loc);
       }
     }
-
+    
     for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, x + i * 18, y + 58));
+      Point loc = new Point(x + i * 18, y + 58);
+      Slot slot = new Slot(playerInv, i, loc.x, loc.y);
+      addSlotToContainer(slot);      
+      playerSlotLocations.put(slot, loc);
     }
+
+    
   }
 
   @Override
@@ -51,11 +66,11 @@ public abstract class AbstractMachineContainer extends Container {
     return tileEntity.isUseableByPlayer(entityplayer);
   }
 
-  protected Point getPlayerInventoryOffset() {
+  public Point getPlayerInventoryOffset() {
     return new Point(8,84);
   }
   
-  protected Point getUpgradeOffset() {
+  public Point getUpgradeOffset() {
     return new Point(12,60);
   }
   
