@@ -21,7 +21,7 @@ import crazypants.gui.ListSelectionListener;
 import crazypants.render.ColorUtil;
 import crazypants.util.Lang;
 
-public class AbstractChannelTab implements ITabPanel {
+public class ChannelTab implements ITabPanel {
 
   protected static final int ADD_BUTTON_ID = 3;
   protected static final int PRIVATE_BUTTON_ID = 4;
@@ -49,7 +49,7 @@ public class AbstractChannelTab implements ITabPanel {
   ListSelectionListener<Channel> selectionListener;
   TileTransceiver transceiver;
 
-  public AbstractChannelTab(GuiTransceiver guiTransceiver, ChannelType type) {
+  public ChannelTab(GuiTransceiver guiTransceiver, ChannelType type) {
     parent = guiTransceiver;
     this.type = type;
     transceiver = guiTransceiver.transceiver;
@@ -238,6 +238,8 @@ public class AbstractChannelTab implements ITabPanel {
     if(c != null) {        
       ClientChannelRegister.instance.removeChannel(c);
       PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, false));
+//      transceiver.removeSendChanel(c);
+//      transceiver.removeRecieveChanel(c);      
     }
   }
 

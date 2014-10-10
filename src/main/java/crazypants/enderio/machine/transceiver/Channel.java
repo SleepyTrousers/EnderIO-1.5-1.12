@@ -100,5 +100,9 @@ public class Channel {
     return user;
   }
 
+  @Override
+  public String toString() {
+    return "Channel [name=" + name + ", user=" + user + ", type=" + type + "]";
+  }
 
 }

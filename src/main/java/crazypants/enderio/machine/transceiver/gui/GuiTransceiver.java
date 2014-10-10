@@ -43,9 +43,9 @@ public class GuiTransceiver extends GuiMachineBase {
     transceiver = te;
     
     tabs.add(new GeneralTab(this));
-    tabs.add(new AbstractChannelTab(this, ChannelType.POWER));
-    tabs.add(new AbstractChannelTab(this, ChannelType.ITEM));
-    tabs.add(new AbstractChannelTab(this, ChannelType.FLUID));
+    tabs.add(new ChannelTab(this, ChannelType.POWER));
+    tabs.add(new ChannelTab(this, ChannelType.ITEM));
+    tabs.add(new ChannelTab(this, ChannelType.FLUID));
   }
 
   @Override

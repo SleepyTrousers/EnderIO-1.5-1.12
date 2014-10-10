@@ -3,6 +3,7 @@ package crazypants.enderio.machine.transceiver;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.stream.JsonReader;
@@ -79,4 +80,23 @@ public class ServerChannelRegister extends ChannelRegister {
     return new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/dimensionalTransceiver.json");
   }
 
+  private List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
+  
+  public void register(TileTransceiver transceiver) {
+    transceivers.add(transceiver);    
+  }
+  
+  public void dergister(TileTransceiver transceiver) {
+    transceivers.remove(transceiver);    
+  }
+
+  @Override
+  public void removeChannel(Channel channel) {    
+    super.removeChannel(channel);
+    for(TileTransceiver trans : transceivers) {
+      trans.removeRecieveChanel(channel);
+      trans.removeSendChanel(channel);
+    }
+  }
+  
 }
