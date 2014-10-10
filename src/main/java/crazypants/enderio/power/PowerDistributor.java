@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.generator;
+package crazypants.enderio.power;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,6 @@ import java.util.ListIterator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
 public class PowerDistributor {

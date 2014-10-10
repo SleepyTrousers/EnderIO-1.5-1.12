@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
@@ -53,10 +54,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
         protected void updateText() {
           text.clear();
           if(renderPowerBar()) {
-            text.add(getPowerOutputText() + PowerDisplayUtil.formatPower(tileEntity.getPowerUsePerTick()) + " " + PowerDisplayUtil.abrevation()
-                + PowerDisplayUtil.perTickStr());
-            //text.add()
-            text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
+            updatePowerBarTooltip(text);
           }
         }
 
@@ -88,8 +86,18 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     return EnderIO.proxy.isNeiInstalled();
   }
 
-  protected String getPowerOutputText() {
+  protected String getPowerOutputLabel() {
     return "Max: ";
+  }
+  
+  protected int getPowerOutputValue() {
+    return tileEntity.getPowerUsePerTick();
+  }
+  
+  protected void updatePowerBarTooltip(List<String> text) {
+    text.add(getPowerOutputLabel() + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
+        + PowerDisplayUtil.perTickStr());
+    text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
   }
 
   public void renderSlotHighlights(IoMode mode) {

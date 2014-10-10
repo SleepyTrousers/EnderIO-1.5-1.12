@@ -139,7 +139,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     return usePower(getPowerUsePerTick());
   }
 
-  protected int usePower(int wantToUse) {
+  public int usePower(int wantToUse) {
     int used = Math.min(getEnergyStored(), wantToUse);
     setEnergyStored( Math.max(0, getEnergyStored() - used));
     currentTask.update(used);

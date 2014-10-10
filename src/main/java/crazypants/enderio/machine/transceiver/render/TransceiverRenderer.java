@@ -53,10 +53,10 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
     Tessellator.instance.setColorOpaque_F(f, f, f);
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 
-    model.render(cube, x, y, z);
-    if(cube.isActive()) {
+    model.render(cube, x, y, z);    
+    if(cube.isActive()) {      
       renderPower(te.getWorldObj(), x, y, z, true);
-    }
+    } 
     GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   }
 

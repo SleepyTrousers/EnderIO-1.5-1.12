@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.Random;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -78,4 +80,10 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   public boolean renderAsNormalBlock() {
     return false;
   }
+
+  @Override
+  public void randomDisplayTick(World world, int x, int y, int z, Random rand) {    
+  }
+  
+  
 }

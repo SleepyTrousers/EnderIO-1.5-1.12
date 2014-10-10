@@ -5,57 +5,58 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.PowerDistributor;
+import crazypants.vecmath.VecmathUtil;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity {
 
+  //Power will only be sent to other transceivers is the buffer is higher than this amount
+  private static final float MIN_POWER_TO_SEND = 0.5f;
+  
   private final EnumMap<ChannelType, List<Channel>> sendChannels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
   private final EnumMap<ChannelType, List<Channel>> recieveChannels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
 
+  private ICapacitor capacitor = new BasicCapacitor(Config.transceiverMaxIoRF * 2, 100000, Config.transceiverMaxIoRF);
   private boolean sendChannelsDirty = false;
   private boolean recieveChannelsDirty = false;
   private boolean registered = false;
 
+  private PowerDistributor powerDistributor;
+  
   public TileTransceiver() {
     super(new SlotDefinition(0, 0, 0));
     for (ChannelType type : ChannelType.values()) {
       sendChannels.put(type, new ArrayList<Channel>());
       recieveChannels.put(type, new ArrayList<Channel>());
     }
+    currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);  
   }
-
+  
   @Override
-  public String getMachineName() {
-    return ModObject.blockTransceiver.unlocalisedName;
-  }
-
-  @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    return true;
-  }
-
-  @Override
-  public void invalidate() {
-    super.invalidate();
-    if(registered && worldObj != null && !worldObj.isRemote) {
-      ServerChannelRegister.instance.dergister(this);
-      registered = false;
-    }
-  }
-
-  @Override
-  public void onChunkUnload() {
-    super.onChunkUnload();
-    if(registered && worldObj != null && !worldObj.isRemote) {
-      ServerChannelRegister.instance.dergister(this);
-      registered = false;
-    }
+  protected boolean processTasks(boolean redstoneChecksPassed) {
+    boolean res = super.processTasks(redstoneChecksPassed);
+    if(!redstoneChecksPassed) {      
+      return res;
+    }  
+    
+    processPower();    
+    return res;
   }
 
   @Override
@@ -79,6 +80,24 @@ public class TileTransceiver extends AbstractPoweredTaskEntity {
       }
     }
   }
+  
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    if(registered && worldObj != null && !worldObj.isRemote) {
+      ServerChannelRegister.instance.dergister(this);
+      registered = false;
+    }
+  }
+
+  @Override
+  public void onChunkUnload() {
+    super.onChunkUnload();
+    if(registered && worldObj != null && !worldObj.isRemote) {
+      ServerChannelRegister.instance.dergister(this);
+      registered = false;
+    }
+  }
 
   private void removeUnregsiteredChannels(EnumMap<ChannelType, List<Channel>> channels) {
     List<Channel> toRemove = new ArrayList<Channel>();
@@ -92,6 +111,30 @@ public class TileTransceiver extends AbstractPoweredTaskEntity {
     for (Channel chan : toRemove) {
       removeChannel(chan, channels);
     }
+  }
+  
+  @Override
+  public String getMachineName() {
+    return ModObject.blockTransceiver.unlocalisedName;
+  }
+    
+  @Override
+  public boolean isActive() {
+    return hasPower();    
+  }
+
+  @Override
+  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+    return true;
+  }
+
+  @Override
+  public ICapacitor getCapacitor() {
+    return capacitor;
+  }
+  
+  public int getPowerUsePerTick() {
+    return Config.transceiverUpkeepCostRF;
   }
 
   public List<Channel> getSendChannels(ChannelType type) {
@@ -155,9 +198,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity {
 
     readChannels(nbtRoot, sendChannels, "sendChannels");
     readChannels(nbtRoot, recieveChannels, "recieveChannels");
+    
+    currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
 
   }
-
+    
   static void readChannels(NBTTagCompound nbtRoot, EnumMap<ChannelType, List<Channel>> readInto, String key) {
     
     for (ChannelType type : ChannelType.values()) {
@@ -222,6 +267,43 @@ public class TileTransceiver extends AbstractPoweredTaskEntity {
   
   EnumMap<ChannelType, List<Channel>> getReceiveChannels() {    
     return recieveChannels;
+  }
+  
+  //Power Handling
+  
+  private void processPower() {
+    List<Channel> sendTo = getSendChannels(ChannelType.POWER);    
+    int canSend = getMaxSendableEnergy();
+    if(canSend > 0 && !sendTo.isEmpty()) {      
+      for(int i=0;i<sendTo.size() && canSend > 0;i++) {
+        ServerChannelRegister.instance.sendPower(this, canSend, sendTo.get(i));
+        canSend = getMaxSendableEnergy();
+      }
+    }    
+    canSend = getMaxSendableEnergy();
+    if(canSend > 0 && !getRecieveChannels(ChannelType.POWER).isEmpty()) {
+      if(powerDistributor == null) {
+        powerDistributor = new PowerDistributor(getLocation());
+      }
+      int used = powerDistributor.transmitEnergy(worldObj, canSend);
+      usePower(used);
+    }
+  }
+
+  private int getMaxSendableEnergy() {
+    return getEnergyStored() - (int)(MIN_POWER_TO_SEND * getMaxEnergyStored());
+  }
+  
+  private float getEnergyStoredRatio() {
+    return (float)getEnergyStored() / getMaxEnergyStored();
+  }
+  
+  @Override
+  public void onNeighborBlockChange(Block blockId) {    
+    super.onNeighborBlockChange(blockId);
+    if(powerDistributor != null) {
+      powerDistributor.neighboursChanged();
+    }
   }
   
 }

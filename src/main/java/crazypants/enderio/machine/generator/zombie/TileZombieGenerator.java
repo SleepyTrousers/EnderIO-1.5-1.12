@@ -16,8 +16,8 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.PowerDistributor;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 

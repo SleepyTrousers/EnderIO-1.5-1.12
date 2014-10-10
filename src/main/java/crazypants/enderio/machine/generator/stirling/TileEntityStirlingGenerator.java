@@ -11,9 +11,9 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.PowerDistributor;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 
 public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory {

@@ -10,8 +10,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
 
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -97,6 +99,21 @@ public class ServerChannelRegister extends ChannelRegister {
       trans.removeRecieveChanel(channel);
       trans.removeSendChanel(channel);
     }
+  }
+
+  public void sendPower(TileTransceiver sender, int canSend, Channel channel) {
+    //TODO: Round robin somehow
+    for(TileTransceiver trans : transceivers) {
+      if(trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
+        double invLoss = 1 - Config.transceiverEnergyLoss;
+        int canSendWithLoss = (int)Math.round(canSend * invLoss);
+        int recieved = trans.receiveEnergy(ForgeDirection.UNKNOWN, canSendWithLoss, false);
+        if(recieved > 0) {
+          int recievedPlusLoss = (int)Math.round(recieved / invLoss);
+          sender.usePower(recievedPlusLoss);
+        }
+      }
+    }    
   }
   
 }

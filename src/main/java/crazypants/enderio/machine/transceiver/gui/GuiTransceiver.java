@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
@@ -26,35 +27,41 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class GuiTransceiver extends GuiMachineBase {
 
   private static final int TAB_HEIGHT = 24;
-  
+
   private TileTransceiver entity;
 
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int tabYOffset = 4;
-  
+
   ContainerTransceiver container;
   TileTransceiver transceiver;
-  
+
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te));
     this.entity = te;
-    container = (ContainerTransceiver)inventorySlots;
+    container = (ContainerTransceiver) inventorySlots;
     transceiver = te;
-    
+
     tabs.add(new GeneralTab(this));
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));
   }
 
+  protected void updatePowerBarTooltip(List<String> text) {
+    text.add("Upkeep: " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
+    text.add("Max IO: " + PowerDisplayUtil.formatPower(Config.transceiverMaxIoRF) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
+    text.add(PowerDisplayUtil.formatStoredPower(transceiver.getEnergyStored(), transceiver.getCapacitor().getMaxEnergyStored()));
+  }
+
   @Override
   protected boolean showRecipeButton() {
     return false;
   }
-  
+
   @Override
-  public int getXSize() {    
+  public int getXSize() {
     return 256;
   }
 
@@ -67,9 +74,9 @@ public class GuiTransceiver extends GuiMachineBase {
       }
     }
   }
-  
+
   @Override
-  protected void keyTyped(char par1, int par2) {    
+  protected void keyTyped(char par1, int par2) {
     if(par2 == 1) {
       for (IGuiOverlay overlay : overlays) {
         if(overlay.isVisible()) {
@@ -79,7 +86,7 @@ public class GuiTransceiver extends GuiMachineBase {
       }
       this.mc.thePlayer.closeScreen();
     }
-    
+
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).keyTyped(par1, par2);
@@ -89,7 +96,7 @@ public class GuiTransceiver extends GuiMachineBase {
   }
 
   @Override
-  public void initGui() {  
+  public void initGui() {
     super.initGui();
     for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
@@ -97,9 +104,9 @@ public class GuiTransceiver extends GuiMachineBase {
       } else {
         tabs.get(i).deactivate();
       }
-    }    
+    }
     configB.visible = activeTab == 0;
-    redstoneButton.visible = activeTab == 0;    
+    redstoneButton.visible = activeTab == 0;
   }
 
   @Override
@@ -133,7 +140,7 @@ public class GuiTransceiver extends GuiMachineBase {
   }
 
   @Override
-  protected void mouseClicked(int x, int y, int par3) {    
+  protected void mouseClicked(int x, int y, int par3) {
     super.mouseClicked(x, y, par3);
 
     int tabLeftX = xSize;
@@ -154,7 +161,6 @@ public class GuiTransceiver extends GuiMachineBase {
     }
     tabs.get(activeTab).mouseClicked(x, y, par3);
   }
-  
 
   @Override
   protected void actionPerformed(GuiButton guiButton) {
@@ -183,7 +189,7 @@ public class GuiTransceiver extends GuiMachineBase {
     }
 
     tes.draw();
-    
+
     RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     if(renderPowerBar()) {

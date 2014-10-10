@@ -20,10 +20,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
@@ -546,65 +545,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
   
   IPoweredTask createTask() {
-    return new DummyTask(getPowerUsePerTick());
+    return new ContinuousTask(getPowerUsePerTick());
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("isActive", isActive());
-  }
-
-  private static class DummyTask implements IPoweredTask {
-    
-    float powerUserPerTick;
-    
-    public DummyTask(float powerUsePerTick) {
-      this.powerUserPerTick = powerUsePerTick;
-    }
-    
-    @Override
-    public void writeToNBT(NBTTagCompound nbtRoot) {
-    }
-
-    @Override
-    public void update(float availableEnergy) {
-    }
-
-    @Override
-    public boolean isComplete() {
-      return false;
-    }
-
-    @Override
-    public float getRequiredEnergy() {
-      return powerUserPerTick;
-    }
-
-    @Override
-    public IMachineRecipe getRecipe() {
-      return null;
-    }
-
-    @Override
-    public float getProgress() {
-      return 0.5f;
-    }
-
-    @Override
-    public ResultStack[] getCompletedResult() {
-      return new ResultStack[0];
-    }
-
-    @Override
-    public float getChance() {
-      return 1;
-    }
-
-    @Override
-    public MachineRecipeInput[] getInputs() {
-      return new MachineRecipeInput[0];
-    }
   }
 
 }

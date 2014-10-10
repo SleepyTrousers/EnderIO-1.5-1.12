@@ -45,7 +45,7 @@ public class GuiFarmStation extends GuiMachineBase {
     return false;
   }
   
-  protected String getPowerOutputText() {
+  protected String getPowerOutputLabel() {
     return "Base Use: ";
   }
 }
