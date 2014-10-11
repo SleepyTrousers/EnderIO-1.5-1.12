@@ -8,6 +8,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.impl.ConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,6 +18,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -30,13 +34,22 @@ public class WailaCompat implements IWailaDataProvider {
   public static final WailaCompat INSTANCE = new WailaCompat();
 
   public static void load(IWailaRegistrar registrar) {
+    registrar.registerStackProvider(INSTANCE, BlockConduitBundle.class); // CHANGE BLOCK TYPE IF MORE ARE ADDED
     registrar.registerHeadProvider(INSTANCE, Block.class);
     registrar.registerBodyProvider(INSTANCE, Block.class);
     registrar.registerTailProvider(INSTANCE, Block.class);
+    
+    ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", "Sneaky Facades");
   }
 
   @Override
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    if (accessor.getBlock() instanceof BlockConduitBundle && config.getConfig("facades.hidden")) {
+      IConduitBundle bundle = (IConduitBundle) accessor.getTileEntity();
+      if (bundle.hasFacade()) {
+        return new ItemStack(bundle.getFacadeId(), 1, bundle.getFacadeMetadata());
+      }
+    }
     return null;
   }
 
