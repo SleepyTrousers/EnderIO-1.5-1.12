@@ -28,7 +28,7 @@ public class GuiTransceiver extends GuiMachineBase {
 
   private static final int TAB_HEIGHT = 24;
 
-  private TileTransceiver entity;
+  TileTransceiver entity;
 
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
@@ -36,6 +36,8 @@ public class GuiTransceiver extends GuiMachineBase {
 
   ContainerTransceiver container;
   TileTransceiver transceiver;
+  
+  GeneralTab generalTab;
 
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te));
@@ -43,16 +45,15 @@ public class GuiTransceiver extends GuiMachineBase {
     container = (ContainerTransceiver) inventorySlots;
     transceiver = te;
 
-    tabs.add(new GeneralTab(this));
+    generalTab = new GeneralTab(this); 
+    tabs.add(generalTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
-    text.add("Upkeep: " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
-    text.add("Max IO: " + PowerDisplayUtil.formatPower(Config.transceiverMaxIoRF) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(transceiver.getEnergyStored(), transceiver.getCapacitor().getMaxEnergyStored()));
+    generalTab.updatePowerBarTooltip(text);    
   }
 
   @Override
@@ -110,33 +111,54 @@ public class GuiTransceiver extends GuiMachineBase {
   }
 
   @Override
+  public void renderPowerBar(int k, int l) {
+    //super.renderPowerBar(k, l);
+  }
+
+  @Override
   protected boolean renderPowerBar() {
     return activeTab == 0;
   }
 
   @Override
-  protected int getPowerX() {
+  public int getPowerX() {
     return super.getPowerX() - 4;
   }
 
   @Override
-  protected int getPowerHeight() {
+  public int getPowerHeight() {
     return 58;
   }
 
   @Override
-  protected int getPowerY() {
+  public int getPowerY() {
     return super.getPowerY();
+  }
+  
+  @Override
+  public int getPowerWidth() {
+    return POWER_WIDTH;
   }
 
   @Override
-  protected int getPowerV() {
+  public int getPowerV() {
     return 196;
   }
 
   @Override
-  protected int getPowerU() {
+  public int getPowerU() {
     return 246;
+  }
+
+  
+  @Override
+  public String getPowerOutputLabel() {
+    return super.getPowerOutputLabel();
+  }
+
+  @Override
+  public  int getPowerOutputValue() {
+    return super.getPowerOutputValue();
   }
 
   @Override
@@ -155,6 +177,7 @@ public class GuiTransceiver extends GuiMachineBase {
     if(x > tabLeftX && x < tabRightX + 24) {
       if(y > minY && y < maxY) {
         activeTab = (y - minY) / 24;
+        hideOverlays();
         initGui();
         return;
       }
@@ -192,11 +215,9 @@ public class GuiTransceiver extends GuiMachineBase {
 
     RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
-    if(renderPowerBar()) {
-      drawTexturedModalRect(getGuiLeft() + getPowerX() - 1, getGuiTop() + getPowerY() - 1, 233, 196, 12, getPowerHeight() + 2);
-    }
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     RenderUtil.bindTexture(IconEIO.TEXTURE);
     tes.startDrawingQuads();
     IconEIO.ACTIVE_TAB.renderIcon(tabX, sy + tabYOffset + (activeTab * TAB_HEIGHT));

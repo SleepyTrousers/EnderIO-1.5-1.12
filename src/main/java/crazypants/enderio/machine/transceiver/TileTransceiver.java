@@ -52,7 +52,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private PowerDistributor powerDistributor;
 
   public TileTransceiver() {
-    super(new SlotDefinition(0, 0, 0));
+    super(new SlotDefinition(4, 4, 0));
     for (ChannelType type : ChannelType.values()) {
       sendChannels.put(type, new ArrayList<Channel>());
       recieveChannels.put(type, new ArrayList<Channel>());

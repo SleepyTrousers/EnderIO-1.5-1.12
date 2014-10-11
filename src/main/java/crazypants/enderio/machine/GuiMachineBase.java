@@ -100,6 +100,16 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
   }
 
+  public void renderSlotHighlights() {
+    SelectedFace sel = configOverlay.getSelection();
+    if(sel != null) {
+      IoMode mode = sel.config.getIoMode(sel.face);
+      if(mode != null) {
+        renderSlotHighlights(mode);
+      }
+    }
+  }
+  
   public void renderSlotHighlights(IoMode mode) {
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
     if(slotDef.getNumInputSlots() > 0 && (mode == IoMode.PULL || mode == IoMode.PUSH_PULL)) {
@@ -123,6 +133,14 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     GL11.glEnable(GL11.GL_BLEND);
     RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, width, height, col);
     GL11.glDisable(GL11.GL_BLEND);
+  }
+
+  public void renderPowerBar(int k, int l) {
+    if(renderPowerBar()) {      
+      int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());      
+      // x, y, u, v, width, height
+      drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
+    }
   }
 
   protected int getPowerX() {
@@ -163,11 +181,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
 
     int k = (width - xSize) / 2;
     int l = (height - ySize) / 2;
-    if(renderPowerBar()) {      
-      int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());      
-      // x, y, u, v, width, height
-      drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
-    }
+    renderPowerBar(k, l);
 
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) this.buttonList.get(i);
@@ -178,13 +192,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       IconEIO.RECIPE.renderIcon(k + 155, l + 43, 16, 16, 0, true);
     }
 
-    SelectedFace sel = configOverlay.getSelection();
-    if(sel != null) {
-      IoMode mode = sel.config.getIoMode(sel.face);
-      if(mode != null) {
-        renderSlotHighlights(mode);
-      }
-    }
+    renderSlotHighlights();
 
   }
 

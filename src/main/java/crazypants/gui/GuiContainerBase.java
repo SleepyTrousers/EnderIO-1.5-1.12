@@ -39,14 +39,21 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   protected void keyTyped(char par1, int par2) {
     if (par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
       //this.mc.thePlayer.closeScreen();
-      for(IGuiOverlay overlay : overlays) {
-        if(overlay.isVisible()) {
-          overlay.setVisible(false);
-          return;
-        }
+      if(hideOverlays()) {
+        return;
       }
     }
     super.keyTyped(par1, par2);
+  }
+
+  public boolean hideOverlays() {
+    for(IGuiOverlay overlay : overlays) {
+      if(overlay.isVisible()) {
+        overlay.setVisible(false);
+        return true;
+      }
+    }
+    return false;
   }
 
 
