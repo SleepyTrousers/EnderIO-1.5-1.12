@@ -186,7 +186,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
   
   @Override
-  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TilePoweredSpawner te = (TilePoweredSpawner) world.getTileEntity(x, y, z);
     tooltip.add(te.getEntityName());
   }

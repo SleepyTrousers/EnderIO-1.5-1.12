@@ -237,6 +237,10 @@ tile.blockCapacitorBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
+enderio.capbank.maxIO=Max I/O
+enderio.capbank.maxIn=Max Input
+enderio.capbank.maxOut=Max Output
+
 tile.blockWirelessCharger.name=Wireless Charger
 tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby
 tile.blockWirelessCharger.tooltip.detailed.line2=players inventories
@@ -257,6 +261,15 @@ tile.blockTransceiver.name=Dimensional Transceiver
 tile.blockTransceiver.tooltip.detailed.line1=Transports items, fluids and power
 tile.blockTransceiver.tooltip.detailed.line2=wirelessly across any distance and
 tile.blockTransceiver.tooltip.detailed.line3=between dimensions
+
+enderio.trans.showChannels=<Shift to show channels>
+
+enderio.trans.power=Power
+enderio.trans.item=Item
+enderio.trans.fluid=Fluid
+
+enderio.trans.recieving=Recieving
+enderio.trans.sending=Sending
 
 tile.blockPowerMonitor.name=Power Monitor
 tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
@@ -320,6 +333,8 @@ tile.blockTank.tooltip.detailed.line1=Portable fluid tank
 tile.blockTank.tooltip.detailed.line2=Can be used to empty and
 tile.blockTank.tooltip.detailed.line3=fill fluid containers
 enderio.tank.tank=Tank
+enderio.tooltip.none=None
+enderio.tooltip.fluidStored=Fluid Stored
 
 tile.blockCrafter.name=Crafter
 tile.blockCrafter.tooltip.detailed.line1=A powered auto-crafter

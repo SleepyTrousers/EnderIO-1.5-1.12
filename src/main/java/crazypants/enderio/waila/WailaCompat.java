@@ -4,8 +4,6 @@ import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -96,7 +94,7 @@ public class WailaCompat implements IWailaDataProvider {
         TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
 
-      info.getWailaInfo(currenttip, world, pos.blockX, pos.blockY, pos.blockZ);
+      info.getWailaInfo(currenttip, player, world, pos.blockX, pos.blockY, pos.blockZ);
     }
 
     else {

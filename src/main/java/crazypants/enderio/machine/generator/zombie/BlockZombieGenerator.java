@@ -147,7 +147,7 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
   
     @Override
-    public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {
+    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
       TileEntity te = world.getTileEntity(x, y, z);
       if (te != null && te instanceof TileZombieGenerator) {
         tooltip.add(((TileZombieGenerator)te).getFluidStored(ForgeDirection.UNKNOWN) + " mB");

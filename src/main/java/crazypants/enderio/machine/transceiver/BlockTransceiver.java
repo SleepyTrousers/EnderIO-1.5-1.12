@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -16,6 +18,8 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.Lang;
+import crazypants.util.Util;
 
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
@@ -98,5 +102,38 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {    
   }
   
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileTransceiver && player.isSneaking()) {
+      TileTransceiver trans = (TileTransceiver) te;
+      for (ChannelType type : ChannelType.VALUES) {
+        tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));
+        
+        List<Channel> recieving = trans.getRecieveChannels(type);
+        List<Channel> sending   = trans.getSendChannels(type);
+        String recieve = "[" + buildString(recieving) + "]";
+        String send    = "[" + buildString(sending)   + "]";
+        
+        if(!"[]".equals(recieve)) {
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.recieving"), Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE, recieve));
+        }
+        if(!"[]".equals(send)) {
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE, send));
+        }
+      }
+    }
+  }
+  
+  private String buildString(List<Channel> channels) {
+    StringBuilder sb = new StringBuilder();
+    for (Channel c : channels) {
+      sb.append(c.getName());
+      if (channels.indexOf(c) != channels.size() - 1) {
+        sb.append(", ");
+      }
+    }
+    return sb.toString();
+  }
   
 }
