@@ -191,6 +191,16 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
     return super.func_150893_a(item, block);
   }
+  
+  @Override
+  public boolean canHarvestBlock(Block block, ItemStack item) {
+    if(hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
+      return block == Blocks.snow_layer ? true : block == Blocks.snow || super.canHarvestBlock(block, item);
+    } else {
+      return super.canHarvestBlock(block, item);
+    }
+    
+  }
 
   private boolean hasSpoonUpgrade(ItemStack item) {
     return SpoonUpgrade.loadFromItem(item) != null;
