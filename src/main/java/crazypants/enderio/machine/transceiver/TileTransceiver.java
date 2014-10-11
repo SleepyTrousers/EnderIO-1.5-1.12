@@ -24,6 +24,7 @@ import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
@@ -52,7 +53,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private PowerDistributor powerDistributor;
 
   public TileTransceiver() {
-    super(new SlotDefinition(4, 4, 0));
+    super(new SlotDefinition(8, 8, 0));
     for (ChannelType type : ChannelType.values()) {
       sendChannels.put(type, new ArrayList<Channel>());
       recieveChannels.put(type, new ArrayList<Channel>());
@@ -357,21 +358,24 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(getSendChannels(ChannelType.FLUID).isEmpty()) {
+    if(getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
       return 0;
     }
     return ServerChannelRegister.instance.fill(this, getSendChannels(ChannelType.FLUID), resource, doFill);
   }
 
   public int recieveFluid(List<Channel> channels, FluidStack resource, boolean doFill) {
-    if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
+    if(!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
       return 0;
     }
     Map<ForgeDirection, IFluidHandler> handlers = getNeighbouringFluidHandlers();
     for (Entry<ForgeDirection, IFluidHandler> entry : handlers.entrySet()) {
-      int res = entry.getValue().fill(entry.getKey().getOpposite(), resource, doFill);
-      if(res > 0) {
-        return res;
+      IoMode mode = getIoMode(entry.getKey());
+      if(mode.canOutput()) {
+        int res = entry.getValue().fill(entry.getKey().getOpposite(), resource, doFill);
+        if(res > 0) {
+          return res;
+        }
       }
     }
     return 0;
@@ -431,7 +435,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
         }
       }
     }
-
   }
 
 }

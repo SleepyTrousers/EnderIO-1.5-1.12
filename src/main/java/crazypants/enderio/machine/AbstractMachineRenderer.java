@@ -56,15 +56,8 @@ public class AbstractMachineRenderer implements ISimpleBlockRenderingHandler, II
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       brightnessPerSide[dir.ordinal()] = Math.max(RenderUtil.getColorMultiplierForFace(dir) + 0.1f, 1f);
     }
-
     CubeRenderer.render(bb, textures, null, brightnessPerSide);
-
-//    GL11.glPushMatrix();
-//    GL11.glTranslatef(0, 0, 0);
-    Tessellator.instance.draw();
-//    GL11.glPopMatrix();
-    
-
+    Tessellator.instance.draw();    
   }
 
   @Override

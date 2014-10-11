@@ -48,6 +48,14 @@ public enum IoMode {
   public boolean pushes() {
     return this == PUSH || this == PUSH_PULL;
   }
+  
+  public boolean canOutput() {
+    return pushes() || this == NONE;
+  }
+  
+  public boolean canRecieveInput() {
+    return pulls() || this == NONE;
+  }
 
   public String getLocalisedName() {
     return Lang.localize(unlocalisedName);

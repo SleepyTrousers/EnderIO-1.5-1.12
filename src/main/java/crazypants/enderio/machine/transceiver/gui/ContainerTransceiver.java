@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerTransceiver extends AbstractMachineContainer {
 
-  static final Point PLAYER_INV_OFFSET = new Point(47, 84);
+  static final Point PLAYER_INV_OFFSET = new Point(47, 86);
 
-  static final Point ITEM_INV_OFFSET = new Point(92, 23);
-
+  static final Point ITEM_INV_OFFSET = new Point(54, 30);
+  
   static final Point HIDDEN_OFFSET = new Point(-3000, -3000);
 
   public ContainerTransceiver(InventoryPlayer inventory, TileTransceiver te) {
@@ -25,10 +25,10 @@ public class ContainerTransceiver extends AbstractMachineContainer {
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
     int i;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 8; i++) {
       addSlotToContainer(new Slot(tileEntity, i, 0, 0));
     }
-    for (; i < 8; i++) {
+    for (; i < 16; i++) {
       addSlotToContainer(new Slot(tileEntity, i, 0, 0) {
         @Override
         public boolean isItemValid(ItemStack p_75214_1_) {
@@ -36,7 +36,7 @@ public class ContainerTransceiver extends AbstractMachineContainer {
         }
       });
     }
-    setItemSlotLocations(ITEM_INV_OFFSET);
+    setItemSlotLocations(getItemInventoryOffset());
 
   }
 
@@ -46,22 +46,38 @@ public class ContainerTransceiver extends AbstractMachineContainer {
       entry.getKey().xDisplayPosition = visible ? entry.getValue().x : -3000;
       entry.getKey().yDisplayPosition = visible ? entry.getValue().y : -3000;
     }
-    Point itemOffset = visible ? ITEM_INV_OFFSET : HIDDEN_OFFSET;       
+    Point itemOffset = visible ? getItemInventoryOffset() : HIDDEN_OFFSET;       
     setItemSlotLocations(itemOffset);
   }
 
   private void setItemSlotLocations(Point offset) {
     int i;
     int x = offset.x;
-    int y = offset.y;
-    for (i = 0; i < 4; i++) {
+    int y = offset.y;    
+    for (i = 0; i < 4; i++) {      
       ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
       ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
       x += 18;
     }
     x = offset.x;
-    y = offset.y + getItemRowSpacing();
-    for (; i < 8; i++) {
+    y = offset.y + 18;
+    for (; i < 8; i++) {      
+      ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
+      ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
+      x += 18;
+    }
+    
+    x = offset.x + (18 * 4) + getItemBufferSpacing();
+    //y = offset.y + 18 + getItemRowSpacing();
+    y = offset.y;
+    for (; i < 12; i++) {
+      ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
+      ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
+      x += 18;
+    }
+    x = offset.x + (18 * 4) + getItemBufferSpacing();
+    y = offset.y + 18;
+    for (; i < 16; i++) {
       ((Slot) inventorySlots.get(i)).xDisplayPosition = x;
       ((Slot) inventorySlots.get(i)).yDisplayPosition = y;
       x += 18;
@@ -70,15 +86,15 @@ public class ContainerTransceiver extends AbstractMachineContainer {
 
   @Override
   public Point getPlayerInventoryOffset() {
-    return PLAYER_INV_OFFSET;    
+    return PLAYER_INV_OFFSET;     
   }
   
-  public Point getItemInventoryOffset() {
+  public Point getItemInventoryOffset() {    
     return ITEM_INV_OFFSET;    
   }
   
-  public int getItemRowSpacing() {
-    return 20;
+  public int getItemBufferSpacing() {    
+    return 5;
   }
 
 }

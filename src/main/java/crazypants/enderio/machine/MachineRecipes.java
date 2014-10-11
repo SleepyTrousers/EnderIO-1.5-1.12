@@ -155,12 +155,13 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(farm, "ehe", "eme", "pzp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricSteel, 'z', zombieController, 'p', pulCry);
 
     //transceiver
-    ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
+    //ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
+    ItemStack transceiver = new ItemStack(EnderIO.blockTransceiver, 1, 0);
     ItemStack obsidian = new ItemStack(Blocks.obsidian);
-
     GameRegistry
         .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
-
+    GameRegistry.addShapelessRecipe(transceiver, new ItemStack(EnderIO.blockHyperCube, 1, 0));
+    
     //solar panel
     if(Config.photovoltaicCellEnabled) {
 

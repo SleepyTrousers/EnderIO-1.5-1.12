@@ -75,6 +75,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     }
     return lastCompletedRecipe.getExperianceForOutput(output);
   }
+  
+  public boolean getRedstoneChecksPassed() {
+    return redstoneCheckPassed;
+  }
 
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {

@@ -249,10 +249,14 @@ tile.blockSagMill.tooltip.detailed.line4=Upgrade with capacitors to increase
 tile.blockSagMill.tooltip.detailed.line5=speed and energy storage
 tile.blockSagMill.tooltipPrefix=Contains
 
-tile.blockHyperCube.name=Dimensional Transceiver
-tile.blockHyperCube.tooltip.detailed.line1=Transports items, fluids and power
-tile.blockHyperCube.tooltip.detailed.line2=wirelessly across any distance and
-tile.blockHyperCube.tooltip.detailed.line3=between dimensions
+tile.blockHyperCube.name=Dimensional Transceiver (Deprecated)
+tile.blockHyperCube.tooltip.detailed.line1=Convert to new model by placing
+tile.blockHyperCube.tooltip.detailed.line2=in the crafting grid
+
+tile.blockTransceiver.name=Dimensional Transceiver
+tile.blockTransceiver.tooltip.detailed.line1=Transports items, fluids and power
+tile.blockTransceiver.tooltip.detailed.line2=wirelessly across any distance and
+tile.blockTransceiver.tooltip.detailed.line3=between dimensions
 
 tile.blockPowerMonitor.name=Power Monitor
 tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and

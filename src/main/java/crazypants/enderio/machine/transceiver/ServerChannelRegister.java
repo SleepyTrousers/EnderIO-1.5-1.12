@@ -197,7 +197,7 @@ public class ServerChannelRegister extends ChannelRegister {
     for (Channel channel : channels) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
       for (TileTransceiver trans : iter) {
-        if(trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel)) {
+        if(trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel) && trans.getRedstoneChecksPassed()) {
           contents = sendItem(from, slot, contents, trans);
           if(contents == null) {
             return;

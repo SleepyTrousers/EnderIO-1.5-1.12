@@ -2,12 +2,14 @@ package crazypants.enderio.machine.transceiver;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
@@ -58,6 +60,17 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     return GuiHandler.GUI_ID_TRANSCEIVER;
   }
 
+  
+  @Override
+  protected void registerOverlayIcons(IIconRegister iIconRegister) {
+    overlayIconPull = iIconRegister.registerIcon("enderio:transcieverOverlayPull");
+    overlayIconPush = iIconRegister.registerIcon("enderio:transcieverOverlayPush");
+    overlayIconPushPull = iIconRegister.registerIcon("enderio:transcieverOverlayPushPull");
+    overlayIconDisabled = iIconRegister.registerIcon("enderio:transcieverOverlayDisabled");
+    overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
+    selectedFaceIcon= iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
+  }
+  
   @Override
   protected String getMachineFrontIconKey(boolean active) {
     if(active) {

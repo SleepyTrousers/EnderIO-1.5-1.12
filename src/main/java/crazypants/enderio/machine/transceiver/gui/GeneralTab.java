@@ -68,14 +68,17 @@ public class GeneralTab implements ITabPanel {
     parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 162, 76);  
     
     invRoot = container.getItemInventoryOffset();
-    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 72, 18);
-    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1 + container.getItemRowSpacing(), 24, 180, 72, 18);
+    parent.drawTexturedModalRect(left + invRoot.x - 1, top + invRoot.y - 1, 24, 180, 72, 36);
+    parent.drawTexturedModalRect(left + invRoot.x - 1 + (18 * 4) + container.getItemBufferSpacing(), top + invRoot.y - 1, 24, 180, 72, 36);
             
     FontRenderer fr = parent.getFontRenderer();
-    String sendTxt = "Send";
-    fr.drawString(sendTxt, left + invRoot.x - fr.getStringWidth(sendTxt) - 4, top + invRoot.y + 3, ColorUtil.getRGB(Color.BLACK));
-    String recText = "Receive:";
-    fr.drawString(recText, left + invRoot.x - fr.getStringWidth(recText) - 4, top + invRoot.y + 3 + container.getItemRowSpacing(), ColorUtil.getRGB(Color.BLACK));
+    String sendTxt = "Send";    
+    int x = left + invRoot.x + 36 - fr.getStringWidth(sendTxt)/2;
+    int y = top + invRoot.y - fr.FONT_HEIGHT - 3;
+    fr.drawString(sendTxt, x, y, ColorUtil.getRGB(Color.BLACK));
+    String recText = "Receive";
+    x = left + invRoot.x + 72 + container.getItemBufferSpacing() + 36 - fr.getStringWidth(recText)/2;
+    fr.drawString(recText, x, y, ColorUtil.getRGB(Color.BLACK));
     
     //Highlights
     parent.renderSlotHighlights();    
@@ -84,8 +87,8 @@ public class GeneralTab implements ITabPanel {
     RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
     GL11.glColor3f(1, 1, 1);
     
-    int x = left + parent.getPowerX() - 1;
-    int y = top + parent.getPowerY() - 1;
+    x = left + parent.getPowerX() - 1;
+    y = top + parent.getPowerY() - 1;
     int maxHeight = parent.getPowerHeight();
     
     parent.drawTexturedModalRect(x, y, 233, 196, 12, maxHeight + 2);
