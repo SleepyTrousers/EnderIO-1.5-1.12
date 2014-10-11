@@ -4,16 +4,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
+import crazypants.util.RoundRobinIterator;
 
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -82,38 +88,101 @@ public class ServerChannelRegister extends ChannelRegister {
     return new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/dimensionalTransceiver.json");
   }
 
-  private List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
-  
-  public void register(TileTransceiver transceiver) {
-    transceivers.add(transceiver);    
+  //-----------------------------------------------------------------------------------------------
+
+  private final List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
+  private Map<Channel, RoundRobinIterator<TileTransceiver>> iterators = new HashMap<Channel, RoundRobinIterator<TileTransceiver>>();
+
+  private ServerChannelRegister() {
   }
-  
+
+  public void register(TileTransceiver transceiver) {
+    transceivers.add(transceiver);
+  }
+
   public void dergister(TileTransceiver transceiver) {
-    transceivers.remove(transceiver);    
+    transceivers.remove(transceiver);
   }
 
   @Override
-  public void removeChannel(Channel channel) {    
+  public void removeChannel(Channel channel) {
     super.removeChannel(channel);
-    for(TileTransceiver trans : transceivers) {
+    for (TileTransceiver trans : transceivers) {
       trans.removeRecieveChanel(channel);
       trans.removeSendChanel(channel);
     }
+    iterators.remove(channel);
   }
 
+  //Power
+
   public void sendPower(TileTransceiver sender, int canSend, Channel channel) {
-    //TODO: Round robin somehow
-    for(TileTransceiver trans : transceivers) {
+    RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
+    for (TileTransceiver trans : iter) {
       if(trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
         double invLoss = 1 - Config.transceiverEnergyLoss;
-        int canSendWithLoss = (int)Math.round(canSend * invLoss);
+        int canSendWithLoss = (int) Math.round(canSend * invLoss);
         int recieved = trans.receiveEnergy(ForgeDirection.UNKNOWN, canSendWithLoss, false);
         if(recieved > 0) {
-          int recievedPlusLoss = (int)Math.round(recieved / invLoss);
+          int recievedPlusLoss = (int) Math.round(recieved / invLoss);
           sender.usePower(recievedPlusLoss);
         }
       }
-    }    
+    }
   }
-  
+
+  private RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
+    RoundRobinIterator<TileTransceiver> res = iterators.get(channel);
+    if(res == null) {
+      res = new RoundRobinIterator<TileTransceiver>(transceivers);
+      iterators.put(channel, res);
+    }
+    return res;
+  }
+
+  //Fluid
+
+  public FluidTankInfo[] getTankInfoForChannels(TileTransceiver tileTransceiver, List<Channel> channels) {
+    List<FluidTankInfo> infos = new ArrayList<FluidTankInfo>();
+    for (TileTransceiver tran : transceivers) {
+      if(tran != tileTransceiver) {
+        tran.getRecieveTankInfo(infos, channels);
+      }
+    }
+    return infos.toArray(new FluidTankInfo[infos.size()]);
+  }
+
+  public boolean canFill(TileTransceiver tileTransceiver, List<Channel> channels, Fluid fluid) {
+    for (TileTransceiver tran : transceivers) {
+      if(tran != tileTransceiver) {
+        if(tran.canReceive(channels, fluid)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public int fill(TileTransceiver from, List<Channel> list, FluidStack resource, boolean doFill) {
+    if(resource == null || !from.hasPower()) {
+      return 0;
+    }
+    for(Channel channel : list) {
+      RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
+      for(TileTransceiver trans : iter) {
+        if(trans != from) {
+          int val = trans.recieveFluid(list, resource, doFill);
+          if(val > 0) {
+            if(doFill && Config.transceiverBucketTransmissionCostRF > 0) {              
+              int powerUsed = (int)Math.max(1, Config.transceiverBucketTransmissionCostRF * val/1000d);
+              from.usePower(powerUsed);
+            }
+            return val;
+          }          
+        }
+      }
+    }
+    return 0;
+  }
+
 }

@@ -81,9 +81,9 @@ public final class Config {
 
   public static double transceiverEnergyLoss = 0.1;
 
-  public static int transceiverUpkeepCostRF = 2;
+  public static int transceiverUpkeepCostRF = 10;
 
-  public static int transceiverBucketTransmissionCostRF = 10;
+  public static int transceiverBucketTransmissionCostRF = 100;
 
   public static int transceiverMaxIoRF = 20480;
 
