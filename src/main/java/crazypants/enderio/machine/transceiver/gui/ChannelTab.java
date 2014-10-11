@@ -237,13 +237,14 @@ public class ChannelTab implements ITabPanel {
     Channel c = channelList.getSelectedElement();
     if(c != null) {        
       ClientChannelRegister.instance.removeChannel(c);
-      PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, false));
-//      transceiver.removeSendChanel(c);
-//      transceiver.removeRecieveChanel(c);      
+      PacketHandler.INSTANCE.sendToServer(new PacketAddRemoveChannel(c, false));    
     }
   }
 
   private void addChannelPressed() {
+    if(newChannelTF.getText() == null || newChannelTF.getText().trim().isEmpty()) {
+      return;
+    }
     Channel c;
     if(privateButton.isSelected()) {
       c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile().getName(), type);

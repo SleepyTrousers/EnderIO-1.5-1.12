@@ -34,10 +34,6 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
     channels = val;
   }
 
-//  void setActiveChannel(Channel channel) {
-//    activeChannel = channel;
-//  }
-
   @Override
   public int getNumElements() {
     return channels.size();
@@ -70,9 +66,6 @@ public class GuiChannelList extends GuiScrollableList<Channel> {
       return;
     }
     int col = ColorUtil.getRGB(Color.white);
-//    if(c.equals(activeChannel)) {      
-//      col = ColorUtil.getRGB(Color.cyan);      
-//    }
     parent.drawString(parent.getFontRenderer(), c.getName(), xPosition + margin, yPosition + margin / 2, col);
     if(!c.isPublic()) {
       IconEIO.PRIVATE.renderIcon(xPosition + width - 18, yPosition - 3, 16, 15, 0, true);
