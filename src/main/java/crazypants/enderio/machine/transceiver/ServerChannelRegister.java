@@ -13,8 +13,11 @@ import com.google.gson.stream.JsonWriter;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.ItemUtil;
 import crazypants.util.RoundRobinIterator;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -114,6 +117,15 @@ public class ServerChannelRegister extends ChannelRegister {
     iterators.remove(channel);
   }
 
+  private RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
+    RoundRobinIterator<TileTransceiver> res = iterators.get(channel);
+    if(res == null) {
+      res = new RoundRobinIterator<TileTransceiver>(transceivers);
+      iterators.put(channel, res);
+    }
+    return res;
+  }
+
   //Power
 
   public void sendPower(TileTransceiver sender, int canSend, Channel channel) {
@@ -129,15 +141,6 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
     }
-  }
-
-  private RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
-    RoundRobinIterator<TileTransceiver> res = iterators.get(channel);
-    if(res == null) {
-      res = new RoundRobinIterator<TileTransceiver>(transceivers);
-      iterators.put(channel, res);
-    }
-    return res;
   }
 
   //Fluid
@@ -167,22 +170,78 @@ public class ServerChannelRegister extends ChannelRegister {
     if(resource == null || !from.hasPower()) {
       return 0;
     }
-    for(Channel channel : list) {
+    for (Channel channel : list) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
-      for(TileTransceiver trans : iter) {
+      for (TileTransceiver trans : iter) {
         if(trans != from) {
           int val = trans.recieveFluid(list, resource, doFill);
           if(val > 0) {
-            if(doFill && Config.transceiverBucketTransmissionCostRF > 0) {              
-              int powerUsed = (int)Math.max(1, Config.transceiverBucketTransmissionCostRF * val/1000d);
+            if(doFill && Config.transceiverBucketTransmissionCostRF > 0) {
+              int powerUsed = (int) Math.max(1, Config.transceiverBucketTransmissionCostRF * val / 1000d);
               from.usePower(powerUsed);
             }
             return val;
-          }          
+          }
         }
       }
     }
     return 0;
+  }
+
+  //Item 
+
+  public void sendItem(TileTransceiver from, List<Channel> channels, int slot, ItemStack contents) {
+    if(!from.hasPower()) {
+      return;
+    }
+    for (Channel channel : channels) {
+      RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
+      for (TileTransceiver trans : iter) {
+        if(trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel)) {
+          contents = sendItem(from, slot, contents, trans);
+          if(contents == null) {
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  private ItemStack sendItem(TileTransceiver from, int slot, ItemStack contents, TileTransceiver to) {
+    SlotDefinition sd = to.getSlotDefinition();
+    //try merging into existing stacks
+    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
+      ItemStack existing = to.getStackInSlot(i);
+      if(ItemUtil.canMergeStacks(existing, contents)) {
+        int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
+        ItemStack remaining;
+        if(numCanMerge >= contents.stackSize) {
+          remaining = null;
+        } else {
+          remaining = contents.copy();
+          remaining.stackSize -= numCanMerge;
+        }
+        ItemStack destStack = existing.copy();
+        destStack.stackSize += numCanMerge;
+        to.setInventorySlotContents(i, destStack);        
+        from.setInventorySlotContents(slot, remaining);
+        if(remaining == null) {
+          return null;
+        } else {
+          contents = remaining.copy();
+        }
+      }
+    }
+    //then fill empty stack
+    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
+      ItemStack existing = to.getStackInSlot(i);
+      if(existing == null) {
+        to.setInventorySlotContents(i, contents.copy());
+        from.setInventorySlotContents(slot, null);
+        return null;
+      }
+    }
+    return contents;
   }
 
 }

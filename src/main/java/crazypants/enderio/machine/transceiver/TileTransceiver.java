@@ -67,7 +67,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       return res;
     }
 
+    //NB: Fluid done synchronously
     processPower();
+    processItems();
     return res;
   }
 
@@ -416,6 +418,20 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
     return false;
+  }
+
+  //item handling
+  private void processItems() {
+    List<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);
+    if(!sendItemChannels.isEmpty()) {
+      for (int i = slotDefinition.minInputSlot; i <= slotDefinition.maxInputSlot; i++) {
+        ItemStack toSend = getStackInSlot(i);
+        if(toSend != null) {
+          ServerChannelRegister.instance.sendItem(this, sendItemChannels, i, toSend);
+        }
+      }
+    }
+
   }
 
 }

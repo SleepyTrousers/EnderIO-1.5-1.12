@@ -164,4 +164,20 @@ public class ItemUtil {
     return inv;
   }
 
+  /**
+   * Checks if items, damage and NBT are equal.
+   * @param s1
+   * @param s2
+   * @return
+   */
+  public static boolean canMergeStacks(ItemStack s1, ItemStack s2) {
+    if(s1 == null || s2 == null || !s1.isStackable() || !s2.isStackable()) {
+      return false;
+    }
+    if(!s1.isItemEqual(s2)) {
+      return false;
+    }    
+    return ItemStack.areItemStackTagsEqual(s1, s2);
+  }
+
 }
