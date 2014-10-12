@@ -330,6 +330,7 @@ public final class Config {
   public static int spawnGuardRangeLevelThree = 128;
   public static int spawnGuardPowerPerTickLevelThree = 1000;
   public static boolean spawnGuardStopAllSlimesDebug = false;
+  public static boolean spawnGuardStopAllSquidSpawning = false;
   
   //Loot Defaults
   public static boolean lootDarkSteel = true;
@@ -353,6 +354,8 @@ public final class Config {
   public static int enderminyHealth = 20;
   public static boolean enderminyGroupAgro = true;
   public static int enderminyMaxGroupSize = 3;
+
+  
   
 
   public static void load(FMLPreInitializationEvent event) {
@@ -906,8 +909,9 @@ public final class Config {
     spawnGuardPowerPerTickLevelThree = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree, 
         "The RF/t  power use of a levele 3 spawn guard").getInt(spawnGuardPowerPerTickLevelThree);
     spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttarctor.name, spawnGuardStopAllSlimesDebug, 
-        "When true slimes wont be alowed to spawn at all. Only added to aid testing in super flat worlds.");
-    
+        "When true slimes wont be alowed to spawn at all. Only added to aid testing in super flat worlds.");    
+    spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttarctor.name, spawnGuardStopAllSquidSpawning, 
+        "When true no squid will be spawned.");
     
     // Loot Config
     lootDarkSteel = config.getBoolean("lootDarkSteel", sectionLootConfig.name, lootDarkSteel, "Adds Darksteel Ingots to loot tables");
