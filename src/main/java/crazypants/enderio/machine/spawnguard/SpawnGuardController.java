@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -52,6 +53,11 @@ public class SpawnGuardController {
       evt.setResult(Result.DENY);
       return;
     }
+    if(Config.spawnGuardStopAllSquidSpawning && evt.entity.getClass() == EntitySquid.class) {
+      evt.setResult(Result.DENY);
+      return;
+    }
+    
     
     Map<BlockCoord, TileSpawnGuard> guards = getGuardsForWorld(evt.world);
     for(TileSpawnGuard guard : guards.values()) {
