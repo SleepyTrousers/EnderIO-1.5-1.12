@@ -3,6 +3,7 @@ package crazypants.enderio.waila;
 import java.util.List;
 
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public interface IWailaInfoProvider {
@@ -20,7 +21,7 @@ public interface IWailaInfoProvider {
    * @param y
    * @param z
    */
-  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z);
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z);
   
   /**
    * A bitmask for the default tooltips to show, use static ints in {@link IWailaInfoProvider}

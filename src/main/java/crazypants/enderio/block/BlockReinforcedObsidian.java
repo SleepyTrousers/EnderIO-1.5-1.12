@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -58,7 +59,7 @@ public class BlockReinforcedObsidian extends BlockEio implements IResourceToolti
   }
 
   @Override
-  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {}
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {}
 
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {

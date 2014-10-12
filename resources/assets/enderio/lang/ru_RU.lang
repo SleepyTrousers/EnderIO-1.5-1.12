@@ -1,7 +1,6 @@
 //***  Ender IO *****//
 
 //Power
-enderio.power.mj=MJ
 enderio.power.rf=RF
 enderio.power.tick=/тик
 enderio.power.maxOutput=Макс. выход
@@ -75,9 +74,11 @@ item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Увеличивает ск�
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=предметов за извлечение
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Макс. улучшений - 15
 
+enderio.itemGasConduit.name=Газовая труба
 
-
-enderio.itemMeConduit.name=МЭ труба
+enderio.itemGasConduit.tooltip.maxExtract=Макс. извлечение:
+enderio.itemGasConduit.tooltip.maxIo=Макс. IO:
+enderio.itemGasConduit.tooltip.detailed.line1=Передаёт газы совместимые с Mekanism
 
 //Materials
 enderio.itemMaterial.name=Материалы
@@ -87,23 +88,33 @@ enderio.binderComposite.name=Составной связующий элемен�
 enderio.phasedIronNugget.name=Пульсирующий железный самородок
 tile.blockDarkIronBars.name=Решётка из тёмного железа
 tile.blockEndermanSkull.name=Череп странника Края
+tile.blockEndermanSkull.base.name=Голова странника Края
+tile.blockEndermanSkull.reanimated.name=Реанимированная голова странника Края
+tile.blockEndermanSkull.tormented.name=Измученная голова странника Края
 enderio.blastResistant=Взрывоустойчивая
 enderio.lightEmitter=Излучает свет
+enderio.tooltip.isBeaconBase=Может быть использовано, как основа для маяка
 
 //Fluids
 fluid.nutrient_distillation=Питательный дистиллят
-fluid.hootch=Самогон
-fluid.fire_water=Огненная вода
-fluid.rocket_fuel=Ракетное топливо
 item.bucketNutrient_distillation.name=Ведро питательного дистиллята
+
+fluid.hootch=Самогон
 item.bucketHootch.name=Ведро самогона
-item.bucketRocket_fuel.name=Ведро ракетного топлива
+fluid.fire_water=Огненная вода
 item.bucketFire_water.name=Ведро огненной воды
+fluid.rocket_fuel=Ракетное топливо
+item.bucketRocket_fuel.name=Ведро ракетного топлива
+fluid.eio.xpjuice=Жидкий опыт
+item.bucketXpjuice.name=Ведро опыта
+
+
 enderio.fluid.millibucket.abr=мВ
 
 enderio.fuel.tooltip.heading=Детали о топливе
 enderio.fuel.tooltip.burnTime=время горения
-enderio.fluid.millibucketsTick=мВ/т
+enderio.fluid.millibucketsTick=мВ/тик
+enderio.gas.gasTick=Газ/тик
 
 
 //Materials
@@ -112,6 +123,8 @@ enderio.machineChassi.name=Шасси механизма
 enderio.basicGear.name=Основная шестерня
 enderio.pulsatingCrystal.name=Пульсирующий кристалл
 enderio.vibrantCrystal.name=Вибрирующий кристалл
+enderio.enderCrystal.name=Кристалл Края
+enderio.attractorCrystal.name=Привлекающий кристалл
 enderio.darkGrindingBall.name=Шарик тёмной стали
 enderio.darkGrindingBall.tooltip.detailed.line1=Измельчающий шарик для дробилки
 enderio.darkGrindingBall.tooltip.detailed.line2=Основной вывод
@@ -141,6 +154,7 @@ enderio.conductiveIron.name=Проводящее железо
 enderio.phasedIron.name=Пульсирующее железо
 enderio.vibrantNugget.name=Самородок вибрирующего сплава
 enderio.darkSteel.name=Тёмная сталь
+enderio.soularium.name=Соуларий
 
 tile.blockIngotStorage.name=Хранилище слитков
 tile.enderio.electricalSteel.name=Блок наэлектризованной стали
@@ -151,6 +165,7 @@ tile.enderio.conductiveIron.name=Блок проводящего железа
 tile.enderio.phasedIron.name=Блок пульсирующего железа
 tile.enderio.vibrantNugget.name=Блок самородка вибрирующего сплава
 tile.enderio.darkSteel.name=Блок тёмной стали
+tile.enderio.soularium.name=Блок соулария
 
 //Powder / Ingot
 enderio.powderCoal.name=Угольный порошок
@@ -265,13 +280,20 @@ tile.blockZombieGenerator.tooltip.detailed.line1=Потребляет питат
 tile.blockZombieGenerator.tooltip.detailed.line2=для производства энергии
 enderio.zombieGenerator.fuelTank=Питательный резервуар
 
-
 tile.blockKillerJoe.name=Киллер Джо
 tile.blockKillerJoe.tooltip.detailed.line1=Атакует ближайших существ, если
 tile.blockKillerJoe.tooltip.detailed.line2=снабжён мечом и
 tile.blockKillerJoe.tooltip.detailed.line3=питательным дистиллятом
+tile.blockKillerJoe.tooltip.detailed.line4=Опыт можно слить как
+tile.blockKillerJoe.tooltip.detailed.line5=жидкий опыт, используя жидкостные трубы
+
 enderio.killerJoe.fuelTank=Питательный резервуар
 enderio.killerJoe.giveXp.tooltip=Использует опыт
+enderio.killerJoe.giveXp10.tooltip=Использует 10 уровней опыта
+
+tile.blockSliceAndSplice.name=Slice'N'Splice
+tile.blockSliceAndSplice.tooltip.detailed.line1=Отрубает головы и превращает их
+tile.blockSliceAndSplice.tooltip.detailed.line2=во всякие полезные вещи
 
 tile.blockFarmStation.name=Фермерская станция
 tile.blockFarmStation.tooltip.detailed.line1=Сажает и собирает растения
@@ -281,6 +303,12 @@ tile.blockFarmStation.tooltip.detailed.line4=Добыча / Удача на ин
 tile.blockFarmStation.tooltip.detailed.line5=применяется при сборе урожая
 tile.blockFarmStation.tooltip.detailed.line6=Улучшите конденсаторами, чтобы увеличить
 tile.blockFarmStation.tooltip.detailed.line7=дальность, улучшение также повышает потребление энергии
+
+enderio.farm.note.outputFull=Выход полон
+enderio.farm.note.noSeeds=Нет семян
+enderio.farm.note.noAxe=Нет топора
+enderio.farm.note.noHoe=Нет мотыги
+enderio.farm.note.noPower=Нет питания
 
 tile.blockTank.name=Жидкостный резервуар
 tile.blockTank.advanced.name=Жидкостный резервуар под давлением
@@ -312,6 +340,26 @@ item.itemBrokenSpawner.name=Сломанный спаунер
 item.itemBrokenSpawner.tooltip.detailed.line1=Объедините электрический спаунер
 item.itemBrokenSpawner.tooltip.detailed.line2=в наковальне, чтобы установить тип спауна
 
+tile.blockSoulBinder.name=Связыватель душ
+tile.blockSoulBinder.tooltip.detailed.line1=Используется для преобразования
+tile.blockSoulBinder.tooltip.detailed.line2=типа сломанного спаунера
+
+tile.blockAttractor.name=Притягивающий обелиск
+tile.blockAttractor.tooltip.detailed.line1=Притягивает мобов к себе
+tile.blockAttractor.tooltip.detailed.line2=Укажите мобов для притягивания,
+tile.blockAttractor.tooltip.detailed.line3=положив их души
+tile.blockAttractor.tooltip.detailed.line4=внутрь механизма
+
+tile.blockSpawnGuard.name=Обелиск отвращения
+tile.blockSpawnGuard.tooltip.detailed.line1=Запрещает мобам появляться
+tile.blockSpawnGuard.tooltip.detailed.line2=в пределах действия обелиска
+
+tile.blockExperienceObelisk.name=Обелиск опыта
+tile.blockExperienceObelisk.tooltip.detailed.line1=Когда поставлен на резервуар,
+tile.blockExperienceObelisk.tooltip.detailed.line2=нажмите ПКМ, чтобы получить опыт
+tile.blockExperienceObelisk.tooltip.detailed.line3=Shift-ПКМ пустой рукой,
+tile.blockExperienceObelisk.tooltip.detailed.line4=чтобы слить свой опыт в резервуар
+
 enderio.machine.tooltip.configured=(Настроен)
 
 //Blocks
@@ -320,6 +368,12 @@ tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Активируется
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Может быть покрашена в покрасочном механизме,
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line3=невидима, когда покрашена в почти
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line4=прозрачное стекло
+tile.blockDarkSteelPressurePlate.silent.tooltip.common.line1=Тихая
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line1=Активируется только игроками
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Может быть покрашена в покрасочном механизме,
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=невидима, когда покрашена в почти
+tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=прозрачное стекло
+
 
 //Travel
 tile.blockTravelAnchor.name=Якорь путешествия
@@ -351,6 +405,7 @@ tile.blockPaintedStair.name=Покрашенные ступени
 tile.blockPaintedSlab.name=Покрашенная плита
 tile.blockPaintedDoubleSlab.name=Покрашенная плита
 tile.blockPaintedGlowstone.name=Покрашенный светящийся камень
+enderio.painter.tooltip.wasPainted=§oКак Вы думаете, что это будет делать?
 
 tile.blockPainter.tooltip.detailed.line1=Используется для покраски:
 tile.blockPainter.tooltip.detailed.line2=Фасадов труб, ступенек, заборов,
@@ -366,6 +421,8 @@ item.itemYetaWrench.tooltip.detailed.line2=Shift-ПКМ, чтобы демонт
 item.itemYetaWrench.tooltip.detailed.line3=и трубы моментально
 item.itemYetaWrench.tooltip.detailed.line4=Используйте Shift-колёсико мыши, чтобы отображать
 item.itemYetaWrench.tooltip.detailed.line5=одиночный тип трубы
+item.itemYetaWrench.tooltip.detailed.line6=Используйте Shift-колёсико мыши или 'Y', чтобы
+item.itemYetaWrench.tooltip.detailed.line7=отображать только один вид труб
 
 item.itemMagnet.name=Электромагнит
 item.itemMagnet.tooltip.detailed.line1=Тянет ближайший предмет к Вам
@@ -378,6 +435,25 @@ item.enderio.itemConduitProbe.tooltip.detailed.line1=ПКМ по трубе, ч�
 item.enderio.itemConduitProbe.tooltip.detailed.line2=детали о её сети
 item.enderio.itemConduitProbe.tooltip.detailed.line3=Shift-ПКМ по трубе, чтобы
 item.enderio.itemConduitProbe.tooltip.detailed.line4=получить доступ к её параметрам подключения
+item.enderio.itemConduitProbe.tooltip.detailed.line5=ПКМ, чтобы вставить их
+item.enderio.itemConduitProbe.tooltip.detailed.line6=Используйте Shift-колёсико мыши или 'Y', чтобы изменить режим
+
+item.itemSoulVessel.name=Флакон для душ
+item.itemSoulVessel.tooltip.detailed.line1=ПКМ по мобу, чтобы
+item.itemSoulVessel.tooltip.detailed.line2=захватить его душу
+item.itemSoulVessel.tooltip.detailed.line3=Нажмите ПКМ снова, чтобы выпустить её
+
+item.itemXpTransfer.name=Стержень опыта
+item.itemXpTransfer.tooltip.detailed.line1=ПКМ по резервуару, содержащему
+item.itemXpTransfer.tooltip.detailed.line2=жидкий опыт, чтобы получить его
+item.itemXpTransfer.tooltip.detailed.line3=Shift-ПКМ, чтобы передать опыт
+item.itemXpTransfer.tooltip.detailed.line4=в резервуар
+
+skullZombieElectrode.name=Зомби-электрод
+skullZombieController.name=Зомби-контроллер
+skullZombieFrankenstien.name=Frank'N'Zombie
+
+item.itemSpawnEggEnderIO.name=Призвать существо - 
 
 //Dark Steel
 item.darkSteel_helmet.name=Тёмный шлем
@@ -426,8 +502,14 @@ enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Энергия: 
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Половина урона поглощается
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=энергией
 
-enderio.darksteel.upgrade.jump_one.name=Прыжок
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Увеличивает шаг и высоту прыжка
+
+enderio.darksteel.upgrade.travel.name=Путешествие
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Зажмите shift и нажмите ПКМ, для телепорта или
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=активируйте якорь путешествия, или Ender IO
+
+enderio.darksteel.upgrade.spoon.name=Ложка
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Кому нужна лопата, когда
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line2=есть ложка
 
 enderio.darksteel.upgrade.glider.name=Планер
 enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Включает планирование
@@ -440,10 +522,18 @@ enderio.darksteel.upgrade.sound.tooltip.detailed.line2=ближайших зву
 enderio.darksteel.upgrade.sound.enabled=Звуколокатор включен
 enderio.darksteel.upgrade.sound.disabled=Звуколокатор отключен
 
+enderio.darksteel.upgrade.gogglesOfRevealing.name=Откровение
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Снижение затрат Вис: 5%
+
 item.itemGliderWing.name=Крыло планёра
 item.itemGliderWings.name=Крылья планёра
 item.itemGliderWings.tooltip.detailed.line1=Улучшите кирасой
 item.itemGliderWings.tooltip.detailed.line2=из чёрной стали
+
+enderio.darksteel.upgrade.jump_one.name=Прыжок
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Увеличивает шаг и высоту прыжка
+enderio.darksteel.upgrade.stepAssist.enabled=Помощь в шаге активирована
+enderio.darksteel.upgrade.stepAssist.disabled=Помощь в шаге отключена
 
 enderio.darksteel.upgrade.jump_two.name=Прыжок II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Увеличивает шаг и высоту прыжка
@@ -455,6 +545,8 @@ enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Позволяет �
 
 enderio.darksteel.upgrade.speed_one.name=Скорость
 enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Увеличивает скорость передвижения
+enderio.darksteel.upgrade.speed.enabled=Скорость активирована
+enderio.darksteel.upgrade.speed.disabled=Скорость отключена
 
 enderio.darksteel.upgrade.speed_two.name=Скорость II
 enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Увеличивает скорость передвижения
@@ -489,6 +581,16 @@ enderio.gui.machine.ioMode.pull=Тянуть
 enderio.gui.machine.ioMode.push=Толкать
 enderio.gui.machine.ioMode.disabled=Отключен
 enderio.gui.machine.ioMode.pullPush=Толкать/Тянуть
+enderio.gui.machine.ioMode.pullPush.colored=%sТолкать %s/ %sТянуть
+enderio.gui.machine.ioMode=Режим: %s
+enderio.gui.machine.side=Сторона: %s
+enderio.gui.machine.side.north=Север
+enderio.gui.machine.side.south=Юг
+enderio.gui.machine.side.west=Запад
+enderio.gui.machine.side.east=Восток
+enderio.gui.machine.side.up=Верх
+enderio.gui.machine.side.down=Низ
+
 
 //Power Monitor
 enderio.gui.powerMonitor.engineControl=Управление двигателем
@@ -574,6 +676,10 @@ enderio.gui.travelAccessable.unauthorised=Вам запрещён доступ �
 enderio.gui.travelAccessable.enterCode=Требуется код доступа
 enderio.gui.travelAccessable.ok=Авторизироваться
 
+//Spawn Gurad
+enderio.gui.spawnGurad.showRange=Показать дальность
+enderio.gui.spawnGurad.range=Дальность:
+
 //conduits
 enderio.gui.conduit.ioMode=Режим
 enderio.gui.conduit.ioMode.inOut=Вход / Выход
@@ -607,6 +713,8 @@ enderio.gui.conduit.redstone.color=Цвет
 
 enderio.gui.conduit.fluid.autoExtract=Авто-извлечение
 enderio.gui.conduit.fluid.filter=Фильтр
+
+enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 
 
 //Configuration
@@ -653,3 +761,7 @@ enderio.config.fluid.tooltip=Чистая энергия жидкостей!
 
 enderio.config.spawner=Настройки электрического спаунера
 enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
+
+
+//Mobs
+entity.EnderIO.Enderminy.name=Enderminy

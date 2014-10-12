@@ -9,13 +9,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,7 +30,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
@@ -38,6 +37,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.BlockCoord;
+import crazypants.util.Lang;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
@@ -385,12 +385,22 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   }
 
   @Override
-  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      TileCapacitorBank cap = (TileCapacitorBank) te;
+      String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
+      
+      tooltip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, cap.getEnergyStored() * 10, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, cap.getMaxEnergyStored() * 10, EnumChatFormatting.RESET));
+      
+      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIO"),  format, cap.getMaxIO()     * 10, Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIn"),  format, cap.getMaxInput()  * 10, Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxOut"), format, cap.getMaxOutput() * 10, Util.TAB + Util.ALIGNRIGHT));
+    }
   }
 
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.BIT_DETAILED;
   }
-
 }

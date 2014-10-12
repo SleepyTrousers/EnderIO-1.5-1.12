@@ -349,7 +349,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
   
   @Override
-  public void getWailaInfo(List<String> tooltip, World world, int x, int y, int z) {}
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {}
   
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {

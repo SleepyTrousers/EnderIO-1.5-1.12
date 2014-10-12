@@ -4,6 +4,7 @@ public enum ChannelType {
 
   POWER,
   ITEM,
-  FLUID
-  
+  FLUID;
+ 
+  public static final ChannelType[] VALUES = values();
 }
