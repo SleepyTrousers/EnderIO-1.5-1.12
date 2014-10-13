@@ -40,37 +40,34 @@ public class PoweredItemRenderer implements IItemRenderer {
 
     Minecraft mc = Minecraft.getMinecraft();
     ri.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), item, 0, 0, true);
+    GL11.glDisable(GL11.GL_LIGHTING);
 
     if(isJustCrafted(item)) {
       return;
     }
-
+    
+    boolean hasEnergyUpgrade = EnergyUpgrade.loadFromItem(item) != null;
+    int y = hasEnergyUpgrade ? 12 : 13;
+    int bgH = hasEnergyUpgrade ? 4 : 2;
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderUtil.renderQuad2D(2, 13, 0, 13, 3, ColorUtil.getRGB(Color.black));
+    RenderUtil.renderQuad2D(2, y, 0, 13, bgH, ColorUtil.getRGB(Color.black));
 
     double maxDam = item.getMaxDamage();
     double dispDamage = item.getItemDamageForDisplay();
-    float r = 0.0f;
-    float g = 1f;
-    float b = 0.0f;
-    int y = 14;
+    y = hasEnergyUpgrade ? 14 : 13;
     renderBar(y, maxDam, dispDamage, Color.green, Color.red);
 
-    boolean hasEnergyUpgrade = EnergyUpgrade.loadFromItem(item) != null;
     if(hasEnergyUpgrade) {
       IEnergyContainerItem armor = (IEnergyContainerItem) item.getItem();
       maxDam = armor.getMaxEnergyStored(item);
       dispDamage = armor.getEnergyStored(item);
-
-      r = 0.4f;
-      g = 0.4f;
-      b = 1f;
-      y = 13;
-      renderBar2(y, maxDam, maxDam - dispDamage, new Color(200, 100, 10), Color.red);
+      y = 12;
+      Color color = new Color(0x2D, 0xCE, 0xFA); // electric blue
+      renderBar2(y, maxDam, maxDam - dispDamage, color, color);
     }
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
+    GL11.glEnable(GL11.GL_LIGHTING);
   }
 
   private boolean isJustCrafted(ItemStack item) {
@@ -94,8 +91,7 @@ public class PoweredItemRenderer implements IItemRenderer {
 
     fg.interpolate(ec, (float) ratio);
 
-    Vector4f bg = new Vector4f(fg);
-    bg.scale(0.25 + (0.75 * 1 - ratio));
+    Vector4f bg = new Vector4f(0.17, 0.3, 0.1, 0);
 
     int barLength = (int) Math.round(12.0 * (1 - ratio));
     RenderUtil.renderQuad2D(2, y, 0, 12, 1, bg);
