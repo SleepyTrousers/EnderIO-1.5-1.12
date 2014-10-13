@@ -111,7 +111,6 @@ public class VatRecipeManager {
   public boolean isValidInput(MachineRecipeInput[] inputs) {
     for (IRecipe recipe : recipes) {
       boolean allValid = true;
-      String name = recipe.getOutputs()[0].getFluidOutput().getFluid().getName();
       for(MachineRecipeInput input : inputs) {
         if(input.item != null) {
           allValid = recipe.isValidInput(input.slotNumber, input.item);
