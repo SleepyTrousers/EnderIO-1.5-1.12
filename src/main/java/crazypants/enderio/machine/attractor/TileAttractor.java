@@ -177,7 +177,7 @@ public class TileAttractor extends AbstractMachineEntity {
       }
     }
     tracking.clear();
-    tracking = trackingThisTick;    
+    tracking = trackingThisTick;
     return false;
   }
 
@@ -234,8 +234,8 @@ public class TileAttractor extends AbstractMachineEntity {
     return false;
   }
 
-  private boolean trackMob(EntityLiving ent) {    
-    if(useSetTarget(ent)) {    
+  private boolean trackMob(EntityLiving ent) {
+    if(useSetTarget(ent)) {
       ((EntityMob) ent).setTarget(getTarget());
       return true;
     } else if(useSpecialCase(ent)) {
@@ -258,7 +258,7 @@ public class TileAttractor extends AbstractMachineEntity {
       }
       if(remove != null) {
         ent.tasks.removeTask(remove);
-      }      
+      }
       ent.tasks.addTask(0, new AttractTask(ent, getTarget(), new BlockCoord(this)));
       return true;
     }
@@ -305,11 +305,27 @@ public class TileAttractor extends AbstractMachineEntity {
         ent.motionX += x / distance * speed;
         if(y > 0) {
           ent.motionY += (0.30000001192092896D - ent.motionY) * 0.30000001192092896D;
-        }                
+        }
         ent.motionZ += z / distance * speed;
       }
+    } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {
+     
+      double x = (xCoord + 0.5D - ent.posX);
+      double y = (yCoord + 1D - ent.posY);
+      double z = (zCoord + 0.5D - ent.posZ);
+      double distance = Math.sqrt(x * x + y * y + z * z);
+      if(distance > 2) {
+        EntityMob mod = (EntityMob) ent;
+        mod.faceEntity(getTarget(), 180, 0);
+        mod.moveEntityWithHeading(0, 1);
+        if(mod.posY < yCoord) {
+          mod.setJumping(true);
+        } else {
+          mod.setJumping(false);
+        }
+      }
 
-    }
+    } 
   }
 
   private boolean useSetTarget(EntityLiving ent) {
