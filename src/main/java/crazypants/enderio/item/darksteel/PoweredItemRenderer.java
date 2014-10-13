@@ -79,7 +79,12 @@ public class PoweredItemRenderer implements IItemRenderer {
     Vector4f fg = ColorUtil.toFloat(full);
     Vector4f ec = ColorUtil.toFloat(empty);
     fg.interpolate(ec, (float) ratio);
+    Vector4f bg = ColorUtil.toFloat(Color.black);
+    bg.interpolate(fg, 0.15f);
+    
     int barLength = (int) Math.round(12.0 * (1 - ratio));    
+    
+    RenderUtil.renderQuad2D(2, y, 0, 12, 1, bg);
     RenderUtil.renderQuad2D(2, y, 0, barLength, 1, fg);
   }
 
