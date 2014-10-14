@@ -39,6 +39,8 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
   private int generated;
 
   private boolean inPause = false;
+  
+  private boolean generatedDirty = false;
 
   private int maxOutputTick = 1280;
 
@@ -154,10 +156,15 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
       return res;
     } else {
 
+      int lastGenerated = generated;
+      
       boolean isActive = generateEnergy();
       if(isActive != this.active) {
         active = isActive;
         res = true;
+      }
+      if(lastGenerated != generated) {
+        generatedDirty = true;
       }
 
       if(getEnergyStored() >= capacitorType.capacitor.getMaxEnergyStored()) {
@@ -170,6 +177,11 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
     if(tanksDirty && worldObj.getTotalWorldTime() % 10 == 0) {
       PacketHandler.sendToAllAround(new PacketCombustionTank(this), this);
       tanksDirty = false;
+    }
+    
+    if(generatedDirty && worldObj.getTotalWorldTime() % 10 == 0) {
+      generatedDirty = false;
+      res = true;
     }
 
     return res;
