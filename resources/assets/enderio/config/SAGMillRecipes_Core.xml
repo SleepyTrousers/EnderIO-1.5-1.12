@@ -720,12 +720,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustIgnatius" number="2" />
       </output>
     </recipe>
-    <recipe name="Shadow IronOre" energyCost="3600">
+    <recipe name="ShadowIronOre" energyCost="3600">
       <input>
-        <itemStack oreDictionary="oreShadow Iron" />
+        <itemStack oreDictionary="oreShadowIron" />
       </input>
       <output>
-        <itemStack oreDictionary="dustShadow Iron" number="2" />
+        <itemStack oreDictionary="dustShadowIron" number="2" />
       </output>
     </recipe>
     <recipe name="LemuriteOre" energyCost="3600">
@@ -792,12 +792,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustPrometheum" number="2" />
       </output>
     </recipe>
-    <recipe name="Deep IronOre" energyCost="3600">
+    <recipe name="DeepIronOre" energyCost="3600">
       <input>
-        <itemStack oreDictionary="oreDeep Iron" />
+        <itemStack oreDictionary="oreDeepIron" />
       </input>
       <output>
-        <itemStack oreDictionary="dustDeep Iron" number="2" />
+        <itemStack oreDictionary="dustDeepIron" number="2" />
       </output>
     </recipe>
     <recipe name="InfuscoliumOre" energyCost="3600">
@@ -816,12 +816,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustOureclase" number="2" />
       </output>
     </recipe>
-    <recipe name="Astral SilverOre" energyCost="3600">
+    <recipe name="AstralSilverOre" energyCost="3600">
       <input>
-        <itemStack oreDictionary="oreAstral Silver" />
+        <itemStack oreDictionary="oreAstralSilver" />
       </input>
       <output>
-        <itemStack oreDictionary="dustAstral Silver" number="2" />
+        <itemStack oreDictionary="dustAstralSilver" number="2" />
       </output>
     </recipe>
     <recipe name="CarmotOre" energyCost="3600">
@@ -914,12 +914,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustIgnatius" number="1" />
       </output>
     </recipe>
-    <recipe name="Shadow IronIngot" energyCost="2400">
+    <recipe name="ShadowIronIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotShadow Iron" />
+        <itemStack oreDictionary="ingotShadowIron" />
       </input>
       <output>
-        <itemStack oreDictionary="dustShadow Iron" number="1" />
+        <itemStack oreDictionary="dustShadowIron" number="1" />
       </output>
     </recipe>
     <recipe name="LemuriteIngot" energyCost="2400">
@@ -986,12 +986,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustPrometheum" number="1" />
       </output>
     </recipe>
-    <recipe name="Deep IronIngot" energyCost="2400">
+    <recipe name="DeepIronIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotDeep Iron" />
+        <itemStack oreDictionary="ingotDeepIron" />
       </input>
       <output>
-        <itemStack oreDictionary="dustDeep Iron" number="1" />
+        <itemStack oreDictionary="dustDeepIron" number="1" />
       </output>
     </recipe>
     <recipe name="InfuscoliumIngot" energyCost="2400">
@@ -1010,7 +1010,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustOureclase" number="1" />
       </output>
     </recipe>
-    <recipe name="Astral SilverIngot" energyCost="2400">
+    <recipe name="AstralSilverIngot" energyCost="2400">
       <input>
         <itemStack oreDictionary="ingotAstral Silver" />
       </input>
@@ -1082,12 +1082,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustHepatizon" number="1" />
       </output>
     </recipe>
-    <recipe name="Damascus SteelIngot" energyCost="2400">
+    <recipe name="DamascusSteelIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotDamascus Steel" />
+        <itemStack oreDictionary="ingotDamascusSteel" />
       </input>
       <output>
-        <itemStack oreDictionary="dustDamascus Steel" number="1" />
+        <itemStack oreDictionary="dustDamascusSteel" number="1" />
       </output>
     </recipe>
     <recipe name="AngmallenIngot" energyCost="2400">
@@ -1122,12 +1122,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustElectrum" number="1" />
       </output>
     </recipe>
-    <recipe name="Shadow SteelIngot" energyCost="2400">
+    <recipe name="ShadowSteelIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotShadow Steel" />
+        <itemStack oreDictionary="ingotShadowSteel" />
       </input>
       <output>
-        <itemStack oreDictionary="dustShadow Steel" number="1" />
+        <itemStack oreDictionary="dustShadowSteel" number="1" />
       </output>
     </recipe>
     <recipe name="InolashiteIngot" energyCost="2400">
@@ -1146,12 +1146,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustAmordrine" number="1" />
       </output>
     </recipe>
-    <recipe name="Black SteelIngot" energyCost="2400">
+    <recipe name="BlackSteelIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotBlack Steel" />
+        <itemStack oreDictionary="ingotBlackSteel" />
       </input>
       <output>
-        <itemStack oreDictionary="dustBlack Steel" number="1" />
+        <itemStack oreDictionary="dustBlackSteel" number="1" />
       </output>
     </recipe>
     <recipe name="QuicksilverIngot" energyCost="2400">
@@ -1228,12 +1228,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustIgnatius" number="9" />
       </output>
     </recipe>
-    <recipe name="Shadow IronBlock" energyCost="3600">
+    <recipe name="ShadowIronBlock" energyCost="3600">
       <input>
-        <itemStack oreDictionary="blockShadow Iron" />
+        <itemStack oreDictionary="blockShadowIron" />
       </input>
       <output>
-        <itemStack oreDictionary="dustShadow Iron" number="9" />
+        <itemStack oreDictionary="dustShadowIron" number="9" />
       </output>
     </recipe>
     <recipe name="LemuriteBlock" energyCost="3600">
@@ -1300,12 +1300,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustPrometheum" number="9" />
       </output>
     </recipe>
-    <recipe name="Deep IronBlock" energyCost="3600">
+    <recipe name="DeepIronBlock" energyCost="3600">
       <input>
-        <itemStack oreDictionary="blockDeep Iron" />
+        <itemStack oreDictionary="blockDeepIron" />
       </input>
       <output>
-        <itemStack oreDictionary="dustDeep Iron" number="9" />
+        <itemStack oreDictionary="dustDeepIron" number="9" />
       </output>
     </recipe>
     <recipe name="InfuscoliumBlock" energyCost="3600">
@@ -1324,12 +1324,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustOureclase" number="9" />
       </output>
     </recipe>
-    <recipe name="Astral SilverBlock" energyCost="3600">
+    <recipe name="AstralSilverBlock" energyCost="3600">
       <input>
-        <itemStack oreDictionary="blockAstral Silver" />
+        <itemStack oreDictionary="blockAstralSilver" />
       </input>
       <output>
-        <itemStack oreDictionary="dustAstral Silver" number="9" />
+        <itemStack oreDictionary="dustAstralSilver" number="9" />
       </output>
     </recipe>
     <recipe name="CarmotBlock" energyCost="3600">
@@ -1396,12 +1396,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustHepatizon" number="9" />
       </output>
     </recipe>
-    <recipe name="Damascus SteelBlock" energyCost="3600">
+    <recipe name="DamascusSteelBlock" energyCost="3600">
       <input>
-        <itemStack oreDictionary="blockDamascus Steel" />
+        <itemStack oreDictionary="blockDamascusSteel" />
       </input>
       <output>
-        <itemStack oreDictionary="dustDamascus Steel" number="9" />
+        <itemStack oreDictionary="dustDamascusSteel" number="9" />
       </output>
     </recipe>
     <recipe name="AngmallenBlock" energyCost="3600">
@@ -1436,12 +1436,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustElectrum" number="9" />
       </output>
     </recipe>
-    <recipe name="Shadow SteelBlock" energyCost="3600">
+    <recipe name="ShadowSteelBlock" energyCost="3600">
       <input>
-        <itemStack oreDictionary="blockShadow Steel" />
+        <itemStack oreDictionary="blockShadowSteel" />
       </input>
       <output>
-        <itemStack oreDictionary="dustShadow Steel" number="9" />
+        <itemStack oreDictionary="dustShadowSteel" number="9" />
       </output>
     </recipe>
     <recipe name="InolashiteBlock" energyCost="3600">
@@ -1460,12 +1460,12 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustAmordrine" number="9" />
       </output>
     </recipe>
-    <recipe name="Black SteelBlock" energyCost="3600">
+    <recipe name="BlackSteelBlock" energyCost="3600">
       <input>
-        <itemStack oreDictionary="blockBlack Steel" />
+        <itemStack oreDictionary="blockBlackSteel" />
       </input>
       <output>
-        <itemStack oreDictionary="dustBlack Steel" number="9" />
+        <itemStack oreDictionary="dustBlackSteel" number="9" />
       </output>
     </recipe>
     <recipe name="QuicksilverBlock" energyCost="3600">
