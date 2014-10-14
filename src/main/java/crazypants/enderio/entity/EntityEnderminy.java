@@ -101,7 +101,7 @@ public class EntityEnderminy extends EntityMob {
   
   @Override
   public boolean getCanSpawnHere() {
-    return posY > 60 && getCanSpawnHere();
+    return posY > 60 && super.getCanSpawnHere();
   }  
 
   protected Entity findPlayerToAttack() {
