@@ -23,6 +23,7 @@ import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.ContinuousTask;
 import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.PacketCurrentTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
@@ -266,25 +267,41 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   @Override
   protected boolean checkProgress(boolean redstoneChecksPassed) {
-    return super.checkProgress(redstoneChecksPassed) || doTick(redstoneChecksPassed);
+    if(canTick(redstoneChecksPassed) && redstoneChecksPassed) {
+      doTick();
+    }
+    return false;
   }
-
-  protected boolean doTick(boolean redstoneCheckPassed) {
-
+  
+  protected boolean canTick(boolean redstoneChecksPassed) {
     if(worldObj.getTotalWorldTime() % 2 != 0) {
       return false;
-    }
-    
-    if (sendNotification) {
+    }    
+    if(getEnergyStored() < getPowerUsePerTick()) {
+      setNotification("noPower");
+      return false;
+    }    
+    if(redstoneChecksPassed) {
+      usePower();
+    }   
+    int curScaled = getProgressScaled(16);
+    if(curScaled != lastProgressScaled) {
+      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+      lastProgressScaled = curScaled;
+    }    
+    return true;
+  }
+
+  protected void doTick() {
+
+    if (sendNotification && worldObj.getTotalWorldTime() % 20 == 0) {
       sendNotification = false;
       sendNotification();
     }       
-    if(!redstoneCheckPassed) {
-      return false;
-    }
-    if(!hasPower()) {
+    
+    if(!hasPower() && Config.farmActionEnergyUseRF > 0 && Config.farmAxeActionEnergyUseRF > 0) {
       setNotification("noPower");
-      return false;
+      return;
     }
     if("noPower".equals(notification)) {
       clearNotification();
@@ -295,20 +312,18 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       bc = getNextCoord();
     }
     if(bc == null) {
-      return false;
+      return;
     }
     lastScanned = bc;
 
     Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
     if(block == null) {
-      return false;
+      return;
     }
     int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
     if(farmerJoe == null) {
       farmerJoe = new FakeFarmPlayer(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
     }
-
-//    clearNotification();
     
     if(isOpen(bc)) {
       FarmersCommune.instance.prepareBlock(this, bc, block, meta);
@@ -317,12 +332,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
     if(isOutputFull()) {
       setNotification("outputFull");
-      return false;
+      return;
     }
     
-    if(!hasPower()) {
+    if(!hasPower() && Config.farmActionEnergyUseRF > 0 && Config.farmAxeActionEnergyUseRF > 0) {
       setNotification("noPower");
-      return false;
+      return;
     }
 
     if(!isOpen(bc)) {
@@ -342,7 +357,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         }
       }
     }
-    return false;
+    return;
   }
 
   private boolean isOutputFull() {
