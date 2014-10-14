@@ -356,6 +356,8 @@ public final class Config {
   public static int enderminyMaxGroupSize = 3;
   public static boolean enderminySpawnInLitAreas = false;
 
+  public static boolean dumpMobNames = false;
+
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -944,6 +946,10 @@ public final class Config {
         "Maximum number of Enderminies that will spawn in a single group").getInt(enderminyMaxGroupSize);
     enderminySpawnInLitAreas= config.getBoolean("enderminySpawnInLitAreas", sectionMobConfig.name, enderminySpawnInLitAreas, 
         "When true enderminies will spawn in well lit areas, when false they will only spawn in dark areas.");
+    
+    
+    dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 
+        "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
   }
 
   private Config() {
