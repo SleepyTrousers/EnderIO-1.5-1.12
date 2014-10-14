@@ -53,7 +53,7 @@ public class GuiSoulBinder extends GuiMachineBase {
     super.actionPerformed(b);
     if(b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().thePlayer);
-      if(xp > 0) {
+      if(xp > 0 || Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) {
         PacketHandler.INSTANCE.sendToServer(new PacketDrainPlayerXP(tileEntity, tileEntity.getCurrentlyRequiredLevel()));
         SoundUtil.playClientSoundFX("random.orb", tileEntity);        
       }

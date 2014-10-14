@@ -49,8 +49,12 @@ public class PacketDrainPlayerXP extends MessageTileEntity<TileEntity> implement
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity tile = message.getTileEntity(player.worldObj);
     if (tile instanceof IHaveExperience) {      
-      IHaveExperience xpTile = (IHaveExperience)tile;           
-      xpTile.getContainer().drainPlayerXpToReachLevel(player, message.targetLevel);      
+      IHaveExperience xpTile = (IHaveExperience)tile;       
+      if(player.capabilities.isCreativeMode) {
+        xpTile.getContainer().addExperience(XpUtil.getExperienceForLevel(message.targetLevel));
+      } else {
+        xpTile.getContainer().drainPlayerXpToReachLevel(player, message.targetLevel);
+      }
     }
     return null;
   }
