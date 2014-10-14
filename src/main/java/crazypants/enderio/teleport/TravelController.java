@@ -21,6 +21,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -294,7 +295,8 @@ public class TravelController {
         if(isTargetEnderIO()) {
           openEnderIO(null, player.worldObj, player);
         } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
-          input.jump = false;
+          input.jump = false;       
+          ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer");
         }
 
       }
