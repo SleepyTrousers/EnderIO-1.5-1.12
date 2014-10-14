@@ -127,6 +127,9 @@ public class TileCrafter extends AbstractMachineEntity {
               }
             }
           }
+          if(avail != null && avail.stackSize == 0) {
+            avail = null;
+          }
           setInventorySlotContents(i, avail);
         }
       }
