@@ -82,7 +82,7 @@ public class EntityEnderminy extends EntityMob {
 
   @Override
   protected boolean isValidLightLevel() {
-    return true;
+    return Config.enderminySpawnInLitAreas ? true : super.isValidLightLevel();
   }
 
   protected void applyEntityAttributes() {

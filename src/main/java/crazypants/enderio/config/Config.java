@@ -354,9 +354,8 @@ public final class Config {
   public static int enderminyHealth = 20;
   public static boolean enderminyGroupAgro = true;
   public static int enderminyMaxGroupSize = 3;
+  public static boolean enderminySpawnInLitAreas = false;
 
-  
-  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -943,6 +942,8 @@ public final class Config {
         "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well");
     enderminyMaxGroupSize= config.get(sectionMobConfig.name, "enderminyMaxGroupSize", enderminyMaxGroupSize, 
         "Maximum number of Enderminies that will spawn in a single group").getInt(enderminyMaxGroupSize);
+    enderminySpawnInLitAreas= config.getBoolean("enderminySpawnInLitAreas", sectionMobConfig.name, enderminySpawnInLitAreas, 
+        "When true enderminies will spawn in well lit areas, when false they will only spawn in dark areas.");
   }
 
   private Config() {
