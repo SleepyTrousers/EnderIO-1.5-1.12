@@ -296,7 +296,7 @@ public class TravelController {
           openEnderIO(null, player.worldObj, player);
         } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
           input.jump = false;       
-          ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer");
+          //ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer");
         }
 
       }
