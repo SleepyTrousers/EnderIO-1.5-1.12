@@ -295,8 +295,12 @@ public class TravelController {
         if(isTargetEnderIO()) {
           openEnderIO(null, player.worldObj, player);
         } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
-          input.jump = false;       
-          //ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer");
+          input.jump = false;
+          try{ 
+            ObfuscationReflectionHelper.setPrivateValue(EntityPlayer.class, (EntityPlayer)player, 0, "flyToggleTimer", "field_71101_bC");
+          } catch (Exception e) {
+            //ignore
+          }
         }
 
       }
