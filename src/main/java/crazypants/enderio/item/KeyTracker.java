@@ -117,7 +117,7 @@ public class KeyTracker {
         message = Lang.localize("darksteel.upgrade.stepAssist.disabled");
       }
       Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(message));
-      DarkSteelController.instance.setSpeedActive(Minecraft.getMinecraft().thePlayer, isStepAssistActive);
+      DarkSteelController.instance.setStepAssistActive(Minecraft.getMinecraft().thePlayer, isStepAssistActive);
       PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(PacketUpgradeState.Type.STEP_ASSIST, isStepAssistActive));
     }
     

@@ -82,7 +82,7 @@ public class EntityEnderminy extends EntityMob {
 
   @Override
   protected boolean isValidLightLevel() {
-    return true;
+    return Config.enderminySpawnInLitAreas ? true : super.isValidLightLevel();
   }
 
   protected void applyEntityAttributes() {
@@ -98,6 +98,11 @@ public class EntityEnderminy extends EntityMob {
     dataWatcher.addObject(17, new Byte((byte) 0));
     dataWatcher.addObject(18, new Byte((byte) 0));
   }
+  
+  @Override
+  public boolean getCanSpawnHere() {
+    return posY > 60 && super.getCanSpawnHere();
+  }  
 
   protected Entity findPlayerToAttack() {
 

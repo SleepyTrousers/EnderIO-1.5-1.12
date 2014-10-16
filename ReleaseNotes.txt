@@ -1,14 +1,45 @@
 ------------------------------------------------------
+Version 2.1.2
+-----------------------------------------------------
+
+- Fix for client crash when using travel anchor
+
+------------------------------------------------------
 Version 2.1.1
 ------------------------------------------------------
+
 Changes
+- Dimensional Transceiver re-written. To convert existing transceivers to the new version place in the crafting grid.
+  Now supports sending to / receiving from an unlimited number of other transceivers / channels.
 - Added Enderminy Mob (Ollieedd)
+- #1040 #1059 Added key toggles for speed and step assist upgrades for DS armor
+- #1061 Reservoir can be disabled in the config
 - #1071 Added recipes to make fused quartz and enlightened glass using quartz blocks and glowstone blocks (MatthiasMann)
+- Yeta wrench works with IDismantleable (Thermal Expansion) blocks (tterragT
+- Added config options to disable all slime and squid spawns  
+- Improved displayed names of paint sources
+- Improve power bar rendering for Dark Steel tools/armor (tterrag)
+- Added support for connected texture facades with chisel mod. This will not work until the next release of chisel.
+- Added WAILA support to capacitor bank, transceiver, and tank (tterragT)
+- When in creative mode the 'drain xp' button of the soul binder now always works.
+- Added Underground Biomes Constructs Support to SAG Mill recipes (mmatis)
+- Added config option to dump mob names in the format required by EIOs blacklists.
+- Updated Metallurgy's Ore Dictionary names for SAG Mill recipes (Glassmaker)
+- Updated ru_RU.lang (Anton)
+- Updated zh_CN.lang (Mrkwtkr)
+
 
 Bugs
+- #1068 Spiders and Zombie Pigman not working correctly with attractor.
 - #1076 Recipes for Slice'N'Splice not showing axe and shears in NEI 
 - #1070 Alloy smelter produces normal Glass with 2-3 Stacks of Sand
-
+- #1087 Combustion generator GUI not updated on fuel change
+- #1102 Crafter duping items
+- #1101 Missing localization for painted carpet
+- #1100 Angle Wings (ExU) flying is activate when jumping on travel anchor
+- Fixed some shaped recipe definitions to allow crafting in different sections of grid (tterrag)
+- Fixed Snowballs not being harvested with spoon upgrade.
+- Remove unneeded call causing NPE in VatRecipeManager (tterrag)
 
 
 ------------------------------------------------------
