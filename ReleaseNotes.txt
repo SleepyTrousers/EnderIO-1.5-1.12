@@ -11,6 +11,12 @@ Changes
 
 Bugs
 - Fix tormented enderman head (and future head variants) dropping damage 0 always (tterrag)
+- Fixed attractor not working with wither skellies.
+- Dark Steel pressure plate no longer needs to be placed in the painter first when painting with quite clear glass.
+- #1106 Using 2nd mode of conduit probe causes server disconnect
+- #1113 Dark Pick Travel does not work correctly.
+- #1107 Crash placing machine next to door
+
 
 ------------------------------------------------------
 Version 2.1.2
