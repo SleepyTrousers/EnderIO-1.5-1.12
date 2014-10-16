@@ -555,7 +555,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       return false; //not in copy paste mode
     }    
     RaytraceResult rr = doRayTrace(world, x, y, z, player);
-    if(rr.component == null) {
+    if(rr == null || rr.component == null) {
       return false;
     }        
     return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
