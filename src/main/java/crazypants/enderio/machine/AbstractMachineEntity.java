@@ -383,7 +383,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
 
     if(notifyNeighbours) {
-      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, blockType);
+      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
       notifyNeighbours = false;
     }
 
