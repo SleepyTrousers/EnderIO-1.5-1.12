@@ -61,6 +61,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
+import crazypants.enderio.entity.EntityEnderCreeper;
 import crazypants.enderio.entity.EntityEnderminy;
 import crazypants.enderio.entity.ItemSpawnEgg;
 import crazypants.enderio.fluid.BlockFluidEio;
@@ -323,7 +324,7 @@ public class EnderIO {
     blockTank = BlockTank.create();
     blockReservoir = BlockReservoir.create();
     blockVacuumChest = BlockVacuumChest.create();
-    
+
     blockTransceiver = BlockTransceiver.create();
 
     blockEnderIo = BlockEnderIO.create();
@@ -400,21 +401,7 @@ public class EnderIO {
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
-    
-    if(Config.enderminyEnabled) {
-      itemSpawnEgg = ItemSpawnEgg.create();      
-      int rate = Config.enderminySpawnRate;
-      EntityRegistry.registerModEntity(EntityEnderminy.class, EntityEnderminy.NAME, 0, this, 32, 1, true);
-      BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST);
-      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
-      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.SWAMP);
-      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
-      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.JUNGLE);
-      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
-    }
-    
-
-    MaterialRecipes.registerOresInDictionary();
+    registerMobs();
 
     int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
@@ -425,6 +412,51 @@ public class EnderIO {
     EntityRegistry.registerModEntity(RangeEntity.class, "rangeEntity", entityID, this, 0, 0, false);
 
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
+
+    MaterialRecipes.registerOresInDictionary();
+  }
+
+  private void registerMobs() {
+    if(Config.enderminyEnabled || Config.enderCreeperEnabled) {
+      itemSpawnEgg = ItemSpawnEgg.create();
+    }
+    if(Config.enderminyEnabled) {
+      int rate = Config.enderminySpawnRate;
+      EntityRegistry.registerModEntity(EntityEnderminy.class, EntityEnderminy.NAME, 0, this, 32, 1, true);
+      BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST);
+      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
+      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.SWAMP);
+      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
+      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.JUNGLE);
+      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
+
+      rate = Config.enderminySpawnRate;
+      EntityRegistry.registerModEntity(EntityEnderminy.class, EntityEnderminy.NAME, 0, this, 32, 1, true);
+
+    }
+
+    if(Config.enderCreeperEnabled) {
+      BiomeDictionary.Type[] biomeTypes = new BiomeDictionary.Type[] {
+          BiomeDictionary.Type.MESA,
+          BiomeDictionary.Type.FOREST,
+          BiomeDictionary.Type.PLAINS,
+          BiomeDictionary.Type.MOUNTAIN,
+          BiomeDictionary.Type.HILLS,
+          BiomeDictionary.Type.SWAMP,
+          BiomeDictionary.Type.SANDY,
+          BiomeDictionary.Type.SNOWY,
+          BiomeDictionary.Type.WASTELAND,
+          BiomeDictionary.Type.BEACH,
+      };
+      int rate = Config.enderCreeperSpawnRate;
+      for (BiomeDictionary.Type type : biomeTypes) {
+        BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(type);
+        EntityRegistry.addSpawn(EntityEnderCreeper.class, rate, 1, 2, EnumCreatureType.monster, biomes);
+      }
+      int entityID = EntityRegistry.findGlobalUniqueEntityId();
+      EntityRegistry.registerModEntity(EntityEnderCreeper.class, EntityEnderCreeper.NAME, entityID, this, 32, 1, true);
+    }
+
   }
 
   private void registerFluids() {
@@ -585,23 +617,23 @@ public class EnderIO {
         Log.error("Liquid XP registration left to open blocks but could not be found.");
       }
     }
-    
+
     if(Config.dumpMobNames) {
       File dumpFile = new File(Config.configDirectory, "mobTypes.txt");
       List<String> names = EntityUtil.getAllRegisteredMobNames(false);
-      
-      try{
+
+      try {
         BufferedWriter br = new BufferedWriter(new FileWriter(dumpFile, false));
-        for(String name : names) {
+        for (String name : names) {
           br.append(name);
           br.newLine();
         }
         br.flush();
-        br.close();        
-      }catch(Exception e) {
+        br.close();
+      } catch (Exception e) {
         Log.error("Could not write mob types file: " + e);
       }
-      
+
     }
   }
 

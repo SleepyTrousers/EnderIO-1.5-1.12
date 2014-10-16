@@ -787,3 +787,4 @@ enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
 //Mobs
 entity.EnderIO.Enderminy.name=Enderminy
+entity.EnderIO.EnderCreeper.name=Tele Creeper
