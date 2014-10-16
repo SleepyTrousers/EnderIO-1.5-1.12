@@ -8,6 +8,8 @@ Changes
 - WAILA support on all IInternalPowerReceptor and IConduitBundle (tterrag)
 - WAILA support for photovoltaic panels (efficiency %) (tterrag)
 - Allow killer joe's sword to charge from wireless chargers, this means that onUpdate() is called each tick (tterrag)
+- Localize tile.blockConduitBundle.name to Conduit Connector (tterrag)
+- Fix WAILA tooltip for dim.trans., was showing channel types even with no channels assigned to them (tterrag)
 
 Bugs
 - Fix tormented enderman head (and future head variants) dropping damage 0 always (tterrag)
