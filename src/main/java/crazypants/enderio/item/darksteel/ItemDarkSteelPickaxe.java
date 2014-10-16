@@ -121,7 +121,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
 
   @Override
   public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    return doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+    if(!isTravelUpgradeActive(player, item)) {
+      return doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+    }
+    return false;
   }
 
   static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {

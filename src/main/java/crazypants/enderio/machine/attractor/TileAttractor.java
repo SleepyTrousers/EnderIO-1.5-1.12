@@ -1,53 +1,33 @@
 package crazypants.enderio.machine.attractor;
 
-import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLeashKnot;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.profiler.Profiler;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.storage.ISaveHandler;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.util.FakePlayer;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.enderface.PacketOpenRemoteUi.PlayerProxy;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
@@ -276,8 +256,7 @@ public class TileAttractor extends AbstractMachineEntity {
       PathEntity pathentity = worldObj.getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
       ((EntityCreature) ent).setPathToEntity(pathentity);
       return true;
-    }
-    else if(ent instanceof EntityBlaze) {
+    } else if(ent instanceof EntityBlaze) {
       return true;
     }
     return false;
@@ -308,24 +287,26 @@ public class TileAttractor extends AbstractMachineEntity {
         }
         ent.motionZ += z / distance * speed;
       }
-    } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {
-     
-      double x = (xCoord + 0.5D - ent.posX);
-      double y = (yCoord + 1D - ent.posY);
-      double z = (zCoord + 0.5D - ent.posZ);
-      double distance = Math.sqrt(x * x + y * y + z * z);
-      if(distance > 2) {
-        EntityMob mod = (EntityMob) ent;
-        mod.faceEntity(getTarget(), 180, 0);
-        mod.moveEntityWithHeading(0, 1);
-        if(mod.posY < yCoord) {
-          mod.setJumping(true);
-        } else {
-          mod.setJumping(false);
-        }
-      }
+    } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {  
+      forceMove(ent);
+    }
+  }
 
-    } 
+  private void forceMove(EntityLiving ent) {
+    double x = (xCoord + 0.5D - ent.posX);
+    double y = (yCoord + 1D - ent.posY);
+    double z = (zCoord + 0.5D - ent.posZ);
+    double distance = Math.sqrt(x * x + y * y + z * z);
+    if(distance > 2) {
+      EntityMob mod = (EntityMob) ent;
+      mod.faceEntity(getTarget(), 180, 0);
+      mod.moveEntityWithHeading(0, 1);
+      if(mod.posY < yCoord) {
+        mod.setJumping(true);
+      } else {
+        mod.setJumping(false);
+      }
+    }
   }
 
   private boolean useSetTarget(EntityLiving ent) {
@@ -340,7 +321,7 @@ public class TileAttractor extends AbstractMachineEntity {
       super(MinecraftServer.getServer().worldServerForDimension(getWorldObj().provider.dimensionId), new GameProfile(null,
           ModObject.blockAttractor.unlocalisedName + ":" + getLocation()));
       posX = xCoord + 0.5;
-      posY = yCoord + 0.5;
+      posY = yCoord + 1.5;
       posZ = zCoord + 0.5;
     }
   }
@@ -395,7 +376,10 @@ public class TileAttractor extends AbstractMachineEntity {
         started = true;
         int speed = 1;
         mob.getNavigator().setAvoidsWater(false);
-        mob.getNavigator().tryMoveToEntityLiving(target, speed);
+        boolean res = mob.getNavigator().tryMoveToEntityLiving(target, speed);
+        if(!res) {
+          mob.getNavigator().tryMoveToXYZ(target.posX, target.posY +1, target.posZ, speed);
+        }
         updatesSincePathing = 0;
       } else {
         updatesSincePathing++;
