@@ -60,15 +60,20 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     }
 
     if(res) {
-      Vector3d look = Util.getLookVecEio(player);
-      double xP = player.posX + look.x;
-      double yP = player.posY + 1.5;
-      double zP = player.posZ + look.z;              
-      TargetPoint tp = new TargetPoint(player.dimension, x, y, z, 32);
-      EnderIO.packetPipeline.INSTANCE.sendTo(new PacketXpTransferEffects(swing, xP, yP, zP), (EntityPlayerMP)player);
-      world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
+      sendXPUpdate(player, world, x, y, z, swing);
     }
+    
     return res;
+  }
+  
+  public static void sendXPUpdate(EntityPlayer player, World world, int x, int y, int z, boolean swing) {
+    Vector3d look = Util.getLookVecEio(player);
+    double xP = player.posX + look.x;
+    double yP = player.posY + 1.5;
+    double zP = player.posZ + look.z;              
+    TargetPoint tp = new TargetPoint(player.dimension, x, y, z, 32);
+    EnderIO.packetPipeline.INSTANCE.sendTo(new PacketXpTransferEffects(swing, xP, yP, zP), (EntityPlayerMP)player);
+    world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.5F * ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.8F));
   }
 
   public static boolean tranferFromBlockToPlayer(EntityPlayer player, World world, int x, int y, int z, int side) {
