@@ -108,21 +108,32 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
     if (te instanceof TileTransceiver && player.isSneaking()) {
       TileTransceiver trans = (TileTransceiver) te;
       for (ChannelType type : ChannelType.VALUES) {
-        tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));
-        
+
         List<Channel> recieving = trans.getRecieveChannels(type);
-        List<Channel> sending   = trans.getSendChannels(type);
+        List<Channel> sending = trans.getSendChannels(type);
         String recieve = "[" + buildString(recieving) + "]";
-        String send    = "[" + buildString(sending)   + "]";
-        
-        if(!"[]".equals(recieve)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.recieving"), Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE, recieve));
+        String send = "[" + buildString(sending) + "]";
+
+        if(isEmpty(recieve) && isEmpty(send)) {
+          break;
         }
-        if(!"[]".equals(send)) {
-          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE, send));
+
+        tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));
+
+        if(!isEmpty(recieve)) {
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.recieving"), Util.TAB + Util.ALIGNRIGHT
+              + EnumChatFormatting.WHITE, recieve));
+        }
+        if(!isEmpty(send)) {
+          tooltip.add(String.format("%s%s " + Util.TAB + ": %s%s", Util.TAB, Lang.localize("trans.sending"), Util.TAB + Util.ALIGNRIGHT
+              + EnumChatFormatting.WHITE, send));
         }
       }
     }
+  }
+  
+  private boolean isEmpty(String str) {
+    return "[]".equals(str);
   }
   
   private String buildString(List<Channel> channels) {
