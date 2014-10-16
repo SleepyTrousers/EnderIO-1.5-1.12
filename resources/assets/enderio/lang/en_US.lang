@@ -378,7 +378,8 @@ tile.blockExperienceObelisk.name=Experience Obelisk
 tile.blockExperienceObelisk.tooltip.detailed.line1=When placed on a fluid tank
 tile.blockExperienceObelisk.tooltip.detailed.line2=R-Click to use stored Liquid XP
 tile.blockExperienceObelisk.tooltip.detailed.line3=Shift-R-Click with an empty hand
-tile.blockExperienceObelisk.tooltip.detailed.line4=to drain player XP into the tank 
+tile.blockExperienceObelisk.tooltip.detailed.line4=to drain player XP into the tank
+tile.blockExperienceObelisk.tooltip.detailed.line5=L-Click to drain 1 level of player XP
 
 enderio.machine.tooltip.configured=(Configured)
 
