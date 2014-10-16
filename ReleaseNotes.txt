@@ -1,6 +1,20 @@
 ------------------------------------------------------
+Version 2.1.3
+------------------------------------------------------
+
+Changes
+- Better bounding boxes on obelisks (tterrag)
+- Left clicking XP obelisk takes one level from player (tterrag)
+- WAILA support on all IInternalPowerReceptor and IConduitBundle (tterrag)
+- WAILA support for photovoltaic panels (efficiency %) (tterrag)
+- Allow killer joe's sword to charge from wireless chargers, this means that onUpdate() is called each tick (tterrag)
+
+Bugs
+- Fix tormented enderman head (and future head variants) dropping damage 0 always (tterrag)
+
+------------------------------------------------------
 Version 2.1.2
------------------------------------------------------
+------------------------------------------------------
 
 - Fix for client crash when using travel anchor
 
@@ -15,12 +29,12 @@ Changes
 - #1040 #1059 Added key toggles for speed and step assist upgrades for DS armor
 - #1061 Reservoir can be disabled in the config
 - #1071 Added recipes to make fused quartz and enlightened glass using quartz blocks and glowstone blocks (MatthiasMann)
-- Yeta wrench works with IDismantleable (Thermal Expansion) blocks (tterragT
+- Yeta wrench works with IDismantleable (Thermal Expansion) blocks (tterrag)
 - Added config options to disable all slime and squid spawns  
 - Improved displayed names of paint sources
 - Improve power bar rendering for Dark Steel tools/armor (tterrag)
 - Added support for connected texture facades with chisel mod. This will not work until the next release of chisel.
-- Added WAILA support to capacitor bank, transceiver, and tank (tterragT)
+- Added WAILA support to capacitor bank, transceiver, and tank (tterrag)
 - When in creative mode the 'drain xp' button of the soul binder now always works.
 - Added Underground Biomes Constructs Support to SAG Mill recipes (mmatis)
 - Added config option to dump mob names in the format required by EIOs blacklists.

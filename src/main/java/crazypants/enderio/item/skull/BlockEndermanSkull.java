@@ -129,5 +129,8 @@ public class BlockEndermanSkull extends BlockEio {
     world.markBlockForUpdate(x, y, z);
   }
 
-   
+  @Override
+  public int damageDropped(int meta) {
+    return meta;
+  }
 }

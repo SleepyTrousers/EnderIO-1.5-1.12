@@ -1,22 +1,16 @@
 package crazypants.enderio.machine.killera;
 
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,9 +20,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -39,7 +35,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
-import crazypants.enderio.xp.XpUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
@@ -103,6 +98,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public void updateEntity() {
     updateArmSwingProgress();
     hooverXP();
+    getAttackera().onUpdate();
     super.updateEntity();
   }
 
@@ -146,7 +142,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         if(!ent.isDead) {
           FakePlayer fakee = getAttackera();
           fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
-          fakee.onUpdate();
           fakee.attackTargetEntityWithCurrentItem(ent);
           useNutrient();
           swingWeapon();
@@ -483,8 +478,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         }
         prevWeapon = cur == null ? null : cur.copy();
       }
+      FMLCommonHandler.instance().bus().post(new PlayerTickEvent(Phase.END, this));
     }
-
   }
-
 }
