@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
@@ -24,6 +29,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private boolean receptorsDirty = true;
 
   private int lastCollectionValue = -1;
+  
   private int checkOffset;
   private static final int CHECK_INTERVAL = 100;
   
@@ -109,8 +115,12 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       float fromSun = calculateLightRatio();
       lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
     }
-    if(lastCollectionValue > 0) {     
+    if(lastCollectionValue > 0) {
+      int lastRF = storedEnergyRF;
       storedEnergyRF = Math.min(lastCollectionValue + storedEnergyRF, capacitor.getMaxEnergyStored());
+      if (lastRF != storedEnergyRF) {
+        MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayersInDimension(getDescriptionPacket(), worldObj.provider.dimensionId); // for WAILA
+      }
     }
   }
 
@@ -122,7 +132,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     return Config.maxPhotovoltaicAdvancedOutputRF;
   }
 
-  private float calculateLightRatio() {
+  float calculateLightRatio() {
     int lightValue = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted;
     float sunAngle = worldObj.getCelestialAngleRadians(1.0F);
 
@@ -206,4 +216,27 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     }
   }
 
+  @Override
+  public void readFromNBT(NBTTagCompound tag) {
+    super.readFromNBT(tag);
+    storedEnergyRF = tag.getInteger("storedEnergyRF");
+  }
+
+  @Override
+  public void writeToNBT(NBTTagCompound tag) {
+    super.writeToNBT(tag);
+    tag.setInteger("storedEnergyRF", storedEnergyRF);
+  }
+
+  @Override
+  public Packet getDescriptionPacket() {
+    NBTTagCompound nbt = new NBTTagCompound();
+    this.writeToNBT(nbt);
+    return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+  }
+
+  @Override
+  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    this.readFromNBT(pkt.func_148857_g());
+  }
 }

@@ -13,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
@@ -20,13 +22,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.BlockConduitBundle;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.solar.TileEntitySolarPanel;
+import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.Lang;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -39,14 +46,17 @@ public class WailaCompat implements IWailaDataProvider {
     registrar.registerBodyProvider(INSTANCE, Block.class);
     registrar.registerTailProvider(INSTANCE, Block.class);
     
+//    registrar.registerHeadProvider(INSTANCE, IInternalPowerReceptor.class);
+//    registrar.registerSyncedNBTKey("*", IInternalPowerReceptor.class);
+
     ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", "Sneaky Facades");
   }
 
   @Override
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-    if (accessor.getBlock() instanceof BlockConduitBundle && config.getConfig("facades.hidden")) {
+    if(accessor.getBlock() instanceof BlockConduitBundle && config.getConfig("facades.hidden")) {
       IConduitBundle bundle = (IConduitBundle) accessor.getTileEntity();
-      if (bundle.hasFacade()) {
+      if(bundle.hasFacade()) {
         return new ItemStack(bundle.getFacadeId(), 1, bundle.getFacadeMetadata());
       }
     }
@@ -61,15 +71,16 @@ public class WailaCompat implements IWailaDataProvider {
   @Override
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
-    Block block = accessor.getBlock();
-    Item item = Item.getItemFromBlock(block);
-    EntityPlayer player = accessor.getPlayer();
-    World world = player.worldObj;
-    MovingObjectPosition pos = accessor.getPosition();
-    int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
+    Block                block  = accessor.getBlock();
+    TileEntity           te     = accessor.getTileEntity();
+    Item                 item   = Item.getItemFromBlock(block);
+    EntityPlayer         player = accessor.getPlayer();
+    World                world  = player.worldObj;
+    MovingObjectPosition pos    = accessor.getPosition();
     
+    int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
+
     if(block instanceof AbstractMachineBlock<?>) {
-      TileEntity te = world.getTileEntity(x, y, z);
       if (te != null && te instanceof AbstractMachineEntity) {
         AbstractMachineEntity machine = (AbstractMachineEntity) te;
         ForgeDirection side = accessor.getSide();
@@ -106,6 +117,10 @@ public class WailaCompat implements IWailaDataProvider {
       } else if(block instanceof IResourceTooltipProvider) {
         TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
+      
+      if (currenttip.size() > 0) {
+        currenttip.add("");
+      }
 
       info.getWailaInfo(currenttip, player, world, pos.blockX, pos.blockY, pos.blockZ);
     }
@@ -120,6 +135,35 @@ public class WailaCompat implements IWailaDataProvider {
         TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
     }
+    
+    if (te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF")) {
+      if (currenttip.size() > 4) {
+        currenttip.add("");
+      }
+      
+      IInternalPowerReceptor power = (IInternalPowerReceptor) te;
+      
+      int   stored      = accessor.getNBTData().getInteger("storedEnergyRF");
+      int   max         = power.getMaxEnergyStored();
+      
+      currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, stored, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, max, EnumChatFormatting.RESET));
+      
+    } else if (te instanceof IConduitBundle) {
+      NBTTagCompound nbtRoot = accessor.getNBTData();
+      short nbtVersion = nbtRoot.getShort("nbtVersion");
+      NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
+      
+      if(conduitTags != null) {
+        for (int i = 0; i < conduitTags.tagCount(); i++) {
+          NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
+          IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
+          if(conduit != null && conduit instanceof IPowerConduit) {
+            currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, ((IPowerConduit)conduit).getEnergyStored(), EnumChatFormatting.RESET, EnumChatFormatting.WHITE, ((IConduitBundle)te).getMaxEnergyStored(), EnumChatFormatting.RESET));
+          }
+        }
+      }
+    }
+    
     return currenttip;
   }
 

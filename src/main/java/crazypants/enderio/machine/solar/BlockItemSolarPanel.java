@@ -16,15 +16,15 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.Lang;
 
-public class BlockItemSolorPanel extends ItemBlockWithMetadata implements IAdvancedTooltipProvider{
+public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvancedTooltipProvider{
 
-  public BlockItemSolorPanel() {
+  public BlockItemSolarPanel() {
     super(EnderIO.blockSolarPanel, EnderIO.blockSolarPanel);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
   
-  public BlockItemSolorPanel(Block block) {
+  public BlockItemSolarPanel(Block block) {
     super(block, block);
     setHasSubtypes(true);
     setCreativeTab(EnderIOTab.tabEnderIO);

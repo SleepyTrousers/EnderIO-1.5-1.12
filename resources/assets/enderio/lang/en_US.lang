@@ -213,6 +213,7 @@ tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of site to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
 enderio.maxSolorProduction=Max Output
+enderio.tooltip.efficiency=Efficiency
 
 item.itemElectricLight.name=Powered Light
 item.itemElectricLight.tooltip.detailed.line1=Lights a large area when supplied with

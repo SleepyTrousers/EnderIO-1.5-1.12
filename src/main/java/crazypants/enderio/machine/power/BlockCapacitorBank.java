@@ -390,12 +390,10 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if (te instanceof TileCapacitorBank) {
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
-      
-      tooltip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, cap.getEnergyStored() * 10, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, cap.getMaxEnergyStored() * 10, EnumChatFormatting.RESET));
-      
-      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIO"),  format, cap.getMaxIO()     * 10, Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIn"),  format, cap.getMaxInput()  * 10, Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxOut"), format, cap.getMaxOutput() * 10, Util.TAB + Util.ALIGNRIGHT));
+            
+      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIO"),  format, cap.getMaxIO(), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIn"),  format, cap.getMaxInput(), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxOut"), format, cap.getMaxOutput(), Util.TAB + Util.ALIGNRIGHT));
     }
   }
 

@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -20,9 +21,11 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.util.Lang;
 import crazypants.util.Util;
 
-public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider {
+public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
   public static BlockSolarPanel create() {
     BlockSolarPanel result = new BlockSolarPanel();
@@ -46,7 +49,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
 
   @Override
   protected void init() {
-    GameRegistry.registerBlock(this, BlockItemSolorPanel.class, name);
+    GameRegistry.registerBlock(this, BlockItemSolarPanel.class, name);
     if(teClass != null) {
       GameRegistry.registerTileEntity(teClass, name + "TileEntity");
     }
@@ -142,6 +145,19 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     return getUnlocalizedName();
   }
 
-  
-  
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntitySolarPanel) {
+      TileEntitySolarPanel solar       = (TileEntitySolarPanel) te;
+      float                efficiency  = solar.calculateLightRatio();
+    
+      tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET, EnumChatFormatting.WHITE, efficiency * 100));
+    }
+  }
+
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return 0;
+  }
 }
