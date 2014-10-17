@@ -210,9 +210,12 @@ public class ServerChannelRegister extends ChannelRegister {
   private ItemStack sendItem(TileTransceiver from, int slot, ItemStack contents, TileTransceiver to) {
     SlotDefinition sd = to.getSlotDefinition();
     //try merging into existing stacks
-    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
+
+    boolean recieverHasItem = false;     // Only allow 1 stack per item type
+    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot && !recieverHasItem; i++) {
       ItemStack existing = to.getStackInSlot(i);
-      if(ItemUtil.canMergeStacks(existing, contents)) {
+      if(ItemUtil.areStackTypesEqual(existing, contents)) {
+        recieverHasItem = true;
         int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
         ItemStack remaining;
         if(numCanMerge >= contents.stackSize) {
@@ -223,7 +226,7 @@ public class ServerChannelRegister extends ChannelRegister {
         }
         ItemStack destStack = existing.copy();
         destStack.stackSize += numCanMerge;
-        to.setInventorySlotContents(i, destStack);        
+        to.setInventorySlotContents(i, destStack);
         from.setInventorySlotContents(slot, remaining);
         if(remaining == null) {
           return null;
@@ -232,13 +235,15 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
     }
-    //then fill empty stack
-    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
-      ItemStack existing = to.getStackInSlot(i);
-      if(existing == null) {
-        to.setInventorySlotContents(i, contents.copy());
-        from.setInventorySlotContents(slot, null);
-        return null;
+    if(!recieverHasItem) {
+      //then fill empty stack
+      for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
+        ItemStack existing = to.getStackInSlot(i);
+        if(existing == null) {
+          to.setInventorySlotContents(i, contents.copy());
+          from.setInventorySlotContents(slot, null);
+          return null;
+        }
       }
     }
     return contents;

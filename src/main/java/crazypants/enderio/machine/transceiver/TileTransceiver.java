@@ -33,6 +33,7 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.FluidUtil;
+import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler {
@@ -424,7 +425,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     return false;
   }
 
-  //item handling
+  //---------------- item handling
   private void processItems() {
     List<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);
     if(!sendItemChannels.isEmpty()) {
@@ -435,6 +436,33 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
         }
       }
     }
+  }
+
+  @Override
+  public boolean canInsertItem(int slot, ItemStack itemstack, int j) {
+    if(itemstack == null) {
+      return false;
+    }
+
+    //only allow 1 stack per type
+    if(slotDefinition.isInputSlot(slot)) {
+      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+        if(i != slot) {
+          if(ItemUtil.areStackTypesEqual(itemstack, getStackInSlot(i))) {
+            return false;
+          }
+        }
+      }
+    } else if(slotDefinition.isOutputSlot(slot)) {
+      for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
+        if(i != slot) {
+          if(ItemUtil.areStackTypesEqual(itemstack, getStackInSlot(i))) {
+            return false;
+          }
+        }
+      }
+    }    
+    return super.canInsertItem(slot, itemstack, j);
   }
 
 }
