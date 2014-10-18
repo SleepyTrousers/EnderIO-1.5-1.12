@@ -99,7 +99,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   public void updateEntity() {
     updateArmSwingProgress();
     hooverXP();
-    getAttackera().onUpdate();
+    if(worldObj != null && worldObj.isRemote) {
+      getAttackera().onUpdate();
+    }
     super.updateEntity();
   }
 
@@ -334,30 +336,31 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   protected boolean doPull(ForgeDirection dir) {
     boolean res = super.doPull(dir);
-    BlockCoord loc = getLocation().getLocation(dir);
-    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-    if(target != null) {
-      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-      if(infos != null) {
-        for (FluidTankInfo info : infos) {
-          if(info.fluid != null && info.fluid.amount > 0) {
-            if(canFill(dir, info.fluid.getFluid())) {
-              FluidStack canPull = info.fluid.copy();
-              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-              if(drained != null && drained.amount > 0) {
-                int filled = fill(dir, drained, false);
-                if(filled > 0) {
-                  drained = target.drain(dir.getOpposite(), filled, true);
-                  fill(dir, drained, true);
-                  return res;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+//    BlockCoord loc = getLocation().getLocation(dir);
+//    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+//    if(target != null) {
+//      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
+//      if(infos != null) {
+//        for (FluidTankInfo info : infos) {
+//          if(info.fluid != null && info.fluid.amount > 0) {
+//            if(canFill(dir, info.fluid.getFluid())) {
+//              FluidStack canPull = info.fluid.copy();
+//              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+//              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
+//              if(drained != null && drained.amount > 0) {
+//                int filled = fill(dir, drained, false);
+//                if(filled > 0) {
+//                  drained = target.drain(dir.getOpposite(), filled, true);
+//                  fill(dir, drained, true);
+//                  return res;
+//                }
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
+    FluidUtil.doPull(this, dir, IO_MB_TICK);
     return res;
   }
 
