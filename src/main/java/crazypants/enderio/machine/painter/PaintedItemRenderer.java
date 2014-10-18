@@ -10,6 +10,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
+import crazypants.render.IconUtil;
 import crazypants.render.RenderUtil;
 
 public class PaintedItemRenderer implements IItemRenderer {
@@ -47,27 +48,32 @@ public class PaintedItemRenderer implements IItemRenderer {
   }
 
   public void renderToInventory(ItemStack item, RenderBlocks renderBlocks) {
-    if(item.getItem() == Item.getItemFromBlock(EnderIO.blockPaintedGlowstone) || item.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform) ) {
+    if(item.getItem() == Item.getItemFromBlock(EnderIO.blockPaintedGlowstone) || item.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform)) {
       Block block = PainterUtil.getSourceBlock(item);
       RenderUtil.bindBlockTexture();
-      if(block != null) {        
+      if(block != null) {
         renderBlocks.renderBlockAsItem(block, PainterUtil.getSourceBlockMetadata(item), 1.0F);
-      } else {        
+      } else {
         renderBlocks.renderBlockAsItem(Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 1.0F);
       }
-    } else {
-      Block block = PainterUtil.getSourceBlock(item);
-      if(block != null) {
-        int meta = PainterUtil.getSourceBlockMetadata(item);
+      return;
+    }
+
+    Block block = PainterUtil.getSourceBlock(item);    
+    if(block != null) {
+      int meta = PainterUtil.getSourceBlockMetadata(item);
+      if(block == EnderIO.blockFusedQuartz && meta == 1) {
+        renderBlocks.setOverrideBlockTexture(EnderIO.blockPainter.getInvisibleIcon());
+      } else {
         renderBlocks.setOverrideBlockTexture(renderBlocks.getBlockIconFromSideAndMetadata(block, 2, meta));
       }
-      Item i = item.getItem();
-      if(i instanceof ItemBlock) {
-        renderBlocks.renderBlockAsItem(((ItemBlock) i).field_150939_a, item.getItemDamage(), 1.0f);
-      }
-
-      renderBlocks.clearOverrideBlockTexture();
     }
+    Item i = item.getItem();
+    if(i instanceof ItemBlock) {
+      renderBlocks.renderBlockAsItem(((ItemBlock) i).field_150939_a, item.getItemDamage(), 1.0f);
+    }
+
+    renderBlocks.clearOverrideBlockTexture();
 
   }
 

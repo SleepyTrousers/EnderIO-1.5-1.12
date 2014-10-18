@@ -1,7 +1,11 @@
 package crazypants.enderio.machine.painter;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -19,6 +23,8 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
     return ppainter;
   }
 
+  private IIcon invisibleIcon;
+  
   private BlockPainter() {
     super(ModObject.blockPainter, TileEntityPainter.class);
   }
@@ -43,6 +49,21 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   @Override
   protected int getGuiId() {
     return GuiHandler.GUI_ID_PAINTER;
+  }
+  
+  public IIcon getInvisibleIcon() {
+    return invisibleIcon;
+  }
+
+  public void setInvisibleIcon(IIcon invisibleIcon) {
+    this.invisibleIcon = invisibleIcon;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerBlockIcons(IIconRegister iIconRegister) {    
+    super.registerBlockIcons(iIconRegister);
+    invisibleIcon = iIconRegister.registerIcon("enderio:invisblePaint");
   }
 
   @Override

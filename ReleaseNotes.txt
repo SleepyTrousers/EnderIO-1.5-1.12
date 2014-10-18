@@ -24,6 +24,8 @@ Bugs
 - #1129 Server crash on placement of Painting Machine 
 - #1128 Server crashes with cauldron when teleporting 
 - #1112 (new) Dimentional transceiver doesn't save the selected channels on pickup
+- #1115 Glass Painted Dark Pressure Plate doesn't render in inventory or as item 
+
 
 
 ------------------------------------------------------
