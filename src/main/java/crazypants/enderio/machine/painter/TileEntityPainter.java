@@ -88,7 +88,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
 
   @Override
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if(!result.isItemEqual(inventory[2])) {
+    if(result == null || !result.isItemEqual(inventory[2]) || !result.hasTagCompound() || !inventory[2].hasTagCompound()) {
       // next result is a different item type
       return 0;
     }
