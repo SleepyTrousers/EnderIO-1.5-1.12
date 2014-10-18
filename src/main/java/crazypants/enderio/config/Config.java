@@ -354,10 +354,21 @@ public final class Config {
   public static int enderminyHealth = 20;
   public static boolean enderminyGroupAgro = true;
   public static int enderminyMaxGroupSize = 3;
-  public static boolean enderminySpawnInLitAreas = false;
-
+  public static boolean enderminySpawnInLitAreas = false;  
+  public static boolean enderminySpawnOnlyOnGrass = true;
+  public static int enderminyMinSpawnY = 0;
+  
+  public static boolean enderCreeperEnabled = true;
+  public static int enderCreeperSpawnRate = 60;
+  public static int enderCreeperMaxTeleportRange = 32;
+  public static int enderCreeperConfusionDuration = 100;
+  public static int enderCreeperExplosionRange = 5;
+  
   public static boolean dumpMobNames = false;
 
+  
+
+  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -944,8 +955,22 @@ public final class Config {
         "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well");
     enderminyMaxGroupSize= config.get(sectionMobConfig.name, "enderminyMaxGroupSize", enderminyMaxGroupSize, 
         "Maximum number of Enderminies that will spawn in a single group").getInt(enderminyMaxGroupSize);
-    enderminySpawnInLitAreas= config.getBoolean("enderminySpawnInLitAreas", sectionMobConfig.name, enderminySpawnInLitAreas, 
+    enderminySpawnInLitAreas = config.getBoolean("enderminySpawnInLitAreas", sectionMobConfig.name, enderminySpawnInLitAreas, 
         "When true enderminies will spawn in well lit areas, when false they will only spawn in dark areas.");
+    enderminySpawnOnlyOnGrass = config.getBoolean("enderminySpawnOnlyOnGrass", sectionMobConfig.name, enderminySpawnOnlyOnGrass, 
+        "When true enderminies will spawn only on grass blocks.");
+    enderminyMinSpawnY = config.get(sectionMobConfig.name, "enderminyMinSpawnY", enderminyMinSpawnY, 
+        "The minimum Y level at which enderminies will spawn").getInt(enderminyMinSpawnY);
+    
+    enderCreeperEnabled = config.getBoolean("enderCreeperEnabled", sectionMobConfig.name, enderCreeperEnabled, "Wether EnderCreepers are enabled");
+    enderCreeperSpawnRate = config.get(sectionMobConfig.name, "enderCreeperSpawnRate", enderCreeperSpawnRate, 
+        "Sets the spawn rate of EnderCreepers. 10=Enderman spawn rate, 100=Zombie spawn rate").getInt(enderCreeperSpawnRate);
+    enderCreeperMaxTeleportRange = config.get(sectionMobConfig.name, "enderCreeperMaxTeleportRange", enderCreeperMaxTeleportRange, 
+        "Sets the max range entites can be telported when the creeper explodes").getInt(enderCreeperMaxTeleportRange);
+    enderCreeperConfusionDuration = config.get(sectionMobConfig.name, "enderCreeperConfusionDuration", enderCreeperConfusionDuration, 
+        "Sets the durtaion in ticks of the confusion effect applied on explosion").getInt(enderCreeperConfusionDuration);
+    enderCreeperExplosionRange = config.get(sectionMobConfig.name, "enderCreeperExplosionRange", enderCreeperExplosionRange, 
+        "The range of the 'teleport explosion'").getInt(enderCreeperExplosionRange);
     
     
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 

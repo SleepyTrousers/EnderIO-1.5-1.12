@@ -170,7 +170,7 @@ public class ItemUtil {
    * @param s2
    * @return
    */
-  public static boolean canMergeStacks(ItemStack s1, ItemStack s2) {
+  public static boolean areStackTypesEqual(ItemStack s1, ItemStack s2) {
     if(s1 == null || s2 == null || !s1.isStackable() || !s2.isStackable()) {
       return false;
     }

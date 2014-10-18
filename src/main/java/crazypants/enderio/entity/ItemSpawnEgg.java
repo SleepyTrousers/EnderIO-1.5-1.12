@@ -6,6 +6,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,9 +29,9 @@ public class ItemSpawnEgg extends Item {
     return res;
   }
 
-  int[] primaryColor = { 0x27624D};
-  int[] secondaryColor = { 0x212121};
-  String[] mobNames = { "EnderIO." + EntityEnderminy.NAME };
+  int[] primaryColor = { 0x27624D, 0x56FF8E};
+  int[] secondaryColor = { 0x212121, 0xFF0A22};
+  String[] mobNames = { "EnderIO." + EntityEnderminy.NAME, "EnderIO." + EntityEnderCreeper.NAME };
   
   private ItemSpawnEgg() {
     setUnlocalizedName("itemSpawnEggEnderIO");
@@ -68,8 +69,11 @@ public class ItemSpawnEgg extends Item {
 
   @Override
   public void getSubItems(Item id, CreativeTabs tab, List list) {
-    for (int i = 0; i < mobNames.length; i++) {
-      list.add(new ItemStack(id, 1, i));
+    if(Config.enderminyEnabled) {
+      list.add(new ItemStack(id, 1, 0));
+    }
+    if(Config.enderCreeperEnabled) {
+      list.add(new ItemStack(id, 1, 1));
     }
   }
 
@@ -106,6 +110,10 @@ public class ItemSpawnEgg extends Item {
     switch (damage) {
     case 0:
       entity = new EntityEnderminy(world);
+      spawnEntity(posX, posY, posZ, entity, world);
+      break;
+    case 1:
+      entity = new EntityEnderCreeper(world);
       spawnEntity(posX, posY, posZ, entity, world);
       break;
     }

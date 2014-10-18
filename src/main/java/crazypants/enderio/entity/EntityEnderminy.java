@@ -17,6 +17,7 @@ import crazypants.vecmath.Vector3d;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -40,7 +41,6 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class EntityEnderminy extends EntityMob {
 
-  
   public static String NAME = "Enderminy";
 
   private static final int MAX_RND_TP_DISTANCE = 32;
@@ -79,7 +79,7 @@ public class EntityEnderminy extends EntityMob {
   public float getShadowSize() {
     return 0.01F;
   }
-
+ 
   @Override
   protected boolean isValidLightLevel() {
     return Config.enderminySpawnInLitAreas ? true : super.isValidLightLevel();
@@ -98,11 +98,20 @@ public class EntityEnderminy extends EntityMob {
     dataWatcher.addObject(17, new Byte((byte) 0));
     dataWatcher.addObject(18, new Byte((byte) 0));
   }
-  
+
   @Override
   public boolean getCanSpawnHere() {
-    return posY > 60 && super.getCanSpawnHere();
-  }  
+    boolean passedGrassCheck = true;
+    if(Config.enderminySpawnOnlyOnGrass) {
+      int i = MathHelper.floor_double(this.posX);
+      int j = MathHelper.floor_double(this.boundingBox.minY);
+      int k = MathHelper.floor_double(this.posZ);
+      passedGrassCheck = worldObj.getBlock(i, j - 1, k) == Blocks.grass;
+    }
+    return posY > Config.enderminyMinSpawnY && super.getCanSpawnHere();
+  }
+
+  
 
   protected Entity findPlayerToAttack() {
 
@@ -125,7 +134,7 @@ public class EntityEnderminy extends EntityMob {
           stareTimer = 0;
         }
       }
-    }    
+    }
     if(attackCreepers) {
       int range = 16;
       AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
@@ -210,7 +219,7 @@ public class EntityEnderminy extends EntityMob {
     }
 
     if(!worldObj.isRemote && isEntityAlive()) {
-      if(entityToAttack != null) {        
+      if(entityToAttack != null) {
         if(entityToAttack.getDistanceSqToEntity(this) > 256.0D && teleportDelay++ >= 30 && teleportToEntity(entityToAttack)) {
           teleportDelay = 0;
         }
@@ -357,11 +366,10 @@ public class EntityEnderminy extends EntityMob {
       }
       return super.attackEntityFrom(damageSource, p_70097_2_);
     }
-    
-    
-    boolean res = super.attackEntityFrom(damageSource, p_70097_2_);    
+
+    boolean res = super.attackEntityFrom(damageSource, p_70097_2_);
     if(damageSource instanceof EntityDamageSource && damageSource.getEntity() instanceof EntityPlayer &&
-        getHealth() > 0 && !ItemDarkSteelSword.isEquippedAndPowered((EntityPlayer)damageSource.getEntity(), 1)) {
+        getHealth() > 0 && !ItemDarkSteelSword.isEquippedAndPowered((EntityPlayer) damageSource.getEntity(), 1)) {
       isAggressive = true;
       if(rand.nextInt(3) == 0) {
         for (int i = 0; i < 64; ++i) {
@@ -373,7 +381,7 @@ public class EntityEnderminy extends EntityMob {
         }
       }
     }
-    
+
     if(res) {
       doGroupArgo();
     }
@@ -385,7 +393,7 @@ public class EntityEnderminy extends EntityMob {
     if(!groupAgroEnabled) {
       return;
     }
-    if(! (entityToAttack instanceof EntityPlayer)) {
+    if(!(entityToAttack instanceof EntityPlayer)) {
       return;
     }
     System.out.println("EntityEnderminy.doGroupArgo: ");
@@ -393,14 +401,14 @@ public class EntityEnderminy extends EntityMob {
     AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(posX - range, posY - range, posZ - range, posX + range, posY + range, posZ + range);
     List<EntityEnderminy> minies = worldObj.getEntitiesWithinAABB(EntityEnderminy.class, bb);
     if(minies != null && !minies.isEmpty()) {
-      
+
       for (EntityEnderminy miny : minies) {
         if(miny.entityToAttack == null) { //&& miny.canEntityBeSeen(this)) {
           miny.entityToAttack = entityToAttack;
         }
       }
     }
-  }   
+  }
 
   public boolean isScreaming() {
     return dataWatcher.getWatchableObjectByte(18) > 0;
@@ -409,18 +417,17 @@ public class EntityEnderminy extends EntityMob {
   public void setScreaming(boolean p_70819_1_) {
     dataWatcher.updateObject(18, Byte.valueOf((byte) (p_70819_1_ ? 1 : 0)));
   }
-  
+
   private final class ClosestEntityComparator implements Comparator<EntityCreeper> {
     Vector3d pos = new Vector3d();
 
     @Override
     public int compare(EntityCreeper o1, EntityCreeper o2) {
-      pos.set(posX,posY,posZ);
+      pos.set(posX, posY, posZ);
       double d1 = new Vector3d(o1.posX, o1.posY, o1.posZ).distanceSquared(pos);
       double d2 = new Vector3d(o2.posX, o2.posY, o2.posZ).distanceSquared(pos);
       return Double.compare(d1, d2);
     }
   }
-
 
 }

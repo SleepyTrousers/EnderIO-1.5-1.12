@@ -9,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -45,7 +47,9 @@ import crazypants.enderio.conduit.render.ItemConduitRenderer;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.EnderIoRenderer;
 import crazypants.enderio.enderface.TileEnderIO;
+import crazypants.enderio.entity.EntityEnderCreeper;
 import crazypants.enderio.entity.EntityEnderminy;
+import crazypants.enderio.entity.RenderEnderCreeper;
 import crazypants.enderio.entity.RenderEnderminy;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.item.ConduitProbeOverlayRenderer;
@@ -396,11 +400,13 @@ public class ClientProxy extends CommonProxy {
         }
 
       });
-    }    
-    
-    
-    RenderingRegistry.registerEntityRenderingHandler(EntityEnderminy.class, new RenderEnderminy());
-
+    }        
+    if(Config.enderminyEnabled) {
+      RenderingRegistry.registerEntityRenderingHandler(EntityEnderminy.class, new RenderEnderminy());
+    }
+    if(Config.enderCreeperEnabled) {
+      RenderingRegistry.registerEntityRenderingHandler(EntityEnderCreeper.class, new RenderEnderCreeper());
+    }
   }
 
   @Override
@@ -419,6 +425,11 @@ public class ClientProxy extends CommonProxy {
       return ((EntityPlayerMP) entityPlayer).theItemInWorldManager.getBlockReachDistance();
     }
     return super.getReachDistanceForPlayer(entityPlayer);
+  }
+  
+  public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
+    ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true));
+    Minecraft.getMinecraft().thePlayer.timeInPortal = 1;
   }
 
 }
