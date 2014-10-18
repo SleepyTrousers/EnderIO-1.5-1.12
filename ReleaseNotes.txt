@@ -26,6 +26,7 @@ Bugs
 - #1112 (new) Dimentional transceiver doesn't save the selected channels on pickup
 - #1115 Glass Painted Dark Pressure Plate doesn't render in inventory or as item 
 - #1125 Improved client side performance when pressurized fluid conduits are transferring small volumes of fluid 
+- #1121 Killer Joe XP bar doesn't update if not active 
 
 
 

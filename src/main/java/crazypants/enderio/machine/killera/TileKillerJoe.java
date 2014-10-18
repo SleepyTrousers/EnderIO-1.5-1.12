@@ -110,10 +110,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
-    if(!redstoneCheckPassed) {
-      return false;
-    }
-
     if(worldObj.getTotalWorldTime() % 10 != 0) {
       return false;
     }
@@ -125,6 +121,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(xpCon.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperianceContainer(this), this);
       xpCon.setDirty(false);
+    }
+    
+    if(!redstoneCheckPassed) {
+      return false;
     }
 
     if(fuelTank.getFluidAmount() < fuelTank.getCapacity() * 0.7f) {
@@ -178,7 +178,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         hooverXP(entity);
       } else {
         double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
-        double speed = 0.005 + (d * 0.02);
+        double speed = 0.01 + (d * 0.02);
 
         entity.motionX += xDist / totalDistance * speed;
         entity.motionZ += zDist / totalDistance * speed;
