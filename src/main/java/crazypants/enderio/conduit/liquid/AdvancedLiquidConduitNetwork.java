@@ -36,6 +36,8 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
 
   private final InnerTickHandler tickHandler = new InnerTickHandler();
 
+  private int ticksEmpty;
+
   public AdvancedLiquidConduitNetwork() {
     super(AdvancedLiquidConduit.class);
   }
@@ -160,22 +162,33 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   private void updateActiveState() {
+
     boolean isActive = tank.containsValidLiquid() && !tank.isEmpty();
-    if(lastSyncedActive != isActive) {
-      ticksActiveUnsynced++;
-    } else {
-      ticksActiveUnsynced = 0;
-    }
-    if(ticksActiveUnsynced >= 10 || ticksActiveUnsynced > 0 && isActive) {
-      if(!isActive && !fluidTypeLocked) {
-        setFluidType(null);
+    if(!isActive) {
+      if(!fluidTypeLocked && liquidType != null) {
+        ticksEmpty++;
+        if(ticksEmpty > 40) {
+          setFluidType(null);
+          ticksEmpty = 0;
+          for (IConduit con : conduits) {
+            con.setActive(false);
+          }
+          lastSyncedActive = false;
+          ticksActiveUnsynced = 0;
+        }
       }
+      return;
+    }
+
+    ticksEmpty = 0;
+    
+    if(!lastSyncedActive) {
       for (IConduit con : conduits) {
-        con.setActive(isActive);
+        con.setActive(true);
       }
-      lastSyncedActive = isActive;
-      ticksActiveUnsynced = 0;
+      lastSyncedActive = true;
     }
+
   }
 
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -256,22 +269,22 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
         return false;
       }
 
-//      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
-//      if(drained == null || drained.amount <= 0) {
-//        return false;
-//      }
-//      tank.addAmount(drained.amount);     
+      //      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
+      //      if(drained == null || drained.amount <= 0) {
+      //        return false;
+      //      }
+      //      tank.addAmount(drained.amount);     
 
       //Have to use this 'double handle' approach to work around an issue with TiC
       FluidStack drained = extTank.drain(dir.getOpposite(), maxExtract, false);
-      if(drained == null || drained.amount == 0) {        
+      if(drained == null || drained.amount == 0) {
         return false;
       } else {
         if(drained.isFluidEqual(getFluidType())) {
           drained = extTank.drain(dir.getOpposite(), maxExtract, true);
-          tank.addAmount(drained.amount);          
-        } 
-      }      
+          tank.addAmount(drained.amount);
+        }
+      }
       return true;
     }
     return false;

@@ -25,6 +25,7 @@ Bugs
 - #1128 Server crashes with cauldron when teleporting 
 - #1112 (new) Dimentional transceiver doesn't save the selected channels on pickup
 - #1115 Glass Painted Dark Pressure Plate doesn't render in inventory or as item 
+- #1125 Improved client side performance when pressurized fluid conduits are transferring small volumes of fluid 
 
 
 
