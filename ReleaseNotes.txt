@@ -7,7 +7,7 @@ Changes
 - Left clicking XP obelisk takes one level from player (tterrag)
 - WAILA support on all IInternalPowerReceptor and IConduitBundle (tterrag)
 - WAILA support for photovoltaic panels (efficiency %) (tterrag)
-- Allow killer joe's sword to charge from wireless chargers, this means that onUpdate() is called each tick (tterrag)
+- Allow killer joe's sword to charge from wireless chargers (tterrag)
 - Localize tile.blockConduitBundle.name to Conduit Connector (tterrag)
 - Fix WAILA tooltip for dim.trans., was showing channel types even with no channels assigned to them (tterrag)
 - Dimensional Transceiver send/receive item buffers will only accept one stack per item type
@@ -29,9 +29,6 @@ Bugs
 - #1128 Server crashes with cauldron when teleporting
 - #1129 Server crash on placement of Painting Machine 
  
- 
-
-
 
 ------------------------------------------------------
 Version 2.1.2

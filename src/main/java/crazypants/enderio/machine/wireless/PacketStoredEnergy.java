@@ -55,7 +55,6 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
           (me.storedEnergyRF > 0 && message.storedEnergy <= 0);
       me.storedEnergyRF = message.storedEnergy;
       if(doRender) {        
-        System.out.println("PacketStoredEnergy.onMessage: ");
         player.worldObj.markBlockRangeForRenderUpdate(message.x, message.y, message.z, message.x, message.y, message.z);
       }
 

@@ -31,6 +31,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.generator.zombie.NutrientTank;
+import crazypants.enderio.machine.wireless.WirelessChargerController;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
@@ -429,10 +430,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     } else {
       fuelTank.setFluid(null);
     }
-
-    //    experienceLevel = nbtRoot.getInteger("experienceLevel");
-    //    experienceTotal = nbtRoot.getInteger("experienceTotal");
-    //    experience = nbtRoot.getFloat("experience");
     xpCon.readFromNBT(nbtRoot);
   }
 
@@ -444,12 +441,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       fuelTank.writeToNBT(tankRoot);
       nbtRoot.setTag("fuelTank", tankRoot);
     }
-
-    //    nbtRoot.setInteger("experienceLevel", experienceLevel);
-    //    nbtRoot.setInteger("experienceTotal", experienceTotal);
-    //    nbtRoot.setFloat("experience", experience);
     xpCon.writeToNBT(nbtRoot);
-
   }
 
   private class Attackera extends FakePlayer {
@@ -478,7 +470,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
         }
         prevWeapon = cur == null ? null : cur.copy();
       }
-      FMLCommonHandler.instance().bus().post(new PlayerTickEvent(Phase.END, this));
+      WirelessChargerController.instance.chargePlayersItems(this);      
     }
   }
 }

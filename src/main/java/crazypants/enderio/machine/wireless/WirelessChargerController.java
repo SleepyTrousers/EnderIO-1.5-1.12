@@ -59,14 +59,18 @@ public class WirelessChargerController {
     if(event.side == Side.CLIENT || event.phase != TickEvent.Phase.END) {
       return;
     }
-    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(event.player.worldObj);
+    chargePlayersItems(event.player);
+  }
+
+  public void chargePlayersItems(EntityPlayer player) {
+    Map<BlockCoord, IWirelessCharger> chargers = getChargersForWorld(player.worldObj);
     if(chargers.isEmpty()) {
       return;
     }
-    BlockCoord bc = new BlockCoord((int) event.player.posX, (int) event.player.posY, (int) event.player.posZ);
+    BlockCoord bc = new BlockCoord((int) player.posX, (int) player.posY, (int) player.posZ);
     for (IWirelessCharger capBank : chargers.values()) {
       if(capBank.getLocation().distanceSquared(bc) <= RANGE_SQ) {
-        boolean done = chargeFromCapBank(event.player, capBank);
+        boolean done = chargeFromCapBank(player, capBank);
         if(done) {
           return;
         }
