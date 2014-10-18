@@ -19,7 +19,8 @@ Bugs
 - #1106 Using 2nd mode of conduit probe causes server disconnect
 - #1113 Dark Pick Travel does not work correctly.
 - #1107 Crash placing machine next to door
-
+- #1129 Server crash on placement of Painting Machine 
+- #1128 Server crashes with cauldron when teleporting 
 
 ------------------------------------------------------
 Version 2.1.2

@@ -66,8 +66,6 @@ public class TravelController {
   private double fovRad;
 
   private double tanFovRad;
-
-  private Minecraft mc = Minecraft.getMinecraft();
   
   private final List<UniqueIdentifier> blackList = new ArrayList<GameRegistry.UniqueIdentifier>();
 
@@ -244,6 +242,7 @@ public class TravelController {
   @SubscribeEvent
   public void onRender(RenderWorldLastEvent event) {
 
+    Minecraft mc = Minecraft.getMinecraft();
     Vector3d eye = Util.getEyePositionEio(mc.thePlayer);
     Vector3d lookAt = Util.getLookVecEio(mc.thePlayer);
     lookAt.add(eye);
