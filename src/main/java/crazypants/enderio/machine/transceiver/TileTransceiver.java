@@ -211,12 +211,14 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
-
+    currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
+  }
+  
+  @Override
+  public void readCommon(NBTTagCompound nbtRoot) {
+    super.readCommon(nbtRoot);    
     readChannels(nbtRoot, sendChannels, "sendChannels");
     readChannels(nbtRoot, recieveChannels, "recieveChannels");
-
-    currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
-
   }
 
   static void readChannels(NBTTagCompound nbtRoot, EnumMap<ChannelType, List<Channel>> readInto, String key) {
@@ -240,15 +242,14 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   @Override
-  public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    super.writeCustomNBT(nbtRoot);
-
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
+    
     NBTTagList channelTags = createTagList(sendChannels);
     nbtRoot.setTag("sendChannels", channelTags);
 
     channelTags = createTagList(recieveChannels);
     nbtRoot.setTag("recieveChannels", channelTags);
-
   }
 
   static NBTTagList createTagList(EnumMap<ChannelType, List<Channel>> chans) {
