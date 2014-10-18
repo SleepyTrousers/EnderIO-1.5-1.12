@@ -19,14 +19,17 @@ Bugs
 - Fixed attractor not working with wither skellies.
 - Dark Steel pressure plate no longer needs to be placed in the painter first when painting with quite clear glass.
 - #1106 Using 2nd mode of conduit probe causes server disconnect
-- #1113 Dark Pick Travel does not work correctly.
 - #1107 Crash placing machine next to door
-- #1129 Server crash on placement of Painting Machine 
-- #1128 Server crashes with cauldron when teleporting 
 - #1112 (new) Dimentional transceiver doesn't save the selected channels on pickup
-- #1115 Glass Painted Dark Pressure Plate doesn't render in inventory or as item 
-- #1125 Improved client side performance when pressurized fluid conduits are transferring small volumes of fluid 
-- #1121 Killer Joe XP bar doesn't update if not active 
+- #1113 Dark Pick Travel does not work correctly.
+- #1115 Glass Painted Dark Pressure Plate doesn't render in inventory or as item
+- #1116 Soul Binder recipes not working with Special Mobs 
+- #1121 Killer Joe XP bar doesn't update if not active
+- #1125 Improved client side performance when pressurized fluid conduits are transferring small volumes of fluid
+- #1128 Server crashes with cauldron when teleporting
+- #1129 Server crash on placement of Painting Machine 
+ 
+ 
 
 
 

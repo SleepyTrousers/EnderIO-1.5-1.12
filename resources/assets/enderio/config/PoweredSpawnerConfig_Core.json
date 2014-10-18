@@ -12,6 +12,7 @@
     "Witch" : "5",                                      
     "Slime" : "5",           
     "Enderman" : "10",
+    "SpecialMobs.SpecialEnderman" : "10",
     
     "LavaSlime" : "2",
     "PigZombie" : "5",

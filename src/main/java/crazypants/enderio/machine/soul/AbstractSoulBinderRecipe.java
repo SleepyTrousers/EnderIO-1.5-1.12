@@ -19,15 +19,24 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   private int energyRequired;
   private String uid;
-  private Class<?> entityClass;
   private int xpRequired;
   
+  private List<String> supportedEntities = new  ArrayList<String>();
   
   protected AbstractSoulBinderRecipe(int energyRequired, int xpRequired, String uid, Class<?> entityClass) {  
     this.energyRequired = energyRequired;
     this.xpRequired = xpRequired;
-    this.uid = uid;
-    this.entityClass = entityClass;    
+    this.uid = uid;    
+    supportedEntities.add((String)EntityList.classToStringMapping.get(entityClass));    
+  }
+  
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpRequired, String uid, String... entityNames) {  
+    this.energyRequired = energyRequired;
+    this.xpRequired = xpRequired;
+    this.uid = uid;    
+    for(String name : entityNames) {
+      supportedEntities.add(name);
+    }       
   }
 
   @Override
@@ -87,8 +96,9 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     }
     int slot = input.slotNumber;
     ItemStack item = input.item;
-    if(slot == 0) {      
-      return  getSupportedSouls().contains(EnderIO.itemSoulVessel.getMobTypeFromStack(item));
+    if(slot == 0) {     
+      String type = EnderIO.itemSoulVessel.getMobTypeFromStack(item);
+      return  getSupportedSouls().contains(type);
     } 
     if(slot == 1) {
       return item.isItemEqual(getInputStack());
@@ -121,7 +131,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   @Override
   public List<String> getSupportedSouls() {    
-    return Collections.singletonList((String)EntityList.classToStringMapping.get(entityClass));
+    return supportedEntities;
   }
 
   @Override
