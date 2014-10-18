@@ -32,7 +32,7 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.solar.TileEntitySolarPanel;
+import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.Lang;
 
@@ -45,6 +45,8 @@ public class WailaCompat implements IWailaDataProvider {
     registrar.registerHeadProvider(INSTANCE, Block.class);
     registrar.registerBodyProvider(INSTANCE, Block.class);
     registrar.registerTailProvider(INSTANCE, Block.class);
+    
+    registrar.registerSyncedNBTKey("controllerStoredEnergyRF", TileCapacitorBank.class);
     
 //    registrar.registerHeadProvider(INSTANCE, IInternalPowerReceptor.class);
 //    registrar.registerSyncedNBTKey("*", IInternalPowerReceptor.class);
@@ -143,7 +145,7 @@ public class WailaCompat implements IWailaDataProvider {
       
       IInternalPowerReceptor power = (IInternalPowerReceptor) te;
       
-      int   stored      = accessor.getNBTData().getInteger("storedEnergyRF");
+      int   stored      = accessor.getTileEntity() instanceof TileCapacitorBank ? power.getEnergyStored() : accessor.getNBTData().getInteger("storedEnergyRF");
       int   max         = power.getMaxEnergyStored();
       
       currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, stored, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, max, EnumChatFormatting.RESET));
