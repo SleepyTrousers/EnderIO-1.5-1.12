@@ -47,16 +47,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   
   protected BlockSoulBinder() {
     super(ModObject.blockSoulBinder, TileSoulBinder.class);
-  }
-  
-  @Override
-  protected void init() {    
-    super.init();
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderReanimationRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderEnderCystalRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderAttractorCystalRecipe.instance);
-  }
+  }  
   
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

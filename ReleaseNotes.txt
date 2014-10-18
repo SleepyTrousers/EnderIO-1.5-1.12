@@ -12,7 +12,7 @@ Changes
 - Fix WAILA tooltip for dim.trans., was showing channel types even with no channels assigned to them (tterrag)
 - Dimensional Transceiver send/receive item buffers will only accept one stack per item type
 - #1127 Implemented IEnergyContainerItem on the Capacitor Bank item so it can be charged in item form (Tonius)  
-
+- Added ability to add Soul Binder recipes via IMC
 
 Bugs
 - Fix tormented enderman head (and future head variants) dropping damage 0 always (tterrag)

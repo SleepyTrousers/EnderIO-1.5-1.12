@@ -114,6 +114,7 @@ import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
+import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
@@ -610,6 +611,7 @@ public class EnderIO {
     VatRecipeManager.getInstance().loadRecipesFromConfig();
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();
+    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
 
     if(fluidXpJuice == null) { //should have been registered by open blocks 
       fluidXpJuice = FluidRegistry.getFluid("xpjuice");
@@ -650,6 +652,10 @@ public class EnderIO {
           CrusherRecipeManager.getInstance().addCustomRecipes(value);
         } else if(AlloyRecipeManager.IMC_KEY.equals(key)) {
           AlloyRecipeManager.getInstance().addCustumRecipes(value);
+        }
+      } else if(msg.isNBTMessage()) {
+        if(SoulBinderRecipeManager.IMC_KEY.equals(msg.key)) {
+          SoulBinderRecipeManager.getInstance().addRecipeFromNBT(msg.getNBTValue());
         }
       }
     }
