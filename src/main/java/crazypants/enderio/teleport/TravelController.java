@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -43,7 +42,6 @@ import crazypants.vecmath.Matrix4d;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector2d;
 import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector4d;
 
 public class TravelController {
 
@@ -510,6 +508,7 @@ public class TravelController {
     return block.getLightOpacity(w, x, y, z) < 2;
   }
 
+  @SideOnly(Side.CLIENT)
   private void updateSelectedTarget(EntityClientPlayerMP player) {
     selectedCoord = null;
     if(candidates.isEmpty()) {
@@ -607,6 +606,7 @@ public class TravelController {
     return scale;
   }
 
+  @SideOnly(Side.CLIENT)
   private int getMaxTravelDistanceSqForPlayer(EntityClientPlayerMP player) {
     if(isTravelItemActive(player)) {
       return TravelSource.STAFF.maxDistanceTravelledSq;
@@ -619,6 +619,7 @@ public class TravelController {
     PacketHandler.INSTANCE.sendToServer(p);
   }
 
+  @SideOnly(Side.CLIENT)
   private BlockCoord getActiveTravelBlock(EntityClientPlayerMP player) {
     World world = Minecraft.getMinecraft().theWorld;
     if(world != null && player != null) {
