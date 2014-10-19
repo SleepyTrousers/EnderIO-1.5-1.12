@@ -105,7 +105,7 @@ public class ItemYetaWrench extends Item implements IYetaWrench, IResourceToolti
   @Override
   public void toolUsed(ItemStack item, EntityLivingBase user, int x, int y, int z) {
     Block block = user.worldObj.getBlock(x, y, z);
-    if (block instanceof IDismantleable && user instanceof EntityPlayer) {
+    if (user.isSneaking() && block instanceof IDismantleable && user instanceof EntityPlayer) {
       EntityPlayer player = (EntityPlayer) user;
       IDismantleable machine = (IDismantleable) block;
       if (machine.canDismantle(player, player.worldObj, x, y, z) && !player.worldObj.isRemote) {
