@@ -217,6 +217,7 @@ public class ServerChannelRegister extends ChannelRegister {
       if(ItemUtil.areStackTypesEqual(existing, contents)) {
         recieverHasItem = true;
         int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
+        numCanMerge = Math.min(numCanMerge, contents.stackSize);
         ItemStack remaining;
         if(numCanMerge >= contents.stackSize) {
           remaining = null;
