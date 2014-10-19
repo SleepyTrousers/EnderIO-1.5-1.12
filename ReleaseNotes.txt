@@ -2,7 +2,11 @@
 Version 2.1.5
 ------------------------------------------------------
 
+Changes
 - Experience Obelisk now stores XP internally. Can still be extracted/inserted to/from liquidXP. 
+
+Bugs
+- #1132 Fixed item duplication bug using Dimensional Transceiver
 
 
 ------------------------------------------------------
