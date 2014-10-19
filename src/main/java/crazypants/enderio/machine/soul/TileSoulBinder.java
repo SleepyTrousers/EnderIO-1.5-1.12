@@ -27,6 +27,7 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
+import crazypants.util.FluidUtil;
 
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler {
 
@@ -177,8 +178,22 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   public int getProgressScaled(int scale) {
     int res = super.getProgressScaled(scale);
     if(currentTask != null) {
-      res = Math.max(1, res);
+      res = Math.max(1, res);                  
     }
+    return res;
+  }
+  
+  @Override
+  protected boolean doPull(ForgeDirection dir) {
+    boolean res = super.doPull(dir);
+    FluidUtil.doPull(this, dir, Config.fluidConduitExtractRate);
+    return res;
+  }
+  
+  @Override
+  protected boolean doPush(ForgeDirection dir) {
+    boolean res = super.doPush(dir);
+    FluidUtil.doPush(this, dir, Config.fluidConduitExtractRate);
     return res;
   }
 

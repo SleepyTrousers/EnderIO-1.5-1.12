@@ -23,25 +23,29 @@ public class PacketDrainPlayerXP extends MessageTileEntity<TileEntity> implement
   
   
   int targetLevel;
+  boolean isContainerLevel;
   
   public PacketDrainPlayerXP() {
   }
 
-  public PacketDrainPlayerXP(TileEntity tile, int targetLevel) {
+  public PacketDrainPlayerXP(TileEntity tile, int targetLevel, boolean isContainerLevel) {
     super(tile);
     this.targetLevel = targetLevel;
+    this.isContainerLevel = isContainerLevel;
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
     buf.writeShort((short)targetLevel);
+    buf.writeBoolean(isContainerLevel);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
     targetLevel = buf.readShort();
+    isContainerLevel = buf.readBoolean();
   }
 
   @Override
@@ -50,10 +54,14 @@ public class PacketDrainPlayerXP extends MessageTileEntity<TileEntity> implement
     TileEntity tile = message.getTileEntity(player.worldObj);
     if (tile instanceof IHaveExperience) {      
       IHaveExperience xpTile = (IHaveExperience)tile;       
-      if(player.capabilities.isCreativeMode) {
-        xpTile.getContainer().addExperience(XpUtil.getExperienceForLevel(message.targetLevel));
+      if(player.capabilities.isCreativeMode && message.isContainerLevel) {        
+          xpTile.getContainer().addExperience(XpUtil.getExperienceForLevel(message.targetLevel));        
       } else {
-        xpTile.getContainer().drainPlayerXpToReachLevel(player, message.targetLevel);
+        if(message.isContainerLevel) {
+          xpTile.getContainer().drainPlayerXpToReachContainerLevel(player, message.targetLevel);
+        } else {
+          xpTile.getContainer().drainPlayerXpToReachPlayerLevel(player, message.targetLevel);
+        }
       }
     }
     return null;

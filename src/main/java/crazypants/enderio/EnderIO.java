@@ -126,7 +126,7 @@ import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
-import crazypants.enderio.machine.xp.BlockExperianceObelisk;
+import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.ItemXpTransfer;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.BlockDarkIronBars;
@@ -230,7 +230,7 @@ public class EnderIO {
   public static BlockSoulBinder blockSoulFuser;
   public static BlockAttractor blockAttractor;
   public static BlockSpawnGuard blockSpawnGuard;
-  public static BlockExperianceObelisk blockExperianceOblisk;
+  public static BlockExperienceObelisk blockExperianceOblisk;
   public static BlockTransceiver blockTransceiver;
 
   public static BlockKillerJoe blockKillerJoe;
@@ -337,7 +337,7 @@ public class EnderIO {
     blockKillerJoe = BlockKillerJoe.create();
     blockAttractor = BlockAttractor.create();
     blockSpawnGuard = BlockSpawnGuard.create();
-    blockExperianceOblisk = BlockExperianceObelisk.create();
+    blockExperianceOblisk = BlockExperienceObelisk.create();
     blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();

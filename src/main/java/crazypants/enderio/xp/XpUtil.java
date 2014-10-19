@@ -20,21 +20,13 @@ public class XpUtil {
     return liquid / RATIO;
   }
 
-  public static int experianceToLiquid(int xp) {
+  public static int experienceToLiquid(int xp) {
     return xp * RATIO;
   }
 
   public static int getLiquidForLevel(int level) {
-    return experianceToLiquid(getExperienceForLevel(level));
+    return experienceToLiquid(getExperienceForLevel(level));
   }
-  
-//  public static int getTotalExperienceForLevel(int level) {
-//    int res = 0;
-//    for(int i=0;i<level;i++) {
-//      res += getExperienceForLevel(i+1);
-//    }
-//    return res;
-//  }
   
   public static int getExperienceForLevel(int level) {
     if (level == 0) { return 0; }

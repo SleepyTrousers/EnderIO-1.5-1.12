@@ -112,9 +112,9 @@ import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
-import crazypants.enderio.machine.xp.BlockExperianceObelisk;
+import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.ExperienceObliskRenderer;
-import crazypants.enderio.machine.xp.TileExperianceOblisk;
+import crazypants.enderio.machine.xp.TileExperienceOblisk;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
@@ -239,8 +239,8 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
     
     ExperienceObliskRenderer eor = new ExperienceObliskRenderer();
-    BlockExperianceObelisk.renderId = BlockAttractor.renderId;
-    ClientRegistry.bindTileEntitySpecialRenderer(TileExperianceOblisk.class, eor);
+    BlockExperienceObelisk.renderId = BlockAttractor.renderId;
+    ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
     if(Config.useCombustionGenModel) {

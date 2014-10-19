@@ -104,13 +104,23 @@ public class ExperienceContainer {
   }
   
     
-  public void drainPlayerXpToReachLevel(EntityPlayer player, int level) {    
+  public void drainPlayerXpToReachContainerLevel(EntityPlayer player, int level) {    
     int targetXP = XpUtil.getExperienceForLevel(level);
     int requiredXP = targetXP - experienceTotal;
     if(requiredXP <= 0) {
       return;
     }
     int drainXP = Math.min(requiredXP, XpUtil.getPlayerXP(player));
+    addExperience(drainXP);
+    XpUtil.addPlayerXP(player, -drainXP);    
+  }
+  
+  public void drainPlayerXpToReachPlayerLevel(EntityPlayer player, int level) {    
+    int targetXP = XpUtil.getExperienceForLevel(level);
+    int drainXP = XpUtil.getPlayerXP(player) - targetXP ;
+    if(drainXP <= 0) {
+      return;
+    }    
     addExperience(drainXP);
     XpUtil.addPlayerXP(player, -drainXP);    
   }
@@ -144,14 +154,23 @@ public class ExperienceContainer {
     if(resource == null) {
       return 0;
     }
+    if(resource.amount <= 0) {
+      return 0;
+    }
     if(!canFill(from, resource.getFluid())) {
       return 0;
     }
-    int canFill = Math.min(resource.amount, getMaxFluidAmount() - getFluidAmount());
-    if(doFill) {
-      addExperience(XpUtil.liquidToExperiance(canFill));
+    //need to do these calcs in XP instead of fluid space to avoid type overflows
+    int xp = XpUtil.liquidToExperiance(resource.amount);
+    int xpSpace = getMaximumExperiance() - getExperienceTotal();
+    int canFillXP = Math.min(xp, xpSpace);
+    if(canFillXP <= 0) {
+      return 0;
     }
-    return canFill;
+    if(doFill) {
+      addExperience(canFillXP);
+    }
+    return XpUtil.experienceToLiquid(canFillXP);
   }
   
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
@@ -164,12 +183,15 @@ public class ExperienceContainer {
     };
   }
 
-  private int getMaxFluidAmount() {
-    return XpUtil.experianceToLiquid(maxXp);
+  private int getMaxFluidAmount() {    
+    if(maxXp == Integer.MAX_VALUE) {
+      return Integer.MAX_VALUE;
+    }
+    return XpUtil.experienceToLiquid(maxXp);
   }
 
   private int getFluidAmount() {
-   return XpUtil.experianceToLiquid(experienceTotal);
+   return XpUtil.experienceToLiquid(experienceTotal);
   }
   
   public void readFromNBT(NBTTagCompound nbtRoot) {

@@ -90,7 +90,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1) + 1;
     int requiredXP = nextLevelXP - currentXP;
 
-    int fluidVolume = XpUtil.experianceToLiquid(requiredXP);
+    int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
     FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
     FluidStack res = fh.drain(dir, fs, true);
     if(res == null || res.amount <= 0) {
@@ -118,7 +118,7 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
       return false;
     }
 
-    int fluidVolume = XpUtil.experianceToLiquid(XpUtil.getPlayerXP(player));
+    int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
     FluidStack fs = new FluidStack(EnderIO.fluidXpJuice, fluidVolume);
     int takenVolume = fh.fill(dir, fs, true);
     if(takenVolume <= 0) {

@@ -329,6 +329,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     return false;
   }
 
+  @Override
   public boolean canConnectEnergy(ForgeDirection from) {
     return false;
   }
