@@ -84,7 +84,7 @@ public class BlockSoulBinder extends AbstractMachineBlock<TileSoulBinder> {
   
   @Override
   public int getLightOpacity() {
-    return 7;
+    return 0;
   }
   
   @Override

@@ -45,70 +45,76 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 
   @Override
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    
+
     if(soulariumIcon == null) {
-      soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);      
+      soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
     }
-    
+
     
     Tessellator.instance.addTranslation(x, y, z);
-    
+
+    //Horrible hack to get the MC lighting engine to set the correct values for me
+    if(renderer != null && world != null) {
+      renderer.setOverrideBlockTexture(IconUtil.blankTexture);
+      renderer.renderStandardBlock(Blocks.stone, x, y, z);
+      renderer.setOverrideBlockTexture(null);
+    }
     BoundingBox bb;
-    
-    bb = BoundingBox.UNIT_CUBE.scale(0.85, 0.85,0.85);
+
+    bb = BoundingBox.UNIT_CUBE.scale(0.85, 0.85, 0.85);
     setIcons(soulariumIcon, ForgeDirection.NORTH);
     CubeRenderer.render(bb, icons, true);
-    
+
     float slabWidth = 0.15f;
-    bb= BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
-    bb = bb.translate(0, 0.5f - (slabWidth/2), 0);
+    bb = BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
+    bb = bb.translate(0, 0.5f - (slabWidth / 2), 0);
     setIcons(EnderIO.blockSoulFuser.getIcon(ForgeDirection.UP.ordinal(), 0), ForgeDirection.UP);
     CubeRenderer.render(bb, icons, true);
-    
-    bb= BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
-    bb = bb.translate(0, -0.5f + (slabWidth/2), 0);
+
+    bb = BoundingBox.UNIT_CUBE.scale(1, slabWidth, 1);
+    bb = bb.translate(0, -0.5f + (slabWidth / 2), 0);
     setIcons(soulariumIcon, ForgeDirection.NORTH);
-    
+
     CubeRenderer.render(bb, icons, true);
-    
+
     IIcon endermanIcon;
     int facing = ForgeDirection.SOUTH.ordinal();;
     if(world == null || !(world.getTileEntity(x, y, z) instanceof TileSoulBinder)) {
       endermanIcon = EnderIO.blockSoulFuser.endermanSkullIcon;
     } else {
-      TileSoulBinder sb = (TileSoulBinder)world.getTileEntity(x, y, z);
+      TileSoulBinder sb = (TileSoulBinder) world.getTileEntity(x, y, z);
       facing = sb.facing;
-      endermanIcon = sb.isActive() ? EnderIO.blockSoulFuser.endermanSkullIconOn : EnderIO.blockSoulFuser.endermanSkullIcon; 
+      endermanIcon = sb.isActive() ? EnderIO.blockSoulFuser.endermanSkullIconOn : EnderIO.blockSoulFuser.endermanSkullIcon;
     }
-    
+
     renderSkull(forFacing(ForgeDirection.SOUTH, facing), endermanIcon);
     renderSkull(forFacing(ForgeDirection.WEST, facing), EnderIO.blockSoulFuser.skeletonSkullIcon);
-    renderSkull(forFacing(ForgeDirection.NORTH,facing), EnderIO.blockSoulFuser.zombieSkullIcon);    
-    renderSkull(forFacing(ForgeDirection.EAST, facing), EnderIO.blockSoulFuser.creeperSkullIcon);    
-    
+    renderSkull(forFacing(ForgeDirection.NORTH, facing), EnderIO.blockSoulFuser.zombieSkullIcon);
+    renderSkull(forFacing(ForgeDirection.EAST, facing), EnderIO.blockSoulFuser.creeperSkullIcon);
+
     Tessellator.instance.addTranslation(-x, -y, -z);
-    
+
     return true;
   }
 
   
-  private ForgeDirection forFacing(ForgeDirection side, int facing) {    
+  private ForgeDirection forFacing(ForgeDirection side, int facing) {
     return ForgeDirection.values()[ClientProxy.sideAndFacingToSpriteOffset[side.ordinal()][facing]];
   }
 
   private void renderSkull(ForgeDirection face, IIcon faceIcon) {
     BoundingBox bb;
-    bb = scaledBB.translate(ForgeDirectionOffsets.offsetScaled(face, 0.5 - skullScale/2));        
+    bb = scaledBB.translate(ForgeDirectionOffsets.offsetScaled(face, 0.5 - skullScale / 2));
     setIcons(faceIcon, face);
     CubeRenderer.render(bb, icons, true);
   }
-  
+
   private void setIcons(IIcon faceIcon, ForgeDirection faceSide) {
     setIcons(soulariumIcon, faceIcon, faceSide);
   }
-  
-  private void setIcons(IIcon defaultIcon, IIcon faceIcon, ForgeDirection faceSide) {    
-    for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+
+  private void setIcons(IIcon defaultIcon, IIcon faceIcon, ForgeDirection faceSide) {
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       icons[dir.ordinal()] = dir == faceSide ? faceIcon : defaultIcon;
     }
   }
@@ -121,6 +127,6 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
   @Override
   public int getRenderId() {
     return BlockSoulBinder.renderId;
-  }    
+  }
 
 }
