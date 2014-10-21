@@ -146,7 +146,9 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   public int usePower(int wantToUse) {
     int used = Math.min(getEnergyStored(), wantToUse);
     setEnergyStored( Math.max(0, getEnergyStored() - used));
-    currentTask.update(used);
+    if(currentTask != null) {
+      currentTask.update(used);
+    }
     return used;
   }
 
