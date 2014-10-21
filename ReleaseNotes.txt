@@ -3,7 +3,11 @@ Version 2.1.6
 ------------------------------------------------------
 
 Bugs
-- #1142 Dimension Tranciever crash, NullPointerException 
+- Using travel upgrade on tools not draining power
+- #1128 Ender IO crashes when using travel staff in SMP
+- #1142 Dimension Transceiver crash, NullPointerException 
+- #1143 Soul binder has incorrect lighting in come situations
+
 
 ------------------------------------------------------
 Version 2.1.5

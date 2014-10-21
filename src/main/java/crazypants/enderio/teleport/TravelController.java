@@ -350,13 +350,6 @@ public class TravelController {
     return false;
   }
 
-  public void usePowerFromTravelItem(ItemStack equipped, int powerUse) {
-    if(equipped == null || !(equipped.getItem() instanceof IItemOfTravel)) {
-      return;
-    }
-    ((IItemOfTravel) equipped.getItem()).extractInternal(equipped, powerUse);
-  }
-
   public boolean travelToSelectedTarget(EntityPlayer player, TravelSource source,boolean conserveMomentum) {
     return travelToLocation(player, source, selectedCoord, conserveMomentum);
   }
@@ -403,7 +396,7 @@ public class TravelController {
   }
 
   public int getRequiredPower(EntityPlayer player, TravelSource source, BlockCoord coord) {
-    if(!ItemTravelStaff.isEquipped(player)) {
+    if(!isTravelItemActive(player)) {
       return 0;
     }
     int requiredPower;

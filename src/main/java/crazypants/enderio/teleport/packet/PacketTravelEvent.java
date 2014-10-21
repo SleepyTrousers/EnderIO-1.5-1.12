@@ -8,6 +8,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.IItemOfTravel;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
@@ -69,9 +70,9 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
       ctx.getServerHandler().sendPacket(p);
     }
 
-    if(message.powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() == EnderIO.itemTravelStaff) {
+    if(message.powerUse > 0 && ep.getCurrentEquippedItem() != null && ep.getCurrentEquippedItem().getItem() instanceof IItemOfTravel) {
       ItemStack item = ep.getCurrentEquippedItem().copy();
-      EnderIO.itemTravelStaff.extractInternal(item, message.powerUse);
+      ((IItemOfTravel)item.getItem()).extractInternal(item, message.powerUse);
       ep.setCurrentItemOrArmor(0, item);
     }
 
