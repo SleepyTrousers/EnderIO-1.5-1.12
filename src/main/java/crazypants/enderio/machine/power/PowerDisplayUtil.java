@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.power;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
 import net.minecraft.item.ItemStack;
@@ -9,9 +11,24 @@ import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
 
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
-
+  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();  
   private static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
+  
+  //Handle french local 'non breaking space' character used to separate thousands.
+  //This is not rendered correctly and cannot be parsed by minecraft so replace it with a regular space
+  private static final boolean REPLACE_NBSP;
+  private static final char NBSP = (char)160;
+  static {
+    boolean res = false;
+    if(INT_NF instanceof DecimalFormat) {
+      DecimalFormatSymbols syms = ((DecimalFormat)INT_NF).getDecimalFormatSymbols();
+      if(syms.getGroupingSeparator() == NBSP) {
+        res = true;
+      }
+      
+    }
+    REPLACE_NBSP = res;
+  }
 
   public static String perTickStr() {
     return Lang.localize("power.tick");
@@ -49,7 +66,12 @@ public class PowerDisplayUtil {
 
   
   public static String formatPower(int powerRF) {
-    return INT_NF.format(powerRF);
+    String str = INT_NF.format(powerRF);
+    if(REPLACE_NBSP) {
+      str = str.replace(NBSP, ' ');
+    }
+
+    return str;
   }
   
   public static String formatPowerFloat(float averageRfTickSent) {
@@ -61,6 +83,9 @@ public class PowerDisplayUtil {
       return null;
     }
     try {
+      if(REPLACE_NBSP) {
+        power = power.replace(' ', NBSP);
+      }
       Number d = INT_NF.parse(power);
       if(d == null) {
         return null;

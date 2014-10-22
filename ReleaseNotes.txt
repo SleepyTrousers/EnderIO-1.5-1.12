@@ -8,6 +8,7 @@ Bugs
 - #1139 Attractor not working with existing entities.
 - #1142 Dimension Transceiver crash, NullPointerException 
 - #1143 Soul binder has incorrect lighting in come situations
+- #1023 Displayed power not rendering the non-breaking space separator correctly (French locale)
 
 ------------------------------------------------------
 Version 2.1.5
