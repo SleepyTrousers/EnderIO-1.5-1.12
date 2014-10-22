@@ -147,7 +147,7 @@ import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.util.EntityUtil;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
