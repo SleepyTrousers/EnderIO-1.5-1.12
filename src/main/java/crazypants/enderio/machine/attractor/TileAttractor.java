@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.attractor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -221,27 +224,50 @@ public class TileAttractor extends AbstractMachineEntity {
     } else if(useSpecialCase(ent)) {
       return applySpecialCase(ent);
     } else {
-      tracking.add(ent);
-      List<EntityAITaskEntry> entries = ent.tasks.taskEntries;
-      boolean hasTask = false;
-      EntityAIBase remove = null;
-      boolean isTracked;
-      for (EntityAITaskEntry entry : entries) {
-        if(entry.action instanceof AttractTask) {
-          AttractTask at = (AttractTask) entry.action;
-          if(at.coord.equals(new BlockCoord(this)) || !at.continueExecuting()) {
-            remove = entry.action;
-          } else {
-            return false;
-          }
+      return attractyUsingAITask(ent);
+    }
+  }
+
+  private boolean attractyUsingAITask(EntityLiving ent) {
+    tracking.add(ent);
+    List<EntityAITaskEntry> entries = ent.tasks.taskEntries;
+    boolean hasTask = false;
+    EntityAIBase remove = null;
+    boolean isTracked;
+    for (EntityAITaskEntry entry : entries) {
+      if(entry.action instanceof AttractTask) {
+        AttractTask at = (AttractTask) entry.action;
+        if(at.coord.equals(new BlockCoord(this)) || !at.continueExecuting()) {
+          remove = entry.action;
+        } else {
+          return false;
         }
       }
-      if(remove != null) {
-        ent.tasks.removeTask(remove);
-      }
-      ent.tasks.addTask(0, new AttractTask(ent, getTarget(), new BlockCoord(this)));
-      return true;
     }
+    if(remove != null) {
+      ent.tasks.removeTask(remove);
+    }
+    cancelCurrentTasks(ent);
+    ent.tasks.addTask(0, new AttractTask(ent, getTarget(), new BlockCoord(this)));
+    
+    return true;
+  }
+
+  private void cancelCurrentTasks(EntityLiving ent) {
+    Iterator iterator = ent.tasks.taskEntries.iterator();
+
+    List<EntityAITasks.EntityAITaskEntry> currentTasks = new ArrayList<EntityAITasks.EntityAITaskEntry>();
+    while (iterator.hasNext()) {
+        EntityAITaskEntry entityaitaskentry = (EntityAITasks.EntityAITaskEntry)iterator.next();
+        if(entityaitaskentry != null) {
+          currentTasks.add(entityaitaskentry);
+        } 
+    }    
+    //Only available way to stop current execution is to remove all current tasks, then re-add them 
+    for(EntityAITaskEntry task : currentTasks) {
+      ent.tasks.removeTask(task.action);
+      ent.tasks.addTask(task.priority, task.action);  
+    }    
   }
 
   private boolean applySpecialCase(EntityLiving ent) {
@@ -289,7 +315,7 @@ public class TileAttractor extends AbstractMachineEntity {
       }
     } else if(ent instanceof EntityPigZombie || ent instanceof EntitySpider) {  
       forceMove(ent);
-    }
+    } 
   }
 
   private void forceMove(EntityLiving ent) {
