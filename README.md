@@ -1,7 +1,7 @@
 EnderIO
 =======
 
-All code (excluding the BuildCraft API, which is covered by the BuildCraft license) is licensed under the WTFPL (Do What the Fuck You Want to Public License http://www.wtfpl.net/).
+All code (excluding the buindled APIs from other mods, which are covered by their respecitive licenses) are released without restriction into the public domain under the CC0 1.0 liscence (http://creativecommons.org/publicdomain/zero/1.0/legalcode) FAQ (https://wiki.creativecommons.org/CC0_FAQ).
 Do what you want with it, as long as you smile while doing so. While it is not a requirement, it would be nice to know if it is being used and how, so send me hello to **crazypants.mc at gmail.com**.
 
 
