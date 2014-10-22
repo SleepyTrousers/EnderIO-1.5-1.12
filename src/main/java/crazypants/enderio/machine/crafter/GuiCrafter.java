@@ -1,10 +1,14 @@
 package crazypants.enderio.machine.crafter;
 
+import java.util.List;
+
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.render.RenderUtil;
 
 public class GuiCrafter extends GuiMachineBase  {
@@ -34,6 +38,12 @@ public class GuiCrafter extends GuiMachineBase  {
   @Override
   protected int getPowerX() {    
     return 9;
+  }  
+  
+  protected void updatePowerBarTooltip(List<String> text) {
+    text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation()
+        + " Per Craft");
+    super.updatePowerBarTooltip(text);
   }
 
   @Override

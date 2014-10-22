@@ -38,10 +38,12 @@ public class TileCrafter extends AbstractMachineEntity {
   }
 
   @Override
-  public void setCapacitor(Capacitors capacitorType) {
+  public void setCapacitor(Capacitors capacitorType) {    
     ICapacitor refCap = capacitorType.capacitor;    
-    capacitor = new BasicCapacitor(refCap.getMaxEnergyReceived() * 2, refCap.getMaxEnergyStored(), refCap.getMaxEnergyExtracted());
-    super.setCapacitor(capacitorType);       
+    int maxUse = getPowerUsePerTick(capacitorType);
+    int io = Math.max(maxUse, refCap.getMaxEnergyExtracted());
+    capacitor = new BasicCapacitor(io * 4, refCap.getMaxEnergyStored(), io);
+    super.setCapacitor(capacitorType);             
   }
 
   @Override
@@ -69,16 +71,13 @@ public class TileCrafter extends AbstractMachineEntity {
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasPower()) {
+    if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
       return false;
     }
-    if(capacitorType == Capacitors.BASIC_CAPACITOR && worldObj.getTotalWorldTime() % 20 != 0) {
+    int ticksPerCraft = getTicksPerCraft(capacitorType);
+    if(worldObj.getTotalWorldTime() % ticksPerCraft != 0) {
       return false;
-    } else if(capacitorType == Capacitors.ACTIVATED_CAPACITOR && worldObj.getTotalWorldTime() % 10 != 0) {
-      return false;
-    } else if(worldObj.getTotalWorldTime() % 2 != 0) {
-      return false;
-    }
+    } 
 
     // process buffered container items
     if(!containerItems.isEmpty()) {
@@ -104,6 +103,29 @@ public class TileCrafter extends AbstractMachineEntity {
       setEnergyStored(getEnergyStored() - used);
     }
     return false;
+  }
+
+  private boolean hasRequiredPower() {
+    return getEnergyStored() >= Config.crafterRfPerCraft;
+  }
+
+  public int getPowerUsePerTick() {
+    return getPowerUsePerTick(capacitorType);
+  }
+  
+  public int getPowerUsePerTick(Capacitors type) {
+    int ticks = getTicksPerCraft(type);    
+    return (int)Math.ceil(Config.crafterRfPerCraft / (double)ticks);
+  }
+
+  public int getTicksPerCraft(Capacitors type) {
+    if(type == Capacitors.BASIC_CAPACITOR) {
+      return 20;
+    } else if(type == Capacitors.ACTIVATED_CAPACITOR) {
+      return 10;
+    } else {
+      return 2;
+    }    
   }
 
   private void craftRecipe() {

@@ -9,7 +9,8 @@ Bugs
 - #1142 Dimension Transceiver crash, NullPointerException 
 - #1143 Soul binder has incorrect lighting in come situations
 - #1023 Displayed power not rendering the non-breaking space separator correctly (French locale)
-- #1144 Wireless charger not keeping its charge when the game / chunk is unloaded 
+- #1136 Crafter energy cost on GUI tool tip wrong.
+- #1144 Wireless charger not keeping its charge when the game / chunk is unloaded  
 
 ------------------------------------------------------
 Version 2.1.5
