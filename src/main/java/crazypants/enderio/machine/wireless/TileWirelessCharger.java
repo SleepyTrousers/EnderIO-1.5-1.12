@@ -83,7 +83,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  protected void writeCustomNBT(NBTTagCompound root) {
+  protected void writeCustomNBT(NBTTagCompound root) {    
     root.setInteger("storedEnergyRF", storedEnergyRF);
   }
 
@@ -93,7 +93,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
       double storedMJ = root.getDouble("storedEnergy");
       storedEnergyRF = (int)(storedMJ * 10);
     } else {
-      storedEnergyRF = root.getInteger("storedEnergy");
+      storedEnergyRF = root.getInteger("storedEnergyRF");
     }
   }
 
@@ -118,7 +118,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   }
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {        
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
