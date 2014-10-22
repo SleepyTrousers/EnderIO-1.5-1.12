@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.generator.stirling;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -67,7 +68,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-    return false;
+    return itemstack.getItem() == Items.bucket; // is there a more general way to do this? I've never found one
   }
 
   @Override
