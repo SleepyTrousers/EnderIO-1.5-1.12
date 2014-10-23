@@ -162,6 +162,9 @@ public class ChannelTab implements ITabPanel {
     case ITEM:
       return IconEIO.WRENCH_OVERLAY_ITEM;
     case POWER:
+      return IconEIO.WRENCH_OVERLAY_POWER;   
+    case RAIL:
+      return IconEIO.ENDER_RAIL;
     default:
       return IconEIO.WRENCH_OVERLAY_POWER;
     }
@@ -205,7 +208,7 @@ public class ChannelTab implements ITabPanel {
     }
   }
 
-  private void receiveTogglePressed() {
+  protected void receiveTogglePressed() {
     Channel c = channelList.getSelectedElement();
     if(c != null && !transceiver.getRecieveChannels(type).contains(c)) {
       transceiver.addRecieveChanel(c);
@@ -219,7 +222,7 @@ public class ChannelTab implements ITabPanel {
     }
   }
 
-  private void sendTogglePressed() {
+  protected void sendTogglePressed() {
     Channel c = channelList.getSelectedElement();
     if(c != null && !transceiver.getSendChannels(type).contains(c)) {
       transceiver.addSendChanel(c);

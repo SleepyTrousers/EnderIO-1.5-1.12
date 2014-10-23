@@ -117,7 +117,7 @@ public class ServerChannelRegister extends ChannelRegister {
     iterators.remove(channel);
   }
 
-  private RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
+  public RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
     RoundRobinIterator<TileTransceiver> res = iterators.get(channel);
     if(res == null) {
       res = new RoundRobinIterator<TileTransceiver>(transceivers);
@@ -141,7 +141,7 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
     }
-  }
+  }  
 
   //Fluid
 
