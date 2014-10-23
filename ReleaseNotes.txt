@@ -2,6 +2,9 @@
 Version 2.1.6
 ------------------------------------------------------
 
+Changes
+- #1147 Increased Dimensional Transceiver energy buffer from 100k to 500k
+
 Bugs
 - Using travel upgrade on tools not draining power
 - #1128 Ender IO crashes when using travel staff in SMP
@@ -11,7 +14,7 @@ Bugs
 - #1023 Displayed power not rendering the non-breaking space separator correctly (French locale)
 - #1136 Crafter energy cost on GUI tool tip wrong.
 - #1144 Wireless charger not keeping its charge when the game / chunk is unloaded
-- #1058 Can't exract buckets from stirling gen (tterrag)
+- #1058 Can't extract buckets from stirling gen (tterrag)
 
 ------------------------------------------------------
 Version 2.1.5
