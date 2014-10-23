@@ -44,7 +44,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private final EnumMap<ChannelType, List<Channel>> sendChannels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
   private final EnumMap<ChannelType, List<Channel>> recieveChannels = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
 
-  private ICapacitor capacitor = new BasicCapacitor(Config.transceiverMaxIoRF * 2, 100000, Config.transceiverMaxIoRF);
+  private ICapacitor capacitor = new BasicCapacitor(Config.transceiverMaxIoRF * 2, 500000, Config.transceiverMaxIoRF);
   private boolean sendChannelsDirty = false;
   private boolean recieveChannelsDirty = false;
   private boolean registered = false;
