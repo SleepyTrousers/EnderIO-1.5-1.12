@@ -60,6 +60,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       recieveChannels.put(type, new ArrayList<Channel>());
     }
     currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
+    
+  }
+  
+  public boolean isRedstoneChecksPassed() {
+    return redstoneCheckPassed;
   }
 
   @Override

@@ -49,7 +49,10 @@ public class GuiTransceiver extends GuiMachineBase {
     tabs.add(generalTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
-    tabs.add(new ChannelTab(this, ChannelType.FLUID));
+    tabs.add(new ChannelTab(this, ChannelType.FLUID));  
+    if(Config.enderRailEnabled) {
+      tabs.add(new ChannelTab(this, ChannelType.RAIL));
+    }
   }
 
   protected void updatePowerBarTooltip(List<String> text) {

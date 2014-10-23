@@ -36,6 +36,11 @@ public final class BlockCoord {
     dz = z - other.z;
     return (dx * dx + dy * dy + dz * dz);
   }
+  
+  public int distance(BlockCoord other) {
+    double dsq = distanceSquared(other);    
+    return (int)Math.ceil(Math.sqrt(dsq)); 
+  }
 
   @Override
   public int hashCode() {

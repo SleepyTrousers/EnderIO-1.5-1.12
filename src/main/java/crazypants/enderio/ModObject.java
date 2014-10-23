@@ -93,7 +93,9 @@ public enum ModObject {
   itemGliderWing,
   blockEndermanSkull, 
   itemSoulVessel, 
-  itemFrankenSkull;
+  itemFrankenSkull, 
+  
+  blockEnderRail;
 
   public final String unlocalisedName;
 

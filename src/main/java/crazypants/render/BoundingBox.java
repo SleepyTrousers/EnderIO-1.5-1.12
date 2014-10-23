@@ -22,6 +22,10 @@ public final class BoundingBox {
   public final float maxY;
   public final float maxZ;
 
+  public BoundingBox(AxisAlignedBB bb) {
+    this(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
+  }
+  
   public BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
     this.minX = minX;
     this.minY = minY;

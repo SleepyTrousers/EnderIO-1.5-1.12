@@ -61,6 +61,7 @@ public final class Config {
   public static final Section sectionAttarctor = new Section("Mob Attractor Settings", "attractor");
   public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
   public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
+  public static final Section sectionRailConfig = new Section("Rail", "railconfig");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -366,9 +367,11 @@ public final class Config {
   
   public static boolean dumpMobNames = false;
 
-  
+  public static boolean enderRailEnabled = true;
+  public static int enderRailPowerRequireCrossDimensions = 10000;
+  public static int enderRailPowerRequiredBase = 100;
+  public static int enderRailPowerRequiredPerBlock = 10;
 
-  
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -971,6 +974,14 @@ public final class Config {
         "Sets the durtaion in ticks of the confusion effect applied on explosion").getInt(enderCreeperConfusionDuration);
     enderCreeperExplosionRange = config.get(sectionMobConfig.name, "enderCreeperExplosionRange", enderCreeperExplosionRange, 
         "The range of the 'teleport explosion'").getInt(enderCreeperExplosionRange);
+    
+    enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Wether Ender Rails are enabled");
+    enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions, 
+        "The amount of power required to transpoer a cart accross dimensions").getInt(enderRailPowerRequireCrossDimensions);
+    enderRailPowerRequiredBase = config.get(sectionRailConfig.name, "enderRailPowerRequiredBase", enderRailPowerRequiredBase, 
+        "The minimum amout of power required to teleport a cart in the same dimension").getInt(enderRailPowerRequiredBase);
+    enderRailPowerRequiredPerBlock = config.get(sectionRailConfig.name, "enderRailPowerRequiredPerBlock", enderRailPowerRequiredPerBlock, 
+        "The amout of power required to teleport a cart per block in the same dimension").getInt(enderRailPowerRequiredPerBlock);
     
     
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 

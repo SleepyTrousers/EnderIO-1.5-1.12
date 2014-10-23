@@ -109,6 +109,8 @@ public final class IconEIO {
   public static final IconEIO SINGLE_MINUS = new IconEIO(206, 116);
   public static final IconEIO DOUBLE_MINUS = new IconEIO(190, 116);
   public static final IconEIO TRIPLE_MINUS = new IconEIO(174, 116);
+  
+  public static final IconEIO ENDER_RAIL = new IconEIO(235,175);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;

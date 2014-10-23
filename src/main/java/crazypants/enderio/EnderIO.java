@@ -142,6 +142,7 @@ import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.network.MessageTileNBT;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
@@ -244,6 +245,8 @@ public class EnderIO {
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
+  
+  public static BlockEnderRail blockEnderRail;
 
   //Fluids
   public static Fluid fluidNutrientDistillation;
@@ -286,6 +289,8 @@ public class EnderIO {
   public static ItemGliderWing itemGliderWing;
 
   public static ItemSpawnEgg itemSpawnEgg;
+  
+   
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
@@ -349,6 +354,8 @@ public class EnderIO {
     blockFusedQuartz = BlockFusedQuartz.create();
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
+    blockEnderRail = BlockEnderRail.create();
+    
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
