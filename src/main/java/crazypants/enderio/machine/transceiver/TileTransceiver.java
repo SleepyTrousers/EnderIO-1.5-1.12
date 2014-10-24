@@ -32,6 +32,7 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.rail.EnderRailController;
 import crazypants.util.FluidUtil;
 import crazypants.util.ItemUtil;
 import crazypants.vecmath.VecmathUtil;
@@ -52,6 +53,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private Map<ForgeDirection, IFluidHandler> neighbourFluidHandlers = null;
 
   private PowerDistributor powerDistributor;
+  
+  private final EnderRailController railController;
 
   public TileTransceiver() {
     super(new SlotDefinition(8, 8, 0));
@@ -60,9 +63,13 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       recieveChannels.put(type, new ArrayList<Channel>());
     }
     currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
-    
-  }
+    railController = new EnderRailController(this);
+  }  
   
+  public EnderRailController getRailController() {
+    return railController;
+  }
+
   public boolean isRedstoneChecksPassed() {
     return redstoneCheckPassed;
   }
@@ -91,6 +98,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     super.updateEntity();
 
     if(worldObj != null && !worldObj.isRemote) {
+      railController.doTick();
       if(sendChannelsDirty) {
         PacketHandler.sendToAllAround(new PacketSendRecieveChannelList(this, true), this, 256);
         sendChannelsDirty = false;
@@ -216,7 +224,14 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
+    railController.readFromNBT(nbtRoot);
     currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
+  }
+
+  @Override
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
+    railController.writeToNBT(nbtRoot);
   }
   
   @Override

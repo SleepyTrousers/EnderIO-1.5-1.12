@@ -1,4 +1,14 @@
 ------------------------------------------------------
+Version 2.1.7
+------------------------------------------------------
+
+Changes
+- Added EnderRail
+
+Bugs
+- Fixed Transceivers losing items when single player worlds reloaded without restarting MC
+
+------------------------------------------------------
 Version 2.1.6
 ------------------------------------------------------
 

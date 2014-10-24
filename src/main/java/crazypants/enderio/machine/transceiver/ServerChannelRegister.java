@@ -106,6 +106,13 @@ public class ServerChannelRegister extends ChannelRegister {
   public void dergister(TileTransceiver transceiver) {
     transceivers.remove(transceiver);
   }
+  
+  @Override
+  public void reset() {    
+    super.reset();
+    transceivers.clear();
+    iterators.clear();
+  }
 
   @Override
   public void removeChannel(Channel channel) {

@@ -85,19 +85,8 @@ public class BlockEnderRail extends BlockRail {
 
   private void init() {
     GameRegistry.registerBlock(this, ModObject.blockEnderRail.unlocalisedName);
-    GameRegistry.registerTileEntity(TileEnderRail.class, ModObject.blockEnderRail.unlocalisedName + "TileEntity");
   }
-
-  @Override
-  public boolean hasTileEntity(int metadata) {
-    return true;
-  }
-
-  @Override
-  public TileEntity createTileEntity(World world, int metadata) {
-    return new TileEnderRail();
-  }
-
+  
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register) {
@@ -170,15 +159,14 @@ public class BlockEnderRail extends BlockRail {
     if(world.isRemote) {
       return;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileEnderRail)) {
+    TileEntity te = world.getTileEntity(x, y - 1, z);
+    if(!(te instanceof TileTransceiver)) {
       return;
     }
-    TileEnderRail ter = (TileEnderRail) te;
-    if(ter.isRecievedCart(cart)) {
+    TileTransceiver ter = (TileTransceiver) te;
+    if(ter.getRailController().isRecievedCart(cart)) {
       return;
     }
-
     tryTeleport(world, cart, x, y, z);
   }
 
@@ -225,12 +213,11 @@ public class BlockEnderRail extends BlockRail {
     if(!reciever.hasPower()) {
       return false;
     }
-    TileEntity te = reciever.getWorldObj().getTileEntity(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
-    if(!(te instanceof TileEnderRail)) {
+    Block blk = reciever.getWorldObj().getBlock(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
+    if(blk != EnderIO.blockEnderRail) {
       return false;
-    }
-    TileEnderRail railTE = (TileEnderRail) te;
-    return railTE.isClear();
+    }    
+    return reciever.getRailController().isClear();
   }
 
   private int getPowerRequired(EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
@@ -251,11 +238,6 @@ public class BlockEnderRail extends BlockRail {
   }
 
   private boolean teleportCart(World world, EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
-
-    TileEnderRail destRail = getRailTile(reciever);
-    if(destRail == null) {
-      return false;
-    }
 
     List<EntityMinecart> allCarts = TeleportUtil.getCartsInTrain(cart);
     if(allCarts.size() > 1) {
@@ -278,20 +260,9 @@ public class BlockEnderRail extends BlockRail {
       TeleportUtil.despawn(sender.getWorldObj(), despawnCart);
     }
 
-    destRail.onTrainRecieved(toTeleport);
+    reciever.getRailController().onTrainRecieved(toTeleport);
     return true;
 
-  }
-
-  private TileEnderRail getRailTile(TileTransceiver reciever) {
-    if(reciever == null || reciever.getWorldObj() == null) {
-      return null;
-    }
-    TileEntity te = reciever.getWorldObj().getTileEntity(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
-    if(!(te instanceof TileEnderRail)) {
-      return null;
-    }
-    return (TileEnderRail) te;
   }
 
   public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
