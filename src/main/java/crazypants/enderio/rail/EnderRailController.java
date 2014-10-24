@@ -1,16 +1,19 @@
 package crazypants.enderio.rail;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,14 +25,14 @@ import crazypants.vecmath.Vector3d;
 public class EnderRailController {
 
   //keep track of which carts we have received have left the track as they can't be teleported again until they have
-  private final Set<EntityMinecart> newlySpawnedCarts = new HashSet<EntityMinecart>();
+  private final Set<UUID> newlySpawnedCarts = new HashSet<UUID>();
 
   private final LinkedList<List<Entity>> cartsToSpawn = new LinkedList<List<Entity>>();
 
   private int ticksFailedToSpawn = 0;
 
   private NBTTagList cartList;
-  
+
   private final TileTransceiver transciever;
 
   public EnderRailController(TileTransceiver tileTransceiver) {
@@ -46,15 +49,27 @@ public class EnderRailController {
     spawnRecievedCart();
 
     List<EntityMinecart> carts = getMinecartsAt(transciever.getWorldObj(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
-    List<EntityMinecart> toRemove = new ArrayList<EntityMinecart>();
-    for (EntityMinecart recievedCart : newlySpawnedCarts) {
-      if(!carts.contains(recievedCart)) {
-        toRemove.add(recievedCart);
+    List<UUID> toRemove = new ArrayList<UUID>();
+    
+    //any cart in the newly spawned list no longer on the track needs to be removed    
+    for (UUID recievedCartUID : newlySpawnedCarts) {
+      EntityMinecart minecart = getMinecartWthUUID(recievedCartUID, carts);
+      if(minecart == null) {        
+        toRemove.add(recievedCartUID);
       }
     }
-    for (EntityMinecart recievedCart : toRemove) {
+    for (UUID recievedCart : toRemove) {
       newlySpawnedCarts.remove(recievedCart);
     }
+  }
+
+  private EntityMinecart getMinecartWthUUID(UUID recievedCartUID, Collection<EntityMinecart> carts) {
+    for (EntityMinecart cart : carts) {
+      if(recievedCartUID.equals(cart.getPersistentID())) {
+        return cart;
+      }
+    }
+    return null;
   }
 
   private void spawnRecievedCart() {
@@ -74,7 +89,7 @@ public class EnderRailController {
       TeleportUtil.spawn(transciever.getWorldObj(), ent);
       if(ent instanceof EntityMinecart) {
         EntityMinecart cart = (EntityMinecart) ent;
-        newlySpawnedCarts.add(cart);
+        newlySpawnedCarts.add(cart.getPersistentID());
         TeleportUtil.recreateLinks(cart);
       }
     }
@@ -86,8 +101,8 @@ public class EnderRailController {
     cartsToSpawn.addAll(toTeleport);
   }
 
-  public boolean isRecievedCart(EntityMinecart mc) {
-    return newlySpawnedCarts.contains(mc);
+  public boolean isRecievedCart(EntityMinecart mc) {    
+    return newlySpawnedCarts.contains(mc.getPersistentID());
   }
 
   public boolean isClear() {
@@ -95,7 +110,7 @@ public class EnderRailController {
 
     BlockCoord railCoord = new BlockCoord(transciever).getLocation(ForgeDirection.UP);
     int meta = worldObj.getBlockMetadata(railCoord.x, railCoord.y, railCoord.z);
-    
+
     double buf = 1;
     ForgeDirection dir = BlockEnderRail.getDirection(meta);
     Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
@@ -119,15 +134,7 @@ public class EnderRailController {
     return carts;
   }
 
-  public void readFromNBT(NBTTagCompound root) {
-    cartsToSpawn.clear();
-    if(!root.hasKey("cartList")) {
-      return;
-    }
-    cartList = (NBTTagList) root.getTag("cartList");
-  }
-
-  private void loadCartsToSpawn() {    
+  private void loadCartsToSpawn() {
     World worldObj = transciever.getWorldObj();
     while (cartList.tagCount() > 0) {
       NBTTagList entityList = (NBTTagList) cartList.removeTag(0);
@@ -137,10 +144,27 @@ public class EnderRailController {
         Entity entity = EntityList.createEntityFromNBT(entityRoot, worldObj);
         if(entity != null) {
           ents.add(entity);
-        } 
+        }
       }
       cartsToSpawn.add(ents);
     }
+  }
+
+  public void readFromNBT(NBTTagCompound root) {
+    cartsToSpawn.clear();
+    if(!root.hasKey("cartList")) {
+      return;
+    }
+    cartList = (NBTTagList) root.getTag("cartList");
+
+    newlySpawnedCarts.clear();
+    if(root.hasKey("newlySpawnedCarts")) {
+      NBTTagList spawnedCartList = (NBTTagList) root.getTag("newlySpawnedCarts");
+      for (int i = 0; i < spawnedCartList.tagCount(); i++) {
+        String uuisStr = spawnedCartList.getStringTagAt(i);
+        newlySpawnedCarts.add(UUID.fromString(uuisStr));
+      }
+    }    
   }
 
   public void writeToNBT(NBTTagCompound root) {
@@ -162,6 +186,14 @@ public class EnderRailController {
       }
     }
     root.setTag("cartList", cartList);
+
+    if(!newlySpawnedCarts.isEmpty()) {
+      NBTTagList spawnedCartList = new NBTTagList();
+      for (UUID uuid : newlySpawnedCarts) {
+        spawnedCartList.appendTag(new NBTTagString(uuid.toString()));
+      }
+      root.setTag("newlySpawnedCarts", spawnedCartList);
+    }
   }
 
 }

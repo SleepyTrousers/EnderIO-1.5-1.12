@@ -73,7 +73,7 @@ public class TeleportUtil {
     WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
 
     Entity passenger = cart.riddenByEntity;
-    if(passenger != null) {
+    if(passenger != null && !(passenger instanceof EntityPlayer)) {
       worldserver.removeEntity(passenger);
       passenger.isDead = true;
     }
