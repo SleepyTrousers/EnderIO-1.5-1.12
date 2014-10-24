@@ -1,5 +1,6 @@
 package crazypants.enderio.rail;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
@@ -200,10 +202,10 @@ public class BlockEnderRail extends BlockRail {
         if(isValidDestination(sender, channel, reciever)) {
           int requiredPower = getPowerRequired(cart, sender, reciever);
           if(sender.getEnergyStored() >= requiredPower) {
-            sender.usePower(requiredPower);
-            teleportCart(world, cart, sender, reciever);
-            
-            return;
+            if(teleportCart(world, cart, sender, reciever)) {
+              sender.usePower(requiredPower);
+              return;
+            }
           }
         }
       }
@@ -233,15 +235,8 @@ public class BlockEnderRail extends BlockRail {
 
   private int getPowerRequired(EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
     int powerPerCart = getPowerRequiredForSingleCart(sender, reciever);
-    //    ILinkageManager linkMan = CartTools.getLinkageManager(sender.getWorldObj());
-    //    if(linkMan == null) {
-    return powerPerCart;
-    //    }
-    //    int numInLink = linkMan.countCartsInTrain(cart);
-    //    if(numInLink <= 1) {
-    //      return powerPerCart;
-    //    }
-    //    return numInLink * powerPerCart;           
+    int numCarts = TeleportUtil.getNumberOfCartsInTrain(cart);
+    return powerPerCart * numCarts;
   }
 
   private int getPowerRequiredForSingleCart(TileTransceiver sender, TileTransceiver reciever) {
@@ -255,174 +250,52 @@ public class BlockEnderRail extends BlockRail {
     return powerRequired;
   }
 
-  private void teleportCart(World world, EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
-    updateCartLinks(world, cart);
-    teleportSingleCart(world, cart, sender, reciever);
-  }
+  private boolean teleportCart(World world, EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
 
-  private void teleportSingleCart(World world, EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
-
-    int toDimension = reciever.getWorldObj().provider.dimensionId;
-    int toX = reciever.xCoord;
-    int toY = reciever.yCoord + 1;
-    int toZ = reciever.zCoord;
-
-    
-    TileEntity te = sender.getWorldObj().getTileEntity(sender.xCoord, sender.yCoord +1 , sender.zCoord);
-    if(!(te instanceof TileEnderRail)) {
-      return;
-    }
-    TileEnderRail senderRail = (TileEnderRail) te;
-    
-    te = reciever.getWorldObj().getTileEntity(toX, toY, toZ);
-    if(!(te instanceof TileEnderRail)) {
-      return;
-    }
-    TileEnderRail destinationRail = (TileEnderRail) te;
-    
-    
-
-    MinecraftServer minecraftserver = MinecraftServer.getServer();
-    int j = cart.dimension;
-    WorldServer worldserver = minecraftserver.worldServerForDimension(j);
-    WorldServer worldserver1 = minecraftserver.worldServerForDimension(toDimension);
-    cart.dimension = toDimension;
-
-    if(j == 1 && toDimension == 1) {
-      worldserver1 = minecraftserver.worldServerForDimension(0);
-      cart.dimension = 0;
+    TileEnderRail destRail = getRailTile(reciever);
+    if(destRail == null) {
+      return false;
     }
 
-    Entity passenger = cart.riddenByEntity;
-    if(passenger != null) {
-      worldserver.removeEntity(passenger);
-      passenger.isDead = true;
+    List<EntityMinecart> allCarts = TeleportUtil.getCartsInTrain(cart);
+    if(allCarts.size() > 1) {
+      TeleportUtil.updateCartLinks(world, cart);
     }
 
-    ItemStack[] stacks = null;
-    if(cart instanceof IInventory) {
-      IInventory cont = (IInventory) cart;
-      stacks = new ItemStack[cont.getSizeInventory()];
-      for (int i = 0; i < stacks.length; i++) {
-        stacks[i] = cont.getStackInSlot(i);
-        cont.setInventorySlotContents(i, null);
-      }
-    }
-
-    worldserver.removeEntity(cart);
-    cart.isDead = false;
-
-    EntityMinecart newCart = (EntityMinecart) EntityList.createEntityByName(EntityList.getEntityString(cart), worldserver1);
-    if(newCart != null) {
-
-      NBTTagCompound nbttagcompound = new NBTTagCompound();
-      cart.writeToNBT(nbttagcompound);
-      newCart.readFromNBT(nbttagcompound);
-
-      newCart.setLocationAndAngles(toX + 0.5, toY, toZ + 0.5, cart.rotationYaw, cart.rotationPitch);
-
-      if(stacks != null && newCart instanceof IInventory) {
-        IInventory cont = (IInventory) newCart;
-        for (int i = 0; i < stacks.length; i++) {
-          cont.setInventorySlotContents(i, stacks[i]);
+    List<List<Entity>> toTeleport = new ArrayList<List<Entity>>(allCarts.size());
+    List<EntityMinecart> toDespawn = new ArrayList<EntityMinecart>(allCarts.size());
+    for (EntityMinecart cartInTrain : allCarts) {
+      if(cartInTrain != null) {
+        List<Entity> entities = TeleportUtil.createEntitiesForReciever(cartInTrain, sender, reciever);
+        if(entities != null) {
+          toTeleport.add(entities);
+          toDespawn.add(cartInTrain);
         }
       }
-
-      if(passenger != null) {
-        Entity newPas = EntityList.createEntityByName(EntityList.getEntityString(passenger), worldserver1);
-        newPas.copyDataFrom(passenger, true);
-        newPas.setLocationAndAngles(toX + 0.5, toY, toZ + 0.5, cart.rotationYaw, cart.rotationPitch);
-        newCart.riddenByEntity = newPas;
-        newPas.ridingEntity = newCart;
-        worldserver1.spawnEntityInWorld(newPas);
-      }
-      
-      worldserver1.spawnEntityInWorld(newCart);
-      
-      destinationRail.onCartRecieved((EntityMinecart) newCart);
-      senderRail.onCartSent(cart);
-      
-
     }
-    cart.isDead = true;
+
+    for (EntityMinecart despawnCart : toDespawn) {
+      TeleportUtil.despawn(sender.getWorldObj(), despawnCart);
+    }
+
+    destRail.onTrainRecieved(toTeleport);
+    return true;
+
+  }
+
+  private TileEnderRail getRailTile(TileTransceiver reciever) {
+    if(reciever == null || reciever.getWorldObj() == null) {
+      return null;
+    }
+    TileEntity te = reciever.getWorldObj().getTileEntity(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
+    if(!(te instanceof TileEnderRail)) {
+      return null;
+    }
+    return (TileEnderRail) te;
   }
 
   public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
     return false;
-  }
-
-  //------------ Link Utils
-
-  public static void recreateLink(EntityMinecart existingCart, EntityMinecart newCart) {
-    if(existingCart == null || newCart == null) {
-      return;
-    }
-    ILinkageManager linkMan = CartTools.getLinkageManager(existingCart.worldObj);
-    if(linkMan == null) {
-      return;
-    }
-    UUID linkA = getLinkA(newCart);
-    if(linkA != null && linkA.equals(existingCart.getPersistentID())) {
-      if(!linkMan.areLinked(existingCart, newCart)) {
-        boolean res = linkMan.createLink(existingCart, newCart);
-        System.out.println("BlockEnderRail.recreateLink: A " + res);
-      }
-      return;
-    }
-    UUID linkB = getLinkB(newCart);
-    if(linkB != null && linkB.equals(existingCart.getPersistentID())) {
-      if(!linkMan.areLinked(existingCart, newCart)) {
-        boolean res = linkMan.createLink(existingCart, newCart);
-        System.out.println("BlockEnderRail.recreateLink: B " + res);
-      }
-      return;
-    }
-  }
-
-  public static void updateCartLinks(World world, EntityMinecart cart) {
-    ILinkageManager linkMan = CartTools.getLinkageManager(cart.worldObj);
-    if(linkMan == null || linkMan.countCartsInTrain(cart) <= 1) {
-      return;
-    }
-    Iterable<EntityMinecart> allCarts = linkMan.getCartsInTrain(cart);
-    for (EntityMinecart aCart : allCarts) {
-      if(aCart != null) {
-        updateLink("a", aCart, linkMan.getLinkedCartA(aCart));
-        updateLink("b", aCart, linkMan.getLinkedCartB(aCart));
-      }
-    }
-  }
-
-  private static void updateLink(String prefix, EntityMinecart cart, EntityMinecart linkedCart) {
-    NBTTagCompound data = cart.getEntityData();
-    long lastUpdateTime = -1;
-    String timeKey = prefix + "UpdateTime";
-    if(data.hasKey(timeKey)) {
-      lastUpdateTime = data.getLong(timeKey);
-    }
-    long curTime = cart.worldObj.getTotalWorldTime();
-    if(lastUpdateTime > 0 && curTime - lastUpdateTime < 100) {
-      return;
-    }
-    data.setLong(timeKey, curTime);
-    data.setString(prefix + "Link", linkedCart == null ? "null" : linkedCart.getPersistentID().toString());
-  }
-
-  public static UUID getLinkA(EntityMinecart cart) {
-    return getLink("a", cart);
-  }
-
-  public static UUID getLinkB(EntityMinecart cart) {
-    return getLink("b", cart);
-  }
-
-  private static UUID getLink(String prefix, EntityMinecart cart) {
-    NBTTagCompound data = cart.getEntityData();
-    String uuidStr = data.getString(prefix + "Link");
-    if(uuidStr == null || uuidStr.trim().isEmpty() || "null".equals(uuidStr)) {
-      return null;
-    }
-    return UUID.fromString(uuidStr);
   }
 
 }

@@ -2,11 +2,14 @@ package crazypants.enderio.rail;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import crazypants.util.ForgeDirectionOffsets;
 import crazypants.util.MetadataUtil;
+import crazypants.vecmath.Vector3d;
 
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.carts.ILinkageManager;
@@ -20,21 +23,53 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEnderRail extends TileEntity {
 
-  private Set<EntityMinecart> recievedCarts = new HashSet<EntityMinecart>();
-  private EntityMinecart lastCartRecieved;
+  //keep track of which carts we have received have left the track as they can't be teleported again until they have
+  private final Set<EntityMinecart> newlySpawnedCarts = new HashSet<EntityMinecart>();  
+  
+  private final LinkedList<List<Entity>> entitiesToSpawn = new LinkedList<List<Entity>>();
+  
+  private int ticksFailedToSpawn = 0;
   
   @Override
   public void updateEntity() {
+    
+    spawnRecievedCart();
+    
     List<EntityMinecart> carts = getMinecartsAt(getWorldObj(), xCoord, yCoord, zCoord);
     List<EntityMinecart> toRemove = new ArrayList<EntityMinecart>();
-    for (EntityMinecart recievedCart : recievedCarts) {
+    for (EntityMinecart recievedCart : newlySpawnedCarts) {
       if(!carts.contains(recievedCart)) {
         toRemove.add(recievedCart);
       }
     }
     for (EntityMinecart recievedCart : toRemove) {
-      recievedCarts.remove(recievedCart);
+      newlySpawnedCarts.remove(recievedCart);
     }
+  }
+
+  private void spawnRecievedCart() {    
+    if(entitiesToSpawn.isEmpty()) {
+      ticksFailedToSpawn = 0;
+      return;
+    }
+    if(!isClear()) {
+      ticksFailedToSpawn++;
+      if(ticksFailedToSpawn < 60) {
+        return;
+      }
+    } 
+    
+    List<Entity> spawnThisTick = entitiesToSpawn.removeFirst();        
+    for(Entity ent : spawnThisTick) {
+      TeleportUtil.spawn(getWorldObj(), ent);
+      if(ent instanceof EntityMinecart) {
+        EntityMinecart cart = (EntityMinecart)ent;
+        newlySpawnedCarts.add(cart);
+        TeleportUtil.recreateLinks(cart);
+      }      
+    }          
+    ticksFailedToSpawn = 0;
+    
   }
 
   public boolean isReverse() {
@@ -45,22 +80,22 @@ public class TileEnderRail extends TileEntity {
     return BlockEnderRail.getDirection(getBlockMetadata());
   }
 
-  public void onCartRecieved(EntityMinecart cart) {    
-    recievedCarts.add(cart);       
-    BlockEnderRail.recreateLink(lastCartRecieved, cart);    
-    lastCartRecieved = cart;
+  public void onTrainRecieved(List<List<Entity>> toTeleport) {     
+    entitiesToSpawn.addAll(toTeleport);
   }
   
-  public void onCartSent(EntityMinecart cart) {
-    recievedCarts.remove(cart);
-  }
-
   public boolean isRecievedCart(EntityMinecart mc) {
-    return recievedCarts.contains(mc);
+    return newlySpawnedCarts.contains(mc);
   }
 
   public boolean isClear() {
-    List res = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord + 1, zCoord, xCoord + 1, yCoord + 2, zCoord + 1));
+    double buf = 1;
+    ForgeDirection dir = BlockEnderRail.getDirection(getBlockMetadata());
+    Vector3d offset = ForgeDirectionOffsets.forDirCopy(dir);
+    offset.scale(buf);
+    offset.x = Math.abs(offset.x);
+    offset.z = Math.abs(offset.z);
+    List res = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - offset.x, yCoord, zCoord - offset.z, xCoord + 1 + offset.x, yCoord + 1, zCoord + 1 + offset.z));
     return res == null || res.isEmpty();
   }
 
