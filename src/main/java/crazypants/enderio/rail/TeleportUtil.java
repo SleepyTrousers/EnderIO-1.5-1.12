@@ -82,16 +82,33 @@ public class TeleportUtil {
 
   }
 
-  public static void spawn(World world, Entity entity ) {
-    MinecraftServer minecraftserver = MinecraftServer.getServer();
-    WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
+  public static void spawn(World world, Entity entity ) {    
     if(entity != null) {      
+      MinecraftServer minecraftserver = MinecraftServer.getServer();
+      WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
       worldserver.spawnEntityInWorld(entity);
     } 
   }
 
   //------------ Link Utils
 
+  public static void breakLinks(World world, Entity cart) {
+    if(cart instanceof EntityMinecart) {
+      breakLinks(world, (EntityMinecart)cart);
+    }
+  }
+  
+  public static void breakLinks(World world, EntityMinecart cart) {
+    if(world == null || cart == null) {
+      return;
+    }
+    ILinkageManager linkMan = CartTools.getLinkageManager(world);
+    if(linkMan == null) {
+      return;
+    }
+    linkMan.breakLinks(cart);
+  }
+  
   public static void recreateLink(EntityMinecart existingCart, EntityMinecart newCart) {
     if(existingCart == null || newCart == null) {
       return;
@@ -99,7 +116,7 @@ public class TeleportUtil {
     ILinkageManager linkMan = CartTools.getLinkageManager(existingCart.worldObj);
     if(linkMan == null) {
       return;
-    }
+    }    
     UUID linkA = getLinkA(newCart);
     if(linkA != null && linkA.equals(existingCart.getPersistentID())) {
       if(!linkMan.areLinked(existingCart, newCart)) {

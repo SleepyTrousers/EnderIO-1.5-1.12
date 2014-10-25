@@ -368,9 +368,10 @@ public final class Config {
   public static boolean dumpMobNames = false;
 
   public static boolean enderRailEnabled = true;
-  public static int enderRailPowerRequireCrossDimensions = 10000;
-  public static int enderRailPowerRequiredBase = 100;
+  public static int enderRailPowerRequireCrossDimensions = 10000; 
   public static int enderRailPowerRequiredPerBlock = 10;
+  public static boolean enderRailCapSameDimensionPowerAtCrossDimensionCost = true;
+  public static int enderRailTicksBeforeForceSpawningLinkedCarts = 60;
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -978,10 +979,12 @@ public final class Config {
     enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Wether Ender Rails are enabled");
     enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions, 
         "The amount of power required to transpoer a cart accross dimensions").getInt(enderRailPowerRequireCrossDimensions);
-    enderRailPowerRequiredBase = config.get(sectionRailConfig.name, "enderRailPowerRequiredBase", enderRailPowerRequiredBase, 
-        "The minimum amout of power required to teleport a cart in the same dimension").getInt(enderRailPowerRequiredBase);
     enderRailPowerRequiredPerBlock = config.get(sectionRailConfig.name, "enderRailPowerRequiredPerBlock", enderRailPowerRequiredPerBlock, 
         "The amout of power required to teleport a cart per block in the same dimension").getInt(enderRailPowerRequiredPerBlock);
+    enderRailCapSameDimensionPowerAtCrossDimensionCost = config.getBoolean("enderRailCapSameDimensionPowerAtCrossDimensionCost", sectionRailConfig.name, enderRailCapSameDimensionPowerAtCrossDimensionCost, 
+        "When set to true the RF cost of sending a cart within the same dimension will be capped to the cross dimension cost");
+    enderRailTicksBeforeForceSpawningLinkedCarts = config.get(sectionRailConfig.name, "enderRailTicksBeforeForceSpawningLinkedCarts", enderRailTicksBeforeForceSpawningLinkedCarts, 
+        "The number of ticks to wait for the track to clear before force spawning the next cart in a (RailCraft) linked set").getInt(enderRailTicksBeforeForceSpawningLinkedCarts);
     
     
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 

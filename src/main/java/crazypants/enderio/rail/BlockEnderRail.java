@@ -11,6 +11,7 @@ import net.minecraft.block.BlockRail;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -33,6 +34,7 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.transceiver.Channel;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
@@ -118,6 +120,18 @@ public class BlockEnderRail extends BlockRail {
     //      return true;
     //    }
     return false;
+  }
+  
+  @Override
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+    if(!world.isRemote) {      
+      TileEntity te = world.getTileEntity(x, y - 1, z);
+      System.out.println("BlockEnderRail.removedByPlayer: " + te);
+      if(te instanceof TileTransceiver) {
+        ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
+      }
+    }
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
 
   public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int x, int y, int z) {
@@ -227,12 +241,14 @@ public class BlockEnderRail extends BlockRail {
   }
 
   private int getPowerRequiredForSingleCart(TileTransceiver sender, TileTransceiver reciever) {
-    int powerRequired;
+    int powerRequired = 0;
     if(sender.getWorldObj().provider.dimensionId != reciever.getWorldObj().provider.dimensionId) {
       powerRequired = Config.enderRailPowerRequireCrossDimensions;
-    } else {
-      powerRequired = Config.enderRailPowerRequiredBase;
+    } else {      
       powerRequired += sender.getLocation().distance(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
+      if(Config.enderRailCapSameDimensionPowerAtCrossDimensionCost) {
+        powerRequired = Math.min(powerRequired, Config.enderRailPowerRequireCrossDimensions);
+      }
     }
     return powerRequired;
   }
