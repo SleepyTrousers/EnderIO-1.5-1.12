@@ -235,11 +235,7 @@ public class MachineRecipes {
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
     GameRegistry.addRecipe(inst);
-    
-    //Ender Rail
-    if(Config.enderRailEnabled) {
-      
-    }
+        
   }
 
   public static void addOreDictionaryRecipes() {

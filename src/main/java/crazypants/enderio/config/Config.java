@@ -303,6 +303,8 @@ public final class Config {
   public static int soulBinderEnderCystalLevels = 10;
   public static int soulBinderAttractorCystalRF = 100000;
   public static int soulBinderAttractorCystalLevels = 10;
+  public static int soulBinderEnderRailRF = 100000;
+  public static int soulBinderEnderRailLevels = 10;
   
 
   public static boolean powerConduitCanDifferentTiersConnect = false;
@@ -881,6 +883,8 @@ public final class Config {
         "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
     soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
         "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
+    soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
+        "The number of RF required to create an ender rail.").getInt(soulBinderEnderRailRF);
     
     soulBinderAttractorCystalLevels = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalLevels", soulBinderAttractorCystalLevels,
         "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
@@ -890,6 +894,9 @@ public final class Config {
         "The number of levels required to re-animate a mob head.").getInt(soulBinderReanimationLevels);
     soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
+    soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
+        "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);    
+    
 
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);

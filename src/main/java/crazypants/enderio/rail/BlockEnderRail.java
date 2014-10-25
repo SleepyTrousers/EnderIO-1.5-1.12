@@ -34,15 +34,18 @@ import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.transceiver.Channel;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.util.MetadataUtil;
 import crazypants.util.RoundRobinIterator;
 
-public class BlockEnderRail extends BlockRail {
+public class BlockEnderRail extends BlockRail implements IResourceTooltipProvider {
 
   public static boolean isReverse(int meta) {
     return MetadataUtil.isBitSet(3, meta);
@@ -66,6 +69,7 @@ public class BlockEnderRail extends BlockRail {
   }
 
   public static BlockEnderRail create() {
+    PacketHandler.INSTANCE.registerMessage(PacketTeleportEffects.class, PacketTeleportEffects.class, PacketHandler.nextID(), Side.CLIENT);
     BlockEnderRail res = new BlockEnderRail();
     res.init();
     return res;
@@ -88,7 +92,7 @@ public class BlockEnderRail extends BlockRail {
   private void init() {
     GameRegistry.registerBlock(this, ModObject.blockEnderRail.unlocalisedName);
   }
-  
+
   @Override
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister register) {
@@ -121,14 +125,14 @@ public class BlockEnderRail extends BlockRail {
     //    }
     return false;
   }
-  
+
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-    if(!world.isRemote) {      
+    if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y - 1, z);
       System.out.println("BlockEnderRail.removedByPlayer: " + te);
       if(te instanceof TileTransceiver) {
-        ((TileTransceiver)te).getRailController().dropNonSpawnedCarts();
+        ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
       }
     }
     return super.removedByPlayer(world, player, x, y, z, willHarvest);
@@ -230,7 +234,7 @@ public class BlockEnderRail extends BlockRail {
     Block blk = reciever.getWorldObj().getBlock(reciever.xCoord, reciever.yCoord + 1, reciever.zCoord);
     if(blk != EnderIO.blockEnderRail) {
       return false;
-    }    
+    }
     return reciever.getRailController().isClear();
   }
 
@@ -244,7 +248,7 @@ public class BlockEnderRail extends BlockRail {
     int powerRequired = 0;
     if(sender.getWorldObj().provider.dimensionId != reciever.getWorldObj().provider.dimensionId) {
       powerRequired = Config.enderRailPowerRequireCrossDimensions;
-    } else {      
+    } else {
       powerRequired += sender.getLocation().distance(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
       if(Config.enderRailCapSameDimensionPowerAtCrossDimensionCost) {
         powerRequired = Math.min(powerRequired, Config.enderRailPowerRequireCrossDimensions);
@@ -273,6 +277,7 @@ public class BlockEnderRail extends BlockRail {
     }
 
     for (EntityMinecart despawnCart : toDespawn) {
+      TeleportUtil.spawnTeleportEffects(world, despawnCart);
       TeleportUtil.despawn(sender.getWorldObj(), despawnCart);
     }
 
@@ -283,6 +288,11 @@ public class BlockEnderRail extends BlockRail {
 
   public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
     return false;
+  }
+
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    return getUnlocalizedName();
   }
 
 }

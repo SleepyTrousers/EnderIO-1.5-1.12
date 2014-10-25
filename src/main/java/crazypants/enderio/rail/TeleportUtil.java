@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.carts.ILinkageManager;
@@ -19,7 +22,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.vecmath.Vector3d;
 
 public class TeleportUtil {
@@ -88,6 +94,13 @@ public class TeleportUtil {
       WorldServer worldserver = minecraftserver.worldServerForDimension(world.provider.dimensionId);
       worldserver.spawnEntityInWorld(entity);
     } 
+  }
+  
+  public static void spawnTeleportEffects(World world, Entity entity) {    
+    PacketHandler.INSTANCE.sendToAllAround(new PacketTeleportEffects(entity),new TargetPoint(world.provider.dimensionId, entity.posX, entity.posY, entity.posZ, 64));
+    if(Config.machineSoundsEnabled) {
+      world.playSoundEffect(entity.posX, entity.posY, entity.posZ, "mob.endermen.portal", 0.5F, 0.25F);
+    }    
   }
 
   //------------ Link Utils

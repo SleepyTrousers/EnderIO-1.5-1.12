@@ -263,6 +263,12 @@ tile.blockTransceiver.tooltip.detailed.line1=Transports items, fluids and power
 tile.blockTransceiver.tooltip.detailed.line2=wirelessly across any distance and
 tile.blockTransceiver.tooltip.detailed.line3=between dimensions
 
+tile.blockEnderRail.name=Ender Rail
+tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed 
+tile.blockEnderRail.tooltip.detailed.line2=on a Dimensional Transceiver
+tile.blockEnderRail.tooltip.detailed.line3=Set destinations using the 
+tile.blockEnderRail.tooltip.detailed.line4=Transceiver's rail tab
+
 enderio.trans.showChannels=<Shift to show channels>
 
 enderio.trans.power=Power
