@@ -139,6 +139,27 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
       </output>
     </recipe>
     
+    <recipe name="Fused Quartz 2 Slots" energyCost="10000">
+      <input>        
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+      </input>            
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0" exp="0.5" number="2"/> 
+      </output>
+    </recipe>
+    
+    <recipe name="Fused Quartz 3 Slots" energyCost="15000">
+      <input>        
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+        <itemStack modID="minecraft" itemName="quartz" number="4"/>
+      </input>            
+      <output>
+        <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0" exp="0.5" number="3"/> 
+      </output>
+    </recipe>
+    
     <recipe name="Fused Glass" energyCost="2500">
       <input>
         <itemStack oreDictionary="sand" />

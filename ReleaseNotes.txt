@@ -7,6 +7,7 @@ Changes
 
 Bugs
 - Fixed Transceivers losing items when single player worlds reloaded without restarting MC
+- More than one stack of quartz can now be placed in alloy smelter when making fused quartz
 
 ------------------------------------------------------
 Version 2.1.6
