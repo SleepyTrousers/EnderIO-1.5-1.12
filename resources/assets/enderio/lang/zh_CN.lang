@@ -13,7 +13,6 @@ tile.blockEnderIo.tooltip.detailed.line3=使用旅行锚或
 tile.blockEnderIo.tooltip.detailed.line4=旅行权杖
 
 item.enderio.itemEnderface.name=末影面板
-tile.blockConduitBundle.name=导管接口
 
 //Conduits
 enderio.blockConduitBundle=导管接口
@@ -213,6 +212,7 @@ tile.blockSolarPanel.tooltip.detailed.line1=白天产生能量
 tile.blockSolarPanel.tooltip.detailed.line2=顶部必须
 tile.blockSolarPanel.tooltip.detailed.line3=直面天空
 enderio.maxSolorProduction=最大输出
+enderio.tooltip.efficiency=效率
 
 item.itemElectricLight.name=电灯
 item.itemElectricLight.tooltip.detailed.line1=当提供能量与红石信
@@ -378,6 +378,7 @@ tile.blockExperienceObelisk.tooltip.detailed.line1=放在流体箱上
 tile.blockExperienceObelisk.tooltip.detailed.line2=右击使用储存的液态XP
 tile.blockExperienceObelisk.tooltip.detailed.line3=用空手Shift右击
 tile.blockExperienceObelisk.tooltip.detailed.line4=从自身抽取XP
+tile.blockExperienceObelisk.tooltip.detailed.line5=左击抽取玩家1级的XP
 
 enderio.machine.tooltip.configured=(已配置)
 
@@ -424,6 +425,7 @@ tile.blockPaintedStair.name=粉刷楼梯
 tile.blockPaintedSlab.name=粉刷台阶
 tile.blockPaintedDoubleSlab.name=粉刷台阶
 tile.blockPaintedGlowstone.name=粉刷萤石
+tile.blockPaintedCarpet.name=粉刷地毯
 enderio.painter.tooltip.wasPainted=§o你认为这是干嘛用的?
 
 tile.blockPainter.tooltip.detailed.line1=用于粉刷:
@@ -708,6 +710,7 @@ enderio.gui.conduit.ioMode.input=提取
 enderio.gui.conduit.ioMode.output=加入
 enderio.gui.conduit.ioMode.disabled=关闭
 enderio.gui.conduit.ioMode.notSet=默认
+tile.blockConduitBundle.name=导管接口
 
 enderio.gui.conduit.item.insertionFilter=加入物品过滤
 enderio.gui.conduit.item.extractionFilter=提取物品过滤
@@ -786,3 +789,4 @@ enderio.config.spawner.tooltip=我已经想不出什么有趣的提示文本了.
 
 //Mobs
 entity.EnderIO.Enderminy.name=Enderminy
+entity.EnderIO.EnderCreeper.name=末影爬行者
