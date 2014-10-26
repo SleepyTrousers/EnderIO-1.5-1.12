@@ -26,7 +26,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   public static BlockFluidEio create(Fluid fluid, Material material) {
     BlockFluidEio res = new BlockFluidEio(fluid, material);
     res.init();
-    fluid.setBlock(res);
+    fluid.setBlock(res);    
     return res;
   }
 
@@ -35,6 +35,7 @@ public class BlockFluidEio extends BlockFluidClassic {
   protected BlockFluidEio(Fluid fluid, Material material) {
     super(fluid, material);
     this.fluid = fluid;
+    setBlockName(fluid.getUnlocalizedName());
   }
 
   protected void init() {

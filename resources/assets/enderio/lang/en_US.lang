@@ -97,15 +97,20 @@ enderio.tooltip.isBeaconBase=Can be used as beacon base
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
+tile.fluid.nutrient_distillation.name=Nutrient Distillation
 item.bucketNutrient_distillation.name=Nutrient Distillation Bucket
 
 fluid.hootch=Hootch
+tile.fluid.hootch.name=Hootch
 item.bucketHootch.name=Hootch Bucket
 fluid.fire_water=Fire Water
+tile.fluid.fire_water.name=Fire Water
 item.bucketFire_water.name=Fire Water Bucket
 fluid.rocket_fuel=Rocket Fuel
+tile.fluid.rocket_fuel.name=Rocket Fuel
 item.bucketRocket_fuel.name=Rocket Fuel Bucket
 fluid.eio.xpjuice=Liquid XP
+tile.fluid.eio.xpjuice.name=Liquid XP
 item.bucketXpjuice.name=XP Bucket
 
 

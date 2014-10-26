@@ -3,7 +3,7 @@
 Please refer to the documentation in SAGMillRecipes_Core/_User for details on the format used.
 Recipes for the alloy smelter have multiple inputs (up to three) and a single output. Multiple output tags
 can be used as long as they are for the same item. This allows 'chance' outputs, for example, if you wanted to 
-output some 4 bronze ingots with a 50% chance of a fith, you would use:
+output some 4 bronze ingots with a 50% chance of a fifth, you would use:
 
 <recipe name="Smelted Bronze" energyCost="750">
    <input>
