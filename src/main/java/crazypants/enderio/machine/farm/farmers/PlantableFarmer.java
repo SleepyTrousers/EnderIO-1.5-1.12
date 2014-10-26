@@ -121,7 +121,7 @@ public class PlantableFarmer implements IFarmerJoe {
   protected boolean canPlant(World worldObj, BlockCoord bc, IPlantable plantable) {
     Block target = plantable.getPlant(null, 0, 0, 0);
     Block ground = worldObj.getBlock(bc.x, bc.y - 1, bc.z);
-    if(target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) &&
+    if(target != null && target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) &&
         target.canBlockStay(worldObj, bc.x, bc.y, bc.z) &&
         ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable)) {
       return true;
