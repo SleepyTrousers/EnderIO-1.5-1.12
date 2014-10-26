@@ -171,7 +171,7 @@ public class NetworkedInventory {
   }
 
   private boolean doTransfer(ItemStack extractedItem, int slot, int maxExtract) {
-    if(extractedItem == null) {
+    if(extractedItem == null || extractedItem.getItem() == null) {
       return false;
     }
     ItemStack toExtract = extractedItem.copy();

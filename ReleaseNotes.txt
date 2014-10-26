@@ -10,7 +10,8 @@ Changes
 Bugs
 - Fixed Transceivers losing items when single player worlds reloaded without restarting MC
 - More than one stack of quartz can now be placed in alloy smelter when making fused quartz
-- #1150 Crash when Farming Station Error trying to plant Pam's Mob Seeds (nb, they dont work, but it wont crash) 
+- #1150 Crash when Farming Station Error trying to plant Pam's Mob Seeds (nb, they don't work, but it wont crash)
+- #1153 Item conduits crash with invalid item stacks (one without an item assigned)  
 
 ------------------------------------------------------
 Version 2.1.6
