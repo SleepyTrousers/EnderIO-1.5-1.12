@@ -41,6 +41,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -243,6 +244,7 @@ public class EnderIO {
 
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
+  public static BlockDarkSteelAnvil blockDarkSteelAnvil;
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
   
@@ -346,6 +348,7 @@ public class EnderIO {
     blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
+    blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
 

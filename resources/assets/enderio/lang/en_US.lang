@@ -406,6 +406,12 @@ tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Can be painted in
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=invisible when painted with Quite
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=Clear Glass
 
+tile.blockDarkSteelAnvil.intact.name=Dark Steel Anvil
+tile.blockDarkSteelAnvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
+tile.blockDarkSteelAnvil.veryDamaged.name=Very Damaged Dark Steel Anvil
+tile.blockDarkSteelAnvil.tooltip.common.line1=Damage Resistant
+tile.blockDarkSteelAnvil.tooltip.detailed.line1=Lasts much longer than
+tile.blockDarkSteelAnvil.tooltip.detailed.line2=the vanilla anvil
 
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor

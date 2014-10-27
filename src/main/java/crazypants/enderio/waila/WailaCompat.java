@@ -21,6 +21,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
@@ -41,15 +42,17 @@ public class WailaCompat implements IWailaDataProvider {
   public static final WailaCompat INSTANCE = new WailaCompat();
 
   public static void load(IWailaRegistrar registrar) {
-    registrar.registerStackProvider(INSTANCE, BlockConduitBundle.class); // CHANGE BLOCK TYPE IF MORE ARE ADDED
+    registrar.registerStackProvider(INSTANCE, BlockConduitBundle.class);
+    registrar.registerStackProvider(INSTANCE, BlockDarkSteelAnvil.class);
+
     registrar.registerHeadProvider(INSTANCE, Block.class);
     registrar.registerBodyProvider(INSTANCE, Block.class);
     registrar.registerTailProvider(INSTANCE, Block.class);
-    
+
     registrar.registerSyncedNBTKey("controllerStoredEnergyRF", TileCapacitorBank.class);
-    
-//    registrar.registerHeadProvider(INSTANCE, IInternalPowerReceptor.class);
-//    registrar.registerSyncedNBTKey("*", IInternalPowerReceptor.class);
+
+    //    registrar.registerHeadProvider(INSTANCE, IInternalPowerReceptor.class);
+    //    registrar.registerSyncedNBTKey("*", IInternalPowerReceptor.class);
 
     ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", "Sneaky Facades");
   }
@@ -61,6 +64,9 @@ public class WailaCompat implements IWailaDataProvider {
       if(bundle.hasFacade()) {
         return new ItemStack(bundle.getFacadeId(), 1, bundle.getFacadeMetadata());
       }
+    } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
+      return accessor.getBlock().getPickBlock(accessor.getPosition(), accessor.getWorld(), accessor.getPosition().blockX, accessor.getPosition().blockY,
+          accessor.getPosition().blockZ);
     }
     return null;
   }
@@ -73,21 +79,22 @@ public class WailaCompat implements IWailaDataProvider {
   @Override
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
-    Block                block  = accessor.getBlock();
-    TileEntity           te     = accessor.getTileEntity();
-    Item                 item   = Item.getItemFromBlock(block);
-    EntityPlayer         player = accessor.getPlayer();
-    World                world  = player.worldObj;
-    MovingObjectPosition pos    = accessor.getPosition();
-    
+    Block block = accessor.getBlock();
+    TileEntity te = accessor.getTileEntity();
+    Item item = Item.getItemFromBlock(block);
+    EntityPlayer player = accessor.getPlayer();
+    World world = player.worldObj;
+    MovingObjectPosition pos = accessor.getPosition();
+
     int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
 
     if(block instanceof AbstractMachineBlock<?>) {
-      if (te != null && te instanceof AbstractMachineEntity) {
+      if(te != null && te instanceof AbstractMachineEntity) {
         AbstractMachineEntity machine = (AbstractMachineEntity) te;
         ForgeDirection side = accessor.getSide();
         IoMode mode = machine.getIoMode(side);
-        currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
+        currenttip.add(EnumChatFormatting.YELLOW
+            + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
         currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
       }
     }
@@ -119,8 +126,8 @@ public class WailaCompat implements IWailaDataProvider {
       } else if(block instanceof IResourceTooltipProvider) {
         TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
-      
-      if (currenttip.size() > 0) {
+
+      if(currenttip.size() > 0) {
         currenttip.add("");
       }
 
@@ -137,35 +144,37 @@ public class WailaCompat implements IWailaDataProvider {
         TooltipAddera.addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
       }
     }
-    
-    if (te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF")) {
-      if (currenttip.size() > 4) {
+
+    if(te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF")) {
+      if(currenttip.size() > 4) {
         currenttip.add("");
       }
-      
+
       IInternalPowerReceptor power = (IInternalPowerReceptor) te;
-      
-      int   stored      = accessor.getTileEntity() instanceof TileCapacitorBank ? power.getEnergyStored() : accessor.getNBTData().getInteger("storedEnergyRF");
-      int   max         = power.getMaxEnergyStored();
-      
-      currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, stored, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, max, EnumChatFormatting.RESET));
-      
-    } else if (te instanceof IConduitBundle) {
+
+      int stored = accessor.getTileEntity() instanceof TileCapacitorBank ? power.getEnergyStored() : accessor.getNBTData().getInteger("storedEnergyRF");
+      int max = power.getMaxEnergyStored();
+
+      currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, stored, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, max,
+          EnumChatFormatting.RESET));
+
+    } else if(te instanceof IConduitBundle) {
       NBTTagCompound nbtRoot = accessor.getNBTData();
       short nbtVersion = nbtRoot.getShort("nbtVersion");
       NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
-      
+
       if(conduitTags != null) {
         for (int i = 0; i < conduitTags.tagCount(); i++) {
           NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
           IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
           if(conduit != null && conduit instanceof IPowerConduit) {
-            currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, ((IPowerConduit)conduit).getEnergyStored(), EnumChatFormatting.RESET, EnumChatFormatting.WHITE, ((IConduitBundle)te).getMaxEnergyStored(), EnumChatFormatting.RESET));
+            currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, ((IPowerConduit) conduit).getEnergyStored(), EnumChatFormatting.RESET,
+                EnumChatFormatting.WHITE, ((IConduitBundle) te).getMaxEnergyStored(), EnumChatFormatting.RESET));
           }
         }
       }
     }
-    
+
     return currenttip;
   }
 

@@ -208,6 +208,8 @@ public final class Config {
   public static int darkSteelTravelCost = 30;  
   public static int darkSteelSpoonCost = 10;
 
+  public static float darkSteelAnvilDamageChance = 0.024f;
+  
   public static int hootchPowerPerCycle = 6;
   public static int hootchPowerTotalBurnTime = 6000;
   public static int rocketFuelPowerPerCycle = 16;
@@ -749,6 +751,8 @@ public final class Config {
         "How much slower shift-harvesting logs is.").getDouble(darkSteelAxeSpeedPenaltyMultiHarvest);
     darkSteelAxeEffeciencyBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelAxeEffeciencyBoostWhenPowered",
         darkSteelAxeEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelAxeEffeciencyBoostWhenPowered);
+
+    darkSteelAnvilDamageChance = (float) config.get(sectionDarkSteel.name, "darkSteelAnvilDamageChance", darkSteelAnvilDamageChance, "Chance that the dark steel anvil will take damage after repairing something.").getDouble();
 
     hootchPowerPerCycle = config.get(sectionPower.name, "hootchPowerPerCycle", hootchPowerPerCycle,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);
