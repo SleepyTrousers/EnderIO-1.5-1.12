@@ -25,7 +25,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedWall extends BlockWall implements ITileEntityProvider {
+public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, IPaintedBlock {
 
   public static BlockPaintedWall create() {
     BlockPaintedWall result = new BlockPaintedWall();

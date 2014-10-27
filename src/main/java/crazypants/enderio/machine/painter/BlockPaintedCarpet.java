@@ -26,7 +26,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider {
+public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintedBlock {
     
     
     public static BlockPaintedCarpet create() {

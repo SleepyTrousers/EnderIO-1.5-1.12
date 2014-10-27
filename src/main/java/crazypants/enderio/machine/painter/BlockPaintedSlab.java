@@ -28,7 +28,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider {
+public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, IPaintedBlock {
 
   private IIcon lastRemovedComponetIcon = null;
 

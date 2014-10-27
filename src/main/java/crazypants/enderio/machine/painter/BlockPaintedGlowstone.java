@@ -32,7 +32,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.util.Lang;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class BlockPaintedGlowstone extends Block implements ITileEntityProvider {
+public class BlockPaintedGlowstone extends Block implements ITileEntityProvider, IPaintedBlock {
    
   public static int renderId = -1;
 

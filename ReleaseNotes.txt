@@ -13,6 +13,7 @@ Bugs
 - #1150 Crash when Farming Station Error trying to plant Pam's Mob Seeds (nb, they don't work, but it wont crash)
 - #1152 Fluids blocks missing names
 - #1153 Item conduits crash with invalid item stacks (one without an item assigned)
+- #1159 Painter allows you to paint glowstone with a painted block causing crash 
 
 ------------------------------------------------------
 Version 2.1.6

@@ -25,7 +25,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return false;
     }
     Block block = Util.getBlockFromItemId(paintSource);
-    if(block == null) {
+    if(block == null || block instanceof IPaintedBlock) {
       return false;
     }
     if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {

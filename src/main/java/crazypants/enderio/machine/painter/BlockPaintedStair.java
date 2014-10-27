@@ -26,7 +26,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 
-public class BlockPaintedStair extends BlockStairs implements ITileEntityProvider {
+public class BlockPaintedStair extends BlockStairs implements ITileEntityProvider, IPaintedBlock {
 
   public static BlockPaintedStair create() {
     BlockPaintedStair result = new BlockPaintedStair();
