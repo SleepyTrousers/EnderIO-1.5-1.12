@@ -26,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,8 +54,11 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
-public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade {
+@Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
+public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRedNetOmniNode {
 
   private static final String KEY_CONNECTOR_ICON = "enderIO:conduitConnector";
 
@@ -291,12 +295,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z,
       int par5) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
-      return 0;
-    }
-    IConduitBundle bundle = (IConduitBundle) te;
-    IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
+    IRedstoneConduit con = getRedstoneConduit(world, x, y, z);
     if(con == null) {
       return 0;
     }
@@ -306,12 +305,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z,
       int par5) {
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof IConduitBundle)) {
-      return 0;
-    }
-    IConduitBundle bundle = (IConduitBundle) te;
-    IRedstoneConduit con = bundle.getConduit(IRedstoneConduit.class);
+    IRedstoneConduit con = getRedstoneConduit(world, x, y, z);
     if(con == null) {
       return 0;
     }
@@ -839,4 +833,57 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return res;
   }
 
+  @Override
+  public void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues) {
+    IRedstoneConduit conduit = getRedstoneConduit(world, x, y, z);
+    if(conduit == null) {
+      return;
+    }
+
+    conduit.onInputsChanged(world, x, y, z, side, inputValues);
+  }
+
+  @Override
+  public void onInputChanged(World world, int x, int y, int z, ForgeDirection side, int inputValue) {
+    // Unused because only called in "Single" mode.
+  }
+
+  @Override
+  public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
+    IRedstoneConduit conduit = getRedstoneConduit(world, x, y, z);
+    if(conduit == null) {
+      return null;
+    }
+
+    return conduit.getOutputValues(world, x, y, z, side);
+  }
+
+  @Override
+  public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
+    IRedstoneConduit conduit = getRedstoneConduit(world, x, y, z);
+    if(conduit == null) {
+      return 0;
+    }
+
+    return conduit.getOutputValue(world, x, y, z, side, subnet);
+  }
+
+  @Override
+  @Optional.Method(modid = "MineFactoryReloaded")
+  public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
+    IRedstoneConduit conduit = getRedstoneConduit(world, x, y, z);
+    if(conduit == null) {
+      return RedNetConnectionType.None;
+    }
+    return conduit.canConnectToExternal(side, false) ? RedNetConnectionType.CableAll : RedNetConnectionType.None;
+  }
+
+  private static IRedstoneConduit getRedstoneConduit(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(!(te instanceof IConduitBundle)) {
+      return null;
+    }
+    IConduitBundle bundle = (IConduitBundle) te;
+    return bundle.getConduit(IRedstoneConduit.class);
+  }
 }

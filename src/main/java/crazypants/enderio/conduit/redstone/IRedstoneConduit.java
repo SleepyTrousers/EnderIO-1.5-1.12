@@ -30,8 +30,11 @@ public interface IRedstoneConduit extends IConduit {
 
   void updateNetwork();
 
+  // MFR RedNet
+
   int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
 
   int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
 
+  void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues);
 }
