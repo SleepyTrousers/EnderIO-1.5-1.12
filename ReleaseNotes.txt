@@ -4,6 +4,7 @@ Version 2.1.7
 
 Changes
 - Added EnderRail
+- Added Dark Steel Anvil (tterrag)
 - #1145 Added RedNet support to insulated redstone conduits (fnuecke)
 - #1133 Update zh_CN.lang (Mrkwtkr)
 - #1138 Created cs_CZ.lang (nalimleinad)
