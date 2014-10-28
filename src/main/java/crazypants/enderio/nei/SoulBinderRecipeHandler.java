@@ -2,35 +2,26 @@ package crazypants.enderio.nei;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.enchanter.EnchanterRecipe;
-import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.enchanter.GuiEnchanter;
-import crazypants.enderio.machine.enchanter.TileEnchanter;
-import crazypants.enderio.machine.recipe.RecipeInput;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.soul.GuiSoulBinder;
 import crazypants.enderio.machine.soul.ISoulBinderRecipe;
-import crazypants.enderio.nei.EnchanterRecipeHandler.EnchanterRecipeNEI;
 
 public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
@@ -110,9 +101,9 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
     }
     for (IMachineRecipe recipe : recipes.values()) {
       if(recipe instanceof ISoulBinderRecipe) {
-        ISoulBinderRecipe sbr = (ISoulBinderRecipe) recipe;
-        if(sbr.getInputStack().isItemEqual(ingredient)) {
-          arecipes.add(new SoulBinderRecipeNEI((ISoulBinderRecipe) recipe));
+        SoulBinderRecipeNEI sbr = new SoulBinderRecipeNEI((ISoulBinderRecipe) recipe);
+        if(sbr.contains(sbr.input, ingredient)) {
+          arecipes.add(sbr);
         }
       }
     }
@@ -120,34 +111,46 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public void drawExtras(int recipeIndex) {
+  public void drawBackground(int recipeIndex) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiDraw.changeTexture(getGuiTexture());
+    GuiDraw.drawTexturedModalRect(18, 0, 29, 11, 142, 65);
   }
 
-  //  public List<ItemStack> getInputs(RecipeInput input) {
-  //    List<ItemStack> result = new ArrayList<ItemStack>();
-  //    result.add(input.getInput());
-  //    ItemStack[] equivs = input.getEquivelentInputs();
-  //    if(equivs != null && equivs.length > 0) {
-  //      result.addAll(Arrays.asList(equivs));
-  //    }
-  //    return result;
-  //  }
+  @Override
+  public void drawExtras(int recipeIndex) {
+    drawProgressBar(70, 23, 177, 14, 23, 17, 160, 0);
+
+    SoulBinderRecipeNEI recipe = (SoulBinderRecipeNEI) arecipes.get(recipeIndex);
+
+    String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
+    GuiDraw.drawStringC(energyString, 83, 45, 0x808080, false);
+
+    int cost = recipe.getExperience();
+    if(cost > 0) {
+      String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(cost) });
+      GuiDraw.drawStringC(s, 83, 55, 0x80FF20);
+    }
+  }
 
   private static final ArrayList<PositionedStack> EMPTY_VIAL_OUTPUT = new ArrayList<PositionedStack>();
   static {
-    EMPTY_VIAL_OUTPUT.add(new PositionedStack(new ItemStack(EnderIO.itemSoulVessel), 107, 23));
+    EMPTY_VIAL_OUTPUT.add(new PositionedStack(new ItemStack(EnderIO.itemSoulVessel), 101, 23));
   }
 
   public class SoulBinderRecipeNEI extends TemplateRecipeHandler.CachedRecipe {
 
     private final ArrayList<PositionedStack> input = new ArrayList<PositionedStack>();
-
     private final PositionedStack output;
-
     private int energy;
+    private int experience;
 
     public int getEnergy() {
       return energy;
+    }
+
+    public int getExperience() {
+      return experience;
     }
 
     @Override
@@ -166,18 +169,20 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
     }
 
     public SoulBinderRecipeNEI(ISoulBinderRecipe recipe) {
-      this(recipe.getInputStack(), recipe.getOutputStack(), recipe.getEnergyRequired(), recipe.getSupportedSouls());
+      this(recipe.getInputStack(), recipe.getOutputStack(), recipe.getEnergyRequired(), recipe.getExperienceRequired(), recipe.getSupportedSouls());
     }
 
-    public SoulBinderRecipeNEI(ItemStack inputStack, ItemStack result, int energy, List<String> list) {
+    public SoulBinderRecipeNEI(ItemStack inputStack, ItemStack result, int energy, int experience, List<String> list) {
 
       int yOff = 11;
-      int xOff = 6;
+      int xOff = 11;
 
       input.add(new PositionedStack(getSoulVialInputs(list), 38 - xOff, 34 - yOff));
-      input.add(new PositionedStack(inputStack, 60 - xOff, 34 - yOff));
+      input.add(new PositionedStack(inputStack, 59 - xOff, 34 - yOff));
       output = new PositionedStack(result, 134 - xOff, 34 - yOff);
 
+      this.energy = energy;
+      this.experience = experience;
     }
 
     private List<ItemStack> getSoulVialInputs(List<String> mobs) {

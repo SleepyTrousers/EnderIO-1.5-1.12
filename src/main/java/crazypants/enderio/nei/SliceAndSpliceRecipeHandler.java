@@ -5,10 +5,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
+
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -82,16 +85,26 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     for (IRecipe recipe : recipes) {
       if(recipe.isValidInput(0, ingredient)) {
         SliceAndSpliceRecipe res = new SliceAndSpliceRecipe(recipe);
+        res.setIngredientPermutation(res.input, ingredient);
         arecipes.add(res);
       }
     }
   }
 
   @Override
+  public void drawBackground(int recipeIndex) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiDraw.changeTexture(getGuiTexture());
+    GuiDraw.drawTexturedModalRect(16, 0, 29, 11, 142, 65);
+  }
+
+  @Override
   public void drawExtras(int recipeIndex) {
+    drawProgressBar(90, 35, 177, 14, 23, 17, 120, 0);
+
     SliceAndSpliceRecipe recipe = (SliceAndSpliceRecipe) arecipes.get(recipeIndex);
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
-    Minecraft.getMinecraft().fontRenderer.drawString(energyString, 100, 58, 0xFFFFFFFF);
+    GuiDraw.drawString(energyString, 100, 57, 0x808080, false);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {
@@ -130,7 +143,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
       int recipeSize = recipe.getInputs().length;
       input = new ArrayList<PositionedStack>();
       int yOff = 11;
-      int xOff = 5;
+      int xOff = 13;
 
       Point pos;
       for (RecipeInput recipeInput : recipe.getInputs()) {
