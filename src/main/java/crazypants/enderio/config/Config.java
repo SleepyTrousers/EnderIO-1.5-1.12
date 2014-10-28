@@ -376,6 +376,7 @@ public final class Config {
   public static int enderRailPowerRequiredPerBlock = 10;
   public static boolean enderRailCapSameDimensionPowerAtCrossDimensionCost = true;
   public static int enderRailTicksBeforeForceSpawningLinkedCarts = 60;
+  public static boolean enderRailTeleportPlayers = false;
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -996,7 +997,7 @@ public final class Config {
         "When set to true the RF cost of sending a cart within the same dimension will be capped to the cross dimension cost");
     enderRailTicksBeforeForceSpawningLinkedCarts = config.get(sectionRailConfig.name, "enderRailTicksBeforeForceSpawningLinkedCarts", enderRailTicksBeforeForceSpawningLinkedCarts, 
         "The number of ticks to wait for the track to clear before force spawning the next cart in a (RailCraft) linked set").getInt(enderRailTicksBeforeForceSpawningLinkedCarts);
-    
+    enderRailTeleportPlayers = config.getBoolean("enderRailTeleportPlayers", sectionRailConfig.name, enderRailTeleportPlayers, "If true player in minecarts will be teleported. WARN: WIP, seems to cause a memory leak.");
     
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");

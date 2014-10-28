@@ -5,15 +5,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.UUID;
-
-import codechicken.nei.WorldOverlayRenderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.util.BlockCoord;
+import crazypants.util.EntityUtil;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 
@@ -34,6 +36,7 @@ public class EnderRailController {
   private final Set<UUID> newlySpawnedCarts = new HashSet<UUID>();
 
   private final LinkedList<List<Entity>> cartsToSpawn = new LinkedList<List<Entity>>();
+  private final List<PlayerTpInfo> playersToRemount = new ArrayList<EnderRailController.PlayerTpInfo>();
 
   private int ticksFailedToSpawn = 0;
 
@@ -54,7 +57,7 @@ public class EnderRailController {
 
     spawnRecievedCart();
 
-    List<EntityMinecart> carts = getMinecartsAt(transciever.getWorldObj(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+    List<EntityMinecart> carts = getMinecartsOnTrack();
     List<UUID> toRemove = new ArrayList<UUID>();
 
     //any cart in the newly spawned list no longer on the track needs to be removed    
@@ -80,6 +83,16 @@ public class EnderRailController {
 
   private void spawnRecievedCart() {
 
+    if(Config.enderRailTeleportPlayers) {
+      ListIterator<PlayerTpInfo> li = playersToRemount.listIterator();
+      while (li.hasNext()) {
+        PlayerTpInfo tpi = li.next();
+        if(tpi.attemptMount() || tpi.attemptsRemaining <= 0) {
+          li.remove();
+        }
+      }
+    }
+
     if(cartsToSpawn.isEmpty()) {
       ticksFailedToSpawn = 0;
       return;
@@ -101,10 +114,11 @@ public class EnderRailController {
         if(ent instanceof EntityMinecart) {
           EntityMinecart cart = (EntityMinecart) ent;
           newlySpawnedCarts.add(cart.getPersistentID());
-          TeleportUtil.recreateLinks(cart);
+          CartLinkUtil.recreateLinks(cart);
         }
       }
     }
+
     ticksFailedToSpawn = 0;
 
   }
@@ -132,6 +146,10 @@ public class EnderRailController {
     List res = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(railCoord.x - offset.x, railCoord.y,
         railCoord.z - offset.z, railCoord.x + 1 + offset.x, railCoord.y + 1, railCoord.z + 1 + offset.z));
     return res == null || res.isEmpty();
+  }
+
+  public List<EntityMinecart> getMinecartsOnTrack() {
+    return getMinecartsAt(transciever.getWorldObj(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
   }
 
   public static List<EntityMinecart> getMinecartsAt(World world, int x, int y, int z) {
@@ -208,7 +226,7 @@ public class EnderRailController {
     }
   }
 
-  public void dropNonSpawnedCarts() {    
+  public void dropNonSpawnedCarts() {
     if(cartsToSpawn.isEmpty()) {
       return;
     }
@@ -239,7 +257,8 @@ public class EnderRailController {
       if(world.canPlaceEntityOnSide(b, x, y, z, false, ForgeDirection.UP.ordinal(), entity, null)) {
         resetForRandomRandomSpawn(entity);
         if(worldserver.spawnEntityInWorld(entity)) {
-          entity.onUpdate();
+          //entity.onUpdate();
+          worldserver.updateEntity(entity);
           return;
         }
       }
@@ -250,23 +269,64 @@ public class EnderRailController {
   }
 
   private void resetForRandomRandomSpawn(Entity entity) {
-    TeleportUtil.breakLinks(transciever.getWorldObj(), entity);
+    CartLinkUtil.breakLinks(transciever.getWorldObj(), entity);
     entity.riddenByEntity = null;
     entity.ridingEntity = null;
     entity.motionX = 0;
-    entity.motionY = 0;    
+    entity.motionY = 0;
     entity.motionZ = 0;
-//    if(entity instanceof EntityMinecart) {
-//      entity.posY -= 0.3;      
-//    }
-    entity.prevPosX  = entity.posX;
+    //    if(entity instanceof EntityMinecart) {
+    //      entity.posY -= 0.3;      
+    //    }
+    entity.prevPosX = entity.posX;
     entity.prevPosY = entity.posY;
-    entity.prevPosZ = entity.posZ;    
-    entity.rotationYaw = (float) (transciever.getWorldObj().rand.nextDouble() * 360);    
+    entity.prevPosZ = entity.posZ;
+    entity.rotationYaw = (float) (transciever.getWorldObj().rand.nextDouble() * 360);
   }
 
   private int randOffset(int spread) {
     return (int) Math.round((transciever.getWorldObj().rand.nextDouble() - 0.5) * spread * 2);
+  }
+
+  public void onPlayerTeleported(EntityPlayerMP playerToTP, EntityMinecart toMount) {
+    if(playerToTP != null) {
+      playersToRemount.add(new PlayerTpInfo(playerToTP.getCommandSenderName(), toMount.getPersistentID(), 20));
+    }
+  }
+
+  private class PlayerTpInfo {
+    String playerName;
+    UUID cartId;
+    int attemptsRemaining;
+
+    PlayerTpInfo(String playerName, UUID cartId, int attemptsRemaining) {
+      this.playerName = playerName;
+      this.cartId = cartId;
+      this.attemptsRemaining = attemptsRemaining;
+    }
+
+    boolean attemptMount() {
+      attemptsRemaining--;
+      List<EntityMinecart> carts = getMinecartsOnTrack();
+      for (EntityMinecart cart : carts) {
+        if(cart != null && cart.getPersistentID().equals(cartId)) {
+          EntityPlayer player = transciever.getWorldObj().getPlayerEntityByName(playerName);
+          if(player != null) {
+            Vector3d playerPos = EntityUtil.getEntityPosition(player);
+            Vector3d cartPos = EntityUtil.getEntityPosition(cart);
+            if(playerPos.distanceSquared(cartPos) <= 9) {
+              player.posX = cart.posX;
+              player.posY = cart.posY;
+              player.posZ = cart.posZ;
+              player.mountEntity(cart);
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+
   }
 
 }

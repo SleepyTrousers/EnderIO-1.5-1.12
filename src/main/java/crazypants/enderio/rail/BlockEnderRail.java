@@ -2,46 +2,34 @@ package crazypants.enderio.rail;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import mods.railcraft.api.carts.CartTools;
-import mods.railcraft.api.carts.ILinkageManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRail;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.transceiver.Channel;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.packet.PacketConfigSync;
 import crazypants.util.MetadataUtil;
 import crazypants.util.RoundRobinIterator;
 
@@ -72,6 +60,10 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     PacketHandler.INSTANCE.registerMessage(PacketTeleportEffects.class, PacketTeleportEffects.class, PacketHandler.nextID(), Side.CLIENT);
     BlockEnderRail res = new BlockEnderRail();
     res.init();
+
+    if(Config.enderRailTeleportPlayers) {
+      FMLCommonHandler.instance().bus().register(PlayerTeleportHandler.instance);
+    }
     return res;
   }
 
@@ -153,6 +145,15 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     return canPlaceBlockAt(world, x, y, z);
   }
 
+  public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
+    return false;
+  }
+
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
+    return getUnlocalizedName();
+  }
+  
   public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
     if(world.isRemote) {
       return;
@@ -240,7 +241,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   private int getPowerRequired(EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
     int powerPerCart = getPowerRequiredForSingleCart(sender, reciever);
-    int numCarts = TeleportUtil.getNumberOfCartsInTrain(cart);
+    int numCarts = CartLinkUtil.getNumberOfCartsInTrain(cart);
     return powerPerCart * numCarts;
   }
 
@@ -259,40 +260,47 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   private boolean teleportCart(World world, EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
 
-    List<EntityMinecart> allCarts = TeleportUtil.getCartsInTrain(cart);
+    List<EntityMinecart> allCarts = CartLinkUtil.getCartsInTrain(cart);
     if(allCarts.size() > 1) {
-      TeleportUtil.updateCartLinks(world, cart);
+      CartLinkUtil.updateCartLinks(world, cart);
     }
 
     List<List<Entity>> toTeleport = new ArrayList<List<Entity>>(allCarts.size());
     List<EntityMinecart> toDespawn = new ArrayList<EntityMinecart>(allCarts.size());
+    EntityPlayerMP playerToTP = null;
+    EntityMinecart playerToMount = null;
     for (EntityMinecart cartInTrain : allCarts) {
       if(cartInTrain != null) {
         List<Entity> entities = TeleportUtil.createEntitiesForReciever(cartInTrain, sender, reciever);
         if(entities != null) {
           toTeleport.add(entities);
           toDespawn.add(cartInTrain);
+          if(Config.enderRailTeleportPlayers && cartInTrain.riddenByEntity instanceof EntityPlayerMP) {
+            playerToTP = (EntityPlayerMP) cartInTrain.riddenByEntity;
+            playerToMount = getCart(entities);
+          }
         }
       }
     }
-
     for (EntityMinecart despawnCart : toDespawn) {
       TeleportUtil.spawnTeleportEffects(world, despawnCart);
       TeleportUtil.despawn(sender.getWorldObj(), despawnCart);
     }
-
     reciever.getRailController().onTrainRecieved(toTeleport);
+    if(playerToTP != null) {
+      PlayerTeleportHandler.instance.teleportPlayer(reciever, playerToTP, playerToMount);
+    }
     return true;
 
   }
 
-  public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
-    return false;
-  }
-
-  @Override
-  public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
-    return getUnlocalizedName();
+  private EntityMinecart getCart(List<Entity> entities) {
+    for (Entity ent : entities) {
+      if(ent instanceof EntityMinecart) {
+        return (EntityMinecart) ent;
+      }
+    }
+    return null;
   }
 
 }
