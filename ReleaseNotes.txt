@@ -5,8 +5,11 @@ Version 2.1.8
 Changes
 - #1167 Improved NEI handlers (Tonius)
 - #1165 Updated zh_CN.lang (Mrkwtkr)
+
 Bugs
-- #1170 Dimensional Transceiver liquid related crash 
+- #1162 Infinite Broken-Spawner exploit with Twilight Forest
+- #1170 Dimensional Transceiver liquid related crash
+  
 
 ------------------------------------------------------
 Version 2.1.7

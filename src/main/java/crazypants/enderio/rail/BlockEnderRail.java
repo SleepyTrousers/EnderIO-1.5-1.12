@@ -122,7 +122,6 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y - 1, z);
-      System.out.println("BlockEnderRail.removedByPlayer: " + te);
       if(te instanceof TileTransceiver) {
         ((TileTransceiver) te).getRailController().dropNonSpawnedCarts();
       }
