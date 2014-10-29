@@ -3,30 +3,31 @@ package crazypants.enderio.teleport.packet;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.teleport.ITravelAccessable;
 import crazypants.enderio.teleport.TileTravelAnchor;
 
-/**
- * Created by CrazyPants on 27/02/14.
- */
-public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessMode, IMessage> {
+public class PacketLabel implements IMessage, IMessageHandler<PacketLabel, IMessage> {
 
   int x;
   int y;
   int z;
-  TileTravelAnchor.AccessMode mode;
+  boolean labelNull;
+  String label;
+  
 
-  public PacketAccessMode() {
+  public PacketLabel() {
   }
 
-  public PacketAccessMode(int x, int y, int z, TileTravelAnchor.AccessMode mode) {
+  public PacketLabel(int x, int y, int z, String label) {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.mode = mode;
+    this.label = label;
+    labelNull = label == null || label.length() == 0;
   }
 
   @Override
@@ -34,7 +35,10 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
     buf.writeInt(x);
     buf.writeInt(y);
     buf.writeInt(z);
-    buf.writeShort(mode.ordinal());
+    buf.writeBoolean(labelNull);
+    if(!labelNull) {
+      ByteBufUtils.writeUTF8String(buf, label);
+    }
   }
 
   @Override
@@ -42,14 +46,19 @@ public class PacketAccessMode implements IMessage, IMessageHandler<PacketAccessM
     x = buf.readInt();
     y = buf.readInt();
     z = buf.readInt();
-    mode = TileTravelAnchor.AccessMode.values()[buf.readShort()];
+    labelNull = buf.readBoolean();
+    if(labelNull) {
+      label = null;
+    } else {
+      label = ByteBufUtils.readUTF8String(buf);
+    }
   }
 
-  public IMessage onMessage(PacketAccessMode message, MessageContext ctx) {
+  public IMessage onMessage(PacketLabel message, MessageContext ctx) {
     EntityPlayer player = ctx.getServerHandler().playerEntity;
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
     if(te instanceof ITravelAccessable) {
-      ((ITravelAccessable) te).setAccessMode(message.mode);
+      ((ITravelAccessable) te).setLabel(message.label);
       player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
       player.worldObj.markTileEntityChunkModified(message.x, message.y, message.z, te);      
     }
