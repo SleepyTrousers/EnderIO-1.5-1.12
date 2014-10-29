@@ -97,16 +97,22 @@ enderio.tooltip.isBeaconBase=可用于当作信标底座
 
 //Fluids
 fluid.nutrient_distillation=营养精华液
+tile.fluid.nutrient_distillation.name=营养精华液
 item.bucketNutrient_distillation.name=桶装营养精华液
 
 fluid.hootch=烈酒
+tile.fluid.hootch.name=烈酒
 item.bucketHootch.name=桶装烈酒
 fluid.fire_water=火焰水
+tile.fluid.fire_water.name=火焰水
 item.bucketFire_water.name=桶装火焰水
 fluid.rocket_fuel=火箭燃料
+tile.fluid.rocket_fuel.name=火箭燃料
 item.bucketRocket_fuel.name=桶装火箭燃料
 fluid.eio.xpjuice=液态XP
+tile.fluid.eio.xpjuice.name=液态XP
 item.bucketXpjuice.name=桶装液态XP
+
 
 enderio.fluid.millibucket.abr=mB
 
@@ -262,6 +268,12 @@ tile.blockTransceiver.tooltip.detailed.line1=在不同空间之间
 tile.blockTransceiver.tooltip.detailed.line2=跨距离无线传输
 tile.blockTransceiver.tooltip.detailed.line3=物品,流体和能量
 
+tile.blockEnderRail.name=末影轨道
+tile.blockEnderRail.tooltip.detailed.line1=放置在空间传送器
+tile.blockEnderRail.tooltip.detailed.line2=上时可以传送矿车
+tile.blockEnderRail.tooltip.detailed.line3=使用传送器对应的
+tile.blockEnderRail.tooltip.detailed.line4=栏目来设定目的地
+
 enderio.trans.showChannels=<按下Shift显示频道>
 
 enderio.trans.power=能量
@@ -394,6 +406,12 @@ tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=可在粉刷机�
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=当使用纯净玻璃粉刷时,
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=无声玄钢压力板能隐形
 
+tile.blockDarkSteelAnvil.intact.name=玄铁砧
+tile.blockDarkSteelAnvil.slightlyDamaged.name=轻微破损的玄铁砧
+tile.blockDarkSteelAnvil.veryDamaged.name=严重破损的玄铁砧
+tile.blockDarkSteelAnvil.tooltip.common.line1=经久耐用
+tile.blockDarkSteelAnvil.tooltip.detailed.line1=比原版的铁砧
+tile.blockDarkSteelAnvil.tooltip.detailed.line2=更加结实耐用
 
 //Travel
 tile.blockTravelAnchor.name=旅行锚
