@@ -43,10 +43,10 @@ public class ItemRecipes {
     
     
     ItemStack dspp = new ItemStack(EnderIO.blockDarkSteelPressurePlate);
-    GameRegistry.addShapedRecipe(dspp, "ss ", 's', darkSteel);
+    GameRegistry.addShapedRecipe(dspp, "ss", 's', darkSteel);
     
     ItemStack dsppSilent = new ItemStack(EnderIO.blockDarkSteelPressurePlate, 1, 1);
-    GameRegistry.addShapedRecipe(dsppSilent, " p ", " w ", 'p', dspp, 'w', Blocks.wool);
+    GameRegistry.addShapedRecipe(dsppSilent, "p", "w", 'p', dspp, 'w', Blocks.wool);
     
     //Soul Vessel
     GameRegistry.addShapedRecipe(new ItemStack(EnderIO.itemSoulVessel), " s ", "q q", " q ", 's', soularium, 'q', new ItemStack(EnderIO.blockFusedQuartz,1,0));

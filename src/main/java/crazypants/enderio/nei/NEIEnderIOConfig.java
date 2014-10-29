@@ -3,7 +3,6 @@ package crazypants.enderio.nei;
 import net.minecraft.item.ItemStack;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
-import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.config.Config;
@@ -12,9 +11,9 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
   @Override
   public void loadConfig() {
-    API.registerRecipeHandler(new AlloySmelterRecipeHandler());    
+    API.registerRecipeHandler(new AlloySmelterRecipeHandler());
     API.registerUsageHandler(new AlloySmelterRecipeHandler());
-    
+
     API.registerRecipeHandler(new SagMillRecipeHandler());
     API.registerUsageHandler(new SagMillRecipeHandler());
 
@@ -23,10 +22,10 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.registerRecipeHandler(new EnchanterRecipeHandler());
     API.registerUsageHandler(new EnchanterRecipeHandler());
-    
+
     API.registerRecipeHandler(new SliceAndSpliceRecipeHandler());
     API.registerUsageHandler(new SliceAndSpliceRecipeHandler());
-    
+
     API.registerRecipeHandler(new SoulBinderRecipeHandler());
     API.registerUsageHandler(new SoulBinderRecipeHandler());
 
@@ -68,8 +67,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
   @Override
   public String getVersion() {
-    return "0.0.1";
+    return EnderIO.VERSION;
   }
 
 }
-

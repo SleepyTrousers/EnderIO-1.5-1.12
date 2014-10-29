@@ -1,17 +1,12 @@
 package crazypants.enderio.nei;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,7 +23,6 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.still.GuiVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
-import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
 public class VatRecipeHandler extends TemplateRecipeHandler {
@@ -124,10 +118,18 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       if(addRecipe) {
         FluidStack output = recipe.getOutputs()[0].getFluidOutput();
         InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        res.setIngredientPermutation(res.inputs, ingredient);
         arecipes.add(res);
       }
     }
 
+  }
+
+  @Override
+  public void drawBackground(int recipeIndex) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GuiDraw.changeTexture(getGuiTexture());
+    GuiDraw.drawTexturedModalRect(22, 0, 27, 11, 123, 52);
   }
 
   @Override
@@ -142,24 +144,15 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
           .renderGuiTank(rec.result, rec.result.amount, rec.result.amount, outTankBounds.x, outTankBounds.y, 0, outTankBounds.width, outTankBounds.height);
     }
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
     String energyString = PowerDisplayUtil.formatPower(rec.energy) + " " + PowerDisplayUtil.abrevation();
-    int width = fr.getStringWidth(energyString);
-
-    GL11.glEnable(GL11.GL_BLEND);
-    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    int col = ColorUtil.getRGBA(0.75f, 1.0f, 1.0f, 1.0f);
-    fr.drawString(energyString, 86 - width / 2, 55, col, true);
-    GL11.glDisable(GL11.GL_BLEND);
-    GL11.glColor4f(1, 1, 1, 1);
+    GuiDraw.drawStringC(energyString, 86, 54, 0x808080, false);
 
     Fluid outputFluid = rec.result.getFluid();
     List<PositionedStack> stacks = rec.getIngredients();
     for (PositionedStack ps : stacks) {
       float mult = VatRecipeManager.getInstance().getMultiplierForInput(ps.item, outputFluid);
       String str = "x" + mult;
-      fr.drawString(str, ps.relx + 8 - fr.getStringWidth(str) / 2, ps.rely + 19, ColorUtil.getRGB(Color.gray), false);
-
+      GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }
   }
 
@@ -195,39 +188,14 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(index);
     if(in) {
       if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-        list.add(rec.inFluid.getFluid().getLocalizedName());
+        list.add(rec.inFluid.getFluid().getLocalizedName(rec.inFluid));
       }
     } else {
       if(rec.result != null && rec.result.getFluid() != null) {
-        list.add(rec.result.getFluid().getLocalizedName());
+        list.add(rec.result.getFluid().getLocalizedName(rec.result));
       }
     }
     return list;
-  }
-
-  public void renderIcon(IIcon icon, double x, double y, double width, double height, double zLevel) {
-
-    Tessellator tessellator = Tessellator.instance;
-
-    RenderUtil.bindItemTexture();
-    GL11.glColor3f(1, 1, 1);
-    tessellator.startDrawingQuads();
-
-    float minU = icon.getMinU();
-    float minV = icon.getMinV();
-    float maxU = icon.getMaxU();
-    float maxV = icon.getMaxV();
-    tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
-    tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
-    tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
-    tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
-
-    tessellator.draw();
-  }
-
-  @Override
-  public void drawProgressBar(int x, int y, int tx, int ty, int w, int h, float completion, int direction) {
-    super.drawProgressBar(87 - 13, 37 - 16, 200, 0, 17, 24, completion, 1);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {
