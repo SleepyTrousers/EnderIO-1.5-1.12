@@ -64,16 +64,6 @@ public class PoweredSpawnerConfig {
         costs.put(entry.getKey(), Double.valueOf(entry.getValue().getAsDouble()));
       }
 
-      blkList = rootObj.getAsJsonArray("blackList");
-      if(blkList != null) {
-        for (int i = 0; i < blkList.size(); i++) {
-          String s = blkList.get(i).getAsString();
-          blackList.add(s);
-        }
-      } else {
-        Log.warn("No black list for powered spawner found in " + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
-      }
-
     } catch (Exception e) {
       Log.error("Could not load Powered Spawner costs from " + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
       e.printStackTrace();
@@ -92,10 +82,10 @@ public class PoweredSpawnerConfig {
 
       blkList = rootObj.getAsJsonArray("blackList");
       if(blkList != null) {
-        blackList.clear();
-        Log.info("Replacing default Powered Spawner blacklist with user supplied values.");
+        Log.info("Using user supplied values for Powered Spawner blacklist.");
         for (int i = 0; i < blkList.size(); i++) {
           String s = blkList.get(i).getAsString();
+          Log.info(s);
           blackList.add(s);
         }
       }
