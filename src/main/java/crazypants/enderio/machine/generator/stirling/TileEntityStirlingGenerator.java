@@ -10,7 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
@@ -29,11 +28,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   
   public TileEntityStirlingGenerator() {
     super(new SlotDefinition(1, 0));        
-  }
-
-  @Override
-  public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
-    return mode != IoMode.PUSH && mode != IoMode.PUSH_PULL;
   }
 
   @Override
