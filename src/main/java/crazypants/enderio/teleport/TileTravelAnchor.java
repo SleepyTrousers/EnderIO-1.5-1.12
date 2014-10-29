@@ -39,6 +39,8 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   private ItemStack[] password = new ItemStack[5];
   
   private ItemStack itemLabel;
+  
+  private String label;
 
   private String placedBy;
 
@@ -143,6 +145,16 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   }
 
   @Override
+  public String getLabel() {  
+    return label;
+  }
+
+  @Override
+  public void setLabel(String label) {
+    this.label = label;    
+  }
+
+  @Override
   public String getPlacedBy() {
     return placedBy;
   }
@@ -233,6 +245,10 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     sourceBlock = Block.getBlockFromName(sourceBlockStr);
     sourceBlockMetadata = root.getInteger(KEY_SOURCE_BLOCK_META);
     
+    label = root.getString("label");
+    if(label == null || label.trim().length() == 0) {
+      label = null;
+    }    
   }
 
   @Override
@@ -269,6 +285,11 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       root.setString(KEY_SOURCE_BLOCK_ID, Block.blockRegistry.getNameForObject(sourceBlock));
     }
     root.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
+    
+    if(label != null && label.trim().length() > 0) {
+      root.setString("label", label);
+    }
+    
   }
   
   @Override

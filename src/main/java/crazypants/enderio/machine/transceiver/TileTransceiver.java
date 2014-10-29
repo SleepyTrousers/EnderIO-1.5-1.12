@@ -53,8 +53,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private Map<ForgeDirection, IFluidHandler> neighbourFluidHandlers = null;
 
   private PowerDistributor powerDistributor;
-  
+
   private final EnderRailController railController;
+
+  private boolean inFluidFill = false;
 
   public TileTransceiver() {
     super(new SlotDefinition(8, 8, 0));
@@ -64,8 +66,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
     currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
     railController = new EnderRailController(this);
-  }  
-  
+  }
+
   public EnderRailController getRailController() {
     return railController;
   }
@@ -233,10 +235,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     super.writeCustomNBT(nbtRoot);
     railController.writeToNBT(nbtRoot);
   }
-  
+
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
-    super.readCommon(nbtRoot);    
+    super.readCommon(nbtRoot);
     readChannels(nbtRoot, sendChannels, "sendChannels");
     readChannels(nbtRoot, recieveChannels, "recieveChannels");
   }
@@ -264,7 +266,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
-    
+
     NBTTagList channelTags = createTagList(sendChannels);
     nbtRoot.setTag("sendChannels", channelTags);
 
@@ -380,13 +382,21 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
-      return 0;
+    try {
+      inFluidFill = true;
+      if(getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
+        return 0;
+      }
+      return ServerChannelRegister.instance.fill(this, getSendChannels(ChannelType.FLUID), resource, doFill);
+    } finally {
+      inFluidFill = false;
     }
-    return ServerChannelRegister.instance.fill(this, getSendChannels(ChannelType.FLUID), resource, doFill);
   }
 
   public int recieveFluid(List<Channel> channels, FluidStack resource, boolean doFill) {
+    if(inFluidFill) {
+      return 0;
+    }
     if(!hasRecieveChannel(channels, ChannelType.FLUID) || !redstoneCheckPassed) {
       return 0;
     }
@@ -482,7 +492,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
           }
         }
       }
-    }    
+    }
     return super.canInsertItem(slot, itemstack, j);
   }
 

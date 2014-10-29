@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
@@ -15,6 +13,8 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
@@ -57,12 +57,12 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
     }
     Map<Number, Number> enchants = EnchantmentHelper.getEnchantments(result);
     List<EnchanterRecipe> recipes = EnchanterRecipeManager.getInstance().getRecipes();
-    
-    for(Number id : enchants.keySet()) {
+
+    for (Number id : enchants.keySet()) {
       if(id != null && id.intValue() >= 0 && id.intValue() < Enchantment.enchantmentsList.length) {
         Enchantment ench = Enchantment.enchantmentsList[id.intValue()];
         if(ench != null && ench.getName() != null) {
-    
+
           for (EnchanterRecipe recipe : recipes) {
             if(recipe.isValid() && recipe.getEnchantment().getName().equals(ench.getName())) {
               EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
@@ -71,18 +71,17 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
               EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
               arecipes.add(rec);
             }
-          }          
-          
-        }        
+          }
+
+        }
       }
     }
-    
 
   }
 
   @Override
   public void loadCraftingRecipes(String outputId, Object... results) {
-    if(outputId.equals("EIOEnchanter") && getClass() == EnchanterRecipeHandler.class) {      
+    if(outputId.equals("EIOEnchanter") && getClass() == EnchanterRecipeHandler.class) {
       List<EnchanterRecipe> recipes = EnchanterRecipeManager.getInstance().getRecipes();
       for (EnchanterRecipe recipe : recipes) {
         if(recipe.isValid()) {
@@ -102,25 +101,29 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
   public void loadUsageRecipes(ItemStack ingredient) {
     List<EnchanterRecipe> recipes = EnchanterRecipeManager.getInstance().getRecipes();
     for (EnchanterRecipe recipe : recipes) {
-      if(recipe.isValid() && recipe.isInput(ingredient)) {
+      if(recipe.isValid()) {
         EnchantmentData enchantment = new EnchantmentData(recipe.getEnchantment(), 1);
         ItemStack output = new ItemStack(Items.enchanted_book);
         Items.enchanted_book.addEnchantment(output, enchantment);
         EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe, output, enchantment);
-        arecipes.add(rec);
+        if(rec.contains(rec.input, ingredient)) {
+          rec.setIngredientPermutation(rec.input, ingredient);
+          arecipes.add(rec);
+        }
       }
     }
   }
 
   @Override
-  public void drawExtras(int recipeIndex) {    
+  public void drawExtras(int recipeIndex) {
     EnchanterRecipeNEI recipe = (EnchanterRecipeNEI) arecipes.get(recipeIndex);
+
+    GuiDraw.drawStringC(recipe.getEnchantName(), 83, 10, 0x808080, false);
+
     int cost = TileEnchanter.getEnchantmentCost(recipe.recipe, 1);
     if(cost > 0) {
-      String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(cost)});      
-      FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-      int sw = fr.getStringWidth(s);
-      fr.drawStringWithShadow(s, 90 - (sw/2), 48, 8453920);
+      String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(cost) });
+      GuiDraw.drawStringC(s, 83, 46, 0x80FF20);
     }
   }
 
@@ -140,6 +143,10 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
     private PositionedStack output;
     private EnchantmentData enchData;
     private EnchanterRecipe recipe;
+
+    public String getEnchantName() {
+      return StatCollector.translateToLocal(enchData.enchantmentobj.getName());
+    }
 
     @Override
     public List<PositionedStack> getIngredients() {

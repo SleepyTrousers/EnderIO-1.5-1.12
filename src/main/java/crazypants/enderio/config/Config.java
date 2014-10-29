@@ -129,6 +129,7 @@ public final class Config {
   public static String[] travelStaffBlinkBlackList = new String[] {
     "minecraft:bedrock"
   };
+  public static float travelAnchorZoomScale = 0.2f;
 
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
@@ -588,6 +589,9 @@ public final class Config {
         .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
     travelStaffBlinkBlackList = config.getStringList("travelStaffBlinkBlackList", sectionStaff.name, travelStaffBlinkBlackList, 
         "Lists the blocks that cannot be teleported through in the form 'modID:blockName'");
+    travelAnchorZoomScale = config.getFloat("travelAnchorZoomScale", sectionStaff.name, travelAnchorZoomScale, 0, 1, 
+        "Set the max zoomed size of a travel anchor as an aprox. percentage of screen height");
+    
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,
         "Range accessable (in blocks) when using the Ender IO.").getInt(enderIoRange);

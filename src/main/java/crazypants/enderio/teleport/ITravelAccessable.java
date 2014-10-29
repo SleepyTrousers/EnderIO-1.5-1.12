@@ -30,6 +30,10 @@ public interface ITravelAccessable {
   ItemStack getItemLabel();
   
   void setItemLabel(ItemStack lableIcon);
+  
+  String getLabel();
+  
+  void setLabel(String label);
 
   String getPlacedBy();
 

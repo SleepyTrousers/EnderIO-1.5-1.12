@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.spawner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.BlockMobSpawner;
@@ -15,7 +16,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -66,9 +70,12 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     
     BlockPoweredSpawner res = new BlockPoweredSpawner();
     MinecraftForge.EVENT_BUS.register(res);
+    FMLCommonHandler.instance().bus().register(res);
     res.init();
     return res;
   }  
+  
+  private List<DropInfo> dropQueue = new ArrayList<BlockPoweredSpawner.DropInfo>();
   
   protected BlockPoweredSpawner() {
     super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);    
@@ -77,7 +84,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @SubscribeEvent
   public void onBreakEvent(BlockEvent.BreakEvent evt) {
     if(evt.block instanceof BlockMobSpawner) {
-      if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().worldObj.isRemote) {
+      if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().worldObj.isRemote && !evt.isCanceled()) {
         TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.x, evt.y, evt.z);
         if(tile instanceof TileEntityMobSpawner) {
           
@@ -90,13 +97,24 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
           if(logic != null) {
             String name = logic.getEntityNameToSpawn();
             if(name != null && !isBlackListed(name)) {
-              ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);
-              Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);
+              ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);  
+              dropQueue.add(new DropInfo(evt, drop));              
             }
           }
         }
       }
     }
+  }
+  
+  @SubscribeEvent
+  public void onServerTick(TickEvent.ServerTickEvent event) {
+    if(event.phase != TickEvent.Phase.END) {
+      return;
+    }
+    for (DropInfo action : dropQueue) {
+      action.doDrop();
+    }
+    dropQueue.clear();
   }
   
   @SubscribeEvent
@@ -194,5 +212,27 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.BIT_DETAILED;
+  }
+  
+  private static class DropInfo {
+    
+    BlockEvent.BreakEvent evt;
+    ItemStack drop;
+    
+    DropInfo(BreakEvent evt, ItemStack stack) {
+      super();
+      this.evt = evt;
+      this.drop = stack;
+    }
+    
+    void doDrop() {
+      if(evt.isCanceled()) {
+        return;
+      }
+      Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);   
+    }
+    
+    
+    
   }
 }

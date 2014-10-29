@@ -248,14 +248,14 @@ public class TravelController {
     lookAt.add(eye);
     Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
 
-    float fov = 70 + Minecraft.getMinecraft().gameSettings.fovSetting * 40.0F;
+    float fov = Minecraft.getMinecraft().gameSettings.fovSetting;        
     Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth,
-        mc.displayHeight);
+        mc.displayHeight);       
     currentView.setProjectionMatrix(pr);
     currentView.setViewMatrix(mv);
     currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
 
-    fovRad = Math.toRadians(fov) / 2;
+    fovRad = Math.toRadians(fov);
     tanFovRad = Math.tanh(fovRad);
   }
 
@@ -507,24 +507,11 @@ public class TravelController {
       return;
     }
 
-    double closestDistance = Double.MAX_VALUE;
-    Vector3d point = new Vector3d();
+    double closestDistance = Double.MAX_VALUE;    
     for (BlockCoord bc : candidates.keySet()) {
       if(!bc.equals(onBlockCoord)) {        
-        point.set(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
-
-        Vector2d sp = currentView.getScreenPoint(new Vector3d(point.x, point.y, point.z));
-        Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-        mid.scale(0.5);
-
-        double d = sp.distance(mid);
-        if(d != d) {
-          d = 0f;  
-         }
-        float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
         
-        
-        candidates.put(bc, ratio);
+        double d = addRatio(bc);
         if(d < closestDistance) {
           selectedCoord = bc;
           closestDistance = d;
@@ -539,22 +526,16 @@ public class TravelController {
       
       Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
       screenMidPixel.scale(0.5);
-      double ratio = blockCenterPixel.distance(screenMidPixel) / Minecraft.getMinecraft().displayWidth;
+
       
-      Vector3d blockLeft = new Vector3d();
-      Vector3d up = new Vector3d(0,1,0);
-      up.add(currentView.getEyePoint());
-      blockLeft.cross(currentView.getEyePoint(), up);
-      blockLeft.normalize();
-      blockLeft.scale(0.5);
-      blockLeft.add(blockCenter);
-      
-      Vector2d blockLeftPixel = currentView.getScreenPoint(blockLeft);
-      double blockSizeRatio = blockCenterPixel.distance(blockLeftPixel)/ Minecraft.getMinecraft().displayWidth;
-      double maxRatio = Math.max(0.2, blockSizeRatio);
-      if(ratio > maxRatio) {
+      double pixDist = blockCenterPixel.distance(screenMidPixel);
+      double rat = pixDist / Minecraft.getMinecraft().displayHeight;
+      if(rat != rat) {
+        rat = 0;
+      }      
+      if(rat > 0.07) {
         selectedCoord = null;
-      } 
+      }      
 
     }
   }
@@ -569,12 +550,8 @@ public class TravelController {
     }
     if(ratio < 0) {
       //no cached value
-      Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x, bc.y, bc.z));
-      Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-      mid.scale(0.5);
-      double d = sp.distance(mid);
-      ratio = (float) d / Minecraft.getMinecraft().displayWidth;
-      candidates.put(bc, ratio);
+      addRatio(bc);
+      ratio = candidates.get(bc);
     }
 
     //smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
@@ -583,19 +560,35 @@ public class TravelController {
     double mix = MathHelper.clamp_float((start - ratio) / (start - end), 0, 1);
     double scale = 1;
     if(mix > 0) {
-      double d = tanFovRad * currentView.getEyePoint().distance(loc);
-      scale = d / tanFovRad;
-
-      scale = scale * 0.1;// why I need this is completely beyond me.
+      
+      Vector3d eyePoint = Util.getEyePositionEio(EnderIO.proxy.getClientPlayer());      
+      scale = tanFovRad * eyePoint.distance(loc);
+      
+      //Using this scale will give us the block full screen, we will make it 20% of the screen
+      scale *= Config.travelAnchorZoomScale;      
 
       //only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp_float((float) currentView.getEyePoint().distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
+      float nf = 1 - MathHelper.clamp_float((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.maxDistanceTravelledSq, 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
       scale = Math.max(1, scale);
+      
     }
     return scale;
+  }
+
+  private double addRatio(BlockCoord bc) {
+    Vector2d sp = currentView.getScreenPoint(new Vector3d(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5));
+    Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+    mid.scale(0.5);
+    double d = sp.distance(mid);
+    if(d != d) {
+      d = 0f;  
+     }
+    float ratio = (float) d / Minecraft.getMinecraft().displayWidth;                
+    candidates.put(bc, ratio);
+    return d;
   }
 
   @SideOnly(Side.CLIENT)
