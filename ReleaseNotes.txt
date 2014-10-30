@@ -3,6 +3,9 @@ Version 2.1.8
 ------------------------------------------------------
 
 Changes
+- Added text labels to Travel Anchors and improved rendering and selection
+- Old transceiver now hidden in NEI / creative tab. Will be removed soon, convert existing blocks to new version by 
+  placing in the crafting grid
 - #1167 Improved NEI handlers (Tonius)
 - #1165 Updated zh_CN.lang (Mrkwtkr)
 

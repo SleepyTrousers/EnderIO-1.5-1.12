@@ -60,7 +60,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
 
   private BlockHyperCube() {
     super(ModObject.blockHyperCube.unlocalisedName, TileHyperCube.class);
-
+    setCreativeTab(null);
   }
 
   @Override

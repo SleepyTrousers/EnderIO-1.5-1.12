@@ -58,6 +58,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     if(!GasUtil.isGasConduitEnabled()) {
       API.hideItem(new ItemStack(EnderIO.itemGasConduit));
     }
+    API.hideItem(new ItemStack(EnderIO.blockHyperCube));
   }
 
   @Override
