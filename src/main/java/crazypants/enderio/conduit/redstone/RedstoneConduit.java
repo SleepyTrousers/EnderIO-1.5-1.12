@@ -227,7 +227,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public int isProvidingStrongPower(ForgeDirection toDirection) {
-    return 0;
+    return isProvidingWeakPower(toDirection);
   }
 
   @Override
