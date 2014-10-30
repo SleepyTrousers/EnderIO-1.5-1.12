@@ -216,13 +216,13 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private ItemStack sendItem(TileTransceiver from, int slot, ItemStack contents, TileTransceiver to) {
     SlotDefinition sd = to.getSlotDefinition();
-    //try merging into existing stacks
-
-    boolean recieverHasItem = false;     // Only allow 1 stack per item type
-    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot && !recieverHasItem; i++) {
+    //try merging into existing stacks    
+    
+    boolean sendComplete = false;     // Only allow 1 stack per item type
+    for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot && !sendComplete; i++) {
       ItemStack existing = to.getStackInSlot(i);
-      if(ItemUtil.areStackTypesEqual(existing, contents)) {
-        recieverHasItem = true;
+      if(ItemUtil.areStacksEqual(existing, contents)) {
+        sendComplete = true;
         int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
         numCanMerge = Math.min(numCanMerge, contents.stackSize);
         ItemStack remaining;
@@ -243,7 +243,7 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
     }
-    if(!recieverHasItem) {
+    if(!sendComplete) {
       //then fill empty stack
       for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
         ItemStack existing = to.getStackInSlot(i);

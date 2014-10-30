@@ -479,7 +479,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     if(slotDefinition.isInputSlot(slot)) {
       for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
         if(i != slot) {
-          if(ItemUtil.areStackTypesEqual(itemstack, getStackInSlot(i))) {
+          if(ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
             return false;
           }
         }
@@ -487,7 +487,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     } else if(slotDefinition.isOutputSlot(slot)) {
       for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
         if(i != slot) {
-          if(ItemUtil.areStackTypesEqual(itemstack, getStackInSlot(i))) {
+          if(ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
             return false;
           }
         }

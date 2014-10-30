@@ -12,6 +12,7 @@ Changes
 Bugs
 - #1162 Infinite Broken-Spawner exploit with Twilight Forest
 - #1170 Dimensional Transceiver liquid related crash
+- Transceiver item buffers would allow multiple non-stackable items of the same type
   
 
 ------------------------------------------------------
