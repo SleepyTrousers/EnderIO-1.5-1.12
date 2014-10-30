@@ -81,12 +81,10 @@ public final class Config {
   public static int numConduitsPerRecipe = 8;
 
   public static double transceiverEnergyLoss = 0.1;
-
   public static int transceiverUpkeepCostRF = 10;
-
   public static int transceiverBucketTransmissionCostRF = 100;
-
   public static int transceiverMaxIoRF = 20480;
+  public static boolean transceiverUseEasyRecipe = false;
 
   public static File configDirectory;
 
@@ -445,12 +443,12 @@ public final class Config {
     allowTileEntitiesAsPaintSource = config.get(sectionRecipe.name, "allowTileEntitiesAsPaintSource", allowTileEntitiesAsPaintSource,
         "When enabled blocks with tile entities (e.g. machines) can be used as paint targets.")
         .getBoolean(allowTileEntitiesAsPaintSource);
-
     useSteelInChassi = config.get(sectionRecipe.name, "useSteelInChassi", useSteelInChassi, "When enabled machine chassis will require steel instead of iron.")
         .getBoolean(useSteelInChassi);
-
     numConduitsPerRecipe = config.get(sectionRecipe.name, "numConduitsPerRecipe", numConduitsPerRecipe,
         "The number of conduits crafted per recipe.").getInt(numConduitsPerRecipe);
+    transceiverUseEasyRecipe= config.get(sectionRecipe.name, "transceiverUseEasyRecipe", transceiverUseEasyRecipe, "When enabled the dim trans. will use a cheaper recipe")
+        .getBoolean(useHardRecipes);
 
     enchanterBaseLevelCost = config.get(sectionRecipe.name, "enchanterBaseLevelCost", enchanterBaseLevelCost,
         "Base level cost added to all recipes in the enchanter.").getInt(enchanterBaseLevelCost);

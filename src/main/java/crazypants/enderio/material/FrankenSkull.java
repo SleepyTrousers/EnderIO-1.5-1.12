@@ -4,7 +4,8 @@ public enum FrankenSkull {
 
   ZOMBIE_ELECTRODE("skullZombieElectrode", false),
   ZOMBIE_CONTROLLER("skullZombieController", false),
-  FRANKEN_ZOMBIE("skullZombieFrankenstien", "enderio:skullZombieController", true);
+  FRANKEN_ZOMBIE("skullZombieFrankenstien", "enderio:skullZombieController", true),
+  ENDER_RESONATOR("skullEnderResonator", "enderio:skullEnderResonator", false);
   
   public final String unlocalisedName;
   public final String iconKey;

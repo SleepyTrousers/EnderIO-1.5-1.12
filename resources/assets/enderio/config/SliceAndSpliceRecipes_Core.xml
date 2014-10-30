@@ -43,6 +43,20 @@
         <itemStack modID="EnderIO" itemName="blockEndermanSkull" itemMeta="2"/> 
       </output>
     </recipe>
+    
+    <recipe name="Ender Resonator" energyCost="20000">
+      <input>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="0"/>      
+        <itemStack modID="EnderIO" itemName="blockEndermanSkull" itemMeta="0" slot="1"/>  
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="2"/>
+        <itemStack oreDictionary="itemSilicon" slot="3"/>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="2" slot="4"/>        
+        <itemStack oreDictionary="itemSilicon" slot="5"/>
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="3"/> 
+      </output>
+    </recipe>
 
   </recipeGroup>  
 

@@ -489,8 +489,9 @@ item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 item.itemXpTransfer.tooltip.detailed.line4=the tank
 
 skullZombieElectrode.name=Zombie Electrode
-skullZombieController.name=Zombie Controller
+skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
+skullEnderResonator.name=Ender Resonator 
 
 item.itemSpawnEggEnderIO.name=Spawn
 

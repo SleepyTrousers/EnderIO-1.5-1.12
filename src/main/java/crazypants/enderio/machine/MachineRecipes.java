@@ -34,17 +34,21 @@ public class MachineRecipes {
     ItemStack silicon = new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal());
     ItemStack pulCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
     ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
+    ItemStack endCry = new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal());
     ItemStack electricSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
     ItemStack phasedGold = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal());
     ItemStack phasedIron = new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal());
     ItemStack energeticAlloy = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ENERGETIC_ALLOY.ordinal());
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
+    ItemStack clearGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
     ItemStack enlightedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 2);
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, 1);
     ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
     ItemStack frankenZombie = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
+    ItemStack enderRes = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ENDER_RESONATOR.ordinal());
+    ItemStack obsidian = new ItemStack(Blocks.obsidian);
 
     //stirling gen
     ItemStack stirlingGen = new ItemStack(EnderIO.blockStirlingGenerator, 1, 0);
@@ -65,7 +69,8 @@ public class MachineRecipes {
 
     //Wireless charger
     ItemStack wirelessCharger = new ItemStack(EnderIO.blockWirelessCharger);
-    GameRegistry.addShapedRecipe(wirelessCharger, "svs", "imi", "scs", 's', electricSteel, 'i', silicon, 'm', machineChassi, 'c', capacitor3, 'v', vibCry);
+    //GameRegistry.addShapedRecipe(wirelessCharger, "svs", "imi", "scs", 's', electricSteel, 'i', silicon, 'm', machineChassi, 'c', capacitor3, 'v', vibCry);
+    GameRegistry.addShapedRecipe(wirelessCharger, "sss", "ses", "scs", 's', electricSteel, 'c', capacitor3, 'e', enderRes);
 
     //Crafter
     ItemStack crafter = new ItemStack(EnderIO.blockCrafter, 1, 0);
@@ -155,13 +160,16 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(farm, "ehe", "eme", "pzp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricSteel, 'z', zombieController, 'p', pulCry);
 
     //transceiver
-    //ItemStack transceiver = new ItemStack(EnderIO.blockHyperCube, 1, 0);
-    ItemStack transceiver = new ItemStack(EnderIO.blockTransceiver, 1, 0);
-    ItemStack obsidian = new ItemStack(Blocks.obsidian);
-    GameRegistry
-        .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
-    GameRegistry.addShapelessRecipe(transceiver, new ItemStack(EnderIO.blockHyperCube, 1, 0));
-    
+    ItemStack transceiver = new ItemStack(EnderIO.blockTransceiver, 1, 0);    
+    if(Config.transceiverUseEasyRecipe) {
+      GameRegistry
+          .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
+    } else {
+      GameRegistry
+          .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', electricSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);
+      GameRegistry.addShapelessRecipe(transceiver, new ItemStack(EnderIO.blockHyperCube, 1, 0));
+    }
+
     //solar panel
     if(Config.photovoltaicCellEnabled) {
 
@@ -235,7 +243,7 @@ public class MachineRecipes {
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
     GameRegistry.addRecipe(inst);
-        
+
   }
 
   public static void addOreDictionaryRecipes() {
