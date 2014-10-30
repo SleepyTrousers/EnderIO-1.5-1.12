@@ -1,5 +1,6 @@
 package crazypants.enderio.waila;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
@@ -12,6 +13,8 @@ public interface IWailaInfoProvider {
   public static final int BIT_COMMON = 0x2;
   public static final int BIT_DETAILED = 0x4;
   public static final int ALL_BITS = BIT_BASIC | BIT_COMMON | BIT_DETAILED;
+  
+  public static final NumberFormat fmt = NumberFormat.getNumberInstance();
 
   /**
    * Adds the block's info to the WAILA information
