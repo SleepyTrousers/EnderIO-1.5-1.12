@@ -10,12 +10,9 @@ import java.io.FileWriter;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -62,9 +59,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
-import crazypants.enderio.entity.EntityEnderCreeper;
-import crazypants.enderio.entity.EntityEnderminy;
-import crazypants.enderio.entity.ItemSpawnEgg;
 import crazypants.enderio.fluid.BlockFluidEio;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
@@ -290,10 +284,6 @@ public class EnderIO {
   public static BlockVacuumChest blockVacuumChest;
   public static ItemGliderWing itemGliderWing;
 
-  public static ItemSpawnEgg itemSpawnEgg;
-  
-   
-
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
 
@@ -412,8 +402,6 @@ public class EnderIO {
     itemDarkSteelPickaxe = ItemDarkSteelPickaxe.create();
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
 
-    registerMobs();
-
     int entityID = EntityRegistry.findGlobalUniqueEntityId();
     EntityRegistry.registerGlobalEntityID(SoundEntity.class, "soundEntity", entityID);
     EntityRegistry.registerModEntity(SoundEntity.class, "soundEntity", entityID, this, 0, 0, false);
@@ -425,49 +413,6 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Waila", "register", "crazypants.enderio.waila.WailaCompat.load");
 
     MaterialRecipes.registerOresInDictionary();
-  }
-
-  private void registerMobs() {
-    if(Config.enderminyEnabled || Config.enderCreeperEnabled) {
-      itemSpawnEgg = ItemSpawnEgg.create();
-    }
-    if(Config.enderminyEnabled) {
-      int rate = Config.enderminySpawnRate;
-      EntityRegistry.registerModEntity(EntityEnderminy.class, EntityEnderminy.NAME, 0, this, 32, 1, true);
-      BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.FOREST);
-      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
-      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.SWAMP);
-      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
-      biomes = BiomeDictionary.getBiomesForType(BiomeDictionary.Type.JUNGLE);
-      EntityRegistry.addSpawn(EntityEnderminy.class, rate, 1, Config.enderminyMaxGroupSize, EnumCreatureType.monster, biomes);
-
-      rate = Config.enderminySpawnRate;
-      EntityRegistry.registerModEntity(EntityEnderminy.class, EntityEnderminy.NAME, 0, this, 32, 1, true);
-
-    }
-
-    if(Config.enderCreeperEnabled) {
-      BiomeDictionary.Type[] biomeTypes = new BiomeDictionary.Type[] {
-          BiomeDictionary.Type.MESA,
-          BiomeDictionary.Type.FOREST,
-          BiomeDictionary.Type.PLAINS,
-          BiomeDictionary.Type.MOUNTAIN,
-          BiomeDictionary.Type.HILLS,
-          BiomeDictionary.Type.SWAMP,
-          BiomeDictionary.Type.SANDY,
-          BiomeDictionary.Type.SNOWY,
-          BiomeDictionary.Type.WASTELAND,
-          BiomeDictionary.Type.BEACH,
-      };
-      int rate = Config.enderCreeperSpawnRate;
-      for (BiomeDictionary.Type type : biomeTypes) {
-        BiomeGenBase[] biomes = BiomeDictionary.getBiomesForType(type);
-        EntityRegistry.addSpawn(EntityEnderCreeper.class, rate, 1, 2, EnumCreatureType.monster, biomes);
-      }
-      int entityID = EntityRegistry.findGlobalUniqueEntityId();
-      EntityRegistry.registerModEntity(EntityEnderCreeper.class, EntityEnderCreeper.NAME, entityID, this, 32, 1, true);
-    }
-
   }
 
   private void registerFluids() {

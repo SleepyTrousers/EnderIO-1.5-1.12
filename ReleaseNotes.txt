@@ -10,6 +10,7 @@ Changes
   placing in the crafting grid
 - #1167 Improved NEI handlers (Tonius)
 - #1165 Updated zh_CN.lang (Mrkwtkr)
+- Removed mobs from EnderIO, moved to new mod EnderZoo
 
 Bugs
 - #1162 Infinite Broken-Spawner exploit with Twilight Forest

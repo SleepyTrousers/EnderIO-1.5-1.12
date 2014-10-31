@@ -3,6 +3,7 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -28,7 +29,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.entity.EntityEnderminy;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.teleport.IItemOfTravel;
 import crazypants.enderio.teleport.TravelController;
@@ -39,6 +39,8 @@ import crazypants.util.Util;
 
 public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
+  private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
+  
   static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", 3, 1561, 7, 2, 25);
 
   public static boolean isEquipped(EntityPlayer player) {
@@ -122,7 +124,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
         }
       }
       if(isEquipped(player)) {
-        if(evt.entityLiving instanceof EntityEnderman || evt.entityLiving instanceof EntityEnderminy) {
+        String name = EntityList.getEntityString(evt.entityLiving);
+        if(evt.entityLiving instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {        
           int numPearls = 0;
           if(Math.random() <= Config.darkSteelSwordEnderPearlDropChance) {
             numPearls++;
@@ -228,7 +231,8 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
         if(eu.energy > Config.darkSteelSwordPowerUsePerHit) {
           extractEnergy(player.getCurrentEquippedItem(), Config.darkSteelSwordPowerUsePerHit, false);
-          if(entity instanceof EntityEnderman || entity instanceof EntityEnderminy) {
+          String name = EntityList.getEntityString(entity);
+          if(entity instanceof EntityEnderman || ENDERZOO_ENDERMINY.equals(name)) {
             entity.getEntityData().setBoolean("hitByDarkSteelSword", true);
           }
         }
