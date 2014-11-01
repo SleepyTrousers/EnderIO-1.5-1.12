@@ -40,7 +40,7 @@ import crazypants.util.Lang;
 public class WailaCompat implements IWailaDataProvider {
 
   public static final WailaCompat INSTANCE = new WailaCompat();
-
+  
   public static void load(IWailaRegistrar registrar) {
     registrar.registerStackProvider(INSTANCE, BlockConduitBundle.class);
     registrar.registerStackProvider(INSTANCE, BlockDarkSteelAnvil.class);
@@ -155,7 +155,7 @@ public class WailaCompat implements IWailaDataProvider {
       int stored = accessor.getTileEntity() instanceof TileCapacitorBank ? power.getEnergyStored() : accessor.getNBTData().getInteger("storedEnergyRF");
       int max = power.getMaxEnergyStored();
 
-      currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, stored, EnumChatFormatting.RESET, EnumChatFormatting.WHITE, max,
+      currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE, fmt.format(max),
           EnumChatFormatting.RESET));
 
     } else if(te instanceof IConduitBundle) {
@@ -168,8 +168,8 @@ public class WailaCompat implements IWailaDataProvider {
           NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
           IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
           if(conduit != null && conduit instanceof IPowerConduit) {
-            currenttip.add(String.format("%s%d%s / %s%d%s RF", EnumChatFormatting.WHITE, ((IPowerConduit) conduit).getEnergyStored(), EnumChatFormatting.RESET,
-                EnumChatFormatting.WHITE, ((IConduitBundle) te).getMaxEnergyStored(), EnumChatFormatting.RESET));
+            currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(((IPowerConduit) conduit).getEnergyStored()), EnumChatFormatting.RESET,
+                EnumChatFormatting.WHITE, fmt.format(((IConduitBundle) te).getMaxEnergyStored()), EnumChatFormatting.RESET));
           }
         }
       }

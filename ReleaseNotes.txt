@@ -8,6 +8,7 @@ Changes
   'Easy' recipe config option added to use old, cheaper recipe
 - Old transceiver now hidden in NEI / creative tab. Will be removed soon, convert existing blocks to new version by 
   placing in the crafting grid
+- Added wireless powered light (tterrag)
 - #1167 Improved NEI handlers (Tonius)
 - #1165 Updated zh_CN.lang (Mrkwtkr)
 - Removed mobs from EnderIO, moved to new mod EnderZoo

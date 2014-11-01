@@ -14,6 +14,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.light.BlockItemElectricLight;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
@@ -243,7 +244,16 @@ public class MachineRecipes {
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
     GameRegistry.addRecipe(inst);
-
+    
+    //wireless light
+    ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC.ordinal());
+    ItemStack poweredLampInv = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC_INV.ordinal());
+    ItemStack wirelessLamp =  new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS.ordinal());
+    ItemStack wirelessLampInv =  new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS_INV.ordinal());
+    GameRegistry.addShapelessRecipe(wirelessLamp, poweredLamp, enderRes);
+    GameRegistry.addShapelessRecipe(wirelessLamp, wirelessLampInv, Blocks.redstone_torch);
+    GameRegistry.addShapelessRecipe(wirelessLampInv, poweredLampInv, enderRes);
+    GameRegistry.addShapelessRecipe(wirelessLampInv, wirelessLamp, Blocks.redstone_torch);
   }
 
   public static void addOreDictionaryRecipes() {

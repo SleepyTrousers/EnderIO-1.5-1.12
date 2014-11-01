@@ -391,9 +391,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       TileCapacitorBank cap = (TileCapacitorBank) te;
       String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
             
-      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIO"),  format, cap.getMaxIO(), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxIn"),  format, cap.getMaxInput(), Util.TAB + Util.ALIGNRIGHT));
-      tooltip.add(String.format("%s : %s%d%sRF/t ", Lang.localize("capbank.maxOut"), format, cap.getMaxOutput(), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, fmt.format(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, fmt.format(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
     }
   }
 

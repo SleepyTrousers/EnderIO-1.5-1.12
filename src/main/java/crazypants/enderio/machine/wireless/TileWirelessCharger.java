@@ -5,8 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
@@ -51,7 +51,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
         (lastPowerUpdate != storedEnergyRF && worldObj.getTotalWorldTime() % 20 == 0)
         ) {
       lastPowerUpdate = storedEnergyRF;
-      EnderIO.packetPipeline.sendToAllAround(new PacketStoredEnergy(this), this);
+      PacketHandler.sendToAllAround(new PacketStoredEnergy(this), this);
     }
 
   }
@@ -125,6 +125,13 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   @Override
   public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
     return 0;
+  }
+  
+  @Override
+  public int takeEnergy(int max) {
+    int prev = storedEnergyRF;
+    storedEnergyRF = Math.max(0, storedEnergyRF - max);
+    return prev - storedEnergyRF;
   }
 
   @Override

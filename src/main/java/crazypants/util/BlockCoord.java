@@ -1,6 +1,8 @@
 package crazypants.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public final class BlockCoord {
@@ -41,6 +43,14 @@ public final class BlockCoord {
     double dsq = distanceSquared(other);    
     return (int)Math.ceil(Math.sqrt(dsq)); 
   }
+  
+  public Block getBlock(World world) {
+    return world.getBlock(x, y, z);
+  }
+
+  public TileEntity getTileEntity(World world) {
+    return world.getTileEntity(x, y, z);
+  }
 
   @Override
   public int hashCode() {
@@ -78,5 +88,4 @@ public final class BlockCoord {
   public boolean equals(int xCoord, int yCoord, int zCoord) {
     return x == xCoord && y == yCoord && z == zCoord;
   }
-
 }

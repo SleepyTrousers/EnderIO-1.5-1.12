@@ -1,15 +1,10 @@
 package crazypants.enderio.machine.wireless;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import scala.Array;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -17,8 +12,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
 import crazypants.util.BlockCoord;
 
 public class WirelessChargerController {
@@ -93,5 +86,11 @@ public class WirelessChargerController {
     return res;
   }
 
- 
+  public Collection<IWirelessCharger> getChargers(World world) {
+    return getChargerMap(world).values();
+  }
+
+  public Map<BlockCoord, IWirelessCharger> getChargerMap(World world) {
+    return perWorldChargers.get(world.provider.dimensionId);
+  }
 }
