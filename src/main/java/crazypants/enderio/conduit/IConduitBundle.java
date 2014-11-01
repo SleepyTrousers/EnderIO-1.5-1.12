@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import appeng.api.networking.IGridHost;
-import appeng.me.helpers.IGridProxyable;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -13,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+import appeng.me.helpers.IGridProxyable;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
@@ -22,7 +21,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
-@Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
+@Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2")
 public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridProxyable {
 
   TileEntity getEntity();
