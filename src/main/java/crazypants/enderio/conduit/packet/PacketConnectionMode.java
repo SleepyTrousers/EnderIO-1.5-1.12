@@ -20,7 +20,7 @@ public class PacketConnectionMode extends AbstractConduitPacket<IConduit> implem
   public PacketConnectionMode(IConduit con, ForgeDirection dir) {
     super(con.getBundle().getEntity(), ConTypeEnum.get(con));
     this.dir = dir;
-    mode = con.getConectionMode(dir);
+    mode = con.getConnectionMode(dir);
   }
 
   @Override

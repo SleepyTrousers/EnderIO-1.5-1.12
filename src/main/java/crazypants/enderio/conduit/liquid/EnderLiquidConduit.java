@@ -85,7 +85,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
 
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -246,7 +246,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(network == null || !getConectionMode(from).acceptsInput()) {
+    if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
     return network.fillFrom(this, from, resource, doFill);
@@ -257,7 +257,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsInput();
+    return getConnectionMode(from).acceptsInput();
   }
 
   @Override

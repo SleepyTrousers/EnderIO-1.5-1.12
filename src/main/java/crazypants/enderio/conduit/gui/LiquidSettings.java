@@ -223,14 +223,14 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   private boolean isInput() {
-    return conduit.getConectionMode(gui.getDir()) == ConnectionMode.INPUT;
+    return conduit.getConnectionMode(gui.getDir()) == ConnectionMode.INPUT;
   }
 
   private boolean isFilterVisible() {
     if(!isEnder) {
       return false;
     }
-    ConnectionMode mode = conduit.getConectionMode(gui.getDir());
+    ConnectionMode mode = conduit.getConnectionMode(gui.getDir());
     return mode == ConnectionMode.INPUT || mode == ConnectionMode.OUTPUT;
   }
   

@@ -173,7 +173,7 @@ public class GasConduit extends AbstractGasTankConduit {
     }
     GasOutput lo = new GasOutput(getBlockCoord().getLocation(dir), dir.getOpposite());
     network.removeInput(lo);
-    if(getConectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
+    if(getConnectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
       network.addInput(lo);
     }
   }
@@ -222,7 +222,7 @@ public class GasConduit extends AbstractGasTankConduit {
 
   @Override
   public int receiveGas(ForgeDirection from, GasStack resource) {
-    if(network == null || !getConectionMode(from).acceptsInput()) {
+    if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
     return network.fill(from, resource, true);
@@ -230,7 +230,7 @@ public class GasConduit extends AbstractGasTankConduit {
 
   @Override
   public GasStack drawGas(ForgeDirection from, int maxDrain) {
-    if(network == null || !getConectionMode(from).acceptsOutput()) {
+    if(network == null || !getConnectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, maxDrain, true);
@@ -241,7 +241,7 @@ public class GasConduit extends AbstractGasTankConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsInput() && GasConduitNetwork.areGassCompatable(getGasType(), new GasStack(gas, 0));
+    return getConnectionMode(from).acceptsInput() && GasConduitNetwork.areGassCompatable(getGasType(), new GasStack(gas, 0));
   }
 
   @Override
@@ -249,7 +249,7 @@ public class GasConduit extends AbstractGasTankConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsOutput() && GasConduitNetwork.areGassCompatable(getGasType(), new GasStack(gas, 0));
+    return getConnectionMode(from).acceptsOutput() && GasConduitNetwork.areGassCompatable(getGasType(), new GasStack(gas, 0));
   }
 
   @Override

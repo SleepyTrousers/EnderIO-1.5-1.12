@@ -182,7 +182,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         renderer.renderEntity(this, bundle, con, x, y, z, partialTick, brightness);
         Set<ForgeDirection> extCons = con.getExternalConnections();
         for (ForgeDirection dir : extCons) {
-          if(con.getConectionMode(dir) != ConnectionMode.DISABLED && con.getConectionMode(dir) != ConnectionMode.NOT_SET) {
+          if(con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
             externals.add(dir);
           }
         }

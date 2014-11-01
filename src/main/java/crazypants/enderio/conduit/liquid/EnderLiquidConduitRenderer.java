@@ -32,9 +32,9 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
     EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       IIcon tex = null;
-      if(conduit.getConectionMode(dir) == ConnectionMode.INPUT) {
+      if(conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
         tex = pc.getTextureForInputMode();
-      } else if(conduit.getConectionMode(dir) == ConnectionMode.OUTPUT) {
+      } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
         tex = pc.getTextureForOutputMode();
       }
       if(tex != null) {

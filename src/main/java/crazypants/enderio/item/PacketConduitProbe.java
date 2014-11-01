@@ -162,7 +162,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       return;
     }
     for (ForgeDirection dir : conduit.getExternalConnections()) {
-      ConnectionMode mode = conduit.getConectionMode(dir);
+      ConnectionMode mode = conduit.getConnectionMode(dir);
 
       sb.append(ITEM_HEADING);
       sb.append(" ");

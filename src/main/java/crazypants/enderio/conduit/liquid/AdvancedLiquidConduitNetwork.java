@@ -54,7 +54,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
       tank.addAmount(con.getTank().getFluidAmount());
     }
     for (ForgeDirection dir : con.getExternalConnections()) {
-      if(con.getConectionMode(dir).acceptsOutput()) {
+      if(con.getConnectionMode(dir).acceptsOutput()) {
         outputs.add(new LiquidOutput(con.getBlockCoord().getLocation(dir), dir.getOpposite()));
       }
     }

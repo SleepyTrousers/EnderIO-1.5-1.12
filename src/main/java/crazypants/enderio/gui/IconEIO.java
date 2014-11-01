@@ -38,11 +38,14 @@ public final class IconEIO {
   public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(32, 180, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(32 + 96, 180, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_GAS = new IconEIO(64, 164, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_GAS_OFF = new IconEIO(64 + 96, 164, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_GAS = new IconEIO(64, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_GAS_OFF = new IconEIO(64 + 96, 148, 32, 32);
   
+  public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(64, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAN_ME_OFF = new IconEIO(64 + 96, 180, 32, 32);
+
   public static final IconEIO PROBE_OVERLAY_PROBE = new IconEIO(112, 100, 32, 16);
-  public static final IconEIO PROBE_OVERLAY_COPY = new IconEIO(144, 100, 32, 16);  
+  public static final IconEIO PROBE_OVERLAY_COPY = new IconEIO(144, 100, 32, 16);
 
   public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);

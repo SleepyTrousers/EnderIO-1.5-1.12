@@ -177,7 +177,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     }
     LiquidOutput lo = new LiquidOutput(getBlockCoord().getLocation(dir), dir.getOpposite());
     network.removeInput(lo);
-    if(getConectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
+    if(getConnectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
       network.addInput(lo);
     }
   }
@@ -226,7 +226,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-    if(network == null || !getConectionMode(from).acceptsInput()) {
+    if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
     return network.fill(from, resource, doFill);
@@ -234,7 +234,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-    if(network == null || !getConectionMode(from).acceptsOutput()) {
+    if(network == null || !getConnectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, resource, doDrain);
@@ -242,7 +242,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(network == null || !getConectionMode(from).acceptsOutput()) {
+    if(network == null || !getConnectionMode(from).acceptsOutput()) {
       return null;
     }
     return network.drain(from, maxDrain, doDrain);
@@ -253,7 +253,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsInput() && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
+    return getConnectionMode(from).acceptsInput() && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
   }
 
   @Override
@@ -261,7 +261,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     if(network == null) {
       return false;
     }
-    return getConectionMode(from).acceptsOutput() && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
+    return getConnectionMode(from).acceptsOutput() && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), new FluidStack(fluid, 0));
   }
 
   @Override

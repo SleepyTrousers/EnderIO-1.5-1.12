@@ -120,7 +120,7 @@ public class GasSettings extends BaseSettingsPanel {
   }
 
   private boolean isInput() {
-    return conduit.getConectionMode(gui.getDir()) == ConnectionMode.INPUT;
+    return conduit.getConnectionMode(gui.getDir()) == ConnectionMode.INPUT;
   }
 
 }

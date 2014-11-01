@@ -139,7 +139,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -159,7 +159,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   private boolean isColorBandRendered(ForgeDirection dir) {
-    return getConectionMode(dir) != ConnectionMode.DISABLED && getExtractionRedstoneMode(dir) != RedstoneControlMode.IGNORE;
+    return getConnectionMode(dir) != ConnectionMode.DISABLED && getExtractionRedstoneMode(dir) != RedstoneControlMode.IGNORE;
   }
 
   @Override
@@ -317,7 +317,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    ConnectionMode mode = getConectionMode(dir);
+    ConnectionMode mode = getConnectionMode(dir);
     if(mode == ConnectionMode.OUTPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
     }
@@ -326,7 +326,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public int getMaxEnergyExtracted(ForgeDirection dir) {
-    ConnectionMode mode = getConectionMode(dir);
+    ConnectionMode mode = getConnectionMode(dir);
     if(mode == ConnectionMode.INPUT || mode == ConnectionMode.DISABLED || !isRedstoneEnabled(dir)) {
       return 0;
     }

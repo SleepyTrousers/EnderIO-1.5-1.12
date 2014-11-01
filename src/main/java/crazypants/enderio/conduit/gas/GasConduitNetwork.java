@@ -51,7 +51,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
       tank.addAmount(con.getTank().getStored());
     }
     for (ForgeDirection dir : con.getExternalConnections()) {
-      if(con.getConectionMode(dir).acceptsOutput()) {
+      if(con.getConnectionMode(dir).acceptsOutput()) {
         outputs.add(new GasOutput(con.getBlockCoord().getLocation(dir), dir.getOpposite()));
       }
     }

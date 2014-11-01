@@ -77,7 +77,7 @@ public class BaseSettingsPanel implements ITabPanel {
     rightArrow.onGuiInit();
 
     FontRenderer fr = gui.getFontRenderer();
-    connectionModeChanged(con.getConectionMode(gui.getDir()));
+    connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     initCustomOptions();
   }
@@ -110,12 +110,12 @@ public class BaseSettingsPanel implements ITabPanel {
     if(guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConectionMode(gui.getDir()));
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     } else if(guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConectionMode(gui.getDir()));
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
     }
   }
 
@@ -136,7 +136,7 @@ public class BaseSettingsPanel implements ITabPanel {
     int y = gui.getGuiTop() + 13;//customTop + 8;//gap + fr.FONT_HEIGHT + gap;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
-    String modeString = con.getConectionMode(gui.getDir()).getLocalisedName();
+    String modeString = con.getConnectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);

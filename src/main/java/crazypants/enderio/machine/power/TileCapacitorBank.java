@@ -338,7 +338,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           //All other power transfer is handled by the conduit network
           IConduitBundle bundle = (IConduitBundle) receptor.receptor.getDelegate();
           IPowerConduit conduit = bundle.getConduit(IPowerConduit.class);
-          if(conduit != null && conduit.getConectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
+          if(conduit != null && conduit.getConnectionMode(receptor.fromDir.getOpposite()) == ConnectionMode.INPUT) {
             used = powerInterface.recieveEnergy(receptor.fromDir.getOpposite(), canTransmit);
           } else {
             used = 0;

@@ -74,12 +74,12 @@ public class NetworkedInventory {
   }
 
   boolean canExtract() {
-    ConnectionMode mode = con.getConectionMode(conDir);
+    ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.INPUT || mode == ConnectionMode.IN_OUT;
   }
 
   boolean canInsert() {
-    ConnectionMode mode = con.getConectionMode(conDir);
+    ConnectionMode mode = con.getConnectionMode(conDir);
     return mode == ConnectionMode.OUTPUT || mode == ConnectionMode.IN_OUT;
   }
 

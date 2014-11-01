@@ -155,7 +155,7 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   private String getHeading() {
-    ConnectionMode mode = con.getConectionMode(gui.getDir());
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.DISABLED) {
       return "";
     }
@@ -180,7 +180,7 @@ public class ItemSettings extends BaseSettingsPanel {
     boolean showInput = false;
     boolean showOutput = false;
 
-    ConnectionMode mode = con.getConectionMode(gui.getDir());
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.INPUT) {
       showInput = true;     
     } else if(mode == ConnectionMode.OUTPUT) {
@@ -228,7 +228,7 @@ public class ItemSettings extends BaseSettingsPanel {
       filterGui = null;
     }
 
-    ConnectionMode mode = con.getConectionMode(gui.getDir());
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.DISABLED) {
       return;
     }
@@ -274,7 +274,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private void updateButtons() {
 
-    ConnectionMode mode = con.getConectionMode(gui.getDir());
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.DISABLED) {
       return;
     }
@@ -372,7 +372,7 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   private boolean isInputVisible() {
-    ConnectionMode mode = con.getConectionMode(gui.getDir());    
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());    
     return (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
   }
 
@@ -384,7 +384,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
-    ConnectionMode mode = con.getConectionMode(gui.getDir());
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.DISABLED) {
       return;
     }

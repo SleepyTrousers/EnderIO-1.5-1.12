@@ -209,7 +209,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
           ForgeDirection connDir = res.component.dir;
           ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
-            if(getConectionMode(faceHit) == ConnectionMode.DISABLED) {
+            if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
@@ -244,7 +244,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   public ItemStack insertItem(ForgeDirection from, ItemStack item) {
     if(!externalConnections.contains(from)) {
       return item;
-    } else if(!getConectionMode(from).acceptsInput()) {
+    } else if(!getConnectionMode(from).acceptsInput()) {
       return item;
     } else if(network == null) {
       return item;

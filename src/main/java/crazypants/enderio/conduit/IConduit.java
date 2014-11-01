@@ -84,7 +84,7 @@ public interface IConduit {
 
   boolean isConnectedTo(ForgeDirection dir);
 
-  ConnectionMode getConectionMode(ForgeDirection dir);
+  ConnectionMode getConnectionMode(ForgeDirection dir);
 
   void setConnectionMode(ForgeDirection dir, ConnectionMode mode);
 

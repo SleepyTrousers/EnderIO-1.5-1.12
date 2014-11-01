@@ -98,7 +98,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean canOutputToDir(ForgeDirection dir) {
-    if(isExtractingFromDir(dir) || getConectionMode(dir) == ConnectionMode.DISABLED) {
+    if(isExtractingFromDir(dir) || getConnectionMode(dir) == ConnectionMode.DISABLED) {
       return false;
     }
     if(conduitConnections.contains(dir)) {
@@ -164,7 +164,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   public boolean isExtractingFromDir(ForgeDirection dir) {
-    return getConectionMode(dir) == ConnectionMode.INPUT;
+    return getConnectionMode(dir) == ConnectionMode.INPUT;
   }
 
   @Override

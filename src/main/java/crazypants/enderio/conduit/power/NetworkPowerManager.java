@@ -401,7 +401,7 @@ public class NetworkPowerManager {
           capBanks.add(cb.getController());
         }
 
-        if(rec.emmiter.getConectionMode(rec.direction) == ConnectionMode.IN_OUT) {
+        if(rec.emmiter.getConnectionMode(rec.direction) == ConnectionMode.IN_OUT) {
           toBalance += cb.getEnergyStored();
           maxToBalance += cb.getMaxEnergyStored();
         }
@@ -436,7 +436,7 @@ public class NetworkPowerManager {
       int canRemove = 0;
       int canAdd = 0;
       for (CapBankSupplyEntry entry : enteries) {
-        if(entry.emmiter.getConectionMode(entry.direction) == ConnectionMode.IN_OUT) {
+        if(entry.emmiter.getConnectionMode(entry.direction) == ConnectionMode.IN_OUT) {
           entry.calcToBalance(filledRatio);
           if(entry.toBalance < 0) {
             canRemove += -entry.toBalance;
@@ -450,7 +450,7 @@ public class NetworkPowerManager {
 
       for (int i = 0; i < enteries.size() && toalTransferAmount > 0; i++) {
         CapBankSupplyEntry from = enteries.get(i);
-        if(from.emmiter.getConectionMode(from.direction) == ConnectionMode.IN_OUT) {
+        if(from.emmiter.getConnectionMode(from.direction) == ConnectionMode.IN_OUT) {
 
           int amount = from.toBalance;
           amount = minAbs(amount, toalTransferAmount);

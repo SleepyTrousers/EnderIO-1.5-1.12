@@ -553,7 +553,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       Set<ForgeDirection> extCons = con.getExternalConnections();
       if(extCons != null) {
         for (ForgeDirection dir : extCons) {
-          if(con.getConectionMode(dir) != ConnectionMode.DISABLED) {
+          if(con.getConnectionMode(dir) != ConnectionMode.DISABLED) {
             externalDirs.add(dir);
           }
         }

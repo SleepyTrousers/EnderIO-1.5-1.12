@@ -199,11 +199,11 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       conduitLoc = con.getBlockCoord();
       tankDir = conDir.getOpposite();
       externalTank = FluidUtil.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
-      acceptsOuput = con.getConectionMode(conDir).acceptsOutput();
+      acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
     }
 
     public boolean isValid() {
-      return externalTank != null && con.getConectionMode(conDir) != ConnectionMode.DISABLED;
+      return externalTank != null && con.getConnectionMode(conDir) != ConnectionMode.DISABLED;
     }
 
     @Override

@@ -108,7 +108,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             Block id = world.getBlock(loc.x, loc.y, loc.z);
             if(id == EnderIO.blockConduitBundle) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
-              if(neighbour != null && neighbour.getConectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
+              if(neighbour != null && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
               }
               setConnectionMode(faceHit, ConnectionMode.NOT_SET);
@@ -189,7 +189,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
-    if(getConectionMode(dir) == ConnectionMode.IN_OUT) {
+    if(getConnectionMode(dir) == ConnectionMode.IN_OUT) {
       return ConnectionMode.DISABLED;
     }
     return ConnectionMode.IN_OUT;
@@ -197,7 +197,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public ConnectionMode getPreviousConnectionMode(ForgeDirection dir) {
-    if(getConectionMode(dir) == ConnectionMode.IN_OUT) {
+    if(getConnectionMode(dir) == ConnectionMode.IN_OUT) {
       return ConnectionMode.DISABLED;
     }
     return ConnectionMode.IN_OUT;
@@ -309,7 +309,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public int isProvidingWeakPower(ForgeDirection toDirection) {
-    if(getConectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
+    if(getConnectionMode(toDirection.getOpposite()) != ConnectionMode.IN_OUT) {
       return 0;
     }
     return super.isProvidingWeakPower(toDirection);    
@@ -340,7 +340,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return super.getNetworkOutputs(side);
     }
 
-    ConnectionMode mode = getConectionMode(side);
+    ConnectionMode mode = getConnectionMode(side);
     if(network == null || mode != ConnectionMode.IN_OUT) {
       return Collections.emptySet();
     }
@@ -361,7 +361,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   }
 
   @Override
-  public ConnectionMode getConectionMode(ForgeDirection dir) {
+  public ConnectionMode getConnectionMode(ForgeDirection dir) {
     ConnectionMode res = conectionModes.get(dir);
     if(res == null) {
       return ConnectionMode.NOT_SET;
@@ -371,7 +371,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   protected boolean acceptSignalsForDir(ForgeDirection dir) {
-    return getConectionMode(dir) == ConnectionMode.IN_OUT && super.acceptSignalsForDir(dir);
+    return getConnectionMode(dir) == ConnectionMode.IN_OUT && super.acceptSignalsForDir(dir);
   }
 
   @Override
