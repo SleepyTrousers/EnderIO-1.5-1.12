@@ -46,6 +46,7 @@ dependencies {
     exportedCompile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
 
     compile "mcp.mobius.waila:Waila:${waila_version}"
+    compile "appeng:appliedenergistics2:${ae2_version}:dev"
 }
 
 sourceSets {
