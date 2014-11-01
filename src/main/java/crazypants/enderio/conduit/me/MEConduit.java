@@ -141,11 +141,12 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       node = AEApi.instance().createGridNode(grid);
       node.updateState();
     }
+    super.updateEntity(worldObj);
   }
 
   @Override
   public void onRemovedFromBundle() {
-    connectionsChanged();
+    super.onRemovedFromBundle();
     node.destroy();
     node = null;
   }
