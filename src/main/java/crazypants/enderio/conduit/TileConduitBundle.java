@@ -850,17 +850,19 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "appliedenergistics2")
   public IGridNode getGridNode(ForgeDirection dir) {
-    IMEConduit cond = getConduit(IMEConduit.class);
-    if (cond != null) {
-      return (IGridNode) node;
-    }
-    return null;
+    return (IGridNode) node;
+  }
+  
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void setGridNode(Object node) {
+    this.node = (IGridNode) node;
   }
 
   @Override
   @Method(modid = "appliedenergistics2")
   public AECableType getCableConnectionType(ForgeDirection dir) {
-    return AECableType.GLASS;
+    return getConduit(IMEConduit.class) != null ? AECableType.GLASS : AECableType.NONE;
   }
 
   @Override

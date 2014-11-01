@@ -10,6 +10,7 @@ import appeng.api.AEApi;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
+import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -19,8 +20,6 @@ import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
-
-  private IGridNode node;
 
   protected MEConduitNetwork network;
   protected MEConduitGrid grid;
@@ -80,6 +79,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     return canConnectTo(getBundle().getWorld(), direction, getBundle().getBlockCoord());
   }
   
+  @Method(modid = "appliedenergistics2")
   private boolean canConnectTo(World world, ForgeDirection dir, BlockCoord pos) {
     TileEntity te = world.getTileEntity(pos.x + dir.offsetX, pos.y + dir.offsetY, pos.z + dir.offsetZ);
     if (te instanceof IGridHost) {
@@ -103,19 +103,24 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
+  @Method(modid = "appliedenergistics2")
   public void updateEntity(World worldObj) {
-    if(node == null && !worldObj.isRemote) {
-      node = AEApi.instance().createGridNode(grid);
-      node.updateState();
+    if(getBundle().getGridNode(null) == null && !worldObj.isRemote) {
+      IGridNode node = AEApi.instance().createGridNode(grid);
+      if (node != null) {
+        getBundle().setGridNode(node);
+        getBundle().getGridNode(null).updateState();
+      }
     }
     super.updateEntity(worldObj);
   }
 
   @Override
+  @Method(modid = "appliedenergistics2")
   public void onRemovedFromBundle() {
     super.onRemovedFromBundle();
-    node.destroy();
-    node = null;
+    getBundle().getGridNode(null).destroy();
+    getBundle().setGridNode(null);
   }
   
   @Override

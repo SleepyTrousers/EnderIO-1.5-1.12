@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+import appeng.api.networking.IGridNode;
 import appeng.me.helpers.IGridProxyable;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
@@ -100,4 +101,5 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
   
   World getWorld();
 
+  void setGridNode(Object node);
 }
