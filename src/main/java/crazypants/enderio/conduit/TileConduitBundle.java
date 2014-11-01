@@ -18,6 +18,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import appeng.api.networking.IGridNode;
+import appeng.api.util.AECableType;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -32,6 +35,7 @@ import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
@@ -836,7 +840,28 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public World getWorld() {
     return getWorldObj();
   }
-  
-  
 
+  /* AE2 */
+  
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public IGridNode getGridNode(ForgeDirection dir) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      return cond.getGridNode(dir);
+    }
+    return null;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public AECableType getCableConnectionType(ForgeDirection dir) {
+    return AECableType.GLASS;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void securityBreak() {
+    ;
+  }
 }

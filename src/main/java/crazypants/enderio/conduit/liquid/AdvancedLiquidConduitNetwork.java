@@ -55,7 +55,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     }
     for (ForgeDirection dir : con.getExternalConnections()) {
       if(con.getConectionMode(dir).acceptsOutput()) {
-        outputs.add(new LiquidOutput(con.getLocation().getLocation(dir), dir.getOpposite()));
+        outputs.add(new LiquidOutput(con.getBlockCoord().getLocation(dir), dir.getOpposite()));
       }
     }
     outputIterator = null;
@@ -102,7 +102,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
           leftOvers--;
         }
         con.getTank().setLiquid(f);
-        BlockCoord bc = con.getLocation();
+        BlockCoord bc = con.getBlockCoord();
         con.getBundle().getEntity().getWorldObj().markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
       }
 
@@ -308,7 +308,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   public IFluidHandler getTankContainer(AdvancedLiquidConduit con, ForgeDirection dir) {
-    BlockCoord bc = con.getLocation().getLocation(dir);
+    BlockCoord bc = con.getBlockCoord().getLocation(dir);
     return getTankContainer(bc);
   }
 

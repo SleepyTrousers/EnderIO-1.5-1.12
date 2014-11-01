@@ -47,7 +47,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   @Override
   public void addConduit(IItemConduit con) {
     super.addConduit(con);
-    conMap.put(con.getLocation(), con);
+    conMap.put(con.getBlockCoord(), con);
 
     TileEntity te = con.getBundle().getEntity();
     if(te != null) {
@@ -91,7 +91,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     List<NetworkedInventory> invs = getOrCreate(bc);
     NetworkedInventory remove = null;
     for (NetworkedInventory ni : invs) {
-      if(ni.con.getLocation().equals(itemConduit.getLocation())) {
+      if(ni.con.getBlockCoord().equals(itemConduit.getBlockCoord())) {
         remove = ni;
         break;
       }
@@ -119,13 +119,13 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
 
     try {
       doingSend = true;
-      BlockCoord loc = itemConduit.getLocation().getLocation(side);
+      BlockCoord loc = itemConduit.getBlockCoord().getLocation(side);
 
       ItemStack result = item.copy();
       List<NetworkedInventory> invs = getOrCreate(loc);
       for (NetworkedInventory inv : invs) {
 
-        if(inv.con.getLocation().equals(itemConduit.getLocation())) {
+        if(inv.con.getBlockCoord().equals(itemConduit.getBlockCoord())) {
           int numInserted = inv.insertIntoTargets(item.copy());
           if(numInserted >= item.stackSize) {
             return null;
@@ -145,7 +145,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     List<NetworkedInventory> invs = getOrCreate(extractFrom);
     for (NetworkedInventory source : invs) {
 
-      if(source.con.getLocation().equals(con.getLocation())) {
+      if(source.con.getBlockCoord().equals(con.getBlockCoord())) {
         if(source != null && source.sendPriority != null) {
           for (Target t : source.sendPriority) {
             IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);

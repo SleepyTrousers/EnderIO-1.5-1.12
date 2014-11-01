@@ -52,7 +52,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
     }
     for (ForgeDirection dir : con.getExternalConnections()) {
       if(con.getConectionMode(dir).acceptsOutput()) {
-        outputs.add(new GasOutput(con.getLocation().getLocation(dir), dir.getOpposite()));
+        outputs.add(new GasOutput(con.getBlockCoord().getLocation(dir), dir.getOpposite()));
       }
     }
     outputIterator = null;
@@ -91,7 +91,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
           leftOvers--;
         }
         con.getTank().setGas(f);
-        BlockCoord bc = con.getLocation();
+        BlockCoord bc = con.getBlockCoord();
         con.getBundle().getEntity().getWorldObj().markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
       }
 
@@ -272,7 +272,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
   }
 
   public IGasHandler getTankContainer(GasConduit con, ForgeDirection dir) {
-    BlockCoord bc = con.getLocation().getLocation(dir);
+    BlockCoord bc = con.getBlockCoord().getLocation(dir);
     return getTankContainer(bc);
   }
 

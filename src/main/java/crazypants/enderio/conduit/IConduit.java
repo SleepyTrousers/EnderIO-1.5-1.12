@@ -45,7 +45,7 @@ public interface IConduit {
 
   void onRemovedFromBundle();
 
-  BlockCoord getLocation();
+  BlockCoord getBlockCoord();
 
   // Conections
   boolean hasConnections();

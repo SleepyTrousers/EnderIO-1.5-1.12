@@ -129,7 +129,7 @@ public class RedstoneSwitch extends RedstoneConduit {
   public Set<Signal> getNetworkInputs() {
     Set<Signal> res = super.getNetworkInputs();
     if(isOn) {
-      BlockCoord loc = getLocation();
+      BlockCoord loc = getBlockCoord();
       Signal signal = new Signal(loc.x, loc.y, loc.z, ForgeDirection.UNKNOWN, 15, DyeColor.RED);
       res.add(signal);
     }

@@ -41,7 +41,7 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
               return true;
             }
 
-            BlockCoord loc = getLocation().getLocation(faceHit);
+            BlockCoord loc = getBlockCoord().getLocation(faceHit);
             IGasConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IGasConduit.class);
             if(n == null) {
               return false;

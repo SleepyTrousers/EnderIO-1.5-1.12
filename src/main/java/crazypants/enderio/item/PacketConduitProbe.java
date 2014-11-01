@@ -184,7 +184,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
           sb.append(input.getDisplayName());
         }
         sb.append(" ");
-        List<String> targets = icn.getTargetsForExtraction(conduit.getLocation().getLocation(dir), conduit, input);
+        List<String> targets = icn.getTargetsForExtraction(conduit.getBlockCoord().getLocation(dir), conduit, input);
         if(targets.isEmpty()) {
           sb.append(" ");
           sb.append(Lang.localize("gui.mjReader.noOutputs"));

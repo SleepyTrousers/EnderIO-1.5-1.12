@@ -181,7 +181,7 @@ public abstract class AbstractConduit implements IConduit {
   }
 
   @Override
-  public BlockCoord getLocation() {
+  public BlockCoord getBlockCoord() {
     if(bundle == null) {
       return null;
     }

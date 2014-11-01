@@ -29,7 +29,7 @@ public abstract class AbstractGasConduit extends AbstractConduit implements IGas
   protected boolean redstoneStateDirty = true;
 
   public IGasHandler getExternalHandler(ForgeDirection direction) {
-    IGasHandler con = GasUtil.getExternalGasHandler(getBundle().getWorld(), getLocation().getLocation(direction));
+    IGasHandler con = GasUtil.getExternalGasHandler(getBundle().getWorld(), getBlockCoord().getLocation(direction));
     return (con != null && !(con instanceof IConduitBundle)) ? con : null;
   }
 

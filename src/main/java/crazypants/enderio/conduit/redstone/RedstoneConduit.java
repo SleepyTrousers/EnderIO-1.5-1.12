@@ -101,7 +101,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   }
 
   protected boolean acceptSignalsForDir(ForgeDirection dir) {
-    BlockCoord loc = getLocation().getLocation(dir);
+    BlockCoord loc = getBlockCoord().getLocation(dir);
     return ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class) == null;
   }
 
@@ -122,7 +122,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
         int input = getExternalPowerLevel(dir);
         if(input > 1) { // need to degrade external signals by one as they
                         // enter
-          BlockCoord loc = getLocation().getLocation(dir);
+          BlockCoord loc = getBlockCoord().getLocation(dir);
           Signal signal = new Signal(loc.x, loc.y, loc.z, dir, input - 1, getSignalColor(dir));
           res.add(signal);
         }
@@ -136,7 +136,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
           // RedNet API, without requiring a piece of RedNet cable in-between.
           int[] bundledInput = getExternalBundledPowerLevel(dir);
           if(bundledInput != null) {
-            BlockCoord loc = getLocation().getLocation(dir);
+            BlockCoord loc = getBlockCoord().getLocation(dir);
             for (int subnet = 0; subnet < bundledInput.length; ++subnet) {
               if(bundledInput[subnet] > 1) { // force signal strength reduction to avoid cycles
                 int color = convertColorForRedNet(subnet);
@@ -196,7 +196,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   //returns 16 for string power inputs
   protected int getExternalPowerLevel(ForgeDirection dir) {
     World world = getBundle().getEntity().getWorldObj();
-    BlockCoord loc = getLocation();
+    BlockCoord loc = getBlockCoord();
     loc = loc.getLocation(dir);
 
     int strong = world.isBlockProvidingPowerTo(loc.x, loc.y, loc.z, dir.ordinal());
@@ -214,7 +214,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   protected int[] getExternalBundledPowerLevel(ForgeDirection dir) {
     World world = getBundle().getEntity().getWorldObj();
-    BlockCoord loc = getLocation();
+    BlockCoord loc = getBlockCoord();
     loc = loc.getLocation(dir);
 
     Block block = world.getBlock(loc.x, loc.y, loc.z);
@@ -266,7 +266,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
     Set<Signal> outs = network != null ? network.getSignals() : null;
     if(outs != null) {
-      BlockCoord loc = getLocation().getLocation(side);
+      BlockCoord loc = getBlockCoord().getLocation(side);
       for (Signal s : outs) {
         // Avoid "feedback loops", i.e. don't report an output on a side where
         // we have an input (otherwise a RedNet cable connected to a conduit
@@ -289,7 +289,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
   public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
     Set<Signal> outs = network != null ? network.getSignals() : null;
     if(outs != null) {
-      BlockCoord loc = getLocation().getLocation(side);
+      BlockCoord loc = getBlockCoord().getLocation(side);
       int color = convertColorForRedNet(subnet);
       for (Signal s : outs) {
         // Avoid "feedback loops", see comment in getOutputValues.
@@ -312,7 +312,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     // with zero signal strength no signals are stored.
     Set<Signal> inputs = getNetworkInputs(side);
     externalSignals.get(side.ordinal()).clear();
-    BlockCoord loc = getLocation().getLocation(side);
+    BlockCoord loc = getBlockCoord().getLocation(side);
     for (int subnet = 0; subnet < inputValues.length; ++subnet) {
       int color = convertColorForRedNet(subnet);
       int newInput = inputValues[subnet];

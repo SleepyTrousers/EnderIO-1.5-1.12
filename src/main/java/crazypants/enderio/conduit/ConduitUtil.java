@@ -36,6 +36,8 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.me.MEConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -65,6 +67,8 @@ public class ConduitUtil {
       return new ItemConduitNetwork();
     } else if(IGasConduit.class.isAssignableFrom(type)) {
       return new GasConduitNetwork();
+    } else if(IMEConduit.class.isAssignableFrom(type)) {
+      return new MEConduitNetwork();
     }
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
     return null;
@@ -108,7 +112,7 @@ public class ConduitUtil {
 
   public static <T extends IConduit> void disconectConduits(T con, ForgeDirection connDir) {
     con.conduitConnectionRemoved(connDir);
-    BlockCoord loc = con.getLocation().getLocation(connDir);
+    BlockCoord loc = con.getBlockCoord().getLocation(connDir);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null) {
       neighbour.conduitConnectionRemoved(connDir.getOpposite());
@@ -122,7 +126,7 @@ public class ConduitUtil {
   }
 
   public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
-    BlockCoord loc = con.getLocation().getLocation(faceHit);
+    BlockCoord loc = con.getBlockCoord().getLocation(faceHit);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
