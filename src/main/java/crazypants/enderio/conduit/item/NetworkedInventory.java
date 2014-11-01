@@ -293,7 +293,7 @@ public class NetworkedInventory {
       if(!result.isEmpty()) {
         Map<BlockCoord, Integer> visited = new HashMap<BlockCoord, Integer>();
         List<BlockCoord> steps = new ArrayList<BlockCoord>();
-        steps.add(con.getBlockCoord());
+        steps.add(con.getLocation());
         calculateDistances(result, visited, steps, 0);
 
         sendPriority.addAll(result);
@@ -339,15 +339,15 @@ public class NetworkedInventory {
   }
 
   private Target getTarget(List<Target> targets, IItemConduit con, ForgeDirection dir) {
-    if(targets == null || con == null || con.getBlockCoord() == null) {
+    if(targets == null || con == null || con.getLocation() == null) {
       return null;
     }
     for (Target target : targets) {
       BlockCoord targetConLoc = null;
       if(target != null && target.inv != null && target.inv.con != null) {
-        targetConLoc = target.inv.con.getBlockCoord();
+        targetConLoc = target.inv.con.getLocation();
       }
-      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getBlockCoord())) {
+      if(targetConLoc != null && target.inv.conDir == dir && targetConLoc.equals(con.getLocation())) {
         return target;
       }
     }
@@ -355,7 +355,7 @@ public class NetworkedInventory {
   }
 
   private int distanceTo(NetworkedInventory other) {
-    return con.getBlockCoord().distanceSquared(other.con.getBlockCoord());
+    return con.getLocation().distanceSquared(other.con.getLocation());
   }
 
   public ISidedInventory getInventory() {

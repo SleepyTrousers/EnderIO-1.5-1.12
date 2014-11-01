@@ -84,7 +84,7 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     for (IConduit con : conduits) {
-      sb.append(con.getBlockCoord());
+      sb.append(con.getLocation());
       sb.append(", ");
     }
     return "AbstractConduitNetwork [conduits=" + sb.toString() + "]";

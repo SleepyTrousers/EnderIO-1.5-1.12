@@ -110,7 +110,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
       //need to send a custom packet as we don't want want to trigger a full chunk update, just
       //need to get the required  values to the entity renderer
-      BlockCoord loc = getBlockCoord();
+      BlockCoord loc = getLocation();
       PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
     }
@@ -130,7 +130,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   private void doExtract() {
 
-    BlockCoord loc = getBlockCoord();
+    BlockCoord loc = getLocation();
     if(!hasConnectionMode(ConnectionMode.INPUT)) {
       return;
     }
@@ -147,7 +147,7 @@ public class LiquidConduit extends AbstractTankConduit {
     for (ForgeDirection dir : externalConnections) {
       if(autoExtractForDir(dir)) {
 
-        IFluidHandler extTank = getTankContainer(getBlockCoord().getLocation(dir));
+        IFluidHandler extTank = getTankContainer(getLocation().getLocation(dir));
         if(extTank != null) {
 
           boolean foundFluid = false;
@@ -193,13 +193,13 @@ public class LiquidConduit extends AbstractTankConduit {
     // Note: This is just a guard against mekansims pipes that will continuously
     // call
     // fill on us if we push liquid to them.
-    if(filledFromThisTick.contains(getBlockCoord().getLocation(from))) {
+    if(filledFromThisTick.contains(getLocation().getLocation(from))) {
       return 0;
     }
 
     if(network.lockNetworkForFill()) {
       if(doFill) {
-        filledFromThisTick.add(getBlockCoord().getLocation(from));
+        filledFromThisTick.add(getLocation().getLocation(from));
       }
       try {
         int res = fill(from, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
@@ -287,7 +287,7 @@ public class LiquidConduit extends AbstractTankConduit {
             pushed += toCon;
           }
         } else if(getExternalConnections().contains(dir)) {
-          IFluidHandler con = getTankContainer(getBlockCoord().getLocation(dir));
+          IFluidHandler con = getTankContainer(getLocation().getLocation(dir));
           if(con != null) {
             int toExt = con.fill(dir.getOpposite(), toPush, doPush);
             toPush.amount -= toExt;

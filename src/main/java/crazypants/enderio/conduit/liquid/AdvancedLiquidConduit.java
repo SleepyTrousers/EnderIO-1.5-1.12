@@ -84,7 +84,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   }
 
   private void doExtract() {
-    BlockCoord loc = getBlockCoord();
+    BlockCoord loc = getLocation();
     if(!hasConnectionMode(ConnectionMode.INPUT)) {
       return;
     }
@@ -175,7 +175,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     if(network == null) {
       return;
     }
-    LiquidOutput lo = new LiquidOutput(getBlockCoord().getLocation(dir), dir.getOpposite());
+    LiquidOutput lo = new LiquidOutput(getLocation().getLocation(dir), dir.getOpposite());
     network.removeInput(lo);
     if(getConectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
       network.addInput(lo);

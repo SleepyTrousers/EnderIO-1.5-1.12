@@ -90,7 +90,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
               return true;
             }
 
-            BlockCoord loc = getBlockCoord().getLocation(faceHit);
+            BlockCoord loc = getLocation().getLocation(faceHit);
             ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
             if(n == null) {
               return false;
@@ -217,7 +217,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   private void doExtract() {
-    BlockCoord loc = getBlockCoord();
+    BlockCoord loc = getLocation();
     if(!hasConnectionMode(ConnectionMode.INPUT)) {
       return;
     }

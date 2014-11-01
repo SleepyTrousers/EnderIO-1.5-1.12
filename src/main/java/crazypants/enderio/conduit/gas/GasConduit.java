@@ -80,7 +80,7 @@ public class GasConduit extends AbstractGasTankConduit {
   }
 
   private void doExtract() {
-    BlockCoord loc = getBlockCoord();
+    BlockCoord loc = getLocation();
     if(!hasConnectionMode(ConnectionMode.INPUT)) {
       return;
     }
@@ -171,7 +171,7 @@ public class GasConduit extends AbstractGasTankConduit {
     if(network == null) {
       return;
     }
-    GasOutput lo = new GasOutput(getBlockCoord().getLocation(dir), dir.getOpposite());
+    GasOutput lo = new GasOutput(getLocation().getLocation(dir), dir.getOpposite());
     network.removeInput(lo);
     if(getConectionMode(dir).acceptsOutput() && containsExternalConnection(dir)) {
       network.addInput(lo);
