@@ -2,6 +2,7 @@ package crazypants.enderio.machine.light;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,6 +11,9 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.wireless.IWirelessCharger;
+import crazypants.enderio.machine.wireless.WirelessChargerController;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -38,6 +42,10 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   private boolean isInvereted;
 
   private boolean requiresPower = true;
+  
+  private boolean isWireless;
+  private IWirelessCharger charger;
+  private int ticksSinceLastSearch = 50;
 
   private ICapacitor capacitor;
 
@@ -77,17 +85,25 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   public void setRequiresPower(boolean isPowered) {
     requiresPower = isPowered;
   }
-
+  
   public boolean isRequiresPower() {
     return requiresPower;
   }
 
+  public void setInvereted(boolean isInvereted) {
+    this.isInvereted = isInvereted;
+  }
+  
   public boolean isInvereted() {
     return isInvereted;
   }
+  
+  public void setWireless(boolean wireless) {
+    this.isWireless = true;
+  }
 
-  public void setInvereted(boolean isInvereted) {
-    this.isInvereted = isInvereted;
+  public boolean isWireless() {
+    return isWireless;
   }
 
   @Override
@@ -99,9 +115,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     boolean hasRedstone = hasRedstoneSignal();
 
     boolean isActivated = (requiresPower ? hasPower() : true) && (hasRedstone && !isInvereted || !hasRedstone && isInvereted);
+    
     if(isActivated && requiresPower) {
       setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
     }
+    
     if(!hasPower() && requiresPower) {
       isActivated = false;
     }
@@ -127,6 +145,41 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       init = false;
       lastActive = isActivated;
     }
+    
+    if (isWireless) {
+      if (ticksSinceLastSearch > 50) {
+        charger = findNearestCharger();
+        ticksSinceLastSearch = 0;
+      } else {
+        ticksSinceLastSearch++;
+      }
+      
+      if (charger != null && energyStoredRF < getMaxEnergyStored()) {
+        this.energyStoredRF += charger.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+      }
+    }
+  }
+  
+  private IWirelessCharger findNearestCharger() {
+    int minDist = Integer.MAX_VALUE;
+    BlockCoord charger = null;
+    Map<BlockCoord, IWirelessCharger> map = WirelessChargerController.instance.getChargerMap(worldObj);
+    for (BlockCoord b : map.keySet()) {
+      int dist = b.distance(new BlockCoord(this));
+      if (dist < minDist) {
+        minDist = dist;
+        charger = b;
+      }
+    }
+
+    if (charger != null && minDist < Config.wirelessChargerRange) {
+      TileEntity te = charger.getTileEntity(worldObj);
+      if (te instanceof IWirelessCharger) {
+        return (IWirelessCharger) te;
+      }
+    }
+    
+    return null;
   }
 
   public void onBlockRemoved() {
@@ -332,6 +385,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     face = ForgeDirection.values()[root.getShort("face")];
     isInvereted = root.getBoolean("isInverted");
     requiresPower = root.getBoolean("requiresPower");
+    isWireless = root.getBoolean("isWireless");
 
     if(root.hasKey("storedEnergy")) {
       float se = root.getFloat("storedEnergy");
@@ -350,6 +404,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     root.setInteger("storedEnergyRF", energyStoredRF);
     root.setBoolean("isInverted", isInvereted);
     root.setBoolean("requiresPower", requiresPower);
+    root.setBoolean("isWireless", isWireless);
 
     if(lightNodes != null) {
       int[] lnLoc = new int[lightNodes.size() * 3];

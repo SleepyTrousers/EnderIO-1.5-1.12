@@ -1,8 +1,8 @@
 package crazypants.enderio.machine.wireless;
 
-import crazypants.util.BlockCoord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import crazypants.util.BlockCoord;
 
 public interface IWirelessCharger {
 
@@ -11,5 +11,6 @@ public interface IWirelessCharger {
   BlockCoord getLocation();
 
   boolean chargeItems(ItemStack[] armorInventory);
-
+  
+  int takeEnergy(int max);
 }
