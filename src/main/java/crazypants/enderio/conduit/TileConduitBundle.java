@@ -20,6 +20,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
+import appeng.api.util.DimensionalCoord;
+import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -843,12 +845,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
   /* AE2 */
   
+  private Object node; // IGridNode object, untyped to avoid crash w/o AE2
+  
   @Override
   @Method(modid = "appliedenergistics2")
   public IGridNode getGridNode(ForgeDirection dir) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
-      return cond.getGridNode(dir);
+      return (IGridNode) node;
     }
     return null;
   }
@@ -862,6 +866,28 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "appliedenergistics2")
   public void securityBreak() {
+    ;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public DimensionalCoord getLocation() {
+    return new DimensionalCoord(this);
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public AENetworkProxy getProxy() {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      return cond.getGrid().getProxy();
+    }
+    return null;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void gridChanged() {
     ;
   }
 }

@@ -22,7 +22,7 @@ public class MEConduitGrid implements IGridBlock {
 
   public MEConduitGrid(IMEConduit conduit) {
     this.conduit = conduit;
-    proxy = new AENetworkProxy(conduit, "enderio:MEConduit", conduit.createItem(), true);
+    proxy = new AENetworkProxy(conduit.getBundle(), "enderio:MEConduit", conduit.createItem(), true);
   }
 
   @Override
@@ -68,7 +68,7 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public IGridHost getMachine() {
-    return conduit;
+    return conduit.getBundle();
   }
 
   @Override

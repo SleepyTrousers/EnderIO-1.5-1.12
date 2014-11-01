@@ -10,8 +10,6 @@ import appeng.api.AEApi;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
-import appeng.api.util.DimensionalCoord;
-import appeng.me.helpers.AENetworkProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -25,7 +23,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   private IGridNode node;
 
   protected MEConduitNetwork network;
-
   protected MEConduitGrid grid;
   
   private static IIcon coreTexture;
@@ -106,36 +103,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
-  public IGridNode getGridNode(ForgeDirection dir) {
-    return node;
-  }
-
-  @Override
-  public void securityBreak() {
-    ;
-  }
-
-  @Override
-  public AECableType getCableConnectionType(ForgeDirection dir) {
-    return AECableType.GLASS;
-  }
-
-  @Override
-  public AENetworkProxy getProxy() {
-    return grid.getProxy();
-  }
-
-  @Override
-  public DimensionalCoord getLocation() {
-    return new DimensionalCoord(getBundle().getEntity());
-  }
-
-  @Override
-  public void gridChanged() {
-    ;
-  }
-
-  @Override
   public void updateEntity(World worldObj) {
     if(node == null && !worldObj.isRemote) {
       node = AEApi.instance().createGridNode(grid);
@@ -149,5 +116,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     super.onRemovedFromBundle();
     node.destroy();
     node = null;
+  }
+  
+  @Override
+  public MEConduitGrid getGrid() {
+     return grid;
   }
 }

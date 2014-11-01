@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import appeng.api.networking.IGridHost;
+import appeng.me.helpers.IGridProxyable;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +23,7 @@ import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
 @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
+public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridProxyable {
 
   TileEntity getEntity();
 
