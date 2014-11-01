@@ -94,7 +94,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   private boolean canConnectTo(World world, ForgeDirection dir, BlockCoord pos) {
     TileEntity te = world.getTileEntity(pos.x + dir.offsetX, pos.y + dir.offsetY, pos.z + dir.offsetZ);
     if (te instanceof IGridProxyable) {
-      return grid.getProxy().getConnectableSides().contains(dir.getOpposite());
+      return ((IGridProxyable)te).getProxy().getConnectableSides().contains(dir.getOpposite());
     } else if (te instanceof IGridHost) {
       return ((IGridHost)te).getCableConnectionType(dir.getOpposite()) != AECableType.NONE;
     }
@@ -118,11 +118,11 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   @Method(modid = "appliedenergistics2")
   public void updateEntity(World worldObj) {
-    if(getBundle().getGridNode(null) == null && !worldObj.isRemote) {
+    if(getNode() == null && !worldObj.isRemote) {
       IGridNode node = AEApi.instance().createGridNode(grid);
       if (node != null) {
         getBundle().setGridNode(node);
-        getBundle().getGridNode(null).updateState();
+        getNode().updateState();
       }
     }
     super.updateEntity(worldObj);
@@ -179,12 +179,17 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Method(modid = "appliedenergistics2")
   public void onRemovedFromBundle() {
     super.onRemovedFromBundle();
-    getBundle().getGridNode(null).destroy();
+    getNode().destroy();
     getBundle().setGridNode(null);
   }
   
   @Override
   public MEConduitGrid getGrid() {
      return grid;
+  }
+  
+  @Method(modid = "appliedenergistics2")
+  private IGridNode getNode() {
+    return getBundle().getGridNode(null);
   }
 }

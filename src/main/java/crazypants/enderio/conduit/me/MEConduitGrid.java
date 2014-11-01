@@ -4,7 +4,6 @@ import java.util.EnumSet;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
-import scala.actors.threadpool.Arrays;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.GridNotification;
 import appeng.api.networking.IGrid;
@@ -60,10 +59,9 @@ public class MEConduitGrid implements IGridBlock {
     ;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public EnumSet<ForgeDirection> getConnectableSides() {
-    return EnumSet.copyOf(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
+    return proxy.getConnectableSides();
   }
 
   @Override

@@ -850,6 +850,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "appliedenergistics2")
   public IGridNode getGridNode(ForgeDirection dir) {
+    if (dir == null || dir == ForgeDirection.UNKNOWN) {
+      return (IGridNode) node;
+    } else {
+      IMEConduit cond = getConduit(IMEConduit.class);
+      if (cond != null) {
+        if (cond.getConnectionMode(dir) != ConnectionMode.IN_OUT) {
+          return null;
+        } else {
+          return (IGridNode) node;
+        }
+      }
+    }
     return (IGridNode) node;
   }
   
