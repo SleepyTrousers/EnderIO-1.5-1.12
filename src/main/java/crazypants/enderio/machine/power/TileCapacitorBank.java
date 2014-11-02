@@ -1131,8 +1131,4 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public boolean isMaxSize() {
     return isMultiblock() && multiblock.length >= MAX_SIZE;
   }
-  
-  private void updateBlock() {
-    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  }
 }

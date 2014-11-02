@@ -38,4 +38,8 @@ public abstract class TileEntityEio extends TileEntity {
   protected abstract void writeCustomNBT(NBTTagCompound root);
 
   protected abstract void readCustomNBT(NBTTagCompound root);
+  
+  protected void updateBlock() {
+    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+  }
 }

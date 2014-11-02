@@ -1,16 +1,14 @@
 package crazypants.enderio.fluid;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import buildcraft.api.fuels.BuildcraftFuelRegistry;
-import buildcraft.api.fuels.ICoolant;
-import buildcraft.api.fuels.IFuel;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import buildcraft.api.fuels.BuildcraftFuelRegistry;
+import buildcraft.api.fuels.ICoolant;
+import buildcraft.api.fuels.IFuel;
 
 
 public class FluidFuelRegister {

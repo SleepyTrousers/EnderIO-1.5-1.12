@@ -143,6 +143,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
+    updateBlock();
   }
 
   public IoMode getModeForChannel(SubChannel channel) {
