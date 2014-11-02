@@ -203,13 +203,7 @@ public class GuiVat extends GuiMachineBase {
   }
 
   private void dump(int i) {
-    if (i == 1) {
-      vat.inputTank.setFluid(null);
-    } else if (i == 2) {
-      vat.outputTank.setFluid(null);
-    }
-    
-    PacketHandler.INSTANCE.sendToServer(new PacketTanks(vat));
+    PacketHandler.INSTANCE.sendToServer(new PacketDumpTank(vat, i));
   }
 
   @Override
