@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import crazypants.enderio.conduit.gas.GasConduit;
 import crazypants.enderio.conduit.gas.GasUtil;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.render.RenderUtil;
 
 public final class IconEIO {
@@ -23,8 +24,8 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, GasUtil.isGasConduitEnabled() ? 96 : 64, 64);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, GasUtil.isGasConduitEnabled() ? 96 : 64, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, MEUtil.isMEEnabled() || GasUtil.isGasConduitEnabled() ? 96 : 64, 64);
+  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, MEUtil.isMEEnabled() || GasUtil.isGasConduitEnabled() ? 96 : 64, 64);
 
   public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(0 + 96, 148, 32, 32);

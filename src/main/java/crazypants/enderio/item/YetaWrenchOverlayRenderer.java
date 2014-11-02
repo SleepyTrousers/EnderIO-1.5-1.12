@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.gas.GasUtil;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.gui.IconEIO;
 
 public class YetaWrenchOverlayRenderer {
@@ -45,7 +46,7 @@ public class YetaWrenchOverlayRenderer {
 
     double offsetX = 16;
     double offsetY = res.getScaledHeight() - 16;
-    int width = GasUtil.isGasConduitEnabled() ? 48 : 32;    
+    int width = MEUtil.isMEEnabled() || GasUtil.isGasConduitEnabled() ? 48 : 32;    
 
     if(mode == ConduitDisplayMode.ALL) {
       GL11.glColor4f(1, 1, 1, 0.75f);

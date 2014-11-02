@@ -149,11 +149,18 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
   
   @Override
+  public ConnectionMode getConnectionMode(ForgeDirection dir) {
+    ConnectionMode mode = conectionModes.get(dir);
+    return mode == null ? validConnections.contains(dir) ? ConnectionMode.IN_OUT : ConnectionMode.DISABLED : mode;
+  }
+  
+  @Override
   @Method(modid = "appliedenergistics2")
   protected void connectionsChanged() {
     super.connectionsChanged();
+    onNodeChanged();
   }
-
+  
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     super.onBlockActivated(player, res, all);
@@ -181,6 +188,28 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     }
     return false;
   }
+  
+  @Method(modid = "appliedenergistics2")
+  public void onNodeChanged() {
+    boolean foundConnection = false;
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      TileEntity te = getBundle().getBlockCoord().getLocation(dir).getTileEntity(getBundle().getWorld());
+      if (te != null && te instanceof IGridHost) {
+        IGridNode node = ((IGridHost)te).getGridNode(ForgeDirection.UNKNOWN);
+        foundConnection |= validConnections.contains(dir);
+        if (node == null) {
+          node = ((IGridHost)te).getGridNode(dir.getOpposite());
+        }
+        if (node != null) {
+          node.updateState();
+        }
+      }
+    }
+    if (!foundConnection && hasNode()) {
+      getNode().destroy();
+    }
+  }
 
   @Override
   @Method(modid = "appliedenergistics2")
@@ -198,6 +227,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Method(modid = "appliedenergistics2")
   private IGridNode getNode() {
     return getBundle().getGridNode(null);
+  }
+  
+  private boolean hasNode() {
+    return getNode() != null;
   }
   
   @Override

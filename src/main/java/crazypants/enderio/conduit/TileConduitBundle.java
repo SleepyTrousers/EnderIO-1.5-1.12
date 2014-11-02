@@ -855,10 +855,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     } else {
       IMEConduit cond = getConduit(IMEConduit.class);
       if (cond != null) {
-        if (cond.getConnectionMode(dir) != ConnectionMode.IN_OUT) {
-          return null;
-        } else {
+        if (cond.getConnectionMode(dir.getOpposite()) == ConnectionMode.IN_OUT) {
           return (IGridNode) node;
+        } else {
+          return null;
         }
       }
     }

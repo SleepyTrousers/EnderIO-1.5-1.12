@@ -707,6 +707,8 @@ enderio.gui.alloy.mode.furnace=Furnace Only
 //Vat
 enderio.vat.outputTank=Output Tank
 enderio.vat.inputTank=Input Tank
+enderio.gui.machine.vat.dump.1=Dump Input Tank
+enderio.gui.machine.vat.dump.2=Dump Output Tank
 
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Coolant
