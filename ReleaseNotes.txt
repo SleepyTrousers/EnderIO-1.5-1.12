@@ -15,7 +15,8 @@ Changes
 
 Bugs
 - #1162 Infinite Broken-Spawner exploit with Twilight Forest
-- #1170 Dimensional Transceiver liquid related crash
+- #1170 Dimensional Transceiver infinite loop with liquids
+- #1176 Stirling Gen not outputting as much power as it generates when base rate changed in config
 - Transceiver item buffers would allow multiple non-stackable items of the same type
   
 
