@@ -23,6 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.transceiver.Channel;
@@ -44,7 +45,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     if(isEastWest(meta)) {
       result = ForgeDirection.EAST;
     } else {
-      result = ForgeDirection.NORTH;
+      result = ForgeDirection.SOUTH;
     }
     if(isReverse(meta)) {
       result = result.getOpposite();
@@ -106,15 +107,14 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-    //    //TODO: Don't let people decide which way the carts come out. Can't figure out how to reliably reverse directions
-    //    if(ConduitUtil.isToolEquipped(player)) {
-    //      if(!world.isRemote) {
-    //        int meta = world.getBlockMetadata(x, y, z);
-    //        meta = MetadataUtil.setBit(3, !MetadataUtil.isBitSet(3, meta), meta);
-    //        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-    //      }
-    //      return true;
-    //    }
+    if(ConduitUtil.isToolEquipped(player)) {
+      if(!world.isRemote) {
+        int meta = world.getBlockMetadata(x, y, z);
+        meta = MetadataUtil.setBit(3, !MetadataUtil.isBitSet(3, meta), meta);
+        world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+      }
+      return true;
+    }
     return false;
   }
 
