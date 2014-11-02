@@ -69,7 +69,6 @@ public class PacketClientState implements IMessage, IMessageHandler<PacketClient
       cb.setOutputControlMode(message.outputMode);
       cb.setMaxInput(message.maxInput);
       cb.setMaxOutput(message.maxOutput);
-      player.worldObj.markBlockForUpdate(x, y, z);
     }
     return null;
   }
