@@ -284,6 +284,8 @@ tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed
 tile.blockEnderRail.tooltip.detailed.line2=on a Dimensional Transceiver
 tile.blockEnderRail.tooltip.detailed.line3=Set destinations using the 
 tile.blockEnderRail.tooltip.detailed.line4=Transceiver's rail tab
+tile.blockEnderRail.tooltip.detailed.line5=Set direction with a Shift-R-Click
+tile.blockEnderRail.tooltip.detailed.line6=of a wrench
 
 enderio.trans.showChannels=<Shift to show channels>
 

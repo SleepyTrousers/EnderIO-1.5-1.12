@@ -110,9 +110,13 @@ public class EnderRailController {
       if(failedSpawn) {
         doRandomSpawn(ent);
       } else {
-        TeleportUtil.spawn(transciever.getWorldObj(), ent);
+        EntityMinecart cart = null;
         if(ent instanceof EntityMinecart) {
-          EntityMinecart cart = (EntityMinecart) ent;
+          cart = (EntityMinecart) ent;
+          setCartDirection(cart);
+        }        
+        TeleportUtil.spawn(transciever.getWorldObj(), ent);
+        if(cart != null) {          
           newlySpawnedCarts.add(cart.getPersistentID());
           CartLinkUtil.recreateLinks(cart);
         }
@@ -121,6 +125,15 @@ public class EnderRailController {
 
     ticksFailedToSpawn = 0;
 
+  }
+
+  private void setCartDirection(EntityMinecart cart) {
+    int meta = transciever.getWorldObj().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+    ForgeDirection dir = BlockEnderRail.getDirection(meta);
+    double velocity = Math.max(Math.abs(cart.motionX), Math.abs(cart.motionZ));
+    cart.motionX = dir.offsetX * velocity;
+    cart.motionZ = dir.offsetZ * velocity;
+    
   }
 
   public void onTrainRecieved(List<List<Entity>> toTeleport) {

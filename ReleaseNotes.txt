@@ -14,7 +14,8 @@ Changes
 - Removed mobs from EnderIO, moved to new mod EnderZoo
 - Redstone conduits will now output strong signal to blocks they are connected to (tterrag)
 - Machines now only respond to strong redstone signals (tterrag)
-- #1181 Add dump buttons to vat tanks
+- #1181 Add dump buttons to vat tanks (tterrag)
+- Added the ability to set the output direction of Ender Rails
 
 Bugs
 - #1162 Infinite Broken-Spawner exploit with Twilight Forest
