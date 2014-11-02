@@ -57,6 +57,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private final EnderRailController railController;
 
   private boolean inFluidFill = false;
+  private boolean inGetTankInfo = false;
 
   public TileTransceiver() {
     super(new SlotDefinition(8, 8, 0));
@@ -361,13 +362,25 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(getSendChannels(ChannelType.FLUID).isEmpty()) {
+    if(inFluidFill) {
       return false;
     }
-    return ServerChannelRegister.instance.canFill(this, getSendChannels(ChannelType.FLUID), fluid);
+    try {
+      inFluidFill = true;
+      if(getSendChannels(ChannelType.FLUID).isEmpty()) {
+        return false;
+      }
+      return ServerChannelRegister.instance.canFill(this, getSendChannels(ChannelType.FLUID), fluid);
+    } finally {
+      inFluidFill = false;
+    }
   }
 
   public boolean canReceive(List<Channel> channels, Fluid fluid) {
+    if(inFluidFill) {
+      return false;
+    }
+
     if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
       return false;
     }
@@ -382,6 +395,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    if(inFluidFill) {
+      return 0;
+    }
     try {
       inFluidFill = true;
       if(getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed || !getIoMode(from).canRecieveInput()) {
@@ -415,21 +431,37 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-    return ServerChannelRegister.instance.getTankInfoForChannels(this, getSendChannels(ChannelType.FLUID));
+    if(inGetTankInfo) {
+      return new FluidTankInfo[0];
+    }
+    try {
+      inGetTankInfo = true;
+      return ServerChannelRegister.instance.getTankInfoForChannels(this, getSendChannels(ChannelType.FLUID));
+    } finally {
+      inGetTankInfo = false;
+    }
   }
 
   public void getRecieveTankInfo(List<FluidTankInfo> infos, List<Channel> channels) {
-    if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
+    if(inGetTankInfo) {
       return;
     }
-    Map<ForgeDirection, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
-    for (Entry<ForgeDirection, IFluidHandler> entry : fluidHandlers.entrySet()) {
-      FluidTankInfo[] tanks = entry.getValue().getTankInfo(entry.getKey().getOpposite());
-      if(tanks != null) {
-        for (FluidTankInfo info : tanks) {
-          infos.add(info);
+    try {
+      inGetTankInfo = true;
+      if(!hasRecieveChannel(channels, ChannelType.FLUID)) {
+        return;
+      }
+      Map<ForgeDirection, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
+      for (Entry<ForgeDirection, IFluidHandler> entry : fluidHandlers.entrySet()) {
+        FluidTankInfo[] tanks = entry.getValue().getTankInfo(entry.getKey().getOpposite());
+        if(tanks != null) {
+          for (FluidTankInfo info : tanks) {
+            infos.add(info);
+          }
         }
       }
+    } finally {
+      inGetTankInfo = false;
     }
   }
 
