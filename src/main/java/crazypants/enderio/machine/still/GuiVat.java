@@ -3,21 +3,24 @@ package crazypants.enderio.machine.still;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.gui.IconButtonEIO;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -28,6 +31,8 @@ public class GuiVat extends GuiMachineBase {
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
 
   private final TileVat vat;
+  
+  private IconButtonEIO dump1, dump2;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
     super(te, new ContainerVat(inventory, te));
@@ -62,7 +67,18 @@ public class GuiVat extends GuiMachineBase {
       }
 
     });
-
+    
+    dump1 = new IconButtonEIO(this, 1, 29, 62, IconEIO.REDSTONE_MODE_NEVER);
+    dump1.setToolTip(Lang.localize("gui.machine.vat.dump.1"));
+    dump2 = new IconButtonEIO(this, 2, 131, 62, IconEIO.REDSTONE_MODE_NEVER);
+    dump2.setToolTip(Lang.localize("gui.machine.vat.dump.2"));
+  }
+  
+  @Override
+  public void initGui() {
+    super.initGui();
+    dump1.onGuiInit();
+    dump2.onGuiInit();
   }
 
   @Override
@@ -173,6 +189,27 @@ public class GuiVat extends GuiMachineBase {
     GL11.glColor4f(1, 1, 1, 1);
     RenderUtil.bindTexture(GUI_TEXTURE);
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
+  }
+  
+  @Override
+  protected void actionPerformed(GuiButton b) {
+    super.actionPerformed(b);
+    
+    if (b == dump1) {
+      dump(1);
+    } else if (b == dump2) {
+      dump(2);
+    }
+  }
+
+  private void dump(int i) {
+    if (i == 1) {
+      vat.inputTank.setFluid(null);
+    } else if (i == 2) {
+      vat.outputTank.setFluid(null);
+    }
+    
+    PacketHandler.INSTANCE.sendToServer(new PacketTanks(vat));
   }
 
   @Override

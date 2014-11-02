@@ -31,6 +31,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
   public static BlockVat create() {
     PacketHandler.INSTANCE.registerMessage(PacketTanks.class,PacketTanks.class,PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketTanks.class,PacketTanks.class,PacketHandler.nextID(), Side.SERVER);
     BlockVat res = new BlockVat();
     res.init();
     return res;
