@@ -292,6 +292,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemGasConduit, itemConRenderer);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemMEConduit, itemConRenderer);
 
     BlockPaintedFenceGateRenderer bcfgr = new BlockPaintedFenceGateRenderer();
     BlockPaintedFenceGate.renderId = RenderingRegistry.getNextAvailableRenderId();
