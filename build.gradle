@@ -37,8 +37,9 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven { url "http://mobiusstrip.eu/maven" }
+    maven { url = "http://mobiusstrip.eu/maven" }
     maven { url = "http://chickenbones.net/maven/" }
+    maven { url = "http://dl.tsr.me/artifactory/libs-release-local" }
 }
 
 dependencies {

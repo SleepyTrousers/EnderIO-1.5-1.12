@@ -14,7 +14,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.AEApi;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartHost;
 import appeng.api.util.AECableType;
+import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
@@ -55,10 +58,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     });
   }
   
-  public MEConduit() {
-    grid = new MEConduitGrid(this);
-  }
-
   @Override
   public Class<? extends IConduit> getBaseConduitType() {
     return IMEConduit.class;
@@ -94,7 +93,11 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   private boolean canConnectTo(World world, ForgeDirection dir, BlockCoord pos) {
     TileEntity te = world.getTileEntity(pos.x + dir.offsetX, pos.y + dir.offsetY, pos.z + dir.offsetZ);
     if (te instanceof IGridProxyable) {
-      return ((IGridProxyable)te).getProxy().getConnectableSides().contains(dir.getOpposite());
+      AENetworkProxy proxy = ((IGridProxyable)te).getProxy();
+      return proxy != null && proxy.getConnectableSides().contains(dir.getOpposite());
+    } else if (te instanceof IPartHost) {
+      IPart part = ((IPartHost) te).getPart(dir.getOpposite());
+      return part != null ? part.getExternalFacingNode() != null : ((IPartHost)te).getPart(ForgeDirection.UNKNOWN) != null;
     } else if (te instanceof IGridHost) {
       return ((IGridHost)te).getCableConnectionType(dir.getOpposite()) != AECableType.NONE;
     }
@@ -118,6 +121,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   @Method(modid = "appliedenergistics2")
   public void updateEntity(World worldObj) {
+    if (grid == null) {
+      grid = new MEConduitGrid(this);
+    }
+    
     if(getNode() == null && !worldObj.isRemote) {
       IGridNode node = AEApi.instance().createGridNode(grid);
       if (node != null) {
@@ -125,6 +132,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         getNode().updateState();
       }
     }
+    
     super.updateEntity(worldObj);
   }
   
@@ -144,7 +152,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Method(modid = "appliedenergistics2")
   protected void connectionsChanged() {
     super.connectionsChanged();
-    grid.getProxy().setValidSides(EnumSet.copyOf(validConnections));
   }
 
   @Override
@@ -191,5 +198,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Method(modid = "appliedenergistics2")
   private IGridNode getNode() {
     return getBundle().getGridNode(null);
+  }
+  
+  @Override
+  public EnumSet<ForgeDirection> getConnections() {
+    return validConnections;
   }
 }

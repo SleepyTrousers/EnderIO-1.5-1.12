@@ -874,7 +874,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   @Method(modid = "appliedenergistics2")
   public AECableType getCableConnectionType(ForgeDirection dir) {
-    return getConduit(IMEConduit.class) != null ? AECableType.GLASS : AECableType.NONE;
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond == null) {
+      return AECableType.NONE;
+    } else {
+      ConnectionMode mode = cond.getConnectionMode(dir);
+      return mode == ConnectionMode.DISABLED ? AECableType.NONE : AECableType.SMART;
+    }
   }
 
   @Override
@@ -894,7 +900,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public AENetworkProxy getProxy() {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
-      return cond.getGrid().getProxy();
+      return cond.getGrid();
     }
     return null;
   }
