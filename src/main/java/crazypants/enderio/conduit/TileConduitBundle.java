@@ -888,26 +888,4 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void securityBreak() {
     ;
   }
-
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public DimensionalCoord getLocation() {
-    return new DimensionalCoord(this);
-  }
-
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public AENetworkProxy getProxy() {
-    IMEConduit cond = getConduit(IMEConduit.class);
-    if (cond != null) {
-      return cond.getGrid();
-    }
-    return null;
-  }
-
-  @Override
-  @Method(modid = "appliedenergistics2")
-  public void gridChanged() {
-    ;
-  }
 }

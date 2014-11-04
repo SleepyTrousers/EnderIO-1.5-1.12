@@ -11,7 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-import appeng.api.networking.IGridNode;
+import appeng.api.networking.IGridHost;
 import appeng.me.helpers.IGridProxyable;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
@@ -23,7 +23,7 @@ import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
 @Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2")
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridProxyable {
+public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
 
   TileEntity getEntity();
 

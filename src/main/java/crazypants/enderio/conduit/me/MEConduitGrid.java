@@ -4,15 +4,20 @@ import java.util.EnumSet;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import appeng.api.networking.GridFlags;
+import appeng.api.networking.GridNotification;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridBlock;
+import appeng.api.networking.IGridHost;
+import appeng.api.networking.IGridNode;
 import appeng.api.util.AEColor;
-import appeng.me.helpers.AENetworkProxy;
+import appeng.api.util.DimensionalCoord;
 
-public class MEConduitGrid extends AENetworkProxy {
+public class MEConduitGrid implements IGridBlock {
 
   private IMEConduit conduit;
 
   public MEConduitGrid(IMEConduit conduit) {
-    super(conduit.getBundle(), "EnderIO:conduit", conduit.createItem(), true);
     this.conduit = conduit;
   }
 
@@ -34,5 +39,43 @@ public class MEConduitGrid extends AENetworkProxy {
   @Override
   public ItemStack getMachineRepresentation() {
     return conduit.createItem();
+  }
+
+  @Override
+  public EnumSet<GridFlags> getFlags() {
+    return EnumSet.noneOf(GridFlags.class);
+  }
+
+  @Override
+  public boolean isWorldAccessable() {
+    return true;
+  }
+
+  @Override
+  public DimensionalCoord getLocation() {
+    return new DimensionalCoord(conduit.getBundle().getEntity());
+  }
+
+  @Override
+  public void onGridNotification(GridNotification notification) {
+    gridChanged();
+  }
+
+  @Override
+  public void setNetworkStatus(IGrid grid, int channelsInUse) {
+    ;
+  }
+
+  @Override
+  public IGridHost getMachine() {
+    return conduit.getBundle();
+  }
+
+  @Override
+  public void gridChanged() {
+    IGridNode node = conduit.getBundle().getGridNode(null);
+    if(node != null) {
+      node.updateState();
+    }
   }
 }

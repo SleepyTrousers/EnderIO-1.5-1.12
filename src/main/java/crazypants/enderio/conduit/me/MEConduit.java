@@ -140,11 +140,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
     ConnectionMode mode = getConnectionMode(dir);
     mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
-    if (mode == ConnectionMode.DISABLED) {
-      validConnections.remove(dir);
-    } else {
-      validConnections.add(dir);
-    }
     return mode;
   }
   
@@ -152,6 +147,17 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public ConnectionMode getConnectionMode(ForgeDirection dir) {
     ConnectionMode mode = conectionModes.get(dir);
     return mode == null ? validConnections.contains(dir) ? ConnectionMode.IN_OUT : ConnectionMode.DISABLED : mode;
+  }
+  
+  @Override
+  public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
+    super.setConnectionMode(dir, mode);
+    if (mode == ConnectionMode.DISABLED) {
+      validConnections.remove(dir);
+    } else {
+      validConnections.add(dir);
+    }
+    getNode().updateState();
   }
   
   @Override
