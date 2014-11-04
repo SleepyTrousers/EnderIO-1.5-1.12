@@ -4,7 +4,7 @@ Version 2.1.9
 
 Changes
 - Updated Build Craft API to v6.1.5. NB: EIO will no longer work with pre 6.1 BC versions
-
+- Added tool blacklist to prevent broken spawners dropping when using those tools
 
 ------------------------------------------------------
 Version 2.1.8
