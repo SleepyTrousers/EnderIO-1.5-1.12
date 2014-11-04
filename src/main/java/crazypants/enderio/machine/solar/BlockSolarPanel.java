@@ -79,8 +79,6 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
         if(wrench.canWrench(entityPlayer, x, y, z)) {          
           if(!world.isRemote && !entityPlayer.capabilities.isCreativeMode) {
             int meta = world.getBlockMetadata(x, y, z);
-            System.out.println("BlockSolarPanel.onBlockActivated: " + meta);
-            System.out.println("BlockSolarPanel.onBlockActivated: " + meta);
             ItemStack is = new ItemStack(this,1,meta);
             Util.dropItems(world, is, x, y, z, true);            
           }
