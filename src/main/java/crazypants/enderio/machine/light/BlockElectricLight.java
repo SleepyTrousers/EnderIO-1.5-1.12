@@ -176,7 +176,11 @@ public class BlockElectricLight extends BlockEio {
   
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
   {
-    Item equipped = player.getCurrentEquippedItem().getItem();
+    ItemStack stack = player.getCurrentEquippedItem();
+    if (stack == null) {
+      return false;
+    }
+    Item equipped = stack.getItem();
     if ((equipped instanceof IToolWrench || equipped instanceof IToolHammer) && player.isSneaking() && !world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if (te instanceof TileElectricLight) {
