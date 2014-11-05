@@ -157,8 +157,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       grid = new MEConduitGrid(this);
     }
 
-    System.out.println(validConnections);
-
     if(getNode() == null && !worldObj.isRemote) {
       IGridNode node = AEApi.instance().createGridNode(grid);
       if(node != null) {

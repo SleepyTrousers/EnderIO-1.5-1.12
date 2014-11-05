@@ -164,6 +164,11 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
     int minDist = Integer.MAX_VALUE;
     BlockCoord charger = null;
     Map<BlockCoord, IWirelessCharger> map = WirelessChargerController.instance.getChargerMap(worldObj);
+    
+    if (map == null) {
+      return null;
+    }
+    
     for (BlockCoord b : map.keySet()) {
       int dist = b.distance(new BlockCoord(this));
       if (dist < minDist) {
