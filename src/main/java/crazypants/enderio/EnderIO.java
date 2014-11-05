@@ -1,8 +1,6 @@
 package crazypants.enderio;
 
-import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.EnderIO.MOD_NAME;
-import static crazypants.enderio.EnderIO.VERSION;
+import static crazypants.enderio.EnderIO.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,8 +15,6 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import buildcraft.api.fuels.IronEngineCoolant;
-import buildcraft.api.fuels.IronEngineFuel;
 
 import com.google.common.collect.ImmutableList;
 
@@ -61,6 +57,7 @@ import crazypants.enderio.enderface.BlockEnderIO;
 import crazypants.enderio.enderface.EnderfaceRecipes;
 import crazypants.enderio.enderface.ItemEnderface;
 import crazypants.enderio.fluid.BlockFluidEio;
+import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.fluid.ItemBucketEio;
 import crazypants.enderio.item.ItemConduitProbe;
@@ -427,29 +424,25 @@ public class EnderIO {
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
-    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
-    IronEngineFuel.addFuel(Fluids.HOOTCH_NAME, Config.hootchPowerPerCycle, Config.hootchPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycle * Config.hootchPowerTotalBurnTime));
+    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);    
+    FluidFuelRegister.instance.addFuel(f, Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycleRF/10 * Config.hootchPowerTotalBurnTime));
 
     f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
     blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
-    IronEngineFuel.addFuel(Fluids.ROCKET_FUEL_NAME, Config.rocketFuelPowerPerCycle, Config.rocketFuelPowerTotalBurnTime);
+    FluidFuelRegister.instance.addFuel(f, Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
-        + (Config.rocketFuelPowerPerCycle * Config.rocketFuelPowerTotalBurnTime));
+        + (Config.rocketFuelPowerPerCycleRF/10 * Config.rocketFuelPowerTotalBurnTime));
 
     f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
     blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
-    IronEngineFuel.addFuel(Fluids.FIRE_WATER_NAME, Config.fireWaterPowerPerCycle, Config.fireWaterPowerTotalBurnTime);
+    FluidFuelRegister.instance.addFuel(f, Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
-        + (Config.fireWaterPowerPerCycle * Config.fireWaterPowerTotalBurnTime));
-
-    if(!IronEngineCoolant.isCoolant(FluidRegistry.getFluid("water"))) {
-      IronEngineCoolant.addCoolant(FluidRegistry.getFluid("water"), 0.0023F);
-    }
+        + (Config.fireWaterPowerPerCycleRF/10 * Config.fireWaterPowerTotalBurnTime));
 
     fluidXpJuice = FluidRegistry.getFluid("xpjuice");
     if(!Loader.isModLoaded("OpenBlocks")) {

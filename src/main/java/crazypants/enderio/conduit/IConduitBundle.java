@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import appeng.api.networking.IGridHost;
-import appeng.me.helpers.IGridProxyable;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
@@ -27,7 +26,7 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
 
   TileEntity getEntity();
 
-  BlockCoord getBlockCoord();
+  BlockCoord getLocation();
 
   // conduits
 

@@ -104,7 +104,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
           } else if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
 
-            BlockCoord loc = getBlockCoord().getLocation(faceHit);
+            BlockCoord loc = getLocation().getLocation(faceHit);
             Block id = world.getBlock(loc.x, loc.y, loc.z);
             if(id == EnderIO.blockConduitBundle) {
               IRedstoneConduit neighbour = ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
@@ -126,7 +126,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             return true;
 
           } else if(containsConduitConnection(connDir)) {
-            BlockCoord loc = getBlockCoord().getLocation(connDir);
+            BlockCoord loc = getLocation().getLocation(connDir);
             IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class);
             if(neighbour != null) {
               if(network != null) {
@@ -256,7 +256,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return true;
     }
     //Not set so figure it out
-    BlockCoord loc = getBlockCoord().getLocation(direction);
+    BlockCoord loc = getLocation().getLocation(direction);
     Block block = getBundle().getEntity().getWorldObj().getBlock(loc.x, loc.y, loc.z);
 
     if(VANILLA_CONECTABLES.contains(block)) {

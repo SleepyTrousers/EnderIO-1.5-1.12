@@ -116,6 +116,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     faceModes.put(faceHit, mode);
     forceClientUpdate = true;
     notifyNeighbours = true;
+    
+    updateBlock();
   }
 
   @Override
@@ -185,6 +187,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
+    updateBlock();
   }
 
   public short getFacing() {

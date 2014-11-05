@@ -100,8 +100,8 @@ public class GuiPowerMonitor extends GuiContainerBase {
     int x = MARGIN + Minecraft.getMinecraft().fontRenderer.getStringWidth(titleStr) + SPACING;
 
     enabledB = new CheckBoxEIO(this, 21267, x, 8);
-    enabledB.setSelectedToolTip(Lang.localize("enderio.gui.enabled"));
-    enabledB.setUnselectedToolTip(Lang.localize("enderio.gui.disabled"));
+    enabledB.setSelectedToolTip(Lang.localize("gui.enabled"));
+    enabledB.setUnselectedToolTip(Lang.localize("gui.disabled"));
     enabledB.setSelected(te.engineControlEnabled);
 
   }

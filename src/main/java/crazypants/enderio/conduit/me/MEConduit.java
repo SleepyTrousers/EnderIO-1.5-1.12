@@ -86,7 +86,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
-    return canConnectTo(getBundle().getWorld(), direction, getBundle().getBlockCoord());
+    return canConnectTo(getBundle().getWorld(), direction, getBundle().getLocation());
   }
   
   @Method(modid = "appliedenergistics2")
@@ -200,7 +200,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     boolean foundConnection = false;
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      TileEntity te = getBundle().getBlockCoord().getLocation(dir).getTileEntity(getBundle().getWorld());
+      TileEntity te = getBundle().getLocation().getLocation(dir).getTileEntity(getBundle().getWorld());
       if (te != null && te instanceof IGridHost) {
         IGridNode node = ((IGridHost)te).getGridNode(ForgeDirection.UNKNOWN);
         foundConnection |= validConnections.contains(dir);

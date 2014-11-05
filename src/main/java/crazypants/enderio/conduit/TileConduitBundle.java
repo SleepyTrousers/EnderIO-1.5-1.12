@@ -20,8 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
-import appeng.api.util.DimensionalCoord;
-import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -278,7 +276,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public BlockCoord getBlockCoord() {
+  public BlockCoord getLocation() {
     return new BlockCoord(xCoord, yCoord, zCoord);
   }
 
@@ -842,8 +840,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public World getWorld() {
     return getWorldObj();
   }
-
-  /* AE2 */
   
   private Object node; // IGridNode object, untyped to avoid crash w/o AE2
   
@@ -882,7 +878,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
       return mode == ConnectionMode.DISABLED ? AECableType.NONE : AECableType.SMART;
     }
   }
-
+  
   @Override
   @Method(modid = "appliedenergistics2")
   public void securityBreak() {

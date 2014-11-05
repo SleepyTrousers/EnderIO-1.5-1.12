@@ -63,7 +63,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
         if(renderer.isDynamic()) {
           if(brightness == -1) {
-            BlockCoord loc = bundle.getBlockCoord();
+            BlockCoord loc = bundle.getLocation();
             brightness = bundle.getEntity().getWorldObj().getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
 
             RenderUtil.bindBlockTexture();
@@ -106,7 +106,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     boolean renderConduit = renderFacade(x, y, z, rb, bundle, player);    
 
     if(renderConduit) {
-      BlockCoord loc = bundle.getBlockCoord();
+      BlockCoord loc = bundle.getLocation();
       float brightness;
       if(!Config.updateLightingWhenHidingFacades && bundle.hasFacade() && ConduitUtil.isFacadeHidden(bundle, player)) {
         brightness = 15 << 20 | 15 << 4;

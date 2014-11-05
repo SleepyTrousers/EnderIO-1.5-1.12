@@ -154,6 +154,8 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       notifyNeighbours = true;
     }
     render = true;
+    
+    updateBlock();
   }
 
   @Override
@@ -425,7 +427,6 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
             if(mode == IoMode.NONE && !(ph.getDelegate() instanceof IInternalPowerReceptor)) {
               setIoMode(dir, IoMode.PULL, false);
               r.mode = IoMode.PULL;
-              worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
               render = true;
             }
           }
@@ -448,6 +449,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   public void setMaxInput(int maxInput) {
     getController().doSetMaxInput(maxInput);
+    updateBlock();
   }
 
   public int getMaxOutput() {
@@ -456,6 +458,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   public void setMaxOutput(int maxOutput) {
     getController().doSetMaxOutput(maxOutput);
+    updateBlock();
   }
 
   @Override
@@ -1128,5 +1131,4 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public boolean isMaxSize() {
     return isMultiblock() && multiblock.length >= MAX_SIZE;
   }
-
 }

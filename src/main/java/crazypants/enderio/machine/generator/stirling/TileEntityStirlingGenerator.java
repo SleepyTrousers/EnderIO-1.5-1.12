@@ -173,7 +173,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    int canTransmit = Math.min(getEnergyStored(), capacitorType.capacitor.getMaxEnergyExtracted());
+    int canTransmit = Math.min(getEnergyStored(), getPowerUsePerTick() * 2);
     if(canTransmit <= 0) {
       return false;
     }

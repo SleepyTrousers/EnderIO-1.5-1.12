@@ -112,7 +112,7 @@ public class ConduitUtil {
 
   public static <T extends IConduit> void disconectConduits(T con, ForgeDirection connDir) {
     con.conduitConnectionRemoved(connDir);
-    BlockCoord loc = con.getBlockCoord().getLocation(connDir);
+    BlockCoord loc = con.getLocation().getLocation(connDir);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null) {
       neighbour.conduitConnectionRemoved(connDir.getOpposite());
@@ -126,7 +126,7 @@ public class ConduitUtil {
   }
 
   public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
-    BlockCoord loc = con.getBlockCoord().getLocation(faceHit);
+    BlockCoord loc = con.getLocation().getLocation(faceHit);
     IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
     if(neighbour != null && con.canConnectToConduit(faceHit, neighbour) && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
@@ -226,6 +226,8 @@ public class ConduitUtil {
       return conduitType == IItemConduit.class;
     case GAS:
       return conduitType == IGasConduit.class;
+    case ME:
+      return conduitType == IMEConduit.class;
     default:
       break;
     }

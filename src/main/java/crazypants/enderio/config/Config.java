@@ -209,11 +209,11 @@ public final class Config {
 
   public static float darkSteelAnvilDamageChance = 0.024f;
   
-  public static int hootchPowerPerCycle = 6;
+  public static int hootchPowerPerCycleRF = 60;
   public static int hootchPowerTotalBurnTime = 6000;
-  public static int rocketFuelPowerPerCycle = 16;
+  public static int rocketFuelPowerPerCycleRF = 160;
   public static int rocketFuelPowerTotalBurnTime = 7000;
-  public static int fireWaterPowerPerCycle = 8;
+  public static int fireWaterPowerPerCycleRF = 80;
   public static int fireWaterPowerTotalBurnTime = 15000;
   public static int vatPowerUserPerTickRF = 20;
 
@@ -261,6 +261,9 @@ public final class Config {
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static boolean poweredSpawnerUseVanillaSpawChecks = false;
   public static double brokenSpawnerDropChance = 1;
+  public static String[] brokenSpawnerToolBlacklist = new String[] {
+    "RotaryCraft:rotarycraft_item_bedpick"
+  };
   public static int powerSpawnerAddSpawnerCost = 30;
 
   public static int painterEnergyPerTaskRF = 2000;
@@ -757,18 +760,18 @@ public final class Config {
 
     darkSteelAnvilDamageChance = (float) config.get(sectionDarkSteel.name, "darkSteelAnvilDamageChance", darkSteelAnvilDamageChance, "Chance that the dark steel anvil will take damage after repairing something.").getDouble();
 
-    hootchPowerPerCycle = config.get(sectionPower.name, "hootchPowerPerCycle", hootchPowerPerCycle,
-        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(hootchPowerPerCycle);
+    hootchPowerPerCycleRF = config.get(sectionPower.name, "hootchPowerPerCycleRF", hootchPowerPerCycleRF,
+        "The amount of power generated per BC engine cycle. Examples: BC Oil = 30, BC Fuel = 60").getInt(hootchPowerPerCycleRF);
     hootchPowerTotalBurnTime = config.get(sectionPower.name, "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(hootchPowerTotalBurnTime);
 
-    rocketFuelPowerPerCycle = config.get(sectionPower.name, "rocketFuelPowerPerCycle", rocketFuelPowerPerCycle,
-        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(rocketFuelPowerPerCycle);
+    rocketFuelPowerPerCycleRF = config.get(sectionPower.name, "rocketFuelPowerPerCycleRF", rocketFuelPowerPerCycleRF,
+        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(rocketFuelPowerPerCycleRF);
     rocketFuelPowerTotalBurnTime = config.get(sectionPower.name, "rocketFuelPowerTotalBurnTime", rocketFuelPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(rocketFuelPowerTotalBurnTime);
 
-    fireWaterPowerPerCycle = config.get(sectionPower.name, "fireWaterPowerPerCycle", fireWaterPowerPerCycle,
-        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(fireWaterPowerPerCycle);
+    fireWaterPowerPerCycleRF = config.get(sectionPower.name, "fireWaterPowerPerCycleRF", fireWaterPowerPerCycleRF,
+        "The amount of power generated per BC engine cycle. Examples: BC Oil = 30, BC Fuel = 60").getInt(fireWaterPowerPerCycleRF);
     fireWaterPowerTotalBurnTime = config.get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime,
         "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000").getInt(fireWaterPowerTotalBurnTime);
 
@@ -842,7 +845,10 @@ public final class Config {
     poweredSpawnerUseVanillaSpawChecks = config.get(sectionSpawner.name, "poweredSpawnerUseVanillaSpawChecks", poweredSpawnerUseVanillaSpawChecks,
         "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").getBoolean(poweredSpawnerUseVanillaSpawChecks);
     brokenSpawnerDropChance = (float) config.get(sectionSpawner.name, "brokenSpawnerDropChance", brokenSpawnerDropChance,
-        "The chance a broken spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);
+        "The chance a broken spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").getDouble(brokenSpawnerDropChance);    
+    brokenSpawnerToolBlacklist = config.getStringList("brokenSpawnerToolBlacklist", sectionSpawner.name, brokenSpawnerToolBlacklist, 
+        "When a spawner is broken with these tools they will not drop a broken spawner");
+    
     powerSpawnerAddSpawnerCost = config.get(sectionSpawner.name, "powerSpawnerAddSpawnerCost", powerSpawnerAddSpawnerCost,
         "The number of levels it costs to add a broken spawner").getInt(powerSpawnerAddSpawnerCost);    
 

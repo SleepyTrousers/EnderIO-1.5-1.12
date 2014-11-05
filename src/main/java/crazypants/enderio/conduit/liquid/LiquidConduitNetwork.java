@@ -159,7 +159,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
         if(con.canOutputToDir(dir)) {
           IFluidHandler externalTank = con.getExternalHandler(dir);
           if(externalTank != null) {
-            externals.add(new LocatedFluidHandler(externalTank, con.getBlockCoord().getLocation(dir), dir.getOpposite()));
+            externals.add(new LocatedFluidHandler(externalTank, con.getLocation().getLocation(dir), dir.getOpposite()));
           }
         }
       }
@@ -193,7 +193,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
   }
 
   private void drainConduitToNearestExternal(LiquidConduit con, List<LocatedFluidHandler> externals) {
-    BlockCoord conLoc = con.getBlockCoord();
+    BlockCoord conLoc = con.getLocation();
     FluidStack toDrain = con.getTank().getFluid();
     if(toDrain == null) {
       return;
@@ -230,7 +230,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     // First flow all we can down, then balance the rest
     if(con.getConduitConnections().contains(ForgeDirection.DOWN)) {
-      BlockCoord loc = con.getBlockCoord().getLocation(ForgeDirection.DOWN);
+      BlockCoord loc = con.getLocation().getLocation(ForgeDirection.DOWN);
       ILiquidConduit dc = ConduitUtil.getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
       if(dc instanceof LiquidConduit) {
         LiquidConduit downCon = (LiquidConduit) dc;
@@ -290,7 +290,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
     int totalCapacity = tank.getCapacity();
 
-    BlockCoord loc = con.getBlockCoord();
+    BlockCoord loc = con.getLocation();
     Collection<ILiquidConduit> connections =
         ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorldObj(),
             loc.x, loc.y, loc.z, ILiquidConduit.class);
@@ -331,7 +331,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     if(neighbour.getNetwork() != this) {
       return false;
     }
-    if(neighbour.getBlockCoord().y > con.getBlockCoord().y) {
+    if(neighbour.getLocation().y > con.getLocation().y) {
       return false;
     }
     float nr = neighbour.getTank().getFilledRatio();

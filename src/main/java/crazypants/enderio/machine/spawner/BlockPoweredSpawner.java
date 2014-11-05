@@ -20,6 +20,8 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -33,7 +35,7 @@ import crazypants.util.Lang;
 import crazypants.util.Util;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
-  
+
   public static void writeMobTypeToNBT(NBTTagCompound nbt, String type) {
     if(nbt == null) {
       return;
@@ -44,7 +46,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       nbt.setString("mobType", type);
     }
   }
-  
+
   public static String readMobTypeFromNBT(NBTTagCompound nbt) {
     if(nbt == null) {
       return null;
@@ -54,31 +56,37 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
     return nbt.getString("mobType");
   }
-  
+
   public static String getSpawnerTypeFromItemStack(ItemStack stack) {
     if(stack == null || stack.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner)) {
       return null;
     }
     return readMobTypeFromNBT(stack.stackTagCompound);
   }
-  
-  public static BlockPoweredSpawner create() {       
+
+  public static BlockPoweredSpawner create() {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.unlocalisedName, new DummyRecipe());
-    
+
     //Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();
-    
+
     BlockPoweredSpawner res = new BlockPoweredSpawner();
     MinecraftForge.EVENT_BUS.register(res);
     FMLCommonHandler.instance().bus().register(res);
     res.init();
     return res;
-  }  
-  
-  private List<DropInfo> dropQueue = new ArrayList<BlockPoweredSpawner.DropInfo>();
-  
+  }
+
+  private final List<DropInfo> dropQueue = new ArrayList<BlockPoweredSpawner.DropInfo>();
+  private final List<UniqueIdentifier> toolBlackList = new ArrayList<UniqueIdentifier>();
+
   protected BlockPoweredSpawner() {
-    super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);    
+    super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);
+
+    String[] blackListNames = Config.brokenSpawnerToolBlacklist;
+    for (String name : blackListNames) {
+      toolBlackList.add(new UniqueIdentifier(name));
+    }
   }
 
   @SubscribeEvent
@@ -87,25 +95,35 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       if(evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode && !evt.getPlayer().worldObj.isRemote && !evt.isCanceled()) {
         TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.x, evt.y, evt.z);
         if(tile instanceof TileEntityMobSpawner) {
-          
-          if(Math.random() > Config.brokenSpawnerDropChance) {            
+
+          if(Math.random() > Config.brokenSpawnerDropChance) {
             return;
           }
           
-          TileEntityMobSpawner spawner = (TileEntityMobSpawner)tile;
+          ItemStack equipped = evt.getPlayer().getCurrentEquippedItem();
+          if(equipped != null) {
+            for (UniqueIdentifier uid : toolBlackList) {
+              Item blackListItem = GameRegistry.findItem(uid.modId, uid.name);
+              if(blackListItem == equipped.getItem()) {
+                return;
+              }
+            }
+          }
+
+          TileEntityMobSpawner spawner = (TileEntityMobSpawner) tile;
           MobSpawnerBaseLogic logic = spawner.func_145881_a();
           if(logic != null) {
             String name = logic.getEntityNameToSpawn();
             if(name != null && !isBlackListed(name)) {
-              ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);  
-              dropQueue.add(new DropInfo(evt, drop));              
+              ItemStack drop = ItemBrokenSpawner.createStackForMobType(name);
+              dropQueue.add(new DropInfo(evt, drop));
             }
           }
         }
       }
     }
   }
-  
+
   @SubscribeEvent
   public void onServerTick(TickEvent.ServerTickEvent event) {
     if(event.phase != TickEvent.Phase.END) {
@@ -116,38 +134,38 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
     dropQueue.clear();
   }
-  
+
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
     if(evt.left == null || evt.left.stackSize != 1 || evt.left.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner) ||
-       evt.right == null || ItemBrokenSpawner.getMobTypeFromStack(evt.right) == null) {
+        evt.right == null || ItemBrokenSpawner.getMobTypeFromStack(evt.right) == null) {
       return;
-    }    
-    
+    }
+
     String spawnerType = ItemBrokenSpawner.getMobTypeFromStack(evt.right);
     if(isBlackListed(spawnerType)) {
       return;
     }
-    
-    evt.cost = Config.powerSpawnerAddSpawnerCost;   
+
+    evt.cost = Config.powerSpawnerAddSpawnerCost;
     evt.output = evt.left.copy();
     if(evt.output.stackTagCompound == null) {
       evt.output.stackTagCompound = new NBTTagCompound();
     }
     evt.output.stackTagCompound.setBoolean("eio.abstractMachine", true);
     writeMobTypeToNBT(evt.output.stackTagCompound, spawnerType);
-    
+
   }
-  
-  public boolean isBlackListed(String entityId) {   
+
+  public boolean isBlackListed(String entityId) {
     return PoweredSpawnerConfig.getInstance().isBlackListed(entityId);
   }
-  
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePoweredSpawner) {
-      return new ContainerPoweredSpawner(player.inventory, (TilePoweredSpawner)te);
+      return new ContainerPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
     }
     return null;
   }
@@ -156,7 +174,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TilePoweredSpawner) {
-      return new GuiPoweredSpawner(player.inventory, (TilePoweredSpawner)te);
+      return new GuiPoweredSpawner(player.inventory, (TilePoweredSpawner) te);
     }
     return null;
   }
@@ -173,7 +191,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     }
     return "enderio:poweredSpawnerFront";
   }
-  
+
   @Override
   public boolean isOpaqueCube() {
     return false;
@@ -190,7 +208,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   }
 
   @Override
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {       
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
   }
 
   @Override
@@ -202,7 +220,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
       TooltipAddera.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner");
     }
   }
-  
+
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
     TilePoweredSpawner te = (TilePoweredSpawner) world.getTileEntity(x, y, z);
@@ -213,26 +231,25 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.BIT_DETAILED;
   }
-  
+
   private static class DropInfo {
-    
+
     BlockEvent.BreakEvent evt;
     ItemStack drop;
-    
+
     DropInfo(BreakEvent evt, ItemStack stack) {
       super();
       this.evt = evt;
       this.drop = stack;
     }
-    
+
     void doDrop() {
       if(evt.isCanceled()) {
         return;
       }
-      Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);   
+
+      Util.dropItems(evt.getPlayer().worldObj, drop, evt.x, evt.y, evt.z, true);
     }
-    
-    
-    
+
   }
 }

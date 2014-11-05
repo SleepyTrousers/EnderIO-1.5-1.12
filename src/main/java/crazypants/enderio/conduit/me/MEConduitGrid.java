@@ -58,7 +58,7 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public void onGridNotification(GridNotification notification) {
-    gridChanged();
+    ;
   }
 
   @Override
@@ -73,9 +73,6 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public void gridChanged() {
-    IGridNode node = conduit.getBundle().getGridNode(null);
-    if(node != null) {
-      node.updateState();
-    }
+    ;
   }
 }

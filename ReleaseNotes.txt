@@ -1,4 +1,12 @@
 ------------------------------------------------------
+Version 2.1.9
+------------------------------------------------------
+
+Changes
+- Updated Build Craft API to v6.1.5. NB: EIO will no longer work with pre 6.1 BC versions
+- Added tool blacklist to prevent broken spawners dropping when using those tools
+
+------------------------------------------------------
 Version 2.1.8
 ------------------------------------------------------
 
@@ -6,16 +14,21 @@ Changes
 - Added text labels to Travel Anchors and improved rendering and selection
 - Added new item 'Ender Resonator', made in Slice'N'Splice, used to make wireless chargers and dim. trans.
   'Easy' recipe config option added to use old, cheaper recipe
+- Added wireless powered light (tterrag)
 - Old transceiver now hidden in NEI / creative tab. Will be removed soon, convert existing blocks to new version by 
   placing in the crafting grid
-- Added wireless powered light (tterrag)
 - #1167 Improved NEI handlers (Tonius)
 - #1165 Updated zh_CN.lang (Mrkwtkr)
 - Removed mobs from EnderIO, moved to new mod EnderZoo
+- Redstone conduits will now output strong signal to blocks they are connected to (tterrag)
+- Machines now only respond to strong redstone signals (tterrag)
+- #1181 Add dump buttons to vat tanks (tterrag)
+- Added the ability to set the output direction of Ender Rails
 
 Bugs
 - #1162 Infinite Broken-Spawner exploit with Twilight Forest
-- #1170 Dimensional Transceiver liquid related crash
+- #1170 Dimensional Transceiver infinite loop with liquids
+- #1176 Stirling Gen not outputting as much power as it generates when base rate changed in config
 - Transceiver item buffers would allow multiple non-stackable items of the same type
   
 

@@ -146,7 +146,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     BlockCoord conduitLoc;
 
     public NetworkTankKey(EnderLiquidConduit con, ForgeDirection conDir) {
-      this(con.getBlockCoord(), conDir);
+      this(con.getLocation(), conDir);
     }
 
     public NetworkTankKey(BlockCoord conduitLoc, ForgeDirection conDir) {
@@ -196,7 +196,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     public NetworkTank(EnderLiquidConduit con, ForgeDirection conDir) {
       this.con = con;
       this.conDir = conDir;
-      conduitLoc = con.getBlockCoord();
+      conduitLoc = con.getLocation();
       tankDir = conDir.getOpposite();
       externalTank = FluidUtil.getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
       acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
