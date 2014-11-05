@@ -1,16 +1,19 @@
 package crazypants.enderio.conduit;
 
-import static crazypants.enderio.ModObject.blockPainter;
+import static crazypants.enderio.ModObject.*;
+import appeng.core.Api;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.Alloy;
@@ -83,6 +86,21 @@ public class ConduitRecipes {
 
     ItemStack speedUpgrade = new ItemStack(EnderIO.itemExtractSpeedUpgrade, 1, 0);
     GameRegistry.addShapedRecipe(speedUpgrade, "iii","epe","ere", 'p', Blocks.piston, 'e', electricalSteel, 'r', Blocks.redstone_torch, 'i', Items.iron_ingot);
+    
+    if (MEUtil.isMEEnabled()) {
+      addAeRecipes();
+    }
   }
 
+  @Method(modid = "appliedenergistics2")
+  private static void addAeRecipes() {
+    ItemStack fluix = Api.instance.materials().materialFluixCrystal.stack(1).copy();
+    ItemStack pureFluix = Api.instance.materials().materialPureifiedFluixCrystal.stack(1).copy();
+    ItemStack quartzFiber = Api.instance.parts().partQuartzFiber.stack(1).copy();
+    ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
+    ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
+    
+    GameRegistry.addRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', fluix, 'q', quartzFiber);
+    GameRegistry.addRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber);
+  }
 }

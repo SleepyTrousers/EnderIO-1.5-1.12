@@ -4,12 +4,18 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import appeng.api.AEApi;
 import appeng.api.networking.IGridHost;
@@ -27,6 +33,7 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -35,10 +42,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   protected MEConduitNetwork network;
   protected MEConduitGrid grid;
-  
+
   public static IIcon coreTexture;
   public static IIcon longTexture;
-  
+
   EnumSet<ForgeDirection> validConnections = EnumSet.copyOf(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
 
   public static void initIcons() {
@@ -48,7 +55,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       public void registerIcons(IIconRegister register) {
         coreTexture = register.registerIcon(EnderIO.MODID + ":meConduitCore");
         longTexture = register.registerIcon(EnderIO.MODID + ":meConduit");
-     }
+      }
 
       @Override
       public int getTextureType() {
@@ -57,7 +64,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
     });
   }
-  
+
   @Override
   public Class<? extends IConduit> getBaseConduitType() {
     return IMEConduit.class;
@@ -78,35 +85,60 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     this.network = (MEConduitNetwork) network;
     return true;
   }
-  
+
   @Override
-  public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
-    return super.canConnectToConduit(direction, conduit);
+  public void writeToNBT(NBTTagCompound nbtRoot) {
+    super.writeToNBT(nbtRoot);
+    NBTTagList list = new NBTTagList();
+    for (ForgeDirection dir : validConnections) {
+      NBTTagString name = new NBTTagString(dir.name());
+      list.appendTag(name);
+    }
+    nbtRoot.setTag("validConnections", list);
   }
 
   @Override
-  public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
-    return canConnectTo(getBundle().getWorld(), direction, getBundle().getLocation());
+  public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
+    super.readFromNBT(nbtRoot, nbtVersion);
+    if(nbtRoot.hasKey("validConnections")) {
+      validConnections.clear();
+      NBTTagList connections = nbtRoot.getTagList("validConnections", Constants.NBT.TAG_STRING);
+      for (int i = 0; i < connections.tagCount(); i++) {
+        validConnections.add(ForgeDirection.valueOf(connections.getStringTagAt(i)));
+      }
+    }
   }
-  
+
+  @Override
   @Method(modid = "appliedenergistics2")
-  private boolean canConnectTo(World world, ForgeDirection dir, BlockCoord pos) {
+  public boolean canConnectToExternal(ForgeDirection dir, boolean ignoreConnectionMode) {
+    World world = getBundle().getWorld();
+    BlockCoord pos = getLocation();
     TileEntity te = world.getTileEntity(pos.x + dir.offsetX, pos.y + dir.offsetY, pos.z + dir.offsetZ);
-    if (te instanceof IGridProxyable) {
-      AENetworkProxy proxy = ((IGridProxyable)te).getProxy();
+
+    if(!ignoreConnectionMode && getConnectionMode(dir) == ConnectionMode.DISABLED) {
+      return false;
+    }
+
+    if(te instanceof IGridProxyable) {
+      AENetworkProxy proxy = ((IGridProxyable) te).getProxy();
       return proxy != null && proxy.getConnectableSides().contains(dir.getOpposite());
-    } else if (te instanceof IPartHost) {
+    } else if(te instanceof IPartHost) {
       IPart part = ((IPartHost) te).getPart(dir.getOpposite());
-      return part != null ? part.getExternalFacingNode() != null : ((IPartHost)te).getPart(ForgeDirection.UNKNOWN) != null;
-    } else if (te instanceof IGridHost) {
-      return ((IGridHost)te).getCableConnectionType(dir.getOpposite()) != AECableType.NONE;
+      if(part == null) {
+        part = ((IPartHost) te).getPart(ForgeDirection.UNKNOWN);
+        return part != null;
+      }
+      return part.getExternalFacingNode() != null;
+    } else if(te instanceof IGridHost) {
+      return !(te instanceof TileConduitBundle) && ((IGridHost) te).getCableConnectionType(dir.getOpposite()) != AECableType.NONE;
     }
     return false;
   }
-  
+
   @Override
   public IIcon getTextureForState(CollidableComponent component) {
-    if (component.dir == ForgeDirection.UNKNOWN) {
+    if(component.dir == ForgeDirection.UNKNOWN) {
       return coreTexture;
     } else {
       return longTexture;
@@ -121,52 +153,74 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   @Method(modid = "appliedenergistics2")
   public void updateEntity(World worldObj) {
-    if (grid == null) {
+    if(grid == null) {
       grid = new MEConduitGrid(this);
     }
-    
+
+    System.out.println(validConnections);
+
     if(getNode() == null && !worldObj.isRemote) {
       IGridNode node = AEApi.instance().createGridNode(grid);
-      if (node != null) {
+      if(node != null) {
         getBundle().setGridNode(node);
         getNode().updateState();
       }
     }
-    
+
     super.updateEntity(worldObj);
   }
-  
+
   @Override
   public ConnectionMode getNextConnectionMode(ForgeDirection dir) {
     ConnectionMode mode = getConnectionMode(dir);
     mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
     return mode;
   }
-  
+
   @Override
   public ConnectionMode getConnectionMode(ForgeDirection dir) {
-    ConnectionMode mode = conectionModes.get(dir);
-    return mode == null ? validConnections.contains(dir) ? ConnectionMode.IN_OUT : ConnectionMode.DISABLED : mode;
+    return validConnections.contains(dir) ? ConnectionMode.IN_OUT : ConnectionMode.DISABLED;
   }
-  
+
   @Override
   public void setConnectionMode(ForgeDirection dir, ConnectionMode mode) {
     super.setConnectionMode(dir, mode);
-    if (mode == ConnectionMode.DISABLED) {
+    if(mode == ConnectionMode.DISABLED) {
       validConnections.remove(dir);
     } else {
       validConnections.add(dir);
     }
     getNode().updateState();
+    getNode().getWorld().markBlockForUpdate(getLocation().x, getLocation().y, getLocation().z);
   }
-  
+
+  @Override
+  public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
+    if(conduit == null) {
+      return false;
+    }
+    return conduit instanceof IMEConduit;
+  }
+
+  @Override
+  public void conduitConnectionAdded(ForgeDirection fromDirection) {
+    super.conduitConnectionAdded(fromDirection);
+    validConnections.add(fromDirection);
+  }
+
+  @Override
+  public void conduitConnectionRemoved(ForgeDirection fromDirection) {
+    super.conduitConnectionRemoved(fromDirection);
+    validConnections.remove(fromDirection);
+  }
+
   @Override
   @Method(modid = "appliedenergistics2")
   protected void connectionsChanged() {
     super.connectionsChanged();
     onNodeChanged();
   }
-  
+
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     super.onBlockActivated(player, res, all);
@@ -178,7 +232,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
           if(connDir == ForgeDirection.UNKNOWN || connDir == faceHit) {
             if(getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
-              return true;
             }
             // Attempt to join networks
             return ConduitUtil.joinConduits(this, faceHit);
@@ -194,26 +247,40 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     }
     return false;
   }
-  
+
   @Method(modid = "appliedenergistics2")
   public void onNodeChanged() {
     boolean foundConnection = false;
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       TileEntity te = getBundle().getLocation().getLocation(dir).getTileEntity(getBundle().getWorld());
-      if (te != null && te instanceof IGridHost) {
-        IGridNode node = ((IGridHost)te).getGridNode(ForgeDirection.UNKNOWN);
+      if(te != null && te instanceof IGridHost) {
+        IGridNode node = ((IGridHost) te).getGridNode(ForgeDirection.UNKNOWN);
         foundConnection |= validConnections.contains(dir);
-        if (node == null) {
-          node = ((IGridHost)te).getGridNode(dir.getOpposite());
+        if(node == null) {
+          node = ((IGridHost) te).getGridNode(dir.getOpposite());
         }
-        if (node != null) {
+        if(node != null) {
           node.updateState();
         }
       }
     }
-    if (!foundConnection && hasNode()) {
+    if(!foundConnection && hasNode()) {
       getNode().destroy();
+    }
+  }
+
+  @Override
+  public void onAddedToBundle() {
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      TileEntity te = getLocation().getLocation(dir).getTileEntity(getBundle().getWorld());
+      if(te instanceof TileConduitBundle) {
+        IMEConduit cond = ((TileConduitBundle) te).getConduit(IMEConduit.class);
+        if(cond != null) {
+          cond.setConnectionMode(dir.getOpposite(), ConnectionMode.IN_OUT);
+          ConduitUtil.joinConduits(cond, dir.getOpposite());
+        }
+      }
     }
   }
 
@@ -224,21 +291,21 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     getNode().destroy();
     getBundle().setGridNode(null);
   }
-  
+
   @Override
   public MEConduitGrid getGrid() {
-     return grid;
+    return grid;
   }
-  
+
   @Method(modid = "appliedenergistics2")
   private IGridNode getNode() {
     return getBundle().getGridNode(null);
   }
-  
+
   private boolean hasNode() {
     return getNode() != null;
   }
-  
+
   @Override
   public EnumSet<ForgeDirection> getConnections() {
     return validConnections;
