@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

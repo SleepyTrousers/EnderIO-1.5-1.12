@@ -292,6 +292,7 @@ public final class Config {
   public static boolean allowTileEntitiesAsPaintSource = true;
 
   public static String isGasConduitEnabled = "auto";
+  public static String isMeConduitEnabled = "auto";
 
   public static String[] soulVesselBlackList = new String[0];
   public static boolean soulVesselCapturesBosses = false;
@@ -875,7 +876,9 @@ public final class Config {
 
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
-
+    isMeConduitEnabled = config.getString("isMeConduitEnabled", sectionItems.name, isMeConduitEnabled,
+        "Can be set to 'auto', 'true' or 'false'. When set to auto the ME conduit will only be enabled when AE2 is installed.");
+    
     soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");
 

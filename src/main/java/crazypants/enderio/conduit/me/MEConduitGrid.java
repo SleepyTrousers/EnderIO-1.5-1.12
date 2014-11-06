@@ -9,7 +9,6 @@ import appeng.api.networking.GridNotification;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridBlock;
 import appeng.api.networking.IGridHost;
-import appeng.api.networking.IGridNode;
 import appeng.api.util.AEColor;
 import appeng.api.util.DimensionalCoord;
 
@@ -48,6 +47,11 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public boolean isWorldAccessable() {
+    return true;
+  }
+  
+  //@Override // dummy method for rv2
+  public boolean isWorldAccessible() {
     return true;
   }
 
