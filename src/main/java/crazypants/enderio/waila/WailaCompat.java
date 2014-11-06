@@ -30,8 +30,7 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPowerReceptor;
@@ -88,15 +87,13 @@ public class WailaCompat implements IWailaDataProvider {
 
     int x = pos.blockX, y = pos.blockY, z = pos.blockZ;
 
-    if(block instanceof AbstractMachineBlock<?>) {
-      if(te != null && te instanceof AbstractMachineEntity) {
-        AbstractMachineEntity machine = (AbstractMachineEntity) te;
-        ForgeDirection side = accessor.getSide();
-        IoMode mode = machine.getIoMode(side);
-        currenttip.add(EnumChatFormatting.YELLOW
-            + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
-        currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
-      }
+    if(te instanceof IIoConfigurable) {
+      IIoConfigurable machine = (IIoConfigurable) te;
+      ForgeDirection side = accessor.getSide();
+      IoMode mode = machine.getIoMode(side);
+      currenttip.add(EnumChatFormatting.YELLOW
+          + String.format(Lang.localize("gui.machine.side"), EnumChatFormatting.WHITE + Lang.localize("gui.machine.side." + side.name().toLowerCase())));
+      currenttip.add(EnumChatFormatting.YELLOW + String.format(Lang.localize("gui.machine.ioMode"), mode.colorLocalisedName()));
     }
 
     if(block instanceof IWailaInfoProvider) {
@@ -135,7 +132,6 @@ public class WailaCompat implements IWailaDataProvider {
     }
 
     else {
-
       if(block instanceof IAdvancedTooltipProvider) {
         TooltipAddera.addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
       } else if(item instanceof IAdvancedTooltipProvider) {
@@ -158,7 +154,7 @@ public class WailaCompat implements IWailaDataProvider {
       currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE, fmt.format(max),
           EnumChatFormatting.RESET));
 
-    } else if(te instanceof IConduitBundle) {
+    } else if(te instanceof IConduitBundle && itemStack != null && itemStack.getItem() == EnderIO.itemPowerConduit) {
       NBTTagCompound nbtRoot = accessor.getNBTData();
       short nbtVersion = nbtRoot.getShort("nbtVersion");
       NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
