@@ -6,20 +6,20 @@ import crazypants.enderio.config.Config;
 public class MEUtil {
 
   private static boolean useCheckPerformed = false;
-  private static boolean isGasConduitEnabled = false;
+  private static boolean isMeConduitEnabled = false;
 
   public static boolean isMEEnabled() {
     if(!useCheckPerformed) {
-      String configOption = Config.isGasConduitEnabled;
+      String configOption = Config.isMeConduitEnabled;
       if(configOption.equalsIgnoreCase("auto")) {
-        isGasConduitEnabled = Loader.isModLoaded("appliedenergistics2");
+        isMeConduitEnabled = Loader.isModLoaded("appliedenergistics2");
       } else if(configOption.equalsIgnoreCase("true")) {
-        isGasConduitEnabled = true;
+        isMeConduitEnabled = true;
       } else {
-        isGasConduitEnabled = false;
+        isMeConduitEnabled = false;
       }
       useCheckPerformed = true;
     }
-    return isGasConduitEnabled;
+    return isMeConduitEnabled;
   }
 }
