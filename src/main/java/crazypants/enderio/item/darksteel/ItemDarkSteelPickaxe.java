@@ -3,15 +3,13 @@ package crazypants.enderio.item.darksteel;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Sets;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -21,6 +19,9 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
+
+import com.google.common.collect.Sets;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,9 +40,7 @@ import crazypants.util.Lang;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
-  private static final Set SHOVEL_BLOCKS = Sets.newHashSet(new Block[] {
-      Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, Blocks.snow_layer, Blocks.snow,
-      Blocks.clay, Blocks.farmland, Blocks.soul_sand, Blocks.mycelium });
+  private static final Set<Material> SHOVEL_MATS = Sets.newHashSet(new Material[] { Material.clay, Material.craftedSnow, Material.grass, Material.ground, Material.sand, Material.snow }); 
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
@@ -184,14 +183,21 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public float func_150893_a(ItemStack item, Block block) {
     int energy = getEnergyStored(item);
+    
     if(block == Blocks.obsidian && energy > 0) {
       return super.func_150893_a(item, block) + Config.darkSteelPickEffeciencyObsidian;
     }
+    
+    if (block.getMaterial() == Material.glass) {
+      return efficiencyOnProperMaterial;
+    }
+    
     if(energy > 0 && hasSpoonUpgrade(item)) {
-      if(SHOVEL_BLOCKS.contains(block)) {
+      if(SHOVEL_MATS.contains(block.getMaterial())) {
         return efficiencyOnProperMaterial;
       }
     }
+    
     return super.func_150893_a(item, block);
   }
   
@@ -202,13 +208,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     } else {
       return super.canHarvestBlock(block, item);
     }
-    
   }
 
   private boolean hasSpoonUpgrade(ItemStack item) {
     return SpoonUpgrade.loadFromItem(item) != null;
   }
-
+  
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
     if(ForgeHooks.isToolEffective(stack, block, meta)) {
