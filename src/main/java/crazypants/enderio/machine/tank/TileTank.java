@@ -213,9 +213,15 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     }
     if(tankDirty && worldObj.getTotalWorldTime() % 10 == 0) {
       PacketHandler.sendToAllAround(new PacketTank(this), this);
+      worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
       tankDirty = false;
     }
     return res;
+  }
+  
+  public int getComparatorOutput() {
+    FluidTankInfo info = getTankInfo(null)[0];
+    return info == null || info.fluid == null ? 0 : (int) (((double) info.fluid.amount / (double) info.capacity) * 15);
   }
 
   private boolean processItems(boolean redstoneCheckPassed) {

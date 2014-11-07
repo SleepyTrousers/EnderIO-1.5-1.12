@@ -231,6 +231,20 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       return super.getExplosionResistance(par1Entity);
     }
   }
+  
+  @Override
+  public boolean hasComparatorInputOverride() {
+    return true;
+  }
+  
+  @Override
+  public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
+    TileEntity te = w.getTileEntity(x, y, z);
+    if (te instanceof TileTank) {
+      return ((TileTank) te).getComparatorOutput();
+    }
+    return 0;
+  }
 
   @Override
   @SideOnly(Side.CLIENT)

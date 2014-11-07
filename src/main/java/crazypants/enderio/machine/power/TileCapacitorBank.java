@@ -68,6 +68,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   private boolean isRecievingRedstoneSignal;
 
   private boolean redstoneStateDirty = true;
+  private int lastComparatorState = 0;
 
   private List<Receptor> masterReceptors;
   private ListIterator<Receptor> receptorIterator;
@@ -207,6 +208,12 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       multiblockDirty = false;
     }
 
+    // update any comparators, since they don't check themselves
+    int comparatorState = getComparatorOutput();
+    if (lastComparatorState != comparatorState) {
+      worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+    }
+    
     if(!isContoller()) {
       if(notifyNeighbours) {
         worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
@@ -251,7 +258,10 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
       worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
       notifyNeighbours = false;
     }
-
+  }
+  
+  public int getComparatorOutput() {
+    return (int) (((double) getEnergyStored() / (double) getMaxEnergyStored()) * 15);
   }
 
   public List<GaugeBounds> getGaugeBounds() {

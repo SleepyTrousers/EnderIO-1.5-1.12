@@ -383,6 +383,20 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     }
     return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
   }
+  
+  @Override
+  public boolean hasComparatorInputOverride() {
+    return true;
+  }
+  
+  @Override
+  public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
+    TileEntity te = w.getTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      return ((TileCapacitorBank) te).getComparatorOutput();
+    }
+    return 0;
+  }
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
