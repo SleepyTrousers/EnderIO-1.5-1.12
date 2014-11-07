@@ -420,9 +420,22 @@ public class ClientProxy extends CommonProxy {
     return super.getReachDistanceForPlayer(entityPlayer);
   }
   
+  @Override
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
     ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true));
     Minecraft.getMinecraft().thePlayer.timeInPortal = 1;
+  }
+
+  @Override
+  public long getTickCount() {
+    return clientTickCount;
+  }
+
+  @Override
+  protected void onClientTick() {
+    if(!Minecraft.getMinecraft().isGamePaused() && Minecraft.getMinecraft().theWorld != null) {
+      ++clientTickCount;
+    }
   }
 
 }

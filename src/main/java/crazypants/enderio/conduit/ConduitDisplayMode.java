@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasUtil;
+import crazypants.enderio.conduit.me.MEUtil;
 
 public enum ConduitDisplayMode {
   ALL,
@@ -23,6 +24,9 @@ public enum ConduitDisplayMode {
     if(res == GAS && !GasUtil.isGasConduitEnabled()) {
       return next(res);
     }
+    if(res == ME && !MEUtil.isMEEnabled()) {
+      return next(res);
+    }
     return res;
   }
 
@@ -33,6 +37,9 @@ public enum ConduitDisplayMode {
     }
     ConduitDisplayMode res = values()[index];
     if(res == GAS && !GasUtil.isGasConduitEnabled()) {
+      return previous(res);
+    }
+    if(res == ME && !MEUtil.isMEEnabled()) {
       return previous(res);
     }
     return res;

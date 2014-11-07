@@ -21,7 +21,7 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
-@Interface(iface = "appeng.me.helpers.IGridProxyable", modid = "appliedenergistics2")
+@Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
 public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
 
   TileEntity getEntity();

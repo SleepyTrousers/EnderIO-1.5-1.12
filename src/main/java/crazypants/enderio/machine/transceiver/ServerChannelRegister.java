@@ -3,10 +3,20 @@ package crazypants.enderio.machine.transceiver;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
+import org.apache.commons.io.FileUtils;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -17,13 +27,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.util.ItemUtil;
 import crazypants.util.RoundRobinIterator;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
 public class ServerChannelRegister extends ChannelRegister {
 
   public static ServerChannelRegister instance = new ServerChannelRegister();
@@ -32,7 +35,12 @@ public class ServerChannelRegister extends ChannelRegister {
     instance.reset();
     File dataFile = getDataFile();
     if(!dataFile.exists()) {
-      return;
+      dataFile = getFallbackDataFile();
+      if(!dataFile.exists()) {
+        return;
+      } else {
+        Log.warn("ServerChannelRegister: Using fallback save location " + dataFile.getAbsolutePath());
+      }
     }
 
     try {
@@ -63,32 +71,58 @@ public class ServerChannelRegister extends ChannelRegister {
   }
 
   public static void store() {
-    try {
-      File dataFile = getDataFile();
-      dataFile.getParentFile().mkdirs();
-      JsonWriter writer = new JsonWriter(new FileWriter(dataFile, false));
-      writer.setIndent("  ");
-      writer.beginArray();
-      for (List<Channel> chanList : instance.channels.values()) {
-        for (Channel chan : chanList) {
-          writer.beginObject();
-          writer.name("name").value(chan.getName());
-          if(chan.getUser() != null) {
-            writer.name("user").value(chan.getUser());
-          }
-          writer.name("type").value(chan.getType().ordinal());
-          writer.endObject();
-        }
+    File dataFile = getDataFile();
+    if(!createFolderAndWriteFile(dataFile)) {
+      dataFile = getFallbackDataFile();
+      Log.error("ServerChannelRegister: Attempting to write Dimensional Trasciever data to fallback location: " + dataFile.getAbsolutePath());
+      try {
+        writeFile(dataFile);
+      } catch (Exception e) {
+        Log.error("ServerChannelRegister: Could not write Dimensional Trasciever data fallback location " + dataFile.getAbsolutePath()
+            + " channles not saved: " + e.getMessage());
+        return;
       }
-      writer.endArray();
-      writer.close();
-    } catch (Exception e) {
-      Log.error("Could not write Dimensional trasciever channels to " + getDataFile().getAbsolutePath() + " : " + e);
     }
+    Log.info("ServerChannelRegister: Dimensional Trasciever data saved to " + dataFile.getAbsolutePath());
+  }
+
+  protected static boolean createFolderAndWriteFile(File dataFile) {
+    try {
+      File parentFolder = dataFile.getParentFile();
+      FileUtils.forceMkdir(parentFolder);
+      writeFile(dataFile);
+      return true;
+    } catch (Exception e) {
+      Log.error("ServerChannelRegister: Could not write Dimensional Trasciever channels to " + dataFile.getAbsolutePath() + " : " + e);
+      return false;
+    }
+  }
+
+  protected static void writeFile(File dataFile) throws IOException {
+    JsonWriter writer = new JsonWriter(new FileWriter(dataFile, false));
+    writer.setIndent("  ");
+    writer.beginArray();
+    for (List<Channel> chanList : instance.channels.values()) {
+      for (Channel chan : chanList) {
+        writer.beginObject();
+        writer.name("name").value(chan.getName());
+        if(chan.getUser() != null) {
+          writer.name("user").value(chan.getUser());
+        }
+        writer.name("type").value(chan.getType().ordinal());
+        writer.endObject();
+      }
+    }
+    writer.endArray();
+    writer.close();
   }
 
   private static File getDataFile() {
     return new File(DimensionManager.getCurrentSaveRootDirectory(), "enderio/dimensionalTransceiver.json");
+  }
+
+  private static File getFallbackDataFile() {
+    return new File(DimensionManager.getCurrentSaveRootDirectory(), "dimensionalTransceiver.json");
   }
 
   //-----------------------------------------------------------------------------------------------
