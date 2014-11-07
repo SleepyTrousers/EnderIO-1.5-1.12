@@ -27,6 +27,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   Map<NetworkTank, RoundRobinIterator<NetworkTank>> iterators;
 
+  boolean filling;
+
   public EnderLiquidConduitNetwork() {
     super(EnderLiquidConduit.class);
   }
@@ -78,27 +80,40 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   }
 
   public int fillFrom(NetworkTank tank, FluidStack resource, boolean doFill) {
-    if(resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+
+    if(filling) {
       return 0;
     }
-    resource = resource.copy();
-    resource.amount = Math.min(resource.amount, MAX_IO_PER_TICK);
-    int filled = 0;
-    int remaining = resource.amount;
-    //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
 
-    for (NetworkTank target : getIteratorForTank(tank)) {
-      if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
-        int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
-        remaining -= vol;
-        filled += vol;
-        if(remaining <= 0) {
-          return filled;
-        }
-        resource.amount = remaining;
+    try {
+
+      filling = true;
+
+      if(resource == null || tank == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+        return 0;
       }
+      resource = resource.copy();
+      resource.amount = Math.min(resource.amount, MAX_IO_PER_TICK);
+      int filled = 0;
+      int remaining = resource.amount;
+      //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
+
+      for (NetworkTank target : getIteratorForTank(tank)) {
+        if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
+          int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
+          remaining -= vol;
+          filled += vol;
+          if(remaining <= 0) {
+            return filled;
+          }
+          resource.amount = remaining;
+        }
+      }
+      return filled;
+
+    } finally {
+      filling = false;
     }
-    return filled;
   }
 
   private boolean matchedFilter(FluidStack drained, EnderLiquidConduit con, ForgeDirection conDir, boolean isInput) {
@@ -165,20 +180,26 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj)
+      if(this == obj) {
         return true;
-      if(obj == null)
+      }
+      if(obj == null) {
         return false;
-      if(getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       NetworkTankKey other = (NetworkTankKey) obj;
-      if(conDir != other.conDir)
+      if(conDir != other.conDir) {
         return false;
+      }
       if(conduitLoc == null) {
-        if(other.conduitLoc != null)
+        if(other.conduitLoc != null) {
           return false;
-      } else if(!conduitLoc.equals(other.conduitLoc))
+        }
+      } else if(!conduitLoc.equals(other.conduitLoc)) {
         return false;
+      }
       return true;
     }
 
@@ -217,20 +238,26 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     @Override
     public boolean equals(Object obj) {
-      if(this == obj)
+      if(this == obj) {
         return true;
-      if(obj == null)
+      }
+      if(obj == null) {
         return false;
-      if(getClass() != obj.getClass())
+      }
+      if(getClass() != obj.getClass()) {
         return false;
+      }
       NetworkTank other = (NetworkTank) obj;
-      if(conDir != other.conDir)
+      if(conDir != other.conDir) {
         return false;
+      }
       if(conduitLoc == null) {
-        if(other.conduitLoc != null)
+        if(other.conduitLoc != null) {
           return false;
-      } else if(!conduitLoc.equals(other.conduitLoc))
+        }
+      } else if(!conduitLoc.equals(other.conduitLoc)) {
         return false;
+      }
       return true;
     }
 
