@@ -9,7 +9,7 @@ import crazypants.enderio.conduit.ItemConduitSubtype;
 public class ItemMEConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ModObject.itemMEConduit.name(), "enderio:itemMEConduit"),
+      new ItemConduitSubtype(ModObject.itemMEConduit.name(), "enderio:itemMeConduit"),
   };
 
   public static ItemMEConduit create() {
