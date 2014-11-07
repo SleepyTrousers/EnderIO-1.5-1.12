@@ -212,6 +212,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     int comparatorState = getComparatorOutput();
     if (lastComparatorState != comparatorState) {
       worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+      lastComparatorState = comparatorState;
     }
     
     if(!isContoller()) {
