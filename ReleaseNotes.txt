@@ -11,6 +11,9 @@ Changes
 Bugs
 - Fix NEI handler for vat showing fire if a recipe only has one item. (tterrag)
 - Fix spoon upgrade only working on certain blocks (tterrag)
+- #1197 Fixed packet size for machine progress updates.
+- #1194 Fixed infinite loop created using ender fluid conduits and TE tesseracts.
+- #1157 Ender IO and Staff of Traveling not working in Mystcraft Ages 
 
 ------------------------------------------------------
 Version 2.1.8

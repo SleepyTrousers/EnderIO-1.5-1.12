@@ -64,14 +64,14 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
   @Override
   public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
     if(player.isSneaking()) {
-      long ticksSinceBlink = player.worldObj.getTotalWorldTime() - lastBlickTick;
+      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
       if(ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
       if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
         if(TravelController.instance.doBlink(equipped, player)) {
           player.swingItem();
-          lastBlickTick = player.worldObj.getTotalWorldTime();
+          lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
       return equipped;
@@ -111,6 +111,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     return res;
   }
 
+  @Override
   public void extractInternal(ItemStack item, int powerUse) {
     int res = Math.max(0, getEnergyStored(item) - powerUse);
     setEnergy(item, res);

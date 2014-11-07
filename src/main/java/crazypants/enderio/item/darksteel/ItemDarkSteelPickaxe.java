@@ -313,14 +313,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
         }
       }
 
-      long ticksSinceBlink = player.worldObj.getTotalWorldTime() - lastBlickTick;
+      long ticksSinceBlink = EnderIO.proxy.getTickCount() - lastBlickTick;
       if(ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
       if(Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
         if(TravelController.instance.doBlink(stack, player)) {
           player.swingItem();
-          lastBlickTick = player.worldObj.getTotalWorldTime();
+          lastBlickTick = EnderIO.proxy.getTickCount();
         }
       }
       return stack;
