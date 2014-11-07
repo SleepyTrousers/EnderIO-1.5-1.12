@@ -2,9 +2,6 @@ package crazypants.enderio.gui;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import crazypants.enderio.conduit.gas.GasConduit;
-import crazypants.enderio.conduit.gas.GasUtil;
-import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.render.RenderUtil;
 
 public final class IconEIO {
@@ -24,9 +21,6 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, MEUtil.isMEEnabled() || GasUtil.isGasConduitEnabled() ? 96 : 64, 64);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, MEUtil.isMEEnabled() || GasUtil.isGasConduitEnabled() ? 96 : 64, 64);
-
   public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(0 + 96, 148, 32, 32);
 
@@ -43,7 +37,7 @@ public final class IconEIO {
   public static final IconEIO WRENCH_OVERLAY_GAS_OFF = new IconEIO(64 + 96, 148, 32, 32);
   
   public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(64, 180, 32, 32);
-  public static final IconEIO WRENCH_OVERLAN_ME_OFF = new IconEIO(64 + 96, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ME_OFF = new IconEIO(64 + 96, 180, 32, 32);
 
   public static final IconEIO PROBE_OVERLAY_PROBE = new IconEIO(112, 100, 32, 16);
   public static final IconEIO PROBE_OVERLAY_COPY = new IconEIO(144, 100, 32, 16);
