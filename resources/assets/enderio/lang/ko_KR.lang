@@ -12,7 +12,7 @@ tile.blockEnderIo.tooltip.detailed.line2=원격 접근을 허용합니다.
 tile.blockEnderIo.tooltip.detailed.line3=여행 앵커나 여행의 지팡이와
 tile.blockEnderIo.tooltip.detailed.line4=함께 사용할 수 있습니다.
 
-item.enderio.itemEnderfaceㅆ.name=엔더 얼굴
+item.enderio.itemEnderface.name=엔더 얼굴
 
 //Conduits
 enderio.blockConduitBundle=컨두잇 묶음
