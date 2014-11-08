@@ -9,9 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Set;
 
-/**
- * @author Vexatos
- */
 public class ConduitBundledRedstoneProvider implements IBundledRedstoneProvider {
 
   @Override
