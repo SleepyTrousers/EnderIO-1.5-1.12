@@ -321,7 +321,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
     for(Class<?> connectable : connectableInterfaces.keySet()) {
-      if( (te != null && connectable.isAssignableFrom(te.getClass()) ) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
+      if((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
         return connectableInterfaces.get(connectable);
       }
     }
