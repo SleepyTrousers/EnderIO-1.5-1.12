@@ -56,20 +56,21 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
 
   }
   
+  @Override
   public boolean chargeItems(ItemStack[] items) {    
     boolean chargedItem = false;
     int available = Math.min(MAX_ENERGY_OUT, storedEnergyRF);
     for (ItemStack item : items) {
       if(item != null && available > 0) {
         int used = 0;
-        if(item.getItem() instanceof IEnergyContainerItem) {
+        if(item.getItem() instanceof IEnergyContainerItem && item.stackSize == 1) {
           IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();
 
           int max = chargable.getMaxEnergyStored(item);
           int cur = chargable.getEnergyStored(item);
           int canUse = Math.min(available, max - cur);
           if(cur < max) {
-            used = chargable.receiveEnergy(item, (int) canUse, false);
+            used = chargable.receiveEnergy(item, canUse, false);
           }
         }
         if(used > 0) {
