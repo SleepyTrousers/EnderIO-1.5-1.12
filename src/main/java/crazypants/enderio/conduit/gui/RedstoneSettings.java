@@ -24,8 +24,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public RedstoneSettings(GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_REDSTONE, Lang.localize("itemRedstoneConduitInsulated.name"), gui, con);
 
-    if(!(con instanceof IInsulatedRedstoneConduit)
-            || !((IInsulatedRedstoneConduit) con).isSpecialConnection(gui.getDir())) {
+    if(!(con instanceof IInsulatedRedstoneConduit
+            && ((IInsulatedRedstoneConduit) con).isSpecialConnection(gui.getDir()))) {
       int x = gap + gui.getFontRenderer().getStringWidth(signalColorStr) + gap + 2;
       int y = customTop;
       cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
