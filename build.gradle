@@ -44,8 +44,8 @@ repositories {
 
 dependencies {
     exportedCompile 'cglib:cglib-nodep:3.1'
-    exportedCompile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
-
+    
+    compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}"
     compile("appeng:appliedenergistics2:rv1-stable-1:dev") {
         exclude module: "Waila"
