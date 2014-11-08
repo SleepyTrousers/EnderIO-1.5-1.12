@@ -7,24 +7,24 @@ enderio.power.maxOutput=최대 출력
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=엔더IO
-tile.blockEnderIo.tooltip.detailed.line1=근처 원격접근 허용
-tile.blockEnderIo.tooltip.detailed.line2=블럭
-tile.blockEnderIo.tooltip.detailed.line3=여행 앵커를 사용하거나
-tile.blockEnderIo.tooltip.detailed.line4=여행의 지팡이 사용
+tile.blockEnderIo.tooltip.detailed.line1=근처의 블럭들에 대해
+tile.blockEnderIo.tooltip.detailed.line2=원격 접근을 허용합니다.
+tile.blockEnderIo.tooltip.detailed.line3=여행 앵커나 여행의 지팡이와
+tile.blockEnderIo.tooltip.detailed.line4=함께 사용할 수 있습니다.
 
-item.enderio.itemEnderface.name=엔더면상
+item.enderio.itemEnderfaceㅆ.name=엔더 얼굴
 
 //Conduits
 enderio.blockConduitBundle=컨두잇 묶음
-enderio.blockConduitFacade=컨두잇 파서드
-item.enderio.itemConduitFacade.name=컨두잇 파서드
-item.enderio.itemConduitFacade.tooltip.detailed.line1=패은트기계에 넣어서 칠함
-item.enderio.itemConduitFacade.tooltip.detailed.line2=우클릭시 컨두잇 설치
-item.enderio.itemConduitFacade.tooltip.detailed.line3=Hidden when a wrench or conduit
-item.enderio.itemConduitFacade.tooltip.detailed.line4=is equipped
+enderio.blockConduitFacade=컨두잇 덮개
+item.enderio.itemConduitFacade.name=컨두잇 덮개
+item.enderio.itemConduitFacade.tooltip.detailed.line1=페인트기계에 넣어서 칠할 수 있습니다.
+item.enderio.itemConduitFacade.tooltip.detailed.line2=우클릭하여 컨두잇에 설치합니다.
+item.enderio.itemConduitFacade.tooltip.detailed.line3=렌치나 컨두잇을 들고 있을 때에는
+item.enderio.itemConduitFacade.tooltip.detailed.line4=보이지 않습니다.
 
 enderio.itemPowerConduit.name=에너지 컨두잇
-enderio.itemPowerConduitEnhanced.name=발전된 에너지 컨두잇
+enderio.itemPowerConduitEnhanced.name=고급 에너지 컨두잇
 enderio.itemPowerConduitEnder.name=엔더 에너지 컨두잇
 
 enderio.itemRedstoneConduit.name=레드스톤 컨두잇
@@ -32,20 +32,20 @@ enderio.itemRedstoneConduitSwitch.name=컨두잇 스위치
 enderio.itemRedstoneConduitInsulated.name=절연 레드스톤 컨두잇
 
 enderio.itemLiquidConduit.name=액체 컨두잇
-enderio.itemLiquidConduitAdvanced.name=공압 액체 컨두잇
-enderio.itemLiquidConduitEnder.name=엔더 액체 컨두잇
+enderio.itemLiquidConduitAdvanced.name=공압식 액체 컨두잇
+enderio.itemLiquidConduitEnder.name=엔더식 액체 컨두잇
 enderio.itemLiquidConduit.lockedType=액체 종류 잠금
 enderio.itemLiquidConduit.unlockedType=액체 종류 잠금 해제
 
-enderio.itemLiquidConduit.tooltip.maxExtract=최대 추출:
-enderio.itemLiquidConduit.tooltip.maxIo=최대 입출력:
-enderio.itemLiquidConduit.tooltip.detailed.line1=Fluid flow respects gravity
-enderio.itemLiquidConduit.tooltip.detailed.line2=Flow rate dependent on fluid
-enderio.itemLiquidConduit.tooltip.detailed.line3=viscosity
+enderio.itemLiquidConduit.tooltip.maxExtract=최대 추출량:
+enderio.itemLiquidConduit.tooltip.maxIo=최대 유량:
+enderio.itemLiquidConduit.tooltip.detailed.line1=액체의 흐름은 중력을 따릅니다.
+enderio.itemLiquidConduit.tooltip.detailed.line2=유량은 액체의 점성에 따라
+enderio.itemLiquidConduit.tooltip.detailed.line3=다를 수 있습니다.
 
-enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Instant fluid teleportation
-enderio.itemLiquidConduitEnder.tooltip.detailed.line2=allows multiple fluids to be
-enderio.itemLiquidConduitEnder.tooltip.detailed.line3=transported on the same line
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=액체를 순간이동시킵니다.
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=서로 다른 액체들을 하나의
+enderio.itemLiquidConduitEnder.tooltip.detailed.line3=수송관만으로 수송할 수 있습니다.
 
 enderio.itemItemConduit.name=아이템 컨두잇
 
@@ -76,8 +76,8 @@ item.itemExtractSpeedUpgrade.tooltip.detailed.line3=Max upgrades is 15
 
 enderio.itemGasConduit.name=가스 컨두잇
 
-enderio.itemGasConduit.tooltip.maxExtract=최대 출력:
-enderio.itemGasConduit.tooltip.maxIo=최대 입출력:
+enderio.itemGasConduit.tooltip.maxExtract=최대 추출량:
+enderio.itemGasConduit.tooltip.maxIo=최대 유량:
 enderio.itemGasConduit.tooltip.detailed.line1=메탈러지 호환 가스 전송
 
 enderio.itemMEConduit.name=ME 컨두잇
@@ -85,32 +85,32 @@ enderio.itemMEConduit.name=ME 컨두잇
 //Materials
 enderio.itemMaterial.name=자원
 enderio.silicon.name=실리콘
-enderio.conduitBinder.name=컨두잇 바인더
-enderio.binderComposite.name=합성 바인더
-enderio.phasedIronNugget.name=맥동 철 조각
-tile.blockDarkIronBars.name=흑철주괴
+enderio.conduitBinder.name=컨두잇 접합제
+enderio.binderComposite.name=합성 접합제
+enderio.phasedIronNugget.name=맥동성 철 조각
+tile.blockDarkIronBars.name=검은 철 주괴
 tile.blockEndermanSkull.name=엔더맨 해골
 tile.blockEndermanSkull.base.name=엔더맨 머리
-tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
-tile.blockEndermanSkull.tormented.name=Tormented Enderman Head
+tile.blockEndermanSkull.reanimated.name=부활한 엔더맨 머리
+tile.blockEndermanSkull.tormented.name=고문당한 엔더맨 머리
 enderio.blastResistant=Blast Resistant
 enderio.lightEmitter=Emits Light
 enderio.tooltip.isBeaconBase=Can be used as beacon base
 
 //Fluids
 fluid.nutrient_distillation=Nutrient Distillation
-tile.fluid.nutrient_distillation.name=Nutrient Distillation
-item.bucketNutrient_distillation.name=Nutrient Distillation 양동이
+tile.fluid.nutrient_distillation.name=영양액
+item.bucketNutrient_distillation.name=영양액 양동이
 
-fluid.hootch=Hootch
-tile.fluid.hootch.name=Hootch
-item.bucketHootch.name=Hootch 양동이
-fluid.fire_water=파이어워터
-tile.fluid.fire_water.name=파이어워터
-item.bucketFire_water.name=파이어워터 양동이
+fluid.hootch=독한 술
+tile.fluid.hootch.name=독한 술
+item.bucketHootch.name=독주 양동이
+fluid.fire_water=화염수
+tile.fluid.fire_water.name=화염수
+item.bucketFire_water.name=화염수 양동이
 fluid.rocket_fuel=로켓연료
-tile.fluid.rocket_fuel.name=로켓연료
-item.bucketRocket_fuel.name=로켓연료 양동이
+tile.fluid.rocket_fuel.name=로켓 연료
+item.bucketRocket_fuel.name=로켓 연료 양동이
 fluid.eio.xpjuice=액체 XP
 tile.fluid.eio.xpjuice.name=액체 XP
 item.bucketXpjuice.name=XP 양동이
@@ -118,54 +118,54 @@ item.bucketXpjuice.name=XP 양동이
 
 enderio.fluid.millibucket.abr=mB
 
-enderio.fuel.tooltip.heading=Fuel Details
+enderio.fuel.tooltip.heading=연료 세부사항
 enderio.fuel.tooltip.burnTime=연료소모시간
 enderio.fluid.millibucketsTick=mB/t
-coolant.tooltip.heading=냉각
+coolant.tooltip.heading=냉각제
 enderio.fuel.tooltip.degreesPerBucket=deg per bucket
 enderio.gas.gasTick=Gas/t
 
 
 //Materials
-enderio.itemMachinePart.name=Machine Parts
+enderio.itemMachinePart.name=기계요소
 enderio.machineChassi.name=기계 케이스
 enderio.basicGear.name=기본 톱니바퀴
-enderio.pulsatingCrystal.name=Pulsating Crystal
-enderio.vibrantCrystal.name=Vibrant Crystal
+enderio.pulsatingCrystal.name=맥동성 수정
+enderio.vibrantCrystal.name=진동성 수정
 enderio.enderCrystal.name=엔더 수정
 enderio.attractorCrystal.name=Enticing Crystal
 enderio.darkGrindingBall.name=검은강철 공
-enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
-enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
-enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
-enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
+enderio.darkGrindingBall.tooltip.detailed.line1=제분용 공
+enderio.darkGrindingBall.tooltip.detailed.line2=주 생산량
+enderio.darkGrindingBall.tooltip.detailed.line3=보너스 생산량
+enderio.darkGrindingBall.tooltip.detailed.line4=전력 절감
 
 tile.blockReinforcedObsidian.name=정제된 흑요석
-tile.blockReinforcedObsidian.tooltip.common.line1=Wither Proof
+tile.blockReinforcedObsidian.tooltip.common.line1=위더 저항성
 
 //Quartz / Glass
-tile.blockFusedQuartz.name=탄 쿼츠
-enderio.blockFusedQuartz.fusedQuartz.name=탄 쿼츠
-enderio.blockFusedQuartz.fusedGlass.name=Quite Clear Glass
-enderio.blockFusedQuartz.enlightenedFusedQuartz.name=Enlightened Fused Quartz
-enderio.blockFusedQuartz.enlightenedFusedGlass.name=Enlightened Clear Glass
+tile.blockFusedQuartz.name=재결정 쿼츠
+enderio.blockFusedQuartz.fusedQuartz.name=재결정 쿼츠
+enderio.blockFusedQuartz.fusedGlass.name=투명 유리
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=고급 재결정 쿼츠
+enderio.blockFusedQuartz.enlightenedFusedGlass.name=고급 투명 유리
 
-item.enderio.itemFusedQuartzFrame.name=Fused Quartz Frame
-enderio.itemPowderIngot=Powders & Ingots
+item.enderio.itemFusedQuartzFrame.name=재결정 쿼츠 뼈대
+enderio.itemPowderIngot=분말 & 주괴
 
 //Alloys
 enderio.itemAlloy.name=합금
-enderio.electricalSteel.name=Electrical Steel
-enderio.energeticAlloy.name=Energetic Alloy
-enderio.phasedGold.name=Vibrant Alloy
+enderio.electricalSteel.name=전기 강철
+enderio.energeticAlloy.name=활동성 합금
+enderio.phasedGold.name=진동성 합금
 enderio.redstoneAlloy.name=레드스톤 합금
-enderio.conductiveIron.name=Conductive Iron
-enderio.phasedIron.name=Pulsating Iron
-enderio.vibrantNugget.name=Vibrant Alloy Nugget
+enderio.conductiveIron.name=전도성 철
+enderio.phasedIron.name=맥동성 철
+enderio.vibrantNugget.name=진동성 합금 조각
 enderio.darkSteel.name=검은 강철
 enderio.soularium.name=Soularium
 
-tile.blockIngotStorage.name=주괴 저장소
+tile.blockIngotStorage.name=주괴 저장고
 tile.enderio.electricalSteel.name=Electrical Steel Block
 tile.enderio.energeticAlloy.name=Energetic Alloy Block
 tile.enderio.phasedGold.name=Vibrant Alloy Block
@@ -182,13 +182,13 @@ enderio.powderIron.name=철 가루
 enderio.powderGold.name=금 가루
 enderio.powderCopper.name=구리 가루
 enderio.powderTin.name=주석 가루
-enderio.powderEnder.name=엔더진주 가루
+enderio.powderEnder.name=엔더 가루
 
 //Capacitors
-enderio.itemBasicCapacitor.name=Capacitor
-enderio.basicCapacitor.name=Basic Capacitor
-enderio.activatedCapacitor.name=Double-Layer Capacitor
-enderio.enderCapacitor.name=Octadic Capacitor
+enderio.itemBasicCapacitor.name=축전지
+enderio.basicCapacitor.name=일반 축전지
+enderio.activatedCapacitor.name=이중막 축전지
+enderio.enderCapacitor.name=8중막 축전지
 
 enderio.machine.tooltip.upgrade=기계 업그레이드
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
@@ -196,12 +196,12 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line2=speed / range of machines
 enderio.machine.tooltip.clearConfig=This will clear all stored info!
 
 //Machines
-tile.blockStirlingGenerator.name=Stirling Generator
+tile.blockStirlingGenerator.name=스털링 발전기
 tile.blockStirlingGenerator.tooltip.detailed.line1=Burns solid fuel to generate power
 tile.blockStirlingGenerator.tooltip.detailed.line2=Can be upgraded to increase output
 tile.blockStirlingGenerator.tooltip.detailed.line3=and efficiency with capacitors
 
-tile.blockReservoir.name=Reservoir
+tile.blockReservoir.name=저수지
 tile.blockReservoir.tooltip.detailed.line1=Formed when placed 2x2x1
 tile.blockReservoir.tooltip.detailed.line2=Add two buckets of water for
 tile.blockReservoir.tooltip.detailed.line3=an infinite water source
@@ -216,19 +216,19 @@ tile.blockAlloySmelter.tooltip.detailed.line3=furnace
 tile.blockAlloySmelter.tooltip.detailed.line4=Upgrade with capacitors to increase
 tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
-tile.blockSolarPanel.name=Photovoltaic Cell
-tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
+tile.blockSolarPanel.name=광전지
+tile.blockSolarPanel.advanced.name=고급 광전지
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
 tile.blockSolarPanel.tooltip.detailed.line3=the sky
-enderio.maxSolorProduction=Max Output
-enderio.tooltip.efficiency=Efficiency
+enderio.maxSolorProduction=최대 출력
+enderio.tooltip.efficiency=효율
 
-item.itemElectricLight.name=Powered Light
+item.itemElectricLight.name=전깃불
 item.itemElectricLight.tooltip.detailed.line1=Lights a large area when supplied with
 item.itemElectricLight.tooltip.detailed.line2=power and a redstone signal.
 
-item.itemElectricLightInverted.name=Powered Light (Inverted)
+item.itemElectricLightInverted.name=전깃불 (역신호)
 item.itemElectricLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
 item.itemElectricLightInverted.tooltip.detailed.line2=power.
 item.itemElectricLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
@@ -241,19 +241,19 @@ item.itemLightInverted.name=Light (Inverted)
 item.itemLightInverted.tooltip.detailed.line1=Emits light, disable with
 item.itemLightInverted.tooltip.detailed.line2=a redstone signal.
 
-item.itemWirelessLight.name=Wireless Powered Light
+item.itemWirelessLight.name=무선 전깃불
 item.itemWirelessLight.tooltip.detailed.line1=Lights a large area when supplied with
 item.itemWirelessLight.tooltip.detailed.line2=power and a redstone signal.
 item.itemWirelessLight.tooltip.detailed.line3=Can receive power from wireless chargers.
 
-item.itemWirelessLightInverted.name=Wireless Powered Light (Inverted)
+item.itemWirelessLightInverted.name=무선 전깃불 (역신호)
 item.itemWirelessLightInverted.tooltip.detailed.line1=Lights a large area when supplied with
 item.itemWirelessLightInverted.tooltip.detailed.line2=power.
 item.itemWirelessLightInverted.tooltip.detailed.line3=Turn off with a redstone signal.
 item.itemWirelessLightInverted.tooltip.detailed.line4=Can receive power from wireless chargers.
 
-tile.blockCapacitorBank.name=Capacitor Bank
-tile.blockCapacitorBank.creative.name=Creative Capacitor Bank
+tile.blockCapacitorBank.name=전지 은행
+tile.blockCapacitorBank.creative.name=크리에이티브 전지은행
 tile.blockCapacitorBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
@@ -300,15 +300,15 @@ enderio.trans.fluid=액체
 enderio.trans.recieving=받기
 enderio.trans.sending=보내기
 
-tile.blockPowerMonitor.name=파워 모니터
-tile.blockPowerMonitor.tooltip.detailed.line1=Displays details of power use and
-tile.blockPowerMonitor.tooltip.detailed.line2=저장량
+tile.blockPowerMonitor.name=전력 모니터
+tile.blockPowerMonitor.tooltip.detailed.line1=이 기기는 전력 사용량과
+tile.blockPowerMonitor.tooltip.detailed.line2=저장량을 보여줍니다.
 tile.blockPowerMonitor.tooltip.detailed.line3=Can be used to emit redstone
 tile.blockPowerMonitor.tooltip.detailed.line4=based on stored power levels
 tile.blockPowerMonitor.tooltip.detailed.line5=Must be attached to an EnderIO
 tile.blockPowerMonitor.tooltip.detailed.line6=컨두잇
 
-tile.blockVat.name=The Vat
+tile.blockVat.name=엔더 양조기
 tile.blockVat.tooltip.detailed.line1=Used to brew EnderIO fluids
 
 tile.blockEnchanter.name=인첸터
@@ -351,10 +351,10 @@ tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
 enderio.farm.note.outputFull=Output Full
-enderio.farm.note.noSeeds=씨앗 없음
-enderio.farm.note.noAxe=도끼 없음
-enderio.farm.note.noHoe=괭이 없음
-enderio.farm.note.noPower=파워 없음
+enderio.farm.note.noSeeds=씨앗 필요
+enderio.farm.note.noAxe=도끼 필요
+enderio.farm.note.noHoe=괭이 필요
+enderio.farm.note.noPower=전력 부족
 
 tile.blockTank.name=액체 탱크
 tile.blockTank.advanced.name=공압 액체 탱크
@@ -384,7 +384,7 @@ tile.blockPoweredSpawner.tooltip.detailed.line2=activate
 tile.blockPoweredSpawner.tooltip.detailed.line3=Upgrade with capacitors to increase
 tile.blockPoweredSpawner.tooltip.detailed.line4=speed and energy storage
 
-item.itemBrokenSpawner.name=부셔진 스포너
+item.itemBrokenSpawner.name=망가진 스포너
 item.itemBrokenSpawner.tooltip.detailed.line1=Combine with a Powered Spawner
 item.itemBrokenSpawner.tooltip.detailed.line2=in an Anvil to set spawn type
 
