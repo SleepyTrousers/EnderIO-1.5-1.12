@@ -87,6 +87,7 @@ processResources {
 jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude 'powercrystals/**'
+    exclude 'dan200/**'
 }
 
 task sourceJar(type: Jar) {
@@ -103,6 +104,7 @@ task deobfJar(type: Jar) {
     from sourceSets.main.output
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude 'powercrystals/**'
+    exclude 'dan200/**'
     classifier = 'dev'
 }
 
