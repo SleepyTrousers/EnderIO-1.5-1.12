@@ -18,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -45,6 +44,7 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
 
@@ -177,7 +177,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && (isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
+    return bundle.getFacadeId() != null && (ToolUtil.isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -244,21 +244,6 @@ public class ConduitUtil {
       return false;
     }
     return equipped.getItem() instanceof IConduitItem;
-  }
-
-  public static boolean isToolEquipped(EntityPlayer player) {
-    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
-      return false;
-    }
-    ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
-      return false;
-    }
-    if(MpsUtil.instance.isPowerFistEquiped(equipped)) {
-      return MpsUtil.instance.isOmniToolActive(equipped);
-    }
-    return equipped.getItem() instanceof IToolWrench;
   }
 
   public static boolean isProbeEquipped(EntityPlayer player) {

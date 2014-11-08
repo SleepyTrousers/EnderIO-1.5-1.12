@@ -19,7 +19,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -29,13 +28,14 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.ITool;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
-public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider, IWailaInfoProvider {
+public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider,
+    IWailaInfoProvider {
 
   public static int renderId;
 
@@ -59,7 +59,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   static {
     PacketHandler.INSTANCE.registerMessage(PacketIoMode.class, PacketIoMode.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketCurrentTask.class,PacketCurrentTask.class,PacketHandler.nextID(),Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketCurrentTask.class, PacketCurrentTask.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass, Material mat) {
@@ -72,7 +72,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setCreativeTab(EnderIOTab.tabEnderIO);
     random = new Random();
   }
-  
+
   protected AbstractMachineBlock(ModObject mo, Class<T> teClass) {
     this(mo, teClass, new Material(MapColor.ironColor));
   }
@@ -96,23 +96,17 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
-      if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removedByPlayer(world, entityPlayer, x, y, z);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      } else {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if(te instanceof AbstractMachineEntity) {
-          ((AbstractMachineEntity)te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
-          world.markBlockForUpdate(x, y, z);
-          return true;
-        }
+    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
+    }
+
+    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
+    if(tool != null && !entityPlayer.isSneaking()) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof AbstractMachineEntity) {
+        ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));
+        world.markBlockForUpdate(x, y, z);
+        return true;
       }
     }
 
@@ -129,8 +123,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int getRenderType() {
     return renderId;
   }
-  
-  
 
   @Override
   public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata) {
@@ -161,7 +153,6 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
     registerOverlayIcons(iIconRegister);
 
-
   }
 
   @SideOnly(Side.CLIENT)
@@ -171,7 +162,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     overlayIconPushPull = iIconRegister.registerIcon("enderio:machineOverlayPushPull");
     overlayIconDisabled = iIconRegister.registerIcon("enderio:machineOverlayDisabled");
     overlayIconNone = iIconRegister.registerIcon("enderio:machineOverlayNone");
-    selectedFaceIcon= iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
+    selectedFaceIcon = iIconRegister.registerIcon("enderio:machineOverlaySelectedFace");
   }
 
   @SideOnly(Side.CLIENT)
@@ -253,7 +244,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
         EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-                        
+
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
       }
@@ -265,7 +256,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
     int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-    AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(x, y, z);    
+    AbstractMachineEntity te = (AbstractMachineEntity) world.getTileEntity(x, y, z);
     te.setFacing(getFacingForHeading(heading));
     te.readFromItemStack(stack);
     if(world.isRemote) {
@@ -281,10 +272,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     case 1:
       return 5;
     case 2:
-      return 3;      
+      return 3;
     case 3:
     default:
-      return 4;    
+      return 4;
     }
   }
 
@@ -347,10 +338,11 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
-  
+
   @Override
-  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {}
-  
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+  }
+
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;

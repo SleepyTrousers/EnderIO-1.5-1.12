@@ -24,7 +24,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -52,10 +53,10 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.item.ItemConduitProbe;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.ITool;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 @Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
 public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRedNetOmniNode {
@@ -137,7 +138,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
@@ -418,7 +419,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
     world.removeTileEntity(x, y, z);
   }
-  
+
+  @Override
   public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
     ItemStack equipped = player.getCurrentEquippedItem();
     if(!player.isSneaking() || equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {
@@ -441,8 +443,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       //add facade
       return handleFacadeClick(world, x, y, z, player, bundle, stack);
 
-    } else if(ConduitUtil.isConduitEquipped(player)) { 
-     // Add conduit
+    } else if(ConduitUtil.isConduitEquipped(player)) {
+      // Add conduit
       if(player.isSneaking()) {
         return false;
       }
@@ -455,8 +457,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       if(handleConduitProbeClick(world, x, y, z, player, bundle, stack)) {
         return true;
       }
-    } else if(ConduitUtil.isToolEquipped(player) && player.isSneaking()) {
-       // Break conduit with tool
+    } else if(ToolUtil.isToolEquipped(player) && player.isSneaking()) {
+      // Break conduit with tool
       if(handleWrenchClick(world, x, y, z, player)) {
         return true;
       }
@@ -529,14 +531,12 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   private boolean handleWrenchClick(World world, int x, int y, int z, EntityPlayer player) {
-    if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {                        
-      IToolWrench wrench = (IToolWrench) player.getCurrentEquippedItem().getItem();
-      if(wrench.canWrench(player, x, y, z)) {
+    ITool tool = ToolUtil.getEquippedTool(player);
+    if(tool != null) {
+      if(tool.canUse(player.getCurrentEquippedItem(), player, x, y, z)) {
         if(!world.isRemote) {
           removedByPlayer(world, player, x, y, z);
-          if(player.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) player.getCurrentEquippedItem().getItem()).wrenchUsed(player, x, y, z);
-          }
+          tool.used(player.getCurrentEquippedItem(), player, x, y, z);
         }
         return true;
       }
@@ -544,14 +544,14 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     return false;
   }
 
-  private boolean handleConduitProbeClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {   
+  private boolean handleConduitProbeClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
     if(stack.getItemDamage() != 1) {
       return false; //not in copy paste mode
-    }    
+    }
     RaytraceResult rr = doRayTrace(world, x, y, z, player);
     if(rr == null || rr.component == null) {
       return false;
-    }        
+    }
     return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
   }
 
@@ -634,7 +634,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
-  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {    
+  public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
     TileEntity conduit = world.getTileEntity(x, y, z);
     if(conduit instanceof IConduitBundle) {
       ((IConduitBundle) conduit).onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
@@ -815,7 +815,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if(!(te instanceof IConduitBundle)) {
       return 0;
     }
-    IConduitBundle cb = (IConduitBundle)te;
+    IConduitBundle cb = (IConduitBundle) te;
     return cb.getFacadeMetadata();
   }
 
@@ -825,7 +825,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if(!(te instanceof IConduitBundle)) {
       return this;
     }
-    IConduitBundle cb = (IConduitBundle)te;
+    IConduitBundle cb = (IConduitBundle) te;
     Block res = cb.getFacadeId();
     if(res == null) {
       return this;

@@ -25,6 +25,7 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -74,7 +75,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       return false;
     }
 
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
 

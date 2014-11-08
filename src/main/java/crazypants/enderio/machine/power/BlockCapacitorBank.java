@@ -20,7 +20,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -29,12 +28,12 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
@@ -120,17 +119,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removedByPlayer(world, entityPlayer, x, y, z);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      }
+    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
     }
 
     if(entityPlayer.isSneaking()) {
@@ -141,7 +131,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       return false;
     }
 
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
+    if(ToolUtil.isToolEquipped(entityPlayer)) {
 
       ForgeDirection faceHit = ForgeDirection.getOrientation(side);
       TileCapacitorBank tcb = (TileCapacitorBank) te;

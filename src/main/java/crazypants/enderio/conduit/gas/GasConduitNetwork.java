@@ -9,8 +9,6 @@ import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.transport.IPipeTile;
-import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
@@ -261,11 +259,6 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
     }
     TileEntity te = w.getTileEntity(bc.x, bc.y, bc.z);
     if(te instanceof IGasHandler) {
-      if(te instanceof IPipeTile) {
-        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
-          return null;
-        }
-      }
       return (IGasHandler) te;
     }
     return null;

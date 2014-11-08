@@ -3,9 +3,7 @@ package crazypants.enderio.power;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.power.IPowerReceptor;
 import cofh.api.energy.IEnergyHandler;
-import crazypants.enderio.config.Config;
 
 public class PowerHandlerUtil {
 
@@ -13,13 +11,6 @@ public class PowerHandlerUtil {
     if(o instanceof IEnergyHandler) {
       return new PowerInterfaceRF((IEnergyHandler) o);
     }
-
-    if(Config.powerConduitOutputMJ) {     
-      if(o instanceof IPowerReceptor) {
-        return new PowerInterfaceBC((IPowerReceptor) o);
-      }
-    }
-
     return null;
   }
 

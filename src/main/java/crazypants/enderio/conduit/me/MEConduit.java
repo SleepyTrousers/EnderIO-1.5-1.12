@@ -33,6 +33,7 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 
@@ -220,7 +221,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
     super.onBlockActivated(player, res, all);
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().getWorldObj().isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;

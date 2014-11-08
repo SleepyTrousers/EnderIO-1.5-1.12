@@ -33,6 +33,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -83,7 +84,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       if(col != null && res.component != null) {
         setSignalColor(res.component.dir, col);
         return true;
-      } else if(ConduitUtil.isToolEquipped(player)) {
+      } else if(ToolUtil.isToolEquipped(player)) {
 
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;

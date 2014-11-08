@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.transceiver.Channel;
@@ -31,6 +30,7 @@ import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.MetadataUtil;
 import crazypants.util.RoundRobinIterator;
 
@@ -107,7 +107,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
       if(!world.isRemote) {
         int meta = world.getBlockMetadata(x, y, z);
         meta = MetadataUtil.setBit(3, !MetadataUtil.isBitSet(3, meta), meta);

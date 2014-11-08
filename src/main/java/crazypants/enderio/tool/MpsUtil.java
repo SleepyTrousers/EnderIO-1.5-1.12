@@ -1,4 +1,4 @@
-package crazypants.enderio.conduit;
+package crazypants.enderio.tool;
 
 import java.lang.reflect.Method;
 
