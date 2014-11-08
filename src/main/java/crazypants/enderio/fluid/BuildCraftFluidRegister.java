@@ -10,6 +10,12 @@ import crazypants.enderio.fluid.FluidFuelRegister.FuelImpl;
 
 public class BuildCraftFluidRegister implements IFluidRegister {
 
+  public BuildCraftFluidRegister() throws Exception {
+    //Make it go splat in object construction if an older version of
+    //build craft is installed
+    Class.forName("buildcraft.api.fuels.BuildcraftFuelRegistry");
+  }
+
   @Override
   public void addCoolant(Fluid fluid, float degreesCoolingPerMB) {
     if(BuildcraftFuelRegistry.coolant != null && BuildcraftFuelRegistry.coolant.getCoolant(fluid) == null) {
