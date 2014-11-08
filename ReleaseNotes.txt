@@ -14,7 +14,8 @@ Bugs
 - Fix spoon upgrade only working on certain blocks (tterrag)
 - #1197 Fixed packet size for machine progress updates.
 - #1194 Fixed infinite loop created using ender fluid conduits and TE tesseracts.
-- #1157 Ender IO and Staff of Traveling not working in Mystcraft Ages 
+- #1157 Ender IO and Staff of Traveling not working in Mystcraft Ages
+- #1201 Displayed Armor RF Power Values where 10x too actual (only a UI issue)   
 
 ------------------------------------------------------
 Version 2.1.8

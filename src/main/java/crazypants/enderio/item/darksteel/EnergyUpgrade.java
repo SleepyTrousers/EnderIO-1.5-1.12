@@ -1,6 +1,5 @@
 package crazypants.enderio.item.darksteel;
 
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -155,7 +154,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public EnergyUpgrade(String name, int levels, ItemStack upgradeItem, int capcity, int maxReceiveIO) {
     super(UPGRADE_NAME, name, upgradeItem, levels);
-    this.capacity = capcity;
+    capacity = capcity;
     energy = 0;
     maxInRF = maxReceiveIO;
     maxOutRF = maxReceiveIO;
@@ -201,7 +200,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     int endIndex = list.size();
     int cap = capacity;
     String percDamage = (int)Math.round(Config.darkSteelPowerDamgeAbsorptionRatio * 100) + "";
-    String capString = PowerDisplayUtil.formatPower(cap/10) + " " + PowerDisplayUtil.abrevation();
+    String capString = PowerDisplayUtil.formatPower(cap) + " " + PowerDisplayUtil.abrevation();
     for(int i=startIndex;i<endIndex;i++) {
       String str = (String)list.get(i);
       str = str.replaceAll("\\$P", capString);
@@ -235,7 +234,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public int receiveEnergy(int maxRF, boolean simulate) {
 
-    int energyReceived = Math.min(capacity - energy, Math.min(this.maxInRF, maxRF));
+    int energyReceived = Math.min(capacity - energy, Math.min(maxInRF, maxRF));
     if(!simulate) {
       energy += energyReceived;
     }
