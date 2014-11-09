@@ -350,7 +350,7 @@ tile.blockFarmStation.tooltip.detailed.line5=applied when harvesting
 tile.blockFarmStation.tooltip.detailed.line6=Upgrade with capacitors to increase
 tile.blockFarmStation.tooltip.detailed.line7=range, upgrade also increases power use
 
-enderio.farm.note.outputFull=Output Full
+enderio.farm.note.outputFull=인벤토리 꽉참
 enderio.farm.note.noSeeds=씨앗 필요
 enderio.farm.note.noAxe=도끼 필요
 enderio.farm.note.noHoe=괭이 필요
@@ -358,7 +358,7 @@ enderio.farm.note.noPower=전력 부족
 
 tile.blockTank.name=액체 탱크
 tile.blockTank.advanced.name=공압 액체 탱크
-tile.blockTank.tooltip.detailed.line1=휴대용 애겣 탱크
+tile.blockTank.tooltip.detailed.line1=휴대용 액체 탱크
 tile.blockTank.tooltip.detailed.line2=Can be used to empty and
 tile.blockTank.tooltip.detailed.line3=fill fluid containers
 enderio.tank.tank=탱크
@@ -442,7 +442,7 @@ tile.blockTravelAnchor.tooltip.detailed.line6=Can be painted in the Painting Mac
 enderio.blockTravelPlatform.invalidTarget=Destination is Obstructed
 enderio.blockTravelPlatform.outOfRange=Destination out of range
 
-item.itemTravelStaff.name=Staff of Traveling
+item.itemTravelStaff.name=여행의 지팡이
 item.itemTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
 item.itemTravelStaff.tooltip.detailed.line2=blocks become visible and can be
 item.itemTravelStaff.tooltip.detailed.line3=activated by R-Click
@@ -451,7 +451,7 @@ item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
 //Painter
-tile.blockPainter.name=Painting Machine
+tile.blockPainter.name=패인트 머신
 enderio.blockPainter.paintedWith=Painted with:
 tile.blockPaintedFence.name=Painted Fence
 tile.blockPaintedFenceGate.name=Painted Gate
@@ -510,7 +510,7 @@ skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
 
-item.itemSpawnEggEnderIO.name=Spawn
+item.itemSpawnEggEnderIO.name=스폰
 
 //Dark Steel
 item.darkSteel_helmet.name=Dark Helm
