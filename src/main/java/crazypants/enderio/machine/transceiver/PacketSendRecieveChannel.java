@@ -1,15 +1,11 @@
 package crazypants.enderio.machine.transceiver;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import io.netty.buffer.ByteBuf;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.PacketCurrentTask;
-import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.network.MessageTileEntity;
 import crazypants.enderio.network.NetworkUtil;
 

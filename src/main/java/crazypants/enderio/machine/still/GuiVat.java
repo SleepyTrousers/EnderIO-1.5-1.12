@@ -15,11 +15,8 @@ import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
@@ -31,7 +28,7 @@ public class GuiVat extends GuiMachineBase {
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
 
   private final TileVat vat;
-  
+
   private IconButtonEIO dump1, dump2;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
@@ -67,13 +64,13 @@ public class GuiVat extends GuiMachineBase {
       }
 
     });
-    
+
     dump1 = new IconButtonEIO(this, 1, 29, 62, IconEIO.REDSTONE_MODE_NEVER);
     dump1.setToolTip(Lang.localize("gui.machine.vat.dump.1"));
     dump2 = new IconButtonEIO(this, 2, 131, 62, IconEIO.REDSTONE_MODE_NEVER);
     dump2.setToolTip(Lang.localize("gui.machine.vat.dump.2"));
   }
-  
+
   @Override
   public void initGui() {
     super.initGui();
@@ -113,19 +110,12 @@ public class GuiVat extends GuiMachineBase {
       drawTexturedModalRect(guiLeft + 81, guiTop + 76 - scaled, 176, 12 - scaled, 14, scaled + 2);
 
       IIcon inputIcon = null;
-      IPoweredTask task = vat.getCurrentTask();
-      for (MachineRecipeInput input : task.getInputs()) {
-        if(input.fluid != null && input.fluid.getFluid() != null) {
-          inputIcon = input.fluid.getFluid().getStillIcon();
-          break;
-        }
+      if(vat.currentTaskInputFluid != null) {
+        inputIcon = vat.currentTaskInputFluid.getStillIcon();
       }
-      IMachineRecipe rec = task.getRecipe();
       IIcon outputIcon = null;
-      for (ResultStack res : rec.getCompletedResult(1.0f, task.getInputs())) {
-        if(res.fluid != null && res.fluid.getFluid() != null) {
-          outputIcon = res.fluid.getFluid().getStillIcon();
-        }
+      if(vat.currentTaskOutputFluid != null) {
+        outputIcon = vat.currentTaskOutputFluid.getStillIcon();
       }
 
       if(inputIcon != null && outputIcon != null) {
@@ -140,14 +130,13 @@ public class GuiVat extends GuiMachineBase {
     x = guiLeft + 132;
     RenderUtil.renderGuiTank(vat.outputTank, x, y, zLevel, 15, 47);
 
-    if(vat.getCurrentTask() != null || vat.outputTank.getFluidAmount() > 0) {
+    if(vat.currentTaskOutputFluid != null || vat.outputTank.getFluidAmount() > 0) {
 
       Fluid outputFluid;
       if(vat.outputTank.getFluidAmount() > 0) {
         outputFluid = vat.outputTank.getFluid().getFluid();
-      } else {
-        ResultStack[] res = vat.getCurrentTask().getRecipe().getCompletedResult(1, vat.getCurrentTask().getInputs());
-        outputFluid = res[0].fluid.getFluid();
+      } else {        
+        outputFluid = vat.currentTaskOutputFluid;
       }
 
       float mult;
@@ -155,14 +144,14 @@ public class GuiVat extends GuiMachineBase {
       if(inStack != null) {
         mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
         String str = "x" + mult;
-        x = guiLeft + 63 - fontRendererObj.getStringWidth(str)/2;
+        x = guiLeft + 63 - fontRendererObj.getStringWidth(str) / 2;
         fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
       }
       inStack = vat.getStackInSlot(1);
       if(inStack != null) {
         mult = VatRecipeManager.instance.getMultiplierForInput(inStack, outputFluid);
         String str = "x" + mult;
-        x = guiLeft + 113 - fontRendererObj.getStringWidth(str)/2;
+        x = guiLeft + 113 - fontRendererObj.getStringWidth(str) / 2;
         fontRendererObj.drawString(str, x, guiTop + 32, ColorUtil.getRGB(Color.gray), false);
       }
     }
@@ -190,14 +179,14 @@ public class GuiVat extends GuiMachineBase {
     RenderUtil.bindTexture(GUI_TEXTURE);
     drawTexturedModalRect(x, y, 0, 256 - 28, 26, 28);
   }
-  
+
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
-    
-    if (b == dump1) {
+
+    if(b == dump1) {
       dump(1);
-    } else if (b == dump2) {
+    } else if(b == dump2) {
       dump(2);
     }
   }

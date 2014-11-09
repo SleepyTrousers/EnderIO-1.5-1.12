@@ -69,6 +69,10 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     return currentTask == null ? 0 : currentTask.getProgress();
   }
 
+  public IPoweredTask getCurrentTask() {
+    return currentTask;
+  }
+
   public float getExperienceForOutput(ItemStack output) {
     if(lastCompletedRecipe == null) {
       return 0;
@@ -108,13 +112,17 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     IMachineRecipe nextRecipe = canStartNextTask(chance);
     if(nextRecipe != null) {
       boolean started = startNextTask(nextRecipe, chance);      
-      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);        
+      sendTaskProgressPacket();        
       startFailed = !started;                        
     } else {
       startFailed = true;
     }
     
     return requiresClientSync;
+  }
+
+  protected void sendTaskProgressPacket() {
+    PacketHandler.sendToAllAround(new PacketCurrentTaskProgress(this), this);
   }
 
   protected boolean checkProgress(boolean redstoneChecksPassed) {
@@ -132,7 +140,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     
     int curScaled = getProgressScaled(16);
     if(curScaled != lastProgressScaled) {
-      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+      sendTaskProgressPacket();
       lastProgressScaled = curScaled;
     }
     
@@ -164,7 +172,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
     markDirty();
     currentTask = null;
     lastProgressScaled = 0;
-    PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+    sendTaskProgressPacket();
   }
 
   protected void mergeResults(ResultStack[] results) {

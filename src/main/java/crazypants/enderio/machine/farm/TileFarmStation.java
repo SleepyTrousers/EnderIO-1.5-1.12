@@ -20,10 +20,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.PacketCurrentTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.IHarvestResult;
@@ -161,8 +160,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public void damageTool(Class<?> class1, Block blk, BlockCoord bc, int damage) {
 
     float rand = worldObj.rand.nextFloat();
-    if(rand >= Config.farmToolTakeDamageChance)
+    if(rand >= Config.farmToolTakeDamageChance) {
       return;
+    }
 
     ItemStack tool = getTool(class1);
     if(tool == null) {
@@ -286,7 +286,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }   
     int curScaled = getProgressScaled(16);
     if(curScaled != lastProgressScaled) {
-      PacketHandler.sendToAllAround(new PacketCurrentTask(this), this);
+      sendTaskProgressPacket();
       lastProgressScaled = curScaled;
     }    
     return true;

@@ -7,18 +7,18 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.MessageTileEntity;
 
-public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEntity> implements IMessageHandler<PacketCurrentTask, IMessage>  {
+public class PacketCurrentTaskProgress extends MessageTileEntity<AbstractPoweredTaskEntity> implements IMessageHandler<PacketCurrentTaskProgress, IMessage>  {
 
   private float progress;
 
-  public PacketCurrentTask() {
+  public PacketCurrentTaskProgress() {
   }
 
-  public PacketCurrentTask(AbstractPoweredTaskEntity tile) {
+  public PacketCurrentTaskProgress(AbstractPoweredTaskEntity tile) {
     super(tile);
     progress = -1;
-    if(tile.currentTask != null) {      
-      progress = tile.currentTask.getProgress();
+    if(tile.getCurrentTask() != null) {      
+      progress = tile.getCurrentTask().getProgress();
     } 
   }
 
@@ -35,7 +35,7 @@ public class PacketCurrentTask extends MessageTileEntity<AbstractPoweredTaskEnti
   }
 
   @Override
-  public IMessage onMessage(PacketCurrentTask message, MessageContext ctx) {
+  public IMessage onMessage(PacketCurrentTaskProgress message, MessageContext ctx) {
     AbstractPoweredTaskEntity tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
     if(tile != null) {
       if(message.progress < 0) {

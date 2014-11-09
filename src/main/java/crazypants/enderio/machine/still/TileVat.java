@@ -26,8 +26,12 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   final FluidTank outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 8);
 
   private static int IO_MB_TICK = 100;
-  
+
   boolean tanksDirty = false;
+
+  //Used client side in the vat gui to render progress
+  Fluid currentTaskInputFluid;
+  Fluid currentTaskOutputFluid;
 
   public TileVat() {
     super(new SlotDefinition(0, 1, -1, -1, -1, -1));
@@ -171,8 +175,8 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     }
     FluidStack res = outputTank.drain(maxDrain, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
-      tanksDirty = true;  
-    }    
+      tanksDirty = true;
+    }
     return res;
   }
 
@@ -182,8 +186,13 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     if(tanksDirty && worldObj.getTotalWorldTime() % 10 == 0) {
       PacketHandler.sendToAllAround(new PacketTanks(this), this);
       tanksDirty = false;
-    }    
+    }
     return res;
+  }
+
+  @Override
+  protected void sendTaskProgressPacket() {
+    PacketHandler.sendToAllAround(new PacketVatProgress(this), this);
   }
 
   @Override
@@ -294,10 +303,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
     }
   }
 
-  public IPoweredTask getCurrentTask() {
-    return currentTask;
-  }
-
   @Override
   public int getPowerUsePerTick() {
     return Config.vatPowerUserPerTickRF;
@@ -307,13 +312,19 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler 
   public String getSoundName() {
     return "machine.vat";
   }
-  
+
   @Override
   public float getPitch() {
     return 0.3f;
   }
-  
+
+  @Override
   public float getVolume() {
     return super.getVolume() * 0.3f;
   }
+
+  void setClientTask(IPoweredTask currentTask) {
+    this.currentTask = currentTask;
+  }
+
 }
