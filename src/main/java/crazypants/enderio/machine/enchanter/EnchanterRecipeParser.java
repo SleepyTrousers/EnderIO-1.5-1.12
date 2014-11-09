@@ -107,7 +107,7 @@ public class EnchanterRecipeParser extends DefaultHandler {
 
     InputStream in = RecipeConfig.class.getResourceAsStream("/assets/enderio/config/" + fileName);
     if(in == null) {
-      Log.error("Could load default AlloySmelter recipes.");
+      Log.error("Could load default Enchanter recipes.");
       throw new IOException("Could not resource /assets/enderio/config/" + fileName + " form classpath. ");
     }
     String output = readStream(in);

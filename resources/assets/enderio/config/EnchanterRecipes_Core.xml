@@ -105,5 +105,19 @@ for (int i = 0; i < level; i++) {
   <enchantment name="enchantment.fishingSpeed" costPerLevel="4">
     <itemStack modID="minecraft" itemName="fish"/>
   </enchantment>
+  
+  <enchantment name="enchantment.enderzoo.witherArrow" costPerLevel="6">
+    <itemStack modID="EnderZoo" itemName="witheringDust"/>
+  </enchantment>
+  
+  <!-- The wither potion in the creative tab has a meta of 8235 while a brewed potion has one of 8203 
+       so adding both-->
+  <enchantment name="enchantment.enderzoo.witherWeapon" costPerLevel="6">
+    <itemStack modID="minecraft" itemName="potion" itemMeta="8235"/>
+  </enchantment>
+  
+  <enchantment name="enchantment.enderzoo.witherWeapon" costPerLevel="6">
+    <itemStack modID="minecraft" itemName="potion" itemMeta="8203"/>
+  </enchantment>
 
 </enchaterRecipes>

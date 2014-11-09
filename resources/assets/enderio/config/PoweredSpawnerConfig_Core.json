@@ -35,7 +35,10 @@
     "Pig" : "0.5",    
     "MushroomCow" : "1",
     
-    "EnderIO.Enderminy" : "10"
+    "enderzoo.Enderminy" : "10",
+    "enderzoo.ConcussionCreeper" : "1.5",
+    "enderzoo.enderzoo.FallenKnight" : "1",
+    "enderzoo.WitherWitch" : "3"
   },
   
   "blackList": [
