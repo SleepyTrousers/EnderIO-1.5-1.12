@@ -4,8 +4,6 @@ import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -43,7 +41,7 @@ public class MaterialRecipes {
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
     OreDictionary.registerOre("woodStick", Items.stick);
-    OreDictionary.registerOre("sand", Blocks.sand);
+    OreDictionary.registerOre("sand", new ItemStack(Blocks.sand, 1, OreDictionary.WILDCARD_VALUE));
     OreDictionary.registerOre("ingotIron", Items.iron_ingot);
     OreDictionary.registerOre("ingotGold", Items.gold_ingot);
 
