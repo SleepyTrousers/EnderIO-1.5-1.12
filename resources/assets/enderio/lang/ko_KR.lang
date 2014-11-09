@@ -1,4 +1,6 @@
 //***  Ender IO *****//
+//Korean Localization text 한국어 현지화 텍스트
+//NOTE: detailed.line이 붙은 경우, 이어진 글을 뜻합니다. 말뜻이 이어지도록 해석해 주시기 바랍니다.
 
 //Power
 enderio.power.rf=RF
