@@ -9,6 +9,8 @@ Changes
 - Allow dark pick to work on glass material blocks such as glowstone (tterrag)
 - Add comparator support to tanks and capacitor banks (tterrag)
 - Added support for Ender Zoo enchants to Enchanter
+- #1188 Updated zh_CN.lang (Mrkwtkr)
+- #1199 Create Korean translation (puyo061) 
 
 Bugs
 - Fix NEI handler for vat showing fire if a recipe only has one item. (tterrag)
