@@ -62,6 +62,13 @@ public class ToolUtil {
     } catch (Exception e) {
       Log.warn("Could not find Build Craft Wrench definition. Wrench integration with other mods may fail");
     }
+    try {
+      Object obj = Class.forName("crazypants.enderio.tool.AEToolProvider").newInstance();
+      toolProviders.add((IToolProvider) obj);
+      toolImpls.add((IToolImpl) obj);
+    } catch (Exception e) {
+      Log.debug("Could not find AE Wrench definition. Wrench integration with AE may fail");
+    }
 
     toolProviders.add(new TEToolProvider());
     toolImpls.add(new TEToolProvider());

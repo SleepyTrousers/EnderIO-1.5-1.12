@@ -106,7 +106,7 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
-build.dependsOn sourceJar, deobfJar, javadocJar
+build.dependsOn sourceJar, deobfJar
 
 publishing {
     tasks.publish.dependsOn 'build'
