@@ -275,7 +275,6 @@ public abstract class AbstractConduit implements IConduit {
   @Override
   public void externalConnectionRemoved(ForgeDirection fromDirection) {
     externalConnections.remove(fromDirection);
-    conectionModes.remove(fromDirection);
     connectionsChanged();
   }
 

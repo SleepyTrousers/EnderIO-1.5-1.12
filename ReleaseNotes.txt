@@ -14,6 +14,7 @@ Changes
 - Added support for Ender Zoo enchants to Enchanter
 - #1188 Updated zh_CN.lang (Mrkwtkr)
 - #1199 Create Korean translation (puyo061) 
+- #1218 All conduits now keep connection settings when removing/replacing adjacent blocks 
 
 Bugs
 - Fix NEI handler for vat showing fire if a recipe only has one item. (tterrag)
