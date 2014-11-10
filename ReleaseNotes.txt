@@ -3,7 +3,10 @@ Version 2.1.9
 ------------------------------------------------------
 
 Changes
-- Updated Build Craft API to v6.1.5. NB: EIO will no longer work with pre 6.1 BC versions
+- Updated Build Craft API compatibility to v6.1
+  - Build Craft API is no longer required and is not distributed with EIO
+  - All MJ support removed
+  - Still compatible with BC v6 but except for liquid fuels 
 - Add ME Conduits - basic, carry 8 channels. Unfinished. (tterrag)
 - Add Computer Craft support to insulated redstone conduits (Vexatos)
 - Insulated Redstone Conduits can now be toggled between emitting a strong and weak signal via the GUI

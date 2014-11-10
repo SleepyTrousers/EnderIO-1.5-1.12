@@ -16,11 +16,23 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.transport.IPipeTile;
-import buildcraft.api.transport.IPipeTile.PipeType;
+import cpw.mods.fml.common.Loader;
+import crazypants.enderio.Log;
 import crazypants.enderio.conduit.IConduitBundle;
 
 public class FluidUtil {
+
+  public static final List<IFluidReceptor> fluidReceptors = new ArrayList<IFluidReceptor>();
+
+  static {
+    try {
+      Class.forName("crazypants.util.BuildcraftUtil");
+    } catch (Exception e) {
+      if(Loader.isModLoaded("BuildCraft|Transport")) {
+        Log.warn("ItemUtil: Could not register Build Craft pipe handler. Fluid conduits will show connections to all Build Craft pipes.");
+      } //Don't log if BC isn't installed, but we still check in case another mod is using their API
+    }
+  }
 
   public static Map<ForgeDirection, IFluidHandler> getNeighbouringFluidHandlers(IBlockAccess world, BlockCoord bc) {
     Map<ForgeDirection, IFluidHandler> res = new HashMap<ForgeDirection, IFluidHandler>();
@@ -49,12 +61,13 @@ public class FluidUtil {
 
   public static IFluidHandler getFluidHandler(TileEntity te) {
     if(te instanceof IFluidHandler) {
-      if(te instanceof IPipeTile) {
-        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
+      IFluidHandler res = (IFluidHandler) te;
+      for (IFluidReceptor rec : fluidReceptors) {
+        if(!rec.isValidReceptor(res)) {
           return null;
         }
       }
-      return (IFluidHandler) te;
+      return res;
     }
     return null;
   }

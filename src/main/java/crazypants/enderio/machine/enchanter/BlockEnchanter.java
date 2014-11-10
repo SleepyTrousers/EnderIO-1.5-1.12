@@ -7,23 +7,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.vacuum.BlockVacuumChest;
-import crazypants.enderio.machine.vacuum.ContainerVacuumChest;
-import crazypants.enderio.machine.vacuum.GuiVacuumChest;
-import crazypants.enderio.machine.vacuum.TileVacuumChest;
+import crazypants.enderio.tool.ITool;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.Util;
 
 public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
@@ -41,13 +35,13 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     setBlockTextureName("enderio:blockEnchanter");
     setLightOpacity(4);
   }
-  
+
   @Override
-  protected void init() {  
+  protected void init() {
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_ENCHANTER, this);
   }
-  
+
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
@@ -68,7 +62,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
       break;
     default:
       break;
-    }    
+    }
     if(world.isRemote) {
       return;
     }
@@ -78,17 +72,13 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
-      if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removedByPlayer(world, entityPlayer, x, y, z, false);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      } 
+    ITool tool = ToolUtil.getEquippedTool(entityPlayer);
+    if(tool != null) {
+      if(entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
+        removedByPlayer(world, entityPlayer, x, y, z, false);
+        tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
+        return true;
+      }
     }
     if(entityPlayer.isSneaking()) {
       return false;
@@ -98,7 +88,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     }
     return true;
   }
-  
+
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harvested) {
     if(!world.isRemote) {
@@ -106,7 +96,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
       if(te instanceof TileEnchanter) {
         TileEnchanter enchanter = (TileEnchanter) te;
         if(!player.capabilities.isCreativeMode) {
-          ItemStack itemStack = new ItemStack(this);          
+          ItemStack itemStack = new ItemStack(this);
           float f = 0.7F;
           double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
           double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -114,7 +104,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
           EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
           entityitem.delayBeforeCanPickup = 10;
           world.spawnEntityInWorld(entityitem);
-          
+
           if(enchanter.getStackInSlot(0) != null) {
             Util.dropItems(world, enchanter.getStackInSlot(0), x, y, z, true);
           }
@@ -128,12 +118,12 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   }
 
   @Override
-  public int quantityDropped(Random p_149745_1_) {    
+  public int quantityDropped(Random p_149745_1_) {
     return 0;
   }
 
   @Override
-  public int getRenderType() {    
+  public int getRenderType() {
     return renderId;
   }
 
@@ -141,7 +131,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   public boolean isOpaqueCube() {
     return false;
   }
-  
+
   @Override
   public boolean renderAsNormalBlock() {
     return false;
@@ -165,6 +155,7 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
     return null;
   }
 
+  @Override
   public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
     super.breakBlock(world, x, y, z, block, p_149749_6_);
     world.removeTileEntity(x, y, z);

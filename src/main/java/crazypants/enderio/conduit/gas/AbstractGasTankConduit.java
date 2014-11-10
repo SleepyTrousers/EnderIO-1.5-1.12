@@ -10,6 +10,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
 
 public abstract class AbstractGasTankConduit extends AbstractGasConduit {
@@ -25,7 +26,7 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
       return false;
     }
     AbstractGasTankConduitNetwork<? extends AbstractGasTankConduit> network = getTankNetwork();
-    if(ConduitUtil.isToolEquipped(player)) {
+    if(ToolUtil.isToolEquipped(player)) {
 
       if(!getBundle().getEntity().getWorldObj().isRemote) {
 

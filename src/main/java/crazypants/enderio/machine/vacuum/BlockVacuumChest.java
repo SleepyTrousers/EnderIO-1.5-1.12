@@ -2,10 +2,6 @@ package crazypants.enderio.machine.vacuum;
 
 import java.util.Random;
 
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -14,18 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.power.BlockItemCapacitorBank;
-import crazypants.enderio.machine.power.ContainerCapacitorBank;
-import crazypants.enderio.machine.power.GuiCapacitorBank;
-import crazypants.enderio.machine.power.TileCapacitorBank;
+import crazypants.enderio.tool.ToolUtil;
 
 public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 
@@ -51,17 +42,8 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
-      if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removedByPlayer(world, entityPlayer, x, y, z, false);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      } 
+    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
     }
     if(entityPlayer.isSneaking()) {
       return false;
@@ -144,6 +126,7 @@ public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResource
     return null;
   }
 
+  @Override
   public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_) {
     super.breakBlock(world, x, y, z, block, p_149749_6_);
     world.removeTileEntity(x, y, z);

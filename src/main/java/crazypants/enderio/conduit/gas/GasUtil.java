@@ -1,13 +1,10 @@
 package crazypants.enderio.conduit.gas;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import buildcraft.api.transport.IPipeTile;
-import buildcraft.api.transport.IPipeTile.PipeType;
+import cpw.mods.fml.common.Loader;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
@@ -48,11 +45,6 @@ public final class GasUtil {
 
   public static IGasHandler getGasHandler(TileEntity te) {
     if(te instanceof IGasHandler) {
-      if(te instanceof IPipeTile) {
-        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
-          return null;
-        }
-      }
       return (IGasHandler) te;
     }
     return null;

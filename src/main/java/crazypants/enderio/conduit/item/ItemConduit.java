@@ -30,6 +30,7 @@ import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
@@ -203,7 +204,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         PacketConduitProbe.sendInfoMessage(player, this, null);
       }
       return true;
-    } else if(ConduitUtil.isToolEquipped(player)) {
+    } else if(ToolUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().getWorldObj().isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;

@@ -36,6 +36,7 @@ import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.DyeColor;
@@ -133,7 +134,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     } else if(col != null && res.component != null && isColorBandRendered(res.component.dir)) {
       setExtractionSignalColor(res.component.dir, col);
       return true;
-    } else if(ConduitUtil.isToolEquipped(player)) {
+    } else if(ToolUtil.isToolEquipped(player)) {
       if(!getBundle().getEntity().getWorldObj().isRemote) {
         if(res != null && res.component != null) {
           ForgeDirection connDir = res.component.dir;

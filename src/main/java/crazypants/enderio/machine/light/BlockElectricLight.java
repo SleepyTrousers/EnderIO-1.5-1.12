@@ -15,13 +15,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.item.IToolHammer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.tool.ITool;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.vecmath.Vector3f;
 
 public class BlockElectricLight extends BlockEio {
@@ -174,19 +174,23 @@ public class BlockElectricLight extends BlockEio {
     }
   }
   
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-  {
+  @Override
+  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
     ItemStack stack = player.getCurrentEquippedItem();
     if (stack == null) {
       return false;
     }
     Item equipped = stack.getItem();
-    if ((equipped instanceof IToolWrench || equipped instanceof IToolHammer) && player.isSneaking() && !world.isRemote) {
+    ITool tool = ToolUtil.getEquippedTool(player);
+    if(tool != null && tool.canUse(stack, player, x, y, z) && player.isSneaking() && !world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if (te instanceof TileElectricLight) {
         ((TileElectricLight) te).onBlockRemoved();
         world.setBlockToAir(x, y, z);
-        dropBlockAsItem(world, x, y, z, createDrop((TileElectricLight) te));
+        if(!player.capabilities.isCreativeMode) {
+          dropBlockAsItem(world, x, y, z, createDrop((TileElectricLight) te));
+        }
+        tool.used(stack, player, x, y, z);
       }
       return true;
     }

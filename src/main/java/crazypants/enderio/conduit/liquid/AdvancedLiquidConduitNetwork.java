@@ -4,19 +4,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.transport.IPipeTile;
-import buildcraft.api.transport.IPipeTile.PipeType;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.util.BlockCoord;
+import crazypants.util.FluidUtil;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
@@ -295,16 +293,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     if(w == null) {
       return null;
     }
-    TileEntity te = w.getTileEntity(bc.x, bc.y, bc.z);
-    if(te instanceof IFluidHandler) {
-      if(te instanceof IPipeTile) {
-        if(((IPipeTile) te).getPipeType() != PipeType.FLUID) {
-          return null;
-        }
-      }
-      return (IFluidHandler) te;
-    }
-    return null;
+    return FluidUtil.getFluidHandler(w.getTileEntity(bc.x, bc.y, bc.z));
   }
 
   public IFluidHandler getTankContainer(AdvancedLiquidConduit con, ForgeDirection dir) {
