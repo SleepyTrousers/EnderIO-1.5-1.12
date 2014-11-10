@@ -86,7 +86,6 @@ processResources {
 
 jar {
     from { configurations.exportedCompile.collect { it.isDirectory() ? it : zipTree(it) } }
-    exclude 'powercrystals/**'
 }
 
 task sourceJar(type: Jar) {
