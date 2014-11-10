@@ -4,8 +4,9 @@ Version 2.1.9
 
 Changes
 - Updated Build Craft API to v6.1.5. NB: EIO will no longer work with pre 6.1 BC versions
-- Added tool blacklist to prevent broken spawners dropping when using those tools
 - Add ME Conduits - basic, carry 8 channels. Unfinished. (tterrag)
+- Add Computer Craft support to insulated redstone conduits (Vexatos)
+- Added tool blacklist to prevent broken spawners dropping when using those tools
 - Allow dark pick to work on glass material blocks such as glowstone (tterrag)
 - Add comparator support to tanks and capacitor banks (tterrag)
 - Added support for Ender Zoo enchants to Enchanter
