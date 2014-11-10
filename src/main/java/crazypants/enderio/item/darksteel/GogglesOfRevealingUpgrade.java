@@ -1,11 +1,10 @@
 package crazypants.enderio.item.darksteel;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 
@@ -63,6 +62,23 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
   @Override
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
+  }
+
+  @Override
+  public ItemStack getUpgradeItem() {
+    if(upgradeItem != null) {
+      return upgradeItem;
+    }
+    upgradeItem = getGoggles();
+    return upgradeItem;
+  }
+
+  @Override
+  public String getUpgradeItemName() {
+    if(getUpgradeItem() == null) {
+      return "Goggles of Revealing";
+    }
+    return super.getUpgradeItemName();
   }
 
 }

@@ -46,10 +46,10 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 
   @Override
   public boolean isUpgradeItem(ItemStack stack) {
-    if(stack == null || stack.getItem() == null || upgradeItem == null) {
+    if(stack == null || stack.getItem() == null || getUpgradeItem() == null) {
       return false;
     }
-    return stack.isItemEqual(upgradeItem) && stack.stackSize == upgradeItem.stackSize;
+    return stack.isItemEqual(getUpgradeItem()) && stack.stackSize == getUpgradeItem().stackSize;
   }
 
   @Override
@@ -111,9 +111,9 @@ public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
     upgradeRoot.setInteger(KEY_LEVEL_COST, levelCost);
     upgradeRoot.setString(KEY_UNLOC_NAME, getUnlocalizedName());
 
-    if(upgradeItem != null) {
+    if(getUpgradeItem() != null) {
       NBTTagCompound itemRoot = new NBTTagCompound();
-      upgradeItem.writeToNBT(itemRoot);
+      getUpgradeItem().writeToNBT(itemRoot);
       upgradeRoot.setTag(KEY_UPGRADE_ITEM, itemRoot);
     }
 

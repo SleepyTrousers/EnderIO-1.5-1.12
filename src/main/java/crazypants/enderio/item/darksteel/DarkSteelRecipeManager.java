@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
@@ -40,7 +41,9 @@ public class DarkSteelRecipeManager {
     upgrades.add(NightVisionUpgrade.INSTANCE);
     upgrades.add(TravelUpgrade.INSTANCE);
     upgrades.add(SpoonUpgrade.INSTANCE);
-    upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
+    if(Loader.isModLoaded("Thaumcraft")) {
+      upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
+    }
   }
 
   @SubscribeEvent
