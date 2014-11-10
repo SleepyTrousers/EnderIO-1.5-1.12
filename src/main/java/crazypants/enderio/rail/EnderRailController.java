@@ -118,7 +118,7 @@ public class EnderRailController {
         TeleportUtil.spawn(transciever.getWorldObj(), ent);
         if(cart != null) {          
           newlySpawnedCarts.add(cart.getPersistentID());
-          CartLinkUtil.recreateLinks(cart);
+          CartLinkUtil.instance.recreateLinks(cart);
         }
       }
     }
@@ -282,7 +282,7 @@ public class EnderRailController {
   }
 
   private void resetForRandomRandomSpawn(Entity entity) {
-    CartLinkUtil.breakLinks(transciever.getWorldObj(), entity);
+    CartLinkUtil.instance.breakLinks(transciever.getWorldObj(), entity);
     entity.riddenByEntity = null;
     entity.ridingEntity = null;
     entity.motionX = 0;

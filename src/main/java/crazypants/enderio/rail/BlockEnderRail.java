@@ -129,6 +129,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
 
+  @Override
   public int getBasicRailMetadata(IBlockAccess world, EntityMinecart cart, int x, int y, int z) {
     //Ignore turning bit, used for receive direction
     return world.getBlockMetadata(x, y, z) & 7;
@@ -144,6 +145,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     return canPlaceBlockAt(world, x, y, z);
   }
 
+  @Override
   public boolean isFlexibleRail(IBlockAccess world, int y, int x, int z) {
     return false;
   }
@@ -153,6 +155,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     return getUnlocalizedName();
   }
   
+  @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
     if(world.isRemote) {
       return;
@@ -173,6 +176,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   }
 
+  @Override
   public void onMinecartPass(World world, EntityMinecart cart, int x, int y, int z) {
     if(world.isRemote) {
       return;
@@ -240,7 +244,7 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   private int getPowerRequired(EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
     int powerPerCart = getPowerRequiredForSingleCart(sender, reciever);
-    int numCarts = CartLinkUtil.getNumberOfCartsInTrain(cart);
+    int numCarts = CartLinkUtil.instance.getNumberOfCartsInTrain(cart);
     return powerPerCart * numCarts;
   }
 
@@ -259,9 +263,9 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
   private boolean teleportCart(World world, EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
 
-    List<EntityMinecart> allCarts = CartLinkUtil.getCartsInTrain(cart);
+    List<EntityMinecart> allCarts = CartLinkUtil.instance.getCartsInTrain(cart);
     if(allCarts.size() > 1) {
-      CartLinkUtil.updateCartLinks(world, cart);
+      CartLinkUtil.instance.updateCartLinks(world, cart);
     }
 
     List<List<Entity>> toTeleport = new ArrayList<List<Entity>>(allCarts.size());
