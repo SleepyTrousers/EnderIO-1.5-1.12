@@ -20,4 +20,5 @@ public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 
   void setSignalColor(ForgeDirection dir, DyeColor col);
 
+  public boolean isSpecialConnection(ForgeDirection dir);
 }

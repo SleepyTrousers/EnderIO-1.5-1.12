@@ -24,21 +24,24 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public RedstoneSettings(GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_REDSTONE, Lang.localize("itemRedstoneConduitInsulated.name"), gui, con);
 
-    int x = gap + gui.getFontRenderer().getStringWidth(signalColorStr) + gap + 2;
-    int y = customTop;
-    cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
-    cb.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
-    if(con instanceof IInsulatedRedstoneConduit) {
-      insCon = (IInsulatedRedstoneConduit) con;
-      DyeColor sigCol = insCon.getSignalColor(gui.getDir());
-      cb.setColorIndex(sigCol.ordinal());
+    if(!(con instanceof IInsulatedRedstoneConduit
+            && ((IInsulatedRedstoneConduit) con).isSpecialConnection(gui.getDir()))) {
+      int x = gap + gui.getFontRenderer().getStringWidth(signalColorStr) + gap + 2;
+      int y = customTop;
+      cb = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
+      cb.setToolTipHeading(Lang.localize("gui.conduit.redstone.signalColor"));
+      if(con instanceof IInsulatedRedstoneConduit) {
+        insCon = (IInsulatedRedstoneConduit) con;
+        DyeColor sigCol = insCon.getSignalColor(gui.getDir());
+        cb.setColorIndex(sigCol.ordinal());
+      }
     }
   }
 
   @Override
   public void actionPerformed(GuiButton guiButton) {
     super.actionPerformed(guiButton);
-    if(guiButton.id == ID_COLOR_BUTTON) {
+    if(guiButton.id == ID_COLOR_BUTTON && cb != null) {
       insCon.setSignalColor(gui.getDir(), DyeColor.values()[cb.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir()));
     }
@@ -46,7 +49,7 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   protected void initCustomOptions() {
-    if(insCon != null) {
+    if(insCon != null && cb != null) {
       cb.setColorIndex(cb.getColorIndex());
       cb.onGuiInit();
     }
@@ -55,7 +58,9 @@ public class RedstoneSettings extends BaseSettingsPanel {
   @Override
   public void deactivate() {
     super.deactivate();
-    cb.setToolTip((String[]) null);
+    if(cb != null) {
+      cb.setToolTip((String[]) null);
+    }
   }
 
   @Override

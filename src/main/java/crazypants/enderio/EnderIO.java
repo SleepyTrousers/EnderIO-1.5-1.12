@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
+import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -536,6 +537,9 @@ public class EnderIO {
       ItemStack boots = new ItemStack(EnderIO.itemDarkSteelBoots, 1, 0);
       ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
       ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(new WeightedRandomChestContent(boots, 1, 1, 5));
+    }
+    if(Loader.isModLoaded("ComputerCraft")) {
+      ConduitBundledRedstoneProvider.register();
     }
 
     EnderfaceRecipes.addRecipes();
