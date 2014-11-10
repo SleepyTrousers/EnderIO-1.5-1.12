@@ -119,6 +119,8 @@ enderio.fluid.millibucket.abr=mB
 enderio.fuel.tooltip.heading=燃料详情
 enderio.fuel.tooltip.burnTime=燃烧时间
 enderio.fluid.millibucketsTick=mB/t
+coolant.tooltip.heading=冷却剂
+enderio.fuel.tooltip.degreesPerBucket=deg per bucket
 enderio.gas.gasTick=Gas/t
 
 
@@ -224,7 +226,7 @@ item.itemElectricLight.name=电灯
 item.itemElectricLight.tooltip.detailed.line1=当提供能量与红石信
 item.itemElectricLight.tooltip.detailed.line2=号时能照亮大片区域
 
-item.itemElectricLightInverted.name=电灯(反转)
+item.itemElectricLightInverted.name=电灯(反相)
 item.itemElectricLightInverted.tooltip.detailed.line1=提供能量时
 item.itemElectricLightInverted.tooltip.detailed.line2=可照亮大片区域
 item.itemElectricLightInverted.tooltip.detailed.line3=有红石信号时熄灭
@@ -233,9 +235,20 @@ item.itemLight.name=灯
 item.itemLight.tooltip.detailed.line1=有红石信号时
 item.itemLight.tooltip.detailed.line2=能提供照明
 
-item.itemLightInverted.name=灯(反转)
+item.itemLightInverted.name=灯(反相)
 item.itemLightInverted.tooltip.detailed.line1=能提供照明
 item.itemLightInverted.tooltip.detailed.line2=有红石信号时熄灭
+
+item.itemWirelessLight.name=无线灯
+item.itemWirelessLight.tooltip.detailed.line1=提供能量和红石信号
+item.itemWirelessLight.tooltip.detailed.line2=时照亮大片区域.
+item.itemWirelessLight.tooltip.detailed.line3=可从无线充能器接收能量.
+
+item.itemWirelessLightInverted.name=无线灯(反相)
+item.itemWirelessLightInverted.tooltip.detailed.line1=提供能量时可
+item.itemWirelessLightInverted.tooltip.detailed.line2=照亮大片区域.
+item.itemWirelessLightInverted.tooltip.detailed.line3=有红石信号时熄灭
+item.itemWirelessLightInverted.tooltip.detailed.line4=可从无线充能器接收能量.
 
 tile.blockCapacitorBank.name=电容储能库
 tile.blockCapacitorBank.creative.name=创造模式电容储能库
@@ -273,6 +286,8 @@ tile.blockEnderRail.tooltip.detailed.line1=放置在空间传送器
 tile.blockEnderRail.tooltip.detailed.line2=上时可以传送矿车
 tile.blockEnderRail.tooltip.detailed.line3=使用传送器对应的
 tile.blockEnderRail.tooltip.detailed.line4=栏目来设定目的地
+tile.blockEnderRail.tooltip.detailed.line5=用扳手shift右击
+tile.blockEnderRail.tooltip.detailed.line6=来设定它的方向
 
 enderio.trans.showChannels=<按下Shift显示频道>
 
@@ -489,8 +504,9 @@ item.itemXpTransfer.tooltip.detailed.line3=Shift右击将经验
 item.itemXpTransfer.tooltip.detailed.line4=灌入其中
 
 skullZombieElectrode.name=僵尸电极
-skullZombieController.name=僵尸控制器
+skullZombieController.name=Z-逻辑控制器
 skullZombieFrankenstien.name=人造僵尸
+skullEnderResonator.name=末影谐振器
 
 item.itemSpawnEggEnderIO.name=生成
 
@@ -697,6 +713,8 @@ enderio.gui.alloy.mode.furnace=仅限熔炉
 //Vat
 enderio.vat.outputTank=输出槽
 enderio.vat.inputTank=输入槽
+enderio.gui.machine.vat.dump.1=导出输入槽
+enderio.gui.machine.vat.dump.2=导出输出槽
 
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=冷却剂
@@ -806,5 +824,5 @@ enderio.config.spawner.tooltip=我已经想不出什么有趣的提示文本了.
 
 
 //Mobs
-entity.EnderIO.Enderminy.name=Enderminy
+entity.EnderIO.Enderminy.name=迷你末影人
 entity.EnderIO.EnderCreeper.name=末影爬行者
