@@ -186,8 +186,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     } else {
       validConnections.add(dir);
     }
-    getNode().updateState();
-    getNode().getWorld().markBlockForUpdate(getLocation().x, getLocation().y, getLocation().z);
+    if(hasNode()) {
+      getNode().updateState();
+      getNode().getWorld().markBlockForUpdate(getLocation().x, getLocation().y, getLocation().z);
+    }
   }
 
   @Override
