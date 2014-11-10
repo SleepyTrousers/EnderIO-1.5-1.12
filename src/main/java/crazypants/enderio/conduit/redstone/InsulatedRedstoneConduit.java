@@ -32,7 +32,6 @@ import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
@@ -66,8 +65,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       Blocks.dropper, Blocks.daylight_detector, Blocks.command_block, Blocks.golden_rail, Blocks.trapped_chest);
   
 
-  private static Set<Class<?>> CONNECTABLE_CLASSES = null;
-  
+  private static Map<Class<?>, Boolean> CONNECTABLE_CLASSES = null;
+
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
   private Map<ForgeDirection, DyeColor> signalColors = new HashMap<ForgeDirection, DyeColor>();
@@ -282,9 +281,9 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().getWorldObj();
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
-    Collection<Class<?>> conectableInterfaces = getConectableInterfaces();
-    for(Class<?> conectable : conectableInterfaces) {
-      if( (te != null && conectable.isAssignableFrom(te.getClass()) ) || (block != null && conectable.isAssignableFrom(block.getClass()))) {
+    Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
+    for(Class<?> connectable : connectableInterfaces.keySet()) {
+      if((te != null && connectable.isAssignableFrom(te.getClass())) || (connectable.isAssignableFrom(block.getClass()))) {
         return true;
       }
     }    
@@ -292,19 +291,42 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     return false;
   }
 
-  private static Collection<Class<?>> getConectableInterfaces() {
+  private static Map<Class<?>, Boolean> getConnectableInterfaces() {
     if(CONNECTABLE_CLASSES == null) {
-      CONNECTABLE_CLASSES = new HashSet<Class<?>>();      
-      CONNECTABLE_CLASSES.add(IRedstoneControl.class);
-      CONNECTABLE_CLASSES.add(AbstractMachineEntity.class);      
+      CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
+      CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
+      CONNECTABLE_CLASSES.put(AbstractMachineEntity.class, false);
       try{
         Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
-        CONNECTABLE_CLASSES.add(conInterface);        
-      } catch(Throwable e) {        
+        CONNECTABLE_CLASSES.put(conInterface, true);
+      } catch(Throwable e) {
+        //NO-OP
       }
-           
+      try{
+        Class<?> ccInterface = Class.forName("dan200.computercraft.shared.computer.blocks.IComputerTile");
+        CONNECTABLE_CLASSES.put(ccInterface, true);
+      } catch(Throwable e) {
+        //NO-OP
+      }
     }
     return CONNECTABLE_CLASSES;
+  }
+
+  @Override
+  public boolean isSpecialConnection(ForgeDirection dir){
+    BlockCoord loc = getLocation().getLocation(dir);
+    Block block = getBundle().getEntity().getWorldObj().getBlock(loc.x, loc.y, loc.z);
+    World world = getBundle().getEntity().getWorldObj();
+    TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
+
+    Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
+    for(Class<?> connectable : connectableInterfaces.keySet()) {
+      if((te != null && connectable.isAssignableFrom(te.getClass())) || (block != null && connectable.isAssignableFrom(block.getClass()))) {
+        return connectableInterfaces.get(connectable);
+      }
+    }
+
+    return false;
   }
 
   @Override

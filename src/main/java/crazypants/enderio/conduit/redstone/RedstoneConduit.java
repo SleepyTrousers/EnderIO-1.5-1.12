@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cpw.mods.fml.common.Optional.Method;
+import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -146,6 +148,17 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
             }
           }
         }
+        if (Loader.isModLoaded("ComputerCraft") && canConnectToExternal(dir, false)) {
+          BlockCoord loc = getLocation().getLocation(dir);
+          int bundledInput = getComputerCraftBundledPowerLevel(dir);
+          if(bundledInput >= 0){
+            for(int i = 0; i < 16; i++) {
+              int color = bundledInput >>> i & 1;
+                Signal signal = new Signal(loc.x, loc.y, loc.z, dir, color == 1 ? 16 : 0, DyeColor.fromIndex(Math.max(0, 15 - i)));
+                res.add(signal);
+            }
+          }
+        }
       }
     }
 
@@ -223,6 +236,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     }
 
     return null;
+  }
+
+  @Method(modid = "ComputerCraft")
+  protected int getComputerCraftBundledPowerLevel(ForgeDirection dir) {
+    BlockCoord loc = getLocation().getLocation(dir);
+    return ComputerCraftAPI.getBundledRedstoneOutput(getBundle().getWorld(), loc.x,loc.y,loc.z, dir.getOpposite().ordinal());
   }
 
   @Override
