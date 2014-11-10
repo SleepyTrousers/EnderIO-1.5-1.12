@@ -24,6 +24,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
@@ -47,6 +49,7 @@ import crazypants.enderio.conduit.liquid.PacketFluidLevel;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
+import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.item.ItemConduitProbe;
@@ -54,8 +57,6 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.BoundingBox;
 import crazypants.util.Util;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 @Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
 public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade, IRedNetOmniNode {
@@ -75,6 +76,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     PacketHandler.INSTANCE.registerMessage(PacketModItemFilter.class, PacketModItemFilter.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketFluidFilter.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitSignalColor.class, PacketRedstoneConduitSignalColor.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketRedstoneConduitOutputStrength.class, PacketRedstoneConduitOutputStrength.class, PacketHandler.nextID(),
+        Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockConduitBundle result = new BlockConduitBundle();
@@ -137,7 +140,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
@@ -419,6 +422,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     world.removeTileEntity(x, y, z);
   }
   
+  @Override
   public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
     ItemStack equipped = player.getCurrentEquippedItem();
     if(!player.isSneaking() || equipped == null || equipped.getItem() != EnderIO.itemYetaWench) {

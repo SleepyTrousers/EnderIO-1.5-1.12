@@ -71,6 +71,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   private Map<ForgeDirection, DyeColor> signalColors = new HashMap<ForgeDirection, DyeColor>();
   
+  private Map<ForgeDirection, Boolean> signalStrengths = new HashMap<ForgeDirection, Boolean>();
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -151,12 +152,14 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
   
   @Override
   protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
-    setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);    
+    setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
+    setOutputStrength(dir, dataRoot.getBoolean("signalStrong"));
   }
-  
+
   @Override
   protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
-    dataRoot.setShort("signalColor", (short)getSignalColor(dir).ordinal());    
+    dataRoot.setShort("signalColor", (short) getSignalColor(dir).ordinal());
+    dataRoot.setBoolean("signalStrong", isOutputStrong(dir));
   }
 
   @Override
@@ -214,12 +217,10 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
   @Override
   public void onInputsChanged(ForgeDirection side, int[] inputValues) {
-    //System.out.println("InsulatedRedstoneConduit.onInputsChanged: ");
   }
 
   @Override
   public void onInputChanged(ForgeDirection side, int inputValue) {
-    //System.out.println("InsulatedRedstoneConduit.onInputChanged: ");
   }
 
   @Override
@@ -242,6 +243,28 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       network.notifyNeigborsOfSignals();
     }
     setClientStateDirty();
+  }
+
+  @Override
+  public boolean isOutputStrong(ForgeDirection dir) {
+    if(signalStrengths.containsKey(dir)) {
+      return signalStrengths.get(dir);
+    }
+    return false;
+  }
+
+  @Override
+  public void setOutputStrength(ForgeDirection dir, boolean isStrong) {
+    if(isOutputStrong(dir) != isStrong) {
+      if(isStrong) {
+        signalStrengths.put(dir, isStrong);
+      } else {
+        signalStrengths.remove(dir);
+      }
+      if(network != null) {
+        network.notifyNeigborsOfSignals();
+      }
+    }
   }
 
   @Override
@@ -336,12 +359,14 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     }
     return super.isProvidingWeakPower(toDirection);    
   }
-  
-  
 
   @Override
   public int isProvidingStrongPower(ForgeDirection toDirection) {
-    return isProvidingWeakPower(toDirection);
+    if(isOutputStrong(toDirection.getOpposite())) {
+      return isProvidingWeakPower(toDirection);
+    } else {
+      return 0;
+    }
   }
 
   @Override
@@ -467,6 +492,22 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       }
       nbtRoot.setByteArray("signalColors", modes);
     }
+
+    if(signalStrengths.size() >= 0) {
+      byte[] modes = new byte[6];
+      int i = 0;
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        boolean isStrong = isOutputStrong(dir);
+        if(isStrong) {
+          modes[i] = 1;
+        } else {
+          modes[i] = 0;
+        }
+        i++;
+      }
+      nbtRoot.setByteArray("signalStrengths", modes);
+    }
+
   }
 
   @Override
@@ -496,6 +537,19 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
         i++;
       }
     }
+
+    signalStrengths.clear();
+    byte[] strengths = nbtRoot.getByteArray("signalStrengths");
+    if(strengths != null && strengths.length == 6) {
+      int i = 0;
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if(strengths[i] > 0) {
+          signalStrengths.put(dir, true);
+        }
+        i++;
+      }
+    }
+
   }
 
 }

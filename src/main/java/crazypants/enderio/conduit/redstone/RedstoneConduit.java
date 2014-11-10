@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cpw.mods.fml.common.Optional.Method;
-import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
@@ -18,7 +16,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -30,7 +30,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
+import dan200.computercraft.api.ComputerCraftAPI;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
@@ -246,7 +246,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
   @Override
   public int isProvidingStrongPower(ForgeDirection toDirection) {
-    return isProvidingWeakPower(toDirection);
+    return 0;
   }
 
   @Override

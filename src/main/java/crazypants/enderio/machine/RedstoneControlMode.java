@@ -34,7 +34,7 @@ public enum RedstoneControlMode {
   }
 
   public static boolean isConditionMet(RedstoneControlMode redstoneControlMode, TileEntity te) {
-    return isConditionMet(redstoneControlMode, te.getWorldObj().getBlockPowerInput(te.xCoord, te.yCoord, te.zCoord));
+    return isConditionMet(redstoneControlMode, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
   }
 
   public RedstoneControlMode next() {

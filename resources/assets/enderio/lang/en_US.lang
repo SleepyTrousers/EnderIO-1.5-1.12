@@ -770,6 +770,8 @@ enderio.gui.conduit.item.priority=Priority
 
 enderio.gui.conduit.redstone.signalColor=Signal Color
 enderio.gui.conduit.redstone.color=Color
+enderio.gui.conduit.redstone.signalStrengh=Strong Signal
+enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone signal 
 
 enderio.gui.conduit.fluid.autoExtract=Auto Extract
 enderio.gui.conduit.fluid.filter=Filter

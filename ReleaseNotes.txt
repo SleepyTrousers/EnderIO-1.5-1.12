@@ -6,6 +6,8 @@ Changes
 - Updated Build Craft API to v6.1.5. NB: EIO will no longer work with pre 6.1 BC versions
 - Add ME Conduits - basic, carry 8 channels. Unfinished. (tterrag)
 - Add Computer Craft support to insulated redstone conduits (Vexatos)
+- Insulated Redstone Conduits can now be toggled between emitting a strong and weak signal via the GUI
+  Default output has been reverted to a weak signal. 
 - Added tool blacklist to prevent broken spawners dropping when using those tools
 - Allow dark pick to work on glass material blocks such as glowstone (tterrag)
 - Add comparator support to tanks and capacitor banks (tterrag)
