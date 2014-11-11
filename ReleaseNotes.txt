@@ -1,12 +1,12 @@
 ------------------------------------------------------
-Version 2.1.9
+Version 2.2.0
 ------------------------------------------------------
 
 Changes
 - Updated Build Craft API compatibility to v6.1
   - Build Craft API is no longer required and is not distributed with EIO
   - All MJ support removed
-  - Still compatible with BC v6 but except for liquid fuels 
+  - Still compatible with BC v6.0 though no MJ support or liquid fuel registration   
 - Added ME Conduits - basic, carry 8 channels. Unfinished. (tterrag)
 - Added support for IAETool for wrench compatibility with AE 
 - Added Computer Craft support to insulated redstone conduits (Vexatos)
@@ -18,6 +18,7 @@ Changes
 - Railcraft API no longer distributed with EIO
 - Thaumcraft API no longer distributed with EIO
 - Added support for Ender Zoo enchants to Enchanter
+- Added spawn costs for Ender Zoo mobs to powered spawner config
 - #1188 Updated zh_CN.lang (Mrkwtkr)
 - #1199 Create Korean translation (puyo061) 
 - #1218 All conduits now keep connection settings when removing/replacing adjacent blocks 
