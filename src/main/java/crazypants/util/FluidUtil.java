@@ -5,16 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.Log;
@@ -72,16 +75,24 @@ public class FluidUtil {
     return null;
   }
 
-  public static FluidStack getFluidFromItem(ItemStack item) {
-    FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(item);
-    if(fluid == null) {
-      if(item.getItem() == Items.water_bucket) {
-        fluid = new FluidStack(FluidRegistry.WATER, 1000);
-      } else if(item.getItem() == Items.lava_bucket) {
-        fluid = new FluidStack(FluidRegistry.LAVA, 1000);
+  public static FluidStack getFluidFromItem(ItemStack stack) {
+    if(stack != null) {
+      FluidStack fluidStack = null;
+      if(stack.getItem() instanceof IFluidContainerItem) {
+        fluidStack = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
       }
+      if(fluidStack == null) {
+        fluidStack = FluidContainerRegistry.getFluidForFilledItem(stack);
+      }
+      if(fluidStack == null && Block.getBlockFromItem(stack.getItem()) instanceof IFluidBlock) {
+        Fluid fluid = ((IFluidBlock) Block.getBlockFromItem(stack.getItem())).getFluid();
+        if(fluid != null) {
+          return new FluidStack(fluid, 1000);
+        }
+      }
+      return fluidStack;
     }
-    return fluid;
+    return null;
   }
 
   public static ItemStack getEmptyContainer(ItemStack stack) {
@@ -132,13 +143,13 @@ public class FluidUtil {
     IFluidHandler target = getFluidHandler(te.getWorldObj(), loc);
     if(target == null) {
       return false;
-    }    
+    }
     FluidTankInfo[] infos = from.getTankInfo(fromDir);
     boolean res = false;
-    if(infos != null) {      
+    if(infos != null) {
       for (FluidTankInfo info : infos) {
         if(info.fluid != null && info.fluid.amount > 0 && from.canDrain(fromDir, info.fluid.getFluid())) {
-          FluidStack maxDrain = new FluidStack(info.fluid.getFluid(), maxVolume); 
+          FluidStack maxDrain = new FluidStack(info.fluid.getFluid(), maxVolume);
           FluidStack canDrain = from.drain(fromDir, maxDrain, false);
           if(canDrain != null && canDrain.amount > 0) {
             int filled = target.fill(fromDir.getOpposite(), canDrain, true);
@@ -148,7 +159,7 @@ public class FluidUtil {
         }
       }
     }
-    return res;    
+    return res;
   }
 
 }
