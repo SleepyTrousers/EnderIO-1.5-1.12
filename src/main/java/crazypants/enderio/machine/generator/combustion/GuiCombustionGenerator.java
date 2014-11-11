@@ -71,9 +71,9 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       int y = 21 - 2;
       int w = 15 + 4;
       int h = 47 + 4;
-      renderSlotHighlight(PULL_COLOR,x,y,w,h);
+      renderSlotHighlight(PULL_COLOR, x, y, w, h);
       x = 114 - 2;
-      renderSlotHighlight(PULL_COLOR,x,y,w,h);
+      renderSlotHighlight(PULL_COLOR, x, y, w, h);
     }
 
   }
@@ -89,10 +89,11 @@ public class GuiCombustionGenerator extends GuiMachineBase {
 
     FontRenderer fr = getFontRenderer();
     int output = 0;
-    if(gen.isActive()) {      
+    if(gen.isActive()) {
       output = gen.getGeneratedLastTick();
     }
-    String txt =  Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+    String txt = Lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+        + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
 
@@ -112,7 +113,7 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       x = guiLeft + 72;
       y = guiTop + 14;
       //center coolant chamber
-      RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 1000, Math.min(gen.getCoolantTank().getFluidAmount(), 1000), x, y, zLevel, 33, 33);
+      RenderUtil.renderGuiTank(gen.getCoolantTank().getFluid(), 1000, Math.min(gen.getCoolantTank().getFluidAmount(), 1000), x, y + 14, zLevel, 33, 33);
       //draw some gui over the top again to make the center shape
       RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");
       drawTexturedModalRect(x, y + 14, 0, 223, 33, 33);
@@ -123,7 +124,6 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       //left tank
       x = guiLeft + 48;
 
-      //RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 4000, gen.fuelTank.getFluidAmount() - 1000, x, y, zLevel, 15, 47);
       RenderUtil.renderGuiTank(gen.getFuelTank().getFluid(), 4000, gen.getFuelTank().getFluidAmount() - 1000, x, y, zLevel, 15, 47);
 
       if(gen.isActive()) {
@@ -133,8 +133,8 @@ public class GuiCombustionGenerator extends GuiMachineBase {
       }
 
       //center tank
-      //RenderUtil.renderGuiTank(gen.fuelTank.getFluid(), 1000, Math.min(gen.fuelTank.getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
-      RenderUtil.renderGuiTank(gen.getFuelTank().getFluid(), 1000, Math.min(gen.getFuelTank().getFluidAmount(), 1000), guiLeft + 81, guiTop + 5, zLevel, 14, 14);
+      RenderUtil
+          .renderGuiTank(gen.getFuelTank().getFluid(), 1000, Math.min(gen.getFuelTank().getFluidAmount(), 1000), guiLeft + 81, guiTop + 38, zLevel, 14, 14);
     }
 
     RenderUtil.bindTexture("enderio:textures/gui/combustionGen.png");

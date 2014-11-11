@@ -65,11 +65,11 @@ import crazypants.vecmath.Vertex;
 
 public class RenderUtil {
 
-  public static final Vector4f DEFAULT_TEXT_SHADOW_COL = new Vector4f(0.33f,0.33f,0.33f,0.33f);
+  public static final Vector4f DEFAULT_TEXT_SHADOW_COL = new Vector4f(0.33f, 0.33f, 0.33f, 0.33f);
 
-  public static final Vector4f DEFAULT_TXT_COL = new Vector4f(1,1,1,1);
+  public static final Vector4f DEFAULT_TXT_COL = new Vector4f(1, 1, 1, 1);
 
-  public static final Vector4f DEFAULT_TEXT_BG_COL = new Vector4f(0.275f,0.08f,0.4f, 0.75f);
+  public static final Vector4f DEFAULT_TEXT_BG_COL = new Vector4f(0.275f, 0.08f, 0.4f, 0.75f);
 
   public static final Vector3d UP_V = new Vector3d(0, 1, 0);
 
@@ -144,7 +144,7 @@ public class RenderUtil {
     }
     return brightnessPerSide;
   }
-  
+
   public static IIcon[] getBlockTextures(Block block, int meta) {
     IIcon[] icons = new IIcon[6];
     int i = 0;
@@ -154,13 +154,13 @@ public class RenderUtil {
     }
     return icons;
   }
-  
+
   public static IIcon[] getBlockTextures(IBlockAccess world, int x, int y, int z) {
     Block block = world.getBlock(x, y, z);
     IIcon[] icons = new IIcon[6];
     int i = 0;
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      icons[i] = block.getIcon(world,x,y,z,dir.ordinal());
+      icons[i] = block.getIcon(world, x, y, z, dir.ordinal());
       i++;
     }
     return icons;
@@ -542,48 +542,61 @@ public class RenderUtil {
       }
     }
 
-    double fullness = (double) amount / (double) capacity;
-    int fluidHeight = (int) Math.round(height * fullness);
+    int renderAmount = (int) Math.max(Math.min(height, amount * height / capacity), 1);
+    int posY = (int) (y + height - renderAmount);
 
     RenderUtil.bindBlockTexture();
-    y = y + (47 - fluidHeight);
-    GL11.glColor4f(1, 1, 1, 0.75f);
+    int color = fluid.getFluid().getColor(fluid);
+    GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
+
     GL11.glEnable(GL11.GL_BLEND);
-    drawTexturedModelRectFromIcon(x, y, zLevel, icon, width, fluidHeight);
+    for (int i = 0; i < width; i += 16) {
+      for (int j = 0; j < renderAmount; j += 16) {
+        int drawWidth = (int) Math.min(width - i, 16);
+        int drawHeight = Math.min(renderAmount - j, 16);
+
+        int drawX = (int) (x + i);
+        int drawY = posY + j;
+
+        double minU = icon.getMinU();
+        double maxU = icon.getMaxU();
+        double minV = icon.getMinV();
+        double maxV = icon.getMaxV();
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(drawX, drawY + drawHeight, 0, minU, minV + (maxV - minV) * drawHeight / 16F);
+        tessellator.addVertexWithUV(drawX + drawWidth, drawY + drawHeight, 0, minU + (maxU - minU) * drawWidth / 16F, minV + (maxV - minV) * drawHeight / 16F);
+        tessellator.addVertexWithUV(drawX + drawWidth, drawY, 0, minU + (maxU - minU) * drawWidth / 16F, minV);
+        tessellator.addVertexWithUV(drawX, drawY, 0, minU, minV);
+        tessellator.draw();
+      }
+    }
     GL11.glDisable(GL11.GL_BLEND);
   }
 
-  public static void drawTexturedModelRectFromIcon(double x, double y, double z, IIcon icon, double width, double height) {
-    Tessellator tessellator = Tessellator.instance;
-    tessellator.startDrawingQuads();
-    tessellator.addVertexWithUV(x, y + height, z, icon.getMinU(), icon.getMaxV());
-    tessellator.addVertexWithUV(x + width, y + height, z, icon.getMaxU(), icon.getMaxV());
-    tessellator.addVertexWithUV(x + width, y, z, icon.getMaxU(), icon.getMinV());
-    tessellator.addVertexWithUV(x, y, z, icon.getMinU(), icon.getMinV());
-    tessellator.draw();
-  }
-  
   public static void drawBillboardedText(Vector3f pos, String text, float size) {
     drawBillboardedText(pos, text, size, DEFAULT_TXT_COL, true, DEFAULT_TEXT_SHADOW_COL, true, DEFAULT_TEXT_BG_COL);
   }
-  
+
   public static void drawBillboardedText(Vector3f pos, String text, float size, Vector4f bgCol) {
     drawBillboardedText(pos, text, size, DEFAULT_TXT_COL, true, DEFAULT_TEXT_SHADOW_COL, true, bgCol);
   }
-  
-  public static void drawBillboardedText(Vector3f pos, String text, float size, Vector4f txtCol, boolean drawShadow, Vector4f shadowCol, boolean drawBackground, Vector4f bgCol) {
+
+  public static void drawBillboardedText(Vector3f pos, String text, float size, Vector4f txtCol, boolean drawShadow, Vector4f shadowCol,
+      boolean drawBackground, Vector4f bgCol) {
     GL11.glPushMatrix();
-    GL11.glTranslatef(pos.x, pos.y,pos.z);
+    GL11.glTranslatef(pos.x, pos.y, pos.z);
     glRotatef(180, 1, 0, 0);
 
-    FontRenderer fnt = Minecraft.getMinecraft().fontRenderer;      
-    float scale = size / fnt.FONT_HEIGHT;      
+    FontRenderer fnt = Minecraft.getMinecraft().fontRenderer;
+    float scale = size / fnt.FONT_HEIGHT;
     GL11.glScalef(scale, scale, scale);
     glRotatef(RenderManager.instance.playerViewY + 180, 0.0F, 1.0F, 0.0F);
     glRotatef(-RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
 
     glTranslatef(-fnt.getStringWidth(text) / 2, 0, 0);
-    if(drawBackground) {        
+    if(drawBackground) {
       renderBackground(fnt, text, bgCol);
     }
     fnt.drawString(text, 0, 0, ColorUtil.getRGBA(txtCol));
@@ -595,7 +608,7 @@ public class RenderUtil {
 
     RenderUtil.bindBlockTexture();
   }
-  
+
   public static void renderBackground(FontRenderer fnt, String toRender, Vector4f color) {
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glDisable(GL_TEXTURE_2D);
@@ -606,7 +619,7 @@ public class RenderUtil {
     glDepthMask(false);
     RenderHelper.disableStandardItemLighting();
     OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO); // stop random disappearing
-    
+
     float width = (float) fnt.getStringWidth(toRender);
     float height = (float) fnt.FONT_HEIGHT;
     float padding = 2f;
@@ -618,7 +631,7 @@ public class RenderUtil {
     tessellator.addVertex(width + padding, height + padding, 0);
     tessellator.addVertex(width + padding, -padding, 0);
     tessellator.draw();
-    
+
     glPopAttrib();
   }
 
