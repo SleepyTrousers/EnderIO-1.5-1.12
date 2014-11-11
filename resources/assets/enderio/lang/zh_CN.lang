@@ -80,6 +80,8 @@ enderio.itemGasConduit.tooltip.maxExtract=最大提取:
 enderio.itemGasConduit.tooltip.maxIo=最大IO:
 enderio.itemGasConduit.tooltip.detailed.line1=传送和通用机械兼容的气体
 
+enderio.itemMEConduit.name=ME导管
+
 //Materials
 enderio.itemMaterial.name=材料
 enderio.silicon.name=硅
@@ -770,6 +772,8 @@ enderio.gui.conduit.item.priority=优先级
 
 enderio.gui.conduit.redstone.signalColor=信号颜色
 enderio.gui.conduit.redstone.color=颜色
+enderio.gui.conduit.redstone.signalStrengh=强信号
+enderio.gui.conduit.redstone.signalStrengh.tooltip=输出强红石信号
 
 enderio.gui.conduit.fluid.autoExtract=自动提取
 enderio.gui.conduit.fluid.filter=过滤器
@@ -821,8 +825,3 @@ enderio.config.fluid.tooltip=纯净的液态能量!
 
 enderio.config.spawner=电动刷怪笼设置
 enderio.config.spawner.tooltip=我已经想不出什么有趣的提示文本了.
-
-
-//Mobs
-entity.EnderIO.Enderminy.name=迷你末影人
-entity.EnderIO.EnderCreeper.name=末影爬行者
