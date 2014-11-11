@@ -75,10 +75,10 @@ public class GeneralTab implements ITabPanel {
     String sendTxt = "Send";    
     int x = left + invRoot.x + 36 - fr.getStringWidth(sendTxt)/2;
     int y = top + invRoot.y - fr.FONT_HEIGHT - 3;
-    fr.drawString(sendTxt, x, y, ColorUtil.getRGB(Color.BLACK));
+    fr.drawStringWithShadow(sendTxt, x, y, ColorUtil.getRGB(Color.WHITE));
     String recText = "Receive";
     x = left + invRoot.x + 72 + container.getItemBufferSpacing() + 36 - fr.getStringWidth(recText)/2;
-    fr.drawString(recText, x, y, ColorUtil.getRGB(Color.BLACK));
+    fr.drawStringWithShadow(recText, x, y, ColorUtil.getRGB(Color.WHITE));
     
     //Highlights
     parent.renderSlotHighlights();    
