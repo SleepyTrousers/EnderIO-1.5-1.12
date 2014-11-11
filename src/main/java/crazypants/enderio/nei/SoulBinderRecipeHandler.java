@@ -17,6 +17,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -131,6 +132,8 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
       String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(cost) });
       GuiDraw.drawStringC(s, 83, 55, 0x80FF20);
     }
+
+    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   private static final ArrayList<PositionedStack> EMPTY_VIAL_OUTPUT = new ArrayList<PositionedStack>();

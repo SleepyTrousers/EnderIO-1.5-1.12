@@ -18,6 +18,7 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.RecipeInfo;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -66,7 +67,6 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public void loadCraftingRecipes(final ItemStack result) {
-
     if(result == null) {
       return;
     }
@@ -154,6 +154,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       String str = "x" + mult;
       GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }
+
+    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   @Override
@@ -248,11 +250,11 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       }
 
       inputs = new ArrayList<PositionedStack>();
-      
-      if (inputsOne != null) {
+
+      if(inputsOne != null) {
         inputs.add(new PositionedStack(inputsOne, 51, 1));
       }
-      if (inputsTwo != null) {
+      if(inputsTwo != null) {
         inputs.add(new PositionedStack(inputsTwo, 100, 1));
       }
 
