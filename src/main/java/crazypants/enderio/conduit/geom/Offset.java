@@ -23,7 +23,9 @@ public enum Offset {
   EAST_DOWN(ForgeDirection.EAST, ForgeDirection.DOWN),
   WEST_DOWN(ForgeDirection.WEST, ForgeDirection.DOWN),
   SOUTH_DOWN(ForgeDirection.SOUTH, ForgeDirection.DOWN),
-  NORTH_DOWN(ForgeDirection.NORTH, ForgeDirection.DOWN);
+  NORTH_DOWN(ForgeDirection.NORTH, ForgeDirection.DOWN),
+  NORTH_EAST(ForgeDirection.NORTH, ForgeDirection.EAST), 
+  NORTH_WEST(ForgeDirection.NORTH, ForgeDirection.WEST);
 
   public final int xOffset;
   public final int yOffset;
