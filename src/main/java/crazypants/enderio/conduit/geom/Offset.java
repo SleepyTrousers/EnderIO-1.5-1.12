@@ -38,9 +38,9 @@ public enum Offset {
   }
 
   private Offset(ForgeDirection dir, ForgeDirection yDir) {
-    xOffset = dir.offsetX;
-    yOffset = yDir.offsetY;
-    zOffset = dir.offsetZ;
+    xOffset = dir.offsetX + yDir.offsetX;
+    yOffset = dir.offsetY + yDir.offsetY;
+    zOffset = dir.offsetZ + yDir.offsetZ;
   }
 
   private Offset(int xOffset, int yOffset, int zOffset) {
