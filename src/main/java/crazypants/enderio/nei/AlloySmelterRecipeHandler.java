@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.GuiAlloySmelter;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -107,6 +108,8 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     AlloySmelterRecipe recipe = (AlloySmelterRecipe) arecipes.get(recipeIndex);
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 100, 52, 0x808080, false);
+
+    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

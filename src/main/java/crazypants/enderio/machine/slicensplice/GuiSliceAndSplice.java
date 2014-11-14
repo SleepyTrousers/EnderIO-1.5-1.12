@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.soul.ContainerSoulBinder;
 import crazypants.render.RenderUtil;
 
 public class GuiSliceAndSplice extends GuiMachineBase {
@@ -33,7 +32,7 @@ public class GuiSliceAndSplice extends GuiMachineBase {
     int i1;
 
     i1 = tileEntity.getProgressScaled(24);
-    drawTexturedModalRect(k + 101, l + 47, 176, 14, i1 + 1, 16);
+    drawTexturedModalRect(k + 101, l + 46, 176, 14, i1 + 1, 16);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }

@@ -106,8 +106,8 @@ public class GuiVat extends GuiMachineBase {
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
     if(vat.getProgress() < 1 && vat.getProgress() > 0) {
-      int scaled = vat.getProgressScaled(12);
-      drawTexturedModalRect(guiLeft + 81, guiTop + 76 - scaled, 176, 12 - scaled, 14, scaled + 2);
+      int scaled = vat.getProgressScaled(14) + 1;
+      drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);
 
       IIcon inputIcon = null;
       if(vat.currentTaskInputFluid != null) {
@@ -135,7 +135,7 @@ public class GuiVat extends GuiMachineBase {
       Fluid outputFluid;
       if(vat.outputTank.getFluidAmount() > 0) {
         outputFluid = vat.outputTank.getFluid().getFluid();
-      } else {        
+      } else {
         outputFluid = vat.currentTaskOutputFluid;
       }
 

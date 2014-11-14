@@ -35,41 +35,41 @@ public class GuiKillerJoe extends GuiMachineBase {
   private static final int XP10_ID = 34892;
 
   private TileKillerJoe joe;
-  
+
   private IconButtonEIO xpB;
   private IconButtonEIO xp10B;
 
   public GuiKillerJoe(InventoryPlayer inventory, TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
     joe = tileEntity;
-    
+
     addToolTip(new GuiToolTip(new Rectangle(18, 11, 15, 47), "") {
 
       @Override
       protected void updateText() {
         text.clear();
-        String heading = Lang.localize("killerJoe.fuelTank");        
+        String heading = Lang.localize("killerJoe.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(joe.fuelTank));
       }
 
     });
-    
-    xpB = new IconButtonEIO(this, XP_ID, 128, 56, IconEIO.XP);    
+
+    xpB = new IconButtonEIO(this, XP_ID, 128, 56, IconEIO.XP);
     xpB.setToolTip(Lang.localize("killerJoe.giveXp.tooltip"));
-    
-    xp10B = new IconButtonEIO(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);    
+
+    xp10B = new IconButtonEIO(this, XP10_ID, 148, 56, IconEIO.XP_PLUS);
     xp10B.setToolTip(Lang.localize("killerJoe.giveXp10.tooltip"));
-    
+
   }
-  
+
   @Override
   public void initGui() {
-    super.initGui();    
+    super.initGui();
     xpB.onGuiInit();
     xp10B.onGuiInit();
   }
-  
+
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
@@ -81,14 +81,14 @@ public class GuiKillerJoe extends GuiMachineBase {
       SoundUtil.playClientSoundFX("random.orb", joe);
     }
   }
-  
+
   @Override
   protected boolean showRecipeButton() {
     return false;
   }
 
   @Override
-  protected boolean renderPowerBar() { 
+  protected boolean renderPowerBar() {
     return false;
   }
 
@@ -101,7 +101,7 @@ public class GuiKillerJoe extends GuiMachineBase {
       int y = 9;
       int w = 15 + 4;
       int h = 47 + 4;
-      renderSlotHighlight(PULL_COLOR,x,y,w,h);     
+      renderSlotHighlight(PULL_COLOR, x, y, w, h);
     }
 
   }
@@ -115,13 +115,12 @@ public class GuiKillerJoe extends GuiMachineBase {
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     int x = guiLeft + 18;
-    int y = guiTop + 11;    
-    if(joe.fuelTank.getFluidAmount() > 0) {    
-      RenderUtil.renderGuiTank(joe.fuelTank.getFluid(), joe.fuelTank.getCapacity(), joe.fuelTank.getFluidAmount(), x, y, zLevel, 15, 47);           
-    }        
-    ExperienceBarRenderer.render(this, sx + 56, sy + 62, 65, joe.getContainer());    
+    int y = guiTop + 11;
+    if(joe.fuelTank.getFluidAmount() > 0) {
+      RenderUtil.renderGuiTank(joe.fuelTank.getFluid(), joe.fuelTank.getCapacity(), joe.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
+    }
+    ExperienceBarRenderer.render(this, sx + 56, sy + 62, 65, joe.getContainer());
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
-
 
 }

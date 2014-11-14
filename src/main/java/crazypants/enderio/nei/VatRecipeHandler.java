@@ -8,29 +8,29 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
-import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.still.GuiVat;
 import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.render.RenderUtil;
+import crazypants.util.FluidUtil;
 
 public class VatRecipeHandler extends TemplateRecipeHandler {
 
   private Rectangle inTankBounds = new Rectangle(25, 1, 15, 47);
   private Rectangle outTankBounds = new Rectangle(127, 1, 15, 47);
-  private Rectangle inTankBoundsLower = new Rectangle(25, 70, 15, 47);
-  private Rectangle outTankBoundsLower = new Rectangle(127, 70, 15, 47);
 
   public VatRecipeHandler() {
   }
@@ -65,64 +65,76 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public void loadCraftingRecipes(final ItemStack result) {
-
-    if(result == null) {
-      return;
-    }
-    if(FluidContainerRegistry.isFilledContainer(result)) {
-      FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(result);
-      if(fluid != null) {
-        List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
-        for (IRecipe recipe : recipes) {
-          FluidStack output = recipe.getOutputs()[0].getFluidOutput();
-          if(output.isFluidEqual(fluid)) {
-            InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
-            arecipes.add(res);
-          }
-        }
-      }
-    }
-  }
-
-  @Override
   public void loadCraftingRecipes(String outputId, Object... results) {
-    if(outputId.equals("EnderIOVat") && getClass() == VatRecipeHandler.class) {
+    if(outputId.equals("liquid")) {
+      loadCraftingRecipes((FluidStack) results[0]);
+    } else if(outputId.equals("EnderIOVat") && getClass() == VatRecipeHandler.class) {
       List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
       for (IRecipe recipe : recipes) {
         FluidStack output = recipe.getOutputs()[0].getFluidOutput();
         InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         arecipes.add(res);
       }
-
     } else {
       super.loadCraftingRecipes(outputId, results);
     }
   }
 
   @Override
-  public void loadUsageRecipes(ItemStack ingredient) {
+  public void loadCraftingRecipes(ItemStack result) {
+    FluidStack fluid = FluidUtil.getFluidFromItem(result);
+    if(fluid != null) {
+      loadCraftingRecipes(fluid);
+    }
+  }
+
+  public void loadCraftingRecipes(FluidStack result) {
     List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
     for (IRecipe recipe : recipes) {
-      boolean addRecipe = false;
-      if(recipe.isValidInput(0, ingredient) || recipe.isValidInput(1, ingredient)) {
-        addRecipe = true;
-      } else if(FluidContainerRegistry.isFilledContainer(ingredient)) {
-        FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(ingredient);
-        if(fluid != null) {
-          if(recipe.isValidInput(fluid)) {
-            addRecipe = true;
-          }
-        }
+      FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+      if(output.isFluidEqual(result)) {
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        arecipes.add(res);
       }
-      if(addRecipe) {
+    }
+  }
+
+  @Override
+  public void loadUsageRecipes(String inputId, Object... ingredients) {
+    if(inputId.equals("liquid")) {
+      loadUsageRecipes((FluidStack) ingredients[0]);
+    } else {
+      super.loadUsageRecipes(inputId, ingredients);
+    }
+  }
+
+  @Override
+  public void loadUsageRecipes(ItemStack ingredient) {
+    FluidStack fluid = FluidUtil.getFluidFromItem(ingredient);
+    if(fluid != null) {
+      loadUsageRecipes(fluid);
+    }
+
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+    for (IRecipe recipe : recipes) {
+      if(recipe.isValidInput(0, ingredient) || recipe.isValidInput(1, ingredient)) {
         FluidStack output = recipe.getOutputs()[0].getFluidOutput();
         InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
         res.setIngredientPermutation(res.inputs, ingredient);
         arecipes.add(res);
       }
     }
+  }
 
+  public void loadUsageRecipes(FluidStack ingredient) {
+    List<IRecipe> recipes = VatRecipeManager.getInstance().getRecipes();
+    for (IRecipe recipe : recipes) {
+      if(recipe.isValidInput(ingredient)) {
+        FluidStack output = recipe.getOutputs()[0].getFluidOutput();
+        InnerVatRecipe res = new InnerVatRecipe(recipe.getEnergyRequired(), recipe.getInputs(), output);
+        arecipes.add(res);
+      }
+    }
   }
 
   @Override
@@ -136,7 +148,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   public void drawExtras(int recipeIndex) {
     InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
     if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-      RenderUtil.renderGuiTank(rec.inFluid, rec.inFluid.amount, rec.inFluid.amount, inTankBounds.x, inTankBounds.y, 0, inTankBounds.width, inTankBounds.height);
+      RenderUtil.renderGuiTank(rec.inFluid, rec.inFluid.amount, rec.inFluid.amount, inTankBounds.x, inTankBounds.y, 0, inTankBounds.width,
+          inTankBounds.height);
     }
 
     if(rec.result != null && rec.result.getFluid() != null) {
@@ -154,6 +167,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       String str = "x" + mult;
       GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }
+
+    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   @Override
@@ -162,40 +177,69 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
   }
 
   @Override
-  public List<String> handleTooltip(GuiRecipe gui, List<String> arg1, int recipeIndex) {
-
+  public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipeIndex) {
+    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
     Point pos = GuiDraw.getMousePosition();
+    Point offset = gui.getRecipePosition(recipeIndex);
+    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset.x, pos.y - ((gui.height - 166) / 2) - offset.y);
 
-    int[] offset = RecipeInfo.getGuiOffset(gui);
-    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset[0], pos.y - ((gui.height - 166) / 2) - offset[1]);
-
-    if(mouseInBounds(relMouse)) {
-      if(recipeIndex % 2 == 0 && inTankBounds.union(outTankBounds).contains(relMouse)) {
-        return getVatFluid(recipeIndex, arg1, inTankBounds.contains(relMouse));
-      }
-      else if(recipeIndex % 2 == 1 && inTankBoundsLower.union(outTankBoundsLower).contains(relMouse)) {
-        return getVatFluid(recipeIndex, arg1, inTankBoundsLower.contains(relMouse));
-      }
-    }
-    return super.handleTooltip(gui, arg1, recipeIndex);
-  }
-
-  private boolean mouseInBounds(Point mouse) {
-    return inTankBounds.contains(mouse) || outTankBounds.contains(mouse) || inTankBoundsLower.contains(mouse) || outTankBoundsLower.contains(mouse);
-  }
-
-  private List<String> getVatFluid(int index, List<String> list, boolean in) {
-    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(index);
-    if(in) {
-      if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
-        list.add(rec.inFluid.getFluid().getLocalizedName(rec.inFluid));
-      }
-    } else {
-      if(rec.result != null && rec.result.getFluid() != null) {
-        list.add(rec.result.getFluid().getLocalizedName(rec.result));
+    if(inTankBounds.contains(relMouse) || outTankBounds.contains(relMouse)) {
+      if(inTankBounds.contains(relMouse)) {
+        if(rec.inFluid != null && rec.inFluid.getFluid() != null) {
+          currenttip.add(rec.inFluid.getFluid().getLocalizedName(rec.inFluid));
+        }
+      } else {
+        if(rec.result != null && rec.result.getFluid() != null) {
+          currenttip.add(rec.result.getFluid().getLocalizedName(rec.result));
+        }
       }
     }
-    return list;
+    return super.handleTooltip(gui, currenttip, recipeIndex);
+  }
+
+  @Override
+  public boolean mouseClicked(GuiRecipe gui, int button, int recipeIndex) {
+    if(button == 0) {
+      if(this.transferFluidTanks(gui, recipeIndex, false)) {
+        return true;
+      }
+    } else if(button == 1) {
+      if(this.transferFluidTanks(gui, recipeIndex, true)) {
+        return true;
+      }
+    }
+    return super.mouseClicked(gui, button, recipeIndex);
+  }
+
+  private boolean transferFluidTanks(GuiRecipe gui, int recipeIndex, boolean usage) {
+    InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
+    Point pos = GuiDraw.getMousePosition();
+    Point offset = gui.getRecipePosition(recipeIndex);
+    Point relMouse = new Point(pos.x - ((gui.width - 176) / 2) - offset.x, pos.y - ((gui.height - 166) / 2) - offset.y);
+
+    if(inTankBounds.contains(relMouse)) {
+      transferFluidTank(rec.inFluid, usage);
+    }
+    else if(outTankBounds.contains(relMouse)) {
+      transferFluidTank(rec.result, usage);
+    }
+    return false;
+  }
+
+  private boolean transferFluidTank(FluidStack tank, boolean usage) {
+    if(tank != null && tank.amount > 0) {
+      if(usage) {
+        if(!GuiUsageRecipe.openRecipeGui("liquid", new Object[] { tank.copy() })) {
+          return false;
+        }
+      } else {
+        if(!GuiCraftingRecipe.openRecipeGui("liquid", new Object[] { tank.copy() })) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {
@@ -248,11 +292,11 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       }
 
       inputs = new ArrayList<PositionedStack>();
-      
-      if (inputsOne != null) {
+
+      if(inputsOne != null) {
         inputs.add(new PositionedStack(inputsOne, 51, 1));
       }
-      if (inputsTwo != null) {
+      if(inputsTwo != null) {
         inputs.add(new PositionedStack(inputsTwo, 100, 1));
       }
 
