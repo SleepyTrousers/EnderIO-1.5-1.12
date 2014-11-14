@@ -21,8 +21,6 @@ import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
 import appeng.api.util.AECableType;
-import appeng.me.helpers.AENetworkProxy;
-import appeng.me.helpers.IGridProxyable;
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -119,10 +117,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       return false;
     }
 
-    if(te instanceof IGridProxyable) {
-      AENetworkProxy proxy = ((IGridProxyable) te).getProxy();
-      return proxy != null && proxy.getConnectableSides().contains(dir.getOpposite());
-    } else if(te instanceof IPartHost) {
+    if(te instanceof IPartHost) {
       IPart part = ((IPartHost) te).getPart(dir.getOpposite());
       if(part == null) {
         part = ((IPartHost) te).getPart(ForgeDirection.UNKNOWN);

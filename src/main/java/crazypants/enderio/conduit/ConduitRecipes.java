@@ -6,7 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import appeng.core.Api;
+import appeng.api.AEApi;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.Optional.Method;
@@ -106,12 +106,12 @@ public class ConduitRecipes {
     if(version.contains("rv1") || (version.contains("rv2") && Integer.valueOf(buildNum) > 15)) // let's make sure we're on a compatible build
     {
       try {
-        pureFluix = Api.instance.materials().materialPureifiedFluixCrystal.stack(1).copy(); // rv1
+        pureFluix = AEApi.instance().materials().materialPureifiedFluixCrystal.stack(1).copy(); // rv1
       } catch (NoSuchFieldError e) {
         pureFluix = "crystalPureFluix"; // rv2
       }
 
-      ItemStack quartzFiber = Api.instance.parts().partQuartzFiber.stack(1).copy();
+      ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
       ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
       ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
 

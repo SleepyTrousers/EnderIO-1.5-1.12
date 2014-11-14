@@ -47,12 +47,6 @@ dependencies {
     
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}"
-    compile("appeng:appliedenergistics2:rv1-stable-1:dev") {
-        exclude module: "Waila"
-        exclude module: "CodeChickenCore"
-        exclude module: "NotEnoughItems"
-        exclude module: "industrialcraft-2"
-    }
 }
 
 sourceSets {

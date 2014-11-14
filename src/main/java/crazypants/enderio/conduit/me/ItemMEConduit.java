@@ -14,7 +14,9 @@ public class ItemMEConduit extends AbstractItemConduit {
 
   public static ItemMEConduit create() {
     ItemMEConduit result = new ItemMEConduit();
-    result.init(subtypes);
+    if (MEUtil.isMEEnabled()) {
+      result.init(subtypes);
+    }
     return result;
   }
 

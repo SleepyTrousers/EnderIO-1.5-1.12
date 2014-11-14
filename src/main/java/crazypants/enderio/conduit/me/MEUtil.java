@@ -10,15 +10,7 @@ public class MEUtil {
 
   public static boolean isMEEnabled() {
     if(!useCheckPerformed) {
-      String configOption = Config.isMeConduitEnabled;
-      if(configOption.equalsIgnoreCase("auto")) {
-        isMeConduitEnabled = Loader.isModLoaded("appliedenergistics2");
-      } else if(configOption.equalsIgnoreCase("true")) {
-        isMeConduitEnabled = true;
-      } else {
-        isMeConduitEnabled = false;
-      }
-      useCheckPerformed = true;
+      isMeConduitEnabled = Loader.isModLoaded("appliedenergistics2") && Config.enableMEConduits;
     }
     return isMeConduitEnabled;
   }
