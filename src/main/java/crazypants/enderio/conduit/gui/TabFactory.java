@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.gui;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.gui.item.ItemSettings;
+import crazypants.enderio.conduit.gui.me.MESettings;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;

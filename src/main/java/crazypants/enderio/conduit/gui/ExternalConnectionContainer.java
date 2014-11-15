@@ -14,16 +14,20 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
 import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
+import crazypants.enderio.conduit.gui.me.InventoryBus;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.conduit.me.IMEConduit;
 
 public class ExternalConnectionContainer extends Container {
 
   private InventoryPlayer playerInv;
   private IConduitBundle bundle;
   private ForgeDirection dir;
+  
   private IItemConduit itemConduit;
-
+  private IMEConduit meConduit;
+  
   private IItemFilter inputFilter;
   private IItemFilter outputFilter;
 
@@ -63,7 +67,7 @@ public class ExternalConnectionContainer extends Container {
     }
 
     itemConduit = bundle.getConduit(IItemConduit.class);
-    if(itemConduit != null) {
+    if(itemConduit != null && itemConduit.isConnectedTo(dir)) {
 
       x = 10;
       y = 47;
@@ -93,6 +97,16 @@ public class ExternalConnectionContainer extends Container {
       addFilterSlots(dir);
     }
 
+    meConduit = bundle.getConduit(IMEConduit.class);
+    if (meConduit != null && meConduit.isConnectedTo(dir)) {
+      x = 50;
+      y = 50;
+      
+      InventoryBus ib = new InventoryBus(meConduit, dir);
+      
+      addSlotToContainer(new Slot(ib, 0, x, y));
+      slotLocations.add(new Point(x, y));
+    }
   }
   
   public void addFilterListener(FilterChangeListener list) {
