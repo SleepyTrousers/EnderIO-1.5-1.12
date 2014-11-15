@@ -1,8 +1,11 @@
 package crazypants.enderio.conduit.me;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +37,7 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.ItemUtil;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
 
@@ -46,6 +50,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   private boolean isDense;
 
   EnumSet<ForgeDirection> validConnections = EnumSet.copyOf(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
+  
+  private EnumMap<ForgeDirection, ItemStack> buses = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
 
   public MEConduit() {
     this(0);
@@ -106,12 +112,20 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
-    NBTTagList list = new NBTTagList();
+    NBTTagList connList = new NBTTagList();
+    NBTTagList busList = new NBTTagList();
     for (ForgeDirection dir : validConnections) {
       NBTTagString name = new NBTTagString(dir.name());
-      list.appendTag(name);
+      connList.appendTag(name);
+      
+      NBTTagCompound bus = new NBTTagCompound();
+      if (buses.get(dir) != null) {
+        buses.get(dir).writeToNBT(bus);
+      }
+      busList.appendTag(bus);
     }
-    nbtRoot.setTag("validConnections", list);
+    nbtRoot.setTag("validConnections", connList);
+    nbtRoot.setTag("buses", busList);
     nbtRoot.setBoolean("isDense", isDense);
   }
 
@@ -120,9 +134,15 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     super.readFromNBT(nbtRoot, nbtVersion);
     if(nbtRoot.hasKey("validConnections")) {
       validConnections.clear();
-      NBTTagList connections = nbtRoot.getTagList("validConnections", Constants.NBT.TAG_STRING);
-      for (int i = 0; i < connections.tagCount(); i++) {
-        validConnections.add(ForgeDirection.valueOf(connections.getStringTagAt(i)));
+      NBTTagList connList = nbtRoot.getTagList("validConnections", Constants.NBT.TAG_STRING);
+      for (int i = 0; i < connList.tagCount(); i++) {
+        validConnections.add(ForgeDirection.valueOf(connList.getStringTagAt(i)));
+      }
+      
+      NBTTagList busList = nbtRoot.getTagList("buses", Constants.NBT.TAG_COMPOUND);
+      for (ForgeDirection f : ForgeDirection.VALID_DIRECTIONS) {
+        NBTTagCompound bus = busList.getCompoundTagAt(f.ordinal());
+        buses.put(f, ItemStack.loadItemStackFromNBT(bus));
       }
     }
     this.isDense = nbtRoot.getBoolean("isDense");
@@ -308,6 +328,11 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     getNode().destroy();
     getBundle().setGridNode(null);
   }
+  
+  @Override
+  public List<ItemStack> getDrops() {
+    return Lists.newArrayList(buses.values());
+  }
 
   @Override
   public MEConduitGrid getGrid() {
@@ -331,5 +356,15 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public boolean isDense() {
     return isDense;
+  }
+  
+  @Override
+  public void setBus(ItemStack stack, ForgeDirection dir) {
+    buses.put(dir, stack);
+  }
+  
+  @Override
+  public ItemStack getBus(ForgeDirection dir) {
+    return buses.get(dir);
   }
 }

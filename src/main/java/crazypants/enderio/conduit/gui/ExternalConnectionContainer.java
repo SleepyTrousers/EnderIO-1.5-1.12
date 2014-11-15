@@ -11,6 +11,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
 import crazypants.enderio.conduit.gui.item.InventorySpeedUpgrades;
@@ -69,13 +70,13 @@ public class ExternalConnectionContainer extends Container {
     }
 
     meConduit = bundle.getConduit(IMEConduit.class);
-    if(meConduit != null && meConduit.isConnectedTo(dir)) {
-      x = 50;
-      y = 50;
+    if(meConduit != null && meConduit.isConnectedTo(dir) && !meConduit.isDense()) {
+      x = 71;
+      y = 36;
 
       InventoryBus ib = new InventoryBus(meConduit, dir);
 
-      addSlotToContainer(new Slot(ib, 0, x, y));
+      addSlotToContainer(new BusSlot(ib, 0, x, y));
       slotLocations.add(new Point(x, y));
 
       ++outputFilterUpgradeSlot;
@@ -115,6 +116,10 @@ public class ExternalConnectionContainer extends Container {
       addFilterSlots(dir);
     }
 
+  }
+  
+  public int getMEBusSlot() {
+    return meSlotIndex;
   }
 
   public void addFilterListener(FilterChangeListener list) {
@@ -157,12 +162,22 @@ public class ExternalConnectionContainer extends Container {
       list.onFilterChanged();
     }
   }
+  
+  private boolean hasConduit(Class<? extends IConduit> clazz) {
+    return bundle.getConduit(clazz) != null;
+  }
 
   public void hideAllSlots() {
-    setItemInputSlotsVisible(false);
-    setItemOutputSlotsVisible(false);
+    if (hasConduit(IItemConduit.class)) {
+      setItemInputSlotsVisible(false);
+      setItemOutputSlotsVisible(false);
+    }
+    
     setInventorySlotsVisible(false);
-    setMeSlotsVisible(false);
+    
+    if (hasConduit(IMEConduit.class) && !bundle.getConduit(IMEConduit.class).isDense()) {
+      setMeSlotsVisible(false);
+    }
   }
 
   public void setMeSlotsVisible(boolean visible) {
@@ -260,5 +275,16 @@ public class ExternalConnectionContainer extends Container {
     }
     
   }
+  
+  private class BusSlot extends Slot {
 
+    public BusSlot(IInventory inv, int id, int x, int y) {
+      super(inv, id, x, y);
+    }
+    
+    @Override
+    public boolean isItemValid(ItemStack stack) {
+      return inventory.isItemValidForSlot(0, stack);
+    }
+  }
 }

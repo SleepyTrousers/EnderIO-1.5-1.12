@@ -34,6 +34,8 @@ public class InventoryBus implements IInventory {
   public InventoryBus(IMEConduit conduit, ForgeDirection dir) {
     this.conduit = conduit;
     this.dir = dir;
+    
+    this.bus = conduit.getBus(dir);
   }
 
   @Override
@@ -48,13 +50,9 @@ public class InventoryBus implements IInventory {
 
   @Override
   public ItemStack decrStackSize(int slot, int amnt) {
-    if(slot == 0 && bus != null) {
-      bus.stackSize -= amnt;
-      if(bus.stackSize < 1) {
-        bus = null;
-      }
-    }
-    return bus;
+    ItemStack ret = bus.copy();
+    setInventorySlotContents(0, null);
+    return ret;
   }
 
   @Override
@@ -66,6 +64,7 @@ public class InventoryBus implements IInventory {
   public void setInventorySlotContents(int slot, ItemStack stack) {
     if(slot == 0) {
       bus = stack;
+      conduit.setBus(bus, dir);
     }
   }
 
