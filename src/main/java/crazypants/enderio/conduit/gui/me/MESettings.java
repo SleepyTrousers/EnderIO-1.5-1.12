@@ -11,9 +11,6 @@ public class MESettings extends BaseSettingsPanel {
 
   public MESettings(GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_ME, Lang.localize("itemMEConduit.name"), gui, con);
-    gui.getContainer().setInputSlotsVisible(true);
-    gui.getContainer().setInventorySlotsVisible(true);
-    gui.getContainer().setOutputSlotsVisible(true);
   }
 
   @Override
@@ -28,5 +25,17 @@ public class MESettings extends BaseSettingsPanel {
     x = gui.getGuiLeft();
     y = gui.getGuiTop() + 100;
     gui.drawTexturedModalRect(x, y, 0, 100, 256, 100);
+  }
+
+  @Override
+  protected void initCustomOptions() {
+    gui.getContainer().setInventorySlotsVisible(true);
+    gui.getContainer().setMeSlotsVisible(true);
+  }
+
+  @Override
+  public void deactivate() {
+    gui.getContainer().setInventorySlotsVisible(false);
+    gui.getContainer().setMeSlotsVisible(false);
   }
 }

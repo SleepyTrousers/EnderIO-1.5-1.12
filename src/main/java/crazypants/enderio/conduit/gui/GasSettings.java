@@ -38,7 +38,6 @@ public class GasSettings extends BaseSettingsPanel {
     super(IconEIO.WRENCH_OVERLAY_GAS, Lang.localize("itemGasConduit.name"), gui, con);
 
     conduit = (IGasConduit) con;
-    gui.getContainer().setInventorySlotsVisible(false);
 
     int x = gap + gui.getFontRenderer().getStringWidth(autoExtractStr) + gap * 2;
     int y = customTop;

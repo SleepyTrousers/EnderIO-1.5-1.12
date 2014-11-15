@@ -31,6 +31,8 @@ public class ExternalConnectionContainer extends Container {
   private IItemFilter inputFilter;
   private IItemFilter outputFilter;
 
+  private int meSlotIndex = 36;
+
   private int outputFilterUpgradeSlot = 36;
   private int inputFilterUpgradeSlot = 37;
   private int speedUpgradeSlot = 38;
@@ -66,6 +68,22 @@ public class ExternalConnectionContainer extends Container {
       slotLocations.add(new Point(x, y));
     }
 
+    meConduit = bundle.getConduit(IMEConduit.class);
+    if(meConduit != null && meConduit.isConnectedTo(dir)) {
+      x = 50;
+      y = 50;
+
+      InventoryBus ib = new InventoryBus(meConduit, dir);
+
+      addSlotToContainer(new Slot(ib, 0, x, y));
+      slotLocations.add(new Point(x, y));
+
+      ++outputFilterUpgradeSlot;
+      ++inputFilterUpgradeSlot;
+      ++speedUpgradeSlot;
+      ++startFilterSlot;
+    }
+
     itemConduit = bundle.getConduit(IItemConduit.class);
     if(itemConduit != null && itemConduit.isConnectedTo(dir)) {
 
@@ -97,18 +115,8 @@ public class ExternalConnectionContainer extends Container {
       addFilterSlots(dir);
     }
 
-    meConduit = bundle.getConduit(IMEConduit.class);
-    if (meConduit != null && meConduit.isConnectedTo(dir)) {
-      x = 50;
-      y = 50;
-      
-      InventoryBus ib = new InventoryBus(meConduit, dir);
-      
-      addSlotToContainer(new Slot(ib, 0, x, y));
-      slotLocations.add(new Point(x, y));
-    }
   }
-  
+
   public void addFilterListener(FilterChangeListener list) {
     filterListeners.add(list);
   }
@@ -150,10 +158,19 @@ public class ExternalConnectionContainer extends Container {
     }
   }
 
-  public void setInputSlotsVisible(boolean visible) {
-    if(itemConduit == null) {
-      return;
-    }
+  public void hideAllSlots() {
+    setItemInputSlotsVisible(false);
+    setItemOutputSlotsVisible(false);
+    setInventorySlotsVisible(false);
+    setMeSlotsVisible(false);
+  }
+
+  public void setMeSlotsVisible(boolean visible) {
+    setSlotsVisible(visible, meSlotIndex, meSlotIndex + 1);
+  }
+
+  public void setItemInputSlotsVisible(boolean visible) {
+
     setSlotsVisible(visible, inputFilterUpgradeSlot, inputFilterUpgradeSlot + 1);
     setSlotsVisible(visible, speedUpgradeSlot, speedUpgradeSlot + 1);
 
@@ -166,12 +183,8 @@ public class ExternalConnectionContainer extends Container {
 
   }
 
-  public void setOutputSlotsVisible(boolean visible) {
+  public void setItemOutputSlotsVisible(boolean visible) {
 
-    if(itemConduit == null) {
-      return;
-    }
-    
     setSlotsVisible(visible, outputFilterUpgradeSlot, outputFilterUpgradeSlot + 1);
 
     if(outputFilter == null || outputFilter.getSlotCount() == 0) {

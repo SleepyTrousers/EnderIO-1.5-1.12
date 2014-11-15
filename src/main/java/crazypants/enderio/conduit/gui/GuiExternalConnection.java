@@ -69,9 +69,7 @@ public class GuiExternalConnection extends GuiContainerBase {
     ySize = 166 + 29;
     xSize = 206;
 
-    getContainer().setInputSlotsVisible(false);
-    getContainer().setOutputSlotsVisible(false);
-    getContainer().setInventorySlotsVisible(false);
+    getContainer().hideAllSlots();
 
     List<IConduit> cons = new ArrayList<IConduit>(bundle.getConduits());
     Collections.sort(cons, new Comparator<IConduit>() {
@@ -109,10 +107,13 @@ public class GuiExternalConnection extends GuiContainerBase {
     super.initGui();
     buttonList.clear();
     for (int i = 0; i < tabs.size(); i++) {
+      if(i != activeTab) {
+        tabs.get(i).deactivate();
+      }
+    }
+    for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
-      } else {
-        tabs.get(i).deactivate();
       }
     }
 
@@ -180,7 +181,7 @@ public class GuiExternalConnection extends GuiContainerBase {
     tes.draw();
 
     RenderUtil.bindTexture("enderio:textures/gui/externalConduitConnection.png");
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     RenderUtil.bindTexture(IconEIO.TEXTURE);
     tes.startDrawingQuads();

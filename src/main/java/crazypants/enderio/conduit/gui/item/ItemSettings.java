@@ -202,16 +202,16 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if(showInput) {
       activeFilter = itemConduit.getInputFilter(gui.getDir());
       gui.getContainer().setInventorySlotsVisible(true);
-      gui.getContainer().setInputSlotsVisible(true);
-      gui.getContainer().setOutputSlotsVisible(false);
+      gui.getContainer().setItemInputSlotsVisible(true);
+      gui.getContainer().setItemOutputSlotsVisible(false);
       if(activeFilter != null) {
         filterGui = getFilterGui(activeFilter, true);
 
       }
     } else if(showOutput) {
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
-      gui.getContainer().setInputSlotsVisible(false);
-      gui.getContainer().setOutputSlotsVisible(true);
+      gui.getContainer().setItemInputSlotsVisible(false);
+      gui.getContainer().setItemOutputSlotsVisible(true);
       gui.getContainer().setInventorySlotsVisible(true);
       if(activeFilter != null) {
         filterGui = getFilterGui(activeFilter, false);
@@ -236,8 +236,8 @@ public class ItemSettings extends BaseSettingsPanel {
     boolean showInput = mode == ConnectionMode.INPUT || (mode == ConnectionMode.IN_OUT && inOutShowIn);
     if(showInput) {
       gui.getContainer().setInventorySlotsVisible(true);
-      gui.getContainer().setInputSlotsVisible(true);
-      gui.getContainer().setOutputSlotsVisible(false);
+      gui.getContainer().setItemInputSlotsVisible(true);
+      gui.getContainer().setItemOutputSlotsVisible(false);
 
       activeFilter = itemConduit.getInputFilter(gui.getDir());
       if(activeFilter != null) {
@@ -245,8 +245,8 @@ public class ItemSettings extends BaseSettingsPanel {
       }
     } else {
       gui.getContainer().setInventorySlotsVisible(true);
-      gui.getContainer().setInputSlotsVisible(false);
-      gui.getContainer().setOutputSlotsVisible(true);
+      gui.getContainer().setItemInputSlotsVisible(false);
+      gui.getContainer().setItemOutputSlotsVisible(true);
 
       activeFilter = itemConduit.getOutputFilter(gui.getDir());
       if(activeFilter != null) {
@@ -428,8 +428,8 @@ public class ItemSettings extends BaseSettingsPanel {
   @Override
   public void deactivate() {
     gui.getContainer().setInventorySlotsVisible(false);
-    gui.getContainer().setInputSlotsVisible(false);
-    gui.getContainer().setOutputSlotsVisible(false);
+    gui.getContainer().setItemInputSlotsVisible(false);
+    gui.getContainer().setItemOutputSlotsVisible(false);
     rsB.detach();
     colorB.detach();
     roundRobinB.detach();
