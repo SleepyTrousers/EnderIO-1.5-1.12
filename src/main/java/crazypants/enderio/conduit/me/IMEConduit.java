@@ -10,5 +10,7 @@ public interface IMEConduit extends IConduit {
   MEConduitGrid getGrid();
   
   EnumSet<ForgeDirection> getConnections();
+  
+  boolean isDense();
 
 }

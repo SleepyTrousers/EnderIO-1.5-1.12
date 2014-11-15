@@ -117,6 +117,10 @@ public class ConduitRecipes {
 
       GameRegistry.addRecipe(new ShapedOreRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', fluix, 'q', quartzFiber));
       GameRegistry.addRecipe(new ShapedOreRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber));
+      
+      res.stackSize = 1;
+      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemMEConduit, 1, 1), "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res));
+      
     } else {
       throw new RuntimeException("EnderIO ME Conduits only support AE2 rv1 or rv2 build 16+");
     }

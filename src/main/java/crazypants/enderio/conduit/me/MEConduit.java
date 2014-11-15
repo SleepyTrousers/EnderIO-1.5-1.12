@@ -40,18 +40,34 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   protected MEConduitNetwork network;
   protected MEConduitGrid grid;
 
-  public static IIcon coreTexture;
-  public static IIcon longTexture;
+  public static IIcon[] coreTextures;
+  public static IIcon[] longTextures;
+  
+  private boolean isDense;
 
   EnumSet<ForgeDirection> validConnections = EnumSet.copyOf(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
+
+  public MEConduit() {
+    this(0);
+  }
+  
+  public MEConduit(int itemDamage) {
+    isDense = itemDamage == 1;
+  }
 
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
 
       @Override
       public void registerIcons(IIconRegister register) {
-        coreTexture = register.registerIcon(EnderIO.MODID + ":meConduitCore");
-        longTexture = register.registerIcon(EnderIO.MODID + ":meConduit");
+        coreTextures = new IIcon[2];
+        longTextures = new IIcon[2];
+        
+        coreTextures[0] = register.registerIcon(EnderIO.MODID + ":meConduitCore");
+        coreTextures[1] = register.registerIcon(EnderIO.MODID + ":meConduitCoreDense");
+        
+        longTextures[0] = register.registerIcon(EnderIO.MODID + ":meConduit");
+        longTextures[1] = register.registerIcon(EnderIO.MODID + ":meConduitDense");
       }
 
       @Override
@@ -61,6 +77,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
     });
   }
+  
+  public static int getDamageForState(boolean isDense) {
+    return isDense ? 1 : 0;
+  }
 
   @Override
   public Class<? extends IConduit> getBaseConduitType() {
@@ -69,7 +89,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemMEConduit);
+    return new ItemStack(EnderIO.itemMEConduit, 1, getDamageForState(isDense));
   }
 
   @Override
@@ -92,6 +112,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       list.appendTag(name);
     }
     nbtRoot.setTag("validConnections", list);
+    nbtRoot.setBoolean("isDense", isDense);
   }
 
   @Override
@@ -104,6 +125,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         validConnections.add(ForgeDirection.valueOf(connections.getStringTagAt(i)));
       }
     }
+    this.isDense = nbtRoot.getBoolean("isDense");
   }
 
   @Override
@@ -132,10 +154,11 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public IIcon getTextureForState(CollidableComponent component) {
+    int state = getDamageForState(isDense);
     if(component.dir == ForgeDirection.UNKNOWN) {
-      return coreTexture;
+      return coreTextures[state];
     } else {
-      return longTexture;
+      return longTextures[state];
     }
   }
 
@@ -205,7 +228,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public void conduitConnectionRemoved(ForgeDirection fromDirection) {
     super.conduitConnectionRemoved(fromDirection);
-    validConnections.remove(fromDirection);
+//    validConnections.remove(fromDirection); // this causes more annoying behavior than wanted behavior. Let's leave it out for now.
   }
 
   @Override
@@ -303,5 +326,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public EnumSet<ForgeDirection> getConnections() {
     return validConnections;
+  }
+  
+  @Override
+  public boolean isDense() {
+    return isDense;
   }
 }

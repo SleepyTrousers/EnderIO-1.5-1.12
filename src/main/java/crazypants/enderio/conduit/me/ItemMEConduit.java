@@ -10,6 +10,7 @@ public class ItemMEConduit extends AbstractItemConduit {
 
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
       new ItemConduitSubtype(ModObject.itemMEConduit.name(), "enderio:itemMeConduit"),
+      new ItemConduitSubtype(ModObject.itemMEConduit.name() + "Dense", "enderio:itemMEConduitDense")
   };
 
   public static ItemMEConduit create() {
@@ -31,6 +32,6 @@ public class ItemMEConduit extends AbstractItemConduit {
 
   @Override
   public IConduit createConduit(ItemStack item) {
-    return new MEConduit();
+    return new MEConduit(item.getItemDamage());
   }
 }

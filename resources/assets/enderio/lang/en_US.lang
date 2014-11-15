@@ -81,6 +81,7 @@ enderio.itemGasConduit.tooltip.maxIo=Max IO:
 enderio.itemGasConduit.tooltip.detailed.line1=Transfers Mekanism-compatible gases
 
 enderio.itemMEConduit.name=ME Conduit
+enderio.itemMEConduitDense.name=Dense ME Conduit
 
 //Materials
 enderio.itemMaterial.name=Materials

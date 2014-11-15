@@ -22,7 +22,7 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public double getIdlePowerUsage() {
-    return 0; // TODO Balance
+    return 0;
   }
 
   @Override
@@ -42,7 +42,7 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public EnumSet<GridFlags> getFlags() {
-    return EnumSet.noneOf(GridFlags.class);
+    return conduit.isDense() ? EnumSet.of(GridFlags.DENSE_CAPACITY) : EnumSet.noneOf(GridFlags.class);
   }
 
   @Override
