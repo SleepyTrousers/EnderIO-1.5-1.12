@@ -63,7 +63,7 @@ public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContaine
 
   @Override
   public boolean showDurabilityBar(ItemStack itemStack) {
-    return true;
+    return itemStack.getItemDamage() != 1;
   }
 
   @Override
@@ -79,7 +79,7 @@ public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContaine
     int maxInput = TileCapacitorBank.BASE_CAP.getMaxEnergyReceived();
     int energyReceived = Math.min(this.getMaxEnergyStored(container) - energy, Math.min(maxReceive, maxInput));
 
-    if(!simulate) {
+    if(!simulate && container.getItemDamage() != 1) {
       energy += energyReceived;
       PowerHandlerUtil.setStoredEnergyForItem(container, energy);
     }
@@ -92,7 +92,7 @@ public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContaine
     int maxOutput = TileCapacitorBank.BASE_CAP.getMaxEnergyExtracted();
     int energyExtracted = Math.min(energy, Math.min(maxExtract, maxOutput));
 
-    if(!simulate) {
+    if(!simulate && container.getItemDamage() != 1) {
       energy -= energyExtracted;
       PowerHandlerUtil.setStoredEnergyForItem(container, energy);
     }

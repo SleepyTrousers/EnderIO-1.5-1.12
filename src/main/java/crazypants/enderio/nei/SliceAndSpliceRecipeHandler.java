@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
@@ -105,6 +106,8 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     SliceAndSpliceRecipe recipe = (SliceAndSpliceRecipe) arecipes.get(recipeIndex);
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 100, 57, 0x808080, false);
+
+    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

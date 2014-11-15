@@ -42,7 +42,7 @@ public class GuiStirlingGenerator extends GuiMachineBase {
 
     if(entity.getProgress() < 1 && entity.getProgress() > 0) {
       scaled = entity.getProgressScaled(12);
-      drawTexturedModalRect(sx + 80, sy + 65 - scaled, 176, 12 - scaled, 14, scaled + 2);
+      drawTexturedModalRect(sx + 80, sy + 64 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -54,11 +54,12 @@ public class GuiStirlingGenerator extends GuiMachineBase {
     if(entity.isActive()) {
       output = entity.getPowerUsePerTick();
     }
-    String txt =  Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+    String txt = Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
+        + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt =  Lang.localize("stirlingGenerator.burnRate") + " " + (entity.getBurnTimeMultiplier()) + "x";
+    txt = Lang.localize("stirlingGenerator.burnRate") + " " + (entity.getBurnTimeMultiplier()) + "x";
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

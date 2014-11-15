@@ -70,7 +70,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
   @Override
   protected void renderSlotHighlight(int slot, Vector4f col) {
     if(tileEntity.getSlotDefinition().isOutputSlot(slot)) {
-      renderSlotHighlight(col, 75,54,24,24);
+      renderSlotHighlight(col, 75, 54, 24, 24);
     } else {
       super.renderSlotHighlight(slot, col);
     }
@@ -113,9 +113,9 @@ public class GuiAlloySmelter extends GuiMachineBase {
     int scaled;
 
     if(tileEntity.getProgress() < 1 && tileEntity.getProgress() > 0) {
-      scaled = tileEntity.getProgressScaled(12);
-      drawTexturedModalRect(sx + 55, sy + 48 - scaled, 176, 12 - scaled, 14, scaled + 2);
-      drawTexturedModalRect(sx + 103, sy + 48 - scaled, 176, 12 - scaled, 14, scaled + 2);
+      scaled = tileEntity.getProgressScaled(14) + 1;
+      drawTexturedModalRect(sx + 55, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
+      drawTexturedModalRect(sx + 103, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

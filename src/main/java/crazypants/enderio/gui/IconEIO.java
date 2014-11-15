@@ -2,6 +2,9 @@ package crazypants.enderio.gui;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.render.RenderUtil;
 
 public final class IconEIO {
@@ -35,7 +38,7 @@ public final class IconEIO {
 
   public static final IconEIO WRENCH_OVERLAY_GAS = new IconEIO(64, 148, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_GAS_OFF = new IconEIO(64 + 96, 148, 32, 32);
-  
+
   public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(64, 180, 32, 32);
   public static final IconEIO WRENCH_OVERLAY_ME_OFF = new IconEIO(64 + 96, 180, 32, 32);
 
@@ -100,15 +103,15 @@ public final class IconEIO {
 
   public static final IconEIO XP = new IconEIO(235, 60, 22, 22);
   public static final IconEIO XP_PLUS = new IconEIO(235, 82, 22, 22);
-  
+
   public static final IconEIO SINGLE_PLUS = new IconEIO(234, 100);
   public static final IconEIO DOUBLE_PLUS = new IconEIO(218, 100);
   public static final IconEIO TRIPLE_PLUS = new IconEIO(202, 100);
   public static final IconEIO SINGLE_MINUS = new IconEIO(206, 116);
   public static final IconEIO DOUBLE_MINUS = new IconEIO(190, 116);
   public static final IconEIO TRIPLE_MINUS = new IconEIO(174, 116);
-  
-  public static final IconEIO ENDER_RAIL = new IconEIO(235,175);
+
+  public static final IconEIO ENDER_RAIL = new IconEIO(235, 175);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
@@ -152,6 +155,7 @@ public final class IconEIO {
   }
 
   public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw, boolean flipY) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     Tessellator tessellator = Tessellator.instance;
     if(doDraw) {

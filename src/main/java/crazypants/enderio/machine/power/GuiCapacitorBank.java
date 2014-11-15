@@ -36,7 +36,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
   protected static final int CONFIG_ID = 377996104;
 
-  private static final int POWER_X = 8 + 21;
+  private static final int POWER_X = 11 + 18;
   private static final int POWER_Y = 9;
   private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
@@ -66,8 +66,8 @@ public class GuiCapacitorBank extends GuiContainerBase {
     this.capBank = te;
 
     xSize = 176 + 42;
-    
-    addToolTip(new GuiToolTip(new Rectangle(POWER_X - 21, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
+
+    addToolTip(new GuiToolTip(new Rectangle(5, POWER_Y, POWER_WIDTH, POWER_HEIGHT), "") {
 
       @Override
       protected void updateText() {
@@ -110,7 +110,6 @@ public class GuiCapacitorBank extends GuiContainerBase {
       }
     });
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
-
 
     y += 20;
     configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
@@ -176,7 +175,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     x = guiLeft + inputX;
     y = guiTop + inputY;
-    maxInputTF = new GuiTextField(fontRenderer, x, y, 72, 16);
+    maxInputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setFocused(false);
@@ -184,7 +183,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     x = guiLeft + outputX;
     y = guiTop + outputY;
-    maxOutputTF = new GuiTextField(fontRenderer, x, y, 72, 16);
+    maxOutputTF = new GuiTextField(fontRenderer, x, y, 68, 16);
     maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setFocused(true);
@@ -265,11 +264,6 @@ public class GuiCapacitorBank extends GuiContainerBase {
 
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize - 21, this.ySize);
 
-    //armor slots
-    //drawTexturedModalRect(sx - 21, sy + 24, 232, 0, 24, 81);
-
-
-
     int i1 = capBank.getEnergyStoredScaled(POWER_HEIGHT);
     drawTexturedModalRect(sx + POWER_X, sy + BOTTOM_POWER_Y - i1, 176 + 21, 0, POWER_WIDTH, i1);
 
@@ -310,7 +304,7 @@ public class GuiCapacitorBank extends GuiContainerBase {
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
     GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
-    super.drawHoveringText(par1List, par2, par3, font);
+    super.drawHoveringText(par1List, par2 + 24, par3, font);
     GL11.glPopAttrib();
     GL11.glPopAttrib();
   }

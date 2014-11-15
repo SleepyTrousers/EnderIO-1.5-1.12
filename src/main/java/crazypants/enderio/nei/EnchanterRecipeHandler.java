@@ -17,6 +17,7 @@ import net.minecraft.util.StatCollector;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.enchanter.EnchanterRecipe;
 import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.enchanter.GuiEnchanter;
@@ -125,6 +126,8 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
       String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(cost) });
       GuiDraw.drawStringC(s, 83, 46, 0x80FF20);
     }
+
+    IconEIO.RECIPE.renderIcon(149, -3, 16, 16, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {
