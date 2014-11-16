@@ -323,7 +323,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       CONNECTABLE_CLASSES.put(AbstractMachineEntity.class, false);
       try{
         Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
-        CONNECTABLE_CLASSES.put(conInterface, true);
+        CONNECTABLE_CLASSES.put(conInterface, false);
       } catch(Throwable e) {
         //NO-OP
       }
