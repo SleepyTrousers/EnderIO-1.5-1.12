@@ -11,6 +11,7 @@ Bugs
 - #1226 Redstone color not showing on MFR machines / BR ports
 - #1210 ME Conduits enabling without AE2
 - #1230 ME Conduits overlap with Gas Conduits
+- #1228 Spoon upgrade still not working properly
 
 ------------------------------------------------------
 Version 2.2.0

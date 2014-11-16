@@ -40,8 +40,6 @@ import crazypants.util.Lang;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
-  private static final Set<Material> SHOVEL_MATS = Sets.newHashSet(new Material[] { Material.clay, Material.craftedSnow, Material.grass, Material.ground, Material.sand, Material.snow }); 
-
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
       return false;
@@ -192,12 +190,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       return efficiencyOnProperMaterial;
     }
     
-    if(energy > 0 && hasSpoonUpgrade(item)) {
-      if(SHOVEL_MATS.contains(block.getMaterial())) {
-        return efficiencyOnProperMaterial;
-      }
-    }
-    
     return super.func_150893_a(item, block);
   }
   
@@ -223,6 +215,16 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial();
     }
     return super.getDigSpeed(stack, block, meta);
+  }
+  
+  
+  @Override
+  public Set<String> getToolClasses(ItemStack stack) {
+    Set<String> set = Sets.newHashSet("pickaxe");
+    if (hasSpoonUpgrade(stack)) {
+      set.add("shovel");
+    }
+    return set;
   }
 
   protected void init() {
