@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import tterrag.core.common.event.ConfigFileChangedEvent;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
@@ -124,6 +126,7 @@ public final class Config {
   public static boolean travelStaffBlinkEnabled = true;
   public static boolean travelStaffBlinkThroughSolidBlocksEnabled = true;
   public static boolean travelStaffBlinkThroughClearBlocksEnabled = true;
+  public static boolean travelStaffBlinkThroughUnbreakableBlocksEnabled = false;
   public static String[] travelStaffBlinkBlackList = new String[] {
     "minecraft:bedrock"
   };
@@ -392,11 +395,14 @@ public final class Config {
 
     File configFile = new File(configDirectory, "EnderIO.cfg");
     config = new Configuration(configFile);
-    syncConfig();
+    syncConfig(false);
   }
 
-  public static void syncConfig() {
+  public static void syncConfig(boolean load) {
     try {
+      if (load) {
+        config.load();
+      }
       Config.processConfig(config);
     } catch (Exception e) {
       Log.error("EnderIO has a problem loading it's configuration");
@@ -412,7 +418,17 @@ public final class Config {
   public void onConfigChanged(OnConfigChangedEvent event) {
     if(event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
-      syncConfig();
+      syncConfig(false);
+    }
+  }
+  
+  @SubscribeEvent
+  @Method(modid = "ttCore")
+  public void onConfigFileChanged(ConfigFileChangedEvent event) {
+    if (event.modID.equals(EnderIO.MODID)) {
+      Log.info("Updating config...");
+      syncConfig(true);
+      event.setSuccessful();
     }
   }
 
@@ -589,7 +605,10 @@ public final class Config {
                 "staff can only be used to blink through transparent or partial blocks (e.g. torches). " +
                 "If both are false: only air blocks may be teleported through.")
         .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
-    travelStaffBlinkBlackList = config.getStringList("travelStaffBlinkBlackList", sectionStaff.name, travelStaffBlinkBlackList, 
+    travelStaffBlinkThroughUnbreakableBlocksEnabled = config.get(sectionItems.name, "travelStaffBlinkThroughUnbreakableBlocksEnabled",
+        travelStaffBlinkThroughUnbreakableBlocksEnabled, "Allows the travel staff to blink through unbreakable blocks such as warded blocks and bedrock.")
+        .getBoolean();
+    travelStaffBlinkBlackList = config.getStringList("travelStaffBlinkBlackList", sectionStaff.name, travelStaffBlinkBlackList,
         "Lists the blocks that cannot be teleported through in the form 'modID:blockName'");
     travelAnchorZoomScale = config.getFloat("travelAnchorZoomScale", sectionStaff.name, travelAnchorZoomScale, 0, 1, 
         "Set the max zoomed size of a travel anchor as an aprox. percentage of screen height");

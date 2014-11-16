@@ -184,7 +184,7 @@ public class TravelController {
     if(ui == null) {
       return false;
     }
-    return blackList.contains(ui);
+    return blackList.contains(ui) && (hitBlock.getBlockHardness(player.worldObj, pos.blockX, pos.blockY, pos.blockZ) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
   }
 
   private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
