@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -10,9 +11,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -24,6 +27,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -37,9 +41,9 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
   private final boolean isDouble;
 
   public BlockPaintedSlab(boolean isDouble) {
-    super(isDouble, new Material(MapColor.stoneColor));
+    super(isDouble, Material.rock);
     this.isDouble = isDouble;
-    setCreativeTab(null);
+    setCreativeTab(EnderIOTab.tabEnderIO);
     setBlockName(ModObject.blockPaintedSlab.unlocalisedName + (isDouble ? "Double" : ""));
     setHardness(0.5F);
     setResistance(5.0F);
@@ -63,6 +67,12 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     ItemStack result = new ItemStack(EnderIO.blockPaintedSlab, 1, 0);
     PainterUtil.setSourceBlock(result, source, damage);
     return result;
+  }
+  
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @Override

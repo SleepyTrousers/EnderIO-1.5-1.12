@@ -1,10 +1,10 @@
 package crazypants.enderio.machine.painter;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameData;
 import crazypants.util.Lang;
 
@@ -64,5 +64,9 @@ public final class PainterUtil {
       tag.setInteger(BlockPainter.KEY_SOURCE_BLOCK_META, meta);
     }
   }
-
+  
+  public static ItemStack applyDefaultPaintedState(ItemStack stack) {
+    setSourceBlock(stack, Blocks.stone, 0);
+    return stack;
+  }
 }

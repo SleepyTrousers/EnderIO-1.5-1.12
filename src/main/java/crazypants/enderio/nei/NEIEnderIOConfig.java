@@ -6,6 +6,7 @@ import codechicken.nei.api.IConfigureNEI;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasUtil;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.painter.PainterUtil;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
 
@@ -31,14 +32,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedCarpet));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedDoubleSlab));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedFence));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedFenceGate));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedSlab));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedStair));
-    API.hideItem(new ItemStack(EnderIO.blockPaintedWall));
-    API.hideItem(new ItemStack(EnderIO.blockConduitBundle));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedDoubleSlab)));
 
     if(!Config.photovoltaicCellEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockSolarPanel));

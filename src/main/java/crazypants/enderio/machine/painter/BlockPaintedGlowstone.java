@@ -2,6 +2,7 @@ package crazypants.enderio.machine.painter;
 
 import info.jbcs.minecraft.chisel.api.IFacade;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -10,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -28,6 +30,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -50,8 +53,11 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
 
   protected BlockPaintedGlowstone() {
     super(Material.glass);
-    setCreativeTab(null);
-    setBlockName(ModObject.blockPaintedGlowstone.unlocalisedName);    
+    setCreativeTab(EnderIOTab.tabEnderIO);
+    setBlockName(ModObject.blockPaintedGlowstone.unlocalisedName);
+    setStepSound(soundTypeGlass);
+    setHardness(0.3F);
+    setLightLevel(1.0f);
   }
 
   private void init() {
@@ -66,10 +72,11 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
     return result;
   }
   
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
-  public int getLightValue() {  
-    return 15;
-  }  
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
+  }
 
   @Override
   @SideOnly(Side.CLIENT)

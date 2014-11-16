@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -8,9 +9,11 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -22,6 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -40,7 +44,7 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
 
   protected BlockPaintedStair() {
     super(Blocks.stone, 0);
-    setCreativeTab(null);
+    setCreativeTab(EnderIOTab.tabEnderIO);
     setBlockName(ModObject.blockPaintedStair.unlocalisedName);
     setLightOpacity(0);
   }
@@ -55,6 +59,12 @@ public class BlockPaintedStair extends BlockStairs implements ITileEntityProvide
     ItemStack result = new ItemStack(EnderIO.blockPaintedStair, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
+  }
+  
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @SideOnly(Side.CLIENT)
