@@ -11,20 +11,9 @@ import appeng.api.parts.IPartItem;
 import com.google.common.collect.Sets;
 
 import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.me.MEUtil;
 
 public class InventoryBus implements IInventory {
-
-  private static Set<Class<?>> supportedParts;
-
-  static {
-    supportedParts = Sets.newHashSet();
-
-    try {
-      supportedParts.add(Class.forName("appeng.parts.automation.PartImportBus"));
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException("Could not load ME conduit GUI", e);
-    }
-  }
 
   private ItemStack bus;
   
@@ -104,7 +93,7 @@ public class InventoryBus implements IInventory {
   @Override
   public boolean isItemValidForSlot(int slot, ItemStack stack) {
     if(slot == 0 && stack.getItem() instanceof IPartItem) {
-      return supportedParts.contains(((IPartItem)stack.getItem()).createPartFromItemStack(stack).getClass());
+      return MEUtil.isSupportedPart(stack);
     }
     return false;
   }

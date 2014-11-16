@@ -46,17 +46,17 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   public static IIcon[] coreTextures;
   public static IIcon[] longTextures;
-  
+
   private boolean isDense;
 
   EnumSet<ForgeDirection> validConnections = EnumSet.copyOf(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
-  
+
   private EnumMap<ForgeDirection, ItemStack> buses = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
 
   public MEConduit() {
     this(0);
   }
-  
+
   public MEConduit(int itemDamage) {
     isDense = itemDamage == 1;
   }
@@ -68,10 +68,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       public void registerIcons(IIconRegister register) {
         coreTextures = new IIcon[2];
         longTextures = new IIcon[2];
-        
+
         coreTextures[0] = register.registerIcon(EnderIO.MODID + ":meConduitCore");
         coreTextures[1] = register.registerIcon(EnderIO.MODID + ":meConduitCoreDense");
-        
+
         longTextures[0] = register.registerIcon(EnderIO.MODID + ":meConduit");
         longTextures[1] = register.registerIcon(EnderIO.MODID + ":meConduitDense");
       }
@@ -83,7 +83,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
     });
   }
-  
+
   public static int getDamageForState(boolean isDense) {
     return isDense ? 1 : 0;
   }
@@ -117,9 +117,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     for (ForgeDirection dir : validConnections) {
       NBTTagString name = new NBTTagString(dir.name());
       connList.appendTag(name);
-      
+
       NBTTagCompound bus = new NBTTagCompound();
-      if (buses.get(dir) != null) {
+      if(buses.get(dir) != null) {
         buses.get(dir).writeToNBT(bus);
       }
       busList.appendTag(bus);
@@ -138,7 +138,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       for (int i = 0; i < connList.tagCount(); i++) {
         validConnections.add(ForgeDirection.valueOf(connList.getStringTagAt(i)));
       }
-      
+
       NBTTagList busList = nbtRoot.getTagList("buses", Constants.NBT.TAG_COMPOUND);
       for (ForgeDirection f : ForgeDirection.VALID_DIRECTIONS) {
         NBTTagCompound bus = busList.getCompoundTagAt(f.ordinal());
@@ -201,6 +201,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         getNode().updateState();
       }
     }
+    
+    System.out.println(buses);
 
     super.updateEntity(worldObj);
   }
@@ -248,7 +250,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public void conduitConnectionRemoved(ForgeDirection fromDirection) {
     super.conduitConnectionRemoved(fromDirection);
-//    validConnections.remove(fromDirection); // this causes more annoying behavior than wanted behavior. Let's leave it out for now.
+    //    validConnections.remove(fromDirection); // this causes more annoying behavior than wanted behavior. Let's leave it out for now.
   }
 
   @Override
@@ -290,7 +292,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     boolean foundConnection = false;
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      TileEntity te = getBundle().getLocation().getLocation(dir).getTileEntity(getBundle().getWorld());
+      TileEntity te = getBundle().getBlockCoord().getLocation(dir).getTileEntity(getBundle().getWorld());
       if(te != null && te instanceof IGridHost) {
         IGridNode node = ((IGridHost) te).getGridNode(ForgeDirection.UNKNOWN);
         foundConnection |= validConnections.contains(dir);
@@ -328,7 +330,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     getNode().destroy();
     getBundle().setGridNode(null);
   }
-  
+
   @Override
   public List<ItemStack> getDrops() {
     return Lists.newArrayList(buses.values());
@@ -352,17 +354,22 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public EnumSet<ForgeDirection> getConnections() {
     return validConnections;
   }
-  
+
   @Override
   public boolean isDense() {
     return isDense;
   }
-  
+
   @Override
   public void setBus(ItemStack stack, ForgeDirection dir) {
+    if(stack != null) {
+      stack = stack.copy();
+      stack.stackSize = 1;
+    }
     buses.put(dir, stack);
+    getBundle().dirty();
   }
-  
+
   @Override
   public ItemStack getBus(ForgeDirection dir) {
     return buses.get(dir);

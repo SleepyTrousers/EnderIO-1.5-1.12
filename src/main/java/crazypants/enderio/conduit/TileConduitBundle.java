@@ -9,9 +9,12 @@ import java.util.Set;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,7 +22,17 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import appeng.api.networking.IGridNode;
+import appeng.api.parts.IFacadeContainer;
+import appeng.api.parts.IPart;
+import appeng.api.parts.IPartItem;
+import appeng.api.parts.LayerFlags;
+import appeng.api.parts.SelectedPart;
 import appeng.api.util.AECableType;
+import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
+
+import com.google.common.collect.Sets;
+
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,6 +49,7 @@ import crazypants.enderio.conduit.geom.Offsets.Axis;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.me.MEUtil;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
@@ -276,7 +290,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   }
 
   @Override
-  public BlockCoord getLocation() {
+  public BlockCoord getBlockCoord() {
     return new BlockCoord(xCoord, yCoord, zCoord);
   }
 
@@ -883,5 +897,149 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Method(modid = "appliedenergistics2")
   public void securityBreak() {
     ;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public IFacadeContainer getFacadeContainer() {
+    return null;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public boolean canAddPart(ItemStack part, ForgeDirection side) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    return cond != null && cond.getBus(side) == null && MEUtil.isSupportedPart(part);
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public ForgeDirection addPart(ItemStack is, ForgeDirection side, EntityPlayer owner) {
+    if(canAddPart(is, side)) {
+      getConduit(IMEConduit.class).setBus(is, side);
+      return side;
+    }
+    return null;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public IPart getPart(ForgeDirection side) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      ItemStack part = cond.getBus(side);
+      if (part != null) {
+        return ((IPartItem)part.getItem()).createPartFromItemStack(part);
+      }
+    }
+    return null;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void removePart(ForgeDirection side, boolean suppressUpdate) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      cond.setBus(null, side);
+    }
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void markForUpdate() {
+    dirty();
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public DimensionalCoord getLocation() {
+    return new DimensionalCoord(getEntity());
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public TileEntity getTile() {
+    return getEntity();
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public AEColor getColor() {
+    return AEColor.Transparent;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void clearContainer() {
+    ;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public boolean isBlocked(ForgeDirection side) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      return cond.getBus(side) != null;
+    }
+    return false;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public SelectedPart selectPart(Vec3 pos) {
+    return new SelectedPart();
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void markForSave() {
+    markDirty();
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void partChanged() {
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public boolean hasRedstone(ForgeDirection side) {
+    return false;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public boolean isEmpty() {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    if (cond != null) {
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if (cond.getBus(dir) != null) { 
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public Set<LayerFlags> getLayerFlags() {
+    return Sets.newHashSet();
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void cleanup() {
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public void notifyNeighbors() {
+  }
+
+  @Override
+  @Method(modid = "appliedenergistics2")
+  public boolean isInWorld() {
+    return true;
   }
 }
