@@ -4,9 +4,13 @@ Version 2.2.1
 Changes
 - #1223 Various small GUI- and NEI-related improvements and tweaks (Tonius) 
 - #1232 Painted Glowstone now implements IFacade and will have connected textures with chisel
+- Add dense ME Conduits
+- Add config to stop travel anchor going through unbreakable blocks
 
 Bugs
 - #1226 Redstone color not showing on MFR machines / BR ports
+- #1210 ME Conduits enabling without AE2
+- #1230 ME Conduits overlap with Gas Conduits
 
 ------------------------------------------------------
 Version 2.2.0
