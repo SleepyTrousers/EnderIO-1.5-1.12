@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import info.jbcs.minecraft.chisel.api.IFacade;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -32,7 +34,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.util.Lang;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class BlockPaintedGlowstone extends Block implements ITileEntityProvider, IPaintedBlock {
+public class BlockPaintedGlowstone extends Block implements ITileEntityProvider, IPaintedBlock, IFacade {
    
   public static int renderId = -1;
 
@@ -268,5 +270,25 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
         }
       }
     }
+  }
+
+  @Override
+  public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      return tef.getBlockMetadata();
+    }
+    return 0;
+  }
+
+  @Override
+  public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      return tef.getSourceBlock();
+    }
+    return this;
   }
 }
