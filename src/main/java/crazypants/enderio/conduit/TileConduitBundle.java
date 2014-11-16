@@ -22,9 +22,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.ticking.IGridTickable;
+import appeng.api.networking.ticking.TickRateModulation;
+import appeng.api.networking.ticking.TickingRequest;
 import appeng.api.parts.IFacadeContainer;
 import appeng.api.parts.IPart;
-import appeng.api.parts.IPartItem;
 import appeng.api.parts.LayerFlags;
 import appeng.api.parts.SelectedPart;
 import appeng.api.util.AECableType;
@@ -855,6 +857,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     return getWorldObj();
   }
   
+  /* IGridHost */
+  
   private Object node; // IGridNode object, untyped to avoid crash w/o AE2
   
   @Override
@@ -898,6 +902,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void securityBreak() {
     ;
   }
+  
+  /* IPartHost */
 
   @Override
   @Method(modid = "appliedenergistics2")
@@ -909,14 +915,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Method(modid = "appliedenergistics2")
   public boolean canAddPart(ItemStack part, ForgeDirection side) {
     IMEConduit cond = getConduit(IMEConduit.class);
-    return cond != null && cond.getBus(side) == null && MEUtil.isSupportedPart(part);
+    return cond != null && cond.getPart(side) == null && MEUtil.isSupportedPart(part);
   }
 
   @Override
   @Method(modid = "appliedenergistics2")
   public ForgeDirection addPart(ItemStack is, ForgeDirection side, EntityPlayer owner) {
-    if(canAddPart(is, side)) {
-      getConduit(IMEConduit.class).setBus(is, side);
+    if(canAddPart(is, side) && !owner.worldObj.isRemote) {
+      getConduit(IMEConduit.class).setPart(is, side);
       return side;
     }
     return null;
@@ -927,10 +933,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public IPart getPart(ForgeDirection side) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
-      ItemStack part = cond.getBus(side);
-      if (part != null) {
-        return ((IPartItem)part.getItem()).createPartFromItemStack(part);
-      }
+      return cond.getPart(side);
     }
     return null;
   }
@@ -940,7 +943,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void removePart(ForgeDirection side, boolean suppressUpdate) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
-      cond.setBus(null, side);
+      cond.setPart(null, side);
     }
   }
 
@@ -979,7 +982,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public boolean isBlocked(ForgeDirection side) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
-      return cond.getBus(side) != null;
+      return cond.getPart(side) != null;
     }
     return false;
   }
@@ -1013,7 +1016,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-        if (cond.getBus(dir) != null) { 
+        if (cond.getPart(dir) != null) { 
           return false;
         }
       }
@@ -1041,5 +1044,29 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Method(modid = "appliedenergistics2")
   public boolean isInWorld() {
     return true;
+  }
+
+  /* IGridTickable */
+  
+  @Override
+  public TickingRequest getTickingRequest(IGridNode node) {
+    return node == null || getConduit(IMEConduit.class) == null ? null : new TickingRequest(0, 20, false, false);
+  }
+
+  @Override
+  public TickRateModulation tickingRequest(IGridNode node, int TicksSinceLastCall) {
+    IMEConduit cond = getConduit(IMEConduit.class);
+    TickRateModulation mod = TickRateModulation.SLOWER;
+    if (cond == null) return mod;
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      IPart part = cond.getPart(dir);
+      if (part != null && part instanceof IGridTickable) {
+        TickRateModulation temp = ((IGridTickable)part).tickingRequest(node, TicksSinceLastCall);
+        if (temp.ordinal() > mod.ordinal()) {
+          mod = temp;
+        }
+      }
+    }
+    return mod;
   }
 }

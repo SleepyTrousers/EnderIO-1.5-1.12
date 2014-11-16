@@ -47,17 +47,17 @@ public class MEConduitGrid implements IGridBlock {
 
   @Override
   public boolean isWorldAccessable() {
-    return true;
+    return isWorldAccessible();
   }
   
   //@Override // dummy method for rv2
   public boolean isWorldAccessible() {
-    return true;
+    return conduit.getBundle() != null && conduit.getBundle().getEntity() !=  null;
   }
 
   @Override
   public DimensionalCoord getLocation() {
-    return new DimensionalCoord(conduit.getBundle().getEntity());
+    return conduit.getBundle() == null ? null : new DimensionalCoord(conduit.getBundle().getEntity());
   }
 
   @Override

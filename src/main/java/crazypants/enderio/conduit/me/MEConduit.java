@@ -5,8 +5,6 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +21,11 @@ import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
+import appeng.api.parts.IPartItem;
 import appeng.api.util.AECableType;
+
+import com.google.common.collect.Lists;
+
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -37,7 +39,6 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.ItemUtil;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
 
@@ -51,7 +52,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   EnumSet<ForgeDirection> validConnections = EnumSet.copyOf(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
 
-  private EnumMap<ForgeDirection, ItemStack> buses = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
+  private EnumMap<ForgeDirection, ItemStack> inventory = new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
+  private EnumMap<ForgeDirection, IPart> parts = new EnumMap<ForgeDirection, IPart>(ForgeDirection.class);
 
   public MEConduit() {
     this(0);
@@ -119,8 +121,8 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       connList.appendTag(name);
 
       NBTTagCompound bus = new NBTTagCompound();
-      if(buses.get(dir) != null) {
-        buses.get(dir).writeToNBT(bus);
+      if(inventory.get(dir) != null) {
+        inventory.get(dir).writeToNBT(bus);
       }
       busList.appendTag(bus);
     }
@@ -142,7 +144,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
       NBTTagList busList = nbtRoot.getTagList("buses", Constants.NBT.TAG_COMPOUND);
       for (ForgeDirection f : ForgeDirection.VALID_DIRECTIONS) {
         NBTTagCompound bus = busList.getCompoundTagAt(f.ordinal());
-        buses.put(f, ItemStack.loadItemStackFromNBT(bus));
+        inventory.put(f, ItemStack.loadItemStackFromNBT(bus));
       }
     }
     this.isDense = nbtRoot.getBoolean("isDense");
@@ -201,8 +203,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         getNode().updateState();
       }
     }
-    
-    System.out.println(buses);
 
     super.updateEntity(worldObj);
   }
@@ -333,7 +333,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public List<ItemStack> getDrops() {
-    return Lists.newArrayList(buses.values());
+    return Lists.newArrayList(inventory.values());
   }
 
   @Override
@@ -361,17 +361,36 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
-  public void setBus(ItemStack stack, ForgeDirection dir) {
+  public void setPart(ItemStack stack, ForgeDirection dir) {
     if(stack != null) {
       stack = stack.copy();
       stack.stackSize = 1;
     }
-    buses.put(dir, stack);
+    inventory.put(dir, stack);
+    IPart part = null;
+    if (stack != null) {
+      part = createPart(stack);
+      part.addToWorld();
+      IGridNode node = part.getGridNode();
+      if (node != null) {
+        node.updateState();
+      }
+    }
+    parts.put(dir, part);
     getBundle().dirty();
   }
 
   @Override
-  public ItemStack getBus(ForgeDirection dir) {
-    return buses.get(dir);
+  public ItemStack getPartStack(ForgeDirection dir) {
+    return inventory.get(dir);
+  }
+  
+  @Override
+  public IPart getPart(ForgeDirection dir) {
+    return parts.get(dir);
+  }
+  
+  private IPart createPart(ItemStack stack) {
+    return ((IPartItem)stack.getItem()).createPartFromItemStack(stack);
   }
 }

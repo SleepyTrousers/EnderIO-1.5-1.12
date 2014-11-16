@@ -6,6 +6,7 @@ import static net.minecraftforge.common.util.ForgeDirection.*;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -29,7 +30,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
   @Override
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
-      float worldLight) {
+      float worldLight, RenderBlocks rb) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     Tessellator tessellator = Tessellator.instance;

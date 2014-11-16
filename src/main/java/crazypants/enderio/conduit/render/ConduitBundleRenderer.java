@@ -113,7 +113,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
       } else {
         brightness = bundle.getEntity().getWorldObj().getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
       }
-      renderConduits(bundle, x, y, z, 0, brightness);
+      renderConduits(bundle, x, y, z, 0, brightness, rb);
     }
 
     return true;
@@ -163,7 +163,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     return res;
   }
 
-  public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness) {
+  public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness, RenderBlocks rb) {
 
     Tessellator tessellator = Tessellator.instance;
     tessellator.setColorOpaque_F(1, 1, 1);
@@ -179,7 +179,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
 
       if(ConduitUtil.renderConduit(player, con)) {
         ConduitRenderer renderer = EnderIO.proxy.getRendererForConduit(con);
-        renderer.renderEntity(this, bundle, con, x, y, z, partialTick, brightness);
+        renderer.renderEntity(this, bundle, con, x, y, z, partialTick, brightness, rb);
         Set<ForgeDirection> extCons = con.getExternalConnections();
         for (ForgeDirection dir : extCons) {
           if(con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {

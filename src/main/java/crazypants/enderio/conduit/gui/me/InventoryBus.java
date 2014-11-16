@@ -24,7 +24,7 @@ public class InventoryBus implements IInventory {
     this.conduit = conduit;
     this.dir = dir;
     
-    this.bus = conduit.getBus(dir);
+    this.bus = conduit.getPartStack(dir);
   }
 
   @Override
@@ -53,7 +53,7 @@ public class InventoryBus implements IInventory {
   public void setInventorySlotContents(int slot, ItemStack stack) {
     if(slot == 0) {
       bus = stack;
-      conduit.setBus(bus, dir);
+      conduit.setPart(bus, dir);
     }
   }
 

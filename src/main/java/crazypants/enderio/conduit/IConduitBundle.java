@@ -11,23 +11,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-import appeng.api.networking.IGridHost;
-import appeng.api.parts.IPartHost;
 import cofh.api.transport.IItemDuct;
 import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
+import crazypants.enderio.conduit.me.IMEConduitBundle;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.BlockCoord;
 
-@InterfaceList({
-  @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2"),
-  @Interface(iface = "appeng.api.parts.IPartHost", modid = "appliedenergistics2")
-})
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridHost, IPartHost {
+@Interface(iface = "crazypants.enderio.conduit.me.IMEConduitBundle", modid = "appliedenergistics2")
+public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IMEConduitBundle {
 
   TileEntity getEntity();
 
