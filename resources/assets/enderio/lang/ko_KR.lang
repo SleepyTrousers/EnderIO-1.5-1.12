@@ -27,26 +27,26 @@ item.enderio.itemConduitFacade.tooltip.detailed.line4=보이지 않습니다.
 
 enderio.itemPowerConduit.name=에너지 컨두잇
 enderio.itemPowerConduitEnhanced.name=고급 에너지 컨두잇
-enderio.itemPowerConduitEnder.name=엔더 에너지 컨두잇
+enderio.itemPowerConduitEnder.name=엔더식 에너지 컨두잇
 
 enderio.itemRedstoneConduit.name=레드스톤 컨두잇
 enderio.itemRedstoneConduitSwitch.name=컨두잇 스위치
 enderio.itemRedstoneConduitInsulated.name=절연 레드스톤 컨두잇
 
-enderio.itemLiquidConduit.name=유체 컨두잇
-enderio.itemLiquidConduitAdvanced.name=가압 유체 컨두잇
-enderio.itemLiquidConduitEnder.name=엔더 유체 컨두잇
-enderio.itemLiquidConduit.lockedType=유체 종류 제한
-enderio.itemLiquidConduit.unlockedType=유체 종류 제한 해제
+enderio.itemLiquidConduit.name=액체 컨두잇
+enderio.itemLiquidConduitAdvanced.name=가압식 액체 컨두잇
+enderio.itemLiquidConduitEnder.name=엔더식 액체 컨두잇
+enderio.itemLiquidConduit.lockedType=액체 종류 제한
+enderio.itemLiquidConduit.unlockedType=액체 종류 제한 해제
 
 enderio.itemLiquidConduit.tooltip.maxExtract=최대 추출량:
 enderio.itemLiquidConduit.tooltip.maxIo=최대 유량:
-enderio.itemLiquidConduit.tooltip.detailed.line1=유체의 흐름은 중력을 따릅니다.
+enderio.itemLiquidConduit.tooltip.detailed.line1=액체의 흐름은 중력을 따릅니다.
 enderio.itemLiquidConduit.tooltip.detailed.line2=유량은 액체의 점성에 따라
 enderio.itemLiquidConduit.tooltip.detailed.line3=다를 수 있습니다.
 
-enderio.itemLiquidConduitEnder.tooltip.detailed.line1=유체를 순간이동시킵니다.
-enderio.itemLiquidConduitEnder.tooltip.detailed.line2=서로 다른 유체들을 하나의
+enderio.itemLiquidConduitEnder.tooltip.detailed.line1=액체를 순간이동시킵니다.
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=서로 다른 액체들을 하나의
 enderio.itemLiquidConduitEnder.tooltip.detailed.line3=수송관만으로 수송할 수 있습니다.
 
 enderio.itemItemConduit.name=아이템 컨두잇
@@ -76,13 +76,14 @@ item.itemExtractSpeedUpgrade.tooltip.detailed.line1=한 번 추출될 때 추출
 item.itemExtractSpeedUpgrade.tooltip.detailed.line2=업그레이드 1개당 4개씩 늘려줍니다.
 item.itemExtractSpeedUpgrade.tooltip.detailed.line3=최대 15개까지 넣을 수 있습니다.
 
-enderio.itemGasConduit.name=가스 컨두잇
+enderio.itemGasConduit.name=기체 컨두잇
 
 enderio.itemGasConduit.tooltip.maxExtract=최대 추출량:
 enderio.itemGasConduit.tooltip.maxIo=최대 유량:
-enderio.itemGasConduit.tooltip.detailed.line1=메탈러지 호환 가스 전송
+enderio.itemGasConduit.tooltip.detailed.line1=메탈러지 호환 기체 전송
 
 enderio.itemMEConduit.name=ME 컨두잇
+enderio.itemMEConduitDense.name=밀집된 ME 컨두잇
 
 //Materials
 enderio.itemMaterial.name=자원
@@ -146,13 +147,13 @@ tile.blockReinforcedObsidian.name=강화 흑요석
 tile.blockReinforcedObsidian.tooltip.common.line1=위더에 내성을 가지고 있습니다.
 
 //Quartz / Glass
-tile.blockFusedQuartz.name=융합된 석영
-enderio.blockFusedQuartz.fusedQuartz.name=융합된 석영
+tile.blockFusedQuartz.name=재결정 석영
+enderio.blockFusedQuartz.fusedQuartz.name=재결정 석영
 enderio.blockFusedQuartz.fusedGlass.name=투명한 유리
-enderio.blockFusedQuartz.enlightenedFusedQuartz.name=고급 융합된 석영
+enderio.blockFusedQuartz.enlightenedFusedQuartz.name=고급 재결정 석영
 enderio.blockFusedQuartz.enlightenedFusedGlass.name=고급 투명한 유리
 
-item.enderio.itemFusedQuartzFrame.name=융합된 석영 틀
+item.enderio.itemFusedQuartzFrame.name=재결정 석영 틀
 enderio.itemPowderIngot=분말 & 주괴
 
 //Alloys
@@ -198,7 +199,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line2=작업 속도, 작동 범
 enderio.machine.tooltip.clearConfig=모든 정보가 초기화됨니다!
 
 //Machines
-tile.blockStirlingGenerator.name=화력 발전기
+tile.blockStirlingGenerator.name=스털링식 화력 발전기
 tile.blockStirlingGenerator.tooltip.detailed.line1=고체 연료를 태와 전력을 만들어냅니다.
 tile.blockStirlingGenerator.tooltip.detailed.line2=축전기를 넣어 효율을 높이고
 tile.blockStirlingGenerator.tooltip.detailed.line3=출력량을 증가시킬 수 있습니다.
@@ -523,7 +524,7 @@ item.darkSteel_sword.name=디 엔더
 item.darkSteel_pickaxe.name=암흑의 곡괭이
 item.darkSteel_axe.name=암흑의 도끼
 
-enderio.item.tooltip.showDetails=<Hold Shift>
+enderio.item.tooltip.showDetails=<Hold Shift수>
 enderio.item.darkSteel.tooltip.durability=내구도:
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
@@ -621,38 +622,38 @@ enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
 
 //------GUI
 
-enderio.gui.enabled=Enabled
-enderio.gui.disabled=Disabled
-enderio.gui.send=Send
-enderio.gui.recieve=Receive
-enderio.gui.sendRecieve=Send & Receive
+enderio.gui.enabled=활성화
+enderio.gui.disabled=비활성화
+enderio.gui.send=발신
+enderio.gui.recieve=수신
+enderio.gui.sendRecieve=수신 & 발신
 
 //Redstone controls
-enderio.gui.tooltip.redstoneControlMode=Redstone Mode
-enderio.gui.tooltip.redstoneControlMode.ignore=Always active
-enderio.gui.tooltip.redstoneControlMode.on=Active with signal
-enderio.gui.tooltip.redstoneControlMode.off=Active without signal
-enderio.gui.tooltip.redstoneControlMode.never=Never active
+enderio.gui.tooltip.redstoneControlMode=레드스톤 모드
+enderio.gui.tooltip.redstoneControlMode.ignore=언제나 활성화
+enderio.gui.tooltip.redstoneControlMode.on=신호가 있으면 활성화
+enderio.gui.tooltip.redstoneControlMode.off=신호가 없으면 활성화
+enderio.gui.tooltip.redstoneControlMode.never=비활성화
 
-enderio.gui.machine.ioMode.overlay.tooltip=Configure IO
-enderio.gui.machine.ioMode.none=None
+enderio.gui.machine.ioMode.overlay.tooltip=입출력 설정
+enderio.gui.machine.ioMode.none=없음
 enderio.gui.machine.ioMode.pull=Pull
 enderio.gui.machine.ioMode.push=Push
-enderio.gui.machine.ioMode.disabled=Disabled
+enderio.gui.machine.ioMode.disabled=비활성
 enderio.gui.machine.ioMode.pullPush=Push / Pull
 enderio.gui.machine.ioMode.pullPush.colored=%sPush %s/ %sPull
-enderio.gui.machine.ioMode=Mode: %s
-enderio.gui.machine.side=Side: %s
-enderio.gui.machine.side.north=North
-enderio.gui.machine.side.south=South
-enderio.gui.machine.side.west=West
-enderio.gui.machine.side.east=East
-enderio.gui.machine.side.up=Up
-enderio.gui.machine.side.down=Down
+enderio.gui.machine.ioMode=모드 : %s
+enderio.gui.machine.side=방향 : %s
+enderio.gui.machine.side.north=북
+enderio.gui.machine.side.south=남
+enderio.gui.machine.side.west=서
+enderio.gui.machine.side.east=동
+enderio.gui.machine.side.up=위
+enderio.gui.machine.side.down=아래
 
 
 //Power Monitor
-enderio.gui.powerMonitor.engineControl=Engine Control
+enderio.gui.powerMonitor.engineControl=엔진 설정
 enderio.gui.powerMonitor.emit=Emit
 enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
 enderio.gui.powerMonitor.engineSection2=than
