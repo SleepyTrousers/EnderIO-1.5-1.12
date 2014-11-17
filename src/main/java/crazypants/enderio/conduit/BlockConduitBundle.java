@@ -97,6 +97,8 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   protected BlockConduitBundle() {
     super(ModObject.blockConduitBundle.unlocalisedName, TileConduitBundle.class);
     setBlockBounds(0.334f, 0.334f, 0.334f, 0.667f, 0.667f, 0.667f);
+    setHardness(1.5f);
+    setResistance(10.0f);
     setCreativeTab(null);
   }
 
