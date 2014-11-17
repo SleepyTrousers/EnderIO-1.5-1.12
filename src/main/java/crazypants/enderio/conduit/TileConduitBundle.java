@@ -884,4 +884,9 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void securityBreak() {
     ;
   }
+
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

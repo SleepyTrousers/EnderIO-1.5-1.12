@@ -788,4 +788,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     redstoneStateDirty = true;
   }
 
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

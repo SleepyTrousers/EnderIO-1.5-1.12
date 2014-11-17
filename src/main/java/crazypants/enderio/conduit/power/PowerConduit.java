@@ -535,4 +535,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     return getCapacitors()[subtype].getMaxEnergyStored();
   }
 
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

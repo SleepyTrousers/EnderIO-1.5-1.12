@@ -13,4 +13,9 @@ public interface IInternalPowerReceptor extends IEnergyHandler {
   
   void setEnergyStored(int stored);
   
+  /**
+   * Should the power be displayed in WAILA or other places
+   */
+  boolean displayPower();
+  
 }

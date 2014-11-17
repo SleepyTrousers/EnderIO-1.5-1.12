@@ -889,7 +889,10 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       this.dir = dir;
       dirOp = dir.getOpposite();
     }
-
   }
 
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

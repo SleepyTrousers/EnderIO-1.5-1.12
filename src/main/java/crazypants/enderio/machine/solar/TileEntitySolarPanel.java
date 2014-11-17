@@ -239,4 +239,9 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
     this.readFromNBT(pkt.func_148857_g());
   }
+  
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

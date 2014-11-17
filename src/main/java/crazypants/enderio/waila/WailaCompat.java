@@ -142,18 +142,21 @@ public class WailaCompat implements IWailaDataProvider {
     }
 
     if(te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF")) {
-      if(currenttip.size() > 4) {
-        currenttip.add("");
-      }
-
       IInternalPowerReceptor power = (IInternalPowerReceptor) te;
 
-      int stored = accessor.getTileEntity() instanceof TileCapacitorBank ? power.getEnergyStored() : accessor.getNBTData().getInteger("storedEnergyRF");
-      int max = power.getMaxEnergyStored();
+      if(power.displayPower()) {
 
-      currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE, fmt.format(max),
-          EnumChatFormatting.RESET));
+        if(currenttip.size() > 4) {
+          currenttip.add("");
+        }
 
+        int stored = accessor.getTileEntity() instanceof TileCapacitorBank ? power.getEnergyStored() : accessor.getNBTData().getInteger("storedEnergyRF");
+        int max = power.getMaxEnergyStored();
+
+        currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE,
+            fmt.format(max),
+            EnumChatFormatting.RESET));
+      }
     } else if(te instanceof IConduitBundle && itemStack != null && itemStack.getItem() == EnderIO.itemPowerConduit) {
       NBTTagCompound nbtRoot = accessor.getNBTData();
       short nbtVersion = nbtRoot.getShort("nbtVersion");

@@ -370,4 +370,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     }
   }
 
+  @Override
+  public boolean displayPower() {
+    return false;
+  }
 }

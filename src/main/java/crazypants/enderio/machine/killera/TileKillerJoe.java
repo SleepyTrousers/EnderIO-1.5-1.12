@@ -476,4 +476,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       WirelessChargerController.instance.chargePlayersItems(this);      
     }
   }
+  
+  @Override
+  public boolean displayPower() {
+    return false;
+  }
 }

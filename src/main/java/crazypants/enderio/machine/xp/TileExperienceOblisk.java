@@ -121,5 +121,9 @@ public class TileExperienceOblisk extends AbstractMachineEntity implements IFlui
   public ExperienceContainer getContainer() {
     return xpCont;
   }
-
+  
+  @Override
+  public boolean displayPower() {
+    return false;
+  }
 }

@@ -1142,4 +1142,9 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   public boolean isMaxSize() {
     return isMultiblock() && multiblock.length >= MAX_SIZE;
   }
+
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

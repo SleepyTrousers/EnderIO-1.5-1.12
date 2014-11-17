@@ -159,7 +159,9 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
   public World getWorld() {    
     return getWorldObj();
   }
-  
-  
 
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

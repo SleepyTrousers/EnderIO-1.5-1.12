@@ -543,4 +543,8 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
 
   }
 
+  @Override
+  public boolean displayPower() {
+    return isRequiresPower();
+  }
 }
