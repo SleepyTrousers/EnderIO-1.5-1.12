@@ -3,6 +3,7 @@ package crazypants.enderio.power;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 
 public class PowerHandlerUtil {
@@ -10,6 +11,8 @@ public class PowerHandlerUtil {
   public static IPowerInterface create(Object o) {
     if(o instanceof IEnergyHandler) {
       return new PowerInterfaceRF((IEnergyHandler) o);
+    } else if(o instanceof IEnergyConnection) {
+      return new PowerInterfaceConnectionRF((IEnergyConnection) o);
     }
     return null;
   }
