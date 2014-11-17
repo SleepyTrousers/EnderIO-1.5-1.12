@@ -99,7 +99,7 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   }
   
   public void setWireless(boolean wireless) {
-    this.isWireless = true;
+    this.isWireless = wireless;
   }
 
   public boolean isWireless() {
