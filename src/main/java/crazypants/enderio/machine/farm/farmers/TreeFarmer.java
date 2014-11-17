@@ -6,9 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockNewLeaf;
-import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -35,7 +32,7 @@ public class TreeFarmer implements IFarmerJoe {
     if(sapling != null) {
       saplingItem = new ItemStack(sapling);
     }
-    this.woods = wood;
+    woods = wood;
   }
 
   @Override
@@ -99,8 +96,11 @@ public class TreeFarmer implements IFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
+
     HarvestResult res = new HarvestResult();
-    //harvestUp(farm, bc, res);
+    if(!farm.hasAxe()) {
+      return res;
+    }
     harvester.harvest(farm, this, bc, res);
     Collections.sort(res.harvestedBlocks, comp);
 
@@ -143,65 +143,6 @@ public class TreeFarmer implements IFarmerJoe {
 
     return res;
   }
-
-//  protected void harvestUp(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
-//
-//    if(!isInHarvestBounds(farm, bc) || res.harvestedBlocks.contains(bc)) {
-//      return;
-//    }
-//
-//    Block blk = farm.getBlock(bc);
-//    boolean isLeaves = blk instanceof BlockLeaves;
-//    if(isWood(blk) || isLeaves) {
-//      res.harvestedBlocks.add(bc);
-//      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-//        if(dir != ForgeDirection.DOWN) {
-//          harvestUp(farm, bc.getLocation(dir), res);
-//        }
-//      }
-//    } else {
-//      // check the sides for connected wood
-//      harvestAdjacentWood(farm, bc, res);
-//      //and another check for large oaks, where wood can be surrounded by leaves
-//      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-//        if(dir.offsetY == 0) {
-//          Block targetBlock = farm.getBlock(bc.getLocation(dir));
-//          if(targetBlock instanceof BlockLeaves) {
-//            harvestAdjacentWood(farm, bc, res);
-//          }
-//        }
-//      }
-//    }
-//
-//  }
-//
-//  private void harvestAdjacentWood(TileFarmStation farm, BlockCoord bc, HarvestResult res) {
-//    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-//      if(dir.offsetY == 0) {
-//        Block targetBlock = farm.getBlock(bc.getLocation(dir));
-//        if(isWood(targetBlock)) {
-//          harvestUp(farm, bc.getLocation(dir), res);
-//        }
-//      }
-//    }
-//  }
-//
-//  private boolean isInHarvestBounds(TileFarmStation farm, BlockCoord bc) {
-//    BlockCoord fLoc = farm.getLocation();
-//    int dist = Math.abs(fLoc.x - bc.x);
-//    if(dist > farm.getFarmSize() + 7) {
-//      return false;
-//    }
-//    dist = Math.abs(fLoc.z - bc.z);
-//    if(dist > farm.getFarmSize() + 7) {
-//      return false;
-//    }
-//    dist = Math.abs(bc.y - fLoc.y);
-//    if(dist > 30) {
-//      return false;
-//    }
-//    return true;
-//  }
 
   private static class HeightComparator implements Comparator<BlockCoord> {
 
