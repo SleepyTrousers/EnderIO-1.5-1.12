@@ -1,8 +1,6 @@
 package crazypants.enderio.machine.soul;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.EnderIO;
@@ -37,7 +35,7 @@ public class SoulBinderRecipeManager {
     //Ender Rail
     if(Config.enderRailEnabled) {
       BasicSoulBinderRecipe err = new BasicSoulBinderRecipe(new ItemStack(Blocks.detector_rail), new ItemStack(EnderIO.blockEnderRail),
-          Config.soulBinderEnderRailRF, Config.soulBinderEnderRailLevels, "SpecialMobs.SpecialEnderman", "Enderman");
+          Config.soulBinderEnderRailRF, Config.soulBinderEnderRailLevels, "EnderRail", "SpecialMobs.SpecialEnderman", "Enderman");
       MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, err);
     }
   }

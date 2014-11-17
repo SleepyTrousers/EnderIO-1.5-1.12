@@ -12,6 +12,7 @@ Bugs
 - #1210 ME Conduits enabling without AE2
 - #1230 ME Conduits overlap with Gas Conduits
 - #1228 Spoon upgrade still not working properly
+- #1239 Ender Rail uncraftable with Special Mobs  
 
 ------------------------------------------------------
 Version 2.2.0
