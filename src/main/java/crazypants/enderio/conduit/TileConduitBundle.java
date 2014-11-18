@@ -922,7 +922,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Method(modid = "appliedenergistics2")
   public ForgeDirection addPart(ItemStack is, ForgeDirection side, EntityPlayer owner) {
     if(canAddPart(is, side) && !owner.worldObj.isRemote) {
-      getConduit(IMEConduit.class).setPart(is, side);
+      getConduit(IMEConduit.class).setPart(owner, is, side);
       return side;
     }
     return null;
@@ -943,7 +943,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   public void removePart(ForgeDirection side, boolean suppressUpdate) {
     IMEConduit cond = getConduit(IMEConduit.class);
     if (cond != null) {
-      cond.setPart(null, side);
+      cond.setPart(null, null, side);
     }
   }
 

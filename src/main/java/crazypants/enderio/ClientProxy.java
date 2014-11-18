@@ -34,7 +34,6 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduitRenderer;
 import crazypants.enderio.conduit.liquid.LiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitRenderer;
 import crazypants.enderio.conduit.me.MEConduit;
-import crazypants.enderio.conduit.me.MEConduitRenderer;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
@@ -338,7 +337,6 @@ public class ClientProxy extends CommonProxy {
     conduitRenderers.add(new EnderLiquidConduitRenderer());
     conduitRenderers.add(new crazypants.enderio.conduit.item.ItemConduitRenderer());
     conduitRenderers.add(new GasConduitRenderer());
-    conduitRenderers.add(new MEConduitRenderer());
 
     EnderIoRenderer eior = new EnderIoRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);

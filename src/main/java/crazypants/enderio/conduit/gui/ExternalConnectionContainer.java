@@ -74,7 +74,7 @@ public class ExternalConnectionContainer extends Container {
       x = 71;
       y = 36;
 
-      InventoryBus ib = new InventoryBus(meConduit, dir);
+      InventoryBus ib = new InventoryBus(playerInv.player, meConduit, dir);
 
       addSlotToContainer(new BusSlot(ib, 0, x, y));
       slotLocations.add(new Point(x, y));

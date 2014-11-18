@@ -20,9 +20,12 @@ public class InventoryBus implements IInventory {
   private ForgeDirection dir;
   private IMEConduit conduit;
   
-  public InventoryBus(IMEConduit conduit, ForgeDirection dir) {
+  private EntityPlayer player;
+  
+  public InventoryBus(EntityPlayer player, IMEConduit conduit, ForgeDirection dir) {
     this.conduit = conduit;
     this.dir = dir;
+    this.player = player;
     
     this.bus = conduit.getPartStack(dir);
   }
@@ -53,7 +56,7 @@ public class InventoryBus implements IInventory {
   public void setInventorySlotContents(int slot, ItemStack stack) {
     if(slot == 0) {
       bus = stack;
-      conduit.setPart(bus, dir);
+      conduit.setPart(player, bus, dir);
     }
   }
 

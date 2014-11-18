@@ -361,21 +361,30 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
-  public void setPart(ItemStack stack, ForgeDirection dir) {
+  public void setPart(EntityPlayer player, ItemStack stack, ForgeDirection dir) {
     if(stack != null) {
       stack = stack.copy();
       stack.stackSize = 1;
     }
     inventory.put(dir, stack);
     IPart part = null;
-    if (stack != null) {
+    if(stack != null) {
+
       part = createPart(stack);
-      part.addToWorld();
-      IGridNode node = part.getGridNode();
-      if (node != null) {
-        node.updateState();
+
+      part.setPartHostInfo(dir, getBundle(), getBundle().getEntity());
+
+      if(player != null) {
+        part.onPlacement(player, stack, dir);
       }
+      
+      part.addToWorld();
+
+      getBundle().markForUpdate();
+      getBundle().markForSave();
+      getBundle().partChanged();
     }
+
     parts.put(dir, part);
     getBundle().dirty();
   }
@@ -384,13 +393,13 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public ItemStack getPartStack(ForgeDirection dir) {
     return inventory.get(dir);
   }
-  
+
   @Override
   public IPart getPart(ForgeDirection dir) {
     return parts.get(dir);
   }
-  
+
   private IPart createPart(ItemStack stack) {
-    return ((IPartItem)stack.getItem()).createPartFromItemStack(stack);
+    return ((IPartItem) stack.getItem()).createPartFromItemStack(stack);
   }
 }
