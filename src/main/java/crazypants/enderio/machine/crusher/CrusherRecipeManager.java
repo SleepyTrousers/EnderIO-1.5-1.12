@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -117,7 +116,7 @@ public class CrusherRecipeManager {
   public void loadRecipesFromConfig() {
     GrindingBallTagHandler th = new GrindingBallTagHandler();
     RecipeConfig config = RecipeConfig.loadRecipeConfig(CORE_FILE_NAME, CUSTOM_FILE_NAME, th);
-    balls.addAll(th.balls);
+    balls.addAll(th.balls.values());
     ballExcludes.addAll(th.excludes);
     Log.info("Loaded " + balls.size() + " grinding balls from SAG Mill config.");
     Log.info("Excluding " + ballExcludes.size() + " recipes from grinding balls bonus.");

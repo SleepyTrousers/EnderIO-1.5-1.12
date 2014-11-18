@@ -1,22 +1,24 @@
 <!--
 
   IMPORTANT:
-  This is the core recipe file. Modifiyig this file may cause Ender IO to function incorrectly.
-  This file may be rewritten by EnderIO and all modifications made to it will be lost. To add
+  This is the core recipe file. Modifiyig this file will have no effect.
+  It will be rewritten by EnderIO and all modifications made to it will be lost. To add
   or modify recipes please use 'SagMillRecipes_User.xml'
 
-  Recipes are organised into named groups. A group of recipes can be disabled by setting the attribiute 'enabled=false'.
+  Recipes are organized into named groups. A group of recipes can be disabled by setting the attribute 'enabled=false'.
   A recipe group is composed of one or more recipes.
+  
+  NB: All recipes MUST belong to a group.
 
   Examples:
   <recipeGroup name="EnderIO">
-  <recipe>...</recipe>
-  <recipe>...</recipe>
+    <recipe>...</recipe>
+    <recipe>...</recipe>
   <recipeGroup/>
 
   <recipeGroup name="EnderIO" enabled="false">
-  <recipe>...</recipe>
-  <recipe>...</recipe>
+    <recipe>...</recipe>
+    <recipe>...</recipe>
   <recipeGroup/>
 
 
@@ -27,14 +29,23 @@
 
   Examples:
   <recipe name="Blah">
-  <input> <itemStack/> </input>
-  <output> <itemStack/> </output>
+    <input> 
+      <itemStack/> 
+    </input>
+    <output> 
+      <itemStack/> 
+    </output>
   </recipe>
 
   <recipe name="BlahBlah" energyCost="2400">
-  <input> <itemStack/> </input>
-  <output> <itemStack/> </output>
-  <output> <itemStack/> </output>
+    <input> 
+      <itemStack/> </input>
+    <output> 
+      <itemStack/> 
+    </output>
+    <output> 
+      <itemStack/> 
+    </output>
   </recipe>
 
 
@@ -84,6 +95,35 @@ String recipe =
         "</recipeGroup>";
 FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe); 
 
+
+
+Grinding Balls
+Grinding balls provide bonus outputs and reduced power use. Using the user config new grinding balls may be added and existing ones
+removed. It is also possible to add or remove items from the 'exludes' list. Items on this list will not have grinding ball bonuses
+applied and will not reduce the durability of an balls in the mill at the time they are processed.
+
+Examples:
+- Adding a new grinding ball:
+
+  <grindingBalls>  
+    <grindingBall id="Diamond" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.5" durationRF="50000">
+      <itemStack modID="minecraft" itemName="diamond"/>
+    </grindingBall>
+  </grindingBalls>
+
+- Removing an existing grinding ball:
+  <grindingBalls>  
+    <grindingBall id="Flint" remove="true"/>    
+  </grindingBalls>
+  
+- Modifiying the excludes list: (removing glowstone, adding sand) 
+  <grindingBalls>
+    <excludes>
+      <itemStack modID="minecraft" itemName="glowstone" remove="true"/>
+      <itemStack modID="minecraft" itemName="sand"/>
+    </excludes>
+  </grindingBalls>
+
 -->
 
 <SAGMillRecipes>
@@ -95,7 +135,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
     <!-- Sand to Silicon -->
     <recipe name="Silicon" energyCost="720">
       <input>
-        <itemStack modID="minecraft" itemName="sand"/>
+        <itemStack modID="minecraft" itemName="sand" />
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="itemMaterial" number="1" itemMeta="0" chance="0.5" />
@@ -104,22 +144,22 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
 
     <recipe name="CoalOre" energyCost="3600">
       <input>
-        <itemStack modID="minecraft" itemName="coal_ore"/>
+        <itemStack modID="minecraft" itemName="coal_ore" />
       </input>
-      <output>        
+      <output>
         <itemStack modID="minecraft" itemName="coal" number="3" />
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" number="1" chance="0.6" />              
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
-        <itemStack modID="minecraft" itemName="diamond" chance="0.001"/>        
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" number="1" chance="0.6" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
+        <itemStack modID="minecraft" itemName="diamond" chance="0.001" />
       </output>
     </recipe>
 
     <recipe name="Coal" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="coal"/>
+        <itemStack modID="minecraft" itemName="coal" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" />      
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" />
         <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" chance="0.25" />
       </output>
     </recipe>
@@ -129,15 +169,15 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="oreIron" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="1" number="2" />      
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" number="1" chance="0.05" />      
-        <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />      
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="1" number="2" />
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" number="1" chance="0.05" />
+        <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
 
     <recipe name="IronIngot" energyCost="2400">
-      <input>          
+      <input>
         <itemStack oreDictionary="ingotIron" />
       </input>
       <output>
@@ -150,9 +190,9 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="oreGold" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" number="2" />      
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" number="1" chance="0.2" />      
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" number="2" />
+        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" number="1" chance="0.2" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
 
@@ -167,7 +207,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
 
     <recipe name="EnderPearl" energyCost="1600">
       <input>
-        <itemStack modID="minecraft" itemName="ender_pearl"/>
+        <itemStack modID="minecraft" itemName="ender_pearl" />
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="5" number="1" />
@@ -180,34 +220,34 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
 
     <recipe name="Strone Bricks" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="stonebrick"/>
+        <itemStack modID="minecraft" itemName="stonebrick" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="cobblestone" number="4"/>
+        <itemStack modID="minecraft" itemName="cobblestone" number="4" />
       </output>
     </recipe>
-    
+
     <recipe name="CrackedBricks" energyCost="1200">
       <input>
-      <itemStack modID="minecraft" itemName="stonebrick" itemMeta="2"/>        
+        <itemStack modID="minecraft" itemName="stonebrick" itemMeta="2" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="cobblestone" number="2"/>
+        <itemStack modID="minecraft" itemName="cobblestone" number="2" />
       </output>
     </recipe>
-    
+
     <recipe name="ChisledBricks" energyCost="3600">
       <input>
-        <itemStack modID="minecraft" itemName="stonebrick" itemMeta="3"/>
+        <itemStack modID="minecraft" itemName="stonebrick" itemMeta="3" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="cobblestone" number="4"/>
+        <itemStack modID="minecraft" itemName="cobblestone" number="4" />
       </output>
     </recipe>
 
     <recipe name="Stone" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="stone" />        
+        <itemStack modID="minecraft" itemName="stone" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="cobblestone" />
@@ -219,44 +259,44 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack modID="minecraft" itemName="cobblestone" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="sand"/>
-        <itemStack modID="minecraft" itemName="gravel" chance="0.1"/>
+        <itemStack modID="minecraft" itemName="sand" />
+        <itemStack modID="minecraft" itemName="gravel" chance="0.1" />
       </output>
     </recipe>
 
     <recipe name="Sandstone" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="sandstone"/>
+        <itemStack modID="minecraft" itemName="sandstone" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="sand" number="2"/>
-        <itemStack modID="minecraft" itemName="sand" number="2" chance="0.4"/>        
+        <itemStack modID="minecraft" itemName="sand" number="2" />
+        <itemStack modID="minecraft" itemName="sand" number="2" chance="0.4" />
       </output>
     </recipe>
 
 
     <recipe name="Glass" energyCost="1200">
       <input>
-        <itemStack oreDictionary="glass" />         
+        <itemStack oreDictionary="glass" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="sand"/>
+        <itemStack modID="minecraft" itemName="sand" />
       </output>
     </recipe>
 
     <recipe name="Gravel" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="gravel"/>
+        <itemStack modID="minecraft" itemName="gravel" />
       </input>
-      <output>        
-        <itemStack modID="minecraft" itemName="flint"/>
-        <itemStack modID="minecraft" itemName="flint" chance="0.1"/>        
+      <output>
+        <itemStack modID="minecraft" itemName="flint" />
+        <itemStack modID="minecraft" itemName="flint" chance="0.1" />
       </output>
     </recipe>
 
     <recipe name="Netherrack" energyCost="2400">
-      <input>      
-        <itemStack modID="minecraft" itemName="netherrack"/>
+      <input>
+        <itemStack modID="minecraft" itemName="netherrack" />
       </input>
       <output>
         <itemStack oreDictionary="dustSulfur" chance="0.15" />
@@ -265,21 +305,21 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
 
     <recipe name="BlazeRod" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="blaze_rod"/>
+        <itemStack modID="minecraft" itemName="blaze_rod" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="blaze_powder" number="4" />        
+        <itemStack modID="minecraft" itemName="blaze_powder" number="4" />
         <itemStack oreDictionary="dustSulfur" chance="0.25" />
       </output>
     </recipe>
 
     <recipe name="GlowStone" energyCost="2400">
-      <input>      
+      <input>
         <itemStack modID="minecraft" itemName="glowstone" />
       </input>
-      <output>      
-        <itemStack modID="minecraft" itemName="glowstone_dust" number="3"/>
-        <itemStack modID="minecraft" itemName="glowstone_dust" number="1" chance="0.8"/>        
+      <output>
+        <itemStack modID="minecraft" itemName="glowstone_dust" number="3" />
+        <itemStack modID="minecraft" itemName="glowstone_dust" number="1" chance="0.8" />
       </output>
     </recipe>
 
@@ -289,111 +329,111 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="6" />
-        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="2" chance="0.1" />        
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="2" chance="0.1" />
       </output>
     </recipe>
 
-    <recipe name="ClayBlock" energyCost="2400">     
+    <recipe name="ClayBlock" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="clay" />        
+        <itemStack modID="minecraft" itemName="clay" />
       </input>
-      <output>      
+      <output>
         <itemStack modID="minecraft" itemName="clay_ball" number="2" />
-        <itemStack modID="minecraft" itemName="clay_ball" number="1" chance="0.1" />        
+        <itemStack modID="minecraft" itemName="clay_ball" number="1" chance="0.1" />
         <itemStack modID="EnderIO" itemName="itemMaterial" number="2" itemMeta="0" chance="0.8" />
       </output>
     </recipe>
 
     <recipe name="Wool" energyCost="1200">
       <input>
-        <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>
+        <itemStack modID="minecraft" itemName="wool" itemMeta="*" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="string" number="3"/>        
-        <itemStack modID="minecraft" itemName="string" number="1" chance="0.1"/>
+        <itemStack modID="minecraft" itemName="string" number="3" />
+        <itemStack modID="minecraft" itemName="string" number="1" chance="0.1" />
       </output>
     </recipe>
 
     <recipe name="Wheat" energyCost="800">
-      <input>      
-        <itemStack modID="minecraft" itemName="wheat" />        
+      <input>
+        <itemStack modID="minecraft" itemName="wheat" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="wheat_seeds" number="2"/>        
+        <itemStack modID="minecraft" itemName="wheat_seeds" number="2" />
       </output>
     </recipe>
 
     <recipe name="RedstoneOre" energyCost="3000">
       <input>
-        <itemStack modID="minecraft" itemName="redstone_ore" />        
+        <itemStack modID="minecraft" itemName="redstone_ore" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="redstone" number="8"/>
-        <itemStack modID="minecraft" itemName="redstone" number="1" chance="0.2"/>        
-        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="0" chance="0.8" />               
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="minecraft" itemName="redstone" number="8" />
+        <itemStack modID="minecraft" itemName="redstone" number="1" chance="0.2" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="0" chance="0.8" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
-    
+
     <recipe name="DiamondOre" energyCost="3000">
       <input>
-        <itemStack modID="minecraft" itemName="diamond_ore" />        
+        <itemStack modID="minecraft" itemName="diamond_ore" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="diamond" number="1"/>
-        <itemStack modID="minecraft" itemName="diamond" number="1" chance="0.25"/>                
+        <itemStack modID="minecraft" itemName="diamond" number="1" />
+        <itemStack modID="minecraft" itemName="diamond" number="1" chance="0.25" />
       </output>
     </recipe>
 
     <recipe name="LapisLazuliOre" energyCost="3000">
-      <input>      
-        <itemStack modID="minecraft" itemName="lapis_ore" />        
+      <input>
+        <itemStack modID="minecraft" itemName="lapis_ore" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="8" />
-        <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="1" chance="0.2" />        
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="1" chance="0.2" />
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
 
     <recipe name="Quartz Ore" energyCost="7200">
       <input>
-        <itemStack modID="minecraft" itemName="quartz_ore" />        
+        <itemStack modID="minecraft" itemName="quartz_ore" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="4"/>
-        <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />        
+        <itemStack modID="minecraft" itemName="quartz" number="4" />
+        <itemStack oreDictionary="dustCertusQuartz" chance="0.05" />
       </output>
     </recipe>
 
     <recipe name="Block of Quartz" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*"/>
+        <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2"/>
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25"/>
+        <itemStack modID="minecraft" itemName="quartz" number="2" />
+        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
       </output>
     </recipe>
 
 
     <recipe name="Quartz Stairs" energyCost="1200">
-      <input>      
-        <itemStack modID="minecraft" itemName="quartz_stairs"/>        
+      <input>
+        <itemStack modID="minecraft" itemName="quartz_stairs" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="2"/>
-        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25"/>
+        <itemStack modID="minecraft" itemName="quartz" number="2" />
+        <itemStack modID="minecraft" itemName="quartz" number="2" chance="0.25" />
       </output>
     </recipe>
 
     <recipe name="Quartz Slab" energyCost="1200">
-      <input>      
-        <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />        
+      <input>
+        <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="quartz" number="1"/>
-        <itemStack modID="minecraft" itemName="quartz" number="1" chance="0.25"/>
+        <itemStack modID="minecraft" itemName="quartz" number="1" />
+        <itemStack modID="minecraft" itemName="quartz" number="1" chance="0.25" />
       </output>
     </recipe>
 
@@ -408,7 +448,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
       <output>
         <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" number="2" />
         <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" chance="0.125" />
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
 
@@ -427,7 +467,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
       </input>
       <output>
         <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" number="2" />
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
 
@@ -447,7 +487,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
       <output>
         <itemStack oreDictionary="dustLead" number="2" />
         <itemStack oreDictionary="dustSilver" chance="0.1" />
-        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15"/>
+        <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
 
@@ -508,19 +548,19 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
     </recipe>
 
   </recipeGroup>
-  
+
   <recipeGroup name="Thermal Expansion">
-  
+
     <recipe name="Obsidian" energyCost="4000">
       <input>
-        <itemStack modID="minecraft" itemName="obsidian"/>
-      </input>      
+        <itemStack modID="minecraft" itemName="obsidian" />
+      </input>
       <output>
-        <itemStack oreDictionary="dustObsidian" number="4"/>        
+        <itemStack oreDictionary="dustObsidian" number="4" />
       </output>
     </recipe>
-    
-</recipeGroup>    
+
+  </recipeGroup>
 
   <recipeGroup name="Forestry">
 
@@ -603,7 +643,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
       <output>
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
-    </recipe>    
+    </recipe>
 
     <recipe name="FluixCrystal" energyCost="2400">
       <input>
@@ -616,7 +656,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
 
     <recipe name="NetherQuartz" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="quartz" />        
+        <itemStack modID="minecraft" itemName="quartz" />
       </input>
       <output>
         <itemStack oreDictionary="dustNetherQuartz" />
@@ -624,17 +664,17 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
     </recipe>
   </recipeGroup>
 
-  <recipeGroup name="Railcraft">    
+  <recipeGroup name="Railcraft">
 
     <recipe name="Charcoal" energyCost="2400">
-      <input>        
-        <itemStack modID="minecraft" itemName="coal" itemMeta="1"/>
+      <input>
+        <itemStack modID="minecraft" itemName="coal" itemMeta="1" />
       </input>
       <output>
         <itemStack oreDictionary="dustCharcoal" number="1" />
       </output>
     </recipe>
-    
+
     <recipe name="CrushedObsidian" energyCost="2400">
       <input>
         <itemStack modID="Railcraft" itemName="tile.railcraft.cube" itemMeta="4" />
@@ -644,23 +684,23 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
         <itemStack oreDictionary="dustObsidian" number="1" chance="0.01" />
       </output>
     </recipe>
-        
+
   </recipeGroup>
 
   <recipeGroup name="Biomes O' Plenty">
 
     <recipe name="SmallBoneSegment" energyCost="2600">
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="0" />
+        <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="0" />
       </input>
       <output>
-        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="8" />        
+        <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="8" />
       </output>
     </recipe>
 
     <recipe name="MediumBoneSegment" energyCost="3200">
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="1" />
+        <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="1" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="12" />
@@ -669,7 +709,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
 
     <recipe name="LargeBoneSegment" energyCost="4800">
       <input>
-        <itemStack modID="BiomesOPlenty" itemName="bop.bones" itemMeta="2" />
+        <itemStack modID="BiomesOPlenty" itemName="bones" itemMeta="2" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="15" number="24" />
@@ -683,11 +723,11 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
     <recipe name="ManganeseOre" energyCost="3600">
       <input>
         <itemStack oreDictionary="oreManganese" />
-      </input>      
+      </input>
       <output>
         <itemStack oreDictionary="dustManganese" number="2" />
       </output>
-    </recipe>    
+    </recipe>
     <recipe name="ZincOre" energyCost="3600">
       <input>
         <itemStack oreDictionary="oreZinc" />
@@ -1644,26 +1684,318 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:sagmill", recipe);
     </recipe>
   </recipeGroup>
 
-  <grindingBalls>  
-    <grindingBall grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000">
-      <itemStack modID="minecraft" itemName="flint"/>
+  <recipeGroup name="UndergroundBiomesConstruct">
+    <recipe name="Red Granite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="0" />
+      </output>
+    </recipe>
+
+    <recipe name="Black Granite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="1" />
+      </output>
+    </recipe>
+
+    <recipe name="Rhyolite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="2" />
+      </output>
+    </recipe>
+
+    <recipe name="Andesite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="3" />
+      </output>
+    </recipe>
+
+    <recipe name="Gabbro" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Basalt" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="5" />
+      </output>
+    </recipe>
+
+    <recipe name="Komatiite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="6" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="6" />
+      </output>
+    </recipe>
+
+    <recipe name="Dacite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStone" itemMeta="7" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="7" />
+      </output>
+    </recipe>
+
+    <recipe name="Red Granite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="0" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Black Granite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="1" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Rhyolite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="2" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Andesite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="3" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Gabbro Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="4" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Basalt Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="5" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Komatiite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="6" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="6" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Dacite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="igneousStoneBrick" itemMeta="7" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="igneousCobblestone" itemMeta="7" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Gneiss" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="0" />
+      </output>
+    </recipe>
+
+    <recipe name="Eclogite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="1" />
+      </output>
+    </recipe>
+
+    <recipe name="Marble" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="2" />
+      </output>
+    </recipe>
+
+    <recipe name="Quartzite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="3" />
+      </output>
+    </recipe>
+
+    <recipe name="Blue Schist" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Green Schist" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="5" />
+      </output>
+    </recipe>
+
+    <recipe name="Soapstone" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="6" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="6" />
+      </output>
+    </recipe>
+
+    <recipe name="Migmatite" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStone" itemMeta="7" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="7" />
+      </output>
+    </recipe>
+
+    <recipe name="Gneiss Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="0" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="0" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Eclogite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="1" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="1" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Marble Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="2" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="2" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Quartzite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="3" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="3" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Blue Schist Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="4" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="4" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Green Schist Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="5" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="5" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Soapstone Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="6" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="6" number="4" />
+      </output>
+    </recipe>
+
+    <recipe name="Migmatite Brick" energyCost="2400">
+      <input>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicStoneBrick" itemMeta="7" />
+      </input>
+      <output>
+        <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="7" number="4" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
+  <grindingBalls>
+    <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85"
+      durationRF="24000">
+      <itemStack modID="minecraft" itemName="flint" />
     </grindingBall>
-    <grindingBall grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000">
+    <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7"
+      durationRF="100000">
       <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="7" />
     </grindingBall>
-    
+
     <excludes>
       <itemStack modID="minecraft" itemName="glowstone" />
-      <itemStack modID="minecraft" itemName="wool" itemMeta="*"/>   
-      <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*"/>
-      <itemStack modID="minecraft" itemName="quartz_stairs"/>
-      <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" /> 
-      
-      <itemStack modID="minecraft" itemName="quartz" />         
+      <itemStack modID="minecraft" itemName="wool" itemMeta="*" />
+      <itemStack modID="minecraft" itemName="quartz_block" itemMeta="*" />
+      <itemStack modID="minecraft" itemName="quartz_stairs" />
+      <itemStack modID="minecraft" itemName="stone_slab" itemMeta="7" />
+
+      <itemStack modID="minecraft" itemName="quartz" />
       <itemStack oreDictionary="crystalCertusQuartz" />
-      <itemStack oreDictionary="crystalFluix" />   
+      <itemStack oreDictionary="crystalFluix" />
     </excludes>
-    
+
   </grindingBalls>
 
 </SAGMillRecipes>
