@@ -3,11 +3,12 @@ Version 2.2.1
 ------------------------------------------------------
 Changes
 - Added dense ME Conduits
-- Added config to stop travel anchor going through unbreakable blocks
+- Added config to stop staff of travelling going through unbreakable blocks
 - Added underground biomes support to SAG Mill
 - #1223 Various small GUI- and NEI-related improvements and tweaks (Tonius) 
 - #1232 Painted Glowstone now implements IFacade and will have connected textures with chisel
 - #1238, #1251 Improved control and modification of grinding balls via the SAGMillRecipes_User.xml file
+- #1164 Conduit resistance increased
 
 Bugs
 - #1226 Redstone color not showing on MFR machines / BR ports
@@ -19,6 +20,8 @@ Bugs
 - #1259 shift right click on vacuum chest with a wrench causes it to disappear 
 - Power conduits will now connect to blocks implementing IEnergyConnection 
 - Fixed SAG Mill recipes for BoP bone segments
+- Fixed lights becoming wireless on place
+- Fixed some blocks showing power in WAILA when they shouldn't
 
 ------------------------------------------------------
 Version 2.2.0
