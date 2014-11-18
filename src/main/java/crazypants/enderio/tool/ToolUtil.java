@@ -34,7 +34,7 @@ public class ToolUtil {
   public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer) {
     ITool tool = ToolUtil.getEquippedTool(entityPlayer);
     if(tool != null && entityPlayer.isSneaking() && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
-      block.removedByPlayer(world, entityPlayer, x, y, z);
+      block.removedByPlayer(world, entityPlayer, x, y, z, true);
       tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
       return true;
     }

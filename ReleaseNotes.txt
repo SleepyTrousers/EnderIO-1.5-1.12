@@ -14,6 +14,7 @@ Bugs
 - #1228 Spoon upgrade still not working properly
 - #1239 Ender Rail uncraftable with Special Mobs  
 - #1248 Farming Station performance issue when large tree farm has no axe
+- #1259 shift right click on vacuum chest with a wrench causes it to disappear 
 - Power conduits will now connect to blocks implementing IEnergyConnection 
 
 ------------------------------------------------------
