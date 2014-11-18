@@ -11,6 +11,7 @@ public class MEUtil {
   public static boolean isMEEnabled() {
     if(!useCheckPerformed) {
       isMeConduitEnabled = Loader.isModLoaded("appliedenergistics2") && Config.enableMEConduits;
+      useCheckPerformed = true;
     }
     return isMeConduitEnabled;
   }
