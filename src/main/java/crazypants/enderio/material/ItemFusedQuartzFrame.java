@@ -3,6 +3,7 @@ package crazypants.enderio.material;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,12 @@ public class ItemFusedQuartzFrame extends Item {
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemFusedQuartzFrame.unlocalisedName);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new FramePainterRecipe(this));
+  }
+  
+  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @Override
+  public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
+    list.add(PainterUtil.applyDefaultPaintedState(new ItemStack(item)));
   }
 
   @Override
@@ -78,7 +85,7 @@ public class ItemFusedQuartzFrame extends Item {
     list.add(PainterUtil.getTooltTipText(item));
   }
 
-  public static final class FramePainterRecipe extends BasicPainterTemplate {
+  public final class FramePainterRecipe extends BasicPainterTemplate {
 
     private ItemFusedQuartzFrame i;
 

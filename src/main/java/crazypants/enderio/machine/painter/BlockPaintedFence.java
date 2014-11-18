@@ -264,10 +264,10 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.fence, Blocks.nether_brick_fence, EnderIO.blockPaintedFence);
+      super(Blocks.fence, Blocks.nether_brick_fence, BlockPaintedFence.this);
     }
 
     @Override

@@ -231,10 +231,10 @@ public class BlockPaintedFenceGate extends BlockFenceGate implements ITileEntity
     return 0; // need to do custom dropping to maintain source metadata
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.fence_gate, Blocks.nether_brick_fence, EnderIO.blockPaintedFenceGate);
+      super(Blocks.fence_gate, Blocks.nether_brick_fence, BlockPaintedFenceGate.this);
     }
 
     @Override

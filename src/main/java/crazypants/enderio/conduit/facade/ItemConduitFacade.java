@@ -126,16 +126,12 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
     TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
   }
 
-  public static final class FacadePainterRecipe extends BasicPainterTemplate {
-
-    public FacadePainterRecipe() {
-    }
+  public final class FacadePainterRecipe extends BasicPainterTemplate {
 
     @Override
     public boolean isValidTarget(ItemStack target) {
-      return target != null && target.getItem() == EnderIO.itemConduitFacade;
+      return target != null && target.getItem() == ItemConduitFacade.this;
     }  
-
   }
-
+  
 }

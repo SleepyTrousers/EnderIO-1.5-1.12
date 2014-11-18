@@ -12,7 +12,6 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.facade.ItemConduitFacade.FacadePainterRecipe;
 import crazypants.enderio.conduit.item.filter.ClearFilterRecipe;
 import crazypants.enderio.conduit.item.filter.CopyFilterRecipe;
 import crazypants.enderio.conduit.me.MEUtil;
@@ -64,7 +63,7 @@ public class ConduitRecipes {
     ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
     GameRegistry.addShapedRecipe(itemConduit, "bbb", "###", "bbb", 'b', conduitBinder, '#', phasedIronNugget);
 
-    MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, new FacadePainterRecipe());
+    MachineRecipeRegistry.instance.registerRecipe(blockPainter.unlocalisedName, EnderIO.itemConduitFacade.new FacadePainterRecipe());
 
     //Filter Recipes
     ItemStack basicFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 0);

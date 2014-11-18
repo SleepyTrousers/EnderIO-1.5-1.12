@@ -230,10 +230,10 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
     return 0; // need to do custom dropping to maintain source metadata
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
-      super(Blocks.carpet);
+      super(Blocks.carpet, BlockPaintedCarpet.this);
     }
 
     @Override
