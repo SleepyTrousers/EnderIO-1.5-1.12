@@ -256,11 +256,11 @@ public class ConnectedTextureRenderer implements IRenderFace {
 
     BlockCoord bc = new BlockCoord((int) x, (int) y, (int) z);
     BlockCoord testLoc = bc.getLocation(dir);
-    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face).contains(dir2)) {
+    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, matchMetaData).contains(dir2)) {
       return true;
     }
     testLoc = bc.getLocation(dir2);
-    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face).contains(dir)) {
+    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, matchMetaData).contains(dir)) {
       return true;
     }
     return false;

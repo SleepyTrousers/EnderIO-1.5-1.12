@@ -369,6 +369,9 @@ public final class Config {
   public static boolean enderRailTeleportPlayers = false;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
+  
+  public static boolean clearGlassSameTexture = false;
+  public static boolean clearGlassConnectToFusedQuartz = false;
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -988,6 +991,9 @@ public final class Config {
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
     
     xpObeliskMaxXpLevel = config.get("xpObeliskMaxXpLevel", sectionMisc.name, xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
+    
+    clearGlassSameTexture = config.get("clearGlassSameTexture", sectionMisc.name, clearGlassSameTexture, "If true, quite clear glass will use the fused quartz border texture for the block instead of the white border.").getBoolean();
+    clearGlassConnectToFusedQuartz = config.get("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.").getBoolean();
   }
 
   private Config() {
