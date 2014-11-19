@@ -60,10 +60,11 @@ public final class Config {
   public static final Section sectionSpawner = new Section("PoweredSpawner Settings", "spawner");
   public static final Section sectionKiller = new Section("Killer Joe Settings", "killerjoe");
   public static final Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
-  public static final Section sectionAttarctor = new Section("Mob Attractor Settings", "attractor");
+  public static final Section sectionAttractor = new Section("Mob Attractor Settings", "attractor");
   public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
   public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
   public static final Section sectionRailConfig = new Section("Rail", "railconfig");
+  public static final Section sectionMisc = new Section("Misc", "misc");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
 
@@ -291,6 +292,7 @@ public final class Config {
   public static double killerJoeAttackLength = 4;  
   public static double killerJoeHooverXpWidth = 5;
   public static double killerJoeHooverXpLength = 10;
+  public static int killerJoeMaxXpLevel = Integer.MAX_VALUE;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -313,7 +315,7 @@ public final class Config {
   public static int soulBinderAttractorCystalLevels = 10;
   public static int soulBinderEnderRailRF = 100000;
   public static int soulBinderEnderRailLevels = 10;
-  
+  public static int soulBinderMaxXpLevel = 40;
 
   public static boolean powerConduitCanDifferentTiersConnect = false;
   public static int powerConduitTierOneRF = 640;
@@ -356,24 +358,6 @@ public final class Config {
   public static boolean lootTravelStaff = true;
   public static boolean lootTheEnder = true;
   public static boolean lootDarkSteelBoots = true;
-
-  public static boolean enderminyEnabled = true;
-  public static int enderminySpawnRate = 60;
-  public static boolean enderminyAttacksPlayerOnSight = false;
-  public static boolean enderminyAttacksCreepers = true;
-  public static int enderminyAttackDamage = 10;
-  public static int enderminyHealth = 20;
-  public static boolean enderminyGroupAgro = true;
-  public static int enderminyMaxGroupSize = 3;
-  public static boolean enderminySpawnInLitAreas = false;  
-  public static boolean enderminySpawnOnlyOnGrass = true;
-  public static int enderminyMinSpawnY = 0;
-  
-  public static boolean enderCreeperEnabled = true;
-  public static int enderCreeperSpawnRate = 60;
-  public static int enderCreeperMaxTeleportRange = 32;
-  public static int enderCreeperConfusionDuration = 100;
-  public static int enderCreeperExplosionRange = 5;
   
   public static boolean dumpMobNames = false;
 
@@ -383,6 +367,8 @@ public final class Config {
   public static boolean enderRailCapSameDimensionPowerAtCrossDimensionCost = true;
   public static int enderRailTicksBeforeForceSpawningLinkedCarts = 60;
   public static boolean enderRailTeleportPlayers = false;
+
+  public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -891,7 +877,7 @@ public final class Config {
         "The distance from which XP will be gathered to each side of Joe.").getDouble(killerJoeHooverXpLength);
     killerJoeHooverXpWidth = config.get(sectionKiller.name, "killerJoeHooverXpWidth", killerJoeHooverXpWidth,
         "The distance from which XP will be gathered in front of Joe.").getDouble(killerJoeHooverXpWidth);
-    
+    killerJoeMaxXpLevel = config.get("killerJoeMaxXpLevel", sectionMisc.name, killerJoeMaxXpLevel, "Maximum level of XP the killer joe can contain.").getInt();
 
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
@@ -931,7 +917,9 @@ public final class Config {
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
     soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
         "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);    
-    
+
+    soulBinderMaxXpLevel = config.get("soulBinder", sectionMisc.name, soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.").getInt();
+
 
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded Slice'N'Splice").getInt(sliceAndSpliceLevelOnePowerPerTickRF);
@@ -940,35 +928,35 @@ public final class Config {
     sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
         "The number of RF/t consumed by a Slice'N'Splice with an octadic capacitor upgrade.").getInt(sliceAndSpliceLevelThreePowerPerTickRF);
     
-    attractorRangeLevelOne = config.get(sectionAttarctor.name, "attractorRangeLevelOne", attractorRangeLevelOne, 
+    attractorRangeLevelOne = config.get(sectionAttractor.name, "attractorRangeLevelOne", attractorRangeLevelOne, 
         "The range of the mob attractor with no upgrades").getInt(attractorRangeLevelOne);
-    attractorRangeLevelTwo = config.get(sectionAttarctor.name, "attractorRangeLevelTwo", attractorRangeLevelTwo, 
+    attractorRangeLevelTwo = config.get(sectionAttractor.name, "attractorRangeLevelTwo", attractorRangeLevelTwo, 
         "The range of the mob attractor with a double layer capacitor upgrade").getInt(attractorRangeLevelTwo);
-    attractorRangeLevelThree = config.get(sectionAttarctor.name, "attractorRangeLevelThree", attractorRangeLevelThree, 
+    attractorRangeLevelThree = config.get(sectionAttractor.name, "attractorRangeLevelThree", attractorRangeLevelThree, 
         "The range of the mob attractor with an octadic capacitor upgrade").getInt(attractorRangeLevelThree);    
-    attractorPowerPerTickLevelOne = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelOne", attractorPowerPerTickLevelOne, 
+    attractorPowerPerTickLevelOne = config.get(sectionAttractor.name, "attractorPowerPerTickLevelOne", attractorPowerPerTickLevelOne, 
         "The RF/t  power use of a levele 1 mob attractor").getInt(attractorPowerPerTickLevelOne);
-    attractorPowerPerTickLevelTwo = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelTwo", attractorPowerPerTickLevelTwo, 
+    attractorPowerPerTickLevelTwo = config.get(sectionAttractor.name, "attractorPowerPerTickLevelTwo", attractorPowerPerTickLevelTwo, 
         "The RF/t  power use of a levele 2 mob attractor").getInt(attractorPowerPerTickLevelTwo);
-    attractorPowerPerTickLevelThree = config.get(sectionAttarctor.name, "attractorPowerPerTickLevelThree", attractorPowerPerTickLevelThree, 
+    attractorPowerPerTickLevelThree = config.get(sectionAttractor.name, "attractorPowerPerTickLevelThree", attractorPowerPerTickLevelThree, 
         "The RF/t  power use of a levele 3 mob attractor").getInt(attractorPowerPerTickLevelThree);
     
     
-    spawnGuardRangeLevelOne = config.get(sectionAttarctor.name, "spawnGuardRangeLevelOne", spawnGuardRangeLevelOne, 
+    spawnGuardRangeLevelOne = config.get(sectionAttractor.name, "spawnGuardRangeLevelOne", spawnGuardRangeLevelOne, 
         "The range of the spawn guard with no upgrades").getInt(spawnGuardRangeLevelOne);
-    spawnGuardRangeLevelTwo = config.get(sectionAttarctor.name, "spawnGuardRangeLevelTwo", spawnGuardRangeLevelTwo, 
+    spawnGuardRangeLevelTwo = config.get(sectionAttractor.name, "spawnGuardRangeLevelTwo", spawnGuardRangeLevelTwo, 
         "The range of the spawn guard with a double layer capacitor upgrade").getInt(spawnGuardRangeLevelTwo);
-    spawnGuardRangeLevelThree = config.get(sectionAttarctor.name, "spawnGuardRangeLevelThree", spawnGuardRangeLevelThree, 
+    spawnGuardRangeLevelThree = config.get(sectionAttractor.name, "spawnGuardRangeLevelThree", spawnGuardRangeLevelThree, 
         "The range of the spawn guard with an octadic capacitor upgrade").getInt(spawnGuardRangeLevelThree);    
-    spawnGuardPowerPerTickLevelOne = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelOne", spawnGuardPowerPerTickLevelOne, 
+    spawnGuardPowerPerTickLevelOne = config.get(sectionAttractor.name, "spawnGuardPowerPerTickLevelOne", spawnGuardPowerPerTickLevelOne, 
         "The RF/t  power use of a levele 1 spawn guard").getInt(spawnGuardPowerPerTickLevelOne);
-    spawnGuardPowerPerTickLevelTwo = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelTwo", spawnGuardPowerPerTickLevelTwo, 
+    spawnGuardPowerPerTickLevelTwo = config.get(sectionAttractor.name, "spawnGuardPowerPerTickLevelTwo", spawnGuardPowerPerTickLevelTwo, 
         "The RF/t  power use of a levele 2 spawn guard").getInt(spawnGuardPowerPerTickLevelTwo);
-    spawnGuardPowerPerTickLevelThree = config.get(sectionAttarctor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree, 
+    spawnGuardPowerPerTickLevelThree = config.get(sectionAttractor.name, "spawnGuardPowerPerTickLevelThree", spawnGuardPowerPerTickLevelThree, 
         "The RF/t  power use of a levele 3 spawn guard").getInt(spawnGuardPowerPerTickLevelThree);
-    spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttarctor.name, spawnGuardStopAllSlimesDebug, 
+    spawnGuardStopAllSlimesDebug = config.getBoolean("spawnGuardStopAllSlimesDebug", sectionAttractor.name, spawnGuardStopAllSlimesDebug, 
         "When true slimes wont be alowed to spawn at all. Only added to aid testing in super flat worlds.");    
-    spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttarctor.name, spawnGuardStopAllSquidSpawning, 
+    spawnGuardStopAllSquidSpawning = config.getBoolean("spawnGuardStopAllSquidSpawning", sectionAttractor.name, spawnGuardStopAllSquidSpawning, 
         "When true no squid will be spawned.");
     
     // Loot Config
@@ -985,39 +973,6 @@ public final class Config {
     lootTheEnder = config.getBoolean("lootTheEnder", sectionLootConfig.name, lootTheEnder, "Adds The Ender to loot tables");
     lootDarkSteelBoots = config.getBoolean("lootDarkSteelBoots", sectionLootConfig.name, lootDarkSteelBoots, "Adds Darksteel Boots to loot tables");
     
-    
-    enderminyEnabled = config.getBoolean("enderminyEnabled", sectionMobConfig.name, enderminyEnabled, "Wether Enderminies are enabled");
-    enderminySpawnRate = config.get(sectionMobConfig.name, "enderminySpawnRate", enderminySpawnRate, 
-        "Sets the spawn rate of Enderminies. 10=Enderman spawn rate, 100=Zombie spawn rate").getInt(enderminySpawnRate);
-    enderminyAttacksPlayerOnSight = config.getBoolean("enderminyAttacksPlayerOnSight", sectionMobConfig.name, enderminyAttacksPlayerOnSight, 
-        "When true an Enderminy will attack a player if it looks at them, otherwise they are neutral mobs.");
-    enderminyAttacksCreepers = config.getBoolean("enderminyAttacksCreepers", sectionMobConfig.name, enderminyAttacksCreepers, 
-        "When true Enderminies will attack creepers");
-    enderminyAttackDamage = config.get(sectionMobConfig.name, "enderminyAttackDamage", enderminyAttackDamage, 
-        "Attack damage of Enderminies. 7=Enderman damage, 3=Zombie damage").getInt(enderminyAttackDamage);
-    enderminyHealth = config.get(sectionMobConfig.name, "enderminyHealth", enderminyHealth, 
-        "Health of Enderminies. 40=Enderman health, 20=Zombie health").getInt(enderminyHealth);
-    enderminyGroupAgro = config.getBoolean("enderminyGroupAgro", sectionMobConfig.name, enderminyGroupAgro, 
-        "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well");
-    enderminyMaxGroupSize= config.get(sectionMobConfig.name, "enderminyMaxGroupSize", enderminyMaxGroupSize, 
-        "Maximum number of Enderminies that will spawn in a single group").getInt(enderminyMaxGroupSize);
-    enderminySpawnInLitAreas = config.getBoolean("enderminySpawnInLitAreas", sectionMobConfig.name, enderminySpawnInLitAreas, 
-        "When true enderminies will spawn in well lit areas, when false they will only spawn in dark areas.");
-    enderminySpawnOnlyOnGrass = config.getBoolean("enderminySpawnOnlyOnGrass", sectionMobConfig.name, enderminySpawnOnlyOnGrass, 
-        "When true enderminies will spawn only on grass blocks.");
-    enderminyMinSpawnY = config.get(sectionMobConfig.name, "enderminyMinSpawnY", enderminyMinSpawnY, 
-        "The minimum Y level at which enderminies will spawn").getInt(enderminyMinSpawnY);
-    
-    enderCreeperEnabled = config.getBoolean("enderCreeperEnabled", sectionMobConfig.name, enderCreeperEnabled, "Wether EnderCreepers are enabled");
-    enderCreeperSpawnRate = config.get(sectionMobConfig.name, "enderCreeperSpawnRate", enderCreeperSpawnRate, 
-        "Sets the spawn rate of EnderCreepers. 10=Enderman spawn rate, 100=Zombie spawn rate").getInt(enderCreeperSpawnRate);
-    enderCreeperMaxTeleportRange = config.get(sectionMobConfig.name, "enderCreeperMaxTeleportRange", enderCreeperMaxTeleportRange, 
-        "Sets the max range entites can be telported when the creeper explodes").getInt(enderCreeperMaxTeleportRange);
-    enderCreeperConfusionDuration = config.get(sectionMobConfig.name, "enderCreeperConfusionDuration", enderCreeperConfusionDuration, 
-        "Sets the durtaion in ticks of the confusion effect applied on explosion").getInt(enderCreeperConfusionDuration);
-    enderCreeperExplosionRange = config.get(sectionMobConfig.name, "enderCreeperExplosionRange", enderCreeperExplosionRange, 
-        "The range of the 'teleport explosion'").getInt(enderCreeperExplosionRange);
-    
     enderRailEnabled = config.getBoolean("enderRailEnabled", sectionRailConfig.name, enderRailEnabled, "Wether Ender Rails are enabled");
     enderRailPowerRequireCrossDimensions = config.get(sectionRailConfig.name, "enderRailPowerRequireCrossDimensions", enderRailPowerRequireCrossDimensions, 
         "The amount of power required to transpoer a cart accross dimensions").getInt(enderRailPowerRequireCrossDimensions);
@@ -1031,6 +986,8 @@ public final class Config {
     
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
+    
+    xpObeliskMaxXpLevel = config.get("xpObeliskMaxXpLevel", sectionMisc.name, xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
   }
 
   private Config() {

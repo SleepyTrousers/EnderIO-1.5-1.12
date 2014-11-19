@@ -45,7 +45,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   
   private ICapacitor capacitor;
   
-  private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(40));
+  private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
   
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1));

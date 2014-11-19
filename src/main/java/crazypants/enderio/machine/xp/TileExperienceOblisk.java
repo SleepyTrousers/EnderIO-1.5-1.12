@@ -8,6 +8,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.XpUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileExperienceOblisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience {
 
-  private ExperienceContainer xpCont = new ExperienceContainer();
+  private ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
 
   public TileExperienceOblisk() {
     super(new SlotDefinition(0, 0, 0));

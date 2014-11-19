@@ -36,6 +36,7 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.XpUtil;
 import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
@@ -66,7 +67,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
   private float prevSwingProgress;
 
-  private ExperienceContainer xpCon = new ExperienceContainer();
+  private ExperienceContainer xpCon = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
