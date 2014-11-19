@@ -370,10 +370,10 @@ public class RenderUtil {
   }
 
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
-    return getNonConectedEdgesForFace(blockAccess, x, y, z, face, false);
+    return getNonConectedEdgesForFace(blockAccess, x, y, z, face, null);
   }
 
-  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, boolean matchMetaData) {
+  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IConnectedTextureRenderer render) {
 
     Block block = blockAccess.getBlock(x, y, z);
     if(block == null) {
@@ -391,8 +391,8 @@ public class RenderUtil {
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     for (EdgeNeighbour edge : edges) {
       boolean matchingNeighbour = blockAccess.getBlock(edge.bc.x, edge.bc.y, edge.bc.z) == block;
-      if(matchingNeighbour && matchMetaData) {
-        matchingNeighbour = blockAccess.getBlockMetadata(x, y, z) == blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z);
+      if(matchingNeighbour && render != null) {
+        matchingNeighbour = render.matchesMetadata(blockAccess.getBlockMetadata(x, y, z), blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z));
       }
       if(!matchingNeighbour) {
         result.add(edge.dir);

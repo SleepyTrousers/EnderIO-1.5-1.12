@@ -15,7 +15,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
-public class ConnectedTextureRenderer implements IRenderFace {
+public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureRenderer {
 
   public static interface TextureCallback {
     public IIcon getTextureForFace(ForgeDirection dir);
@@ -86,7 +86,11 @@ public class ConnectedTextureRenderer implements IRenderFace {
   public void setMatchMeta(boolean matchMetaData) {
     this.matchMetaData = matchMetaData;        
   }
-
+  
+  @Override
+  public boolean matchesMetadata(int meta1, int meta2) {
+    return !this.matchMetaData || meta1 == meta2;
+  }
 
   @Override
   public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
@@ -103,7 +107,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
       if(forceAllEdges) {
         edges = RenderUtil.getEdgesForFace(face);
       } else {
-        edges = RenderUtil.getNonConectedEdgesForFace(rb.blockAccess, (int) x, (int) y, (int) z, face, matchMetaData);
+        edges = RenderUtil.getNonConectedEdgesForFace(rb.blockAccess, (int) x, (int) y, (int) z, face, this);
       }
 
       List<ForgeDirection> allEdges = RenderUtil.getEdgesForFace(face);
@@ -256,11 +260,11 @@ public class ConnectedTextureRenderer implements IRenderFace {
 
     BlockCoord bc = new BlockCoord((int) x, (int) y, (int) z);
     BlockCoord testLoc = bc.getLocation(dir);
-    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, matchMetaData).contains(dir2)) {
+    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, this).contains(dir2)) {
       return true;
     }
     testLoc = bc.getLocation(dir2);
-    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, matchMetaData).contains(dir)) {
+    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, this).contains(dir)) {
       return true;
     }
     return false;

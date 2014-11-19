@@ -23,7 +23,17 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   static int renderPass;
 
-  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer();
+  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer() {
+    @Override
+    public boolean matchesMetadata(int meta1, int meta2) {
+      if (super.matchesMetadata(meta1, meta2)) {
+        return true;
+      }
+      
+      BlockFusedQuartz.Type type = BlockFusedQuartz.Type.values()[meta1];
+      return type.connectTo(meta2);
+    }
+  };
 
   public FusedQuartzRenderer() {
     connectedTextureRenderer.setMatchMeta(!Config.clearGlassConnectToFusedQuartz);

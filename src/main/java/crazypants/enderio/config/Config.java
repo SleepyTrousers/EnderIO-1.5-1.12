@@ -880,7 +880,7 @@ public final class Config {
         "The distance from which XP will be gathered to each side of Joe.").getDouble(killerJoeHooverXpLength);
     killerJoeHooverXpWidth = config.get(sectionKiller.name, "killerJoeHooverXpWidth", killerJoeHooverXpWidth,
         "The distance from which XP will be gathered in front of Joe.").getDouble(killerJoeHooverXpWidth);
-    killerJoeMaxXpLevel = config.get("killerJoeMaxXpLevel", sectionMisc.name, killerJoeMaxXpLevel, "Maximum level of XP the killer joe can contain.").getInt();
+    killerJoeMaxXpLevel = config.get(sectionMisc.name, "killerJoeMaxXpLevel", killerJoeMaxXpLevel, "Maximum level of XP the killer joe can contain.").getInt();
 
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
@@ -921,7 +921,7 @@ public final class Config {
     soulBinderEnderRailLevels = config.get(sectionSoulBinder.name, "soulBinderEnderRailLevels", soulBinderEnderRailLevels,
         "The number of levels required to create an ender rail.").getInt(soulBinderEnderRailLevels);    
 
-    soulBinderMaxXpLevel = config.get("soulBinder", sectionMisc.name, soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.").getInt();
+    soulBinderMaxXpLevel = config.get(sectionSoulBinder.name, "soulBinderMaxXPLevel", soulBinderMaxXpLevel, "Maximum level of XP the soul binder can contain.").getInt();
 
 
     sliceAndSpliceLevelOnePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelOnePowerPerTickRF", sliceAndSpliceLevelOnePowerPerTickRF,
@@ -990,10 +990,10 @@ public final class Config {
     dumpMobNames = config.getBoolean("dumpMobNames", sectionMobConfig.name, dumpMobNames, 
         "When set to true a list of all registered mobs will be dumped to config/enderio/mobTypes.txt The names are in the format required by EIOs mob blacklists.");
     
-    xpObeliskMaxXpLevel = config.get("xpObeliskMaxXpLevel", sectionMisc.name, xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
+    xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
     
-    clearGlassSameTexture = config.get("clearGlassSameTexture", sectionMisc.name, clearGlassSameTexture, "If true, quite clear glass will use the fused quartz border texture for the block instead of the white border.").getBoolean();
-    clearGlassConnectToFusedQuartz = config.get("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.").getBoolean();
+    clearGlassSameTexture = config.getBoolean("clearGlassSameTexture", sectionMisc.name, clearGlassSameTexture, "If true, quite clear glass will use the fused quartz border texture for the block instead of the white border.");
+    clearGlassConnectToFusedQuartz = config.getBoolean("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.");
   }
 
   private Config() {

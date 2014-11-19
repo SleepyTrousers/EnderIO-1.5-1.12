@@ -48,7 +48,25 @@ public class BlockFusedQuartz extends BlockEio {
       this.blockIcon = blockIcon;
       this.itemIcon = itemIcon;
     }
-
+    
+    public boolean connectTo(int otherMeta) {
+      if (otherMeta == this.ordinal()) {
+        return true;
+      }
+      
+      switch(this) {
+      case FUSED_QUARTZ:
+        return otherMeta == ENLIGHTENED_FUSED_QUARTZ.ordinal();
+      case ENLIGHTENED_FUSED_QUARTZ:
+        return otherMeta == FUSED_QUARTZ.ordinal();
+      case GLASS:
+        return otherMeta == ENLIGHTENED_GLASS.ordinal();
+      case ENLIGHTENED_GLASS:
+        return otherMeta == GLASS.ordinal();
+      }
+      
+      return false;
+    }
   }
 
   public static BlockFusedQuartz create() {
