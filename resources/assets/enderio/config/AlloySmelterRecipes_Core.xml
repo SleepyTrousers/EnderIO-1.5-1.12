@@ -231,7 +231,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
       </output>
     </recipe>
   
-   <recipe name="Fused Quartz from Block" energyCost="500">
+   <recipe name="Fused Quartz from Block" energyCost="5000">
         <input>        
             <itemStack modID="minecraft" itemName="quartz_block" number="1"/>
         </input>
@@ -240,7 +240,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
         </output>
     </recipe>
 
-    <recipe name="Enlightened Fused Quartz from Block" energyCost="500">
+    <recipe name="Enlightened Fused Quartz from Block" energyCost="5000">
         <input>
             <itemStack modID="minecraft" itemName="quartz_block" number="1"/>
             <itemStack modID="minecraft" itemName="glowstone_dust" number="4"/>
@@ -250,7 +250,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
         </output>
     </recipe>
 
-    <recipe name="Enlightened Fused Quartz from Block 2" energyCost="500">
+    <recipe name="Enlightened Fused Quartz from Block 2" energyCost="5000">
         <input>
             <itemStack modID="minecraft" itemName="quartz_block" number="1"/>
             <itemStack modID="minecraft" itemName="glowstone" number="1"/>
@@ -260,7 +260,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
         </output>
     </recipe>
 
-    <recipe name="Enlightened Fused Quartz from Block 3" energyCost="500">
+    <recipe name="Enlightened Fused Quartz from Block 3" energyCost="5000">
         <input>
             <itemStack modID="minecraft" itemName="quartz" number="4"/>
             <itemStack modID="minecraft" itemName="glowstone" number="1"/>
@@ -270,7 +270,7 @@ FMLInterModComms.sendMessage("EnderIO", "recipe:alloysmelter", recipe);
         </output>
     </recipe>
 
-    <recipe name="Enlightened Fused Quartz from Block 4" energyCost="500">
+    <recipe name="Enlightened Fused Quartz from Block 4" energyCost="5000">
         <input>
             <itemStack modID="EnderIO" itemName="blockFusedQuartz" itemMeta="0"/>
             <itemStack modID="minecraft" itemName="glowstone" number="1"/>
