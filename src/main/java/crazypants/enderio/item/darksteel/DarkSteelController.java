@@ -134,12 +134,8 @@ public class DarkSteelController {
   }
 
   private void updateSolar(EntityPlayer player) {
-    if (player.worldObj.isRemote) {
-      return;
-    }
-    
-    BlockCoord block = new BlockCoord(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ));
-    if (!player.worldObj.canBlockSeeTheSky(block.x, block.y, block.z)) {
+    // no processing on client or if the player isn't under the sun
+    if (player.worldObj.isRemote || !player.worldObj.canBlockSeeTheSky(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ))) {
       return;
     }
     
