@@ -24,10 +24,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
 import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -83,6 +85,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
 
     BlockConduitBundle result = new BlockConduitBundle();
     result.init();
+    MinecraftForge.EVENT_BUS.register(result);
     return result;
   }
 
@@ -296,6 +299,27 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
       result += conduit.getLightValue();
     }
     return result;
+  }
+  
+  @SubscribeEvent
+  public void onBreakSpeed(BreakSpeed event) {
+    if (event.block == this) {
+      event.newSpeed *= 3;
+    }
+  }
+  
+  @Override
+  public int getRenderBlockPass() {
+    return 1;
+  }
+  
+  public static volatile int theRenderPass;
+  
+  @Override
+  public boolean canRenderInPass(int pass) {
+    theRenderPass = pass;
+    System.out.println(pass);
+    return pass == 0 || pass == 1;
   }
 
   @Override

@@ -188,7 +188,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
   @Override
   public int getLightOpacity() {
     if((worldObj != null && !worldObj.isRemote) || lightOpacity == -1) {
-      return hasFacade() ? 255 : 0;
+      return hasFacade() ? facadeId.getLightOpacity() : 0;
     }
     return lightOpacity;
   }

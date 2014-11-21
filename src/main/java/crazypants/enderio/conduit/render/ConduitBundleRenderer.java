@@ -53,7 +53,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
     IConduitBundle bundle = (IConduitBundle) te;
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-    if(bundle.hasFacade() && !ConduitUtil.isFacadeHidden(bundle, player)) {
+    if(bundle.hasFacade() && bundle.getFacadeId().isOpaqueCube() && !ConduitUtil.isFacadeHidden(bundle, player)) {
       return;
     }
 
@@ -103,7 +103,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
     EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 
-    boolean renderConduit = renderFacade(x, y, z, rb, bundle, player);    
+    boolean renderedFacade = !renderFacade(x, y, z, rb, bundle, player);
+    boolean renderConduit = !renderedFacade && BlockConduitBundle.theRenderPass == 0;
 
     if(renderConduit) {
       BlockCoord loc = bundle.getLocation();
@@ -114,9 +115,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         brightness = bundle.getEntity().getWorldObj().getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
       }
       renderConduits(bundle, x, y, z, 0, brightness);
+      return true;
     }
 
-    return true;
+    return renderedFacade || (bundle.hasFacade() && !bundle.getFacadeId().isOpaqueCube());
   }
 
   private boolean renderFacade(int x, int y, int z, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
@@ -140,20 +142,22 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         
       } else if(facadeId != null){
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
-        res = false;
+        res = !facadeId.isOpaqueCube();
         
-        IBlockAccess origBa = rb.blockAccess;
-        rb.blockAccess = new FacadeAccessWrapper(origBa);
-        try {
-          rb.renderBlockByRenderType(facadeId, x, y, z);
-        } catch(Exception e) {
-          //just in case the paint source wont render safely in this way
-          rb.setOverrideBlockTexture(IconUtil.errorTexture);
-          rb.renderStandardBlock(Blocks.stone, x, y, z);
-          rb.setOverrideBlockTexture(null);
+        if(BlockConduitBundle.theRenderPass == 1) {
+          IBlockAccess origBa = rb.blockAccess;
+          rb.blockAccess = new FacadeAccessWrapper(origBa);
+          try {
+            rb.renderBlockByRenderType(facadeId, x, y, z);
+          } catch (Exception e) {
+            //just in case the paint source wont render safely in this way
+            rb.setOverrideBlockTexture(IconUtil.errorTexture);
+            rb.renderStandardBlock(Blocks.stone, x, y, z);
+            rb.setOverrideBlockTexture(null);
+          }
+
+          rb.blockAccess = origBa;
         }
-        
-        rb.blockAccess = origBa;        
       }
 
 
