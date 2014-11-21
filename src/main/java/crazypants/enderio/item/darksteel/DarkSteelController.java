@@ -1,6 +1,8 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovementInput;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -23,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
@@ -123,8 +127,53 @@ public class DarkSteelController {
 
       updateSwim(player);
       
+      updateSolar(player);
+      
     }
 
+  }
+
+  private void updateSolar(EntityPlayer player) {
+    if (player.worldObj.isRemote) {
+      return;
+    }
+    
+    BlockCoord block = new BlockCoord(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ));
+    if (!player.worldObj.canBlockSeeTheSky(block.x, block.y, block.z)) {
+      return;
+    }
+    
+    ItemStack helm = player.getEquipmentInSlot(4);
+    SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
+    if(upgrade == null) {
+      return;
+    }
+    
+    int RFperSecond = upgrade.getRFPerSec();
+    int leftover = RFperSecond % 20;
+    boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
+    
+    int toAdd = (RFperSecond / 20) + (addExtraRF ? 1 : 0);
+    
+    if(toAdd != 0) {
+
+      List<Integer> validArmors = new ArrayList<Integer>();
+
+      // we need to evenly split power between all equipped DS armors
+      for (int i = 0; i < 4; i++) {
+        ItemStack stack = player.inventory.armorInventory[i];
+        if(EnergyUpgrade.loadFromItem(stack) != null) {
+          validArmors.add(i);
+        }
+      }
+
+      int nextToAddTo = player.getEntityData().getInteger("dsarmor:solar");
+      ItemStack armor = player.inventory.armorInventory[validArmors.get(nextToAddTo)];
+
+      ((IEnergyContainerItem) armor.getItem()).receiveEnergy(armor, toAdd, false);
+
+      player.getEntityData().setInteger("dsarmor:solar", (validArmors.indexOf(nextToAddTo) + 1) % validArmors.size());
+    }
   }
 
   private void updateSwim(EntityPlayer player) {

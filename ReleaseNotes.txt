@@ -4,6 +4,8 @@ Version 2.2.2
 Changes
 - #1261 Add max level configs for XP obelisk, killer joe, and soul binder
 - #900 Add different texture for quite clear glass block
+- #1254 Add method for tools to control hiding of facades
+- #779 Add solar upgrade for DS helm
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

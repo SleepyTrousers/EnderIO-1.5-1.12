@@ -104,5 +104,4 @@ public class SpeedUpgrade extends AbstractUpgrade {
     upgradeRoot.setShort(KEY_LEVEL, level);
     upgradeRoot.setFloat(KEY_MULTIPLIER, walkMultiplier);
   }
-
 }

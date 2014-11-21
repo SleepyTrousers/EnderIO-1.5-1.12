@@ -127,7 +127,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     if(up == null) {
       return null;
     }
-    return PowerDisplayUtil.formatStoredPower(up.energy / 10, up.capacity/10);
+    return PowerDisplayUtil.formatStoredPower(up.energy, up.capacity);
   }
 
   public static int getEnergyStored(ItemStack container) {

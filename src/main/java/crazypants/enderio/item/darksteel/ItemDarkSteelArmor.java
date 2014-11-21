@@ -1,5 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -109,6 +110,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     GameRegistry.registerItem(this, getUnlocalizedName());
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
@@ -118,21 +120,15 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
     EnergyUpgrade.setPowerFull(is);
-    if(armorType == 2) {
-      SpeedUpgrade.SPEED_THREE.writeToItem(is);
-    } else if(armorType == 3) {
-      JumpUpgrade.JUMP_THREE.writeToItem(is);
-      SwimUpgrade.INSTANCE.writeToItem(is);
-    } else if(armorType == 1) {
-      GliderUpgrade.INSTANCE.writeToItem(is);
-    } else if(armorType == 0) {
-      SoundDetectorUpgrade.INSTANCE.writeToItem(is);
-      NightVisionUpgrade.INSTANCE.writeToItem(is);
-      if(GogglesOfRevealingUpgrade.getGoggles() != null) {
-        GogglesOfRevealingUpgrade.INSTANCE.writeToItem(is);
+    
+    Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.instance.recipeIterator();
+    while (iter.hasNext()) {
+      IDarkSteelUpgrade upgrade = iter.next();
+      if (!(upgrade instanceof EnergyUpgrade) && upgrade.canAddToItem(is)) {
+        upgrade.writeToItem(is);
       }
     }
-
+    
     par3List.add(is);
   }
 

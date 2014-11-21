@@ -12,6 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
+
+import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
@@ -41,6 +44,8 @@ public class DarkSteelRecipeManager {
     upgrades.add(NightVisionUpgrade.INSTANCE);
     upgrades.add(TravelUpgrade.INSTANCE);
     upgrades.add(SpoonUpgrade.INSTANCE);
+    upgrades.add(SolarUpgrade.SOLAR_ONE);
+    upgrades.add(SolarUpgrade.SOLAR_TWO);
     if(Loader.isModLoaded("Thaumcraft")) {
       upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
     }
@@ -184,4 +189,7 @@ public class DarkSteelRecipeManager {
     }
   }
 
+  public Iterator<IDarkSteelUpgrade> recipeIterator() {
+    return ImmutableList.copyOf(upgrades).iterator();
+  }
 }
