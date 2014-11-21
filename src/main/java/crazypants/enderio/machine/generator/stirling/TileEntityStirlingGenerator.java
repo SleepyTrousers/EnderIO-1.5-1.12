@@ -20,6 +20,9 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   public static final int ENERGY_PER_TICK = Config.stirlingGeneratorBaseRfPerTick;
 
+  // public for alloy smelter
+  public static final String SOUND_NAME = "generator.stirling";
+
   /** How many ticks left until the item is burnt. */
   public int burnTime = 0;
   public int totalBurnTime;
@@ -80,7 +83,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public String getSoundName() {
-    return "generator.stirling";
+    return SOUND_NAME;
   }
   
   @Override

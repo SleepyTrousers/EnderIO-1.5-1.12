@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.tool.ITool;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.vecmath.Vector3f;
 

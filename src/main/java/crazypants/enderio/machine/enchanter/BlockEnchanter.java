@@ -15,8 +15,8 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.tool.ITool;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.Util;
 

@@ -15,11 +15,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.ITool;
 import crazypants.enderio.tool.ToolUtil;
 
 public class ItemYetaWrench extends Item implements ITool, IResourceTooltipProvider, InvocationHandler {
@@ -96,6 +96,11 @@ public class ItemYetaWrench extends Item implements ITool, IResourceTooltipProvi
 
   @Override
   public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
+  }
+  
+  @Override
+  public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+    return true;
   }
 
 

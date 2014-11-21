@@ -2,6 +2,7 @@ package crazypants.enderio.tool;
 
 import java.lang.reflect.Method;
 
+import crazypants.enderio.api.tool.ITool;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import appeng.api.implementations.items.IAEWrench;
@@ -48,7 +49,10 @@ public class AEToolProvider implements IToolProvider, IToolImpl {
     @Override
     public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
     }
-
+    
+    @Override
+    public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+      return true;
+    }
   }
-
 }

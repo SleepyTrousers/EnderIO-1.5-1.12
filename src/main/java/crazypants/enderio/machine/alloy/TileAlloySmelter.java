@@ -12,6 +12,7 @@ import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
@@ -81,7 +82,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
     // make sure we have room for the next output
     return canInsertResult(chance, nextRecipe) ? nextRecipe : null;
   }
-
+  
   @Override
   public String getMachineName() {
     return ModObject.blockAlloySmelter.unlocalisedName;

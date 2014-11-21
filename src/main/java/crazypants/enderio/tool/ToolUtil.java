@@ -15,6 +15,7 @@ import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.item.ItemYetaWrench;
 
 public class ToolUtil {
@@ -80,7 +81,8 @@ public class ToolUtil {
   }
 
   private boolean isToolEquippedImpl(EntityPlayer player) {
-    return getEquippedToolImpl(player) != null;
+    ITool tool = getEquippedToolImpl(player);
+    return tool != null && tool.shouldHideFacades(player.getCurrentEquippedItem(), player);
   }
 
   private ITool getEquippedToolImpl(EntityPlayer player) {
@@ -115,7 +117,7 @@ public class ToolUtil {
     e.setCallback(proxy);
     e.setSuperclass(item.getClass());
     e.setInterceptDuringConstruction(false);
-    Class[] interfaces = new Class[toolImpls.size()];
+    Class<?>[] interfaces = new Class<?>[toolImpls.size()];
     int i = 0;
     for (IToolImpl tool : toolImpls) {
       interfaces[i] = tool.getInterface();
@@ -130,11 +132,11 @@ public class ToolUtil {
   public static class YetaWrenchProxy implements MethodInterceptor {
 
     private ItemYetaWrench item;
-    private Map<Class, IToolImpl> impls;
+    private Map<Class<?>, IToolImpl> impls;
 
     private YetaWrenchProxy(ItemYetaWrench item, List<IToolImpl> toolImpls) {
       this.item = item;
-      impls = new HashMap<Class, IToolImpl>();
+      impls = new HashMap<Class<?>, IToolImpl>();
       for (IToolImpl tool : toolImpls) {
         impls.put(tool.getInterface(), tool);
       }
@@ -154,7 +156,5 @@ public class ToolUtil {
         return null;
       }
     }
-
   }
-
 }

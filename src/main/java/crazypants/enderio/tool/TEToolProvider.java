@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
+import crazypants.enderio.api.tool.ITool;
 
 public class TEToolProvider implements IToolProvider, IToolImpl {
 
@@ -32,7 +33,11 @@ public class TEToolProvider implements IToolProvider, IToolImpl {
     public void used(ItemStack stack, EntityPlayer player, int x, int y, int z) {
       ((IToolHammer) stack.getItem()).toolUsed(stack, player, x, y, z);
     }
-
+    
+    @Override
+    public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
+      return true;
+    }
   }
 
   @Override
