@@ -150,25 +150,20 @@ public class DarkSteelController {
     boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
     
     int toAdd = (RFperSecond / 20) + (addExtraRF ? 1 : 0);
-    
+
     if(toAdd != 0) {
 
-      List<Integer> validArmors = new ArrayList<Integer>();
+      int nextIndex = player.getEntityData().getInteger("dsarmor:solar") % 4;
 
-      // we need to evenly split power between all equipped DS armors
-      for (int i = 0; i < 4; i++) {
-        ItemStack stack = player.inventory.armorInventory[i];
+      for (int i = 0; i < 4 && toAdd > 0; i++) {
+        ItemStack stack = player.inventory.armorInventory[nextIndex];
         if(EnergyUpgrade.loadFromItem(stack) != null) {
-          validArmors.add(i);
+          toAdd -= ((IEnergyContainerItem) stack.getItem()).receiveEnergy(stack, toAdd, false);
         }
+        nextIndex = (nextIndex + 1) % 4;
       }
-
-      int nextToAddTo = player.getEntityData().getInteger("dsarmor:solar");
-      ItemStack armor = player.inventory.armorInventory[validArmors.get(nextToAddTo)];
-
-      ((IEnergyContainerItem) armor.getItem()).receiveEnergy(armor, toAdd, false);
-
-      player.getEntityData().setInteger("dsarmor:solar", (validArmors.indexOf(nextToAddTo) + 1) % validArmors.size());
+      
+      player.getEntityData().setInteger("dsarmor:solar", nextIndex);
     }
   }
 
