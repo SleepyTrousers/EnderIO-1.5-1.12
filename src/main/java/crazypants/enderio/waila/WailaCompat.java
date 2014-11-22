@@ -1,6 +1,7 @@
 package crazypants.enderio.waila;
 
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
+import info.jbcs.minecraft.chisel.api.IFacade;
 
 import java.util.List;
 
@@ -22,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
-import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -41,7 +41,7 @@ public class WailaCompat implements IWailaDataProvider {
   public static final WailaCompat INSTANCE = new WailaCompat();
   
   public static void load(IWailaRegistrar registrar) {
-    registrar.registerStackProvider(INSTANCE, BlockConduitBundle.class);
+    registrar.registerStackProvider(INSTANCE, IFacade.class);
     registrar.registerStackProvider(INSTANCE, BlockDarkSteelAnvil.class);
 
     registrar.registerHeadProvider(INSTANCE, Block.class);
@@ -58,10 +58,14 @@ public class WailaCompat implements IWailaDataProvider {
 
   @Override
   public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-    if(accessor.getBlock() instanceof BlockConduitBundle && config.getConfig("facades.hidden")) {
-      IConduitBundle bundle = (IConduitBundle) accessor.getTileEntity();
-      if(bundle.hasFacade()) {
-        return new ItemStack(bundle.getFacadeId(), 1, bundle.getFacadeMetadata());
+    MovingObjectPosition pos = accessor.getPosition();
+    if(config.getConfig("facades.hidden")) {
+      if(accessor.getBlock() instanceof IFacade) {
+        IFacade bundle = (IFacade) accessor.getBlock();
+        Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
+        if (facade != null) {
+          return facade.getPickBlock(pos, accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
+        }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
       return accessor.getBlock().getPickBlock(accessor.getPosition(), accessor.getWorld(), accessor.getPosition().blockX, accessor.getPosition().blockY,
