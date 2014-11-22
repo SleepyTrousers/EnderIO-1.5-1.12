@@ -159,21 +159,21 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return true;
   }
 
-  private void applyDamage(EntityLivingBase entity, ItemStack item, int damage) {
+  private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage) {
 
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(item);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelPickPowerUsePerDamagePoint, false);
 
     } else {
-      damage = item.getItemDamage() + damage;
+      damage = stack.getItemDamage() + damage;
       if(damage >= getMaxDamage()) {
-        item.stackSize = 0;
+        stack.stackSize = 0;
       }
-      item.setItemDamage(damage);
+      stack.setItemDamage(damage);
     }
     if(eu != null) {
-      eu.writeToItem(item);
+      eu.writeToItem(stack);
     }
 
   }

@@ -209,7 +209,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   }
 
   @Override
-  public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase entity, EntityLivingBase playerEntity) {
+  public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase playerEntity) {
 
     if(playerEntity instanceof EntityPlayer) {
 
@@ -217,12 +217,12 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
       ItemStack sword = player.getCurrentEquippedItem();
 
       //Durability damage
-      EnergyUpgrade eu = EnergyUpgrade.loadFromItem(par1ItemStack);
-      if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+      if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
         eu.extractEnergy(powerPerDamagePoint, false);
 
       } else {
-        super.hitEntity(par1ItemStack, entity, playerEntity);
+        super.hitEntity(stack, entity, playerEntity);
       }
 
       //sword hit

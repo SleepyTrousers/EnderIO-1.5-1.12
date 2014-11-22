@@ -5,7 +5,11 @@ Changes
 - #1261 Add max level configs for XP obelisk, killer joe, and soul binder
 - #900 Add different texture for quite clear glass block
 - #1254 Add method for tools to control hiding of facades
+	- For this, a new API has been added, containing ITool
 - #779 Add solar upgrade for DS helm
+- Facades that are not opaque will no longer stop conduit rendering
+- Translucent facades are now possible
+- #1257 Add per-level absorption rations on dark steel items
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

@@ -199,7 +199,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     super.addDetailedEntries(itemstack, entityplayer, list, flag);
     int endIndex = list.size();
     int cap = capacity;
-    String percDamage = (int)Math.round(Config.darkSteelPowerDamgeAbsorptionRatio * 100) + "";
+    String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";
     String capString = PowerDisplayUtil.formatPower(cap) + " " + PowerDisplayUtil.abrevation();
     for(int i=startIndex;i<endIndex;i++) {
       String str = (String)list.get(i);
@@ -218,11 +218,23 @@ public class EnergyUpgrade extends AbstractUpgrade {
     upgradeRoot.setInteger(KEY_MAX_OUT, maxOutRF);
   }
 
-  public boolean isAbsorbDamageWithPower() {
-    boolean res= RANDOM.nextFloat() < Config.darkSteelPowerDamgeAbsorptionRatio;
+  public boolean isAbsorbDamageWithPower(ItemStack stack) {
+    boolean res= RANDOM.nextFloat() < getAbsorptionRatio(stack);
     return res;
   }
 
+  private double getAbsorptionRatio(ItemStack stack) {
+    AbstractUpgrade upgrade = loadFromItem(stack);
+    int index = 0;
+    if (upgrade.unlocName.equals(EMPOWERED_TWO.unlocName)) {
+      index = 1;
+    } else if (upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
+      index = 2;
+    } else if (upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
+      index = 3;
+    }
+    return Config.darkSteelPowerDamgeAbsorptionRatios[index];
+  }
 
   public int getEnergy() {
     return energy;

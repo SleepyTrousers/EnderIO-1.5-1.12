@@ -136,7 +136,7 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
-  public static double darkSteelPowerDamgeAbsorptionRatio = 0.75;
+  public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.75, 0.95};
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
   public static int darkSteelPowerStorageLevelTwo = 250000;
@@ -620,8 +620,10 @@ public final class Config {
             + "better quality rendering but can result in frame stutters when switching to/from a wrench.")
         .getBoolean(updateLightingWhenHidingFacades);
 
-    darkSteelPowerDamgeAbsorptionRatio= config.get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatio", darkSteelPowerDamgeAbsorptionRatio,
-        "Amount of durabilty damage absorbed when items are powered. 1=100% so items take no durablity damage when powered.").getDouble(darkSteelPowerDamgeAbsorptionRatio);
+    darkSteelPowerDamgeAbsorptionRatios = config
+        .get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatios", darkSteelPowerDamgeAbsorptionRatios,
+            "A list of the amount of durabilty damage absorbed when items are powered. In order of upgrade level. 1=100% so items take no durablity damage when powered.")
+        .getDoubleList();
     darkSteelPowerStorageBase = config.get(sectionDarkSteel.name, "darkSteelPowerStorageBase", darkSteelPowerStorageBase,
         "Base amount of power stored by dark steel items.").getInt(darkSteelPowerStorageBase);
     darkSteelPowerStorageLevelOne = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelOne", darkSteelPowerStorageLevelOne,

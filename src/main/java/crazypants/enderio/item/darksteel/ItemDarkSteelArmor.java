@@ -216,7 +216,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
 
     EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
 
     } else {

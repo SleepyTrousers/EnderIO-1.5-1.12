@@ -194,21 +194,21 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
   }
 
-  private void applyDamage(EntityLivingBase entity, ItemStack item, int damage, boolean isMultiharvest) {
+  private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage, boolean isMultiharvest) {
 
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(item);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       int powerUse = isMultiharvest ? Config.darkSteelAxePowerUsePerDamagePointMultiHarvest : Config.darkSteelAxePowerUsePerDamagePoint;
       eu.extractEnergy(damage * powerUse, false);
     } else {
-      damage = item.getItemDamage() + damage;
+      damage = stack.getItemDamage() + damage;
       if(damage >= getMaxDamage()) {
-        item.stackSize = 0;
+        stack.stackSize = 0;
       }
-      item.setItemDamage(damage);
+      stack.setItemDamage(damage);
     }
     if(eu != null) {      
-      eu.writeToItem(item);
+      eu.writeToItem(stack);
     }
   }
 
