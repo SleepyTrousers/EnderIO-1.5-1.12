@@ -797,6 +797,10 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     }
     IConduitBundle bundle = (IConduitBundle) te;
     List<RaytraceResult> hits = new ArrayList<RaytraceResult>();
+    
+    if (player == null) {
+      player = EnderIO.proxy.getClientPlayer();
+    }
 
     if(ConduitUtil.isSolidFacadeRendered(bundle, player)) {
       setBlockBounds(0, 0, 0, 1, 1, 1);

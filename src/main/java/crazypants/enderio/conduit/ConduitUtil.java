@@ -24,6 +24,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
 import crazypants.enderio.conduit.gas.IGasConduit;
@@ -177,7 +178,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && (ToolUtil.isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
+    return bundle.getFacadeId() != null && ((ToolUtil.isToolEquipped(player) && (player == null || ToolUtil.getEquippedTool(player).shouldHideFacades(player.getCurrentEquippedItem(), player))) || isConduitEquipped(player) || isProbeEquipped(player));
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {

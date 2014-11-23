@@ -81,8 +81,7 @@ public class ToolUtil {
   }
 
   private boolean isToolEquippedImpl(EntityPlayer player) {
-    ITool tool = getEquippedToolImpl(player);
-    return tool != null && player != null && tool.shouldHideFacades(player.getCurrentEquippedItem(), player);
+    return getEquippedToolImpl(player) != null;
   }
 
   private ITool getEquippedToolImpl(EntityPlayer player) {
