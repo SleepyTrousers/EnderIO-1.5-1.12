@@ -1643,7 +1643,7 @@ Examples:
         <itemStack oreDictionary="oreYellorite" />
       </input>
       <output>
-        <itemStack oreDictionary="dustUranium" number="2" />
+        <itemStack oreDictionary="dustYellorium" number="2" />
         <itemStack oreDictionary="dustCyanite" number="1" chance="0.05" />
       </output>
     </recipe>
@@ -1651,7 +1651,7 @@ Examples:
     <!-- Alloys and Ingots -->
     <recipe name="YelloriteIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotUranium" />
+        <itemStack oreDictionary="ingotYellorium" />
       </input>
       <output>
         <itemStack oreDictionary="dustUranium" number="1" />
@@ -1668,10 +1668,10 @@ Examples:
     </recipe>
     <recipe name="BlutoniumIngot" energyCost="2400">
       <input>
-        <itemStack oreDictionary="ingotPlutonium" />
+        <itemStack oreDictionary="ingotBlutonium" />
       </input>
       <output>
-        <itemStack oreDictionary="dustPlutonium" number="1" />
+        <itemStack oreDictionary="dustBlutonium" number="1" />
       </output>
     </recipe>
     <recipe name="GraphiteIngot" energyCost="2400">
