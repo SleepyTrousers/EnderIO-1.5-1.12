@@ -1,5 +1,7 @@
 package crazypants.enderio.teleport;
 
+import info.jbcs.minecraft.chisel.api.IFacade;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -38,7 +40,7 @@ import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.util.Lang;
 
-public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider {
+public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
 
   public static int renderId = -1;
 
@@ -254,4 +256,21 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
 
   }
 
+  @Override
+  public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileTravelAnchor) {
+      return ((TileTravelAnchor)te).getSourceBlockMetadata();
+    }
+    return 0;
+  }
+
+  @Override
+  public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileTravelAnchor) {
+      return ((TileTravelAnchor)te).getSourceBlock();
+    }
+    return this;
+  }
 }

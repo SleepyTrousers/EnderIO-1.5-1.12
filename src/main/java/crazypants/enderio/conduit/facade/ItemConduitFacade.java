@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.facade;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,10 +18,14 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.util.Util;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider {
 
@@ -128,6 +133,21 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
 
   public final class FacadePainterRecipe extends BasicPainterTemplate {
 
+    @Override
+    public boolean isValidPaintSource(ItemStack paintSource) {
+      if(paintSource == null) {
+        return false;
+      }
+      Block block = Util.getBlockFromItemId(paintSource);
+      if(block == null || block instanceof IPaintedBlock) {
+        return false;
+      }
+      if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
+        return false;
+      }
+      return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
+    }
+    
     @Override
     public boolean isValidTarget(ItemStack target) {
       return target != null && target.getItem() == ItemConduitFacade.this;

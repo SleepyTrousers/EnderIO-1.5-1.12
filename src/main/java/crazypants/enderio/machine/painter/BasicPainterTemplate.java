@@ -32,7 +32,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
       return false;
     }
     
-    return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
+    return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock()) || block == Blocks.glass;
   }
 
   protected final Block[] validTargets;
