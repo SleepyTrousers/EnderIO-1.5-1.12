@@ -239,6 +239,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister IIconRegister) {
     connectorIcon = IIconRegister.registerIcon(KEY_CONNECTOR_ICON);
     blockIcon = connectorIcon;
