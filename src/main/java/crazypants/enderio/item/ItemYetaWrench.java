@@ -100,7 +100,7 @@ public class ItemYetaWrench extends Item implements ITool, IResourceTooltipProvi
   
   @Override
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
-    return false;
+    return true;
   }
 
 
