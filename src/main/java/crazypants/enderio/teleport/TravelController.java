@@ -76,6 +76,10 @@ public class TravelController {
     }    
   }
 
+  public void addBlockToBlinkBlackList(String blockName) {
+    blackList.add(new UniqueIdentifier(blockName));
+  }
+
   public boolean activateTravelAccessable(ItemStack equipped, World world, EntityPlayer player, TravelSource source) {
     if(!hasTarget()) {
       return false;
@@ -388,7 +392,7 @@ public class TravelController {
     sendTravelEvent(coord, source, requiredPower, conserveMomentum);
     for (int i = 0; i < 6; ++i) {
       player.worldObj.spawnParticle("portal", player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
-          player.posZ + (rand.nextDouble() - 0.5D), (this.rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
+          player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(),
           (rand.nextDouble() - 0.5D) * 2.0D);
     }
     return true;

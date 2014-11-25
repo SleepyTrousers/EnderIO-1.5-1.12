@@ -36,6 +36,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
@@ -114,6 +115,7 @@ import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
+import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
 import crazypants.enderio.machine.spawnguard.RangeEntity;
 import crazypants.enderio.machine.still.BlockVat;
@@ -143,6 +145,7 @@ import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
+import crazypants.enderio.teleport.TravelController;
 import crazypants.util.EntityUtil;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
@@ -244,7 +247,7 @@ public class EnderIO {
   public static BlockDarkSteelAnvil blockDarkSteelAnvil;
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
-  
+
   public static BlockEnderRail blockEnderRail;
 
   //Fluids
@@ -351,7 +354,7 @@ public class EnderIO {
     itemFusedQuartzFrame = ItemFusedQuartzFrame.create();
 
     blockEnderRail = BlockEnderRail.create();
-    
+
     blockConduitBundle = BlockConduitBundle.create();
     blockConduitFacade = BlockConduitFacade.create();
     itemConduitFacade = ItemConduitFacade.create();
@@ -428,9 +431,10 @@ public class EnderIO {
     f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
-    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);    
+    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
     FluidFuelRegister.instance.addFuel(f, Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@" + (Config.hootchPowerPerCycleRF/10 * Config.hootchPowerTotalBurnTime));
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@"
+        + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
 
     f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
@@ -438,7 +442,7 @@ public class EnderIO {
     blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
     FluidFuelRegister.instance.addFuel(f, Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
-        + (Config.rocketFuelPowerPerCycleRF/10 * Config.rocketFuelPowerTotalBurnTime));
+        + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
 
     f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
@@ -446,7 +450,7 @@ public class EnderIO {
     blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
     FluidFuelRegister.instance.addFuel(f, Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
-        + (Config.fireWaterPowerPerCycleRF/10 * Config.fireWaterPowerTotalBurnTime));
+        + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
 
     fluidXpJuice = FluidRegistry.getFluid("xpjuice");
     if(!Loader.isModLoaded("OpenBlocks")) {
@@ -602,20 +606,42 @@ public class EnderIO {
   public void onImc(IMCEvent evt) {
     ImmutableList<IMCMessage> messages = evt.getMessages();
     for (IMCMessage msg : messages) {
-      if(msg.isStringMessage()) {
-        String key = msg.key;
-        String value = msg.getStringValue();
-        if(VatRecipeManager.IMC_KEY.equals(key)) {
-          VatRecipeManager.getInstance().addCustumRecipes(value);
-        } else if(CrusherRecipeManager.IMC_KEY.equals(key)) {
-          CrusherRecipeManager.getInstance().addCustomRecipes(value);
-        } else if(AlloyRecipeManager.IMC_KEY.equals(key)) {
-          AlloyRecipeManager.getInstance().addCustumRecipes(value);
+      String key = msg.key;
+      try {
+        if(msg.isStringMessage()) {
+          String value = msg.getStringValue();
+          if(IMC.VAT_RECIPE.equals(key)) {
+            VatRecipeManager.getInstance().addCustumRecipes(value);
+          } else if(IMC.SAG_RECIPE.equals(key)) {
+            CrusherRecipeManager.getInstance().addCustomRecipes(value);
+          } else if(IMC.ALLOY_RECIPE.equals(key)) {
+            AlloyRecipeManager.getInstance().addCustumRecipes(value);
+          } else if(IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
+            PoweredSpawnerConfig.getInstance().addToBlacklist(value);
+          } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
+            TravelController.instance.addBlockToBlinkBlackList(value);
+          } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
+            itemSoulVessel.addEntityToBlackList(value);
+          }
+        } else if(msg.isNBTMessage()) {
+          if(IMC.SOUL_BINDER_RECIPE.equals(key)) {
+            SoulBinderRecipeManager.getInstance().addRecipeFromNBT(msg.getNBTValue());
+          } else if(IMC.POWERED_SPAWNER_COST_MULTIPLIER.equals(key)) {
+            PoweredSpawnerConfig.getInstance().addEntityCostFromNBT(msg.getNBTValue());
+          } else if(IMC.FLUID_FUEL_ADD.equals(key)) {
+            FluidFuelRegister.instance.addFuel(msg.getNBTValue());
+          } else if(IMC.FLUID_COOLANT_ADD.equals(key)) {
+            FluidFuelRegister.instance.addCoolant(msg.getNBTValue());
+          }
+        } else if(msg.isItemStackMessage()) {
+          if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {
+            PaintSourceValidator.instance.addToWhitelist(msg.getItemStackValue());
+          } else if(IMC.PAINTER_BLACKLIST_ADD.equals(key)) {
+            PaintSourceValidator.instance.addToBlacklist(msg.getItemStackValue());
+          }
         }
-      } else if(msg.isNBTMessage()) {
-        if(SoulBinderRecipeManager.IMC_KEY.equals(msg.key)) {
-          SoulBinderRecipeManager.getInstance().addRecipeFromNBT(msg.getNBTValue());
-        }
+      } catch (Exception e) {
+        Log.error("Error occured handling IMC message " + key + " from " + msg.getSender());
       }
     }
   }

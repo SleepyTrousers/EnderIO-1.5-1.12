@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -18,8 +17,6 @@ import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 
 public class VatRecipeManager {
-
-  public static final String IMC_KEY = "recipe:vat";
   
   private static final String CORE_FILE_NAME = "VatRecipes_Core.xml";
   private static final String CUSTOM_FILE_NAME = "VatRecipes_User.xml";

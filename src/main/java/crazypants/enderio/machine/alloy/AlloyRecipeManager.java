@@ -1,34 +1,21 @@
 package crazypants.enderio.machine.alloy;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.item.ItemStack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.recipe.BasicManyToOneRecipe;
 import crazypants.enderio.machine.recipe.CustomTagHandler;
-import crazypants.enderio.machine.recipe.IManyToOneRecipe;
-import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneRecipeManager;
-import crazypants.enderio.machine.recipe.Recipe;
-import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.util.Util;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
-
-  public static final String IMC_KEY = "recipe:alloysmelter";
   
   private static final String CORE_FILE_NAME = "AlloySmelterRecipes_Core.xml";
   private static final String CUSTOM_FILE_NAME = "AlloySmelterRecipes_User.xml";
@@ -53,10 +40,12 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
     this.vanillaRecipe = vanillaRecipe;
   }
   
+  @Override
   protected CustomTagHandler createCustomTagHandler() {
     return new VanillaFurnaceTagHandler();
   }
 
+  @Override
   public void loadRecipesFromConfig() {
     super.loadRecipesFromConfig();
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockAlloySmelter.unlocalisedName, new ManyToOneMachineRecipe("AlloySmelterRecipe", ModObject.blockAlloySmelter.unlocalisedName, this));

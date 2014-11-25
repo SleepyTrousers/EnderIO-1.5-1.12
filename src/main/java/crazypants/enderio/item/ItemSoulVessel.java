@@ -1,20 +1,8 @@
 package crazypants.enderio.item;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
-import crazypants.enderio.material.Material;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.util.EntityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
@@ -24,21 +12,22 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
-import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.util.EntityUtil;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
@@ -50,14 +39,24 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
   private IIcon filledIcon;
   
+  private List<String> blackList;
+
   protected ItemSoulVessel() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemSoulVessel.unlocalisedName);
-    setMaxStackSize(1);    
+    setMaxStackSize(1);
+    blackList = new ArrayList<String>();
+    for (String ent : Config.soulVesselBlackList) {
+      blackList.add(ent);
+    }
   }
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemSoulVessel.unlocalisedName);
+  }
+
+  public void addEntityToBlackList(String entityName) {
+    blackList.add(entityName);
   }
 
   @Override
@@ -120,11 +119,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(!spaceClear) {
       return false;
     }
-   
-//    if(mob instanceof EntityHorse) {
-//      ((EntityHorse)mob).setHorseType(3);
-//    }
-    
+
     world.spawnEntityInWorld(mob);    
     if(mob instanceof EntityLiving) {
       ((EntityLiving)mob).playLivingSound();
@@ -211,7 +206,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   }
 
   private boolean isBlackListed(String entityId) {
-    for(String str : Config.soulVesselBlackList) {
+    for (String str : blackList) {
       if(str != null && str.equals(entityId)) {
         return true;
       }

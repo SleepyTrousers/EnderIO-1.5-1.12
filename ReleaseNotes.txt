@@ -12,7 +12,9 @@ Changes
 - #1257 Add per-level absorption rations on dark steel items
 - Reduced amount of powered stored in wireless charger from 1 mil to 200k
 - Added white/black lists for paint sources for the Painter. Thaumcraft silverwood/great wood planks 
-  whitelisted by default
+  whitelisted by default. See PainterPaintSources_Core.xml for details.
+- Added Thaumcraft Warded blocks to the default teleport black list
+- Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC  
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

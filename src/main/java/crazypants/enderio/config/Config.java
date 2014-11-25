@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import tterrag.core.common.event.ConfigFileChangedEvent;
 import net.minecraftforge.common.config.Configuration;
+import tterrag.core.common.event.ConfigFileChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Method;
@@ -129,7 +129,8 @@ public final class Config {
   public static boolean travelStaffBlinkThroughClearBlocksEnabled = true;
   public static boolean travelStaffBlinkThroughUnbreakableBlocksEnabled = false;
   public static String[] travelStaffBlinkBlackList = new String[] {
-    "minecraft:bedrock"
+      "minecraft:bedrock",
+      "Thaumcraft:blockWarded"
   };
   public static float travelAnchorZoomScale = 0.2f;
 

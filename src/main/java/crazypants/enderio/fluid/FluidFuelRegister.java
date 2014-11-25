@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -14,6 +15,11 @@ import crazypants.enderio.Log;
 public class FluidFuelRegister implements IFluidRegister {
 
   public static final FluidFuelRegister instance = new FluidFuelRegister();
+
+  private static final String KEY_FLUID_NAME = "fluidName";
+  private static final String KEY_POWER_PER_CYCLE = "powerPerCycle";
+  private static final String KEY_TOTAL_BURN_TIME = "totalBurnTime";
+  private static final String KEY_COOLING_PER_MB = "coolingPerMb";
 
   private final Map<String, IFluidCoolant> coolants = new HashMap<String, IFluidCoolant>();
   private final Map<String, IFluidFuel> fuels = new HashMap<String, IFluidFuel>();
@@ -32,6 +38,23 @@ public class FluidFuelRegister implements IFluidRegister {
     }
   }
 
+  public void addCoolant(NBTTagCompound tag) {
+    if(tag == null) {
+      return;
+    }
+    if(!tag.hasKey(KEY_FLUID_NAME)) {
+      return;
+    }
+    if(!tag.hasKey(KEY_COOLING_PER_MB)) {
+      return;
+    }
+    addCoolant(tag.getString(KEY_FLUID_NAME), tag.getFloat(KEY_COOLING_PER_MB));
+  }
+
+  public void addCoolant(String fluidName, float degreesCoolingPerMB) {
+    addCoolant(FluidRegistry.getFluid(fluidName), degreesCoolingPerMB);
+  }
+
   @Override
   public void addCoolant(Fluid fluid, float degreesCoolingPerMB) {
     if(fluid == null || coolants.get(fluid.getName()) != null) {
@@ -42,6 +65,7 @@ public class FluidFuelRegister implements IFluidRegister {
       reg.addCoolant(fluid, degreesCoolingPerMB);
     }
   }
+
 
   @Override
   public IFluidCoolant getCoolant(Fluid fluid) {
@@ -67,6 +91,26 @@ public class FluidFuelRegister implements IFluidRegister {
       return null;
     }
     return getCoolant(fluid.getFluid());
+  }
+
+  public void addFuel(NBTTagCompound tag) {
+    if(tag == null) {
+      return;
+    }
+    if(!tag.hasKey(KEY_FLUID_NAME)) {
+      return;
+    }
+    if(!tag.hasKey(KEY_POWER_PER_CYCLE)) {
+      return;
+    }
+    if(!tag.hasKey(KEY_TOTAL_BURN_TIME)) {
+      return;
+    }
+    addFuel(tag.getString(KEY_FLUID_NAME), tag.getInteger(KEY_FLUID_NAME), tag.getInteger(KEY_TOTAL_BURN_TIME));
+  }
+
+  public void addFuel(String fluidName, int powerPerCycleRF, int totalBurnTime) {
+    addFuel(FluidRegistry.getFluid(fluidName), powerPerCycleRF, totalBurnTime);
   }
 
   @Override

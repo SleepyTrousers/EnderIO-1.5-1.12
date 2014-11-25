@@ -1,14 +1,12 @@
 package crazypants.enderio.machine.spawner;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -23,6 +21,9 @@ public class PoweredSpawnerConfig {
   static final PoweredSpawnerConfig instance = new PoweredSpawnerConfig();
   private static final String CORE_FILE_NAME = "PoweredSpawnerConfig_Core.json";
   private static final String USER_FILE_NAME = "PoweredSpawnerConfig_User.json";
+
+  private static final String KEY_ENTITY_NAME = "entityName";
+  private static final String KEY_COST_MULTIPLIER = "costMultiplier";
 
   public static PoweredSpawnerConfig getInstance() {
     return instance;
@@ -105,6 +106,31 @@ public class PoweredSpawnerConfig {
       e.printStackTrace();
     }
     
+  }
+
+  public void addToBlacklist(String entityName) {
+    if(entityName != null) {
+      blackList.add(entityName);
+    }
+  }
+
+  public void addEntityCost(String entityName, double costMultiplier) {
+    if(entityName != null && costMultiplier > 0) {
+      costs.put(entityName, costMultiplier);
+    }
+  }
+
+  public void addEntityCostFromNBT(NBTTagCompound tag) {
+    if(tag == null) {
+      return;
+    }
+    if(!tag.hasKey(KEY_ENTITY_NAME)) {
+      return;
+    }
+    if(!tag.hasKey(KEY_COST_MULTIPLIER)) {
+      return;
+    }
+    addEntityCost(tag.getString(KEY_ENTITY_NAME), tag.getDouble(KEY_COST_MULTIPLIER));
   }
 
 }

@@ -13,8 +13,6 @@ public class SoulBinderRecipeManager {
 
   private static final SoulBinderRecipeManager instance = new SoulBinderRecipeManager();
 
-  public static final String IMC_KEY = "recipe:soulbinder";
-
   public static final String KEY_RECIPE_UID = "recipeUID";
   public static final String KEY_INPUT_STACK = "inputStack";
   public static final String KEY_OUTPUT_STACK = "outputStack";
@@ -59,6 +57,31 @@ public class SoulBinderRecipeManager {
   //  SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
   //  FMLInterModComms.sendMessage("EnderIO",  "recipe:soulbinder", root);
 
+  //@formatter:off
+  /**
+   * Example of how to add a recipe:
+   * 
+   * NBTTagCompound root = new NBTTagCompound();
+   * root.setString(SoulBinderRecipeManager.KEY_RECIPE_UID, "diamondToWood");
+   * root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_ENERGY, 50000);
+   * root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_XP, 7);
+   * root.setString(SoulBinderRecipeManager.KEY_SOUL_TYPES, "Zombie|SpecialMobs.SpecialZombie|Villager");
+   * ItemStack is = new ItemStack(Items.diamond);
+   * NBTTagCompound stackRoot = new NBTTagCompound();
+   * is.writeToNBT(stackRoot);
+   * root.setTag(SoulBinderRecipeManager.KEY_INPUT_STACK, stackRoot);
+   * is = new ItemStack(Blocks.planks);
+   * stackRoot = new NBTTagCompound();
+   * is.writeToNBT(stackRoot);
+   * root.setTag(SoulBinderRecipeManager.KEY_OUTPUT_STACK, stackRoot);
+   * 
+   * SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
+   * FMLInterModComms.sendMessage("EnderIO",  "recipe:soulbinder", root);
+   * 
+   * @param root
+   * @return
+   */
+  //@formatter:on
   public boolean addRecipeFromNBT(NBTTagCompound root) {
     try {
       String recipeUid = root.getString(KEY_RECIPE_UID);
