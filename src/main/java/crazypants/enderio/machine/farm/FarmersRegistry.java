@@ -1,14 +1,11 @@
 package crazypants.enderio.machine.farm;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.IPlantable;
 import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.Log;
 import crazypants.enderio.machine.farm.farmers.CustomSeedFarmer;
 import crazypants.enderio.machine.farm.farmers.FarmersCommune;
 import crazypants.enderio.machine.farm.farmers.MelonFarmer;
@@ -154,10 +151,10 @@ public final class FarmersRegistry {
   
   private static void addMFR() {
     String mod = "MineFactoryReloaded";
-    String blockName = "tile.mfr.rubberwood.sapling";    
+    String blockName = "rubberwood.sapling";
     Block saplingBlock = GameRegistry.findBlock(mod, blockName);
     if(saplingBlock != null) {
-      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "tile.mfr.rubberwood.log")));
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock, GameRegistry.findBlock(mod, "rubberwood.log")));
     }
     
   }
