@@ -13,7 +13,7 @@ import crazypants.util.BlockCoord;
 
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceptor, IWirelessCharger {
 
-  public static final int MAX_ENERGY_STORED = 1000000;
+  public static final int MAX_ENERGY_STORED = 200000;
   public static final int MAX_ENERGY_IN = 10000;
   public static final int MAX_ENERGY_OUT = 10000;
   
