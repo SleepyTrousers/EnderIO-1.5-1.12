@@ -530,14 +530,17 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     int ppt = getPowerUsePerTick();
     switch (capacitorType.ordinal()) {
     case 1:
-      cap = new BasicCapacitor(ppt * 4, 500000);
+      cap = new BasicCapacitor(ppt * 40, 500000);
       break;
     case 2:
-      cap = new BasicCapacitor(ppt * 4, 1000000);
+      cap = new BasicCapacitor(ppt * 40, 1000000);
       break;
     default:
-      cap = new BasicCapacitor(ppt * 4, 250000);
+      cap = new BasicCapacitor(ppt * 40, 250000);
       break;
+    }
+    if(getEnergyStored() > getMaxEnergyStored()) {
+      setEnergyStored(getMaxEnergyStored());
     }
     
   }
