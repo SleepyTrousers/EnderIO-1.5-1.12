@@ -4,7 +4,9 @@ import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
+import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.still.VatRecipeManager;
@@ -37,6 +39,21 @@ public final class IMC {
    * of the message.
    */
   public static final String ALLOY_RECIPE = "recipe:alloysmelter";
+
+  /**
+   * Key for a string message to add Enchanter recipes. Calls
+   * {@link EnchanterRecipeManager#addCustomRecipes(String)} with the string
+   * value of the message. The supplied xml is treated as if it was loaded from
+   * EnchanterRecipes_User.xm.
+   */
+  public static final String ENCHANTER_RECIPE = "recipe:enchanter";
+
+  /**
+   * Key for a string message to add Slice'N'Splice recipes. Calls
+   * {@link SliceAndSpliceRecipeManager#addCustumRecipes(String)} with the
+   * string value of the message.
+   */
+  public static final String SLINE_N_SPLICE_RECIPE = "recipe:slicensplice";
 
   /**
    * Key for an NBT message to add Soul Binder recipes. Calls

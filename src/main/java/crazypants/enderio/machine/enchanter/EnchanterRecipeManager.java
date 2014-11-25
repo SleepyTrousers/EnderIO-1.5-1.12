@@ -3,11 +3,8 @@ package crazypants.enderio.machine.enchanter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-
 import crazypants.enderio.Log;
-import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 
 public class EnchanterRecipeManager {
 
@@ -39,9 +36,17 @@ public class EnchanterRecipeManager {
     return null;
   }
 
+  public void addCustomRecipes(String xml) {
+    try {
+      List<EnchanterRecipe> newRec = EnchanterRecipeParser.parse(xml);
+      EnchanterRecipeParser.merge(recipes, newRec);
+    } catch (Exception e) {
+      Log.error("EnchanterRecipeManager: Error processing custom Enchanter recipes: " + e);
+    }
+  }
+
   public List<EnchanterRecipe> getRecipes() {
     return recipes;
-    
   }
 
 }

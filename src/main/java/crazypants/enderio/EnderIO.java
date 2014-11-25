@@ -622,6 +622,10 @@ public class EnderIO {
             TravelController.instance.addBlockToBlinkBlackList(value);
           } else if(IMC.SOUL_VIAL_BLACKLIST.equals(key) && itemSoulVessel != null) {
             itemSoulVessel.addEntityToBlackList(value);
+          } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
+            EnchanterRecipeManager.getInstance().addCustomRecipes(value);
+          } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
+            SliceAndSpliceRecipeManager.getInstance().addCustumRecipes(key);
           }
         } else if(msg.isNBTMessage()) {
           if(IMC.SOUL_BINDER_RECIPE.equals(key)) {

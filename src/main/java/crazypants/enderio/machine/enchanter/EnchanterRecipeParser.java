@@ -79,7 +79,7 @@ public class EnchanterRecipeParser extends DefaultHandler {
     return result;
   }
 
-  private static void merge(List<EnchanterRecipe> core, List<EnchanterRecipe> userConfig) {
+  public static void merge(List<EnchanterRecipe> core, List<EnchanterRecipe> userConfig) {
     for (EnchanterRecipe rec : userConfig) {
       removeFromList(rec.getEnchantment(), core);
     }
