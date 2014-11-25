@@ -319,7 +319,6 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public boolean canRenderInPass(int pass) {
     theRenderPass = pass;
-    System.out.println(pass);
     return pass == 0 || pass == 1;
   }
 

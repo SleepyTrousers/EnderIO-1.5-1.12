@@ -21,9 +21,9 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
-import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
+import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.util.Util;
 
@@ -141,6 +141,12 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
       Block block = Util.getBlockFromItemId(paintSource);
       if(block == null || block instanceof IPaintedBlock) {
         return false;
+      }
+      if(PaintSourceValidator.instance.isBlacklisted(paintSource)) {
+        return false;
+      }
+      if(PaintSourceValidator.instance.isWhitelisted(paintSource)) {
+        return true;
       }
       if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
         return false;

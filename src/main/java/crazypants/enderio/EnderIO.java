@@ -1,13 +1,14 @@
 package crazypants.enderio;
 
-import static crazypants.enderio.EnderIO.*;
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.EnderIO.MOD_NAME;
+import static crazypants.enderio.EnderIO.VERSION;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
-import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -52,6 +53,7 @@ import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
+import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enderface.BlockEnderIO;
@@ -102,6 +104,7 @@ import crazypants.enderio.machine.painter.BlockPaintedSlab;
 import crazypants.enderio.machine.painter.BlockPaintedStair;
 import crazypants.enderio.machine.painter.BlockPaintedWall;
 import crazypants.enderio.machine.painter.BlockPainter;
+import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.power.BlockCapacitorBank;
 import crazypants.enderio.machine.reservoir.BlockReservoir;
 import crazypants.enderio.machine.slicensplice.BlockSliceAndSplice;
@@ -567,6 +570,7 @@ public class EnderIO {
     EnchanterRecipeManager.getInstance().loadRecipesFromConfig();
     FarmersRegistry.addFarmers();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
+    PaintSourceValidator.instance.loadConfig();
 
     if(fluidXpJuice == null) { //should have been registered by open blocks 
       fluidXpJuice = FluidRegistry.getFluid("xpjuice");

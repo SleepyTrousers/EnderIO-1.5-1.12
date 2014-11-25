@@ -67,7 +67,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
           }
         }
       }      
-      return BasicPainterTemplate.isValidSourceDefault(itemStack);      
+      return PaintSourceValidator.instance.isValidSourceDefault(itemStack);
     }
     return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(),
         i == 0 ? MachineRecipeInput.create(0, itemStack) : targetInput(), i == 1 ? MachineRecipeInput.create(1, itemStack) : paintSource()) != null;

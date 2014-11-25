@@ -28,6 +28,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
+import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.util.Util;
@@ -143,13 +144,14 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     items.add(new ItemStack(this, 1, 1));
   }
 
+  @Override
   protected void func_150062_a(World world, int x, int y, int z, int p_150062_5_) {
-    int i1 = this.func_150065_e(world, x, y, z);
+    int i1 = func_150065_e(world, x, y, z);
     boolean flag = p_150062_5_ > 0;
     boolean flag1 = i1 > 0;
 
     if(p_150062_5_ != i1) {
-      world.setBlockMetadataWithNotify(x, y, z, this.func_150066_d(i1), 2);
+      world.setBlockMetadataWithNotify(x, y, z, func_150066_d(i1), 2);
       func_150064_a_(world, x, y, z);
       world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
     }
@@ -161,14 +163,14 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
     }
     if(playSound) {
       if(!flag1 && flag) {
-        world.playSoundEffect((double) x + 0.5D, (double) y + 0.1D, (double) z + 0.5D, "random.click", 0.3F, 0.5F);
+        world.playSoundEffect(x + 0.5D, y + 0.1D, z + 0.5D, "random.click", 0.3F, 0.5F);
       } else if(flag1 && !flag) {
-        world.playSoundEffect((double) x + 0.5D, (double) y + 0.1D, (double) z + 0.5D, "random.click", 0.3F, 0.6F);
+        world.playSoundEffect(x + 0.5D, y + 0.1D, z + 0.5D, "random.click", 0.3F, 0.6F);
       }
     }
 
     if(flag1) {
-      world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+      world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
     }
   }
 
@@ -178,8 +180,9 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate implements I
       super(dspp);
     }
 
+    @Override
     public boolean isValidPaintSource(ItemStack paintSource) {
-      if(BasicPainterTemplate.isValidSourceDefault(paintSource)) {
+      if(PaintSourceValidator.instance.isValidSourceDefault(paintSource)) {
         return true;
       }
       if(paintSource == null) {

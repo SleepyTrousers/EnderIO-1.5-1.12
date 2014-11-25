@@ -11,6 +11,8 @@ Changes
 - Translucent facades are now possible
 - #1257 Add per-level absorption rations on dark steel items
 - Reduced amount of powered stored in wireless charger from 1 mil to 200k
+- Added white/black lists for paint sources for the Painter. Thaumcraft silverwood/great wood planks 
+  whitelisted by default
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

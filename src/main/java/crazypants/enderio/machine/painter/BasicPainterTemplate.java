@@ -1,13 +1,11 @@
 package crazypants.enderio.machine.painter;
 
-import static crazypants.enderio.machine.MachineRecipeInput.*;
+import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
 import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
@@ -20,25 +18,10 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
 
   public static int DEFAULT_ENERGY_PER_TASK = Config.painterEnergyPerTaskRF;
 
-  public static boolean isValidSourceDefault(ItemStack paintSource) {
-    if(paintSource == null) {
-      return false;
-    }
-    Block block = Util.getBlockFromItemId(paintSource);
-    if(block == null || block instanceof IPaintedBlock) {
-      return false;
-    }
-    if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
-      return false;
-    }
-    
-    return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock()) || block == Blocks.glass;
-  }
-
   protected final Block[] validTargets;
 
   protected BasicPainterTemplate(Block... validTargetBlocks) {
-    this.validTargets = validTargetBlocks;
+    validTargets = validTargetBlocks;
   }
 
   @Override
@@ -91,7 +74,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   public boolean isValidPaintSource(ItemStack paintSource) {
-    return isValidSourceDefault(paintSource);
+    return PaintSourceValidator.instance.isValidSourceDefault(paintSource);
   }
 
   public boolean isValidTarget(ItemStack target) {
