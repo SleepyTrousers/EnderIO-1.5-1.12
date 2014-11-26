@@ -237,6 +237,19 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     return 0; // need to do custom dropping to maintain source metadata
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      }
+    }
+    return super.colorMultiplier(world, x, y, z);
+  }
+
   public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {

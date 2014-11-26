@@ -263,6 +263,19 @@ public class BlockPaintedFence extends BlockFence implements ITileEntityProvider
     return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileEntityPaintedBlock) {
+      TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
+      if(tef.getSourceBlock() != null) {
+        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+      }
+    }
+    return super.colorMultiplier(world, x, y, z);
+  }
+
   public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
