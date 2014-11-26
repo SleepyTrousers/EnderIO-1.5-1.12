@@ -32,6 +32,13 @@ public class NEIEnderIOConfig implements IConfigureNEI {
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedCarpet)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedSlab)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedFence)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedFenceGate)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedGlowstone)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedStair)));
+    API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedWall)));
     API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedDoubleSlab)));
 
     if(!Config.photovoltaicCellEnabled) {

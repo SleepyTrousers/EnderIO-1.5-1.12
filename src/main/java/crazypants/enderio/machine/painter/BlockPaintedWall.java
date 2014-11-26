@@ -24,7 +24,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -43,7 +42,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
 
   public BlockPaintedWall() {
     super(Blocks.cobblestone);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(null);
     setBlockName(ModObject.blockPaintedWall.unlocalisedName);
   }
 
@@ -98,7 +97,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);

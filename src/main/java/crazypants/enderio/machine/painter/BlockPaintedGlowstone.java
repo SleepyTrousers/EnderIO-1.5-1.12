@@ -26,16 +26,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.util.Lang;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockPaintedGlowstone extends Block implements ITileEntityProvider, IPaintedBlock, IFacade {
    
@@ -53,7 +52,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
 
   protected BlockPaintedGlowstone() {
     super(Material.glass);
-    setCreativeTab(EnderIOTab.tabEnderIO);
+    setCreativeTab(null);
     setBlockName(ModObject.blockPaintedGlowstone.unlocalisedName);
     setStepSound(soundTypeGlass);
     setHardness(0.3F);
@@ -124,7 +123,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
           double d0 = x + (j1 + 0.5D) / b0;
           double d1 = y + (k1 + 0.5D) / b0;
           double d2 = z + (l1 + 0.5D) / b0;
-          int i2 = this.rand.nextInt(6);
+          int i2 = rand.nextInt(6);
           EntityDiggingFX fx = new EntityDiggingFX(world, d0, d1, d2, d0 - x - 0.5D,
               d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0).applyColourMultiplier(x, y, z);
           fx.setParticleIcon(tex);
