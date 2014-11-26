@@ -151,6 +151,9 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
       if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
         return false;
       }
+      if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {
+        return true;
+      }
       return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
     }
     

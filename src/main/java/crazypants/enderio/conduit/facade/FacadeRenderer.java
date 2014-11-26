@@ -56,6 +56,11 @@ public class FacadeRenderer implements IItemRenderer {
       // Render the facade block
 
       RenderUtil.bindBlockTexture();
+      if(!block.isOpaqueCube()) {
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      }
+
       if("appeng.block.solids.BlockSkyStone".equals(block.getClass().getName())) {
         //Yes, this is a horrible hack, but stumped as to why it is rendered invisible if this isn't done.
         renderBlocks.setOverrideBlockTexture(block.getIcon(0, PainterUtil.getSourceBlockMetadata(item)));
