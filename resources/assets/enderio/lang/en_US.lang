@@ -786,7 +786,7 @@ enderio.gui.conduit.fluid.filter=Filter
 enderio.gui.conduit.gas.autoExtract=Auto Extract
 
 //Enchants
-enchantment.enderio.soulBound=Soul Bound
+enchantment.enderio.soulBound=Soulbound
 
 //Configuration
 enderio.config.title=Ender IO Configuration

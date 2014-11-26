@@ -12,8 +12,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.config.Config;
 
@@ -48,8 +50,15 @@ public class EnchantmentSoulBound extends Enchantment {
     return 1;
   }
 
-  @SubscribeEvent
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
   public void onPlayerDeath(PlayerDropsEvent evt) {
+    if(evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
+      return;
+    }
+    if(evt.entityPlayer.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
+      return;
+    }
+
     ListIterator<EntityItem> iter = evt.drops.listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
@@ -67,7 +76,10 @@ public class EnchantmentSoulBound extends Enchantment {
     if(!evt.wasDeath) {
       return;
     }
-    if(evt.original == null || evt.entityPlayer == null) {
+    if(evt.original == null || evt.entityPlayer == null || evt.entityPlayer instanceof FakePlayer) {
+      return;
+    }
+    if(evt.entityPlayer.worldObj.getGameRules().getGameRuleBooleanValue("keepInventory")) {
       return;
     }
     for (int i = 0; i < evt.original.inventory.mainInventory.length; i++) {
