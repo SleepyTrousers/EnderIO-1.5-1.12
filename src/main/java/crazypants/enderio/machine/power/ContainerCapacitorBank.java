@@ -50,12 +50,12 @@ public class ContainerCapacitorBank extends Container {
     // add players inventory
     for (int i = 0; i < 3; ++i) {
       for (int j = 0; j < 9; ++j) {
-        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, + armorOffset + 8 + j * 18, 84 + i * 18));
+        addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, +armorOffset + 8 + j * 18, 84 + i * 18));
       }
     }
 
     for (int i = 0; i < 9; ++i) {
-      addSlotToContainer(new Slot(playerInv, i, + armorOffset + 8 + i * 18, 142));
+      addSlotToContainer(new Slot(playerInv, i, +armorOffset + 8 + i * 18, 142));
     }
 
     //armor slots
@@ -108,8 +108,10 @@ public class ContainerCapacitorBank extends Container {
 
       if(slotIndex < 4) {
         // merge from machine input slots to inventory
-        if(!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
-          return null;
+        if(!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)) {
+          if(!mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
+            return null;
+          }
         }
 
       } else {
@@ -147,6 +149,21 @@ public class ContainerCapacitorBank extends Container {
     }
 
     return copystack;
+  }
+
+  private boolean mergeItemStackIntoArmor(EntityPlayer entityPlayer, ItemStack origStack, int slotIndex) {
+    if(origStack == null || !(origStack.getItem() instanceof ItemArmor)) {
+      return false;
+    }
+    ItemArmor armor = (ItemArmor) origStack.getItem();
+    int index = 3 - armor.armorType;
+    ItemStack[] ai = entityPlayer.inventory.armorInventory;
+    if(ai[index] == null) {
+      ai[index] = origStack.copy();
+      origStack.stackSize = 0;
+      return true;
+    }
+    return false;
   }
 
 }
