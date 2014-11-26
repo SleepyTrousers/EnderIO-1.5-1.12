@@ -11,11 +11,11 @@ for (int i = 0; i < level; i++) {
 <enchaterRecipes>
 
   <enchantment name="enchantment.protect.all" costPerLevel="1">
-    <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="6"/> 
+    <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="6" number="16"/> 
   </enchantment>
 
   <enchantment name="enchantment.protect.fire" costPerLevel="2">
-    <itemStack modID="minecraft" itemName="blaze_powder"/>
+    <itemStack modID="minecraft" itemName="blaze_powder" number="16"/>
   </enchantment>
 
   <enchantment name="enchantment.protect.fall" costPerLevel="2">
@@ -23,11 +23,11 @@ for (int i = 0; i < level; i++) {
   </enchantment>
 
   <enchantment name="enchantment.protect.explosion" costPerLevel="2">
-    <itemStack modID="minecraft" itemName="gunpowder"/>
+    <itemStack modID="minecraft" itemName="gunpowder" number="16"/>
   </enchantment>
 
   <enchantment name="enchantment.protect.projectile" costPerLevel="2">
-    <itemStack modID="minecraft" itemName="arrow"/>
+    <itemStack modID="minecraft" itemName="arrow" number="16"/>
   </enchantment>
 
   <enchantment name="enchantment.oxygen" costPerLevel="4">
@@ -43,15 +43,15 @@ for (int i = 0; i < level; i++) {
   </enchantment>
 
   <enchantment name="enchantment.damage.all" costPerLevel="1">
-    <itemStack modID="minecraft" itemName="quartz"/>
+    <itemStack modID="minecraft" itemName="quartz" number="12"/>
   </enchantment>
 
   <enchantment name="enchantment.damage.undead" costPerLevel="2">
-    <itemStack modID="minecraft" itemName="rotten_flesh"/>
+    <itemStack modID="minecraft" itemName="rotten_flesh" number="12"/>
   </enchantment>
 
   <enchantment name="enchantment.damage.arthropods" costPerLevel="2">
-    <itemStack modID="minecraft" itemName="spider_eye"/>
+    <itemStack modID="minecraft" itemName="spider_eye" number="12"/>
   </enchantment>
 
   <enchantment name="enchantment.knockback" costPerLevel="2">
@@ -59,7 +59,7 @@ for (int i = 0; i < level; i++) {
   </enchantment>
 
   <enchantment name="enchantment.fire" costPerLevel="4">
-    <itemStack modID="minecraft" itemName="blaze_rod"/>
+    <itemStack modID="minecraft" itemName="blaze_rod" number="8"/>
   </enchantment>
 
   <enchantment name="enchantment.lootBonus" costPerLevel="4">  
@@ -67,7 +67,7 @@ for (int i = 0; i < level; i++) {
   </enchantment>
 
   <enchantment name="enchantment.digging" costPerLevel="1">
-    <itemStack modID="minecraft" itemName="redstone"/>
+    <itemStack modID="minecraft" itemName="redstone" number="12"/>
   </enchantment>
 
   <enchantment name="enchantment.untouching" costPerLevel="26">
@@ -79,11 +79,11 @@ for (int i = 0; i < level; i++) {
   </enchantment>
 
   <enchantment name="enchantment.lootBonusDigger" costPerLevel="4">
-    <itemStack modID="minecraft" itemName="emerald"/>
+    <itemStack modID="minecraft" itemName="emerald" number="4"/>
   </enchantment>
 
   <enchantment name="enchantment.arrowDamage" costPerLevel="1">
-    <itemStack modID="minecraft" itemName="flint"/>
+    <itemStack modID="minecraft" itemName="flint" number="12"/>
   </enchantment>
 
   <enchantment name="enchantment.arrowKnockback" costPerLevel="4">

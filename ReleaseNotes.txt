@@ -15,7 +15,9 @@ Changes
   whitelisted by default. See PainterPaintSources_Core.xml for details.
 - Added Thaumcraft Warded blocks to the default teleport black list
 - Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC
-- #1098 Added Soulbound enchantment. Items with this enchantment will not be dropped when the player dies  
+- #1098 Added Soulbound enchantment. Items with this enchantment will not be dropped when the player dies
+- #1272 Number of items required for each enchantment level in the Enchanter can now be set in the config  
+  
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

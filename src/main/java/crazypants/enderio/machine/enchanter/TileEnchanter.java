@@ -1,13 +1,9 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.util.Map;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +12,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.enderface.TileEnderIO;
 
 public class TileEnchanter extends TileEntityEio implements ISidedInventory {
 
@@ -167,6 +162,10 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if(ench == null) {
       return null;
     }
+    int level = ench.getLevelForStackSize(inv[1].stackSize);
+    if(level <= 0) {
+      return null;
+    }
     return ench;
   }
   
@@ -175,7 +174,11 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
     if(rec == null || inv[1] == null) {
       return null;
     }
-    return new EnchantmentData(rec.getEnchantment(), Math.min(inv[1].stackSize, rec.getEnchantment().getMaxLevel()));
+    int level = rec.getLevelForStackSize(inv[1].stackSize);
+    if(level <= 0) {
+      return null;
+    }
+    return new EnchantmentData(rec.getEnchantment(), level);
   }
 
   //  public static int getEnchantmentCost(EnchantmentData enchData) {
@@ -235,7 +238,7 @@ public class TileEnchanter extends TileEntityEio implements ISidedInventory {
       return 0;
     }
     Enchantment enchantment = currentEnchantment.getEnchantment();
-    int level = item.stackSize;
+    int level = currentEnchantment.getLevelForStackSize(item.stackSize);
     return getEnchantmentCost(currentEnchantment, level);
   }
   

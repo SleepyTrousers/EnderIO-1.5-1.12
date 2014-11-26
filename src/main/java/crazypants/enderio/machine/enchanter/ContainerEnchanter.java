@@ -1,19 +1,11 @@
 package crazypants.enderio.machine.enchanter;
 
-import java.util.Map;
-
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerRepair;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ContainerEnchanter extends Container {
@@ -69,18 +61,25 @@ public class ContainerEnchanter extends Container {
         return false;
       }
 
+      @Override
       public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
         if(!player.capabilities.isCreativeMode) {
           player.addExperienceLevel(-enchanter.getCurrentEnchantmentCost());
         }
         EnchantmentData enchData = enchanter.getCurrentEnchantmentData();
+        EnchanterRecipe recipe = enchanter.getCurrentEnchantmentRecipe();
         ItemStack curStack = enchanter.getStackInSlot(1);
-        if(enchData == null || curStack == null || enchData.enchantmentLevel >= curStack.stackSize) {
+        if(recipe == null || enchData == null || curStack == null || enchData.enchantmentLevel >= curStack.stackSize) {
           enchanter.setInventorySlotContents(1, (ItemStack) null);
         } else {
+
           curStack = curStack.copy();
-          curStack.stackSize -= enchData.enchantmentLevel;
-          enchanter.setInventorySlotContents(1, curStack);
+          curStack.stackSize -= recipe.getItemsPerLevel() * enchData.enchantmentLevel;
+          if(curStack.stackSize > 0) {
+            enchanter.setInventorySlotContents(1, curStack);
+          } else {
+            enchanter.setInventorySlotContents(1, null);
+          }
           enchanter.markDirty();
         }
 
@@ -134,9 +133,10 @@ public class ContainerEnchanter extends Container {
     enchanter.setOutput(output);
   }
 
+  @Override
   public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
     ItemStack copyStack = null;
-    Slot slot = (Slot) this.inventorySlots.get(par2);
+    Slot slot = (Slot) inventorySlots.get(par2);
 
     if(slot != null && slot.getHasStack()) {
       ItemStack origStack = slot.getStack();
