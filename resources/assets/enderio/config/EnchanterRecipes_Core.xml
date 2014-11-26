@@ -106,6 +106,10 @@ for (int i = 0; i < level; i++) {
     <itemStack modID="minecraft" itemName="fish"/>
   </enchantment>
   
+  <enchantment name="enchantment.enderio.soulBound" costPerLevel="21">
+    <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="8"/>
+  </enchantment>
+  
   <enchantment name="enchantment.enderzoo.witherArrow" costPerLevel="6">
     <itemStack modID="EnderZoo" itemName="witheringDust"/>
   </enchantment>

@@ -14,7 +14,8 @@ Changes
 - Added white/black lists for paint sources for the Painter. Thaumcraft silverwood/great wood planks 
   whitelisted by default. See PainterPaintSources_Core.xml for details.
 - Added Thaumcraft Warded blocks to the default teleport black list
-- Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC  
+- Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC
+- #1098 Added Soul Bound enchantment. Items with this enchantment will not be dropped when the player dies  
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

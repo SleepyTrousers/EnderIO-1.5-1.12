@@ -64,6 +64,7 @@ public final class Config {
   public static final Section sectionLootConfig = new Section("Loot Config", "lootconfig");
   public static final Section sectionMobConfig = new Section("Mob Config", "mobconfig");
   public static final Section sectionRailConfig = new Section("Rail", "railconfig");
+  public static final Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final Section sectionMisc = new Section("Misc", "misc");
 
   public static final double DEFAULT_CONDUIT_SCALE = 0.6;
@@ -379,6 +380,8 @@ public final class Config {
   public static boolean clearGlassSameTexture = false;
   public static boolean clearGlassConnectToFusedQuartz = false;
 
+  public static int enchantmentSoulBoundWeight = 1;
+  public static boolean enchantmentSoulBoundEnabled = true;
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -1012,6 +1015,12 @@ public final class Config {
     
     clearGlassSameTexture = config.getBoolean("clearGlassSameTexture", sectionMisc.name, clearGlassSameTexture, "If true, quite clear glass will use the fused quartz border texture for the block instead of the white border.");
     clearGlassConnectToFusedQuartz = config.getBoolean("clearGlassConnectToFusedQuartz", sectionMisc.name, clearGlassConnectToFusedQuartz, "If true, quite clear glass will connect textures with fused quartz.");
+
+    enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
+        "If false the soul bound enchantment will not be available");
+    enchantmentSoulBoundWeight = config.get("enchantmentSoulBoundWeight", sectionEnchantments.name, enchantmentSoulBoundWeight,
+        "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
+
   }
 
   private Config() {
