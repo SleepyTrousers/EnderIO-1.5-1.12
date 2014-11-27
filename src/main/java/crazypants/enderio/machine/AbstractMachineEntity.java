@@ -273,6 +273,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return VecmathUtil.clamp(Math.round(scale * ((float)storedEnergyRF / getMaxEnergyStored())), 0, scale);
   }
 
+  @Override
   public int getEnergyStored() {
     return storedEnergyRF;
   }
@@ -527,6 +528,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     readCommon(nbtRoot);
   }
 
+  /**
+   * Read state common to both block and item
+   */
   public void readCommon(NBTTagCompound nbtRoot) {
 
     setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
@@ -592,6 +596,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     writeCommon(nbtRoot);
   }
 
+  /**
+   * Write state common to both block and item
+   */
   public void writeCommon(NBTTagCompound nbtRoot) {
     nbtRoot.setInteger("storedEnergyRF", storedEnergyRF);
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());

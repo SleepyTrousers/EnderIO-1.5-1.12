@@ -1,13 +1,10 @@
 package crazypants.enderio.machine.transceiver;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -19,23 +16,20 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
 import crazypants.util.FluidUtil;
 import crazypants.util.ItemUtil;
-import crazypants.vecmath.VecmathUtil;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler {
 
@@ -59,6 +53,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private boolean inFluidFill = false;
   private boolean inGetTankInfo = false;
 
+  private ItemFilter sendItemFilter;
+  private ItemFilter recieveItemFilter;
+
   public TileTransceiver() {
     super(new SlotDefinition(8, 8, 0));
     for (ChannelType type : ChannelType.values()) {
@@ -67,6 +64,9 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
     currentTask = new ContinuousTask(Config.transceiverUpkeepCostRF);
     railController = new EnderRailController(this);
+
+    sendItemFilter = new ItemFilter(true);
+    recieveItemFilter = new ItemFilter(true);
   }
 
   public EnderRailController getRailController() {
@@ -156,15 +156,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   @Override
-  protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
-    return true;
-  }
-
-  @Override
   public ICapacitor getCapacitor() {
     return capacitor;
   }
 
+  @Override
   public int getPowerUsePerTick() {
     return Config.transceiverUpkeepCostRF;
   }
@@ -242,6 +238,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     super.readCommon(nbtRoot);
     readChannels(nbtRoot, sendChannels, "sendChannels");
     readChannels(nbtRoot, recieveChannels, "recieveChannels");
+
+    if(nbtRoot.hasKey("sendItemFilter")) {
+      NBTTagCompound itemRoot = nbtRoot.getCompoundTag("sendItemFilter");
+      sendItemFilter = (ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot);
+    }
+    if(nbtRoot.hasKey("recieveItemFilter")) {
+      NBTTagCompound itemRoot = nbtRoot.getCompoundTag("recieveItemFilter");
+      recieveItemFilter = (ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot);
+    }
   }
 
   static void readChannels(NBTTagCompound nbtRoot, EnumMap<ChannelType, List<Channel>> readInto, String key) {
@@ -273,6 +278,17 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
     channelTags = createTagList(recieveChannels);
     nbtRoot.setTag("recieveChannels", channelTags);
+
+    if(sendItemFilter != null) {
+      NBTTagCompound itemRoot = new NBTTagCompound();
+      FilterRegister.writeFilterToNbt(sendItemFilter, itemRoot);
+      nbtRoot.setTag("sendItemFilter", itemRoot);
+    }
+    if(recieveItemFilter != null) {
+      NBTTagCompound itemRoot = new NBTTagCompound();
+      FilterRegister.writeFilterToNbt(recieveItemFilter, itemRoot);
+      nbtRoot.setTag("recieveItemFilter", itemRoot);
+    }
   }
 
   static NBTTagList createTagList(EnumMap<ChannelType, List<Channel>> chans) {
@@ -489,6 +505,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   //---------------- item handling
+
+
   private void processItems() {
     List<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);
     if(!sendItemChannels.isEmpty()) {
@@ -501,6 +519,43 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
     }
   }
 
+  public ItemFilter getSendItemFilter() {
+    return sendItemFilter;
+  }
+
+  public ItemFilter getReceiveItemFilter() {
+    return recieveItemFilter;
+  }
+
+  public ItemFilter getRecieveItemFilter() {
+    return recieveItemFilter;
+  }
+
+  public void setRecieveItemFilter(ItemFilter recieveItemFilter) {
+    this.recieveItemFilter = recieveItemFilter;
+  }
+
+  public void setSendItemFilter(ItemFilter sendItemFilter) {
+    this.sendItemFilter = sendItemFilter;
+  }
+
+  @Override
+  protected boolean isMachineItemValidForSlot(int slot, ItemStack itemstack) {
+    if(itemstack == null) {
+      return false;
+    }
+    if(slotDefinition.isInputSlot(slot)) {
+      if(!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
+        return false;
+      }
+    } else if(slotDefinition.isOutputSlot(slot)) {
+      if(!getReceiveItemFilter().doesItemPassFilter(null, itemstack)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   @Override
   public boolean canInsertItem(int slot, ItemStack itemstack, int j) {
     if(itemstack == null) {
@@ -509,6 +564,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
     //only allow 1 stack per type
     if(slotDefinition.isInputSlot(slot)) {
+
+      List<Channel> chans = getSendChannels().get(ChannelType.ITEM);
+      if(chans == null || chans.size() == 0) {
+        return false;
+      }
+      if(!getSendItemFilter().doesItemPassFilter(null, itemstack)) {
+        return false;
+      }
+
       for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
         if(i != slot) {
           if(ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {
@@ -517,6 +581,10 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
         }
       }
     } else if(slotDefinition.isOutputSlot(slot)) {
+
+      if(!getRecieveItemFilter().doesItemPassFilter(null, itemstack)) {
+        return false;
+      }
       for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
         if(i != slot) {
           if(ItemUtil.areStacksEqual(itemstack, getStackInSlot(i))) {

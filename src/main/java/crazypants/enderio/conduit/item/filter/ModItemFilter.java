@@ -1,18 +1,13 @@
 package crazypants.enderio.conduit.item.filter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 
 public class ModItemFilter implements IItemFilter {
@@ -93,7 +88,7 @@ public class ModItemFilter implements IItemFilter {
   }
 
   @Override
-  public List<Slot> getSlots() {
+  public List<Slot> getSlots(int xOffset, int yOffset) {
     return Collections.emptyList();
   }
 

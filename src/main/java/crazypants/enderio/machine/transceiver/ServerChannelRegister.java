@@ -140,9 +140,9 @@ public class ServerChannelRegister extends ChannelRegister {
   public void dergister(TileTransceiver transceiver) {
     transceivers.remove(transceiver);
   }
-  
+
   @Override
-  public void reset() {    
+  public void reset() {
     super.reset();
     transceivers.clear();
     iterators.clear();
@@ -182,7 +182,7 @@ public class ServerChannelRegister extends ChannelRegister {
         }
       }
     }
-  }  
+  }
 
   //Fluid
 
@@ -235,6 +235,9 @@ public class ServerChannelRegister extends ChannelRegister {
     if(!from.hasPower()) {
       return;
     }
+    if(!from.getSendItemFilter().doesItemPassFilter(null, contents)) {
+      return;
+    }
     for (Channel channel : channels) {
       RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
       for (TileTransceiver trans : iter) {
@@ -250,9 +253,12 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private ItemStack sendItem(TileTransceiver from, int slot, ItemStack contents, TileTransceiver to) {
     SlotDefinition sd = to.getSlotDefinition();
+    if(!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
+      return contents;
+    }
     //try merging into existing stacks    
-    
-    boolean sendComplete = false;     // Only allow 1 stack per item type
+
+    boolean sendComplete = false; // Only allow 1 stack per item type
     for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot && !sendComplete; i++) {
       ItemStack existing = to.getStackInSlot(i);
       if(ItemUtil.areStacksEqual(existing, contents)) {

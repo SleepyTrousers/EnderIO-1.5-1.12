@@ -81,7 +81,7 @@ public abstract class AbstractMachineContainer extends Container {
 
     SlotDefinition slotDef = tileEntity.getSlotDefinition();
 
-    int startPlayerSlot = slotDef.getNumSlots();
+    int startPlayerSlot = getIndexOfFirstPlayerInvSlot(slotDef);
     int endPlayerSlot = startPlayerSlot + 26;
     int startHotBarSlot = endPlayerSlot + 1;
     int endHotBarSlot = startHotBarSlot + 9;
@@ -141,6 +141,10 @@ public abstract class AbstractMachineContainer extends Container {
     }
 
     return copystack;
+  }
+
+  protected int getIndexOfFirstPlayerInvSlot(SlotDefinition slotDef) {
+    return slotDef.getNumSlots();
   }
 
   /**

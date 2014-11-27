@@ -1,8 +1,11 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
@@ -11,18 +14,9 @@ import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
-import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
-import crazypants.util.Lang;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiTransceiver extends GuiMachineBase {
 
@@ -41,12 +35,14 @@ public class GuiTransceiver extends GuiMachineBase {
 
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te));
-    this.entity = te;
+    entity = te;
     container = (ContainerTransceiver) inventorySlots;
     transceiver = te;
 
     generalTab = new GeneralTab(this); 
     tabs.add(generalTab);
+    FilterTab filterTab = new FilterTab(this);
+    tabs.add(filterTab);
     tabs.add(new ChannelTab(this, ChannelType.POWER));
     tabs.add(new ChannelTab(this, ChannelType.ITEM));
     tabs.add(new ChannelTab(this, ChannelType.FLUID));  
@@ -55,6 +51,7 @@ public class GuiTransceiver extends GuiMachineBase {
     }
   }
 
+  @Override
   protected void updatePowerBarTooltip(List<String> text) {
     generalTab.updatePowerBarTooltip(text);    
   }
@@ -66,7 +63,7 @@ public class GuiTransceiver extends GuiMachineBase {
 
   @Override
   public int getXSize() {
-    return 256;
+    return ContainerTransceiver.GUI_WIDTH;
   }
 
   @Override
@@ -88,7 +85,7 @@ public class GuiTransceiver extends GuiMachineBase {
           return;
         }
       }
-      this.mc.thePlayer.closeScreen();
+      mc.thePlayer.closeScreen();
     }
 
     for (int i = 0; i < tabs.size(); i++) {
@@ -103,10 +100,13 @@ public class GuiTransceiver extends GuiMachineBase {
   public void initGui() {
     super.initGui();
     for (int i = 0; i < tabs.size(); i++) {
+      if(i != activeTab) {
+        tabs.get(i).deactivate();
+      }
+    }
+    for (int i = 0; i < tabs.size(); i++) {
       if(i == activeTab) {
         tabs.get(i).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
-      } else {
-        tabs.get(i).deactivate();
       }
     }
     configB.visible = activeTab == 0;
@@ -217,7 +217,7 @@ public class GuiTransceiver extends GuiMachineBase {
     tes.draw();
 
     RenderUtil.bindTexture("enderio:textures/gui/transceiver.png");
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

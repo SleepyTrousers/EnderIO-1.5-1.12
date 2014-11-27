@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit.item.filter;
 
-import java.io.FilterInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -167,7 +166,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   public void setMatchNBT(boolean matchNbt) {
-    this.matchNBT = matchNbt;
+    matchNBT = matchNbt;
   }
 
   public boolean isUseOreDict() {
@@ -312,17 +311,17 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public List<Slot> getSlots() {
+  public List<Slot> getSlots(int xOffset, int yOffset) {
     List<Slot> result = new ArrayList<Slot>();
     
-    int topY = 69;
-    int leftX = 33;
+    int topY = yOffset;
+    int leftX = xOffset;
     int index = 0;    
     int numRows = isAdvanced ? 2 : 1;
     for (int row = 0; row < numRows; ++row) {
       for (int col = 0; col < 5; ++col) {
         int x = leftX + col * 18;
-        int y = topY + row * 18;        
+        int y = topY + row * 20;
         result.add(new TemplateSlot(this, index, x, y));        
         index++;
       }

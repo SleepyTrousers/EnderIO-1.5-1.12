@@ -5,10 +5,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
@@ -42,12 +43,14 @@ public class GeneralTab implements ITabPanel {
 
   @Override
   public void onGuiInit(int x, int y, int width, int height) {
-    container.setPlayerInventory(true);
+    container.setPlayerInventoryVisible(true);
+    container.setBufferSlotsVisible(true);
   }
 
   @Override
   public void deactivate() {   
-    container.setPlayerInventory(false);
+    container.setPlayerInventoryVisible(false);
+    container.setBufferSlotsVisible(false);
   }
 
   @Override

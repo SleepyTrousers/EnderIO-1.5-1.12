@@ -79,7 +79,7 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   @Override
-  public List<Slot> getSlots() {
+  public List<Slot> getSlots(int xOffset, int yOffset) {
     return Collections.emptyList();
   }
 
@@ -120,7 +120,7 @@ public class ExistingItemFilter implements IItemFilter {
   }
 
   public void setMatchNBT(boolean matchNbt) {
-    this.matchNBT = matchNbt;
+    matchNBT = matchNbt;
   }
 
   public boolean isUseOreDict() {

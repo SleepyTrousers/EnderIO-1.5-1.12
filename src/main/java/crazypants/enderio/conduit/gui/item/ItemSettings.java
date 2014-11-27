@@ -263,9 +263,10 @@ public class ItemSettings extends BaseSettingsPanel {
   private IItemFilterGui getFilterGui(IItemFilter filter, boolean isInput) {
     //TODO: move to a factory
     if(filter instanceof ItemFilter) {
-      return new BasicItemFilterGui(gui, itemConduit, isInput);
+      ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
+      return new BasicItemFilterGui(gui, cont, !isInput);
     } else if(filter instanceof ExistingItemFilter) {
-      return new ExistingItemFilterGui(gui, itemConduit, isInput);      
+      return new ExistingItemFilterGui(gui, itemConduit, isInput);
     } else if(filter instanceof ModItemFilter) {
       return new ModItemFilterGui(gui, itemConduit, isInput);
     }

@@ -21,7 +21,7 @@ public interface IItemFilter {
 
   boolean isSticky();
 
-  List<Slot> getSlots();
+  List<Slot> getSlots(int xOffset, int yOffset);
 
   int getSlotCount();
   
