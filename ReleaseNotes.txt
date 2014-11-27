@@ -18,6 +18,7 @@ Changes
 - #1098 Added Soulbound enchantment. Items with this enchantment will not be dropped when the player dies
 - #1272 Number of items required for each enchantment level in the Enchanter can now be set in the config  
 - #1011 Shift-clicking armor from a Capacitor Bank's charge slots will re-equip the item if possible   
+- Added config option to disable Dimensional Transceiver
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

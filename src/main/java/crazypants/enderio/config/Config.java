@@ -84,6 +84,7 @@ public final class Config {
 
   public static int numConduitsPerRecipe = 8;
 
+  public static boolean transceiverEnabled = true;
   public static double transceiverEnergyLoss = 0.1;
   public static int transceiverUpkeepCostRF = 10;
   public static int transceiverBucketTransmissionCostRF = 100;
@@ -479,6 +480,10 @@ public final class Config {
         "If set to false reservoirs will not be craftable.")
         .getBoolean(reservoirEnabled);
     
+    transceiverEnabled = config.get(sectionItems.name, "transceiverEnabled", transceiverEnabled,
+        "If set to false: Dimensional Transceivers will not be craftable.")
+        .getBoolean(transceiverEnabled);
+
     maxPhotovoltaicOutputRF = config.get(sectionPower.name, "maxPhotovoltaicOutputRF", maxPhotovoltaicOutputRF,
         "Maximum output in RF/t of the Photovoltaic Panels.").getInt(maxPhotovoltaicOutputRF);
     maxPhotovoltaicAdvancedOutputRF = config.get(sectionPower.name, "maxPhotovoltaicAdvancedOutputRF", maxPhotovoltaicAdvancedOutputRF,

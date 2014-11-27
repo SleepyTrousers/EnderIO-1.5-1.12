@@ -50,8 +50,11 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     if(!Config.reinforcedObsidianEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockReinforcedObsidian));
     }
-    if(!Config.enderRailEnabled) {
+    if((!Config.transceiverEnabled || !Config.enderRailEnabled) && EnderIO.blockEnderRail != null) {
       API.hideItem(new ItemStack(EnderIO.blockEnderRail));
+    }
+    if(!Config.transceiverEnabled && EnderIO.blockTransceiver != null) {
+      API.hideItem(new ItemStack(EnderIO.blockTransceiver));
     }
     if(!Config.reservoirEnabled) {
       API.hideItem(new ItemStack(EnderIO.blockReservoir));

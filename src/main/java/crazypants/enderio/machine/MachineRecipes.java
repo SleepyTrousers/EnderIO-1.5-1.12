@@ -1,14 +1,10 @@
 package crazypants.enderio.machine;
 
-import static crazypants.enderio.EnderIO.*;
-
-import java.util.ArrayList;
-
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
@@ -160,15 +156,17 @@ public class MachineRecipes {
     }
     GameRegistry.addShapedRecipe(farm, "ehe", "eme", "pzp", 'h', Items.diamond_hoe, 'm', machineChassi, 'e', electricSteel, 'z', zombieController, 'p', pulCry);
 
-    //transceiver
-    ItemStack transceiver = new ItemStack(EnderIO.blockTransceiver, 1, 0);    
-    if(Config.transceiverUseEasyRecipe) {
-      GameRegistry
-          .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
-    } else {
-      GameRegistry
-          .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', electricSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);
-      GameRegistry.addShapelessRecipe(transceiver, new ItemStack(EnderIO.blockHyperCube, 1, 0));
+    if(Config.transceiverEnabled) {
+      //transceiver
+      ItemStack transceiver = new ItemStack(EnderIO.blockTransceiver, 1, 0);
+      if(Config.transceiverUseEasyRecipe) {
+        GameRegistry
+            .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', obsidian, 'e', Items.ender_eye, 'c', enderCapacitor, 'p', phasedGold, 'd', Items.diamond);
+      } else {
+        GameRegistry
+            .addShapedRecipe(transceiver, "oeo", "pdp", "oco", 'o', electricSteel, 'e', enderRes, 'c', enderCapacitor, 'p', fusedQuartz, 'd', endCry);
+        GameRegistry.addShapelessRecipe(transceiver, new ItemStack(EnderIO.blockHyperCube, 1, 0));
+      }
     }
 
     //solar panel
@@ -244,12 +242,12 @@ public class MachineRecipes {
     ClearConfigRecipe inst = new ClearConfigRecipe();
     MinecraftForge.EVENT_BUS.register(inst);
     GameRegistry.addRecipe(inst);
-    
+
     //wireless light
     ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC.ordinal());
     ItemStack poweredLampInv = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC_INV.ordinal());
-    ItemStack wirelessLamp =  new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS.ordinal());
-    ItemStack wirelessLampInv =  new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS_INV.ordinal());
+    ItemStack wirelessLamp = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS.ordinal());
+    ItemStack wirelessLampInv = new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS_INV.ordinal());
     GameRegistry.addShapelessRecipe(wirelessLamp, poweredLamp, enderRes);
     GameRegistry.addShapelessRecipe(wirelessLamp, wirelessLampInv, Blocks.redstone_torch);
     GameRegistry.addShapelessRecipe(wirelessLampInv, poweredLampInv, enderRes);

@@ -221,21 +221,21 @@ public class ClientProxy extends CommonProxy {
     BlockFarmStation.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new FarmingStationRenderer());
     ClientRegistry.bindTileEntitySpecialRenderer(TileFarmStation.class, new FarmingStationSpecialRenderer());
-    
+
     BlockSoulBinder.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
-    
+
     BlockAttractor.renderId = RenderingRegistry.getNextAvailableRenderId();
     AttractorRenderer attRen = new AttractorRenderer();
     RenderingRegistry.registerBlockHandler(attRen);
     ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAttractor), attRen);
-        
+
     SpawnGuardRenderer sgr = new SpawnGuardRenderer();
     BlockSpawnGuard.renderId = BlockAttractor.renderId;
     ClientRegistry.bindTileEntitySpecialRenderer(TileSpawnGuard.class, sgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
-    
+
     ExperienceObliskRenderer eor = new ExperienceObliskRenderer();
     BlockExperienceObelisk.renderId = BlockAttractor.renderId;
     ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
@@ -349,17 +349,19 @@ public class ClientProxy extends CommonProxy {
     HyperCubeRenderer hcr = new HyperCubeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileHyperCube.class, hcr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockHyperCube), hcr);
-    
-    TransceiverRenderer tr = new TransceiverRenderer();
-    ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
-    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTransceiver), tr);
+
+    if(Config.transceiverEnabled) {
+      TransceiverRenderer tr = new TransceiverRenderer();
+      ClientRegistry.bindTileEntitySpecialRenderer(TileTransceiver.class, tr);
+      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTransceiver), tr);
+    }
 
     new YetaWrenchOverlayRenderer(EnderIO.itemYetaWench);
     new ConduitProbeOverlayRenderer();
     if(Config.useSneakMouseWheelYetaWrench) {
       ToolTickHandler th = new ToolTickHandler();
       MinecraftForge.EVENT_BUS.register(th);
-      FMLCommonHandler.instance().bus().register(th);            
+      FMLCommonHandler.instance().bus().register(th);
     }
     MinecraftForge.EVENT_BUS.register(TravelController.instance);
     FMLCommonHandler.instance().bus().register(TravelController.instance);
@@ -399,7 +401,7 @@ public class ClientProxy extends CommonProxy {
         }
 
       });
-    }            
+    }
   }
 
   @Override
@@ -419,7 +421,7 @@ public class ClientProxy extends CommonProxy {
     }
     return super.getReachDistanceForPlayer(entityPlayer);
   }
-  
+
   @Override
   public void setInstantConfusionOnPlayer(EntityPlayer ent, int duration) {
     ent.addPotionEffect(new PotionEffect(Potion.confusion.getId(), duration, 1, true));

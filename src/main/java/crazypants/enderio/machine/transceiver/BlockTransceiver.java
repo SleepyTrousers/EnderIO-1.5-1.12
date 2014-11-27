@@ -11,9 +11,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
@@ -42,6 +42,9 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
   private BlockTransceiver() {
     super(ModObject.blockTransceiver, TileTransceiver.class);
+    if(!Config.transceiverEnabled) {
+      setCreativeTab(null);
+    }
   }
 
   @Override
