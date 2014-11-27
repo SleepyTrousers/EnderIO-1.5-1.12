@@ -126,8 +126,9 @@ public class TooltipAddera {
           if(showAdvancedTooltips()) {
             list.add(Lang.localize("coolant.tooltip.heading"));
             list.add(EnumChatFormatting.ITALIC + " "
-                + list.add(Lang.localize("fuel.tooltip.degreesPerBucket") + " "
-                    + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000)));
+                + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000) + " "
+                + Lang.localize("coolant.tooltip.degreesPerBucket")
+                );
           } else {
             addShowDetailsTooltip(list);
           }

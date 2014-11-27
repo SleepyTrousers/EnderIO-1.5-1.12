@@ -25,6 +25,7 @@ Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be
 - #1300 Farming Station won't take MFR Rubber trees
 - #1273 Farming Stations not accepting enough power to keep up
+- Fixed coolant tooltips
 
 
 ------------------------------------------------------

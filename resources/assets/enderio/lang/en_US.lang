@@ -122,8 +122,8 @@ enderio.fluid.millibucket.abr=mB
 enderio.fuel.tooltip.heading=Fuel Details
 enderio.fuel.tooltip.burnTime=burn time
 enderio.fluid.millibucketsTick=mB/t
-coolant.tooltip.heading=Coolant
-enderio.fuel.tooltip.degreesPerBucket=deg per bucket
+enderio.coolant.tooltip.heading=Coolant
+enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
 enderio.gas.gasTick=Gas/t
 
 
