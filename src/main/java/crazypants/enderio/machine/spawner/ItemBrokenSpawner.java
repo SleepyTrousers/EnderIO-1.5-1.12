@@ -24,7 +24,9 @@ public class ItemBrokenSpawner extends Item {
     "Zombie",
     "Spider",
     "CaveSpider",
-    "Blaze"
+      "Blaze",
+      "Enderman",
+      "Chicken"
   };
   
   public static String getMobTypeFromStack(ItemStack stack) {
@@ -57,7 +59,7 @@ public class ItemBrokenSpawner extends Item {
     setUnlocalizedName(ModObject.itemBrokenSpawner.unlocalisedName);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setMaxStackSize(1);  
+    setMaxStackSize(64);
   }
 
   @Override

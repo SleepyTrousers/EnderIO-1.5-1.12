@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.BlockMobSpawner;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -30,6 +33,7 @@ import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.Lang;
 import crazypants.util.Util;
@@ -66,6 +70,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
   public static BlockPoweredSpawner create() {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.unlocalisedName, new DummyRecipe());
+
+    PacketHandler.INSTANCE.registerMessage(PacketMode.class, PacketMode.class, PacketHandler.nextID(), Side.SERVER);
 
     //Ensure costs are loaded at startup
     PoweredSpawnerConfig.getInstance();
@@ -232,6 +238,22 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     return IWailaInfoProvider.BIT_DETAILED;
   }
 
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    super.getSubBlocks(item, tab, list);
+    list.add(createItemStackForMob("Enderman"));
+    list.add(createItemStackForMob("Chicken"));
+  }
+
+  protected ItemStack createItemStackForMob(String mob) {
+    ItemStack stack = new ItemStack(this);
+    stack.stackTagCompound = new NBTTagCompound();
+    stack.stackTagCompound.setBoolean("eio.abstractMachine", true);
+    writeMobTypeToNBT(stack.stackTagCompound, mob);
+    return stack;
+  }
+
   private static class DropInfo {
 
     BlockEvent.BreakEvent evt;
@@ -240,7 +262,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     DropInfo(BreakEvent evt, ItemStack stack) {
       super();
       this.evt = evt;
-      this.drop = stack;
+      drop = stack;
     }
 
     void doDrop() {

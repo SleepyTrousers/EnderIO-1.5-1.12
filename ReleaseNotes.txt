@@ -20,6 +20,8 @@ Changes
 - #1011 Shift-clicking armor from a Capacitor Bank's charge slots will re-equip the item if possible   
 - Added config option to disable Dimensional Transceiver
 - Added send/recieve item filters to the Dimensional Transceiver
+- Added 'Capture Mode' to powered spawners to allow automated filling of Soul Vials
+- Increased max stack size for Soul Vials and Broken Spawners to 64
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be

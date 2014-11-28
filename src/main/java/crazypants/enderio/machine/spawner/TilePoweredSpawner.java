@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.spawner;
 
-import java.lang.reflect.Field;
-
-import cpw.mods.fml.common.asm.transformers.AccessTransformer;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -23,7 +19,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.PowerHandlerUtil;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
@@ -44,44 +39,70 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public static final int MIN_PLAYER_DISTANCE = Config.poweredSpawnerMaxPlayerDistance;
   public static final boolean USE_VANILLA_SPAWN_CHECKS = Config.poweredSpawnerUseVanillaSpawChecks;
 
-  private final MobSpawnerBaseLogic logic = new SpawnerLogic();
+  private final SpawnerLogic logic = new SpawnerLogic();
 
   private static final String NULL_ENTITY_NAME = "None";
-  
+
   private ICapacitor capacitor;
 
+  private boolean isSpawnMode = true;
+
   public TilePoweredSpawner() {
-    super(new SlotDefinition(0, 0));
+    super(new SlotDefinition(1, 1, 1));
     logic.setEntityName(NULL_ENTITY_NAME);
     capacitor = CAP_ONE;
+  }
+
+  public boolean isSpawnMode() {
+    return isSpawnMode;
+  }
+
+  public void setSpawnMode(boolean isSpawnMode) {
+    if(isSpawnMode != this.isSpawnMode) {
+      currentTask = null;
+    }
+    this.isSpawnMode = isSpawnMode;
   }
 
   @Override
   protected void taskComplete() {
     super.taskComplete();
-    logic.spawnDelay = 0;
+    if(isSpawnMode) {
+      logic.spawnDelay = 0;
+    } else {
+      if(getStackInSlot(0) == null || getStackInSlot(1) != null) {
+        return;
+      }
+      Entity ent = logic.createEntity();
+      if(ent == null) {
+        return;
+      }
+      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntity(ent);
+      decrStackSize(0, 1);
+      setInventorySlotContents(1, res);
+    }
   }
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;    
+    this.capacitorType = capacitorType;
     ICapacitor refCap;
     switch (capacitorType) {
     case BASIC_CAPACITOR:
-      refCap = CAP_ONE;      
+      refCap = CAP_ONE;
       break;
     case ACTIVATED_CAPACITOR:
-      refCap = CAP_TWO;     
+      refCap = CAP_TWO;
       break;
     case ENDER_CAPACITOR:
-      refCap = CAP_THREE;      
+      refCap = CAP_THREE;
       break;
     default:
       refCap = CAP_ONE;
       break;
-    }    
+    }
     double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
-    capacitor = new BasicCapacitor((int)(refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored());
+    capacitor = new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored());
     forceClientUpdate = true;
   }
 
@@ -97,13 +118,25 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   protected boolean isMachineItemValidForSlot(int i, ItemStack itemstack) {
+    if(itemstack == null || isSpawnMode) {
+      return false;
+    }
+    if(slotDefinition.isInputSlot(i)) {
+      return itemstack.getItem() == EnderIO.itemSoulVessel && !EnderIO.itemSoulVessel.containsSoul(itemstack);
+    }
     return false;
   }
 
   @Override
   protected IMachineRecipe canStartNextTask(float chance) {
-    if(logic.getEntityNameToSpawn() == null || logic.getEntityNameToSpawn().equals(NULL_ENTITY_NAME)) {
-      return null;
+    if(isSpawnMode) {
+      if(logic.getEntityNameToSpawn() == null || logic.getEntityNameToSpawn().equals(NULL_ENTITY_NAME)) {
+        return null;
+      }
+    } else {
+      if(getStackInSlot(0) == null || getStackInSlot(1) != null) {
+        return null;
+      }
     }
     return new DummyRecipe();
   }
@@ -117,11 +150,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public int getPowerUsePerTick() {
     double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
     if(capacitorType.ordinal() == 0) {
-      return (int)Math.round(POWER_PER_TICK_ONE * multuplier);
+      return (int) Math.round(POWER_PER_TICK_ONE * multuplier);
     } else if(capacitorType.ordinal() == 1) {
-      return (int)Math.round(POWER_PER_TICK_TWO * multuplier);
+      return (int) Math.round(POWER_PER_TICK_TWO * multuplier);
     }
-    return (int)Math.round(POWER_PER_TICK_THREE * multuplier);
+    return (int) Math.round(POWER_PER_TICK_THREE * multuplier);
   }
 
   @Override
@@ -138,13 +171,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     logic.readFromNBT(nbtRoot);
     super.readCustomNBT(nbtRoot);
-    
+
   }
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     logic.writeToNBT(nbtRoot);
-    super.writeCustomNBT(nbtRoot);    
+    super.writeCustomNBT(nbtRoot);
 
   }
 
@@ -156,17 +189,24 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       mobType = NULL_ENTITY_NAME;
     }
     logic.setEntityName(mobType);
-    super.readCommon(nbtRoot);    
+    logic.resetTimer();
+    if(!nbtRoot.hasKey("isSpawnMode")) {
+      isSpawnMode = true;
+    } else {
+      isSpawnMode = nbtRoot.getBoolean("isSpawnMode");
+    }
+    super.readCommon(nbtRoot);
   }
 
   @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {    
+  public void writeCommon(NBTTagCompound nbtRoot) {
     String mobType = logic.getEntityNameToSpawn();
     if(mobType == null || mobType.equals(NULL_ENTITY_NAME)) {
       BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, null);
     } else {
       BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, mobType);
     }
+    nbtRoot.setBoolean("isSpawnMode", isSpawnMode);
     super.writeCommon(nbtRoot);
   }
 
@@ -189,14 +229,19 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   protected IPoweredTask createTask(IMachineRecipe nextRecipe, float chance) {
     PoweredTask res = new PoweredTask(nextRecipe, chance, getRecipeInputs());
 
-    int ticksDelay = TilePoweredSpawner.MIN_SPAWN_DELAY_BASE
-        + (int) Math.round((TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE) * Math.random());
+    int ticksDelay;
+    if(isSpawnMode) {
+      ticksDelay = TilePoweredSpawner.MIN_SPAWN_DELAY_BASE
+          + (int) Math.round((TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE) * Math.random());
+    } else {
+      ticksDelay = TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - ((TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE) / 2);
+    }
     if(capacitorType.ordinal() == 1) {
       ticksDelay /= 2;
     } else if(capacitorType.ordinal() == 2) {
       ticksDelay /= 4;
     }
-    int powerPerTick = (int) getPowerUsePerTick();
+    int powerPerTick = getPowerUsePerTick();
     res.setRequiredEnergy(powerPerTick * ticksDelay);
     return res;
   }
@@ -210,7 +255,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
     return spaceClear;
   }
-    
+
   public String getEntityName() {
     return logic.getEntityNameToSpawn();
   }
@@ -284,28 +329,18 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
           getSpawnerWorld().spawnParticle("smoke", d0, d1, d2, 0.0D, 0.0D, 0.0D);
           getSpawnerWorld().spawnParticle("flame", d0, d1, d2, 0.0D, 0.0D, 0.0D);
 
-          if(spawnDelay > 0)
-          {
-            --spawnDelay;
-          }
-
           field_98284_d = field_98287_c;
           field_98287_c = (field_98287_c + 1000.0F / (spawnDelay + 200.0F)) % 360.0D;
         } else {
 
-          if(spawnDelay == -1) {
-            resetTimer();
-          }
           if(spawnDelay > 0) {
-            --spawnDelay;
             return;
           }
-
-          boolean doTimerReset = false;
+          resetTimer();
 
           for (int i = 0; i < spawnCount; ++i) {
 
-            Entity entity = EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());
+            Entity entity = createEntity();
             if(entity == null) {
               return;
             }
@@ -334,16 +369,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
               {
                 entityliving.spawnExplosionParticle();
               }
-
-              doTimerReset = true;
             }
-          }
-
-          if(doTimerReset) {
-            resetTimer();
           }
         }
       }
+    }
+
+    Entity createEntity() {
+      return EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());
     }
 
     void resetTimer() {

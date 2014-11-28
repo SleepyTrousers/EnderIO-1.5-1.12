@@ -44,7 +44,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   protected ItemSoulVessel() {
     setCreativeTab(EnderIOTab.tabEnderIO);
     setUnlocalizedName(ModObject.itemSoulVessel.unlocalisedName);
-    setMaxStackSize(1);
+    setMaxStackSize(64);
     blackList = new ArrayList<String>();
     for (String ent : Config.soulVesselBlackList) {
       blackList.add(ent);
@@ -156,9 +156,12 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(entity instanceof EntityPlayer) {
       return false;
     }
+    if(item.stackSize > 1) {
+      return false;
+    }
     
     String entityId = EntityList.getEntityString(entity);
-//    System.out.println("ItemSoulVessel.itemInteractionForEntity: " + entityId);
+    //    System.out.println("ItemSoulVessel.itemInteractionForEntity: " + entityId);
     if(isBlackListed(entityId)) {
       return false;
     }
@@ -185,6 +188,18 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     return false;
   }
   
+  public ItemStack createVesselWithEntity(Entity ent) {
+
+    String entityId = EntityList.getEntityString(ent);
+    NBTTagCompound root = new NBTTagCompound();
+    root.setString("id", entityId);
+    ent.writeToNBT(root);
+
+    ItemStack res = new ItemStack(this);
+    res.stackTagCompound = root;
+    return res;
+  }
+
   public boolean containsSoul(ItemStack item) {
     if(item == null) {
       return false;
