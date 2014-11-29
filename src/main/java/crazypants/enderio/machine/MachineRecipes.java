@@ -260,7 +260,7 @@ public class MachineRecipes {
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
 
     //powered light
-    ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 0);
+    ItemStack poweredLamp = new ItemStack(EnderIO.blockElectricLight, 1, 8);
     ItemStack glowstone = new ItemStack(Items.glowstone_dust);
     if(Config.useHardRecipes) {
       GameRegistry.addRecipe(new ShapedOreRecipe(poweredLamp, "ggg", "sds", "scs", 'g', fusedQuartz, 'd', glowstone, 's', "itemSilicon", 'c', capacitor));
