@@ -7,19 +7,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.spawner.ContainerPoweredSpawner;
-import crazypants.enderio.machine.spawner.TilePoweredSpawner;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.PacketGivePlayerXP;
-import crazypants.enderio.xp.XpUtil;
 import crazypants.render.RenderUtil;
 
 public class GuiExperianceObelisk extends GuiMachineBase {
@@ -119,7 +113,7 @@ public class GuiExperianceObelisk extends GuiMachineBase {
     } else {
       return;
     }
-    
+
     if(levels < 0) {
       
       EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
@@ -145,7 +139,7 @@ public class GuiExperianceObelisk extends GuiMachineBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     
     int width = 110;
     ExperienceBarRenderer.render(this, getGuiLeft() + xSize/2 - width/2, getGuiTop() + 55, width, te.getContainer());

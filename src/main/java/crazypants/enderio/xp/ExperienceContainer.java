@@ -6,10 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
 
 public class ExperienceContainer {
 
@@ -57,7 +55,7 @@ public class ExperienceContainer {
     experience = xpCon.experience;    
   }
 
-  public void addExperience(int xpToAdd) {
+  public int addExperience(int xpToAdd) {
     int j = maxXp - experienceTotal;
     if(xpToAdd > j) {
       xpToAdd = j;
@@ -65,11 +63,12 @@ public class ExperienceContainer {
 
     experience += (float) xpToAdd / (float) getXpBarCapacity();
     experienceTotal += xpToAdd;
-    for (; experience >= 1.0F; experience /= (float) getXpBarCapacity()) {
-      experience = (experience - 1.0F) * (float) getXpBarCapacity();
+    for (; experience >= 1.0F; experience /= getXpBarCapacity()) {
+      experience = (experience - 1.0F) * getXpBarCapacity();
       experienceLevel++;
     }
     xpDirty = true;
+    return xpToAdd;
   }
 
   private int getXpBarCapacity() {
@@ -117,12 +116,14 @@ public class ExperienceContainer {
   
   public void drainPlayerXpToReachPlayerLevel(EntityPlayer player, int level) {    
     int targetXP = XpUtil.getExperienceForLevel(level);
-    int drainXP = XpUtil.getPlayerXP(player) - targetXP ;
+    int drainXP = XpUtil.getPlayerXP(player) - targetXP;
     if(drainXP <= 0) {
       return;
     }    
-    addExperience(drainXP);
-    XpUtil.addPlayerXP(player, -drainXP);    
+    drainXP = addExperience(drainXP);
+    if(drainXP > 0) {
+      XpUtil.addPlayerXP(player, -drainXP);
+    }
   }
   
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
