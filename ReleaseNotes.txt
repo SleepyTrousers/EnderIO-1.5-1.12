@@ -1,27 +1,35 @@
 ------------------------------------------------------
 Version 2.2.2
 ------------------------------------------------------
-Changes
-- #1261 Add max level configs for XP obelisk, killer joe, and soul binder
-- #900 Add different texture for quite clear glass block
-- #1254 Add method for tools to control hiding of facades
-	- For this, a new API has been added, containing ITool
-- #779 Add solar upgrade for DS helm
-- Facades that are not opaque will no longer stop conduit rendering
-- Translucent facades are now possible
-- #1257 Add per-level absorption rations on dark steel items
-- Reduced amount of powered stored in wireless charger from 1 mil to 200k
-- Added white/black lists for paint sources for the Painter. Thaumcraft silverwood/great wood planks 
-  whitelisted by default. See PainterPaintSources_Core.xml for details.
-- Added Thaumcraft Warded blocks to the default teleport black list
-- Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC
+
+New
+- #779 Added solar upgrade for DS helm
 - #1098 Added Soulbound enchantment. Items with this enchantment will not be dropped when the player dies
-- #1272 Number of items required for each enchantment level in the Enchanter can now be set in the config  
-- #1011 Shift-clicking armor from a Capacitor Bank's charge slots will re-equip the item if possible   
-- Added config option to disable Dimensional Transceiver
 - Added send/recieve item filters to the Dimensional Transceiver
 - Added 'Capture Mode' to powered spawners to allow automated filling of Soul Vials
-- Increased max stack size for Soul Vials and Broken Spawners to 64
+- Added white/black lists for paint sources for the Painter. Thaumcraft silverwood/great wood planks 
+  whitelisted by default. See PainterPaintSources_Core.xml for details.
+- Added support for transparent facades. Facades that are not opaque will not stop conduits rendering 
+
+Changes
+- #1257 Upgrading Dark Steel items with capacitors now increases the amount of damage absorbed by power as
+  well as the amount of power stored
+- #900 New texture for quite clear glass block
+- Reduced amount of powered stored in wireless charger from 1 mil to 200k
+- #1011 Shift-clicking armor from a Capacitor Bank's charge slots will re-equip the item if possible
+- Increased max stack size for Soul Vials and Broken Spawners to 64   
+
+API
+- #1254 Add method for tools to control hiding of facades
+    - For this, a new API has been added, containing ITool
+- Added support for a large number of new IMC messages. Details in crazypants.enderio.api.IMC
+
+Config
+- Increased range of Aversion Obelisk and lower power use to tier three upgrade
+- #1261 Add max level configs for XP obelisk, killer joe, and soul binder
+- Added Thaumcraft Warded blocks to the default teleport black list
+- #1272 Number of items required for each enchantment level in the Enchanter can now be set in the config
+- Added config option to disable Dimensional Transceiver
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be
