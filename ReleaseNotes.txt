@@ -33,9 +33,14 @@ Config
 
 Bugs
 - Fix outer corners on connected texture blocks not being metadata sensitive when they should be
-- #1300 Farming Station won't take MFR Rubber trees
-- #1273 Farming Stations not accepting enough power to keep up
 - Fixed coolant tooltips
+- #1266 Certain types of blocks can't be repainted
+- #1273 Farming Stations not accepting enough power to keep up 
+- #1284 Spawner not working when chunk loaded
+- #1280 The Ender Sword holds 1m RF but only shows 100k 
+- #1298 Painted Blocks for biome specific Blocks render grey 
+- #1300 Farming Station won't take MFR Rubber trees
+
 
 
 ------------------------------------------------------
