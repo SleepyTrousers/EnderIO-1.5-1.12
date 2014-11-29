@@ -626,6 +626,17 @@ Examples:
 
   <recipeGroup name="Applied Energistics">
 
+
+    <recipe name="ChargedCertusQuartzOre" energyCost="2400">
+      <input>
+        <itemStack  modID="appliedenergistics2" itemName="tile.OreQuartzCharged"  />
+      </input>
+      <output>
+        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1"/>
+        <itemStack oreDictionary="dustCertusQuartz" />
+      </output>
+    </recipe>
+
     <recipe name="CertusQuartzOre" energyCost="2400">
       <input>
         <itemStack oreDictionary="oreCertusQuartz" />

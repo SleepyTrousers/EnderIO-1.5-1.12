@@ -2,8 +2,6 @@ package crazypants.enderio.machine.crusher;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
@@ -142,6 +140,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     return "machine.sagmill";
   }
   
+  @Override
   public float getVolume() {
     return super.getVolume() * 0.125f;
   }

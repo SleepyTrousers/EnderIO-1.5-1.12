@@ -15,9 +15,10 @@ Changes
 - #1257 Upgrading Dark Steel items with capacitors now increases the amount of damage absorbed by power as
   well as the amount of power stored
 - #900 New texture for quite clear glass block
-- Reduced amount of powered stored in wireless charger from 1 mil to 200k
 - #1011 Shift-clicking armor from a Capacitor Bank's charge slots will re-equip the item if possible
-- Increased max stack size for Soul Vials and Broken Spawners to 64   
+- #1320 Charged Certus Quartz Ore now produces charged rather than normal certus quartz in the SAG Mill
+- Increased max stack size for Soul Vials and Broken Spawners to 64
+- Reduced amount of powered stored in wireless charger from 1 mil to 200k   
 
 API
 - #1254 Add method for tools to control hiding of facades
@@ -54,7 +55,7 @@ Changes
 - #1223 Various small GUI- and NEI-related improvements and tweaks (Tonius) 
 - #1232 Painted Glowstone now implements IFacade and will have connected textures with chisel
 - #1238, #1251 Improved control and modification of grinding balls via the SAGMillRecipes_User.xml file
-- #1164 Conduit resistance increased
+- #1164 Conduit resistance increased 
 
 Bugs
 - #1226 Redstone color not showing on MFR machines / BR ports
