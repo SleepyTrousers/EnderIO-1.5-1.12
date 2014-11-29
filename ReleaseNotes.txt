@@ -42,6 +42,7 @@ Bugs
 - #1298 Painted Blocks for biome specific Blocks render grey 
 - #1300 Farming Station won't take MFR Rubber trees
 - #1312 Incorrect number of items used in Alloy Smelter recipe
+- #1313 Solar arrays cause an immense amount of packets to be sent 
 
 
 

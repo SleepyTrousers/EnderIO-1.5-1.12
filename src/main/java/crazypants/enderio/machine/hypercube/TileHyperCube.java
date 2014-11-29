@@ -39,7 +39,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   private static final int ENERGY_UPKEEP = Config.transceiverUpkeepCostRF;
 
-  private static final float MILLIBUCKET_TRANSMISSION_COST = (float) Config.transceiverBucketTransmissionCostRF / 1000F;
+  private static final float MILLIBUCKET_TRANSMISSION_COST = Config.transceiverBucketTransmissionCostRF / 1000F;
 
   public static enum IoMode {
 
@@ -132,6 +132,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   public TileHyperCube() {
     redstoneControlMode = RedstoneControlMode.IGNORE;
     recieveBuffer = new ItemRecieveBuffer(this);
+  }
+
+  @Override
+  public BlockCoord getLocation() {
+    return new BlockCoord(this);
   }
 
   @Override
@@ -872,7 +877,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     ForgeDirection fromDir;
 
     private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
-      this.receptor = rec;
+      receptor = rec;
       this.fromDir = fromDir;
     }
   }

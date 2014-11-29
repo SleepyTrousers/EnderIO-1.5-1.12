@@ -7,6 +7,8 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.IPowerContainer;
+import crazypants.util.BlockCoord;
 
 public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPowerStorage, IMessage> {
 
@@ -18,10 +20,11 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   public PacketPowerStorage() {
   }
 
-  public PacketPowerStorage(AbstractMachineEntity ent) {
-    x = ent.xCoord;
-    y = ent.yCoord;
-    z = ent.zCoord;
+  public PacketPowerStorage(IPowerContainer ent) {
+    BlockCoord bc = ent.getLocation();
+    x = bc.x;
+    y = bc.y;
+    z = bc.z;
     storedEnergy = ent.getEnergyStored();
   }
 
@@ -46,8 +49,8 @@ public class PacketPowerStorage implements IMessage, IMessageHandler<PacketPower
   public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
-    if(te instanceof AbstractMachineEntity) {
-      AbstractMachineEntity me = (AbstractMachineEntity) te;      
+    if(te instanceof IPowerContainer) {
+      IPowerContainer me = (IPowerContainer) te;
       me.setEnergyStored(message.storedEnergy);
     }
     return null;

@@ -8,12 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.PacketPowerStorage;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
@@ -34,6 +35,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private static final int CHECK_INTERVAL = 100;
   
   private int storedEnergyRF;
+  private int lastSyncedStoredPower;
 
   public TileEntitySolarPanel() {
     checkOffset = (int) (Math.random() * 20);
@@ -43,6 +45,11 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   
   public void onNeighborBlockChange() {
     receptorsDirty = true;
+  }
+
+  @Override
+  public BlockCoord getLocation() {
+    return new BlockCoord(this);
   }
 
   // RF Power
@@ -116,10 +123,12 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
     }
     if(lastCollectionValue > 0) {
-      int lastRF = storedEnergyRF;
+
       storedEnergyRF = Math.min(lastCollectionValue + storedEnergyRF, capacitor.getMaxEnergyStored());
-      if (lastRF != storedEnergyRF) {
-        MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayersInDimension(getDescriptionPacket(), worldObj.provider.dimensionId); // for WAILA
+      if(lastSyncedStoredPower != storedEnergyRF && worldObj.getTotalWorldTime() % 40 == 0) {
+        //TODO: Remove as its only used for WAILA
+        lastSyncedStoredPower = storedEnergyRF;
+        PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
       }
     }
   }
@@ -211,7 +220,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
     ForgeDirection fromDir;
 
     private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
-      this.receptor = rec;
+      receptor = rec;
       this.fromDir = fromDir;
     }
   }
@@ -231,13 +240,13 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   @Override
   public Packet getDescriptionPacket() {
     NBTTagCompound nbt = new NBTTagCompound();
-    this.writeToNBT(nbt);
-    return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+    writeToNBT(nbt);
+    return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
   }
 
   @Override
   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-    this.readFromNBT(pkt.func_148857_g());
+    readFromNBT(pkt.func_148857_g());
   }
   
   @Override
