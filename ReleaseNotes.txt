@@ -40,6 +40,7 @@ Bugs
 - #1280 The Ender Sword holds 1m RF but only shows 100k 
 - #1298 Painted Blocks for biome specific Blocks render grey 
 - #1300 Farming Station won't take MFR Rubber trees
+- #1312 Incorrect number of items used in Alloy Smelter recipe
 
 
 

@@ -22,22 +22,74 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
   @Override
   public List<MachineRecipeInput> getQuantitiesConsumed(MachineRecipeInput[] inputs) {
-    IRecipe rec = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(inputs);
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
-    for (RecipeInput ri : rec.getInputs()) {
-      for (MachineRecipeInput input : inputs) {
-        if(input != null && (input.item != null || input.fluid != null)) {
-          if(ri.isInput(input.item) && (ri.getSlotNumber() == -1 || ri.getSlotNumber() == input.slotNumber)) {
-            result.add(new MachineRecipeInput(input.slotNumber, ri.getInput().copy()));
-            break;
-          } else if(ri.isInput(input.fluid)) {
-            result.add(new MachineRecipeInput(input.slotNumber, ri.getFluidInput().copy()));
+
+    //Need to make copies so we can reduce their values as we go
+    MachineRecipeInput[] availableInputs = new MachineRecipeInput[inputs.length];
+    int i = 0;
+    for (MachineRecipeInput available : inputs) {
+      availableInputs[i] = available.copy();
+      ++i;
+    }
+    RecipeInput[] requiredIngredients = new RecipeInput[recipe.getInputs().length];
+    i = 0;
+    for (RecipeInput ri : recipe.getInputs()) {
+      requiredIngredients[i] = ri.copy();
+      ++i;
+    }
+
+    //For each input required by the recipe got through the available machine inputs and consume them
+    for (RecipeInput required : requiredIngredients) {
+      for (MachineRecipeInput available : availableInputs) {
+        if(isValid(available)) {
+          if(consume(required, available, result)) {
             break;
           }
         }
       }
     }
     return result;
+  }
+
+  protected boolean consume(RecipeInput required, MachineRecipeInput available, List<MachineRecipeInput> consumedInputs) {
+
+    if(required.isInput(available.fluid)) {
+      consumedInputs.add(new MachineRecipeInput(available.slotNumber, required.getFluidInput().copy()));
+      return true;
+    }
+
+
+    if(required.isInput(available.item) && (required.getSlotNumber() == -1 || required.getSlotNumber() == available.slotNumber)) {
+
+      ItemStack availableStack = available.item;
+      ItemStack requiredStack = required.getInput();
+
+      ItemStack comsumedStack = requiredStack.copy();
+      comsumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
+
+      requiredStack.stackSize -= comsumedStack.stackSize;
+      availableStack.stackSize -= comsumedStack.stackSize;
+
+      consumedInputs.add(new MachineRecipeInput(available.slotNumber, comsumedStack));
+
+      if(requiredStack.stackSize <= 0) {
+        //Fully met the requirement
+        return true;
+      }
+
+    }
+    return false;
+  }
+
+  protected boolean isValid(MachineRecipeInput input) {
+    if(input == null) {
+      return false;
+    }
+    if(input.item != null && input.item.stackSize > 0) {
+      return true;
+    }
+    return input.fluid != null && input.fluid.amount > 0;
   }
 
   @Override
