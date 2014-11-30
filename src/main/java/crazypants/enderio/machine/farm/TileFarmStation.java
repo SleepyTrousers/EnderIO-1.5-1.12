@@ -168,21 +168,26 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(tool == null) {
       return;
     }
+    boolean canDamage = canDamage(tool);
     if(tool.getItem() instanceof ItemAxe) {            
       tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.x, bc.y, bc.z, farmerJoe);      
     } else if(tool.getItem() instanceof ItemHoe) {
       int origDamage = tool.getItemDamage();
       tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
-      if(origDamage == tool.getItemDamage() && tool.isItemStackDamageable()) {
+      if(origDamage == tool.getItemDamage() && canDamage) {
         tool.damageItem(1, farmerJoe);
       }      
-    } else if(tool.isItemStackDamageable()) {
+    } else if(canDamage) {
       tool.damageItem(1, farmerJoe);
     }
 
-    if(tool.isItemStackDamageable() && tool.getItemDamage() >= tool.getMaxDamage()) {
+    if(canDamage && tool.getItemDamage() >= tool.getMaxDamage()) {
       destroyTool(class1);
     }
+  }
+  
+  private boolean canDamage(ItemStack stack) {
+	return stack != null && stack.isItemStackDamageable() && stack.getItem().isDamageable();  
   }
 
   private boolean isLeaves(Block blk) {
