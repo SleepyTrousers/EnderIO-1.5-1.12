@@ -35,7 +35,6 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   private static final int CHECK_INTERVAL = 100;
   
   private int storedEnergyRF;
-  private int lastSyncedStoredPower;
 
   public TileEntitySolarPanel() {
     checkOffset = (int) (Math.random() * 20);
@@ -123,13 +122,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
       lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
     }
     if(lastCollectionValue > 0) {
-
       storedEnergyRF = Math.min(lastCollectionValue + storedEnergyRF, capacitor.getMaxEnergyStored());
-      if(lastSyncedStoredPower != storedEnergyRF && worldObj.getTotalWorldTime() % 40 == 0) {
-        //TODO: Remove as its only used for WAILA
-        lastSyncedStoredPower = storedEnergyRF;
-        PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
-      }
     }
   }
 

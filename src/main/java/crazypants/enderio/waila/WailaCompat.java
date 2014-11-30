@@ -40,6 +40,8 @@ public class WailaCompat implements IWailaDataProvider {
 
   public static final WailaCompat INSTANCE = new WailaCompat();
   
+  private static IWailaDataAccessor _accessor = null;
+  
   public static void load(IWailaRegistrar registrar) {
     registrar.registerStackProvider(INSTANCE, IFacade.class);
     registrar.registerStackProvider(INSTANCE, BlockDarkSteelAnvil.class);
@@ -81,7 +83,9 @@ public class WailaCompat implements IWailaDataProvider {
 
   @Override
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-
+	
+	_accessor = accessor;
+	
     Block block = accessor.getBlock();
     TileEntity te = accessor.getTileEntity();
     Item item = Item.getItemFromBlock(block);
@@ -184,5 +188,10 @@ public class WailaCompat implements IWailaDataProvider {
   @Override
   public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
     return currenttip;
+  }
+
+  public static NBTTagCompound getNBTData()
+  {
+	  return _accessor.getNBTData();
   }
 }
