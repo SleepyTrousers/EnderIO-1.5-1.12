@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.item.filter;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.network.NetworkUtil;
 
 public class ModItemFilter implements IItemFilter {
 
@@ -119,6 +122,19 @@ public class ModItemFilter implements IItemFilter {
         nbtRoot.setString("mod" + i, mod);
       }
     }
+  }
+
+  @Override
+  public void writeToByteBuf(ByteBuf buf) {
+    NBTTagCompound root = new NBTTagCompound();
+    writeToNBT(root);
+    NetworkUtil.writeNBTTagCompound(root, buf);
+  }
+
+  @Override
+  public void readFromByteBuf(ByteBuf buf) {
+    NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
+    readFromNBT(tag);
   }
 
 }

@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.item.filter;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +15,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.conduit.item.NetworkedInventory;
+import crazypants.enderio.network.NetworkUtil;
 import crazypants.gui.TemplateSlot;
 
 public class ItemFilter implements IInventory, IItemFilter {
@@ -230,6 +233,19 @@ public class ItemFilter implements IInventory, IItemFilter {
         items[i] = null;
       }
     }
+  }
+
+  @Override
+  public void writeToByteBuf(ByteBuf buf) {
+    NBTTagCompound root = new NBTTagCompound();
+    writeToNBT(root);
+    NetworkUtil.writeNBTTagCompound(root, buf);
+  }
+
+  @Override
+  public void readFromByteBuf(ByteBuf buf) {
+    NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
+    readFromNBT(tag);
   }
 
   @Override

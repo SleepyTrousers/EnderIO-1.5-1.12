@@ -110,7 +110,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   }
 
   public ItemConduit(int itemDamage) {
-    this.metaData = itemDamage;
+    metaData = itemDamage;
     updateFromNonUpgradeableVersion();
   }
 
@@ -754,7 +754,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
         IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);
         inputFilters.put(dir, filter);
       }
@@ -783,7 +782,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       key = "outFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
         NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
-        FilterRegister.updateLegacyFilterNbt(filterTag, metaData);
         IItemFilter filter = FilterRegister.loadFilterFromNbt(filterTag);
         outputFilters.put(dir, filter);
       }
