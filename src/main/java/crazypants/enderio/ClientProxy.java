@@ -64,6 +64,8 @@ import crazypants.enderio.machine.AbstractMachineRenderer;
 import crazypants.enderio.machine.attractor.AttractorRenderer;
 import crazypants.enderio.machine.attractor.BlockAttractor;
 import crazypants.enderio.machine.attractor.TileAttractor;
+import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.capbank.CapBankRenderer;
 import crazypants.enderio.machine.enchanter.EnchanterModelRenderer;
 import crazypants.enderio.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machine.farm.BlockFarmStation;
@@ -272,6 +274,13 @@ public class ClientProxy extends CommonProxy {
 
     BlockElectricLight.renderId = RenderingRegistry.getNextAvailableRenderId();
     RenderingRegistry.registerBlockHandler(new ElectricLightRenderer());
+
+    if(EnderIO.blockCapBank != null) {
+      BlockCapBank.renderId = RenderingRegistry.getNextAvailableRenderId();
+      CapBankRenderer newCbr = new CapBankRenderer();
+      RenderingRegistry.registerBlockHandler(newCbr);
+      MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapBank), newCbr);
+    }
 
     CapacitorBankRenderer capr = new CapacitorBankRenderer();
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCapacitorBank), capr);

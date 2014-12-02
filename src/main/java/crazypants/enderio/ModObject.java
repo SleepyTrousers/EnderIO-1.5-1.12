@@ -42,6 +42,7 @@ public enum ModObject {
   blockAlloySmelter,
   blockSolarPanel,
   blockCapacitorBank,
+  blockCapBank,
   blockSagMill,
   blockHyperCube,
   blockPowerMonitor,
@@ -102,7 +103,7 @@ public enum ModObject {
   public final String unlocalisedName;
 
   private ModObject() {
-    this.unlocalisedName = name();
+    unlocalisedName = name();
   }
 
 }

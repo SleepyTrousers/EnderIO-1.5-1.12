@@ -259,6 +259,14 @@ tile.blockCapacitorBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
+tile.blockCapBank.creative.name=Creative Capacitor Bank
+tile.blockCapBank.basic.name=Capacitor Bank
+tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
+tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
+tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
+tile.blockCapBank.tooltipPrefix=Contains
+
+
 enderio.capbank.maxIO=Max I/O
 enderio.capbank.maxIn=Max Input
 enderio.capbank.maxOut=Max Output
