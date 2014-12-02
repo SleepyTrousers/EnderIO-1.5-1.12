@@ -12,10 +12,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.capbank.network.CapBankNetwork;
+import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
+import crazypants.enderio.machine.capbank.network.NetworkUtil;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -31,6 +38,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   private CapBankNetwork network;
 
+  //Client side refernce to look up network state
+  private int networkId = -1;
+
   @Override
   public BlockCoord getLocation() {
     return new BlockCoord(this);
@@ -44,6 +54,19 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   }
 
   //---------- Multiblock
+
+  @SideOnly(Side.CLIENT)
+  public void setNetworkId(int networkId) {
+    this.networkId = networkId;
+    if(networkId != -1) {
+      ClientNetworkManager.getInstance().addToNetwork(networkId, this);
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  public int getNetworkId() {
+    return networkId;
+  }
 
   public CapBankNetwork getNetwork() {
     return network;
@@ -61,7 +84,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   @Override
   public void onChunkUnload() {
-    CapBankNetwork network = getNetwork();
+    if(network != null) {
+      network.destroyNetwork();
+    }
+  }
+
+  @Override
+  public void invalidate() {
+    super.invalidate();
     if(network != null) {
       network.destroyNetwork();
     }
@@ -70,6 +100,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   @Override
   public void updateEntity() {
     if(worldObj.isRemote) {
+      if(networkId == -1) {
+        PacketHandler.INSTANCE.sendToServer(new PacketNetworkIdRequest(this));
+      }
       return;
     }
     updateNetwork(worldObj);
@@ -78,7 +111,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   private void updateNetwork(World world) {
     if(getNetwork() == null) {
-      NetworkManager.ensureValidNetwork(this);
+      NetworkUtil.ensureValidNetwork(this);
       if(getNetwork() != null && !world.isRemote) {
         //        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord,
         //            bundle.getEntity().getBlockType());
@@ -146,6 +179,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     //    }
     //    render = true;    
     //    updateBlock();
+    if(worldObj != null) {
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
   }
 
   @Override
@@ -172,6 +208,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   //----------- Power
 
+  public void addEnergy(int energy) {
+    if(network == null) {
+      setEnergyStored(getEnergyStored() + energy);
+    } else {
+      network.addEnergy(energy);
+    }
+  }
+
   @Override
   public void setEnergyStored(int stored) {
     energyStored = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());
@@ -189,11 +233,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    CapBankNetwork con = getNetwork();
-    if(con == null) {
-      getType().getMaxEnergyStored();
+    CapBankNetwork network = getNetwork();
+    if(network == null) {
+      return getType().getMaxIO();
     }
-    return con.getMaxEnergyRecieved();
+    return network.getMaxEnergyRecieved();
   }
 
   @Override
@@ -203,7 +247,14 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
+    if(network == null) {
+      return 0;
+    }
+    IoMode mode = getIoMode(from);
+    if(mode == IoMode.DISABLED || mode == IoMode.PUSH) {
+      return 0;
+    }
+    return network.recieveEnergy(maxReceive, simulate);
   }
 
   @Override
@@ -306,6 +357,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   protected void writeCustomNBT(NBTTagCompound nbtRoot) {
 
     nbtRoot.setString("type", getType().getUid());
+    nbtRoot.setInteger("energyStored", energyStored);
 
     //face modes
     if(faceModes != null) {
@@ -320,6 +372,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   protected void readCustomNBT(NBTTagCompound nbtRoot) {
 
     type = CapBankType.getTypeFromUID(nbtRoot.getString("type"));
+    energyStored = nbtRoot.getInteger("energyStored");
 
     if(nbtRoot.hasKey("hasFaces")) {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {

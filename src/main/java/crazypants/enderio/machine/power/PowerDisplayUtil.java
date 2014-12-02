@@ -6,7 +6,6 @@ import java.text.NumberFormat;
 
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.config.Config;
 import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
@@ -64,13 +63,20 @@ public class PowerDisplayUtil {
     return formatPower(amount) + "/" + formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
   }
 
+  public static String formatPower(long amount) {
+    String str = INT_NF.format(amount);
+    if(REPLACE_NBSP) {
+      str = str.replace(NBSP, ' ');
+    }
+    return str;
+  }
+
   
   public static String formatPower(int powerRF) {
     String str = INT_NF.format(powerRF);
     if(REPLACE_NBSP) {
       str = str.replace(NBSP, ' ');
     }
-
     return str;
   }
   

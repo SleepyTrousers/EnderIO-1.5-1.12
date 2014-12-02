@@ -1,16 +1,20 @@
-package crazypants.enderio.machine.capbank;
+package crazypants.enderio.machine.capbank.network;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.util.BlockCoord;
 
-public class NetworkManager {
+public class NetworkUtil {
+
+  private static AtomicInteger nextID = new AtomicInteger(0);
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(TileCapBank cap) {
@@ -19,7 +23,7 @@ public class NetworkManager {
     if(reuseNetwork(cap, neighbours, world)) {
       return;
     }
-    CapBankNetwork network = new CapBankNetwork();
+    CapBankNetwork network = new CapBankNetwork(nextID.getAndIncrement());
     network.init(cap, neighbours, world);
     return;
   }

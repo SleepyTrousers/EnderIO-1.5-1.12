@@ -67,7 +67,6 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
   @Override
   protected void init() {
-    //super.init();
 
     GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, name);
     if(teClass != null) {

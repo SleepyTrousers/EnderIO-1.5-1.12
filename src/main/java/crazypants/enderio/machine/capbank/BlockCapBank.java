@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -28,16 +29,29 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
+import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
+import crazypants.enderio.machine.capbank.packet.PacketClientStateRequest;
+import crazypants.enderio.machine.capbank.packet.PacketClientStateResponse;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.vecmath.Vector3d;
 
 public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
 
   public static int renderId = -1;
 
   public static BlockCapBank create() {
+
+    PacketHandler.INSTANCE.registerMessage(PacketClientStateResponse.class, PacketClientStateResponse.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketClientStateRequest.class, PacketClientStateRequest.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketNetworkIdRequest.class, PacketNetworkIdRequest.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketNetworkIdResponse.class, PacketNetworkIdResponse.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockCapBank res = new BlockCapBank();
     res.init();
@@ -152,19 +166,19 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    //    TileEntity te = world.getTileEntity(x, y, z);
-    //    if(te instanceof TileCapBank) {
-    //      return new ContainerCapBank(player, player.inventory, ((TileCapBank) te).getController());
-    //    }
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCapBank) {
+      return new ContainerCapBank(player, player.inventory, (TileCapBank) te);
+    }
     return null;
   }
 
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    //    TileEntity te = world.getTileEntity(x, y, z);
-    //    if(te instanceof TileCapBank) {
-    //      return new GuiCapBank(player, player.inventory, ((TileCapBank) te).getController());
-    //    }
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCapBank) {
+      return new GuiCapBank(player, player.inventory, (TileCapBank) te);
+    }
     return null;
   }
 
@@ -338,24 +352,13 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       return;
     }
     TileEntity te = world.getTileEntity(x, y, z);
-    //    if(te instanceof TileCapacitorBank) {
-    //      TileCapacitorBank cb = (TileCapacitorBank) te;
-    //      cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
-    //      if(player instanceof EntityPlayer) {
-    //        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-    //          BlockCoord bc = new BlockCoord(x, y, z);
-    //          bc = bc.getLocation(dir);
-    //          te = world.getTileEntity(bc.x, bc.y, bc.z);
-    //          if(te instanceof TileCapacitorBank) {
-    //            if(((TileCapacitorBank)te).isMaxSize()) {
-    //              ((EntityPlayer)player).addChatComponentMessage(new ChatComponentText("Capacitor bank is at maximum size"));
-    //            }            
-    //          }          
-    //        }
-    //        
-    //      }
-    //      
-    //    }
+    if(!(te instanceof TileCapBank)) {
+      return;
+    }
+
+    TileCapBank cb = (TileCapBank) te;
+    cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
+
     world.markBlockForUpdate(x, y, z);
   }
 
@@ -378,30 +381,32 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     world.removeTileEntity(x, y, z);
   }
 
-  //  @Override
-  //  @SideOnly(Side.CLIENT)
-  //  public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-  //    TileEntity te = world.getTileEntity(x, y, z);
-  //    if(!(te instanceof TileCapacitorBank)) {
-  //      return super.getSelectedBoundingBoxFromPool(world, x, y, z);
-  //    }
-  //    TileCapacitorBank tr = (TileCapacitorBank) te;
-  //    if(!tr.isMultiblock()) {
-  //      return super.getSelectedBoundingBoxFromPool(world, x, y, z);
-  //    }
-  //
-  //    Vector3d min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-  //    Vector3d max = new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
-  //    for (BlockCoord bc : tr.multiblock) {
-  //      min.x = Math.min(min.x, bc.x);
-  //      max.x = Math.max(max.x, bc.x + 1);
-  //      min.y = Math.min(min.y, bc.y);
-  //      max.y = Math.max(max.y, bc.y + 1);
-  //      min.z = Math.min(min.z, bc.z);
-  //      max.z = Math.max(max.z, bc.z + 1);
-  //    }
-  //    return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
-  //  }
+  @Override
+  @SideOnly(Side.CLIENT)
+  public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(!(te instanceof TileCapBank)) {
+      return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+    TileCapBank tr = (TileCapBank) te;
+    CapBankClientNetwork network = ClientNetworkManager.getInstance().getNetwork(tr);
+
+    if(!tr.getType().isMultiblock() || network == null) {
+      return super.getSelectedBoundingBoxFromPool(world, x, y, z);
+    }
+
+    Vector3d min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+    Vector3d max = new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+    for (TileCapBank bc : network.getMembers()) {
+      min.x = Math.min(min.x, bc.xCoord);
+      max.x = Math.max(max.x, bc.xCoord + 1);
+      min.y = Math.min(min.y, bc.yCoord);
+      max.y = Math.max(max.y, bc.yCoord + 1);
+      min.z = Math.min(min.z, bc.zCoord);
+      max.z = Math.max(max.z, bc.zCoord + 1);
+    }
+    return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
+  }
 
   @Override
   public boolean hasComparatorInputOverride() {
