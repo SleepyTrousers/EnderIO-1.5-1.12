@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -23,7 +22,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import crazypants.enderio.waila.WailaCompat;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
