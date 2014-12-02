@@ -130,7 +130,7 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
         String send = "[" + buildString(sending) + "]";
 
         if(isEmpty(recieve) && isEmpty(send)) {
-          break;
+          continue;
         }
 
         tooltip.add(EnumChatFormatting.WHITE + Lang.localize("trans." + type.name().toLowerCase()));

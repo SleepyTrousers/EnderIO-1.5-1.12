@@ -297,6 +297,7 @@ enderio.trans.showChannels=<Shift to show channels>
 enderio.trans.power=Power
 enderio.trans.item=Item
 enderio.trans.fluid=Fluid
+enderio.trans.rail=Rail
 
 enderio.trans.recieving=Recieving
 enderio.trans.sending=Sending
