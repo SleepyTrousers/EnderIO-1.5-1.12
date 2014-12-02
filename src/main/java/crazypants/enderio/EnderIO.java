@@ -38,6 +38,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
+import crazypants.enderio.block.BlockDarkSteelLadder;
 import crazypants.enderio.block.BlockDarkSteelPressurePlate;
 import crazypants.enderio.block.BlockReinforcedObsidian;
 import crazypants.enderio.conduit.BlockConduitBundle;
@@ -246,6 +247,7 @@ public class EnderIO {
   //Blocks
   public static BlockDarkSteelPressurePlate blockDarkSteelPressurePlate;
   public static BlockDarkSteelAnvil blockDarkSteelAnvil;
+  public static BlockDarkSteelLadder blockDarkSteelLadder;
   public static BlockEndermanSkull blockEndermanSkull;
   public static BlockReinforcedObsidian blockReinforcedObsidian;
 
@@ -346,6 +348,7 @@ public class EnderIO {
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();
     blockDarkSteelAnvil = BlockDarkSteelAnvil.create();
+    blockDarkSteelLadder = BlockDarkSteelLadder.create();
     blockElectricLight = BlockElectricLight.create();
     blockLightNode = BlockLightNode.create();
 

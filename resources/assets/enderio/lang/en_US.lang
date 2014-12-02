@@ -432,6 +432,9 @@ tile.blockDarkSteelAnvil.tooltip.common.line1=Damage Resistant
 tile.blockDarkSteelAnvil.tooltip.detailed.line1=Lasts much longer than
 tile.blockDarkSteelAnvil.tooltip.detailed.line2=the vanilla anvil
 
+tile.blockDarkSteelLadder.name=Dark Steel Ladder
+tile.blockDarkSteelLadder.tooltip.common.line1=Faster than regular ladders
+
 //Travel
 tile.blockTravelAnchor.name=Travel Anchor
 tile.blockTravelAnchor.tooltip.detailed.line1=Allows teleportation between anchors

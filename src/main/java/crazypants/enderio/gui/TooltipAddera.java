@@ -1,5 +1,6 @@
 package crazypants.enderio.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -150,7 +151,9 @@ public class TooltipAddera {
     } else {
       addBasicTooltipFromResources(list, name);
       addCommonTooltipFromResources(list, name);
-      addShowDetailsTooltip(list);
+      if (hasDetailedTooltip(tt, itemstack)) {
+        addShowDetailsTooltip(list);
+      }
     }
   }
 
@@ -160,10 +163,26 @@ public class TooltipAddera {
       tt.addDetailedEntries(itemstack, entityplayer, list, flag);
     } else {
       tt.addBasicEntries(itemstack, entityplayer, list, flag);
-      addShowDetailsTooltip(list);
+      if(hasDetailedTooltip(tt, itemstack, entityplayer, flag)) {
+        addShowDetailsTooltip(list);
+      }
     }
   }
-
+  
+  private static final List<String> throwaway = new ArrayList<String>();
+  private static boolean hasDetailedTooltip(IResourceTooltipProvider tt, ItemStack stack) {
+    throwaway.clear();
+    String name = tt.getUnlocalizedNameForTooltip(stack);
+    addDetailedTooltipFromResources(throwaway, name);
+    return !throwaway.isEmpty();
+  }
+  
+  private static boolean hasDetailedTooltip(IAdvancedTooltipProvider tt, ItemStack stack, EntityPlayer player, boolean flag) {
+    throwaway.clear();
+    tt.addDetailedEntries(stack, player, throwaway, flag);
+    return !throwaway.isEmpty();
+  }
+  
   public static void addShowDetailsTooltip(List list) {
     list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
   }

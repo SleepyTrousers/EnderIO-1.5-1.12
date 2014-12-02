@@ -221,6 +221,8 @@ public final class Config {
 
   public static float darkSteelAnvilDamageChance = 0.024f;
   
+  public static float darkSteelLadderSpeedBoost = 0.06f;
+  
   public static int hootchPowerPerCycleRF = 60;
   public static int hootchPowerTotalBurnTime = 6000;
   public static int rocketFuelPowerPerCycleRF = 160;
@@ -795,6 +797,8 @@ public final class Config {
 
     darkSteelAnvilDamageChance = (float) config.get(sectionDarkSteel.name, "darkSteelAnvilDamageChance", darkSteelAnvilDamageChance, "Chance that the dark steel anvil will take damage after repairing something.").getDouble();
 
+    darkSteelLadderSpeedBoost = (float) config.get(sectionDarkSteel.name, "darkSteelLadderSpeedBoost", darkSteelLadderSpeedBoost, "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").getDouble();
+    
     hootchPowerPerCycleRF = config.get(sectionPower.name, "hootchPowerPerCycleRF", hootchPowerPerCycleRF,
         "The amount of power generated per BC engine cycle. Examples: BC Oil = 30, BC Fuel = 60").getInt(hootchPowerPerCycleRF);
     hootchPowerTotalBurnTime = config.get(sectionPower.name, "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime,

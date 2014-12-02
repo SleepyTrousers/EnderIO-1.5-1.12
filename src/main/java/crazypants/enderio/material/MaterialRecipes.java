@@ -169,6 +169,8 @@ public class MaterialRecipes {
       'b', "blockDarkSteel",
       'i', "ingotDarkSteel"
     ));
+    
+    GameRegistry.addRecipe(new ItemStack(EnderIO.blockDarkSteelLadder, 12), "b", "b", "b", 'b', EnderIO.blockDarkIronBars);
 
     for (Alloy alloy : Alloy.values()) {
       GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictIngotName));

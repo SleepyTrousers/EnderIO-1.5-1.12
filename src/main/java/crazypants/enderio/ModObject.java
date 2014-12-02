@@ -71,6 +71,7 @@ public enum ModObject {
   //Blocks
   blockDarkSteelPressurePlate,
   blockDarkSteelAnvil,
+  blockDarkSteelLadder,
   blockReinforcedObsidian,
   blockIngotStorage,
 
