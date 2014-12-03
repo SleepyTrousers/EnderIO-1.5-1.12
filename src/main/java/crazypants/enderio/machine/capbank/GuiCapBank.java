@@ -25,7 +25,9 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.NetworkClientState;
-import crazypants.enderio.machine.capbank.packet.PacketClientStateRequest;
+import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
@@ -38,6 +40,8 @@ import crazypants.vecmath.VecmathUtil;
 public class GuiCapBank extends GuiContainerBase {
 
   private static final NetworkClientState EMPTY_STATE = new NetworkClientState();
+
+  private static final CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 
   protected static final int INPUT_BUTTON_ID = 18;
   protected static final int OUTPUT_BUTTON_ID = 37;
@@ -69,7 +73,10 @@ public class GuiCapBank extends GuiContainerBase {
   private GuiOverlayIoConfig configOverlay;
   private IconButtonEIO configB;
 
-  private NetworkClientState state = EMPTY_STATE;
+  private CapBankClientNetwork network;
+
+  private int initialStateCount = -1;
+  private boolean initState = true;
 
   public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te) {
     super(new ContainerCapBank(player, playerInv, te));
@@ -84,8 +91,8 @@ public class GuiCapBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(PowerDisplayUtil.formatPower(state.getEnergyStored()) + " " + PowerDisplayUtil.ofStr());
-        text.add(PowerDisplayUtil.formatPower(state.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
+        text.add(PowerDisplayUtil.formatPower(network.getEnergyStored()) + " " + PowerDisplayUtil.ofStr());
+        text.add(PowerDisplayUtil.formatPower(network.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
       }
 
     });
@@ -96,13 +103,13 @@ public class GuiCapBank extends GuiContainerBase {
 
       @Override
       public void setRedstoneControlMode(RedstoneControlMode mode) {
-        //        capBank.setInputControlMode(mode);
-        //        PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
+        network.setInputControlMode(mode);
+        sendUpdateToServer();
       }
 
       @Override
       public RedstoneControlMode getRedstoneControlMode() {
-        return RedstoneControlMode.IGNORE;//capBank.getInputControlMode();
+        return network.getInputControlMode();
       }
     });
     inputRsButton.setTooltipKey("enderio.gui.capBank.inputRs");
@@ -112,14 +119,13 @@ public class GuiCapBank extends GuiContainerBase {
 
       @Override
       public void setRedstoneControlMode(RedstoneControlMode mode) {
-        //        capBank.setOutputControlMode(mode);
-        //        PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
+        network.setOutputControlMode(mode);
+        sendUpdateToServer();
       }
 
       @Override
       public RedstoneControlMode getRedstoneControlMode() {
-        //return capBank.getOutputControlMode();
-        return RedstoneControlMode.IGNORE;
+        return network.getOutputControlMode();
       }
     });
     outputRsButton.setTooltipKey("enderio.gui.capBank.outputRs");
@@ -130,7 +136,7 @@ public class GuiCapBank extends GuiContainerBase {
 
     List<BlockCoord> coords = new ArrayList<BlockCoord>();
     CapBankClientNetwork network = ClientNetworkManager.getInstance().getNetwork(capBank);
-    if(network != null) {
+    if(network != null && network.getMembers().size() < 200) {
       for (TileCapBank cb : network.getMembers()) {
         coords.add(cb.getLocation());
       }
@@ -138,6 +144,7 @@ public class GuiCapBank extends GuiContainerBase {
     if(coords.isEmpty()) {
       coords.add(te.getLocation());
     }
+
 
     configOverlay = new GuiOverlayIoConfig(coords) {
 
@@ -191,7 +198,6 @@ public class GuiCapBank extends GuiContainerBase {
     maxInputTF.setCanLoseFocus(true);
     maxInputTF.setMaxStringLength(10);
     maxInputTF.setFocused(false);
-    maxInputTF.setText(PowerDisplayUtil.formatPower(getMaxInput()));
 
     x = guiLeft + outputX;
     y = guiTop + outputY;
@@ -199,7 +205,6 @@ public class GuiCapBank extends GuiContainerBase {
     maxOutputTF.setCanLoseFocus(true);
     maxOutputTF.setMaxStringLength(10);
     maxOutputTF.setFocused(true);
-    maxOutputTF.setText(PowerDisplayUtil.formatPower(getMaxOutput()));
   }
 
   @Override
@@ -215,28 +220,34 @@ public class GuiCapBank extends GuiContainerBase {
 
   private void updateInputOutput() {
     int input = parsePower(maxInputTF);
-    if(input >= 0 && getMaxInput() != input) {
+    if(input >= 0 && network.getMaxEnergyRecieved() != input) {
       setMaxInput(input);
     }
     int output = parsePower(maxOutputTF);
-    if(output >= 0 && getMaxOutput() != output) {
+    if(output >= 0 && network.getMaxEnergySent() != output) {
       setMaxOutput(output);
     }
   }
 
   private void setMaxOutput(int output) {
-    if(output != getMaxOutput()) {
-      //      capBank.setMaxOutput(output);
-      //      maxOutputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxOutput()));
-      //      PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
+    if(output != network.getMaxEnergySent()) {
+      network.setMaxEnergySend(output);
+      maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergySent()));
+      sendUpdateToServer();
     }
   }
 
   private void setMaxInput(int input) {
-    if(input != getMaxInput()) {
-      //      capBank.setMaxInput(input);
-      //      maxInputTF.setText(PowerDisplayUtil.formatPower(capBank.getMaxInput()));
-      //      PacketHandler.INSTANCE.sendToServer(new PacketClientState(capBank));
+    if(input != network.getMaxEnergyRecieved()) {
+      network.setMaxEnergyReccieved(input);
+      maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergyRecieved()));
+      sendUpdateToServer();
+    }
+  }
+
+  protected void sendUpdateToServer() {
+    if(network != NULL_NETWORK) {
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(capBank, network));
     }
   }
 
@@ -291,7 +302,7 @@ public class GuiCapBank extends GuiContainerBase {
 
     int midX = sx + xSize / 2;
 
-    String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(getMaxIO()) +
+    String str = Lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO()) +
         " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
     FontRenderer fontRenderer = getFontRenderer();
     int swid = fontRenderer.getStringWidth(str);
@@ -348,49 +359,51 @@ public class GuiCapBank extends GuiContainerBase {
     return Minecraft.getMinecraft().fontRenderer;
   }
 
-  private int getMaxOutput() {
-    return state.getMaxOutput();
-  }
-
-  private int getMaxInput() {
-    return state.getMaxInput();
-  }
-
-  private int getMaxIO() {
-    return state.getMaxIO();
-  }
-
   private int getEnergyStoredScaled(int scale) {
-    return (int) VecmathUtil.clamp(Math.round(scale * getEnergyStoredRatio()), 0, scale);
-  }
-
-  private double getEnergyStoredRatio() {
-    return (double) state.getEnergyStored() / state.getMaxEnergyStored();
+    return (int) VecmathUtil.clamp(Math.round(scale * network.getEnergyStoredRatio()), 0, scale);
   }
 
   private void requestStateUpdate() {
     if(EnderIO.proxy.getTickCount() % 2 == 0) {
-      PacketHandler.INSTANCE.sendToServer(new PacketClientStateRequest(capBank));
+      if(!updateState()) {
+        PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(capBank));
+      }
     }
-    updateState();
   }
 
-  private void updateState() {
-
-    NetworkClientState prevState = state;
-    //
-
-    //System.out.println("GuiCapBank.updateState: " + capBank.getNetworkId());
-    state = ClientNetworkManager.getInstance().getClientState(capBank.getNetworkId());
-    if(state == null) {
-      state = EMPTY_STATE;
+  private boolean updateState() {
+    if(!initState) {
+      return false;
     }
 
-    if(prevState == EMPTY_STATE && maxInputTF != null) {
-      maxInputTF.setText(PowerDisplayUtil.formatPower(getMaxInput()));
-      maxOutputTF.setText(PowerDisplayUtil.formatPower(getMaxInput()));
+    if(capBank.getNetworkId() == -1) {
+      network = NULL_NETWORK;
+      return true;
     }
-
+    if(network == null || network == NULL_NETWORK) {
+      network = ClientNetworkManager.getInstance().getOrCreateNetwork(capBank.getNetworkId());
+      initialStateCount = network.getStateUpdateCount();
+      PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
+      return true;
+    }
+    if(network.getStateUpdateCount() == initialStateCount) {
+      PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
+      return true;
+    }
+    if(network.getStateUpdateCount() > initialStateCount) {
+      updateFieldsFromState();
+      initState = false;
+      return true;
+    }
+    return false;
   }
+
+  private void updateFieldsFromState() {
+    maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergyRecieved()));
+    maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergySent()));
+    inputRsButton.setMode(network.getInputControlMode());
+    outputRsButton.setMode(network.getOutputControlMode());
+  }
+
 
 }

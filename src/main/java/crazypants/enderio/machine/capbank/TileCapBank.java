@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.network.CapBankNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
@@ -35,11 +37,20 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   private CapBankType type;
 
   private int energyStored;
+  private int maxInput = -1;
+  private int maxOutput = -1;
+
+  private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
+  private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
+
+  private boolean redstoneStateDirty = true;
+  private boolean isRecievingRedstoneSignal;
 
   private CapBankNetwork network;
 
   //Client side refernce to look up network state
   private int networkId = -1;
+  private int idRequestTimer = 0;
 
   @Override
   public BlockCoord getLocation() {
@@ -51,6 +62,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
       type = CapBankType.getTypeFromMeta(getBlockMetadata());
     }
     return type;
+  }
+
+  public void onNeighborBlockChange(Block blockId) {
+    redstoneStateDirty = true;
   }
 
   //---------- Multiblock
@@ -101,21 +116,31 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   public void updateEntity() {
     if(worldObj.isRemote) {
       if(networkId == -1) {
-        PacketHandler.INSTANCE.sendToServer(new PacketNetworkIdRequest(this));
+        if(idRequestTimer <= 0) {
+          PacketHandler.INSTANCE.sendToServer(new PacketNetworkIdRequest(this));
+          idRequestTimer = 5;
+        } else {
+          --idRequestTimer;
+        }
       }
       return;
     }
     updateNetwork(worldObj);
-  }
+    if(network == null) {
+      return;
+    }
 
+    if(redstoneStateDirty) {
+      int sig = worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord);
+      boolean recievingSignal = sig > 0;
+      network.updateRedstoneSignal(this, recievingSignal);
+      redstoneStateDirty = false;
+    }
+  }
 
   private void updateNetwork(World world) {
     if(getNetwork() == null) {
       NetworkUtil.ensureValidNetwork(this);
-      if(getNetwork() != null && !world.isRemote) {
-        //        world.notifyBlocksOfNeighborChange(bundle.getEntity().xCoord, bundle.getEntity().yCoord, bundle.getEntity().zCoord,
-        //            bundle.getEntity().getBlockType());
-      }
     }
     if(getNetwork() != null) {
       getNetwork().onUpdateEntity(this);
@@ -124,7 +149,6 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   }
 
   //---------- IO
-
 
   @Override
   public IoMode toggleIoModeForFace(ForgeDirection faceHit) {
@@ -181,6 +205,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     //    updateBlock();
     if(worldObj != null) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+      worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, blockType);
     }
   }
 
@@ -205,6 +230,23 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     return null;
   }
 
+  //----------- Redstone
+
+  public RedstoneControlMode getInputControlMode() {
+    return inputControlMode;
+  }
+
+  public void setInputControlMode(RedstoneControlMode inputControlMode) {
+    this.inputControlMode = inputControlMode;
+  }
+
+  public RedstoneControlMode getOutputControlMode() {
+    return outputControlMode;
+  }
+
+  public void setOutputControlMode(RedstoneControlMode outputControlMode) {
+    this.outputControlMode = outputControlMode;
+  }
 
   //----------- Power
 
@@ -232,17 +274,39 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   }
 
   @Override
+  public int getMaxEnergyStored() {
+    return getType().getMaxEnergyStored();
+  }
+
+  @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    CapBankNetwork network = getNetwork();
     if(network == null) {
       return getType().getMaxIO();
     }
     return network.getMaxEnergyRecieved();
   }
 
-  @Override
-  public int getMaxEnergyStored() {
-    return getType().getMaxEnergyStored();
+  public int getMaxEnergySent() {
+    if(network == null) {
+      return getType().getMaxIO();
+    }
+    return network.getMaxEnergySent();
+  }
+
+  public void setMaxEnergyRecieved(int maxInput) {
+    this.maxInput = maxInput;
+  }
+
+  public void setMaxEnergySend(int maxOutput) {
+    this.maxOutput = maxOutput;
+  }
+
+  public int getMaxEnergySentOverride() {
+    return maxOutput;
+  }
+
+  public int getMaxEnergyRecievedOverride() {
+    return maxInput;
   }
 
   @Override
@@ -359,6 +423,19 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     nbtRoot.setString("type", getType().getUid());
     nbtRoot.setInteger("energyStored", energyStored);
 
+    if(maxInput != -1) {
+      nbtRoot.setInteger("maxInput", maxInput);
+    }
+    if(maxOutput != -1) {
+      nbtRoot.setInteger("maxOutput", maxOutput);
+    }
+    if(inputControlMode != RedstoneControlMode.IGNORE) {
+      nbtRoot.setShort("inputControlMode", (short) inputControlMode.ordinal());
+    }
+    if(outputControlMode != RedstoneControlMode.IGNORE) {
+      nbtRoot.setShort("outputControlMode", (short) outputControlMode.ordinal());
+    }
+
     //face modes
     if(faceModes != null) {
       nbtRoot.setByte("hasFaces", (byte) 1);
@@ -373,6 +450,28 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
     type = CapBankType.getTypeFromUID(nbtRoot.getString("type"));
     energyStored = nbtRoot.getInteger("energyStored");
+
+    if(nbtRoot.hasKey("maxInput")) {
+      maxInput = nbtRoot.getInteger("maxInput");
+    } else {
+      maxInput = -1;
+    }
+    if(nbtRoot.hasKey("maxOutput")) {
+      maxOutput = nbtRoot.getInteger("maxOutput");
+    } else {
+      maxOutput = -1;
+    }
+
+    if(nbtRoot.hasKey("inputControlMode")) {
+      inputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("inputControlMode")];
+    } else {
+      inputControlMode = RedstoneControlMode.IGNORE;
+    }
+    if(nbtRoot.hasKey("outputControlMode")) {
+      outputControlMode = RedstoneControlMode.values()[nbtRoot.getShort("outputControlMode")];
+    } else {
+      outputControlMode = RedstoneControlMode.IGNORE;
+    }
 
     if(nbtRoot.hasKey("hasFaces")) {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {

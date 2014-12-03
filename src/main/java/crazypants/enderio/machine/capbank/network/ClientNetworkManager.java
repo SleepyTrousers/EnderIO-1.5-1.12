@@ -19,10 +19,9 @@ public class ClientNetworkManager {
   }
 
   public void destroyNetwork(int id) {
-    System.out.println("ClientNetworkManager.destroyNetwork: " + id);
     CapBankClientNetwork res = networks.get(id);
     if(res != null) {
-      res.destroy();
+      res.destroyNetwork();
     }
   }
 
@@ -31,15 +30,15 @@ public class ClientNetworkManager {
     network.setState(state);
   }
 
-  public NetworkClientState getClientState(int id) {
+  public void updateEnergyStored(int id, long energyStored) {
     CapBankClientNetwork res = networks.get(id);
     if(res == null) {
-      return null;
+      return;
     }
-    return res.getState();
+    res.setEnergyStored(energyStored);
   }
 
-  private CapBankClientNetwork getOrCreateNetwork(int id) {
+  public CapBankClientNetwork getOrCreateNetwork(int id) {
     CapBankClientNetwork res = networks.get(id);
     if(res == null) {
       res = new CapBankClientNetwork(id);
@@ -51,7 +50,6 @@ public class ClientNetworkManager {
   public void addToNetwork(int id, TileCapBank tileCapBank) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
     network.addMember(tileCapBank);
-
   }
 
   public CapBankClientNetwork getNetwork(TileCapBank tr) {

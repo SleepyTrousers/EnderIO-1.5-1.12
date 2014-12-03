@@ -60,7 +60,7 @@ public class NetworkUtil {
     }
     if(cap.setNetwork(network)) {
       network.addCapBank(cap);
-      network.notifyNetworkOfUpdate();
+      //network.notifyNetworkOfUpdate();
       return true;
     }
     return false;

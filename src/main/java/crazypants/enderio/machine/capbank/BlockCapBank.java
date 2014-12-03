@@ -31,10 +31,13 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
-import crazypants.enderio.machine.capbank.packet.PacketClientStateRequest;
-import crazypants.enderio.machine.capbank.packet.PacketClientStateResponse;
+import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdResponse;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -48,10 +51,13 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   public static BlockCapBank create() {
 
-    PacketHandler.INSTANCE.registerMessage(PacketClientStateResponse.class, PacketClientStateResponse.class, PacketHandler.nextID(), Side.CLIENT);
-    PacketHandler.INSTANCE.registerMessage(PacketClientStateRequest.class, PacketClientStateRequest.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketNetworkStateResponse.class, PacketNetworkStateResponse.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketNetworkStateRequest.class, PacketNetworkStateRequest.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketNetworkIdRequest.class, PacketNetworkIdRequest.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketNetworkIdResponse.class, PacketNetworkIdResponse.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketNetworkEnergyRequest.class, PacketNetworkEnergyRequest.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketNetworkEnergyResponse.class, PacketNetworkEnergyResponse.class, PacketHandler.nextID(), Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketGuiChange.class, PacketGuiChange.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockCapBank res = new BlockCapBank();
     res.init();
@@ -287,17 +293,17 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   //    }
   //  }
 
-  //  @Override
-  //  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
-  //    if(world.isRemote) {
-  //      return;
-  //    }
-  //    TileEntity tile = world.getTileEntity(x, y, z);
-  //    if(tile instanceof TileCapBank) {
-  //      TileCapBank te = (TileCapBank) tile;
-  //      te.onNeighborBlockChange(blockId);
-  //    }
-  //  }
+  @Override
+  public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
+    if(world.isRemote) {
+      return;
+    }
+    TileEntity tile = world.getTileEntity(x, y, z);
+    if(tile instanceof TileCapBank) {
+      TileCapBank te = (TileCapBank) tile;
+      te.onNeighborBlockChange(blockId);
+    }
+  }
 
   @Override
   public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {

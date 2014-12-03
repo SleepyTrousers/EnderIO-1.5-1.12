@@ -8,19 +8,19 @@ import crazypants.enderio.machine.capbank.network.CapBankNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.NetworkClientState;
 
-public class PacketClientStateResponse implements IMessage, IMessageHandler<PacketClientStateResponse, IMessage> {
+public class PacketNetworkStateResponse implements IMessage, IMessageHandler<PacketNetworkStateResponse, IMessage> {
 
   private int id;
   private NetworkClientState state;
 
-  public PacketClientStateResponse() {
+  public PacketNetworkStateResponse() {
   }
 
-  public PacketClientStateResponse(CapBankNetwork network) {
+  public PacketNetworkStateResponse(CapBankNetwork network) {
     this(network, false);
   }
 
-  public PacketClientStateResponse(CapBankNetwork network, boolean remove) {
+  public PacketNetworkStateResponse(CapBankNetwork network, boolean remove) {
     id = network.getId();
     if(!remove) {
       state = network.getClientState();
@@ -50,7 +50,7 @@ public class PacketClientStateResponse implements IMessage, IMessageHandler<Pack
   }
 
   @Override
-  public IMessage onMessage(PacketClientStateResponse message, MessageContext ctx) {
+  public IMessage onMessage(PacketNetworkStateResponse message, MessageContext ctx) {
     if(message.state != null) {
       ClientNetworkManager.getInstance().updateState(message.id, message.state);
     } else {

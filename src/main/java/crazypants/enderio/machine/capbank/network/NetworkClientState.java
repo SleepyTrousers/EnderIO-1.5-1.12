@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank.network;
 
 import io.netty.buffer.ByteBuf;
+import crazypants.enderio.machine.RedstoneControlMode;
 
 public class NetworkClientState {
 
@@ -9,37 +10,32 @@ public class NetworkClientState {
   private final int maxIO;
   private final int maxInput;
   private final int maxOutput;
+  private final RedstoneControlMode inputMode;
+  private final RedstoneControlMode outputMode;
 
   public NetworkClientState() {
-    this(0, 0, 0, 0, 0);
+    this(0, 0, 0, 0, 0, RedstoneControlMode.IGNORE, RedstoneControlMode.IGNORE);
   }
 
-  public NetworkClientState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput) {
+  public NetworkClientState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput, RedstoneControlMode inputMode,
+      RedstoneControlMode ouputMode) {
     this.energyStored = energyStored;
     this.maxEnergyStored = maxEnergyStored;
     this.maxIO = maxIO;
     this.maxInput = maxInput;
     this.maxOutput = maxOutput;
+    this.inputMode = inputMode;
+    outputMode = ouputMode;
   }
 
-  public NetworkClientState(CapBankNetwork network) {
+  public NetworkClientState(ICapBankNetwork network) {
     energyStored = network.getEnergyStored();
     maxEnergyStored = network.getMaxEnergyStored();
     maxIO = network.getMaxIO();
     maxInput = network.getMaxEnergyRecieved();
     maxOutput = network.getMaxEnergySent();
-  }
-
-  public void writeToBuf(ByteBuf buf) {
-    buf.writeLong(energyStored);
-    buf.writeLong(maxEnergyStored);
-    buf.writeInt(maxIO);
-    buf.writeInt(maxInput);
-    buf.writeInt(maxOutput);
-  }
-
-  public static NetworkClientState readFromBuf(ByteBuf buf) {
-    return new NetworkClientState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt());
+    inputMode = network.getInputControlMode();
+    outputMode = network.getOutputControlMode();
   }
 
   public long getEnergyStored() {
@@ -60,6 +56,29 @@ public class NetworkClientState {
 
   public int getMaxIO() {
     return maxIO;
+  }
+
+  public RedstoneControlMode getInputMode() {
+    return inputMode;
+  }
+
+  public RedstoneControlMode getOutputMode() {
+    return outputMode;
+  }
+
+  public void writeToBuf(ByteBuf buf) {
+    buf.writeLong(energyStored);
+    buf.writeLong(maxEnergyStored);
+    buf.writeInt(maxIO);
+    buf.writeInt(maxInput);
+    buf.writeInt(maxOutput);
+    buf.writeShort(inputMode.ordinal());
+    buf.writeShort(outputMode.ordinal());
+  }
+
+  public static NetworkClientState readFromBuf(ByteBuf buf) {
+    return new NetworkClientState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt(),
+        RedstoneControlMode.values()[buf.readShort()], RedstoneControlMode.values()[buf.readShort()]);
   }
 
   @Override
