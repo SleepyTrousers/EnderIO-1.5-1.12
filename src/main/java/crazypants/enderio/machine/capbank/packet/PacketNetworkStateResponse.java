@@ -6,12 +6,12 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.capbank.network.CapBankNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
-import crazypants.enderio.machine.capbank.network.NetworkClientState;
+import crazypants.enderio.machine.capbank.network.NetworkState;
 
 public class PacketNetworkStateResponse implements IMessage, IMessageHandler<PacketNetworkStateResponse, IMessage> {
 
   private int id;
-  private NetworkClientState state;
+  private NetworkState state;
 
   public PacketNetworkStateResponse() {
   }
@@ -43,7 +43,7 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
     id = buf.readInt();
     boolean hasState = buf.readBoolean();
     if(hasState) {
-      state = NetworkClientState.readFromBuf(buf);
+      state = NetworkState.readFromBuf(buf);
     } else {
       state = null;
     }

@@ -25,7 +25,7 @@ public class ClientNetworkManager {
     }
   }
 
-  public void updateState(int id, NetworkClientState state) {
+  public void updateState(int id, NetworkState state) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
     network.setState(state);
   }

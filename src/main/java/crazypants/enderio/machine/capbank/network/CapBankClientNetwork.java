@@ -31,7 +31,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return id;
   }
 
-  public void setState(NetworkClientState state) {
+  public void setState(NetworkState state) {
     maxEnergyRecieved = state.getMaxInput();
     maxEnergySent = state.getMaxOutput();
     maxIO = state.getMaxIO();

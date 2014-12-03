@@ -1,6 +1,8 @@
 package crazypants.enderio.machine.capbank;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -22,6 +24,7 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.network.CapBankNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
+import crazypants.enderio.machine.capbank.network.EnergyReceptor;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.network.PacketHandler;
@@ -46,6 +49,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   private boolean redstoneStateDirty = true;
   private boolean isRecievingRedstoneSignal;
 
+  private final List<EnergyReceptor> receptors = new ArrayList<EnergyReceptor>();
+  private boolean receptorsDirty = true;
+
   private CapBankNetwork network;
 
   //Client side refernce to look up network state
@@ -66,6 +72,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   public void onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
+    receptorsDirty = true;
   }
 
   //---------- Multiblock
@@ -136,6 +143,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
       network.updateRedstoneSignal(this, recievingSignal);
       redstoneStateDirty = false;
     }
+
+    if(receptorsDirty) {
+      updateReceptors();
+    }
   }
 
   private void updateNetwork(World world) {
@@ -194,15 +205,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
       faceModes = new EnumMap<ForgeDirection, IoMode>(ForgeDirection.class);
     }
     faceModes.put(faceHit, mode);
-
-    //TODO
-    //    if(updateReceptors) {
-    //      receptorsDirty = true;
-    //      getController().masterReceptorsDirty = true;
-    //      notifyNeighbours = true;
-    //    }
-    //    render = true;    
-    //    updateBlock();
+    if(updateReceptors) {
+      receptorsDirty = true;
+    }
     if(worldObj != null) {
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
       worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, blockType);
@@ -249,6 +254,36 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   }
 
   //----------- Power
+
+  public List<EnergyReceptor> getReceptors() {
+    if(receptorsDirty) {
+      updateReceptors();
+    }
+    return receptors;
+  }
+
+  private void updateReceptors() {
+
+    if(network == null) {
+      return;
+    }
+    network.removeReceptors(receptors);
+
+    receptors.clear();
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      IoMode ioMode = getIoMode(dir);
+      if(ioMode != IoMode.DISABLED && ioMode != IoMode.PULL) {
+        IPowerInterface pi = getReceptorForFace(dir);
+        if(pi != null) {
+          EnergyReceptor er = new EnergyReceptor(this, pi, dir);
+          receptors.add(er);
+        }
+      }
+    }
+    network.addReceptors(receptors);
+
+    receptorsDirty = false;
+  }
 
   public void addEnergy(int energy) {
     if(network == null) {

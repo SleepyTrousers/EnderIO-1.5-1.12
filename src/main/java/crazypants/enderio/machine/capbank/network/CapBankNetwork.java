@@ -3,22 +3,34 @@ package crazypants.enderio.machine.capbank.network;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import net.minecraft.world.World;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.power.IPowerInterface;
 import crazypants.util.BlockCoord;
+import crazypants.util.RoundRobinIterator;
 
 public class CapBankNetwork implements ICapBankNetwork {
 
   private static final int IO_CAP = 2000000000;
 
-  protected final List<TileCapBank> capBanks = new ArrayList<TileCapBank>();
+  private final List<TileCapBank> capBanks = new ArrayList<TileCapBank>();
+
+  private final Set<EnergyReceptor> receptors = new HashSet<EnergyReceptor>();
+  private RoundRobinIterator<EnergyReceptor> receptorIterator;
 
   private final int id;
 
@@ -45,6 +57,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   private boolean inputRedstoneConditionMet = true;
   private boolean outputRedstoneConditionMet = true;
 
+  private TickListener tickListener;
 
   public CapBankNetwork(int id) {
     this.id = id;
@@ -56,6 +69,8 @@ public class CapBankNetwork implements ICapBankNetwork {
     if(world.isRemote) {
       throw new UnsupportedOperationException();
     }
+
+    tickListener = new TickReciever();
 
     type = cap.getType();
     inputControlMode = cap.getInputControlMode();
@@ -94,7 +109,7 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   @Override
   public void destroyNetwork() {
-    distributeEnergy();
+    distributeEnergyToBanks();
     TileCapBank cap = null;
     for (TileCapBank cb : capBanks) {
       cb.setNetwork(null);
@@ -132,6 +147,12 @@ public class CapBankNetwork implements ICapBankNetwork {
       }
       cap.setInputControlMode(inputControlMode);
       cap.setOutputControlMode(outputControlMode);
+
+      List<EnergyReceptor> recs = cap.getReceptors();
+      if(!recs.isEmpty()) {
+        addReceptors(recs);
+      }
+
     }
   }
 
@@ -140,8 +161,8 @@ public class CapBankNetwork implements ICapBankNetwork {
     return id;
   }
 
-  public NetworkClientState getClientState() {
-    return new NetworkClientState(this);
+  public NetworkState getClientState() {
+    return new NetworkState(this);
   }
 
   //--------- Tick Handling 
@@ -157,18 +178,71 @@ public class CapBankNetwork implements ICapBankNetwork {
     long curTime = world.getTotalWorldTime();
     if(curTime != timeAtLastApply) {
       timeAtLastApply = curTime;
-      doNetworkTick();
+      ConduitNetworkTickHandler.instance.addListener(tickListener);
     }
   }
 
   private void doNetworkTick() {
+    transmitEnergy();
+
     if(energyStored != prevEnergyStored) {
-      distributeEnergy();
+      distributeEnergyToBanks();
     }
     prevEnergyStored = energyStored;
   }
 
-  private void distributeEnergy() {
+  private void transmitEnergy() {
+
+    if(!outputRedstoneConditionMet) {
+      return;
+    }
+
+    if(receptors.isEmpty()) {
+      return;
+    }
+
+    int available;
+    if(energyStored > getMaxEnergySent()) {
+      available = getMaxEnergySent();
+    } else {
+      available = (int) energyStored;
+    }
+    if(available <= 0) {
+      return;
+    }
+
+    if(receptorIterator == null) {
+      List<EnergyReceptor> rl = new ArrayList<EnergyReceptor>(receptors);
+      receptorIterator = new RoundRobinIterator<EnergyReceptor>(rl);
+    }
+
+    int totalSent = 0;
+    Iterator<EnergyReceptor> iter = receptorIterator.iterator();
+    while (available > 0 && iter.hasNext()) {
+      int sent = sendPowerTo(iter.next(), available);
+      totalSent += sent;
+      available -= sent;
+    }
+    addEnergy(-totalSent);
+
+  }
+
+  private int sendPowerTo(EnergyReceptor next, int available) {
+    //Can only send to power conduits if we are in push mode or the conduit is in pull mode
+    //With default setting interaction between conduits and Cap Banks is handled by NetworkPowerManager
+    IPowerConduit con = next.getConduit();
+    if(con != null && next.getMode() == IoMode.NONE && con.getConnectionMode(next.getDir().getOpposite()) == ConnectionMode.IN_OUT) {
+      return 0;
+    }
+    IPowerInterface inf = next.getReceptor();
+    int result = inf.recieveEnergy(next.getDir().getOpposite(), available);
+    if(result < 0) {
+      result = 0;
+    }
+    return result;
+  }
+
+  private void distributeEnergyToBanks() {
     if(capBanks.isEmpty()) {
       return;
     }
@@ -181,7 +255,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     cb.setEnergyStored(cb.getEnergyStored() + remaining);
   }
 
-  //------ Power 
+  //------ Power     
 
   public int recieveEnergy(int maxReceive, boolean simulate) {
     if(maxReceive <= 0 || !inputRedstoneConditionMet) {
@@ -209,6 +283,31 @@ public class CapBankNetwork implements ICapBankNetwork {
     }
   }
 
+  public void addEnergyReceptor(EnergyReceptor rec) {
+    receptors.add(rec);
+    receptorIterator = null;
+  }
+
+  public void addReceptors(Collection<EnergyReceptor> rec) {
+    if(rec.isEmpty()) {
+      return;
+    }
+    receptors.addAll(rec);
+    receptorIterator = null;
+  }
+
+  public void removeReceptors(Collection<EnergyReceptor> rec) {
+    if(rec.isEmpty()) {
+      return;
+    }
+    receptors.removeAll(rec);
+    receptorIterator = null;
+  }
+
+  public void removeReceptor(EnergyReceptor rec) {
+    receptors.remove(rec);
+    receptorIterator = null;
+  }
 
   @Override
   public long getEnergyStored() {
@@ -322,6 +421,19 @@ public class CapBankNetwork implements ICapBankNetwork {
     int powerLevel = redstoneRecievers.isEmpty() ? 0 : 15;
     inputRedstoneConditionMet = RedstoneControlMode.isConditionMet(inputControlMode, powerLevel);
     outputRedstoneConditionMet = RedstoneControlMode.isConditionMet(outputControlMode, powerLevel);
+
+  }
+
+  private class TickReciever implements TickListener {
+
+    @Override
+    public void tickStart(ServerTickEvent evt) {
+    }
+
+    @Override
+    public void tickEnd(ServerTickEvent evt) {
+      doNetworkTick();
+    }
 
   }
 

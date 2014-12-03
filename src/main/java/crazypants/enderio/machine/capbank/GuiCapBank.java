@@ -24,7 +24,7 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
-import crazypants.enderio.machine.capbank.network.NetworkClientState;
+import crazypants.enderio.machine.capbank.network.NetworkState;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
@@ -39,7 +39,7 @@ import crazypants.vecmath.VecmathUtil;
 
 public class GuiCapBank extends GuiContainerBase {
 
-  private static final NetworkClientState EMPTY_STATE = new NetworkClientState();
+  private static final NetworkState EMPTY_STATE = new NetworkState();
 
   private static final CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 

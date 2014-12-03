@@ -3,7 +3,7 @@ package crazypants.enderio.machine.capbank.network;
 import io.netty.buffer.ByteBuf;
 import crazypants.enderio.machine.RedstoneControlMode;
 
-public class NetworkClientState {
+public class NetworkState {
 
   private final long energyStored;
   private final long maxEnergyStored;
@@ -13,11 +13,11 @@ public class NetworkClientState {
   private final RedstoneControlMode inputMode;
   private final RedstoneControlMode outputMode;
 
-  public NetworkClientState() {
+  public NetworkState() {
     this(0, 0, 0, 0, 0, RedstoneControlMode.IGNORE, RedstoneControlMode.IGNORE);
   }
 
-  public NetworkClientState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput, RedstoneControlMode inputMode,
+  public NetworkState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput, RedstoneControlMode inputMode,
       RedstoneControlMode ouputMode) {
     this.energyStored = energyStored;
     this.maxEnergyStored = maxEnergyStored;
@@ -28,7 +28,7 @@ public class NetworkClientState {
     outputMode = ouputMode;
   }
 
-  public NetworkClientState(ICapBankNetwork network) {
+  public NetworkState(ICapBankNetwork network) {
     energyStored = network.getEnergyStored();
     maxEnergyStored = network.getMaxEnergyStored();
     maxIO = network.getMaxIO();
@@ -76,8 +76,8 @@ public class NetworkClientState {
     buf.writeShort(outputMode.ordinal());
   }
 
-  public static NetworkClientState readFromBuf(ByteBuf buf) {
-    return new NetworkClientState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt(),
+  public static NetworkState readFromBuf(ByteBuf buf) {
+    return new NetworkState(buf.readLong(), buf.readLong(), buf.readInt(), buf.readInt(), buf.readInt(),
         RedstoneControlMode.values()[buf.readShort()], RedstoneControlMode.values()[buf.readShort()]);
   }
 
