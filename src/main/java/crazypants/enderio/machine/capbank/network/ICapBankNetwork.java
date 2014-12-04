@@ -5,8 +5,9 @@ import java.util.List;
 
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.power.IPowerStorage;
 
-public interface ICapBankNetwork {
+public interface ICapBankNetwork extends IPowerStorage {
 
   //------ Network
 
@@ -25,23 +26,30 @@ public interface ICapBankNetwork {
 
   //------ Energy
 
-  long getEnergyStored();
+  @Override
+  long getEnergyStoredL();
 
+  @Override
   void addEnergy(int energy);
 
   int recieveEnergy(int maxReceive, boolean simulate);
 
-  long getMaxEnergyStored();
+  @Override
+  long getMaxEnergyStoredL();
 
   int getMaxIO();
 
-  int getMaxEnergySent();
+  @Override
+  int getMaxOutput();
 
-  void setMaxEnergySend(int max);
+  void setMaxOutput(int max);
 
-  int getMaxEnergyRecieved();
+  @Override
+  int getMaxInput();
 
-  void setMaxEnergyReccieved(int max);
+  void setMaxInput(int max);
+
+  float getAverageChangePerTick();
 
   void removeReceptors(Collection<EnergyReceptor> receptors);
 
@@ -65,7 +73,9 @@ public interface ICapBankNetwork {
 
   void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal);
 
-  public abstract float getAverageChangePerTick();
+  boolean isOutputEnabled();
+
+  boolean isInputEnabled();
 
 
 

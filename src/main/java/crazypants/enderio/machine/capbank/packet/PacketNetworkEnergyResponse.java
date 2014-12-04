@@ -18,7 +18,7 @@ public class PacketNetworkEnergyResponse implements IMessage, IMessageHandler<Pa
 
   public PacketNetworkEnergyResponse(ICapBankNetwork network) {
     id = network.getId();
-    energyStored = network.getEnergyStored();
+    energyStored = network.getEnergyStoredL();
     avChange = network.getAverageChangePerTick();
   }
 

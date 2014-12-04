@@ -7,8 +7,10 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.power.IPowerStorage;
 import crazypants.util.BlockCoord;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
@@ -94,7 +96,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public long getMaxEnergyStored() {
+  public long getMaxEnergyStoredL() {
     return maxEnergyStored;
   }
 
@@ -103,35 +105,35 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public long getEnergyStored() {
+  public long getEnergyStoredL() {
     return energyStored;
   }
 
   @Override
-  public int getMaxEnergySent() {
+  public int getMaxOutput() {
     return maxEnergySent;
   }
 
   @Override
-  public void setMaxEnergySend(int max) {
+  public void setMaxOutput(int max) {
     maxEnergySent = MathHelper.clamp_int(max, 0, maxIO);
   }
 
   @Override
-  public int getMaxEnergyRecieved() {
+  public int getMaxInput() {
     return maxEnergyRecieved;
   }
 
   @Override
-  public void setMaxEnergyReccieved(int max) {
+  public void setMaxInput(int max) {
     maxEnergyRecieved = MathHelper.clamp_int(max, 0, maxIO);
   }
 
   public double getEnergyStoredRatio() {
-    if(getMaxEnergyStored() <= 0) {
+    if(getMaxEnergyStoredL() <= 0) {
       return 0;
     }
-    return (double) getEnergyStored() / getMaxEnergyStored();
+    return (double) getEnergyStoredL() / getMaxEnergyStoredL();
   }
 
   @Override
@@ -196,6 +198,36 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   @Override
   public void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal) {
+  }
+
+  @Override
+  public boolean isOutputEnabled() {
+    return true;
+  }
+
+  @Override
+  public boolean isInputEnabled() {
+    return true;
+  }
+
+  @Override
+  public IPowerStorage getController() {
+    return this;
+  }
+
+  @Override
+  public boolean isOutputEnabled(ForgeDirection direction) {
+    return isOutputEnabled();
+  }
+
+  @Override
+  public boolean isInputEnabled(ForgeDirection direction) {
+    return isInputEnabled();
+  }
+
+  @Override
+  public boolean isCreative() {
+    return false;
   }
 
 }

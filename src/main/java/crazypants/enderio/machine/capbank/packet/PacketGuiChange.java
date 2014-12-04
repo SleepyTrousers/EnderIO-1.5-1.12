@@ -20,8 +20,8 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
   public PacketGuiChange(TileCapBank capBank) {
     super(capBank);
     ICapBankNetwork network = capBank.getNetwork();
-    maxSend = network.getMaxEnergySent();
-    maxRec = network.getMaxEnergyRecieved();
+    maxSend = network.getMaxOutput();
+    maxRec = network.getMaxInput();
     inputMode = network.getInputControlMode();
     outputMode = network.getOutputControlMode();
   }
@@ -50,8 +50,8 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
     if(net == null) {
       return null;
     }
-    net.setMaxEnergySend(message.maxSend);
-    net.setMaxEnergyReccieved(message.maxRec);
+    net.setMaxOutput(message.maxSend);
+    net.setMaxInput(message.maxRec);
     net.setInputControlMode(message.inputMode);
     net.setOutputControlMode(message.outputMode);
     return null;

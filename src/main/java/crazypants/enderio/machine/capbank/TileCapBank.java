@@ -34,13 +34,14 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.EntityUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable {
+public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable, IPowerStorage {
 
   private Map<ForgeDirection, IoMode> faceModes;
 
@@ -300,6 +301,58 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   //----------- Power
 
+  @Override
+  public IPowerStorage getController() {
+    return network;
+  }
+
+  @Override
+  public long getEnergyStoredL() {
+    if(network == null) {
+      return getEnergyStored();
+    }
+    return network.getEnergyStoredL();
+  }
+
+  @Override
+  public long getMaxEnergyStoredL() {
+    if(network == null) {
+      return getMaxEnergyStored();
+    }
+    return network.getMaxEnergyStoredL();
+  }
+
+  @Override
+  public boolean isOutputEnabled(ForgeDirection direction) {
+    IoMode mode = getIoMode(direction);
+    return mode == IoMode.PUSH || mode == IoMode.NONE && isOutputEnabled();
+  }
+
+  private boolean isOutputEnabled() {
+    if(network == null) {
+      return true;
+    }
+    return network.isOutputEnabled();
+  }
+
+  @Override
+  public boolean isInputEnabled(ForgeDirection direction) {
+    IoMode mode = getIoMode(direction);
+    return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
+  }
+
+  private boolean isInputEnabled() {
+    if(network == null) {
+      return true;
+    }
+    return network.isInputEnabled();
+  }
+
+  @Override
+  public boolean isCreative() {
+    return getType().isCreative();
+  }
+
   public List<EnergyReceptor> getReceptors() {
     if(receptorsDirty) {
       updateReceptors();
@@ -348,6 +401,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   }
 
+  @Override
   public void addEnergy(int energy) {
     if(network == null) {
       setEnergyStored(getEnergyStored() + energy);
@@ -378,33 +432,39 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
+    return getMaxInput();
+  }
+
+  @Override
+  public int getMaxInput() {
     if(network == null) {
       return getType().getMaxIO();
     }
-    return network.getMaxEnergyRecieved();
+    return network.getMaxInput();
   }
 
-  public int getMaxEnergySent() {
-    if(network == null) {
-      return getType().getMaxIO();
-    }
-    return network.getMaxEnergySent();
-  }
-
-  public void setMaxEnergyRecieved(int maxInput) {
+  public void setMaxInput(int maxInput) {
     this.maxInput = maxInput;
   }
 
-  public void setMaxEnergySend(int maxOutput) {
+  public int getMaxInputOverride() {
+    return maxInput;
+  }
+
+  @Override
+  public int getMaxOutput() {
+    if(network == null) {
+      return getType().getMaxIO();
+    }
+    return network.getMaxOutput();
+  }
+
+  public void setMaxOutput(int maxOutput) {
     this.maxOutput = maxOutput;
   }
 
-  public int getMaxEnergySentOverride() {
+  public int getMaxOutputOverride() {
     return maxOutput;
-  }
-
-  public int getMaxEnergyRecievedOverride() {
-    return maxInput;
   }
 
   @Override

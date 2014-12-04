@@ -94,8 +94,8 @@ public class GuiCapBank extends GuiContainerBase {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(PowerDisplayUtil.formatPower(network.getEnergyStored()) + " " + PowerDisplayUtil.ofStr());
-        text.add(EnumChatFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStored()) + " " + EnumChatFormatting.GRAY
+        text.add(PowerDisplayUtil.formatPower(network.getEnergyStoredL()) + " " + PowerDisplayUtil.ofStr());
+        text.add(EnumChatFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStoredL()) + " " + EnumChatFormatting.GRAY
             + PowerDisplayUtil.abrevation());
 
         float change = network.getAverageChangePerTick();
@@ -234,27 +234,27 @@ public class GuiCapBank extends GuiContainerBase {
 
   private void updateInputOutput() {
     int input = parsePower(maxInputTF);
-    if(input >= 0 && network.getMaxEnergyRecieved() != input) {
+    if(input >= 0 && network.getMaxInput() != input) {
       setMaxInput(input);
     }
     int output = parsePower(maxOutputTF);
-    if(output >= 0 && network.getMaxEnergySent() != output) {
+    if(output >= 0 && network.getMaxOutput() != output) {
       setMaxOutput(output);
     }
   }
 
   private void setMaxOutput(int output) {
-    if(output != network.getMaxEnergySent()) {
-      network.setMaxEnergySend(output);
-      maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergySent()));
+    if(output != network.getMaxOutput()) {
+      network.setMaxOutput(output);
+      maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
       sendUpdateToServer();
     }
   }
 
   private void setMaxInput(int input) {
-    if(input != network.getMaxEnergyRecieved()) {
-      network.setMaxEnergyReccieved(input);
-      maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergyRecieved()));
+    if(input != network.getMaxInput()) {
+      network.setMaxInput(input);
+      maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
       sendUpdateToServer();
     }
   }
@@ -414,8 +414,8 @@ public class GuiCapBank extends GuiContainerBase {
   }
 
   private void updateFieldsFromState() {
-    maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergyRecieved()));
-    maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxEnergySent()));
+    maxInputTF.setText(PowerDisplayUtil.formatPower(network.getMaxInput()));
+    maxOutputTF.setText(PowerDisplayUtil.formatPower(network.getMaxOutput()));
     inputRsButton.setMode(network.getInputControlMode());
     outputRsButton.setMode(network.getOutputControlMode());
   }

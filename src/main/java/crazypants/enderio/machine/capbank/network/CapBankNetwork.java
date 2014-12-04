@@ -9,6 +9,7 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.EnderIO;
@@ -22,6 +23,7 @@ import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
 import crazypants.util.BlockCoord;
 import crazypants.util.RoundRobinIterator;
@@ -62,7 +64,7 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   private TickListener tickListener;
 
-  private PerTickIntAverageCalculator powerTracker = new PerTickIntAverageCalculator();
+  private PerTickIntAverageCalculator powerTracker = new PerTickIntAverageCalculator(2);
 
   private final InventoryImpl inventory = new InventoryImpl();
 
@@ -142,10 +144,10 @@ public class CapBankNetwork implements ICapBankNetwork {
       energyStored += cap.getEnergyStored();
       maxEnergyStored += cap.getMaxEnergyStored();
       if(maxInput == -1) {
-        maxInput = cap.getMaxEnergyRecievedOverride();
+        maxInput = cap.getMaxInputOverride();
       }
       if(maxOutput == -1) {
-        maxOutput = cap.getMaxEnergySentOverride();
+        maxOutput = cap.getMaxOutputOverride();
       }
       cap.setInputControlMode(inputControlMode);
       cap.setOutputControlMode(outputControlMode);
@@ -226,7 +228,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       return;
     }
 
-    int available = getEnergyAvailableForTick(getMaxEnergySent());
+    int available = getEnergyAvailableForTick(getMaxOutput());
     if(available <= 0) {
       return;
     }
@@ -336,7 +338,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       spaceAvailable = Integer.MAX_VALUE;
     }
     int res = Math.min(maxReceive, (int) spaceAvailable);
-    res = Math.min(maxReceive, getMaxEnergyRecieved());
+    res = Math.min(maxReceive, getMaxInput());
     if(!simulate) {
       if(!type.isCreative()) {
         addEnergy(res);
@@ -385,12 +387,12 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public long getEnergyStored() {
+  public long getEnergyStoredL() {
     return energyStored;
   }
 
   @Override
-  public long getMaxEnergyStored() {
+  public long getMaxEnergyStoredL() {
     return maxEnergyStored;
   }
 
@@ -402,7 +404,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   //----- IO overrides
 
   @Override
-  public int getMaxEnergyRecieved() {
+  public int getMaxInput() {
     if(maxInput == -1) {
       return maxIO;
     }
@@ -410,7 +412,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public int getMaxEnergySent() {
+  public int getMaxOutput() {
     if(maxOutput == -1) {
       return maxIO;
     }
@@ -418,7 +420,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public void setMaxEnergyReccieved(int max) {
+  public void setMaxInput(int max) {
     if(max >= maxIO) {
       maxInput = -1;
     } else if(max < 0) {
@@ -427,12 +429,12 @@ public class CapBankNetwork implements ICapBankNetwork {
       maxInput = max;
     }
     for (TileCapBank cb : capBanks) {
-      cb.setMaxEnergyRecieved(maxInput);
+      cb.setMaxInput(maxInput);
     }
   }
 
   @Override
-  public void setMaxEnergySend(int max) {
+  public void setMaxOutput(int max) {
     if(max >= maxIO) {
       maxOutput = -1;
     } else if(max < 0) {
@@ -441,7 +443,7 @@ public class CapBankNetwork implements ICapBankNetwork {
       maxOutput = max;
     }
     for (TileCapBank cb : capBanks) {
-      cb.setMaxEnergySend(maxOutput);
+      cb.setMaxOutput(maxOutput);
     }
   }
 
@@ -493,6 +495,16 @@ public class CapBankNetwork implements ICapBankNetwork {
     updateRedstoneConditions();
   }
 
+  @Override
+  public boolean isInputEnabled() {
+    return inputRedstoneConditionMet;
+  }
+
+  @Override
+  public boolean isOutputEnabled() {
+    return outputRedstoneConditionMet;
+  }
+
   private void updateRedstoneConditions() {
     int powerLevel = redstoneRecievers.isEmpty() ? 0 : 15;
     inputRedstoneConditionMet = RedstoneControlMode.isConditionMet(inputControlMode, powerLevel);
@@ -511,6 +523,26 @@ public class CapBankNetwork implements ICapBankNetwork {
       doNetworkTick();
     }
 
+  }
+
+  @Override
+  public IPowerStorage getController() {
+    return this;
+  }
+
+  @Override
+  public boolean isOutputEnabled(ForgeDirection direction) {
+    return isOutputEnabled();
+  }
+
+  @Override
+  public boolean isInputEnabled(ForgeDirection direction) {
+    return isInputEnabled();
+  }
+
+  @Override
+  public boolean isCreative() {
+    return type.isCreative();
   }
 
 }

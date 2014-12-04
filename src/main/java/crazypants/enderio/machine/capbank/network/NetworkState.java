@@ -35,11 +35,11 @@ public class NetworkState {
   }
 
   public NetworkState(ICapBankNetwork network) {
-    energyStored = network.getEnergyStored();
-    maxEnergyStored = network.getMaxEnergyStored();
+    energyStored = network.getEnergyStoredL();
+    maxEnergyStored = network.getMaxEnergyStoredL();
     maxIO = network.getMaxIO();
-    maxInput = network.getMaxEnergyRecieved();
-    maxOutput = network.getMaxEnergySent();
+    maxInput = network.getMaxInput();
+    maxOutput = network.getMaxOutput();
     inputMode = network.getInputControlMode();
     outputMode = network.getOutputControlMode();
     TileCapBank cb = network.getInventory().getCapBank();

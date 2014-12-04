@@ -441,15 +441,15 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         if(TooltipAddera.showAdvancedTooltips()) {
           tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"), format, fmt.format(nw.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
           tooltip
-              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"), format, fmt.format(nw.getMaxEnergyRecieved()), Util.TAB + Util.ALIGNRIGHT));
+              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"), format, fmt.format(nw.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
           tooltip
-              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(nw.getMaxEnergySent()), Util.TAB + Util.ALIGNRIGHT));
+              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(nw.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
 
           tooltip.add("");
         }
 
-        long stored = nw.getEnergyStored();
-        long max = nw.getMaxEnergyStored();
+        long stored = nw.getEnergyStoredL();
+        long max = nw.getMaxEnergyStoredL();
         tooltip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE,
             fmt.format(max),
             EnumChatFormatting.RESET));
