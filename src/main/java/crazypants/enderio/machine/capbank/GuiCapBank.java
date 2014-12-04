@@ -23,7 +23,6 @@ import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
-import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.NetworkState;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
@@ -78,9 +77,12 @@ public class GuiCapBank extends GuiContainerBase {
   private int initialStateCount = -1;
   private boolean initState = true;
 
+  private final ContainerCapBank container;
+
   public GuiCapBank(Entity player, InventoryPlayer playerInv, TileCapBank te) {
     super(new ContainerCapBank(player, playerInv, te));
     capBank = te;
+    container = (ContainerCapBank) inventorySlots;
 
     updateState();
 
@@ -135,7 +137,6 @@ public class GuiCapBank extends GuiContainerBase {
     configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
 
     List<BlockCoord> coords = new ArrayList<BlockCoord>();
-    CapBankClientNetwork network = ClientNetworkManager.getInstance().getNetwork(capBank);
     if(network != null && network.getMembers().size() < 200) {
       for (TileCapBank cb : network.getMembers()) {
         coords.add(cb.getLocation());
@@ -247,7 +248,7 @@ public class GuiCapBank extends GuiContainerBase {
 
   protected void sendUpdateToServer() {
     if(network != NULL_NETWORK) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(capBank, network));
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(capBank));
     }
   }
 
@@ -376,12 +377,12 @@ public class GuiCapBank extends GuiContainerBase {
       return false;
     }
 
-    if(capBank.getNetworkId() == -1) {
+    if(capBank.getNetwork() == null) {
       network = NULL_NETWORK;
       return true;
     }
     if(network == null || network == NULL_NETWORK) {
-      network = ClientNetworkManager.getInstance().getOrCreateNetwork(capBank.getNetworkId());
+      network = (CapBankClientNetwork) capBank.getNetwork();
       initialStateCount = network.getStateUpdateCount();
       PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
       return true;
@@ -391,6 +392,7 @@ public class GuiCapBank extends GuiContainerBase {
       return true;
     }
     if(network.getStateUpdateCount() > initialStateCount) {
+      container.updateInventory();
       updateFieldsFromState();
       initState = false;
       return true;

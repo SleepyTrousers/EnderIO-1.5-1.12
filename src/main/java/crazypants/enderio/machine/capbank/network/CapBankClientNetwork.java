@@ -1,11 +1,15 @@
 package crazypants.enderio.machine.capbank.network;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.util.BlockCoord;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 
@@ -14,13 +18,17 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   private int maxEnergySent;
   private int maxEnergyRecieved;
 
-  private int stateUpdateCount = 0;
+  private int stateUpdateCount;
   private int maxIO;
   private long maxEnergyStored;
   private long energyStored;
 
   private RedstoneControlMode inputControlMode = RedstoneControlMode.IGNORE;
   private RedstoneControlMode outputControlMode = RedstoneControlMode.IGNORE;
+
+  private final InventoryImpl inventory = new InventoryImpl();
+
+  private float aveChange;
 
   public CapBankClientNetwork(int id) {
     this.id = id;
@@ -31,7 +39,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return id;
   }
 
-  public void setState(NetworkState state) {
+  public void setState(World world, NetworkState state) {
     maxEnergyRecieved = state.getMaxInput();
     maxEnergySent = state.getMaxOutput();
     maxIO = state.getMaxIO();
@@ -39,6 +47,18 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     energyStored = state.getEnergyStored();
     inputControlMode = state.getInputMode();
     outputControlMode = state.getOutputMode();
+
+    BlockCoord bc = state.getInventoryImplLocation();
+    if(bc == null) {
+      inventory.setCapBank(null);
+    } else {
+      TileEntity te = world.getTileEntity(bc.x, bc.y, bc.z);
+      if(te instanceof TileCapBank) {
+        inventory.setCapBank((TileCapBank) te);
+      }
+    }
+    aveChange = state.getAverageChange();
+    
     stateUpdateCount++;
   }
 
@@ -50,6 +70,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     this.stateUpdateCount = stateUpdateCount;
   }
 
+  @Override
   public void addMember(TileCapBank capBank) {
     members.add(capBank);
   }
@@ -63,6 +84,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   public void destroyNetwork() {
     for (TileCapBank cb : members) {
       cb.setNetworkId(-1);
+      cb.setNetwork(null);
     }
   }
 
@@ -130,6 +152,50 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   @Override
   public void setOutputControlMode(RedstoneControlMode outputControlMode) {
     this.outputControlMode = outputControlMode;
+  }
+
+  @Override
+  public InventoryImpl getInventory() {
+    return inventory;
+  }
+
+  @Override
+  public float getAverageChangePerTick() {
+    return aveChange;
+  }
+
+  public void setAverageChangePerTick(float aveChange) {
+    this.aveChange = aveChange;
+  }
+
+  @Override
+  public NetworkState getState() {
+    return new NetworkState(this);
+  }
+
+  @Override
+  public void onUpdateEntity(TileCapBank tileCapBank) {
+  }
+
+  @Override
+  public void addEnergy(int energy) {
+  }
+
+  @Override
+  public int recieveEnergy(int maxReceive, boolean simulate) {
+    return 0;
+  }
+
+  @Override
+  public void removeReceptors(Collection<EnergyReceptor> receptors) {
+  }
+
+  @Override
+  public void addReceptors(Collection<EnergyReceptor> receptors) {
+  }
+
+  @Override
+  public void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal) {
   }
 
 }

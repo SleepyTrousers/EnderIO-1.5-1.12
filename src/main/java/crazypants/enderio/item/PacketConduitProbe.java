@@ -25,7 +25,7 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPowerReceptor;
-import crazypants.enderio.power.PowerInterfaceRF;
+import crazypants.enderio.power.EnergyHandlerPI;
 import crazypants.util.Lang;
 
 public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
@@ -120,7 +120,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     } else if(te instanceof IInternalPowerReceptor) {
         IInternalPowerReceptor pr = (IInternalPowerReceptor) te;        
         sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,
-            0, PowerInterfaceRF.getPowerRequest(ForgeDirection.NORTH, pr));
+            0, EnergyHandlerPI.getPowerRequest(ForgeDirection.NORTH, pr));
 
     } 
     return null;

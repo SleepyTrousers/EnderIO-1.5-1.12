@@ -13,6 +13,8 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
   public static ItemStack createItemStackWithPower(int meta, int storedEnergy) {
     ItemStack res = new ItemStack(EnderIO.blockCapBank, 1, meta);
     PowerHandlerUtil.setStoredEnergyForItem(res, storedEnergy);
+    CapBankType type = CapBankType.getTypeFromMeta(meta);
+    type.writeTypeToNBT(res.stackTagCompound);
     return res;
   }
 

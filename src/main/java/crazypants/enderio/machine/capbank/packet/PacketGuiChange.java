@@ -5,7 +5,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 
 public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
@@ -18,8 +17,9 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
   public PacketGuiChange() {
   }
 
-  public PacketGuiChange(TileCapBank capBank, CapBankClientNetwork network) {
+  public PacketGuiChange(TileCapBank capBank) {
     super(capBank);
+    ICapBankNetwork network = capBank.getNetwork();
     maxSend = network.getMaxEnergySent();
     maxRec = network.getMaxEnergyRecieved();
     inputMode = network.getInputControlMode();

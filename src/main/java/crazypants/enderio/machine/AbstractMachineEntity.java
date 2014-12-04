@@ -540,7 +540,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
       energy = (int)(storedEnergyMJ * 10);
     } else {
-      energy = nbtRoot.getInteger("storedEnergyRF");  
+      energy = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
     }
     setEnergyStored(energy);
 
@@ -600,7 +600,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
    * Write state common to both block and item
    */
   public void writeCommon(NBTTagCompound nbtRoot) {
-    nbtRoot.setInteger("storedEnergyRF", storedEnergyRF);
+    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
 
     // write inventory list

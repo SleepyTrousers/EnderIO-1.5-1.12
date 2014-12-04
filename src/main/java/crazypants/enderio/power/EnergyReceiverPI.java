@@ -2,11 +2,13 @@ package crazypants.enderio.power;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
-public class PowerInterfaceRF implements IPowerInterface {
-  private IEnergyHandler rfPower;
+public class EnergyReceiverPI implements IPowerInterface {
+  
+  private IEnergyReceiver rfPower;
 
-  public PowerInterfaceRF(IEnergyHandler powerReceptor) {
+  public EnergyReceiverPI(IEnergyReceiver powerReceptor) {
     rfPower = powerReceptor;
   }
 
@@ -47,7 +49,6 @@ public class PowerInterfaceRF implements IPowerInterface {
     return 0;
   }
 
-
   public static int getPowerRequest(ForgeDirection dir, IEnergyHandler handler) {
     if(handler != null && dir != null && handler.canConnectEnergy(dir)) {
       return handler.receiveEnergy(dir, 99999999, true);
@@ -67,4 +68,15 @@ public class PowerInterfaceRF implements IPowerInterface {
     }
     return 0;
   }
+
+  @Override
+  public boolean isOutputOnly() {
+    return false;
+  }
+
+  @Override
+  public boolean isInputOnly() {
+    return true;
+  }
+
 }

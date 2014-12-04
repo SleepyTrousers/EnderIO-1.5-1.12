@@ -8,11 +8,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
@@ -29,8 +32,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
-import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
+import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
@@ -43,6 +45,8 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.util.Lang;
+import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
 public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
@@ -123,7 +127,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {    
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     list.add(PowerDisplayUtil.formatStoredPower(PowerHandlerUtil.getStoredEnergyForItem(itemstack), CapBankType.getTypeFromMeta(itemstack.getItemDamage())
         .getMaxEnergyStored()));
   }
@@ -277,22 +281,6 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     return lockedIcons[meta];
   }
 
-  //  @Override
-  //  public void onBlockAdded(World world, int x, int y, int z) {
-  //    if(world.isRemote) {
-  //      return;
-  //    }
-  //    TileEntity te = world.getTileEntity(x, y, z);
-  //    if(te instanceof TileCapacitorBank) {
-  //      TileCapacitorBank tr = (TileCapacitorBank) te;
-  //      int meta = world.getBlockMetadata(x, y, z);
-  //      if(meta == 1) {
-  //        tr.setCreativeMode();
-  //      }
-  //      tr.onBlockAdded();
-  //    }
-  //  }
-
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block blockId) {
     if(world.isRemote) {
@@ -306,83 +294,107 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    //    if(!world.isRemote) {
-    //      TileEntity te = world.getTileEntity(x, y, z);
-    //      if(te instanceof TileCapBank) {
-    //        TileCapBank cb = (TileCapBank) te;
-    //        cb.onBreakBlock();
-    //
-    //        ItemStack itemStack =
-    //            BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-    //        ret.add(itemStack);
-    //      }
-    //    }
-    return ret;
+  public int quantityDropped(Random r) {
+    return 0;
   }
 
-  @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    if(!world.isRemote) {
-      //      TileEntity te = world.getTileEntity(x, y, z);
-      //      if(te instanceof TileCapBank) {
-      //        TileCapBank cb = (TileCapBank) te;
-      //        cb.onBreakBlock();
-      //
-      //        // If we are not in Creative or blockCapBankAllwaysDrop is set to true, allow the item drop.
-      //        // This option allows creative players to pick up broken capacitor banks
-      //
-      //        if(!player.capabilities.isCreativeMode || "true".equalsIgnoreCase(System.getProperty("blockCapBankAllwaysDrop"))) {
-      //          ItemStack itemStack =
-      //              BlockItemCapacitorBank.createItemStackWithPower(cb.doGetEnergyStored());
-      //          if(cb.isCreative()) {
-      //            itemStack.setItemDamage(1);
-      //          }
-      //          float f = 0.7F;
-      //          double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      //          double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      //          double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-      //          EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-      //          entityitem.delayBeforeCanPickup = 10;
-      //          world.spawnEntityInWorld(entityitem);
-      //        }
-      //      }
-    }
-    return super.removedByPlayer(world, player, x, y, z);
-  }
+  //  @Override
+  //  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+  //    if(world.isRemote) {
+  //      return;
+  //    }
+  //    TileEntity te = world.getTileEntity(x, y, z);
+  //    if(!(te instanceof TileCapBank)) {
+  //      return;
+  //    }
+  //
+  //    TileCapBank cb = (TileCapBank) te;
+  //    cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
+  //
+  //    world.markBlockForUpdate(x, y, z);
+  //  }
 
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-    if(world.isRemote) {
-      return;
-    }
+    super.onBlockPlacedBy(world, x, y, z, player, stack);
+
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileCapBank)) {
       return;
     }
 
     TileCapBank cb = (TileCapBank) te;
-    cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
-
+    if(stack.stackTagCompound != null) {
+      cb.readCommonNBT(stack.stackTagCompound);
+    }
+    if(world.isRemote) {
+      return;
+    }
     world.markBlockForUpdate(x, y, z);
   }
 
   @Override
-  public int quantityDropped(Random r) {
-    return 0;
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileCapBank) {
+        TileCapBank cb = (TileCapBank) te;
+        ret.add(createItemStack(world, x, y, z, cb));
+      }
+    }
+    return ret;
+  }
+
+  @Override
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+    if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileCapBank) {
+        TileCapBank cb = (TileCapBank) te;
+        cb.moveInventoryToNetwork();
+
+        ItemStack itemStack = createItemStack(world, x, y, z, cb);
+
+        //Clear in the inventory as its now in the item stack
+        for (int i = 0; i < cb.getInventory().length; i++) {
+          cb.getInventory()[i] = null;
+        }
+
+        float f = 0.7F;
+        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
+        entityitem.delayBeforeCanPickup = 10;
+
+        world.spawnEntityInWorld(entityitem);
+      }
+    }
+    return super.removedByPlayer(world, player, x, y, z);
+  }
+
+  protected ItemStack createItemStack(World world, int x, int y, int z, TileCapBank cb) {
+    int meta = damageDropped(world.getBlockMetadata(x, y, z));
+    ItemStack itemStack = new ItemStack(this, 1, meta);
+    itemStack.stackTagCompound = new NBTTagCompound();
+    cb.writeCommonNBT(itemStack.stackTagCompound);
+    return itemStack;
   }
 
   @Override
   public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
-      //      TileEntity te = world.getTileEntity(x, y, z);
-      //      if(!(te instanceof TileCapacitorBank)) {
-      //        super.breakBlock(world, x, y, z, par5, par6);
-      //        return;
-      //      }
-      //      TileCapacitorBank cb = (TileCapacitorBank) te;
-      //      Util.dropItems(world, cb, x, y, z, true);
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(!(te instanceof TileCapBank)) {
+        super.breakBlock(world, x, y, z, par5, par6);
+        return;
+      }
+      TileCapBank cb = (TileCapBank) te;
+      cb.onBreakBlock();
+      if(world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+        Util.dropItems(world, cb.getInventory(), x, y, z, true);
+      }
     }
     world.removeTileEntity(x, y, z);
   }
@@ -395,7 +407,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
     }
     TileCapBank tr = (TileCapBank) te;
-    CapBankClientNetwork network = ClientNetworkManager.getInstance().getNetwork(tr);
+    ICapBankNetwork network = tr.getNetwork();
 
     if(!tr.getType().isMultiblock() || network == null) {
       return super.getSelectedBoundingBoxFromPool(world, x, y, z);
@@ -430,15 +442,48 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
 
   @Override
   public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-    //    TileEntity te = world.getTileEntity(x, y, z);
-    //    if (te instanceof TileCapBank) {
-    //      TileCapBank cap = (TileCapBank) te;
-    //      String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
-    //            
-    //      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, fmt.format(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
-    //      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, fmt.format(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
-    //      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
-    //    }
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCapBank) {
+      TileCapBank cap = (TileCapBank) te;
+      if(cap.getNetwork() != null) {
+        if(world.isRemote && world.getTotalWorldTime() % 20 == 0) {
+          PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(cap));
+        } else if(world.isRemote && world.getTotalWorldTime() % 2 == 0) {
+          PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(cap));
+        }
+        ICapBankNetwork nw = cap.getNetwork();
+
+        String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
+        if(TooltipAddera.showAdvancedTooltips()) {
+          tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"), format, fmt.format(nw.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
+          tooltip
+              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"), format, fmt.format(nw.getMaxEnergyRecieved()), Util.TAB + Util.ALIGNRIGHT));
+          tooltip
+              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(nw.getMaxEnergySent()), Util.TAB + Util.ALIGNRIGHT));
+
+          tooltip.add("");
+        }
+
+        long stored = nw.getEnergyStored();
+        long max = nw.getMaxEnergyStored();
+        tooltip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE,
+            fmt.format(max),
+            EnumChatFormatting.RESET));
+
+        float change = nw.getAverageChangePerTick();
+        String color = EnumChatFormatting.WHITE.toString();
+        if(change > 0) {
+          color = EnumChatFormatting.GREEN.toString() + "+";
+        } else if(change < 0) {
+          color = EnumChatFormatting.RED.toString();
+        }
+        tooltip
+            .add(String.format("%s%s%sRF/t ", color, fmt.format(change), " " + EnumChatFormatting.RESET.toString()));
+
+
+
+      }
+    }
   }
 
   @Override

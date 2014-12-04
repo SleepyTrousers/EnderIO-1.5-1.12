@@ -18,4 +18,8 @@ public interface IPowerInterface {
 
   int recieveEnergy(ForgeDirection opposite, int canOffer);
 
+  boolean isOutputOnly();
+
+  boolean isInputOnly();
+
 }

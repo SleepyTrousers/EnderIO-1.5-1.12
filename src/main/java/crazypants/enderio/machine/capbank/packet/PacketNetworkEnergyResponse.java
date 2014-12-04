@@ -11,6 +11,7 @@ public class PacketNetworkEnergyResponse implements IMessage, IMessageHandler<Pa
 
   private int id;
   private long energyStored;
+  private float avChange;
 
   public PacketNetworkEnergyResponse() {
   }
@@ -18,23 +19,26 @@ public class PacketNetworkEnergyResponse implements IMessage, IMessageHandler<Pa
   public PacketNetworkEnergyResponse(ICapBankNetwork network) {
     id = network.getId();
     energyStored = network.getEnergyStored();
+    avChange = network.getAverageChangePerTick();
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     buf.writeInt(id);
     buf.writeLong(energyStored);
+    buf.writeFloat(avChange);
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     id = buf.readInt();
     energyStored = buf.readLong();
+    avChange = buf.readFloat();
   }
 
   @Override
   public IMessage onMessage(PacketNetworkEnergyResponse message, MessageContext ctx) {
-    ClientNetworkManager.getInstance().updateEnergyStored(message.id, message.energyStored);
+    ClientNetworkManager.getInstance().updateEnergy(message.id, message.energyStored, message.avChange);
     return null;
   }
 

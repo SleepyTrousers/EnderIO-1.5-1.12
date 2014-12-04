@@ -1,5 +1,6 @@
 package crazypants.enderio.machine.capbank.network;
 
+import java.util.Collection;
 import java.util.List;
 
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -7,13 +8,32 @@ import crazypants.enderio.machine.capbank.TileCapBank;
 
 public interface ICapBankNetwork {
 
+  //------ Network
+
   int getId();
 
-  int getMaxIO();
+  void addMember(TileCapBank cap);
+
+  List<TileCapBank> getMembers();
+
+  void destroyNetwork();
+
+  NetworkState getState();
+
+  void onUpdateEntity(TileCapBank tileCapBank);
+
+
+  //------ Energy
+
+  long getEnergyStored();
+
+  void addEnergy(int energy);
+
+  int recieveEnergy(int maxReceive, boolean simulate);
 
   long getMaxEnergyStored();
 
-  long getEnergyStored();
+  int getMaxIO();
 
   int getMaxEnergySent();
 
@@ -23,16 +43,30 @@ public interface ICapBankNetwork {
 
   void setMaxEnergyReccieved(int max);
 
-  void destroyNetwork();
+  void removeReceptors(Collection<EnergyReceptor> receptors);
 
-  List<TileCapBank> getMembers();
+  void addReceptors(Collection<EnergyReceptor> receptors);
 
-  public abstract void setOutputControlMode(RedstoneControlMode outputControlMode);
 
-  public abstract RedstoneControlMode getOutputControlMode();
+  //------ Inventory
 
-  public abstract void setInputControlMode(RedstoneControlMode inputControlMode);
+  InventoryImpl getInventory();
 
-  public abstract RedstoneControlMode getInputControlMode();
+
+  //------ Redstone
+
+  void setOutputControlMode(RedstoneControlMode outputControlMode);
+
+  RedstoneControlMode getOutputControlMode();
+
+  void setInputControlMode(RedstoneControlMode inputControlMode);
+
+  RedstoneControlMode getInputControlMode();
+
+  void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal);
+
+  public abstract float getAverageChangePerTick();
+
+
 
 }

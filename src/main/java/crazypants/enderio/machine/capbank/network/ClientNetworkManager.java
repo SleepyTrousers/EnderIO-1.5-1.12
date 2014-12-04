@@ -3,6 +3,7 @@ package crazypants.enderio.machine.capbank.network;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.world.World;
 import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class ClientNetworkManager {
@@ -22,20 +23,22 @@ public class ClientNetworkManager {
     CapBankClientNetwork res = networks.get(id);
     if(res != null) {
       res.destroyNetwork();
+      networks.remove(res);
     }
   }
 
-  public void updateState(int id, NetworkState state) {
+  public void updateState(World world, int id, NetworkState state) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
-    network.setState(state);
+    network.setState(world, state);
   }
 
-  public void updateEnergyStored(int id, long energyStored) {
+  public void updateEnergy(int id, long energyStored, float avChange) {
     CapBankClientNetwork res = networks.get(id);
     if(res == null) {
       return;
     }
     res.setEnergyStored(energyStored);
+    res.setAverageChangePerTick(avChange);
   }
 
   public CapBankClientNetwork getOrCreateNetwork(int id) {
@@ -50,13 +53,6 @@ public class ClientNetworkManager {
   public void addToNetwork(int id, TileCapBank tileCapBank) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
     network.addMember(tileCapBank);
-  }
-
-  public CapBankClientNetwork getNetwork(TileCapBank tr) {
-    if(tr == null) {
-      return null;
-    }
-    return networks.get(tr.getNetworkId());
   }
 
 }

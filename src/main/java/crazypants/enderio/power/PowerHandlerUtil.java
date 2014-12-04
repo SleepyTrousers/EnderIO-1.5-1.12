@@ -5,14 +5,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
 public class PowerHandlerUtil {
 
+  public static final String STORED_ENERGY_NBT_KEY = "storedEnergyRF";
+
   public static IPowerInterface create(Object o) {
     if(o instanceof IEnergyHandler) {
-      return new PowerInterfaceRF((IEnergyHandler) o);
+      return new EnergyHandlerPI((IEnergyHandler) o);
+    } else if(o instanceof IEnergyReceiver) {
+      return new EnergyReceiverPI((IEnergyReceiver) o);
     } else if(o instanceof IEnergyConnection) {
-      return new PowerInterfaceConnectionRF((IEnergyConnection) o);
+      return new EnergyConnectionPI((IEnergyConnection) o);
     }
     return null;
   }
@@ -28,7 +33,7 @@ public class PowerHandlerUtil {
       return (int) (storedMj * 10);
     }
 
-    return tag.getInteger("storedEnergyRF");
+    return tag.getInteger(STORED_ENERGY_NBT_KEY);
   }
 
   public static void setStoredEnergyForItem(ItemStack item, int storedEnergy) {
@@ -36,7 +41,7 @@ public class PowerHandlerUtil {
     if(tag == null) {
       tag = new NBTTagCompound();
     }
-    tag.setInteger("storedEnergyRF", storedEnergy);
+    tag.setInteger(STORED_ENERGY_NBT_KEY, storedEnergy);
     item.setTagCompound(tag);
   }
 

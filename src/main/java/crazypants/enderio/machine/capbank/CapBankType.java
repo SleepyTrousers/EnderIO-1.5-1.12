@@ -3,6 +3,7 @@ package crazypants.enderio.machine.capbank;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.config.Config;
 
@@ -115,6 +116,17 @@ public class CapBankType {
 
   public String getUid() {
     return uid;
+  }
+
+  public void writeTypeToNBT(NBTTagCompound nbtRoot) {
+    nbtRoot.setString("type", getUid());
+  }
+
+  public static CapBankType readTypeFromNBT(NBTTagCompound nbtRoot) {
+    if(nbtRoot == null || !nbtRoot.hasKey("type")) {
+      return BASIC;
+    }
+    return getTypeFromUID(nbtRoot.getString("type"));
   }
 
 }

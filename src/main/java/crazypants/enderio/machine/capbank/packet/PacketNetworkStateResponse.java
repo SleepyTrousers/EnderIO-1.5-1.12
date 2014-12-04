@@ -4,8 +4,9 @@ import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.machine.capbank.network.CapBankNetwork;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
+import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkState;
 
 public class PacketNetworkStateResponse implements IMessage, IMessageHandler<PacketNetworkStateResponse, IMessage> {
@@ -16,14 +17,14 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
   public PacketNetworkStateResponse() {
   }
 
-  public PacketNetworkStateResponse(CapBankNetwork network) {
+  public PacketNetworkStateResponse(ICapBankNetwork network) {
     this(network, false);
   }
 
-  public PacketNetworkStateResponse(CapBankNetwork network, boolean remove) {
+  public PacketNetworkStateResponse(ICapBankNetwork network, boolean remove) {
     id = network.getId();
     if(!remove) {
-      state = network.getClientState();
+      state = network.getState();
     } else {
       state = null;
     }
@@ -52,7 +53,7 @@ public class PacketNetworkStateResponse implements IMessage, IMessageHandler<Pac
   @Override
   public IMessage onMessage(PacketNetworkStateResponse message, MessageContext ctx) {
     if(message.state != null) {
-      ClientNetworkManager.getInstance().updateState(message.id, message.state);
+      ClientNetworkManager.getInstance().updateState(EnderIO.proxy.getClientWorld(), message.id, message.state);
     } else {
       ClientNetworkManager.getInstance().destroyNetwork(message.id);
     }

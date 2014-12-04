@@ -20,8 +20,6 @@ import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerInterfaceRF;
-import crazypants.util.BlockCoord;
 
 public class NetworkPowerManager {
 
@@ -41,9 +39,6 @@ public class NetworkPowerManager {
 
   private boolean receptorsDirty = true;
 
-  private boolean lastActiveValue = false;
-  private int ticksWithNoPower = 0;
-
   private final Map<IPowerConduit, PowerTracker> powerTrackers = new HashMap<IPowerConduit, PowerTracker>();
 
   private PowerTracker networkPowerTracker = new PowerTracker();
@@ -53,7 +48,7 @@ public class NetworkPowerManager {
   private InnerTickHandler applyPowerCallback = new InnerTickHandler();
 
   public NetworkPowerManager(PowerConduitNetwork netowrk, World world) {
-    this.network = netowrk;
+    network = netowrk;
     maxEnergyStored = 64;
   }
 
@@ -131,8 +126,6 @@ public class NetworkPowerManager {
     // Update our energy stored based on what's in our conduits
     updateNetorkStorage();
     networkPowerTracker.tickStart(energyStored);
-
-    updateActiveState();
 
     capSupply.init();
 
@@ -250,25 +243,6 @@ public class NetworkPowerManager {
       powerTrackers.put(con, result);
     }
     return result;
-  }
-
-  private void updateActiveState() {
-    boolean active;
-    if(energyStored > 0) {
-      ticksWithNoPower = 0;
-      active = true;
-    } else {
-      ticksWithNoPower++;
-      active = false;
-    }
-
-    boolean doRender = active != lastActiveValue && (active || (!active && ticksWithNoPower > updateRenderTicks));
-    if(doRender) {
-      lastActiveValue = active;
-      //for (IPowerConduit con : network.getConduits()) {
-      //con.setActive(active);
-      //}
-    }
   }
 
   private void distributeStorageToConduits() {
@@ -424,7 +398,7 @@ public class NetworkPowerManager {
 
       filledRatio = 0;
       if(maxToBalance > 0) {
-        filledRatio = (float) toBalance / maxToBalance;
+        filledRatio = toBalance / maxToBalance;
       }
     }
 
@@ -522,7 +496,7 @@ public class NetworkPowerManager {
 
     private CapBankSupplyEntry(TileCapacitorBank capBank, int available, int canFill, IPowerConduit emmiter, ForgeDirection direction) {
       this.capBank = capBank;
-      this.canExtract = available;
+      canExtract = available;
       this.canFill = canFill;
       this.emmiter = emmiter;
       this.direction = direction;

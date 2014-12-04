@@ -11,20 +11,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.capbank.network.CapBankNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.EnergyReceptor;
+import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
+import crazypants.enderio.machine.capbank.network.InventoryImpl;
 import crazypants.enderio.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.network.PacketHandler;
@@ -32,6 +36,9 @@ import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.EntityUtil;
+import crazypants.util.Util;
+import crazypants.vecmath.Vector3d;
 
 public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable {
 
@@ -52,11 +59,19 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   private final List<EnergyReceptor> receptors = new ArrayList<EnergyReceptor>();
   private boolean receptorsDirty = true;
 
-  private CapBankNetwork network;
+  private ICapBankNetwork network;
+
+  private final ItemStack[] inventory;
+
+  public TileCapBank() {
+    inventory = new ItemStack[4];
+  }
 
   //Client side refernce to look up network state
   private int networkId = -1;
   private int idRequestTimer = 0;
+
+  private boolean dropItems;
 
   @Override
   public BlockCoord getLocation() {
@@ -90,11 +105,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     return networkId;
   }
 
-  public CapBankNetwork getNetwork() {
+  public ICapBankNetwork getNetwork() {
     return network;
   }
 
-  public boolean setNetwork(CapBankNetwork network) {
+  public boolean setNetwork(ICapBankNetwork network) {
     this.network = network;
     return true;
   }
@@ -117,6 +132,29 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     if(network != null) {
       network.destroyNetwork();
     }
+  }
+
+  public void moveInventoryToNetwork() {
+    if(network == null) {
+      return;
+    }
+    if(network.getInventory().getCapBank() == this && !InventoryImpl.isInventoryEmtpy(inventory)) {
+      for (TileCapBank cb : network.getMembers()) {
+        if(cb != this) {
+          for (int i = 0; i < inventory.length; i++) {
+            cb.inventory[i] = inventory[i];
+            inventory[i] = null;
+          }
+          network.getInventory().setCapBank(cb);
+          break;
+        }
+      }
+    }
+  }
+
+  public void onBreakBlock() {
+    //If we are holding the networks inventory when we care broken, tranfer it to another member of the network
+    moveInventoryToNetwork();
   }
 
   @Override
@@ -147,6 +185,8 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     if(receptorsDirty) {
       updateReceptors();
     }
+
+    doDropItems();
   }
 
   private void updateNetwork(World world) {
@@ -231,6 +271,11 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
     if(!(te instanceof TileCapBank)) {
       return PowerHandlerUtil.create(te);
+    } else {
+      TileCapBank other = (TileCapBank) te;
+      if(other.getType() != getType()) {
+        return PowerHandlerUtil.create(te);
+      }
     }
     return null;
   }
@@ -271,11 +316,12 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
 
     receptors.clear();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      IoMode ioMode = getIoMode(dir);
-      if(ioMode != IoMode.DISABLED && ioMode != IoMode.PULL) {
-        IPowerInterface pi = getReceptorForFace(dir);
-        if(pi != null) {
-          EnergyReceptor er = new EnergyReceptor(this, pi, dir);
+      IPowerInterface pi = getReceptorForFace(dir);
+      if(pi != null) {
+        EnergyReceptor er = new EnergyReceptor(this, pi, dir);
+        validateModeForReceptor(er);
+        IoMode ioMode = getIoMode(dir);
+        if(ioMode != IoMode.DISABLED && ioMode != IoMode.PULL) {
           receptors.add(er);
         }
       }
@@ -283,6 +329,23 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     network.addReceptors(receptors);
 
     receptorsDirty = false;
+  }
+
+  private void validateModeForReceptor(EnergyReceptor er) {
+    IoMode ioMode = getIoMode(er.getDir());
+    if(ioMode == IoMode.PUSH_PULL && er.getConduit() == null) {
+      if(er.getReceptor().isOutputOnly()) {
+        setIoMode(er.getDir(), IoMode.PULL, false);
+      } else {
+        setIoMode(er.getDir(), IoMode.PUSH, false);
+      }
+    }
+    if(ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
+      setIoMode(er.getDir(), IoMode.PUSH, false);
+    } else if(ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
+      setIoMode(er.getDir(), IoMode.PULL, false);
+    }
+
   }
 
   public void addEnergy(int energy) {
@@ -383,57 +446,57 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   //------------------- Inventory
 
   @Override
-  public int getSizeInventory() {
-    // TODO Auto-generated method stub
-    return 0;
+  public ItemStack getStackInSlot(int slot) {
+    if(network == null) {
+      return null;
+    }
+    return network.getInventory().getStackInSlot(slot);
   }
 
   @Override
-  public ItemStack getStackInSlot(int p_70301_1_) {
-    // TODO Auto-generated method stub
-    return null;
+  public ItemStack decrStackSize(int fromSlot, int amount) {
+    if(network == null) {
+      return null;
+    }
+    return network.getInventory().decrStackSize(fromSlot, amount);
   }
 
   @Override
-  public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-    // TODO Auto-generated method stub
-    return null;
+  public void setInventorySlotContents(int slot, ItemStack itemstack) {
+    if(network == null) {
+      return;
+    }
+    network.getInventory().setInventorySlotContents(slot, itemstack);
   }
 
   @Override
   public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-    // TODO Auto-generated method stub
-
+  public int getSizeInventory() {
+    return 4;
   }
 
   @Override
   public String getInventoryName() {
-    // TODO Auto-generated method stub
-    return null;
+    return EnderIO.blockCapacitorBank.getUnlocalizedName() + ".name";
   }
 
   @Override
   public boolean hasCustomInventoryName() {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public int getInventoryStackLimit() {
-    // TODO Auto-generated method stub
-    return 0;
+    return 1;
   }
 
   @Override
   public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
   @Override
@@ -445,18 +508,50 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   }
 
   @Override
-  public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+    if(itemstack == null) {
+      return false;
+    }
+    return itemstack.getItem() instanceof IEnergyContainerItem;
+  }
+
+  public ItemStack[] getInventory() {
+    return inventory;
+  }
+
+  public void dropItems() {
+    dropItems = true;
+  }
+
+  public void doDropItems() {
+    if(!dropItems) {
+      return;
+    }
+    Vector3d dropLocation;
+    EntityPlayer player = worldObj.getClosestPlayer(xCoord, yCoord, zCoord, 32);
+    if(player != null) {
+      dropLocation = EntityUtil.getEntityPosition(player);
+    } else {
+      dropLocation = new Vector3d(xCoord, yCoord, zCoord);
+    }
+    Util.dropItems(worldObj, inventory, (int) dropLocation.x, (int) dropLocation.y, (int) dropLocation.z, false);
+    for (int i = 0; i < inventory.length; i++) {
+      inventory[i] = null;
+    }
+    dropItems = false;
   }
 
   //---------------- NBT
 
   @Override
   protected void writeCustomNBT(NBTTagCompound nbtRoot) {
+    writeCommonNBT(nbtRoot);
+  }
 
-    nbtRoot.setString("type", getType().getUid());
-    nbtRoot.setInteger("energyStored", energyStored);
+  //Values common to both item and block form
+  public void writeCommonNBT(NBTTagCompound nbtRoot) {
+    getType().writeTypeToNBT(nbtRoot);
+    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, energyStored);
 
     if(maxInput != -1) {
       nbtRoot.setInteger("maxInput", maxInput);
@@ -478,13 +573,28 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
         nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
       }
     }
+
+    NBTTagList itemList = new NBTTagList();
+    for (int i = 0; i < inventory.length; i++) {
+      if(inventory[i] != null) {
+        NBTTagCompound itemStackNBT = new NBTTagCompound();
+        itemStackNBT.setByte("Slot", (byte) i);
+        inventory[i].writeToNBT(itemStackNBT);
+        itemList.appendTag(itemStackNBT);
+      }
+    }
+    nbtRoot.setTag("Items", itemList);
   }
 
   @Override
   protected void readCustomNBT(NBTTagCompound nbtRoot) {
+    readCommonNBT(nbtRoot);
+  }
 
-    type = CapBankType.getTypeFromUID(nbtRoot.getString("type"));
-    energyStored = nbtRoot.getInteger("energyStored");
+  //Values common to both item and block form
+  public void readCommonNBT(NBTTagCompound nbtRoot) {
+    type = CapBankType.readTypeFromNBT(nbtRoot);
+    energyStored = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
 
     if(nbtRoot.hasKey("maxInput")) {
       maxInput = nbtRoot.getInteger("maxInput");
@@ -516,6 +626,20 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
       }
     }
 
+    for (int i = 0; i < inventory.length; i++) {
+      inventory[i] = null;
+    }
+
+    if(nbtRoot.hasKey("Items")) {
+      NBTTagList itemList = (NBTTagList) nbtRoot.getTag("Items");
+      for (int i = 0; i < itemList.tagCount(); i++) {
+        NBTTagCompound itemStack = itemList.getCompoundTagAt(i);
+        byte slot = itemStack.getByte("Slot");
+        if(slot >= 0 && slot < inventory.length) {
+          inventory[slot] = ItemStack.loadItemStackFromNBT(itemStack);
+        }
+      }
+    }
   }
 
 }

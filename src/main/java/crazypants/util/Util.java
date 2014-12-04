@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -18,7 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -191,6 +189,17 @@ public class Util {
 
   }
 
+  public static void dropItems(World world, ItemStack[] inventory, int x, int y, int z, boolean doRandomSpread) {
+    if(inventory == null) {
+      return;
+    }
+    for (ItemStack stack : inventory) {
+      if(stack != null && stack.stackSize > 0) {
+        dropItems(world, stack.copy(), x, y, z, doRandomSpread);
+      }
+    }
+  }
+
   public static void dropItems(World world, IInventory inventory, int x, int y, int z, boolean doRandomSpread) {
     for (int l = 0; l < inventory.getSizeInventory(); ++l) {
       ItemStack items = inventory.getStackInSlot(l);
@@ -357,25 +366,25 @@ public class Util {
           double d2 = 999.0D;
 
           if(i > l) {
-            d0 = (double) l + 1.0D;
+            d0 = l + 1.0D;
           } else if(i < l) {
-            d0 = (double) l + 0.0D;
+            d0 = l + 0.0D;
           } else {
             flag6 = false;
           }
 
           if(j > i1) {
-            d1 = (double) i1 + 1.0D;
+            d1 = i1 + 1.0D;
           } else if(j < i1) {
-            d1 = (double) i1 + 0.0D;
+            d1 = i1 + 0.0D;
           } else {
             flag3 = false;
           }
 
           if(k > j1) {
-            d2 = (double) j1 + 1.0D;
+            d2 = j1 + 1.0D;
           } else if(k < j1) {
-            d2 = (double) j1 + 0.0D;
+            d2 = j1 + 0.0D;
           } else {
             flag4 = false;
           }
@@ -433,20 +442,20 @@ public class Util {
           }
 
           Vec3 vec32 = Vec3.createVectorHelper(startVec.xCoord, startVec.yCoord, startVec.zCoord);
-          l = (int) (vec32.xCoord = (double) MathHelper.floor_double(startVec.xCoord));
+          l = (int) (vec32.xCoord = MathHelper.floor_double(startVec.xCoord));
           if(b0 == 5) {
             --l;
             ++vec32.xCoord;
           }
 
-          i1 = (int) (vec32.yCoord = (double) MathHelper.floor_double(startVec.yCoord));
+          i1 = (int) (vec32.yCoord = MathHelper.floor_double(startVec.yCoord));
 
           if(b0 == 1) {
             --i1;
             ++vec32.yCoord;
           }
 
-          j1 = (int) (vec32.zCoord = (double) MathHelper.floor_double(startVec.zCoord));
+          j1 = (int) (vec32.zCoord = MathHelper.floor_double(startVec.zCoord));
 
           if(b0 == 3) {
             --j1;

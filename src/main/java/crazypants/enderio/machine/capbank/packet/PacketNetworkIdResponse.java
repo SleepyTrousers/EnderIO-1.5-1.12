@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 
 public class PacketNetworkIdResponse extends PacketCapBank<PacketNetworkIdResponse, IMessage> {
 
@@ -36,6 +37,7 @@ public class PacketNetworkIdResponse extends PacketCapBank<PacketNetworkIdRespon
   @Override
   protected IMessage handleMessage(TileCapBank te, PacketNetworkIdResponse message, MessageContext ctx) {
     te.setNetworkId(message.id);
+    te.setNetwork(ClientNetworkManager.getInstance().getOrCreateNetwork(message.id));
     return null;
   }
 

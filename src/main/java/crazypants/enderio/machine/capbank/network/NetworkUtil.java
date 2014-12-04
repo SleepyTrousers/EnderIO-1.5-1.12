@@ -47,7 +47,7 @@ public class NetworkUtil {
   }
 
   private static boolean reuseNetwork(TileCapBank cap, Collection<TileCapBank> neighbours, World world) {
-    CapBankNetwork network = null;
+    ICapBankNetwork network = null;
     for (TileCapBank conduit : neighbours) {
       if(network == null) {
         network = conduit.getNetwork();
@@ -59,7 +59,7 @@ public class NetworkUtil {
       return false;
     }
     if(cap.setNetwork(network)) {
-      network.addCapBank(cap);
+      network.addMember(cap);
       //network.notifyNetworkOfUpdate();
       return true;
     }

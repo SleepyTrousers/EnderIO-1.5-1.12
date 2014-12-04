@@ -1,5 +1,6 @@
 package crazypants.util;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -64,19 +65,25 @@ public final class BlockCoord {
 
   @Override
   public boolean equals(Object obj) {
-    if(this == obj)
+    if(this == obj) {
       return true;
-    if(obj == null)
+    }
+    if(obj == null) {
       return false;
-    if(getClass() != obj.getClass())
+    }
+    if(getClass() != obj.getClass()) {
       return false;
+    }
     BlockCoord other = (BlockCoord) obj;
-    if(x != other.x)
+    if(x != other.x) {
       return false;
-    if(y != other.y)
+    }
+    if(y != other.y) {
       return false;
-    if(z != other.z)
+    }
+    if(z != other.z) {
       return false;
+    }
     return true;
   }
 
@@ -87,5 +94,15 @@ public final class BlockCoord {
 
   public boolean equals(int xCoord, int yCoord, int zCoord) {
     return x == xCoord && y == yCoord && z == zCoord;
+  }
+
+  public void writeToBuf(ByteBuf buf) {
+    buf.writeInt(x);
+    buf.writeInt(y);
+    buf.writeInt(z);
+  }
+
+  public static BlockCoord readFromBuf(ByteBuf buf) {
+    return new BlockCoord(buf.readInt(), buf.readInt(), buf.readInt());
   }
 }
