@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
@@ -94,7 +95,19 @@ public class GuiCapBank extends GuiContainerBase {
       protected void updateText() {
         text.clear();
         text.add(PowerDisplayUtil.formatPower(network.getEnergyStored()) + " " + PowerDisplayUtil.ofStr());
-        text.add(PowerDisplayUtil.formatPower(network.getMaxEnergyStored()) + " " + PowerDisplayUtil.abrevation());
+        text.add(EnumChatFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStored()) + " " + EnumChatFormatting.GRAY
+            + PowerDisplayUtil.abrevation());
+
+        float change = network.getAverageChangePerTick();
+        String color = EnumChatFormatting.WHITE.toString();
+        if(change > 0) {
+          color = EnumChatFormatting.GREEN.toString() + "+";
+        } else if(change < 0) {
+          color = EnumChatFormatting.RED.toString();
+        }
+        text.add(String.format("%s%s%s" + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr(), color,
+            PowerDisplayUtil.formatPower(Math.round(change)), " "
+                + EnumChatFormatting.GRAY.toString()));
       }
 
     });

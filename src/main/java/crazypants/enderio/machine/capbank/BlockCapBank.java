@@ -298,22 +298,6 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     return 0;
   }
 
-  //  @Override
-  //  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-  //    if(world.isRemote) {
-  //      return;
-  //    }
-  //    TileEntity te = world.getTileEntity(x, y, z);
-  //    if(!(te instanceof TileCapBank)) {
-  //      return;
-  //    }
-  //
-  //    TileCapBank cb = (TileCapBank) te;
-  //    cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
-  //
-  //    world.markBlockForUpdate(x, y, z);
-  //  }
-
   @Override
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
@@ -470,7 +454,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
             fmt.format(max),
             EnumChatFormatting.RESET));
 
-        float change = nw.getAverageChangePerTick();
+        int change = Math.round(nw.getAverageChangePerTick());
         String color = EnumChatFormatting.WHITE.toString();
         if(change > 0) {
           color = EnumChatFormatting.GREEN.toString() + "+";
