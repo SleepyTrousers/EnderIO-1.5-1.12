@@ -26,7 +26,6 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkState;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
-import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
@@ -380,7 +379,7 @@ public class GuiCapBank extends GuiContainerBase {
   private void requestStateUpdate() {
     if(EnderIO.proxy.getTickCount() % 2 == 0) {
       if(!updateState()) {
-        PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(capBank));
+        network.requestPowerUpdate(capBank, 2);
       }
     }
   }

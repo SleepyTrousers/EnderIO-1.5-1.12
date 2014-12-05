@@ -32,6 +32,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
@@ -69,9 +70,9 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   }
 
   @SideOnly(Side.CLIENT)
-  IIcon overlayIcon;
+  private IIcon gaugeIcon;
   @SideOnly(Side.CLIENT)
-  IIcon fillBarIcon;
+  private IIcon fillBarIcon;
 
   @SideOnly(Side.CLIENT)
   private IIcon[] blockIcons;
@@ -141,23 +142,50 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(!(te instanceof TileCapBank)) {
+      return false;
+    }
+
     if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
+    }
+
+    TileCapBank tcb = (TileCapBank) te;
+    ForgeDirection faceHit = ForgeDirection.getOrientation(side);
+
+    if(entityPlayer.isSneaking() && entityPlayer.getCurrentEquippedItem() == null && faceHit.offsetY == 0) {
+      InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
+      if(newDisplayType == InfoDisplayType.NONE) {
+        tcb.setDefaultIoMode(faceHit);
+      } else {
+        tcb.setIoMode(faceHit, IoMode.DISABLED);
+      }
+      tcb.setDisplayType(faceHit, newDisplayType);
       return true;
     }
 
     if(entityPlayer.isSneaking()) {
       return false;
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCapBank)) {
-      return false;
-    }
 
     if(ToolUtil.isToolEquipped(entityPlayer)) {
 
-      ForgeDirection faceHit = ForgeDirection.getOrientation(side);
-      TileCapBank tcb = (TileCapBank) te;
-      tcb.toggleIoModeForFace(faceHit);
+      IoMode ioMode = tcb.getIoMode(faceHit);
+      if(faceHit.offsetY == 0) {
+        if(ioMode == IoMode.DISABLED) {
+          InfoDisplayType newDisplayType = tcb.getDisplayType(faceHit).next();
+          tcb.setDisplayType(faceHit, newDisplayType);
+          if(newDisplayType == InfoDisplayType.NONE) {
+            tcb.setDefaultIoMode(faceHit);
+          }
+        } else {
+          tcb.toggleIoModeForFace(faceHit);
+        }
+      } else {
+        tcb.toggleIoModeForFace(faceHit);
+      }
+
       if(world.isRemote) {
         world.markBlockForUpdate(x, y, z);
       } else {
@@ -196,7 +224,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   public void registerBlockIcons(IIconRegister IIconRegister) {
     blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
-    overlayIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
+    gaugeIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
     fillBarIcon = IIconRegister.registerIcon("enderio:capacitorBankFillBar");
 
     blockIcons = new IIcon[CapBankType.types().size()];
@@ -208,11 +236,9 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     for (CapBankType type : CapBankType.types()) {
       blockIcons[index] = IIconRegister.registerIcon(type.getIcon());
       borderIcons[index] = IIconRegister.registerIcon(type.getBorderIcon());
-
       inputIcons[index] = IIconRegister.registerIcon(type.getInputIcon());
       outputIcons[index] = IIconRegister.registerIcon(type.getOutputIcon());
       lockedIcons[index] = IIconRegister.registerIcon(type.getLockedIcon());
-
       ++index;
     }
 
@@ -264,12 +290,14 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(!(te instanceof TileCapBank)) {
       return blockIcons[0];
     }
+    TileCapBank cb = (TileCapBank) te;
+    ForgeDirection face = ForgeDirection.values()[side];
+
     int meta = ba.getBlockMetadata(x, y, z);
     meta = MathHelper.clamp_int(meta, 0, CapBankType.types().size() - 1);
 
-    TileCapBank cb = (TileCapBank) te;
-    IoMode mode = cb.getIoMode(ForgeDirection.values()[side]);
-    if(mode == null || mode == IoMode.NONE) {
+    IoMode mode = cb.getIoMode(face);
+    if(mode == null || mode == IoMode.NONE || cb.getDisplayType(face) != InfoDisplayType.NONE) {
       return blockIcons[meta];
     }
     if(mode == IoMode.PULL) {
@@ -279,6 +307,14 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       return outputIcons[meta];
     }
     return lockedIcons[meta];
+  }
+
+  public IIcon getGaugeIcon() {
+    return gaugeIcon;
+  }
+
+  public IIcon getFillBarIcon() {
+    return fillBarIcon;
   }
 
   @Override
@@ -432,10 +468,11 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       if(cap.getNetwork() != null) {
         if(world.isRemote && world.getTotalWorldTime() % 20 == 0) {
           PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(cap));
-        } else if(world.isRemote && world.getTotalWorldTime() % 2 == 0) {
-          PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(cap));
         }
         ICapBankNetwork nw = cap.getNetwork();
+        if(world.isRemote) {
+          ((CapBankClientNetwork) nw).requestPowerUpdate(cap, 2);
+        }
 
         String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
         if(TooltipAddera.showAdvancedTooltips()) {
@@ -463,8 +500,6 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
         }
         tooltip
             .add(String.format("%s%s%sRF/t ", color, fmt.format(change), " " + EnumChatFormatting.RESET.toString()));
-
-
 
       }
     }

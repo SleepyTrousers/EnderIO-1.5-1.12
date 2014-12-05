@@ -9,7 +9,6 @@ import crazypants.enderio.config.Config;
 
 public class CapBankType {
 
-
   private static final CapBankType CREATIVE = new CapBankType("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankMaxStorageRF, false, true,
       "enderio:capacitorBank", "enderio:capacitorBankCreativeBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");

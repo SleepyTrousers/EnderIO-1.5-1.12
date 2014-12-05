@@ -8,8 +8,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.util.BlockCoord;
 
@@ -32,6 +35,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
 
   private float aveChange;
 
+  private long lastPowerRequestTick = -1;
+
   public CapBankClientNetwork(int id) {
     this.id = id;
   }
@@ -39,6 +44,14 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   @Override
   public int getId() {
     return id;
+  }
+
+  public void requestPowerUpdate(TileCapBank capBank, int interval) {
+    long curTick = EnderIO.proxy.getTickCount();
+    if(lastPowerRequestTick == -1 || curTick - lastPowerRequestTick >= interval) {
+      PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(capBank));
+      lastPowerRequestTick = curTick;
+    }
   }
 
   public void setState(World world, NetworkState state) {

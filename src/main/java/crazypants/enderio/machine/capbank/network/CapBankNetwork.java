@@ -21,6 +21,7 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
@@ -68,6 +69,8 @@ public class CapBankNetwork implements ICapBankNetwork {
 
   private final InventoryImpl inventory = new InventoryImpl();
 
+  private boolean firstUpate = true;
+
   public CapBankNetwork(int id) {
     this.id = id;
   }
@@ -91,7 +94,6 @@ public class CapBankNetwork implements ICapBankNetwork {
       }
     }
     setNetwork(world, cap);
-    EnderIO.packetPipeline.sendToAllAround(new PacketNetworkStateResponse(this), cap);
   }
 
 
@@ -215,6 +217,14 @@ public class CapBankNetwork implements ICapBankNetwork {
       powerTracker.tick((int) (energyStored - prevEnergyStored));
     }
     prevEnergyStored = energyStored;
+
+    if(firstUpate) {
+      if(!capBanks.isEmpty()) {
+        EnderIO.packetPipeline.sendToAllAround(new PacketNetworkStateResponse(this), capBanks.get(0));
+        EnderIO.packetPipeline.sendToAllAround(new PacketNetworkEnergyResponse(this), capBanks.get(0));
+      }
+      firstUpate = false;
+    }
 
   }
 
