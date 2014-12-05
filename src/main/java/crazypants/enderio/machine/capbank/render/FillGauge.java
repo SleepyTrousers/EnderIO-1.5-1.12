@@ -22,7 +22,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
-public class FillGauge {
+public class FillGauge implements IInfoRenderer {
 
   private static final double HEIGHT = 0.75;
   private static final double VERT_BORDER = (1 - HEIGHT) / 2;
@@ -47,16 +47,34 @@ public class FillGauge {
   FillGauge() {
   }
 
-  public void render(TileCapBank cb, CapBankClientNetwork nw, ForgeDirection dir) {
+  @Override
+  public void render(TileCapBank cb, ForgeDirection dir, double x, double y, double z, float partialTick) {
     if(gaugeVertexCache == null) {
       createVertexCache();
     }
+    CapBankClientNetwork nw = null;
+    if(cb.getNetwork() != null) {
+      nw = (CapBankClientNetwork) cb.getNetwork();
+      nw.requestPowerUpdate(cb, 20);
+    }
+
+
+    RenderUtil.bindBlockTexture();
+
+    int brightness = cb.getWorldObj().getLightBrightnessForSkyBlocks(cb.xCoord + dir.offsetX, cb.yCoord + dir.offsetY, cb.zCoord + dir.offsetZ, 0);
+
+    Tessellator tes = Tessellator.instance;
+    tes.startDrawingQuads();
+    tes.setBrightness(brightness);
+    tes.setColorOpaque_F(1, 1, 1);
+
     GaugeInfo info = getGaugeInfo(cb, dir);
     GaugeKey key = new GaugeKey(dir, info.type);
     List<Vertex> verts = gaugeVertexCache.get(key);
     RenderUtil.addVerticesToTessellator(verts, Tessellator.instance);
-
     renderFillBar(key, nw, info);
+
+    tes.draw();
 
   }
 

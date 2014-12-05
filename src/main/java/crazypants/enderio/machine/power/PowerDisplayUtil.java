@@ -10,8 +10,8 @@ import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
 
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();  
-  private static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
+  public static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
+  public static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
   
   //Handle french local 'non breaking space' character used to separate thousands.
   //This is not rendered correctly and cannot be parsed by minecraft so replace it with a regular space

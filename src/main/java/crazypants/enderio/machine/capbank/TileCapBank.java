@@ -344,7 +344,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     for (Entry<ForgeDirection, InfoDisplayType> entry : faceDisplayTypes.entrySet()) {
       BlockCoord bc = getLocation().getLocation(entry.getKey());
       Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
-      if(block != null && block.isOpaqueCube()) {
+      if(block != null && (block.isOpaqueCube() || block == EnderIO.blockCapBank)) {
         reset.add(entry.getKey());
       }
     }

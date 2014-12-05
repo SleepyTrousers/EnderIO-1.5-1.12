@@ -4,7 +4,8 @@ package crazypants.enderio.machine.capbank;
 public enum InfoDisplayType {
 
   NONE,
-  LEVEL_BAR;
+  LEVEL_BAR,
+  IO;
 
   public InfoDisplayType next() {
     int ord = ordinal();

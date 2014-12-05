@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +35,7 @@ import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
+import crazypants.enderio.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
@@ -84,6 +86,8 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   private IIcon[] outputIcons;
   @SideOnly(Side.CLIENT)
   private IIcon[] lockedIcons;
+  @SideOnly(Side.CLIENT)
+  private IIcon infoPanelIcon;
 
   protected BlockCapBank() {
     super(ModObject.blockCapBank.unlocalisedName, TileCapBank.class);
@@ -226,6 +230,7 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     blockIcon = IIconRegister.registerIcon("enderio:capacitorBank");
     gaugeIcon = IIconRegister.registerIcon("enderio:capacitorBankOverlays");
     fillBarIcon = IIconRegister.registerIcon("enderio:capacitorBankFillBar");
+    infoPanelIcon = IIconRegister.registerIcon("enderio:capBankInfoPanel");
 
     blockIcons = new IIcon[CapBankType.types().size()];
     borderIcons = new IIcon[CapBankType.types().size()];
@@ -290,6 +295,11 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(!(te instanceof TileCapBank)) {
       return blockIcons[0];
     }
+
+    //    if(true) {
+    //      return IconUtil.blankTexture;
+    //    }
+
     TileCapBank cb = (TileCapBank) te;
     ForgeDirection face = ForgeDirection.values()[side];
 
@@ -309,12 +319,19 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     return lockedIcons[meta];
   }
 
+  @SideOnly(Side.CLIENT)
   public IIcon getGaugeIcon() {
     return gaugeIcon;
   }
 
+  @SideOnly(Side.CLIENT)
   public IIcon getFillBarIcon() {
     return fillBarIcon;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public IIcon getInfoPanelIcon() {
+    return infoPanelIcon;
   }
 
   @Override
@@ -347,10 +364,32 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
     if(stack.stackTagCompound != null) {
       cb.readCommonNBT(stack.stackTagCompound);
     }
+
+    Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(cb);
+    if(neigbours.isEmpty()) {
+      int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+      ForgeDirection dir = getDirForHeading(heading);
+      cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
+    }
+
     if(world.isRemote) {
       return;
     }
     world.markBlockForUpdate(x, y, z);
+  }
+
+  protected ForgeDirection getDirForHeading(int heading) {
+    switch (heading) {
+    case 0:
+      return ForgeDirection.values()[2];
+    case 1:
+      return ForgeDirection.values()[5];
+    case 2:
+      return ForgeDirection.values()[3];
+    case 3:
+    default:
+      return ForgeDirection.values()[4];
+    }
   }
 
   @Override
