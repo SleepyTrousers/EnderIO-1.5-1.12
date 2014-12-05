@@ -9,14 +9,25 @@ import crazypants.enderio.config.Config;
 
 public class CapBankType {
 
-  private static final CapBankType CREATIVE = new CapBankType("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankMaxStorageRF, false, true,
+  private static final CapBankType CREATIVE = new CapBankType("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false,
+      true,
       "enderio:capacitorBank", "enderio:capacitorBankCreativeBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");
-  private static final CapBankType BASIC = new CapBankType("BASIC", "tile.blockCapBank.basic", Config.capacitorBankMaxIoRF, Config.capacitorBankMaxStorageRF,
+
+  private static final CapBankType SIMPLE = new CapBankType("SIMPLE", "tile.blockCapBank.simple", Config.capacitorBankTierOneMaxIoRF,
+      Config.capacitorBankTierOneMaxStorageRF,
       true,
-      false, "enderio:capacitorBank", "enderio:blankMachinePanel", "enderio:capacitorBankInput", "enderio:capacitorBankOutput", "enderio:capacitorBankLocked");
-  private static final CapBankType VIBRANT = new CapBankType("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankMaxIoRF * 4,
-      Config.capacitorBankMaxStorageRF * 8,
+      false, "enderio:capacitorBank", "enderio:capacitorBankSimpleBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
+      "enderio:capacitorBankLocked");
+
+  private static final CapBankType ACTIVATED = new CapBankType("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF,
+      Config.capacitorBankTierTwoMaxStorageRF,
+      true,
+      false, "enderio:capacitorBank", "enderio:capacitorBankActivatedBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
+      "enderio:capacitorBankLocked");
+
+  private static final CapBankType VIBRANT = new CapBankType("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF,
+      Config.capacitorBankTierThreeMaxStorageRF,
       true, false, "enderio:capacitorBank", "enderio:capacitorBankVibrantBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");
 
@@ -24,7 +35,8 @@ public class CapBankType {
 
   static {
     TYPES.add(CREATIVE);
-    TYPES.add(BASIC);
+    TYPES.add(SIMPLE);
+    TYPES.add(ACTIVATED);
     TYPES.add(VIBRANT);
   }
 
@@ -43,7 +55,7 @@ public class CapBankType {
         return type;
       }
     }
-    return BASIC;
+    return ACTIVATED;
   }
 
   private final String uid;
@@ -123,7 +135,7 @@ public class CapBankType {
 
   public static CapBankType readTypeFromNBT(NBTTagCompound nbtRoot) {
     if(nbtRoot == null || !nbtRoot.hasKey("type")) {
-      return BASIC;
+      return ACTIVATED;
     }
     return getTypeFromUID(nbtRoot.getString("type"));
   }

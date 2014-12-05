@@ -11,6 +11,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
@@ -132,7 +133,7 @@ public class FillGauge implements IInfoRenderer {
     boolean found = true;
     while (found) {
       loc = loc.getLocation(ForgeDirection.UP);
-      if(isGaugeType(cb.getWorldObj(), loc, dir)) {
+      if(isGaugeType(cb.getWorldObj(), loc, dir, cb.getType())) {
         height++;
       } else {
         found = false;
@@ -143,7 +144,7 @@ public class FillGauge implements IInfoRenderer {
     found = true;
     while (found) {
       loc = loc.getLocation(ForgeDirection.DOWN);
-      if(isGaugeType(cb.getWorldObj(), loc, dir)) {
+      if(isGaugeType(cb.getWorldObj(), loc, dir, cb.getType())) {
         height++;
         yPos++;
       } else {
@@ -155,24 +156,11 @@ public class FillGauge implements IInfoRenderer {
 
   }
 
-  //  private Type getType(TileCapBank cb, ForgeDirection dir) {
-  //    boolean hasAbove = isGaugeType(cb.getWorldObj(), cb.getLocation().getLocation(ForgeDirection.UP), dir);
-  //    boolean hasBellow = isGaugeType(cb.getWorldObj(), cb.getLocation().getLocation(ForgeDirection.DOWN), dir);
-  //
-  //    if(!hasAbove && !hasBellow) {
-  //      return Type.SINGLE;
-  //    } else if(hasAbove && !hasBellow) {
-  //      return Type.TOP;
-  //    } else if(!hasAbove && hasBellow) {
-  //      return Type.BOTTOM;
-  //    }
-  //    return Type.MIDDLE;
-  //  }
-
-  private boolean isGaugeType(World worldObj, BlockCoord bc, ForgeDirection face) {
+  private boolean isGaugeType(World worldObj, BlockCoord bc, ForgeDirection face, CapBankType type) {
     TileEntity te = worldObj.getTileEntity(bc.x, bc.y, bc.z);
     if(te instanceof TileCapBank) {
-      return ((TileCapBank) te).getDisplayType(face) == InfoDisplayType.LEVEL_BAR;
+      TileCapBank cb = (TileCapBank) te;
+      return type == cb.getType() && cb.getDisplayType(face) == InfoDisplayType.LEVEL_BAR;
     }
     return false;
   }

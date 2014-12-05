@@ -260,7 +260,8 @@ tile.blockCapacitorBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapacitorBank.tooltipPrefix=Contains
 
 tile.blockCapBank.creative.name=Creative Capacitor Bank
-tile.blockCapBank.basic.name=Capacitor Bank
+tile.blockCapBank.simple.name=Simple Capacitor Bank
+tile.blockCapBank.activated.name=Capacitor Bank
 tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
 tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.

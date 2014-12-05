@@ -265,6 +265,15 @@ public final class Config {
   public static int capacitorBankMaxIoRF = 5000;
   public static int capacitorBankMaxStorageRF = 5000000;
   
+  public static int capacitorBankTierOneMaxIoRF = 1000;
+  public static int capacitorBankTierOneMaxStorageRF = 1000000;
+
+  public static int capacitorBankTierTwoMaxIoRF = 5000;
+  public static int capacitorBankTierTwoMaxStorageRF = 5000000;
+
+  public static int capacitorBankTierThreeMaxIoRF = 25000;
+  public static int capacitorBankTierThreeMaxStorageRF = 25000000;
+
   public static int poweredSpawnerMinDelayTicks = 200;
   public static int poweredSpawnerMaxDelayTicks = 800;
   public static int poweredSpawnerLevelOnePowerPerTickRF = 160;
@@ -384,6 +393,8 @@ public final class Config {
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
 
+
+
   public static void load(FMLPreInitializationEvent event) {
 
     FMLCommonHandler.instance().bus().register(new Config());
@@ -438,6 +449,27 @@ public final class Config {
     capacitorBankMaxStorageRF = config.get(sectionPower.name, "capacitorBankMaxStorageRF", capacitorBankMaxStorageRF,
         "The maximum storage for a single capacitor in RF")
         .getInt(capacitorBankMaxStorageRF);
+
+    capacitorBankTierOneMaxIoRF = config.get(sectionPower.name, "capacitorBankTierOneMaxIoRF", capacitorBankTierOneMaxIoRF,
+        "The maximum IO for a single tier one capacitor in RF/t")
+        .getInt(capacitorBankTierOneMaxIoRF);
+    capacitorBankTierOneMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierOneMaxStorageRF", capacitorBankTierOneMaxStorageRF,
+        "The maximum storage for a single tier one capacitor in RF")
+        .getInt(capacitorBankTierOneMaxStorageRF);
+
+    capacitorBankTierTwoMaxIoRF = config.get(sectionPower.name, "capacitorBankTierTwoMaxIoRF", capacitorBankTierTwoMaxIoRF,
+        "The maximum IO for a single tier two capacitor in RF/t")
+        .getInt(capacitorBankTierTwoMaxIoRF);
+    capacitorBankTierTwoMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierTwoMaxStorageRF", capacitorBankTierTwoMaxStorageRF,
+        "The maximum storage for a single tier two capacitor in RF")
+        .getInt(capacitorBankTierTwoMaxStorageRF);
+
+    capacitorBankTierThreeMaxIoRF = config.get(sectionPower.name, "capacitorBankTierThreeMaxIoRF", capacitorBankTierThreeMaxIoRF,
+        "The maximum IO for a single tier three capacitor in RF/t")
+        .getInt(capacitorBankTierThreeMaxIoRF);
+    capacitorBankTierThreeMaxStorageRF = config.get(sectionPower.name, "capacitorBankTierThreeMaxStorageRF", capacitorBankTierThreeMaxStorageRF,
+        "The maximum storage for a single tier three capacitor in RF")
+        .getInt(capacitorBankTierThreeMaxStorageRF);
 
     powerConduitTierOneRF = config.get(sectionPower.name, "powerConduitTierOneRF", powerConduitTierOneRF, "The maximum IO for the tier 1 power conduit")
         .getInt(powerConduitTierOneRF);
