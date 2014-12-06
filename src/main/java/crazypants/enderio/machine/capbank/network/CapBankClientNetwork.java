@@ -113,6 +113,10 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return maxEnergyStored;
   }
 
+  public void setMaxEnergyStoredL(long maxEnergyStored) {
+    this.maxEnergyStored = maxEnergyStored;
+  }
+
   public void setEnergyStored(long energyStored) {
     this.energyStored = energyStored;
   }

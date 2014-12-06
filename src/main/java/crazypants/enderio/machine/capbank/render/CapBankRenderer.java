@@ -23,6 +23,10 @@ import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
 import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
+import crazypants.enderio.machine.capbank.render.FillGauge.GaugeInfo;
+import crazypants.enderio.machine.capbank.render.FillGauge.GaugeKey;
+import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.render.ConnectedTextureRenderer;
 import crazypants.render.CubeRenderer;
 import crazypants.render.CustomCubeRenderer;
@@ -33,12 +37,14 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
   private ConnectedTextureRenderer connectedTexRenderer;
 
   private Map<InfoDisplayType, IInfoRenderer> infoRenderers;
+  private FillGauge fillGaugeRenderer;
 
   public CapBankRenderer() {
     connectedTexRenderer = new ConnectedTextureRenderer();
     connectedTexRenderer.setMatchMeta(true);
+    fillGaugeRenderer = new FillGauge();
     infoRenderers = new HashMap<InfoDisplayType, IInfoRenderer>();
-    infoRenderers.put(InfoDisplayType.LEVEL_BAR, new FillGauge());
+    infoRenderers.put(InfoDisplayType.LEVEL_BAR, fillGaugeRenderer);
     infoRenderers.put(InfoDisplayType.IO, new IoDisplay());
 
   }
@@ -105,6 +111,17 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     tes.draw();
 
     GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+
+
+    CapBankClientNetwork nw = new CapBankClientNetwork(-1);
+    nw.setMaxEnergyStoredL(CapBankType.getTypeFromMeta(item.getItemDamage()).getMaxEnergyStored());
+    nw.setEnergyStored(PowerHandlerUtil.getStoredEnergyForItem(item));
+
+    GaugeInfo gi = new GaugeInfo(1, 0);
+    GaugeKey key = new GaugeKey(ForgeDirection.SOUTH, FillGauge.Type.SINGLE);
+    fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
+    //    key = new GaugeKey(ForgeDirection.EAST, FillGauge.Type.SINGLE);
+    //    fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
 
   }
 

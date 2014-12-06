@@ -1,7 +1,5 @@
 package crazypants.enderio.machine;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.util.Lang;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -12,8 +10,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.util.Lang;
 
-public class ClearConfigRecipe implements IRecipe{
+public class ClearConfigRecipe implements IRecipe {
   
   static {
     RecipeSorter.register("EnderIO:clearConfig", ClearConfigRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
@@ -39,9 +39,9 @@ public class ClearConfigRecipe implements IRecipe{
       out.stackTagCompound = new NBTTagCompound();
       out.stackTagCompound.setBoolean("clearedConfig", true);
       out.stackSize = 1;
-      this.output = out;
+      output = out;
     } else {
-      this.output = null;
+      output = null;
     }
     
     return count == 1 && output != null;
@@ -64,7 +64,7 @@ public class ClearConfigRecipe implements IRecipe{
   
   @SubscribeEvent
   public void onTooltip(ItemTooltipEvent event) {
-    if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
+    if (output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
       event.toolTip.add(EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC + Lang.localize("machine.tooltip.clearConfig", true));
     }
   }

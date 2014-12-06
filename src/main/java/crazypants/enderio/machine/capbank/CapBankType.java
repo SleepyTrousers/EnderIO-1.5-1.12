@@ -9,24 +9,24 @@ import crazypants.enderio.config.Config;
 
 public class CapBankType {
 
-  private static final CapBankType CREATIVE = new CapBankType("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false,
+  public static final CapBankType CREATIVE = new CapBankType("CREATIVE", "tile.blockCapBank.creative", 500000, Config.capacitorBankTierTwoMaxStorageRF, false,
       true,
       "enderio:capacitorBank", "enderio:capacitorBankCreativeBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");
 
-  private static final CapBankType SIMPLE = new CapBankType("SIMPLE", "tile.blockCapBank.simple", Config.capacitorBankTierOneMaxIoRF,
+  public static final CapBankType SIMPLE = new CapBankType("SIMPLE", "tile.blockCapBank.simple", Config.capacitorBankTierOneMaxIoRF,
       Config.capacitorBankTierOneMaxStorageRF,
       true,
       false, "enderio:capacitorBank", "enderio:capacitorBankSimpleBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");
 
-  private static final CapBankType ACTIVATED = new CapBankType("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF,
+  public static final CapBankType ACTIVATED = new CapBankType("ACTIVATED", "tile.blockCapBank.activated", Config.capacitorBankTierTwoMaxIoRF,
       Config.capacitorBankTierTwoMaxStorageRF,
       true,
       false, "enderio:capacitorBank", "enderio:capacitorBankActivatedBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");
 
-  private static final CapBankType VIBRANT = new CapBankType("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF,
+  public static final CapBankType VIBRANT = new CapBankType("VIBRANT", "tile.blockCapBank.vibrant", Config.capacitorBankTierThreeMaxIoRF,
       Config.capacitorBankTierThreeMaxStorageRF,
       true, false, "enderio:capacitorBank", "enderio:capacitorBankVibrantBorder", "enderio:capacitorBankInput", "enderio:capacitorBankOutput",
       "enderio:capacitorBankLocked");
@@ -42,6 +42,15 @@ public class CapBankType {
 
   public static List<CapBankType> types() {
     return TYPES;
+  }
+
+  public static int getMetaFromType(CapBankType type) {
+    for (int i = 0; i < TYPES.size(); i++) {
+      if(TYPES.get(i) == type) {
+        return i;
+      }
+    }
+    return 1;
   }
 
   public static CapBankType getTypeFromMeta(int meta) {

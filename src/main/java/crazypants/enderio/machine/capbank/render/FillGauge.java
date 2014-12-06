@@ -50,33 +50,33 @@ public class FillGauge implements IInfoRenderer {
 
   @Override
   public void render(TileCapBank cb, ForgeDirection dir, double x, double y, double z, float partialTick) {
-    if(gaugeVertexCache == null) {
-      createVertexCache();
-    }
+
     CapBankClientNetwork nw = null;
     if(cb.getNetwork() != null) {
       nw = (CapBankClientNetwork) cb.getNetwork();
       nw.requestPowerUpdate(cb, 20);
     }
 
-
-    RenderUtil.bindBlockTexture();
-
     int brightness = cb.getWorldObj().getLightBrightnessForSkyBlocks(cb.xCoord + dir.offsetX, cb.yCoord + dir.offsetY, cb.zCoord + dir.offsetZ, 0);
+    GaugeInfo info = getGaugeInfo(cb, dir);
+    GaugeKey key = new GaugeKey(dir, info.type);
+    doRender(nw, brightness, info, key);
 
+  }
+
+  public void doRender(CapBankClientNetwork nw, int brightness, GaugeInfo info, GaugeKey key) {
+    if(gaugeVertexCache == null) {
+      createVertexCache();
+    }
+    RenderUtil.bindBlockTexture();
     Tessellator tes = Tessellator.instance;
     tes.startDrawingQuads();
     tes.setBrightness(brightness);
     tes.setColorOpaque_F(1, 1, 1);
-
-    GaugeInfo info = getGaugeInfo(cb, dir);
-    GaugeKey key = new GaugeKey(dir, info.type);
     List<Vertex> verts = gaugeVertexCache.get(key);
     RenderUtil.addVerticesToTessellator(verts, Tessellator.instance);
     renderFillBar(key, nw, info);
-
     tes.draw();
-
   }
 
   private void renderFillBar(GaugeKey key, CapBankClientNetwork nw, GaugeInfo info) {
@@ -222,7 +222,7 @@ public class FillGauge implements IInfoRenderer {
     return res;
   }
 
-  private static class GaugeInfo {
+  static class GaugeInfo {
 
     int height;
     int yPosition;
@@ -249,12 +249,12 @@ public class FillGauge implements IInfoRenderer {
 
   }
 
-  private static class GaugeKey {
+  static class GaugeKey {
 
     ForgeDirection dir;
     Type type;
 
-    public GaugeKey(ForgeDirection dir, Type type) {
+    GaugeKey(ForgeDirection dir, Type type) {
       this.dir = dir;
       this.type = type;
     }

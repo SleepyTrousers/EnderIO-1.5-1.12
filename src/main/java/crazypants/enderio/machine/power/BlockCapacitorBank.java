@@ -63,6 +63,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   protected BlockCapacitorBank() {
     super(ModObject.blockCapacitorBank.unlocalisedName, TileCapacitorBank.class);
     setHardness(2.0F);
+    setCreativeTab(null);
   }
 
   @Override
@@ -397,6 +398,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, fmt.format(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, fmt.format(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
       tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add("Deprecated. Convert by placing in crafting grid");
     }
   }
 
