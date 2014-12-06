@@ -14,6 +14,7 @@ Changes
 
 Bugs
 - #1297 EnderLiquidConduit writing excessive warning messages
+- #1336 Soul Binder - Ghost Block 
 
 ------------------------------------------------------
 Version 2.2.2

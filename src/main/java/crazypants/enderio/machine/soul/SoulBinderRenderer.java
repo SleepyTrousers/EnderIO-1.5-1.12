@@ -4,8 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,15 +13,10 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.material.Alloy;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.IconUtil;
-import crazypants.render.VertexTransform;
 import crazypants.util.ForgeDirectionOffsets;
-import crazypants.vecmath.Vector3d;
-import crazypants.vecmath.Vector3f;
-import crazypants.vecmath.Vertex;
 
 public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 
@@ -50,9 +43,6 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
       soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
     }
 
-    
-    Tessellator.instance.addTranslation(x, y, z);
-
     //Horrible hack to get the MC lighting engine to set the correct values for me
     if(renderer != null && world != null) {
       renderer.setOverrideBlockTexture(IconUtil.blankTexture);
@@ -60,6 +50,8 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
       renderer.setOverrideBlockTexture(null);
     }
     BoundingBox bb;
+
+    Tessellator.instance.addTranslation(x, y, z);
 
     bb = BoundingBox.UNIT_CUBE.scale(0.85, 0.85, 0.85);
     setIcons(soulariumIcon, ForgeDirection.NORTH);
