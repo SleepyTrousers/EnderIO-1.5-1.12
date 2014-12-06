@@ -1,6 +1,9 @@
 package crazypants.enderio.waila;
 
-import static crazypants.enderio.waila.IWailaInfoProvider.*;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
+import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
+import static crazypants.enderio.waila.IWailaInfoProvider.fmt;
 import info.jbcs.minecraft.chisel.api.IFacade;
 
 import java.util.List;
@@ -32,6 +35,7 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.util.Lang;
@@ -56,6 +60,7 @@ public class WailaCompat implements IWailaDataProvider {
     //    registrar.registerSyncedNBTKey("*", IInternalPowerReceptor.class);
 
     ConfigHandler.instance().addConfig(EnderIO.MOD_NAME, "facades.hidden", "Sneaky Facades");
+    IWailaInfoProvider.fmt.setMaximumFractionDigits(1);
   }
 
   @Override
@@ -149,7 +154,7 @@ public class WailaCompat implements IWailaDataProvider {
       }
     }
 
-    if(te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF")) {
+    if(te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF") && !(te instanceof TileCapBank)) {
       IInternalPowerReceptor power = (IInternalPowerReceptor) te;
 
       if(power.displayPower()) {

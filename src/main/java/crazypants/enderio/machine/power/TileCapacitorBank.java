@@ -30,12 +30,13 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileCapacitorBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable {
+public class TileCapacitorBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable, IPowerStorage {
 
   static final BasicCapacitor BASE_CAP = new BasicCapacitor(Config.capacitorBankMaxIoRF, Config.capacitorBankMaxStorageRF);
 
@@ -285,7 +286,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
           int cur = chargable.getEnergyStored(item);
           int canUse = Math.min(available, max - cur);
           if(cur < max) {
-            used = chargable.receiveEnergy(item, (int) canUse, false);
+            used = chargable.receiveEnergy(item, canUse, false);
           }
 
         }
@@ -310,6 +311,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return getController().outputEnabled;
   }
 
+  @Override
   public boolean isOutputEnabled(ForgeDirection direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PUSH || mode == IoMode.NONE && isOutputEnabled();
@@ -319,6 +321,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return getController().inputEnabled;
   }
 
+  @Override
   public boolean isInputEnabled(ForgeDirection direction) {
     IoMode mode = getIoMode(direction);
     return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
@@ -454,6 +457,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return getController().doGetEnergyStoredScaled(scale);
   }
 
+  @Override
   public int getMaxInput() {
     return maxInput;
   }
@@ -463,6 +467,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     updateBlock();
   }
 
+  @Override
   public int getMaxOutput() {
     return maxOutput;
   }
@@ -477,6 +482,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     return getController().doGetEnergyStored();
   }
 
+  @Override
+  public long getEnergyStoredL() {
+    return getEnergyStored();
+  }
+
   public double getEnergyStoredRatio() {
     return getController().doGetEnergyStoredRatio();
   }
@@ -484,6 +494,11 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   @Override
   public int getMaxEnergyStored() {
     return getController().doGetMaxEnergyStored();
+  }
+
+  @Override
+  public long getMaxEnergyStoredL() {
+    return getMaxEnergyStored();
   }
 
   public int getMaxIO() {
@@ -545,6 +560,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
 
   // end rf power
 
+  @Override
   public void addEnergy(int add) {
     getController().doAddEnergy(add);
   }
@@ -824,6 +840,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     render = true;
   }
 
+  @Override
   public TileCapacitorBank getController() {
     if(isMaster() || !isMultiblock()) {
       return this;
@@ -983,7 +1000,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     doSetEnergyStored(nbtRoot.getInteger("storedEnergyRF"));
 
     double newEnergy = storedEnergyRF;
-    if(maxStoredEnergy != 0 && Math.abs(oldEnergy - newEnergy) / (double) maxStoredEnergy > 0.05 || nbtRoot.hasKey("render")) {
+    if(maxStoredEnergy != 0 && Math.abs(oldEnergy - newEnergy) / maxStoredEnergy > 0.05 || nbtRoot.hasKey("render")) {
       render = true;
     }
     if(energyAtLastRender != -1 && maxStoredEnergy != 0) {
@@ -1110,7 +1127,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
     IoMode mode;
 
     private Receptor(IPowerInterface rec, ForgeDirection fromDir, IoMode mode) {
-      this.receptor = rec;
+      receptor = rec;
       this.fromDir = fromDir;
       this.mode = mode;
     }
@@ -1129,12 +1146,13 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
   }
 
   public void setCreativeMode() {
-    this.isCreative = true;
+    isCreative = true;
     maxIO = maxIO * 1000;
     maxInput = maxIO;
     maxOutput = maxIO;
   }
 
+  @Override
   public boolean isCreative() {
     return isCreative;
   }

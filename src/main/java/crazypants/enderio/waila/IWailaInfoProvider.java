@@ -3,9 +3,9 @@ package crazypants.enderio.waila;
 import java.text.NumberFormat;
 import java.util.List;
 
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
 
 public interface IWailaInfoProvider {
   
@@ -15,6 +15,7 @@ public interface IWailaInfoProvider {
   public static final int ALL_BITS = BIT_BASIC | BIT_COMMON | BIT_DETAILED;
   
   public static final NumberFormat fmt = NumberFormat.getNumberInstance();
+
 
   /**
    * Adds the block's info to the WAILA information

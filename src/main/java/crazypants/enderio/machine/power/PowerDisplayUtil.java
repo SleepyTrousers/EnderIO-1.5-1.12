@@ -6,13 +6,12 @@ import java.text.NumberFormat;
 
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.config.Config;
 import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
 
-  private static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();  
-  private static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
+  public static final NumberFormat INT_NF = NumberFormat.getIntegerInstance();
+  public static final NumberFormat FLOAT_NF = NumberFormat.getInstance();
   
   //Handle french local 'non breaking space' character used to separate thousands.
   //This is not rendered correctly and cannot be parsed by minecraft so replace it with a regular space
@@ -64,13 +63,20 @@ public class PowerDisplayUtil {
     return formatPower(amount) + "/" + formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
   }
 
+  public static String formatPower(long amount) {
+    String str = INT_NF.format(amount);
+    if(REPLACE_NBSP) {
+      str = str.replace(NBSP, ' ');
+    }
+    return str;
+  }
+
   
   public static String formatPower(int powerRF) {
     String str = INT_NF.format(powerRF);
     if(REPLACE_NBSP) {
       str = str.replace(NBSP, ' ');
     }
-
     return str;
   }
   

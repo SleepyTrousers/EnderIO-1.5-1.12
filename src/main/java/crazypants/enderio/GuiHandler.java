@@ -51,6 +51,8 @@ public class GuiHandler implements IGuiHandler {
   public static final int GUI_ID_XP_OBELISK = 98;
   public static final int GUI_ID_ANVIL = 99;
 
+  public static final int GUI_ID_CAP_BANK = 100;
+
   protected final Map<Integer, IGuiHandler> guiHandlers = new HashMap<Integer, IGuiHandler>();
 
   public void registerGuiHandler(int id, IGuiHandler handler) {

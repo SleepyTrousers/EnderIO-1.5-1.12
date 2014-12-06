@@ -25,8 +25,8 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
 
   int powerInConduits;
   int maxPowerInCoduits;
-  int  powerInCapBanks;
-  int  maxPowerInCapBanks;
+  long powerInCapBanks;
+  long maxPowerInCapBanks;
   int  powerInMachines;
   int  maxPowerInMachines;
   float aveRfSent;
@@ -216,8 +216,13 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   public void readPowerInfoFromNBT(NBTTagCompound nbtRoot) {
     powerInConduits = nbtRoot.getInteger("powerInConduits");
     maxPowerInCoduits = nbtRoot.getInteger("maxPowerInCoduits");
-    powerInCapBanks = nbtRoot.getInteger("powerInCapBanks");
-    maxPowerInCapBanks = nbtRoot.getInteger("maxPowerInCapBanks");
+    if(nbtRoot.hasKey("powerInCapBanks")) {
+      powerInCapBanks = nbtRoot.getInteger("powerInCapBanks");
+      maxPowerInCapBanks = nbtRoot.getInteger("maxPowerInCapBanks");
+    } else {
+      powerInCapBanks = nbtRoot.getLong("powerInCapBanksL");
+      maxPowerInCapBanks = nbtRoot.getLong("maxPowerInCapBanksL");
+    }
     powerInMachines = nbtRoot.getInteger("powerInMachines");
     maxPowerInMachines = nbtRoot.getInteger("maxPowerInMachines");
     aveRfSent = nbtRoot.getFloat("aveRfSent");
@@ -237,8 +242,8 @@ public class TilePowerMonitor extends AbstractMachineEntity implements IInternal
   public void writePowerInfoToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setInteger("powerInConduits", powerInConduits);
     nbtRoot.setInteger("maxPowerInCoduits", maxPowerInCoduits);
-    nbtRoot.setInteger("powerInCapBanks", powerInCapBanks);
-    nbtRoot.setInteger("maxPowerInCapBanks", maxPowerInCapBanks);
+    nbtRoot.setLong("powerInCapBanksL", powerInCapBanks);
+    nbtRoot.setLong("maxPowerInCapBanksL", maxPowerInCapBanks);
     nbtRoot.setInteger("powerInMachines", powerInMachines);
     nbtRoot.setInteger("maxPowerInMachines", maxPowerInMachines);
     nbtRoot.setFloat("aveRfSent", aveRfSent);

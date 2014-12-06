@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 2.2.3
+------------------------------------------------------
+
+New
+- Added Dark Steel Ladder
+- Added new Capacitor Banks  
+  - 3 tiers
+  - Configurable level / io display
+  - Existing cap banks unchanged but are no longer craftable. Convert them to new version by placing in the crafting grid (power level is maintained) 
+
+------------------------------------------------------
 Version 2.2.2
 ------------------------------------------------------
 

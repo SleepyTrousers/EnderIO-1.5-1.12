@@ -156,6 +156,9 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
   }
 
   private double getSkullDropChance(EntityPlayer player, LivingDropsEvent evt) {
+
+    //TODO:  <boni> stack.getTagCompound().getCompoundTag("InfiTool").getInteger("Beheading")
+
     if(evt.entityLiving instanceof EntitySkeleton && ((EntitySkeleton) evt.entityLiving).getSkeletonType() == 1) {
       if(isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
         return Config.darkSteelSwordWitherSkullChance + (Config.darkSteelSwordWitherSkullLootingModifier * evt.lootingLevel);

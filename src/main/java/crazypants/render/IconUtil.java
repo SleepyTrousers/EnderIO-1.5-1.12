@@ -34,6 +34,7 @@ public class IconUtil {
       public void registerIcons(IIconRegister register) {
         whiteTexture = register.registerIcon("enderio:white");
         errorTexture = register.registerIcon("enderio:error");
+        blankTexture = register.registerIcon("enderio:blank");
       }
 
       @Override

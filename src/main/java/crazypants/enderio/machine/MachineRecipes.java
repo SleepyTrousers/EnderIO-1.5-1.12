@@ -10,6 +10,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.capbank.CapBankType;
+import crazypants.enderio.machine.capbank.ConvertOldRecipe;
 import crazypants.enderio.machine.light.BlockItemElectricLight;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.FrankenSkull;
@@ -129,13 +131,22 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(still, "eve", "tmt", "efe", 'v', Items.cauldron, 'm', machineChassi, 'e', electricSteel, 'f', Blocks.furnace, 't', basicTank);
 
     //capacitor bank
-    ItemStack capacitorBank = new ItemStack(EnderIO.blockCapacitorBank, 1, 0);
-    if(Config.useHardRecipes) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block, 'M',
-          machineChassi));
-    } else {
-      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block));
-    }
+    //    ItemStack capacitorBank = new ItemStack(EnderIO.blockCapacitorBank, 1, 0);
+    //    if(Config.useHardRecipes) {
+    //      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block, 'M',
+    //          machineChassi));
+    //    } else {
+    //      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block));
+    //    }
+    ItemStack capBank = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.SIMPLE));
+    GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', Items.iron_ingot, 'c', capacitor, 'm', Blocks.redstone_block);
+    capBank = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.ACTIVATED));
+    GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor2, 'm', Blocks.redstone_block);
+    capBank = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.VIBRANT));
+    GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor3, 'm', vibCry);
+
+    ConvertOldRecipe convertRecipe = new ConvertOldRecipe();
+    GameRegistry.addRecipe(convertRecipe);
 
     //painter
     ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);

@@ -1,7 +1,29 @@
 package crazypants.render;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
-import static org.lwjgl.opengl.GL11.*;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_ZERO;
+import static org.lwjgl.opengl.GL11.glDepthMask;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glPopAttrib;
+import static org.lwjgl.opengl.GL11.glPushAttrib;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glShadeModel;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -60,6 +82,8 @@ public class RenderUtil {
   public static final ResourceLocation ITEM_TEX = TextureMap.locationItemsTexture;
 
   public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+
+  public static int BRIGHTNESS_MAX = 15 << 20 | 15 << 4;
 
   public static void loadMatrix(Matrix4d mat) {
     MATRIX_BUFFER.rewind();
@@ -598,8 +622,8 @@ public class RenderUtil {
     RenderHelper.disableStandardItemLighting();
     OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO); // stop random disappearing
 
-    float width = (float) fnt.getStringWidth(toRender);
-    float height = (float) fnt.FONT_HEIGHT;
+    float width = fnt.getStringWidth(toRender);
+    float height = fnt.FONT_HEIGHT;
     float padding = 2f;
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();
