@@ -9,6 +9,9 @@ New
   - Configurable level / io display
   - Existing cap banks unchanged but are no longer craftable. Convert them to new version by placing in the crafting grid (power level is maintained) 
 
+Changes
+- Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
+
 ------------------------------------------------------
 Version 2.2.2
 ------------------------------------------------------
