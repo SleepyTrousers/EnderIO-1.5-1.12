@@ -547,7 +547,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
       //TODO: The MFR thing is a horrible hack. Blocks like the harvester make no slots accessible but will push into a connected
       //conduit. I could just return true for sided inventories but this will lead to confusing connections in some cases.
       //Therefore, bad hack for now.
-      return (slots != null && slots.length != 0) || inv.getClass().getName().startsWith("powercrystals.minefactoryreloaded");
+
+      return (slots != null && slots.length != 0) || inv.getClass().getName().startsWith("powercrystals.minefactoryreloaded") ||
+          inv.getClass().getName().endsWith("TileTesseract");
     } else {
       return inv != null;
     }
