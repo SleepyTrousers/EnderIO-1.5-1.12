@@ -85,7 +85,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     GL11.glPushMatrix();
     GL11.glTranslated(x, y, z);
 
-
     Tessellator.instance.startDrawingQuads();
     renderBlock(sf);
     Tessellator.instance.draw();
@@ -102,7 +101,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
     Tessellator.instance.draw();
     GL11.glPopMatrix();
 
-    
     renderLabel(tileentity, x, y, z, ta, sf);
 
     GL11.glPopAttrib();
@@ -162,28 +160,31 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
       }
 
-      String toRender = ta.getLabel();
-      if(toRender != null && toRender.trim().length() > 0) {
-        Vector4f bgCol = RenderUtil.DEFAULT_TEXT_BG_COL;
-        if(TravelController.instance.isBlockSelected(new BlockCoord(tileentity))) {
-          bgCol = new Vector4f(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
-        }
-        
+    }
+
+    String toRender = ta.getLabel();
+    if(toRender != null && toRender.trim().length() > 0) {
+      GL11.glColor4f(1, 1, 1, 1);
+      Vector4f bgCol = RenderUtil.DEFAULT_TEXT_BG_COL;
+      if(TravelController.instance.isBlockSelected(new BlockCoord(tileentity))) {
+        bgCol = new Vector4f(selectedColor.x, selectedColor.y, selectedColor.z, selectedColor.w);
+      }
+
+      {
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
         {
           GL11.glPushMatrix();
-          GL11.glTranslatef((float) x + 0.5f, (float) y + 0.5f, (float) z + 0.5f);
-          {
-            GL11.glPushMatrix();
-            GL11.glScalef(globalScale, globalScale, globalScale);
-            Vector3f pos = new Vector3f(0, 1.2f, 0);
-            float size = 0.5f;
-            RenderUtil.drawBillboardedText(pos, toRender, size, bgCol);
-            GL11.glPopMatrix();
-          }
+          GL11.glScalef(globalScale, globalScale, globalScale);
+          Vector3f pos = new Vector3f(0, 1.2f, 0);
+          float size = 0.5f;
+          RenderUtil.drawBillboardedText(pos, toRender, size, bgCol);
           GL11.glPopMatrix();
         }
+        GL11.glPopMatrix();
       }
     }
+
   }
 
   protected void renderBlock(double sf) {

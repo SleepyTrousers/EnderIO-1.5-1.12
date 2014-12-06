@@ -15,6 +15,7 @@ Changes
 Bugs
 - #1297 EnderLiquidConduit writing excessive warning messages
 - #1336 Soul Binder - Ghost Block 
+- #1351 Travel Anchor: Item needs to be added before text is displayed 
 
 ------------------------------------------------------
 Version 2.2.2
