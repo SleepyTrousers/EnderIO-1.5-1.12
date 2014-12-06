@@ -77,6 +77,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
   private boolean dropItems;
   private boolean displayTypesDirty;
   private boolean revalidateDisplayTypes;
+  private int lastComparatorState;
 
   @Override
   public BlockCoord getLocation() {
@@ -198,7 +199,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     if(displayTypesDirty) {
       displayTypesDirty = false;
       worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
+    // update any comparators, since they don't check themselves
+    int comparatorState = getComparatorOutput();
+    if(lastComparatorState != comparatorState) {
+      worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
+      lastComparatorState = comparatorState;
     }
 
     doDropItems();
