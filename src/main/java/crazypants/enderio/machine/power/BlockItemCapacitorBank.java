@@ -68,16 +68,19 @@ public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContaine
 
   @Override
   public double getDurabilityForDisplay(ItemStack itemStack) {
-    double stored = this.getMaxEnergyStored(itemStack) - this.getEnergyStored(itemStack) + 1;
-    double max = this.getMaxEnergyStored(itemStack) + 1;
+    double stored = getMaxEnergyStored(itemStack) - getEnergyStored(itemStack) + 1;
+    double max = getMaxEnergyStored(itemStack) + 1;
     return stored / max;
   }
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-    int energy = this.getEnergyStored(container);
+    if(container.stackSize > 1) {
+      return 0;
+    }
+    int energy = getEnergyStored(container);
     int maxInput = TileCapacitorBank.BASE_CAP.getMaxEnergyReceived();
-    int energyReceived = Math.min(this.getMaxEnergyStored(container) - energy, Math.min(maxReceive, maxInput));
+    int energyReceived = Math.min(getMaxEnergyStored(container) - energy, Math.min(maxReceive, maxInput));
 
     if(!simulate && container.getItemDamage() != 1) {
       energy += energyReceived;
@@ -88,7 +91,10 @@ public class BlockItemCapacitorBank extends ItemBlock implements IEnergyContaine
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-    int energy = this.getEnergyStored(container);
+    if(container.stackSize > 1) {
+      return 0;
+    }
+    int energy = getEnergyStored(container);
     int maxOutput = TileCapacitorBank.BASE_CAP.getMaxEnergyExtracted();
     int energyExtracted = Math.min(energy, Math.min(maxExtract, maxOutput));
 
