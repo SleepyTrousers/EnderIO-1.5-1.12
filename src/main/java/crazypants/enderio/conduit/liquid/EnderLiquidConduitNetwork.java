@@ -9,7 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import crazypants.enderio.Log;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.config.Config;
@@ -56,7 +55,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
-    int amountAccepted = fillFrom(tank, drained, true);
+    int amountAccepted = fillFrom(tank, drained.copy(), true);
     if(amountAccepted <= 0) {
       return false;
     }
@@ -64,10 +63,10 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if(drained == null || drained.amount <= 0) {
       return false;
     }
-    if(drained.amount != amountAccepted) {
-      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
-          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
-    }
+    //    if(drained.amount != amountAccepted) {
+    //      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
+    //          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
+    //    }
     return true;
   }
 

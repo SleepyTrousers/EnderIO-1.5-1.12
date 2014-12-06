@@ -12,6 +12,9 @@ New
 Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
 
+Bugs
+- #1297 EnderLiquidConduit writing excessive warning messages
+
 ------------------------------------------------------
 Version 2.2.2
 ------------------------------------------------------
