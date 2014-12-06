@@ -39,6 +39,30 @@ public abstract class PacketCapBank<T extends PacketCapBank, Q extends IMessage>
     z = buf.readInt();
   }
 
+  public int getX() {
+    return x;
+  }
+
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public void setY(int y) {
+    this.y = y;
+  }
+
+  public int getZ() {
+    return z;
+  }
+
+  public void setZ(int z) {
+    this.z = z;
+  }
+
   @Override
   public Q onMessage(T message, MessageContext ctx) {
 
@@ -57,7 +81,7 @@ public abstract class PacketCapBank<T extends PacketCapBank, Q extends IMessage>
     if(worldObj == null) {
       return null;
     }
-    TileEntity te = worldObj.getTileEntity(message.x, message.y, message.z);
+    TileEntity te = worldObj.getTileEntity(message.getX(), message.getY(), message.getZ());
     if(te == null) {
       return null;
     }
