@@ -54,6 +54,9 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
 
   @Override
   public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+    if(container.stackSize > 1) {
+      return 0;
+    }
     CapBankType type = CapBankType.getTypeFromMeta(container.getItemDamage());
     int energy = getEnergyStored(container);
     int maxInput = type.getMaxIO();
@@ -69,6 +72,9 @@ public class BlockItemCapBank extends ItemBlock implements IEnergyContainerItem 
 
   @Override
   public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+    if(container.stackSize > 1) {
+      return 0;
+    }
     CapBankType type = CapBankType.getTypeFromMeta(container.getItemDamage());
     int energy = getEnergyStored(container);
     int maxOutput = type.getMaxIO();
