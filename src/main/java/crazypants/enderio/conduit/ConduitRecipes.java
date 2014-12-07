@@ -98,30 +98,20 @@ public class ConduitRecipes {
     String fluix = "crystalFluix";
     Object pureFluix = null;
 
-    ModContainer AE2 = Loader.instance().getIndexedModList().get("appliedenergistics2");
-    String version = AE2.getVersion();
-    String buildNum = version.substring(version.indexOf('-') + 1);
-    buildNum = buildNum.substring(buildNum.indexOf('-') + 1);
-    if(version.contains("rv1") || (version.contains("rv2") && Integer.valueOf(buildNum) > 15)) // let's make sure we're on a compatible build
-    {
-      try {
-        pureFluix = AEApi.instance().materials().materialPureifiedFluixCrystal.stack(1).copy(); // rv1
-      } catch (NoSuchFieldError e) {
-        pureFluix = "crystalPureFluix"; // rv2
-      }
-
-      ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
-      ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
-      ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
-
-      GameRegistry.addRecipe(new ShapedOreRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', fluix, 'q', quartzFiber));
-      GameRegistry.addRecipe(new ShapedOreRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber));
-      
-      res.stackSize = 1;
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemMEConduit, 1, 1), "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res));
-      
-    } else {
-      throw new RuntimeException("EnderIO ME Conduits only support AE2 rv1 or rv2 build 16+");
+    try {
+      pureFluix = AEApi.instance().materials().materialPureifiedFluixCrystal.stack(1).copy(); // rv1
+    } catch (NoSuchFieldError e) {
+      pureFluix = "crystalPureFluix"; // rv2
     }
+
+    ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
+    ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
+    ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', fluix, 'q', quartzFiber));
+    GameRegistry.addRecipe(new ShapedOreRecipe(res.copy(), "bbb", "fqf", "bbb", 'b', conduitBinder, 'f', pureFluix, 'q', quartzFiber));
+
+    res.stackSize = 1;
+    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.itemMEConduit, 1, 1), "bCb", "CbC", "bCb", 'b', conduitBinder, 'C', res));
   }
 }
