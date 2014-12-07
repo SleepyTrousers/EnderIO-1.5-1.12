@@ -11,10 +11,9 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.PacketPowerStorage;
-import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.IPowerInterface;
@@ -135,8 +134,12 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   float calculateLightRatio() {
-    int lightValue = worldObj.getSavedLightValue(EnumSkyBlock.Sky, xCoord, yCoord, zCoord) - worldObj.skylightSubtracted;
-    float sunAngle = worldObj.getCelestialAngleRadians(1.0F);
+    return calculateLightRatio(worldObj, xCoord, yCoord, zCoord);
+  }
+  
+  public static float calculateLightRatio(World world, int x, int y, int z) {
+    int lightValue = world.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - world.skylightSubtracted;
+    float sunAngle = world.getCelestialAngleRadians(1.0F);
 
     if(sunAngle < (float) Math.PI) {
       sunAngle += (0.0F - sunAngle) * 0.2F;

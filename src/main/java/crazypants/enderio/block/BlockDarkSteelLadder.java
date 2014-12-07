@@ -44,6 +44,8 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
   public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
     if(entity.motionY >= 0.1) {
       entity.setPosition(entity.posX, entity.posY + Config.darkSteelLadderSpeedBoost, entity.posZ);
+    } else if (entity.motionY <= 0.1) {
+      entity.setPosition(entity.posX, entity.posY - Config.darkSteelLadderSpeedBoost, entity.posZ);
     }
   }
   

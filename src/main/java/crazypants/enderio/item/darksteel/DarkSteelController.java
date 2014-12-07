@@ -1,8 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,8 +23,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 import crazypants.vecmath.Vector3d;
@@ -134,8 +132,8 @@ public class DarkSteelController {
   }
 
   private void updateSolar(EntityPlayer player) {
-    // no processing on client or if the player isn't under the sun
-    if (player.worldObj.isRemote || !player.worldObj.canBlockSeeTheSky(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ))) {
+    // no processing on client
+    if (player.worldObj.isRemote) {
       return;
     }
     
@@ -145,7 +143,8 @@ public class DarkSteelController {
       return;
     }
     
-    int RFperSecond = upgrade.getRFPerSec();
+    int RFperSecond = Math.round((float) upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ)));
+    
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
     
