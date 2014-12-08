@@ -24,6 +24,7 @@ Bugs
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
+- #1366 Powered Spawners don't remain active with chunk loaders 
  
 
 ------------------------------------------------------

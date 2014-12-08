@@ -73,7 +73,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       if(getStackInSlot(0) == null || getStackInSlot(1) != null) {
         return;
       }
-      Entity ent = logic.createEntity();
+      Entity ent = logic.createEntity(false);
       if(ent == null) {
         return;
       }
@@ -340,7 +340,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
           for (int i = 0; i < spawnCount; ++i) {
 
-            Entity entity = createEntity();
+            Entity entity = createEntity(true);
             if(entity == null) {
               return;
             }
@@ -375,8 +375,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       }
     }
 
-    Entity createEntity() {
-      return EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());
+    Entity createEntity(boolean forceAlive) {
+      Entity ent = EntityList.createEntityByName(getEntityNameToSpawn(), getSpawnerWorld());     
+      if(forceAlive && MIN_PLAYER_DISTANCE <= 0 && ent instanceof EntityLiving) {
+         ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, getSpawnerWorld().getTotalWorldTime());
+        ((EntityLiving) ent).func_110163_bv();
+      }
+      return ent;
     }
 
     void resetTimer() {
