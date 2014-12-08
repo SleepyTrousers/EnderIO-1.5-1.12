@@ -19,6 +19,7 @@ Bugs
 - #1348 Item conduits not connecting to tesseracts in receive only mode 
 - #1357 Power Conduits replaced by growing tree's 
 - #1347 Capacitor Bank energy duplication bug. 
+- #1268 Capacitor bank not honoring input redstone settings. 
 
 ------------------------------------------------------
 Version 2.2.2
