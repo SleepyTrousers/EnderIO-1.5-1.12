@@ -15,6 +15,8 @@ Changes
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
 - #1297 EnderLiquidConduit writing excessive warning messages
+- #1333 Sound locator sometimes creates thousands of entities per frame
+- Sound locator entities not being rendered in some cases
 - #1336 Soul Binder - Ghost Block 
 - #1339 SAG Mill grinding balls reducing return rate for bonus outputs
 - #1347 Capacitor Bank energy duplication bug 
@@ -22,6 +24,7 @@ Bugs
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
+ 
 
 ------------------------------------------------------
 Version 2.2.2
