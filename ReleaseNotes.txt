@@ -18,8 +18,9 @@ Bugs
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
 - #1348 Item conduits not connecting to tesseracts in receive only mode 
 - #1357 Power Conduits replaced by growing tree's 
-- #1347 Capacitor Bank energy duplication bug. 
-- #1268 Capacitor bank not honoring input redstone settings. 
+- #1347 Capacitor Bank energy duplication bug
+- #1268 Capacitor bank not honoring input redstone settings 
+- #1361 Enlightened Fused Quartz is not blast resistant 
 
 ------------------------------------------------------
 Version 2.2.2
