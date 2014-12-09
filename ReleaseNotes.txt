@@ -13,6 +13,7 @@ New
 Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
 - SAG Mill no longer produces dusts for metals that are not available
+- Corrected Experience Obelisk tooltip
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
