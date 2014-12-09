@@ -10,6 +10,7 @@ public final class OreDictionaryHelper {
   public static final String INGOT_COPPER = "ingotCopper";
   public static final String INGOT_TIN = "ingotTin";
   public static final String DUST_ENDERPEARL = "dustEnderPearl";
+  public static final String INGOT_ENDERIUM = "ingotEnderium";
 
   public static boolean isRegistered(String name) {
     if(!getOres(name).isEmpty()) {
@@ -35,6 +36,10 @@ public final class OreDictionaryHelper {
   }
 
   private OreDictionaryHelper() {
+  }
+
+  public static boolean hasEnderium() {
+    return isRegistered(INGOT_ENDERIUM);
   }
 
 }

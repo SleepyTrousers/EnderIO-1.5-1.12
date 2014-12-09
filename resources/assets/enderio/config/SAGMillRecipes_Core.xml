@@ -181,7 +181,8 @@ addOreDictionaryTooltips=true
       </input>
       <output>        
         <itemStack oreDictionary="dustCoal" number="1"/>
-        <itemStack oreDictionary="dustCoal" number="1" chance="0.25"/>        
+        <itemStack oreDictionary="dustCoal" number="1" chance="0.1"/>        
+        <itemStack oreDictionary="dustSulfur" number="1" chance="0.1"/>
       </output>
     </recipe>
     
@@ -301,6 +302,7 @@ addOreDictionaryTooltips=true
       <output>
         <itemStack modID="minecraft" itemName="sand" number="2" />
         <itemStack modID="minecraft" itemName="sand" number="2" chance="0.4" />
+        <itemStack oreDictionary="dustSaltpeter" number="1" chance ="0.15"/>
       </output>
     </recipe>
 
@@ -321,6 +323,7 @@ addOreDictionaryTooltips=true
       <output>
         <itemStack modID="minecraft" itemName="flint" />
         <itemStack modID="minecraft" itemName="flint" chance="0.1" />
+        <itemStack modID="minecraft" itemName="sand" chance="0.1" />
       </output>
     </recipe>
 
@@ -339,7 +342,7 @@ addOreDictionaryTooltips=true
       </input>
       <output>
         <itemStack modID="minecraft" itemName="blaze_powder" number="4" />
-        <itemStack oreDictionary="dustSulfur" chance="0.25" />
+        <itemStack oreDictionary="dustSulfur" chance="0.5" />
       </output>
     </recipe>
 
@@ -707,12 +710,12 @@ addOreDictionaryTooltips=true
 
   <recipeGroup name="Railcraft">
 
-    <recipe name="Charcoal" energyCost="2400">
+    <recipe name="Sulfor Ore" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="coal" itemMeta="1" />
+        <itemStack oreDictionary="oreSulfor" number="1" />
       </input>
       <output>
-        <itemStack oreDictionary="dustCharcoal" number="1" />
+        <itemStack oreDictionary="dustSulfor" number="6" />
       </output>
     </recipe>
 

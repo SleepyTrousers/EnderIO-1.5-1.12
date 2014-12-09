@@ -570,11 +570,13 @@ public class EnderIO {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
-    //This must be loaded before parsing the recipes so we get the preferred outputs
-    OreDictionaryPreferences.loadConfig();
-
     //Regsiter the enchants
     Enchantments.getInstance();
+
+    MaterialRecipes.registerDependantOresInDictionary();
+
+    //This must be loaded before parsing the recipes so we get the preferred outputs
+    OreDictionaryPreferences.loadConfig();
 
     MaterialRecipes.addOreDictionaryRecipes();
     MachineRecipes.addOreDictionaryRecipes();

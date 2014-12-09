@@ -2,6 +2,7 @@ package crazypants.enderio.material;
 
 import static crazypants.util.OreDictionaryHelper.DUST_ENDERPEARL;
 import static crazypants.util.OreDictionaryHelper.INGOT_COPPER;
+import static crazypants.util.OreDictionaryHelper.INGOT_ENDERIUM;
 import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
 import static crazypants.util.OreDictionaryHelper.isRegistered;
 
@@ -13,7 +14,8 @@ public enum PowderIngot {
   POWDER_GOLD("powderGold", null),
   POWDER_COPPER("powderCopper", INGOT_COPPER),
   POWDER_TIN("powderTin", INGOT_TIN),
-  POWDER_ENDER("powderEnder", DUST_ENDERPEARL);
+  POWDER_ENDER("powderEnder", DUST_ENDERPEARL),
+  INGOT_ENDERIUM_BASE("ingotEnderiumBase", INGOT_ENDERIUM);
   // POWDER_LEAD("powderLead", "Lead Powder", "powderLead"),
   // POWDER_SILVER("powderSilver", "Silver Powder", "powderSilver"),
   // POWDER_BRONZE("powderBronze", "Bronze Powder", "powderBronze"),

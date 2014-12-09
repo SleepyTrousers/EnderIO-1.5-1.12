@@ -2,11 +2,6 @@ package crazypants.enderio.material;
 
 import java.util.ArrayList;
 
-import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
-import static crazypants.util.OreDictionaryHelper.hasCopper;
-import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
-import static crazypants.util.OreDictionaryHelper.hasTin;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -20,15 +15,15 @@ import crazypants.enderio.config.Config;
 import crazypants.util.OreDictionaryHelper;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 
+import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
+import static crazypants.util.OreDictionaryHelper.hasCopper;
+import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
+import static crazypants.util.OreDictionaryHelper.hasTin;
+
 
 public class MaterialRecipes {
 
-  public static void registerOresInDictionary() {
-    //Ore Dictionary Registeration
-    OreDictionary.registerOre("dustCoal", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COAL.ordinal()));
-    OreDictionary.registerOre("dustIron", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()));
-    OreDictionary.registerOre("dustGold", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()));
-
+  public static void registerDependantOresInDictionary() {
     if(hasCopper()) {
       OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
     }
@@ -38,6 +33,18 @@ public class MaterialRecipes {
     if(hasEnderPearlDust()) {
       OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
     }
+    //Enderium Base
+    if(OreDictionaryHelper.hasEnderium()) {
+      OreDictionary.registerOre("ingotEnderiumBase", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.INGOT_ENDERIUM_BASE.ordinal()));
+    }
+  }
+
+  public static void registerOresInDictionary() {
+    //Ore Dictionary Registeration
+    OreDictionary.registerOre("dustCoal", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COAL.ordinal()));
+    OreDictionary.registerOre("dustIron", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()));
+    OreDictionary.registerOre("dustGold", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()));
+    
     OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
 
