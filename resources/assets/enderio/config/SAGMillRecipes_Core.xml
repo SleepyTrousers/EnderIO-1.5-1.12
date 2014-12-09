@@ -710,12 +710,12 @@ addOreDictionaryTooltips=true
 
   <recipeGroup name="Railcraft">
 
-    <recipe name="Sulfor Ore" energyCost="2400">
+    <recipe name="Sulfur Ore" energyCost="2400">
       <input>
-        <itemStack oreDictionary="oreSulfor" number="1" />
+        <itemStack oreDictionary="oreSulfur" number="1" />
       </input>
       <output>
-        <itemStack oreDictionary="dustSulfor" number="6" />
+        <itemStack oreDictionary="dustSulfur" number="6" />
       </output>
     </recipe>
 
