@@ -50,7 +50,7 @@ public class BlockFusedQuartz extends BlockEio {
     }
     
     public boolean connectTo(int otherMeta) {
-      if (otherMeta == this.ordinal()) {
+      if (otherMeta == ordinal()) {
         return true;
       }
       
@@ -95,8 +95,8 @@ public class BlockFusedQuartz extends BlockEio {
   @Override
   public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
     int meta = world.getBlockMetadata(x, y, z);
-    meta = MathHelper.clamp_int(meta, 0, 1);
-    if(meta == 0) {
+    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
+    if(meta == Type.FUSED_QUARTZ.ordinal() || meta == Type.ENLIGHTENED_FUSED_QUARTZ.ordinal()) {
       return 2000;
     } else {
       return super.getExplosionResistance(par1Entity);

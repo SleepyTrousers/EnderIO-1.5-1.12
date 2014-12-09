@@ -1,10 +1,13 @@
 package crazypants.enderio.machine.spawner;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +19,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -23,10 +27,12 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
+import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
@@ -68,6 +74,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     return readMobTypeFromNBT(stack.stackTagCompound);
   }
 
+  public static final String KEY_SPAWNED_BY_POWERED_SPAWNER = "spawnedByPoweredSpawner";
+
   public static BlockPoweredSpawner create() {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPoweredSpawner.unlocalisedName, new DummyRecipe());
 
@@ -86,12 +94,20 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
   private final List<DropInfo> dropQueue = new ArrayList<BlockPoweredSpawner.DropInfo>();
   private final List<UniqueIdentifier> toolBlackList = new ArrayList<UniqueIdentifier>();
 
+  private Field fieldpersistenceRequired;
+
   protected BlockPoweredSpawner() {
     super(ModObject.blockPoweredSpawner, TilePoweredSpawner.class);
 
     String[] blackListNames = Config.brokenSpawnerToolBlacklist;
     for (String name : blackListNames) {
       toolBlackList.add(new UniqueIdentifier(name));
+    }
+
+    try {
+      fieldpersistenceRequired = ReflectionHelper.findField(EntityLiving.class, "field_82179_bU", "persistenceRequired");
+    } catch (Exception e) {
+      Log.error("BlockPoweredSpawner: Could not find field: persistenceRequired");
     }
   }
 
@@ -161,6 +177,31 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     evt.output.stackTagCompound.setBoolean("eio.abstractMachine", true);
     writeMobTypeToNBT(evt.output.stackTagCompound, spawnerType);
 
+  }
+
+  @SubscribeEvent
+  public void onLivingUpdate(LivingUpdateEvent livingUpdate) {
+
+    Entity ent = livingUpdate.entityLiving;
+    if(!ent.getEntityData().hasKey(KEY_SPAWNED_BY_POWERED_SPAWNER)) {
+      return;
+    }
+    if(fieldpersistenceRequired == null) {
+      ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);
+      return;
+    }
+
+    long spawnTime = ent.getEntityData().getLong(KEY_SPAWNED_BY_POWERED_SPAWNER);
+    long livedFor = livingUpdate.entity.worldObj.getTotalWorldTime() - spawnTime;
+    if(livedFor > 1200) { //after two minutes stop forcing it to be around 
+      try {
+        fieldpersistenceRequired.setBoolean(livingUpdate.entityLiving, false);
+        ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);
+      } catch (Exception e) {
+        Log.warn("BlockPoweredSpawner.onLivingUpdate: Error occured allowing entity to despawn: " + e);
+        ent.getEntityData().removeTag(KEY_SPAWNED_BY_POWERED_SPAWNER);
+      }
+    }
   }
 
   public boolean isBlackListed(String entityId) {

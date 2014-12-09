@@ -13,12 +13,19 @@ Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
 
 Bugs
+- #1268 Capacitor bank not honoring input redstone settings
 - #1297 EnderLiquidConduit writing excessive warning messages
+- #1333 Sound locator sometimes creates thousands of entities per frame
+- Sound locator entities not being rendered in some cases
 - #1336 Soul Binder - Ghost Block 
+- #1339 SAG Mill grinding balls reducing return rate for bonus outputs
+- #1347 Capacitor Bank energy duplication bug 
+- #1348 Item conduits not connecting to tesseracts in receive only mode
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
-- #1348 Item conduits not connecting to tesseracts in receive only mode 
 - #1357 Power Conduits replaced by growing tree's 
-- #1347 Capacitor Bank energy duplication bug. 
+- #1361 Enlightened Fused Quartz is not blast resistant 
+- #1366 Powered Spawners don't remain active with chunk loaders 
+ 
 
 ------------------------------------------------------
 Version 2.2.2

@@ -10,6 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.ConvertOldRecipe;
 import crazypants.enderio.machine.light.BlockItemElectricLight;
@@ -131,18 +132,12 @@ public class MachineRecipes {
     GameRegistry.addShapedRecipe(still, "eve", "tmt", "efe", 'v', Items.cauldron, 'm', machineChassi, 'e', electricSteel, 'f', Blocks.furnace, 't', basicTank);
 
     //capacitor bank
-    //    ItemStack capacitorBank = new ItemStack(EnderIO.blockCapacitorBank, 1, 0);
-    //    if(Config.useHardRecipes) {
-    //      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "rcr", "ccc", "rMr", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block, 'M',
-    //          machineChassi));
-    //    } else {
-    //      GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBank, "mcm", "crc", "mcm", 'm', electricSteel, 'c', capacitor2, 'r', Blocks.redstone_block));
-    //    }
-    ItemStack capBank = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.SIMPLE));
+
+    ItemStack capBank = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
     GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', Items.iron_ingot, 'c', capacitor, 'm', Blocks.redstone_block);
-    capBank = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.ACTIVATED));
+    capBank = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
     GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor2, 'm', Blocks.redstone_block);
-    capBank = new ItemStack(EnderIO.blockCapBank, 1, CapBankType.getMetaFromType(CapBankType.VIBRANT));
+    capBank = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
     GameRegistry.addShapedRecipe(capBank, "bcb", "cmc", "bcb", 'b', electricSteel, 'c', capacitor3, 'm', vibCry);
 
     ConvertOldRecipe convertRecipe = new ConvertOldRecipe();
