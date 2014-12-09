@@ -37,9 +37,9 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
     <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="1" />
   </preference>
 
-  <preference oreDictionary="dustGold">    
+  <preference oreDictionary="dustGold">
     <itemStack modID="ThermalFoundation" itemName="material" itemMeta="1" />
-    <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" />    
+    <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" />
   </preference>
 
   <preference oreDictionary="dustCopper">
@@ -70,6 +70,40 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
 
   <preference oreDictionary="dustBronze">
     <itemStack modID="ThermalFoundation" itemName="material" itemMeta="41" />
+  </preference>
+  
+  
+  <!-- Ingots -->
+
+  <preference oreDictionary="ingotCopper">
+    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="64" />
+    <itemStack modID="TConstruct" itemName="materials" itemMeta="9" />
+  </preference>
+  
+  <preference oreDictionary="ingotTin">
+    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="65" />
+    <itemStack modID="TConstruct" itemName="materials" itemMeta="10" />
+  </preference>
+  
+  <preference oreDictionary="ingotSilver">
+    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="66" />    
+  </preference>
+  
+  <preference oreDictionary="ingotLead">
+    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="67" />    
+  </preference>
+  
+  <preference oreDictionary="ingotBronze">
+    <itemStack modID="ThermalFoundation" itemName="material" itemMeta="73" />
+    <itemStack modID="TConstruct" itemName="materials" itemMeta="13" />    
+  </preference>
+  
+  <preference oreDictionary="ingotAluminum">    
+    <itemStack modID="TConstruct" itemName="materials" itemMeta="11" />    
+  </preference>
+  
+  <preference oreDictionary="ingotAluminuim">    
+    <itemStack modID="TConstruct" itemName="materials" itemMeta="11" />    
   </preference>
 
 

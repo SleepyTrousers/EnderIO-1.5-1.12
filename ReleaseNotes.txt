@@ -8,6 +8,8 @@ New
   - 3 tiers
   - Configurable level / io display
   - Existing cap banks unchanged but are no longer craftable. Convert them to new version by placing in the crafting grid (power level is maintained) 
+- Added preferences for Ore Dictionary outputs for the SAG Mill and Alloy Furnace. 
+    - Defaults to Thermal Foundation when available, see OreDictionaryPreferences_Core.xml
 - Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
 
 Changes
