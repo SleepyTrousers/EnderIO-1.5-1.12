@@ -219,7 +219,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   public boolean isAbsorbDamageWithPower(ItemStack stack) {
-    boolean res= RANDOM.nextFloat() < getAbsorptionRatio(stack);
+    boolean res= RANDOM.nextDouble() < getAbsorptionRatio(stack);
     return res;
   }
 
