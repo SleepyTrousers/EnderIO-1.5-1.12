@@ -34,14 +34,6 @@ public final class OreDictionaryHelper {
     return isRegistered(DUST_ENDERPEARL);
   }
 
-  public static ItemStack getPreffered(String oreDictName) {
-    List<ItemStack> ores = getOres(oreDictName);
-    if(ores.isEmpty()) {
-      return null;
-    }
-    return ores.get(0);
-  }
-
   private OreDictionaryHelper() {
   }
 

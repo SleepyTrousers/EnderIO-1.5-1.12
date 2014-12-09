@@ -2,6 +2,11 @@ package crazypants.enderio.material;
 
 import java.util.ArrayList;
 
+import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
+import static crazypants.util.OreDictionaryHelper.hasCopper;
+import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
+import static crazypants.util.OreDictionaryHelper.hasTin;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -15,11 +20,6 @@ import crazypants.enderio.config.Config;
 import crazypants.util.OreDictionaryHelper;
 import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 
-import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
-import static crazypants.util.OreDictionaryHelper.getPreffered;
-import static crazypants.util.OreDictionaryHelper.hasCopper;
-import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
-import static crazypants.util.OreDictionaryHelper.hasTin;
 
 public class MaterialRecipes {
 
@@ -193,10 +193,11 @@ public class MaterialRecipes {
   public static void addOreDictionaryRecipes() {
     if(OreDictionaryHelper.hasCopper()) {
       FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()),
-          getPreffered(OreDictionaryHelper.INGOT_COPPER), 0);
+          OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_COPPER), 0);
     }
     if(hasTin()) {
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()), getPreffered(INGOT_TIN), 0);
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()),
+          OreDictionaryPreferences.instance.getPreferred(INGOT_TIN), 0);
     }
 
     ItemStack capacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 0);

@@ -1,9 +1,5 @@
 package crazypants.enderio;
 
-import static crazypants.enderio.EnderIO.MODID;
-import static crazypants.enderio.EnderIO.MOD_NAME;
-import static crazypants.enderio.EnderIO.VERSION;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -142,6 +138,7 @@ import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
+import crazypants.enderio.material.OreDictionaryPreferences;
 import crazypants.enderio.network.MessageTileNBT;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
@@ -150,6 +147,9 @@ import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.EntityUtil;
+import static crazypants.enderio.EnderIO.MODID;
+import static crazypants.enderio.EnderIO.MOD_NAME;
+import static crazypants.enderio.EnderIO.VERSION;
 
 @Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "required-after:Forge@10.13.0.1150,);after:MineFactoryReloaded", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
@@ -569,6 +569,9 @@ public class EnderIO {
 
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
+
+    //This must be loaded before parsing the recipes so we get the preferred outputs
+    OreDictionaryPreferences.loadConfig();
 
     //Regsiter the enchants
     Enchantments.getInstance();

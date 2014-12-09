@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -31,6 +30,8 @@ import crazypants.enderio.Log;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
 import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
+import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.util.OreDictionaryHelper;
 
 public class RecipeConfigParser extends DefaultHandler {
 
@@ -103,7 +104,7 @@ public class RecipeConfigParser extends DefaultHandler {
   private boolean inputTagOpen = false;
 
   private boolean debug = false;
-  
+
   private boolean inCustomHandler = false;
 
   private CustomTagHandler customHandler = null;
@@ -376,12 +377,16 @@ public class RecipeConfigParser extends DefaultHandler {
     int stackSize = getIntValue(AT_NUMBER, attributes, 1);
     String oreDict = getStringValue(AT_ORE_DICT, attributes, null);
     if(oreDict != null) {
-      ArrayList<ItemStack> ores = OreDictionary.getOres(oreDict);
-      if(ores == null || ores.isEmpty() || ores.get(0) == null) {
+      if(!OreDictionaryHelper.isRegistered(oreDict)) {
         Log.debug(LP + "Could not find an entry in the ore dictionary for " + oreDict);
         return null;
       }
-      ItemStack stack = ores.get(0).copy();
+      ItemStack stack = OreDictionaryPreferences.instance.getPreferred(oreDict);
+      if(stack == null) {
+        Log.debug(LP + "Could not find a prefered item  in the ore dictionary for " + oreDict);
+        return null;
+      }
+      stack = stack.copy();
       stack.stackSize = stackSize;
       return new OreDictionaryRecipeInput(stack, OreDictionary.getOreID(oreDict), getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes,
           -1));
