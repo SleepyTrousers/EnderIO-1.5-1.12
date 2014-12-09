@@ -1,7 +1,5 @@
 package crazypants.enderio.material;
 
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
-
 import java.util.ArrayList;
 
 import net.minecraft.init.Blocks;
@@ -14,6 +12,14 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.util.OreDictionaryHelper;
+import static crazypants.enderio.EnderIO.itemBasicCapacitor;
+
+import static crazypants.util.OreDictionaryHelper.INGOT_TIN;
+import static crazypants.util.OreDictionaryHelper.getPreffered;
+import static crazypants.util.OreDictionaryHelper.hasCopper;
+import static crazypants.util.OreDictionaryHelper.hasEnderPearlDust;
+import static crazypants.util.OreDictionaryHelper.hasTin;
 
 public class MaterialRecipes {
 
@@ -22,12 +28,17 @@ public class MaterialRecipes {
     OreDictionary.registerOre("dustCoal", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COAL.ordinal()));
     OreDictionary.registerOre("dustIron", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal()));
     OreDictionary.registerOre("dustGold", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_GOLD.ordinal()));
-    OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
-    OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
-    OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
 
+    if(hasCopper()) {
+      OreDictionary.registerOre("dustCopper", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()));
+    }
+    if(hasTin()) {
+      OreDictionary.registerOre("dustTin", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()));
+    }
+    if(hasEnderPearlDust()) {
+      OreDictionary.registerOre("dustEnderPearl", new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_ENDER.ordinal()));
+    }
     OreDictionary.registerOre("gearStone", new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal()));
-
     OreDictionary.registerOre("itemSilicon", new ItemStack(EnderIO.itemMaterial, 1, Material.SILICON.ordinal()));
 
     for (Alloy alloy : Alloy.values()) {
@@ -46,9 +57,9 @@ public class MaterialRecipes {
     OreDictionary.registerOre("ingotGold", Items.gold_ingot);
 
     ItemStack pureGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
-    OreDictionary.registerOre("glass", pureGlass);    
-    OreDictionary.registerOre("blockGlass", pureGlass);      
-    OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));    
+    OreDictionary.registerOre("glass", pureGlass);
+    OreDictionary.registerOre("blockGlass", pureGlass);
+    OreDictionary.registerOre("blockGlassHardened", new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.FUSED_QUARTZ.ordinal()));
 
     //Skulls
     ItemStack skull = new ItemStack(Items.skull, 1, OreDictionary.WILDCARD_VALUE);
@@ -78,7 +89,7 @@ public class MaterialRecipes {
     ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
 
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
-    
+
     //Conduit Binder
     ItemStack cbc = binderComposite.copy();
     cbc.stackSize = 8;
@@ -158,36 +169,34 @@ public class MaterialRecipes {
       if(Config.reinforcedObsidianUseDarkSteelBlocks) {
         corners = new ItemStack(EnderIO.blockIngotStorage, 1, Alloy.DARK_STEEL.ordinal());
       }
-      GameRegistry.addShapedRecipe(reinfObs , "dbd", "bob", "dbd", 'd', corners, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
+      GameRegistry.addShapedRecipe(reinfObs, "dbd", "bob", "dbd", 'd', corners, 'b', EnderIO.blockDarkIronBars, 'o', Blocks.obsidian);
     }
-    
-    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.blockDarkSteelAnvil, 
-      "bbb",
-      " i ",
-      "iii",
-      
-      'b', "blockDarkSteel",
-      'i', "ingotDarkSteel"
-    ));
-    
+
+    GameRegistry.addRecipe(new ShapedOreRecipe(EnderIO.blockDarkSteelAnvil,
+        "bbb",
+        " i ",
+        "iii",
+
+        'b', "blockDarkSteel",
+        'i', "ingotDarkSteel"
+        ));
+
     GameRegistry.addRecipe(new ItemStack(EnderIO.blockDarkSteelLadder, 12), "b", "b", "b", 'b', EnderIO.blockDarkIronBars);
 
     for (Alloy alloy : Alloy.values()) {
-      GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictIngotName));
+      GameRegistry
+          .addRecipe(new ShapedOreRecipe(new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()), "iii", "iii", "iii", 'i', alloy.oredictIngotName));
       GameRegistry.addShapelessRecipe(new ItemStack(EnderIO.itemAlloy, 9, alloy.ordinal()), new ItemStack(EnderIO.blockIngotStorage, 1, alloy.ordinal()));
     }
   }
 
   public static void addOreDictionaryRecipes() {
-    int oreId = OreDictionary.getOreID("ingotCopper");
-    ArrayList<ItemStack> ingots = OreDictionary.getOres(oreId);
-    if(!ingots.isEmpty()) {
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()), ingots.get(0), 0);
+    if(OreDictionaryHelper.hasCopper()) {
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal()),
+          getPreffered(OreDictionaryHelper.INGOT_COPPER), 0);
     }
-    oreId = OreDictionary.getOreID("ingotTin");
-    ingots = OreDictionary.getOres(oreId);
-    if(!ingots.isEmpty()) {
-      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()), ingots.get(0), 0);
+    if(hasTin()) {
+      FurnaceRecipes.smelting().func_151394_a(new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal()), getPreffered(INGOT_TIN), 0);
     }
 
     ItemStack capacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 0);

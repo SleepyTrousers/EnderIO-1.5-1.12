@@ -244,6 +244,8 @@ public final class Config {
   public static boolean addFuelTooltipsToAllFluidContainers = true;
   public static boolean addFurnaceFuelTootip = true;
   public static boolean addDurabilityTootip = true;
+  public static boolean addOreDictionaryTooltips = false;
+  public static boolean addRegisterdNameTooltip = false;
 
   public static int farmContinuousEnergyUseRF = 40;
   public static int farmActionEnergyUseRF = 500;
@@ -394,7 +396,6 @@ public final class Config {
 
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
-
 
 
   public static void load(FMLPreInitializationEvent event) {
@@ -862,6 +863,10 @@ public final class Config {
         addDurabilityTootip);
     addFurnaceFuelTootip = config.get(sectionPersonal.name, "addFurnaceFuelTootip", addFuelTooltipsToAllFluidContainers,
         "If true, adds burn duration tooltips to furnace fuels").getBoolean(addFurnaceFuelTootip);
+    addOreDictionaryTooltips = config.get(sectionPersonal.name, "addOreDictionaryTooltips", addOreDictionaryTooltips,
+        "If true, adds ore dictionary registrations to tooltips").getBoolean(addOreDictionaryTooltips);
+    addRegisterdNameTooltip = config.get(sectionPersonal.name, "addRegisterdNameTooltip", addRegisterdNameTooltip,
+        "If true, adds the registered name for the item").getBoolean(addRegisterdNameTooltip);
 
     farmContinuousEnergyUseRF = config.get(sectionFarm.name, "farmContinuousEnergyUseRF", farmContinuousEnergyUseRF,
         "The amount of power used by a farm per tick ").getInt(farmContinuousEnergyUseRF);

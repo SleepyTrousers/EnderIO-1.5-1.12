@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
@@ -19,10 +20,13 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
@@ -89,6 +93,35 @@ public class TooltipAddera {
       btp.ball = gb;
       TooltipAddera.instance.addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
     }
+
+    if(Config.addRegisterdNameTooltip) {
+      UniqueIdentifier uid = null;
+      Block block = Block.getBlockFromItem(evt.itemStack.getItem());
+      if(block != null && block != Blocks.air) {
+        uid = GameRegistry.findUniqueIdentifierFor(block);
+      } else {
+        uid = GameRegistry.findUniqueIdentifierFor(evt.itemStack.getItem());
+      }
+      if(uid != null) {
+        evt.toolTip.add(EnumChatFormatting.AQUA + "UID: " + uid.toString() + " Meta: " + evt.itemStack.getItemDamage());
+      }
+    }
+
+    if(Config.addOreDictionaryTooltips) {
+      int[] ids = OreDictionary.getOreIDs(evt.itemStack);
+      if(ids != null && ids.length > 0) {
+        if(ids.length == 1) {
+          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary: " + OreDictionary.getOreName(ids[0]));
+        } else {
+          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary:");
+          for (int id : ids) {
+            String name = OreDictionary.getOreName(id);
+            evt.toolTip.add(EnumChatFormatting.AQUA + "  " + name);
+          }
+        }
+      }
+
+    }
   }
 
   public static void addDurabilityTooltip(List<String> toolTip, ItemStack itemStack) {
@@ -151,7 +184,7 @@ public class TooltipAddera {
     } else {
       addBasicTooltipFromResources(list, name);
       addCommonTooltipFromResources(list, name);
-      if (hasDetailedTooltip(tt, itemstack)) {
+      if(hasDetailedTooltip(tt, itemstack)) {
         addShowDetailsTooltip(list);
       }
     }
@@ -168,21 +201,22 @@ public class TooltipAddera {
       }
     }
   }
-  
+
   private static final List<String> throwaway = new ArrayList<String>();
+
   private static boolean hasDetailedTooltip(IResourceTooltipProvider tt, ItemStack stack) {
     throwaway.clear();
     String name = tt.getUnlocalizedNameForTooltip(stack);
     addDetailedTooltipFromResources(throwaway, name);
     return !throwaway.isEmpty();
   }
-  
+
   private static boolean hasDetailedTooltip(IAdvancedTooltipProvider tt, ItemStack stack, EntityPlayer player, boolean flag) {
     throwaway.clear();
     tt.addDetailedEntries(stack, player, throwaway, flag);
     return !throwaway.isEmpty();
   }
-  
+
   public static void addShowDetailsTooltip(List list) {
     list.add(EnumChatFormatting.WHITE + "" + EnumChatFormatting.ITALIC + Lang.localize("item.tooltip.showDetails"));
   }

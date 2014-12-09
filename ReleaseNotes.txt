@@ -8,9 +8,11 @@ New
   - 3 tiers
   - Configurable level / io display
   - Existing cap banks unchanged but are no longer craftable. Convert them to new version by placing in the crafting grid (power level is maintained) 
+- Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
 
 Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
+- SAG Mill no longer produces dusts for metals that are not available
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
