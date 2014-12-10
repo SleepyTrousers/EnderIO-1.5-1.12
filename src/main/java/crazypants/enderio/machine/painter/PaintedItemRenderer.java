@@ -51,14 +51,18 @@ public class PaintedItemRenderer implements IItemRenderer {
       Block block = PainterUtil.getSourceBlock(item);
       int meta;
       RenderUtil.bindBlockTexture();
+      boolean renderOverlay = true;
       if(block != null) {
         meta = PainterUtil.getSourceBlockMetadata(item);
       } else {
         block = Block.getBlockFromItem(item.getItem());
         meta = item.getItemDamage();
+        renderOverlay = false;
       }
       renderBlocks.renderBlockAsItem(block, meta, 1.0F);
-      renderOverlay(block, meta, renderBlocks);
+      if(renderOverlay) {
+        renderOverlay(block, meta, renderBlocks);
+      }
       renderBlocks.clearOverrideBlockTexture();
       return;
     }
