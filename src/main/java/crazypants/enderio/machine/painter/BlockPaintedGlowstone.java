@@ -55,7 +55,7 @@ public class BlockPaintedGlowstone extends Block implements ITileEntityProvider,
     setCreativeTab(null);
     setBlockName(ModObject.blockPaintedGlowstone.unlocalisedName);
     setStepSound(soundTypeGlass);
-    setHardness(0.3F);
+    setHardness(0.7F);
     setLightLevel(1.0f);
   }
 

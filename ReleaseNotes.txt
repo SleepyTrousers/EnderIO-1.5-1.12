@@ -17,6 +17,8 @@ Changes
 - SAG Mill no longer produces dusts for metals that are not available
 - Corrected Experience Obelisk tooltip
 - Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
+- Painted items are now rendered with a border to make it easier to tell them from the paint source blocks
+- Painted glow stone hardness increased to stop instant breaking
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
