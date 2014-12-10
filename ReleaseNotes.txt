@@ -8,9 +8,18 @@ New
   - 3 tiers
   - Configurable level / io display
   - Existing cap banks unchanged but are no longer craftable. Convert them to new version by placing in the crafting grid (power level is maintained) 
+- Added preferences for Ore Dictionary outputs for the SAG Mill and Alloy Furnace. 
+    - Defaults to Thermal Foundation when available, see OreDictionaryPreferences_Core.xml
+- Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
 
 Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
+- SAG Mill no longer produces dusts for metals that are not available
+- Corrected Experience Obelisk tooltip
+- Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
+- Painted items are now rendered with a border to make it easier to tell them from the paint source blocks
+- Painted glow stone hardness increased to stop instant breaking
+- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
@@ -24,7 +33,8 @@ Bugs
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
-- #1366 Powered Spawners don't remain active with chunk loaders 
+- #1366 Powered Spawner doesn't remain active when chunk loaded 
+- RF Tools not charging in Killer Joe until he has attacked something
  
 
 ------------------------------------------------------

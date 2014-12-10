@@ -184,6 +184,7 @@ enderio.powderGold.name=Gold Powder
 enderio.powderCopper.name=Copper Powder
 enderio.powderTin.name=Tin Powder
 enderio.powderEnder.name=Ender Pearl Powder
+enderio.ingotEnderiumBase.name=Enderium Base
 
 //Capacitors
 enderio.itemBasicCapacitor.name=Capacitor
@@ -415,11 +416,9 @@ tile.blockSpawnGuard.tooltip.detailed.line1=Prevents mobs from spawning
 tile.blockSpawnGuard.tooltip.detailed.line2=within its area of effect
 
 tile.blockExperienceObelisk.name=Experience Obelisk
-tile.blockExperienceObelisk.tooltip.detailed.line1=When placed on a fluid tank
-tile.blockExperienceObelisk.tooltip.detailed.line2=R-Click to use stored Liquid XP
-tile.blockExperienceObelisk.tooltip.detailed.line3=Shift-R-Click with an empty hand
-tile.blockExperienceObelisk.tooltip.detailed.line4=to drain player XP into the tank
-tile.blockExperienceObelisk.tooltip.detailed.line5=L-Click to drain 1 level of player XP
+tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
+tile.blockExperienceObelisk.tooltip.detailed.line2=Can output liquid XP to
+tile.blockExperienceObelisk.tooltip.detailed.line3=adjacent tanks
 
 enderio.machine.tooltip.configured=(Configured)
 

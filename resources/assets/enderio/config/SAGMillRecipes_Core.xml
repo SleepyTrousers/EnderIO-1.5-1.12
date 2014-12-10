@@ -53,10 +53,10 @@
   - Must have either: modID + itemName or oreDictionary
   - 'modID' is the identifier registered by the mod with Forge (for example vanilla blocks use 'minecraft' while Ender IO is 'EnderIO').
   This value can be found in the details panel of Forge's 'mods' UI.
-  - 'itemName' the name used to register the block/item with forge. To dump all registered items to config/modObjectsRegistery.txt
+  - 'itemName' the name used to register the block/item with forge. To write all registered items to config/modObjectsRegistery.txt
   include: <dumpRegistry modObjects="true/>
   - 'oreDictionary' will use the OreDictionary to find the appropriate itemStack. The first entry returned by the dictionary
-  will be used. The dump the contents of the dictionary to config/oreDictionaryRegistery.txt include <dumpRegistery oreDictionary="true"/>
+  will be used. To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt include <dumpRegistery oreDictionary="true"/>
   - The item metadata/damage may optionally be specified for all types except
   oreDictionary. If a '*' is used for the metadata value then meta data will ignored when determining if an input is valid.
 
@@ -124,6 +124,18 @@ Examples:
     </excludes>
   </grindingBalls>
 
+
+Item Information and data dumps:
+To write all registered items to config/modObjectsRegistery.txt include: 
+<dumpRegistry modObjects="true/>
+
+To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt include:
+<dumpRegistery oreDictionary="true"/>
+
+To show ore dictionary and/or registered names, in the EnderIO config set:
+addRegisterdNameTooltip=true
+addOreDictionaryTooltips=true
+
 -->
 
 <SAGMillRecipes>
@@ -157,7 +169,7 @@ Examples:
       </input>
       <output>
         <itemStack modID="minecraft" itemName="coal" number="3" />
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" number="1" chance="0.6" />
+        <itemStack oreDictionary="dustCoal" number="1" chance="0.6"/>        
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
         <itemStack modID="minecraft" itemName="diamond" chance="0.001" />
       </output>
@@ -167,9 +179,19 @@ Examples:
       <input>
         <itemStack modID="minecraft" itemName="coal" />
       </input>
+      <output>        
+        <itemStack oreDictionary="dustCoal" number="1"/>
+        <itemStack oreDictionary="dustCoal" number="1" chance="0.1"/>        
+        <itemStack oreDictionary="dustSulfur" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    
+    <recipe name="Charcoal" energyCost="2400">
+      <input>
+        <itemStack modID="minecraft" itemName="coal" itemMeta="1"/>
+      </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" />
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="0" chance="0.25" />
+        <itemStack oreDictionary="dustCharcoal" number="1" />        
       </output>
     </recipe>
 
@@ -177,9 +199,9 @@ Examples:
       <input>
         <itemStack oreDictionary="oreIron" />
       </input>
-      <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="1" number="2" />
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" number="1" chance="0.05" />
+      <output>          
+        <itemStack oreDictionary="dustIron" number="2"/>              
+        <itemStack oreDictionary="dustTin" number="1" chance="0.05" />        
         <itemStack oreDictionary="dustNickel" number="1" chance="0.1" />
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
@@ -190,7 +212,7 @@ Examples:
         <itemStack oreDictionary="ingotIron" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="1" />
+        <itemStack oreDictionary="dustIron" number="1"/>
       </output>
     </recipe>
 
@@ -199,8 +221,8 @@ Examples:
         <itemStack oreDictionary="oreGold" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" number="2" />
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" number="1" chance="0.2" />
+        <itemStack oreDictionary="dustGold" number="2"/>               
+        <itemStack oreDictionary="dustCopper" number="1" chance="0.2" />        
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
@@ -210,7 +232,7 @@ Examples:
         <itemStack oreDictionary="ingotGold" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" />
+        <itemStack oreDictionary="dustGold" number="1"/>
       </output>
     </recipe>
 
@@ -219,7 +241,7 @@ Examples:
         <itemStack modID="minecraft" itemName="ender_pearl" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="5" number="1" />
+        <itemStack oreDictionary="dustEnderPearl" number="1"/>        
       </output>
     </recipe>
 
@@ -280,6 +302,7 @@ Examples:
       <output>
         <itemStack modID="minecraft" itemName="sand" number="2" />
         <itemStack modID="minecraft" itemName="sand" number="2" chance="0.4" />
+        <itemStack oreDictionary="dustSaltpeter" number="1" chance ="0.15"/>
       </output>
     </recipe>
 
@@ -300,6 +323,7 @@ Examples:
       <output>
         <itemStack modID="minecraft" itemName="flint" />
         <itemStack modID="minecraft" itemName="flint" chance="0.1" />
+        <itemStack modID="minecraft" itemName="sand" chance="0.1" />
       </output>
     </recipe>
 
@@ -318,7 +342,7 @@ Examples:
       </input>
       <output>
         <itemStack modID="minecraft" itemName="blaze_powder" number="4" />
-        <itemStack oreDictionary="dustSulfur" chance="0.25" />
+        <itemStack oreDictionary="dustSulfur" chance="0.5" />
       </output>
     </recipe>
 
@@ -455,8 +479,8 @@ Examples:
         <itemStack oreDictionary="oreCopper" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" number="2" />
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="2" chance="0.125" />
+        <itemStack oreDictionary="dustCopper" number="2"/>
+        <itemStack oreDictionary="dustGold" number="1" chance="0.125"/>                  
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
@@ -466,7 +490,7 @@ Examples:
         <itemStack oreDictionary="ingotCopper" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="3" />
+        <itemStack oreDictionary="dustCopper" number="1"/>        
       </output>
     </recipe>
 
@@ -475,7 +499,7 @@ Examples:
         <itemStack oreDictionary="oreTin" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" number="2" />
+        <itemStack oreDictionary="dustTin" number="2"/>        
         <itemStack modID="minecraft" itemName="cobblestone" chance="0.15" />
       </output>
     </recipe>
@@ -485,7 +509,7 @@ Examples:
         <itemStack oreDictionary="ingotTin" />
       </input>
       <output>
-        <itemStack modID="EnderIO" itemName="itemPowderIngot" itemMeta="4" />
+        <itemStack oreDictionary="dustTin" number="1"/>        
       </output>
     </recipe>
 
@@ -686,12 +710,12 @@ Examples:
 
   <recipeGroup name="Railcraft">
 
-    <recipe name="Charcoal" energyCost="2400">
+    <recipe name="Sulfur Ore" energyCost="2400">
       <input>
-        <itemStack modID="minecraft" itemName="coal" itemMeta="1" />
+        <itemStack oreDictionary="oreSulfur" number="1" />
       </input>
       <output>
-        <itemStack oreDictionary="dustCharcoal" number="1" />
+        <itemStack oreDictionary="dustSulfur" number="6" />
       </output>
     </recipe>
 

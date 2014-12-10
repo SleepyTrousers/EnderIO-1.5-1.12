@@ -22,9 +22,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.mojang.authlib.GameProfile;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -462,6 +459,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
 
     @Override
     public void onUpdate() {
+
+      setCurrentItemOrArmor(0, getStackInSlot(0));
+
       ItemStack prev = prevWeapon;
       ItemStack cur = getCurrentEquippedItem();
       if(!ItemStack.areItemStacksEqual(cur, prev)) {

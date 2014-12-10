@@ -12,6 +12,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
+import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.util.BlockCoord;
@@ -49,6 +50,9 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   public void requestPowerUpdate(TileCapBank capBank, int interval) {
     long curTick = EnderIO.proxy.getTickCount();
     if(lastPowerRequestTick == -1 || curTick - lastPowerRequestTick >= interval) {
+      if(stateUpdateCount == 0) {
+        PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
+      }
       PacketHandler.INSTANCE.sendToServer(new PacketNetworkEnergyRequest(capBank));
       lastPowerRequestTick = curTick;
     }
