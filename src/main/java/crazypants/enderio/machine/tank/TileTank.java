@@ -12,6 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.BlockCoord;
@@ -119,41 +120,63 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
 
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    if(!canFill(from)) {
+      return 0;
+    }
+
     int res = tank.fill(resource, doFill);
     if(res > 0 && doFill) {
-      tankDirty = true;      
+      tankDirty = true;
     }
     return res;
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    if(!canDrain(from)) {
+      return null;
+    }
+
     FluidStack res = tank.drain(resource, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
-      tankDirty = true;      
+      tankDirty = true;
     }
     return res;
   }
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    if(!canDrain(from)) {
+      return null;
+    }
+
     FluidStack res = tank.drain(maxDrain, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
-      tankDirty = true;      
+      tankDirty = true;
     }
     return res;
   }
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return fluid != null && (tank.getFluidAmount() > 0 && tank.getFluid().fluidID == fluid.getID() || tank.getFluidAmount() == 0);
+    return canFill(from) && fluid != null && (tank.getFluidAmount() > 0 && tank.getFluid().fluidID == fluid.getID() || tank.getFluidAmount() == 0);
+  }
+
+  private boolean canFill(ForgeDirection from) {
+    IoMode mode = getIoMode(from);
+    return mode != IoMode.PUSH && mode != IoMode.DISABLED;
   }
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    return tank.canDrainFluidType(fluid);
+    return canDrain(from) && tank.canDrainFluidType(fluid);
   }
 
+  private boolean canDrain(ForgeDirection from) {
+    IoMode mode = getIoMode(from);
+    return mode != IoMode.PULL && mode != IoMode.DISABLED;
+  }
+  
   @Override
   public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     return new FluidTankInfo[] { new FluidTankInfo(tank) };
