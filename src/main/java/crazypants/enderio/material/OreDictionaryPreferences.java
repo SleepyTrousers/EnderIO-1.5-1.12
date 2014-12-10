@@ -42,8 +42,8 @@ public final class OreDictionaryPreferences {
   }
 
   public ItemStack getPreferred(ItemStack stack) {
-    if(stack == null) {
-      return null;
+    if(stack == null || stack.getItem() == null) {
+      return stack;
     }
     StackKey key = new StackKey(stack);
     if(stackCache.containsKey(key)) {
