@@ -33,6 +33,7 @@ Bugs
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
+- RF Tools not charging in Killer Joe until he has attacked something
  
 
 ------------------------------------------------------
