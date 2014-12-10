@@ -19,6 +19,7 @@ Changes
 - Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
 - Painted items are now rendered with a border to make it easier to tell them from the paint source blocks
 - Painted glow stone hardness increased to stop instant breaking
+- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings

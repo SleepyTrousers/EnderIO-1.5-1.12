@@ -41,7 +41,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
 
   private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
   
-  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", 3, 1561, 7, 2, 25);
+  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("darkSteel", 5, 1561, 7, 2, 25);
 
   public static boolean isEquipped(EntityPlayer player) {
     if(player == null) {
