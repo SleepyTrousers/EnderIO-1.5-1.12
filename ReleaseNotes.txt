@@ -13,6 +13,7 @@ New
 - Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
 - Added support for increased Enderman Skull drops when using a TiC Cleaver or weapon with the beheading modifier
     - Values adjustable in config. Default sets Cleaver = The Ender, Beheading = looting on The Ender 
+- Capacitor Banks can now be used to add the Flux upgrade to TiC tools    
 
 Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
