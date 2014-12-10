@@ -177,6 +177,10 @@ public final class Config {
   public static float darkSteelSwordSkullLootingModifier = 0.075f;
   public static float vanillaSwordSkullLootingModifier = 0.05f;
   public static float vanillaSwordSkullChance = 0.05f;
+  public static float ticCleaverSkullDropChance = 0.1f;
+  public static float ticBeheadingSkullModifier = 0.075f;
+  public static float fakePlayerSkullChance = 0.5f;
+
   public static int darkSteelSwordPowerUsePerHit = 750;
   public static double darkSteelSwordEnderPearlDropChance = 1;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.5;
@@ -185,6 +189,7 @@ public final class Config {
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUsePerDamagePoint = 750;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
+  public static boolean darkSteelPickMinesTiCArdite = true;
 
   public static int darkSteelAxePowerUsePerDamagePoint = 750;
   public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;
@@ -396,7 +401,6 @@ public final class Config {
 
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
-
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -797,6 +801,22 @@ public final class Config {
         "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)").getDouble(
         vanillaSwordSkullLootingModifier);
 
+    ticCleaverSkullDropChance = (float) config.get(sectionDarkSteel.name, "ticCleaverSkullDropChance", ticCleaverSkullDropChance,
+        "The base chance that an enderman skull will be dropped when using TiC Cleaver").getDouble(
+        ticCleaverSkullDropChance);
+    ticBeheadingSkullModifier = (float) config.get(sectionPersonal.name, "ticBeheadingSkullModifier", ticBeheadingSkullModifier,
+        "The chance per level of Beheading that a skull will be dropped when using a TiC weapon").getDouble(
+        ticBeheadingSkullModifier);
+
+    fakePlayerSkullChance = (float) config
+        .get(
+            sectionDarkSteel.name,
+            "fakePlayerSkullChance",
+            fakePlayerSkullChance,
+            "The ratio of skull drops when a mob is killed by a 'FakePlayer', such as Killer Joe. When set to 0 no skulls will drop, at 1 the rate of skull drops is not modified")
+        .getDouble(
+            fakePlayerSkullChance);
+
     darkSteelSwordPowerUsePerHit = config.get(sectionDarkSteel.name, "darkSteelSwordPowerUsePerHit", darkSteelSwordPowerUsePerHit,
         "The amount of power (RF) used per hit.").getInt(darkSteelSwordPowerUsePerHit);
     darkSteelSwordEnderPearlDropChance = config.get(sectionDarkSteel.name, "darkSteelSwordEnderPearlDropChance", darkSteelSwordEnderPearlDropChance,
@@ -816,6 +836,8 @@ public final class Config {
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
     darkSteelPickEffeciencyBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelPickEffeciencyBoostWhenPowered",
         darkSteelPickEffeciencyBoostWhenPowered, "The increase in effciency when powered.").getDouble(darkSteelPickEffeciencyBoostWhenPowered);
+    darkSteelPickMinesTiCArdite = config.getBoolean("darkSteelPickMinesTiCArdite", sectionDarkSteel.name, darkSteelPickMinesTiCArdite,
+        "When true the dark steel pick will be able to mine TiC Ardite and Cobalt");
 
     darkSteelAxePowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelAxePowerUsePerDamagePoint", darkSteelAxePowerUsePerDamagePoint,
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelAxePowerUsePerDamagePoint);

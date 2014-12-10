@@ -11,6 +11,8 @@ New
 - Added preferences for Ore Dictionary outputs for the SAG Mill and Alloy Furnace. 
     - Defaults to Thermal Foundation when available, see OreDictionaryPreferences_Core.xml
 - Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
+- Added support for increased Enderman Skull drops when using a TiC Cleaver or weapon with the beheading modifier
+    - Values adjustable in config. Default sets Cleaver = The Ender, Beheading = looting on The Ender 
 
 Changes
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
@@ -19,7 +21,8 @@ Changes
 - Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
 - Painted items are now rendered with a border to make it easier to tell them from the paint source blocks
 - Painted glow stone hardness increased to stop instant breaking
-- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore
+- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore (can be disabled in the config)
+- Halved the skull drop chance when mobs killed by a 'fake player', such as killer joe (can be changed in the config)
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
