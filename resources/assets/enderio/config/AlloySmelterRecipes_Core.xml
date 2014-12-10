@@ -376,6 +376,17 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </output>
     </recipe>
     
+    <recipe name="Fluxed Electrum" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotElectrum" number="2" />
+        <itemStack modID="minecraft" itemName="redstone" number="4"/>
+        <itemStack modID="ThermalFoundation" itemName="material" itemMeta="512" />                    
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotElectrumFlux" number="2" />
+      </output>
+    </recipe>
+    
     <!-- 
     <recipe name="Steel" energyCost="8000">
       <input>
