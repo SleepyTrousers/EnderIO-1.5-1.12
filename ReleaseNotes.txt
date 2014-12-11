@@ -16,6 +16,7 @@ New
 - Capacitor Banks can now be used to add the Flux upgrade to TiC tools    
 
 Changes
+- #1378 Soul Vial filled in a Powered Spawner now produce identical item stacks to enable their use in auto crafting systems
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
 - SAG Mill no longer produces dusts for metals that are not available
 - Corrected Experience Obelisk tooltip
