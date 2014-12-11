@@ -5,9 +5,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
@@ -30,6 +36,8 @@ import crazypants.util.RoundRobinIterator;
 public class ServerChannelRegister extends ChannelRegister {
 
   public static ServerChannelRegister instance = new ServerChannelRegister();
+
+  private static final ExecutorService saveExecutor = Executors.newSingleThreadExecutor();
 
   public static void load() {
     instance.reset();
@@ -71,12 +79,27 @@ public class ServerChannelRegister extends ChannelRegister {
   }
 
   public static void store() {
+    Future<?> future = saveExecutor.submit(new SaveRunnable(copyChannels()));
+    try {
+      //wait up to 5 seconds for it to finish
+      future.get(5, TimeUnit.SECONDS);
+    } catch (Exception e) {
+      Log.warn("Failed to write Transciever Channels on exit: " + e);
+      future.cancel(false);
+    }
+  }
+
+  private static void queueStore() {
+    saveExecutor.execute(new SaveRunnable(copyChannels()));
+  }
+
+  private static void doStore(EnumMap<ChannelType, List<Channel>> channels) {
     File dataFile = getDataFile();
-    if(!createFolderAndWriteFile(dataFile)) {
+    if(!createFolderAndWriteFile(channels, dataFile)) {
       dataFile = getFallbackDataFile();
       Log.error("ServerChannelRegister: Attempting to write Dimensional Trasciever data to fallback location: " + dataFile.getAbsolutePath());
       try {
-        writeFile(dataFile);
+        writeFile(copyChannels(), dataFile);
       } catch (Exception e) {
         Log.error("ServerChannelRegister: Could not write Dimensional Trasciever data fallback location " + dataFile.getAbsolutePath()
             + " channles not saved: " + e.getMessage());
@@ -86,11 +109,13 @@ public class ServerChannelRegister extends ChannelRegister {
     Log.info("ServerChannelRegister: Dimensional Trasciever data saved to " + dataFile.getAbsolutePath());
   }
 
-  protected static boolean createFolderAndWriteFile(File dataFile) {
+
+
+  private static boolean createFolderAndWriteFile(EnumMap<ChannelType, List<Channel>> data, File dataFile) {
     try {
       File parentFolder = dataFile.getParentFile();
       FileUtils.forceMkdir(parentFolder);
-      writeFile(dataFile);
+      writeFile(data, dataFile);
       return true;
     } catch (Exception e) {
       Log.error("ServerChannelRegister: Could not write Dimensional Trasciever channels to " + dataFile.getAbsolutePath() + " : " + e);
@@ -98,11 +123,25 @@ public class ServerChannelRegister extends ChannelRegister {
     }
   }
 
-  protected static void writeFile(File dataFile) throws IOException {
+  protected static void writeFile(EnumMap<ChannelType, List<Channel>> chans, File dataFile) throws IOException {
+    if(dataFile.exists()) {
+      File tmpFile = new File(dataFile.getAbsolutePath() + ".tmp");
+      doWriteFile(chans, tmpFile);
+      if(FileUtils.deleteQuietly(dataFile)) {
+        tmpFile.renameTo(dataFile);
+      }
+
+    } else {
+      doWriteFile(chans, dataFile);
+    }
+
+  }
+
+  protected static void doWriteFile(EnumMap<ChannelType, List<Channel>> chans, File dataFile) throws IOException {
     JsonWriter writer = new JsonWriter(new FileWriter(dataFile, false));
     writer.setIndent("  ");
     writer.beginArray();
-    for (List<Channel> chanList : instance.channels.values()) {
+    for (List<Channel> chanList : chans.values()) {
       for (Channel chan : chanList) {
         writer.beginObject();
         writer.name("name").value(chan.getName());
@@ -123,6 +162,15 @@ public class ServerChannelRegister extends ChannelRegister {
 
   private static File getFallbackDataFile() {
     return new File(DimensionManager.getCurrentSaveRootDirectory(), "dimensionalTransceiver.json");
+  }
+
+  private static EnumMap<ChannelType, List<Channel>> copyChannels() {
+    //NB: deep copy not needed as all types are immuatble
+    EnumMap<ChannelType, List<Channel>> copy = new EnumMap<ChannelType, List<Channel>>(ChannelType.class);
+    for (Entry<ChannelType, List<Channel>> entry : instance.channels.entrySet()) {
+      copy.put(entry.getKey(), new ArrayList<Channel>(entry.getValue()));
+    }
+    return copy;
   }
 
   //-----------------------------------------------------------------------------------------------
@@ -156,6 +204,13 @@ public class ServerChannelRegister extends ChannelRegister {
       trans.removeSendChanel(channel);
     }
     iterators.remove(channel);
+    queueStore();
+  }
+
+  @Override
+  public void addChannel(Channel channel) {
+    super.addChannel(channel);
+    queueStore();
   }
 
   public RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
@@ -295,6 +350,21 @@ public class ServerChannelRegister extends ChannelRegister {
       }
     }
     return contents;
+  }
+
+  private static class SaveRunnable implements Runnable {
+
+    private EnumMap<ChannelType, List<Channel>> chans;
+
+    public SaveRunnable(EnumMap<ChannelType, List<Channel>> chans) {
+      this.chans = chans;
+    }
+
+    @Override
+    public void run() {
+      doStore(chans);
+    }
+
   }
 
 }

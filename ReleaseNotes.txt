@@ -31,6 +31,7 @@ Bugs
 - #1297 EnderLiquidConduit writing excessive warning messages
 - #1333 Sound locator sometimes creates thousands of entities per frame
 - Sound locator entities not being rendered in some cases
+- #1335 Dimensional Transceivers not saving channels after server restart
 - #1336 Soul Binder - Ghost Block 
 - #1339 SAG Mill grinding balls reducing return rate for bonus outputs
 - #1347 Capacitor Bank energy duplication bug 
@@ -41,6 +42,7 @@ Bugs
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
 - #1373 Fluid Tank accepts fluid regardless of configuration
 - #1383 Travel Anchor crash 
+ 
 - RF Tools not charging in Killer Joe until he has attacked something
  
 
