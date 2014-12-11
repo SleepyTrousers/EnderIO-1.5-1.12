@@ -28,6 +28,8 @@ Changes
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
+- #1285 Ender Rail can no longer be rotated as the forge rotation code was messing with my bits
+- #1285 Ender Rail not adjusting the direction of RC locomotives when required 
 - #1297 EnderLiquidConduit writing excessive warning messages
 - #1333 Sound locator sometimes creates thousands of entities per frame
 - Sound locator entities not being rendered in some cases
@@ -41,8 +43,7 @@ Bugs
 - #1361 Enlightened Fused Quartz is not blast resistant 
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
 - #1373 Fluid Tank accepts fluid regardless of configuration
-- #1383 Travel Anchor crash 
- 
+- #1383 Travel Anchor crash  
 - RF Tools not charging in Killer Joe until he has attacked something
  
 
