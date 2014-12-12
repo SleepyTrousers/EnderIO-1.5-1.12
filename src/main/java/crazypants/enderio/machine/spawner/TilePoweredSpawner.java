@@ -73,11 +73,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       if(getStackInSlot(0) == null || getStackInSlot(1) != null) {
         return;
       }
-      Entity ent = logic.createEntity(false);
-      if(ent == null) {
+      String name = logic.getEntityNameToSpawn();
+      if(name == NULL_ENTITY_NAME) {
         return;
       }
-      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntity(ent);
+      ItemStack res = EnderIO.itemSoulVessel.createVesselWithEntityStub(logic.getEntityNameToSpawn());
       decrStackSize(0, 1);
       setInventorySlotContents(1, res);
     }

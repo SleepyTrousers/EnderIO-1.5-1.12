@@ -12,13 +12,58 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.vecmath.Vector3d;
 
 public class RailcraftLinkUtil implements ICartLinkUtil {
 
+  private Class<?> directionalClass;
+
   public RailcraftLinkUtil() throws Exception {
     //Make sure the class we actually want to use exists, just in case the API changes
     Class.forName("mods.railcraft.api.carts.CartTools");
+
+    try {
+      directionalClass = Class.forName("mods.railcraft.common.carts.IDirectionalCart");
+    } catch (Exception e) {
+    }
+  }
+
+  @Override
+  public void setCartDirection(EntityMinecart cart, ForgeDirection dir) {
+
+    if(!isDirectional(cart)) {
+      CartLinkUtil.defaultInstance.setCartDirection(cart, dir);
+      return;
+    }
+
+    ForgeDirection oldDir = getCurrentDir(cart);
+    CartLinkUtil.defaultInstance.setCartDirection(cart, dir);
+    ForgeDirection newDir = getCurrentDir(cart);
+
+    if(oldDir.getOpposite() == newDir) {
+      cart.rotationYaw += 180;
+    }
+  }
+
+  private boolean isDirectional(EntityMinecart cart) {
+    if(directionalClass == null) {
+      return false;
+    }
+    return directionalClass.isAssignableFrom(cart.getClass());
+  }
+
+  private ForgeDirection getCurrentDir(EntityMinecart cart) {
+    boolean isX = true;
+    boolean isNeg = cart.motionX < 0;
+    if(Math.abs(cart.motionZ) > Math.abs(cart.motionX)) {
+      isX = false;
+      isNeg = cart.motionZ < 0;
+    }
+    if(isX) {
+      return isNeg ? ForgeDirection.WEST : ForgeDirection.EAST;
+    }
+    return isNeg ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
   }
 
   @Override

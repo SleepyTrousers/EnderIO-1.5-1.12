@@ -93,13 +93,25 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
     if(world.isRemote) {
       return true;
-    }  
-    if(!containsSoul(itemstack)) {
-      return true;
     }
-    
+    if(!containsSoul(itemstack)) {
+      return false;
+    }
+    if(player == null) {
+      return false;
+    }
+    if(itemstack.stackSize > 1) {
+      return false;
+    }
+
+    Entity mob;
     NBTTagCompound root = itemstack.stackTagCompound;    
-    Entity mob = EntityList.createEntityFromNBT(root, world);
+    if(root.hasKey("isStub")) {
+      String entityId = root.getString("id");
+      mob = EntityList.createEntityByName(entityId, world);
+    } else {
+      mob = EntityList.createEntityFromNBT(root, world);
+    }
     if (mob == null) {
       return true;      
     }
@@ -123,7 +135,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     world.spawnEntityInWorld(mob);    
     if(mob instanceof EntityLiving) {
       ((EntityLiving)mob).playLivingSound();
-    }  
+    }
     
     Entity riddenByEntity = mob.riddenByEntity;
     while(riddenByEntity != null) {      
@@ -161,7 +173,6 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
     
     String entityId = EntityList.getEntityString(entity);
-    //    System.out.println("ItemSoulVessel.itemInteractionForEntity: " + entityId);
     if(isBlackListed(entityId)) {
       return false;
     }
@@ -188,6 +199,16 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     return false;
   }
   
+  public ItemStack createVesselWithEntityStub(String entityId) {
+    NBTTagCompound root = new NBTTagCompound();
+    root.setString("id", entityId);
+    root.setBoolean("isStub", true);
+
+    ItemStack res = new ItemStack(this);
+    res.stackTagCompound = root;
+    return res;
+  }
+
   public ItemStack createVesselWithEntity(Entity ent) {
 
     String entityId = EntityList.getEntityString(ent);

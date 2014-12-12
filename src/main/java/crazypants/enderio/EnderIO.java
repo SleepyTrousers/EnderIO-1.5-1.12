@@ -3,6 +3,7 @@ package crazypants.enderio;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -615,6 +616,29 @@ public class EnderIO {
       }
 
     }
+
+    addModIntegration();
+  }
+
+  private void addModIntegration() {
+
+    if(Loader.isModLoaded("TConstruct")) {
+      try {
+        Class<?> ttClass = Class.forName("tconstruct.tools.TinkerTools");
+        Field modFluxF = ttClass.getField("modFlux");
+        Object modFluxInst = modFluxF.get(null);
+
+        Class<?> modFluxClass = Class.forName("tconstruct.modifiers.tools.ModFlux");
+        Field batteriesField = modFluxClass.getField("batteries");
+        List<ItemStack> batteries = (List<ItemStack>) batteriesField.get(modFluxInst);
+        batteries.add(new ItemStack(blockCapBank));
+        Log.info("Registered Capacitor Banks as Tinkers Construct Flux Upgrades");
+      } catch (Exception e) {
+        //Doesn't matter if it didnt work
+        Log.info("Failed to registered Capacitor Banks as Tinkers Construct Flux Upgrades");
+      }
+    }
+
   }
 
   @EventHandler

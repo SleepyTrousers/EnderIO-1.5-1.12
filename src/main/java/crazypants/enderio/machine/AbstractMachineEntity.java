@@ -491,7 +491,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
       int tSlot = targetSlots[i];
       ItemStack targetStack = target.getStackInSlot(tSlot);
       if(targetStack != null && target.canExtractItem(i, targetStack, side.getOpposite().ordinal())) {
-        int res = ItemUtil.doInsertItem(this, targetStack, side.getOpposite());
+        int res = ItemUtil.doInsertItem(this, targetStack, side);
         if(res > 0) {
           targetStack = targetStack.copy();
           targetStack.stackSize -= res;

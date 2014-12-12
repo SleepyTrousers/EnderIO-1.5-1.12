@@ -6,11 +6,14 @@ import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.Loader;
 
 public class CartLinkUtil implements ICartLinkUtil {
 
   public static final ICartLinkUtil instance;
+
+  public static final ICartLinkUtil defaultInstance = new CartLinkUtil();
 
   static {
     ICartLinkUtil daInstance;
@@ -18,15 +21,22 @@ public class CartLinkUtil implements ICartLinkUtil {
       try {
         daInstance = new RailcraftLinkUtil();
       } catch (Exception e) {
-        daInstance = new CartLinkUtil();
+        daInstance = defaultInstance;
       }
     } else {
-      daInstance = new CartLinkUtil();
+      daInstance = defaultInstance;
     }
     instance = daInstance;
   }
 
   private CartLinkUtil() {
+  }
+
+  @Override
+  public void setCartDirection(EntityMinecart cart, ForgeDirection dir) {
+    double velocity = Math.max(Math.abs(cart.motionX), Math.abs(cart.motionZ));
+    cart.motionX = dir.offsetX * velocity;
+    cart.motionZ = dir.offsetZ * velocity;
   }
 
   @Override

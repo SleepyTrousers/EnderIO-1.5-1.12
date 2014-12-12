@@ -13,7 +13,10 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.gui.ToggleButtonEIO;
+import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -25,9 +28,18 @@ public class GeneralTab implements ITabPanel {
   GuiTransceiver parent;
   GuiToolTip sendPowerBarTT;
   
+  ToggleButtonEIO bufferSizeB;
+
   public GeneralTab(GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;    
     container = parent.container;
+
+    int x = parent.getXSize() - 5 - 16;
+    int y = 43;
+    bufferSizeB = new ToggleButtonEIO(parent, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
+    bufferSizeB.setSelectedToolTip("Buffering item stacks");
+    bufferSizeB.setUnselectedToolTip("Buffering single items");
+    bufferSizeB.setSelected(parent.transceiver.isBufferStacks());
     
     sendPowerBarTT = new GuiToolTip(new Rectangle(parent.getPowerX() + SEND_BAR_OFFSET, parent.getPowerY(), parent.getPowerWidth(), parent.getPowerHeight()), "") {
       @Override
@@ -45,12 +57,14 @@ public class GeneralTab implements ITabPanel {
   public void onGuiInit(int x, int y, int width, int height) {
     container.setPlayerInventoryVisible(true);
     container.setBufferSlotsVisible(true);
+    bufferSizeB.onGuiInit();
   }
 
   @Override
   public void deactivate() {   
     container.setPlayerInventoryVisible(false);
     container.setBufferSlotsVisible(false);
+    bufferSizeB.detach();
   }
 
   @Override
@@ -128,7 +142,11 @@ public class GeneralTab implements ITabPanel {
   
   
   @Override
-  public void actionPerformed(GuiButton guiButton) {    
+  public void actionPerformed(GuiButton guiButton) {
+    if(guiButton == bufferSizeB) {
+      parent.entity.setBufferStacks(bufferSizeB.isSelected());
+      PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(parent.entity));
+    }
   }
 
   @Override

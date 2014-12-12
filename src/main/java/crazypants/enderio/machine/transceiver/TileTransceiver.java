@@ -21,6 +21,7 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.ContinuousTask;
+import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
@@ -31,7 +32,7 @@ import crazypants.enderio.rail.EnderRailController;
 import crazypants.util.FluidUtil;
 import crazypants.util.ItemUtil;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer {
 
   //Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
@@ -55,6 +56,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   private ItemFilter sendItemFilter;
   private ItemFilter recieveItemFilter;
+
+  private boolean bufferStacks = true;
 
   public TileTransceiver() {
     super(new SlotDefinition(8, 8, 0));
@@ -247,6 +250,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       NBTTagCompound itemRoot = nbtRoot.getCompoundTag("recieveItemFilter");
       recieveItemFilter = (ItemFilter) FilterRegister.loadFilterFromNbt(itemRoot);
     }
+
+    if(nbtRoot.hasKey("bufferStacks")) {
+      bufferStacks = nbtRoot.getBoolean("bufferStacks");
+    } else {
+      bufferStacks = true;
+    }
   }
 
   static void readChannels(NBTTagCompound nbtRoot, EnumMap<ChannelType, List<Channel>> readInto, String key) {
@@ -289,6 +298,8 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
       FilterRegister.writeFilterToNbt(recieveItemFilter, itemRoot);
       nbtRoot.setTag("recieveItemFilter", itemRoot);
     }
+
+    nbtRoot.setBoolean("bufferStacks", bufferStacks);
   }
 
   static NBTTagList createTagList(EnumMap<ChannelType, List<Channel>> chans) {
@@ -506,6 +517,20 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
   //---------------- item handling
 
+  @Override
+  public int getInventoryStackLimit() {
+    return bufferStacks ? 64 : 1;
+  }
+
+  @Override
+  public boolean isBufferStacks() {
+    return bufferStacks;
+  }
+
+  @Override
+  public void setBufferStacks(boolean bufferStacks) {
+    this.bufferStacks = bufferStacks;
+  }
 
   private void processItems() {
     List<Channel> sendItemChannels = getSendChannels(ChannelType.ITEM);

@@ -130,10 +130,7 @@ public class EnderRailController {
   private void setCartDirection(EntityMinecart cart) {
     int meta = transciever.getWorldObj().getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
     ForgeDirection dir = BlockEnderRail.getDirection(meta);
-    double velocity = Math.max(Math.abs(cart.motionX), Math.abs(cart.motionZ));
-    cart.motionX = dir.offsetX * velocity;
-    cart.motionZ = dir.offsetZ * velocity;
-    
+    CartLinkUtil.instance.setCartDirection(cart, dir);
   }
 
   public void onTrainRecieved(List<List<Entity>> toTeleport) {

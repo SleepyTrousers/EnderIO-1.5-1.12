@@ -119,6 +119,11 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
   }
 
   @Override
+  public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+    return false;
+  }
+
+  @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y - 1, z);

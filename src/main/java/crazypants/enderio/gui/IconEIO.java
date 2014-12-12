@@ -115,6 +115,9 @@ public final class IconEIO {
 
   public static final IconEIO FILTER = new IconEIO(203, 31);
 
+  public static final IconEIO ITEM_SINGLE = new IconEIO(220, 32);
+  public static final IconEIO ITEM_STACK = new IconEIO(220, 48);
+
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 

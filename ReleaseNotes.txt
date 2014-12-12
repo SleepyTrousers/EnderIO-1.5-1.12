@@ -11,30 +11,48 @@ New
 - Added preferences for Ore Dictionary outputs for the SAG Mill and Alloy Furnace. 
     - Defaults to Thermal Foundation when available, see OreDictionaryPreferences_Core.xml
 - Added config option to add Ore Dictionary entries and registered names to tooltips (default is off)
+- Added support for increased Enderman Skull drops when using a TiC Cleaver or weapon with the beheading modifier
+    - Values adjustable in config. Default sets Cleaver = The Ender, Beheading = looting on The Ender 
+- Capacitor Banks can now be used to add the Flux upgrade to TiC tools    
 
 Changes
+- #1378 Soul Vial filled in a Powered Spawner now produce identical item stacks to enable their use in auto crafting systems
 - Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
 - SAG Mill no longer produces dusts for metals that are not available
 - Corrected Experience Obelisk tooltip
 - Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
 - Painted items are now rendered with a border to make it easier to tell them from the paint source blocks
 - Painted glow stone hardness increased to stop instant breaking
-- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore
+- Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore (can be disabled in the config)
+- Halved the skull drop chance when mobs killed by a 'fake player', such as killer joe (can be changed in the config)
+- Added Soul Bound enchantment ID to the config
+- Dark Steel Pick will now apply the obsidian efficiency boost on all hard blocks (can be changed in the config)
+- Crafter can now be configured to buffer either single items or item stacks
+- Dimensional Transceiver can now be configured to buffer either single items or item stacks
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings
+- #1285 Ender Rail can no longer be rotated as the forge rotation code was messing with my bits
+- #1285 Ender Rail not adjusting the direction of RC locomotives when required 
 - #1297 EnderLiquidConduit writing excessive warning messages
 - #1333 Sound locator sometimes creates thousands of entities per frame
 - Sound locator entities not being rendered in some cases
+- #1335 Dimensional Transceivers not saving channels after server restart
 - #1336 Soul Binder - Ghost Block 
 - #1339 SAG Mill grinding balls reducing return rate for bonus outputs
 - #1347 Capacitor Bank energy duplication bug 
 - #1348 Item conduits not connecting to tesseracts in receive only mode
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
+- #1354 ME conduit always connected regardless of visual state
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
+- #1371 Farming Stations don't harvest third/top block of sugar cane or cactus
+- #1373 Fluid Tank accepts fluid regardless of configuration
+- #1383 Travel Anchor crash  
+- #1384 Disabling one side of machines disables the opposite side as well.  
 - RF Tools not charging in Killer Joe until he has attacked something
+- Farm and Dark Steel Axe where having non target trees with adjacent log blocks
  
 
 ------------------------------------------------------

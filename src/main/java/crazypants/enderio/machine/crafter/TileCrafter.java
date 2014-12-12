@@ -13,12 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 
-public class TileCrafter extends AbstractMachineEntity {
+public class TileCrafter extends AbstractMachineEntity implements IItemBuffer {
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 
@@ -26,6 +27,10 @@ public class TileCrafter extends AbstractMachineEntity {
 
   private ICapacitor capacitor;
   
+  private boolean bufferStacks = true;
+
+  private long ticksSinceLastCraft = 0;
+
   public TileCrafter() {
     super(new SlotDefinition(9, 1));
     containerItems = new ArrayList<ItemStack>();    
@@ -71,13 +76,15 @@ public class TileCrafter extends AbstractMachineEntity {
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
+    ticksSinceLastCraft++;
     if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
       return false;
     }
     int ticksPerCraft = getTicksPerCraft(capacitorType);
-    if(worldObj.getTotalWorldTime() % ticksPerCraft != 0) {
+    if(ticksSinceLastCraft <= ticksPerCraft) {
       return false;
-    } 
+    }
+    ticksSinceLastCraft = 0;
 
     // process buffered container items
     if(!containerItems.isEmpty()) {
@@ -109,6 +116,7 @@ public class TileCrafter extends AbstractMachineEntity {
     return getEnergyStored() >= Config.crafterRfPerCraft;
   }
 
+  @Override
   public int getPowerUsePerTick() {
     return getPowerUsePerTick(capacitorType);
   }
@@ -202,10 +210,31 @@ public class TileCrafter extends AbstractMachineEntity {
   }
 
   @Override
+  public int getInventoryStackLimit() {
+    return bufferStacks ? 64 : 1;
+  }
+
+  @Override
+  public boolean isBufferStacks() {
+    return bufferStacks;
+  }
+
+  @Override
+  public void setBufferStacks(boolean bufferStacks) {
+    this.bufferStacks = bufferStacks;
+  }
+
+  @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
     NBTTagCompound craftRoot = nbtRoot.getCompoundTag("craftingGrid");
     craftingGrid.readFromNBT(craftRoot);
+
+    if(nbtRoot.hasKey("bufferStacks")) {
+      bufferStacks = nbtRoot.getBoolean("bufferStacks");
+    } else {
+      bufferStacks = true;
+    }
   }
 
   @Override
@@ -214,6 +243,8 @@ public class TileCrafter extends AbstractMachineEntity {
     NBTTagCompound craftingRoot = new NBTTagCompound();
     craftingGrid.writeToNBT(craftingRoot);
     nbtRoot.setTag("craftingGrid", craftingRoot);
+
+    nbtRoot.setBoolean("bufferStacks", bufferStacks);
   }
 
   public void updateCraftingOutput() {

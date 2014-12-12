@@ -108,7 +108,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   @Override
   public boolean onBlockDestroyed(ItemStack item, World world, Block block, int x, int y, int z, EntityLivingBase entLiving) {
     if(block.getBlockHardness(world, x, y, z) != 0.0D) {
-      if(block == Blocks.obsidian) {
+      if(useObsidianEffeciency(item, block)) {
         extractEnergy(item, Config.darkSteelPickPowerUseObsidian, false);
       }
       applyDamage(entLiving, item, 1);
@@ -152,7 +152,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     } else {
       BoundingBox bb = new BoundingBox(placeCoord);
       aabb = bb.getAxisAlignedBB();
-    }      
+    }
     if(aabb != null && aabb.intersectsWith(player.boundingBox)) {
       return false;
     }
@@ -179,21 +179,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   @Override
-  public float func_150893_a(ItemStack item, Block block) {
-    int energy = getEnergyStored(item);
-    
-    if(block == Blocks.obsidian && energy > 0) {
-      return super.func_150893_a(item, block) + Config.darkSteelPickEffeciencyObsidian;
-    }
-    
-    if (block.getMaterial() == Material.glass) {
-      return efficiencyOnProperMaterial;
-    }
-    
-    return super.func_150893_a(item, block);
-  }
-  
-  @Override
   public boolean canHarvestBlock(Block block, ItemStack item) {
     if(hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
       return block == Blocks.snow_layer ? true : block == Blocks.snow || super.canHarvestBlock(block, item);
@@ -205,9 +190,13 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   private boolean hasSpoonUpgrade(ItemStack item) {
     return SpoonUpgrade.loadFromItem(item) != null;
   }
-  
+
   @Override
   public float getDigSpeed(ItemStack stack, Block block, int meta) {
+    if(useObsidianEffeciency(stack, block)) {
+      return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered
+          + Config.darkSteelPickEffeciencyObsidian;
+    }
     if(ForgeHooks.isToolEffective(stack, block, meta)) {
       if(Config.darkSteelPickPowerUsePerDamagePoint <= 0 || getEnergyStored(stack) > 0) {
         return ItemDarkSteelSword.MATERIAL.getEfficiencyOnProperMaterial() + Config.darkSteelPickEffeciencyBoostWhenPowered;
@@ -216,12 +205,35 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
     return super.getDigSpeed(stack, block, meta);
   }
-  
-  
+
+  @Override
+  public float func_150893_a(ItemStack item, Block block) {
+    if(block.getMaterial() == Material.glass) {
+      return efficiencyOnProperMaterial;
+    }
+    return super.func_150893_a(item, block);
+  }
+
+  private boolean useObsidianEffeciency(ItemStack item, Block block) {
+    boolean useObsidianSpeed = false;
+    int energy = getEnergyStored(item);
+    if(energy > 0) {
+      useObsidianSpeed = block == Blocks.obsidian;
+      if(!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
+        try {
+          useObsidianSpeed = (block != null && block.getBlockHardness(null, -1, -1, -1) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
+        } catch (Exception e) {
+          //given we are passing in a null world to getBlockHardness it is possible this could cause an NPE, so just ignore it
+        }
+      }
+    }
+    return useObsidianSpeed;
+  }
+
   @Override
   public Set<String> getToolClasses(ItemStack stack) {
     Set<String> set = Sets.newHashSet("pickaxe");
-    if (hasSpoonUpgrade(stack)) {
+    if(hasSpoonUpgrade(stack)) {
       set.add("shovel");
     }
     return set;

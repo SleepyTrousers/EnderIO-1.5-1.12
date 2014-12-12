@@ -193,7 +193,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
       updateReceptors();
     }
     if(revalidateDisplayTypes) {
-      checkDisplayTypesValid();
+      validateDisplayTypes();
       revalidateDisplayTypes = false;
     }
     if(displayTypesDirty) {
@@ -343,7 +343,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceptor
     displayTypesDirty = markDirty;
   }
 
-  private void checkDisplayTypesValid() {
+  public void validateDisplayTypes() {
     if(faceDisplayTypes == null) {
       return;
     }

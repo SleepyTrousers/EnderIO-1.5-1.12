@@ -546,6 +546,10 @@ public class TravelController {
 
   public double getScaleForCandidate(Vector3d loc) {
 
+    if(!currentView.isValid()) {
+      return 1;
+    }
+
     BlockCoord bc = new BlockCoord((int) loc.x, (int) loc.y, (int) loc.z);
     float ratio = -1;
     Float r = candidates.get(bc);

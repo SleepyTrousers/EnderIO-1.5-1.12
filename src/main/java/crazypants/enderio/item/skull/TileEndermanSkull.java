@@ -2,7 +2,6 @@ package crazypants.enderio.item.skull;
 
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.enderface.TileEnderIO;
 
 public class TileEndermanSkull extends TileEntityEio {
 
@@ -20,6 +19,11 @@ public class TileEndermanSkull extends TileEntityEio {
 
   public void setYaw(float yaw) {
     this.yaw = yaw;    
+  }
+
+  @Override
+  public boolean canUpdate() {
+    return false;
   }
 
 }

@@ -266,6 +266,8 @@ tile.blockCapBank.activated.name=Capacitor Bank
 tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
 tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
+tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
+tile.blockCapBank.tooltip.detailed.line4=to change information display 
 tile.blockCapBank.tooltipPrefix=Contains
 
 
