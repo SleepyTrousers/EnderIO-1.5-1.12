@@ -9,6 +9,7 @@ buildscript {
 
 apply plugin: 'forge'
 apply plugin: 'maven-publish'
+apply plugin: 'curseforge'
 
 ext.buildnumber = 0
 if (System.getenv('BUILD_NUMBER') != null)
@@ -120,4 +121,42 @@ publishing {
             maven { url mavendir }
         }
     }
+}
+
+String getChangelog() {
+    def changelogFile = new File('ReleaseNotes.txt')
+    String str = ''
+    String separator = '---'
+    int lineCount = 0
+    boolean done = false
+    changelogFile.eachLine {
+        if (done || it == null) {
+            return
+        }
+        if (lineCount < 3) {
+            lineCount++
+            if (it.startsWith(separator)) {return}
+        }
+        if (!it.startsWith(separator)) {
+            str += "$it\n"
+            return
+        }
+        done = true // once we go past the first version block, parse no more
+    }
+    return str
+}
+
+println getChangelog() 
+
+curse {
+    dependsOn 'reobf'
+    
+    onlyIf {
+        return project.hasProperty('cp_curseforge_key') && System.getenv("CURSE") != null && System.getenv("CURSE").equalsIgnoreCase("true")
+    }
+
+    if (project.hasProperty('cp_curseforge_key')) apiKey = project.curseforge_key
+    projectId = project.curse_projectId
+    changelog = getChangelog()
+    releaseType = 'beta'
 }
