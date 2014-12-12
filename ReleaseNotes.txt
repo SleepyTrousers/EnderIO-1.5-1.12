@@ -43,6 +43,7 @@ Bugs
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
+- #1371 Farming Stations don't harvest third/top block of sugar cane or cactus
 - #1373 Fluid Tank accepts fluid regardless of configuration
 - #1383 Travel Anchor crash  
 - #1384 Disabling one side of machines disables the opposite side as well. 

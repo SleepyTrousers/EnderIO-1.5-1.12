@@ -1,6 +1,9 @@
 package crazypants.enderio.machine.farm.farmers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -12,6 +15,7 @@ import crazypants.util.BlockCoord;
 
 public class StemFarmer extends CustomSeedFarmer {
 
+  private static final HeightCompatator COMP = new HeightCompatator();
 
   public StemFarmer(Block plantedBlock, ItemStack seeds) {
     super(plantedBlock, seeds);
@@ -39,7 +43,7 @@ public class StemFarmer extends CustomSeedFarmer {
 
   @Override
   public IHarvestResult harvestBlock(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-        
+
     
     HarvestResult res = new HarvestResult();
     BlockCoord harvestCoord = bc;
@@ -57,11 +61,16 @@ public class StemFarmer extends CustomSeedFarmer {
         }
         farm.damageHoe(1, harvestCoord);
         farm.actionPerformed(false);
-        farm.getWorldObj().setBlockToAir(harvestCoord.x, harvestCoord.y, harvestCoord.z);
       } else {
         done = true;
       }
     } while(!done);
+
+    List<BlockCoord> toClear = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
+    Collections.sort(toClear, COMP);
+    for (BlockCoord coord : toClear) {
+      farm.getWorldObj().setBlockToAir(coord.x, coord.y, coord.z);
+    }
 
     return res;
   }
@@ -73,6 +82,19 @@ public class StemFarmer extends CustomSeedFarmer {
       return plant(farm, worldObj, bc);
     }
     return false;
+  }
+
+  private static class HeightCompatator implements Comparator<BlockCoord> {
+
+    @Override
+    public int compare(BlockCoord o1, BlockCoord o2) {
+      return -compare(o1.y, o2.y);
+    }
+
+    public static int compare(int x, int y) {
+      return (x < y) ? -1 : ((x == y) ? 0 : 1);
+    }
+
   }
 
 }
