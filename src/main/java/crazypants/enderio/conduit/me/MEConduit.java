@@ -333,6 +333,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public EnumSet<ForgeDirection> getConnections() {
     Set<ForgeDirection> cons = getConduitConnections();
     cons.addAll(getExternalConnections());
+    if(cons.isEmpty()) {
+      return EnumSet.noneOf(ForgeDirection.class);
+    }
     return EnumSet.copyOf(cons);
     //return validConnections;
   }
