@@ -40,13 +40,14 @@ Bugs
 - #1347 Capacitor Bank energy duplication bug 
 - #1348 Item conduits not connecting to tesseracts in receive only mode
 - #1351 Travel Anchor: Item needs to be added before text is displayed 
+- #1354 ME conduit always connected regardless of visual state
 - #1357 Power Conduits replaced by growing tree's 
 - #1361 Enlightened Fused Quartz is not blast resistant 
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
 - #1371 Farming Stations don't harvest third/top block of sugar cane or cactus
 - #1373 Fluid Tank accepts fluid regardless of configuration
 - #1383 Travel Anchor crash  
-- #1384 Disabling one side of machines disables the opposite side as well. 
+- #1384 Disabling one side of machines disables the opposite side as well.  
 - RF Tools not charging in Killer Joe until he has attacked something
  
 

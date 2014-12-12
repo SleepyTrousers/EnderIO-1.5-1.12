@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.me;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -125,7 +126,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
         validConnections.add(ForgeDirection.valueOf(connections.getStringTagAt(i)));
       }
     }
-    this.isDense = nbtRoot.getBoolean("isDense");
+    isDense = nbtRoot.getBoolean("isDense");
   }
 
   @Override
@@ -251,12 +252,17 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
             }
             // Attempt to join networks
-            return ConduitUtil.joinConduits(this, faceHit);
+            boolean retVal = ConduitUtil.joinConduits(this, faceHit);
+            if(retVal) {
+              onNodeChanged();
+            }
+            return retVal;
           } else if(externalConnections.contains(connDir)) {
             setConnectionMode(connDir, getNextConnectionMode(connDir));
             return true;
           } else if(containsConduitConnection(connDir)) {
             ConduitUtil.disconectConduits(this, connDir);
+            onNodeChanged();
             return true;
           }
         }
@@ -325,7 +331,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public EnumSet<ForgeDirection> getConnections() {
-    return validConnections;
+    Set<ForgeDirection> cons = getConduitConnections();
+    cons.addAll(getExternalConnections());
+    return EnumSet.copyOf(cons);
+    //return validConnections;
   }
   
   @Override
