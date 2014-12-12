@@ -221,10 +221,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       useObsidianSpeed = block == Blocks.obsidian;
       if(!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
         try {
-          float hardness = block.getBlockHardness(null, -1, -1, -1);
           useObsidianSpeed = (block != null && block.getBlockHardness(null, -1, -1, -1) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
         } catch (Exception e) {
-          System.out.println("ItemDarkSteelPickaxe.func_150893_a: boom");
           //given we are passing in a null world to getBlockHardness it is possible this could cause an NPE, so just ignore it
         }
       }
