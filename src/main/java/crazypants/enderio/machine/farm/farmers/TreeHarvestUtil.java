@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockNewLeaf;
@@ -23,21 +19,12 @@ public class TreeHarvestUtil {
   
   private int horizontalRange;
   private int verticalRange;
-  protected Block[] woods;
   private BlockCoord origin;
   
-//  private List<Block> extraLeaves = new ArrayList<Block>();
-  
   public TreeHarvestUtil() {
-    //Dont get saplings if we do this
-//    Block blk = GameRegistry.findBlock("Thaumcraft", "blockMagicalLeaves");
-//    if(blk != null) {
-//      extraLeaves.add(blk);
-//    }
   }
 
   public void harvest(TileFarmStation farm, TreeFarmer farmer, BlockCoord bc, HarvestResult res) {
-    woods = farmer.woods;
     horizontalRange = farm.getFarmSize() + 7;
     verticalRange = 30;
     harvest(farm.getWorldObj(), farm.getLocation(), bc, res);
@@ -47,40 +34,43 @@ public class TreeHarvestUtil {
     horizontalRange = 12;
     verticalRange = 30;
     origin = new BlockCoord(bc);
-    woods = new Block[] {world.getBlock(bc.x, bc.y, bc.z)};
-    harvestUp(world, bc, res);
+    Block wood = world.getBlock(bc.x, bc.y, bc.z);
+    int woodMeta = world.getBlockMetadata(bc.x, bc.y, bc.z);
+    harvestUp(world, bc, res, new HarvestTarget(wood, woodMeta));
   }
   
-  private void harvest(World farm, BlockCoord origin, BlockCoord bc, HarvestResult res) {
+  private void harvest(World world, BlockCoord origin, BlockCoord bc, HarvestResult res) {
     this.origin = new BlockCoord(origin);
-    harvestUp(farm, bc, res);
+    Block wood = world.getBlock(bc.x, bc.y, bc.z);
+    int woodMeta = world.getBlockMetadata(bc.x, bc.y, bc.z);
+    harvestUp(world, bc, res, new HarvestTarget(wood, woodMeta));
   }
   
-  protected void harvestUp(World world, BlockCoord bc, HarvestResult res) {
+  protected void harvestUp(World world, BlockCoord bc, HarvestResult res, HarvestTarget target) {
 
     if(!isInHarvestBounds(bc) || res.harvestedBlocks.contains(bc)) {
       return;
     }
 
     Block blk = world.getBlock(bc.x, bc.y,bc.z);
-    boolean isLeaves = blk instanceof BlockLeaves;//|| extraLeaves.contains(blk);        
-    if(isWood(blk) || isLeaves) {
+    boolean isLeaves = blk instanceof BlockLeaves;
+    if(target.isTarget(blk, world.getBlockMetadata(bc.x, bc.y, bc.z)) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir != ForgeDirection.DOWN) {
-          harvestUp(world, bc.getLocation(dir), res);
+          harvestUp(world, bc.getLocation(dir), res, target);
         }
       }
     } else {
       // check the sides for connected wood
-      harvestAdjacentWood(world, bc, res);
+      harvestAdjacentWood(world, bc, res, target);
       //and another check for large oaks, where wood can be surrounded by leaves
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         if(dir.offsetY == 0) {
           BlockCoord loc = bc.getLocation(dir);
           Block targetBlock = world.getBlock(loc.x,loc.y,loc.z);
           if(targetBlock instanceof BlockLeaves) {
-            harvestAdjacentWood(world, bc, res);
+            harvestAdjacentWood(world, bc, res, target);
           }
         }
       }
@@ -88,13 +78,13 @@ public class TreeHarvestUtil {
 
   }
 
-  private void harvestAdjacentWood(World world, BlockCoord bc, HarvestResult res) {
+  private void harvestAdjacentWood(World world, BlockCoord bc, HarvestResult res, HarvestTarget target) {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if(dir.offsetY == 0) {
         BlockCoord loc = bc.getLocation(dir);
         Block targetBlock = world.getBlock(loc.x, loc.y, loc.z);
-        if(isWood(targetBlock)) {
-          harvestUp(world, bc.getLocation(dir), res);
+        if(target.isTarget(targetBlock, world.getBlockMetadata(loc.x, loc.y, loc.z))) {
+          harvestUp(world, bc.getLocation(dir), res, target);
         }
       }
     }
@@ -117,13 +107,20 @@ public class TreeHarvestUtil {
     return true;
   }
   
-  protected boolean isWood(Block block) {
-    for(Block wood : woods) {
-      if(block == wood) {
-        return true;
-      }
+  private static final class HarvestTarget {
+
+    private final Block wood;
+    private final int woodMeta;
+
+    HarvestTarget(Block wood, int woodMeta) {
+      this.wood = wood;
+      this.woodMeta = woodMeta;
     }
-    return false;
+
+    boolean isTarget(Block blk, int meta) {
+      return blk == wood && ((meta & 3) == (woodMeta & 3));
+    }
+
   }
-  
+
 }

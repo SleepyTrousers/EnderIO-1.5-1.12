@@ -50,6 +50,7 @@ Bugs
 - #1383 Travel Anchor crash  
 - #1384 Disabling one side of machines disables the opposite side as well.  
 - RF Tools not charging in Killer Joe until he has attacked something
+- Farm and Dark Steel Axe where having non target trees with adjacent log blocks
  
 
 ------------------------------------------------------
