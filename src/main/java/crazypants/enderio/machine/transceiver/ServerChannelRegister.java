@@ -109,8 +109,6 @@ public class ServerChannelRegister extends ChannelRegister {
     Log.info("ServerChannelRegister: Dimensional Trasciever data saved to " + dataFile.getAbsolutePath());
   }
 
-
-
   private static boolean createFolderAndWriteFile(EnumMap<ChannelType, List<Channel>> data, File dataFile) {
     try {
       File parentFolder = dataFile.getParentFile();
@@ -318,23 +316,25 @@ public class ServerChannelRegister extends ChannelRegister {
       ItemStack existing = to.getStackInSlot(i);
       if(ItemUtil.areStacksEqual(existing, contents)) {
         sendComplete = true;
-        int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
-        numCanMerge = Math.min(numCanMerge, contents.stackSize);
-        ItemStack remaining;
-        if(numCanMerge >= contents.stackSize) {
-          remaining = null;
-        } else {
-          remaining = contents.copy();
-          remaining.stackSize -= numCanMerge;
-        }
-        ItemStack destStack = existing.copy();
-        destStack.stackSize += numCanMerge;
-        to.setInventorySlotContents(i, destStack);
-        from.setInventorySlotContents(slot, remaining);
-        if(remaining == null) {
-          return null;
-        } else {
-          contents = remaining.copy();
+        if(existing.stackSize < to.getInventoryStackLimit()) {
+          int numCanMerge = existing.getMaxStackSize() - existing.stackSize;
+          numCanMerge = Math.min(numCanMerge, contents.stackSize);
+          ItemStack remaining;
+          if(numCanMerge >= contents.stackSize) {
+            remaining = null;
+          } else {
+            remaining = contents.copy();
+            remaining.stackSize -= numCanMerge;
+          }
+          ItemStack destStack = existing.copy();
+          destStack.stackSize += numCanMerge;
+          to.setInventorySlotContents(i, destStack);
+          from.setInventorySlotContents(slot, remaining);
+          if(remaining == null) {
+            return null;
+          } else {
+            contents = remaining.copy();
+          }
         }
       }
     }
@@ -343,9 +343,19 @@ public class ServerChannelRegister extends ChannelRegister {
       for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot; i++) {
         ItemStack existing = to.getStackInSlot(i);
         if(existing == null) {
-          to.setInventorySlotContents(i, contents.copy());
-          from.setInventorySlotContents(slot, null);
-          return null;
+          int numCanMerge = Math.min(contents.stackSize, to.getInventoryStackLimit());
+          if(numCanMerge > 0) {
+            ItemStack destStack = contents.copy();
+            destStack.stackSize = numCanMerge;
+            to.setInventorySlotContents(i, destStack);
+            ItemStack remaining = contents.copy();
+            remaining.stackSize -= numCanMerge;
+            if(remaining.stackSize == 0) {
+              remaining = null;
+            }
+            from.setInventorySlotContents(slot, remaining);
+            return null;
+          }
         }
       }
     }

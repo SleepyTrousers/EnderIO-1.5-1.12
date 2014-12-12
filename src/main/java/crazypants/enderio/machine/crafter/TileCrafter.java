@@ -13,12 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 
-public class TileCrafter extends AbstractMachineEntity {
+public class TileCrafter extends AbstractMachineEntity implements IItemBuffer {
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 
@@ -213,10 +214,12 @@ public class TileCrafter extends AbstractMachineEntity {
     return bufferStacks ? 64 : 1;
   }
 
+  @Override
   public boolean isBufferStacks() {
     return bufferStacks;
   }
 
+  @Override
   public void setBufferStacks(boolean bufferStacks) {
     this.bufferStacks = bufferStacks;
   }
