@@ -26,6 +26,7 @@ Changes
 - Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore (can be disabled in the config)
 - Halved the skull drop chance when mobs killed by a 'fake player', such as killer joe (can be changed in the config)
 - Added Soul Bound enchantment ID to the config
+- Dark Steel Pick will now apply the obsidian efficiency boost on all hard blocks (can be changed in the config)
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings

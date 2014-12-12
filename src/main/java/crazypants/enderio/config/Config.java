@@ -185,8 +185,9 @@ public final class Config {
   public static double darkSteelSwordEnderPearlDropChance = 1;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.5;
 
-  public static int darkSteelPickPowerUseObsidian = 10000;
   public static int darkSteelPickEffeciencyObsidian = 50;
+  public static int darkSteelPickPowerUseObsidian = 10000;
+  public static float darkSteelPickApplyObsidianEffeciencyAtHardess = 40;
   public static int darkSteelPickPowerUsePerDamagePoint = 750;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
   public static boolean darkSteelPickMinesTiCArdite = true;
@@ -834,6 +835,10 @@ public final class Config {
         "The amount of power (RF) used to break an obsidian block.").getInt(darkSteelPickPowerUseObsidian);
     darkSteelPickEffeciencyObsidian = config.get(sectionDarkSteel.name, "darkSteelPickEffeciencyObsidian", darkSteelPickEffeciencyObsidian,
         "The effeciency when breaking obsidian with a powered  Dark Pickaxe.").getInt(darkSteelPickEffeciencyObsidian);
+    darkSteelPickApplyObsidianEffeciencyAtHardess = (float) config.get(sectionDarkSteel.name, "darkSteelPickApplyObsidianEffeciencyAtHardess",
+        darkSteelPickApplyObsidianEffeciencyAtHardess,
+        "If set to a value > 0, the obsidian speed and power use will be used for all blocks with hardness >= to this value.").getDouble(
+        darkSteelPickApplyObsidianEffeciencyAtHardess);
     darkSteelPickPowerUsePerDamagePoint = config.get(sectionDarkSteel.name, "darkSteelPickPowerUsePerDamagePoint", darkSteelPickPowerUsePerDamagePoint,
         "Power use (RF) per damage/durability point avoided.").getInt(darkSteelPickPowerUsePerDamagePoint);
     darkSteelPickEffeciencyBoostWhenPowered = (float) config.get(sectionDarkSteel.name, "darkSteelPickEffeciencyBoostWhenPowered",
