@@ -25,6 +25,7 @@ Changes
 - Painted glow stone hardness increased to stop instant breaking
 - Increased mining level of Dark Steel Pick so it can mine TiC Cobalt and Ardite ore (can be disabled in the config)
 - Halved the skull drop chance when mobs killed by a 'fake player', such as killer joe (can be changed in the config)
+- Added Soul Bound enchantment ID to the config
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings

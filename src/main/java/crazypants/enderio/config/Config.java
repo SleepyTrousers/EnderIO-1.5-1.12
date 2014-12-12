@@ -399,8 +399,10 @@ public final class Config {
   public static boolean clearGlassSameTexture = false;
   public static boolean clearGlassConnectToFusedQuartz = false;
 
+  public static int enchantmentSoulBoundId = -1;
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
+
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -1086,6 +1088,8 @@ public final class Config {
 
     enchantmentSoulBoundEnabled = config.getBoolean("enchantmentSoulBoundEnabled", sectionEnchantments.name, enchantmentSoulBoundEnabled,
         "If false the soul bound enchantment will not be available");
+    enchantmentSoulBoundId = config.get(sectionEnchantments.name, "enchantmentSoulBoundId", enchantmentSoulBoundId,
+        "The id of the enchantment. If set to -1 the lowest unassigned id will be used.").getInt(enchantmentSoulBoundId);
     enchantmentSoulBoundWeight = config.get("enchantmentSoulBoundWeight", sectionEnchantments.name, enchantmentSoulBoundWeight,
         "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
 
