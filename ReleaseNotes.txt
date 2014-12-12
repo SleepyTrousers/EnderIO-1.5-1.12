@@ -45,6 +45,7 @@ Bugs
 - #1366 Powered Spawner doesn't remain active when chunk loaded 
 - #1373 Fluid Tank accepts fluid regardless of configuration
 - #1383 Travel Anchor crash  
+- #1384 Disabling one side of machines disables the opposite side as well. 
 - RF Tools not charging in Killer Joe until he has attacked something
  
 
