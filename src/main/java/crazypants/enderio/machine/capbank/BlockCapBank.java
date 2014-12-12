@@ -355,12 +355,10 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
     super.onBlockPlacedBy(world, x, y, z, player, stack);
 
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(!(te instanceof TileCapBank)) {
+    TileCapBank cb = getTileEntity(world, x, y, z);
+    if(cb == null) {
       return;
     }
-
-    TileCapBank cb = (TileCapBank) te;
     if(stack.stackTagCompound != null) {
       cb.readCommonNBT(stack.stackTagCompound);
     }
@@ -370,12 +368,40 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
       int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
       ForgeDirection dir = getDirForHeading(heading);
       cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
+    } else {
+      boolean modifiedDisplayType = false;
+      modifiedDisplayType = setDisplayToVerticalFillBar(cb, getTileEntity(world, x, y - 1, z));
+      modifiedDisplayType |= setDisplayToVerticalFillBar(cb, getTileEntity(world, x, y + 1, z));
+      if(modifiedDisplayType) {
+        cb.validateDisplayTypes();
+      }
     }
 
     if(world.isRemote) {
       return;
     }
     world.markBlockForUpdate(x, y, z);
+  }
+
+  protected boolean setDisplayToVerticalFillBar(TileCapBank cb, TileCapBank capBank) {
+    boolean modifiedDisplayType = false;
+    if(capBank != null) {
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        if(dir.offsetY == 0 && capBank.getDisplayType(dir) == InfoDisplayType.LEVEL_BAR && capBank.getType() == cb.getType()) {
+          cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
+          modifiedDisplayType = true;
+        }
+      }
+    }
+    return modifiedDisplayType;
+  }
+
+  private TileCapBank getTileEntity(World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCapBank) {
+      return (TileCapBank) te;
+    }
+    return null;
   }
 
   protected ForgeDirection getDirForHeading(int heading) {
