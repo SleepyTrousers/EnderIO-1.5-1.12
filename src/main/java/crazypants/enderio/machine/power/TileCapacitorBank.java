@@ -28,7 +28,8 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
@@ -36,7 +37,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileCapacitorBank extends TileEntityEio implements IInternalPowerReceptor, IInventory, IIoConfigurable, IPowerStorage {
+public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHandler, IInventory, IIoConfigurable, IPowerStorage {
 
   static final BasicCapacitor BASE_CAP = new BasicCapacitor(Config.capacitorBankMaxIoRF, Config.capacitorBankMaxStorageRF);
 
@@ -438,7 +439,7 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerRe
             }
             Receptor r = new Receptor(ph, dir, mode);
             localReceptors.add(r);
-            if(mode == IoMode.NONE && !(ph.getDelegate() instanceof IInternalPowerReceptor)) {
+            if(mode == IoMode.NONE && !(ph.getDelegate() instanceof IInternalPoweredTile)) {
               setIoMode(dir, IoMode.PULL, false);
               r.mode = IoMode.PULL;
               render = true;

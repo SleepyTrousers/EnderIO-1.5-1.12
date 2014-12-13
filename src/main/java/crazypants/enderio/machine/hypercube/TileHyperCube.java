@@ -25,7 +25,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
@@ -33,7 +33,7 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileHyperCube extends TileEntityEio implements IInternalPowerReceptor, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
+public class TileHyperCube extends TileEntityEio implements IInternalPowerHandler, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
 
   private static final double ENERGY_LOSS = Config.transceiverEnergyLoss;
 

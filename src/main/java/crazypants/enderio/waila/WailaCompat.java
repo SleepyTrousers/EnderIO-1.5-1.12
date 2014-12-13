@@ -37,7 +37,7 @@ import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.Lang;
 
 public class WailaCompat implements IWailaDataProvider {
@@ -154,8 +154,8 @@ public class WailaCompat implements IWailaDataProvider {
       }
     }
 
-    if(te instanceof IInternalPowerReceptor && accessor.getNBTData().hasKey("storedEnergyRF") && !(te instanceof TileCapBank)) {
-      IInternalPowerReceptor power = (IInternalPowerReceptor) te;
+    if(te instanceof IInternalPoweredTile && accessor.getNBTData().hasKey("storedEnergyRF") && !(te instanceof TileCapBank)) {
+      IInternalPoweredTile power = (IInternalPoweredTile) te;
 
       if(power.displayPower()) {
 

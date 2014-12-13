@@ -17,13 +17,13 @@ import crazypants.enderio.machine.wireless.WirelessChargerController;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ForgeDirectionOffsets;
 import crazypants.vecmath.Vector3d;
 
-public class TileElectricLight extends TileEntityEio implements IInternalPowerReceptor {
+public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
 
   private ForgeDirection face = ForgeDirection.DOWN;
 
@@ -444,11 +444,6 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
       return 0;
     }
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
   }
 
   @Override

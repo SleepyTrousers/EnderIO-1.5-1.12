@@ -15,4 +15,9 @@ public class EnergyHandlerPI extends EnergyReceiverPI {
     return false;
   }
 
+  @Override
+  public boolean isOutputOnly() {
+    return false;
+  }
+
 }

@@ -9,8 +9,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.PowerHandlerUtil;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
+public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity implements IInternalPowerReceiver {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;
@@ -67,6 +69,26 @@ public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
   @Override
   public float getProgress() {
     return currentTask == null ? 0 : currentTask.getProgress();
+  }
+
+  //RF API Power
+
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    if(isSideDisabled(from.ordinal())) {
+      return 0;
+    }
+    return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
+  }
+
+  @Override
+  public int getEnergyStored(ForgeDirection from) {
+    return getEnergyStored();
+  }
+
+  @Override
+  public int getMaxEnergyStored(ForgeDirection from) {
+    return getMaxEnergyStored();
   }
 
   public IPoweredTask getCurrentTask() {

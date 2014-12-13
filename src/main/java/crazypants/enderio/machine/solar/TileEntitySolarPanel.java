@@ -15,12 +15,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerProvider;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
-public class TileEntitySolarPanel extends TileEntity implements IInternalPowerReceptor {
+public class TileEntitySolarPanel extends TileEntity implements IInternalPowerProvider {
   
   private BasicCapacitor capacitor;
 
@@ -51,11 +51,6 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerRe
   }
 
   // RF Power
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
-  }
 
   @Override
   public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {

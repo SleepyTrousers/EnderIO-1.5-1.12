@@ -16,10 +16,10 @@ import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.DyeColor;
 
-public class TilePowerMonitor extends AbstractMachineEntity implements IInternalPowerReceptor {
+public class TilePowerMonitor extends AbstractMachineEntity implements IInternalPoweredTile {
 
   int energyPerTick = 1;
 

@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import scala.xml.persistent.SetStorage;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,15 +12,15 @@ import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
-public class TileZombieGenerator extends AbstractMachineEntity implements IFluidHandler {
+public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler {
 
   private static int IO_MB_TICK = 250;
 
@@ -46,12 +45,6 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IFluid
     return ModObject.blockZombieGenerator.unlocalisedName;
   }
 
-  
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return 0;
-  }
 
   @Override
   public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
@@ -129,7 +122,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IFluid
     } else {
 
       boolean isActive = generateEnergy();
-      if(isActive != this.active) {
+      if(isActive != active) {
         active = isActive;
         res = true;
       }

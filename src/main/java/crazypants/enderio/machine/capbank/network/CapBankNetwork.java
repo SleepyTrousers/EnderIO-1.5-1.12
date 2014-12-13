@@ -348,13 +348,12 @@ public class CapBankNetwork implements ICapBankNetwork {
       spaceAvailable = Integer.MAX_VALUE;
     }
     int res = Math.min(maxReceive, (int) spaceAvailable);
-    res = Math.min(maxReceive, getMaxInput());
+    res = Math.min(res, getMaxInput());
     if(!simulate) {
       if(!type.isCreative()) {
         addEnergy(res);
       }
     }
-
     return res;
   }
 

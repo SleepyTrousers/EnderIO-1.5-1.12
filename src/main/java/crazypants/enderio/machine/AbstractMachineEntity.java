@@ -25,7 +25,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
@@ -33,7 +33,7 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.VecmathUtil;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPowerReceptor, IMachine, IRedstoneModeControlable,
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IInternalPoweredTile, IMachine, IRedstoneModeControlable,
     IIoConfigurable {
 
   public short facing;
@@ -292,31 +292,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   // RF API Power
 
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    if(isSideDisabled(from.ordinal())) {
-      return 0;
-    }
-    return PowerHandlerUtil.recieveInternal(this, maxReceive,from, simulate);
-  }
-
-  @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
-  }
-
-  @Override
   public boolean canConnectEnergy(ForgeDirection from) {
     return !isSideDisabled(from.ordinal());
-  }
-
-  @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return getEnergyStored();
-  }
-
-  @Override
-  public int getMaxEnergyStored(ForgeDirection from) {
-    return getMaxEnergyStored();
   }
 
   // --- Process Loop

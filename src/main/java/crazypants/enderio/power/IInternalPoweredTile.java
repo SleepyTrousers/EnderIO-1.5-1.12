@@ -1,19 +1,14 @@
 package crazypants.enderio.power;
 
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyConnection;
 
-public interface IInternalPowerReceptor extends IEnergyHandler, IPowerContainer {
+//IEnergyHandler, 
+public interface IInternalPoweredTile extends IPowerContainer, IEnergyConnection {
 
   int getMaxEnergyRecieved(ForgeDirection dir);
   
-  @Override
-  int getEnergyStored();
-  
   int getMaxEnergyStored();
-  
-  @Override
-  void setEnergyStored(int stored);
   
   /**
    * Should the power be displayed in WAILA or other places
