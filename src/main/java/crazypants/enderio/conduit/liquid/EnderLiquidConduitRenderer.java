@@ -25,10 +25,6 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
       float worldLight) {
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
-
-    if(!conduit.hasConnectionMode(ConnectionMode.INPUT) && !conduit.hasConnectionMode(ConnectionMode.OUTPUT)) {
-      return;
-    }
     EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       IIcon tex = null;
@@ -36,6 +32,8 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
         tex = pc.getTextureForInputMode();
       } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
         tex = pc.getTextureForOutputMode();
+      } else if(conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+        tex = pc.getTextureForInOutMode();
       }
       if(tex != null) {
         Offset offset = te.getOffset(ILiquidConduit.class, dir);

@@ -22,7 +22,8 @@ New
 
 Changes
 - #1378 Soul Vial filled in a Powered Spawner now produce identical item stacks to enable their use in auto crafting systems
-- Updated implementation of RF API to correctly handle IEnergyReceivers that are not IEnergyHandlers
+- Ender Fluid Conduit filters and auto extract can now be used when in/out mode
+- Updated implementation of RF API to send power to IEnergyReceivers that are not IEnergyHandlers
 - SAG Mill no longer produces dusts for metals that are not available
 - Corrected Experience Obelisk tooltip
 - Improved recipe support for Thermal Foundation/Expansion in the SAG Mill and Alloy Smelter
