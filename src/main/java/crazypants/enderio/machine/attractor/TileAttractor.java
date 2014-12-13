@@ -28,11 +28,15 @@ import net.minecraftforge.common.util.FakePlayer;
 
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
@@ -40,7 +44,7 @@ import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
-public class TileAttractor extends AbstractMachineEntity {
+public class TileAttractor extends AbstractMachineEntity implements IRanged {
 
   private AxisAlignedBB attractorBounds;
   private FakePlayer target;
@@ -52,6 +56,8 @@ public class TileAttractor extends AbstractMachineEntity {
   private int maxMobsAttracted = 20;
 
   private ICapacitor capacitor;
+
+  private boolean showingRange;
 
   public TileAttractor() {
     super(new SlotDefinition(12, 0));
@@ -69,8 +75,26 @@ public class TileAttractor extends AbstractMachineEntity {
     return capacitor;
   }
 
-  public int getRange() {
+  @Override
+  public float getRange() {
     return range;
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public boolean isShowingRange() {
+    return showingRange;
+  }
+
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if(showingRange == showRange) {
+      return;
+    }
+    showingRange = showRange;
+    if(showingRange) {
+      worldObj.spawnEntityInWorld(new RangeEntity(this));
+    }
   }
 
   private void setUpdrade(Capacitors capacitorType) {

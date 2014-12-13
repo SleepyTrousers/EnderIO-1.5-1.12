@@ -34,6 +34,7 @@ Changes
 - Dark Steel Pick will now apply the obsidian efficiency boost on all hard blocks (can be changed in the config)
 - Crafter can now be configured to buffer either single items or item stacks
 - Dimensional Transceiver can now be configured to buffer either single items or item stacks
+- Added 'show range' button to Attractor Obelisk
 
 Bugs
 - #1268 Capacitor bank not honoring input redstone settings

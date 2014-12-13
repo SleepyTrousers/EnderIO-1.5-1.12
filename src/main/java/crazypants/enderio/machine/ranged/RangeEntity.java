@@ -1,24 +1,26 @@
-package crazypants.enderio.machine.spawnguard;
+package crazypants.enderio.machine.ranged;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.util.BlockCoord;
 
 public class RangeEntity extends Entity {
 
-  int totalLife = 80;
+  int totalLife = 20;
   int lifeSpan = totalLife;
   float range;  
-  private TileSpawnGuard spawnGuard;
+  private IRanged spawnGuard;
 
-  public RangeEntity(TileSpawnGuard sg) {
+  public RangeEntity(IRanged sg) {
     super(sg.getWorldObj());
     spawnGuard = sg;
-    setPosition(sg.xCoord + 0.5, sg.yCoord + 0.5, sg.zCoord + 0.5);
+    BlockCoord bc = spawnGuard.getLocation();
+    setPosition(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);
     ignoreFrustumCheck = true;
-    this.range = sg.getRange() + 0.5f;
+    range = sg.getRange() + 0.5f;
   }
 
   @Override
@@ -31,6 +33,7 @@ public class RangeEntity extends Entity {
   protected void entityInit() {
   }
 
+  @Override
   protected boolean canTriggerWalking() {
     return false;
   }
@@ -44,7 +47,11 @@ public class RangeEntity extends Entity {
   public void onUpdate() {
     super.onUpdate();
     lifeSpan--;
-    if(spawnGuard.isInvalid() || !spawnGuard.isShowingRange()) {
+    BlockCoord bc = spawnGuard.getLocation();
+    if(!(worldObj.getTileEntity(bc.x, bc.y, bc.z) instanceof IRanged)) {
+      setDead();
+    }
+    if(!spawnGuard.isShowingRange()) {
       setDead();
     }
   }

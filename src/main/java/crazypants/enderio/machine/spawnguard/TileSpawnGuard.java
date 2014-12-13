@@ -13,12 +13,14 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.render.BoundingBox;
 
-public class TileSpawnGuard extends AbstractMachineEntity {
+public class TileSpawnGuard extends AbstractMachineEntity implements IRanged {
 
   private ICapacitor capacitor;
   private int powerPerTick;
@@ -34,6 +36,7 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     setUpdrade(Capacitors.BASIC_CAPACITOR);    
   }
   
+  @Override
   @SideOnly(Side.CLIENT)
   public boolean isShowingRange() {
     return showingRange;
@@ -44,7 +47,7 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     if(showingRange == showRange) {
       return;
     }
-    this.showingRange = showRange;
+    showingRange = showRange;
     if(showingRange) {
       worldObj.spawnEntityInWorld(new RangeEntity(this));
     }
@@ -57,7 +60,8 @@ public class TileSpawnGuard extends AbstractMachineEntity {
     registered = false;
   }
   
-  public int getRange() {
+  @Override
+  public float getRange() {
     return range;    
   }
 

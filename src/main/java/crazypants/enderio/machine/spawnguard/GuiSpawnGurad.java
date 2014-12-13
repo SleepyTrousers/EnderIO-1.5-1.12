@@ -45,11 +45,11 @@ public class GuiSpawnGurad extends GuiMachineBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
 
-    drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
-    int range = sg.getRange();
+    int range = (int) sg.getRange();
     drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
   }
 
