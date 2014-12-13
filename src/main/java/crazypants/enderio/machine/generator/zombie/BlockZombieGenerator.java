@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -121,23 +122,23 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     return "enderio:stirlingGenFrontOff";
   }
 
+  @SideOnly(Side.CLIENT)
+  @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
     if(rand.nextInt(3) == 0) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileZombieGenerator && ((TileZombieGenerator) te).isActive()) {
-        //see RenderGlobal.doSpawnParticle
         for (int i = 0; i < 2; i++) {
-          float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
+          float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
           float yOffset = 0.1f;
-          float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.125f;
-          
-          EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("bubble", x + xOffset, y + yOffset, z + zOffset, -0.1D, 0.5D, 0.0D);
-          if(fx != null) {            
-            fx.setRBGColorF(0.4f, 0.4f, 0.1f);
-          }
-          
+          float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
+
+          EntityFX fx = new BubbleFX(world, x + xOffset, y + yOffset, z + zOffset, 0, 0.5, 0);
+          Minecraft.getMinecraft().effectRenderer.addEffect(fx);
+
         }
+
         if(Config.machineSoundsEnabled) {
           float volume = (Config.machineSoundVolume * 0.045f);
           world.playSound(x + 0.5, y + 1, z + 0.5, EnderIO.MODID + ":generator.zombie.bubble", volume, world.rand.nextFloat() * 0.75f, false);
@@ -145,13 +146,13 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
       }
     }
   }
-  
-    @Override
-    public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if (te != null && te instanceof TileZombieGenerator) {
-        tooltip.add(((TileZombieGenerator)te).getFluidStored(ForgeDirection.UNKNOWN) + " mB");
-      }
+
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te != null && te instanceof TileZombieGenerator) {
+      tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " mB");
     }
+  }
 
 }

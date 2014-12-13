@@ -36,6 +36,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   private int ticksRemaingFuel;
   private boolean inPause;
 
+  int pass = 0;
+
   public TileZombieGenerator() {
     super(new SlotDefinition(0, 0, 0));    
   }
@@ -225,6 +227,18 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     active = nbtRoot.getBoolean("active");
+  }
+
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    this.pass = pass;
+    if(pass == 0) {
+      return true;
+    }
+    if(pass == 1) {
+      return fuelTank.getFluidAmount() > 0;
+    }
+    return false;
   }
 
   @Override
