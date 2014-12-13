@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.me;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -236,6 +237,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   protected void connectionsChanged() {
     super.connectionsChanged();
     onNodeChanged();
+    if(getNode() != null) {
+      getNode().updateState();
+    }
   }
 
   @Override
@@ -330,13 +334,13 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public EnumSet<ForgeDirection> getConnections() {
-    //    Set<ForgeDirection> cons = getConduitConnections();
-    //    cons.addAll(getExternalConnections());
-    //    if(cons.isEmpty()) {
-    //      return EnumSet.noneOf(ForgeDirection.class);
-    //    }
-    //    return EnumSet.copyOf(cons);
-    return validConnections;
+    Set<ForgeDirection> cons = getConduitConnections();
+    cons.addAll(getExternalConnections());
+    if(cons.isEmpty()) {
+      return EnumSet.noneOf(ForgeDirection.class);
+    }
+    return EnumSet.copyOf(cons);
+    //    return validConnections;
   }
   
   @Override
