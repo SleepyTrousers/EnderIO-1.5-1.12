@@ -123,7 +123,7 @@ publishing {
     }
 }
 
-String getChangelog() {
+String getChangelogText() {
     def changelogFile = new File('ReleaseNotes.txt')
     String str = ''
     String separator = '---'
@@ -155,6 +155,6 @@ curse {
 
     if (project.hasProperty('cp_curseforge_key')) apiKey = project.curseforge_key
     projectId = project.curse_projectId
-    changelog = getChangelog()
+    changelog = getChangelogText()
     releaseType = 'beta'
 }
