@@ -146,8 +146,6 @@ String getChangelog() {
     return str
 }
 
-println getChangelog() 
-
 curse {
     dependsOn 'reobf'
     
