@@ -162,4 +162,8 @@ public class FluidUtil {
     return res;
   }
 
+  public static boolean isValidFluid(FluidStack fluidStack) {
+    return fluidStack != null && fluidStack.getFluid() != null && fluidStack.getFluid().getName() != null;
+  }
+
 }
