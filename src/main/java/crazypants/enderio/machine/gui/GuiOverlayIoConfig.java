@@ -1,4 +1,4 @@
-package crazypants.enderio.machine;
+package crazypants.enderio.machine.gui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -13,6 +13,8 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
+import crazypants.enderio.machine.IIoConfigurable;
+import crazypants.enderio.machine.IoMode;
 import crazypants.gui.IGuiScreen;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;

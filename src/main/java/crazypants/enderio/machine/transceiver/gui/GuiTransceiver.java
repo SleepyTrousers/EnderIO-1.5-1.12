@@ -13,12 +13,12 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.render.RenderUtil;
 
-public class GuiTransceiver extends GuiMachineBase {
+public class GuiTransceiver extends GuiPoweredMachineBase {
 
   private static final int TAB_HEIGHT = 24;
 

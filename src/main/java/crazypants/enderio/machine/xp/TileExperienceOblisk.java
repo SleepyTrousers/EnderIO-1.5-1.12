@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.xp;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
@@ -9,16 +16,7 @@ import crazypants.enderio.xp.ExperienceContainer;
 import crazypants.enderio.xp.IHaveExperience;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.XpUtil;
-import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileExperienceOblisk extends AbstractMachineEntity implements IFluidHandler, IHaveExperience {
 
@@ -46,11 +44,6 @@ public class TileExperienceOblisk extends AbstractMachineEntity implements IFlui
   @Override
   public float getProgress() {
     return 0;
-  }
-  
-  @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
-    return false;
   }
 
   @Override
@@ -122,9 +115,5 @@ public class TileExperienceOblisk extends AbstractMachineEntity implements IFlui
   public ExperienceContainer getContainer() {
     return xpCont;
   }
-  
-  @Override
-  public boolean displayPower() {
-    return false;
-  }
+
 }

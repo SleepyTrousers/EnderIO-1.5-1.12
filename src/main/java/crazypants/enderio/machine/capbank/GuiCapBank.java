@@ -18,8 +18,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
-import crazypants.enderio.machine.GuiMachineBase;
-import crazypants.enderio.machine.GuiOverlayIoConfig;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
@@ -27,6 +25,8 @@ import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkState;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
@@ -111,7 +111,7 @@ public class GuiCapBank extends GuiContainerBase {
 
     });
 
-    int x = xSize - rightMargin - GuiMachineBase.BUTTON_SIZE - 21;
+    int x = xSize - rightMargin - GuiPoweredMachineBase.BUTTON_SIZE - 21;
     int y = inputY;
     inputRsButton = new RedstoneModeButton(this, -1, x, y, new IRedstoneModeControlable() {
 
@@ -197,7 +197,7 @@ public class GuiCapBank extends GuiContainerBase {
 
     configB.onGuiInit();
 
-    int x = guiLeft + xSize - rightMargin - GuiMachineBase.BUTTON_SIZE;
+    int x = guiLeft + xSize - rightMargin - GuiPoweredMachineBase.BUTTON_SIZE;
     int y = guiTop + inputY;
 
     FontRenderer fontRenderer = getFontRenderer();

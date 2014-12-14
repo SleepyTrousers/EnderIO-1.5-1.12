@@ -33,7 +33,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
@@ -44,7 +44,7 @@ import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.vecmath.Vector3d;
 
-public class TileAttractor extends AbstractMachineEntity implements IRanged {
+public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
   private AxisAlignedBB attractorBounds;
   private FakePlayer target;

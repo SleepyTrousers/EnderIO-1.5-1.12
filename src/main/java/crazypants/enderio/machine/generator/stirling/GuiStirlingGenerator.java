@@ -9,14 +9,14 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
 @SideOnly(Side.CLIENT)
-public class GuiStirlingGenerator extends GuiMachineBase {
+public class GuiStirlingGenerator extends GuiPoweredMachineBase {
 
   private TileEntityStirlingGenerator entity;
 

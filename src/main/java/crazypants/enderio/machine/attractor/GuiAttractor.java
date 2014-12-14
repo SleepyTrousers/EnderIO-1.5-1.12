@@ -9,12 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiAttractor extends GuiMachineBase {
+public class GuiAttractor extends GuiPoweredMachineBase {
 
   private static final int RANGE_ID = 8738924;
 

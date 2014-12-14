@@ -1,16 +1,17 @@
 package crazypants.enderio.machine.painter;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
@@ -43,7 +44,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    return new GuiPainter(player.inventory, (AbstractMachineEntity) te);
+    return new GuiPainter(player.inventory, (AbstractPoweredMachineEntity) te);
   }
 
   @Override

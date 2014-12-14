@@ -10,12 +10,12 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
-public class GuiPoweredSpawner extends GuiMachineBase {
+public class GuiPoweredSpawner extends GuiPoweredMachineBase {
 
   private IconButtonEIO modeB;
 

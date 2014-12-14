@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
 import crazypants.enderio.machine.ranged.RangeEntity;
@@ -20,7 +20,7 @@ import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.render.BoundingBox;
 
-public class TileSpawnGuard extends AbstractMachineEntity implements IRanged {
+public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRanged {
 
   private ICapacitor capacitor;
   private int powerPerTick;

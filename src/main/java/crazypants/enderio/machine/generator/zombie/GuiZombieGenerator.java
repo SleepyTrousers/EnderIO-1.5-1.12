@@ -9,15 +9,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiZombieGenerator extends GuiMachineBase {
+public class GuiZombieGenerator extends GuiPoweredMachineBase {
 
   private TileZombieGenerator gen;
 

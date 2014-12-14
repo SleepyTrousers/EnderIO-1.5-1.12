@@ -12,14 +12,14 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
 
-public class TileCrafter extends AbstractMachineEntity implements IItemBuffer {
+public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer {
 
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 

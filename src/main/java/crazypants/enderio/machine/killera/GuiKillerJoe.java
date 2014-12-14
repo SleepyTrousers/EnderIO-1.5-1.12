@@ -1,30 +1,21 @@
 package crazypants.enderio.machine.killera;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.PacketRedstoneMode;
-import crazypants.enderio.machine.generator.zombie.ContainerZombieGenerator;
-import crazypants.enderio.machine.generator.zombie.TileZombieGenerator;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
 import crazypants.gui.GuiToolTip;
-import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.util.SoundUtil;
@@ -84,11 +75,6 @@ public class GuiKillerJoe extends GuiMachineBase {
 
   @Override
   protected boolean showRecipeButton() {
-    return false;
-  }
-
-  @Override
-  protected boolean renderPowerBar() {
     return false;
   }
 

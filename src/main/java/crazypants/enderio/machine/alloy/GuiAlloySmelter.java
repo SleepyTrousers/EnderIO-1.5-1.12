@@ -9,8 +9,8 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
@@ -18,7 +18,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
-public class GuiAlloySmelter extends GuiMachineBase {
+public class GuiAlloySmelter extends GuiPoweredMachineBase {
 
   private TileAlloySmelter tileEntity;
 

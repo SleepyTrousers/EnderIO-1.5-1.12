@@ -317,13 +317,6 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return hooverBounds;
   }
 
-  //------------------------------- Power
-
-  @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
-    return false;
-  }
-
   //-------------------------------  Fluid Stuff
 
   private void useNutrient() {
@@ -478,8 +471,4 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
   }
   
-  @Override
-  public boolean displayPower() {
-    return false;
-  }
 }

@@ -8,11 +8,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
-public class GuiFarmStation extends GuiMachineBase {
+public class GuiFarmStation extends GuiPoweredMachineBase {
 
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine));

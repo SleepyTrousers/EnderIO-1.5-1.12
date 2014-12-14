@@ -2,27 +2,19 @@ package crazypants.enderio.machine.slicensplice;
 
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
-import crazypants.enderio.machine.soul.BlockSoulBinder;
-import crazypants.enderio.machine.soul.ContainerSoulBinder;
-import crazypants.enderio.machine.soul.GuiSoulBinder;
-import crazypants.enderio.machine.soul.SoulBinderSpawnerRecipe;
-import crazypants.enderio.machine.soul.TileSoulBinder;
-import crazypants.vecmath.Vector3f;
+import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
 
@@ -49,7 +41,7 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileSliceAndSplice) {
-      return new GuiSliceAndSplice(player.inventory, (AbstractMachineEntity) te);
+      return new GuiSliceAndSplice(player.inventory, (AbstractPoweredMachineEntity) te);
     }
     return null;
   }
@@ -72,10 +64,12 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
     return "enderio:blockSoulMachineSide";
   }
   
+  @Override
   protected String getTopIconKey(boolean active) {
     return "enderio:blockSoulMachineTop";
   }
 
+  @Override
   protected String getBackIconKey(boolean active) {
     return "enderio:blockSoulMachineBack";
   }
