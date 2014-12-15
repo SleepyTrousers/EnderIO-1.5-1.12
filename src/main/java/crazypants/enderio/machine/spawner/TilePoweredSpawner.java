@@ -104,6 +104,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
     capacitor = new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multuplier), refCap.getMaxEnergyStored());
     forceClientUpdate = true;
+    setEnergyStored(getEnergyStored());
   }
 
   @Override

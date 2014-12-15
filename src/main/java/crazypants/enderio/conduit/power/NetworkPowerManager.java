@@ -150,6 +150,7 @@ public class NetworkPowerManager {
       if(pp != null) {        
         int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
         int used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+        used = Math.max(0, used);
         trackerSend(r.emmiter, used, false);
         available -= used;
         if(available <= 0) {
