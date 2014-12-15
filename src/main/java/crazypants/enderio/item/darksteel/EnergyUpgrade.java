@@ -1,17 +1,21 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
+import crazypants.util.Lang;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
@@ -195,18 +199,21 @@ public class EnergyUpgrade extends AbstractUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    int startIndex = list.size();
-    super.addDetailedEntries(itemstack, entityplayer, list, flag);
-    int endIndex = list.size();
-    int cap = capacity;
+
+    List<String> upgradeStr = new ArrayList<String>();
+    upgradeStr.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
+    TooltipAddera.instance.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
+
     String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";
-    String capString = PowerDisplayUtil.formatPower(cap) + " " + PowerDisplayUtil.abrevation();
-    for(int i=startIndex;i<endIndex;i++) {
-      String str = (String)list.get(i);
+    String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
+    for (int i = 0; i < upgradeStr.size(); i++) {
+      String str = upgradeStr.get(i);
       str = str.replaceAll("\\$P", capString);
       str = str.replaceAll("\\$D", percDamage);
-      list.set(i, str);
+      upgradeStr.set(i, str);
     }
+    list.addAll(upgradeStr);
+
   }
 
   @Override
