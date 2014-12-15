@@ -71,7 +71,10 @@ public class WailaCompat implements IWailaDataProvider {
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if (facade != null) {
-          return facade.getPickBlock(pos, accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
+          accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, bundle.getFacadeMetadata(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, 0), 0);
+          ItemStack ret = facade.getPickBlock(pos, accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
+          accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, 0, 0);
+          return ret;
         }
       }
     } else if(accessor.getBlock() instanceof BlockDarkSteelAnvil) {
@@ -195,8 +198,12 @@ public class WailaCompat implements IWailaDataProvider {
     return currenttip;
   }
 
-  public static NBTTagCompound getNBTData()
-  {
+  @Override
+  public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+    return tag;
+  }
+  
+  public static NBTTagCompound getNBTData() {
 	  return _accessor.getNBTData();
   }
 }
