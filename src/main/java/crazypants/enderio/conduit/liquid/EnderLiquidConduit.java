@@ -35,6 +35,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreEnder";
   public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitAdvancedInput";
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
+  public static final String ICON_IN_OUT_KEY = "enderio:liquidConduitAdvancedInOut";
 
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
@@ -48,6 +49,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
         ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
+        ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
       }
 
       @Override
@@ -167,6 +169,10 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     return ICONS.get(ICON_INSERT_KEY);
   }
 
+  public IIcon getTextureForInOutMode() {
+    return ICONS.get(ICON_IN_OUT_KEY);
+  }
+
   @Override
   public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return null;
@@ -217,9 +223,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     doExtract();
   }
 
+  @Override
+  public boolean isExtractingFromDir(ForgeDirection dir) {
+    return getConnectionMode(dir).acceptsInput();
+  }
+
   private void doExtract() {
     BlockCoord loc = getLocation();
-    if(!hasConnectionMode(ConnectionMode.INPUT)) {
+    if(!hasConnectionMode(ConnectionMode.INPUT) && !hasConnectionMode(ConnectionMode.IN_OUT)) {
       return;
     }
     if(network == null) {

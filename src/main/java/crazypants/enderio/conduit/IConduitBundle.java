@@ -18,14 +18,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.util.BlockCoord;
 
 @Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
+public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
 
   TileEntity getEntity();
 
+  @Override
   BlockCoord getLocation();
 
   // conduits

@@ -5,8 +5,8 @@ import java.awt.Point;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import crazypants.enderio.machine.AbstractMachineContainer;
 import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerSliceAndSplice extends AbstractMachineContainer {
 

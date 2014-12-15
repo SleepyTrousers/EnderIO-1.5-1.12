@@ -359,11 +359,6 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
   }
 
   @Override
-  public boolean canConnectEnergy(ForgeDirection from) {
-    return false;
-  }
-
-  @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     nbtRoot.setInteger("tankType",getBlockMetadata());
@@ -393,8 +388,4 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     }
   }
 
-  @Override
-  public boolean displayPower() {
-    return false;
-  }
 }

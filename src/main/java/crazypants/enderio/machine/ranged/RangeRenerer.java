@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.spawnguard;
+package crazypants.enderio.machine.ranged;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderEntity;

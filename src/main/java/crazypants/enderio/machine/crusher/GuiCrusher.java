@@ -4,10 +4,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.RenderUtil;
 
-public class GuiCrusher extends GuiMachineBase {
+public class GuiCrusher extends GuiPoweredMachineBase {
 
   private TileCrusher tileEntity;
 

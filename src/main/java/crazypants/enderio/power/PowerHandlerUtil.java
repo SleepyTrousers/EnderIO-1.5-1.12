@@ -46,7 +46,7 @@ public class PowerHandlerUtil {
   }
 
 
-  public static int recieveInternal(IInternalPowerReceptor target, int maxReceive, ForgeDirection from, boolean simulate) {
+  public static int recieveInternal(IInternalPoweredTile target, int maxReceive, ForgeDirection from, boolean simulate) {
     int result = Math.min(target.getMaxEnergyRecieved(from), maxReceive);
     result = Math.min(target.getMaxEnergyStored() - target.getEnergyStored(), result);
     if(result > 0 && !simulate) {

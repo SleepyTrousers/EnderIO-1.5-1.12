@@ -6,17 +6,16 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 
-public class TileEntityStirlingGenerator extends AbstractMachineEntity implements ISidedInventory {
+public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory {
 
   public static final int ENERGY_PER_TICK = Config.stirlingGeneratorBaseRfPerTick;
 
@@ -41,11 +40,6 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
   @Override
   public String getInventoryName() {
     return "Stirling Generator";
-  }
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return 0;
   }
 
   @Override
@@ -110,7 +104,7 @@ public class TileEntityStirlingGenerator extends AbstractMachineEntity implement
 
   @Override
   public int getPowerUsePerTick() {
-    return (int)Math.round(ENERGY_PER_TICK * getEnergyMultiplier());
+    return Math.round(ENERGY_PER_TICK * getEnergyMultiplier());
   }
 
   @Override

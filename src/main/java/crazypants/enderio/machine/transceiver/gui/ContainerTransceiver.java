@@ -11,8 +11,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.conduit.gui.item.InventoryFilterUpgrade;
-import crazypants.enderio.machine.AbstractMachineContainer;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class ContainerTransceiver extends AbstractMachineContainer {

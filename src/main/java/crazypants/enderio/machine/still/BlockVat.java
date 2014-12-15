@@ -25,6 +25,8 @@ import crazypants.util.FluidUtil;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
+import static crazypants.util.FluidUtil.isValidFluid;
+
 public class BlockVat extends AbstractMachineBlock<TileVat> {
 
   public static int renderId;
@@ -121,7 +123,7 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
     //check for filled fluid containers and see if we can empty them into our input tank
     FluidStack fluid = FluidUtil.getFluidFromItem(item);
-    if(fluid != null) {
+    if(isValidFluid(fluid)) {
       int filled = vat.fill(ForgeDirection.UP, fluid, false);
       if(filled >= fluid.amount) {
         vat.fill(ForgeDirection.UP, fluid, true);
@@ -134,21 +136,22 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
     //now check for empty fluid containers to fill
     FluidStack available = vat.outputTank.getFluid();
-    if(available != null) {
+    if(isValidFluid(available)) {
       ItemStack res = FluidContainerRegistry.fillFluidContainer(available.copy(), item);
       FluidStack filled = FluidContainerRegistry.getFluidForFilledItem(res);
 
       if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
         FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
         for (FluidContainerData data : datas) {
-          if(data != null && data.fluid != null && data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
+          if(data != null && isValidFluid(data.fluid) && data.fluid.getFluid().getName().equals(available.getFluid().getName())
+              && data.emptyContainer.isItemEqual(item)) {
             res = data.filledContainer.copy();
             filled = FluidContainerRegistry.getFluidForFilledItem(res);
           }
         }
       }
 
-      if(filled != null) {
+      if(isValidFluid(filled)) {
         vat.drain(ForgeDirection.DOWN, filled, true);
         if(item.stackSize > 1) {
           item.stackSize--;

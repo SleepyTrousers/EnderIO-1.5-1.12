@@ -353,18 +353,7 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </output>
     </recipe>
 
-    <recipe name="Enderium Base from dust" energyCost="2000">
-      <input>
-        <itemStack oreDictionary="dustTin" number="2" />
-        <itemStack oreDictionary="dustSilver" />
-        <itemStack oreDictionary="dustPlatinum" />
-      </input>
-      <output>
-        <itemStack oreDictionary="ingotEnderiumBase" number="4" />
-      </output>
-    </recipe>
-
-    
+ 
     <recipe name="Enderium" energyCost="50000">
       <input>
         <itemStack oreDictionary="ingotEnderiumBase" number="2" />

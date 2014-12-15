@@ -9,21 +9,21 @@ import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiCombustionGenerator extends GuiMachineBase {
+public class GuiCombustionGenerator extends GuiPoweredMachineBase {
 
   private TileCombustionGenerator gen;
 
   public GuiCombustionGenerator(InventoryPlayer par1InventoryPlayer, TileCombustionGenerator te) {
     super(te, new ContainerCombustionEngine(par1InventoryPlayer, te));
-    this.gen = te;
+    gen = te;
 
     addToolTip(new GuiToolTip(new Rectangle(114, 21, 15, 47), "") {
 

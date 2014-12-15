@@ -301,8 +301,7 @@ public class NetworkPowerManager {
     storageReceptors.clear();
     for (ReceptorEntry rec : network.getPowerReceptors()) {
       if(rec.powerInterface.getDelegate() != null &&
-          rec.powerInterface.getDelegate() instanceof IPowerStorage &&
-          !((IPowerStorage) rec.powerInterface.getDelegate()).isCreative()) {
+          rec.powerInterface.getDelegate() instanceof IPowerStorage) {
         storageReceptors.add(rec);
       } else {
         receptors.add(rec);
@@ -455,7 +454,9 @@ public class NetworkPowerManager {
         long use = (int) Math.ceil(ratio * entry.canExtract);
         use = Math.min(use, amount);
         use = Math.min(use, entry.canExtract);
-        entry.capBank.addEnergy((int) -use);
+        if(!entry.capBank.isCreative()) {
+          entry.capBank.addEnergy((int) -use);
+        }
         trackerRecieve(entry.emmiter, (int) use, true);
         amount -= use;
         if(amount == 0) {
@@ -474,7 +475,9 @@ public class NetworkPowerManager {
         long add = (int) Math.ceil(ratio * entry.canFill);
         add = Math.min(add, entry.canFill);
         add = Math.min(add, amount);
-        entry.capBank.addEnergy((int) add);
+        if(!entry.capBank.isCreative()) {
+          entry.capBank.addEnergy((int) add);
+        }
         trackerSend(entry.emmiter, (int) add, true);
         amount -= add;
         if(amount == 0) {
@@ -503,6 +506,11 @@ public class NetworkPowerManager {
     }
 
     void calcToBalance(double targetRatio) {
+      if(capBank.isCreative()) {
+        toBalance = 0;
+        return;
+      }
+
       long targetAmount = (long) Math.floor(capBank.getMaxEnergyStoredL() * targetRatio);
       long b = targetAmount - capBank.getEnergyStoredL();
       if(b < 0) {

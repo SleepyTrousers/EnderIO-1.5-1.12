@@ -9,8 +9,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
 
-public abstract class AbstractPoweredTaskEntity extends AbstractMachineEntity {
+public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity implements IInternalPowerReceiver {
 
   protected IPoweredTask currentTask = null;
   protected IMachineRecipe lastCompletedRecipe;

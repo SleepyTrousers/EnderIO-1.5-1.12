@@ -1,7 +1,6 @@
 package crazypants.enderio.power;
 
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 
 public class EnergyReceiverPI implements IPowerInterface {
@@ -49,7 +48,7 @@ public class EnergyReceiverPI implements IPowerInterface {
     return 0;
   }
 
-  public static int getPowerRequest(ForgeDirection dir, IEnergyHandler handler) {
+  public static int getPowerRequest(ForgeDirection dir, IEnergyReceiver handler) {
     if(handler != null && dir != null && handler.canConnectEnergy(dir)) {
       return handler.receiveEnergy(dir, 99999999, true);
     }

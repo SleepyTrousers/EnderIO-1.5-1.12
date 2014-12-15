@@ -15,7 +15,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.painter.PainterContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
@@ -26,7 +26,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.SoundUtil;
 import crazypants.vecmath.Vector4f;
 
-public class GuiSoulBinder extends GuiMachineBase {
+public class GuiSoulBinder extends GuiPoweredMachineBase {
 
   private static final int PLAYER_XP_ID = 985162394;
 

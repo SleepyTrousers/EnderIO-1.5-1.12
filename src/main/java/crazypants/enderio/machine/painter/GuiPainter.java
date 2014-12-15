@@ -7,16 +7,17 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.AbstractPoweredMachineEntity;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
-public class GuiPainter extends GuiMachineBase {
+public class GuiPainter extends GuiPoweredMachineBase {
 
   private AbstractMachineEntity tileEntity;
 
-  public GuiPainter(InventoryPlayer par1InventoryPlayer, AbstractMachineEntity furnaceInventory) {
+  public GuiPainter(InventoryPlayer par1InventoryPlayer, AbstractPoweredMachineEntity furnaceInventory) {
     super(furnaceInventory, new PainterContainer(par1InventoryPlayer, furnaceInventory));
     tileEntity = furnaceInventory;
   }
@@ -32,7 +33,7 @@ public class GuiPainter extends GuiMachineBase {
     int k = (width - xSize) / 2;
     int l = (height - ySize) / 2;
 
-    drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+    drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
     int i1;
 
     i1 = tileEntity.getProgressScaled(24);

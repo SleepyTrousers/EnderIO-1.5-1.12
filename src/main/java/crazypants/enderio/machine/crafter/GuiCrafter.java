@@ -10,14 +10,14 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.ToggleButtonEIO;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.IItemBuffer;
 import crazypants.enderio.machine.PacketItemBuffer;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.RenderUtil;
 
-public class GuiCrafter extends GuiMachineBase  {
+public class GuiCrafter extends GuiPoweredMachineBase  {
 
   private IItemBuffer entity;
 

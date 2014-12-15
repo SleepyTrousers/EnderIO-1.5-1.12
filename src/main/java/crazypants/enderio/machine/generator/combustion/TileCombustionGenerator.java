@@ -11,18 +11,18 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
-import crazypants.enderio.fluid.FluidFuelRegister;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
-public class TileCombustionGenerator extends AbstractMachineEntity implements IFluidHandler {
+public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler {
 
   private final FluidTank coolantTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
   private final FluidTank fuelTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 5);
@@ -162,7 +162,7 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
       int lastGenerated = generated;
       
       boolean isActive = generateEnergy();
-      if(isActive != this.active) {
+      if(isActive != active) {
         active = isActive;
         res = true;
       }
@@ -188,11 +188,6 @@ public class TileCombustionGenerator extends AbstractMachineEntity implements IF
     }
 
     return res;
-  }
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return 0;
   }
 
   private boolean transmitEnergy() {

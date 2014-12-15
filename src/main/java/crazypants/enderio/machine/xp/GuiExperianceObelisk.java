@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.GuiMachineBase;
+import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
@@ -151,13 +151,5 @@ public class GuiExperianceObelisk extends GuiMachineBase {
   protected boolean showRecipeButton() {    
     return false;
   }
-
-  @Override
-  protected boolean renderPowerBar() {
-    return false;
-  }
   
-  
-
-
 }

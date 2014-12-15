@@ -154,9 +154,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         
       } else if(facadeId != null) {
         bundle.setFacadeRenderAs(FacadeRenderState.FULL);
-        res = !facadeId.isOpaqueCube();
+        boolean isFacadeOpaque = facadeId.isOpaqueCube();
+        res = !isFacadeOpaque;
 
-        if(BlockConduitBundle.theRenderPass == 1) {
+        if((isFacadeOpaque && BlockConduitBundle.theRenderPass == 0) ||
+            (!isFacadeOpaque && BlockConduitBundle.theRenderPass == 1)) {
           IBlockAccess origBa = rb.blockAccess;
           rb.blockAccess = new FacadeAccessWrapper(origBa);
           try {

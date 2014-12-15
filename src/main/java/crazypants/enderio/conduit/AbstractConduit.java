@@ -146,6 +146,12 @@ public abstract class AbstractConduit implements IConduit {
 
   @Override
   public boolean hasConnectionMode(ConnectionMode mode) {
+    if(mode == null) {
+      return false;
+    }
+    if(mode == getDefaultConnectionMode() && conectionModes.size() != 6) {
+      return true;
+    }
     for (ConnectionMode cm : conectionModes.values()) {
       if(cm == mode) {
         return true;

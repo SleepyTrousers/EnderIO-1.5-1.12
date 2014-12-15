@@ -24,8 +24,9 @@ import crazypants.enderio.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.power.PowerTracker;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.power.IInternalPowerReceptor;
 import crazypants.enderio.power.EnergyHandlerPI;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.Lang;
 
 public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
@@ -57,7 +58,7 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
       TileConduitBundle tcb = (TileConduitBundle) te;
       return tcb.getConduit(IPowerConduit.class) != null || tcb.getConduit(IItemConduit.class) != null;
     }
-    if(te instanceof IInternalPowerReceptor) {
+    if(te instanceof IInternalPoweredTile) {
       return true;
     }   
     return false;
@@ -117,9 +118,9 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
 
       sendInfoMessage(player, (TileConduitBundle) te);
 
-    } else if(te instanceof IInternalPowerReceptor) {
-        IInternalPowerReceptor pr = (IInternalPowerReceptor) te;        
-        sendPowerReciptorInfo(player, block, pr.getEnergyStored(null), pr.getMaxEnergyStored(null), 0,
+    } else if(te instanceof IInternalPowerReceiver) {
+      IInternalPowerReceiver pr = (IInternalPowerReceiver) te;
+      sendPowerReciptorInfo(player, block, pr.getEnergyStored(), pr.getMaxEnergyStored(), 0,
             0, EnergyHandlerPI.getPowerRequest(ForgeDirection.NORTH, pr));
 
     } 

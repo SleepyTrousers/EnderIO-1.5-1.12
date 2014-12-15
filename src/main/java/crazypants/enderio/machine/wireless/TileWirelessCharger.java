@@ -7,11 +7,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 
-public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceptor, IWirelessCharger {
+public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger {
 
   public static final int MAX_ENERGY_STORED = 200000;
   public static final int MAX_ENERGY_IN = 10000;
@@ -123,11 +123,6 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
     return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
   }
 
-  @Override
-  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    return 0;
-  }
-  
   @Override
   public int takeEnergy(int max) {
     int prev = storedEnergyRF;
