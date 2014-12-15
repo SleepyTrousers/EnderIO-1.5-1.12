@@ -219,6 +219,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     if(conduitsDirty) {
       if(!worldObj.isRemote) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        markDirty();
       }
       conduitsDirty = false;
     }
