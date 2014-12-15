@@ -71,9 +71,10 @@ public class WailaCompat implements IWailaDataProvider {
         IFacade bundle = (IFacade) accessor.getBlock();
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if (facade != null) {
-          accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, bundle.getFacadeMetadata(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, 0), 0);
+          //accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, bundle.getFacadeMetadata(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, 0), 0);
+          // TODO metadata is wrong, this gives the wrong output
           ItemStack ret = facade.getPickBlock(pos, accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ);
-          accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, 0, 0);
+          //accessor.getWorld().setBlockMetadataWithNotify(pos.blockX, pos.blockY, pos.blockZ, 0, 0);
           return ret;
         }
       }
