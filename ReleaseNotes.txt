@@ -2,11 +2,6 @@
 Version 2.2.3
 ------------------------------------------------------
 
-RF Update
-EIO machines and generators now implement only IEnergyReciver or IEnergyProvider instead of IEnergyHandler where appropriate
-NOTE: This change means EIO will no longer work with old versions of the RF API. If you are getting an incompatible class
-      change exception it will be due to an installed mod including an old version of the RF API.
-
 New
 - Added Dark Steel Ladder
 - Added new Capacitor Banks  
