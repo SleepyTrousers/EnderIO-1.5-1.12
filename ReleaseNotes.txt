@@ -3,6 +3,7 @@ Version 2.2.4
 ------------------------------------------------------
 
 Bugs
+- #1409 Energy conduit and capacitor interaction bug
 - Fixed infinite power bug
 
 ------------------------------------------------------

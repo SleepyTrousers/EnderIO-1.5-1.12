@@ -554,4 +554,10 @@ public class CapBankNetwork implements ICapBankNetwork {
     return type.isCreative();
   }
 
+  @Override
+  public boolean isNetworkControlledIo(ForgeDirection direction) {
+    //This is handled at the block level based on the IO mode
+    return true;
+  }
+
 }
