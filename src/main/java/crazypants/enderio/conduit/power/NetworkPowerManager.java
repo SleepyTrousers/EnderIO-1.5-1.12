@@ -147,9 +147,10 @@ public class NetworkPowerManager {
       }
       ReceptorEntry r = receptorIterator.next();
       IPowerInterface pp = r.powerInterface;
-      if(pp != null) {        
+      if(pp != null) {
         int canOffer = Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
         int used = pp.recieveEnergy(r.direction.getOpposite(), canOffer);
+        used = Math.max(0, used);
         trackerSend(r.emmiter, used, false);
         available -= used;
         if(available <= 0) {
@@ -286,7 +287,7 @@ public class NetworkPowerManager {
       con.onTick();
       energyStored += con.getEnergyStored();
     }
-    energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);    
+    energyStored = MathHelper.clamp_int(energyStored, 0, maxEnergyStored);
   }
 
   public void receptorsChanged() {
@@ -380,18 +381,21 @@ public class NetworkPowerManager {
         }
 
         long canGet = 0;
-        if(cb.isOutputEnabled(rec.direction.getOpposite())) {
-          canGet = Math.min(cb.getEnergyStoredL(), cb.getMaxOutput());
-          canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
-          canExtract += canGet;
-        }
         long canFill = 0;
-        if(cb.isInputEnabled(rec.direction.getOpposite())) {
-          canFill = Math.min(cb.getMaxEnergyStoredL() - cb.getEnergyStoredL(), cb.getMaxInput());
-          canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
-          this.canFill += canFill;
+        if(cb.isNetworkControlledIo(rec.direction.getOpposite())) {
+          if(cb.isOutputEnabled(rec.direction.getOpposite())) {
+            canGet = Math.min(cb.getEnergyStoredL(), cb.getMaxOutput());
+            canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
+            canExtract += canGet;
+          }
+
+          if(cb.isInputEnabled(rec.direction.getOpposite())) {
+            canFill = Math.min(cb.getMaxEnergyStoredL() - cb.getEnergyStoredL(), cb.getMaxInput());
+            canFill = Math.min(canFill, rec.emmiter.getMaxEnergyExtracted(rec.direction));
+            this.canFill += canFill;
+          }
+          enteries.add(new CapBankSupplyEntry(cb, (int) canGet, (int) canFill, rec.emmiter, rec.direction));
         }
-        enteries.add(new CapBankSupplyEntry(cb, (int) canGet, (int) canFill, rec.emmiter, rec.direction));
 
       }
 

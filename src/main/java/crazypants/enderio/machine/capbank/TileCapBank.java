@@ -438,6 +438,12 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
   }
 
   @Override
+  public boolean isNetworkControlledIo(ForgeDirection direction) {
+    IoMode mode = getIoMode(direction);
+    return mode == IoMode.NONE || mode == IoMode.PULL;
+  }
+
+  @Override
   public boolean isCreative() {
     return getType().isCreative();
   }

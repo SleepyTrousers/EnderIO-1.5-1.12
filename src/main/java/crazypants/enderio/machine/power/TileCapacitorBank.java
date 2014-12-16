@@ -328,6 +328,12 @@ public class TileCapacitorBank extends TileEntityEio implements IInternalPowerHa
     return mode == IoMode.PULL || mode == IoMode.NONE && isInputEnabled();
   }
 
+  @Override
+  public boolean isNetworkControlledIo(ForgeDirection direction) {
+    IoMode mode = getIoMode(direction);
+    return mode == IoMode.NONE || mode == IoMode.PULL;
+  }
+
   private boolean transmitEnergy() {
 
     if(getEnergyStored() <= 0) {

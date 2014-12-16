@@ -251,4 +251,9 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     return false;
   }
 
+  @Override
+  public boolean isNetworkControlledIo(ForgeDirection direction) {
+    return true;
+  }
+
 }
