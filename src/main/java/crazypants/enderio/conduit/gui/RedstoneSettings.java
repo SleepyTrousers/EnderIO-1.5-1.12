@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.gui;
 import java.awt.Color;
 
 import net.minecraft.client.gui.GuiButton;
+import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
@@ -12,7 +13,6 @@ import crazypants.enderio.gui.ColorButton;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
-import crazypants.util.DyeColor;
 import crazypants.util.Lang;
 
 public class RedstoneSettings extends BaseSettingsPanel {

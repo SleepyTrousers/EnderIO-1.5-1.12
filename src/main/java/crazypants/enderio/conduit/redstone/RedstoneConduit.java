@@ -16,12 +16,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.DyeColor;
+import crazypants.enderio.api.redstone.IRedstoneEmitter;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -29,7 +32,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
 import dan200.computercraft.api.ComputerCraftAPI;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
@@ -121,10 +123,10 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     Set<Signal> res = new HashSet<Signal>();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if((side == null || dir == side) && acceptSignalsForDir(dir)) {
+        BlockCoord loc = getLocation().getLocation(dir);
         int input = getExternalPowerLevel(dir);
         if(input > 1) { // need to degrade external signals by one as they
                         // enter
-          BlockCoord loc = getLocation().getLocation(dir);
           Signal signal = new Signal(loc.x, loc.y, loc.z, dir, input - 1, getSignalColor(dir));
           res.add(signal);
         }
@@ -138,7 +140,6 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
           // RedNet API, without requiring a piece of RedNet cable in-between.
           int[] bundledInput = getExternalBundledPowerLevel(dir);
           if(bundledInput != null) {
-            BlockCoord loc = getLocation().getLocation(dir);
             for (int subnet = 0; subnet < bundledInput.length; ++subnet) {
               if(bundledInput[subnet] > 1) { // force signal strength reduction to avoid cycles
                 int color = convertColorForRedNet(subnet);
@@ -149,7 +150,6 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
           }
         }
         if (Loader.isModLoaded("ComputerCraft") && canConnectToExternal(dir, false)) {
-          BlockCoord loc = getLocation().getLocation(dir);
           int bundledInput = getComputerCraftBundledPowerLevel(dir);
           if(bundledInput >= 0){
             for(int i = 0; i < 16; i++) {

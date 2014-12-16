@@ -1,8 +1,8 @@
 package crazypants.enderio.conduit.redstone;
 
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.util.DyeColor;
 
 public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 

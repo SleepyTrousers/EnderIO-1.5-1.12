@@ -3,15 +3,21 @@ package crazypants.enderio.conduit.redstone;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.DyeColor;
+import crazypants.enderio.api.redstone.IRedstoneReceiever;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.util.BlockCoord;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -187,26 +193,21 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
     // Need to notify neighbours neighbours for changes to  signals
     if(signal != null /*&& signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord*/) {
-      if(worldObj.getBlock(te.xCoord + 1, te.yCoord, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord + 1, te.yCoord, te.zCoord,  EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord - 1, te.yCoord, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord - 1, te.yCoord, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord + 1, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord + 1, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord - 1, te.zCoord).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord - 1, te.zCoord, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord + 1).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord + 1, EnderIO.blockConduitBundle);
-      }
-      if(worldObj.getBlock(te.xCoord, te.yCoord, te.zCoord - 1).isNormalCube()) {
-        worldObj.notifyBlocksOfNeighborChange(te.xCoord, te.yCoord, te.zCoord - 1, EnderIO.blockConduitBundle);
+      for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+        BlockCoord loc = new BlockCoord(te).getLocation(dir);
+        Block block;
+        if ((block = worldObj.getBlock(loc.x, loc.y, loc.z)).isNormalCube()) {
+          worldObj.notifyBlockOfNeighborChange(loc.x, loc.y, loc.z, EnderIO.blockConduitBundle);
+          if (con instanceof IInsulatedRedstoneConduit && block instanceof IRedstoneReceiever) {
+            Set<Signal> outputs = con.getNetworkOutputs(dir);
+            EnumMap<DyeColor, Integer> inputs = new EnumMap<DyeColor, Integer>(DyeColor.class);
+            for (Signal s : outputs) {
+              inputs.put(s.color, s.strength);
+            }
+            ((IRedstoneReceiever) block).inputsChanged(worldObj, loc.x, loc.y, loc.z, dir, inputs);
+          }
+        }
       }
     }
-
   }
-
 }

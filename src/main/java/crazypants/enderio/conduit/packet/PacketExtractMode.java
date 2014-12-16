@@ -5,9 +5,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.util.DyeColor;
 
 public class PacketExtractMode extends AbstractConduitPacket<IExtractor> implements IMessageHandler<PacketExtractMode, IMessage> {
 

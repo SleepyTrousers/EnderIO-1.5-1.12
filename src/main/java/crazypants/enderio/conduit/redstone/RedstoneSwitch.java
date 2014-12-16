@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
@@ -18,7 +19,6 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
 import crazypants.vecmath.Vector3d;
 
 public class RedstoneSwitch extends RedstoneConduit {

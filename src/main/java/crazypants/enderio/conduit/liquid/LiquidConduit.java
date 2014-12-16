@@ -21,6 +21,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -31,7 +32,6 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
 
 public class LiquidConduit extends AbstractTankConduit {
 

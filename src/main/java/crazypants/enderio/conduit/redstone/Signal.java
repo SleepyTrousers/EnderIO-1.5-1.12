@@ -1,7 +1,7 @@
 package crazypants.enderio.conduit.redstone;
 
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.util.DyeColor;
+import crazypants.enderio.api.DyeColor;
 
 public class Signal {
 

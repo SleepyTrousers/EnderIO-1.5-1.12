@@ -10,8 +10,8 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.api.DyeColor;
 import crazypants.gui.IGuiScreen;
-import crazypants.util.DyeColor;
 
 public class ColorButton extends IconButtonEIO {
 

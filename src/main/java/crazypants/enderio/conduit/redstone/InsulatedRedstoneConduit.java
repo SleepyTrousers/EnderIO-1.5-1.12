@@ -24,7 +24,9 @@ import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.api.redstone.IRedstoneEmitter;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -32,13 +34,10 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
-import crazypants.util.DyeColor;
 
 public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsulatedRedstoneConduit {
 
@@ -378,6 +377,27 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     setConnectionMode(fromDirection, ConnectionMode.NOT_SET);
   }
 
+  @Override
+  public Set<Signal> getNetworkInputs(ForgeDirection side) {
+    Set<Signal> base = super.getNetworkInputs(side);
+
+    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+      if((side == null || dir == side) && acceptSignalsForDir(dir)) {
+        BlockCoord loc = getLocation().getLocation(dir);
+        World world = getBundle().getWorld();
+        Block block = world.getBlock(loc.x, loc.y, loc.z);
+        if(block instanceof IRedstoneEmitter && ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, dir)) {
+          Map<DyeColor, Integer> outputs = ((IRedstoneEmitter) block).getOutputs(world, loc.x, loc.y, loc.z, dir.getOpposite());
+          for (DyeColor color : outputs.keySet()) {
+            base.add(new Signal(loc.x, loc.y, loc.z, dir, outputs.get(color), color));
+          }
+        }
+      }
+    }
+    
+    return base;
+  }
+  
   @Override
   public Set<Signal> getNetworkOutputs(ForgeDirection side) {
     if(side == null || side == ForgeDirection.UNKNOWN) {
