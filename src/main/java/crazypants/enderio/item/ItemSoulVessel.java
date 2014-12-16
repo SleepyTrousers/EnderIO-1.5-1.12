@@ -12,7 +12,9 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.IBossDisplayData;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -168,9 +171,6 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(entity instanceof EntityPlayer) {
       return false;
     }
-    if(item.stackSize > 1) {
-      return false;
-    }
     
     String entityId = EntityList.getEntityString(entity);
     if(isBlackListed(entityId)) {
@@ -185,15 +185,28 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     root.setString("id", entityId);    
     entity.writeToNBT(root);
     
+    ItemStack capturedMobVessel = new ItemStack(EnderIO.itemSoulVessel);
+    player.swingItem();
     if(!isCreative) {
       entity.setDead();
       if(entity.isDead) {
-        item.setTagCompound(root);        
+        capturedMobVessel.setTagCompound(root);
+        item.stackSize--;
+        if (!player.inventory.addItemStackToInventory(capturedMobVessel))
+        {
+        	entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj,entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+        }
+        player.setCurrentItemOrArmor(0, item);
+        ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
         return true;
       }
     } else {
-      item.setTagCompound(root);
-      player.setCurrentItemOrArmor(0, item);
+      capturedMobVessel.setTagCompound(root);
+      if (!player.inventory.addItemStackToInventory(capturedMobVessel)) //Inventory full, drop it in the world!
+      {
+      	entity.worldObj.spawnEntityInWorld(new EntityItem(entity.worldObj,entity.posX, entity.posY, entity.posZ, capturedMobVessel));
+      }
+      ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
       return true;
     }
     return false;
