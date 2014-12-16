@@ -218,7 +218,7 @@ public final class CubeRenderer {
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
 
-    tex = getTexSafe(faceTextures, ForgeDirection.NORTH);
+    tex = faceTextures[ForgeDirection.NORTH.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -233,7 +233,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.SOUTH.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = getTexSafe(faceTextures, ForgeDirection.NORTH);
+    tex = faceTextures[ForgeDirection.SOUTH.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -248,7 +248,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.UP.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = getTexSafe(faceTextures, ForgeDirection.UP);
+    tex = faceTextures[ForgeDirection.UP.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -263,7 +263,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.DOWN.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = getTexSafe(faceTextures, ForgeDirection.DOWN);
+    tex = faceTextures[ForgeDirection.DOWN.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -278,7 +278,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.EAST.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = getTexSafe(faceTextures, ForgeDirection.EAST);
+    tex = faceTextures[ForgeDirection.EAST.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -293,7 +293,7 @@ public final class CubeRenderer {
       float cm = brightnessPerSide[ForgeDirection.WEST.ordinal()];
       tessellator.setColorOpaque_F(cm, cm, cm);
     }
-    tex = getTexSafe(faceTextures, ForgeDirection.WEST);
+    tex = faceTextures[ForgeDirection.WEST.ordinal()];
     minU = tex.getMinU();
     maxU = tex.getMaxU();
     minV = tex.getMinV();
@@ -302,11 +302,6 @@ public final class CubeRenderer {
     addVecWithUV(verts[4], maxU, maxV);
     addVecWithUV(verts[7], maxU, minV);
     addVecWithUV(verts[3], minU, minV);
-  }
-  
-  private static IIcon getTexSafe(IIcon[] faceTextures, ForgeDirection dir) {
-    int i = dir.ordinal();
-    return faceTextures[i] == null ? IconUtil.errorTexture : faceTextures[i];
   }
 
   public static void setupVertices(BoundingBox bound) {
