@@ -25,7 +25,7 @@ public class ToggleButtonEIO extends IconButtonEIO {
     return selected;
   }
 
-  public void setSelected(boolean selected) {
+  public ToggleButtonEIO setSelected(boolean selected) {
     this.selected = selected;
     icon = selected ? selectedIcon : unselectedIcon;
     if(selected && selectedTooltip != null) {
@@ -33,6 +33,7 @@ public class ToggleButtonEIO extends IconButtonEIO {
     } else if(!selected && unselectedTooltip != null) {
       setToolTip(unselectedTooltip);
     }
+    return this;
   }
 
   @Override

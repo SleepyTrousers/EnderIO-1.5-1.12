@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -53,6 +54,11 @@ public class TileSpawnGuard extends AbstractPowerConsumerEntity implements IRang
     }
   }
   
+  @Override
+  public World getWorld() {
+    return getWorldObj();
+  }
+
   @Override
   public void invalidate() {
     super.invalidate();    

@@ -15,7 +15,7 @@ public class RangeEntity extends Entity {
   private IRanged spawnGuard;
 
   public RangeEntity(IRanged sg) {
-    super(sg.getWorldObj());
+    super(sg.getWorld());
     spawnGuard = sg;
     BlockCoord bc = spawnGuard.getLocation();
     setPosition(bc.x + 0.5, bc.y + 0.5, bc.z + 0.5);

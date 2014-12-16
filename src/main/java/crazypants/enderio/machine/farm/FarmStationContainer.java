@@ -24,10 +24,10 @@ public class FarmStationContainer extends AbstractMachineContainer {
       new Point(53, 55),
       new Point(71, 55),
 
-      new Point(106, 37),
-      new Point(124, 37),
-      new Point(106, 55),
-      new Point(124, 55),
+      new Point(116, 37),
+      new Point(134, 37),
+      new Point(116, 55),
+      new Point(134, 55),
     };
 
     int i=0;

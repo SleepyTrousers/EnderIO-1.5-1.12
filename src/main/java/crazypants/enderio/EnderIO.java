@@ -53,6 +53,7 @@ import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
@@ -675,6 +676,8 @@ public class EnderIO {
             FluidFuelRegister.instance.addFuel(msg.getNBTValue());
           } else if(IMC.FLUID_COOLANT_ADD.equals(key)) {
             FluidFuelRegister.instance.addCoolant(msg.getNBTValue());
+          } else if(IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
+            InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if(msg.isItemStackMessage()) {
           if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {

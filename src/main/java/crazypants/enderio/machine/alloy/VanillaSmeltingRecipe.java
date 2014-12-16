@@ -104,8 +104,10 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     if(output == null) {
       return new ResultStack[0];
     }
+    int stackSize = output.stackSize;
     output = OreDictionaryPreferences.instance.getPreferred(output);
     ItemStack result = output.copy();
+    result.stackSize = stackSize;
     result.stackSize = result.stackSize * getNumInputs(inputs);
     return new ResultStack[] { new ResultStack(result) };
   }

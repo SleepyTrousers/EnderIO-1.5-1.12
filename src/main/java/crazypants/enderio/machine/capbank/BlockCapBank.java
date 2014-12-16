@@ -30,6 +30,7 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
@@ -52,7 +53,7 @@ import crazypants.util.Lang;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
+public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable {
 
   public static int renderId = -1;
 
@@ -573,5 +574,12 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.BIT_DETAILED;
+  }
+
+  /* IRedstoneConnectable */
+  
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
   }
 }

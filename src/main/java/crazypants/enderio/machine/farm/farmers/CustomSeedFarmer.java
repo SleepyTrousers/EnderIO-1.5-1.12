@@ -160,8 +160,6 @@ public class CustomSeedFarmer implements IFarmerJoe {
     return new HarvestResult(result, bc);
   }
 
-  
-
   protected boolean tillBlock(TileFarmStation farm, BlockCoord plantingLocation) {
     World worldObj = farm.getWorldObj();
     BlockCoord dirtLoc = plantingLocation.getLocation(ForgeDirection.DOWN);

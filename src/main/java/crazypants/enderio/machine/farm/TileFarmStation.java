@@ -1,5 +1,8 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
@@ -48,8 +51,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   private int minToolSlot = 0;
   private int maxToolSlot = 1;
 
-  private int minSupSlot = maxToolSlot + 1;
-  private int maxSupSlot = minSupSlot + 4;
+  int minSupSlot = maxToolSlot + 1;
+  int maxSupSlot = minSupSlot + 4;
+  
+  List<Integer> lockedSlots = new ArrayList<Integer>();
 
   private final int upgradeBonusSize = 2;
 
@@ -259,7 +264,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(stack == null) {
       return false;
     }
-    if(i < 2) {
+    if(i <= maxToolSlot) {
       for (Class<?> toolType : FarmersCommune.instance.getToolTypes()) {
         if(getTool(stack.getItem().getClass()) == null && (Util.isType(stack, toolType) || getLooting(stack) > 0)) {
           return true;
@@ -267,7 +272,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
       return false;
     }
-    return FarmersCommune.instance.canPlant(stack);
+    return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
   }
 
   @Override
@@ -378,7 +383,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public boolean hasSeed(ItemStack seeds, BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    if(inv != null && inv.isItemEqual(seeds)) {
+    if(inv != null && (inv.stackSize > 1 || !isSlotLocked(slot)) && inv.isItemEqual(seeds)) {
       return true;
     }
     return false;
@@ -396,6 +401,10 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     ItemStack inv = inventory[slot];
     if(inv != null) {
       if(matchMetadata ? inv.isItemEqual(stack) : inv.getItem() == stack.getItem()) {
+        if (inv.stackSize <= 1 && isSlotLocked(slot)) {
+          return null;
+        }
+        
         ItemStack result = inv.copy();
         result.stackSize = 1;
         
@@ -418,7 +427,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public ItemStack getSeedTypeInSuppliesFor(BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    if(inv != null) {
+    if(inv != null && (inv.stackSize > 1 || !isSlotLocked(slot))) {
       return inv.copy();
     }
     return null;
@@ -505,6 +514,21 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     return new BlockCoord(nextX, lastScanned.y, nextZ);
   }
+  
+  public void toggleLockedState(int buttonID) {
+    if (worldObj.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketFarmLockedSlot(this, buttonID));
+    }
+    buttonID += minSupSlot;
+    if (lockedSlots.contains(buttonID)) {
+      lockedSlots.remove((Integer) buttonID); // hard cast otherwise it removes by index
+    } else {
+      lockedSlots.add(buttonID);
+    }
+  }
+  public boolean isSlotLocked(int slot) {
+    return lockedSlots.contains(slot);
+  }
 
   @Override
   public String getInventoryName() {
@@ -564,7 +588,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     currentTask = createTask();
-    
+    for (int i : nbtRoot.getIntArray("lockedSlots")) {
+      lockedSlots.add(i);
+    }
   }
   
   IPoweredTask createTask() {
@@ -575,6 +601,11 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
     nbtRoot.setBoolean("isActive", isActive());
+    int[] locked = new int[lockedSlots.size()];
+    for (int i = 0; i < lockedSlots.size(); i++) {
+      locked[i] = lockedSlots.get(i);
+    }
+    nbtRoot.setIntArray("lockedSlots", locked);
   }
 
 }

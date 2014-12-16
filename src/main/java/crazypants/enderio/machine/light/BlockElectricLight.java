@@ -20,11 +20,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.vecmath.Vector3f;
 
-public class BlockElectricLight extends BlockEio {
+public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
 
   static final float BLOCK_HEIGHT = 0.05f;
   static final float BLOCK_WIDTH = 0.3f;
@@ -267,5 +268,12 @@ public class BlockElectricLight extends BlockEio {
       return createDrop((TileElectricLight) te);
     }
     return new ItemStack(this);
+  }
+
+  /* IRedstoneConnectable */
+  
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
   }
 }

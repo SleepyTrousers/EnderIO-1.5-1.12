@@ -24,6 +24,7 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
 import com.mojang.authlib.GameProfile;
@@ -95,6 +96,11 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
     if(showingRange) {
       worldObj.spawnEntityInWorld(new RangeEntity(this));
     }
+  }
+
+  @Override
+  public World getWorld() {
+    return worldObj;
   }
 
   private void setUpdrade(Capacitors capacitorType) {

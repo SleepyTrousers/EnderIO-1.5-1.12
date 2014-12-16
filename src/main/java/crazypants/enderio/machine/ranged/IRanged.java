@@ -5,7 +5,7 @@ import crazypants.util.BlockCoord;
 
 public interface IRanged {
 
-  World getWorldObj();
+  World getWorld();
 
   BlockCoord getLocation();
 

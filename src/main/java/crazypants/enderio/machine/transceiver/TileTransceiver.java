@@ -27,12 +27,13 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
 import crazypants.util.FluidUtil;
 import crazypants.util.ItemUtil;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluidHandler, IItemBuffer, IInternalPowerHandler {
 
   //Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
@@ -337,6 +338,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   }
 
   //---------------- Power Handling
+
+  @Override
+  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    return 0;
+  }
 
   private void processPower() {
     List<Channel> sendTo = getSendChannels(ChannelType.POWER);

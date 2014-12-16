@@ -136,5 +136,8 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     RenderUtil.renderQuad2D(getGuiLeft() + x, getGuiTop() + y, 0, width, height, col);
     GL11.glDisable(GL11.GL_BLEND);
   }
-
+  
+  protected boolean isConfigOverlayEnabled() {
+    return configOverlay.isVisible();
+  }
 }
