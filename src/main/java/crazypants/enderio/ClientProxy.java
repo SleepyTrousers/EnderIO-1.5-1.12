@@ -198,6 +198,7 @@ public class ClientProxy extends CommonProxy {
     super.load();
 
     //make sure the tooltip stuff is registered
+    @SuppressWarnings("unused")
     TooltipAddera tta = TooltipAddera.instance;
 
     // Renderers
@@ -211,6 +212,7 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPowerMonitor), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockBuffer), machRen);
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
 

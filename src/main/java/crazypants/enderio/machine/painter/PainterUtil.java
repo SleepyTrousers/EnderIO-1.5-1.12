@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.painter;
 
+import com.google.common.base.Strings;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -23,16 +25,26 @@ public final class PainterUtil {
 
   public static Block getSourceBlock(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
+    return getSourceBlock(tag);
+  }
+
+  public static Block getSourceBlock(NBTTagCompound tag) {
     if(tag != null) {
       String blockId = tag.getString(BlockPainter.KEY_SOURCE_BLOCK_ID);
-      Block res = GameData.blockRegistry.get(blockId);
-      return res;
+      if(!Strings.isNullOrEmpty(blockId)) {
+        Block res = (Block) Block.blockRegistry.getObject(blockId);
+        return res;
+      }
     }
     return null;
   }
 
   public static int getSourceBlockMetadata(ItemStack item) {
     NBTTagCompound tag = item.getTagCompound();
+    return getSourceBlockMetadata(tag);
+  }
+
+  public static int getSourceBlockMetadata(NBTTagCompound tag) {
     if(tag != null) {
       return tag.getInteger(BlockPainter.KEY_SOURCE_BLOCK_META);
     }
@@ -57,6 +69,13 @@ public final class PainterUtil {
     if(tag == null) {
       tag = new NBTTagCompound();
       item.setTagCompound(tag);
+    }
+    setSourceBlock(item.getTagCompound(), source, meta);
+  }
+  
+  public static void setSourceBlock(NBTTagCompound tag, Block source, int meta) {
+    if (tag == null) {
+      return;
     }
     String name = Block.blockRegistry.getNameForObject(source);
     if(name != null && !name.trim().isEmpty()) {

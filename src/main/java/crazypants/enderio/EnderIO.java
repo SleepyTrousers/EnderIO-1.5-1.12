@@ -80,6 +80,7 @@ import crazypants.enderio.machine.PacketRedstoneMode;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.attractor.BlockAttractor;
+import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
@@ -239,6 +240,7 @@ public class EnderIO {
   public static BlockSpawnGuard blockSpawnGuard;
   public static BlockExperienceObelisk blockExperianceOblisk;
   public static BlockTransceiver blockTransceiver;
+  public static BlockBuffer blockBuffer;
 
   public static BlockKillerJoe blockKillerJoe;
 
@@ -337,6 +339,8 @@ public class EnderIO {
     blockVacuumChest = BlockVacuumChest.create();
 
     blockTransceiver = BlockTransceiver.create();
+    
+    blockBuffer = BlockBuffer.create();
 
     blockEnderIo = BlockEnderIO.create();
     blockTravelPlatform = BlockTravelAnchor.create();

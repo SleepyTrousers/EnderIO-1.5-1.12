@@ -324,10 +324,15 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
     BlockCoord loc = getLocation().getLocation(dir);
     TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+
+    return doPush(dir, te, slotDefinition.minOutputSlot, slotDefinition.maxInputSlot);
+  }
+  
+  protected boolean doPush(ForgeDirection dir, TileEntity te, int minSlot, int maxSlot) {
     if(te == null) {
       return false;
     }
-    for (int i = slotDefinition.minOutputSlot; i <= slotDefinition.maxOutputSlot; i++) {
+    for (int i = minSlot; i <= maxSlot; i++) {
       ItemStack item = inventory[i];
       if(item != null) {
         int num = ItemUtil.doInsertItem(te, item, dir.getOpposite());

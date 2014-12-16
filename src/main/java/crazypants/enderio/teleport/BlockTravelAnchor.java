@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -76,7 +75,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
   @Override
@@ -226,8 +225,8 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     return getUnlocalizedName();
   }
 
-  public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockTravelPlatform, 1, damage);
+  public ItemStack createItemStackForSourceBlock(Block block, int damage) {
+    ItemStack result = new ItemStack(this, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }
@@ -237,10 +236,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     return false;
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  public final class PainterTemplate extends BasicPainterTemplate {
 
-    public PainterTemplate(Block ta) {
-      super(ta);
+    public PainterTemplate() {
+      super(BlockTravelAnchor.this);
     }
 
     @Override
@@ -248,8 +247,6 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if(paintSource == null) {
         return new ResultStack[0];
-      } else if(paintSource.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform)) {
-        return new ResultStack[] { new ResultStack(new ItemStack(EnderIO.blockTravelPlatform)) };
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
