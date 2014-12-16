@@ -3,7 +3,9 @@ Version 2.2.4
 ------------------------------------------------------
 
 Changes
-- #1413 Added support for Dense Ores in SAG Mill and Alloy Furnace 
+- #1413 Added support for Dense Ores in SAG Mill and Alloy Furnace
+- #1209 Add API interface to allow forced connection of redstone conduits
+- #1029 Add lock buttons to farm seed slots
 
 Bugs
 - #1409 Energy conduit and capacitor interaction bug
