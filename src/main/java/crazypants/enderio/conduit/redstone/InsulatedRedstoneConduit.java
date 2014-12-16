@@ -24,6 +24,7 @@ import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -281,30 +282,25 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     }
     //Not set so figure it out
     BlockCoord loc = getLocation().getLocation(direction);
-    Block block = getBundle().getEntity().getWorldObj().getBlock(loc.x, loc.y, loc.z);
+    World world = getBundle().getEntity().getWorldObj();
+    Block block = world.getBlock(loc.x, loc.y, loc.z);
+    TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
+    if(block == null || block == EnderIO.blockConduitBundle) {
+      return false;
+    }
+    
     if(VANILLA_CONECTABLES.contains(block)) {
       return true;
     }
-
-    if(block == EnderIO.blockConduitBundle) {
-      return false;
+    
+    if (block instanceof IRedstoneConnectable) {
+      return ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
     }
-
-    if(block == EnderIO.blockCapacitorBank) {
-      return true;
+    
+    if (te instanceof IRedstoneConnectable) {
+      return ((IRedstoneConnectable) te).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
     }
-
-    if(block == EnderIO.blockElectricLight) {
-      return true;
-    }
-
-    if(block == null) {
-      return false;
-    }
-
-    World world = getBundle().getEntity().getWorldObj();
-    TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
     for(Class<?> connectable : connectableInterfaces.keySet()) {
@@ -320,7 +316,6 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     if(CONNECTABLE_CLASSES == null) {
       CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
       CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
-      CONNECTABLE_CLASSES.put(AbstractMachineEntity.class, false);
       try{
         Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
         CONNECTABLE_CLASSES.put(conInterface, false);
