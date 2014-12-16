@@ -71,9 +71,10 @@ public class IconButtonEIO extends GuiButton {
     }
   }
 
-  public void setIconMargin(int x, int y) {
+  public IconButtonEIO setIconMargin(int x, int y) {
     marginX = x;
     marginY = y;
+    return this;
   }
 
   public int getWidth() {

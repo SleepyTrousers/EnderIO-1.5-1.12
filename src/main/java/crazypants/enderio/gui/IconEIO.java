@@ -121,6 +121,9 @@ public final class IconEIO {
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 
+  public static final IconEIO UNLOCKED = new IconEIO(150, 245, 10, 10);
+  public static final IconEIO LOCKED   = new IconEIO(162, 245, 10, 10);
+  
   public final double minU;
   public final double maxU;
   public final double minV;
