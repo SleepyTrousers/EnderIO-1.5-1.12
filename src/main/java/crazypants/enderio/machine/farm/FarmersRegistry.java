@@ -24,11 +24,12 @@ public final class FarmersRegistry {
   public static void addFarmers() {
 
     addExtraUtilities();
-    addNutura();
+    addNatura();
     addTiC();
     addStillHungry();
     addIC2();
     addMFR();
+    addBoP();
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
@@ -104,7 +105,7 @@ public final class FarmersRegistry {
 
   }
 
-  private static void addNutura() {
+  private static void addNatura() {
     String mod = "Natura";
     String blockName = "N Crops";
 
@@ -178,6 +179,34 @@ public final class FarmersRegistry {
     CustomSeedFarmer farmer = addSeed(mod, name, name, Blocks.end_stone, GameRegistry.findBlock(mod, "decorativeBlock1"));
     if(farmer != null) {
       farmer.setIgnoreGroundCanSustainCheck(true);
+    }
+  }
+
+  //Support for Biomes o' Plenty plants
+  private static void addBoP() {
+    String mod = "BiomesOPlenty";
+    String blockName = "saplings";
+    String blockColorizedName = "colorizedSaplings";
+
+    Block saplingBlock = GameRegistry.findBlock(mod, blockName);
+    Block colorizedSaplingBlock = GameRegistry.findBlock(mod, blockColorizedName);
+
+    if (saplingBlock != null) {
+      FarmersCommune.joinCommune(new TreeFarmer(saplingBlock,
+              GameRegistry.findBlock(mod, "logs1"),
+              GameRegistry.findBlock(mod, "logs2"),
+              GameRegistry.findBlock(mod, "logs3"),
+              GameRegistry.findBlock(mod, "logs4"),
+              GameRegistry.findBlock(mod, "bamboo")));
+    }
+
+    if (colorizedSaplingBlock != null){
+      FarmersCommune.joinCommune(new TreeFarmer(colorizedSaplingBlock,
+              GameRegistry.findBlock(mod, "logs1"),
+              GameRegistry.findBlock(mod, "logs2"),
+              GameRegistry.findBlock(mod, "logs3"),
+              GameRegistry.findBlock(mod, "logs4"),
+              GameRegistry.findBlock(mod, "bamboo")));
     }
   }
 
