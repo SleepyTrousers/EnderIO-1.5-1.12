@@ -152,7 +152,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
     if(itemDrops != null) {
       for (ItemStack stack : itemDrops) {                
         worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));                
-        if(TreeHarvestUtil.canDropApples(block, meta)) {
+        if(TreeHarvestUtil.canDropFood(block, meta)) {
           if(worldObj.rand.nextInt(200) == 0) {            
             worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
           }
