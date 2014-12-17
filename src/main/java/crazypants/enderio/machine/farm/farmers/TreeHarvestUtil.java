@@ -1,20 +1,63 @@
 package crazypants.enderio.machine.farm.farmers;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.farm.TileFarmStation;
 import crazypants.util.BlockCoord;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TreeHarvestUtil {
 
-  public static boolean canDropApples(Block block, int meta) {
-    return 
-        (block instanceof BlockOldLeaf && (meta == 0 || meta == 8)) || //oak
-            (block instanceof BlockNewLeaf && (meta == 1 || meta == 9)); //giant oak
+  // Determine if harvested leaves can drop fruit items.
+  public static boolean canDropFood(Block block, int meta){
+    if (isBlockBOPFruitLeaf(block)) {
+      // Block is either BoP Apple or Persimmon leaf
+      return true;
+    } else if (block instanceof BlockOldLeaf && (meta == 0 || meta == 4 || meta == 8 || meta == 12)) {
+      // Block is vanilla Minecraft Oak Leaf
+      return true;
+    } else if (block instanceof BlockNewLeaf && (meta == 1 || meta == 5 || meta == 9 || meta == 13)){
+      // Block is vanilla Minecraft Dark Oak Leaf
+      return true;
+    }
+    return false;
+  }
+
+  // Calculate Drop chance for fruit when harvesting leaves.
+  public static EntityItem dropFoodAsItemWithChance(World world, BlockCoord bc, Block block, int meta) {
+    ItemStack fruit = new ItemStack(Items.apple);
+
+    // Biomes O' Plenty
+    if (isBlockBOPFruitLeaf(block)) {
+      Class<?> LeafClass = block.getClass();
+      Class<?> BlockBOPPersimmonLeaves = GameRegistry.findBlock("BiomesOPlenty", "persimmonLeaves").getClass();
+
+      Item food = GameRegistry.findItem("BiomesOPlenty", "food");
+      if (LeafClass == BlockBOPPersimmonLeaves) fruit = new ItemStack(food, 1, 8); // Change fruit to Persimmon.
+
+      if ((meta & 3) == 3 && world.rand.nextInt(16) == 0) return new EntityItem(world, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, fruit);
+      else if ((meta & 3) == 2 && world.rand.nextInt(64) == 0) return new EntityItem(world, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, fruit);
+      else if ((meta & 3) == 1 && world.rand.nextInt(128) == 0) return new EntityItem(world, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, fruit);
+      else if ((meta & 3) == 0 && world.rand.nextInt(256) == 0) return new EntityItem(world, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, fruit);
+    }
+
+    // Vanilla Oak and Dark Oak trees.
+    if(world.rand.nextInt(200) == 0) {
+      return new EntityItem(world, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, fruit);
+    }
+    return null;
   }
   
   private int horizontalRange;
@@ -53,7 +96,7 @@ public class TreeHarvestUtil {
     }
 
     Block blk = world.getBlock(bc.x, bc.y,bc.z);
-    boolean isLeaves = blk instanceof BlockLeaves;
+    boolean isLeaves = areTheseLeaves(blk);
     if(target.isTarget(blk, world.getBlockMetadata(bc.x, bc.y, bc.z)) || isLeaves) {
       res.harvestedBlocks.add(bc);
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -105,6 +148,46 @@ public class TreeHarvestUtil {
       return false;
     }
     return true;
+  }
+
+  private boolean areTheseLeaves(Block blk){
+    List<Class<?>> leafTypes = new ArrayList<Class<?>>();
+
+    // Leaf Blocks that subclass standard vanilla Minecraft BlockLeaves
+    if (blk instanceof BlockLeaves) return true;
+
+    // Add Biomes O' Plenty custom leaves
+    if (Loader.isModLoaded("BiomesOPlenty")) try {
+      Class<?> BlockBOPAppleLeaves = Class.forName("biomesoplenty.common.blocks.BlockBOPAppleLeaves");
+      Class<?> BlockBOPColorizedLeaves = Class.forName("biomesoplenty.common.blocks.BlockBOPColorizedLeaves");
+      Class<?> BlockBOPLeaves = Class.forName("biomesoplenty.common.blocks.BlockBOPLeaves");
+      Class<?> BlockBOPPersimmonLeaves = Class.forName("biomesoplenty.common.blocks.BlockBOPPersimmonLeaves");
+
+      leafTypes.add(BlockBOPAppleLeaves);
+      leafTypes.add(BlockBOPColorizedLeaves);
+      leafTypes.add(BlockBOPLeaves);
+      leafTypes.add(BlockBOPPersimmonLeaves);
+    } catch (Exception e) {
+      // No BoP leaf blocks found... Carry on.
+    }
+    return leafTypes.contains(blk.getClass());
+  }
+
+  private static boolean isBlockBOPFruitLeaf(Block block) {
+    String bop = "BiomesOPlenty";
+    if (Loader.isModLoaded(bop)) {
+      try {
+        Class<?> LeafClass = block.getClass();
+        Class<?> BlockBOPAppleLeaves = GameRegistry.findBlock(bop, "appleLeaves").getClass();
+        Class<?> BlockBOPPersimmonLeaves = GameRegistry.findBlock(bop, "persimmonLeaves").getClass();
+        if (LeafClass == BlockBOPAppleLeaves || LeafClass == BlockBOPPersimmonLeaves) {
+          return true;
+        }
+      } catch (Exception e) {
+        // Not a BoP fruit bearing leaf block... Carry on.
+      }
+    }
+    return false;
   }
   
   private static final class HarvestTarget {
