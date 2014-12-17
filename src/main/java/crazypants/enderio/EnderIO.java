@@ -119,12 +119,12 @@ import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
-import crazypants.enderio.machine.still.BlockVat;
-import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vat.BlockVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.ItemXpTransfer;
@@ -651,11 +651,11 @@ public class EnderIO {
         if(msg.isStringMessage()) {
           String value = msg.getStringValue();
           if(IMC.VAT_RECIPE.equals(key)) {
-            VatRecipeManager.getInstance().addCustumRecipes(value);
+            VatRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SAG_RECIPE.equals(key)) {
             CrusherRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.ALLOY_RECIPE.equals(key)) {
-            AlloyRecipeManager.getInstance().addCustumRecipes(value);
+            AlloyRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
@@ -665,7 +665,7 @@ public class EnderIO {
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
-            SliceAndSpliceRecipeManager.getInstance().addCustumRecipes(key);
+            SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
           }
         } else if(msg.isNBTMessage()) {
           if(IMC.SOUL_BINDER_RECIPE.equals(key)) {

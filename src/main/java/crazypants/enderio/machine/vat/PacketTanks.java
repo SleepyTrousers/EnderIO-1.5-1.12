@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.still;
+package crazypants.enderio.machine.vat;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

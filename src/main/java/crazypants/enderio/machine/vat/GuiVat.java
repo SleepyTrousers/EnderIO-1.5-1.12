@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.still;
+package crazypants.enderio.machine.vat;
 
 import java.awt.Color;
 import java.awt.Rectangle;

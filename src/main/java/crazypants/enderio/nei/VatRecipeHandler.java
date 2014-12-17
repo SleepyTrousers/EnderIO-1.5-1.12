@@ -22,8 +22,8 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.still.GuiVat;
-import crazypants.enderio.machine.still.VatRecipeManager;
+import crazypants.enderio.machine.vat.GuiVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.render.RenderUtil;
 import crazypants.util.FluidUtil;
 
