@@ -41,7 +41,7 @@ public class ManyToOneRecipeManager {
     return null;
   }
 
-  public void addCustumRecipes(String xmlDef) {
+  public void addCustomRecipes(String xmlDef) {
     RecipeConfig config;
     CustomTagHandler tagHandler = createCustomTagHandler();
     try {

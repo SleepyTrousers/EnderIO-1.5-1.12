@@ -44,7 +44,7 @@ public class VatRecipeManager {
 
   }
 
-  public void addCustumRecipes(String xmlDef) {
+  public void addCustomRecipes(String xmlDef) {
     RecipeConfig config;
     try {
       config = RecipeConfigParser.parse(xmlDef, null);

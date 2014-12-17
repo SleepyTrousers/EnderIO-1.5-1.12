@@ -22,21 +22,21 @@ public final class IMC {
 
   /**
    * Key for a string message to add Vat recipes. Calls
-   * {@link VatRecipeManager#addCustumRecipes(String)} with the string value of
+   * {@link VatRecipeManager#addCustomRecipes(String)} with the string value of
    * the message.
    */
   public static final String VAT_RECIPE = "recipe:vat";
 
   /**
    * Key for a string message to add SAGMill recipes. Calls
-   * {@link CrusherRecipeManager#addCustumRecipes(String)} with the string value
+   * {@link CrusherRecipeManager#addCustomRecipes(String)} with the string value
    * of the message.
    */
   public static final String SAG_RECIPE = "recipe:sagmill";
 
   /**
    * Key for a string message to add Alloy Smelter recipes. Calls
-   * {@link AlloyRecipeManager#addCustumRecipes(String)} with the string value
+   * {@link AlloyRecipeManager#addCustomRecipes(String)} with the string value
    * of the message.
    */
   public static final String ALLOY_RECIPE = "recipe:alloysmelter";
@@ -51,7 +51,7 @@ public final class IMC {
 
   /**
    * Key for a string message to add Slice'N'Splice recipes. Calls
-   * {@link SliceAndSpliceRecipeManager#addCustumRecipes(String)} with the
+   * {@link SliceAndSpliceRecipeManager#addCustomRecipes(String)} with the
    * string value of the message.
    */
   public static final String SLINE_N_SPLICE_RECIPE = "recipe:slicensplice";
