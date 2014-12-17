@@ -24,6 +24,7 @@ import cofh.api.tileentity.IRedstoneControl;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -32,8 +33,6 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
 import crazypants.render.IconUtil;
@@ -63,12 +62,70 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     });
   }  
 
-  private static List<Block> VANILLA_CONECTABLES = Arrays.asList(Blocks.redstone_lamp, Blocks.redstone_torch, Blocks.redstone_wire, Blocks.redstone_block,
+  private static final List<Block> CONECTABLE_BLOCKS = Arrays.asList(Blocks.redstone_lamp, Blocks.redstone_torch, Blocks.redstone_wire, Blocks.redstone_block,
       Blocks.dispenser, Blocks.lever, Blocks.wooden_button, Blocks.stone_button, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate,
       Blocks.dropper, Blocks.daylight_detector, Blocks.command_block, Blocks.golden_rail, Blocks.trapped_chest);
   
 
   private static Map<Class<?>, Boolean> CONNECTABLE_CLASSES = null;
+
+  public static void addConnectableBlock(NBTTagCompound nbt) {
+    if(nbt == null) {
+      Log.warn("InsulatedRedstoneConduit: An attempt was made to register a redstone connectable using a null NBT");
+      return;
+    }
+    boolean connectable = true;
+    if(nbt.hasKey("isConnectable")) {
+      connectable = nbt.getBoolean("isConnectable");
+    }
+    String className = nbt.getString("className");
+    addConnectableInterface(className, connectable);
+  }
+
+  public static void addConnectableBlock(Block block) {
+    if(block == null) {
+      Log.warn("InsulatedRedstoneConduit: An attempt was made to register a redstone connectable using a null Block");
+      return;
+    }
+    CONECTABLE_BLOCKS.add(block);
+  }
+
+  public static void addConnectableInterface(String className, boolean connectable) {
+    try {
+      Class<?> clz = Class.forName(className);
+      addConnectableInterface(clz, connectable);
+    } catch (Exception e) {
+      Log.warn("InsulatedRedstoneConduit: An attempt was made to register " + className + " as connectable but it could not be loaded");
+    }
+  }
+
+  public static void addConnectableInterface(Class<?> clazz, boolean connectable) {
+    if(clazz == null) {
+      Log.warn("InsulatedRedstoneConduit: An attempt was made to register a null class as a connectable");
+      return;
+    }
+    getConnectableInterfaces().put(clazz, connectable);
+  }
+
+  private static Map<Class<?>, Boolean> getConnectableInterfaces() {
+    if(CONNECTABLE_CLASSES == null) {
+      CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
+      CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
+      try {
+        Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
+        CONNECTABLE_CLASSES.put(conInterface, false);
+      } catch (Throwable e) {
+        //NO-OP
+      }
+      try {
+        Class<?> ccInterface = Class.forName("dan200.computercraft.shared.computer.blocks.IComputerTile");
+        CONNECTABLE_CLASSES.put(ccInterface, true);
+      } catch (Throwable e) {
+        //NO-OP
+      }
+    }
+    return CONNECTABLE_CLASSES;
+  }
 
   private Map<ForgeDirection, ConnectionMode> forcedConnections = new HashMap<ForgeDirection, ConnectionMode>();
 
@@ -290,7 +347,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return false;
     }
     
-    if(VANILLA_CONECTABLES.contains(block)) {
+    if(CONECTABLE_BLOCKS.contains(block)) {
       return true;
     }
     
@@ -310,26 +367,6 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     }    
 
     return false;
-  }
-
-  private static Map<Class<?>, Boolean> getConnectableInterfaces() {
-    if(CONNECTABLE_CLASSES == null) {
-      CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
-      CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
-      try{
-        Class<?> conInterface = Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
-        CONNECTABLE_CLASSES.put(conInterface, false);
-      } catch(Throwable e) {
-        //NO-OP
-      }
-      try{
-        Class<?> ccInterface = Class.forName("dan200.computercraft.shared.computer.blocks.IComputerTile");
-        CONNECTABLE_CLASSES.put(ccInterface, true);
-      } catch(Throwable e) {
-        //NO-OP
-      }
-    }
-    return CONNECTABLE_CLASSES;
   }
 
   @Override

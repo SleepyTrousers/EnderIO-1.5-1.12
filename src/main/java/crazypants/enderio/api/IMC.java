@@ -1,5 +1,6 @@
 package crazypants.enderio.api;
 
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -120,6 +121,14 @@ public final class IMC {
    * value of the message.
    */
   public static final String TELEPORT_BLACKLIST_ADD = "teleport:blacklist:add";
+
+  /**
+   * Key for an NBT message to register a block or tile entity as connectable to
+   * insulated redstone conduits. Calls
+   * {@link InsulatedRedstoneConduit#addConnectableBlock(net.minecraft.nbt.NBTTagCompound)}
+   * with the NBT value of the message.
+   */
+  public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
 
 
   private IMC() {
