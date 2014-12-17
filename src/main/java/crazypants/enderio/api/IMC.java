@@ -9,7 +9,7 @@ import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.still.VatRecipeManager;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.teleport.TravelController;
 
 /**
