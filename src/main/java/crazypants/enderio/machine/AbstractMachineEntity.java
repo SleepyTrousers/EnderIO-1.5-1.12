@@ -27,6 +27,7 @@ import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
+import crazypants.util.Rotation;
 
 public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable, 
   IRedstoneConnectable, IIoConfigurable {
@@ -673,4 +674,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
     return true;
   }
+  
+  public void rotate(ForgeDirection axis) {
+	  this.setFacing(Rotation.newSide(facing, axis));
+  }
+  
 }

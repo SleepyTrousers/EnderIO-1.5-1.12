@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.common.network.IGuiHandler;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
@@ -164,6 +165,16 @@ public class BlockEnchanter extends BlockEio implements IGuiHandler, IResourceTo
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {
     return getUnlocalizedName();
+  }
+  
+  @Override
+  public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
+	TileEntity te=world.getTileEntity(x,y,z);
+	if(te instanceof TileEnchanter) {
+	  ((TileEnchanter) te).rotate(axis);
+	  return true;
+	}
+	return false;
   }
 
 }

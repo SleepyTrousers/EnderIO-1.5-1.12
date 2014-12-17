@@ -21,6 +21,7 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ForgeDirectionOffsets;
+import crazypants.util.Rotation;
 import crazypants.vecmath.Vector3d;
 
 public class TileElectricLight extends TileEntityEio implements IInternalPowerReceiver {
@@ -546,5 +547,9 @@ public class TileElectricLight extends TileEntityEio implements IInternalPowerRe
   @Override
   public boolean displayPower() {
     return isRequiresPower();
+  }
+
+  public void rotate(ForgeDirection axis) {
+	this.face=ForgeDirection.VALID_DIRECTIONS[Rotation.newSide(face.ordinal(), axis)];
   }
 }

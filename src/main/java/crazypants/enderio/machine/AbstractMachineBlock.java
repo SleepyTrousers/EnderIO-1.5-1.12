@@ -335,6 +335,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     }
     return false;
   }
+  
+  @Override
+  public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
+	  TileEntity te=world.getTileEntity(x, y, z);
+	  if(te instanceof AbstractMachineEntity) {
+		  ((AbstractMachineEntity) te).rotate(axis);
+		  return true;
+	  }
+	  return false;
+  }
 
   @Override
   public String getUnlocalizedNameForTooltip(ItemStack stack) {
@@ -349,4 +359,5 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
   }
+  
 }

@@ -924,4 +924,14 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     IConduitBundle bundle = (IConduitBundle) te;
     return bundle.getConduit(IRedstoneConduit.class);
   }
+  
+  @Override
+  public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis) {
+	  TileEntity te=world.getTileEntity(x, y, z);
+	  if(te instanceof TileConduitBundle) {
+		  ((TileConduitBundle) te).rotate(axis);
+		  return true;
+	  }
+	  return false;
+  }
 }
