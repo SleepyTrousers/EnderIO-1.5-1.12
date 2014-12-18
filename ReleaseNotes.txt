@@ -1,4 +1,15 @@
 ------------------------------------------------------
+Version 2.2.5
+------------------------------------------------------
+Changes
+- Killer joe can now have its sword extracted
+- Killer joe will now update its render properly when a sword is added/removed
+
+Bugs
+- Update CoFHAPIProps.java version to prevent other RF API versions loading instead of EnderIO's
+- Fix right clicking redstone color buttons not making the clicky noise
+
+------------------------------------------------------
 Version 2.2.4
 ------------------------------------------------------
 
