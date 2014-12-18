@@ -65,6 +65,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private float prevSwingProgress;
 
   private ExperienceContainer xpCon = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
+  
+  private boolean hadSword;
 
   public TileKillerJoe() {
     super(new SlotDefinition(1, 0, 0));
@@ -99,6 +101,10 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     hooverXP();
     if(worldObj != null && !worldObj.isRemote) {
       getAttackera().onUpdate();
+      if (inventory[0] != null != hadSword) {
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        hadSword = inventory[0] != null;
+      }
     }
     super.updateEntity();
   }
@@ -106,6 +112,23 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   @Override
   public ExperienceContainer getContainer() {
     return xpCon;
+  }
+  
+  private static final int[] slots = new int[1];
+  @Override
+  public int[] getAccessibleSlotsFromSide(int var1) {
+    return slots;
+  }
+  
+  @Override
+  public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
+    if(isSideDisabled(side)) {
+      return false;
+    }
+    if(inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
+      return false;
+    }
+    return itemstack.getItem() == inventory[slot].getItem();
   }
 
   @Override
