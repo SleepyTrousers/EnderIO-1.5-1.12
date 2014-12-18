@@ -5,6 +5,7 @@ import java.util.Set;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.api.DyeColor;
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.conduit.IConduit;
 
 public interface IRedstoneConduit extends IConduit {

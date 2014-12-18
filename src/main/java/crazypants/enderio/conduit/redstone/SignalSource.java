@@ -3,6 +3,7 @@ package crazypants.enderio.conduit.redstone;
 import java.util.HashSet;
 import java.util.Set;
 
+import crazypants.enderio.api.redstone.Signal;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class SignalSource {

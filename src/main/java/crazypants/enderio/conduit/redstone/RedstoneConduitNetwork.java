@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.redstone.IRedstoneReceiver;
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.util.BlockCoord;
@@ -193,17 +194,12 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     if(signal != null /*&& signal.strength >= 15 && signal.x == te.xCoord && signal.y == te.yCoord && signal.z == te.zCoord*/) {
       for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
         BlockCoord loc = new BlockCoord(te).getLocation(dir);
-        Block block;
-        if ((block = worldObj.getBlock(loc.x, loc.y, loc.z)).isNormalCube()) {
+        Block block = worldObj.getBlock(loc.x, loc.y, loc.z);
+        if(con instanceof IInsulatedRedstoneConduit && block instanceof IRedstoneReceiver) {
+          ((IRedstoneReceiver) block).signalChanged(worldObj, dir, signal);
+        }
+        if(block.isNormalCube()) {
           worldObj.notifyBlockOfNeighborChange(loc.x, loc.y, loc.z, EnderIO.blockConduitBundle);
-          if (con instanceof IInsulatedRedstoneConduit && block instanceof IRedstoneReceiver) {
-            Set<Signal> outputs = con.getNetworkOutputs(dir);
-            byte[] strengths = new byte[16];
-            for (Signal s: outputs) {
-              strengths[s.color.ordinal()] = (byte) s.strength;
-            }
-            ((IRedstoneReceiver) block).inputsChanged(worldObj, loc.x, loc.y, loc.z, dir, strengths);
-          }
         }
       }
     }

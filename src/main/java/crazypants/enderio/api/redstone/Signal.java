@@ -1,15 +1,37 @@
-package crazypants.enderio.conduit.redstone;
+package crazypants.enderio.api.redstone;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.api.DyeColor;
 
+/**
+ * A class to represent a signal in a redstone conduit network.
+ */
 public class Signal {
 
+  /**
+   * X coordinate of the conduit this signal exists in.
+   */
   public final int x;
+  /**
+   * Y coordinate of the conduit this signal exists in.
+   */
   public final int y;
+  /**
+   * Z coordinate of the conduit this signal exists in.
+   */
   public final int z;
+  /**
+   * The direction this signal is being received from. Note that this is NOT the
+   * direction of output.
+   */
   public final ForgeDirection dir;
+  /**
+   * The redstone signal strength of this signal
+   */
   public final int strength;
+  /**
+   * The {@link DyeColor color} of this signal
+   */
   public final DyeColor color;
 
   public Signal(int x, int y, int z, ForgeDirection dir, int strength, DyeColor color) {

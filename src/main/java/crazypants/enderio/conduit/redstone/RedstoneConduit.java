@@ -25,6 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.api.redstone.IRedstoneEmitter;
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;

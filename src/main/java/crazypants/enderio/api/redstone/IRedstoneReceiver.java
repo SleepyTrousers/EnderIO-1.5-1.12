@@ -2,6 +2,7 @@ package crazypants.enderio.api.redstone;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.api.DyeColor;
 
 /**
  * Implement this on blocks that need to receive and react to redstone signals
@@ -24,9 +25,9 @@ public interface IRedstoneReceiver extends IRedstoneConnectable {
    * @param to
    *          The {@link ForgeDirection} that the output is going to
    * 
-   * @return A {@code byte[]} of redstone strength, in order of color. The order
-   *         of colors is defined in {@link DyeColor}.
+   * @return A {@link Signalbyte[]} of redstone strength, in order of color. The
+   *         order of colors is defined in {@link DyeColor}.
    */
-  void inputsChanged(World world, int x, int y, int z, ForgeDirection from, byte[] inputs);
+  void signalChanged(World world, ForgeDirection from, Signal signal);
 
 }

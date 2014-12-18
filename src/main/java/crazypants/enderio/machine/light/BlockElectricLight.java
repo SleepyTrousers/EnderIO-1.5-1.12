@@ -20,12 +20,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.api.redstone.IRedstoneReceiver;
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.vecmath.Vector3f;
 
-public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
+public class BlockElectricLight extends BlockEio implements IRedstoneReceiver {
 
   static final float BLOCK_HEIGHT = 0.05f;
   static final float BLOCK_WIDTH = 0.3f;
@@ -174,18 +175,18 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
       ((TileElectricLight) te).onNeighborBlockChange(blockID);
     }
   }
-  
+
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
     ItemStack stack = player.getCurrentEquippedItem();
-    if (stack == null) {
+    if(stack == null) {
       return false;
     }
     Item equipped = stack.getItem();
     ITool tool = ToolUtil.getEquippedTool(player);
     if(tool != null && tool.canUse(stack, player, x, y, z) && player.isSneaking() && !world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if (te instanceof TileElectricLight) {
+      if(te instanceof TileElectricLight) {
         ((TileElectricLight) te).onBlockRemoved();
         world.setBlockToAir(x, y, z);
         if(!player.capabilities.isCreativeMode) {
@@ -219,7 +220,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
 
   @Override
   public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    
+
     ArrayList<ItemStack> res = new ArrayList<ItemStack>();
     if(!world.isRemote) {
       TileEntity t = world.getTileEntity(x, y, z);
@@ -227,7 +228,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
       if(t instanceof TileElectricLight) {
         te = (TileElectricLight) t;
       }
-      if(t != null) {        
+      if(t != null) {
         ItemStack st = createDrop(te);
         res.add(st);
       }
@@ -239,7 +240,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     int meta = te.isInvereted() ? 1 : 0;
     if(!te.isRequiresPower()) {
       meta += 2;
-    } else if (te.isWireless()) {
+    } else if(te.isWireless()) {
       meta += 4;
     }
     ItemStack st = new ItemStack(this, 1, meta);
@@ -252,7 +253,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileElectricLight) {
-        TileElectricLight cb = (TileElectricLight) te;                
+        TileElectricLight cb = (TileElectricLight) te;
         if(!player.capabilities.isCreativeMode) {
           dropBlockAsItem(world, x, y, z, createDrop(cb));
         }
@@ -260,18 +261,18 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     }
     return super.removedByPlayer(world, player, x, y, z);
   }
-  
+
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te != null && te instanceof TileElectricLight) {
+    if(te != null && te instanceof TileElectricLight) {
       return createDrop((TileElectricLight) te);
     }
     return new ItemStack(this);
   }
 
   /* IRedstoneConnectable */
-  
+
   @Override
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
     return true;
@@ -280,5 +281,10 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
   @Override
   public boolean isSpecialConnection(World world, int x, int y, int z, ForgeDirection from) {
     return false;
+  }
+
+  @Override
+  public void signalChanged(World world, ForgeDirection from, Signal signal) {
+    System.out.println(from + ": " + signal);
   }
 }

@@ -12,6 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.DyeColor;
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;

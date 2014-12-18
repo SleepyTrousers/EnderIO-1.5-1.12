@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.redstone;
 
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.conduit.IConduitBundle;
 import dan200.computercraft.api.ComputerCraftAPI;
 import dan200.computercraft.api.redstone.IBundledRedstoneProvider;

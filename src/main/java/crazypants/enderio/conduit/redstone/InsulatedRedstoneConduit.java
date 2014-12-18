@@ -28,6 +28,8 @@ import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.Log;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.api.redstone.IRedstoneEmitter;
+import crazypants.enderio.api.redstone.IRedstoneReceiver;
+import crazypants.enderio.api.redstone.Signal;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
