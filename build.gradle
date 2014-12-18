@@ -156,5 +156,5 @@ curse {
     if (project.hasProperty('cp_curseforge_key')) apiKey = project.curseforge_key
     projectId = project.curse_projectId
     changelog = getChangelogText()
-    releaseType = 'beta'
+    releaseType = 'release'
 }
