@@ -339,7 +339,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().getWorldObj();
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
-    if (block instanceof IRedstoneReceiever && ((IRedstoneReceiever) block).isSpecialConnection(world, loc.x, loc.y, loc.z, dir)) {
+    if (block instanceof IRedstoneReceiever && ((IRedstoneReceiever) block).isSpecialConnection(world, loc.x, loc.y, loc.z, dir.getOpposite())) {
       return true;
     }
     

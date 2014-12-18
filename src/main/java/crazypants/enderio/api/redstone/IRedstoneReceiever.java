@@ -22,8 +22,8 @@ public interface IRedstoneReceiever extends IRedstoneConnectable {
    *          Y position of your block
    * @param z
    *          Z position of your block
-   * @param to
-   *          The {@link ForgeDirection} that the output is going to
+   * @param from
+   *          The {@link ForgeDirection} that the conduit is coming from
    * 
    * @return Whether this connection is special
    */
