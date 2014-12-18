@@ -3,9 +3,11 @@ package crazypants.enderio.gui;
 import java.awt.Rectangle;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemDye;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -84,6 +86,7 @@ public class ColorButton extends IconButtonEIO {
       Rectangle r = new Rectangle(xPosition, yPosition, width, height);
       if(r.contains(mouseX, mouseY)) {
         if(rightMouseDown && Mouse.getEventButton() == 1 && !Mouse.getEventButtonState()) {
+          Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
           prevColor();
           gui.doActionPerformed(this);
         }

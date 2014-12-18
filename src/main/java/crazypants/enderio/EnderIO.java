@@ -53,6 +53,7 @@ import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.enchantment.Enchantments;
@@ -118,12 +119,12 @@ import crazypants.enderio.machine.spawner.BlockPoweredSpawner;
 import crazypants.enderio.machine.spawner.ItemBrokenSpawner;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
-import crazypants.enderio.machine.still.BlockVat;
-import crazypants.enderio.machine.still.VatRecipeManager;
 import crazypants.enderio.machine.tank.BlockTank;
 import crazypants.enderio.machine.transceiver.BlockTransceiver;
 import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
+import crazypants.enderio.machine.vat.BlockVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.ItemXpTransfer;
@@ -650,11 +651,11 @@ public class EnderIO {
         if(msg.isStringMessage()) {
           String value = msg.getStringValue();
           if(IMC.VAT_RECIPE.equals(key)) {
-            VatRecipeManager.getInstance().addCustumRecipes(value);
+            VatRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SAG_RECIPE.equals(key)) {
             CrusherRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.ALLOY_RECIPE.equals(key)) {
-            AlloyRecipeManager.getInstance().addCustumRecipes(value);
+            AlloyRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.POWERED_SPAWNER_BLACKLIST_ADD.equals(key)) {
             PoweredSpawnerConfig.getInstance().addToBlacklist(value);
           } else if(IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
@@ -664,7 +665,7 @@ public class EnderIO {
           } else if(IMC.ENCHANTER_RECIPE.equals(key)) {
             EnchanterRecipeManager.getInstance().addCustomRecipes(value);
           } else if(IMC.SLINE_N_SPLICE_RECIPE.equals(key)) {
-            SliceAndSpliceRecipeManager.getInstance().addCustumRecipes(key);
+            SliceAndSpliceRecipeManager.getInstance().addCustomRecipes(key);
           }
         } else if(msg.isNBTMessage()) {
           if(IMC.SOUL_BINDER_RECIPE.equals(key)) {
@@ -675,6 +676,8 @@ public class EnderIO {
             FluidFuelRegister.instance.addFuel(msg.getNBTValue());
           } else if(IMC.FLUID_COOLANT_ADD.equals(key)) {
             FluidFuelRegister.instance.addCoolant(msg.getNBTValue());
+          } else if(IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
+            InsulatedRedstoneConduit.addConnectableBlock(msg.getNBTValue());
           }
         } else if(msg.isItemStackMessage()) {
           if(IMC.PAINTER_WHITELIST_ADD.equals(key)) {

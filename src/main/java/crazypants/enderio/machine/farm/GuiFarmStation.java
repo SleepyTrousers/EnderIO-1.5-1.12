@@ -49,12 +49,14 @@ public class GuiFarmStation extends GuiPoweredMachineBase {
   @Override
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
-    
+
     if(inventorySlots.inventorySlots.size() >= farm.maxSupSlot && !isConfigOverlayEnabled()) {
       for (int i : farm.lockedSlots) {
-        Slot slot = inventorySlots.getSlot(i);
-        GL11.glEnable(GL11.GL_BLEND);
-        RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
+        if (i < inventorySlots.inventorySlots.size()) { // hack to allow old broken farms to be opened
+          Slot slot = inventorySlots.getSlot(i);
+          GL11.glEnable(GL11.GL_BLEND);
+          RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
+        }
       }
     }
   }
@@ -83,7 +85,10 @@ public class GuiFarmStation extends GuiPoweredMachineBase {
   
   @Override
   protected void actionPerformed(GuiButton b) {
-    farm.toggleLockedState(b.id);
+    if (b instanceof ToggleButtonEIO) { 
+      farm.toggleLockedState(b.id);
+    }
+    super.actionPerformed(b);
   }
 
   @Override

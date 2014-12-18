@@ -1,5 +1,6 @@
 package crazypants.enderio.api;
 
+import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.item.ItemSoulVessel;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
@@ -9,7 +10,7 @@ import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machine.soul.SoulBinderRecipeManager;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
-import crazypants.enderio.machine.still.VatRecipeManager;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.teleport.TravelController;
 
 /**
@@ -21,21 +22,21 @@ public final class IMC {
 
   /**
    * Key for a string message to add Vat recipes. Calls
-   * {@link VatRecipeManager#addCustumRecipes(String)} with the string value of
+   * {@link VatRecipeManager#addCustomRecipes(String)} with the string value of
    * the message.
    */
   public static final String VAT_RECIPE = "recipe:vat";
 
   /**
    * Key for a string message to add SAGMill recipes. Calls
-   * {@link CrusherRecipeManager#addCustumRecipes(String)} with the string value
+   * {@link CrusherRecipeManager#addCustomRecipes(String)} with the string value
    * of the message.
    */
   public static final String SAG_RECIPE = "recipe:sagmill";
 
   /**
    * Key for a string message to add Alloy Smelter recipes. Calls
-   * {@link AlloyRecipeManager#addCustumRecipes(String)} with the string value
+   * {@link AlloyRecipeManager#addCustomRecipes(String)} with the string value
    * of the message.
    */
   public static final String ALLOY_RECIPE = "recipe:alloysmelter";
@@ -50,7 +51,7 @@ public final class IMC {
 
   /**
    * Key for a string message to add Slice'N'Splice recipes. Calls
-   * {@link SliceAndSpliceRecipeManager#addCustumRecipes(String)} with the
+   * {@link SliceAndSpliceRecipeManager#addCustomRecipes(String)} with the
    * string value of the message.
    */
   public static final String SLINE_N_SPLICE_RECIPE = "recipe:slicensplice";
@@ -120,6 +121,14 @@ public final class IMC {
    * value of the message.
    */
   public static final String TELEPORT_BLACKLIST_ADD = "teleport:blacklist:add";
+
+  /**
+   * Key for an NBT message to register a block or tile entity as connectable to
+   * insulated redstone conduits. Calls
+   * {@link InsulatedRedstoneConduit#addConnectableBlock(net.minecraft.nbt.NBTTagCompound)}
+   * with the NBT value of the message.
+   */
+  public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
 
 
   private IMC() {
