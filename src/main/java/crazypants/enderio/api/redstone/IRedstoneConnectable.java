@@ -5,7 +5,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implement this on your Block to control whether insulated restone conduits
- * will automatically connect to your block.
+ * will automatically connect to your block and how.
+ * <p>
+ * This is the base interface for {@link IRedstoneReceiver} and
+ * {@link IRedstoneEmitter}
  */
 public interface IRedstoneConnectable {
 

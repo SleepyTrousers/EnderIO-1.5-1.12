@@ -4,7 +4,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Implement this on a block which can control colored redstone conduit outputs.
+ * Implement this on blocks which can emit colored redstone conduit outputs.
  */
 public interface IRedstoneEmitter extends IRedstoneConnectable {
 
