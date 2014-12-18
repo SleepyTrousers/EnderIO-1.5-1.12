@@ -730,6 +730,164 @@ addOreDictionaryTooltips=true
     </recipe>
 
   </recipeGroup>
+  
+  <recipeGroup name="Dense Ores">
+
+    <recipe name="Dense Iron Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreIron" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreIron" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Gold Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreGold" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreGold" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Copper Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreCopper" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreCopper" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Lead Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreLead" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreLead" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Silver Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreSilver" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreSilver" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Tin Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreTin" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreTin" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Nickel Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreNickel" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreNickel" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Platinum Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseorePlatinum" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="orePlatinum" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Mithril Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreMithril" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreMithril" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Cobalt Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreCobalt" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreCobalt" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Ardite Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreArdite" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreArdite" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Coal Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreCoal" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreCoal" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Diamon Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreDiamond" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreDiamond" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Lapis Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreLapis" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreLapis" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Emerald Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreEmerald" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreEmerald" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Redstone Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreRedstone" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreRedstone" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Dense Quartz Ore" energyCost="2400">
+      <input>
+        <itemStack oreDictionary="denseoreQuartz" number="1" />
+      </input>
+      <output>
+        <itemStack oreDictionary="oreQuartz" number="4" />
+      </output>
+    </recipe>
+
+
+  </recipeGroup>
 
   <recipeGroup name="Biomes O' Plenty">
 

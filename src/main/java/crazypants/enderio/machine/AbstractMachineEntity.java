@@ -14,20 +14,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable,
-    IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable, 
+  IRedstoneConnectable, IIoConfigurable {
 
   public short facing;
 
@@ -64,7 +66,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public AbstractMachineEntity(SlotDefinition slotDefinition) {
     this.slotDefinition = slotDefinition;
     facing = 3;
-    
+
     inventory = new ItemStack[slotDefinition.getNumSlots()];
     redstoneControlMode = RedstoneControlMode.IGNORE;
     soundRes = getSoundFor(getSoundName());
@@ -102,7 +104,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     faceModes.put(faceHit, mode);
     forceClientUpdate = true;
     notifyNeighbours = true;
-    
+
     updateBlock();
   }
 
@@ -224,8 +226,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     return result;
   }
 
-  
-
   // --- Process Loop
   // --------------------------------------------------------------------------
 
@@ -274,8 +274,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
 
     requiresClientSync |= processTasks(redstoneCheckPassed);
-
-
 
     if(requiresClientSync) {
 
@@ -607,8 +605,6 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     }
   }
 
-
-
   @Override
   public ItemStack getStackInSlotOnClosing(int i) {
     return null;
@@ -674,5 +670,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   public void onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
   }
-
+  
+  /* IRedstoneConnectable */
+  
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
+  }
 }

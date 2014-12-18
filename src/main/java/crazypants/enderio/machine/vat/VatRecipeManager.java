@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.still;
+package crazypants.enderio.machine.vat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class VatRecipeManager {
 
   }
 
-  public void addCustumRecipes(String xmlDef) {
+  public void addCustomRecipes(String xmlDef) {
     RecipeConfig config;
     try {
       config = RecipeConfigParser.parse(xmlDef, null);

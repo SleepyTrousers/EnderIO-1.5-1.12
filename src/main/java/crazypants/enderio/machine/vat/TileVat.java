@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.still;
+package crazypants.enderio.machine.vat;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
