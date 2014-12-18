@@ -28,6 +28,7 @@ import crazypants.enderio.ClientProxy;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
@@ -35,7 +36,7 @@ import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
 
 public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> extends BlockContainer implements IGuiHandler, IResourceTooltipProvider,
-    IWailaInfoProvider {
+    IWailaInfoProvider, IRedstoneConnectable {
 
   public static int renderId;
 
@@ -348,5 +349,17 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
+  }
+  
+  /* IRedstoneConnectable */
+  
+  @Override
+  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
+    return true;
+  }
+  
+  @Override
+  public boolean isSpecialConnection(World world, int x, int y, int z, ForgeDirection from) {
+    return false;
   }
 }

@@ -582,4 +582,9 @@ public class BlockCapBank extends BlockEio implements IGuiHandler, IAdvancedTool
   public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
     return true;
   }
+
+  @Override
+  public boolean isSpecialConnection(World world, int x, int y, int z, ForgeDirection from) {
+    return false;
+  }
 }

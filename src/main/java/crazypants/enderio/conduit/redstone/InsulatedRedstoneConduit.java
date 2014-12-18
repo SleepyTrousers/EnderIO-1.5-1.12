@@ -27,7 +27,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.DyeColor;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.api.redstone.IRedstoneEmitter;
-import crazypants.enderio.api.redstone.IRedstoneReceiever;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -339,7 +338,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
     World world = getBundle().getEntity().getWorldObj();
     TileEntity te = world.getTileEntity(loc.x, loc.y, loc.z);
 
-    if (block instanceof IRedstoneReceiever && ((IRedstoneReceiever) block).isSpecialConnection(world, loc.x, loc.y, loc.z, dir.getOpposite())) {
+    if (block instanceof IRedstoneConnectable && ((IRedstoneConnectable) block).isSpecialConnection(world, loc.x, loc.y, loc.z, dir.getOpposite())) {
       return true;
     }
     

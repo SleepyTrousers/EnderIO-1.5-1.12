@@ -14,22 +14,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
 import crazypants.util.InventoryWrapper;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
-public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable, 
-  IRedstoneConnectable, IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements ISidedInventory, IMachine, IRedstoneModeControlable, IIoConfigurable {
 
   public short facing;
 
@@ -665,12 +662,5 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
 
   public void onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
-  }
-  
-  /* IRedstoneConnectable */
-  
-  @Override
-  public boolean shouldRedstoneConduitConnect(World world, int x, int y, int z, ForgeDirection from) {
-    return true;
   }
 }
