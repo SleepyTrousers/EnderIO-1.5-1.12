@@ -14,8 +14,9 @@ public class ContainerBuffer extends AbstractMachineContainer {
 
   @Override
   protected void addMachineSlots(InventoryPlayer playerInv) {
-    if(((TileBuffer)tileEntity).hasInventory()) {
-      Point point = new Point(62, 15);
+    TileBuffer buf = (TileBuffer) tileEntity;
+    if(buf.hasInventory()) {
+      Point point = new Point(buf.hasInventory() && buf.hasPower() ? 96 : 62, 15);
       for (int i = 0; i < 9; i++) {
         addSlotToContainer(new Slot(this.tileEntity, i, point.x + ((i % 3) * 18), point.y + ((i / 3) * 18)));
       }
@@ -24,6 +25,6 @@ public class ContainerBuffer extends AbstractMachineContainer {
   
   @Override
   public Point getPlayerInventoryOffset() {
-    return new Point(8, 96);
+    return super.getPlayerInventoryOffset();
   }
 }

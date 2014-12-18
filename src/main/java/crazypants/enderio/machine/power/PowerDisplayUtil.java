@@ -4,8 +4,11 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.item.ItemStack;
 import cofh.api.energy.IEnergyContainerItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.util.Lang;
 
 public class PowerDisplayUtil {
@@ -104,6 +107,20 @@ public class PowerDisplayUtil {
 
   public static String abrevation() {
     return Lang.localize("power.rf");
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public static int parsePower(GuiTextField tf) {
+    String txt = tf.getText();
+    try {
+      Integer power = PowerDisplayUtil.parsePower(txt);
+      if(power == null) {
+        return -1;
+      }
+      return power.intValue();
+    } catch (Exception e) {
+      return -1;
+    }
   }
 
 }

@@ -645,6 +645,9 @@ enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from 
 
 //------GUI
 
+enderio.gui.simple.in=Max In:
+enderio.gui.simple.out=Max Out:
+
 enderio.gui.enabled=Enabled
 enderio.gui.disabled=Disabled
 enderio.gui.send=Send

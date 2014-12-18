@@ -11,20 +11,22 @@ import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 
-public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintableTileEntity {
+public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintableTileEntity, IInternalPowerHandler {
 
   private Block sourceBlock;
   private int sourceBlockMetadata;
-  
+
   private boolean hasPower, hasInventory, isCreative;
-  
+
   private PowerDistributor dist;
-  
-  private final int maxOut = Config.powerConduitTierThreeRF;
-  
+
+  private int maxOut = Config.powerConduitTierThreeRF;
+  private int maxIn = maxOut;
+
   public TileBuffer() {
     super(new SlotDefinition(9, 0, 0));
   }
@@ -51,50 +53,55 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    if (getEnergyStored() <= 0) {
+    if(getEnergyStored() <= 0) {
       return false;
     }
-    if (dist == null) {
+    if(dist == null) {
       dist = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = dist.transmitEnergy(worldObj, Math.min(maxOut, getEnergyStored()));
-    setEnergyStored(getEnergyStored() - transmitted);    
+    int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored()));
+    setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
-  
+
   @Override
   public void setIoMode(ForgeDirection faceHit, IoMode mode) {
     super.setIoMode(faceHit, mode);
-    if (dist != null) {
+    if(dist != null) {
       dist.neighboursChanged();
     }
   }
-  
+
   @Override
   public boolean canInsertItem(int slot, ItemStack var2, int side) {
-   return hasInventory() && super.canInsertItem(slot, var2, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput();
+    return hasInventory() && super.canInsertItem(slot, var2, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput();
   }
 
   @Override
   public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
     return hasInventory() && super.canExtractItem(slot, itemstack, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canOutput();
   }
-  
+
   @Override
   public boolean canConnectEnergy(ForgeDirection from) {
     return hasPower;
   }
-  
+
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    return maxOut;
+    return maxIn;
+  }
+
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    return hasPower() && getIoMode(from).canRecieveInput() ? super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
   }
   
   @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return hasPower() ?  super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
+  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    return 0;
   }
-  
+
   @Override
   protected boolean doPull(ForgeDirection dir) {
     ItemStack[] invCopy = new ItemStack[inventory.length];
@@ -122,7 +129,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
     for (int i = 0; i < inventory.length; i++) {
       invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
     }
-    
+
     BlockCoord loc = getLocation().getLocation(dir);
     TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
 
@@ -134,7 +141,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
     return ret;
   }
-  
+
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
     super.writeCustomNBT(nbtRoot);
@@ -142,13 +149,13 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
     nbtRoot.setBoolean("hasPower", hasPower);
     nbtRoot.setBoolean("creative", isCreative);
   }
-  
+
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     PainterUtil.setSourceBlock(nbtRoot, sourceBlock, sourceBlockMetadata);
   }
-  
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
@@ -156,7 +163,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
     this.hasPower = nbtRoot.getBoolean("hasPower");
     this.isCreative = nbtRoot.getBoolean("creative");
   }
-  
+
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
@@ -187,25 +194,38 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   public boolean hasInventory() {
     return hasInventory;
   }
-  
+
   public void setHasInventory(boolean hasInventory) {
     this.hasInventory = hasInventory;
   }
-  
+
   @Override
   public boolean hasPower() {
     return hasPower;
   }
-  
+
   public void setHasPower(boolean hasPower) {
     this.hasPower = hasPower;
   }
-  
-  public boolean isCreative()  {
+
+  public boolean isCreative() {
     return isCreative;
   }
 
   public void setCreative(boolean isCreative) {
     this.isCreative = isCreative;
+  }
+
+  public void setIO(int in, int out) {
+    this.maxIn = in;
+    this.maxOut = out;
+  }
+
+  public int getMaxInput() {
+    return maxIn;
+  }
+
+  public int getMaxOutput() {
+    return maxOut;
   }
 }

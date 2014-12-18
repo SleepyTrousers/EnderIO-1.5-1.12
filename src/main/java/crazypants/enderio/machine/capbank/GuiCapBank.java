@@ -25,8 +25,8 @@ import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.NetworkState;
 import crazypants.enderio.machine.capbank.packet.PacketGuiChange;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
@@ -232,11 +232,11 @@ public class GuiCapBank extends GuiContainerBase {
   }
 
   private void updateInputOutput() {
-    int input = parsePower(maxInputTF);
+    int input = PowerDisplayUtil.parsePower(maxInputTF);
     if(input >= 0 && network.getMaxInput() != input) {
       setMaxInput(input);
     }
-    int output = parsePower(maxOutputTF);
+    int output = PowerDisplayUtil.parsePower(maxOutputTF);
     if(output >= 0 && network.getMaxOutput() != output) {
       setMaxOutput(output);
     }
@@ -261,19 +261,6 @@ public class GuiCapBank extends GuiContainerBase {
   protected void sendUpdateToServer() {
     if(network != NULL_NETWORK) {
       PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(capBank));
-    }
-  }
-
-  private int parsePower(GuiTextField tf) {
-    String txt = tf.getText();
-    try {
-      Integer power = PowerDisplayUtil.parsePower(txt);
-      if(power == null) {
-        return -1;
-      }
-      return power.intValue();
-    } catch (Exception e) {
-      return -1;
     }
   }
 

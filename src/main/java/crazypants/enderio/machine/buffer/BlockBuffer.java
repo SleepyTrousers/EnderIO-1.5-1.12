@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -25,28 +26,30 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.network.PacketHandler;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
-    
+
   public static BlockBuffer create() {
+    PacketHandler.INSTANCE.registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
     BlockBuffer res = new BlockBuffer();
     res.init();
     return res;
   }
-  
+
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class);
     setBlockTextureName("enderio:blockBuffer");
   }
-  
+
   @Override
-  protected void init() {  
+  protected void init() {
     GameRegistry.registerBlock(this, BlockItemBuffer.class, modObject.unlocalisedName);
     GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
     EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
-  
+
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -74,17 +77,17 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   protected String getMachineFrontIconKey(boolean active) {
     return this.textureName;
   }
-  
+
   @Override
   protected String getBackIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
-  
+
   @Override
   protected String getSideIconKey(boolean active) {
     return getMachineFrontIconKey(active);
   }
-  
+
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -120,13 +123,13 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   protected boolean shouldDropDefaultItem(World world, EntityPlayer player, int x, int y, int z) {
     return false;
   }
-  
+
   @Override
   public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileBuffer) {
-        TileBuffer cb = (TileBuffer) te;                
+        TileBuffer cb = (TileBuffer) te;
         if(!player.capabilities.isCreativeMode) {
           dropBlockAsItem(world, x, y, z, createDrop(cb));
         }
@@ -141,12 +144,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     te.writeCommon(stack.stackTagCompound);
     return stack;
   }
-  
+
   public ItemStack createItemStackForSourceBlock(ItemStack machine, Block block, int sourceMeta) {
     PainterUtil.setSourceBlock(machine, block, sourceMeta);
     return machine;
   }
-  
+
   public final class PainterTemplate extends BasicPainterTemplate {
 
     public PainterTemplate() {
@@ -167,8 +170,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @Override
   public int getFacadeMetadata(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileBuffer) {
-      return ((TileBuffer)te).getSourceBlockMetadata();
+    if(te instanceof TileBuffer) {
+      return ((TileBuffer) te).getSourceBlockMetadata();
     }
     return 0;
   }
@@ -176,8 +179,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   @Override
   public Block getFacade(IBlockAccess world, int x, int y, int z, int side) {
     TileEntity te = world.getTileEntity(x, y, z);
-    if (te instanceof TileBuffer) {
-      return ((TileBuffer)te).getSourceBlock();
+    if(te instanceof TileBuffer) {
+      return ((TileBuffer) te).getSourceBlock();
     }
     return this;
   }
