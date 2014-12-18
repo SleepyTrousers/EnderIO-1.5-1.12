@@ -283,8 +283,9 @@ public class BlockElectricLight extends BlockEio implements IRedstoneReceiver {
     return false;
   }
 
+  // TODO remove testing code
   @Override
-  public void signalChanged(World world, ForgeDirection from, Signal signal) {
+  public void signalChanged(World world, int x, int y, int z, ForgeDirection from, Signal signal) {
     System.out.println(from + ": " + signal);
   }
 }

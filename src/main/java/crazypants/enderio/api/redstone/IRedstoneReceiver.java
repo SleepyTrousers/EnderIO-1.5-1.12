@@ -28,6 +28,6 @@ public interface IRedstoneReceiver extends IRedstoneConnectable {
    * @return A {@link Signalbyte[]} of redstone strength, in order of color. The
    *         order of colors is defined in {@link DyeColor}.
    */
-  void signalChanged(World world, ForgeDirection from, Signal signal);
+  void signalChanged(World world, int x, int y, int z, ForgeDirection from, Signal signal);
 
 }

@@ -196,7 +196,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         BlockCoord loc = new BlockCoord(te).getLocation(dir);
         Block block = worldObj.getBlock(loc.x, loc.y, loc.z);
         if(con instanceof IInsulatedRedstoneConduit && block instanceof IRedstoneReceiver) {
-          ((IRedstoneReceiver) block).signalChanged(worldObj, dir, signal);
+          ((IRedstoneReceiver) block).signalChanged(worldObj, loc.x, loc.y, loc.z, dir, signal);
         }
         if(block.isNormalCube()) {
           worldObj.notifyBlockOfNeighborChange(loc.x, loc.y, loc.z, EnderIO.blockConduitBundle);
