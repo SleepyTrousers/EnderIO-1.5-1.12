@@ -297,10 +297,6 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
       return ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
     }
     
-    if (te instanceof IRedstoneConnectable) {
-      return ((IRedstoneConnectable) te).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, direction);
-    }
-
     Map<Class<?>, Boolean> connectableInterfaces = getConnectableInterfaces();
     for(Class<?> connectable : connectableInterfaces.keySet()) {
       if((te != null && connectable.isAssignableFrom(te.getClass())) || (connectable.isAssignableFrom(block.getClass()))) {
