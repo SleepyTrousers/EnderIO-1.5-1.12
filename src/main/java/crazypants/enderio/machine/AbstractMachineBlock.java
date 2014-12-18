@@ -1,6 +1,5 @@
 package crazypants.enderio.machine;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -214,27 +213,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public int quantityDropped(Random r) {
     return 0;
   }
-
-  @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-    if(!world.isRemote) {
-      TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof AbstractMachineEntity) {
-        AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
-        ItemStack itemStack = new ItemStack(this);
-        machineEntity.writeToItemStack(itemStack);
-        ret.add(itemStack);
-      }
-    }
-    return ret;
+  
+  protected boolean shouldDropDefaultItem(World world, EntityPlayer player, int x, int y, int z) {
+    return true;
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
-      if(te instanceof AbstractMachineEntity) {
+      if(te instanceof AbstractMachineEntity && shouldDropDefaultItem(world, player, x, y, z)) {
         AbstractMachineEntity machineEntity = (AbstractMachineEntity) te;
         int meta = damageDropped(world.getBlockMetadata(x, y, z));
         ItemStack itemStack = new ItemStack(this, 1, meta);
@@ -250,7 +238,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         world.spawnEntityInWorld(entityitem);
       }
     }
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
 
   @Override

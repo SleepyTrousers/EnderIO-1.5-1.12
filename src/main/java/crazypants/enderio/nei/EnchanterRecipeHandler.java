@@ -127,7 +127,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(s, 83, 46, 0x80FF20);
     }
 
-    IconEIO.RECIPE.renderIcon(149, -3, 16, 16, 0, true);
+    IconEIO.RECIPE_BUTTON.renderIcon(149, -3, 16, 16, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

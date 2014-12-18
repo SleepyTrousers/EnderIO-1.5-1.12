@@ -109,7 +109,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     String energyString = PowerDisplayUtil.formatPower(recipe.getEnergy()) + " " + PowerDisplayUtil.abrevation();
     GuiDraw.drawString(energyString, 100, 52, 0x808080, false);
 
-    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
+    IconEIO.RECIPE_BUTTON.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   public List<ItemStack> getInputs(RecipeInput input) {

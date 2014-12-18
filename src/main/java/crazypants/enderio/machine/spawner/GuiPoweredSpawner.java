@@ -15,16 +15,12 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 
-public class GuiPoweredSpawner extends GuiPoweredMachineBase {
+public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 
   private IconButtonEIO modeB;
 
-  private TilePoweredSpawner spawner;
-
   public GuiPoweredSpawner(InventoryPlayer par1InventoryPlayer, TilePoweredSpawner te) {
     super(te, new ContainerPoweredSpawner(par1InventoryPlayer, te));
-
-    spawner = te;
 
     modeB = new IconButtonEIO(this, 8888, 115, 10, IconEIO.RIGHT_ARROW);
     modeB.setSize(10, 16);
@@ -39,8 +35,8 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase {
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     if(par1GuiButton == modeB) {
-      spawner.setSpawnMode(!spawner.isSpawnMode());
-      PacketHandler.INSTANCE.sendToServer(new PacketMode(spawner));
+      getTileEntity().setSpawnMode(!getTileEntity().isSpawnMode());
+      PacketHandler.INSTANCE.sendToServer(new PacketMode(getTileEntity()));
     } else {
       super.actionPerformed(par1GuiButton);
     }
@@ -57,6 +53,8 @@ public class GuiPoweredSpawner extends GuiPoweredMachineBase {
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
+    TilePoweredSpawner spawner = getTileEntity();
+    
     int left = getGuiLeft();
     int top = getGuiTop();
 

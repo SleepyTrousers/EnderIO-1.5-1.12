@@ -5,17 +5,25 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 
-public class TileBuffer extends AbstractMachineEntity implements IPaintableTileEntity {
+public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintableTileEntity {
 
   private Block sourceBlock;
   private int sourceBlockMetadata;
+  
+  private boolean hasPower, hasInventory, isCreative;
+  
+  private PowerDistributor dist;
+  
+  private final int maxOut = Config.powerConduitTierThreeRF;
   
   public TileBuffer() {
     super(new SlotDefinition(9, 0, 0));
@@ -23,7 +31,7 @@ public class TileBuffer extends AbstractMachineEntity implements IPaintableTileE
 
   @Override
   public String getMachineName() {
-    return ModObject.blockBuffer.unlocalisedName;
+    return BlockItemBuffer.Type.get(this).getUnlocalizedName();
   }
 
   @Override
@@ -38,24 +46,71 @@ public class TileBuffer extends AbstractMachineEntity implements IPaintableTileE
 
   @Override
   public float getProgress() {
-    return 0; // no tasks
+    return 0; // none
   }
 
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
-    return false; // no tasks
+    if (getEnergyStored() <= 0) {
+      return false;
+    }
+    if (dist == null) {
+      dist = new PowerDistributor(new BlockCoord(this));
+    }
+    int transmitted = dist.transmitEnergy(worldObj, Math.min(maxOut, getEnergyStored()));
+    setEnergyStored(getEnergyStored() - transmitted);    
+    return transmitted > 0;
+  }
+  
+  @Override
+  public void setIoMode(ForgeDirection faceHit, IoMode mode) {
+    super.setIoMode(faceHit, mode);
+    if (dist != null) {
+      dist.neighboursChanged();
+    }
   }
   
   @Override
   public boolean canInsertItem(int slot, ItemStack var2, int side) {
-   return super.canInsertItem(slot, var2, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput();
+   return hasInventory() && super.canInsertItem(slot, var2, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput();
   }
 
   @Override
   public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-    return super.canExtractItem(slot, itemstack, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canOutput();
+    return hasInventory() && super.canExtractItem(slot, itemstack, side) && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canOutput();
   }
   
+  @Override
+  public boolean canConnectEnergy(ForgeDirection from) {
+    return hasPower;
+  }
+  
+  @Override
+  public int getMaxEnergyRecieved(ForgeDirection dir) {
+    return maxOut;
+  }
+  
+  @Override
+  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    return hasPower() ?  super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
+  }
+  
+  @Override
+  protected boolean doPull(ForgeDirection dir) {
+    ItemStack[] invCopy = new ItemStack[inventory.length];
+    for (int i = 0; i < inventory.length; i++) {
+      invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
+    }
+
+    boolean ret = super.doPull(dir);
+
+    if(isCreative()) {
+      inventory = invCopy;
+    }
+
+    return ret;
+  }
+
   @Override
   protected boolean doPush(ForgeDirection dir) {
 
@@ -63,15 +118,43 @@ public class TileBuffer extends AbstractMachineEntity implements IPaintableTileE
       return false;
     }
 
+    ItemStack[] invCopy = new ItemStack[inventory.length];
+    for (int i = 0; i < inventory.length; i++) {
+      invCopy[i] = inventory[i] == null ? null : inventory[i].copy();
+    }
+    
     BlockCoord loc = getLocation().getLocation(dir);
     TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
-    return doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
+
+    boolean ret = super.doPush(dir, te, slotDefinition.minInputSlot, slotDefinition.maxInputSlot);
+
+    if(isCreative()) {
+      inventory = invCopy;
+    }
+
+    return ret;
+  }
+  
+  @Override
+  public void writeCustomNBT(NBTTagCompound nbtRoot) {
+    super.writeCustomNBT(nbtRoot);
+    nbtRoot.setBoolean("hasInv", hasInventory);
+    nbtRoot.setBoolean("hasPower", hasPower);
+    nbtRoot.setBoolean("creative", isCreative);
   }
   
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     PainterUtil.setSourceBlock(nbtRoot, sourceBlock, sourceBlockMetadata);
+  }
+  
+  @Override
+  public void readCustomNBT(NBTTagCompound nbtRoot) {
+    super.readCustomNBT(nbtRoot);
+    this.hasInventory = nbtRoot.getBoolean("hasInv");
+    this.hasPower = nbtRoot.getBoolean("hasPower");
+    this.isCreative = nbtRoot.getBoolean("creative");
   }
   
   @Override
@@ -99,5 +182,30 @@ public class TileBuffer extends AbstractMachineEntity implements IPaintableTileE
   @Override
   public Block getSourceBlock() {
     return sourceBlock;
+  }
+
+  public boolean hasInventory() {
+    return hasInventory;
+  }
+  
+  public void setHasInventory(boolean hasInventory) {
+    this.hasInventory = hasInventory;
+  }
+  
+  @Override
+  public boolean hasPower() {
+    return hasPower;
+  }
+  
+  public void setHasPower(boolean hasPower) {
+    this.hasPower = hasPower;
+  }
+  
+  public boolean isCreative()  {
+    return isCreative;
+  }
+
+  public void setCreative(boolean isCreative) {
+    this.isCreative = isCreative;
   }
 }

@@ -1,42 +1,29 @@
 package crazypants.enderio.machine.soul;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.machine.painter.PainterContainer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.ExperienceBarRenderer;
 import crazypants.enderio.xp.PacketDrainPlayerXP;
 import crazypants.enderio.xp.XpUtil;
-import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.SoundUtil;
-import crazypants.vecmath.Vector4f;
 
-public class GuiSoulBinder extends GuiPoweredMachineBase {
+public class GuiSoulBinder extends GuiPoweredMachineBase<TileSoulBinder> {
 
   private static final int PLAYER_XP_ID = 985162394;
-
-  private TileSoulBinder tileEntity;
   
   private IconButtonEIO usePlayerXP;
 
   public GuiSoulBinder(InventoryPlayer par1InventoryPlayer, TileSoulBinder te) {
     super(te, new ContainerSoulBinder(par1InventoryPlayer, te));
-    tileEntity = te;
     usePlayerXP = new IconButtonEIO(this, PLAYER_XP_ID, 125, 57, IconEIO.XP);
     usePlayerXP.visible = false;
     usePlayerXP.setToolTip("Use Player XP");    
@@ -54,8 +41,8 @@ public class GuiSoulBinder extends GuiPoweredMachineBase {
     if(b.id == PLAYER_XP_ID) {
       int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().thePlayer);
       if(xp > 0 || Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) {
-        PacketHandler.INSTANCE.sendToServer(new PacketDrainPlayerXP(tileEntity, tileEntity.getCurrentlyRequiredLevel(), true));
-        SoundUtil.playClientSoundFX("random.orb", tileEntity);        
+        PacketHandler.INSTANCE.sendToServer(new PacketDrainPlayerXP(getTileEntity(), getTileEntity().getCurrentlyRequiredLevel(), true));
+        SoundUtil.playClientSoundFX("random.orb", getTileEntity());        
       }
     }
   }
@@ -74,13 +61,15 @@ public class GuiSoulBinder extends GuiPoweredMachineBase {
     drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     int i1;
 
-    i1 = tileEntity.getProgressScaled(24);
+    TileSoulBinder binder = getTileEntity();
+    
+    i1 = binder.getProgressScaled(24);
     drawTexturedModalRect(k + 80, l + 34, 176, 14, i1 + 1, 16);    
 
-    boolean needsXp = tileEntity.getCurrentlyRequiredLevel() > 0 && tileEntity.getCurrentlyRequiredLevel() > tileEntity.getContainer().getExperienceLevel();
+    boolean needsXp = getTileEntity().getCurrentlyRequiredLevel() > 0 && binder.getCurrentlyRequiredLevel() > binder.getContainer().getExperienceLevel();
     usePlayerXP.visible = needsXp;        
     
-    ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, tileEntity.getContainer(), tileEntity.getCurrentlyRequiredLevel());
+    ExperienceBarRenderer.render(this, getGuiLeft() + 56, getGuiTop() + 68, 65, binder.getContainer(), binder.getCurrentlyRequiredLevel());
     
     RenderUtil.bindTexture("enderio:textures/gui/soulFuser.png");
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

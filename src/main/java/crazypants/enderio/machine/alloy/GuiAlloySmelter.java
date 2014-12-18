@@ -18,9 +18,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
-public class GuiAlloySmelter extends GuiPoweredMachineBase {
-
-  private TileAlloySmelter tileEntity;
+public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
   private IconButton vanillaFurnaceButton;
 
@@ -28,7 +26,6 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
 
   public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
     super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory));
-    this.tileEntity = furnaceInventory;
 
     addToolTip(new GuiToolTip(new Rectangle(0, 0, 0, 0), "") {
 
@@ -37,9 +34,9 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
         text.clear();
         text.add(Lang.localize("gui.alloy.mode.heading"));
         String txt = Lang.localize("gui.alloy.mode.all");
-        if(tileEntity.getMode() == Mode.ALLOY) {
+        if(getTileEntity().getMode() == Mode.ALLOY) {
           txt = Lang.localize("gui.alloy.mode.alloy");
-        } else if(tileEntity.getMode() == Mode.FURNACE) {
+        } else if(getTileEntity().getMode() == Mode.FURNACE) {
           txt = Lang.localize("gui.alloy.mode.furnace");
         }
         text.add(txt);
@@ -54,6 +51,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
     });
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void initGui() {
     super.initGui();
@@ -69,7 +67,7 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
 
   @Override
   protected void renderSlotHighlight(int slot, Vector4f col) {
-    if(tileEntity.getSlotDefinition().isOutputSlot(slot)) {
+    if(getTileEntity().getSlotDefinition().isOutputSlot(slot)) {
       renderSlotHighlight(col, 75, 54, 24, 24);
     } else {
       super.renderSlotHighlight(slot, col);
@@ -79,9 +77,9 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
-      tileEntity.setMode(tileEntity.getMode().next());
+      getTileEntity().setMode(getTileEntity().getMode().next());
       vanillaFurnaceButton.setIcon(getIconForMode());
-      PacketHandler.INSTANCE.sendToServer(new PacketClientState(tileEntity));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(getTileEntity()));
     } else {
       super.actionPerformed(par1GuiButton);
     }
@@ -89,9 +87,9 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
 
   private IIcon getIconForMode() {
     IIcon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
-    if(tileEntity.getMode() == Mode.ALLOY) {
+    if(getTileEntity().getMode() == Mode.ALLOY) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
-    } else if(tileEntity.getMode() == Mode.FURNACE) {
+    } else if(getTileEntity().getMode() == Mode.FURNACE) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly;
     }
     return icon;
@@ -112,8 +110,8 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase {
 
     int scaled;
 
-    if(tileEntity.getProgress() < 1 && tileEntity.getProgress() > 0) {
-      scaled = tileEntity.getProgressScaled(14) + 1;
+    if(getTileEntity().getProgress() < 1 && getTileEntity().getProgress() > 0) {
+      scaled = getTileEntity().getProgressScaled(14) + 1;
       drawTexturedModalRect(sx + 55, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
       drawTexturedModalRect(sx + 103, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
     }

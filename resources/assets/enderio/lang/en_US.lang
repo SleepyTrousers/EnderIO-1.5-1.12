@@ -422,6 +422,10 @@ tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
 tile.blockExperienceObelisk.tooltip.detailed.line2=Can output liquid XP to
 tile.blockExperienceObelisk.tooltip.detailed.line3=adjacent tanks
 
+tile.blockBuffer.basic.name=Item Buffer
+tile.blockBuffer.power.name=Power Buffer
+tile.blockBuffer.omni.name=Omni Buffer
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks

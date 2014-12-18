@@ -1,14 +1,22 @@
 package crazypants.enderio.machine.buffer;
 
 import info.jbcs.minecraft.chisel.api.IFacade;
+
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -19,7 +27,7 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
-  
+    
   public static BlockBuffer create() {
     BlockBuffer res = new BlockBuffer();
     res.init();
@@ -33,8 +41,9 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   
   @Override
   protected void init() {  
-    super.init();
-    EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_BUFFER, this);
+    GameRegistry.registerBlock(this, BlockItemBuffer.class, modObject.unlocalisedName);
+    GameRegistry.registerTileEntity(teClass, modObject.unlocalisedName + "TileEntity");
+    EnderIO.guiHandler.registerGuiHandler(getGuiId(), this);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
   
@@ -89,22 +98,53 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   }
 
   @Override
-  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack par6ItemStack) {
+  public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
     if(entity instanceof EntityPlayer) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileBuffer) {
         TileBuffer ta = (TileBuffer) te;
-        ta.setSourceBlock(PainterUtil.getSourceBlock(par6ItemStack));
-        ta.setSourceBlockMetadata(PainterUtil.getSourceBlockMetadata(par6ItemStack));
+        if(stack.stackTagCompound != null) {
+          ta.readCommon(stack.stackTagCompound);
+        }
         world.markBlockForUpdate(x, y, z);
       }
     }
   }
+
+  @Override
+  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+    return Lists.newArrayList();
+  }
+
+  @Override
+  protected boolean shouldDropDefaultItem(World world, EntityPlayer player, int x, int y, int z) {
+    return false;
+  }
   
-  public ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    ItemStack result = new ItemStack(this, 1, damage);
-    PainterUtil.setSourceBlock(result, block, damage);
-    return result;
+  @Override
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+    if(!world.isRemote) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof TileBuffer) {
+        TileBuffer cb = (TileBuffer) te;                
+        if(!player.capabilities.isCreativeMode) {
+          dropBlockAsItem(world, x, y, z, createDrop(cb));
+        }
+      }
+    }
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
+  }
+
+  private ItemStack createDrop(TileBuffer te) {
+    ItemStack stack = new ItemStack(this, 1, BlockItemBuffer.Type.get(te).ordinal());
+    stack.stackTagCompound = new NBTTagCompound();
+    te.writeCommon(stack.stackTagCompound);
+    return stack;
+  }
+  
+  public ItemStack createItemStackForSourceBlock(ItemStack machine, Block block, int sourceMeta) {
+    PainterUtil.setSourceBlock(machine, block, sourceMeta);
+    return machine;
   }
   
   public final class PainterTemplate extends BasicPainterTemplate {
@@ -119,7 +159,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       if(paintSource == null) {
         return new ResultStack[0];
       }
-      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
+      return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(MachineRecipeInput.getInputForSlot(0, inputs).copy(),
+          Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
   }
 

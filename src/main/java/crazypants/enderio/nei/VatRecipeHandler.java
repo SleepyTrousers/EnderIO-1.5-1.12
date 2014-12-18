@@ -168,7 +168,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }
 
-    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
+    IconEIO.RECIPE_BUTTON.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   @Override

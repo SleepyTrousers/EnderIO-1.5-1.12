@@ -133,7 +133,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(s, 83, 55, 0x80FF20);
     }
 
-    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
+    IconEIO.RECIPE_BUTTON.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   private static final ArrayList<PositionedStack> EMPTY_VIAL_OUTPUT = new ArrayList<PositionedStack>();

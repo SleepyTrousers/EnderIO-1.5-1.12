@@ -52,7 +52,7 @@ public class ChannelTab implements ITabPanel {
   public ChannelTab(GuiTransceiver guiTransceiver, ChannelType type) {
     parent = guiTransceiver;
     this.type = type;
-    transceiver = guiTransceiver.transceiver;
+    transceiver = guiTransceiver.getTransciever();
 
     newChannelTF = new GuiTextField(parent.getFontRenderer(), 7, 12, 103, 16);    
     addButton = new IconButtonEIO(parent, ADD_BUTTON_ID, 137, 12, IconEIO.PLUS);
