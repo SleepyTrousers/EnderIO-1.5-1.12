@@ -3,7 +3,6 @@ package crazypants.enderio.conduit.redstone;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.api.DyeColor;
-import crazypants.enderio.api.redstone.IRedstoneReceiever;
+import crazypants.enderio.api.redstone.IRedstoneReceiver;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.util.BlockCoord;
@@ -198,13 +196,13 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         Block block;
         if ((block = worldObj.getBlock(loc.x, loc.y, loc.z)).isNormalCube()) {
           worldObj.notifyBlockOfNeighborChange(loc.x, loc.y, loc.z, EnderIO.blockConduitBundle);
-          if (con instanceof IInsulatedRedstoneConduit && block instanceof IRedstoneReceiever) {
+          if (con instanceof IInsulatedRedstoneConduit && block instanceof IRedstoneReceiver) {
             Set<Signal> outputs = con.getNetworkOutputs(dir);
-            EnumMap<DyeColor, Integer> inputs = new EnumMap<DyeColor, Integer>(DyeColor.class);
-            for (Signal s : outputs) {
-              inputs.put(s.color, s.strength);
+            byte[] strengths = new byte[16];
+            for (Signal s: outputs) {
+              strengths[s.color.ordinal()] = (byte) s.strength;
             }
-            ((IRedstoneReceiever) block).inputsChanged(worldObj, loc.x, loc.y, loc.z, dir, inputs);
+            ((IRedstoneReceiver) block).inputsChanged(worldObj, loc.x, loc.y, loc.z, dir, strengths);
           }
         }
       }

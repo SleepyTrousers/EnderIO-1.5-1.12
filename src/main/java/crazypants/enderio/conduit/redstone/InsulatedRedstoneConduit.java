@@ -387,9 +387,9 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
         World world = getBundle().getWorld();
         Block block = world.getBlock(loc.x, loc.y, loc.z);
         if(block instanceof IRedstoneEmitter && ((IRedstoneConnectable) block).shouldRedstoneConduitConnect(world, loc.x, loc.y, loc.z, dir)) {
-          Map<DyeColor, Integer> outputs = ((IRedstoneEmitter) block).getOutputs(world, loc.x, loc.y, loc.z, dir.getOpposite());
-          for (DyeColor color : outputs.keySet()) {
-            base.add(new Signal(loc.x, loc.y, loc.z, dir, outputs.get(color), color));
+          byte[] outputs = ((IRedstoneEmitter) block).getOutputs(world, loc.x, loc.y, loc.z, dir.getOpposite());
+          for (int i = 0; i < outputs.length; i++) {
+            base.add(new Signal(loc.x, loc.y, loc.z, dir, outputs[i], DyeColor.COLORS[i]));
           }
         }
       }
