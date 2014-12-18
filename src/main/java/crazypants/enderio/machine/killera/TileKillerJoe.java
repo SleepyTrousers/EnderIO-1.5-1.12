@@ -103,6 +103,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
       getAttackera().onUpdate();
       if (inventory[0] != null != hadSword) {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        hadSword = inventory[0] != null;
       }
     }
     super.updateEntity();
