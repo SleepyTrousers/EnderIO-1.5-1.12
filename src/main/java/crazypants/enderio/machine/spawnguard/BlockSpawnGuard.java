@@ -104,12 +104,7 @@ public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
   public int getRenderType() {    
     return renderId;
   }
-  
-  @Override
-  public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int x, int y, int z) {
-    return AxisAlignedBB.getBoundingBox(x + 0.1, y, z + 0.1, x + 0.9, y + 0.5, z + 0.9);
-  }
-  
+
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {

@@ -65,11 +65,6 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   public int getRenderType() {    
     return renderId;
   }
-  
-  @Override
-  public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int x, int y, int z) {
-    return AxisAlignedBB.getBoundingBox(x + 0.1, y, z + 0.1, x + 0.9, y + 0.5, z + 0.9);
-  }
 
 //  @Override
 //  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
