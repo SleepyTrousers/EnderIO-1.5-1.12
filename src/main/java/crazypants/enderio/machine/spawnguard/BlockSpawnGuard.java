@@ -13,10 +13,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.attractor.BlockAttractor;
-import crazypants.enderio.machine.attractor.ContainerAttractor;
-import crazypants.enderio.machine.attractor.GuiAttractor;
-import crazypants.enderio.machine.attractor.TileAttractor;
 
 public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
 
@@ -34,6 +30,7 @@ public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
   
   protected BlockSpawnGuard() {
     super(ModObject.blockSpawnGuard, TileSpawnGuard.class);
+    setObeliskBounds();
   }
 
   @Override

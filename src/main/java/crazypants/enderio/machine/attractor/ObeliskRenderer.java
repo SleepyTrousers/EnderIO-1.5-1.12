@@ -143,7 +143,6 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
 
     Tessellator.instance.addTranslation(x, y, z);
 

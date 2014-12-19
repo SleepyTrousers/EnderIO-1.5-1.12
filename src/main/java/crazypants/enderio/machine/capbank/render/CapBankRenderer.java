@@ -46,7 +46,6 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     infoRenderers = new HashMap<InfoDisplayType, IInfoRenderer>();
     infoRenderers.put(InfoDisplayType.LEVEL_BAR, fillGaugeRenderer);
     infoRenderers.put(InfoDisplayType.IO, new IoDisplay());
-
   }
 
   //------- Block
