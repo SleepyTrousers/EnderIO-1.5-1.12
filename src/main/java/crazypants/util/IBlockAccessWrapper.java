@@ -33,7 +33,7 @@ public class IBlockAccessWrapper implements IBlockAccess {
 
   @Override
   public TileEntity getTileEntity(int var1, int var2, int var3) {
-    if (var2 > 0 && var2 <= 256) {
+    if (var2 >= 0 && var2 < 256) {
       return wrapped.getTileEntity(var1, var2, var3);
     } else {
       return null;
