@@ -493,7 +493,7 @@ item.itemYetaWrench.tooltip.detailed.line2=Shift-R-Click to break machines
 item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
 item.itemYetaWrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
 item.itemYetaWrench.tooltip.detailed.line5=open conduit settings GUI
-item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to 
+item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to 
 item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
 
 item.itemMagnet.name=Electromagnet
