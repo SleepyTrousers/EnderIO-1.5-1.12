@@ -98,17 +98,27 @@ public class CapBankNetwork implements ICapBankNetwork {
 
 
   protected void setNetwork(World world, TileCapBank cap) {
-    if(cap != null && cap.setNetwork(this)) {
-      addMember(cap);
-      Collection<TileCapBank> neighbours = NetworkUtil.getNeigbours(cap);
-      for (TileCapBank neighbour : neighbours) {
-        if(neighbour.getNetwork() == null) {
-          setNetwork(world, neighbour);
-        } else if(neighbour.getNetwork() != this) {
-          neighbour.getNetwork().destroyNetwork();
-          setNetwork(world, neighbour);
+    if(cap == null) {
+      return;
+    }
+    Set<TileCapBank> work = new HashSet<TileCapBank>();
+    for(;;) {
+      ICapBankNetwork network = cap.getNetwork();
+      if(network != this) {
+        if(network != null) {
+          network.destroyNetwork();
+        }
+        if(cap.setNetwork(this)) {
+          addMember(cap);
+          NetworkUtil.getNeigbours(cap, work);
         }
       }
+      if(work.isEmpty()) {
+        return;
+      }
+      Iterator<TileCapBank> iter = work.iterator();
+      cap = iter.next();
+      iter.remove();
     }
   }
 
