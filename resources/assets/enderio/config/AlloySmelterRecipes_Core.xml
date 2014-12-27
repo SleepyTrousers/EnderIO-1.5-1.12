@@ -333,8 +333,8 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
     
     <recipe name="Bronze" energyCost="4000">
       <input>
-        <itemStack oreDictionary="ingotTin" number="3" />
-        <itemStack oreDictionary="ingotCopper" />        
+        <itemStack oreDictionary="ingotCopper" number="3" />
+        <itemStack oreDictionary="ingotTin" />        
       </input>
       <output>
         <itemStack oreDictionary="ingotBronze" number="4" />
