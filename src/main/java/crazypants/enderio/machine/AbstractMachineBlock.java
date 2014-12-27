@@ -231,7 +231,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof AbstractMachineEntity) {
@@ -250,7 +250,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         world.spawnEntityInWorld(entityitem);
       }
     }
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   @Override
