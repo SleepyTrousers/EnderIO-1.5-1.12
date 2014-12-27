@@ -219,7 +219,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   }
 
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
     if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof AbstractMachineEntity && shouldDropDefaultItem(world, player, x, y, z)) {
@@ -238,7 +238,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         world.spawnEntityInWorld(entityitem);
       }
     }
-    return super.removedByPlayer(world, player, x, y, z, willHarvest);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   @Override
@@ -336,5 +336,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public int getDefaultDisplayMask(World world, int x, int y, int z) {
     return IWailaInfoProvider.ALL_BITS;
+  }
+  
+  protected void setObeliskBounds() {
+    setBlockBounds(0.11f, 0, 0.11f, 0.91f, 0.48f, 0.91f);
   }
 }

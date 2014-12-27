@@ -1,51 +1,46 @@
 package crazypants.enderio.machine.attractor;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.generator.combustion.TranslatedCubeRenderer;
-import crazypants.enderio.machine.killera.TileKillerJoe;
-import crazypants.enderio.material.Material;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
-import crazypants.render.RenderUtil;
 import crazypants.render.VertexTransform;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector3f;
 import crazypants.vecmath.Vertex;
+import static org.lwjgl.opengl.GL11.*;
 
-public class AttractorRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
+public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
   private VertXForm xform = new VertXForm();
   private VertXForm2 xform2 = new VertXForm2();
   private ItemStack floatingStack;
+  
+  private Random rand = new Random();
 
-  public AttractorRenderer() {
+  public ObeliskRenderer(ItemStack itemStack) {
+    this.floatingStack = itemStack;
   }
 
   @Override
@@ -81,7 +76,7 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
       GL11.glTranslatef(12, 2f, 0);
       RenderItem ri = new RenderItem();
       ri.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine,
-          getFloatingStack(null, 0, 0, 0, 0), 0, 0);
+          getFloatingItem(null), 0, 0);
       GL11.glPopMatrix();
       GL11.glEnable(GL11.GL_LIGHTING);
     } else {
@@ -92,6 +87,9 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
 
   }
 
+  private EntityItem ei = null;
+
+  @SuppressWarnings("unchecked")
   @Override
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float tick) {
 
@@ -103,26 +101,30 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
     Tessellator.instance.setColorOpaque_F(f, f, f);
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) l1, (float) l2);
 
-    GL11.glPushMatrix();
-    GL11.glTranslatef((float) x, (float) y, (float) z);
-
-    GL11.glPopMatrix();
-
-    EntityItem ei = new EntityItem(world, x, y, z, getFloatingStack(te, x, y, z, tick));
-    ei.age = (int) world.getTotalWorldTime();
-
-    //Remove the bob
-    float bob = ((float) ei.age + tick) / 10.0F;
-    ei.hoverStart = -bob;
-
-    RenderManager.instance.getEntityRenderObject(ei).doRender(ei, x + 0.5, y + 0.55, z + 0.5, 0, tick);
-
-  }
-
-  protected ItemStack getFloatingStack(TileEntity te, double x, double y, double z, float tick) {
-    if(floatingStack == null) {
-      floatingStack = new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal());
+    if(ei == null) {
+      ei = new EntityItem(world, 0, 0, 0, getFloatingItem((T) te));
     }
+
+    rand.setSeed(te.xCoord + te.yCoord + te.zCoord);
+    rand.nextBoolean();
+    
+    ei.setEntityItemStack(getFloatingItem((T) te));
+    ei.hoverStart = (float) world.getTotalWorldTime() * 0.05f + (tick * 0.05f) + rand.nextFloat();
+
+    glPushMatrix();
+    glScalef(1.1f, 1.1f, 1.1f);
+    glTranslated(x + 0.5, y + 0.7, z + 0.5);
+    glDepthMask(true);
+    glRotatef(rand.nextFloat() * 360f, 0, 1, 0);
+
+    RenderManager.instance.renderEntityWithPosYaw(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
+    glPopMatrix();
+  }
+  
+  /**
+   * @param te CAN BE NULL
+   */
+  protected ItemStack getFloatingItem(T te) {
     return floatingStack;
   }
 
@@ -141,7 +143,6 @@ public class AttractorRenderer extends TileEntitySpecialRenderer implements ISim
   public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
     BoundingBox bb = BoundingBox.UNIT_CUBE;
-    TranslatedCubeRenderer.instance.renderBoundingBox(x, y, z, block, bb, xform, null, world != null);
 
     Tessellator.instance.addTranslation(x, y, z);
 

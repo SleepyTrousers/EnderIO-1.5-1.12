@@ -40,8 +40,6 @@ public class NaturaBerryFarmer extends PickableFarmer {
         for(EntityItem stack : addToDrops) {
           res.getDrops().add(stack);
         }
-        farm.actionPerformed(false);
-        farm.damageHoe(1, checkBlock);
       }
       checkBlock = checkBlock.getLocation(ForgeDirection.UP);
     }
@@ -60,15 +58,9 @@ public class NaturaBerryFarmer extends PickableFarmer {
     }
     
     BlockCoord checkBlock = bc;
-    
-    for(int i=0; i < 5; i++) {
-      meta = farm.getBlockMeta(checkBlock);
-      if(super.canHarvest(farm, checkBlock, block, meta)) {     
-        return true;
-      }
-      checkBlock = checkBlock.getLocation(ForgeDirection.UP);
-    }   
-    return false;
-  }
 
+    meta = farm.getBlockMeta(checkBlock);
+    block = checkBlock.getBlock(farm.getWorldObj());
+    return super.canHarvest(farm, checkBlock, block, meta);
+  }
 }

@@ -2,28 +2,19 @@ package crazypants.enderio.machine.xp;
 
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.monitor.ContainerPowerMonitor;
-import crazypants.enderio.machine.tank.TileTank;
-import crazypants.enderio.xp.XpUtil;
 
 public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceOblisk> {
 
@@ -37,6 +28,7 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   
   private BlockExperienceObelisk() {
     super(ModObject.blockExperienceObelisk, TileExperienceOblisk.class);
+    setObeliskBounds();
   }
     
   @Override
@@ -72,11 +64,6 @@ public class BlockExperienceObelisk extends AbstractMachineBlock<TileExperienceO
   @Override
   public int getRenderType() {    
     return renderId;
-  }
-  
-  @Override
-  public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int x, int y, int z) {
-    return AxisAlignedBB.getBoundingBox(x + 0.1, y, z + 0.1, x + 0.9, y + 0.5, z + 0.9);
   }
 
 //  @Override

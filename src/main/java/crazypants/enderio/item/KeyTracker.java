@@ -17,7 +17,6 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.GogglesOfRevealingUpgrade;
-import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.item.darksteel.JumpUpgrade;
 import crazypants.enderio.item.darksteel.PacketUpgradeState;
 import crazypants.enderio.item.darksteel.SoundDetector;
@@ -230,4 +229,7 @@ public class KeyTracker {
     return true;
   }
   
+  public KeyBinding getYetaWrenchMode() {
+    return yetaWrenchMode;
+  }
 }

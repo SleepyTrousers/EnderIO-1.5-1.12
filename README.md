@@ -1,4 +1,4 @@
-EnderIO
+EnderIO [![Build Status](http://ci.tterrag.com/buildStatus/icon?job=EnderIO)](http://ci.tterrag.com/job/EnderIO/)
 =======
 
 All code (excluding the buindled APIs from other mods, which are covered by their respecitive licenses) are released without restriction into the public domain under the CC0 1.0 liscence (http://creativecommons.org/publicdomain/zero/1.0/legalcode) FAQ (https://wiki.creativecommons.org/CC0_FAQ).

@@ -124,4 +124,8 @@ for (int i = 0; i < level; i++) {
     <itemStack modID="minecraft" itemName="potion" itemMeta="8203"/>
   </enchantment>
 
+  <enchantment name="enchantment.repair" costPerLevel="6">
+    <itemStack modID="minecraft" itemName="anvil"/>
+  </enchantment>
+
 </enchaterRecipes>
