@@ -60,7 +60,9 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
       dist = new PowerDistributor(new BlockCoord(this));
     }
     int transmitted = dist.transmitEnergy(worldObj, Math.min(getMaxOutput(), getEnergyStored()));
-    setEnergyStored(getEnergyStored() - transmitted);
+    if (!isCreative()) {
+      setEnergyStored(getEnergyStored() - transmitted);
+    }
     return transmitted > 0;
   }
 
@@ -94,6 +96,7 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    System.out.println("called " + worldObj.getTotalWorldTime() + " " + worldObj.isRemote);
     return hasPower() && getIoMode(from).canRecieveInput() ? super.receiveEnergy(from, maxReceive, isCreative() || simulate) : 0;
   }
   
@@ -154,6 +157,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     PainterUtil.setSourceBlock(nbtRoot, sourceBlock, sourceBlockMetadata);
+    nbtRoot.setInteger("maxIn", maxIn);
+    nbtRoot.setInteger("maxOut", maxOut);
   }
 
   @Override
@@ -169,6 +174,8 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
     super.readCommon(nbtRoot);
     this.sourceBlock = PainterUtil.getSourceBlock(nbtRoot);
     this.sourceBlockMetadata = PainterUtil.getSourceBlockMetadata(nbtRoot);
+    this.maxIn = nbtRoot.getInteger("maxIn");
+    this.maxOut = nbtRoot.getInteger("maxOut");
   }
 
   @Override
@@ -214,6 +221,9 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
   public void setCreative(boolean isCreative) {
     this.isCreative = isCreative;
+    if (isCreative) {
+      this.setEnergyStored(getMaxEnergyStored() / 2);
+    }
   }
 
   public void setIO(int in, int out) {
