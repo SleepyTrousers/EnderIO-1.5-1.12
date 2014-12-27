@@ -131,6 +131,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     return itemstack.getItem() == inventory[slot].getItem();
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
 
@@ -169,7 +170,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
           fakee.attackTargetEntityWithCurrentItem(ent);
           useNutrient();
           swingWeapon();
-          if(getStackInSlot(0).stackSize <= 0) {
+          if(getStackInSlot(0).stackSize <= 0 || fakee.getCurrentEquippedItem() == null) {
             setInventorySlotContents(0, null);
           }
         }
