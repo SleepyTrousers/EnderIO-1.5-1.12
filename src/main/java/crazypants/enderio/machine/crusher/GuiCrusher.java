@@ -30,6 +30,7 @@ public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
     drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, barHeight + 1);
 
     barHeight = getTileEntity().getBallDurationScaled(16);
+    System.out.println(barHeight);
     if(barHeight > 0) {
       drawTexturedModalRect(guiLeft + 142, guiTop + 23 + (16 - barHeight), 186, 31, 4, barHeight);
     }

@@ -15,6 +15,7 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
 
   protected IGrindingMultiplier gb;
   protected int currGbUse = 0;
+  protected int maxGbUse = 0; // client only
 
   protected int lastSendGbScaled = 0;
   private boolean useGrindingBall;
@@ -43,10 +44,13 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
 
   public int getBallDurationScaled(int scale) {
     if(gb == null) {
-      return 0;
+      return worldObj.isRemote ? calcScaled(currGbUse, maxGbUse, scale) : 0;
     }
-    float res = 1 - (float) currGbUse / (float) gb.getDurationMJ();
-    return (int) (res * scale);
+    return calcScaled(currGbUse, gb.getDurationMJ(), scale);
+  }
+  
+  private int calcScaled(float cur, float max, int scale) {
+	  return max == 0 ? 0 : (int) (scale * (1 - ((float) cur / (float) max)));
   }
 
   @Override

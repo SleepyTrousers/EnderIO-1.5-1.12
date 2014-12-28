@@ -16,9 +16,9 @@ public class PacketGrindingBall implements IMessage, IMessageHandler<PacketGrind
 
   int currGbUse;
 
-  public PacketGrindingBall() {    
+  public PacketGrindingBall() {
   }
-  
+
   public PacketGrindingBall(TileCrusher ent) {
     x = ent.xCoord;
     y = ent.yCoord;
