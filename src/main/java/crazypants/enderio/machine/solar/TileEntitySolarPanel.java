@@ -120,7 +120,6 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   }
 
   private void findNetwork() {
-    System.out.println("searching for network");
     for (ForgeDirection dir : SolarPanelNetwork.VALID_CONS) {
       TileEntity te = new BlockCoord(this).getLocation(dir).getTileEntity(worldObj);
       if(te != null && te instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) te).canConnect(this)) {
