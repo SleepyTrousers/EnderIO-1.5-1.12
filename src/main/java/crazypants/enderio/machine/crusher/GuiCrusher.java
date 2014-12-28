@@ -1,16 +1,27 @@
 package crazypants.enderio.machine.crusher;
 
+import java.awt.Rectangle;
+
 import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 
 public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
 
   public GuiCrusher(InventoryPlayer par1InventoryPlayer, TileCrusher inventory) {
     super(inventory, new ContainerCrusher(par1InventoryPlayer, inventory));
+    addToolTip(new GuiToolTip(new Rectangle(142, 23, 5, 17), "") {
+
+      @Override
+      protected void updateText() {
+        text.clear();
+        text.add(getTileEntity().getBallDurationScaled(100) + "%");
+      }
+    });
   }
 
   /**
@@ -30,7 +41,6 @@ public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
     drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, barHeight + 1);
 
     barHeight = getTileEntity().getBallDurationScaled(16);
-    System.out.println(barHeight);
     if(barHeight > 0) {
       drawTexturedModalRect(guiLeft + 142, guiTop + 23 + (16 - barHeight), 186, 31, 4, barHeight);
     }
