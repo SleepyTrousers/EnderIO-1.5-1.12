@@ -14,16 +14,14 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiAttractor extends GuiPoweredMachineBase {
+public class GuiAttractor extends GuiPoweredMachineBase<TileAttractor> {
 
   private static final int RANGE_ID = 8738924;
 
-  private TileAttractor ta;
   private ToggleButtonEIO showRangeB;
   
   public GuiAttractor(InventoryPlayer par1InventoryPlayer, TileAttractor te) {
     super(te, new ContainerAttractor(par1InventoryPlayer, te));
-    ta = te;
 
     int x = getXSize() - 5 - BUTTON_SIZE;
     showRangeB = new ToggleButtonEIO(this, RANGE_ID, x, 44, IconEIO.ADD_BUT, IconEIO.ADD_BUT);
@@ -35,14 +33,14 @@ public class GuiAttractor extends GuiPoweredMachineBase {
   public void initGui() {
     super.initGui();
     showRangeB.onGuiInit();
-    showRangeB.setSelected(ta.isShowingRange());
+    showRangeB.setSelected(getTileEntity().isShowingRange());
   }
 
   @Override
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == RANGE_ID) {
-      ta.setShowRange(showRangeB.isSelected());
+      getTileEntity().setShowRange(showRangeB.isSelected());
     }
   }
 
@@ -57,7 +55,7 @@ public class GuiAttractor extends GuiPoweredMachineBase {
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
-    int range = (int) ta.getRange();
+    int range = (int) getTileEntity().getRange();
     drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
   }
 

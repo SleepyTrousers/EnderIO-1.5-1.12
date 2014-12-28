@@ -11,7 +11,7 @@ import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.gui.GuiToolTip;
 
-public abstract class GuiPoweredMachineBase extends GuiMachineBase {
+public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiMachineBase<T> {
 
   protected static final int POWER_Y = 14;
   protected final int POWER_X = 15;
@@ -19,11 +19,8 @@ public abstract class GuiPoweredMachineBase extends GuiMachineBase {
   protected static final int POWER_HEIGHT = 42;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
-  private AbstractPoweredMachineEntity tileEntity;
-
-  public GuiPoweredMachineBase(AbstractPoweredMachineEntity machine, Container container) {
+  public GuiPoweredMachineBase(T machine, Container container) {
     super(machine, container);
-    tileEntity = machine;
     if(renderPowerBar()) {
       addToolTip(new GuiToolTip(new Rectangle(getPowerX(), getPowerY(), getPowerWidth(), getPowerHeight()), "") {
 
@@ -44,18 +41,18 @@ public abstract class GuiPoweredMachineBase extends GuiMachineBase {
   }
   
   protected int getPowerOutputValue() {
-    return tileEntity.getPowerUsePerTick();
+    return getTileEntity().getPowerUsePerTick();
   }
   
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(getPowerOutputLabel() + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr());
-    text.add(PowerDisplayUtil.formatStoredPower(tileEntity.getEnergyStored(), tileEntity.getCapacitor().getMaxEnergyStored()));
+    text.add(PowerDisplayUtil.formatStoredPower(getTileEntity().getEnergyStored(), getTileEntity().getCapacitor().getMaxEnergyStored()));
   }
 
   public void renderPowerBar(int k, int l) {
     if(renderPowerBar()) {      
-      int i1 = tileEntity.getEnergyStoredScaled(getPowerHeight());      
+      int i1 = getTileEntity().getEnergyStoredScaled(getPowerHeight());      
       // x, y, u, v, width, height
       drawTexturedModalRect(k + getPowerX(), l + (getPowerY() + getPowerHeight()) - i1, getPowerU(), getPowerV(), getPowerWidth(), i1);
     }

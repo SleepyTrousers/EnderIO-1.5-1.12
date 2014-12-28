@@ -1,9 +1,5 @@
 package crazypants.enderio.waila;
 
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_BASIC;
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_COMMON;
-import static crazypants.enderio.waila.IWailaInfoProvider.BIT_DETAILED;
-import static crazypants.enderio.waila.IWailaInfoProvider.fmt;
 import info.jbcs.minecraft.chisel.api.IFacade;
 
 import java.util.List;
@@ -25,6 +21,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
@@ -40,6 +37,8 @@ import crazypants.enderio.machine.power.TileCapacitorBank;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.Lang;
 
+import static crazypants.enderio.waila.IWailaInfoProvider.*;
+
 public class WailaCompat implements IWailaDataProvider {
 
   public static final WailaCompat INSTANCE = new WailaCompat();
@@ -53,6 +52,8 @@ public class WailaCompat implements IWailaDataProvider {
     registrar.registerHeadProvider(INSTANCE, Block.class);
     registrar.registerBodyProvider(INSTANCE, Block.class);
     registrar.registerTailProvider(INSTANCE, Block.class);
+    
+    registrar.registerNBTProvider(INSTANCE, TileEntityEio.class);
 
     registrar.registerSyncedNBTKey("controllerStoredEnergyRF", TileCapacitorBank.class);
 
@@ -93,7 +94,7 @@ public class WailaCompat implements IWailaDataProvider {
   @Override
   public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 	
-	_accessor = accessor;
+    _accessor = accessor;
 	
     Block block = accessor.getBlock();
     TileEntity te = accessor.getTileEntity();
@@ -201,6 +202,12 @@ public class WailaCompat implements IWailaDataProvider {
 
   @Override
   public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+    if (te instanceof IWailaNBTProvider) {
+      ((IWailaNBTProvider) te).getData(tag);
+    }
+    tag.setInteger("x", x);
+    tag.setInteger("y", y);
+    tag.setInteger("z", z);
     return tag;
   }
   

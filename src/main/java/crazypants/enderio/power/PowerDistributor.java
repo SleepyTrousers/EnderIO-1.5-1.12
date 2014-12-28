@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.util.BlockCoord;
 
 public class PowerDistributor {
@@ -65,11 +66,14 @@ public class PowerDistributor {
     }
     receptors.clear();
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      BlockCoord checkLoc = bc.getLocation(dir);
-      TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
-      IPowerInterface pi = PowerHandlerUtil.create(te);
-      if(pi != null && pi.canConduitConnect(dir.getOpposite())) {        
-        receptors.add(new Receptor(pi, dir));
+      TileEntity transmitter = worldObj.getTileEntity(bc.x, bc.y, bc.z);
+      if(!(transmitter instanceof AbstractMachineEntity) || ((AbstractMachineEntity) transmitter).getIoMode(dir).canOutput()) {
+        BlockCoord checkLoc = bc.getLocation(dir);
+        TileEntity te = worldObj.getTileEntity(checkLoc.x, checkLoc.y, checkLoc.z);
+        IPowerInterface pi = PowerHandlerUtil.create(te);
+        if(pi != null && pi.canConduitConnect(dir.getOpposite())) {
+          receptors.add(new Receptor(pi, dir));
+        }
       }
     }
     receptorIterator = receptors.listIterator();

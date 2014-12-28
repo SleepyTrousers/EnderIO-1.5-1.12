@@ -1,6 +1,7 @@
 package crazypants.render;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -58,6 +59,8 @@ public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureR
   private TextureCallback edgeTexureCallback;
 
   private boolean matchMetaData;
+  
+  private EnumSet<ForgeDirection> sidesToRender = EnumSet.allOf(ForgeDirection.class);
 
   public boolean isForceAllEdges() {
     return forceAllEdges;
@@ -87,6 +90,10 @@ public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureR
     this.matchMetaData = matchMetaData;        
   }
   
+  public void setSidesToRender(EnumSet<ForgeDirection> sides) {
+    sidesToRender = sides.clone();
+  }
+  
   @Override
   public boolean matchesMetadata(int meta1, int meta2) {
     return !this.matchMetaData || meta1 == meta2;
@@ -95,6 +102,10 @@ public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureR
   @Override
   public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
       boolean translateToXYZ) {
+    
+    if (!sidesToRender.contains(face)) {
+      return;
+    }
 
     List<Vertex> finalVerts = new ArrayList<Vertex>();
     finalVerts.addAll(refVertices);
@@ -126,6 +137,10 @@ public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureR
         float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
         float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
         float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
+        
+        xLen -= 2* (1 - par1Block.getBlockBoundsMaxX()) - par1Block.getBlockBoundsMinX();
+        yLen -= 2* (1 - par1Block.getBlockBoundsMaxY()) - par1Block.getBlockBoundsMinY();
+        zLen -= 2* (1 - par1Block.getBlockBoundsMaxZ()) - par1Block.getBlockBoundsMinZ();
 
         BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
@@ -172,7 +187,11 @@ public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureR
           v.xyz.x = Math.max(-0.001, v.xyz.x);
           v.xyz.y = Math.max(-0.001, v.xyz.y);
           v.xyz.z = Math.max(-0.001, v.xyz.z);
-
+          
+          v.xyz.x -= (1 - par1Block.getBlockBoundsMaxX()) - par1Block.getBlockBoundsMinX();
+          v.xyz.y -= (1 - par1Block.getBlockBoundsMaxY()) - par1Block.getBlockBoundsMinY();
+          v.xyz.z -= (1 - par1Block.getBlockBoundsMaxZ()) - par1Block.getBlockBoundsMinZ();
+          
           if(ForgeDirectionOffsets.isPositiveOffset(face)) {
             v.xyz.add(ForgeDirectionOffsets.forDir(face));
           }

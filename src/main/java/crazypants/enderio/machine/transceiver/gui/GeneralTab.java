@@ -32,14 +32,14 @@ public class GeneralTab implements ITabPanel {
 
   public GeneralTab(GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;    
-    container = parent.container;
+    container = parent.getContainer();
 
     int x = parent.getXSize() - 5 - 16;
     int y = 43;
     bufferSizeB = new ToggleButtonEIO(parent, 4327, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
     bufferSizeB.setSelectedToolTip("Buffering item stacks");
     bufferSizeB.setUnselectedToolTip("Buffering single items");
-    bufferSizeB.setSelected(parent.transceiver.isBufferStacks());
+    bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());
     
     sendPowerBarTT = new GuiToolTip(new Rectangle(parent.getPowerX() + SEND_BAR_OFFSET, parent.getPowerY(), parent.getPowerWidth(), parent.getPowerHeight()), "") {
       @Override
@@ -111,7 +111,7 @@ public class GeneralTab implements ITabPanel {
     parent.drawTexturedModalRect(x, y, 233, 196, 12, maxHeight + 2);
     parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, y, 233, 196, 12, maxHeight + 2);
     
-    int totalPixelHeight = parent.transceiver.getEnergyStoredScaled(maxHeight * 2);
+    int totalPixelHeight = parent.getTransciever().getEnergyStoredScaled(maxHeight * 2);
     int fillHeight = Math.min(totalPixelHeight,maxHeight);
     
     int fillY = y + 1 + parent.getPowerHeight() - fillHeight;
@@ -127,16 +127,16 @@ public class GeneralTab implements ITabPanel {
   public void updatePowerBarTooltip(List<String> text) {
     text.add("Local Buffer");
     text.add("Upkeep: " + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));    
-    int maxEnergy = parent.transceiver.getCapacitor().getMaxEnergyStored()/2;
-    int energyStored = Math.min(parent.transceiver.getEnergyStored(), maxEnergy);       
+    int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored()/2;
+    int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);       
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));    
   }
   
   private void updateSendPowerBarTooltip(List<String> text) {
     text.add("Send/Recieve Buffer");
     text.add("Max IO: " + PowerDisplayUtil.formatPowerPerTick(Config.transceiverMaxIoRF));
-    int maxEnergy = parent.transceiver.getCapacitor().getMaxEnergyStored()/2;
-    int energyStored = Math.max(0, parent.transceiver.getEnergyStored() - maxEnergy);
+    int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored()/2;
+    int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
     text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));    
   }
   
@@ -144,8 +144,8 @@ public class GeneralTab implements ITabPanel {
   @Override
   public void actionPerformed(GuiButton guiButton) {
     if(guiButton == bufferSizeB) {
-      parent.entity.setBufferStacks(bufferSizeB.isSelected());
-      PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(parent.entity));
+      parent.getTransciever().setBufferStacks(bufferSizeB.isSelected());
+      PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(parent.getTransciever()));
     }
   }
 

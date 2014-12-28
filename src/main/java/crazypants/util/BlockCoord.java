@@ -2,7 +2,9 @@ package crazypants.util;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -20,6 +22,10 @@ public final class BlockCoord {
 
   public BlockCoord(TileEntity tile) {
     this(tile.xCoord, tile.yCoord, tile.zCoord);
+  }
+  
+  public BlockCoord(Entity e) {
+    this(MathHelper.floor_double(e.posX), MathHelper.floor_double(e.posY), MathHelper.floor_double(e.posZ));
   }
 
   public BlockCoord(BlockCoord bc) {

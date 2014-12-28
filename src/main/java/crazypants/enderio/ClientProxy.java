@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
@@ -61,8 +62,8 @@ import crazypants.enderio.item.skull.BlockEndermanSkull;
 import crazypants.enderio.item.skull.EndermanSkullRenderer;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineRenderer;
-import crazypants.enderio.machine.attractor.AttractorRenderer;
 import crazypants.enderio.machine.attractor.BlockAttractor;
+import crazypants.enderio.machine.attractor.ObeliskRenderer;
 import crazypants.enderio.machine.attractor.TileAttractor;
 import crazypants.enderio.machine.capbank.BlockCapBank;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -97,14 +98,14 @@ import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.ranged.RangeRenerer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.solar.SolarPanelRenderer;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRenderer;
 import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
 import crazypants.enderio.machine.spawnguard.BlockSpawnGuard;
 import crazypants.enderio.machine.spawnguard.SpawnGuardRenderer;
 import crazypants.enderio.machine.spawnguard.TileSpawnGuard;
-import crazypants.enderio.machine.still.BlockVat;
-import crazypants.enderio.machine.still.VatRenderer;
 import crazypants.enderio.machine.tank.TankFluidRenderer;
 import crazypants.enderio.machine.tank.TankItemRenderer;
 import crazypants.enderio.machine.tank.TileTank;
@@ -112,13 +113,15 @@ import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.machine.transceiver.render.TransceiverRenderer;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
+import crazypants.enderio.machine.vat.BlockVat;
+import crazypants.enderio.machine.vat.VatRenderer;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
-import crazypants.enderio.machine.xp.ExperienceObliskRenderer;
 import crazypants.enderio.machine.xp.TileExperienceOblisk;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FusedQuartzFrameRenderer;
 import crazypants.enderio.material.FusedQuartzRenderer;
 import crazypants.enderio.material.MachinePartRenderer;
+import crazypants.enderio.material.Material;
 import crazypants.enderio.teleport.BlockTravelAnchor;
 import crazypants.enderio.teleport.TileTravelAnchor;
 import crazypants.enderio.teleport.TravelController;
@@ -198,6 +201,7 @@ public class ClientProxy extends CommonProxy {
     super.load();
 
     //make sure the tooltip stuff is registered
+    @SuppressWarnings("unused")
     TooltipAddera tta = TooltipAddera.instance;
 
     // Renderers
@@ -211,9 +215,13 @@ public class ClientProxy extends CommonProxy {
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPowerMonitor), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockPainter), machRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockCrafter), machRen);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockBuffer), machRen);
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
 
+    BlockSolarPanel.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new SolarPanelRenderer());
+    
     EnchanterModelRenderer emr = new EnchanterModelRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), emr);
@@ -229,7 +237,7 @@ public class ClientProxy extends CommonProxy {
     RenderingRegistry.registerBlockHandler(new SoulBinderRenderer());
 
     BlockAttractor.renderId = RenderingRegistry.getNextAvailableRenderId();
-    AttractorRenderer attRen = new AttractorRenderer();
+    ObeliskRenderer<TileAttractor> attRen = new ObeliskRenderer<TileAttractor>(new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()));
     RenderingRegistry.registerBlockHandler(attRen);
     ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAttractor), attRen);
@@ -239,7 +247,7 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileSpawnGuard.class, sgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
 
-    ExperienceObliskRenderer eor = new ExperienceObliskRenderer();
+    ObeliskRenderer<TileExperienceOblisk> eor = new ObeliskRenderer<TileExperienceOblisk>(new ItemStack(EnderIO.itemXpTransfer));
     BlockExperienceObelisk.renderId = BlockAttractor.renderId;
     ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);

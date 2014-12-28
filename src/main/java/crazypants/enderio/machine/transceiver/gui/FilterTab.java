@@ -33,10 +33,10 @@ public class FilterTab implements ITabPanel {
 
   FilterTab(GuiTransceiver parent) {
     this.parent = parent;
-    container = parent.container;
-    sendGui = new BasicItemFilterGui(parent, new FilterContainer(parent.entity, true), false, container.getFilterOffset().x,
+    container = parent.getContainer();
+    sendGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), true), false, container.getFilterOffset().x,
         container.getFilterOffset().y, 0);
-    recGui = new BasicItemFilterGui(parent, new FilterContainer(parent.entity, true), false, container.getFilterOffset().x,
+    recGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), true), false, container.getFilterOffset().x,
         container.getFilterOffset().y, 20);
 
     sendRecB = new IconButtonEIO(parent, 8888, container.getFilterOffset().x + 79, container.getFilterOffset().y - 20, IconEIO.RIGHT_ARROW);
@@ -45,7 +45,7 @@ public class FilterTab implements ITabPanel {
 
   @Override
   public void onGuiInit(int x, int y, int width, int height) {
-    parent.container.setPlayerInventoryVisible(true);
+    parent.getContainer().setPlayerInventoryVisible(true);
     sendRecB.onGuiInit();
     updateSendRecieve();
 
@@ -53,13 +53,13 @@ public class FilterTab implements ITabPanel {
 
   protected void updateSendRecieve() {
     if(showSend) {
-      parent.container.setSendFilterSlotsVisible(true);
-      parent.container.setReceiveFilterSlotsVisible(false);
+      parent.getContainer().setSendFilterSlotsVisible(true);
+      parent.getContainer().setReceiveFilterSlotsVisible(false);
       sendGui.updateButtons();
       recGui.deactivate();
     } else {
-      parent.container.setSendFilterSlotsVisible(false);
-      parent.container.setReceiveFilterSlotsVisible(true);
+      parent.getContainer().setSendFilterSlotsVisible(false);
+      parent.getContainer().setReceiveFilterSlotsVisible(true);
       sendGui.deactivate();
       recGui.updateButtons();
     }
@@ -67,9 +67,9 @@ public class FilterTab implements ITabPanel {
 
   @Override
   public void deactivate() {
-    parent.container.setPlayerInventoryVisible(false);
-    parent.container.setSendFilterSlotsVisible(false);
-    parent.container.setReceiveFilterSlotsVisible(false);
+    parent.getContainer().setPlayerInventoryVisible(false);
+    parent.getContainer().setSendFilterSlotsVisible(false);
+    parent.getContainer().setReceiveFilterSlotsVisible(false);
     sendGui.deactivate();
     recGui.deactivate();
     sendRecB.detach();

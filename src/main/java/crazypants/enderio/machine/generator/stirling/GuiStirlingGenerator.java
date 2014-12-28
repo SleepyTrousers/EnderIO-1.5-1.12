@@ -16,13 +16,10 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
 @SideOnly(Side.CLIENT)
-public class GuiStirlingGenerator extends GuiPoweredMachineBase {
-
-  private TileEntityStirlingGenerator entity;
+public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirlingGenerator> {
 
   public GuiStirlingGenerator(InventoryPlayer par1InventoryPlayer, TileEntityStirlingGenerator te) {
     super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te));
-    this.entity = te;
   }
 
   @Override
@@ -40,8 +37,8 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase {
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
     int scaled;
 
-    if(entity.getProgress() < 1 && entity.getProgress() > 0) {
-      scaled = entity.getProgressScaled(12);
+    if(getTileEntity().getProgress() < 1 && getTileEntity().getProgress() > 0) {
+      scaled = getTileEntity().getProgressScaled(12);
       drawTexturedModalRect(sx + 80, sy + 64 - scaled, 176, 12 - scaled, 14, scaled + 2);
     }
 
@@ -51,15 +48,15 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase {
     int y = guiTop + fr.FONT_HEIGHT / 2 + 3;
 
     int output = 0;
-    if(entity.isActive()) {
-      output = entity.getPowerUsePerTick();
+    if(getTileEntity().isActive()) {
+      output = getTileEntity().getPowerUsePerTick();
     }
     String txt = Lang.localize("stirlingGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt = Lang.localize("stirlingGenerator.burnRate") + " " + (entity.getBurnTimeMultiplier()) + "x";
+    txt = Lang.localize("stirlingGenerator.burnRate") + " " + (getTileEntity().getBurnTimeMultiplier()) + "x";
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

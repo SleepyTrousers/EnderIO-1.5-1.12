@@ -9,7 +9,10 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.InfoDisplayType;
@@ -46,6 +49,7 @@ public class FillGauge implements IInfoRenderer {
   private float barMinV;
 
   FillGauge() {
+    MinecraftForge.EVENT_BUS.register(this);
   }
 
   @Override
@@ -163,6 +167,11 @@ public class FillGauge implements IInfoRenderer {
       return type == cb.getType() && cb.getDisplayType(face) == InfoDisplayType.LEVEL_BAR;
     }
     return false;
+  }
+  
+  @SubscribeEvent
+  public void onTextureRestitch(TextureStitchEvent.Post event) {
+    createVertexCache();
   }
 
   private void createVertexCache() {

@@ -79,7 +79,6 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
   protected boolean func_146978_c(int p_146978_1_, int p_146978_2_, int p_146978_3_, int p_146978_4_, int p_146978_5_, int p_146978_6_)  {
     int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
     int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-    int b = Mouse.getEventButton();
     for(IGuiOverlay overlay : overlays) {
       if(overlay != null && overlay.isVisible() && overlay.isMouseInBounds(x, y)) {
         return false;
@@ -148,6 +147,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     super.drawGuiContainerForegroundLayer(mouseX, mouseY);
   }
 
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void drawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
     GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
@@ -159,7 +159,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
 
   //This is a copy of the super class method due to 'Method not found' errors
   // reported with some mods installed.
-  protected void copyOfdrawHoveringText(List par1List, int par2, int par3, FontRenderer font) {
+  protected void copyOfdrawHoveringText(List<String> par1List, int par2, int par3, FontRenderer font) {
     if(!par1List.isEmpty())
     {
       GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -167,7 +167,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
       GL11.glDisable(GL11.GL_LIGHTING);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
       int k = 0;
-      Iterator iterator = par1List.iterator();
+      Iterator<String> iterator = par1List.iterator();
 
       while (iterator.hasNext())
       {
@@ -261,6 +261,7 @@ public abstract class GuiContainerBase extends GuiContainer implements ToolTipRe
     return Minecraft.getMinecraft().fontRenderer;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void addButton(GuiButton button) {
     if(!buttonList.contains(button)) {

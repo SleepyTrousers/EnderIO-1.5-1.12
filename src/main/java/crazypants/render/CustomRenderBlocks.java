@@ -16,6 +16,7 @@ import crazypants.vecmath.Vertex;
 public class CustomRenderBlocks extends RenderBlocks {
 
   boolean translateToXYZ = true;
+  boolean shouldRenderBaseTexture = true;
 
   private final List<IRenderFace> renderFaceCallbacks = new ArrayList<IRenderFace>();
   private IIcon overrideTexture;
@@ -53,6 +54,10 @@ public class CustomRenderBlocks extends RenderBlocks {
 
   public void setOverrideTexture(IIcon overrideTexture) {
     this.overrideTexture = overrideTexture;
+  }
+  
+  public void setShouldRenderBaseTexture(boolean val) {
+    shouldRenderBaseTexture = val;
   }
 
   private void renderFace(ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture) {

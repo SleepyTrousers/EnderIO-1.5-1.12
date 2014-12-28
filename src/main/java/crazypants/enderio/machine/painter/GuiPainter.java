@@ -7,19 +7,15 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
-public class GuiPainter extends GuiPoweredMachineBase {
+public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
 
-  private AbstractMachineEntity tileEntity;
-
-  public GuiPainter(InventoryPlayer par1InventoryPlayer, AbstractPoweredMachineEntity furnaceInventory) {
-    super(furnaceInventory, new PainterContainer(par1InventoryPlayer, furnaceInventory));
-    tileEntity = furnaceInventory;
+  public GuiPainter(InventoryPlayer par1InventoryPlayer, TileEntityPainter te) {
+    super(te, new PainterContainer(par1InventoryPlayer, te));
   }
 
   /**
@@ -36,7 +32,7 @@ public class GuiPainter extends GuiPoweredMachineBase {
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
     int i1;
 
-    i1 = tileEntity.getProgressScaled(24);
+    i1 = getTileEntity().getProgressScaled(24);
     drawTexturedModalRect(k + 88, l + 34, 176, 14, i1 + 1, 16);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
@@ -49,7 +45,7 @@ public class GuiPainter extends GuiPoweredMachineBase {
 
   @Override
   protected void renderSlotHighlight(int slot, Vector4f col) {
-    if(tileEntity.getSlotDefinition().isOutputSlot(slot)) {
+    if(getTileEntity().getSlotDefinition().isOutputSlot(slot)) {
       renderSlotHighlight(col, 117,31,24,24);
     } else if(slot != 1) {
       super.renderSlotHighlight(slot, col);

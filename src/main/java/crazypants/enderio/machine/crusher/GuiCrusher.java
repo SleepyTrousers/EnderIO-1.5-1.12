@@ -7,13 +7,10 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.RenderUtil;
 
-public class GuiCrusher extends GuiPoweredMachineBase {
-
-  private TileCrusher tileEntity;
+public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
 
   public GuiCrusher(InventoryPlayer par1InventoryPlayer, TileCrusher inventory) {
     super(inventory, new ContainerCrusher(par1InventoryPlayer, inventory));
-    tileEntity = inventory;
   }
 
   /**
@@ -29,10 +26,10 @@ public class GuiCrusher extends GuiPoweredMachineBase {
 
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
-    int barHeight = tileEntity.getProgressScaled(24);
+    int barHeight = getTileEntity().getProgressScaled(24);
     drawTexturedModalRect(guiLeft + 79, guiTop + 31, 200, 0, 18, barHeight + 1);
 
-    barHeight = tileEntity.getBallDurationScaled(16);
+    barHeight = getTileEntity().getBallDurationScaled(16);
     if(barHeight > 0) {
       drawTexturedModalRect(guiLeft + 142, guiTop + 23 + (16 - barHeight), 186, 31, 4, barHeight);
     }

@@ -32,7 +32,12 @@ public class NetworkUtil {
     if(!cap.getType().isMultiblock()) {
       return Collections.emptyList();
     }
-    List<TileCapBank> res = new ArrayList<TileCapBank>();
+    Collection<TileCapBank> res = new ArrayList<TileCapBank>();
+    getNeigbours(cap, res);
+    return res;
+  }
+
+  public static void getNeigbours(TileCapBank cap, Collection<TileCapBank> res) {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       BlockCoord bc = cap.getLocation().getLocation(dir);
       TileEntity te = cap.getWorldObj().getTileEntity(bc.x, bc.y, bc.z);
@@ -43,7 +48,6 @@ public class NetworkUtil {
         }
       }
     }
-    return res;
   }
 
   private static boolean reuseNetwork(TileCapBank cap, Collection<TileCapBank> neighbours, World world) {

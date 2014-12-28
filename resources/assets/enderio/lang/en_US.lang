@@ -422,6 +422,11 @@ tile.blockExperienceObelisk.tooltip.detailed.line1=Stores Experience
 tile.blockExperienceObelisk.tooltip.detailed.line2=Can output liquid XP to
 tile.blockExperienceObelisk.tooltip.detailed.line3=adjacent tanks
 
+tile.blockBuffer.basic.name=Item Buffer
+tile.blockBuffer.power.name=Power Buffer
+tile.blockBuffer.omni.name=Omni Buffer
+tile.blockBuffer.creative.name=Creative Buffer
+
 enderio.machine.tooltip.configured=(Configured)
 
 //Blocks
@@ -493,7 +498,7 @@ item.itemYetaWrench.tooltip.detailed.line2=Shift-R-Click to break machines
 item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
 item.itemYetaWrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
 item.itemYetaWrench.tooltip.detailed.line5=open conduit settings GUI
-item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to 
+item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to 
 item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
 
 item.itemMagnet.name=Electromagnet
@@ -640,6 +645,9 @@ enderio.darksteel.upgrade.solar_two.name=Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
 
 //------GUI
+
+enderio.gui.simple.in=Max In:
+enderio.gui.simple.out=Max Out:
 
 enderio.gui.enabled=Enabled
 enderio.gui.disabled=Disabled

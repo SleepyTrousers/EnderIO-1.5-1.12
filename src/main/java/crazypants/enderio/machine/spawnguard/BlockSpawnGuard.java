@@ -13,10 +13,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.attractor.BlockAttractor;
-import crazypants.enderio.machine.attractor.ContainerAttractor;
-import crazypants.enderio.machine.attractor.GuiAttractor;
-import crazypants.enderio.machine.attractor.TileAttractor;
 
 public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
 
@@ -34,6 +30,7 @@ public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
   
   protected BlockSpawnGuard() {
     super(ModObject.blockSpawnGuard, TileSpawnGuard.class);
+    setObeliskBounds();
   }
 
   @Override
@@ -107,12 +104,7 @@ public class BlockSpawnGuard extends AbstractMachineBlock<TileSpawnGuard> {
   public int getRenderType() {    
     return renderId;
   }
-  
-  @Override
-  public AxisAlignedBB getSelectedBoundingBoxFromPool(World p_149633_1_, int x, int y, int z) {
-    return AxisAlignedBB.getBoundingBox(x + 0.1, y, z + 0.1, x + 0.9, y + 0.5, z + 0.9);
-  }
-  
+
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(World world, int x, int y, int z, Random rand) {

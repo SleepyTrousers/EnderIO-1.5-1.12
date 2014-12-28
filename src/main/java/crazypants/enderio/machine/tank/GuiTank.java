@@ -12,7 +12,7 @@ import crazypants.gui.GuiToolTip;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiTank extends GuiMachineBase {
+public class GuiTank extends GuiMachineBase<TileTank> {
 
   private TileTank entity;
 
@@ -27,7 +27,7 @@ public class GuiTank extends GuiMachineBase {
         text.clear();
         String heading = Lang.localize("tank.tank");
         if(entity.tank.getFluid() != null) {
-          heading += ": " + entity.tank.getFluid().getFluid().getLocalizedName();
+          heading += ": " + entity.tank.getFluid().getLocalizedName();
         }
         text.add(heading);
         text.add(Fluids.toCapactityString(entity.tank));

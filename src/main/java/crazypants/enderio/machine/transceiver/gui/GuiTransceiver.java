@@ -18,26 +18,17 @@ import crazypants.enderio.machine.transceiver.ChannelType;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.render.RenderUtil;
 
-public class GuiTransceiver extends GuiPoweredMachineBase {
+public class GuiTransceiver extends GuiPoweredMachineBase<TileTransceiver> {
 
   private static final int TAB_HEIGHT = 24;
-
-  TileTransceiver entity;
 
   private int activeTab = 0;
   private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int tabYOffset = 4;
-
-  ContainerTransceiver container;
-  TileTransceiver transceiver;
-  
   GeneralTab generalTab;
 
   public GuiTransceiver(InventoryPlayer par1InventoryPlayer, TileTransceiver te) {
     super(te, new ContainerTransceiver(par1InventoryPlayer, te));
-    entity = te;
-    container = (ContainerTransceiver) inventorySlots;
-    transceiver = te;
 
     generalTab = new GeneralTab(this); 
     tabs.add(generalTab);
@@ -234,5 +225,12 @@ public class GuiTransceiver extends GuiPoweredMachineBase {
       tes.draw();
     }
   }
-
+  
+  public TileTransceiver getTransciever() {
+    return getTileEntity();
+  }
+  
+  public ContainerTransceiver getContainer() {
+    return (ContainerTransceiver) inventorySlots;
+  }
 }

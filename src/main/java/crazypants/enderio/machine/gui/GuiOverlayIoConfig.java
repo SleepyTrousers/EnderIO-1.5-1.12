@@ -8,8 +8,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.IIcon;
-import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
@@ -114,9 +112,6 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
   }
 
   public SelectedFace getSelection() {
-    return renderer.getSelection();
+    return visible ? renderer.getSelection() : null;
   }
-
-
-
 }
