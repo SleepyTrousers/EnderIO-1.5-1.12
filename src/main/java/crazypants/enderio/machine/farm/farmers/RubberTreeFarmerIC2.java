@@ -5,6 +5,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
 import crazypants.util.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 
 public class RubberTreeFarmerIC2 extends TreeFarmer {
 
-  private Class<?> treeTap;
+  public static Class<?> treeTap;
   private ItemStack stickyResin;
 
   public RubberTreeFarmerIC2() {
@@ -23,7 +24,6 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
     Item item = GameRegistry.findItem("IC2", "itemTreetap");
     if(item != null) {
       treeTap = item.getClass();
-      FarmersCommune.instance.registerToolType(treeTap);
     }
     item = GameRegistry.findItem("IC2", "itemHarz");
     if(item != null) {
@@ -53,7 +53,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
     HarvestResult res = new HarvestResult();
     int y = bc.y;
     boolean done = false;
-    while (!done && farm.hasTool(treeTap)) {
+    while (!done && farm.hasTool(ToolType.TREETAP)) {
       bc = new BlockCoord(bc.x, y, bc.z);
       block = farm.getBlock(bc);
       if(!isWood(block)) {
@@ -61,7 +61,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
       } else {
         meta = farm.getBlockMeta(bc);
         if(attemptHarvest(res, farm.getWorldObj(), bc.x, y, bc.z, meta)) {
-          farm.damageTool(treeTap, woods[0], bc, 1);
+          farm.damageTool(ToolType.TREETAP, woods[0], bc, 1);
         }
       }
       y++;

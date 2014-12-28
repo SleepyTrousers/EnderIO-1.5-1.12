@@ -26,16 +26,8 @@ public class FarmersCommune implements IFarmerJoe {
   }
 
   private List<IFarmerJoe> farmers = new ArrayList<IFarmerJoe>();
-  
-  private Set<Class<?>> toolTypes = new HashSet<Class<?>>();
-  
+    
   private FarmersCommune() {
-    registerToolType(ItemHoe.class);
-    registerToolType(ItemAxe.class);
-  }
-  
-  public void registerToolType(Class<?> clz) {
-    toolTypes.add(clz);
   }
   
   @Override
@@ -77,11 +69,4 @@ public class FarmersCommune implements IFarmerJoe {
     }
     return false;
   }
-
-  public Set<Class<?>> getToolTypes() {
-    return toolTypes;
-  }
-
-
-
 }

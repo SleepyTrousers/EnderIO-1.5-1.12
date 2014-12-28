@@ -1,6 +1,7 @@
 package crazypants.enderio.nei;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import crazypants.enderio.EnderIO;
@@ -63,6 +64,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
       API.hideItem(new ItemStack(EnderIO.itemGasConduit));
     }
     API.hideItem(new ItemStack(EnderIO.blockHyperCube));
+    API.hideItem(new ItemStack(EnderIO.blockCapacitorBank, 1, OreDictionary.WILDCARD_VALUE));
   }
 
   @Override
