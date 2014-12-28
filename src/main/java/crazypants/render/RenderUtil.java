@@ -321,11 +321,11 @@ public class RenderUtil {
     }
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges) {
-    renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges, true, true);
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges) {
+    renderConnectedTextureFace(blockAccess, block, x, y, z, face, texture, forceAllEdges, true, true);
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges,
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
 
     if((blockAccess == null && !forceAllEdges) || face == null || texture == null) {
@@ -333,11 +333,11 @@ public class RenderUtil {
     }
 
     if(!forceAllEdges) {
-      Block block = blockAccess.getBlock(x, y, z);
-      if(block == null) {
+      Block check = blockAccess.getBlock(x, y, z);
+      if(check == null) {
         return;
       }
-      if(!block.shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+      if(!check.shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
         return;
       }
     }
@@ -365,6 +365,11 @@ public class RenderUtil {
       float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
       float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
       float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
+      
+      xLen -= 2* (1 - block.getBlockBoundsMaxX()) - block.getBlockBoundsMinX();
+      yLen -= 2* (1 - block.getBlockBoundsMaxY()) - block.getBlockBoundsMinY();
+      zLen -= 2* (1 - block.getBlockBoundsMaxZ()) - block.getBlockBoundsMinZ();
+
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
       List<Vector3f> corners = bb.getCornersForFace(face);

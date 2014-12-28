@@ -90,7 +90,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
         if(tecb != null && tecb.getSourceBlock() != null) {
           texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
         }
-        RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges);
+        RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockFusedQuartz, x, y, z, face, texture, forceAllEdges);
       }
       return;
     }

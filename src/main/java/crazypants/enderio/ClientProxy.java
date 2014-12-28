@@ -98,6 +98,8 @@ import crazypants.enderio.machine.ranged.RangeEntity;
 import crazypants.enderio.machine.ranged.RangeRenerer;
 import crazypants.enderio.machine.reservoir.ReservoirRenderer;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.enderio.machine.solar.BlockSolarPanel;
+import crazypants.enderio.machine.solar.SolarPanelRenderer;
 import crazypants.enderio.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machine.soul.SoulBinderRenderer;
 import crazypants.enderio.machine.spawner.BrokenSpawnerRenderer;
@@ -217,6 +219,9 @@ public class ClientProxy extends CommonProxy {
 
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemBrokenSpawner, new BrokenSpawnerRenderer());
 
+    BlockSolarPanel.renderId = RenderingRegistry.getNextAvailableRenderId();
+    RenderingRegistry.registerBlockHandler(new SolarPanelRenderer());
+    
     EnchanterModelRenderer emr = new EnchanterModelRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileEnchanter.class, emr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnchanter), emr);

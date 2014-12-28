@@ -127,7 +127,7 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
   private void renderBorder(IBlockAccess blockAccess, int x, int y, int z, int meta) {
     IIcon texture = EnderIO.blockCapBank.getBorderIcon(0, meta);
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
+      RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockCapBank,  x, y, z, face, texture,
           blockAccess == null, false, false);
     }
   }

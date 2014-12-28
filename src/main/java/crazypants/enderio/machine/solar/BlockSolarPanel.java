@@ -14,6 +14,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.api.energy.EnergyStorage;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.ModObject;
@@ -22,10 +23,13 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
+import crazypants.enderio.waila.WailaCompat;
 import crazypants.util.Lang;
 import crazypants.util.Util;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
+
+  public static int renderId;
 
   public static BlockSolarPanel create() {
     BlockSolarPanel result = new BlockSolarPanel();
@@ -38,6 +42,9 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   IIcon sideIcon;
   IIcon advancedSideIcon;
   IIcon advancedIcon;
+  
+  IIcon borderIcon;
+  IIcon advancedBorderIcon;
 
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class);
@@ -79,7 +86,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
         ItemStack is = new ItemStack(this, 1, meta);
         Util.dropItems(world, is, x, y, z, true);
       }
-      removedByPlayer(world, entityPlayer, x, y, z);
+      removedByPlayer(world, entityPlayer, x, y, z, true);
       tool.used(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z);
       return true;
     }
@@ -94,6 +101,15 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     return meta == 0 ? sideIcon : advancedSideIcon;
   }
 
+  public IIcon getBorderIcon(int i, int meta) {
+    return meta == 0 ? borderIcon : advancedBorderIcon;
+  }
+  
+  @Override
+  public int getRenderType() {
+    return renderId;
+  }
+
   @Override
   public void onNeighborBlockChange(World world, int x, int y, int z, Block par5) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -103,11 +119,13 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   }
 
   @Override
-  public void registerBlockIcons(IIconRegister IIconRegister) {
-    blockIcon = IIconRegister.registerIcon("enderio:solarPanelTop");
-    advancedIcon = IIconRegister.registerIcon("enderio:solarPanelAdvancedTop");
-    sideIcon = IIconRegister.registerIcon("enderio:solarPanelSide");
-    advancedSideIcon = IIconRegister.registerIcon("enderio:solarPanelAdvancedSide");
+  public void registerBlockIcons(IIconRegister register) {
+    blockIcon = register.registerIcon("enderio:solarPanelTop");
+    advancedIcon = register.registerIcon("enderio:solarPanelAdvancedTop");
+    sideIcon = register.registerIcon("enderio:solarPanelSide");
+    advancedSideIcon = register.registerIcon("enderio:solarPanelAdvancedSide");
+    borderIcon = register.registerIcon("enderio:solarPanelBorder");
+    advancedBorderIcon = register.registerIcon("enderio:solarPanelAdvancedBorder");
   }
 
   @Override
@@ -120,6 +138,7 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, BLOCK_HEIGHT, 1.0F);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
     setBlockBoundsBasedOnState(par1World, par2, par3, par4);
@@ -143,7 +162,9 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
     if(te instanceof TileEntitySolarPanel) {
       TileEntitySolarPanel solar = (TileEntitySolarPanel) te;
       float efficiency = solar.calculateLightRatio();
-
+      EnergyStorage storage = new EnergyStorage(Integer.MAX_VALUE);
+      storage.readFromNBT(WailaCompat.getNBTData());
+      tooltip.add(storage.getEnergyStored() + " / " + WailaCompat.getNBTData().getInteger("rfCap") + " RF");
       tooltip.add(String.format("%s : %s%.0f%%", EnumChatFormatting.WHITE + Lang.localize("tooltip.efficiency") + EnumChatFormatting.RESET,
           EnumChatFormatting.WHITE, efficiency * 100));
     }
