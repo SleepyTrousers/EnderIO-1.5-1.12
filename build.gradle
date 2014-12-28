@@ -138,7 +138,7 @@ String getChangelogText() {
             if (it.startsWith(separator)) {return}
         }
         if (!it.startsWith(separator)) {
-            str += "$it\n"
+            str += "$it" + (lineCount < 3 ? ':\n\n' : '\n')
             return
         }
         done = true // once we go past the first version block, parse no more
