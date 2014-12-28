@@ -138,7 +138,7 @@ String getChangelogText() {
             if (it.startsWith(separator)) {return}
         }
         if (!it.startsWith(separator)) {
-            str += "$it\n"
+            str += "$it" + (lineCount < 3 ? ':\n\n' : '\n')
             return
         }
         done = true // once we go past the first version block, parse no more
@@ -155,6 +155,6 @@ curse {
 
     if (project.hasProperty('cp_curseforge_key')) apiKey = project.curseforge_key
     projectId = project.curse_projectId
-    changelog = getChangelogText()
-    releaseType = 'beta'
+    changelog = System.getenv("CHANGELOG").equals("none") ? getChangelogText() : System.getenv("CHANGELOG")
+    releaseType = project.hasProperty('mod_appendix') ? "${mod_appendix}".toString() : 'release'
 }

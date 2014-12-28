@@ -49,14 +49,17 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
     par3List.add(stack);
   }
   
+  @SuppressWarnings("rawtypes")
   @Override
   public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {       
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {       
   }
 
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     TooltipAddera.addDetailedTooltipFromResources(list, itemstack); 

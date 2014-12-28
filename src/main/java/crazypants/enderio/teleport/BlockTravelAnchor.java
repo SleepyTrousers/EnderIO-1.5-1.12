@@ -8,9 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -76,7 +74,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     super.init();
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, this);
     EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, this);
-    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
   }
 
   @Override
@@ -166,36 +164,26 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     }
     return null;
   }
-
-  /**
-   * Remove the tile entity too.
-   */
+  
   @Override
-  public void breakBlock(World world, int x, int y, int z, Block par5, int par6) {
-    if(!world.isRemote && world.getGameRules().getGameRuleBooleanValue("doTileDrops")) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean doHarvest) {
+    if(!world.isRemote && (!player.capabilities.isCreativeMode)) {
       TileEntity te = world.getTileEntity(x, y, z);
-
       if(te instanceof TileTravelAnchor) {
-        TileTravelAnchor tef = (TileTravelAnchor) te;
-
+        TileTravelAnchor anchor = (TileTravelAnchor) te;
+        
         ItemStack itemStack;
-        Block srcBlk = tef.getSourceBlock();
+        Block srcBlk = anchor.getSourceBlock();
         if(srcBlk != null) {
-          itemStack = createItemStackForSourceBlock(tef.getSourceBlock(), tef.getSourceBlockMetadata());
+          itemStack = createItemStackForSourceBlock(anchor.getSourceBlock(), anchor.getSourceBlockMetadata());
         } else {
           itemStack = new ItemStack(this);
         }
 
-        float f = 0.7F;
-        double d0 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d1 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        double d2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, itemStack);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
+        dropBlockAsItem(world, x, y, z, itemStack);
       }
     }
-    world.removeTileEntity(x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, doHarvest);
   }
 
   @Override
@@ -226,8 +214,8 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     return getUnlocalizedName();
   }
 
-  public static ItemStack createItemStackForSourceBlock(Block block, int damage) {
-    ItemStack result = new ItemStack(EnderIO.blockTravelPlatform, 1, damage);
+  public ItemStack createItemStackForSourceBlock(Block block, int damage) {
+    ItemStack result = new ItemStack(this, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
   }
@@ -237,10 +225,10 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     return false;
   }
 
-  public static final class PainterTemplate extends BasicPainterTemplate {
+  public final class PainterTemplate extends BasicPainterTemplate {
 
-    public PainterTemplate(Block ta) {
-      super(ta);
+    public PainterTemplate() {
+      super(BlockTravelAnchor.this);
     }
 
     @Override
@@ -248,8 +236,6 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
       if(paintSource == null) {
         return new ResultStack[0];
-      } else if(paintSource.getItem() == Item.getItemFromBlock(EnderIO.blockTravelPlatform)) {
-        return new ResultStack[] { new ResultStack(new ItemStack(EnderIO.blockTravelPlatform)) };
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }

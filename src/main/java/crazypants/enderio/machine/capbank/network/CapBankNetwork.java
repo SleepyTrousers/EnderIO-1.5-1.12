@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -23,6 +22,7 @@ import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
@@ -98,17 +98,27 @@ public class CapBankNetwork implements ICapBankNetwork {
 
 
   protected void setNetwork(World world, TileCapBank cap) {
-    if(cap != null && cap.setNetwork(this)) {
-      addMember(cap);
-      Collection<TileCapBank> neighbours = NetworkUtil.getNeigbours(cap);
-      for (TileCapBank neighbour : neighbours) {
-        if(neighbour.getNetwork() == null) {
-          setNetwork(world, neighbour);
-        } else if(neighbour.getNetwork() != this) {
-          neighbour.getNetwork().destroyNetwork();
-          setNetwork(world, neighbour);
+    if(cap == null) {
+      return;
+    }
+    Set<TileCapBank> work = new HashSet<TileCapBank>();
+    for(;;) {
+      ICapBankNetwork network = cap.getNetwork();
+      if(network != this) {
+        if(network != null) {
+          network.destroyNetwork();
+        }
+        if(cap.setNetwork(this)) {
+          addMember(cap);
+          NetworkUtil.getNeigbours(cap, work);
         }
       }
+      if(work.isEmpty()) {
+        return;
+      }
+      Iterator<TileCapBank> iter = work.iterator();
+      cap = iter.next();
+      iter.remove();
     }
   }
 
@@ -124,7 +134,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     }
     capBanks.clear();
     if(cap != null) {
-      EnderIO.packetPipeline.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
+      PacketHandler.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
     }
   }
 
@@ -220,8 +230,8 @@ public class CapBankNetwork implements ICapBankNetwork {
 
     if(firstUpate) {
       if(!capBanks.isEmpty()) {
-        EnderIO.packetPipeline.sendToAllAround(new PacketNetworkStateResponse(this), capBanks.get(0));
-        EnderIO.packetPipeline.sendToAllAround(new PacketNetworkEnergyResponse(this), capBanks.get(0));
+        PacketHandler.sendToAllAround(new PacketNetworkStateResponse(this), capBanks.get(0));
+        PacketHandler.sendToAllAround(new PacketNetworkEnergyResponse(this), capBanks.get(0));
       }
       firstUpate = false;
     }

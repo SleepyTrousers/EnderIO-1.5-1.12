@@ -22,7 +22,7 @@ public class Enchantments {
     if(Config.enchantmentSoulBoundEnabled) {
       int id = Config.enchantmentSoulBoundId;
       if(id < 0) {
-        getEmptyEnchantId();
+        id = getEmptyEnchantId();
       }
       if(id < 0) {
         Log.error("Could not find an empty enchantment ID to add enchanments");

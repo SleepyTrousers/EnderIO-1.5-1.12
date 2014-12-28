@@ -60,9 +60,9 @@ public class WirelessChargerController {
     if(chargers.isEmpty()) {
       return;
     }
-    BlockCoord bc = new BlockCoord((int) player.posX, (int) player.posY, (int) player.posZ);
+    BlockCoord bc = new BlockCoord(player);
     for (IWirelessCharger capBank : chargers.values()) {
-      if(capBank.getLocation().distanceSquared(bc) <= RANGE_SQ) {
+      if(capBank.isActive() && capBank.getLocation().distanceSquared(bc) <= RANGE_SQ) {
         boolean done = chargeFromCapBank(player, capBank);
         if(done) {
           return;

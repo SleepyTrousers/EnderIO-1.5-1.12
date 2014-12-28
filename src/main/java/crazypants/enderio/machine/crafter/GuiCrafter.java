@@ -17,15 +17,12 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.RenderUtil;
 
-public class GuiCrafter extends GuiPoweredMachineBase  {
-
-  private IItemBuffer entity;
+public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter>  {
 
   private ToggleButtonEIO bufferSizeB;
 
   public GuiCrafter(InventoryPlayer par1InventoryPlayer, TileCrafter te) {
     super(te, new ContainerCrafter(par1InventoryPlayer, te));
-    entity = te;
     xSize = getXSize();
 
     int x = getXSize() - 5 - 16;
@@ -46,8 +43,8 @@ public class GuiCrafter extends GuiPoweredMachineBase  {
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b == bufferSizeB) {
-      entity.setBufferStacks(bufferSizeB.isSelected());
-      PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(entity));
+      getTileEntity().setBufferStacks(bufferSizeB.isSelected());
+      PacketHandler.INSTANCE.sendToServer(new PacketItemBuffer(getTileEntity()));
     }
   }
 

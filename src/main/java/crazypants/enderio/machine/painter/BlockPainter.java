@@ -11,7 +11,6 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 
 public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
 
@@ -44,7 +43,7 @@ public class BlockPainter extends AbstractMachineBlock<TileEntityPainter> {
   @Override
   public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
     TileEntity te = world.getTileEntity(x, y, z);
-    return new GuiPainter(player.inventory, (AbstractPoweredMachineEntity) te);
+    return new GuiPainter(player.inventory, (TileEntityPainter) te);
   }
 
   @Override

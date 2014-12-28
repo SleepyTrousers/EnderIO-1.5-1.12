@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import cofh.api.energy.EnergyStorage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -13,17 +14,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.IInternalPowerProvider;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.waila.IWailaNBTProvider;
 import crazypants.util.BlockCoord;
 
-public class TileEntitySolarPanel extends TileEntity implements IInternalPowerProvider {
+public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
   
-  private BasicCapacitor capacitor;
-
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
@@ -33,13 +33,13 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
   private int checkOffset;
   private static final int CHECK_INTERVAL = 100;
   
-  private int storedEnergyRF;
+  EnergyStorage destroyedNetworkBuffer = null;
+  
+  protected SolarPanelNetwork network = new SolarPanelNetwork();
 
   public TileEntitySolarPanel() {
     checkOffset = (int) (Math.random() * 20);
-    capacitor = new BasicCapacitor(0, 10000, Config.maxPhotovoltaicAdvancedOutputRF * 5);
   }
-
   
   public void onNeighborBlockChange() {
     receptorsDirty = true;
@@ -59,7 +59,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
 
   @Override
   public boolean canConnectEnergy(ForgeDirection from) {
-    return true;
+    return from == ForgeDirection.DOWN;
   }
 
   @Override
@@ -72,30 +72,25 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
     return getMaxEnergyStored();
   }
   
-  
-
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    return capacitor.getMaxEnergyReceived();
+    return 0;
   }
-
 
   @Override
   public int getEnergyStored() {
-    return storedEnergyRF;
+    return network.getEnergyStored();
   }
 
   @Override
   public int getMaxEnergyStored() {
-    return capacitor.getMaxEnergyStored();
+    return network.getMaxEnergyStored();
   }
-
 
   @Override
   public void setEnergyStored(int stored) {
-    storedEnergyRF = Math.max(stored, 0);    
+    network.setEnergyStored(stored);
   }
-
 
   @Override
   public void updateEntity() {
@@ -104,6 +99,44 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
     }
     collectEnergy();
     transmitEnergy();
+    
+    if (network.isValid()) {
+      if (destroyedNetworkBuffer != null) {
+        network.addBuffer(destroyedNetworkBuffer);
+        destroyedNetworkBuffer = null;
+      }
+      network.onUpdate(this);
+    }
+    
+    if (!network.isValid() || (worldObj.getTotalWorldTime() % 20 == 0 && network.addToNetwork(this))) {
+      findNetwork();
+    }
+  }
+  
+  @Override
+  public void invalidate() {
+    network.removeFromNetwork(this);
+    super.invalidate();
+  }
+
+  private void findNetwork() {
+    for (ForgeDirection dir : SolarPanelNetwork.VALID_CONS) {
+      TileEntity te = new BlockCoord(this).getLocation(dir).getTileEntity(worldObj);
+      if(te != null && te instanceof TileEntitySolarPanel && ((TileEntitySolarPanel) te).canConnect(this)) {
+        SolarPanelNetwork network = ((TileEntitySolarPanel) te).network;
+        if(network != null) {
+          network.addToNetwork(this);
+        }
+      }
+    }
+
+    if(!network.isValid()) {
+      network = new SolarPanelNetwork(this);
+    }
+  }
+
+  private boolean canConnect(TileEntitySolarPanel other) {
+    return getBlockMetadata() == other.getBlockMetadata();
   }
 
   private void collectEnergy() {
@@ -116,7 +149,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
       lastCollectionValue = Math.round(getEnergyPerTick() * fromSun);
     }
     if(lastCollectionValue > 0) {
-      storedEnergyRF = Math.min(lastCollectionValue + storedEnergyRF, capacitor.getMaxEnergyStored());
+      network.setEnergyStored(Math.min(lastCollectionValue + network.getEnergyStored(), network.getMaxEnergyStored()));
     }
   }
 
@@ -131,7 +164,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
   float calculateLightRatio() {
     return calculateLightRatio(worldObj, xCoord, yCoord, zCoord);
   }
-  
+
   public static float calculateLightRatio(World world, int x, int y, int z) {
     int lightValue = world.getSavedLightValue(EnumSkyBlock.Sky, x, y, z) - world.skylightSubtracted;
     float sunAngle = world.getCelestialAngleRadians(1.0F);
@@ -151,7 +184,7 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
   private boolean transmitEnergy() {
 
 
-    int canTransmit = Math.min(getEnergyStored(), capacitor.getMaxEnergyExtracted());
+    int canTransmit = Math.min(getEnergyStored(), network.getMaxEnergyExtracted());
     int transmitted = 0;
 
     checkReceptors();
@@ -217,15 +250,16 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
   }
 
   @Override
-  public void readFromNBT(NBTTagCompound tag) {
-    super.readFromNBT(tag);
-    storedEnergyRF = tag.getInteger("storedEnergyRF");
+  public void readCustomNBT(NBTTagCompound tag) {
+    network.readFromNBT(this, tag);
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound tag) {
-    super.writeToNBT(tag);
-    tag.setInteger("storedEnergyRF", storedEnergyRF);
+  public void writeCustomNBT(NBTTagCompound tag) {
+    if (network.isValid() && network.shouldSave(this)) {
+      network.writeToNBT(tag);
+      tag.setInteger("rfCap", network.getMaxEnergyStored()); // for WAILA
+    }
   }
 
   @Override
@@ -243,5 +277,20 @@ public class TileEntitySolarPanel extends TileEntity implements IInternalPowerPr
   @Override
   public boolean displayPower() {
     return true;
+  }
+
+  public void setNetwork(SolarPanelNetwork network) {
+    this.network = network;
+  }
+  
+  public boolean isMaster() {
+    return network.getMaster() == this;
+  }
+
+  @Override
+  public void getData(NBTTagCompound tag) {
+    if (network.isValid()) {
+      network.getMaster().writeToNBT(tag);
+    }
   }
 }

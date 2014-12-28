@@ -14,16 +14,14 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiSpawnGurad extends GuiPoweredMachineBase {
+public class GuiSpawnGurad extends GuiPoweredMachineBase<TileSpawnGuard> {
 
-  TileSpawnGuard sg;
   ToggleButtonEIO showRangeB;
   
   private static final int RANGE_ID = 8738924;
   
   public GuiSpawnGurad(InventoryPlayer par1InventoryPlayer, TileSpawnGuard te) {
     super(te, new ContainerSpawnGuard(par1InventoryPlayer, te));
-    sg = te;
     
     int x = getXSize() - 5 - BUTTON_SIZE;
     showRangeB = new ToggleButtonEIO(this, RANGE_ID, x, 44, IconEIO.ADD_BUT, IconEIO.ADD_BUT);
@@ -35,7 +33,7 @@ public class GuiSpawnGurad extends GuiPoweredMachineBase {
   public void initGui() {    
     super.initGui();
     showRangeB.onGuiInit();
-    showRangeB.setSelected(sg.isShowingRange());
+    showRangeB.setSelected(getTileEntity().isShowingRange());
   }
 
   @Override
@@ -49,7 +47,7 @@ public class GuiSpawnGurad extends GuiPoweredMachineBase {
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     
-    int range = (int) sg.getRange();
+    int range = (int) getTileEntity().getRange();
     drawCenteredString(fontRendererObj, Lang.localize("gui.spawnGurad.range") + " " + range, getGuiLeft() + sx/2 + 9, getGuiTop() + 68, ColorUtil.getRGB(Color.white));
   }
 
@@ -57,7 +55,7 @@ public class GuiSpawnGurad extends GuiPoweredMachineBase {
   protected void actionPerformed(GuiButton b) {    
     super.actionPerformed(b);
     if(b.id == RANGE_ID) {
-      sg.setShowRange(showRangeB.isSelected());      
+      getTileEntity().setShowRange(showRangeB.isSelected());      
     }
   }
 

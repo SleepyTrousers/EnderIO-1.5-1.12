@@ -1,4 +1,44 @@
 ------------------------------------------------------
+Version 2.2.6
+------------------------------------------------------
+New
+- Add Buffer. Comes in 4 types: Item, Power, Omni, Creative. 
+	- Used to be a small inventory/power storage with a large throughput. 
+	- Can be used to "transform" between different conduit types.
+	- Creative buffer will pull/push infinite items/power.
+	- Can be painted and has connected textures with Chisel.
+- #32 Add connected photovoltaic panels. Will now form a multiblock and generate/emit power as a cohesive unit.
+- Add default recipe for the "Repair" enchant from Thaumcraft
+
+Changes
+- #1456 Wireless Charger can be deactivated with redstone
+
+Bugs
+- Fix obelisk hovering item being stuttery
+- #1447 Capacitor bank render glitch when restitching textures
+- Fix obelisk bounds
+- Fix soulbound enchant being missing when ID set to -1
+- #1466 Fix travel anchor teleport being one block off in certain directions
+- #1436 Fix crash when painted block placed at y=0
+- #1489 Fix farming station trying to harvest certain non-bush blocks above berry bushes
+- #1500 Fix dupe bug with infernal mobs and killer joe
+- Fix small capacitor bank bug causing 2x as much power to be pulled as expected in some situations
+- #1501 Fix travel anchor dropping in creative
+- #1445 Fix cap banks refusing to be set to input mode when connected to certain blocks
+- Fix crash when tons (thousands) of cap banks edited at once.
+
+------------------------------------------------------
+Version 2.2.5
+------------------------------------------------------
+Changes
+- Killer joe can now have its sword extracted
+- Killer joe will now update its render properly when a sword is added/removed
+
+Bugs
+- Update CoFHAPIProps.java version to prevent other RF API versions loading instead of EnderIO's
+- Fix right clicking redstone color buttons not making the clicky noise
+
+------------------------------------------------------
 Version 2.2.4
 ------------------------------------------------------
 

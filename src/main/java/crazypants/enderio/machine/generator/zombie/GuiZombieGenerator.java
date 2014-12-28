@@ -17,14 +17,11 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiZombieGenerator extends GuiPoweredMachineBase {
-
-  private TileZombieGenerator gen;
+public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
   public GuiZombieGenerator(InventoryPlayer inventory, TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity));
-    gen = tileEntity;
-
+    
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
 
       @Override
@@ -32,7 +29,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase {
         text.clear();
         String heading = Lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.fuelTank));
+        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
       }
 
     });
@@ -65,7 +62,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    int scaled;
+    TileZombieGenerator gen = getTileEntity();
 
     FontRenderer fr = getFontRenderer();
     int output = 0;

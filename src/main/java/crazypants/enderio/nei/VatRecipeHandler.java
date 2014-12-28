@@ -22,8 +22,8 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import crazypants.enderio.machine.still.GuiVat;
-import crazypants.enderio.machine.still.VatRecipeManager;
+import crazypants.enderio.machine.vat.GuiVat;
+import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.render.RenderUtil;
 import crazypants.util.FluidUtil;
 
@@ -168,7 +168,7 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
       GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
     }
 
-    IconEIO.RECIPE.renderIcon(149, 32, 16, 16, 0, true);
+    IconEIO.RECIPE_BUTTON.renderIcon(149, 32, 16, 16, 0, true);
   }
 
   @Override

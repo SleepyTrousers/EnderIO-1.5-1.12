@@ -3,6 +3,7 @@ package crazypants.render;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.util.BlockCoord;
@@ -54,6 +55,10 @@ public final class BoundingBox {
 
   public BoundingBox(BlockCoord bc) {
     this(bc.x, bc.y, bc.z, bc.x + 1, bc.y + 1, bc.z + 1);
+  }
+
+  public BoundingBox(Block block) {
+    this(block.getBlockBoundsMinX(), block.getBlockBoundsMinY(), block.getBlockBoundsMinZ(), block.getBlockBoundsMaxX(), block.getBlockBoundsMaxY(), block.getBlockBoundsMaxZ());
   }
 
   public BoundingBox expandBy(BoundingBox other) {

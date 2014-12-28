@@ -506,7 +506,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     if((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
       if(er.getReceptor().isOutputOnly()) {
         setIoMode(er.getDir(), IoMode.PULL, false);
-      } else {
+      } else if (er.getReceptor().isInputOnly()) {
         setIoMode(er.getDir(), IoMode.PUSH, false);
       }
     }

@@ -17,13 +17,10 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiCombustionGenerator extends GuiPoweredMachineBase {
-
-  private TileCombustionGenerator gen;
+public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustionGenerator> {
 
   public GuiCombustionGenerator(InventoryPlayer par1InventoryPlayer, TileCombustionGenerator te) {
     super(te, new ContainerCombustionEngine(par1InventoryPlayer, te));
-    gen = te;
 
     addToolTip(new GuiToolTip(new Rectangle(114, 21, 15, 47), "") {
 
@@ -31,11 +28,11 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase {
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("combustionGenerator.coolantTank");
-        if(gen.getCoolantTank().getFluid() != null) {
-          heading += ": " + gen.getCoolantTank().getFluid().getFluid().getLocalizedName();
+        if(getTileEntity().getCoolantTank().getFluid() != null) {
+          heading += ": " + getTileEntity().getCoolantTank().getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.getCoolantTank()));
+        text.add(Fluids.toCapactityString(getTileEntity().getCoolantTank()));
       }
 
     });
@@ -46,11 +43,11 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase {
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("combustionGenerator.fuelTank");
-        if(gen.getFuelTank().getFluid() != null) {
-          heading += ": " + gen.getFuelTank().getFluid().getFluid().getLocalizedName();
+        if(getTileEntity().getFuelTank().getFluid() != null) {
+          heading += ": " + getTileEntity().getFuelTank().getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(gen.getFuelTank()));
+        text.add(Fluids.toCapactityString(getTileEntity().getFuelTank()));
       }
 
     });
@@ -85,7 +82,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase {
     int sx = (width - xSize) / 2;
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    int scaled;
+    TileCombustionGenerator gen = getTileEntity();
 
     FontRenderer fr = getFontRenderer();
     int output = 0;

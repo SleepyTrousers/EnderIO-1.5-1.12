@@ -71,6 +71,12 @@ public class IconButtonEIO extends GuiButton {
     }
   }
 
+  public IconButtonEIO setPosition(int x, int y) {
+    this.xOrigin = x;
+    this.yOrigin = y;
+    return this;
+  }
+  
   public IconButtonEIO setIconMargin(int x, int y) {
     marginX = x;
     marginY = y;

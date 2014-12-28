@@ -2,6 +2,7 @@ package crazypants.enderio.item;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,6 +11,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.input.Keyboard;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,11 +22,12 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
+import crazypants.util.Lang;
 
-public class ItemYetaWrench extends Item implements ITool, IResourceTooltipProvider, InvocationHandler {
+public class ItemYetaWrench extends Item implements ITool, IAdvancedTooltipProvider, InvocationHandler {
 
   public static ItemYetaWrench create() {
     if(Config.useSneakMouseWheelYetaWrench) {
@@ -103,13 +108,32 @@ public class ItemYetaWrench extends Item implements ITool, IResourceTooltipProvi
     return true;
   }
 
-
-  /* IResourceTooltipProvider */
+  /* IAdvancedTooltipProvider */
+  
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
-  public String getUnlocalizedNameForTooltip(ItemStack stack) {
-    return getUnlocalizedName();
+  public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    int line = 1;
+    String unloc = getUnlocalizedName() + ".tooltip.detailed.line", loc = null;
+    while (!(loc = Lang.localize(unloc + line, false)).equals(unloc + line++)) {
+      list.add(String.format(loc, Keyboard.getKeyName(KeyTracker.instance.getYetaWrenchMode().getKeyCode())));
+    }
+  }
+  
+  @SuppressWarnings("rawtypes")
+  @Override
+  public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    ; // none
+  }
+  
+  @SuppressWarnings("rawtypes")
+  @Override
+  public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
+    ; // none
   }
 
+  /* InvocationHandler */
+  
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     System.out.println("ItemYetaWrench.invoke: method = " + method.getName());

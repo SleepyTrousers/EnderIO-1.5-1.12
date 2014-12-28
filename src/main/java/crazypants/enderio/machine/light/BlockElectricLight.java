@@ -181,7 +181,6 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     if (stack == null) {
       return false;
     }
-    Item equipped = stack.getItem();
     ITool tool = ToolUtil.getEquippedTool(player);
     if(tool != null && tool.canUse(stack, player, x, y, z) && player.isSneaking() && !world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
@@ -217,24 +216,6 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     return 0;
   }
 
-  @Override
-  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-    
-    ArrayList<ItemStack> res = new ArrayList<ItemStack>();
-    if(!world.isRemote) {
-      TileEntity t = world.getTileEntity(x, y, z);
-      TileElectricLight te = null;
-      if(t instanceof TileElectricLight) {
-        te = (TileElectricLight) t;
-      }
-      if(t != null) {        
-        ItemStack st = createDrop(te);
-        res.add(st);
-      }
-    }
-    return res;
-  }
-
   private ItemStack createDrop(TileElectricLight te) {
     int meta = te.isInvereted() ? 1 : 0;
     if(!te.isRequiresPower()) {
@@ -246,9 +227,8 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     return st;
   }
 
-  @SuppressWarnings("deprecation")
   @Override
-  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+  public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
     if(!world.isRemote) {
       TileEntity te = world.getTileEntity(x, y, z);
       if(te instanceof TileElectricLight) {
@@ -258,7 +238,7 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
         }
       }
     }
-    return super.removedByPlayer(world, player, x, y, z);
+    return super.removedByPlayer(world, player, x, y, z, willHarvest);
   }
   
   @Override

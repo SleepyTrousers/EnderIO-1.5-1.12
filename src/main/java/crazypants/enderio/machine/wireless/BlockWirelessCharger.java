@@ -65,7 +65,7 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
     TileEntity te = world.getTileEntity(x, y, z);
     if(te instanceof TileWirelessCharger) {
       TileWirelessCharger twc = (TileWirelessCharger) te;
-      if(twc.getEnergyStored() > 0) {
+      if(twc.isActive()) {
         return centerOn;
       }
     }

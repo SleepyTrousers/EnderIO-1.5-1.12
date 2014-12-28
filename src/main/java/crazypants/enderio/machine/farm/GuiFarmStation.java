@@ -16,14 +16,10 @@ import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.vecmath.Vector4f;
 
-public class GuiFarmStation extends GuiPoweredMachineBase {
-
-  private TileFarmStation farm;
+public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
   
   public GuiFarmStation(InventoryPlayer par1InventoryPlayer, TileFarmStation machine) {
     super(machine, new FarmStationContainer(par1InventoryPlayer, machine));
-    
-    this.farm = machine;
   }
   
   @SuppressWarnings("unchecked")
@@ -43,18 +39,20 @@ public class GuiFarmStation extends GuiPoweredMachineBase {
   
   private int id = 0;
   private IconButtonEIO createButton(int x, int y) {
-    return new ToggleButtonEIO(this, id, x, y, IconEIO.UNLOCKED, IconEIO.LOCKED).setSelected(farm.lockedSlots.contains(id++ + farm.minSupSlot)).setIconMargin(3, 3);
+    return new ToggleButtonEIO(this, id, x, y, IconEIO.UNLOCKED, IconEIO.LOCKED).setSelected(getTileEntity().lockedSlots.contains(id++ + getTileEntity().minSupSlot)).setIconMargin(3, 3);
   }
 
   @Override
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
-    
-    if(inventorySlots.inventorySlots.size() >= farm.maxSupSlot && !isConfigOverlayEnabled()) {
-      for (int i : farm.lockedSlots) {
-        Slot slot = inventorySlots.getSlot(i);
-        GL11.glEnable(GL11.GL_BLEND);
-        RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
+
+    if(inventorySlots.inventorySlots.size() >= getTileEntity().maxSupSlot && !isConfigOverlayEnabled()) {
+      for (int i : getTileEntity().lockedSlots) {
+        if (i < inventorySlots.inventorySlots.size()) { // hack to allow old broken farms to be opened
+          Slot slot = inventorySlots.getSlot(i);
+          GL11.glEnable(GL11.GL_BLEND);
+          RenderUtil.renderQuad2D(slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
+        }
       }
     }
   }
@@ -83,7 +81,10 @@ public class GuiFarmStation extends GuiPoweredMachineBase {
   
   @Override
   protected void actionPerformed(GuiButton b) {
-    farm.toggleLockedState(b.id);
+    if (b instanceof ToggleButtonEIO) { 
+      getTileEntity().toggleLockedState(b.id);
+    }
+    super.actionPerformed(b);
   }
 
   @Override

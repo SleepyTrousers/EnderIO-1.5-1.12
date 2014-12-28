@@ -138,7 +138,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
       texture = IconUtil.whiteTexture;
     }
     for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
-      RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture,
+      RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockCapacitorBank, x, y, z, face, texture,
           blockAccess == null, false, false);
     }
   }

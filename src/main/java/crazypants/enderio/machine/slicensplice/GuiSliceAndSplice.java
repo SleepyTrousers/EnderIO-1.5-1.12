@@ -4,18 +4,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.render.RenderUtil;
 
-public class GuiSliceAndSplice extends GuiPoweredMachineBase {
+public class GuiSliceAndSplice extends GuiPoweredMachineBase<TileSliceAndSplice> {
 
-  private AbstractMachineEntity tileEntity;
-
-  public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, AbstractPoweredMachineEntity te) {
+  public GuiSliceAndSplice(InventoryPlayer par1InventoryPlayer, TileSliceAndSplice te) {
     super(te, new ContainerSliceAndSplice(par1InventoryPlayer, te));
-    tileEntity = te;
   }
 
   /**
@@ -32,7 +27,7 @@ public class GuiSliceAndSplice extends GuiPoweredMachineBase {
     drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
     int i1;
 
-    i1 = tileEntity.getProgressScaled(24);
+    i1 = getTileEntity().getProgressScaled(24);
     drawTexturedModalRect(k + 101, l + 46, 176, 14, i1 + 1, 16);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

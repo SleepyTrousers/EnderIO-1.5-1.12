@@ -11,6 +11,7 @@ import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.gui.RedstoneModeButton;
+import crazypants.enderio.gui.ToggleButtonEIO;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
@@ -20,23 +21,26 @@ import crazypants.util.BlockCoord;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
-public abstract class GuiMachineBase extends GuiContainerBase {
+public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBase {
 
   public static final Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
   public static final Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);
 
   public static final int BUTTON_SIZE = 16;
   private static final int CONFIG_ID = 8962349;
+  private static final int RECIPE_ID = CONFIG_ID + 1;
 
-  private AbstractMachineEntity tileEntity;
+  private T tileEntity;
 
   protected RedstoneModeButton redstoneButton;
 
   private GuiOverlayIoConfig configOverlay;
 
-  protected IconButtonEIO configB;
+  protected ToggleButtonEIO configB;
+  
+  protected IconButtonEIO recipeButton;
 
-  protected GuiMachineBase(AbstractMachineEntity machine, Container par1Container) {
+  protected GuiMachineBase(T machine, Container par1Container) {
     super(par1Container);
     tileEntity = machine;
 
@@ -47,7 +51,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     redstoneButton = new RedstoneModeButton(this, -1, x, y, tileEntity, new BlockCoord(tileEntity));
 
     y += 19;
-    configB = new IconButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP);
+    configB = new ToggleButtonEIO(this, CONFIG_ID, x, y, IconEIO.IO_CONFIG_UP, IconEIO.IO_CONFIG_DOWN);
     configB.setToolTip(Lang.localize("gui.machine.ioMode.overlay.tooltip"));
 
     configOverlay = new GuiOverlayIoConfig(machine) {
@@ -55,11 +59,17 @@ public abstract class GuiMachineBase extends GuiContainerBase {
       @Override
       public void setVisible(boolean visible) {
         super.setVisible(visible);
-        configB.setIcon(visible ? IconEIO.IO_CONFIG_DOWN : IconEIO.IO_CONFIG_UP);
+        configB.setSelected(visible);
       }
 
     };
     addOverlay(configOverlay);
+    
+    y += 19;
+    
+    recipeButton = new IconButtonEIO(this, RECIPE_ID, x, y, IconEIO.RECIPE);
+    recipeButton.visible = false;
+    recipeButton.setIconMargin(3, 3);
   }
 
   @Override
@@ -76,6 +86,7 @@ public abstract class GuiMachineBase extends GuiContainerBase {
     super.initGui();
     redstoneButton.onGuiInit();
     configB.onGuiInit();
+    recipeButton.onGuiInit();
   }
 
   protected boolean showRecipeButton() {
@@ -86,20 +97,16 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-    int k = (width - xSize) / 2;
-    int l = (height - ySize) / 2;
-
     for (int i = 0; i < buttonList.size(); ++i) {
       GuiButton guibutton = (GuiButton) buttonList.get(i);
       guibutton.drawButton(mc, 0, 0);
     }
 
     if(showRecipeButton()) {
-      IconEIO.RECIPE.renderIcon(k + 155, l + 43, 16, 16, 0, true);
+      recipeButton.visible = true;
     }
 
     renderSlotHighlights();
-
   }
 
   public void renderSlotHighlights() {
@@ -139,5 +146,9 @@ public abstract class GuiMachineBase extends GuiContainerBase {
   
   protected boolean isConfigOverlayEnabled() {
     return configOverlay.isVisible();
+  }
+  
+  protected T getTileEntity() {
+    return tileEntity;
   }
 }

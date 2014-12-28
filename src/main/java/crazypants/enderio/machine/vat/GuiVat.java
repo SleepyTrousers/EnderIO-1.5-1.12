@@ -1,4 +1,4 @@
-package crazypants.enderio.machine.still;
+package crazypants.enderio.machine.vat;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -14,26 +14,22 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 
-public class GuiVat extends GuiPoweredMachineBase {
+public class GuiVat extends GuiPoweredMachineBase<TileVat> {
 
   private static final String GUI_TEXTURE = "enderio:textures/gui/vat.png";
-
-  private final TileVat vat;
 
   private IconButtonEIO dump1, dump2;
 
   public GuiVat(InventoryPlayer inventory, TileVat te) {
     super(te, new ContainerVat(inventory, te));
-    vat = te;
 
     addToolTip(new GuiToolTip(new Rectangle(30, 12, 15, 47), "") {
 
@@ -41,11 +37,11 @@ public class GuiVat extends GuiPoweredMachineBase {
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("vat.inputTank");
-        if(vat.inputTank.getFluid() != null) {
-          heading += ": " + vat.inputTank.getFluid().getFluid().getLocalizedName();
+        if(getTileEntity().inputTank.getFluid() != null) {
+          heading += ": " + getTileEntity().inputTank.getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(vat.inputTank));
+        text.add(Fluids.toCapactityString(getTileEntity().inputTank));
       }
 
     });
@@ -56,11 +52,11 @@ public class GuiVat extends GuiPoweredMachineBase {
       protected void updateText() {
         text.clear();
         String heading = Lang.localize("vat.outputTank");
-        if(vat.outputTank.getFluid() != null) {
-          heading += ": " + vat.outputTank.getFluid().getFluid().getLocalizedName();
+        if(getTileEntity().outputTank.getFluid() != null) {
+          heading += ": " + getTileEntity().outputTank.getFluid().getLocalizedName();
         }
         text.add(heading);
-        text.add(Fluids.toCapactityString(vat.outputTank));
+        text.add(Fluids.toCapactityString(getTileEntity().outputTank));
       }
 
     });
@@ -104,7 +100,8 @@ public class GuiVat extends GuiPoweredMachineBase {
     int guiLeft = (width - xSize) / 2;
     int guiTop = (height - ySize) / 2;
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-
+    TileVat vat = getTileEntity();
+    
     if(vat.getProgress() < 1 && vat.getProgress() > 0) {
       int scaled = vat.getProgressScaled(14) + 1;
       drawTexturedModalRect(guiLeft + 81, guiTop + 77 - scaled, 176, 14 - scaled, 14, scaled);
@@ -192,7 +189,7 @@ public class GuiVat extends GuiPoweredMachineBase {
   }
 
   private void dump(int i) {
-    PacketHandler.INSTANCE.sendToServer(new PacketDumpTank(vat, i));
+    PacketHandler.INSTANCE.sendToServer(new PacketDumpTank(getTileEntity(), i));
   }
 
   @Override

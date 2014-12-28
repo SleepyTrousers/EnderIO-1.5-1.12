@@ -20,19 +20,16 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.util.SoundUtil;
 
-public class GuiKillerJoe extends GuiMachineBase {
+public class GuiKillerJoe extends GuiMachineBase<TileKillerJoe> {
 
   private static final int XP_ID = 3489;
   private static final int XP10_ID = 34892;
-
-  private TileKillerJoe joe;
 
   private IconButtonEIO xpB;
   private IconButtonEIO xp10B;
 
   public GuiKillerJoe(InventoryPlayer inventory, TileKillerJoe tileEntity) {
     super(tileEntity, new ContainerKillerJoe(inventory, tileEntity));
-    joe = tileEntity;
 
     addToolTip(new GuiToolTip(new Rectangle(18, 11, 15, 47), "") {
 
@@ -41,7 +38,7 @@ public class GuiKillerJoe extends GuiMachineBase {
         text.clear();
         String heading = Lang.localize("killerJoe.fuelTank");
         text.add(heading);
-        text.add(Fluids.toCapactityString(joe.fuelTank));
+        text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
       }
 
     });
@@ -65,11 +62,11 @@ public class GuiKillerJoe extends GuiMachineBase {
   protected void actionPerformed(GuiButton b) {
     super.actionPerformed(b);
     if(b.id == XP_ID) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(joe, 1));
-      SoundUtil.playClientSoundFX("random.orb", joe);
+      PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 1));
+      SoundUtil.playClientSoundFX("random.orb", getTileEntity());
     } else if(b.id == XP10_ID) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(joe, 10));
-      SoundUtil.playClientSoundFX("random.orb", joe);
+      PacketHandler.INSTANCE.sendToServer(new PacketGivePlayerXP(getTileEntity(), 10));
+      SoundUtil.playClientSoundFX("random.orb", getTileEntity());
     }
   }
 
@@ -102,6 +99,7 @@ public class GuiKillerJoe extends GuiMachineBase {
 
     int x = guiLeft + 18;
     int y = guiTop + 11;
+    TileKillerJoe joe = getTileEntity();
     if(joe.fuelTank.getFluidAmount() > 0) {
       RenderUtil.renderGuiTank(joe.fuelTank.getFluid(), joe.fuelTank.getCapacity(), joe.fuelTank.getFluidAmount(), x, y, zLevel, 16, 47);
     }

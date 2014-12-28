@@ -94,7 +94,8 @@ public final class IconEIO {
 
   public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13, 13);
 
-  public static final IconEIO RECIPE = new IconEIO(128, 116, 24, 24);
+  public static final IconEIO RECIPE = new IconEIO(16, 132, 16, 16);
+  public static final IconEIO RECIPE_BUTTON = new IconEIO(128, 116, 24, 24);
 
   public static final IconEIO ADD_BUT = new IconEIO(139, 246, 10, 10);
   public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10, 10);
