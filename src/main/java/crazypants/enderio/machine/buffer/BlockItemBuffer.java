@@ -10,12 +10,13 @@ import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 
 public class BlockItemBuffer extends ItemBlockWithMetadata {
 
   public enum Type {
-    BASIC(true, false, false),
+    ITEM(true, false, false),
     POWER(false, true, false),
     OMNI(true, true, false),
     CREATIVE(true, true, true);
@@ -31,12 +32,16 @@ public class BlockItemBuffer extends ItemBlockWithMetadata {
     }
 
     public static Type get(TileBuffer buffer) {
-      return !buffer.hasPower() ? BASIC : !buffer.hasInventory() ? POWER : !buffer.isCreative() ? OMNI : CREATIVE;
+      return !buffer.hasPower() ? ITEM : !buffer.hasInventory() ? POWER : !buffer.isCreative() ? OMNI : CREATIVE;
     }
     
     public String getUnlocalizedName() {
       return "tile." + ModObject.blockBuffer.unlocalisedName + "." + name().toLowerCase();
     }
+
+	public static ItemStack getStack(Type type) {
+		return new ItemStack(EnderIO.blockBuffer, 1, type.ordinal());
+	}
   }
   
   public BlockItemBuffer(Block block) {

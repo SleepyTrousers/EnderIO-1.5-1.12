@@ -6,10 +6,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.skull.BlockEndermanSkull;
+import crazypants.enderio.machine.buffer.BlockItemBuffer.Type;
 import crazypants.enderio.machine.capbank.BlockItemCapBank;
 import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.ConvertOldRecipe;
@@ -262,7 +264,7 @@ public class MachineRecipes {
 
   public static void addOreDictionaryRecipes() {
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
-    ItemStack machineChassi = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
+    ItemStack machineChassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
 
     //powered light
@@ -297,8 +299,16 @@ public class MachineRecipes {
     //Slice'N'Splice
     ItemStack soularium = new ItemStack(EnderIO.itemAlloy, 1, Alloy.SOULARIUM.ordinal());
     ItemStack sns = new ItemStack(EnderIO.blockSliceAndSplice);
-    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams", "iii", 'i', soularium, 'm', machineChassi, 'k', "itemSkull", 'a', Items.iron_axe, 's',
+    GameRegistry.addRecipe(new ShapedOreRecipe(sns, "iki", "ams", "iii", 'i', soularium, 'm', machineChassis, 'k', "itemSkull", 'a', Items.iron_axe, 's',
         Items.shears));
+    
+    //Buffer
+    ItemStack itemBuffer 	 = Type.getStack(Type.ITEM);
+    ItemStack powerBuffer 	 = Type.getStack(Type.POWER);
+    ItemStack omniBuffer 	 = Type.getStack(Type.OMNI);
+    GameRegistry.addRecipe(new ShapedOreRecipe(itemBuffer,  "isi", "scs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'c', Blocks.chest));
+    GameRegistry.addRecipe(new ShapedOreRecipe(powerBuffer, "isi", "sfs", "isi", 'i', "ingotIron", 's', "ingotElectricalSteel", 'f', machineChassis));
+    GameRegistry.addRecipe(new ShapelessOreRecipe(omniBuffer, itemBuffer, powerBuffer));
 
   }
 }
