@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -23,6 +22,7 @@ import crazypants.enderio.machine.capbank.CapBankType;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyResponse;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
@@ -134,7 +134,7 @@ public class CapBankNetwork implements ICapBankNetwork {
     }
     capBanks.clear();
     if(cap != null) {
-      EnderIO.packetPipeline.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
+      PacketHandler.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
     }
   }
 
@@ -230,8 +230,8 @@ public class CapBankNetwork implements ICapBankNetwork {
 
     if(firstUpate) {
       if(!capBanks.isEmpty()) {
-        EnderIO.packetPipeline.sendToAllAround(new PacketNetworkStateResponse(this), capBanks.get(0));
-        EnderIO.packetPipeline.sendToAllAround(new PacketNetworkEnergyResponse(this), capBanks.get(0));
+        PacketHandler.sendToAllAround(new PacketNetworkStateResponse(this), capBanks.get(0));
+        PacketHandler.sendToAllAround(new PacketNetworkEnergyResponse(this), capBanks.get(0));
       }
       firstUpate = false;
     }
