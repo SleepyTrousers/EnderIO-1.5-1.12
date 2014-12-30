@@ -22,7 +22,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.generator.combustion.TranslatedCubeRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.VertexTransform;
@@ -115,7 +114,10 @@ public class ObeliskRenderer<T extends TileEntity> extends TileEntitySpecialRend
     glScalef(1.1f, 1.1f, 1.1f);
     glTranslated(x + 0.5, y + 0.7, z + 0.5);
     glDepthMask(true);
-    glRotatef(rand.nextFloat() * 360f, 0, 1, 0);
+    
+    if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+      glRotatef(rand.nextFloat() * 360f, 0, 1, 0);
+    }
 
     RenderManager.instance.renderEntityWithPosYaw(ei, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
     glPopMatrix();
