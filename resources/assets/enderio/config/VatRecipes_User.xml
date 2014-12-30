@@ -1,3 +1,5 @@
-<VatRecipes>  
-  
-</VatRecipes>  
+<VatRecipes>
+  <recipeGroup name="YOURNAME"> <!-- Required for EnderIO to function correctly. -->
+    
+  </recipeGroup>
+</VatRecipes> 
