@@ -65,13 +65,13 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       ItemStack availableStack = available.item;
       ItemStack requiredStack = required.getInput();
 
-      ItemStack comsumedStack = requiredStack.copy();
-      comsumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
+      ItemStack consumedStack = requiredStack.copy();
+      consumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
 
-      requiredStack.stackSize -= comsumedStack.stackSize;
-      availableStack.stackSize -= comsumedStack.stackSize;
+      requiredStack.stackSize -= consumedStack.stackSize;
+      availableStack.stackSize -= consumedStack.stackSize;
 
-      consumedInputs.add(new MachineRecipeInput(available.slotNumber, comsumedStack));
+      consumedInputs.add(new MachineRecipeInput(available.slotNumber, consumedStack));
 
       if(requiredStack.stackSize <= 0) {
         //Fully met the requirement
@@ -93,7 +93,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

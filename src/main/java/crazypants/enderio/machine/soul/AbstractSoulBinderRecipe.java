@@ -85,7 +85,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

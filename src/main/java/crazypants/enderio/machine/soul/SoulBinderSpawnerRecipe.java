@@ -64,7 +64,7 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

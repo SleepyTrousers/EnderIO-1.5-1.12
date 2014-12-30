@@ -41,7 +41,7 @@ public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return recipeManager.getExperianceForOutput(output);
   }
 
