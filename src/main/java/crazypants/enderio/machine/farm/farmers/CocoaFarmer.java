@@ -17,6 +17,7 @@ public class CocoaFarmer extends CustomSeedFarmer
     {
         super(Blocks.cocoa, new ItemStack(Items.dye,1,3));
         this.requiresFarmland = false;
+        this.disableTreeFarm = true;
     }
 
     @Override
