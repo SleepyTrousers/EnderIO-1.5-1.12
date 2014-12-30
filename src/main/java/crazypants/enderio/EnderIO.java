@@ -126,6 +126,7 @@ import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
+import crazypants.enderio.machine.weather.BlockWeatherObelisk;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.ItemXpTransfer;
@@ -240,6 +241,7 @@ public class EnderIO {
   public static BlockAttractor blockAttractor;
   public static BlockSpawnGuard blockSpawnGuard;
   public static BlockExperienceObelisk blockExperianceOblisk;
+  public static BlockWeatherObelisk blockWeatherObelisk;
   public static BlockTransceiver blockTransceiver;
   public static BlockBuffer blockBuffer;
 
@@ -353,6 +355,7 @@ public class EnderIO {
     blockAttractor = BlockAttractor.create();
     blockSpawnGuard = BlockSpawnGuard.create();
     blockExperianceOblisk = BlockExperienceObelisk.create();
+    blockWeatherObelisk = BlockWeatherObelisk.create();
     blockEnchanter = BlockEnchanter.create();
 
     blockDarkSteelPressurePlate = BlockDarkSteelPressurePlate.create();

@@ -483,7 +483,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         if(curStack == null) {
           inventory[i] = stack.copy();
           inserted = stack.stackSize;
-        } else if(curStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(curStack,stack)) {
+        } else if(curStack.isItemEqual(stack)) {
           inserted = Math.min(16 - curStack.stackSize, stack.stackSize);
           inventory[i].stackSize += inserted;
         }
@@ -498,14 +498,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     ResultStack[] in = new ResultStack[] { new ResultStack(stack) };
     mergeResults(in);
     return origSize - (in[0].item == null ? 0 : in[0].item.stackSize);
-  }
 
-  @Override
-  protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if(!itemStack.isItemEqual(result) || !ItemStack.areItemStackTagsEqual(itemStack,result)) {
-      return 0;
-    }
-    return Math.min(itemStack.getMaxStackSize() - itemStack.stackSize, result.stackSize);
   }
 
   private BlockCoord getNextCoord() {
@@ -568,7 +561,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;    
+    super.setCapacitor(capacitorType);
     tier = capacitorType.ordinal();
     currentTask = createTask();
     
@@ -586,8 +579,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
     if(getEnergyStored() > getMaxEnergyStored()) {
       setEnergyStored(getMaxEnergyStored());
-    }
-    
+    } 
   }
 
   @Override

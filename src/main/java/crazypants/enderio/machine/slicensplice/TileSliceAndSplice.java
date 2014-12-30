@@ -86,9 +86,9 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
   @Override
   public int getPowerUsePerTick() {
-    if(capacitorType.ordinal() == 0) {
+    if(getCapacitorType().ordinal() == 0) {
       return POWER_PER_TICK_ONE;
-    } else if(capacitorType.ordinal() == 1) {
+    } else if(getCapacitorType().ordinal() == 1) {
       return POWER_PER_TICK_TWO;
     }
     return POWER_PER_TICK_THREE;

@@ -170,7 +170,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
         generatedDirty = true;
       }
 
-      if(getEnergyStored() >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(getEnergyStored() >= getCapacitor().getMaxEnergyStored()) {
         inPause = true;        
       }       
 
@@ -222,7 +222,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     }
     inPause = false;
 
-    boolean res = false;
     ticksRemaingFuel--;
     if(ticksRemaingFuel <= 0) {
       curFuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
@@ -235,7 +234,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       }
       ticksRemaingFuel = getNumTicksPerMbFuel(curFuel) * drained.amount;
       
-      res = true;
       tanksDirty = true;
     } else if(curFuel == null) {
       curFuel = FluidFuelRegister.instance.getFuel(getFuelTank().getFluid());
@@ -255,7 +253,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
         return false;
       }
       ticksRemaingCoolant = getNumTicksPerMbCoolant(curCoolant, curFuel) * drained.amount;
-      res = true;
     } else if(curCoolant == null) {
       updateCoolantFromTank();
       if(curCoolant == null) {

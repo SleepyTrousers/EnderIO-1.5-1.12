@@ -80,7 +80,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     if(!redstoneCheckPassed || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
       return false;
     }
-    int ticksPerCraft = getTicksPerCraft(capacitorType);
+    int ticksPerCraft = getTicksPerCraft(getCapacitorType());
     if(ticksSinceLastCraft <= ticksPerCraft) {
       return false;
     }
@@ -118,7 +118,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
 
   @Override
   public int getPowerUsePerTick() {
-    return getPowerUsePerTick(capacitorType);
+    return getPowerUsePerTick(getCapacitorType());
   }
   
   public int getPowerUsePerTick(Capacitors type) {

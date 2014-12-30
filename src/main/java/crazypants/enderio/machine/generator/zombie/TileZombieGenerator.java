@@ -129,7 +129,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
         res = true;
       }
 
-      if(getEnergyStored() >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(getEnergyStored() >= getCapacitor().getMaxEnergyStored()) {
         inPause = true;
       }
 
@@ -145,8 +145,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   private boolean generateEnergy() {
-
-    int generated = 0;
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces

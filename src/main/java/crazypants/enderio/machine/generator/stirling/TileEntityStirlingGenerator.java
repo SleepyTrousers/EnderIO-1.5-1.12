@@ -148,18 +148,18 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   }
 
   private float getEnergyMultiplier() {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
+    if(getCapacitorType() == Capacitors.ACTIVATED_CAPACITOR) {
       return 2;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
+    } else if(getCapacitorType() == Capacitors.ENDER_CAPACITOR) {
       return 4;
     }
     return 1;
   }
 
   public float getBurnTimeMultiplier() {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
+    if(getCapacitorType() == Capacitors.ACTIVATED_CAPACITOR) {
       return 1.5f;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
+    } else if(getCapacitorType() == Capacitors.ENDER_CAPACITOR) {
       return 1.5f;
     }
     return 2;

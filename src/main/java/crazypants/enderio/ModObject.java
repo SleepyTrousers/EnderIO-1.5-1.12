@@ -58,6 +58,7 @@ public enum ModObject {
   blockAttractor,
   blockSpawnGuard,
   blockExperienceObelisk,
+  blockWeatherObelisk,
   blockTransceiver,
   blockBuffer,
 

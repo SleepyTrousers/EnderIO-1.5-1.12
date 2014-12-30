@@ -85,7 +85,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public void setCapacitor(Capacitors capacitorType) {
-    this.capacitorType = capacitorType;
+    super.setCapacitor(capacitorType);
     ICapacitor refCap;
     switch (capacitorType) {
     case BASIC_CAPACITOR:
@@ -150,9 +150,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   @Override
   public int getPowerUsePerTick() {
     double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
-    if(capacitorType.ordinal() == 0) {
+    if(getCapacitorType().ordinal() == 0) {
       return (int) Math.round(POWER_PER_TICK_ONE * multuplier);
-    } else if(capacitorType.ordinal() == 1) {
+    } else if(getCapacitorType().ordinal() == 1) {
       return (int) Math.round(POWER_PER_TICK_TWO * multuplier);
     }
     return (int) Math.round(POWER_PER_TICK_THREE * multuplier);
@@ -237,9 +237,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     } else {
       ticksDelay = TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - ((TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE) / 2);
     }
-    if(capacitorType.ordinal() == 1) {
+    if(getCapacitorType().ordinal() == 1) {
       ticksDelay /= 2;
-    } else if(capacitorType.ordinal() == 2) {
+    } else if(getCapacitorType().ordinal() == 2) {
       ticksDelay /= 4;
     }
     int powerPerTick = getPowerUsePerTick();

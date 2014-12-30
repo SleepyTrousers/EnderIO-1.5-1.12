@@ -1,19 +1,16 @@
 package crazypants.enderio.machine.gui;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.SlotDefinition;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.SlotDefinition;
 
 public abstract class AbstractMachineContainer extends Container {
 

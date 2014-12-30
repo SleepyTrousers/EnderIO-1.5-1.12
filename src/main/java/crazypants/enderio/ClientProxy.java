@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -115,6 +116,8 @@ import crazypants.enderio.machine.vacuum.BlockVacuumChest;
 import crazypants.enderio.machine.vacuum.VacuumChestRenderer;
 import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRenderer;
+import crazypants.enderio.machine.weather.BlockWeatherObelisk;
+import crazypants.enderio.machine.weather.TileWeatherObelisk;
 import crazypants.enderio.machine.xp.BlockExperienceObelisk;
 import crazypants.enderio.machine.xp.TileExperienceOblisk;
 import crazypants.enderio.material.BlockFusedQuartz;
@@ -252,6 +255,11 @@ public class ClientProxy extends CommonProxy {
     ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceOblisk.class, eor);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
+    ObeliskRenderer<TileWeatherObelisk> twr = new ObeliskRenderer<TileWeatherObelisk>(new ItemStack(Items.diamond));
+    BlockWeatherObelisk.renderId = BlockAttractor.renderId;
+    ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
+    
     if(Config.useCombustionGenModel) {
       CombustionGeneratorModelRenderer cgmr = new CombustionGeneratorModelRenderer();
       ClientRegistry.bindTileEntitySpecialRenderer(TileCombustionGenerator.class, cgmr);

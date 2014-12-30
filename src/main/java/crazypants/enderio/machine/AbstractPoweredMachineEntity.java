@@ -15,7 +15,7 @@ import crazypants.vecmath.VecmathUtil;
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  protected Capacitors capacitorType;
+  private Capacitors capacitorType;
 
   private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
@@ -81,6 +81,10 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     return storedEnergyRF > 0;
   }
 
+  public Capacitors getCapacitorType() {
+    return capacitorType;
+  }
+  
   public ICapacitor getCapacitor() {
     return capacitorType.capacitor;
   }
