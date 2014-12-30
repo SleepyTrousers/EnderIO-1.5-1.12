@@ -262,6 +262,7 @@ public final class Config {
   public static float farmToolTakeDamageChance = 1;
   public static boolean disableFarmNotification = false;
   public static boolean farmEssenceBerriesEnabled = true;
+  public static boolean farmManaBeansEnabled = false;
   
 
   public static int magnetPowerUsePerSecondRF = 1;
@@ -916,7 +917,10 @@ public final class Config {
         "Disable the notification text above the farm block.").getBoolean();
     
     farmEssenceBerriesEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmEssenceBerriesEnabled,
-        "This setting controls wether essence berry bushes from TiC can be harvested by the farm.").getBoolean();
+        "This setting controls whether essence berry bushes from TiC can be harvested by the farm.").getBoolean();
+
+    farmManaBeansEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmManaBeansEnabled,
+            "This setting controls whether mana beans from Thaumcraft can be harvested by the farm.").getBoolean();
 
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
