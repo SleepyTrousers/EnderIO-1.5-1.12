@@ -263,7 +263,7 @@ public final class Config {
   public static boolean disableFarmNotification = false;
   public static boolean farmEssenceBerriesEnabled = true;
   public static boolean farmManaBeansEnabled = false;
-  
+  public static boolean farmHarvestJungleWhenCocoa = false;
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -921,6 +921,9 @@ public final class Config {
 
     farmManaBeansEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmManaBeansEnabled,
             "This setting controls whether mana beans from Thaumcraft can be harvested by the farm.").getBoolean();
+    
+    farmHarvestJungleWhenCocoa = config.get(sectionFarm.name, "farmHarvestJungleWhenCocoa", farmHarvestJungleWhenCocoa,
+        "If this is enabled the farm will harvest jungle wood even if it has cocoa beans in its inventory.").getBoolean();    
 
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
