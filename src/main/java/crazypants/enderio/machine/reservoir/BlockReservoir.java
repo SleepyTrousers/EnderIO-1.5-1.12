@@ -214,6 +214,10 @@ public class BlockReservoir extends BlockContainer implements IResourceTooltipPr
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int blockSide) {
+    if (y < 0 || y >= 256) { // getTileEntity is not safe for out of bounds coords
+      return false;
+    }
+    
     TileEntity te = world.getTileEntity(x, y, z);
     if(!(te instanceof TileReservoir)) {
       return true;
