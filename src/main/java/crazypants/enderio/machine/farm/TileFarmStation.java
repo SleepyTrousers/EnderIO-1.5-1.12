@@ -53,7 +53,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     abstract boolean match(ItemStack item);
 
     public static boolean isTool(ItemStack stack) {
-      return HOE.itemMatches(stack) || AXE.itemMatches(stack);
+      for (ToolType type : values()) {
+        if (type.itemMatches(stack)) {
+          return true;
+        }
+      }
+      return false;
     }
   }
   
