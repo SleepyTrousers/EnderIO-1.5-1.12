@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.buffer;
 
-import info.jbcs.minecraft.chisel.api.IFacade;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -27,6 +25,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.IFacade;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
 
