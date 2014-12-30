@@ -26,6 +26,7 @@ public class TreeFarmer implements IFarmerJoe {
   protected Block[] woods;
   
   protected TreeHarvestUtil harvester = new TreeHarvestUtil();
+  private boolean ignoreMeta;
 
   public TreeFarmer(Block sapling, Block... wood) {
     this.sapling = sapling;
@@ -35,11 +36,16 @@ public class TreeFarmer implements IFarmerJoe {
     woods = wood;
   }
 
+  public TreeFarmer(boolean ignoreMeta, Block sapling, Block... wood) {
+    this(sapling,wood);
+    this.ignoreMeta = ignoreMeta;
+  }
+
   @Override
   public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
     return isWood(block);
   }
-  
+
   protected boolean isWood(Block block) {
     for(Block wood : woods) {
       if(block == wood) {
@@ -144,6 +150,11 @@ public class TreeFarmer implements IFarmerJoe {
     return res;
   }
 
+  public boolean getIgnoreMeta()
+  {
+    return ignoreMeta;
+  }
+
   private static class HeightComparator implements Comparator<BlockCoord> {
 
     @Override
@@ -155,7 +166,6 @@ public class TreeFarmer implements IFarmerJoe {
     public static int compare(int x, int y) {
       return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
-
   }
 
 }

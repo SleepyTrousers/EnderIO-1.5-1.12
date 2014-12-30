@@ -32,7 +32,7 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

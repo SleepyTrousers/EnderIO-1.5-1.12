@@ -67,7 +67,7 @@ public interface IMachineRecipe {
    * @param output
    * @return
    */
-  float getExperianceForOutput(ItemStack output);
+  float getExperienceForOutput(ItemStack output);
 
   /**
    * Should return true if the specified parameter is can be used in this

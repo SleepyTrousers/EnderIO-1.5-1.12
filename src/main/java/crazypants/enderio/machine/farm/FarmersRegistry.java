@@ -27,6 +27,8 @@ public final class FarmersRegistry {
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
     FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log));
     FarmersCommune.joinCommune(new TreeFarmer(Blocks.sapling, Blocks.log2));
+    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.red_mushroom, Blocks.red_mushroom_block));
+    FarmersCommune.joinCommune(new TreeFarmer(true,Blocks.brown_mushroom, Blocks.brown_mushroom_block));
     //special case of plantables to get spacing correct
     FarmersCommune.joinCommune(new MelonFarmer(Blocks.melon_stem, Blocks.melon_block, new ItemStack(Items.melon_seeds)));
     FarmersCommune.joinCommune(new MelonFarmer(Blocks.pumpkin_stem, Blocks.pumpkin, new ItemStack(Items.pumpkin_seeds)));

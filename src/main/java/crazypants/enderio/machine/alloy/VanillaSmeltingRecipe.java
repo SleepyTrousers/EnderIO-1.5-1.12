@@ -113,7 +113,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     if(output == null) {
       return 0;
     }

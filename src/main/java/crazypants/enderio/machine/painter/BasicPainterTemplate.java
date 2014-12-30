@@ -127,7 +127,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

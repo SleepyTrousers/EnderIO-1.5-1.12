@@ -78,7 +78,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     if(lastCompletedRecipe == null) {
       return 0;
     }
-    return lastCompletedRecipe.getExperianceForOutput(output);
+    return lastCompletedRecipe.getExperienceForOutput(output);
   }
   
   public boolean getRedstoneChecksPassed() {
