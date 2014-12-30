@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
 
+import java.util.Locale;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -48,6 +50,7 @@ public class RecipeConfigParser extends DefaultHandler {
   public static final String AT_DUMP_ITEMS = "modObjects";
   public static final String AT_ORE_DICT = "oreDictionary";
   public static final String AT_ENERGY_COST = "energyCost";
+  public static final String AT_BONUS_TYPE = "bonusType";
   public static final String AT_ITEM_META = "itemMeta";
   public static final String AT_ITEM_NAME = "itemName";
   public static final String AT_MOD_ID = "modID";
@@ -250,6 +253,7 @@ public class RecipeConfigParser extends DefaultHandler {
       }
       recipe = recipeGroup.createRecipe(name);
       recipe.setEnergyRequired(getIntValue(AT_ENERGY_COST, attributes, CrusherRecipeManager.ORE_ENERGY_COST));
+      recipe.setBonusType(getEnumValue(AT_BONUS_TYPE, attributes, RecipeBonusType.class, RecipeBonusType.MULTIPLY_OUTPUT));
       return;
     }
 
@@ -462,6 +466,23 @@ public class RecipeConfigParser extends DefaultHandler {
       return null;
     }
     return val;
+  }
+
+  public static <E extends Enum<E>> E getEnumValue(String qName, Attributes attributes, Class<E> clazz, E def) {
+    String val = attributes.getValue(qName);
+    if(val == null) {
+      return def;
+    }
+    val = val.trim();
+    if(val.length() <= 0) {
+      return def;
+    }
+    val = val.toUpperCase(Locale.ENGLISH);
+    try {
+      return Enum.valueOf(clazz, val);
+    } catch(IllegalArgumentException ex) {
+      return def;
+    }
   }
 
   public static boolean hasAttribute(String att, Attributes attributes) {

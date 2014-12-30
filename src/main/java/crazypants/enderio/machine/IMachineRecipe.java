@@ -5,6 +5,8 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import crazypants.enderio.machine.recipe.RecipeBonusType;
+
 /**
  * A MachineRecipe implementation must be stateless, always returning the same
  * values given the same parameters. The 'in progress' recipe for a machine is
@@ -33,6 +35,11 @@ public interface IMachineRecipe {
    * @return
    */
   int getEnergyRequired(MachineRecipeInput... inputs);
+
+  /**
+   * Returns the how bonus should be handled for this input
+   **/
+  RecipeBonusType getBonusType(MachineRecipeInput... inputs);
 
   /**
    * Only returns true if output can be generated using these inputs. If

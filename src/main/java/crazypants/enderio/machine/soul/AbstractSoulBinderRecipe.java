@@ -13,6 +13,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.material.FrankenSkull;
 
 public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
@@ -52,6 +53,11 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
     return getEnergyRequired();
+  }
+
+  @Override
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
   }
 
   @Override

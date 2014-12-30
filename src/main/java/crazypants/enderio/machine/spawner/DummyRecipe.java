@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class DummyRecipe implements IMachineRecipe {
 
@@ -29,6 +30,11 @@ public class DummyRecipe implements IMachineRecipe {
   @Override
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     return new ResultStack[0];
+  }
+
+  @Override
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
   }
 
   @Override

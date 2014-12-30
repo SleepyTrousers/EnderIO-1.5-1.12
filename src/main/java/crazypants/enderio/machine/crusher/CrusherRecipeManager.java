@@ -19,6 +19,7 @@ import crazypants.enderio.machine.recipe.RecipeConfig;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.util.Util;
 
 public class CrusherRecipeManager {
@@ -178,7 +179,7 @@ public class CrusherRecipeManager {
     if(input == null || output == null) {
       return;
     }
-    addRecipe(new Recipe(new RecipeInput(input, false), energyCost, output));
+    addRecipe(new Recipe(new RecipeInput(input, false), energyCost, RecipeBonusType.MULTIPLY_OUTPUT, output));
   }
 
   public void addRecipe(Recipe recipe) {
