@@ -4,23 +4,30 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import mekanism.api.gas.IGasHandler;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+import appeng.api.networking.IGridHost;
 import cofh.api.transport.IItemDuct;
+import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.Offset;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.util.BlockCoord;
 
-public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, IItemDuct {
+@Interface(iface = "appeng.api.networking.IGridHost", modid = "appliedenergistics2")
+public interface IConduitBundle extends IInternalPowerHandler, IFluidHandler, IItemDuct, IGasHandler, IGridHost {
 
   TileEntity getEntity();
 
-  BlockCoord getBlockCoord();
+  @Override
+  BlockCoord getLocation();
 
   // conduits
 
@@ -55,6 +62,8 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
   // events
 
   void onNeighborBlockChange(Block blockId);
+  
+  void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
 
   void onBlockRemoved();
 
@@ -89,5 +98,8 @@ public interface IConduitBundle extends IInternalPowerReceptor, IFluidHandler, I
   void setFacadeMetadata(int meta);
 
   int getFacadeMetadata();
+  
+  World getWorld();
 
+  void setGridNode(Object node);
 }

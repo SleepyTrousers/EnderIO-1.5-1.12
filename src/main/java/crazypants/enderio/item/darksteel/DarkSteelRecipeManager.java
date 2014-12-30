@@ -12,6 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
+
+import com.google.common.collect.ImmutableList;
+
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
@@ -34,6 +38,17 @@ public class DarkSteelRecipeManager {
     upgrades.add(SpeedUpgrade.SPEED_ONE);
     upgrades.add(SpeedUpgrade.SPEED_TWO);
     upgrades.add(SpeedUpgrade.SPEED_THREE);
+    upgrades.add(GliderUpgrade.INSTANCE);
+    upgrades.add(SoundDetectorUpgrade.INSTANCE);
+    upgrades.add(SwimUpgrade.INSTANCE);
+    upgrades.add(NightVisionUpgrade.INSTANCE);
+    upgrades.add(TravelUpgrade.INSTANCE);
+    upgrades.add(SpoonUpgrade.INSTANCE);
+    upgrades.add(SolarUpgrade.SOLAR_ONE);
+    upgrades.add(SolarUpgrade.SOLAR_TWO);
+    if(Loader.isModLoaded("Thaumcraft")) {
+      upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
+    }
   }
 
   @SubscribeEvent
@@ -168,10 +183,13 @@ public class DarkSteelRecipeManager {
       list.add(EnumChatFormatting.YELLOW + "Anvil Upgrades: ");
       for (IDarkSteelUpgrade up : applyableUpgrades) {
         list.add(EnumChatFormatting.DARK_AQUA + "" + "" + Lang.localize(up.getUnlocalizedName() + ".name", false) + ": ");
-        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItem().getDisplayName() + " + " + up.getLevelCost()
+        list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName() + " + " + up.getLevelCost()
             + " lvs");
       }
     }
   }
 
+  public Iterator<IDarkSteelUpgrade> recipeIterator() {
+    return ImmutableList.copyOf(upgrades).iterator();
+  }
 }

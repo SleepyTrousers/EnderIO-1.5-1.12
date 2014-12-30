@@ -17,20 +17,24 @@ import crazypants.enderio.gui.IResourceTooltipProvider;
 
 public class BlockItemElectricLight extends ItemBlockWithMetadata implements IResourceTooltipProvider {
 
-  enum Type {
-    ELECTRIC("item.itemElectricLight", false, true),
-    ELECTRIC_INV("item.itemElectricLightInverted", true, true),
-    BASIC("item.itemLight", false, false),
-    BASIC_INV("item.itemLightInverted", true, false);
+  public enum Type {
+    ELECTRIC("item.itemElectricLight", false, true, false),
+    ELECTRIC_INV("item.itemElectricLightInverted", true, true, false),
+    BASIC("item.itemLight", false, false, false),
+    BASIC_INV("item.itemLightInverted", true, false, false),
+    WIRELESS("item.itemWirelessLight", false, true, true),
+    WIRELESS_INV("item.itemWirelessLightInverted", true, true, true);
     
     final String unlocName;
     final boolean isInverted;
     final boolean isPowered;
+    final boolean isWireless;
     
-    private Type(String unlocName, boolean isInverted, boolean isPowered) {
+    private Type(String unlocName, boolean isInverted, boolean isPowered, boolean isWireless) {
       this.unlocName = unlocName;
       this.isInverted = isInverted;
       this.isPowered = isPowered;
+      this.isWireless = isWireless;
     }
     
   }
@@ -43,7 +47,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
   @Override
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
-    meta = MathHelper.clamp_int(meta, 0, Type.values().length);
+    meta = MathHelper.clamp_int(meta, 0, Type.values().length - 1);
     return Type.values()[meta].unlocName;
   }
 
@@ -69,6 +73,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
         Type t= Type.values()[metadata];
         el.setInverted(t.isInverted);
         el.setRequiresPower(t.isPowered);
+        el.setWireless(t.isWireless);
       }
     }
     return true;
@@ -78,7 +83,4 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
   public String getUnlocalizedNameForTooltip(ItemStack itemStack) {    
     return getUnlocalizedName(itemStack);
   }
-  
-  
-  
 }

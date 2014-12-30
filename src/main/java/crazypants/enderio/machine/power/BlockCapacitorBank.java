@@ -14,11 +14,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,23 +28,25 @@ import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.tool.ToolUtil;
+import crazypants.enderio.waila.IWailaInfoProvider;
 import crazypants.util.BlockCoord;
+import crazypants.util.Lang;
 import crazypants.util.Util;
 import crazypants.vecmath.Vector3d;
 
-public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider {
+public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider {
 
   public static int renderId = -1;
 
   public static BlockCapacitorBank create() {
-    PacketHandler.INSTANCE.registerMessage(PacketClientState.class,PacketClientState.class,PacketHandler.nextID(),Side.SERVER);
-    PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class,PacketPowerStorage.class,PacketHandler.nextID(),Side.CLIENT);
+    PacketHandler.INSTANCE.registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketPowerStorage.class, PacketPowerStorage.class, PacketHandler.nextID(), Side.CLIENT);
 
     BlockCapacitorBank res = new BlockCapacitorBank();
     res.init();
@@ -60,11 +63,11 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   protected BlockCapacitorBank() {
     super(ModObject.blockCapacitorBank.unlocalisedName, TileCapacitorBank.class);
     setHardness(2.0F);
+    setCreativeTab(null);
   }
 
   @Override
   protected void init() {
-    //super.init();
 
     GameRegistry.registerBlock(this, BlockItemCapacitorBank.class, name);
     if(teClass != null) {
@@ -81,7 +84,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
 
     ItemStack is = BlockItemCapacitorBank.createItemStackWithPower(0);
     list.add(is);
-    
+
     is = BlockItemCapacitorBank.createItemStackWithPower(TileCapacitorBank.BASE_CAP.getMaxEnergyStored());
     list.add(is);
 
@@ -116,17 +119,8 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
   @Override
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
 
-    if(ConduitUtil.isToolEquipped(entityPlayer) && entityPlayer.isSneaking()) {
-      if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-        IToolWrench wrench = (IToolWrench) entityPlayer.getCurrentEquippedItem().getItem();
-        if(wrench.canWrench(entityPlayer, x, y, z)) {
-          removedByPlayer(world, entityPlayer, x, y, z);
-          if(entityPlayer.getCurrentEquippedItem().getItem() instanceof IToolWrench) {
-            ((IToolWrench) entityPlayer.getCurrentEquippedItem().getItem()).wrenchUsed(entityPlayer, x, y, z);
-          }
-          return true;
-        }
-      }
+    if(ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
+      return true;
     }
 
     if(entityPlayer.isSneaking()) {
@@ -137,7 +131,7 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       return false;
     }
 
-    if(ConduitUtil.isToolEquipped(entityPlayer)) {
+    if(ToolUtil.isToolEquipped(entityPlayer)) {
 
       ForgeDirection faceHit = ForgeDirection.getOrientation(side);
       TileCapacitorBank tcb = (TileCapacitorBank) te;
@@ -152,7 +146,9 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
       return true;
     }
 
-    entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
+    if(!world.isRemote) {
+      entityPlayer.openGui(EnderIO.instance, GuiHandler.GUI_ID_CAPACITOR_BANK, world, x, y, z);
+    }
     return true;
   }
 
@@ -237,12 +233,15 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(world.isRemote) {
       return;
     }
-    TileCapacitorBank tr = (TileCapacitorBank) world.getTileEntity(x, y, z);
-    int meta = world.getBlockMetadata(x, y, z);
-    if(meta == 1) {
-      tr.setCreativeMode();
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(te instanceof TileCapacitorBank) {
+      TileCapacitorBank tr = (TileCapacitorBank) te;
+      int meta = world.getBlockMetadata(x, y, z);
+      if(meta == 1) {
+        tr.setCreativeMode();
+      }
+      tr.onBlockAdded();
     }
-    tr.onBlockAdded();
   }
 
   @Override
@@ -250,8 +249,11 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(world.isRemote) {
       return;
     }
-    TileCapacitorBank te = (TileCapacitorBank) world.getTileEntity(x, y, z);
-    te.onNeighborBlockChange(blockId);
+    TileEntity tile = world.getTileEntity(x, y, z);
+    if(tile instanceof TileCapacitorBank) {
+      TileCapacitorBank te = (TileCapacitorBank) tile;
+      te.onNeighborBlockChange(blockId);
+    }
   }
 
   @Override
@@ -310,6 +312,20 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     if(te instanceof TileCapacitorBank) {
       TileCapacitorBank cb = (TileCapacitorBank) te;
       cb.addEnergy(PowerHandlerUtil.getStoredEnergyForItem(stack));
+      if(player instanceof EntityPlayer) {
+        for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+          BlockCoord bc = new BlockCoord(x, y, z);
+          bc = bc.getLocation(dir);
+          te = world.getTileEntity(bc.x, bc.y, bc.z);
+          if(te instanceof TileCapacitorBank) {
+            if(((TileCapacitorBank)te).isMaxSize()) {
+              ((EntityPlayer)player).addChatComponentMessage(new ChatComponentText("Capacitor bank is at maximum size"));
+            }            
+          }          
+        }
+        
+      }
+      
     }
     world.markBlockForUpdate(x, y, z);
   }
@@ -357,5 +373,37 @@ public class BlockCapacitorBank extends BlockEio implements IGuiHandler, IAdvanc
     }
     return AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x, max.y, max.z);
   }
+  
+  @Override
+  public boolean hasComparatorInputOverride() {
+    return true;
+  }
+  
+  @Override
+  public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
+    TileEntity te = w.getTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      return ((TileCapacitorBank) te).getComparatorOutput();
+    }
+    return 0;
+  }
 
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileCapacitorBank) {
+      TileCapacitorBank cap = (TileCapacitorBank) te;
+      String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
+            
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"),  format, fmt.format(cap.getMaxIO()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"),  format, fmt.format(cap.getMaxInput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(cap.getMaxOutput()), Util.TAB + Util.ALIGNRIGHT));
+      tooltip.add("Deprecated. Convert by placing in crafting grid");
+    }
+  }
+
+  @Override
+  public int getDefaultDisplayMask(World world, int x, int y, int z) {
+    return IWailaInfoProvider.BIT_DETAILED;
+  }
 }

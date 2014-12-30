@@ -10,7 +10,7 @@ public interface IRecipe {
 
   boolean isValid();
 
-  float getEnergyRequired();
+  int getEnergyRequired();
 
   RecipeOutput[] getOutputs();
 

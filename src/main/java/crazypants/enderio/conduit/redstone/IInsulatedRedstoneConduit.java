@@ -12,12 +12,18 @@ public interface IInsulatedRedstoneConduit extends IRedstoneConduit {
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 
-  public void onInputsChanged(ForgeDirection side, int[] inputValues);
+  void onInputsChanged(ForgeDirection side, int[] inputValues);
 
-  public void onInputChanged(ForgeDirection side, int inputValue);
+  void onInputChanged(ForgeDirection side, int inputValue);
 
-  public void forceConnectionMode(ForgeDirection dir, ConnectionMode mode);
+  void forceConnectionMode(ForgeDirection dir, ConnectionMode mode);
 
   void setSignalColor(ForgeDirection dir, DyeColor col);
+
+  boolean isSpecialConnection(ForgeDirection dir);
+
+  boolean isOutputStrong(ForgeDirection dir);
+
+  void setOutputStrength(ForgeDirection dir, boolean isStrong);
 
 }

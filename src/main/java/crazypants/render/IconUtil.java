@@ -24,6 +24,7 @@ public class IconUtil {
 
   public static IIcon whiteTexture;
   public static IIcon blankTexture;
+  public static IIcon errorTexture;
 
   static {
     MinecraftForge.EVENT_BUS.register(new IconUtil());
@@ -32,6 +33,8 @@ public class IconUtil {
       @Override
       public void registerIcons(IIconRegister register) {
         whiteTexture = register.registerIcon("enderio:white");
+        errorTexture = register.registerIcon("enderio:error");
+        blankTexture = register.registerIcon("enderio:blank");
       }
 
       @Override

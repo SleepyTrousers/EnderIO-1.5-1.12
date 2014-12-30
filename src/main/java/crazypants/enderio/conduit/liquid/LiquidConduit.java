@@ -7,6 +7,7 @@ import java.util.Set;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -26,9 +27,11 @@ import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.IconUtil;
 import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 
 public class LiquidConduit extends AbstractTankConduit {
 
@@ -111,6 +114,18 @@ public class LiquidConduit extends AbstractTankConduit {
       PacketHandler.INSTANCE.sendToAllAround(new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
       lastSyncRatio = tank.getFilledRatio();
     }
+  }
+  
+  @Override
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
+  }
+  
+  @Override
+  protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
+    dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short)getExtractionRedstoneMode(dir).ordinal());
   }
 
   private void doExtract() {
@@ -296,7 +311,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return null;
     }
     return tank.drain(maxDrain, doDrain);
@@ -312,7 +327,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    if(getConectionMode(from) == ConnectionMode.OUTPUT || getConectionMode(from) == ConnectionMode.DISABLED) {
+    if(getConnectionMode(from) == ConnectionMode.OUTPUT || getConnectionMode(from) == ConnectionMode.DISABLED) {
       return false;
     }
     if(tank.getFluid() == null) {
@@ -326,7 +341,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    if(getConectionMode(from) == ConnectionMode.INPUT || getConectionMode(from) == ConnectionMode.DISABLED
+    if(getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED
         || tank.getFluid() == null || fluid == null) {
       return false;
     }
@@ -400,7 +415,7 @@ public class LiquidConduit extends AbstractTankConduit {
     if(isExtractingFromDir(component.dir)) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY);
     }
-    if(getConectionMode(component.dir) == ConnectionMode.OUTPUT) {
+    if(getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
       return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
     }
     //    if(getFluidType() == null) {

@@ -67,7 +67,7 @@ public class RecipeConfig {
     return config;
   }
 
-  private static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
+  public static String readRecipes(File copyTo, String fileName, boolean replaceIfExists) throws IOException {
     if(!replaceIfExists && copyTo.exists()) {
       return readStream(new FileInputStream(copyTo));
     }

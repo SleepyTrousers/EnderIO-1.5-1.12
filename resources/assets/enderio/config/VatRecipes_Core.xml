@@ -11,18 +11,35 @@ Produce:
 output fluid volume (mb) = IM * inputFluid.multiplier * 1000.
 
 The vat always uses 1 MJ per tick, so energy cost also equates to duration.
+
+Recipes can also be added using forge IMC messages. For example, in the init method of a mod:
+String recipe = 
+       "<recipeGroup name=\"cheaty\">" +
+         "<recipe name=\"foo\" energyCost=\"2400\">" +
+           "<input>" +
+            "<itemStack modID=\"minecraft\" itemName=\"dirt\" slot=\"0\"/>" +
+            "<fluidStack name=\"water\" multiplier=\"1\"/>" +
+           "</input>" +
+           "<output>" +
+             "<fluidStack name=\"lava\"/>" +
+           "</output>" +
+          "</recipe>" +
+        "</recipeGroup>";
+FMLInterModComms.sendMessage("EnderIO", "recipe:vat", recipe);
+
  -->
 <VatRecipes>
   
   <recipeGroup name="EnderIO"> <!-- Required for EnderIO to function correctly. -->
      
-    <recipe name="Nutrient Distilation" energyCost="1000">
-      <input>
-        <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="2"/>
-        <itemStack modID="minecraft" itemName="skull" slot="0" multiplier="2"/>
-        <itemStack modID="minecraft" itemName="chicken" slot="0" multiplier="1"/>
-        <itemStack modID="minecraft" itemName="beef" slot="0" multiplier="1"/>
-        <itemStack modID="minecraft" itemName="porkchop" slot="0" multiplier="1"/>
+    <recipe name="Nutrient Distilation" energyCost="10000">
+      <input>      
+        <itemStack modID="Thaumcraft" itemName="ItemZombieBrain" slot="0" multiplier="2"/>
+        <itemStack oreDictionary="itemSkull" slot="0" multiplier="2"/>
+        <itemStack modID="minecraft" itemName="rotten_flesh" slot="0" multiplier="1.5"/>        
+        <itemStack modID="minecraft" itemName="chicken" slot="0" multiplier="0.75"/>
+        <itemStack modID="minecraft" itemName="beef" slot="0" multiplier="0.75"/>
+        <itemStack modID="minecraft" itemName="porkchop" slot="0" multiplier="0.75"/>
                 
         <itemStack modID="minecraft" itemName="sugar" slot="1" multiplier="1"/>        
         <itemStack modID="minecraft" itemName="brown_mushroom" slot="1" multiplier="1.5"/>     
@@ -31,7 +48,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
         <itemStack modID="minecraft" itemName="fermented_spider_eye" slot="1" multiplier="2"/>
         
         
-        <fluidStack name="water" multiplier="0.5"/>
+        <fluidStack name="water" multiplier="0.25"/>
       </input>      
       <output>
         <fluidStack name="nutrient_distillation"/>        
@@ -40,11 +57,12 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
     </recipe>
      
     
-    <recipe name="Hootch" energyCost="1000">
+    <recipe name="Hootch" energyCost="10000">
       <input>
 
         <itemStack modID="minecraft" itemName="poisonous_potato" slot="0" multiplier="8"/>
-        <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="4"/>                                               
+        <itemStack modID="minecraft" itemName="potato" slot="0" multiplier="4"/>
+        <itemStack modID="minecraft" itemName="apple" slot="0" multiplier="3.5"/>                                                
         <itemStack modID="minecraft" itemName="wheat" slot="0" multiplier="3"/>
         <itemStack modID="minecraft" itemName="wheat_seeds" slot="0" multiplier="2"/>        
         
@@ -59,7 +77,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       
     </recipe>
     
-    <recipe name="Rocket Fuel" energyCost="1000">
+    <recipe name="Rocket Fuel" energyCost="10000">
       <input>
         <itemStack modID="minecraft" itemName="gunpowder" slot="0" multiplier="1"/>                
         <itemStack modID="minecraft" itemName="redstone" slot="1" multiplier="1"/>                
@@ -71,7 +89,7 @@ The vat always uses 1 MJ per tick, so energy cost also equates to duration.
       
     </recipe>
     
-    <recipe name="Fire Water" energyCost="1000">
+    <recipe name="Fire Water" energyCost="10000">
       <input>
         <itemStack modID="minecraft" itemName="blaze_powder" slot="0" multiplier="1"/>                
         <itemStack modID="minecraft" itemName="redstone" slot="1" multiplier="1"/>                

@@ -39,6 +39,10 @@ public final class ColorUtil {
     return getRGB((int) (r * 255), (int) (g * 255), (int) (b * 255));
   }
 
+  public static int getRGBA(Vector4f col) {
+    return getRGBA(col.x, col.y,col.z,col.w);
+  }
+  
   public static int getRGBA(float r, float g, float b, float a) {
     return getRGBA((int) (r * 255), (int) (g * 255), (int) (b * 255), (int) (a * 255));
   }

@@ -29,12 +29,11 @@ public class TeleportRecipes {
       //travel staff
       ItemStack travelStaff = new ItemStack(EnderIO.itemTravelStaff);
       EnderIO.itemTravelStaff.setEnergy(travelStaff, 0);
-      ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
-      ItemStack electricalSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal());
+      ItemStack endCry = new ItemStack(EnderIO.itemMaterial, 1, Material.ENDER_CRYSTAL.ordinal());
+      ItemStack darkSteel = new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal());
       IRecipe rec = GameRegistry
-          .addShapedRecipe(travelStaff, "  g", " s ", "c  ", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);
-      rec = GameRegistry
-          .addShapedRecipe(travelStaff, "g  ", " s ", "  c", 's', electricalSteel, 'c', enderCapacitor, 'g', vibCry);      
+          .addShapedRecipe(travelStaff, "  e", " s ", "s  ", 's', darkSteel, 'c', enderCapacitor, 'e', endCry);
+            
     }
   }
 

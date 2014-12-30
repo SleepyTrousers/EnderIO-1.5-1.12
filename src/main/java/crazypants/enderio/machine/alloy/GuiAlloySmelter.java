@@ -9,8 +9,8 @@ import net.minecraft.util.IIcon;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.GuiMachineBase;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiToolTip;
 import crazypants.gui.IconButton;
@@ -18,9 +18,7 @@ import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
 import crazypants.vecmath.Vector4f;
 
-public class GuiAlloySmelter extends GuiMachineBase {
-
-  private TileAlloySmelter tileEntity;
+public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
   private IconButton vanillaFurnaceButton;
 
@@ -28,7 +26,6 @@ public class GuiAlloySmelter extends GuiMachineBase {
 
   public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
     super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory));
-    this.tileEntity = furnaceInventory;
 
     addToolTip(new GuiToolTip(new Rectangle(0, 0, 0, 0), "") {
 
@@ -37,9 +34,9 @@ public class GuiAlloySmelter extends GuiMachineBase {
         text.clear();
         text.add(Lang.localize("gui.alloy.mode.heading"));
         String txt = Lang.localize("gui.alloy.mode.all");
-        if(tileEntity.getMode() == Mode.ALLOY) {
+        if(getTileEntity().getMode() == Mode.ALLOY) {
           txt = Lang.localize("gui.alloy.mode.alloy");
-        } else if(tileEntity.getMode() == Mode.FURNACE) {
+        } else if(getTileEntity().getMode() == Mode.FURNACE) {
           txt = Lang.localize("gui.alloy.mode.furnace");
         }
         text.add(txt);
@@ -54,6 +51,7 @@ public class GuiAlloySmelter extends GuiMachineBase {
     });
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void initGui() {
     super.initGui();
@@ -69,8 +67,8 @@ public class GuiAlloySmelter extends GuiMachineBase {
 
   @Override
   protected void renderSlotHighlight(int slot, Vector4f col) {
-    if(tileEntity.getSlotDefinition().isOutputSlot(slot)) {
-      renderSlotHighlight(col, 75,54,24,24);
+    if(getTileEntity().getSlotDefinition().isOutputSlot(slot)) {
+      renderSlotHighlight(col, 75, 54, 24, 24);
     } else {
       super.renderSlotHighlight(slot, col);
     }
@@ -79,9 +77,9 @@ public class GuiAlloySmelter extends GuiMachineBase {
   @Override
   protected void actionPerformed(GuiButton par1GuiButton) {
     if(par1GuiButton.id == SMELT_MODE_BUTTON_ID) {
-      tileEntity.setMode(tileEntity.getMode().next());
+      getTileEntity().setMode(getTileEntity().getMode().next());
       vanillaFurnaceButton.setIcon(getIconForMode());
-      PacketHandler.INSTANCE.sendToServer(new PacketClientState(tileEntity));
+      PacketHandler.INSTANCE.sendToServer(new PacketClientState(getTileEntity()));
     } else {
       super.actionPerformed(par1GuiButton);
     }
@@ -89,9 +87,9 @@ public class GuiAlloySmelter extends GuiMachineBase {
 
   private IIcon getIconForMode() {
     IIcon icon = EnderIO.blockAlloySmelter.vanillaSmeltingOn;
-    if(tileEntity.getMode() == Mode.ALLOY) {
+    if(getTileEntity().getMode() == Mode.ALLOY) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOff;
-    } else if(tileEntity.getMode() == Mode.FURNACE) {
+    } else if(getTileEntity().getMode() == Mode.FURNACE) {
       icon = EnderIO.blockAlloySmelter.vanillaSmeltingOnly;
     }
     return icon;
@@ -112,10 +110,10 @@ public class GuiAlloySmelter extends GuiMachineBase {
 
     int scaled;
 
-    if(tileEntity.getProgress() < 1 && tileEntity.getProgress() > 0) {
-      scaled = tileEntity.getProgressScaled(12);
-      drawTexturedModalRect(sx + 55, sy + 48 - scaled, 176, 12 - scaled, 14, scaled + 2);
-      drawTexturedModalRect(sx + 103, sy + 48 - scaled, 176, 12 - scaled, 14, scaled + 2);
+    if(getTileEntity().getProgress() < 1 && getTileEntity().getProgress() > 0) {
+      scaled = getTileEntity().getProgressScaled(14) + 1;
+      drawTexturedModalRect(sx + 55, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
+      drawTexturedModalRect(sx + 103, sy + 49 - scaled, 176, 14 - scaled, 14, scaled);
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);

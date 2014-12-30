@@ -13,17 +13,17 @@ public class Recipe implements IRecipe {
 
   private final RecipeInput[] inputs;
   private final RecipeOutput[] outputs;
-  private final float energyRequired;
+  private final int energyRequired;
 
-  public Recipe(RecipeOutput output, float energyRequired, RecipeInput... input) {
+  public Recipe(RecipeOutput output, int energyRequired, RecipeInput... input) {
     this(input, new RecipeOutput[] { output }, energyRequired);
   }
 
-  public Recipe(RecipeInput input, float energyRequired, RecipeOutput... output) {
+  public Recipe(RecipeInput input, int energyRequired, RecipeOutput... output) {
     this(new RecipeInput[] { input }, output, energyRequired);
   }
 
-  public Recipe(RecipeInput[] input, RecipeOutput[] output, float energyRequired) {
+  public Recipe(RecipeInput[] input, RecipeOutput[] output, int energyRequired) {
     this.inputs = input;
     this.outputs = output;
     this.energyRequired = energyRequired;
@@ -47,7 +47,7 @@ public class Recipe implements IRecipe {
         RecipeInput required = null;        
         for(int i=0;i<requiredInputs.size() && required == null;i++) {
           RecipeInput tst = requiredInputs.get(i);
-          if(tst.isInput(input.item) || tst.isInput(input.fluid)) {
+          if( (tst.isInput(input.item) && tst.getInput().stackSize > 0) || tst.isInput(input.fluid)) {
              required = tst;
           }
         }        
@@ -145,8 +145,21 @@ public class Recipe implements IRecipe {
     return outputs;
   }
 
+  public boolean hasOuput(ItemStack result) {
+    if(result == null) {
+      return false;
+    }
+    for(RecipeOutput output : outputs) {
+      ItemStack os = output.getOutput();
+      if(os != null && os.isItemEqual(result)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   @Override
-  public float getEnergyRequired() {
+  public int getEnergyRequired() {
     return energyRequired;
   }
 
@@ -159,5 +172,7 @@ public class Recipe implements IRecipe {
   public String toString() {
     return "Recipe [input=" + Arrays.toString(inputs) + ", output=" + Arrays.toString(outputs) + ", energyRequired=" + energyRequired + "]";
   }
+
+  
 
 }

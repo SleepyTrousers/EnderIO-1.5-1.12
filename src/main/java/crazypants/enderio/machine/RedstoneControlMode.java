@@ -47,4 +47,13 @@ public enum RedstoneControlMode {
     return values()[ord];
   }
 
+  public RedstoneControlMode previous() {
+    int ord = ordinal();
+    ord--;
+    if(ord < 0) {
+      ord = values().length - 1;
+    } 
+    return values()[ord];    
+  }
+
 }

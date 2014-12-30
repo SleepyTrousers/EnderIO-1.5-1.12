@@ -11,13 +11,14 @@ import org.lwjgl.opengl.GL11;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
+import crazypants.enderio.gui.ITabPanel;
 import crazypants.enderio.gui.IconButtonEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.render.ColorUtil;
 import crazypants.util.Lang;
 
-public class BaseSettingsPanel implements ISettingsPanel {
+public class BaseSettingsPanel implements ITabPanel {
 
   static final int PREV_MODE_B = 327;
   static final int NEXT_MODE_B = 328;
@@ -76,7 +77,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     rightArrow.onGuiInit();
 
     FontRenderer fr = gui.getFontRenderer();
-    connectionModeChanged(con.getConectionMode(gui.getDir()));
+    connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     initCustomOptions();
   }
@@ -88,8 +89,15 @@ public class BaseSettingsPanel implements ISettingsPanel {
   public void deactivate() {
   }
   
-  public void mouseClicked(int x, int y, int par3) {
-    
+  public void mouseClicked(int x, int y, int par3) {    
+  }
+
+  @Override
+  public void keyTyped(char par1, int par2) {
+  }
+
+  @Override
+  public void updateScreen() {    
   }
 
   @Override
@@ -102,12 +110,12 @@ public class BaseSettingsPanel implements ISettingsPanel {
     if(guiButton.id == PREV_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getPreviousConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConectionMode(gui.getDir()));
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
 
     } else if(guiButton.id == NEXT_MODE_B) {
       con.setConnectionMode(gui.getDir(), con.getNextConnectionMode(gui.getDir()));
       PacketHandler.INSTANCE.sendToServer(new PacketConnectionMode(con, gui.getDir()));
-      connectionModeChanged(con.getConectionMode(gui.getDir()));
+      connectionModeChanged(con.getConnectionMode(gui.getDir()));
     }
   }
 
@@ -128,7 +136,7 @@ public class BaseSettingsPanel implements ISettingsPanel {
     int y = gui.getGuiTop() + 13;//customTop + 8;//gap + fr.FONT_HEIGHT + gap;
     gui.getFontRenderer().drawString(modeLabel, x, y, rgb);
 
-    String modeString = con.getConectionMode(gui.getDir()).getLocalisedName();
+    String modeString = con.getConnectionMode(gui.getDir()).getLocalisedName();
     x += gap + leftArrow.getWidth() + fr.getStringWidth(modeLabel) + gap;
 
     GL11.glColor3f(1, 1, 1);

@@ -36,8 +36,9 @@ public class IconButtonEIO extends GuiButton {
     texture = IconEIO.TEXTURE;
     this.xOrigin = x;
     this.yOrigin = y;
-  }
 
+  }
+ 
   public void setToolTip(String... tooltipText) {
     if(toolTip == null) {
       toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
@@ -70,9 +71,16 @@ public class IconButtonEIO extends GuiButton {
     }
   }
 
-  public void setIconMargin(int x, int y) {
+  public IconButtonEIO setPosition(int x, int y) {
+    this.xOrigin = x;
+    this.yOrigin = y;
+    return this;
+  }
+  
+  public IconButtonEIO setIconMargin(int x, int y) {
     marginX = x;
     marginY = y;
+    return this;
   }
 
   public int getWidth() {
@@ -97,6 +105,9 @@ public class IconButtonEIO extends GuiButton {
   @SuppressWarnings("synthetic-access")
   @Override
   public void drawButton(Minecraft mc, int mouseX, int mouseY) {
+    if(toolTip != null) {
+      toolTip.setVisible(visible);
+    }    
     if(visible) {
 
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

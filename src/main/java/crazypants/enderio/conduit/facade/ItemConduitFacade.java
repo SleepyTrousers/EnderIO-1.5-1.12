@@ -1,9 +1,9 @@
 package crazypants.enderio.conduit.facade;
 
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,12 +18,14 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.crafting.IEnderIoRecipe;
-import crazypants.enderio.crafting.impl.EnderIoRecipe;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.IPaintedBlock;
+import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.util.Util;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider {
 
@@ -89,14 +91,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
   public boolean isFull3D() {
     return true;
   }
-
-  @Override
-  public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-    if(PainterUtil.getSourceBlock(itemStack) == null) {
-      PainterUtil.setSourceBlock(itemStack, EnderIO.blockConduitFacade, 0);
-    }
-  }
-
+ 
   public ItemStack createItemStackForSourceBlock(Block id, int itemDamage) {
     if(id == null) {
       id = EnderIO.blockConduitFacade;
@@ -136,23 +131,36 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider 
     TooltipAddera.addDetailedTooltipFromResources(list, itemstack);
   }
 
-  public static final class FacadePainterRecipe extends BasicPainterTemplate {
+  public final class FacadePainterRecipe extends BasicPainterTemplate {
 
-    public FacadePainterRecipe() {
+    @Override
+    public boolean isValidPaintSource(ItemStack paintSource) {
+      if(paintSource == null) {
+        return false;
+      }
+      Block block = Util.getBlockFromItemId(paintSource);
+      if(block == null || block instanceof IPaintedBlock) {
+        return false;
+      }
+      if(PaintSourceValidator.instance.isBlacklisted(paintSource)) {
+        return false;
+      }
+      if(PaintSourceValidator.instance.isWhitelisted(paintSource)) {
+        return true;
+      }
+      if(!Config.allowTileEntitiesAsPaintSource && block instanceof ITileEntityProvider) {
+        return false;
+      }
+      if(block == EnderIO.blockFusedQuartz && paintSource.getItemDamage() < 2) {
+        return true;
+      }
+      return block.getRenderType() == 0 || block.isOpaqueCube() || block.isNormalCube();
     }
-
+    
     @Override
     public boolean isValidTarget(ItemStack target) {
-      return target != null && target.getItem() == EnderIO.itemConduitFacade;
-    }
-
-    @Override
-    public List<IEnderIoRecipe> getAllRecipes() {
-      ItemStack is = new ItemStack(EnderIO.itemConduitFacade, 1, 0);
-      IEnderIoRecipe recipe = new EnderIoRecipe(IEnderIoRecipe.PAINTER_ID, DEFAULT_ENERGY_PER_TASK, is, is);
-      return Collections.singletonList(recipe);
-    }
-
+      return target != null && target.getItem() == ItemConduitFacade.this;
+    }  
   }
-
+  
 }

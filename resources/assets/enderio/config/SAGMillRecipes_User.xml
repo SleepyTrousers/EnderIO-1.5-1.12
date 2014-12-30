@@ -79,6 +79,29 @@ found in the core file.
     </recipe>
 </recipeGroup>
 -->
-  
+
+<!-- Adding a new grinding ball  
+  <grindingBalls>  
+    <grindingBall id="Diamond" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.5" durationRF="50000">
+      <itemStack modID="minecraft" itemName="diamond"/>
+    </grindingBall>
+  </grindingBalls>
+  -->
+
+<!-- - Removing an existing grinding ball:
+  <grindingBalls>
+    <grindingBall id="Flint" remove="true" />
+  </grindingBalls>
+ -->  
+ 
+ <!-- - Modifiying the excludes list: (removing glowstone, adding sand)
+  <grindingBalls>
+    <excludes>
+      <itemStack modID="minecraft" itemName="glowstone" remove="true" />
+      <itemStack modID="minecraft" itemName="sand" />
+    </excludes>
+  </grindingBalls>
+ --> 
+
 
 </SAGMillRecipes>

@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.item.filter;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.List;
 
 import net.minecraft.inventory.Slot;
@@ -13,6 +15,10 @@ public interface IItemFilter {
 
   void writeToNBT(NBTTagCompound nbtRoot);
 
+  void writeToByteBuf(ByteBuf buf);
+
+  void readFromByteBuf(ByteBuf buf);
+
   boolean doesItemPassFilter(NetworkedInventory inv, ItemStack item);
 
   boolean doesFilterCaptureStack(NetworkedInventory inv, ItemStack item);
@@ -21,8 +27,8 @@ public interface IItemFilter {
 
   boolean isSticky();
 
-  List<Slot> getSlots();
+  List<Slot> getSlots(int xOffset, int yOffset);
 
   int getSlotCount();
-  
+
 }

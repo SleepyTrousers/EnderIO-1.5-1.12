@@ -1,6 +1,29 @@
 package crazypants.render;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
+import static org.lwjgl.opengl.GL11.GL_ALL_ATTRIB_BITS;
+import static org.lwjgl.opengl.GL11.GL_ALPHA_TEST;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_ZERO;
+import static org.lwjgl.opengl.GL11.glDepthMask;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glPopAttrib;
+import static org.lwjgl.opengl.GL11.glPushAttrib;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glShadeModel;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -11,7 +34,10 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,6 +65,12 @@ import crazypants.vecmath.Vertex;
 
 public class RenderUtil {
 
+  public static final Vector4f DEFAULT_TEXT_SHADOW_COL = new Vector4f(0.33f, 0.33f, 0.33f, 0.33f);
+
+  public static final Vector4f DEFAULT_TXT_COL = new Vector4f(1, 1, 1, 1);
+
+  public static final Vector4f DEFAULT_TEXT_BG_COL = new Vector4f(0.275f, 0.08f, 0.4f, 0.75f);
+
   public static final Vector3d UP_V = new Vector3d(0, 1, 0);
 
   public static final Vector3d ZERO_V = new Vector3d(0, 0, 0);
@@ -50,6 +82,8 @@ public class RenderUtil {
   public static final ResourceLocation ITEM_TEX = TextureMap.locationItemsTexture;
 
   public static final ResourceLocation GLINT_TEX = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+
+  public static int BRIGHTNESS_MAX = 15 << 20 | 15 << 4;
 
   public static void loadMatrix(Matrix4d mat) {
     MATRIX_BUFFER.rewind();
@@ -112,7 +146,7 @@ public class RenderUtil {
     }
     return brightnessPerSide;
   }
-  
+
   public static IIcon[] getBlockTextures(Block block, int meta) {
     IIcon[] icons = new IIcon[6];
     int i = 0;
@@ -122,13 +156,13 @@ public class RenderUtil {
     }
     return icons;
   }
-  
+
   public static IIcon[] getBlockTextures(IBlockAccess world, int x, int y, int z) {
     Block block = world.getBlock(x, y, z);
     IIcon[] icons = new IIcon[6];
     int i = 0;
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      icons[i] = block.getIcon(world,x,y,z,dir.ordinal());
+      icons[i] = block.getIcon(world, x, y, z, dir.ordinal());
       i++;
     }
     return icons;
@@ -287,11 +321,11 @@ public class RenderUtil {
     }
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges) {
-    renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges, true, true);
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges) {
+    renderConnectedTextureFace(blockAccess, block, x, y, z, face, texture, forceAllEdges, true, true);
   }
 
-  public static void renderConnectedTextureFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges,
+  public static void renderConnectedTextureFace(IBlockAccess blockAccess, Block block, int x, int y, int z, ForgeDirection face, IIcon texture, boolean forceAllEdges,
       boolean translateToXYZ, boolean applyFaceShading) {
 
     if((blockAccess == null && !forceAllEdges) || face == null || texture == null) {
@@ -299,11 +333,11 @@ public class RenderUtil {
     }
 
     if(!forceAllEdges) {
-      Block block = blockAccess.getBlock(x, y, z);
-      if(block == null) {
+      Block check = blockAccess.getBlock(x, y, z);
+      if(check == null) {
         return;
       }
-      if(!block.shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
+      if(!check.shouldSideBeRendered(blockAccess, x + face.offsetX, y + face.offsetY, z + face.offsetZ, face.ordinal())) {
         return;
       }
     }
@@ -331,6 +365,11 @@ public class RenderUtil {
       float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
       float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
       float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
+      
+      xLen -= 2* (1 - block.getBlockBoundsMaxX()) - block.getBlockBoundsMinX();
+      yLen -= 2* (1 - block.getBlockBoundsMaxY()) - block.getBlockBoundsMinY();
+      zLen -= 2* (1 - block.getBlockBoundsMaxZ()) - block.getBlockBoundsMinZ();
+
       BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
       List<Vector3f> corners = bb.getCornersForFace(face);
@@ -360,10 +399,10 @@ public class RenderUtil {
   }
 
   public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face) {
-    return getNonConectedEdgesForFace(blockAccess, x, y, z, face, false);
+    return getNonConectedEdgesForFace(blockAccess, x, y, z, face, null);
   }
 
-  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, boolean matchMetaData) {
+  public static List<ForgeDirection> getNonConectedEdgesForFace(IBlockAccess blockAccess, int x, int y, int z, ForgeDirection face, IConnectedTextureRenderer render) {
 
     Block block = blockAccess.getBlock(x, y, z);
     if(block == null) {
@@ -381,8 +420,8 @@ public class RenderUtil {
     List<ForgeDirection> result = new ArrayList<ForgeDirection>(4);
     for (EdgeNeighbour edge : edges) {
       boolean matchingNeighbour = blockAccess.getBlock(edge.bc.x, edge.bc.y, edge.bc.z) == block;
-      if(matchingNeighbour && matchMetaData) {
-        matchingNeighbour = blockAccess.getBlockMetadata(x, y, z) == blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z);
+      if(matchingNeighbour && render != null) {
+        matchingNeighbour = render.matchesMetadata(blockAccess.getBlockMetadata(x, y, z), blockAccess.getBlockMetadata(edge.bc.x, edge.bc.y, edge.bc.z));
       }
       if(!matchingNeighbour) {
         result.add(edge.dir);
@@ -510,25 +549,97 @@ public class RenderUtil {
       }
     }
 
-    double fullness = (double) amount / (double) capacity;
-    int fluidHeight = (int) Math.round(height * fullness);
+    int renderAmount = (int) Math.max(Math.min(height, amount * height / capacity), 1);
+    int posY = (int) (y + height - renderAmount);
 
     RenderUtil.bindBlockTexture();
-    y = y + (47 - fluidHeight);
-    GL11.glColor4f(1, 1, 1, 0.75f);
+    int color = fluid.getFluid().getColor(fluid);
+    GL11.glColor3ub((byte) (color >> 16 & 0xFF), (byte) (color >> 8 & 0xFF), (byte) (color & 0xFF));
+
     GL11.glEnable(GL11.GL_BLEND);
-    drawTexturedModelRectFromIcon(x, y, zLevel, icon, width, fluidHeight);
+    for (int i = 0; i < width; i += 16) {
+      for (int j = 0; j < renderAmount; j += 16) {
+        int drawWidth = (int) Math.min(width - i, 16);
+        int drawHeight = Math.min(renderAmount - j, 16);
+
+        int drawX = (int) (x + i);
+        int drawY = posY + j;
+
+        double minU = icon.getMinU();
+        double maxU = icon.getMaxU();
+        double minV = icon.getMinV();
+        double maxV = icon.getMaxV();
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(drawX, drawY + drawHeight, 0, minU, minV + (maxV - minV) * drawHeight / 16F);
+        tessellator.addVertexWithUV(drawX + drawWidth, drawY + drawHeight, 0, minU + (maxU - minU) * drawWidth / 16F, minV + (maxV - minV) * drawHeight / 16F);
+        tessellator.addVertexWithUV(drawX + drawWidth, drawY, 0, minU + (maxU - minU) * drawWidth / 16F, minV);
+        tessellator.addVertexWithUV(drawX, drawY, 0, minU, minV);
+        tessellator.draw();
+      }
+    }
     GL11.glDisable(GL11.GL_BLEND);
   }
 
-  public static void drawTexturedModelRectFromIcon(double x, double y, double z, IIcon icon, double width, double height) {
+  public static void drawBillboardedText(Vector3f pos, String text, float size) {
+    drawBillboardedText(pos, text, size, DEFAULT_TXT_COL, true, DEFAULT_TEXT_SHADOW_COL, true, DEFAULT_TEXT_BG_COL);
+  }
+
+  public static void drawBillboardedText(Vector3f pos, String text, float size, Vector4f bgCol) {
+    drawBillboardedText(pos, text, size, DEFAULT_TXT_COL, true, DEFAULT_TEXT_SHADOW_COL, true, bgCol);
+  }
+
+  public static void drawBillboardedText(Vector3f pos, String text, float size, Vector4f txtCol, boolean drawShadow, Vector4f shadowCol,
+      boolean drawBackground, Vector4f bgCol) {
+    GL11.glPushMatrix();
+    GL11.glTranslatef(pos.x, pos.y, pos.z);
+    glRotatef(180, 1, 0, 0);
+
+    FontRenderer fnt = Minecraft.getMinecraft().fontRenderer;
+    float scale = size / fnt.FONT_HEIGHT;
+    GL11.glScalef(scale, scale, scale);
+    glRotatef(RenderManager.instance.playerViewY + 180, 0.0F, 1.0F, 0.0F);
+    glRotatef(-RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);
+
+    glTranslatef(-fnt.getStringWidth(text) / 2, 0, 0);
+    if(drawBackground) {
+      renderBackground(fnt, text, bgCol);
+    }
+    fnt.drawString(text, 0, 0, ColorUtil.getRGBA(txtCol));
+    if(drawShadow) {
+      glTranslatef(0.5f, 0.5f, 0.1f);
+      fnt.drawString(text, 0, 0, ColorUtil.getRGBA(shadowCol));
+    }
+    GL11.glPopMatrix();
+
+    RenderUtil.bindBlockTexture();
+  }
+
+  public static void renderBackground(FontRenderer fnt, String toRender, Vector4f color) {
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glShadeModel(GL_SMOOTH);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_CULL_FACE);
+    glDepthMask(false);
+    RenderHelper.disableStandardItemLighting();
+    OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO); // stop random disappearing
+
+    float width = fnt.getStringWidth(toRender);
+    float height = fnt.FONT_HEIGHT;
+    float padding = 2f;
     Tessellator tessellator = Tessellator.instance;
     tessellator.startDrawingQuads();
-    tessellator.addVertexWithUV(x, y + height, z, icon.getMinU(), icon.getMaxV());
-    tessellator.addVertexWithUV(x + width, y + height, z, icon.getMaxU(), icon.getMaxV());
-    tessellator.addVertexWithUV(x + width, y, z, icon.getMaxU(), icon.getMinV());
-    tessellator.addVertexWithUV(x, y, z, icon.getMinU(), icon.getMinV());
+    tessellator.setColorRGBA_F(color.x, color.y, color.z, color.w);
+    tessellator.addVertex(-padding, -padding, 0);
+    tessellator.addVertex(-padding, height + padding, 0);
+    tessellator.addVertex(width + padding, height + padding, 0);
+    tessellator.addVertex(width + padding, -padding, 0);
     tessellator.draw();
+
+    glPopAttrib();
   }
 
   private static class EdgeNeighbour {

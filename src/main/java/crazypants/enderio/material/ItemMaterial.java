@@ -68,11 +68,8 @@ public class ItemMaterial extends Item {
     if(par1ItemStack == null) {
       return false;
     }
-    int damage = par1ItemStack.getItemDamage();
-    if(damage == Material.VIBRANT_CYSTAL.ordinal() || damage == Material.PULSATING_CYSTAL.ordinal()) {
-      return true;
-    }
-    return false;
+    int damage = MathHelper.clamp_int(par1ItemStack.getItemDamage(), 0, Material.values().length - 1);
+    return Material.values()[damage].hasEffect;
   }
 
 }

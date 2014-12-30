@@ -2,6 +2,7 @@ package crazypants.enderio.machine.monitor;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -31,7 +32,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
 
   @Override
   public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    return null;
+    return new ContainerPowerMonitor();    
   }
 
   @Override
@@ -48,6 +49,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor> im
   protected int getGuiId() {
     return GuiHandler.GUI_ID_POWER_MONITOR;
   }
+
 
   @Override
   public boolean canProvidePower() {

@@ -32,7 +32,7 @@ public class ContainerTravelAccessable extends Container {
     }
     
     arrInv = new PasswordInventory(new ItemStack[] {ta.getItemLabel()}, false);    
-    x = 80;
+    x = 125;
     y = 10;    
     addSlotToContainer(new TemplateSlot(arrInv, 0, x, y));
     

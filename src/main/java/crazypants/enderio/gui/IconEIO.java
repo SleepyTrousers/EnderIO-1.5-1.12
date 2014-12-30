@@ -2,6 +2,9 @@ package crazypants.enderio.gui;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import crazypants.render.RenderUtil;
 
 public final class IconEIO {
@@ -12,6 +15,7 @@ public final class IconEIO {
   public static final IconEIO PRIVATE = new IconEIO(48, 100);
   public static final IconEIO CROSS = new IconEIO(64, 100);
   public static final IconEIO PLUS = new IconEIO(80, 100);
+  public static final IconEIO ARROWS = new IconEIO(178, 100);
 
   public static final IconEIO BUTTON = new IconEIO(0, 116);
   public static final IconEIO CHECKED_BUTTON = new IconEIO(0, 132);
@@ -20,21 +24,26 @@ public final class IconEIO {
   public static final IconEIO BUTTON_DOWN = new IconEIO(48, 116);
   public static final IconEIO BUTTON_DOWN_HIGHLIGHT = new IconEIO(64, 116);
 
-  public static final IconEIO WRENCH_OVERLAY_ALL_ON = new IconEIO(0, 148, 96, 64);
-  public static final IconEIO WRENCH_OVERLAY_ALL_OFF = new IconEIO(96, 148, 96, 64);
-
   public static final IconEIO WRENCH_OVERLAY_POWER = new IconEIO(0, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(96, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_POWER_OFF = new IconEIO(0 + 96, 148, 32, 32);
 
   public static final IconEIO WRENCH_OVERLAY_REDSTONE = new IconEIO(32, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_REDSTONE_OFF = new IconEIO(32 + 96, 148, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(64, 148, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(64 + 96, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(0, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(96, 180, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_FLUID = new IconEIO(16, 180, 32, 32);
-  public static final IconEIO WRENCH_OVERLAY_FLUID_OFF = new IconEIO(112, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ITEM = new IconEIO(32, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ITEM_OFF = new IconEIO(32 + 96, 180, 32, 32);
 
-  public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(48, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_GAS = new IconEIO(64, 148, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_GAS_OFF = new IconEIO(64 + 96, 148, 32, 32);
+
+  public static final IconEIO WRENCH_OVERLAY_ME = new IconEIO(64, 180, 32, 32);
+  public static final IconEIO WRENCH_OVERLAY_ME_OFF = new IconEIO(64 + 96, 180, 32, 32);
+
+  public static final IconEIO PROBE_OVERLAY_PROBE = new IconEIO(112, 100, 32, 16);
+  public static final IconEIO PROBE_OVERLAY_COPY = new IconEIO(144, 100, 32, 16);
 
   public static final IconEIO ACTIVE_TAB = new IconEIO(237, 0, 19, 24);
   public static final IconEIO INACTIVE_TAB = new IconEIO(237, 25, 19, 24);
@@ -76,26 +85,46 @@ public final class IconEIO {
 
   public static final IconEIO LOOP = new IconEIO(217, 236, 20, 20);
   public static final IconEIO LOOP_OFF = new IconEIO(236, 236, 20, 20);
-  
+
   public static final IconEIO ROUND_ROBIN = new IconEIO(86, 236, 20, 20);
   public static final IconEIO ROUND_ROBIN_OFF = new IconEIO(106, 236, 20, 20);
 
   public static final IconEIO IO_CONFIG_UP = new IconEIO(80, 116, 24, 24);
-  public static final IconEIO IO_CONFIG_DOWN  = new IconEIO(104, 116, 24, 24);
+  public static final IconEIO IO_CONFIG_DOWN = new IconEIO(104, 116, 24, 24);
 
-  public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13,13);
+  public static final IconEIO IO_WHATSIT = new IconEIO(192, 148, 13, 13);
 
-  public static final IconEIO RECIPE = new IconEIO(128, 116, 24,24);
-  
-  public static final IconEIO ADD_BUT = new IconEIO(139, 246, 10,10);
-  public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10,10);
-  
+  public static final IconEIO RECIPE = new IconEIO(16, 132, 16, 16);
+  public static final IconEIO RECIPE_BUTTON = new IconEIO(128, 116, 24, 24);
 
+  public static final IconEIO ADD_BUT = new IconEIO(139, 246, 10, 10);
+  public static final IconEIO MINUS_BUT = new IconEIO(129, 246, 10, 10);
 
+  public static final IconEIO SOUND = new IconEIO(209, 172, 22, 22);
+
+  public static final IconEIO XP = new IconEIO(235, 60, 22, 22);
+  public static final IconEIO XP_PLUS = new IconEIO(235, 82, 22, 22);
+
+  public static final IconEIO SINGLE_PLUS = new IconEIO(234, 100);
+  public static final IconEIO DOUBLE_PLUS = new IconEIO(218, 100);
+  public static final IconEIO TRIPLE_PLUS = new IconEIO(202, 100);
+  public static final IconEIO SINGLE_MINUS = new IconEIO(206, 116);
+  public static final IconEIO DOUBLE_MINUS = new IconEIO(190, 116);
+  public static final IconEIO TRIPLE_MINUS = new IconEIO(174, 116);
+
+  public static final IconEIO ENDER_RAIL = new IconEIO(235, 175);
+
+  public static final IconEIO FILTER = new IconEIO(203, 31);
+
+  public static final IconEIO ITEM_SINGLE = new IconEIO(220, 32);
+  public static final IconEIO ITEM_STACK = new IconEIO(220, 48);
 
   private static final int TEX_SIZE = 256;
   private static final double PIX_SIZE = 1d / TEX_SIZE;
 
+  public static final IconEIO UNLOCKED = new IconEIO(150, 245, 10, 10);
+  public static final IconEIO LOCKED   = new IconEIO(162, 245, 10, 10);
+  
   public final double minU;
   public final double maxU;
   public final double minV;
@@ -131,16 +160,28 @@ public final class IconEIO {
   }
 
   public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw) {
+    renderIcon(x, y, width, height, zLevel, doDraw, false);
+  }
+
+  public void renderIcon(double x, double y, double width, double height, double zLevel, boolean doDraw, boolean flipY) {
+    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
     Tessellator tessellator = Tessellator.instance;
     if(doDraw) {
       RenderUtil.bindTexture(TEXTURE);
       tessellator.startDrawingQuads();
     }
-    tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
-    tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
-    tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
-    tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
+    if(flipY) {
+      tessellator.addVertexWithUV(x, y + height, zLevel, minU, minV);
+      tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, minV);
+      tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, maxV);
+      tessellator.addVertexWithUV(x, y + 0, zLevel, minU, maxV);
+    } else {
+      tessellator.addVertexWithUV(x, y + height, zLevel, minU, maxV);
+      tessellator.addVertexWithUV(x + width, y + height, zLevel, maxU, maxV);
+      tessellator.addVertexWithUV(x + width, y + 0, zLevel, maxU, minV);
+      tessellator.addVertexWithUV(x, y + 0, zLevel, minU, minV);
+    }
     if(doDraw) {
       tessellator.draw();
     }

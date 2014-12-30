@@ -9,26 +9,25 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.power.IPowerEmitter;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.PowerDistributor;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDistributor;
 import crazypants.util.BlockCoord;
 import crazypants.util.FluidUtil;
 
-public class TileZombieGenerator extends AbstractMachineEntity implements IPowerEmitter, IFluidHandler {
+public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler {
 
   private static int IO_MB_TICK = 250;
 
   final NutrientTank fuelTank = new NutrientTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
 
-  float outputPerTick = (float) Config.zombieGeneratorMjPerTick;
-  int tickPerMbFuel = Config.zombieGeneratorTicksPerBucketFuel;
+  int outputPerTick = Config.zombieGeneratorRfPerTick;
+  int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
 
   private boolean tanksDirty;
   private boolean active = false;
@@ -37,9 +36,10 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   private int ticksRemaingFuel;
   private boolean inPause;
 
+  int pass = 0;
+
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0));
-    powerHandler.configure(0, 0, 0, capacitorType.capacitor.getMaxEnergyStored());
+    super(new SlotDefinition(0, 0, 0));    
   }
 
   @Override
@@ -47,15 +47,6 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     return ModObject.blockZombieGenerator.unlocalisedName;
   }
 
-  @Override
-  public boolean canEmitPowerFrom(ForgeDirection side) {
-    return !isSideDisabled(side.ordinal());
-  }
-
-  @Override
-  public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-    return 0;
-  }
 
   @Override
   public boolean supportsMode(ForgeDirection faceHit, IoMode mode) {
@@ -93,7 +84,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   }
 
   @Override
-  public float getPowerUsePerTick() {
+  public int getPowerUsePerTick() {
     return outputPerTick;
   }
 
@@ -121,17 +112,6 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
   }
 
   @Override
-  protected void updateStoredEnergyFromPowerHandler() {
-    //no-op as we don't actually need a BC power handler for a generator
-    //Need to clean this up
-  }
-
-  @Override
-  public int getEnergyStored(ForgeDirection from) {
-    return (int) (storedEnergy * 10);
-  }
-
-  @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean res = false;
 
@@ -144,12 +124,12 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     } else {
 
       boolean isActive = generateEnergy();
-      if(isActive != this.active) {
+      if(isActive != active) {
         active = isActive;
         res = true;
       }
 
-      if(storedEnergy >= capacitorType.capacitor.getMaxEnergyStored()) {
+      if(getEnergyStored() >= capacitorType.capacitor.getMaxEnergyStored()) {
         inPause = true;
       }
 
@@ -170,7 +150,7 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if(inPause && storedEnergy >= (powerHandler.getMaxEnergyStored() - (outputPerTick * 200))) {
+    if(inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200))) {
       return false;
     }
     inPause = false;
@@ -183,25 +163,22 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     ticksRemaingFuel--;    
     if(ticksRemaingFuel <= 0) {
       fuelTank.drain(1, true);
-      ticksRemaingFuel = tickPerMbFuel/1000;    
+      ticksRemaingFuel = tickPerBucketOfFuel/1000;    
       tanksDirty = true;
-    }
-    
-    float oldVal = storedEnergy;
-    storedEnergy += outputPerTick;
-    storedEnergy = Math.min(storedEnergy, capacitorType.capacitor.getMaxEnergyStored());
+    }    
+    setEnergyStored(getEnergyStored() + outputPerTick);     
     return true;
   }
 
   private boolean transmitEnergy() {
-    if(storedEnergy <= 0) {
+    if(getEnergyStored() <= 0) {
       return false;
     }
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    float transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, storedEnergy));
-    storedEnergy -= transmitted;
+    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
+    setEnergyStored(getEnergyStored() - transmitted);    
     return transmitted > 0;
   }
 
@@ -210,8 +187,11 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     if(resource == null || resource.getFluid() == null || !canFill(from, resource.getFluid())) {
       return 0;
     }
-    tanksDirty = true;
-    return fuelTank.fill(resource, doFill);
+    int res = fuelTank.fill(resource, doFill);
+    if(res > 0 && doFill) {
+      tanksDirty = true;
+    }
+    return res;
   }
 
   @Override
@@ -239,10 +219,26 @@ public class TileZombieGenerator extends AbstractMachineEntity implements IPower
     return new FluidTankInfo[] { fuelTank.getInfo() };
   }
 
+  public int getFluidStored(ForgeDirection from) {
+    return fuelTank.getFluidAmount();
+  }
+  
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
     active = nbtRoot.getBoolean("active");
+  }
+
+  @Override
+  public boolean shouldRenderInPass(int pass) {
+    this.pass = pass;
+    if(pass == 0) {
+      return true;
+    }
+    if(pass == 1) {
+      return fuelTank.getFluidAmount() > 0;
+    }
+    return false;
   }
 
   @Override

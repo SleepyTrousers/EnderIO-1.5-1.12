@@ -1,5 +1,7 @@
 package crazypants.enderio.machine.light;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -89,6 +91,11 @@ public class BlockLightNode extends BlockEio {
   @Override
   public void registerBlockIcons(IIconRegister iIconRegister) {
     blockIcon = iIconRegister.registerIcon("enderio:blockElectricLightFace");
+  }
+
+  @Override
+  public int quantityDropped(Random p_149745_1_) {    
+    return 0;
   }
 
 }

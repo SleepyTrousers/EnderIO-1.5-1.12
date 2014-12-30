@@ -13,8 +13,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.painter.IPaintedBlock;
 
-public class BlockConduitFacade extends Block {
+public class BlockConduitFacade extends Block implements IPaintedBlock{
 
   public static BlockConduitFacade create() {
     BlockConduitFacade result = new BlockConduitFacade();

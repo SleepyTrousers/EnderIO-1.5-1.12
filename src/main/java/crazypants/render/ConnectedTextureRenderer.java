@@ -1,6 +1,7 @@
 package crazypants.render;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -15,7 +16,7 @@ import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vector4f;
 import crazypants.vecmath.Vertex;
 
-public class ConnectedTextureRenderer implements IRenderFace {
+public class ConnectedTextureRenderer implements IRenderFace, IConnectedTextureRenderer {
 
   public static interface TextureCallback {
     public IIcon getTextureForFace(ForgeDirection dir);
@@ -58,6 +59,8 @@ public class ConnectedTextureRenderer implements IRenderFace {
   private TextureCallback edgeTexureCallback;
 
   private boolean matchMetaData;
+  
+  private EnumSet<ForgeDirection> sidesToRender = EnumSet.allOf(ForgeDirection.class);
 
   public boolean isForceAllEdges() {
     return forceAllEdges;
@@ -86,11 +89,23 @@ public class ConnectedTextureRenderer implements IRenderFace {
   public void setMatchMeta(boolean matchMetaData) {
     this.matchMetaData = matchMetaData;        
   }
-
+  
+  public void setSidesToRender(EnumSet<ForgeDirection> sides) {
+    sidesToRender = sides.clone();
+  }
+  
+  @Override
+  public boolean matchesMetadata(int meta1, int meta2) {
+    return !this.matchMetaData || meta1 == meta2;
+  }
 
   @Override
   public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z, IIcon texture, List<Vertex> refVertices,
       boolean translateToXYZ) {
+    
+    if (!sidesToRender.contains(face)) {
+      return;
+    }
 
     List<Vertex> finalVerts = new ArrayList<Vertex>();
     finalVerts.addAll(refVertices);
@@ -103,7 +118,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
       if(forceAllEdges) {
         edges = RenderUtil.getEdgesForFace(face);
       } else {
-        edges = RenderUtil.getNonConectedEdgesForFace(rb.blockAccess, (int) x, (int) y, (int) z, face, matchMetaData);
+        edges = RenderUtil.getNonConectedEdgesForFace(rb.blockAccess, (int) x, (int) y, (int) z, face, this);
       }
 
       List<ForgeDirection> allEdges = RenderUtil.getEdgesForFace(face);
@@ -122,6 +137,10 @@ public class ConnectedTextureRenderer implements IRenderFace {
         float xLen = 1 - Math.abs(edge.offsetX) * scaleFactor;
         float yLen = 1 - Math.abs(edge.offsetY) * scaleFactor;
         float zLen = 1 - Math.abs(edge.offsetZ) * scaleFactor;
+        
+        xLen -= 2* (1 - par1Block.getBlockBoundsMaxX()) - par1Block.getBlockBoundsMinX();
+        yLen -= 2* (1 - par1Block.getBlockBoundsMaxY()) - par1Block.getBlockBoundsMinY();
+        zLen -= 2* (1 - par1Block.getBlockBoundsMaxZ()) - par1Block.getBlockBoundsMinZ();
 
         BoundingBox bb = BoundingBox.UNIT_CUBE.scale(xLen, yLen, zLen);
 
@@ -147,7 +166,7 @@ public class ConnectedTextureRenderer implements IRenderFace {
           }
           Vertex vertex = new Vertex();
           vertex.xyz.set(corner);
-          vertex.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.001));
+          //vertex.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.00005));
           vertex.uv = new Vector2f(uv);
           applyLighting(vertex, corner, refVertices);
           finalVerts.add(vertex);
@@ -164,11 +183,15 @@ public class ConnectedTextureRenderer implements IRenderFace {
           v.xyz.set(ForgeDirectionOffsets.forDir(dir));
           v.xyz.add(ForgeDirectionOffsets.forDir(dir2));
           //TODO: dodgy hack to just move the corner forward a bit          
-          v.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.002f));
-          v.xyz.x = Math.max(-0.002, v.xyz.x);
-          v.xyz.y = Math.max(-0.002, v.xyz.y);
-          v.xyz.z = Math.max(-0.002, v.xyz.z);
-
+          v.xyz.add(ForgeDirectionOffsets.offsetScaled(face, 0.001f));
+          v.xyz.x = Math.max(-0.001, v.xyz.x);
+          v.xyz.y = Math.max(-0.001, v.xyz.y);
+          v.xyz.z = Math.max(-0.001, v.xyz.z);
+          
+          v.xyz.x -= (1 - par1Block.getBlockBoundsMaxX()) - par1Block.getBlockBoundsMinX();
+          v.xyz.y -= (1 - par1Block.getBlockBoundsMaxY()) - par1Block.getBlockBoundsMinY();
+          v.xyz.z -= (1 - par1Block.getBlockBoundsMaxZ()) - par1Block.getBlockBoundsMinZ();
+          
           if(ForgeDirectionOffsets.isPositiveOffset(face)) {
             v.xyz.add(ForgeDirectionOffsets.forDir(face));
           }
@@ -256,11 +279,11 @@ public class ConnectedTextureRenderer implements IRenderFace {
 
     BlockCoord bc = new BlockCoord((int) x, (int) y, (int) z);
     BlockCoord testLoc = bc.getLocation(dir);
-    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face).contains(dir2)) {
+    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, this).contains(dir2)) {
       return true;
     }
     testLoc = bc.getLocation(dir2);
-    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face).contains(dir)) {
+    if(RenderUtil.getNonConectedEdgesForFace(blockAccess, testLoc.x, testLoc.y, testLoc.z, face, this).contains(dir)) {
       return true;
     }
     return false;

@@ -22,15 +22,14 @@ public class GuiTravelAuth extends GuiContainerBase {
 
   private final String title;
   private final ITravelAccessable ta;
-  private final UUID username;
+  
   private boolean failed = false;
   private final EntityPlayer player;
 
   public GuiTravelAuth(EntityPlayer player, ITravelAccessable te, World world) {
     super(new ContainerTravelAuth(player.inventory));
     this.ta = te;
-    title = Lang.localize("gui.travelAccessable.enterCode");
-    username = player.getGameProfile().getId();
+    title = Lang.localize("gui.travelAccessable.enterCode");  
     this.player = player;
   }
 

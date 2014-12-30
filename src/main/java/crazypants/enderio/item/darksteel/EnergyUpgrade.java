@@ -1,16 +1,21 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.gui.TooltipAddera;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
+import crazypants.util.Lang;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
@@ -46,6 +51,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
   private static final String KEY_MAX_OUT = "maxOuput";
 
 
+  private static final Random RANDOM = new Random();
+  
   public static EnergyUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -124,7 +131,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     if(up == null) {
       return null;
     }
-    return PowerDisplayUtil.formatStoredPower(up.energy / 10, up.capacity/10);
+    return PowerDisplayUtil.formatStoredPower(up.energy, up.capacity);
   }
 
   public static int getEnergyStored(ItemStack container) {
@@ -144,15 +151,14 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   protected int capacity;
-  protected int energy;
-  protected boolean absorbDamageWithPower;
+  protected int energy;  
 
   protected int maxInRF;
   protected int maxOutRF;
 
   public EnergyUpgrade(String name, int levels, ItemStack upgradeItem, int capcity, int maxReceiveIO) {
     super(UPGRADE_NAME, name, upgradeItem, levels);
-    this.capacity = capcity;
+    capacity = capcity;
     energy = 0;
     maxInRF = maxReceiveIO;
     maxOutRF = maxReceiveIO;
@@ -161,8 +167,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public EnergyUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
     capacity = tag.getInteger(KEY_CAPACITY);
-    energy = tag.getInteger(KEY_ENERGY);
-    absorbDamageWithPower = tag.getBoolean(KEY_ABS_WITH_POWER);
+    energy = tag.getInteger(KEY_ENERGY);    
     maxInRF = tag.getInteger(KEY_MAX_IN);
     maxOutRF = tag.getInteger(KEY_MAX_OUT);
   }
@@ -194,33 +199,48 @@ public class EnergyUpgrade extends AbstractUpgrade {
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    int startIndex = list.size();
-    super.addDetailedEntries(itemstack, entityplayer, list, flag);
-    int endIndex = list.size();
-    int cap = capacity;
-    String capString = PowerDisplayUtil.formatPower(cap/10) + " " + PowerDisplayUtil.abrevation();
-    for(int i=startIndex;i<endIndex;i++) {
-      String str = (String)list.get(i);
+
+    List<String> upgradeStr = new ArrayList<String>();
+    upgradeStr.add(EnumChatFormatting.DARK_AQUA + Lang.localize(getUnlocalizedName() + ".name", false));
+    TooltipAddera.instance.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
+
+    String percDamage = (int)Math.round(getAbsorptionRatio(itemstack) * 100) + "";
+    String capString = PowerDisplayUtil.formatPower(capacity) + " " + PowerDisplayUtil.abrevation();
+    for (int i = 0; i < upgradeStr.size(); i++) {
+      String str = upgradeStr.get(i);
       str = str.replaceAll("\\$P", capString);
-      list.set(i, str);
+      str = str.replaceAll("\\$D", percDamage);
+      upgradeStr.set(i, str);
     }
+    list.addAll(upgradeStr);
+
   }
 
   @Override
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
     upgradeRoot.setInteger(KEY_CAPACITY, capacity);
     upgradeRoot.setInteger(KEY_ENERGY, energy);
-    upgradeRoot.setBoolean(KEY_ABS_WITH_POWER, absorbDamageWithPower);
+    
     upgradeRoot.setInteger(KEY_MAX_IN, maxInRF);
     upgradeRoot.setInteger(KEY_MAX_OUT, maxOutRF);
   }
 
-  public boolean isAbsorbDamageWithPower() {
-    return absorbDamageWithPower;
+  public boolean isAbsorbDamageWithPower(ItemStack stack) {
+    boolean res= RANDOM.nextDouble() < getAbsorptionRatio(stack);
+    return res;
   }
 
-  public void setAbsorbDamageWithPower(boolean val) {
-    absorbDamageWithPower = val;
+  private double getAbsorptionRatio(ItemStack stack) {
+    AbstractUpgrade upgrade = loadFromItem(stack);
+    int index = 0;
+    if (upgrade.unlocName.equals(EMPOWERED_TWO.unlocName)) {
+      index = 1;
+    } else if (upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
+      index = 2;
+    } else if (upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
+      index = 3;
+    }
+    return Config.darkSteelPowerDamgeAbsorptionRatios[index];
   }
 
   public int getEnergy() {
@@ -233,7 +253,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public int receiveEnergy(int maxRF, boolean simulate) {
 
-    int energyReceived = Math.min(capacity - energy, Math.min(this.maxInRF, maxRF));
+    int energyReceived = Math.min(capacity - energy, Math.min(maxInRF, maxRF));
     if(!simulate) {
       energy += energyReceived;
     }

@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -17,13 +18,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
 import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.conduit.IConduitBundle.FacadeRenderState;
+import crazypants.enderio.conduit.gas.GasConduitNetwork;
+import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
@@ -32,6 +36,8 @@ import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.me.IMEConduit;
+import crazypants.enderio.conduit.me.MEConduitNetwork;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
@@ -39,6 +45,7 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
 
@@ -59,6 +66,10 @@ public class ConduitUtil {
       return new LiquidConduitNetwork();
     } else if(IItemConduit.class.isAssignableFrom(type)) {
       return new ItemConduitNetwork();
+    } else if(IGasConduit.class.isAssignableFrom(type)) {
+      return new GasConduitNetwork();
+    } else if(IMEConduit.class.isAssignableFrom(type)) {
+      return new MEConduitNetwork();
     }
     FMLCommonHandler.instance().raiseException(new Exception("Could not determine network type for class " + type), "ConduitUtil.createNetworkForType", false);
     return null;
@@ -167,7 +178,7 @@ public class ConduitUtil {
   }
 
   public static boolean isFacadeHidden(IConduitBundle bundle, EntityPlayer player) {
-    return bundle.getFacadeId() != null && (isToolEquipped(player) || isConduitEquipped(player) || isProbeEquipped(player));
+    return bundle.getFacadeId() != null && ((ToolUtil.isToolEquipped(player) && (player == null || ToolUtil.getEquippedTool(player).shouldHideFacades(player.getCurrentEquippedItem(), player))) || isConduitEquipped(player) || isProbeEquipped(player));
   }
 
   public static ConduitDisplayMode getDisplayMode(EntityPlayer player) {
@@ -206,14 +217,18 @@ public class ConduitUtil {
     switch (mode) {
     case ALL:
       return true;
-    case FLUID:
-      return conduitType == ILiquidConduit.class;
-    case ITEM:
-      return conduitType == IItemConduit.class;
     case POWER:
       return conduitType == IPowerConduit.class;
     case REDSTONE:
       return conduitType == IRedstoneConduit.class || conduitType == IInsulatedRedstoneConduit.class;
+    case FLUID:
+      return conduitType == ILiquidConduit.class;
+    case ITEM:
+      return conduitType == IItemConduit.class;
+    case GAS:
+      return conduitType == IGasConduit.class;
+    case ME:
+      return conduitType == IMEConduit.class;
     default:
       break;
     }
@@ -230,21 +245,6 @@ public class ConduitUtil {
       return false;
     }
     return equipped.getItem() instanceof IConduitItem;
-  }
-
-  public static boolean isToolEquipped(EntityPlayer player) {
-    player = player == null ? EnderIO.proxy.getClientPlayer() : player;
-    if(player == null) {
-      return false;
-    }
-    ItemStack equipped = player.getCurrentEquippedItem();
-    if(equipped == null) {
-      return false;
-    }
-    if(MpsUtil.instance.isPowerFistEquiped(equipped)) {
-      return MpsUtil.instance.isOmniToolActive(equipped);
-    }
-    return equipped.getItem() instanceof IToolWrench;
   }
 
   public static boolean isProbeEquipped(EntityPlayer player) {
@@ -334,6 +334,8 @@ public class ConduitUtil {
       return true;
     } else if(mode == RedstoneControlMode.NEVER) {
       return false;
+    } else if(mode == null) {
+      return false;
     }
 
     int signalStrength = getInternalSignalForColor(bundle, col);
@@ -371,6 +373,30 @@ public class ConduitUtil {
       }
     }
     return false;
+  }
+  
+  public static void openConduitGui(World world, int x, int y, int z, EntityPlayer player) {    
+    TileEntity te = world.getTileEntity(x, y, z);
+    if(! (te instanceof TileConduitBundle) ) {
+      return;
+    }
+    IConduitBundle cb = (IConduitBundle) te;
+    Set<ForgeDirection> cons = new HashSet<ForgeDirection>();
+    boolean hasInsulated = false;
+    for (IConduit con : cb.getConduits()) {
+      cons.addAll(con.getExternalConnections());
+      if(con instanceof IInsulatedRedstoneConduit) {
+        hasInsulated = true;
+      }
+    }
+    if(cons.isEmpty() && !hasInsulated) {
+      return;
+    }
+    if(cons.size() == 1) {
+      player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(), world, x, y, z);
+      return;
+    }
+    player.openGui(EnderIO.instance, GuiHandler.GUI_ID_EXTERNAL_CONNECTION_SELECTOR, world, x, y, z);
   }
 
 }

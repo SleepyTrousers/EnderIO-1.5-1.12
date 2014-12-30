@@ -34,13 +34,13 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
       IIcon inTex = null;
       IIcon outTex = null;
       boolean render = true;
-      if(conduit.getConectionMode(dir) == ConnectionMode.INPUT) {
+      if(conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
         inTex = pc.getTextureForInputMode();
         inChannel = pc.getInputColor(dir);
-      } else if(conduit.getConectionMode(dir) == ConnectionMode.OUTPUT) {
+      } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
         outTex = pc.getTextureForOutputMode();
         outChannel = pc.getOutputColor(dir);
-      } else if(conduit.getConectionMode(dir) == ConnectionMode.IN_OUT) {
+      } else if(conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
         inTex = pc.getTextureForInOutMode(true);
         outTex = pc.getTextureForInOutMode(false);
         inChannel = pc.getInputColor(dir);

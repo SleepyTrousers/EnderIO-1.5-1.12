@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import crazypants.render.ConnectedTextureRenderer;
@@ -22,8 +23,22 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
 
   static int renderPass;
 
-  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer();
+  private ConnectedTextureRenderer connectedTextureRenderer = new ConnectedTextureRenderer() {
+    @Override
+    public boolean matchesMetadata(int meta1, int meta2) {
+      if (super.matchesMetadata(meta1, meta2)) {
+        return true;
+      }
+      
+      BlockFusedQuartz.Type type = BlockFusedQuartz.Type.values()[meta1];
+      return type.connectTo(meta2);
+    }
+  };
 
+  public FusedQuartzRenderer() {
+    connectedTextureRenderer.setMatchMeta(!Config.clearGlassConnectToFusedQuartz);
+  }
+  
   @Override
   public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
     renderer.setOverrideBlockTexture(EnderIO.blockFusedQuartz.getItemIcon(metadata));
@@ -75,7 +90,7 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
         if(tecb != null && tecb.getSourceBlock() != null) {
           texture = tecb.getSourceBlock().getIcon(face.ordinal(), tecb.getSourceBlockMetadata());
         }
-        RenderUtil.renderConnectedTextureFace(blockAccess, x, y, z, face, texture, forceAllEdges);
+        RenderUtil.renderConnectedTextureFace(blockAccess, EnderIO.blockFusedQuartz, x, y, z, face, texture, forceAllEdges);
       }
       return;
     }

@@ -77,7 +77,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
       drawSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false);
 
-      if(conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED) {
+      if(conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = EnderIO.blockConduitBundle.getConnectorIcon();
         List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;

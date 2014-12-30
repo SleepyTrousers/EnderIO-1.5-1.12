@@ -147,7 +147,7 @@ public class GuiEnderface extends GuiScreen {
     guiLeft = (width - gw) / 2;
     guiTop = (height - gh) / 2;
 
-    initTime = world.getTotalWorldTime();
+    initTime = EnderIO.proxy.getTickCount();
   }
 
   @Override
@@ -182,7 +182,7 @@ public class GuiEnderface extends GuiScreen {
     distance -= Mouse.getDWheel() * 0.01;
     distance = VecmathUtil.clamp(distance, 0.1, 20);
 
-    long elapsed = world.getTotalWorldTime() - initTime;
+    long elapsed = EnderIO.proxy.getTickCount() - initTime;
 
     if(Mouse.getEventButton() == 1 && !Mouse.getEventButtonState() && camera.isValid() && elapsed > 10) {
 
@@ -389,7 +389,7 @@ public class GuiEnderface extends GuiScreen {
   private float portalFade = 1;
 
   private void drawEffectOverlay(float partialTick) {
-    ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+    ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
     GL11.glMatrixMode(GL11.GL_PROJECTION);
     GL11.glLoadIdentity();
     GL11.glOrtho(0.0D, scaledresolution.getScaledWidth_double(), scaledresolution.getScaledHeight_double(), 0.0D, 1000.0D, 3000.0D);
@@ -518,10 +518,10 @@ public class GuiEnderface extends GuiScreen {
 
   private void drawEnderfaceBackground() {
 
-    int w = this.gw;
-    int h = this.gh;
-    int left = this.guiLeft;
-    int top = this.guiTop;
+    int w = gw;
+    int h = gh;
+    int left = guiLeft;
+    int top = guiTop;
     int cx = left + w / 2;
     int cy = top + h / 2;
 
@@ -565,7 +565,7 @@ public class GuiEnderface extends GuiScreen {
 
     private ViewableBlocks(int x, int y, int z, Block block) {
       super();
-      this.bc = new BlockCoord(x, y, z);
+      bc = new BlockCoord(x, y, z);
       this.block = block;
     }
 

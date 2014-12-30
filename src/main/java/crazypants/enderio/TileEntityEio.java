@@ -38,4 +38,14 @@ public abstract class TileEntityEio extends TileEntity {
   protected abstract void writeCustomNBT(NBTTagCompound root);
 
   protected abstract void readCustomNBT(NBTTagCompound root);
+  
+  protected void updateBlock() {
+    if(worldObj != null) {
+      worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+  }
+  
+  protected boolean isPoweredRedstone() {
+    return worldObj.getStrongestIndirectPower(xCoord, yCoord, zCoord) > 0;
+  }
 }

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,15 +12,12 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import buildcraft.api.power.PowerHandler;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.power.PowerHandler.Type;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.TileEntityEio;
@@ -29,22 +25,21 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.IInternalPowerReceptor;
+import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
-import crazypants.util.Util;
 import crazypants.vecmath.VecmathUtil;
 
-public class TileHyperCube extends TileEntityEio implements IInternalPowerReceptor, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
+public class TileHyperCube extends TileEntityEio implements IInternalPowerHandler, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
 
-  private static final float ENERGY_LOSS = (float) Config.transceiverEnergyLoss;
+  private static final double ENERGY_LOSS = Config.transceiverEnergyLoss;
 
-  private static final float ENERGY_UPKEEP = (float) Config.transceiverUpkeepCost;
+  private static final int ENERGY_UPKEEP = Config.transceiverUpkeepCostRF;
 
-  private static final float MILLIBUCKET_TRANSMISSION_COST = (float) Config.transceiverBucketTransmissionCost / 1000F;
+  private static final float MILLIBUCKET_TRANSMISSION_COST = Config.transceiverBucketTransmissionCostRF / 1000F;
 
   public static enum IoMode {
 
@@ -102,11 +97,10 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     ITEM
   }
 
-  private final BasicCapacitor internalCapacitor = new BasicCapacitor(Config.transceiverMaxIO, 25000);
+  private final BasicCapacitor internalCapacitor = new BasicCapacitor(Config.transceiverMaxIoRF, 25000);
 
-  PowerHandler powerHandler;
-
-  private float lastSyncPowerStored = 0;
+  private int lastSyncPowerStored = 0;
+  private int storedEnergyRF;
 
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
@@ -118,11 +112,9 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   private CompositeInventory localInventory = new CompositeInventory();
   private boolean inventoriesDirty = true;
 
-  private PowerHandler disabledPowerHandler;
-
   private Channel channel = null;
   private Channel registeredChannel = null;
-  private UUID owner;
+  private String owner;
 
   private boolean init = true;
 
@@ -138,9 +130,13 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   private boolean isConnected = false;
 
   public TileHyperCube() {
-    powerHandler = PowerHandlerUtil.createHandler(internalCapacitor, this, Type.STORAGE);
     redstoneControlMode = RedstoneControlMode.IGNORE;
     recieveBuffer = new ItemRecieveBuffer(this);
+  }
+
+  @Override
+  public BlockCoord getLocation() {
+    return new BlockCoord(this);
   }
 
   @Override
@@ -152,6 +148,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   public void setRedstoneControlMode(RedstoneControlMode redstoneControlMode) {
     this.redstoneControlMode = redstoneControlMode;
     redstoneStateDirty = true;
+    updateBlock();
   }
 
   public IoMode getModeForChannel(SubChannel channel) {
@@ -175,7 +172,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   }
 
   int getEnergyStoredScaled(int scale) {
-    return (int) VecmathUtil.clamp(Math.round(scale * (powerHandler.getEnergyStored() / powerHandler.getMaxEnergyStored())), 0, scale);
+    return (int) VecmathUtil.clamp(Math.round(scale * ((double)getEnergyStored() / getMaxEnergyStored())), 0, scale);
   }
 
   public void onBreakBlock() {
@@ -186,7 +183,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     HyperCubeRegister.instance.register(this);
   }
 
-  public void setOwner(UUID owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
   }
 
@@ -196,11 +193,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     }
     List<TileHyperCube> cons = HyperCubeRegister.instance.getCubesForChannel(channel);
     for (TileHyperCube cube : cons) {
-      if(cube != this && cube.powerHandler.getEnergyStored() <= 0) {
+      if(cube != this && cube.getEnergyStored() <= 0) {
         return false;
       }
     }
-    return cons != null && cons.size() > 1 && powerHandler.getEnergyStored() > 0;
+    return cons != null && cons.size() > 1 && getEnergyStored() > 0;
   }
 
   private void sendEnergyToOtherNodes() {
@@ -213,14 +210,14 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     if(canSendPower()) {
 
       for (TileHyperCube cube : cubes) {
-        double stored = powerHandler.getEnergyStored();
+        int stored = getEnergyStored();
         if(stored > 0 && cube != null && cube != this && cube.canRecievePower()) {
-          double curPower = cube.powerHandler.getEnergyStored();
-          double requires = cube.powerHandler.getMaxEnergyStored() - curPower;
-          double transfer = Math.min(requires, stored);
-          transfer = Math.min(transfer, Config.transceiverMaxIO);
-          cube.powerHandler.setEnergy(curPower + ((1 - ENERGY_LOSS) * transfer));
-          powerHandler.setEnergy(powerHandler.getEnergyStored() - transfer);
+          int curPower = cube.getEnergyStored();
+          int requires = cube.getMaxEnergyStored() - curPower;
+          int transfer = Math.min(requires, stored);
+          transfer = Math.min(transfer, Config.transceiverMaxIoRF);
+          cube.setEnergyStored(curPower + (int)Math.round((1 - ENERGY_LOSS) * transfer));
+          setEnergyStored(getEnergyStored() - transfer);
         }
       }
 
@@ -255,23 +252,15 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       return;
     } // else is server, do all logic only on the server
 
-    // do the required tick to keep BC API happy
-    double stored = powerHandler.getEnergyStored();
-    powerHandler.update();
-    // do a dummy recieve of power to force the updating of what is an isn't a
-    // power source as we rely on this
-    // to make sure we dont both send and recieve to the same source
-    powerHandler.getPowerReceiver().receiveEnergy(Type.STORAGE, 1, null);
-    powerHandler.setEnergy(stored);
+    
 
     // Pay upkeep cost
-    stored -= ENERGY_UPKEEP;
+    storedEnergyRF -= ENERGY_UPKEEP;
     // Pay fluid transmission cost
-    stored -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
+    storedEnergyRF -= (MILLIBUCKET_TRANSMISSION_COST * milliBucketsTransfered);
 
     // update power status
-    stored = Math.max(stored, 0);
-    powerHandler.setEnergy(stored);
+    storedEnergyRF = Math.max(storedEnergyRF, 0);    
 
     milliBucketsTransfered = 0;
 
@@ -289,7 +278,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
     }
 
-    if(powerHandler.getEnergyStored() > 0) {
+    if(storedEnergyRF > 0) {
       transmitEnergy();
       sendEnergyToOtherNodes();
     }
@@ -318,15 +307,11 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     }
 
     requiresClientSync |= prevRedCheck != redstoneCheckPassed;
-
-    float storedEnergy = (float) powerHandler.getEnergyStored();
-    // Update if our power has changed by more than 0.5%
-    boolean powerChanged = lastSyncPowerStored != storedEnergy && worldObj.getTotalWorldTime() % 21 == 0;
+    
+    boolean powerChanged = lastSyncPowerStored != storedEnergyRF && worldObj.getTotalWorldTime() % 21 == 0;
     if(powerChanged) {
-      lastSyncPowerStored = storedEnergy;
-      if(!canSendPower()) {        
-        EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
-      }
+      lastSyncPowerStored = storedEnergyRF;        
+      EnderIO.packetPipeline.sendToAllAround(new PacketStoredPower(this), this);
     }
 
     if(requiresClientSync) {
@@ -369,12 +354,12 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   private boolean transmitEnergy() {
 
-    if(!getModeForChannel(SubChannel.POWER).isRecieveEnabled() || !redstoneCheckPassed || powerHandler.getEnergyStored() <= 0) {
+    if(!getModeForChannel(SubChannel.POWER).isRecieveEnabled() || !redstoneCheckPassed || getEnergyStored() <= 0) {
       return false;
     }
 
-    float canTransmit = (float) Math.min(powerHandler.getEnergyStored(), internalCapacitor.getMaxEnergyExtracted());
-    float transmitted = 0;
+    int canTransmit = Math.min(getEnergyStored(), internalCapacitor.getMaxEnergyExtracted());
+    int  transmitted = 0;
 
     updatePowersReceptors();
 
@@ -401,38 +386,10 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       }
       appliedCount++;
     }
-    powerHandler.setEnergy(powerHandler.getEnergyStored() - transmitted);
+    setEnergyStored(getEnergyStored() - transmitted);
 
     return transmitted > 0;
 
-  }
-
-  @Override
-  public PowerReceiver getPowerReceiver(ForgeDirection side) {
-    return getPowerHandler().getPowerReceiver();
-  }
-
-  @Override
-  public World getWorld() {
-    return worldObj;
-  }
-
-  public PowerHandler getPowerHandler() {
-    if(getModeForChannel(SubChannel.POWER) == IoMode.RECIEVE) {
-      return getDisabledPowerHandler();
-    }
-    return powerHandler;
-  }
-
-  public PowerHandler getInternalPowerHandler() {
-    return powerHandler;
-  }
-
-  private PowerHandler getDisabledPowerHandler() {
-    if(disabledPowerHandler == null) {
-      disabledPowerHandler = PowerHandlerUtil.createHandler(new BasicCapacitor(0, 0), this, Type.STORAGE);
-    }
-    return disabledPowerHandler;
   }
 
   // RF Power
@@ -440,7 +397,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
   @Override
   public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
     if(getModeForChannel(SubChannel.POWER) != IoMode.RECIEVE) {
-      return PowerHandlerUtil.recieveRedstoneFlux(from, powerHandler, maxReceive, simulate);
+      return PowerHandlerUtil.recieveInternal(this, maxReceive, from, simulate);
     }
     return 0;
   }
@@ -457,16 +414,35 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   @Override
   public int getEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getEnergyStored() * 10);
+    return storedEnergyRF;
   }
 
   @Override
   public int getMaxEnergyStored(ForgeDirection from) {
-    return (int) (powerHandler.getMaxEnergyStored() * 10);
+    return getMaxEnergyStored();
   }
 
   @Override
-  public void doWork(PowerHandler workProvider) {
+  public int getMaxEnergyRecieved(ForgeDirection dir) { 
+    if(getModeForChannel(SubChannel.POWER) == IoMode.RECIEVE) {
+      return 0;  
+    }
+    return internalCapacitor.getMaxEnergyReceived();
+  }
+
+  @Override
+  public int getEnergyStored() {
+    return storedEnergyRF;
+  }
+
+  @Override
+  public int getMaxEnergyStored() {
+    return internalCapacitor.getMaxEnergyStored();
+  }
+
+  @Override
+  public void setEnergyStored(int stored) {
+    storedEnergyRF = MathHelper.clamp_int(stored, 0, getMaxEnergyStored());    
   }
 
   @Override
@@ -837,16 +813,25 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
-    powerHandler.setEnergy(nbtRoot.getFloat("storedEnergy"));
+    
+    int energy; 
+    if(nbtRoot.hasKey("storedEnergy")) {
+      energy = (int)(nbtRoot.getFloat("storedEnergy") * 10);
+    } else {
+      energy = nbtRoot.getInteger("storedEnergyRF");
+    }
+    setEnergyStored(energy);
+    
+    
     String channelName = nbtRoot.getString("channelName");
     String channelUser = nbtRoot.getString("channelUser");
     if(channelName != null && !channelName.isEmpty()) {
-      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : UUID.fromString(channelUser));
+      channel = new Channel(channelName, channelUser == null || channelUser.isEmpty() ? null : channelUser);
     } else {
       channel = null;
     }
 
-    owner = UUID.fromString(nbtRoot.getString("owner"));
+    owner = nbtRoot.getString("owner");
 
     for (SubChannel subChannel : SubChannel.values()) {
       String key = "subChannel" + subChannel.ordinal();
@@ -866,7 +851,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
 
   @Override
   public void writeCustomNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setFloat("storedEnergy", (float) powerHandler.getEnergyStored());
+    nbtRoot.setInteger("storedEnergyRF", storedEnergyRF);
     if(channel != null) {
       nbtRoot.setString("channelName", channel.name);
       if(channel.user != null) {
@@ -892,7 +877,7 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
     ForgeDirection fromDir;
 
     private Receptor(IPowerInterface rec, ForgeDirection fromDir) {
-      this.receptor = rec;
+      receptor = rec;
       this.fromDir = fromDir;
     }
   }
@@ -909,7 +894,10 @@ public class TileHyperCube extends TileEntityEio implements IInternalPowerRecept
       this.dir = dir;
       dirOp = dir.getOpposite();
     }
-
   }
 
+  @Override
+  public boolean displayPower() {
+    return true;
+  }
 }

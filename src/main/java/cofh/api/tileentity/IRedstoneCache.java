@@ -10,8 +10,8 @@ package cofh.api.tileentity;
  */
 public interface IRedstoneCache {
 
-	public void setPowered(boolean isPowered);
+	void setPowered(boolean isPowered);
 
-	public boolean isPowered();
+	boolean isPowered();
 
 }

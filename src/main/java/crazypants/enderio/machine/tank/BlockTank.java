@@ -99,7 +99,10 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       if(filled == null) { //this shouldn't be necessary but it appears to be a bug as the above method doesnt work
         FluidContainerData[] datas = FluidContainerRegistry.getRegisteredFluidContainerData();
         for (FluidContainerData data : datas) {
-          if(data.fluid.getFluid().getName().equals(available.getFluid().getName()) && data.emptyContainer.isItemEqual(item)) {
+          if(data != null && data.fluid != null && data.fluid.getFluid() != null && 
+              data.fluid.getFluid().getName() != null && data.emptyContainer != null &&               
+              data.fluid.getFluid().getName().equals(available.getFluid().getName()) && 
+              data.emptyContainer.isItemEqual(item)) {
             res = data.filledContainer.copy();
             filled = FluidContainerRegistry.getFluidForFilledItem(res);
           }
@@ -153,18 +156,6 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     }
     return new GuiTank(player.inventory, (TileTank) te);
   }
-
-  //Causes crashes in 1.7 on some machines
-  //@Override
-  //@SideOnly(Side.CLIENT)
-  //public int getRenderBlockPass() {
-  //  return 1;
-  //}
-  //
-  //@Override
-  //public boolean canRenderInPass(int pass) {
-  //  return pass == 1;
-  //}
 
   @Override
   public boolean isOpaqueCube() {
@@ -240,6 +231,20 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       return super.getExplosionResistance(par1Entity);
     }
   }
+  
+  @Override
+  public boolean hasComparatorInputOverride() {
+    return true;
+  }
+  
+  @Override
+  public int getComparatorInputOverride(World w, int x, int y, int z, int side) {
+    TileEntity te = w.getTileEntity(x, y, z);
+    if (te instanceof TileTank) {
+      return ((TileTank) te).getComparatorOutput();
+    }
+    return 0;
+  }
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -268,4 +273,16 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     return stack.getUnlocalizedName();
   }
 
+  @Override
+  public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+    TileEntity te = world.getTileEntity(x, y, z);
+    if (te instanceof TileTank) {
+      TileTank tank = (TileTank) te;
+      FluidStack stored = tank.tank.getFluid();
+      String fluid = stored == null ? Lang.localize("tooltip.none") : stored.getFluid().getLocalizedName(stored);
+      int amount = stored == null ? 0 : stored.amount;
+      
+      tooltip.add(String.format("%s%s : %s (%d %s)", EnumChatFormatting.WHITE, Lang.localize("tooltip.fluidStored"), fluid, amount, Lang.localize("fluid.millibucket.abr")));
+    }
+  }
 }

@@ -17,6 +17,10 @@ public class NutrientTank extends FluidTank {
     }
     return super.fill(resource, doFill);
   }
+
+  public float getFilledRatio() {
+    return (float) getFluidAmount() / getCapacity();
+  }
   
   
 

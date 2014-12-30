@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.TileEntityEio;
 
-public class TileEntityPaintedBlock extends TileEntityEio {
+public class TileEntityPaintedBlock extends TileEntityEio implements IPaintableTileEntity {
 
   private static final String KEY_SOURCE_BLOCK_ID = "sourceBlock";
   private static final String KEY_SOURCE_BLOCK_META = "sourceBlockMeta";
@@ -30,18 +30,22 @@ public class TileEntityPaintedBlock extends TileEntityEio {
     nbtRoot.setInteger(KEY_SOURCE_BLOCK_META, sourceBlockMetadata);
   }
 
+  @Override
   public Block getSourceBlock() {
     return sourceBlock;
   }
 
+  @Override
   public void setSourceBlock(Block sourceBlock) {
     this.sourceBlock = sourceBlock;
   }
 
+  @Override
   public int getSourceBlockMetadata() {
     return sourceBlockMetadata;
   }
 
+  @Override
   public void setSourceBlockMetadata(int sourceBlockMetadata) {
     this.sourceBlockMetadata = sourceBlockMetadata;
   }

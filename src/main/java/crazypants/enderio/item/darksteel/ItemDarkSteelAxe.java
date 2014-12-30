@@ -9,13 +9,18 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockNewLeaf;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -33,6 +38,9 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.machine.farm.farmers.HarvestResult;
+import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
+import crazypants.render.BoundingBox;
 import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
@@ -109,77 +117,61 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @SubscribeEvent
-  public void onBreakEvent(BlockEvent.BreakEvent evt) {
-    
+  public void onBreakEvent(BlockEvent.BreakEvent evt) {    
     if(evt.getPlayer().isSneaking() && isEquipped(evt.getPlayer()) && isLog(evt.block, evt.blockMetadata)) {
       int powerStored = getStoredPower(evt.getPlayer());
     
-      int maxBlocks = 50;
-      Set<BlockCoord> toBreak = new HashSet<BlockCoord>();
+      TreeHarvestUtil harvester = new TreeHarvestUtil();
+      HarvestResult res = new HarvestResult();
       BlockCoord bc = new BlockCoord(evt.x, evt.y, evt.z);
-      getConnectedLogs(evt.world, bc, evt.block, evt.blockMetadata, toBreak, maxBlocks);    
-      toBreak.remove(bc); //handled automatically
+      harvester.harvest(evt.getPlayer().worldObj, bc, res);
       
-      List<BlockCoord> sortedTargets = new ArrayList<BlockCoord>(toBreak);
+      List<BlockCoord> sortedTargets = new ArrayList<BlockCoord>(res.getHarvestedBlocks());
       harvestComparator.refPoint = bc;
       Collections.sort(sortedTargets, harvestComparator);
             
-      maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;      
-      for(int i=0;i<maxBlocks && i < sortedTargets.size();i++) {
-        doMultiHarvest(evt.getPlayer(), evt.getPlayer().worldObj, sortedTargets.get(i), evt.block, evt.blockMetadata % 4);
+      int maxBlocks = powerStored / Config.darkSteelAxePowerUsePerDamagePointMultiHarvest;  
+      int numUsedPower = 0;
+      for(int i=0;numUsedPower<maxBlocks && i < sortedTargets.size();i++) {        
+        if(doMultiHarvest(evt.getPlayer(), evt.getPlayer().worldObj, sortedTargets.get(i), evt.block, evt.blockMetadata % 4)) {
+          numUsedPower++;
+        }
       }
 
     }
   }
 
-  private void doMultiHarvest(EntityPlayer player, World worldObj, BlockCoord bc, Block block, int meta) {  
+  private boolean doMultiHarvest(EntityPlayer player, World worldObj, BlockCoord bc, Block refBlock, int refMeta) {  
+    
+    Block block = worldObj.getBlock(bc.x, bc.y, bc.z);
+    int meta = worldObj.getBlockMetadata(bc.x, bc.y, bc.z);
     
     ArrayList<ItemStack> itemDrops = block.getDrops(worldObj, bc.x, bc.y, bc.z, meta, 0);
     worldObj.setBlockToAir(bc.x, bc.y, bc.z);
-    boolean removed = false;
+    boolean usedPower = false;
     if(itemDrops != null) {
       for (ItemStack stack : itemDrops) {                
-        worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
-        applyDamage(player, player.getCurrentEquippedItem(), 1, true);
+        worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));                
+        if(TreeHarvestUtil.canDropApples(block, meta)) {
+          if(worldObj.rand.nextInt(200) == 0) {            
+            worldObj.spawnEntityInWorld(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+          }
+        } else if(block == refBlock) { //other wise leaves
+          applyDamage(player, player.getCurrentEquippedItem(), 1, true);
+          usedPower = true;
+        }
       }
     }
-  }
-
-  private void getConnectedLogs(World world, BlockCoord bc, Block block, int blockMetadata, Set<BlockCoord> results, int maxBlocks) {
-    if(results.size() >= maxBlocks || results.contains(bc)) {
-      return;
-    }
-    Block targetBlock = world.getBlock(bc.x, bc.y, bc.z);
-    int targetMeta = world.getBlockMetadata(bc.x, bc.y, bc.z) % 4;
-    boolean isValidTarget = targetBlock == block && targetMeta == blockMetadata;
-    
-    if(isValidTarget) {
-      results.add(bc);
-      getConnectedNeighbours(world, bc, blockMetadata, results, maxBlocks, targetBlock);
-      
-      bc = bc.getLocation(ForgeDirection.UP);
-      getConnectedLogs(world, bc, targetBlock, blockMetadata, results, maxBlocks);      
-      getConnectedNeighbours(world, bc, blockMetadata, results, maxBlocks, targetBlock);      
-    } 
-    
-  }
-
-  private void getConnectedNeighbours(World world, BlockCoord bc, int blockMetadata, Set<BlockCoord> results, int maxBlocks, Block targetBlock) {
-    for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-      if(dir.offsetY == 0) { //logs next to us
-        getConnectedLogs(world, bc.getLocation(dir), targetBlock, blockMetadata, results, maxBlocks);
-      }
-    }
-    for(Point p : DIAGINALS) {
-      BlockCoord diagBc = new BlockCoord(bc.x + p.x, bc.y, bc.z + p.y);
-      getConnectedLogs(world, diagBc, targetBlock, blockMetadata, results, maxBlocks);
-    }
+    return usedPower;
   }
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
     if(evt.entityPlayer.isSneaking() && isEquippedAndPowered(evt.entityPlayer, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest) && isLog(evt.block, evt.metadata)) {
       evt.newSpeed = evt.originalSpeed / Config.darkSteelAxeSpeedPenaltyMultiHarvest;
+    }
+    if(isEquipped(evt.entityPlayer) && evt.block.getMaterial() == Material.leaves) {
+      evt.newSpeed = 6;
     }
   }
 
@@ -198,32 +190,25 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
   }
 
   @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10) {
-    int slot = player.inventory.currentItem + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-      return player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, par3World, par4, par5, par6, par7, par8,
-          par9, par10);
-    }
-
-    return super.onItemUse(item, player, par3World, par4, par5, par6, par7, par8, par9, par10);
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
   }
 
-  private void applyDamage(EntityLivingBase entity, ItemStack item, int damage, boolean isMultiharvest) {
+  private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage, boolean isMultiharvest) {
 
-    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(item);
-    if(eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    EnergyUpgrade eu = EnergyUpgrade.loadFromItem(stack);
+    if(eu != null && eu.isAbsorbDamageWithPower(stack) && eu.getEnergy() > 0) {
       int powerUse = isMultiharvest ? Config.darkSteelAxePowerUsePerDamagePointMultiHarvest : Config.darkSteelAxePowerUsePerDamagePoint;
       eu.extractEnergy(damage * powerUse, false);
     } else {
-      damage = item.getItemDamage() + damage;
+      damage = stack.getItemDamage() + damage;
       if(damage >= getMaxDamage()) {
-        item.stackSize = 0;
+        stack.stackSize = 0;
       }
-      item.setItemDamage(damage);
+      stack.setItemDamage(damage);
     }
-    if(eu != null) {
-      eu.setAbsorbDamageWithPower(!eu.isAbsorbDamageWithPower());
-      eu.writeToItem(item);
+    if(eu != null) {      
+      eu.writeToItem(stack);
     }
   }
 
@@ -290,7 +275,9 @@ public class ItemDarkSteelAxe extends ItemAxe implements IEnergyContainerItem, I
 
   @Override
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-    list.add(ItemUtil.getDurabilityString(itemstack));
+    if(!Config.addDurabilityTootip) {
+      list.add(ItemUtil.getDurabilityString(itemstack));
+    }
     String str = EnergyUpgrade.getStoredEnergyString(itemstack);
     if(str != null) {
       list.add(str);

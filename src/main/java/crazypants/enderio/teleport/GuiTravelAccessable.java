@@ -5,15 +5,18 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.gui.CheckBoxEIO;
+import crazypants.enderio.gui.IGuiOverlay;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.TileTravelAnchor.AccessMode;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
+import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.gui.GuiContainerBase;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -29,6 +32,8 @@ public class GuiTravelAccessable extends GuiContainerBase {
   private CheckBoxEIO publicCB;
   private CheckBoxEIO privateCB;
   private CheckBoxEIO protectedCB;
+
+  private GuiTextField tf;
 
   private String publicStr;
   private String privateStr;
@@ -51,6 +56,8 @@ public class GuiTravelAccessable extends GuiContainerBase {
     protectedStr = Lang.localize("gui.travelAccessable.protected");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+
+    tf = new GuiTextField(fr, 7, 12, 90, 16);
 
     col1x = 88;
     col0x = (col1x - fr.getStringWidth(protectedStr) / 2) / 2;
@@ -98,6 +105,43 @@ public class GuiTravelAccessable extends GuiContainerBase {
     publicCB.onGuiInit();
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
+
+    tf.xPosition = getGuiLeft() + 30;
+    tf.yPosition = getGuiTop() + 10;
+    tf.setCanLoseFocus(false);
+    tf.setMaxStringLength(32);
+    tf.setFocused(true);
+    String txt = te.getLabel();
+    if(txt != null && txt.length() > 0) {
+      tf.setText(txt);
+    }
+
+  }
+
+  @Override
+  public void keyTyped(char par1, int par2) {
+    if(par2 == 1) {
+      for (IGuiOverlay overlay : overlays) {
+        if(overlay.isVisible()) {
+          overlay.setVisible(false);
+          return;
+        }
+      }
+      this.mc.thePlayer.closeScreen();
+    }
+    tf.textboxKeyTyped(par1, par2);
+  }
+
+  @Override
+  public void updateScreen() {
+    super.updateScreen();
+    tf.updateCursorCounter();
+  }
+
+  @Override
+  public void mouseClicked(int x, int y, int par3) {
+    super.mouseClicked(x, y, par3);
+    tf.mouseClicked(x, y, par3);
   }
 
   @Override
@@ -123,6 +167,40 @@ public class GuiTravelAccessable extends GuiContainerBase {
     x = sx + col2x - fontRenderer.getStringWidth(publicStr) / 2;
     fontRenderer.drawStringWithShadow(publicStr, x, y, col);
 
+    tf.drawTextBox();
+    checkLabelForChange();
+
+  }
+
+  private void checkLabelForChange() {
+    String newTxt = tf.getText();
+    if(newTxt != null && newTxt.length() == 0) {
+      newTxt = null;
+    }
+
+    String curText = te.getLabel();
+    if(curText != null && curText.length() == 0) {
+      curText = null;
+    }
+
+    boolean changed = false;
+    if(newTxt == null) {
+      if(curText == null) {
+        changed = false;
+      } else {
+        changed = true;
+      }
+    } else {
+      changed = !newTxt.equals(curText);
+    }
+    if(!changed) {
+      return;
+    }
+    te.setLabel(newTxt);
+    BlockCoord bc = te.getLocation();
+    PacketLabel p = new PacketLabel(bc.x, bc.y, bc.z, te.getLabel());
+    PacketHandler.INSTANCE.sendToServer(p);
+
   }
 
   @Override
@@ -135,6 +213,7 @@ public class GuiTravelAccessable extends GuiContainerBase {
       RenderUtil.bindTexture("enderio:textures/gui/travelAccessable.png");
       GL11.glColor4f(1, 1, 1, 0.75f);
       GL11.glEnable(GL11.GL_BLEND);
+      GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
       GL11.glDisable(GL11.GL_DEPTH_TEST);
       drawTexturedModalRect(43, 72, 5, 35, 90, 18);
       GL11.glDisable(GL11.GL_BLEND);

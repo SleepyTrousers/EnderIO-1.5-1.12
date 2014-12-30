@@ -8,12 +8,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.gui.TooltipAddera;
 
 public class ItemBrokenSpawner extends Item {
   
@@ -22,7 +24,9 @@ public class ItemBrokenSpawner extends Item {
     "Zombie",
     "Spider",
     "CaveSpider",
-    "Blaze"
+      "Blaze",
+      "Enderman",
+      "Chicken"
   };
   
   public static String getMobTypeFromStack(ItemStack stack) {
@@ -55,14 +59,13 @@ public class ItemBrokenSpawner extends Item {
     setUnlocalizedName(ModObject.itemBrokenSpawner.unlocalisedName);
     setHasSubtypes(true);
     setMaxDamage(0);
-    setMaxStackSize(1);    
+    setMaxStackSize(64);
   }
 
   @Override
   public boolean isDamageable() {  
     return false;
   }
-
 
   protected void init() {
     GameRegistry.registerItem(this, ModObject.itemBrokenSpawner.unlocalisedName);
@@ -88,7 +91,12 @@ public class ItemBrokenSpawner extends Item {
     if(par1ItemStack != null && par1ItemStack.stackTagCompound != null) {
       String mobName = getMobTypeFromStack(par1ItemStack);
       if(mobName != null) {
-        par3List.add(mobName);
+        par3List.add(StatCollector.translateToLocal("entity." + mobName + ".name"));
+      }
+      if(!TooltipAddera.instance.showAdvancedTooltips()) {
+        TooltipAddera.instance.addShowDetailsTooltip(par3List);
+      } else {
+        TooltipAddera.instance.addDetailedTooltipFromResources(par3List, par1ItemStack);
       }
     }
 

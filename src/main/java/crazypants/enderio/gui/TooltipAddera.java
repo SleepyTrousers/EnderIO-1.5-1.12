@@ -1,9 +1,11 @@
 package crazypants.enderio.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
@@ -18,15 +20,19 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
 
-import buildcraft.api.fuels.IronEngineFuel;
-import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.fluid.FluidFuelRegister;
+import crazypants.enderio.fluid.IFluidCoolant;
+import crazypants.enderio.fluid.IFluidFuel;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.IGrindingMultiplier;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -34,7 +40,6 @@ import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
 public class TooltipAddera {
-
 
   public static TooltipAddera instance = new TooltipAddera();
 
@@ -56,28 +61,28 @@ public class TooltipAddera {
         evt.toolTip.add("Burn time " + time);
       }
     }
-    
+
     if(Config.addDurabilityTootip) {
       addDurabilityTooltip(evt.toolTip, evt.itemStack);
     }
 
     if(evt.itemStack.getItem() instanceof IAdvancedTooltipProvider) {
-      IAdvancedTooltipProvider ttp = (IAdvancedTooltipProvider)evt.itemStack.getItem();
+      IAdvancedTooltipProvider ttp = (IAdvancedTooltipProvider) evt.itemStack.getItem();
       addInformation(ttp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
       return;
     } else if(evt.itemStack.getItem() instanceof IResourceTooltipProvider) {
-      addInformation((IResourceTooltipProvider)evt.itemStack.getItem(), evt);
+      addInformation((IResourceTooltipProvider) evt.itemStack.getItem(), evt);
       return;
     }
 
     Block blk = Block.getBlockFromItem(evt.itemStack.getItem());
     if(blk instanceof IAdvancedTooltipProvider) {
-      addInformation((IAdvancedTooltipProvider)blk, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
+      addInformation((IAdvancedTooltipProvider) blk, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
       return;
     } else if(blk instanceof IResourceTooltipProvider) {
-      addInformation((IResourceTooltipProvider)blk, evt);
+      addInformation((IResourceTooltipProvider) blk, evt);
       return;
-    } 
+    }
 
     if(Config.addFuelTooltipsToAllFluidContainers) {
       addTooltipForFluid(evt.toolTip, evt.itemStack);
@@ -88,6 +93,35 @@ public class TooltipAddera {
       btp.ball = gb;
       TooltipAddera.instance.addInformation(btp, evt.itemStack, evt.entityPlayer, evt.toolTip, false);
     }
+
+    if(Config.addRegisterdNameTooltip) {
+      UniqueIdentifier uid = null;
+      Block block = Block.getBlockFromItem(evt.itemStack.getItem());
+      if(block != null && block != Blocks.air) {
+        uid = GameRegistry.findUniqueIdentifierFor(block);
+      } else {
+        uid = GameRegistry.findUniqueIdentifierFor(evt.itemStack.getItem());
+      }
+      if(uid != null) {
+        evt.toolTip.add(EnumChatFormatting.AQUA + "UID: " + uid.toString() + " Meta: " + evt.itemStack.getItemDamage());
+      }
+    }
+
+    if(Config.addOreDictionaryTooltips) {
+      int[] ids = OreDictionary.getOreIDs(evt.itemStack);
+      if(ids != null && ids.length > 0) {
+        if(ids.length == 1) {
+          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary: " + OreDictionary.getOreName(ids[0]));
+        } else {
+          evt.toolTip.add(EnumChatFormatting.AQUA + "Ore Dictionary:");
+          for (int id : ids) {
+            String name = OreDictionary.getOreName(id);
+            evt.toolTip.add(EnumChatFormatting.AQUA + "  " + name);
+          }
+        }
+      }
+
+    }
   }
 
   public static void addDurabilityTooltip(List<String> toolTip, ItemStack itemStack) {
@@ -95,10 +129,10 @@ public class TooltipAddera {
       return;
     }
     Item item = itemStack.getItem();
-    if(item instanceof ItemTool || item instanceof ItemArmor || 
+    if(item instanceof ItemTool || item instanceof ItemArmor ||
         item instanceof ItemSword || item instanceof ItemHoe || item instanceof ItemBow) {
       toolTip.add(ItemUtil.getDurabilityString(itemStack));
-    }    
+    }
   }
 
   public static void addTooltipForFluid(List list, ItemStack stk) {
@@ -111,26 +145,49 @@ public class TooltipAddera {
 
   public static void addTooltipForFluid(List list, Fluid fluid) {
     if(fluid != null) {
-      Fuel fuel = IronEngineFuel.getFuelForFluid(fluid);
+      IFluidFuel fuel = FluidFuelRegister.instance.getFuel(fluid);
       if(fuel != null) {
         if(showAdvancedTooltips()) {
           list.add(Lang.localize("fuel.tooltip.heading"));
-          list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.powerPerCycle));
-          list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " + Lang.localize("fuel.tooltip.burnTime"));
+          list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.getPowerPerCycle()));
+          list.add(EnumChatFormatting.ITALIC + " " + fuel.getTotalBurningTime() + " " + Lang.localize("fuel.tooltip.burnTime"));
         } else {
           addShowDetailsTooltip(list);
         }
+      } else {
+        IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
+        if(coolant != null) {
+          if(showAdvancedTooltips()) {
+            list.add(Lang.localize("coolant.tooltip.heading"));
+            list.add(EnumChatFormatting.ITALIC + " "
+                + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000) + " "
+                + Lang.localize("coolant.tooltip.degreesPerBucket")
+                );
+          } else {
+            addShowDetailsTooltip(list);
+          }
+        }
       }
+
     }
   }
 
   public static void addInformation(IResourceTooltipProvider item, ItemTooltipEvent evt) {
-    if(showAdvancedTooltips()) {
-      addDetailedTooltipFromResources(evt.toolTip, item.getUnlocalizedNameForTooltip(evt.itemStack));
-    } else {
-      addShowDetailsTooltip(evt.toolTip);
-    }
+    addInformation(item, evt.itemStack, evt.entityPlayer, evt.toolTip);
+  }
 
+  public static void addInformation(IResourceTooltipProvider tt, ItemStack itemstack, EntityPlayer entityplayer, List list) {
+    String name = tt.getUnlocalizedNameForTooltip(itemstack);
+    if(showAdvancedTooltips()) {
+      addCommonTooltipFromResources(list, name);
+      addDetailedTooltipFromResources(list, name);
+    } else {
+      addBasicTooltipFromResources(list, name);
+      addCommonTooltipFromResources(list, name);
+      if(hasDetailedTooltip(tt, itemstack)) {
+        addShowDetailsTooltip(list);
+      }
+    }
   }
 
   public static void addInformation(IAdvancedTooltipProvider tt, ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
@@ -139,8 +196,25 @@ public class TooltipAddera {
       tt.addDetailedEntries(itemstack, entityplayer, list, flag);
     } else {
       tt.addBasicEntries(itemstack, entityplayer, list, flag);
-      addShowDetailsTooltip(list);
+      if(hasDetailedTooltip(tt, itemstack, entityplayer, flag)) {
+        addShowDetailsTooltip(list);
+      }
     }
+  }
+
+  private static final List<String> throwaway = new ArrayList<String>();
+
+  private static boolean hasDetailedTooltip(IResourceTooltipProvider tt, ItemStack stack) {
+    throwaway.clear();
+    String name = tt.getUnlocalizedNameForTooltip(stack);
+    addDetailedTooltipFromResources(throwaway, name);
+    return !throwaway.isEmpty();
+  }
+
+  private static boolean hasDetailedTooltip(IAdvancedTooltipProvider tt, ItemStack stack, EntityPlayer player, boolean flag) {
+    throwaway.clear();
+    tt.addDetailedEntries(stack, player, throwaway, flag);
+    return !throwaway.isEmpty();
   }
 
   public static void addShowDetailsTooltip(List list) {
@@ -167,7 +241,7 @@ public class TooltipAddera {
     String keyBase = unlocalizedName + tooltipTag;
     boolean done = false;
     int line = 1;
-    while(!done) {
+    while (!done) {
       String key = keyBase + line;
       String val = Lang.localize(key, false);
       if(val == null || val.trim().length() < 0 || val.equals(key) || line > 12) {
@@ -179,15 +253,15 @@ public class TooltipAddera {
     }
   }
 
-  public static void addDetailedTooltipFromResources(List list,ItemStack itemstack) {
+  public static void addDetailedTooltipFromResources(List list, ItemStack itemstack) {
     if(itemstack.getItem() == null) {
       return;
     }
     String unlock = null;
-//    Block blk = Block.getBlockFromItem(itemstack.getItem());
-//    if(blk != null && blk != Blocks.air) {
-//      unlock = blk.getUnlocalizedName();
-//    }
+    //    Block blk = Block.getBlockFromItem(itemstack.getItem());
+    //    if(blk != null && blk != Blocks.air) {
+    //      unlock = blk.getUnlocalizedName();
+    //    }
     if(unlock == null) {
       unlock = itemstack.getItem().getUnlocalizedName();
     }
@@ -227,6 +301,5 @@ public class TooltipAddera {
       return " " + per + "%";
     }
   }
-
 
 }

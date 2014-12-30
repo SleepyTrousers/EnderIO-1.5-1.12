@@ -32,8 +32,17 @@ public class OreDictionaryRecipeInput extends RecipeInput {
     if(test == null || oreId < 0) {
       return false;
     }
-    try { //work around for issue #591
-      return OreDictionary.getOreID(test) == oreId;
+    try { 
+      int[] ids = OreDictionary.getOreIDs(test);
+      if(ids == null) {
+        return false;
+      }
+      for(int id : ids) {
+        if(id == oreId) {
+          return true;
+        }
+      }
+      return false;
     } catch (Exception e) {
       return false;
     }

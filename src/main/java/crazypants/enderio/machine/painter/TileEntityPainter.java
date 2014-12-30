@@ -1,9 +1,13 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
@@ -38,10 +42,32 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
       return false;
     }
     if(i == 0) {
-      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(i, itemStack)).isEmpty();
+      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(i, itemStack));
+      if(inventory[1] == null) {
+        return !recipes.isEmpty();
+      } else {
+        for(IMachineRecipe rec : recipes) {
+          if(rec instanceof BasicPainterTemplate) {
+            BasicPainterTemplate temp = (BasicPainterTemplate)rec;
+            if(temp.isValidPaintSource(inventory[1])) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
     }
-    if(inventory[0] == null) {
-      return BasicPainterTemplate.isValidSourceDefault(itemStack);
+    if(inventory[0] == null) {      
+      Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
+      for(IMachineRecipe rec : recipes.values()) {
+        if(rec instanceof BasicPainterTemplate) {
+          BasicPainterTemplate temp = (BasicPainterTemplate)rec;
+          if(temp.isValidPaintSource(itemStack)) {
+            return true;
+          }
+        }
+      }      
+      return PaintSourceValidator.instance.isValidSourceDefault(itemStack);
     }
     return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(),
         i == 0 ? MachineRecipeInput.create(0, itemStack) : targetInput(), i == 1 ? MachineRecipeInput.create(1, itemStack) : paintSource()) != null;
@@ -62,7 +88,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
 
   @Override
   protected int getNumCanMerge(ItemStack itemStack, ItemStack result) {
-    if(!result.isItemEqual(inventory[2])) {
+    if(result == null || !result.isItemEqual(inventory[2]) || !result.hasTagCompound() || !inventory[2].hasTagCompound()) {
       // next result is a different item type
       return 0;
     }

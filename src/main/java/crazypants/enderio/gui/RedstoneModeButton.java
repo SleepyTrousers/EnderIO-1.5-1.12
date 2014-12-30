@@ -1,5 +1,9 @@
 package crazypants.enderio.gui;
 
+import java.awt.Rectangle;
+
+import org.lwjgl.input.Mouse;
+
 import net.minecraft.client.Minecraft;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;
@@ -14,12 +18,14 @@ public class RedstoneModeButton extends IconButtonEIO {
   private static IconEIO[] ICONS = new IconEIO[] { IconEIO.REDSTONE_MODE_ALWAYS, IconEIO.REDSTONE_MODE_WITH_SIGNAL, IconEIO.REDSTONE_MODE_WITHOUT_SIGNAL,
       IconEIO.REDSTONE_MODE_NEVER };
 
-  IRedstoneModeControlable model;
-  RedstoneControlMode curMode;
+  private IRedstoneModeControlable model;
+  private RedstoneControlMode curMode;
+  
+  private boolean rightMouseDown = false;
 
-  BlockCoord bc;
+  private BlockCoord bc;
 
-  String tooltipKey = "enderio.gui.tooltip.redstoneControlMode";
+  private String tooltipKey = "enderio.gui.tooltip.redstoneControlMode";
 
   public RedstoneModeButton(IGuiScreen gui, int id, int x, int y, IRedstoneModeControlable model) {
     this(gui, id, x, y, model, null);
@@ -58,6 +64,13 @@ public class RedstoneModeButton extends IconButtonEIO {
     }
     setMode(curMode.next());
   }
+  
+  private void prevMode() {
+    if(curMode == null) {
+      curMode = RedstoneControlMode.ON;
+    }
+    setMode(curMode.previous());
+  }
 
   public void setMode(RedstoneControlMode mode) {
     if(mode == curMode) {
@@ -75,6 +88,17 @@ public class RedstoneModeButton extends IconButtonEIO {
   @Override
   public void drawButton(Minecraft mc, int mouseX, int mouseY) {
     super.drawButton(mc, mouseX, mouseY);
+    
+    Rectangle r = new Rectangle(xPosition, yPosition, width, height);
+    if(r.contains(mouseX, mouseY)) {
+      if(rightMouseDown && Mouse.getEventButton() == 1 && !Mouse.getEventButtonState()) {
+        prevMode();
+        gui.doActionPerformed(this);
+      }
+      rightMouseDown = Mouse.getEventButton() == 1 && Mouse.getEventButtonState();
+    } else {
+      rightMouseDown = false;
+    }
   }
 
 }
