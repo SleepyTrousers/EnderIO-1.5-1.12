@@ -9,6 +9,7 @@ import crazypants.enderio.machine.IPoweredTask;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.PoweredTask;
 import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.network.PacketHandler;
 
 public class TileCrusher extends AbstractPoweredTaskEntity {
@@ -85,15 +86,17 @@ public class TileCrusher extends AbstractPoweredTaskEntity {
     IPoweredTask ct = currentTask;
     super.taskComplete();
     //run it again if the ball says so
-    if(gb != null && useGrindingBall) {
-      float chance = random.nextFloat();
-      float mul = gb.getGrindingMultiplier() - 1;
-      while (mul > 0) {
-        if(chance <= mul) {
-          currentTask = ct;
-          super.taskComplete();
+    if(gb != null && useGrindingBall && ct != null) {
+      if(ct.getBonusType() == RecipeBonusType.MULTIPLY_OUTPUT) {
+        float chance = random.nextFloat();
+        float mul = gb.getGrindingMultiplier() - 1;
+        while (mul > 0) {
+          if(chance <= mul) {
+            currentTask = ct;
+            super.taskComplete();
+          }
+          mul--;
         }
-        mul--;
       }
     }
   }

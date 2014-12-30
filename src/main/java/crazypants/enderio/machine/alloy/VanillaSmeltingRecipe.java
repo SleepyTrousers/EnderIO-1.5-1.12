@@ -17,6 +17,7 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.material.OreDictionaryPreferences;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
@@ -47,6 +48,11 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   public int getEnergyRequired(MachineRecipeInput... inputs) {
     int numInputs = getNumInputs(inputs);
     return numInputs * RF_PER_ITEM;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
   }
 
   private int getNumInputs(MachineRecipeInput[] inputs) {
@@ -171,7 +177,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
       ItemStack output = entry.getValue();
       output = OreDictionaryPreferences.instance.getPreferred(output);
-      result.add(new Recipe(new RecipeInput(entry.getKey()), RF_PER_ITEM, new RecipeOutput(output)));
+      result.add(new Recipe(new RecipeInput(entry.getKey()), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
     }
     return result;
   }
