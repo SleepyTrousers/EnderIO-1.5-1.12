@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
@@ -16,6 +17,14 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     }
     IRecipe recipe = getRecipeForInputs(inputs);
     return recipe == null ? 0 : recipe.getEnergyRequired();
+  }
+
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    if(inputs == null || inputs.length <= 0) {
+      return RecipeBonusType.NONE;
+    }
+    IRecipe recipe = getRecipeForInputs(inputs);
+    return recipe == null ? RecipeBonusType.NONE : recipe.getBonusType();
   }
 
   public abstract IRecipe getRecipeForInputs(MachineRecipeInput[] inputs);

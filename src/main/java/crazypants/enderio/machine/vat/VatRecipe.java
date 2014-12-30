@@ -10,6 +10,7 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class VatRecipe implements IRecipe {
 
@@ -77,6 +78,11 @@ public class VatRecipe implements IRecipe {
   @Override
   public List<ItemStack> getInputStacks() {
     return inputStacks;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType() {
+    return RecipeBonusType.NONE;
   }
 
   @Override

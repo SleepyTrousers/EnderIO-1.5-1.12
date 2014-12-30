@@ -2,6 +2,7 @@ package crazypants.enderio.machine;
 
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 /**
  * Client side stub for reporting progress.
@@ -45,6 +46,11 @@ public class PoweredTaskProgress implements IPoweredTask {
   @Override
   public float getChance() {
     return 0;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType() {
+    return RecipeBonusType.NONE;
   }
 
   @Override
