@@ -22,6 +22,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
   protected boolean requiresFarmland = true;
   protected List<Block> tilledBlocks = new ArrayList<Block>();
   protected boolean ignoreSustainCheck = false;
+  protected boolean disableTreeFarm;
 
   public CustomSeedFarmer(Block plantedBlock, ItemStack seeds) {
     this(plantedBlock, 0, 7, seeds);
@@ -207,4 +208,8 @@ public class CustomSeedFarmer implements IFarmerJoe {
     return false;
   }
 
+  public boolean doesDisableTreeFarm()
+  {
+    return disableTreeFarm;
+  }
 }

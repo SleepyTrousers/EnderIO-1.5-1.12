@@ -17,6 +17,7 @@ public class CocoaFarmer extends CustomSeedFarmer
     {
         super(Blocks.cocoa, new ItemStack(Items.dye,1,3));
         this.requiresFarmland = false;
+        this.disableTreeFarm = true;
     }
 
     @Override
@@ -28,9 +29,9 @@ public class CocoaFarmer extends CustomSeedFarmer
     @Override
     protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc)
     {
+        worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
         int dir = getPlantDirection(worldObj,bc);
         if (dir<0) return false;
-        worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
         worldObj.setBlock(bc.x, bc.y, bc.z, getPlantedBlock(), Direction.facingToDirection[dir], 1 | 2);
         farm.actionPerformed(false);
         return true;
