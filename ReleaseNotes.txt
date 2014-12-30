@@ -9,6 +9,13 @@ New
 	- Can be painted and has connected textures with Chisel.
 - #32 Add connected photovoltaic panels. Will now form a multiblock and generate/emit power as a cohesive unit.
 - Add default recipe for the "Repair" enchant from Thaumcraft
+- Add support for old and new chisel versions
+- **REMOVE AE2 rv1 SUPPORT COMPLETELY**
+- Add farming support for cocoa (hilburn)
+- Add farming support for mana beans - disabled by default (hilburn)
+- Add a percentage tooltip to the grinding ball remaining bar
+- Farm axe detection should now support most modded axes
+- Add farming station support for giant mushrooms (hilburn)
 
 Changes
 - #1456 Wireless Charger can be deactivated with redstone
@@ -26,6 +33,9 @@ Bugs
 - #1501 Fix travel anchor dropping in creative
 - #1445 Fix cap banks refusing to be set to input mode when connected to certain blocks
 - Fix crash when tons (thousands) of cap banks edited at once.
+- #1416 Fix advanced item filter not matching some bees properly (hilburn)
+- Fix obelisk hovering item rendering being broken in fast graphics mode
+- Fix grinding ball duration bar not rendering sometimes
 
 ------------------------------------------------------
 Version 2.2.5
