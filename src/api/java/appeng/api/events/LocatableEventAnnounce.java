@@ -15,7 +15,7 @@ public class LocatableEventAnnounce extends Event
 	{
 		Register, // Adds the locatable to the registry
 		Unregister // Removes the locatable from the registry
-	};
+	}
 
 	final public ILocatable target;
 	final public LocatableEvent change;

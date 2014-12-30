@@ -94,14 +94,8 @@ public class ConduitRecipes {
   @Method(modid = "appliedenergistics2")
   private static void addAeRecipes() {
     String fluix = "crystalFluix";
-    Object pureFluix = null;
-
-    try {
-      pureFluix = AEApi.instance().materials().materialPureifiedFluixCrystal.stack(1).copy(); // rv1
-    } catch (NoSuchFieldError e) {
-      pureFluix = "crystalPureFluix"; // rv2
-    }
-
+    String pureFluix = "crystalPureFluix";
+    
     ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
     ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
     ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);

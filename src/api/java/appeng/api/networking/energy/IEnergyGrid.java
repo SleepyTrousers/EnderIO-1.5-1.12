@@ -41,7 +41,7 @@ public interface IEnergyGrid extends IGridCache, IEnergySource, IEnergyGridProvi
 	/**
 	 * AE will accept any power, and store it, to maintain sanity please don't send more then 10,000 at a time.
 	 * 
-	 * IMPORTANT: Network power knows no bounds, for less spamy power flow, networks can store more then their alloted
+	 * IMPORTANT: Network power knows no bounds, for less spamy power flow, networks can store more then their allotted
 	 * storage, however, it should be kept to a minimum, to help with this, this method returns the networks current
 	 * OVERFLOW, this is not energy you can store some where else, its already stored in the network, you can extract it
 	 * if you want, however it it owned by the network, this is different then IAEEnergyStore

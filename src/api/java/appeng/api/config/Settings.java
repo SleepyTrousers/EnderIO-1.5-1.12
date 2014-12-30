@@ -8,7 +8,7 @@ public enum Settings
 
 	REDSTONE_EMITTER(EnumSet.of( RedstoneMode.HIGH_SIGNAL, RedstoneMode.LOW_SIGNAL )), REDSTONE_CONTROLLED(EnumSet.allOf( RedstoneMode.class )),
 
-	CONDENSER_OUTPUT(EnumSet.allOf( CondenserOuput.class )),
+	CONDENSER_OUTPUT(EnumSet.allOf( CondenserOutput.class )),
 
 	POWER_UNITS(EnumSet.allOf( PowerUnits.class )), ACCESS(EnumSet.of( AccessRestriction.READ_WRITE, AccessRestriction.READ, AccessRestriction.WRITE )),
 

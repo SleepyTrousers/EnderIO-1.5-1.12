@@ -17,7 +17,7 @@ public interface ITickManager extends IGridCache
 	 * Sleeping Devices Still Alertable, when your tile is alerted its new status is determined by the result of its
 	 * tick.
 	 * 
-	 * @param node
+	 * @param node gridnode
 	 */
 	boolean alertDevice(IGridNode node);
 
@@ -25,7 +25,7 @@ public interface ITickManager extends IGridCache
 	 * 
 	 * disables ticking for your device.
 	 * 
-	 * @param node
+	 * @param node gridnode
 	 * 
 	 * @return if the call was successful.
 	 */
@@ -35,7 +35,7 @@ public interface ITickManager extends IGridCache
 	 * 
 	 * enables ticking for your device, undoes a sleepDevice call.
 	 * 
-	 * @param node
+	 * @param node gridnode
 	 * 
 	 * @return if the call was successful.
 	 */

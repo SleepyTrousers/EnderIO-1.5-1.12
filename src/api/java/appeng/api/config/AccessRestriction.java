@@ -4,30 +4,30 @@ public enum AccessRestriction
 {
 	NO_ACCESS(0), READ(1), WRITE(2), READ_WRITE(3);
 
-	private final int permisionBit;
+	private final int permissionBit;
 
 	private AccessRestriction(int v) {
-		permisionBit = v;
+		permissionBit = v;
 	}
 
 	public boolean hasPermission(AccessRestriction ar)
 	{
-		return (permisionBit & ar.permisionBit) == ar.permisionBit;
+		return (permissionBit & ar.permissionBit) == ar.permissionBit;
 	}
 
 	public AccessRestriction restrictPermissions(AccessRestriction ar)
 	{
-		return getPermByBit( permisionBit & ar.permisionBit );
+		return getPermByBit( permissionBit & ar.permissionBit);
 	}
 
 	public AccessRestriction addPermissions(AccessRestriction ar)
 	{
-		return getPermByBit( permisionBit | ar.permisionBit );
+		return getPermByBit( permissionBit | ar.permissionBit);
 	}
 
 	public AccessRestriction removePermissions(AccessRestriction ar)
 	{
-		return getPermByBit( permisionBit & (~ar.permisionBit) );
+		return getPermByBit( permissionBit & (~ar.permissionBit) );
 	}
 
 	private AccessRestriction getPermByBit(int bit)

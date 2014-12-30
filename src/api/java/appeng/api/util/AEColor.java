@@ -76,9 +76,7 @@ public enum AEColor
 	 */
 	public boolean matches(AEColor color)
 	{
-		if ( equals( Transparent ) || color.equals( Transparent ) )
-			return true;
-		return equals( color );
+		return equals(Transparent) || color.equals(Transparent) || equals(color);
 	}
 
 	@Override

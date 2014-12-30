@@ -43,15 +43,14 @@ public interface IPartHelper
 	/**
 	 * use in use item, to try and place a IBusItem
 	 * 
-	 * @param is
-	 *            ItemStack of an item which implements {@link IPartItem}
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param side
-	 * @param player
-	 * @param world
-	 * @return
+	 * @param is ItemStack of an item which implements {@link IPartItem}
+	 * @param x x pos of part
+	 * @param y y pos of part
+	 * @param z z pos of part
+	 * @param side side which the part should be on
+	 * @param player player placing part
+	 * @param world part in world
+	 * @return true if placing was successful
 	 */
 	boolean placeBus(ItemStack is, int x, int y, int z, int side, EntityPlayer player, World world);
 

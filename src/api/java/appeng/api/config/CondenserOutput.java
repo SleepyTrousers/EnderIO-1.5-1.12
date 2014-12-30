@@ -1,7 +1,7 @@
 package appeng.api.config;
 
 
-public enum CondenserOuput
+public enum CondenserOutput
 {
 
 	TRASH, // 0

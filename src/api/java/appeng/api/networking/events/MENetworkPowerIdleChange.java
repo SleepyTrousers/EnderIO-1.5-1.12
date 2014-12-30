@@ -3,7 +3,7 @@ package appeng.api.networking.events;
 import appeng.api.networking.IGridNode;
 
 /**
- * Implementors of a IGridBlock must post this event when your getIdlePowerUsage
+ * Implementers of a IGridBlock must post this event when your getIdlePowerUsage
  * starts returning a new value, if you do not post this event the network will
  * not change the idle draw.
  * 

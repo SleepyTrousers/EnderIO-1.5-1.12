@@ -5,6 +5,6 @@ public enum StorageFilter
 
 	NONE,
 
-	EXTACTABLE_ONLY
+	EXTRACTABLE_ONLY
 
 }

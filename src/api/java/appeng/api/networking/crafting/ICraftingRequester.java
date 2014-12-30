@@ -21,11 +21,11 @@ public interface ICraftingRequester extends IActionHost
 	 * items are injected into the requester as they are completed, any items that cannot be taken, or are unwanted can
 	 * be returned.
 	 * 
-	 * @param items
-	 * @param mode
-	 * @return
+	 * @param items item
+	 * @param mode action mode
+	 * @return unwanted item
 	 */
-	IAEItemStack injectCratedItems(ICraftingLink link, IAEItemStack items, Actionable mode);
+	IAEItemStack injectCraftedItems(ICraftingLink link, IAEItemStack items, Actionable mode);
 
 	/**
 	 * called when the job changes from in progress, to either complete, or canceled.

@@ -54,16 +54,16 @@ public interface IAppEngApi
 	/**
 	 * create a grid node for your {@link IGridHost}
 	 * 
-	 * @param block
-	 * @return
+	 * @param block grid block
+	 * @return grid node of block
 	 */
 	IGridNode createGridNode(IGridBlock block);
 
 	/**
 	 * create a connection between two {@link IGridNode}
 	 * 
-	 * @param a
-	 * @param b
+	 * @param a to be connected gridnode
+	 * @param b to be connected gridnode
 	 * @throws FailedConnection
 	 */
 	IGridConnection createGridConnection(IGridNode a, IGridNode b) throws FailedConnection;

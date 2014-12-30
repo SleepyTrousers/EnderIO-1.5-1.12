@@ -1,14 +1,14 @@
 package appeng.api.parts;
 
-import java.util.Set;
-
+import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
-import appeng.api.util.AEColor;
-import appeng.api.util.DimensionalCoord;
+
+import java.util.Set;
 
 /**
  * Implemented on AE's TileEntity or AE's FMP Part.
@@ -27,8 +27,8 @@ public interface IPartHost
 	 * Test if you can add a part to the specified side of the Part Host, {@link ForgeDirection}.UNKNOWN is used to
 	 * represent the cable in the middle.
 	 * 
-	 * @param is
-	 * @param side
+	 * @param part to be added part
+	 * @param side part placed onto side
 	 * @return returns false if the part cannot be added.
 	 */
 	boolean canAddPart(ItemStack part, ForgeDirection side);
@@ -36,9 +36,9 @@ public interface IPartHost
 	/**
 	 * try to add a new part to the specified side, returns false if it failed to be added.
 	 * 
-	 * @param is
-	 * @param side
-	 * @param owner
+	 * @param is new part
+	 * @param side onto side
+	 * @param owner with owning player
 	 * @return null if the item failed to add, the side it was placed on other wise ( may different for cables,
 	 *         {@link ForgeDirection}.UNKNOWN )
 	 */
@@ -47,7 +47,7 @@ public interface IPartHost
 	/**
 	 * Get part by side ( center is {@link ForgeDirection}.UNKNOWN )
 	 * 
-	 * @param side
+	 * @param side side of part
 	 * @return the part located on the specified side, or null if there is no part.
 	 */
 	IPart getPart(ForgeDirection side);
@@ -58,7 +58,7 @@ public interface IPartHost
 	 * 
 	 * if you want to drop the part you must request it prior to removing it.
 	 * 
-	 * @param side
+	 * @param side side of part
 	 * @param suppressUpdate
 	 *            - used if you need to replace a part's instance, without really removing it first.
 	 */
@@ -100,7 +100,7 @@ public interface IPartHost
 	/**
 	 * finds the part located at the position ( pos must be relative, not global )
 	 * 
-	 * @param pos
+	 * @param pos part position
 	 * @return a new SelectedPart, this is never null.
 	 */
 	SelectedPart selectPart(Vec3 pos);
@@ -118,8 +118,8 @@ public interface IPartHost
 	/**
 	 * get the redstone state of host on this side, this value is cached internally.
 	 * 
-	 * @param side
-	 * @return true of the part host is receieveing redstone from an external source.
+	 * @param side side of part
+	 * @return true of the part host is receiving redstone from an external source.
 	 */
 	boolean hasRedstone(ForgeDirection side);
 
@@ -139,14 +139,14 @@ public interface IPartHost
 	void cleanup();
 
 	/**
-	 * notify neightbors uf updated status.
+	 * notify neighbors uf updated status.
 	 */
 	void notifyNeighbors();
 
 	/**
 	 * true if the tile is in the world, other wise false.
 	 * 
-	 * @return
+	 * @return true if tile is in world
 	 */
 	boolean isInWorld();
 }

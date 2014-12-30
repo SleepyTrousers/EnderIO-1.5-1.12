@@ -44,13 +44,8 @@ public class MEConduitGrid implements IGridBlock {
   public EnumSet<GridFlags> getFlags() {
     return conduit.isDense() ? EnumSet.of(GridFlags.DENSE_CAPACITY) : EnumSet.noneOf(GridFlags.class);
   }
-
-  @Override
-  public boolean isWorldAccessable() {
-    return true;
-  }
   
-  //@Override // dummy method for rv2
+  @Override
   public boolean isWorldAccessible() {
     return true;
   }
