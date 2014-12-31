@@ -688,6 +688,15 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>
+    
+   	<recipe name="ChargedCertusQuartzCrystal" energyCost="2400">
+      <input>
+        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1"/>
+      </input>
+      <output>
+        <itemStack oreDictionary="dustCertusQuartz" />
+      </output>
+    </recipe>
 
     <recipe name="FluixCrystal" energyCost="2400">
       <input>
