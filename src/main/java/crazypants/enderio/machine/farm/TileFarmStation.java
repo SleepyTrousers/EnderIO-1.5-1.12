@@ -42,7 +42,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     HOE { 
       boolean match(ItemStack item) {
         for (ItemStack stack : Config.farmHoes) {
-          if (stack != null && OreDictionary.itemMatches(item, stack, false)) {
+          if (stack.getItem() == item.getItem()) {
             return true;
           }
         }
@@ -57,7 +57,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       if (item == null) {
         return false;
       }
-      
       return match(item);
     }
     
