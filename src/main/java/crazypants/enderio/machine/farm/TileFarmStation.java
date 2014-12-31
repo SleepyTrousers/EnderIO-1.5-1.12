@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -38,7 +39,17 @@ import crazypants.util.Lang;
 public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public enum ToolType {
-    HOE     { boolean match(ItemStack item) { return item.getItem() instanceof ItemHoe;                       }}, 
+    HOE { 
+      boolean match(ItemStack item) {
+        for (ItemStack stack : Config.farmHoes) {
+          if (stack != null && OreDictionary.itemMatches(item, stack, false)) {
+            return true;
+          }
+        }
+        return false;
+      }
+    },
+    
     AXE     { boolean match(ItemStack item) { return item.getItem().getHarvestLevel(item, "axe") > 0;         }},
     TREETAP { boolean match(ItemStack item) { return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap;}};
     

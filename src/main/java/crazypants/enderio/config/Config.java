@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import tterrag.core.common.event.ConfigFileChangedEvent;
 import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -11,6 +12,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.vecmath.VecmathUtil;
@@ -264,6 +266,14 @@ public final class Config {
   public static boolean farmEssenceBerriesEnabled = true;
   public static boolean farmManaBeansEnabled = false;
   public static boolean farmHarvestJungleWhenCocoa = false;
+  public static String[] hoeStrings = new String[] { 
+    "minecraft:wooden_hoe", "minecraft:stone_hoe", "minecraft:iron_hoe", "minecraft:diamond_hoe", "minecraft:golden_hoe",
+    "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe", "MekanismTools:GlowstoneHoe", "MekanismTools:SteelHoe",
+    "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold",
+    "Railcraft:tool.steel.hoe",
+    "TConstruct:mattock"
+  };
+  public static ItemStack[] farmHoes = new ItemStack[0];
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;
@@ -440,6 +450,7 @@ public final class Config {
     if(event.modID.equals(EnderIO.MODID)) {
       Log.info("Updating config...");
       syncConfig(false);
+      postInit();
     }
   }
   
@@ -450,6 +461,7 @@ public final class Config {
       Log.info("Updating config...");
       syncConfig(true);
       event.setSuccessful();
+      postInit();
     }
   }
 
@@ -925,6 +937,9 @@ public final class Config {
     farmHarvestJungleWhenCocoa = config.get(sectionFarm.name, "farmHarvestJungleWhenCocoa", farmHarvestJungleWhenCocoa,
         "If this is enabled the farm will harvest jungle wood even if it has cocoa beans in its inventory.").getBoolean();    
 
+    hoeStrings = config.get(sectionFarm.name, "farmHoes", hoeStrings,
+        "Use this to specify items that can be hoes in the farming station. Use the registry name (eg. modid:name).").getStringList();
+
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
 
@@ -1107,7 +1122,14 @@ public final class Config {
 
   }
 
+  public static void postInit() {
+    farmHoes = new ItemStack[hoeStrings.length];
+    for (int i = 0; i < Config.hoeStrings.length; i++) {
+      String[] data = hoeStrings[i].split(":");
+      farmHoes[i] = GameRegistry.findItemStack(data[0], data[1], 1); 
+    }
+  }
+  
   private Config() {
   }
-
 }
