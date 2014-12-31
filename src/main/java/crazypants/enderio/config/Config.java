@@ -919,7 +919,7 @@ public final class Config {
     farmEssenceBerriesEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmEssenceBerriesEnabled,
         "This setting controls whether essence berry bushes from TiC can be harvested by the farm.").getBoolean();
 
-    farmManaBeansEnabled = config.get(sectionFarm.name, "farmEssenceBerriesEnabled", farmManaBeansEnabled,
+    farmManaBeansEnabled = config.get(sectionFarm.name, "farmManaBeansEnabled", farmManaBeansEnabled,
             "This setting controls whether mana beans from Thaumcraft can be harvested by the farm.").getBoolean();
 
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
