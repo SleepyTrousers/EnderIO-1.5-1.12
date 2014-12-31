@@ -12,7 +12,7 @@ public interface ICraftingProvider extends ICraftingMedium
 	/**
 	 * called when the network is looking for possible crafting jobs.
 	 * 
-	 * @param craftingTracker
+	 * @param craftingTracker crafting helper
 	 */
 	void provideCrafting(ICraftingProviderHelper craftingTracker);
 

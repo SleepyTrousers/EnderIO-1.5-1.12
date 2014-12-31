@@ -28,7 +28,7 @@ public interface ICraftingLink
 	/**
 	 * write the link to an NBT Tag
 	 * 
-	 * @param tag
+	 * @param tag to be written data
 	 */
 	void writeToNBT(NBTTagCompound tag);
 

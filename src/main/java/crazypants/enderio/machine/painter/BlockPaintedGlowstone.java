@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import info.jbcs.minecraft.chisel.api.IFacade;
-
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +32,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
 public class BlockPaintedGlowstone extends Block implements ITileEntityProvider, IPaintedBlock, IFacade {

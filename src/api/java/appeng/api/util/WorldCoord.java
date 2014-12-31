@@ -119,9 +119,7 @@ public class WorldCoord
 	@Override
 	public boolean equals(Object obj)
 	{
-		if ( obj instanceof WorldCoord )
-			return isEqual( (WorldCoord) obj );
-		return false;
+		return obj instanceof WorldCoord && isEqual((WorldCoord) obj);
 	}
 
 	@Override

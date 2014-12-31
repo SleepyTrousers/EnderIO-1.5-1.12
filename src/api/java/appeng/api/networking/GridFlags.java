@@ -32,7 +32,7 @@ public enum GridFlags
 	DENSE_CAPACITY,
 
 	/**
-	 * This block is part of a multiblock, used in conjunction with REQUIRE_CANNEL, and {@link IGridMultiblock} see this
+	 * This block is part of a multiblock, used in conjunction with REQUIRE_CHANNEL, and {@link IGridMultiblock} see this
 	 * interface for details.
 	 */
 	MULTIBLOCK,
@@ -41,5 +41,5 @@ public enum GridFlags
 	 * Indicates which path might be preferred, this only matters if two routes of equal length exist, ad only changes
 	 * the order they are processed in.
 	 */
-	PREFERED
+	PREFERRED
 }

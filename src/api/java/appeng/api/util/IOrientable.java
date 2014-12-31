@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * 
  * and it can be used to manipulate the direction of some machines, most of these orientations are purely visual.
  * 
- * AE also responds to {@link Block}.rotateBlock
+ * AE also responds to Block.rotateBlock
  */
 public interface IOrientable
 {
@@ -29,8 +29,8 @@ public interface IOrientable
 
 	/**
 	 * Update the orientation
-	 * @param Forward
-	 * @param Up
+	 * @param Forward new forward direction
+	 * @param Up new upwards direction
 	 */
 	void setOrientation(ForgeDirection Forward, ForgeDirection Up);
 

@@ -1,10 +1,10 @@
 package appeng.api.recipes;
 
-import java.util.List;
-
 import appeng.api.exceptions.MissingIngredientError;
 import appeng.api.exceptions.RecipeError;
 import appeng.api.exceptions.RegistrationError;
+
+import java.util.List;
 
 public interface ICraftHandler
 {
@@ -12,8 +12,8 @@ public interface ICraftHandler
 	/**
 	 * Called when your recipe handler receives a newly parsed list of inputs/outputs.
 	 * 
-	 * @param input
-	 * @param output
+	 * @param input parsed inputs
+	 * @param output parsed outputs
 	 * @throws RecipeError
 	 */
 	public void setup(List<List<IIngredient>> input, List<List<IIngredient>> output) throws RecipeError;

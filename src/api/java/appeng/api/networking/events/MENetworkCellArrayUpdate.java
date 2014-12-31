@@ -1,7 +1,7 @@
 package appeng.api.networking.events;
 
 /**
- * Posted by storage devices to inform AE to refreash its storage structure.
+ * Posted by storage devices to inform AE to refresh its storage structure.
  * 
  * This is done in cases such as a storage cell being removed or added to a
  * drive.

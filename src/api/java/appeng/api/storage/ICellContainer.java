@@ -11,7 +11,7 @@ public interface ICellContainer extends IActionHost, ICellProvider, ISaveProvide
 	/**
 	 * tell the Cell container that this slot should blink, the slot number is relative to the
 	 * 
-	 * @param slot
+	 * @param slot slot index
 	 */
 	void blinkCell(int slot);
 

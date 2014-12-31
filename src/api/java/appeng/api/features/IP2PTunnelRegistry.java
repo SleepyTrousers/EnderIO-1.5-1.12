@@ -23,8 +23,8 @@ public interface IP2PTunnelRegistry
 	/**
 	 * returns null if no attunement can be found.
 	 * 
-	 * @param trigger
-	 * @return
+	 * @param trigger attunement trigger
+	 * @return null if no attunement can be found or attunement
 	 */
 	TunnelType getTunnelTypeByItem(ItemStack trigger);
 

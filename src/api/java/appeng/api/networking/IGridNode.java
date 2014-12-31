@@ -1,12 +1,12 @@
 package appeng.api.networking;
 
-import java.util.EnumSet;
-
+import appeng.api.IAppEngApi;
+import appeng.api.util.IReadOnlyCollection;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import appeng.api.IAppEngApi;
-import appeng.api.util.IReadOnlyCollection;
+
+import java.util.EnumSet;
 
 /**
  * 
@@ -24,9 +24,9 @@ public interface IGridNode
 	 * lets you walk the grid stating at the current node using a IGridVisitor, generally not needed, please use only if
 	 * required.
 	 * 
-	 * @param g
+	 * @param visitor visitor
 	 */
-	void beginVisition(IGridVisitor g);
+	void beginVisit(IGridVisitor visitor);
 
 	/**
 	 * inform the node that your IGridBlock has changed its internal state, and force the node to update.
@@ -43,14 +43,14 @@ public interface IGridNode
 	/**
 	 * get the machine represented by the node.
 	 * 
-	 * @return
+	 * @return grid host
 	 */
 	IGridHost getMachine();
 
 	/**
 	 * get the grid for the node, this can change at a moments notice.
 	 * 
-	 * @return
+	 * @return grid
 	 */
 	IGrid getGrid();
 
@@ -74,7 +74,7 @@ public interface IGridNode
 	/**
 	 * lets you iterate a nodes connections
 	 * 
-	 * @return
+	 * @return grid connections
 	 */
 	IReadOnlyCollection<IGridConnection> getConnections();
 
@@ -97,8 +97,8 @@ public interface IGridNode
 	 * 
 	 * Important: You must call this before updateState.
 	 * 
-	 * @param name
-	 * @param nodeData
+	 * @param name nbt name
+	 * @param nodeData to be loaded data
 	 */
 	void loadFromNBT(String name, NBTTagCompound nodeData);
 
@@ -106,8 +106,8 @@ public interface IGridNode
 	 * this should be called for each node you maintain, you can save all your nodes to the same tag with different
 	 * names, if you fail to complete the load / save procedure, network state may be lost between game load/saves.
 	 * 
-	 * @param name
-	 * @param nodeData
+	 * @param name nbt name
+	 * @param nodeData to be saved data
 	 */
 	void saveToNBT(String name, NBTTagCompound nodeData);
 
@@ -120,16 +120,16 @@ public interface IGridNode
 	/**
 	 * see if this node has a certain flag
 	 * 
-	 * @param tier2Capacity
-	 * @return
+	 * @param flag flags
+	 * @return true if has flag
 	 */
 	boolean hasFlag(GridFlags flag);
 
 	/**
 	 * tell the node who was responsible for placing it, failure to do this may result in in-compatibility with the
-	 * security system. Called instead of loadFromNBT when intialily placed, once set never required again, the value is saved with the Node NBT.
+	 * security system. Called instead of loadFromNBT when initially placed, once set never required again, the value is saved with the Node NBT.
 	 * 
-	 * @param p
+	 * @param playerID new player id
 	 */
 	void setPlayerID(int playerID);
 

@@ -3,7 +3,7 @@ package appeng.api.util;
 /**
  * Implemented by various Tiles or Parts in AE
  */
-public interface IConfigureableObject
+public interface IConfigurableObject
 {
 
 	/**

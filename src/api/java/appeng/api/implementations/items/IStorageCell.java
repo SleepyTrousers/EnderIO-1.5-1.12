@@ -22,16 +22,16 @@ public interface IStorageCell extends ICellWorkbenchItem
 	 * If this returns something where N % 8 != 0 Then you will be shot on
 	 * sight, or your car will explode, something like that least...
 	 * 
-	 * @param cellItem
-	 * @return numberofBytes
+	 * @param cellItem item
+	 * @return number of bytes
 	 */
 	int getBytes(ItemStack cellItem);
 
 	/**
 	 * Determines the number of bytes used for any type included on the cell.
 	 * 
-	 * @param cellItem
-	 * @return numberOfBytes
+	 * @param cellItem item
+	 * @return number of bytes
 	 */
 	int BytePerType(ItemStack cellItem);
 
@@ -39,8 +39,8 @@ public interface IStorageCell extends ICellWorkbenchItem
 	 * Must be between 1 and 63, indicates how many types you want to store on
 	 * the item.
 	 * 
-	 * @param cellItem
-	 * @return numberOfTypes
+	 * @param cellItem item
+	 * @return number of types
 	 */
 	int getTotalTypes(ItemStack cellItem);
 
@@ -49,8 +49,8 @@ public interface IStorageCell extends ICellWorkbenchItem
 	 * don't care, just return false; As the handler for this type of cell is
 	 * still the default cells, the normal AE black list is also applied.
 	 * 
-	 * @param cellItem
-	 * @param requestedAddition
+	 * @param cellItem item
+	 * @param requestedAddition requested addition
 	 * @return true to preventAdditionOfItem
 	 */
 	boolean isBlackListed(ItemStack cellItem, IAEItemStack requestedAddition);
@@ -70,7 +70,7 @@ public interface IStorageCell extends ICellWorkbenchItem
 	 * Allows an item to selectively enable or disable its status as a storage
 	 * cell.
 	 * 
-	 * @param i
+	 * @param i item
 	 * @return if the ItemStack should behavior as a storage cell.
 	 */
 	boolean isStorageCell(ItemStack i);

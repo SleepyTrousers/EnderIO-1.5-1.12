@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
@@ -17,6 +18,8 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   private final float expPerItem;
 
+  private final RecipeBonusType bonusType;
+
   private final Recipe recipe;
 
   public BasicManyToOneRecipe(Recipe recipe) {
@@ -24,6 +27,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
     this.output = recipe.getOutputs()[0].getOutput().copy();
     expPerItem = recipe.getOutputs()[0].getExperiance();
     energyRequired = recipe.getEnergyRequired();
+    bonusType = recipe.getBonusType();
   }
 
   @Override
@@ -75,6 +79,11 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   @Override
   public int getEnergyRequired() {
     return energyRequired;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType() {
+    return bonusType;
   }
 
   @Override

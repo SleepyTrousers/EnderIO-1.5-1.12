@@ -12,6 +12,17 @@ New
 
 Changes
 - #1456 Wireless Charger can be deactivated with redstone
+- Add support for old and new chisel versions
+- Add farming support for cocoa (hilburn)
+- Add farming support for mana beans - disabled by default (hilburn)
+- Add farming station support for giant mushrooms (hilburn)
+- Add a percentage tooltip to the grinding ball remaining bar
+- **REMOVE AE2 rv1 SUPPORT COMPLETELY**
+- Farm axe detection should now support most modded axes
+- Add ExNihilo recipes to SAG mill default recipes (MatthiasM2)
+- Add "modes" for SAG mill bonuses, allow you to disable the main output bonus (MatthiasM2)
+- Add whitelist for hoes supported by farming station
+- #1490 Add SAG mill recipe for charged certus quartz crystals
 
 Bugs
 - Fix obelisk hovering item being stuttery
@@ -26,6 +37,10 @@ Bugs
 - #1501 Fix travel anchor dropping in creative
 - #1445 Fix cap banks refusing to be set to input mode when connected to certain blocks
 - Fix crash when tons (thousands) of cap banks edited at once.
+- #1416 Fix advanced item filter not matching some bees properly (hilburn)
+- Fix obelisk hovering item rendering being broken in fast graphics mode
+- Fix grinding ball duration bar not rendering sometimes
+- Fix fill gauge connecting on creative capacitor banks
 
 ------------------------------------------------------
 Version 2.2.5

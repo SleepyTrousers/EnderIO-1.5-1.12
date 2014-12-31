@@ -23,7 +23,7 @@ public interface IStorageGrid extends IGridCache, IStorageMonitorable
 	 * Expects the input to have either a negative or a positive stack size to correspond to the injection, or
 	 * extraction operation.
 	 * 
-	 * @param input
+	 * @param input injected items
 	 */
 	void postAlterationOfStoredItems(StorageChannel chan, Iterable<? extends IAEStack> input, BaseActionSource src);
 
@@ -33,7 +33,7 @@ public interface IStorageGrid extends IGridCache, IStorageMonitorable
 	 * THIS IT NOT FOR USE {@link IGridHost} THAT PROVIDE {@link ICellContainer} - those are automatically handled by
 	 * the storage system.
 	 * 
-	 * @param cc
+	 * @param cc to be added cell provider
 	 */
 	void registerCellProvider(ICellProvider cc);
 

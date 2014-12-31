@@ -576,6 +576,8 @@ public class EnderIO {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
+    Config.postInit();
+    
     //Regsiter the enchants
     Enchantments.getInstance();
 

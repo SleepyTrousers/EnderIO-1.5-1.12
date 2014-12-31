@@ -16,7 +16,7 @@ public class Blocks
 	 * Decorative
 	 */
 	public AEItemDefinition blockQuartz;
-	public AEItemDefinition blockQuartzPiller;
+	public AEItemDefinition blockQuartzPillar;
 	public AEItemDefinition blockQuartzChiseled;
 	public AEItemDefinition blockQuartzGlass;
 	public AEItemDefinition blockQuartzVibrantGlass;

@@ -131,6 +131,11 @@ public class FillGauge implements IInfoRenderer {
   }
 
   private GaugeInfo getGaugeInfo(TileCapBank cb, ForgeDirection dir) {
+    
+    if (!cb.getType().isMultiblock()) {
+      return new GaugeInfo(1, 0);
+    }
+    
     int height = 1;
     int yPos = 0;
     BlockCoord loc = cb.getLocation();

@@ -25,7 +25,7 @@ public class MENetworkPowerStorage extends MENetworkEvent
 		 * informs the network this tile is ready to provide power again.
 		 */
 		PROVIDE_POWER 
-	};
+	}
 
 	public final IAEPowerStorage storage;
 	public final PowerEventType type;

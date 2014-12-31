@@ -688,6 +688,15 @@ addOreDictionaryTooltips=true
         <itemStack oreDictionary="dustCertusQuartz" />
       </output>
     </recipe>
+    
+   	<recipe name="ChargedCertusQuartzCrystal" energyCost="2400">
+      <input>
+        <itemStack modID="appliedenergistics2" itemName="item.ItemMultiMaterial" itemMeta="1"/>
+      </input>
+      <output>
+        <itemStack oreDictionary="dustCertusQuartz" />
+      </output>
+    </recipe>
 
     <recipe name="FluixCrystal" energyCost="2400">
       <input>
@@ -2172,6 +2181,169 @@ addOreDictionaryTooltips=true
       </input>
       <output>
         <itemStack modID="UndergroundBiomes" itemName="metamorphicCobblestone" itemMeta="7" number="4" />
+      </output>
+    </recipe>
+  </recipeGroup>
+
+  <recipeGroup name="ExNihilo">
+    <recipe name="iron_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="iron_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.iron_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.iron_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.iron_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="iron_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="iron_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.iron_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.iron_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.iron_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="gold_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="gold_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.gold_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.gold_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.gold_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="gold_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="gold_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.gold_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.gold_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.gold_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="copper_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="copper_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.copper_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.copper_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.copper_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="copper_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="copper_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.copper_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.copper_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.copper_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="tin_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="tin_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.tin_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.tin_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.tin_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="tin_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="tin_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.tin_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.tin_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.tin_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="silver_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="silver_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.silver_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.silver_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.silver_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="silver_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="silver_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.silver_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.silver_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.silver_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="lead_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="lead_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.lead_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.lead_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.lead_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="lead_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="lead_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.lead_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.lead_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.lead_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="nickel_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="nickel_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.nickel_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.nickel_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.nickel_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="nickel_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="nickel_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.nickel_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.nickel_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.nickel_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="platinum_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="platinum_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.platinum_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.platinum_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.platinum_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="platinum_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="platinum_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.platinum_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.platinum_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.platinum_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="aluminum_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="aluminum_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.aluminum_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.aluminum_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.aluminum_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="aluminum_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="aluminum_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.aluminum_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.aluminum_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.aluminum_powdered" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="osmium_gravel_to_crushed" energyCost="500" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="osmium_gravel"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.osmium_crushed" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.osmium_crushed" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.osmium_crushed" number="1" itemMeta="0" chance="0.05"/>
+      </output>
+    </recipe>
+    <recipe name="osmium_sand_to_powdered" energyCost="1000" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="osmium_sand"/></input>
+      <output>
+        <itemStack modID="exnihilo" itemName="exnihilo.osmium_powdered" number="4" itemMeta="0"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.osmium_powdered" number="1" itemMeta="0" chance="0.5"/>
+        <itemStack modID="exnihilo" itemName="exnihilo.osmium_powdered" number="1" itemMeta="0" chance="0.05"/>
       </output>
     </recipe>
   </recipeGroup>

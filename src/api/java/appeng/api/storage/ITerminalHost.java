@@ -1,8 +1,8 @@
 package appeng.api.storage;
 
-import appeng.api.util.IConfigureableObject;
+import appeng.api.util.IConfigurableObject;
 
-public interface ITerminalHost extends IStorageMonitorable, IConfigureableObject
+public interface ITerminalHost extends IStorageMonitorable, IConfigurableObject
 {
 
 }
