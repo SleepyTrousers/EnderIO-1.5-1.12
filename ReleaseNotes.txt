@@ -21,6 +21,8 @@ Changes
 - Farm axe detection should now support most modded axes
 - Add ExNihilo recipes to SAG mill default recipes (MatthiasM2)
 - Add "modes" for SAG mill bonuses, allow you to disable the main output bonus (MatthiasM2)
+- Add whitelist for hoes supported by farming station
+- #1490 Add SAG mill recipe for charged certus quartz crystals
 
 Bugs
 - Fix obelisk hovering item being stuttery
