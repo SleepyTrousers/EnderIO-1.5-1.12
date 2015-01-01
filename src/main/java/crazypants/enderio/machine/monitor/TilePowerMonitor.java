@@ -223,8 +223,8 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
       powerInCapBanks = nbtRoot.getLong("powerInCapBanksL");
       maxPowerInCapBanks = nbtRoot.getLong("maxPowerInCapBanksL");
     }
-    powerInMachines = nbtRoot.getInteger("powerInMachines");
-    maxPowerInMachines = nbtRoot.getInteger("maxPowerInMachines");
+    powerInMachines = nbtRoot.getLong("powerInMachines");
+    maxPowerInMachines = nbtRoot.getLong("maxPowerInMachines");
     aveRfSent = nbtRoot.getFloat("aveRfSent");
     aveRfReceived = nbtRoot.getFloat("aveRfReceived");
 
