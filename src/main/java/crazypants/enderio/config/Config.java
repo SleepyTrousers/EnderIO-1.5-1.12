@@ -2,9 +2,7 @@ package crazypants.enderio.config;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -275,7 +273,7 @@ public final class Config {
     "Railcraft:tool.steel.hoe",
     "TConstruct:mattock"
   };
-  public static Set<ItemStack> farmHoes = new HashSet<ItemStack>();
+  public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
 
   public static int magnetPowerUsePerSecondRF = 1;
   public static int magnetPowerCapacityRF = 100000;

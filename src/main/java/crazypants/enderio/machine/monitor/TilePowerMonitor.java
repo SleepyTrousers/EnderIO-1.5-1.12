@@ -24,13 +24,13 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   int energyPerTick = 1;
 
   int powerInConduits;
-  int maxPowerInCoduits;
+  int maxPowerInConduits;
   long powerInCapBanks;
   long maxPowerInCapBanks;
-  int  powerInMachines;
-  int  maxPowerInMachines;
+  long  powerInMachines;
+  long  maxPowerInMachines;
   float aveRfSent;
-  float aveRfRecieved;
+  float aveRfReceived;
 
   boolean engineControlEnabled = false;
   float startLevel = 0.75f;
@@ -106,8 +106,8 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     return powerInConduits;
   }
 
-  public float getMaxPowerInCoduits() {
-    return maxPowerInCoduits;
+  public float getMaxPowerInConduits() {
+    return maxPowerInConduits;
   }
 
   public float getPowerInCapBanks() {
@@ -130,8 +130,8 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     return aveRfSent;
   }
 
-  public float getAveRfRecieved() {
-    return aveRfRecieved;
+  public float getAveRfReceived() {
+    return aveRfReceived;
   }
 
   @Override
@@ -176,19 +176,19 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
   }
 
   private float getPercentFull() {
-    return (float)(powerInConduits + powerInCapBanks) / (maxPowerInCoduits + maxPowerInCapBanks);
+    return (float)(powerInConduits + powerInCapBanks) / (maxPowerInConduits + maxPowerInCapBanks);
   }
 
   private void update(NetworkPowerManager pm) {
     powerInConduits = pm.getPowerInConduits();
-    maxPowerInCoduits = pm.getMaxPowerInConduits();
+    maxPowerInConduits = pm.getMaxPowerInConduits();
     powerInCapBanks = pm.getPowerInCapacitorBanks();
     maxPowerInCapBanks = pm.getMaxPowerInCapacitorBanks();
     powerInMachines = pm.getPowerInReceptors();
     maxPowerInMachines = pm.getMaxPowerInReceptors();
     PowerTracker tracker = pm.getNetworkPowerTracker();
     aveRfSent = tracker.getAverageRfTickSent();
-    aveRfRecieved = tracker.getAverageRfTickRecieved();
+    aveRfReceived = tracker.getAverageRfTickRecieved();
   }
 
   private NetworkPowerManager getPowerManager() {
@@ -215,7 +215,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
 
   public void readPowerInfoFromNBT(NBTTagCompound nbtRoot) {
     powerInConduits = nbtRoot.getInteger("powerInConduits");
-    maxPowerInCoduits = nbtRoot.getInteger("maxPowerInCoduits");
+    maxPowerInConduits = nbtRoot.getInteger("maxPowerInConduits");
     if(nbtRoot.hasKey("powerInCapBanks")) {
       powerInCapBanks = nbtRoot.getInteger("powerInCapBanks");
       maxPowerInCapBanks = nbtRoot.getInteger("maxPowerInCapBanks");
@@ -226,7 +226,7 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     powerInMachines = nbtRoot.getInteger("powerInMachines");
     maxPowerInMachines = nbtRoot.getInteger("maxPowerInMachines");
     aveRfSent = nbtRoot.getFloat("aveRfSent");
-    aveRfRecieved = nbtRoot.getFloat("aveRfRecieved");
+    aveRfReceived = nbtRoot.getFloat("aveRfReceived");
 
     engineControlEnabled = nbtRoot.getBoolean("engineControlEnabled");
     startLevel = nbtRoot.getFloat("startLevel");
@@ -241,13 +241,13 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
 
   public void writePowerInfoToNBT(NBTTagCompound nbtRoot) {
     nbtRoot.setInteger("powerInConduits", powerInConduits);
-    nbtRoot.setInteger("maxPowerInCoduits", maxPowerInCoduits);
+    nbtRoot.setInteger("maxPowerInConduits", maxPowerInConduits);
     nbtRoot.setLong("powerInCapBanksL", powerInCapBanks);
     nbtRoot.setLong("maxPowerInCapBanksL", maxPowerInCapBanks);
-    nbtRoot.setInteger("powerInMachines", powerInMachines);
-    nbtRoot.setInteger("maxPowerInMachines", maxPowerInMachines);
+    nbtRoot.setLong("powerInMachines", powerInMachines);
+    nbtRoot.setLong("maxPowerInMachines", maxPowerInMachines);
     nbtRoot.setFloat("aveRfSent", aveRfSent);
-    nbtRoot.setFloat("aveRfRecieved", aveRfRecieved);
+    nbtRoot.setFloat("aveRfReceived", aveRfReceived);
 
     nbtRoot.setBoolean("engineControlEnabled", engineControlEnabled);
     nbtRoot.setFloat("startLevel", startLevel);
