@@ -29,6 +29,7 @@ public class BlockConduitFacade extends Block implements IPaintedBlock{
     super(new Material(MapColor.stoneColor));
     setHardness(0.5F);
     setStepSound(Block.soundTypeStone);
+    setHarvestLevel("pickaxe", 0);
     setBlockName(ModObject.blockConduitFacade.unlocalisedName);
     setCreativeTab(null);
   }

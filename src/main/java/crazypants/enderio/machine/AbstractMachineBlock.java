@@ -70,6 +70,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     setStepSound(soundTypeMetal);
     setBlockName(mo.unlocalisedName);
     setCreativeTab(EnderIOTab.tabEnderIO);
+    setHarvestLevel("pickaxe", 0);
     random = new Random();
   }
 

@@ -26,6 +26,7 @@ public abstract class BlockEio extends Block {
     setHardness(0.5F);
     setBlockName(name);
     setStepSound(Block.soundTypeMetal);
+    setHarvestLevel("pickaxe", 0);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }
 
