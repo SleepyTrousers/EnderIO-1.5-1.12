@@ -125,9 +125,12 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
 
   @Override
   public int takeEnergy(int max) {
-    int prev = storedEnergyRF;
-    storedEnergyRF = Math.max(0, storedEnergyRF - max);
-    return prev - storedEnergyRF;
+    if (isActive()) {
+      int prev = storedEnergyRF;
+      storedEnergyRF = Math.max(0, storedEnergyRF - max);
+      return prev - storedEnergyRF;
+    }
+    return 0;
   }
 
   @Override
