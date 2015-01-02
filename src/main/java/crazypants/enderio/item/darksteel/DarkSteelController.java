@@ -156,7 +156,7 @@ public class DarkSteelController {
 
       for (int i = 0; i < 4 && toAdd > 0; i++) {
         ItemStack stack = player.inventory.armorInventory[nextIndex];
-        if(EnergyUpgrade.loadFromItem(stack) != null) {
+        if(stack != null && (EnergyUpgrade.loadFromItem(stack) != null || (Config.darkSteelSolarChargeOthers && stack.getItem() instanceof IEnergyContainerItem))) {
           toAdd -= ((IEnergyContainerItem) stack.getItem()).receiveEnergy(stack, toAdd, false);
         }
         nextIndex = (nextIndex + 1) % 4;
