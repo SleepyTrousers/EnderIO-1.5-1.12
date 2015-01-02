@@ -168,7 +168,7 @@ public class CrusherRecipeManager {
     for (Recipe rec : newRecipes) {
       addRecipe(rec);
     }
-    Log.info("Finished processing Alloy Smelter recipes. " + recipes.size() + " recipes avaliable.");
+    Log.info("Finished processing SAG Mill recipes. " + recipes.size() + " recipes avaliable.");
   }
 
   public void addRecipe(ItemStack input, int energyCost, ItemStack output) {
