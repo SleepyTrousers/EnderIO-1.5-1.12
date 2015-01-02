@@ -308,7 +308,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   
   @SubscribeEvent
   public void onBreakSpeed(BreakSpeed event) {
-    if (event.block == this) {
+    if (event.block == this && event.entityPlayer.getCurrentEquippedItem() == null) {
       event.newSpeed *= 3;
     }
   }
