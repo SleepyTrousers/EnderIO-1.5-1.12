@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -294,7 +293,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return false;
     }
     if(i <= maxToolSlot) {
-        return ToolType.isTool(stack) || getLooting(stack) > 0;          
+        if (ToolType.isTool(stack)) {          
+          int otherSlot = i == minToolSlot ? maxToolSlot : minToolSlot;
+          if (inventory[otherSlot] == null) {
+            return true;
+          } else { // let's make sure there's not one of this type in here already
+            for (ToolType type : ToolType.values()) {
+              if (type.itemMatches(inventory[otherSlot]) && type.itemMatches(stack)) {
+                return false;
+              }
+            }
+            return true;
+          }
+        }
     }
     return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
   }
