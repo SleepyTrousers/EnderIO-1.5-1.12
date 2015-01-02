@@ -272,7 +272,9 @@ public final class Config {
     "MekanismTools:ObsidianHoe", "MekanismTools:LapisLazuliHoe", "MekanismTools:OsmiumHoe", "MekanismTools:BronzeHoe", "MekanismTools:GlowstoneHoe", "MekanismTools:SteelHoe",
     "Steamcraft:hoeBrass", "Steamcraft:hoeGildedGold",
     "Railcraft:tool.steel.hoe",
-    "TConstruct:mattock"
+    "TConstruct:mattock",
+    "appliedenergistics2:item.ToolCertusQuartzHoe", "appliedenergistics2:item.ToolNetherQuartzHoe",
+    "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire", "ProjRed|Exploration:projectred.exploration.hoeperidot"
   };
   public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
 

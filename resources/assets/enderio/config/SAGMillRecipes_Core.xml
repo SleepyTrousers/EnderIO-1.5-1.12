@@ -2346,6 +2346,77 @@ addOreDictionaryTooltips=true
         <itemStack modID="exnihilo" itemName="exnihilo.osmium_powdered" number="1" itemMeta="0" chance="0.05"/>
       </output>
     </recipe>
+    <!-- dust to dust -->
+    <recipe name="iron_dust_to_dustIron" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="iron_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustIron" number="2"/>
+        <itemStack oreDictionary="dustNickel" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="gold_dust_to_dustGold" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="gold_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustGold" number="2"/>
+        <itemStack oreDictionary="dustCopper" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="copper_dust_to_dustCopper" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="copper_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustCopper" number="2"/>
+        <itemStack oreDictionary="dustGold" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="tin_dust_to_dustTin" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="tin_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustTin" number="2"/>
+        <itemStack oreDictionary="dustIron" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="silver_dust_to_dustSilver" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="silver_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustSilver" number="2"/>
+        <itemStack oreDictionary="dustLead" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="lead_dust_to_dustLead" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="lead_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustLead" number="2"/>
+        <itemStack oreDictionary="dustSilver" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="nickel_dust_to_dustNickel" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="nickel_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustNickel" number="2"/>
+        <itemStack oreDictionary="dustPlatinum" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="platinum_dust_to_dustPlatinum" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="platinum_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustPlatinum" number="2"/>
+        <itemStack oreDictionary="dustPlatinum" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="aluminum_dust_to_dustAluminum" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="aluminum_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustAluminum" number="2"/>
+        <itemStack oreDictionary="dustAluminum" number="1" chance="0.1"/>
+      </output>
+    </recipe>
+    <recipe name="osmium_dust_to_dustOsmium" energyCost="3200" bonusType="chance_only">
+      <input><itemStack modID="exnihilo" itemName="osmium_dust"/></input>
+      <output>
+        <itemStack oreDictionary="dustOsmium" number="2"/>
+        <itemStack oreDictionary="dustOsmium" number="1" chance="0.1"/>
+      </output>
+    </recipe>
   </recipeGroup>
 
   <grindingBalls>
