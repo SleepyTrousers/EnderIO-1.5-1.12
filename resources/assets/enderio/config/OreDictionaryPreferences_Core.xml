@@ -1,4 +1,10 @@
 <!--
+
+IMPORTANT:
+  This is the core recipe file. Modifying this file will have no effect.
+  It will be rewritten by EnderIO and all modifications made to it will be lost. To add
+  or modify ore dict preferences please use 'OreDictionaryPreferences_User.xml'
+  
 This file contains the preferred outputs from Ender IO machines for items registered in the OreDictionary
 
 Details of itemStack definition can be found in SAGMillRecipes_Core.xml

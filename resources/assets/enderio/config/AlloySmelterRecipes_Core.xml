@@ -1,5 +1,10 @@
 <!-- 
 
+IMPORTANT:
+  This is the core recipe file. Modifying this file will have no effect.
+  It will be rewritten by EnderIO and all modifications made to it will be lost. To add
+  or modify recipes please use 'AlloySmelterRecipes_User.xml'
+
 Please refer to the documentation in SAGMillRecipes_Core/_User for details on the format used.
 Recipes for the alloy smelter have multiple inputs (up to three) and a single output. Multiple output tags
 can be used as long as they are for the same item. This allows 'chance' outputs, for example, if you wanted to 
