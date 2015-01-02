@@ -80,6 +80,9 @@ enderio.itemGasConduit.tooltip.maxExtract=Макс. извлечение:
 enderio.itemGasConduit.tooltip.maxIo=Макс. IO:
 enderio.itemGasConduit.tooltip.detailed.line1=Передаёт газы совместимые с Mekanism
 
+enderio.itemMEConduit.name=МЭ труба
+enderio.itemMEConduitDense.name=Плотная МЭ труба
+
 //Materials
 enderio.itemMaterial.name=Материалы
 enderio.silicon.name=Кремний
@@ -97,23 +100,30 @@ enderio.tooltip.isBeaconBase=Может быть использовано, ка�
 
 //Fluids
 fluid.nutrient_distillation=Питательный дистиллят
+tile.fluid.nutrient_distillation.name=Питательный дистиллят
 item.bucketNutrient_distillation.name=Ведро питательного дистиллята
 
 fluid.hootch=Самогон
+tile.fluid.hootch.name=Самогон
 item.bucketHootch.name=Ведро самогона
 fluid.fire_water=Огненная вода
+tile.fluid.fire_water.name=Огненная вода
 item.bucketFire_water.name=Ведро огненной воды
 fluid.rocket_fuel=Ракетное топливо
+tile.fluid.rocket_fuel.name=Ракетное топливо
 item.bucketRocket_fuel.name=Ведро ракетного топлива
 fluid.eio.xpjuice=Жидкий опыт
+tile.fluid.eio.xpjuice.name=Жидкий опыт
 item.bucketXpjuice.name=Ведро опыта
 
 
 enderio.fluid.millibucket.abr=мВ
 
-enderio.fuel.tooltip.heading=Детали о топливе
+enderio.fuel.tooltip.heading=Информация о топливе
 enderio.fuel.tooltip.burnTime=время горения
 enderio.fluid.millibucketsTick=мВ/тик
+enderio.coolant.tooltip.heading=Хладагент
+enderio.coolant.tooltip.degreesPerBucket=Градус за ведро
 enderio.gas.gasTick=Газ/тик
 
 
@@ -127,8 +137,8 @@ enderio.enderCrystal.name=Кристалл Края
 enderio.attractorCrystal.name=Привлекающий кристалл
 enderio.darkGrindingBall.name=Шарик тёмной стали
 enderio.darkGrindingBall.tooltip.detailed.line1=Измельчающий шарик для дробилки
-enderio.darkGrindingBall.tooltip.detailed.line2=Основной вывод
-enderio.darkGrindingBall.tooltip.detailed.line3=Бонусный вывод
+enderio.darkGrindingBall.tooltip.detailed.line2=Основной выход
+enderio.darkGrindingBall.tooltip.detailed.line3=Бонусный выход
 enderio.darkGrindingBall.tooltip.detailed.line4=Снижение мощности
 
 tile.blockReinforcedObsidian.name=Укреплённый обсидиан
@@ -174,6 +184,7 @@ enderio.powderGold.name=Золотой порошок
 enderio.powderCopper.name=Медный порошок
 enderio.powderTin.name=Оловянный порошок
 enderio.powderEnder.name=Порошок из жемчуга Края
+enderio.ingotEnderiumBase.name=Основа Края
 
 //Capacitors
 enderio.itemBasicCapacitor.name=Конденсатор
@@ -189,7 +200,7 @@ enderio.machine.tooltip.clearConfig=Это очистит всю хранящу�
 //Machines
 tile.blockStirlingGenerator.name=Генератор Стирлинга
 tile.blockStirlingGenerator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
-tile.blockStirlingGenerator.tooltip.detailed.line2=Может быть улучшен, чтобы увеличить вывод
+tile.blockStirlingGenerator.tooltip.detailed.line2=Может быть улучшен, чтобы увеличить выход
 tile.blockStirlingGenerator.tooltip.detailed.line3=и эффективность
 
 tile.blockReservoir.name=Резервуар
@@ -198,7 +209,7 @@ tile.blockReservoir.tooltip.detailed.line2=Добавьте два ведра в
 tile.blockReservoir.tooltip.detailed.line3=бесконечного источника воды
 tile.blockReservoir.tooltip.detailed.line4=Производит одно ведро в секунду
 tile.blockReservoir.tooltip.detailed.line5=ПКМ с гаечным ключом, чтобы
-tile.blockReservoir.tooltip.detailed.line6=включить авто-вывод
+tile.blockReservoir.tooltip.detailed.line6=включить авто-выход
 
 tile.blockAlloySmelter.name=Завод сплавов
 tile.blockAlloySmelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
@@ -212,16 +223,17 @@ tile.blockSolarPanel.advanced.name=Продвинутая фотовольтов
 tile.blockSolarPanel.tooltip.detailed.line1=Производит энергию в светлое время суток
 tile.blockSolarPanel.tooltip.detailed.line2=Должна иметь чистое пространство
 tile.blockSolarPanel.tooltip.detailed.line3=к небу
-enderio.maxSolorProduction=Макс. вывод
+enderio.maxSolorProduction=Макс. выход
+enderio.tooltip.efficiency=Эффективность
 
 item.itemElectricLight.name=Электрический светильник
 item.itemElectricLight.tooltip.detailed.line1=Освещает большую площадь при подаче
-item.itemElectricLight.tooltip.detailed.line2=энергии и сигнала красного камня
+item.itemElectricLight.tooltip.detailed.line2=энергии и сигнала красного камня.
 
 item.itemElectricLightInverted.name=Электрический светильник (Перевёрнутый)
 item.itemElectricLightInverted.tooltip.detailed.line1=Освещает большую площадь при подаче
-item.itemElectricLightInverted.tooltip.detailed.line2=энергии
-item.itemElectricLightInverted.tooltip.detailed.line3=Выключается по сигналу красного камня
+item.itemElectricLightInverted.tooltip.detailed.line2=энергии.
+item.itemElectricLightInverted.tooltip.detailed.line3=Выключается по сигналу красного камня.
 
 item.itemLight.name=Светильник
 item.itemLight.tooltip.detailed.line1=Излучает свет по
@@ -231,11 +243,38 @@ item.itemLightInverted.name=Светильник (Перевёрнутый)
 item.itemLightInverted.tooltip.detailed.line1=Излучает свет, отключается по
 item.itemLightInverted.tooltip.detailed.line2=сигналу красного камня
 
-tile.blockCapacitorBank.name=Блок конденсаторов
-tile.blockCapacitorBank.creative.name=Творческий блок конденсаторов
-tile.blockCapacitorBank.tooltip.detailed.line1=Мульти-блок для хранения энергии.
-tile.blockCapacitorBank.tooltip.detailed.line2=Может заряжать РФ-предметы.
+item.itemWirelessLight.name=Беспроводной электрический светильник
+item.itemWirelessLight.tooltip.detailed.line1=Освещает большую площадь при подаче
+item.itemWirelessLight.tooltip.detailed.line2=энергии и сигнала красного камня.
+item.itemWirelessLight.tooltip.detailed.line3=Может получать энергию от беспроводных зарядников.
+
+item.itemWirelessLightInverted.name=Беспроводной электрический светильник (Перевёрнутый)
+item.itemWirelessLightInverted.tooltip.detailed.line1=Освещает большую площадь при подаче
+item.itemWirelessLightInverted.tooltip.detailed.line2=энергии.
+item.itemWirelessLightInverted.tooltip.detailed.line3=Выключается по сигналу красного камня.
+item.itemWirelessLightInverted.tooltip.detailed.line4=Может получать энергию от беспроводных зарядников.
+
+tile.blockCapacitorBank.name=Блок конденсаторов (Устаревший)
+tile.blockCapacitorBank.creative.name=Творческий блок конденсаторов (Устаревший)
+tile.blockCapacitorBank.tooltip.detailed.line1=Переделайте в новый блок, положив
+tile.blockCapacitorBank.tooltip.detailed.line2=в сетку создания.
 tile.blockCapacitorBank.tooltipPrefix=Содержит
+
+tile.blockCapBank.creative.name=Творческий блок конденсаторов
+tile.blockCapBank.simple.name=Основной блок конденсаторов
+tile.blockCapBank.activated.name=Блок конденсаторов
+tile.blockCapBank.vibrant.name=Вибрирующий блок конденсаторов
+tile.blockCapBank.tooltip.detailed.line1=Мульти-блок для хранения энергии.
+tile.blockCapBank.tooltip.detailed.line2=Может заряжать РФ-предметы.
+tile.blockCapBank.tooltip.detailed.line3=Shift-ПКМ, по экрану пустой рукой,
+tile.blockCapBank.tooltip.detailed.line4=чтобы изменить отображаемую информацию
+tile.blockCapBank.tooltipPrefix=Содержит
+
+
+enderio.capbank.maxIO=Макс. вход/выход
+enderio.capbank.maxIn=Макс. вход
+enderio.capbank.maxOut=Макс. выход
+enderio.capbank.change=Вход/выход
 
 tile.blockWirelessCharger.name=Беспроводной зарядник
 tile.blockWirelessCharger.tooltip.detailed.line1=Заряжает ближайшие предметы 
@@ -244,15 +283,37 @@ tile.blockWirelessCharger.tooltip.detailed.line2=в инвентарях игр�
 tile.blockSagMill.name=Дробилка
 tile.blockSagMill.tooltip.detailed.line1=Дробит руду и другие предметы
 tile.blockSagMill.tooltip.detailed.line2=Добавьте измельчающие шарики, чтобы увеличить
-tile.blockSagMill.tooltip.detailed.line3=вывод и эффективность
+tile.blockSagMill.tooltip.detailed.line3=выход и эффективность
 tile.blockSagMill.tooltip.detailed.line4=Улучшите конденсаторами, чтобы увеличить
 tile.blockSagMill.tooltip.detailed.line5=скорость и хранилище энергии
 tile.blockSagMill.tooltipPrefix=Содержит
 
-tile.blockHyperCube.name=Пространственный приёмопередатчик
-tile.blockHyperCube.tooltip.detailed.line1=Переносит предметы, жидкости и энергию
-tile.blockHyperCube.tooltip.detailed.line2=без проводов на любое расстояние и
-tile.blockHyperCube.tooltip.detailed.line3=между измерениями
+tile.blockHyperCube.name=Пространственный приёмопередатчик (Устаревший)
+tile.blockHyperCube.tooltip.detailed.line1=Переделайте под новую модель, положив
+tile.blockHyperCube.tooltip.detailed.line2=в сетку создания
+
+tile.blockTransceiver.name=Пространственный приёмопередатчик
+tile.blockTransceiver.tooltip.detailed.line1=Переносит предметы, жидкости и энергию
+tile.blockTransceiver.tooltip.detailed.line2=без проводов на любое расстояние и
+tile.blockTransceiver.tooltip.detailed.line3=между измерениями
+
+tile.blockEnderRail.name=Рельс Края
+tile.blockEnderRail.tooltip.detailed.line1=Телепортирует вагонетки, когда поставлен
+tile.blockEnderRail.tooltip.detailed.line2=на пространственный приёмопередатчик
+tile.blockEnderRail.tooltip.detailed.line3=Установите направления, используя
+tile.blockEnderRail.tooltip.detailed.line4=вкладку "рельс" в приёмопередатчике
+tile.blockEnderRail.tooltip.detailed.line5=Установите направление с помощью Shift-ПКМ
+tile.blockEnderRail.tooltip.detailed.line6=ключом
+
+enderio.trans.showChannels=<Shift, чтобы увидеть каналы>
+
+enderio.trans.power=Энергия
+enderio.trans.item=Предмет
+enderio.trans.fluid=Жидкость
+enderio.trans.rail=Рельс
+
+enderio.trans.recieving=Получение
+enderio.trans.sending=Отправка
 
 tile.blockPowerMonitor.name=Индикатор мощности
 tile.blockPowerMonitor.tooltip.detailed.line1=Показывает сведения о затратах энергии
@@ -273,7 +334,7 @@ tile.blockEnchanter.tooltip.detailed.line2=зачарованные книги
 tile.blockCombustionGenerator.name=Генератор внутреннего сгорания
 tile.blockCombustionGenerator.tooltip.detailed.line1=Сжигает жидкое топливо для производства энергии
 tile.blockCombustionGenerator.tooltip.detailed.line2=Требует охладитель (например воду)
-tile.blockCombustionGenerator.tooltip.detailed.line3=Вывод зависит от топлива
+tile.blockCombustionGenerator.tooltip.detailed.line3=Выход зависит от топлива
 
 tile.blockZombieGenerator.name=Зомби генератор
 tile.blockZombieGenerator.tooltip.detailed.line1=Потребляет питательный дистиллят
@@ -316,6 +377,8 @@ tile.blockTank.tooltip.detailed.line1=Переносной жидкостный 
 tile.blockTank.tooltip.detailed.line2=Может быть использован для опустошения и
 tile.blockTank.tooltip.detailed.line3=заполнения жидкостных контейнеров
 enderio.tank.tank=Резервуар
+enderio.tooltip.none=Нет
+enderio.tooltip.fluidStored=Содержится жидкость
 
 tile.blockCrafter.name=Создатель
 tile.blockCrafter.tooltip.detailed.line1=Электрический авто-создатель
@@ -355,10 +418,14 @@ tile.blockSpawnGuard.tooltip.detailed.line1=Запрещает мобам поя
 tile.blockSpawnGuard.tooltip.detailed.line2=в пределах действия обелиска
 
 tile.blockExperienceObelisk.name=Обелиск опыта
-tile.blockExperienceObelisk.tooltip.detailed.line1=Когда поставлен на резервуар,
-tile.blockExperienceObelisk.tooltip.detailed.line2=нажмите ПКМ, чтобы получить опыт
-tile.blockExperienceObelisk.tooltip.detailed.line3=Shift-ПКМ пустой рукой,
-tile.blockExperienceObelisk.tooltip.detailed.line4=чтобы слить свой опыт в резервуар
+tile.blockExperienceObelisk.tooltip.detailed.line1=Содержит опыт
+tile.blockExperienceObelisk.tooltip.detailed.line2=Может отдавать жидкий опыт
+tile.blockExperienceObelisk.tooltip.detailed.line3=присоединённым резервуарам
+
+tile.blockBuffer.item.name=Предметный буфер
+tile.blockBuffer.power.name=Энергобуфер
+tile.blockBuffer.omni.name=Универсальный буфер
+tile.blockBuffer.creative.name=Творческий буфер
 
 enderio.machine.tooltip.configured=(Настроен)
 
@@ -374,6 +441,15 @@ tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line2=Может быт
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=невидима, когда покрашена в почти
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=прозрачное стекло
 
+tile.blockDarkSteelAnvil.intact.name=Наковальня из тёмной стали
+tile.blockDarkSteelAnvil.slightlyDamaged.name=Повреждённая наковальня из тёмной стали
+tile.blockDarkSteelAnvil.veryDamaged.name=Сильно повреждённая наковальня из тёмной стали
+tile.blockDarkSteelAnvil.tooltip.common.line1=Устойчива к повреждениям
+tile.blockDarkSteelAnvil.tooltip.detailed.line1=Намного прочнее
+tile.blockDarkSteelAnvil.tooltip.detailed.line2=обычной наковальни
+
+tile.blockDarkSteelLadder.name=Лестница из тёмной стали
+tile.blockDarkSteelLadder.tooltip.common.line1=Быстрее обычных лестниц
 
 //Travel
 tile.blockTravelAnchor.name=Якорь путешествия
@@ -405,7 +481,8 @@ tile.blockPaintedStair.name=Покрашенные ступени
 tile.blockPaintedSlab.name=Покрашенная плита
 tile.blockPaintedDoubleSlab.name=Покрашенная плита
 tile.blockPaintedGlowstone.name=Покрашенный светящийся камень
-enderio.painter.tooltip.wasPainted=§oКак Вы думаете, что это будет делать?
+tile.blockPaintedCarpet.name=Покрашенный ковёр
+enderio.painter.tooltip.wasPainted=§oКак Вы думаете, что оно будет делать?
 
 tile.blockPainter.tooltip.detailed.line1=Используется для покраски:
 tile.blockPainter.tooltip.detailed.line2=Фасадов труб, ступенек, заборов,
@@ -452,6 +529,7 @@ item.itemXpTransfer.tooltip.detailed.line4=в резервуар
 skullZombieElectrode.name=Зомби-электрод
 skullZombieController.name=Зомби-контроллер
 skullZombieFrankenstien.name=Frank'N'Zombie
+skullEnderResonator.name=Резонатор Края
 
 item.itemSpawnEggEnderIO.name=Призвать существо - 
 
@@ -560,7 +638,16 @@ enderio.darksteel.upgrade.nightVision.name=Ночное видение
 enderio.darksteel.upgrade.nightVision.enabled=Ночное видение включено
 enderio.darksteel.upgrade.nightVision.disabled=Ночное видение выключено
 
+enderio.darksteel.upgrade.solar_one.name=Солнечная батарея I
+enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Генерирует энергию от солнца.
+
+enderio.darksteel.upgrade.solar_two.name=Солнечная батарея II
+enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1==Генерирует энергию от солнца.
+
 //------GUI
+
+enderio.gui.simple.in=Макс. вход:
+enderio.gui.simple.out=Макс. выход:
 
 enderio.gui.enabled=Включено
 enderio.gui.disabled=Выключено
@@ -618,7 +705,7 @@ enderio.gui.mjReader.noPowerFromSide=не может получать энерг
 enderio.gui.mjReader.connectionDir=соединение с
 enderio.gui.mjReader.extractedItems=Экспортируемые предметы
 enderio.gui.mjReader.extractedItem=Предмет
-enderio.gui.mjReader.noOutputs=нет доступных выводов
+enderio.gui.mjReader.noOutputs=нет доступных выходов
 enderio.gui.mjReader.insertedInto=будет направлен:
 enderio.gui.mjReader.noItems=Не получает предметов.
 enderio.gui.mjReader.noItem=Не может получать
@@ -656,6 +743,8 @@ enderio.gui.alloy.mode.furnace=Только обычные рецепты
 //Vat
 enderio.vat.outputTank=Выход чана
 enderio.vat.inputTank=Вход чана
+enderio.gui.machine.vat.dump.1=Сбросить резервуар входа
+enderio.gui.machine.vat.dump.2=Сбросить резервуар выхода
 
 //Combustion Gen
 enderio.combustionGenerator.coolantTank=Охладитель
@@ -687,6 +776,7 @@ enderio.gui.conduit.ioMode.input=Извлекать
 enderio.gui.conduit.ioMode.output=Помещать
 enderio.gui.conduit.ioMode.disabled=Отключен
 enderio.gui.conduit.ioMode.notSet=По-умолчанию
+tile.blockConduitBundle.name=Коннектор для труб
 
 enderio.gui.conduit.item.insertionFilter=Фильтр на помещение
 enderio.gui.conduit.item.extractionFilter=Фильтр на извлечение
@@ -696,7 +786,7 @@ enderio.gui.conduit.item.ignoreMetaData=Игнорировать метадан�
 enderio.gui.conduit.item.matchMetaData=Соблюдать метаданные
 enderio.gui.conduit.item.whitelist=Белый список
 enderio.gui.conduit.item.blacklist=Чёрный список
-enderio.gui.conduit.item.stickyEnabled=Включён "липкий" режим|Выбранные предметы будут|отправляться только на|"липкие" выводы.
+enderio.gui.conduit.item.stickyEnabled=Включён "липкий" режим|Выбранные предметы будут|отправляться только на|"липкие" выходы.
 enderio.gui.conduit.item.stickyDisbaled="Липкий" режим выключен
 enderio.gui.conduit.item.ignoreNBT=Игнорировать NBT
 enderio.gui.conduit.item.matchNBT=Соблюдать NBT
@@ -710,12 +800,16 @@ enderio.gui.conduit.item.priority=Приоритет
 
 enderio.gui.conduit.redstone.signalColor=Цвет сигнала
 enderio.gui.conduit.redstone.color=Цвет
+enderio.gui.conduit.redstone.signalStrengh=Сильный сигнал
+enderio.gui.conduit.redstone.signalStrengh.tooltip=Испускает сильный сигнал красного камня
 
 enderio.gui.conduit.fluid.autoExtract=Авто-извлечение
 enderio.gui.conduit.fluid.filter=Фильтр
 
 enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 
+//Enchants
+enchantment.enderio.soulBound=Печать души
 
 //Configuration
 enderio.config.title=Конфигурация Ender IO
@@ -761,7 +855,3 @@ enderio.config.fluid.tooltip=Чистая энергия жидкостей!
 
 enderio.config.spawner=Настройки электрического спаунера
 enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
-
-
-//Mobs
-entity.EnderIO.Enderminy.name=Enderminy
