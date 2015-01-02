@@ -268,6 +268,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     }
     faceModes.put(faceHit, mode);
     if(updateReceptors) {
+      validateModeForReceptor(faceHit);
       receptorsDirty = true;
     }
     if(worldObj != null) {
@@ -501,6 +502,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     return new EnergyReceptor(this, pi, dir);
   }
 
+  private void validateModeForReceptor(ForgeDirection dir) {
+    validateModeForReceptor(getEnergyReceptorForFace(dir));
+  }
+  
   private void validateModeForReceptor(EnergyReceptor er) {
     IoMode ioMode = getIoMode(er.getDir());
     if((ioMode == IoMode.PUSH_PULL || ioMode == IoMode.NONE) && er.getConduit() == null) {
@@ -513,9 +518,8 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     if(ioMode == IoMode.PULL && er.getReceptor().isInputOnly()) {
       setIoMode(er.getDir(), IoMode.PUSH, false);
     } else if(ioMode == IoMode.PUSH && er.getReceptor().isOutputOnly()) {
-      setIoMode(er.getDir(), IoMode.PULL, false);
+      setIoMode(er.getDir(), IoMode.DISABLED, false);
     }
-
   }
 
   @Override
