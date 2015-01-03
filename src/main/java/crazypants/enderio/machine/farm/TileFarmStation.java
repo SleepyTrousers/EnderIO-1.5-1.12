@@ -56,9 +56,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       if (item == null) {
         return false;
       }
-      return match(item);
+      return match(item) && !isBrokenTinkerTool(item);
     }
-    
+
+    private boolean isBrokenTinkerTool(ItemStack item)
+    {
+      return item.hasTagCompound() && item.getTagCompound().hasKey("InfiTool") && item.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
+    }
+
     abstract boolean match(ItemStack item);
 
     public static boolean isTool(ItemStack stack) {
@@ -187,7 +192,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private ItemStack getTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(type.itemMatches(inventory[i])) {
+      if(type.itemMatches(inventory[i]) && inventory[i].stackSize>0) {
         return inventory[i];
       }
     }
@@ -218,7 +223,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       tool.damageItem(1, farmerJoe);
     }
 
-    if(canDamage && tool.getItemDamage() >= tool.getMaxDamage()) {
+    if(tool.stackSize == 0 || (canDamage && tool.getItemDamage() >= tool.getMaxDamage())) {
       destroyTool(type);
     }
   }
@@ -229,7 +234,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private void destroyTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(type.itemMatches(inventory[i])) {
+      if(type.itemMatches(inventory[i]) && inventory[i].stackSize==0) {
         inventory[i] = null;
         markDirty();
         return;
@@ -306,6 +311,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
             return true;
           }
         }
+      return false;
     }
     return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
   }
@@ -485,7 +491,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       if(entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();
-
         int numInserted = insertResult(stack);
         stack.stackSize -= numInserted;
         item.setEntityItemStack(stack);
@@ -494,8 +499,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         }
       }
     }
-
   }
+
 
   private int insertResult(ItemStack stack) {
 
