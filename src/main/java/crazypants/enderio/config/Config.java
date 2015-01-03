@@ -334,6 +334,7 @@ public final class Config {
   public static double killerJoeHooverXpWidth = 5;
   public static double killerJoeHooverXpLength = 10;
   public static int killerJoeMaxXpLevel = Integer.MAX_VALUE;
+  public static boolean killerJoeMustSee = false;
 
   public static boolean allowTileEntitiesAsPaintSource = true;
 
@@ -1004,6 +1005,8 @@ public final class Config {
     killerJoeHooverXpWidth = config.get(sectionKiller.name, "killerJoeHooverXpWidth", killerJoeHooverXpWidth,
         "The distance from which XP will be gathered in front of Joe.").getDouble(killerJoeHooverXpWidth);
     killerJoeMaxXpLevel = config.get(sectionMisc.name, "killerJoeMaxXpLevel", killerJoeMaxXpLevel, "Maximum level of XP the killer joe can contain.").getInt();
+
+    killerJoeMustSee = config.get(sectionKiller.name, "killerJoeMustSee", killerJoeMustSee, "Set whether the Killer Joe can attack through blocks.").getBoolean();
 
     isGasConduitEnabled = config.getString("isGasConduitEnabled", sectionItems.name, isGasConduitEnabled,
         "Can be set to 'auto', 'true' or 'false'. When set to auto the gas conduit will only be enabled when Mekanism is installed.");
