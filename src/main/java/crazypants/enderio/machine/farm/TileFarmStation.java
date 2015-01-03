@@ -49,7 +49,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       }
     },
     
-    AXE     { boolean match(ItemStack item) { return item.getItem().getHarvestLevel(item, "axe") > 0;         }},
+    AXE     { boolean match(ItemStack item) { return item.getItem().getHarvestLevel(item, "axe") >= 0;         }},
     TREETAP { boolean match(ItemStack item) { return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap;}};
     
     public final boolean itemMatches(ItemStack item) {
