@@ -165,7 +165,7 @@ addOreDictionaryTooltips=true
 
     <recipe name="CoalOre" energyCost="3600">
       <input>
-        <itemStack modID="minecraft" itemName="coal_ore" />
+        <itemStack oreDictionary="oreCoal" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="coal" number="3" />
@@ -398,7 +398,7 @@ addOreDictionaryTooltips=true
 
     <recipe name="RedstoneOre" energyCost="3000">
       <input>
-        <itemStack modID="minecraft" itemName="redstone_ore" />
+        <itemStack oreDictionary="oreRedstone" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="redstone" number="8" />
@@ -410,7 +410,7 @@ addOreDictionaryTooltips=true
 
     <recipe name="DiamondOre" energyCost="3000">
       <input>
-        <itemStack modID="minecraft" itemName="diamond_ore" />
+        <itemStack oreDictionary="oreDiamond" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="diamond" number="1" />
@@ -420,7 +420,7 @@ addOreDictionaryTooltips=true
 
     <recipe name="LapisLazuliOre" energyCost="3000">
       <input>
-        <itemStack modID="minecraft" itemName="lapis_ore" />
+        <itemStack oreDictionary="oreLapis" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="dye" itemMeta="4" number="8" />
@@ -431,7 +431,7 @@ addOreDictionaryTooltips=true
 
     <recipe name="Quartz Ore" energyCost="7200">
       <input>
-        <itemStack modID="minecraft" itemName="quartz_ore" />
+        <itemStack oreDictionary="oreQuartz" />
       </input>
       <output>
         <itemStack modID="minecraft" itemName="quartz" number="4" />
