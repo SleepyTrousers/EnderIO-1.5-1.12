@@ -191,7 +191,7 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ);
     for (int facing:frontFaceAndSides)
     {
-      if (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.xCoord + faceMidPoints[facing][0], this.yCoord + +faceMidPoints[facing][1], this.zCoord + +faceMidPoints[facing][2]), entPos) == null) return true;
+      if (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.xCoord + faceMidPoints[facing][0], this.yCoord + faceMidPoints[facing][1], this.zCoord + faceMidPoints[facing][2]), entPos) == null) return true;
     }
     return false;
   }
