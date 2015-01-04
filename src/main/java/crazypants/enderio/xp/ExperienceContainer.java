@@ -148,7 +148,7 @@ public class ExperienceContainer {
   }
 
   public boolean canFill(ForgeDirection from, Fluid fluid) {
-    return fluid != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
   }
   
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {

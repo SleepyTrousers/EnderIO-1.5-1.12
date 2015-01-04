@@ -260,13 +260,20 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
   }
 
   public void setIoMode(ForgeDirection faceHit, IoMode mode, boolean updateReceptors) {
-    if(mode == IoMode.NONE && faceModes == null) {
-      return;
+    if(mode == IoMode.NONE) {
+      if(faceModes == null) {
+        return;
+      }
+      faceModes.remove(faceHit);
+      if(faceModes.isEmpty()) {
+        faceModes = null;
+      }
+    } else {
+      if(faceModes == null) {
+        faceModes = new EnumMap<ForgeDirection, IoMode>(ForgeDirection.class);
+      }
+      faceModes.put(faceHit, mode);
     }
-    if(faceModes == null) {
-      faceModes = new EnumMap<ForgeDirection, IoMode>(ForgeDirection.class);
-    }
-    faceModes.put(faceHit, mode);
     if(updateReceptors) {
       validateModeForReceptor(faceHit);
       receptorsDirty = true;
