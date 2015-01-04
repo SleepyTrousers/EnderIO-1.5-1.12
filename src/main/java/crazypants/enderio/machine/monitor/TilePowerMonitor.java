@@ -65,6 +65,30 @@ public class TilePowerMonitor extends AbstractPowerConsumerEntity implements IIn
     return 0;
   }
 
+  public boolean isEngineControlEnabled() {
+    return this.engineControlEnabled;
+  }
+
+  public void setEngineControlEnabled(boolean control) {
+    this.engineControlEnabled = control;
+  }
+
+  public float getStartLevel() {
+    return this.startLevel;
+  }
+
+  public void setStartLevel(float start) {
+    this.startLevel = start;
+  }
+
+  public float getStopLevel() {
+    return this.stopLevel;
+  }
+
+  public void setStopLevel(float stop) {
+    this.stopLevel = stop;
+  }
+
   int asPercentInt(float val) {
     return Math.round(val * 100);
   }
