@@ -465,10 +465,9 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
         + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
 
-    fluidXpJuice = FluidRegistry.getFluid("xpjuice");
     if(!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid("xpjuice").setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+      fluidXpJuice = new Fluid(Config.xpJuiceName).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
       itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
     } else {
@@ -600,9 +599,9 @@ public class EnderIO {
     PaintSourceValidator.instance.loadConfig();
 
     if(fluidXpJuice == null) { //should have been registered by open blocks 
-      fluidXpJuice = FluidRegistry.getFluid("xpjuice");
+      fluidXpJuice = FluidRegistry.getFluid(getXPJuiceName());
       if(fluidXpJuice == null) {
-        Log.error("Liquid XP registration left to open blocks but could not be found.");
+        Log.error("Liquid XP Juice registration left to open blocks but could not be found.");
       }
     }
 
@@ -625,6 +624,23 @@ public class EnderIO {
     }
 
     addModIntegration();
+  }
+
+  private static String getXPJuiceName() {
+    String openBlocksXPJuiceName = null;
+
+    try {
+      Field getField = Class.forName("openblocks.Config").getField("xpFluidId");
+      openBlocksXPJuiceName = (String) getField.get(null);
+    }catch(Exception e) {
+    }
+
+    if(openBlocksXPJuiceName != null && !Config.xpJuiceName.equals(openBlocksXPJuiceName)) {
+      Log.info("Overwriting XP Juice name with '" + openBlocksXPJuiceName + "' taken from OpenBlocks' config");
+      return openBlocksXPJuiceName;
+    }
+
+    return Config.xpJuiceName;
   }
 
   private void addModIntegration() {
