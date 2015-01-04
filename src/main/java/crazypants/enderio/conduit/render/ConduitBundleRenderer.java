@@ -271,7 +271,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     return BlockConduitBundle.rendererId;
   }
 
-  private class FacadeAccessWrapper extends IBlockAccessWrapper {
+  public static class FacadeAccessWrapper extends IBlockAccessWrapper {
 
     public FacadeAccessWrapper(IBlockAccess ba) {
       super(ba);
