@@ -135,6 +135,9 @@ public class ExperienceContainer {
 
   
   public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    if(EnderIO.fluidXpJuice == null) {
+      return null;
+    }
     int available = getFluidAmount();
     int canDrain = Math.min(available, maxDrain);
     if(doDrain) {      
@@ -175,10 +178,13 @@ public class ExperienceContainer {
   }
   
   public boolean canDrain(ForgeDirection from, Fluid fluid) {
-    return fluid != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
+    return fluid != null && EnderIO.fluidXpJuice != null && fluid.getID() == EnderIO.fluidXpJuice.getID();
   }
   
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {    
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    if(EnderIO.fluidXpJuice == null) {
+      return new FluidTankInfo[0];
+    }
     return new FluidTankInfo[] {
       new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getMaxFluidAmount())  
     };
