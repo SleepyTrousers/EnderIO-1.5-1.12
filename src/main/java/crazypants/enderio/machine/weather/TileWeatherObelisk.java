@@ -53,7 +53,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity {
     }
 
     void thunder(TileEntity te, boolean state) {
-      te.getWorldObj().getWorldInfo().setThundering(false);
+      te.getWorldObj().getWorldInfo().setThundering(state);
     }
     
     boolean isValid(ItemStack item) {
