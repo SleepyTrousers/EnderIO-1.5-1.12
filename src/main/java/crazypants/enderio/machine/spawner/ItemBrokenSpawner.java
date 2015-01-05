@@ -35,14 +35,20 @@ public class ItemBrokenSpawner extends Item {
     }
     return stack.stackTagCompound.getString("mobType");
   }
-  
-  public static ItemStack createStackForMobType(String mobType) {
+
+  public static ItemStack createStackForMobType(String mobType)
+  {
+    return createStackForMobType(mobType,false);
+  }
+
+  public static ItemStack createStackForMobType(String mobType, boolean wither) {
     if(mobType == null) {
       return null;
     }
     ItemStack res = new ItemStack(EnderIO.itemBrokenSpawner);
     res.stackTagCompound = new NBTTagCompound();
     res.stackTagCompound.setString("mobType", mobType);
+    if (wither) res.stackTagCompound.setBoolean("isWither",true);
     return res;
   }
   

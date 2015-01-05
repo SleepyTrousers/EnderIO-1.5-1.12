@@ -3,6 +3,7 @@ package crazypants.enderio.machine.spawner;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
@@ -46,6 +47,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   private ICapacitor capacitor;
 
   private boolean isSpawnMode = true;
+  private boolean isWitherSkeleton = false;
 
   public TilePoweredSpawner() {
     super(new SlotDefinition(1, 1, 1));
@@ -149,13 +151,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
   @Override
   public int getPowerUsePerTick() {
-    double multuplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
+    double multiplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(logic.getEntityNameToSpawn());
+    if (isWitherSkeleton) multiplier *= 10;
     if(capacitorType.ordinal() == 0) {
-      return (int) Math.round(POWER_PER_TICK_ONE * multuplier);
+      return (int) Math.round(POWER_PER_TICK_ONE * multiplier);
     } else if(capacitorType.ordinal() == 1) {
-      return (int) Math.round(POWER_PER_TICK_TWO * multuplier);
+      return (int) Math.round(POWER_PER_TICK_TWO * multiplier);
     }
-    return (int) Math.round(POWER_PER_TICK_THREE * multuplier);
+    return (int) Math.round(POWER_PER_TICK_THREE * multiplier);
   }
 
   @Override
@@ -191,6 +194,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     }
     logic.setEntityName(mobType);
     logic.resetTimer();
+    this.isWitherSkeleton = nbtRoot.getBoolean("isWither");
     if(!nbtRoot.hasKey("isSpawnMode")) {
       isSpawnMode = true;
     } else {
@@ -207,6 +211,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
     } else {
       BlockPoweredSpawner.writeMobTypeToNBT(nbtRoot, mobType);
     }
+    nbtRoot.setBoolean("isWither", this.isWitherSkeleton);
     nbtRoot.setBoolean("isSpawnMode", isSpawnMode);
     super.writeCommon(nbtRoot);
   }
@@ -355,7 +360,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
               resetTimer();
               return;
             }
-
+            if (isWitherSkeleton && entity instanceof EntitySkeleton) ((EntitySkeleton)entity).setSkeletonType(1);
             d2 = getSpawnerX() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * spawnRange;
             double d3 = getSpawnerY() + getSpawnerWorld().rand.nextInt(3) - 1;
             double d4 = getSpawnerZ() + (getSpawnerWorld().rand.nextDouble() - getSpawnerWorld().rand.nextDouble()) * spawnRange;

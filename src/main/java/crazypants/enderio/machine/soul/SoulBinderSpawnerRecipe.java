@@ -3,6 +3,7 @@ package crazypants.enderio.machine.soul;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -53,15 +54,17 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   @Override
   public ResultStack[] getCompletedResult(float randomChance, MachineRecipeInput... inputs) {
     String mobType = null;
+    boolean wither = false;
     for(MachineRecipeInput input : inputs) {
       if(input != null && EnderIO.itemSoulVessel.containsSoul(input.item)) {
         mobType = EnderIO.itemSoulVessel.getMobTypeFromStack(input.item);
+        wither = input.item.stackTagCompound.getByte("SkeletonType") == 1;
       }
     }
     if(mobType == null) {
       return new ResultStack[0];
     }
-    ItemStack spawner = EnderIO.itemBrokenSpawner.createStackForMobType(mobType);
+    ItemStack spawner = EnderIO.itemBrokenSpawner.createStackForMobType(mobType,wither);
     if(spawner == null) {
       return new ResultStack[0];
     }
