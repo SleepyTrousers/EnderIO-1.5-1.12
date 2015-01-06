@@ -516,6 +516,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
 item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
 
 item.itemSoulVessel.name=Soul Vial
+enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
 item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
@@ -810,6 +811,7 @@ enderio.gui.conduit.gas.autoExtract=Auto Extract
 
 //Enchants
 enchantment.enderio.soulBound=Soulbound
+description.enchantment.enderio.soulBound=This enchantment prevents the item from being lost on death
 
 //Configuration
 enderio.config.title=Ender IO Configuration
