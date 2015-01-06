@@ -17,7 +17,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -270,7 +272,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(!containsSoul(item)) {
       return null;
     }
-    if(item == null || item.stackTagCompound == null || !item.stackTagCompound.hasKey("id")) {
+    if(item.stackTagCompound == null || !item.stackTagCompound.hasKey("id")) {
       return null;
     }
     return item.stackTagCompound.getString("id");
@@ -281,10 +283,48 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(!containsSoul(item)) {
       return null;
     }
-    if(item == null || item.stackTagCompound == null || !item.stackTagCompound.hasKey("FluidName")) {
+    if(!item.stackTagCompound.hasKey("FluidName")) {
       return null;
     }
     return item.stackTagCompound.getString("FluidName");
+  }
+
+  public float getHealthFromStack(ItemStack item) {
+    if(!containsSoul(item)) {
+      return Float.NaN;
+    }
+    if(!item.stackTagCompound.hasKey("HealF")) {
+      return Float.NaN;
+    }
+    return item.stackTagCompound.getFloat("HealF");
+  }
+
+  public NBTTagCompound getAttributeFromStack(ItemStack item, String name) {
+    if(!containsSoul(item)) {
+      return null;
+    }
+    NBTBase tag = item.stackTagCompound.getTag("Attributes");
+    if(tag instanceof NBTTagList) {
+      NBTTagList attributes = (NBTTagList)tag;
+      for(int i=0 ; i<attributes.tagCount() ; i++) {
+        NBTTagCompound attrib = attributes.getCompoundTagAt(i);
+        if(attrib.hasKey("Name") && name.equals(attrib.getString("Name"))) {
+          return attrib;
+        }
+      }
+    }
+    return null;
+  }
+
+  public float getMaxHealthFromStack(ItemStack item) {
+    NBTTagCompound maxHealthAttrib = getAttributeFromStack(item, "generic.maxHealth");
+    if(maxHealthAttrib == null) {
+      return Float.NaN;
+    }
+    if(!maxHealthAttrib.hasKey("Base")) {
+      return Float.NaN;
+    }
+    return maxHealthAttrib.getFloat("Base");
   }
 
   private boolean isBlackListed(String entityId) {
@@ -310,6 +350,17 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
         par3List.add(EntityUtil.getDisplayNameForEntity(mobName));
       } else {
         par3List.add("Empty");
+      }
+
+      float health = getHealthFromStack(par1ItemStack);
+      if(health >= 0) {
+        float maxHealth = getMaxHealthFromStack(par1ItemStack);
+        String msg = Lang.localize("item.itemSoulVessel.tooltip.health");
+        if(maxHealth >= 0) {
+          par3List.add(String.format("%s %3.1f/%3.1f", msg, health, maxHealth));
+        } else {
+          par3List.add(String.format("%s %3.1f", msg, health));
+        }
       }
 
       String fluidName = getFluidNameFromStack(par1ItemStack);
