@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import cofh.api.inventory.IInventoryConnection;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -542,16 +543,15 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IInventory inv = getExternalInventory(direction);
-    if(inv instanceof ISidedInventory) {
+    if (inv==null) return false;
+    else if (inv instanceof IInventoryConnection){
+      return ((IInventoryConnection)inv).canConnectInventory(direction.getOpposite()).canConnect;
+    }
+    else if(inv instanceof ISidedInventory) {
       int[] slots = ((ISidedInventory) inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal());
-      //TODO: The MFR thing is a horrible hack. Blocks like the harvester make no slots accessible but will push into a connected
-      //conduit. I could just return true for sided inventories but this will lead to confusing connections in some cases.
-      //Therefore, bad hack for now.
-
-      return (slots != null && slots.length != 0) || inv.getClass().getName().startsWith("powercrystals.minefactoryreloaded") ||
-          inv.getClass().getName().endsWith("TileTesseract");
+      return slots!=null && slots.length>0;
     } else {
-      return inv != null;
+      return true;
     }
   }
 
