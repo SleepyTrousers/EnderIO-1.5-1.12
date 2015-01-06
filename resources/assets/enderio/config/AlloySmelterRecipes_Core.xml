@@ -381,6 +381,39 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </output>
     </recipe>
     
+    <recipe name="Signalum" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotCopper" number="3" />
+        <itemStack oreDictionary="ingotSilver" />
+        <itemStack modID="minecraft" itemName="redstone" number="10" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotSignalum" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Lumium from dust" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotTin" number="3" />
+        <itemStack oreDictionary="ingotSilver" />
+        <itemStack modID="minecraft" itemName="glowstone_dust" number="4" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotLumium" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Lumium" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotTin" number="3" />
+        <itemStack oreDictionary="ingotSilver" />
+        <itemStack modID="minecraft" itemName="glowstone" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotLumium" number="4" />
+      </output>
+    </recipe>
+    
     <!-- 
     <recipe name="Steel" energyCost="8000">
       <input>
