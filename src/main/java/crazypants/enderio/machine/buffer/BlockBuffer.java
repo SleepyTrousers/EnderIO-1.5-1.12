@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -147,6 +148,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       }
     }
     return super.removedByPlayer(world, player, x, y, z, willHarvest);
+  }
+  
+  // TODO refactor machines so all have this functionality
+  @Override
+  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    return createDrop((TileBuffer) world.getTileEntity(x, y, z));
   }
 
   private ItemStack createDrop(TileBuffer te) {
