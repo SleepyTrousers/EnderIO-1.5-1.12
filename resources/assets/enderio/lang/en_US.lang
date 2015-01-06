@@ -83,6 +83,10 @@ enderio.itemGasConduit.tooltip.detailed.line1=Transfers Mekanism-compatible gase
 enderio.itemMEConduit.name=ME Conduit
 enderio.itemMEConduitDense.name=Dense ME Conduit
 
+//Entity
+entity.witherSkeleton.name=Wither Skeleton
+
+
 //Materials
 enderio.itemMaterial.name=Materials
 enderio.silicon.name=Silicon

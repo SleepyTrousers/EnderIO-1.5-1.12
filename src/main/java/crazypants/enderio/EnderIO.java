@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import crazypants.enderio.entity.SkeletonHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -560,6 +561,8 @@ public class EnderIO {
     if(Loader.isModLoaded("ComputerCraft")) {
       ConduitBundledRedstoneProvider.register();
     }
+
+    SkeletonHandler.registerSkeleton(this);
 
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
