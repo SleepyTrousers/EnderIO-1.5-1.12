@@ -420,6 +420,8 @@ public final class Config {
   public static int enchantmentSoulBoundWeight = 1;
   public static boolean enchantmentSoulBoundEnabled = true;
 
+  public static boolean replaceWitherSkeletons = true;
+
 
   public static void load(FMLPreInitializationEvent event) {
 
@@ -1130,6 +1132,9 @@ public final class Config {
     enchantmentSoulBoundWeight = config.get("enchantmentSoulBoundWeight", sectionEnchantments.name, enchantmentSoulBoundWeight,
         "The chance of getting this enchantment in the enchantment table").getInt(enchantmentSoulBoundWeight);
 
+
+    replaceWitherSkeletons = config.get("replaceWitherSkeletons", sectionMisc.name, replaceWitherSkeletons,
+            "Separates wither and normal skeletons into different entities, enables the powered spawner to treat them differently [EXPERIMENTAL - MAY CAUSE ISSUES WITH OTHER MODS]").getBoolean();
   }
 
   public static void postInit() {

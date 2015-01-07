@@ -562,7 +562,10 @@ public class EnderIO {
       ConduitBundledRedstoneProvider.register();
     }
 
-    SkeletonHandler.registerSkeleton(this);
+    if(Config.replaceWitherSkeletons)
+    {
+      SkeletonHandler.registerSkeleton(this);
+    }
 
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
