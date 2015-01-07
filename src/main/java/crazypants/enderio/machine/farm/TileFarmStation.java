@@ -211,9 +211,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return;
     }
     boolean canDamage = canDamage(tool);
-    if(tool.getItem() instanceof ItemAxe) {            
+    if(type == ToolType.AXE) {            
       tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.x, bc.y, bc.z, farmerJoe);      
-    } else if(tool.getItem() instanceof ItemHoe) {
+    } else if(type == ToolType.HOE) {
       int origDamage = tool.getItemDamage();
       tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
       if(origDamage == tool.getItemDamage() && canDamage) {
