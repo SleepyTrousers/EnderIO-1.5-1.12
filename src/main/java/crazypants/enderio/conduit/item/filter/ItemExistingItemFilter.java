@@ -59,14 +59,12 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {          
-    if(FilterRegister.isFilterSet(par1ItemStack)) {      
-      if(TooltipAddera.instance.showAdvancedTooltips()) {        
+    if(FilterRegister.isFilterSet(par1ItemStack)) {
+      if(TooltipAddera.showAdvancedTooltips()) {
         par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
         par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
-      }      
+      }
     }
   }
-  
-  //par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
 
 }

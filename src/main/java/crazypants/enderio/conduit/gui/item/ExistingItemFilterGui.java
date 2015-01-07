@@ -39,6 +39,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private static final int ID_SNAPSHOT = GuiExternalConnection.nextButtonId();
   private static final int ID_CLEAR = GuiExternalConnection.nextButtonId();
   private static final int ID_SHOW = GuiExternalConnection.nextButtonId();
+  private static final int ID_MERGE = GuiExternalConnection.nextButtonId();
   
 
   private IItemConduit itemConduit;
@@ -52,6 +53,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
   private GuiButton snapshotB;
   private GuiButton clearB;
   private GuiButton showB;
+  private GuiButton mergeB;
   private SnapshotOverlay snapshotOverlay;
 
   boolean isInput;
@@ -99,7 +101,12 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     useOreDictB.setSelectedToolTip(Lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(Lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
-    
+
+    snapshotB = new GuiButton(ID_SNAPSHOT, 0, 0, 60, 20, "Snapshot");
+    mergeB = new GuiButton(ID_MERGE, 0, 0, 40, 20, "Merge");
+    clearB = new GuiButton(ID_CLEAR, 0, 0, 60, 20, "Clear");
+    showB = new GuiButton(ID_SHOW, 0, 0, 40, 20, "Show");
+
     snapshotOverlay = new SnapshotOverlay();
     gui.addOverlay(snapshotOverlay);
     
@@ -128,29 +135,36 @@ public class ExistingItemFilterGui implements IItemFilterGui {
 
     useMetaB.onGuiInit();
     useMetaB.setSelected(activeFilter.isMatchMeta());
-    
-    int x = gui.getGuiLeft() + 80;
-    int y = gui.getGuiTop() + 65;
-    snapshotB = new GuiButton(ID_SNAPSHOT, x, y, 60, 20, "Snapshot");
-    
-    x += 65;
-    showB = new GuiButton(ID_SHOW, x, y, 40, 20, "Show");
-    
-    x = gui.getGuiLeft() + 80;
-    y += 22;
-    clearB = new GuiButton(ID_CLEAR, x, y, 60, 20, "Clear");
-    
-    clearB.enabled = filter.getSnapshot() != null;         
+
+    int x0 = gui.getGuiLeft() + 80;
+    int y0 = gui.getGuiTop() + 65;
+    int x1 = x0 + 65;
+    int y1 = y0 + 22;
+
+    snapshotB.xPosition = x0;
+    snapshotB.yPosition = y0;
+
+    mergeB.xPosition = x1;
+    mergeB.yPosition = y0;
+
+    clearB.xPosition = x0;
+    clearB.yPosition = y1;
+
+    showB.xPosition = x1;
+    showB.yPosition = y1;
+
+    clearB.enabled = filter.getSnapshot() != null;
     showB.enabled = clearB.enabled;
-    
+    mergeB.enabled = filter.getSnapshot() != null;
+
     gui.addButton(snapshotB);
     gui.addButton(clearB);
     gui.addButton(showB);
-
+    gui.addButton(mergeB);
   }
 
+  @Override
   public void actionPerformed(GuiButton guiButton) {
-
     if(guiButton.id == ID_META) {
       filter.setMatchMeta(useMetaB.isSelected());
       sendFilterChange();
@@ -164,9 +178,11 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       filter.setUseOreDict(useOreDictB.isSelected());
       sendFilterChange();
     } else if(guiButton.id == ID_SNAPSHOT) {
-      sendSnapshotPacket(false);
+      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.SET);
     } else if(guiButton.id == ID_CLEAR) {
-      sendSnapshotPacket(true);
+      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.CLEAR);
+    } else if(guiButton.id == ID_MERGE) {
+      sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode.MERGE);
     } else if(guiButton.id == ID_SHOW) {
       showSnapshotOverlay();  
     }
@@ -176,8 +192,8 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     snapshotOverlay.setVisible(true);    
   }
 
-  private void sendSnapshotPacket(boolean isClear) {    
-    PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,isClear));
+  private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
+    PacketHandler.INSTANCE.sendToServer(new PacketExistingItemFilterSnapshot(itemConduit, gui.getDir(),isInput,opcode));
   }
 
   private void sendFilterChange() {
@@ -193,6 +209,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
     gui.removeButton(snapshotB);
     gui.removeButton(clearB);
     gui.removeButton(showB);
+    gui.removeButton(mergeB);
   }
 
   public void renderCustomOptions(int top, float par1, int par2, int par3) {
