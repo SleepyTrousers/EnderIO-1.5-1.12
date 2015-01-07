@@ -274,7 +274,9 @@ public final class Config {
     "Railcraft:tool.steel.hoe",
     "TConstruct:mattock",
     "appliedenergistics2:item.ToolCertusQuartzHoe", "appliedenergistics2:item.ToolNetherQuartzHoe",
-    "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire", "ProjRed|Exploration:projectred.exploration.hoeperidot"
+    "ProjRed|Exploration:projectred.exploration.hoeruby", "ProjRed|Exploration:projectred.exploration.hoesapphire", "ProjRed|Exploration:projectred.exploration.hoeperidot",
+    "magicalcrops:magicalcrops_AccioHoe", "magicalcrops:magicalcrops_CrucioHoe", "magicalcrops:magicalcrops_ImperioHoe",
+    // disabled as it is currently not unbreaking as advertised "magicalcrops:magicalcrops_ZivicioHoe",
   };
   public static List<ItemStack> farmHoes = new ArrayList<ItemStack>();
 
