@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
+import net.minecraft.inventory.IInventory;
 
 public class ExistingItemFilter implements IItemFilter {
 
@@ -112,6 +113,22 @@ public class ExistingItemFilter implements IItemFilter {
         snapshot.add(stack);
       }
     }
+  }
+
+  public boolean mergeSnapshot(IInventory inventory) {
+    if(snapshot == null) {
+      snapshot = new ArrayList<ItemStack>();
+    }
+    int size = inventory.getSizeInventory();
+    boolean added = false;
+    for (int i = 0; i < size; i++) {
+      ItemStack stack = inventory.getStackInSlot(i);
+      if(stack != null && !isStackInSnapshot(stack)) {
+        snapshot.add(stack);
+        added = true;
+      }
+    }
+    return added;
   }
 
   public List<ItemStack> getSnapshot() {
