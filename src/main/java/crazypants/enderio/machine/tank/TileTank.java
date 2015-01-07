@@ -123,7 +123,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     if(!canFill(from)) {
       return 0;
     }
+    return fillInternal(resource, doFill);
+  }
 
+  private int fillInternal(FluidStack resource, boolean doFill) {
     int res = tank.fill(resource, doFill);
     if(res > 0 && doFill) {
       tankDirty = true;
@@ -329,11 +332,11 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
       }
     }
 
-    int filled = fill(ForgeDirection.UP, fluid, false);
+    int filled = fillInternal(fluid, false);
     if(filled < fluid.amount) {
       return false; //can't empty the entire thing
     }
-    fill(ForgeDirection.UP, fluid, true);
+    fillInternal(fluid, true);
 
     fillFrom = fillFrom.copy();
     fillFrom.stackSize--;
