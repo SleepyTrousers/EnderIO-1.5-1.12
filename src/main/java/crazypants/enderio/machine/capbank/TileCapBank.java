@@ -93,8 +93,9 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
 
   public void onNeighborBlockChange(Block blockId) {
     redstoneStateDirty = true;
-    receptorsDirty = true;
     revalidateDisplayTypes = true;
+    // directly call updateReceptors() to work around issue #1433
+    updateReceptors();
   }
 
   //---------- Multiblock
