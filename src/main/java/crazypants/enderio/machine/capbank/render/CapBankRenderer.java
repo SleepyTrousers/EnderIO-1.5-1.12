@@ -138,28 +138,36 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
   public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
 
     TileCapBank cb = (TileCapBank) te;
+    if(!cb.hasDisplayTypes()) {
+      return;
+    }
 
-
-    GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-    GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-    GL11.glPolygonOffset(-1.0f, -1.0f);
-
-    GL11.glPushMatrix();
-    GL11.glTranslatef((float) x, (float) y, (float) z);
+    boolean glSetup = false;
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       InfoDisplayType type = cb.getDisplayType(dir);
       if(type != InfoDisplayType.NONE) {
         IInfoRenderer rend = infoRenderers.get(type);
         if(rend != null) {
+          if(!glSetup) {
+            glSetup = true;
+            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+            GL11.glPolygonOffset(-1.0f, -1.0f);
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef((float) x, (float) y, (float) z);
+          }
+
           rend.render(cb, dir, x, y, z, partialTick);
         }
       }
     }
 
-    GL11.glPopMatrix();
-    GL11.glPopAttrib();
-
+    if(glSetup) {
+      GL11.glPopMatrix();
+      GL11.glPopAttrib();
+    }
   }
 
 }

@@ -312,6 +312,10 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
 
   //----- Info Display
 
+  public boolean hasDisplayTypes() {
+    return faceDisplayTypes != null;
+  }
+
   public InfoDisplayType getDisplayType(ForgeDirection face) {
     if(faceDisplayTypes == null) {
       return InfoDisplayType.NONE;
