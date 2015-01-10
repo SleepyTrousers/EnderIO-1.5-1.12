@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,6 +27,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.machine.capbank.network.EnergyReceptor;
 import crazypants.enderio.machine.capbank.network.ICapBankNetwork;
@@ -354,6 +356,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
       faceDisplayTypes = null;
     }
     displayTypesDirty = markDirty;
+    invalidateDisplayInfoCache();
   }
 
   public void validateDisplayTypes() {
@@ -374,8 +377,13 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     }
   }
 
+  private void invalidateDisplayInfoCache() {
+    if(network != null) {
+      network.invalidateDisplayInfoCache();
+    }
+  }
 
-  //----------- Redstone
+  //----------- rendering
 
   @Override
   public boolean shouldRenderInPass(int pass) {
@@ -384,6 +392,49 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerHandler,
     }
     return pass == 0;
   }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public AxisAlignedBB getRenderBoundingBox() {
+    if(!type.isMultiblock() || !(network instanceof CapBankClientNetwork)) {
+      return super.getRenderBoundingBox();
+    }
+
+    int minX = xCoord;
+    int minY = yCoord;
+    int minZ = zCoord;
+    int maxX = xCoord+1;
+    int maxY = yCoord+1;
+    int maxZ = zCoord+1;
+
+    if(faceDisplayTypes != null) {
+      CapBankClientNetwork cn = (CapBankClientNetwork)network;
+      if(faceDisplayTypes.get(ForgeDirection.NORTH) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.NORTH);
+        maxX = Math.max(maxX, xCoord +     info.width);
+        minY = Math.min(minY, yCoord + 1 - info.height);
+      }
+      if(faceDisplayTypes.get(ForgeDirection.SOUTH) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.SOUTH);
+        minX = Math.min(minX, xCoord + 1 - info.width);
+        minY = Math.min(minY, yCoord + 1 - info.height);
+      }
+      if(faceDisplayTypes.get(ForgeDirection.EAST) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.EAST);
+        maxZ = Math.max(maxZ, zCoord +     info.width);
+        minY = Math.min(minY, yCoord + 1 - info.height);
+      }
+      if(faceDisplayTypes.get(ForgeDirection.WEST) == InfoDisplayType.IO) {
+        CapBankClientNetwork.IOInfo info = cn.getIODisplayInfo(xCoord, yCoord, zCoord, ForgeDirection.WEST);
+        minZ = Math.min(minZ, zCoord + 1 - info.width);
+        minY = Math.min(minY, yCoord + 1 - info.height);
+      }
+    }
+
+    return AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+  }
+
+  //----------- Redstone
 
   public RedstoneControlMode getInputControlMode() {
     return inputControlMode;

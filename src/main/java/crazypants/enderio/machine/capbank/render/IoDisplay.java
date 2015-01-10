@@ -36,7 +36,7 @@ public class IoDisplay implements IInfoRenderer {
       return;
     }
 
-    IOInfo info = getIOInfo(cb, dir);
+    CapBankClientNetwork.IOInfo info = nw.getIODisplayInfo(cb.xCoord, cb.yCoord, cb.zCoord, dir);
     if(info.isInside()) {
       return;
     }
@@ -194,133 +194,6 @@ public class IoDisplay implements IInfoRenderer {
     return txt;
   }
 
-  private IOInfo getIOInfo(TileCapBank cb, ForgeDirection dir) {
-    if(dir.offsetY != 0) {
-      return IOInfo.SINGLE;
-    }
-
-    ForgeDirection left = dir.getRotation(ForgeDirection.DOWN);
-    ForgeDirection right = left.getOpposite();
-
-    int hOff = 0;
-    int vOff = 0;
-    int xOrg = cb.xCoord;
-    int yOrg = cb.yCoord;
-    int zOrg = cb.zCoord;
-
-    // step 1: find top left
-    while(isIOType(cb.getWorldObj(), xOrg+left.offsetX, yOrg, zOrg+left.offsetZ, dir, cb.getType())) {
-      xOrg += left.offsetX;
-      zOrg += left.offsetZ;
-      hOff++;
-    }
-
-    while(isIOType(cb.getWorldObj(), xOrg, yOrg+1, zOrg, dir, cb.getType())) {
-      yOrg++;
-      vOff++;
-    }
-
-    if(isIOType(cb.getWorldObj(), xOrg+left.offsetX, yOrg, zOrg+left.offsetZ, dir, cb.getType())) {
-      // not a rectangle
-      return IOInfo.SINGLE;
-    }
-
-    // step 2: find width
-    int width = 1;
-    int height = 1;
-    int xTmp = xOrg;
-    int yTmp = yOrg;
-    int zTmp = zOrg;
-    while(isIOType(cb.getWorldObj(), xTmp+right.offsetX, yTmp, zTmp+right.offsetZ, dir, cb.getType())) {
-      if(isIOType(cb.getWorldObj(), xTmp+right.offsetX, yTmp+1, zTmp+right.offsetZ, dir, cb.getType())) {
-        // not a rectangle
-        return IOInfo.SINGLE;
-      }
-      xTmp += right.offsetX;
-      zTmp += right.offsetZ;
-      width++;
-    }
-
-    // step 3: find height
-    while(isIOType(cb.getWorldObj(), xOrg, yTmp-1, zOrg, dir, cb.getType())) {
-      xTmp = xOrg;
-      yTmp--;
-      zTmp = zOrg;
-
-      if(isIOType(cb.getWorldObj(), xTmp+left.offsetX, yTmp, zTmp+left.offsetZ, dir, cb.getType())) {
-        // not a rectangle
-        return IOInfo.SINGLE;
-      }
-
-      for(int i=1 ; i<width ; i++) {
-        xTmp += right.offsetX;
-        zTmp += right.offsetZ;
-
-        if(!isIOType(cb.getWorldObj(), xTmp, yTmp, zTmp, dir, cb.getType())) {
-          // not a rectangle
-          return IOInfo.SINGLE;
-        }
-      }
-
-      if(isIOType(cb.getWorldObj(), xTmp+right.offsetX, yTmp, zTmp+right.offsetZ, dir, cb.getType())) {
-        // not a rectangle
-        return IOInfo.SINGLE;
-      }
-
-      height++;
-    }
-
-    xTmp = xOrg;
-    yTmp--;
-    zTmp = zOrg;
-
-    for(int i=0 ; i<width ; i++) {
-      if(isIOType(cb.getWorldObj(), xTmp, yTmp, zTmp, dir, cb.getType())) {
-        // not a rectangle
-        return IOInfo.SINGLE;
-      }
-
-      xTmp += right.offsetX;
-      zTmp += right.offsetZ;
-    }
-
-    if(width == 1 && height == 1) {
-      return IOInfo.SINGLE;
-    }
-
-    if(hOff > 0 || vOff > 0) {
-      return IOInfo.INSIDE;
-    }
-
-    return new IOInfo(width, height);
-  }
-
-  private boolean isIOType(World worldObj, int x, int y, int z, ForgeDirection face, CapBankType type) {
-    TileEntity te = worldObj.getTileEntity(x, y, z);
-    if(te instanceof TileCapBank) {
-      TileCapBank cb = (TileCapBank) te;
-      return type == cb.getType() && cb.getDisplayType(face) == InfoDisplayType.IO;
-    }
-    return false;
-  }
-
-  static class IOInfo {
-    final int width;
-    final int height;
-
-    static final IOInfo SINGLE = new IOInfo(1, 1);
-    static final IOInfo INSIDE = new IOInfo(0, 0);
-
-    IOInfo(int width, int height) {
-      this.width = width;
-      this.height = height;
-    }
-
-    boolean isInside() {
-      return width == 0;
-    }
-  }
-  
   static enum HeadingText {
     STABLE(ColorUtil.getRGB(0, 0, 0)),
     GAIN(ColorUtil.getRGB(0, 0.25f, 0)),
