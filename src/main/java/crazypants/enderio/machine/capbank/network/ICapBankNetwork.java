@@ -1,7 +1,6 @@
 package crazypants.enderio.machine.capbank.network;
 
 import java.util.Collection;
-import java.util.List;
 
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
@@ -15,7 +14,7 @@ public interface ICapBankNetwork extends IPowerStorage {
 
   void addMember(TileCapBank cap);
 
-  List<TileCapBank> getMembers();
+  Collection<TileCapBank> getMembers();
 
   void destroyNetwork();
 
@@ -77,6 +76,8 @@ public interface ICapBankNetwork extends IPowerStorage {
 
   boolean isInputEnabled();
 
+  //------- rendering info caching
 
+  void invalidateDisplayInfoCache();
 
 }
