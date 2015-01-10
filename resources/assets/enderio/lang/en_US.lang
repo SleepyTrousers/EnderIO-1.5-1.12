@@ -74,6 +74,9 @@ item.itemModItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
 item.itemModItemFilter.tooltip.detailed.line2=mod/s
 
+item.itemPowerItemFilter.name=Chargeable Item Filter
+item.itemPowerItemFilter.tooltip.basic.line1=Upgrade for item conduits
+
 item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
 item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
 item.itemExtractSpeedUpgrade.tooltip.detailed.line1=Increases speed by 4

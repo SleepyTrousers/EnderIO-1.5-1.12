@@ -76,6 +76,9 @@ public class ConduitRecipes {
     ItemStack exFilt = new ItemStack(EnderIO.itemExistingItemFilter);
     GameRegistry.addShapedRecipe(exFilt, " r ", "rfr", " c ", 'c', new ItemStack(Items.comparator, 1, 0), 'r', Items.redstone, 'f', advFilter);
 
+    ItemStack powerFilt = new ItemStack(EnderIO.itemPowerItemFilter);
+    GameRegistry.addShapedRecipe(powerFilt, " p ", "pcp", " p ", 'p', Items.paper, 'c', EnderIO.itemConduitProbe);
+
     ClearFilterRecipe clearRec = new ClearFilterRecipe();
     MinecraftForge.EVENT_BUS.register(clearRec);
     GameRegistry.addRecipe(clearRec);

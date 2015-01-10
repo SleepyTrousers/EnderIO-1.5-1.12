@@ -49,6 +49,7 @@ import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
@@ -214,6 +215,7 @@ public class EnderIO {
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
   public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemModItemFilter itemModItemFilter;
+  public static ItemPowerItemFilter itemPowerItemFilter;
   public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
 
   // Machines
@@ -387,6 +389,7 @@ public class EnderIO {
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
     itemModItemFilter = ItemModItemFilter.create();
+    itemPowerItemFilter = ItemPowerItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
     itemBasicCapacitor = ItemCapacitor.create();
