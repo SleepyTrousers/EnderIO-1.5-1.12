@@ -5,7 +5,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
@@ -145,6 +147,26 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     }
 
     return needsUpdate;
+  }
+
+  @Override
+  protected boolean doPush(ForgeDirection dir) {
+    if(inventory[0] == null) {
+      return false;
+    }
+
+    if(worldObj.getTotalWorldTime() % 20 != 0) {
+      return false;
+    }
+
+    if(!canExtractItem(0, inventory[0], 0)) {
+      return false;
+    }
+
+    BlockCoord loc = getLocation().getLocation(dir);
+    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+
+    return doPush(dir, te, 0, 0);
   }
 
   private float getEnergyMultiplier() {
