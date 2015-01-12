@@ -180,6 +180,10 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     return result;
   }
 
+  public boolean isFluidTypeLocked() {
+    return fluidTypeLocked;
+  }
+
   protected abstract void updateTank();
 
   @Override
