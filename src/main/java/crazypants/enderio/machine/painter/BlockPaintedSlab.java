@@ -244,7 +244,8 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+        PaintedBlockAccessWrapper ba = new PaintedBlockAccessWrapper(world);
+        return tef.getSourceBlock().colorMultiplier(ba, x, y, z);
       }
     }
     return super.colorMultiplier(world, x, y, z);
