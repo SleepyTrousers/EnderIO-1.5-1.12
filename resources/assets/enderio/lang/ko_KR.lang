@@ -67,7 +67,7 @@ item.itemExistingItemFilter.tooltip.detailed.line2=아이템만을 설정합니�
 
 item.itemModItemFilter.name=아이템 필터 모드
 item.itemModItemFilter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-item.itemModItemFilter.tooltip.detailed.line1=특정한 모드(들)의
+item.itemModItemFilter.tooltip.detailed.line1=특정한 모드의
 item.itemModItemFilter.tooltip.detailed.line2=아이템만을 설정합니다.
 
 item.itemExtractSpeedUpgrade.name=아이템 컨두잇 속도 업그레이드
@@ -125,7 +125,7 @@ enderio.fuel.tooltip.heading=연료 세부사항
 enderio.fuel.tooltip.burnTime=연료 소모시간
 enderio.fluid.millibucketsTick=mB/t
 coolant.tooltip.heading=냉각제
-enderio.fuel.tooltip.degreesPerBucket=deg per bucket
+enderio.fuel.tooltip.degreesPerBucket=양동이당 온도
 enderio.gas.gasTick=Gas/t
 
 
@@ -509,9 +509,9 @@ item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 item.itemXpTransfer.tooltip.detailed.line4=the tank
 
 skullZombieElectrode.name=좀비 전극
-skullZombieController.name=Z-Logic Controller
-skullZombieFrankenstien.name=Frank'N'Zombie
-skullEnderResonator.name=Ender Resonator 
+skullZombieController.name=Z-논리 제어기
+skullZombieFrankenstien.name=프랑켄 좀비
+skullEnderResonator.name=엔더 공명기
 
 item.itemSpawnEggEnderIO.name=스폰
 
@@ -524,17 +524,17 @@ item.darkSteel_sword.name=디 엔더
 item.darkSteel_pickaxe.name=암흑의 곡괭이
 item.darkSteel_axe.name=암흑의 도끼
 
-enderio.item.tooltip.showDetails=<Hold Shift수>
+enderio.item.tooltip.showDetails=<Shift를 누르십시오>
 enderio.item.darkSteel.tooltip.durability=내구도:
 
-enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
-enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.darkSteel_pickaxe.tooltip.effPowered=충전되어 있을 시 채굴 속도가 증가합니다.
+enderio.item.darkSteel_pickaxe.tooltip.effObs=흑요석에 대한 채굴 속도가 증가합니다.
 
-enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.darkSteel_axe.tooltip.multiHarvest=앉아서 사용하면 원목 여러 개를 채굴 가능합니다.
 
-enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
-enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
-enderio.item.darkSteel_sword.tooltip.line3=+2 Damage when Powered
+enderio.item.darkSteel_sword.tooltip.line1=몹의 머리와 엔더 진주의 드랍 확률이 높아집니다.
+enderio.item.darkSteel_sword.tooltip.line2=엔더맨을 치면 텔레포트할 수 없습니다.
+enderio.item.darkSteel_sword.tooltip.line3=충전 시 데미지가 2 늘어납니다.
 
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
 enderio.item.darkSteel_armor.tooltip.line2=when powered
