@@ -7,8 +7,9 @@
   "mcversion": "${mcversion}",
   "url": "http://enderio.com",
   "updateUrl": "",
-  "authors": [
-    "crazypants"
+  "authorList": [
+    "crazypants",
+    "tterrag"
   ],
   "credits": "By CrazyPants, with the help of many",
   "logoFile": "",
