@@ -4,6 +4,8 @@
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
+enderio.power.generates=Generates
+enderio.power.generation_rate=at
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
