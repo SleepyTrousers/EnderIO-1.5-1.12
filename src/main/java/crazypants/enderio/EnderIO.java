@@ -55,6 +55,7 @@ import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
+import crazypants.enderio.conduit.power.PowerConduitPeripheralProvider;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -564,6 +565,7 @@ public class EnderIO {
     }
     if(Loader.isModLoaded("ComputerCraft")) {
       ConduitBundledRedstoneProvider.register();
+	  PowerConduitPeripheralProvider.register();
     }
 
     if(Config.replaceWitherSkeletons)
