@@ -55,6 +55,7 @@ import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
+import crazypants.enderio.conduit.power.PowerConduitPeripheralProvider;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -86,6 +87,7 @@ import crazypants.enderio.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machine.attractor.BlockAttractor;
 import crazypants.enderio.machine.buffer.BlockBuffer;
 import crazypants.enderio.machine.capbank.BlockCapBank;
+import crazypants.enderio.machine.capbank.CapBankPeripheralProvider;
 import crazypants.enderio.machine.crafter.BlockCrafter;
 import crazypants.enderio.machine.crusher.BlockCrusher;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
@@ -102,6 +104,7 @@ import crazypants.enderio.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machine.light.BlockElectricLight;
 import crazypants.enderio.machine.light.BlockLightNode;
 import crazypants.enderio.machine.monitor.BlockPowerMonitor;
+import crazypants.enderio.machine.monitor.PowerMonitorPeripheralProvider;
 import crazypants.enderio.machine.painter.BlockPaintedCarpet;
 import crazypants.enderio.machine.painter.BlockPaintedFence;
 import crazypants.enderio.machine.painter.BlockPaintedFenceGate;
@@ -564,6 +567,9 @@ public class EnderIO {
     }
     if(Loader.isModLoaded("ComputerCraft")) {
       ConduitBundledRedstoneProvider.register();
+	  PowerConduitPeripheralProvider.register();
+	  PowerMonitorPeripheralProvider.register();
+	  CapBankPeripheralProvider.register();
     }
 
     if(Config.replaceWitherSkeletons)
