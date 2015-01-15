@@ -99,7 +99,7 @@ public class PowerMonitorPeripheral implements IPeripheral {
 			return new Object[] {monitor.getEnergyStored()};
 		}
 		}
-		if(arguments.length < 1 || arguments[0] == null) return null;
+		if((arguments.length < 1 || arguments[0] == null) && method >= 13 && method <= 15) return new Object[] {"Invalid Arguments"};
 		String sArg = arguments[0].toString();
 		switch(method) {
 			case 13: { //setEngineControlEnabled
@@ -114,6 +114,7 @@ public class PowerMonitorPeripheral implements IPeripheral {
 						monitor.setStartLevel(fVal);
 					}
 				} catch (NumberFormatException ex) {
+					return new Object[] {ex.getMessage()};
 				}
 				break;
 			}
@@ -124,6 +125,7 @@ public class PowerMonitorPeripheral implements IPeripheral {
 						monitor.setStopLevel(fVal);
 					}
 				} catch (NumberFormatException ex) {
+					return new Object[] {ex.getMessage()};
 				}
 				break;
 			}

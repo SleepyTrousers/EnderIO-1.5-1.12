@@ -83,7 +83,7 @@ public class CapBankPeripheral implements IPeripheral {
 		}
 		
 		}
-		if(arguments.length < 1 || arguments[0] == null) return null;
+		if((arguments.length < 1 || arguments[0] == null) && method >= 8 && method <= 10) return new Object[] {"Invalid Arguments"};
 		String sArg = arguments[0].toString();
 		
 		switch(method) {
@@ -92,6 +92,7 @@ public class CapBankPeripheral implements IPeripheral {
 				RedstoneControlMode rMode = RedstoneControlMode.valueOf(sArg);
 				net.setOutputControlMode(rMode);
 			} catch(Exception ex) {
+				return new Object[] {ex.getMessage()};
 			}
 		}
 		case 9: { //setMaxInput
@@ -99,6 +100,7 @@ public class CapBankPeripheral implements IPeripheral {
 				int max = Integer.parseInt(sArg);
 				net.setMaxInput(max);
 			} catch(NumberFormatException ex) {
+				return new Object[] {ex.getMessage()};
 			}
 		}
 		case 10: { //setMaxOutput
@@ -106,6 +108,7 @@ public class CapBankPeripheral implements IPeripheral {
 				int max = Integer.parseInt(sArg);
 				net.setMaxOutput(max);
 			} catch(NumberFormatException ex) {
+				return new Object[] {ex.getMessage()};
 			}
 		}
 		}
