@@ -33,8 +33,11 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.fluid.FluidFuelRegister;
 import crazypants.enderio.fluid.IFluidCoolant;
 import crazypants.enderio.fluid.IFluidFuel;
+import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.IGrindingMultiplier;
+import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
+import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
@@ -56,9 +59,11 @@ public class TooltipAddera {
       return;
     }
     if(Config.addFurnaceFuelTootip) {
-      int time = TileEntityFurnace.getItemBurnTime(evt.itemStack);
-      if(time > 0) {
-        evt.toolTip.add("Burn time " + time);
+      if(!addStirlinGeneratorTooltip(evt)) {
+        int time = TileEntityFurnace.getItemBurnTime(evt.itemStack);
+        if(time > 0) {
+          evt.toolTip.add("Burn time " + time);
+        }
       }
     }
 
@@ -122,6 +127,34 @@ public class TooltipAddera {
       }
 
     }
+  }
+
+  private static boolean addStirlinGeneratorTooltip(ItemTooltipEvent evt) {
+    if(evt.entityPlayer.openContainer instanceof StirlingGeneratorContainer) {
+      AbstractMachineEntity te = ((StirlingGeneratorContainer)evt.entityPlayer.openContainer).getTileEntity();
+      if(te instanceof TileEntityStirlingGenerator) {
+        TileEntityStirlingGenerator gen = (TileEntityStirlingGenerator) te;
+        int burnTime = gen.getBurnTime(evt.itemStack);
+        if(burnTime <= 0) {
+          return false;
+        }
+
+        int rate = gen.getPowerUsePerTick();
+
+        String msg = String.format("%s %s %s %s %s %s%s",
+                Lang.localize("power.generates"),
+                PowerDisplayUtil.formatPower((long)burnTime * rate),
+                PowerDisplayUtil.abrevation(),
+                Lang.localize("power.generation_rate"),
+                PowerDisplayUtil.formatPower(rate),
+                PowerDisplayUtil.abrevation(),
+                PowerDisplayUtil.perTickStr());
+
+        evt.toolTip.add(msg);
+        return true;
+      }
+    }
+    return false;
   }
 
   public static void addDurabilityTooltip(List<String> toolTip, ItemStack itemStack) {

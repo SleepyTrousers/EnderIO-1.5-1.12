@@ -109,6 +109,10 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return Math.round(ENERGY_PER_TICK * getEnergyMultiplier());
   }
 
+  public int getBurnTime(ItemStack item) {
+    return Math.round(TileEntityFurnace.getItemBurnTime(item) / getBurnTimeMultiplier());
+  }
+
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
@@ -128,7 +132,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
       if(burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
-          burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) / getBurnTimeMultiplier());
+          burnTime = getBurnTime(inventory[0]);
           if(burnTime > 0) {
             totalBurnTime = burnTime;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);

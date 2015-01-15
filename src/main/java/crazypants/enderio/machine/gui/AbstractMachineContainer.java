@@ -76,7 +76,11 @@ public abstract class AbstractMachineContainer extends Container {
   public Point getUpgradeOffset() {
     return new Point(12,60);
   }
-  
+
+  public AbstractMachineEntity getTileEntity() {
+    return tileEntity;
+  }
+
   protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
   @Override
