@@ -173,7 +173,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return doPush(dir, te, 0, 0);
   }
 
-  private float getEnergyMultiplier() {
+  public static float getEnergyMultiplier(Capacitors capacitorType) {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
       return 2;
     } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
@@ -182,13 +182,21 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return 1;
   }
 
-  public float getBurnTimeMultiplier() {
+  private float getEnergyMultiplier() {
+    return getEnergyMultiplier(capacitorType);
+  }
+
+  public static float getBurnTimeMultiplier(Capacitors capacitorType) {
     if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
       return 1.5f;
     } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
       return 1.5f;
     }
     return 2;
+  }
+
+  public float getBurnTimeMultiplier() {
+    return getBurnTimeMultiplier(capacitorType);
   }
 
   //private PowerDistributor powerDis;

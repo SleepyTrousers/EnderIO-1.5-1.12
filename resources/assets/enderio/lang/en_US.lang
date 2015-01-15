@@ -775,6 +775,8 @@ enderio.combustionGenerator.output=Generating:
 //Stirling Gen
 enderio.stirlingGenerator.output=Generating:
 enderio.stirlingGenerator.burnRate=Burn Rate:
+enderio.stirlingGenerator.upgradeslot=Upgrade slot
+enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficency
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
