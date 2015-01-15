@@ -23,6 +23,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
@@ -635,6 +636,11 @@ public class EnderIO {
     addModIntegration();
   }
 
+  @EventHandler
+  public void loadComplete(FMLLoadCompleteEvent event) {
+    processImc(FMLInterModComms.fetchRuntimeMessages(this)); //Some mods send IMCs during PostInit, so we catch them here.
+  }
+
   private static String getXPJuiceName() {
     String openBlocksXPJuiceName = null;
 
@@ -675,7 +681,10 @@ public class EnderIO {
 
   @EventHandler
   public void onImc(IMCEvent evt) {
-    ImmutableList<IMCMessage> messages = evt.getMessages();
+    processImc(evt.getMessages());
+  }
+
+  private void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {
       String key = msg.key;
       try {
