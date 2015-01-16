@@ -5,6 +5,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,12 +13,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 
 import com.google.common.collect.Sets;
@@ -33,8 +32,6 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.teleport.IItemOfTravel;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.TravelSource;
-import crazypants.render.BoundingBox;
-import crazypants.util.BlockCoord;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
 
@@ -125,39 +122,33 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    int current = player.inventory.currentItem;
-    int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
-    if(slot < 9 && player.inventory.mainInventory[slot] != null && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-
-      if(!canPlaceBlockOnRightClick(player, world, x, y, z, side, slot)) {
-        return false;
-      }
-      boolean ret = player.inventory.mainInventory[slot].getItem().onItemUse(player.inventory.mainInventory[slot], player, world, x, y, z, side, par8,
-          par9, par10);
-      if(player.inventory.mainInventory[slot].stackSize <= 0) {
-        player.inventory.mainInventory[slot] = null;
-      }
-      return ret;
+	if (world.isRemote) {
+	    int current = player.inventory.currentItem;
+	    int slot = current == 0 && Config.slotZeroPlacesEight ? 8
+		    : current + 1;
+	    if (slot < 9
+		    && player.inventory.mainInventory[slot] != null
+		    && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
+		/*
+		 * this will not work with buckets unless we don't switch back
+		 * to the current item (the pick); there's probably some client
+		 * <-> server event thing going on with buckets, so our
+		 * item-switch within the same tick would be a problem.
+		 */
+		player.inventory.currentItem = slot;
+		Minecraft mc = Minecraft.getMinecraft();
+		boolean result = mc.playerController.onPlayerRightClick(
+			mc.thePlayer, mc.theWorld,
+			player.inventory.mainInventory[slot],
+			mc.objectMouseOver.blockX, mc.objectMouseOver.blockY,
+			mc.objectMouseOver.blockZ, mc.objectMouseOver.sideHit,
+			mc.objectMouseOver.hitVec);
+		player.inventory.currentItem = current;
+		return (result);
+	    }
+	}
+	return false;
     }
-    return false;
-  }
-
-  static boolean canPlaceBlockOnRightClick(EntityPlayer player, World world, int x, int y, int z, int side, int slot) {
-    BlockCoord placeCoord = new BlockCoord(x, y, z).getLocation(ForgeDirection.getOrientation(side));
-    ItemStack toUse = player.inventory.mainInventory[slot];
-    AxisAlignedBB aabb;
-    Block blk = Block.getBlockFromItem(toUse.getItem());
-    if(blk != null) {
-      aabb = blk.getCollisionBoundingBoxFromPool(world, placeCoord.x, placeCoord.y, placeCoord.z);
-    } else {
-      BoundingBox bb = new BoundingBox(placeCoord);
-      aabb = bb.getAxisAlignedBB();
-    }
-    if(aabb != null && aabb.intersectsWith(player.boundingBox)) {
-      return false;
-    }
-    return true;
-  }
 
   private void applyDamage(EntityLivingBase entity, ItemStack stack, int damage) {
 
