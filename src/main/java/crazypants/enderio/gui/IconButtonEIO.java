@@ -43,7 +43,6 @@ public class IconButtonEIO extends GuiButton {
     if(toolTip == null) {
       toolTip = new GuiToolTip(new Rectangle(xOrigin, yOrigin, width, height), tooltipText);
       //gui.addToolTip(toolTip);
-      toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
     } else {
       toolTip.setToolTipText(tooltipText);
     }
@@ -66,17 +65,22 @@ public class IconButtonEIO extends GuiButton {
   public void setSize(int width, int height) {
     this.width = width;
     this.height = height;
-    if(toolTip != null) {
-      toolTip.setBounds(new Rectangle(xPosition, yPosition, width, height));
-    }
+    updateTooltipBounds();
   }
 
   public IconButtonEIO setPosition(int x, int y) {
     this.xOrigin = x;
     this.yOrigin = y;
+    updateTooltipBounds();
     return this;
   }
-  
+
+  private void updateTooltipBounds() {
+    if(toolTip != null) {
+      toolTip.setBounds(new Rectangle(xOrigin, yOrigin, width, height));
+    }
+  }
+
   public IconButtonEIO setIconMargin(int x, int y) {
     marginX = x;
     marginY = y;
