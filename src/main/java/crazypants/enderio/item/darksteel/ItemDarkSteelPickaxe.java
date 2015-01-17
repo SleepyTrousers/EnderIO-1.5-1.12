@@ -113,39 +113,40 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     return true;
   }
 
-  @Override
-  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-    if(!isTravelUpgradeActive(player, item)) {
-      return doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
+    @Override
+    public boolean onItemUse(ItemStack item, EntityPlayer player, World world,
+	    int x, int y, int z, int side, float par8, float par9, float par10) {
+	if (!isTravelUpgradeActive(player, item) && world.isRemote) {
+	    return doRightClickItemPlace(player, world, x, y, z, side, par8,
+		    par9, par10);
+	}
+	return false;
     }
-    return false;
-  }
 
-  static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-	if (world.isRemote) {
-	    int current = player.inventory.currentItem;
-	    int slot = current == 0 && Config.slotZeroPlacesEight ? 8
-		    : current + 1;
-	    if (slot < 9
-		    && player.inventory.mainInventory[slot] != null
-		    && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
-		/*
-		 * this will not work with buckets unless we don't switch back
-		 * to the current item (the pick); there's probably some client
-		 * <-> server event thing going on with buckets, so our
-		 * item-switch within the same tick would be a problem.
-		 */
-		player.inventory.currentItem = slot;
-		Minecraft mc = Minecraft.getMinecraft();
-		boolean result = mc.playerController.onPlayerRightClick(
-			mc.thePlayer, mc.theWorld,
-			player.inventory.mainInventory[slot],
-			mc.objectMouseOver.blockX, mc.objectMouseOver.blockY,
-			mc.objectMouseOver.blockZ, mc.objectMouseOver.sideHit,
-			mc.objectMouseOver.hitVec);
-		player.inventory.currentItem = current;
-		return (result);
-	    }
+    @SideOnly(Side.CLIENT)
+    static boolean doRightClickItemPlace(EntityPlayer player, World world,
+	    int x, int y, int z, int side, float par8, float par9, float par10) {
+	int current = player.inventory.currentItem;
+	int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
+	if (slot < 9
+		&& player.inventory.mainInventory[slot] != null
+		&& !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
+	    /*
+	     * this will not work with buckets unless we don't switch back to
+	     * the current item (the pick); there's probably some client <->
+	     * server event thing going on with buckets, so our item-switch
+	     * within the same tick would be a problem.
+	     */
+	    player.inventory.currentItem = slot;
+	    Minecraft mc = Minecraft.getMinecraft();
+	    boolean result = mc.playerController.onPlayerRightClick(
+		    mc.thePlayer, mc.theWorld,
+		    player.inventory.mainInventory[slot],
+		    mc.objectMouseOver.blockX, mc.objectMouseOver.blockY,
+		    mc.objectMouseOver.blockZ, mc.objectMouseOver.sideHit,
+		    mc.objectMouseOver.hitVec);
+	    player.inventory.currentItem = current;
+	    return (result);
 	}
 	return false;
     }
