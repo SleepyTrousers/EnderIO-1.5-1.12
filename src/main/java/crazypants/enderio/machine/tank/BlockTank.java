@@ -80,9 +80,9 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     //check for filled fluid containers and see if we can empty them into our input tank
     FluidStack fluid = FluidUtil.getFluidFromItem(item);
     if(fluid != null) {
-      int filled = tank.fill(ForgeDirection.UP, fluid, false);
+      int filled = tank.fillInternal(fluid, false);
       if(filled >= fluid.amount) {
-        tank.fill(ForgeDirection.UP, fluid, true);
+        tank.fillInternal(fluid, true);
         if(!entityPlayer.capabilities.isCreativeMode) {
           entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, Util.consumeItem(item));
         }
@@ -110,7 +110,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
       }
 
       if(filled != null) {
-        tank.drain(ForgeDirection.DOWN, filled, true);
+        tank.drainInternal(filled, true);
         if(item.stackSize > 1) {
           item.stackSize--;
           entityPlayer.inventory.setInventorySlotContents(entityPlayer.inventory.currentItem, item);

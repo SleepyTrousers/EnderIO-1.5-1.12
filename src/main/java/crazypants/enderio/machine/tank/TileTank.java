@@ -126,7 +126,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     return fillInternal(resource, doFill);
   }
 
-  private int fillInternal(FluidStack resource, boolean doFill) {
+  int fillInternal(FluidStack resource, boolean doFill) {
     int res = tank.fill(resource, doFill);
     if(res > 0 && doFill) {
       tankDirty = true;
@@ -139,7 +139,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     if(!canDrain(from)) {
       return null;
     }
+    return drainInternal(resource, doDrain);
+  }
 
+  FluidStack drainInternal(FluidStack resource, boolean doDrain) {
     FluidStack res = tank.drain(resource, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
       tankDirty = true;
@@ -152,7 +155,10 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler {
     if(!canDrain(from)) {
       return null;
     }
+    return drainInternal(maxDrain, doDrain);
+  }
 
+  FluidStack drainInternal(int maxDrain, boolean doDrain) {
     FluidStack res = tank.drain(maxDrain, doDrain);
     if(res != null && res.amount > 0 && doDrain) {
       tankDirty = true;
