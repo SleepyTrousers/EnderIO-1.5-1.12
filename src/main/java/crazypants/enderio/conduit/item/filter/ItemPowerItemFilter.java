@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
+import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.util.Lang;
 
@@ -23,7 +24,7 @@ import crazypants.util.Lang;
  *
  * @author matthias
  */
-public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade {
+public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
   public static ItemPowerItemFilter create() {
     ItemPowerItemFilter result = new ItemPowerItemFilter();
@@ -59,6 +60,11 @@ public class ItemPowerItemFilter extends Item implements IItemFilterUpgrade {
 
   @Override
   public String getUnlocalizedName(ItemStack stack) {
+    return getUnlocalizedName();
+  }
+
+  @Override
+  public String getUnlocalizedNameForTooltip(ItemStack stack) {
     return getUnlocalizedName();
   }
 

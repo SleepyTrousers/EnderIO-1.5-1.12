@@ -79,6 +79,8 @@ item.itemModItemFilter.tooltip.detailed.line2=mod/s
 
 item.itemPowerItemFilter.name=Chargeable Item Filter
 item.itemPowerItemFilter.tooltip.basic.line1=Upgrade for item conduits
+item.itemPowerItemFilter.tooltip.detailed.line1=Filters chargeable items based on
+item.itemPowerItemFilter.tooltip.detailed.line2=how much RF they have stored
 
 item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
 item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
