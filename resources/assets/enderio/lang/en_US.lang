@@ -830,6 +830,8 @@ enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone sign
 
 enderio.gui.conduit.fluid.autoExtract=Auto Extract
 enderio.gui.conduit.fluid.filter=Filter
+enderio.gui.conduit.fluid.whitelist=Whitelist
+enderio.gui.conduit.fluid.blacklist=Blacklist
 
 enderio.gui.conduit.gas.autoExtract=Auto Extract
 
