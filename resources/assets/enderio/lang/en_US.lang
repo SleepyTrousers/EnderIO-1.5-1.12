@@ -539,6 +539,7 @@ item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y
 item.itemSoulVessel.name=Soul Vial
 enderio.item.itemSoulVessel.tooltip.health=Health:
 enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
+enderio.item.itemSoulVessel.tooltip.color=Color:
 item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
