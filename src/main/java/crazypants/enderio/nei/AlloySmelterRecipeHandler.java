@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -23,7 +24,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getRecipeName() {
-    return "Alloy Smelter";
+    return StatCollector.translateToLocal("enderio.nei.alloysmelter");
   }
 
   @Override

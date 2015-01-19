@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -26,7 +27,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getRecipeName() {
-    return "Slice'N'Splice";
+    return StatCollector.translateToLocal("enderio.nei.slicensplice");
   }
 
   @Override

@@ -55,22 +55,22 @@ public class KeyTracker {
   
   
   public KeyTracker() {
-    glideKey = new KeyBinding("Glider Toggle", Keyboard.KEY_G, "Dark Steel Armor");
+    glideKey = new KeyBinding(Lang.localize("keybind.glidertoggle"), Keyboard.KEY_G, Lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(glideKey);
-    soundDetectorKey = new KeyBinding("Sound Locator", Keyboard.KEY_L, "Dark Steel Armor");
+    soundDetectorKey = new KeyBinding(Lang.localize("keybind.soundlocator"), Keyboard.KEY_L, Lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(soundDetectorKey);        
-    nightVisionKey = new KeyBinding("Night Vision", Keyboard.KEY_P, "Dark Steel Armor");
+    nightVisionKey = new KeyBinding(Lang.localize("keybind.nightvision"), Keyboard.KEY_P, Lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(nightVisionKey);
-    gogglesKey = new KeyBinding("Goggles of Revealing", Keyboard.KEY_R, "Dark Steel Armor");
+    gogglesKey = new KeyBinding(Lang.localize("keybind.gogglesofrevealing"), Keyboard.KEY_R, Lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(gogglesKey);
     
-    stepAssistKey = new KeyBinding("Step Assist", Keyboard.KEY_NONE, "Dark Steel Armor");
+    stepAssistKey = new KeyBinding(Lang.localize("keybind.stepassist"), Keyboard.KEY_NONE, Lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(stepAssistKey);
     
-    speedKey = new KeyBinding("Speed", Keyboard.KEY_NONE, "Dark Steel Armor");
+    speedKey = new KeyBinding(Lang.localize("keybind.speed"), Keyboard.KEY_NONE, Lang.localize("category.darksteelarmor"));
     ClientRegistry.registerKeyBinding(speedKey);
     
-    yetaWrenchMode = new KeyBinding("Yeta Wrench Mode", Keyboard.KEY_Y, "Tools");
+    yetaWrenchMode = new KeyBinding(Lang.localize("keybind.yetawrenchmode"), Keyboard.KEY_Y, Lang.localize("category.tools"));
     ClientRegistry.registerKeyBinding(yetaWrenchMode);
   }
   
