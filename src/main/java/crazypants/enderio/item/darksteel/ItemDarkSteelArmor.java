@@ -33,14 +33,18 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.util.ItemUtil;
 import crazypants.util.Lang;
+import forestry.api.apiculture.IArmorApiarist;
+import forestry.api.core.IArmorNaturalist;
 
 @InterfaceList({
     @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
     @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft")
+    @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft"),
+    @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "Forestry"),
+    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry")
 })
 public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles,
-    IRevealer, IVisDiscountGear {
+    IRevealer, IVisDiscountGear, IArmorApiarist, IArmorNaturalist {
 
   public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
@@ -294,4 +298,20 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     this.gogglesUgradeActive = gogglesUgradeActive;
   }
 
+  // Forestry
+
+  @Override
+  @Method(modid = "Forestry")
+  public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
+    return ApiaristArmorUpgrade.loadFromItem(armor) != null;
+  }
+
+  @Override
+  @Method(modid = "Forestry")
+  public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
+    if(armor == null || armor.getItem() != EnderIO.itemDarkSteelHelmet) {
+      return false;
+    }
+    return NaturalistEyeUpgrade.isUpgradeEquipped(player);
+  }
 }

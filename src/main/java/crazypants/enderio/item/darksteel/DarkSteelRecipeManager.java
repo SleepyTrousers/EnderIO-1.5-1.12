@@ -49,6 +49,13 @@ public class DarkSteelRecipeManager {
     if(Loader.isModLoaded("Thaumcraft")) {
       upgrades.add(GogglesOfRevealingUpgrade.INSTANCE);
     }
+    if(Loader.isModLoaded("Forestry")) {
+      upgrades.add(NaturalistEyeUpgrade.INSTANCE);
+      upgrades.add(ApiaristArmorUpgrade.HELMET);
+      upgrades.add(ApiaristArmorUpgrade.CHEST);
+      upgrades.add(ApiaristArmorUpgrade.LEGS);
+      upgrades.add(ApiaristArmorUpgrade.BOOTS);
+    }
   }
 
   @SubscribeEvent
