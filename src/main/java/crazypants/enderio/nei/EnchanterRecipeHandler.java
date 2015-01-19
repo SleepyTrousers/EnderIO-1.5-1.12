@@ -28,7 +28,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getRecipeName() {
-    return "Enchanter";
+    return StatCollector.translateToLocal("enderio.nei.enchanter");
   }
 
   @Override

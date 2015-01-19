@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -31,7 +32,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getRecipeName() {
-    return "SAG Mill";
+    return StatCollector.translateToLocal("enderio.nei.sagmill");
   }
 
   @Override

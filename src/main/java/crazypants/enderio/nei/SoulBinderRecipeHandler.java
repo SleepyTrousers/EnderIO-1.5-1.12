@@ -9,6 +9,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
@@ -28,7 +29,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
   @Override
   public String getRecipeName() {
-    return "Soul Binder";
+    return StatCollector.translateToLocal("enderio.nei.soulbinder");
   }
 
   @Override

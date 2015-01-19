@@ -4,6 +4,8 @@
 enderio.power.rf=RF
 enderio.power.tick=/тик
 enderio.power.maxOutput=Макс. выход
+enderio.power.generates=Генерирует
+enderio.power.generation_rate=на скорости
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Вход/выход Края
@@ -36,6 +38,7 @@ enderio.itemLiquidConduitAdvanced.name=Жидкостная труба высо�
 enderio.itemLiquidConduitEnder.name=Жидкостная труба Края
 enderio.itemLiquidConduit.lockedType=Тип жидкости установлен на
 enderio.itemLiquidConduit.unlockedType=Тип жидкости не установлен
+enderio.itemLiquidConduit.lockedWaila=Установленная жидкость 
 
 enderio.itemLiquidConduit.tooltip.maxExtract=Макс. извлечение:
 enderio.itemLiquidConduit.tooltip.maxIo=Макс. вход/выход:
@@ -53,7 +56,6 @@ enderio.filterUpgradeBasic.name=Основной предметный фильт
 enderio.filterUpgradeAdvanced.name=Продвинутый предметный фильтр
 enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
 
-
 enderio.itemConduitFilterUpgrade.configured=Настроенный
 enderio.itemConduitFilterUpgrade.clearConfigMethod=Положите в сетку создания, чтобы очистить
 enderio.itemConduitFilterUpgrade.clearConfigWarning=Это очистит все сохранённые настройки фильтра!
@@ -62,11 +64,22 @@ item.itemExistingItemFilter.name=Существующий предметный �
 item.itemExistingItemFilter.tooltip.basic.line1=Улучшение для предметных труб
 item.itemExistingItemFilter.tooltip.detailed.line1=Выбирает предметы только
 item.itemExistingItemFilter.tooltip.detailed.line2=в инвентаре
+item.itemExistingItemFilter.tooltip.detailed.line3=ПКМ, сидя,
+item.itemExistingItemFilter.tooltip.detailed.line4=по инвентарю, чтобы добавить
+item.itemExistingItemFilter.tooltip.detailed.line5=содержимое в фильтр
+
+enderio.item.itemExistingItemFilter.filterUpdated=Новые предметы добавлены в список
+enderio.item.itemExistingItemFilter.filterNotUpdated=Список уже содержит все предметы инвентаря
 
 item.itemModItemFilter.name=Фильтр по предметам модификаций
 item.itemModItemFilter.tooltip.basic.line1=Улучшение для предметных труб
 item.itemModItemFilter.tooltip.detailed.line1=Выбирает предметы только для определённой(-ых)
 item.itemModItemFilter.tooltip.detailed.line2=модификации/модификаций
+
+item.itemPowerItemFilter.name=Фильтр по заряжаемым предметам
+item.itemPowerItemFilter.tooltip.basic.line1=Улучшение для предметных труб
+item.itemPowerItemFilter.tooltip.detailed.line1=Фильтрует заряжаемые предметы на основе
+item.itemPowerItemFilter.tooltip.detailed.line2=количества RF в предмете
 
 item.itemExtractSpeedUpgrade.name=Улучшение скорости для предметной трубы
 item.itemExtractSpeedUpgrade.tooltip.basic.line1=Улучшение для предметных труб
@@ -82,6 +95,9 @@ enderio.itemGasConduit.tooltip.detailed.line1=Передаёт газы совм
 
 enderio.itemMEConduit.name=МЭ труба
 enderio.itemMEConduitDense.name=Плотная МЭ труба
+
+//Entity
+entity.witherSkeleton.name=Скелет-иссушитель
 
 //Materials
 enderio.itemMaterial.name=Материалы
@@ -116,7 +132,6 @@ fluid.eio.xpjuice=Жидкий опыт
 tile.fluid.eio.xpjuice.name=Жидкий опыт
 item.bucketXpjuice.name=Ведро опыта
 
-
 enderio.fluid.millibucket.abr=мВ
 
 enderio.fuel.tooltip.heading=Информация о топливе
@@ -125,7 +140,6 @@ enderio.fluid.millibucketsTick=мВ/тик
 enderio.coolant.tooltip.heading=Хладагент
 enderio.coolant.tooltip.degreesPerBucket=Градус за ведро
 enderio.gas.gasTick=Газ/тик
-
 
 //Materials
 enderio.itemMachinePart.name=Детали механизма
@@ -270,11 +284,13 @@ tile.blockCapBank.tooltip.detailed.line3=Shift-ПКМ, по экрану пус�
 tile.blockCapBank.tooltip.detailed.line4=чтобы изменить отображаемую информацию
 tile.blockCapBank.tooltipPrefix=Содержит
 
-
 enderio.capbank.maxIO=Макс. вход/выход
 enderio.capbank.maxIn=Макс. вход
 enderio.capbank.maxOut=Макс. выход
 enderio.capbank.change=Вход/выход
+enderio.capbank.iodisplay.stable=Вход/выход
+enderio.capbank.iodisplay.gain=Вход
+enderio.capbank.iodisplay.loss=Выход
 
 tile.blockWirelessCharger.name=Беспроводной зарядник
 tile.blockWirelessCharger.tooltip.detailed.line1=Заряжает ближайшие предметы 
@@ -352,7 +368,7 @@ enderio.killerJoe.fuelTank=Питательный резервуар
 enderio.killerJoe.giveXp.tooltip=Использует опыт
 enderio.killerJoe.giveXp10.tooltip=Использует 10 уровней опыта
 
-tile.blockSliceAndSplice.name=Slice'N'Splice
+tile.blockSliceAndSplice.name=«Отрубатель и сращиватель»
 tile.blockSliceAndSplice.tooltip.detailed.line1=Отрубает головы и превращает их
 tile.blockSliceAndSplice.tooltip.detailed.line2=во всякие полезные вещи
 
@@ -516,6 +532,8 @@ item.enderio.itemConduitProbe.tooltip.detailed.line5=ПКМ, чтобы вста
 item.enderio.itemConduitProbe.tooltip.detailed.line6=Используйте Shift-колёсико мыши или 'Y', чтобы изменить режим
 
 item.itemSoulVessel.name=Флакон для душ
+enderio.item.itemSoulVessel.tooltip.health=Здоровье:
+enderio.item.itemSoulVessel.tooltip.fluidname=Название жидкости:
 item.itemSoulVessel.tooltip.detailed.line1=ПКМ по мобу, чтобы
 item.itemSoulVessel.tooltip.detailed.line2=захватить его душу
 item.itemSoulVessel.tooltip.detailed.line3=Нажмите ПКМ снова, чтобы выпустить её
@@ -528,7 +546,7 @@ item.itemXpTransfer.tooltip.detailed.line4=в резервуар
 
 skullZombieElectrode.name=Зомби-электрод
 skullZombieController.name=Зомби-контроллер
-skullZombieFrankenstien.name=Frank'N'Zombie
+skullZombieFrankenstien.name=Зомби Фрэнк
 skullEnderResonator.name=Резонатор Края
 
 item.itemSpawnEggEnderIO.name=Призвать существо - 
@@ -562,24 +580,23 @@ enderio.item.darkSteel_boots.tooltip.line2=если есть питание
 
 enderio.darksteel.upgrade.empowered_one.name=Усиление
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Половина урона поглощается
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Поглощается $D% урона
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=энергией
 
 enderio.darksteel.upgrade.empowered_two.name=Усиление II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Половина урона поглощается
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Поглощается $D% урона
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=энергией
 
 enderio.darksteel.upgrade.empowered_three.name=Усиление III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Половина урона поглощается
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Поглощается $D% урона
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=энергией
 
 enderio.darksteel.upgrade.empowered_four.name=Усиление IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Половина урона поглощается
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Поглощается $D% урона
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=энергией
-
 
 enderio.darksteel.upgrade.travel.name=Путешествие
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Зажмите shift и нажмите ПКМ, для телепорта или
@@ -754,6 +771,8 @@ enderio.combustionGenerator.output=Генерирование:
 //Stirling Gen
 enderio.stirlingGenerator.output=Генерирование:
 enderio.stirlingGenerator.burnRate=Скорость сгорания:
+enderio.stirlingGenerator.upgradeslot=Слот улучшения
+enderio.stirlingGenerator.upgrades={0} даёт {2}{1,number,#.#}x{3} эффективности
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Только
@@ -810,6 +829,7 @@ enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 
 //Enchants
 enchantment.enderio.soulBound=Печать души
+description.enchantment.enderio.soulBound=Это зачарование оставляет предмет в инвентаре после смерти
 
 //Configuration
 enderio.config.title=Конфигурация Ender IO
@@ -855,3 +875,20 @@ enderio.config.fluid.tooltip=Чистая энергия жидкостей!
 
 enderio.config.spawner=Настройки электрического спаунера
 enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
+
+//Keybinds/Waila/NEI
+enderio.category.darksteelarmor=Броня из тёмной стали
+enderio.category.tools=Инструменты
+enderio.keybind.glidertoggle=Переключить планер
+enderio.keybind.soundlocator=Звуколокатор
+enderio.keybind.nightvision=Ночное зрение
+enderio.keybind.gogglesofrevealing=Очки откровения
+enderio.keybind.stepassist=Шаг вверх
+enderio.keybind.speed=Скорость
+enderio.keybind.yetawrenchmode=Режим ключа Yeta
+enderio.nei.alloysmelter=Завод сплавов
+enderio.nei.enchanter=Зачарователь
+enderio.nei.sagmill=Дробилка
+enderio.nei.slicensplice=«Отрубатель и сращиватель»
+enderio.nei.soulbinder=Связыватель душ
+enderio.nei.vat=Чан
