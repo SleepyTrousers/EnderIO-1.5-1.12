@@ -14,7 +14,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
@@ -39,27 +38,28 @@ public class LiquidSettings extends BaseSettingsPanel {
   static final int ID_REDSTONE_BUTTON = GuiExternalConnection.nextButtonId();
 
   private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
+  private static final int ID_WHITELIST = GuiExternalConnection.nextButtonId();
 
   private static final int NEXT_FILTER_ID = 989322;
 
-  private RedstoneModeButton rsB;
+  private final RedstoneModeButton rsB;
+  private final ColorButton colorB;
 
-  private ColorButton colorB;
+  private static final String autoExtractStr = Lang.localize("gui.conduit.fluid.autoExtract");
+  private static final String filterStr = Lang.localize("gui.conduit.fluid.filter");
 
-  private String autoExtractStr = Lang.localize("gui.conduit.fluid.autoExtract");
-  private String filterStr = Lang.localize("gui.conduit.fluid.filter");
-
-  private ILiquidConduit conduit;
+  private final ILiquidConduit conduit;
 
   private EnderLiquidConduit eConduit;
   private boolean isEnder;
-  private int filterX = 59;
-  private int filterY = 63;
-  private Rectangle filterBounds = new Rectangle(filterX, filterY, 90, 18);
+  private static final int filterX = 59;
+  private static final int filterY = 63;
+  private static final Rectangle filterBounds = new Rectangle(filterX, filterY, 90, 18);
   private GuiToolTip[] filterToolTips;
 
   private boolean inOutShowIn = true;
   private IconButtonEIO inOutNextB;
+  private IconButtonEIO whiteListB;
 
   protected LiquidSettings(final GuiExternalConnection gui, IConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, Lang.localize("itemLiquidConduit.name"), gui, con);
@@ -75,6 +75,11 @@ public class LiquidSettings extends BaseSettingsPanel {
       inOutNextB = new IconButtonEIO(gui, NEXT_FILTER_ID, x, y, IconEIO.RIGHT_ARROW);
       inOutNextB.setSize(8, 16);
 
+      x = filterX - 20;
+      y = filterY + 1;
+
+      whiteListB = new IconButtonEIO(gui, ID_WHITELIST, x, y, IconEIO.FILTER_WHITELIST);
+      whiteListB.setToolTip(Lang.localize("gui.conduit.fluid.whitelist"));
     } else {
       isEnder = false;
       gui.getContainer().setInventorySlotsVisible(false);
@@ -122,6 +127,8 @@ public class LiquidSettings extends BaseSettingsPanel {
     if(guiButton.id == ID_COLOR_BUTTON) {
       conduit.setExtractionSignalColor(gui.getDir(), DyeColor.values()[colorB.getColorIndex()]);
       PacketHandler.INSTANCE.sendToServer(new PacketExtractMode(conduit, gui.getDir()));
+    } else if(guiButton.id == ID_WHITELIST) {
+      toggleBlacklist();
     } else if(guiButton.id == NEXT_FILTER_ID) {
       inOutShowIn = !inOutShowIn;
       if(isInput()) {
@@ -130,6 +137,9 @@ public class LiquidSettings extends BaseSettingsPanel {
       } else {
         rsB.detach();
         colorB.detach();
+      }
+      if(isFilterVisible()) {
+        updateWhiteListButton(eConduit.getFilter(gui.getDir(), isInput()));
       }
     }
   }
@@ -140,10 +150,26 @@ public class LiquidSettings extends BaseSettingsPanel {
     updateGuiVisibility();
   }
 
+  private void toggleBlacklist() {
+    if(!isFilterVisible()) {
+      return;
+    }
+    FluidFilter filter = eConduit.getFilter(gui.getDir(), isInput());
+    if(filter == null) {
+      filter = new FluidFilter();
+    }
+    filter.setBlacklist(!filter.isBlacklist());
+    setConduitFilter(filter);
+    updateWhiteListButton(filter);
+  }
+
   @Override
   public void mouseClicked(int x, int y, int par3) {
 
     if(!isFilterVisible()) {
+      return;
+    }
+    if(!filterBounds.contains(x, y)) {
       return;
     }
     ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
@@ -154,13 +180,14 @@ public class LiquidSettings extends BaseSettingsPanel {
     if(filter == null) {
       filter = new FluidFilter();
     }
-    if(filterBounds.contains(x, y)) {
-      int slot = (x - filterX) / 18;
-      filter.setFluid(slot, st);
-    }
-    eConduit.setFilter(gui.getDir(), filter, isInput());
-    EnderIO.packetPipeline.INSTANCE.sendToServer(new PacketFluidFilter(eConduit, gui.getDir(), filter, isInput()));
+    int slot = (x - filterX) / 18;
+    filter.setFluid(slot, st);
+    setConduitFilter(filter);
+  }
 
+  protected void setConduitFilter(FluidFilter filter) {
+    eConduit.setFilter(gui.getDir(), filter, isInput());
+    PacketHandler.INSTANCE.sendToServer(new PacketFluidFilter(eConduit, gui.getDir(), filter, isInput()));
   }
 
   @Override
@@ -183,6 +210,9 @@ public class LiquidSettings extends BaseSettingsPanel {
     if(isFilterVisible()) {
       gui.getContainer().setInventorySlotsVisible(true);
       addFilterTooltips();
+
+      whiteListB.onGuiInit();
+      updateWhiteListButton(eConduit.getFilter(gui.getDir(), isInput()));
     } else {
       gui.getContainer().setInventorySlotsVisible(false);
     }
@@ -190,6 +220,16 @@ public class LiquidSettings extends BaseSettingsPanel {
     ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.IN_OUT) {
       inOutNextB.onGuiInit();
+    }
+  }
+
+  private void updateWhiteListButton(FluidFilter filter) {
+    if(filter != null && filter.isBlacklist()) {
+      whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
+      whiteListB.setToolTip(Lang.localize("gui.conduit.fluid.blacklist"));
+    } else {
+      whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
+      whiteListB.setToolTip(Lang.localize("gui.conduit.fluid.whitelist"));
     }
   }
 
@@ -208,6 +248,7 @@ public class LiquidSettings extends BaseSettingsPanel {
         }
       }
       inOutNextB.detach();
+      whiteListB.detach();
     }
   }
 
@@ -268,11 +309,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private boolean isInput() {
     ConnectionMode mode = conduit.getConnectionMode(gui.getDir());
-    return mode != ConnectionMode.DISABLED &&
-        (
-        mode == ConnectionMode.INPUT ||
-        (conduit.getConnectionMode(gui.getDir()) == ConnectionMode.IN_OUT && inOutShowIn)
-        );
+    return (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
   }
 
   private boolean isFilterVisible() {

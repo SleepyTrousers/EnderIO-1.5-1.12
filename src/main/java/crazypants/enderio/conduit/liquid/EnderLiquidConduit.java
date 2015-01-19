@@ -301,7 +301,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     for (Entry<ForgeDirection, FluidFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
-        if(f != null && !f.isEmpty()) {
+        if(f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
@@ -311,7 +311,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     for (Entry<ForgeDirection, FluidFilter> entry : outputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
-        if(f != null && !f.isEmpty()) {
+        if(f != null && !f.isDefault()) {
           NBTTagCompound itemRoot = new NBTTagCompound();
           f.writeToNBT(itemRoot);
           nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);

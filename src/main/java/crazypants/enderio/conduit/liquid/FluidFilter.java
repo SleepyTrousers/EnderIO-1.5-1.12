@@ -11,6 +11,7 @@ import crazypants.util.FluidUtil;
 public class FluidFilter {
 
   private final Fluid[] fluids = new Fluid[5];
+  private boolean isBlacklist;
 
   public boolean isEmpty() {
     for (Fluid f : fluids) {
@@ -62,7 +63,20 @@ public class FluidFilter {
     fluids[index] = f;
   }
 
+  public boolean isBlacklist() {
+    return isBlacklist;
+  }
+
+  public void setBlacklist(boolean isBlacklist) {
+    this.isBlacklist = isBlacklist;
+  }
+
+  public boolean isDefault() {
+    return !isBlacklist && isEmpty();
+  }
+
   public void writeToNBT(NBTTagCompound root) {
+    root.setBoolean("isBlacklist", isBlacklist);
     if(isEmpty()) {
       root.removeTag("fluidFilter");
       return;
@@ -84,6 +98,7 @@ public class FluidFilter {
   }
 
   public void readFromNBT(NBTTagCompound root) {
+    isBlacklist = root.getBoolean("isBlacklist");
     if(!root.hasKey("fluidFilter")) {
       clear();
       return;
@@ -110,10 +125,10 @@ public class FluidFilter {
     }
     for (Fluid f : fluids) {
       if(f != null && f.getID() == drained.getFluid().getID()) {
-        return true;
+        return !isBlacklist;
       }
     }
-    return false;
+    return isBlacklist;
   }
 
 }
