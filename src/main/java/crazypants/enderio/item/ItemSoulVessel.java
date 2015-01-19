@@ -34,6 +34,7 @@ import crazypants.enderio.EnderIOTab;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.util.DyeColor;
 import crazypants.util.EntityUtil;
 import crazypants.util.Lang;
 
@@ -279,7 +280,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
   }
 
   /** Support for displaying fluid name of captured Moo Fluids cow */
-  public String getFluidNameFromStack(ItemStack item) {
+  private String getFluidNameFromStack(ItemStack item) {
     if(!containsSoul(item)) {
       return null;
     }
@@ -289,7 +290,21 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     return item.stackTagCompound.getString("FluidName");
   }
 
-  public float getHealthFromStack(ItemStack item) {
+  private DyeColor getColorFromStack(ItemStack item) {
+    if(!containsSoul(item)) {
+      return null;
+    }
+    if(!item.stackTagCompound.hasKey("Color")) {
+      return null;
+    }
+    int colorIdx = item.stackTagCompound.getInteger("Color");
+    if(colorIdx < 0 || colorIdx > 15) {
+      return null;
+    }
+    return DyeColor.values()[15-colorIdx];
+  }
+
+  private float getHealthFromStack(ItemStack item) {
     if(!containsSoul(item)) {
       return Float.NaN;
     }
@@ -299,7 +314,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     return item.stackTagCompound.getFloat("HealF");
   }
 
-  public NBTTagCompound getAttributeFromStack(ItemStack item, String name) {
+  private NBTTagCompound getAttributeFromStack(ItemStack item, String name) {
     if(!containsSoul(item)) {
       return null;
     }
@@ -316,7 +331,7 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     return null;
   }
 
-  public float getMaxHealthFromStack(ItemStack item) {
+  private float getMaxHealthFromStack(ItemStack item) {
     NBTTagCompound maxHealthAttrib = getAttributeFromStack(item, "generic.maxHealth");
     if(maxHealthAttrib == null) {
       return Float.NaN;
@@ -369,6 +384,11 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
         if(fluid != null) {
           par3List.add(Lang.localize("item.itemSoulVessel.tooltip.fluidname") + " " + fluid.getLocalizedName());
         }
+      }
+
+      DyeColor color = getColorFromStack(par1ItemStack);
+      if(color != null) {
+        par3List.add(Lang.localize("item.itemSoulVessel.tooltip.color") + " " + color.getLocalisedName());
       }
     }
   }
