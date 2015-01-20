@@ -25,6 +25,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.util.BlockCoord;
 
 public class BlockFusedQuartz extends BlockEio {
 
@@ -50,7 +51,7 @@ public class BlockFusedQuartz extends BlockEio {
     }
     
     public boolean connectTo(int otherMeta) {
-      if (otherMeta == ordinal()) {
+      if (otherMeta == ordinal() || Config.clearGlassConnectToFusedQuartz) {
         return true;
       }
       
@@ -162,9 +163,15 @@ public class BlockFusedQuartz extends BlockEio {
   }
 
   @Override
-  public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-    Block i1 = par1IBlockAccess.getBlock(par2, par3, par4);
-    return i1 == this ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+  public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    Block block = world.getBlock(x, y, z);
+    int meta = world.getBlockMetadata(x, y, z);
+    if(block == this) {
+      BlockCoord here = new BlockCoord(x, y, z).getLocation(ForgeDirection.VALID_DIRECTIONS[side].getOpposite());
+      int myMeta = world.getBlockMetadata(here.x, here.y, here.z);
+      return !Type.values()[myMeta].connectTo(meta);
+    }
+    return true;
   }
 
   @Override
