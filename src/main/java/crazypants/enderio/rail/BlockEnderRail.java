@@ -80,6 +80,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
       setCreativeTab(EnderIOTab.tabEnderIO);
     }
     setBlockTextureName("enderio:blockEnderRail");
+    setHardness(0.7F);
+    setStepSound(soundTypeMetal);
   }
 
   private void init() {
