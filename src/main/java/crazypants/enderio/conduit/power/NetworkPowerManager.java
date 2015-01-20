@@ -82,8 +82,8 @@ public class NetworkPowerManager {
     return capSupply.maxCap;
   }
 
-  public int getPowerInReceptors() {
-    int result = 0;
+  public long getPowerInReceptors() {
+    long result = 0;
     Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {
@@ -97,8 +97,8 @@ public class NetworkPowerManager {
     return result;
   }
 
-  public int getMaxPowerInReceptors() {
-    int result = 0;
+  public long getMaxPowerInReceptors() {
+    long result = 0;
     Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if(!re.emmiter.getConnectionsDirty()) {

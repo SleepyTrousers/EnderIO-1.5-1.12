@@ -39,7 +39,7 @@ public interface IMovableRegistry
 	 * You can also use the IMC, FMLInterModComms.sendMessage( "appliedenergistics2", "whitelist-spatial",
 	 * "appeng.common.AppEngTile" );
 	 * 
-	 * @param blk
+	 * @param blk block
 	 */
 	void blacklistBlock(Block blk);
 
@@ -54,7 +54,7 @@ public interface IMovableRegistry
 	void whiteListTileEntity(Class<? extends TileEntity> c);
 
 	/**
-	 * @param te
+	 * @param te to be moved tile entity
 	 * @return true if the tile has accepted your request to move it
 	 */
 	boolean askToMove(TileEntity te);
@@ -62,14 +62,14 @@ public interface IMovableRegistry
 	/**
 	 * tells the tile you are done moving it.
 	 * 
-	 * @param te
+	 * @param te moved tile entity
 	 */
 	void doneMoving(TileEntity te);
 
 	/**
 	 * add a new handler movable handler.
 	 * 
-	 * @param handler
+	 * @param handler moving handler
 	 */
 	void addHandler(IMovableHandler handler);
 
@@ -78,8 +78,8 @@ public interface IMovableRegistry
 	 * 
 	 * only valid after askToMove(...) = true
 	 * 
-	 * @param te
-	 * @return
+	 * @param te tile entity
+	 * @return moving handler of tile entity
 	 */
 	IMovableHandler getHandler(TileEntity te);
 
@@ -89,7 +89,7 @@ public interface IMovableRegistry
 	IMovableHandler getDefaultHandler();
 
 	/**
-	 * @param blk
+	 * @param blk block
 	 * @return true if this block is blacklisted
 	 */
 	boolean isBlacklisted(Block blk);

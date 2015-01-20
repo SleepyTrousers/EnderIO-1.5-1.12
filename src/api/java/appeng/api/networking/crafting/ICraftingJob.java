@@ -21,7 +21,7 @@ public interface ICraftingJob
 	 * Populates the plan list with stack size, and requestable values that represent the stored, and crafting job
 	 * contents respectively.
 	 * 
-	 * @param plan
+	 * @param plan plan
 	 */
 	void populatePlan(IItemList<IAEItemStack> plan);
 

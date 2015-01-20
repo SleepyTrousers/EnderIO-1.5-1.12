@@ -45,7 +45,9 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     setBlockName(ModObject.blockPaintedSlab.unlocalisedName + (isDouble ? "Double" : ""));
     setHardness(0.5F);
     setResistance(5.0F);
-    setLightOpacity(0);
+    if(!isDouble) {
+      useNeighborBrightness = true;
+    }
   }
 
   public void init() {
@@ -244,7 +246,8 @@ public class BlockPaintedSlab extends BlockSlab implements ITileEntityProvider, 
     if(te instanceof TileEntityPaintedBlock) {
       TileEntityPaintedBlock tef = (TileEntityPaintedBlock) te;
       if(tef.getSourceBlock() != null) {
-        return tef.getSourceBlock().colorMultiplier(world, x, y, z);
+        PaintedBlockAccessWrapper ba = new PaintedBlockAccessWrapper(world);
+        return tef.getSourceBlock().colorMultiplier(ba, x, y, z);
       }
     }
     return super.colorMultiplier(world, x, y, z);

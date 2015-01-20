@@ -1,9 +1,6 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockNewLeaf;
-import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.machine.farm.TileFarmStation;
@@ -27,7 +24,7 @@ public class TreeHarvestUtil {
   public void harvest(TileFarmStation farm, TreeFarmer farmer, BlockCoord bc, HarvestResult res) {
     horizontalRange = farm.getFarmSize() + 7;
     verticalRange = 30;
-    harvest(farm.getWorldObj(), farm.getLocation(), bc, res);
+    harvest(farm.getWorldObj(), farm.getLocation(), bc, res, farmer.getIgnoreMeta());
   }
   
   public void harvest(World world, BlockCoord bc, HarvestResult res) {
@@ -39,14 +36,21 @@ public class TreeHarvestUtil {
     harvestUp(world, bc, res, new HarvestTarget(wood, woodMeta));
   }
   
-  private void harvest(World world, BlockCoord origin, BlockCoord bc, HarvestResult res) {
+  private void harvest(World world, BlockCoord origin, BlockCoord bc, HarvestResult res, boolean ignoreMeta) {
     this.origin = new BlockCoord(origin);
     Block wood = world.getBlock(bc.x, bc.y, bc.z);
     int woodMeta = world.getBlockMetadata(bc.x, bc.y, bc.z);
-    harvestUp(world, bc, res, new HarvestTarget(wood, woodMeta));
+    if (ignoreMeta)
+    {
+      harvestUp(world, bc, res, new BaseHarvestTarget(wood));
+    }
+    else
+    {
+      harvestUp(world, bc, res, new HarvestTarget(wood, woodMeta));
+    }
   }
   
-  protected void harvestUp(World world, BlockCoord bc, HarvestResult res, HarvestTarget target) {
+  protected void harvestUp(World world, BlockCoord bc, HarvestResult res, BaseHarvestTarget target) {
 
     if(!isInHarvestBounds(bc) || res.harvestedBlocks.contains(bc)) {
       return;
@@ -78,7 +82,7 @@ public class TreeHarvestUtil {
 
   }
 
-  private void harvestAdjacentWood(World world, BlockCoord bc, HarvestResult res, HarvestTarget target) {
+  private void harvestAdjacentWood(World world, BlockCoord bc, HarvestResult res, BaseHarvestTarget target) {
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       if(dir.offsetY == 0) {
         BlockCoord loc = bc.getLocation(dir);
@@ -107,20 +111,31 @@ public class TreeHarvestUtil {
     return true;
   }
   
-  private static final class HarvestTarget {
-
-    private final Block wood;
+  private static final class HarvestTarget extends BaseHarvestTarget
+  {
     private final int woodMeta;
 
     HarvestTarget(Block wood, int woodMeta) {
-      this.wood = wood;
+      super(wood);
       this.woodMeta = woodMeta;
     }
 
     boolean isTarget(Block blk, int meta) {
-      return blk == wood && ((meta & 3) == (woodMeta & 3));
+      return super.isTarget(blk,meta) && ((meta & 3) == (woodMeta & 3));
+    }
+  }
+
+  private static class BaseHarvestTarget
+  {
+    private final Block wood;
+
+    BaseHarvestTarget(Block wood) {
+      this.wood = wood;
     }
 
+    boolean isTarget(Block blk, int meta) {
+      return blk == wood;
+    }
   }
 
 }

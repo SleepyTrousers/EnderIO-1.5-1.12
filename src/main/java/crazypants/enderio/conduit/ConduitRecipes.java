@@ -76,6 +76,9 @@ public class ConduitRecipes {
     ItemStack exFilt = new ItemStack(EnderIO.itemExistingItemFilter);
     GameRegistry.addShapedRecipe(exFilt, " r ", "rfr", " c ", 'c', new ItemStack(Items.comparator, 1, 0), 'r', Items.redstone, 'f', advFilter);
 
+    ItemStack powerFilt = new ItemStack(EnderIO.itemPowerItemFilter);
+    GameRegistry.addShapedRecipe(powerFilt, " p ", "pcp", " p ", 'p', Items.paper, 'c', EnderIO.itemConduitProbe);
+
     ClearFilterRecipe clearRec = new ClearFilterRecipe();
     MinecraftForge.EVENT_BUS.register(clearRec);
     GameRegistry.addRecipe(clearRec);
@@ -94,14 +97,8 @@ public class ConduitRecipes {
   @Method(modid = "appliedenergistics2")
   private static void addAeRecipes() {
     String fluix = "crystalFluix";
-    Object pureFluix = null;
-
-    try {
-      pureFluix = AEApi.instance().materials().materialPureifiedFluixCrystal.stack(1).copy(); // rv1
-    } catch (NoSuchFieldError e) {
-      pureFluix = "crystalPureFluix"; // rv2
-    }
-
+    String pureFluix = "crystalPureFluix";
+    
     ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
     ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
     ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);

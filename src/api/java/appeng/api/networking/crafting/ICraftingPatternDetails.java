@@ -9,7 +9,7 @@ import appeng.api.storage.data.IAEItemStack;
 /**
  * do not implement provided by {@link ICraftingPatternItem}
  * 
- * caching this instance will increase preformance of validation and checks.
+ * caching this instance will increase performance of validation and checks.
  */
 public interface ICraftingPatternDetails
 {
@@ -20,9 +20,9 @@ public interface ICraftingPatternDetails
 	ItemStack getPattern();
 
 	/**
-	 * @param slotIndex
-	 * @param itemStack
-	 * @param world
+	 * @param slotIndex specific slot index
+	 * @param itemStack item in slot
+	 * @param world crafting world
 	 * 
 	 * @return if an item can be used in the specific slot for this pattern.
 	 */
@@ -41,12 +41,12 @@ public interface ICraftingPatternDetails
 	/**
 	 * @return a list of the inputs, will be clean
 	 */
-	IAEItemStack[] getCondencedInputs();
+	IAEItemStack[] getCondensedInputs();
 
 	/**
 	 * @return a list of the outputs, will be clean
 	 */
-	IAEItemStack[] getCondencedOutputs();
+	IAEItemStack[] getCondensedOutputs();
 
 	/**
 	 * @return a list of the outputs, will include nulls.
@@ -59,10 +59,10 @@ public interface ICraftingPatternDetails
 	boolean canSubstitute();
 
 	/**
-	 * Allow using this instance of the pattern details to preform the crafting action with preformance enhancements.
+	 * Allow using this instance of the pattern details to preform the crafting action with performance enhancements.
 	 * 
-	 * @param craftingInv
-	 * @param world
+	 * @param craftingInv inventory
+	 * @param world crafting world
 	 * @return the crafted ( work bench ) item.
 	 */
 	ItemStack getOutput(InventoryCrafting craftingInv, World world);
@@ -70,8 +70,14 @@ public interface ICraftingPatternDetails
 	/**
 	 * Set the priority the of this pattern.
 	 * 
-	 * @param priority
+	 * @param priority priority of pattern
 	 */
 	void setPriority(int priority);
 
+	/**
+	 * Get the priority of this pattern
+	 *
+	 * @return the priority of this pattern
+	 */
+	int getPriority();
 }

@@ -14,6 +14,7 @@ import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+import crazypants.enderio.conduit.render.ConduitBundleRenderer.FacadeAccessWrapper;
 import crazypants.render.ConnectedTextureRenderer;
 import crazypants.render.ConnectedTextureRenderer.DefaultTextureCallback;
 import crazypants.render.CustomCubeRenderer;
@@ -66,7 +67,13 @@ public class FusedQuartzRenderer implements ISimpleBlockRenderingHandler {
     if(te instanceof TileEntityPaintedBlock) {
       tecb = (TileEntityPaintedBlock) te;
     }
-    renderFrame(blockAccess, x, y, z, tecb, false, meta);
+    IBlockAccess origBa = renderer.blockAccess;
+    renderer.blockAccess = new FacadeAccessWrapper(origBa);
+    try {
+      renderFrame(renderer.blockAccess, x, y, z, tecb, false, meta);
+    } finally {
+      renderer.blockAccess = origBa;
+    }
     //    }
     return true;
   }

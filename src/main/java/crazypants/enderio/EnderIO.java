@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import crazypants.enderio.entity.SkeletonHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
@@ -49,6 +51,7 @@ import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
 import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
@@ -215,6 +218,7 @@ public class EnderIO {
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
   public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemModItemFilter itemModItemFilter;
+  public static ItemPowerItemFilter itemPowerItemFilter;
   public static ItemExtractSpeedUpgrade itemExtractSpeedUpgrade;
 
   // Machines
@@ -390,6 +394,7 @@ public class EnderIO {
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
     itemModItemFilter = ItemModItemFilter.create();
+    itemPowerItemFilter = ItemPowerItemFilter.create();
     itemExtractSpeedUpgrade = ItemExtractSpeedUpgrade.create();
 
     itemBasicCapacitor = ItemCapacitor.create();
@@ -468,10 +473,9 @@ public class EnderIO {
     FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
         + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
 
-    fluidXpJuice = FluidRegistry.getFluid("xpjuice");
     if(!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
-      fluidXpJuice = new Fluid("xpjuice").setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
+      fluidXpJuice = new Fluid(Config.xpJuiceName).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
       FluidRegistry.registerFluid(fluidXpJuice);
       itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
     } else {
@@ -565,6 +569,11 @@ public class EnderIO {
       ConduitBundledRedstoneProvider.register();
     }
 
+    if(Config.replaceWitherSkeletons)
+    {
+      SkeletonHandler.registerSkeleton(this);
+    }
+
     EnderfaceRecipes.addRecipes();
     MaterialRecipes.addRecipes();
     ConduitRecipes.addRecipes();
@@ -579,6 +588,8 @@ public class EnderIO {
   @EventHandler
   public void postInit(FMLPostInitializationEvent event) {
 
+    Config.postInit();
+    
     //Regsiter the enchants
     Enchantments.getInstance();
 
@@ -601,9 +612,9 @@ public class EnderIO {
     PaintSourceValidator.instance.loadConfig();
 
     if(fluidXpJuice == null) { //should have been registered by open blocks 
-      fluidXpJuice = FluidRegistry.getFluid("xpjuice");
+      fluidXpJuice = FluidRegistry.getFluid(getXPJuiceName());
       if(fluidXpJuice == null) {
-        Log.error("Liquid XP registration left to open blocks but could not be found.");
+        Log.error("Liquid XP Juice registration left to open blocks but could not be found.");
       }
     }
 
@@ -626,6 +637,28 @@ public class EnderIO {
     }
 
     addModIntegration();
+  }
+
+  @EventHandler
+  public void loadComplete(FMLLoadCompleteEvent event) {
+    processImc(FMLInterModComms.fetchRuntimeMessages(this)); //Some mods send IMCs during PostInit, so we catch them here.
+  }
+
+  private static String getXPJuiceName() {
+    String openBlocksXPJuiceName = null;
+
+    try {
+      Field getField = Class.forName("openblocks.Config").getField("xpFluidId");
+      openBlocksXPJuiceName = (String) getField.get(null);
+    }catch(Exception e) {
+    }
+
+    if(openBlocksXPJuiceName != null && !Config.xpJuiceName.equals(openBlocksXPJuiceName)) {
+      Log.info("Overwriting XP Juice name with '" + openBlocksXPJuiceName + "' taken from OpenBlocks' config");
+      return openBlocksXPJuiceName;
+    }
+
+    return Config.xpJuiceName;
   }
 
   private void addModIntegration() {
@@ -651,7 +684,10 @@ public class EnderIO {
 
   @EventHandler
   public void onImc(IMCEvent evt) {
-    ImmutableList<IMCMessage> messages = evt.getMessages();
+    processImc(evt.getMessages());
+  }
+
+  private void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {
       String key = msg.key;
       try {

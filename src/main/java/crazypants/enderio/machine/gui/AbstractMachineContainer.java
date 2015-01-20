@@ -18,13 +18,15 @@ public abstract class AbstractMachineContainer extends Container {
   
   protected Map<Slot, Point> playerSlotLocations = new HashMap<Slot, Point>();
 
+  protected Slot upgradeSlot;
+
   public AbstractMachineContainer(InventoryPlayer playerInv, AbstractMachineEntity te) {
     this.tileEntity = te;
 
     addMachineSlots(playerInv);
 
     if(te.getSlotDefinition().getNumUpgradeSlots() == 1) {
-      addSlotToContainer(new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
+      upgradeSlot = new Slot(te, te.getSlotDefinition().getMinUpgradeSlot(), getUpgradeOffset().x, getUpgradeOffset().y) {
 
         @Override
         public int getSlotStackLimit() {
@@ -35,7 +37,8 @@ public abstract class AbstractMachineContainer extends Container {
         public boolean isItemValid(ItemStack itemStack) {
           return tileEntity.isItemValidForSlot(tileEntity.getSlotDefinition().getMinUpgradeSlot(), itemStack);
         }
-      });
+      };
+      addSlotToContainer(upgradeSlot);
     }
 
     int x = getPlayerInventoryOffset().x;
@@ -73,7 +76,15 @@ public abstract class AbstractMachineContainer extends Container {
   public Point getUpgradeOffset() {
     return new Point(12,60);
   }
-  
+
+  public Slot getUpgradeSlot() {
+    return upgradeSlot;
+  }
+
+  public AbstractMachineEntity getTileEntity() {
+    return tileEntity;
+  }
+
   protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
   @Override

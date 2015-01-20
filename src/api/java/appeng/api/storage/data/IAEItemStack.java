@@ -50,7 +50,7 @@ public interface IAEItemStack extends IAEStack<IAEItemStack>
 	/**
 	 * quick way to get access to the MC Item Definition.
 	 * 
-	 * @return
+	 * @return item definition
 	 */
 	Item getItem();
 
@@ -67,16 +67,16 @@ public interface IAEItemStack extends IAEStack<IAEItemStack>
 	/**
 	 * compare the item/damage/nbt of the stack.
 	 * 
-	 * @param otherStack
-	 * @return
+	 * @param otherStack to be compared item
+	 * @return true if it is the same type (same item, damage, nbt)
 	 */
 	boolean isSameType(IAEItemStack otherStack);
 
 	/**
 	 * compare the item/damage/nbt of the stack.
 	 * 
-	 * @param otherStack
-	 * @return
+	 * @param stored to be compared item
+	 * @return true if it is the same type (same item, damage, nbt)
 	 */
 	boolean isSameType(ItemStack stored);
 }

@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class PoweredTask implements IPoweredTask {
 
@@ -21,6 +22,8 @@ public class PoweredTask implements IPoweredTask {
   private MachineRecipeInput[] inputs;
 
   private float requiredEnergy;
+
+  private RecipeBonusType bonusType;
 
   private IMachineRecipe recipe;
 
@@ -57,6 +60,7 @@ public class PoweredTask implements IPoweredTask {
     this.usedEnergy = usedEnergy;
     this.chance = MathHelper.clamp_float(chance, 0, 1);
     requiredEnergy = recipe.getEnergyRequired(inputsIn);
+    bonusType = recipe.getBonusType(inputsIn);
   }
 
 
@@ -113,6 +117,11 @@ public class PoweredTask implements IPoweredTask {
 
   public void setChance(float chance) {
     this.chance = chance;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType() {
+    return bonusType;
   }
 
   /* (non-Javadoc)

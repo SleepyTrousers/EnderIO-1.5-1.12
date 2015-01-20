@@ -4,6 +4,8 @@
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
+enderio.power.generates=Generates
+enderio.power.generation_rate=at
 
 //Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
@@ -36,6 +38,7 @@ enderio.itemLiquidConduitAdvanced.name=Pressurized Fluid Conduit
 enderio.itemLiquidConduitEnder.name=Ender Fluid Conduit
 enderio.itemLiquidConduit.lockedType=Fluid type locked to
 enderio.itemLiquidConduit.unlockedType=Fluid type unlocked
+enderio.itemLiquidConduit.lockedWaila=Locked to 
 
 enderio.itemLiquidConduit.tooltip.maxExtract=Max Extract:
 enderio.itemLiquidConduit.tooltip.maxIo=Max IO:
@@ -53,7 +56,6 @@ enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 
-
 enderio.itemConduitFilterUpgrade.configured=Configured
 enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to clear
 enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
@@ -62,11 +64,22 @@ item.itemExistingItemFilter.name=Existing Item Filter
 item.itemExistingItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemExistingItemFilter.tooltip.detailed.line1=Selects only items already
 item.itemExistingItemFilter.tooltip.detailed.line2=in the inventory
+item.itemExistingItemFilter.tooltip.detailed.line3=Right click while sneaking
+item.itemExistingItemFilter.tooltip.detailed.line4=on an inventory to add the
+item.itemExistingItemFilter.tooltip.detailed.line5=content to the snapshot
+
+enderio.item.itemExistingItemFilter.filterUpdated=New items have been added to the snapshot
+enderio.item.itemExistingItemFilter.filterNotUpdated=The snapshot already covers all items in the inventory
 
 item.itemModItemFilter.name=Mod Item Filter
 item.itemModItemFilter.tooltip.basic.line1=Upgrade for item conduits
 item.itemModItemFilter.tooltip.detailed.line1=Selects only items for a specified
 item.itemModItemFilter.tooltip.detailed.line2=mod/s
+
+item.itemPowerItemFilter.name=Chargeable Item Filter
+item.itemPowerItemFilter.tooltip.basic.line1=Upgrade for item conduits
+item.itemPowerItemFilter.tooltip.detailed.line1=Filters chargeable items based on
+item.itemPowerItemFilter.tooltip.detailed.line2=how much RF they have stored
 
 item.itemExtractSpeedUpgrade.name=Item Conduit Speed Upgrade
 item.itemExtractSpeedUpgrade.tooltip.basic.line1=Upgrade for item conduits
@@ -82,6 +95,9 @@ enderio.itemGasConduit.tooltip.detailed.line1=Transfers Mekanism-compatible gase
 
 enderio.itemMEConduit.name=ME Conduit
 enderio.itemMEConduitDense.name=Dense ME Conduit
+
+//Entity
+entity.witherSkeleton.name=Wither Skeleton
 
 //Materials
 enderio.itemMaterial.name=Materials
@@ -116,7 +132,6 @@ fluid.eio.xpjuice=Liquid XP
 tile.fluid.eio.xpjuice.name=Liquid XP
 item.bucketXpjuice.name=XP Bucket
 
-
 enderio.fluid.millibucket.abr=mB
 
 enderio.fuel.tooltip.heading=Fuel Details
@@ -125,7 +140,6 @@ enderio.fluid.millibucketsTick=mB/t
 enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
 enderio.gas.gasTick=Gas/t
-
 
 //Materials
 enderio.itemMachinePart.name=Machine Parts
@@ -267,14 +281,16 @@ tile.blockCapBank.vibrant.name=Vibrant Capacitor Bank
 tile.blockCapBank.tooltip.detailed.line1=Multi-block energy storage.
 tile.blockCapBank.tooltip.detailed.line2=Can charge RF powered items.
 tile.blockCapBank.tooltip.detailed.line3=Shift-R-Click on a face with an empty hand
-tile.blockCapBank.tooltip.detailed.line4=to change information display 
+tile.blockCapBank.tooltip.detailed.line4=to change information display
 tile.blockCapBank.tooltipPrefix=Contains
-
 
 enderio.capbank.maxIO=Max I/O
 enderio.capbank.maxIn=Max Input
 enderio.capbank.maxOut=Max Output
 enderio.capbank.change=I/O
+enderio.capbank.iodisplay.stable=I/O
+enderio.capbank.iodisplay.gain=In
+enderio.capbank.iodisplay.loss=Out
 
 tile.blockWirelessCharger.name=Wireless Charger
 tile.blockWirelessCharger.tooltip.detailed.line1=Charges items in nearby
@@ -298,9 +314,9 @@ tile.blockTransceiver.tooltip.detailed.line2=wirelessly across any distance and
 tile.blockTransceiver.tooltip.detailed.line3=between dimensions
 
 tile.blockEnderRail.name=Ender Rail
-tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed 
+tile.blockEnderRail.tooltip.detailed.line1=Teleports minecarts when placed
 tile.blockEnderRail.tooltip.detailed.line2=on a Dimensional Transceiver
-tile.blockEnderRail.tooltip.detailed.line3=Set destinations using the 
+tile.blockEnderRail.tooltip.detailed.line3=Set destinations using the
 tile.blockEnderRail.tooltip.detailed.line4=Transceiver's rail tab
 tile.blockEnderRail.tooltip.detailed.line5=Set direction with a Shift-R-Click
 tile.blockEnderRail.tooltip.detailed.line6=of a wrench
@@ -343,7 +359,7 @@ enderio.zombieGenerator.fuelTank=Nutrient Tank
 
 tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
-tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and 
+tile.blockKillerJoe.tooltip.detailed.line2=supplied with a sword and
 tile.blockKillerJoe.tooltip.detailed.line3=Nutrient Distillation
 tile.blockKillerJoe.tooltip.detailed.line4=Experience can be drained as
 tile.blockKillerJoe.tooltip.detailed.line5=Liquid XP using fluid conduits
@@ -498,7 +514,7 @@ item.itemYetaWrench.tooltip.detailed.line2=Shift-R-Click to break machines
 item.itemYetaWrench.tooltip.detailed.line3=and conduits instantly
 item.itemYetaWrench.tooltip.detailed.line4=Shift-L-Click on a conduit to 
 item.itemYetaWrench.tooltip.detailed.line5=open conduit settings GUI
-item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to 
+item.itemYetaWrench.tooltip.detailed.line6=Use Shift-Mouse Wheel or '%s' to
 item.itemYetaWrench.tooltip.detailed.line7=render a single conduit type
 
 item.itemMagnet.name=Electromagnet
@@ -508,7 +524,7 @@ item.itemMagnet.tooltip.detailed.line3=Must be powered, active and in the
 item.itemMagnet.tooltip.detailed.line4=hot bar to function
 
 item.enderio.itemConduitProbe.name=Conduit Probe
-item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit   
+item.enderio.itemConduitProbe.tooltip.detailed.line1=In probe mode R-Click on a conduit
 item.enderio.itemConduitProbe.tooltip.detailed.line2=to display details about its network
 item.enderio.itemConduitProbe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
 item.enderio.itemConduitProbe.tooltip.detailed.line4=copy a conduit bundles connection settings 
@@ -516,12 +532,15 @@ item.enderio.itemConduitProbe.tooltip.detailed.line5=R-Click to paste them
 item.enderio.itemConduitProbe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
 
 item.itemSoulVessel.name=Soul Vial
+enderio.item.itemSoulVessel.tooltip.health=Health:
+enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
+enderio.item.itemSoulVessel.tooltip.color=Color:
 item.itemSoulVessel.tooltip.detailed.line1=R-Click on a mob to
 item.itemSoulVessel.tooltip.detailed.line2=capture its soul
 item.itemSoulVessel.tooltip.detailed.line3=R-Click again to release it
 
 item.itemXpTransfer.name=Experience Rod
-item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing 
+item.itemXpTransfer.tooltip.detailed.line1=R-Click on a fluid tank containing
 item.itemXpTransfer.tooltip.detailed.line2=liquid XP to gain levels
 item.itemXpTransfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 item.itemXpTransfer.tooltip.detailed.line4=the tank
@@ -579,7 +598,6 @@ enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
-
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
@@ -754,6 +772,8 @@ enderio.combustionGenerator.output=Generating:
 //Stirling Gen
 enderio.stirlingGenerator.output=Generating:
 enderio.stirlingGenerator.burnRate=Burn Rate:
+enderio.stirlingGenerator.upgradeslot=Upgrade slot
+enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
 
 //Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
@@ -805,11 +825,14 @@ enderio.gui.conduit.redstone.signalStrengh.tooltip=Output a strong redstone sign
 
 enderio.gui.conduit.fluid.autoExtract=Auto Extract
 enderio.gui.conduit.fluid.filter=Filter
+enderio.gui.conduit.fluid.whitelist=Whitelist
+enderio.gui.conduit.fluid.blacklist=Blacklist
 
 enderio.gui.conduit.gas.autoExtract=Auto Extract
 
 //Enchants
 enchantment.enderio.soulBound=Soulbound
+description.enchantment.enderio.soulBound=This enchantment prevents the item from being lost on death
 
 //Configuration
 enderio.config.title=Ender IO Configuration
@@ -856,3 +879,19 @@ enderio.config.fluid.tooltip=Pure liquid energy!
 enderio.config.spawner=PoweredSpawner Settings
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
+//Keybinds/Waila/NEI
+enderio.category.darksteelarmor=Dark Steel Armor
+enderio.category.tools=Tools
+enderio.keybind.glidertoggle=Glider Toggle
+enderio.keybind.soundlocator=Sound Locator
+enderio.keybind.nightvision=Night Vision
+enderio.keybind.gogglesofrevealing=Goggles of Revealing
+enderio.keybind.stepassist=Step Assist
+enderio.keybind.speed=Speed
+enderio.keybind.yetawrenchmode=Yeta Wrench Mode
+enderio.nei.alloysmelter=Alloy Smelter
+enderio.nei.enchanter=Enchanter
+enderio.nei.sagmill=SAG Mill
+enderio.nei.slicensplice=Slice'N'Splice
+enderio.nei.soulbinder=Soul Binder
+enderio.nei.vat=Vat

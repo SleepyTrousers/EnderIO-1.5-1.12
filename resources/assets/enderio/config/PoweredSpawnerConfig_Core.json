@@ -1,6 +1,6 @@
 {
  
-  "_comment": "The RF cost per tick for spawners of each entity type is multiplied by these values",
+  "_comment": "This is the CORE FILE. Do not edit. The RF cost per tick for spawners of each entity type is multiplied by these values:",
   "costMultiplier": {
     
     "Zombie" : "1",
@@ -38,7 +38,9 @@
     "enderzoo.Enderminy" : "10",
     "enderzoo.ConcussionCreeper" : "1.5",
     "enderzoo.enderzoo.FallenKnight" : "1",
-    "enderzoo.WitherWitch" : "3"
+    "enderzoo.WitherWitch" : "3",
+
+    "enderio.witherSkeleton" : "20"
   },
   
   "blackList": [

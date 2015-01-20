@@ -11,6 +11,7 @@ import mcp.mobius.waila.api.IWailaRegistrar;
 import mcp.mobius.waila.api.impl.ConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +27,10 @@ import crazypants.enderio.block.BlockDarkSteelAnvil;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.liquid.AbstractTankConduit;
+import crazypants.enderio.conduit.liquid.ConduitTank;
 import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IAdvancedTooltipProvider;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
@@ -184,9 +188,39 @@ public class WailaCompat implements IWailaDataProvider {
         for (int i = 0; i < conduitTags.tagCount(); i++) {
           NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
           IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
-          if(conduit != null && conduit instanceof IPowerConduit) {
+          if(conduit instanceof IPowerConduit) {
             currenttip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(((IPowerConduit) conduit).getEnergyStored()), EnumChatFormatting.RESET,
                 EnumChatFormatting.WHITE, fmt.format(((IConduitBundle) te).getMaxEnergyStored()), EnumChatFormatting.RESET));
+          }
+        }
+      }
+    } else if(te instanceof IConduitBundle && itemStack != null && itemStack.getItem() == EnderIO.itemLiquidConduit) {
+      NBTTagCompound nbtRoot = accessor.getNBTData();
+      short nbtVersion = nbtRoot.getShort("nbtVersion");
+      NBTTagList conduitTags = (NBTTagList) nbtRoot.getTag("conduits");
+
+      if(conduitTags != null) {
+        for (int i = 0; i < conduitTags.tagCount(); i++) {
+          NBTTagCompound conduitTag = conduitTags.getCompoundTagAt(i);
+          IConduit conduit = ConduitUtil.readConduitFromNBT(conduitTag, nbtVersion);
+          if(conduit instanceof AbstractTankConduit) {
+            AbstractTankConduit tankConduit = (AbstractTankConduit) conduit;
+            ConduitTank tank = tankConduit.getTank();
+            if(tank.getFluid() != null) {
+              String lockedStr = tankConduit.isFluidTypeLocked() ? Lang.localize("itemLiquidConduit.lockedWaila") : "";
+              String fluidName = tank.getFluid().getLocalizedName();
+              int fluidAmount = tank.getFluidAmount();
+              if(fluidAmount > 0) {
+                currenttip.add(String.format("%s%s%s%s %s%s%s %s", lockedStr,
+                      EnumChatFormatting.WHITE, fluidName, EnumChatFormatting.RESET,
+                      EnumChatFormatting.WHITE, fmt.format(fluidAmount), EnumChatFormatting.RESET,
+                      Fluids.MB()));
+              } else if(tankConduit.isFluidTypeLocked()) {
+                currenttip.add(String.format("%s%s%s%s", lockedStr,
+                      EnumChatFormatting.WHITE, fluidName, EnumChatFormatting.RESET));
+              }
+            }
+            break;
           }
         }
       }
@@ -201,7 +235,7 @@ public class WailaCompat implements IWailaDataProvider {
   }
 
   @Override
-  public NBTTagCompound getNBTData(TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+  public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
     if (te instanceof IWailaNBTProvider) {
       ((IWailaNBTProvider) te).getData(tag);
     }

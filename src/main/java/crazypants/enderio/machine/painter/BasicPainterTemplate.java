@@ -12,6 +12,7 @@ import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.util.Util;
 
 public abstract class BasicPainterTemplate implements IMachineRecipe {
@@ -27,6 +28,11 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
     return DEFAULT_ENERGY_PER_TASK;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
   }
 
   @Override
@@ -127,7 +133,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

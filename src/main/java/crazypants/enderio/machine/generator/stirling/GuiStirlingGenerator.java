@@ -1,9 +1,13 @@
 package crazypants.enderio.machine.generator.stirling;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.text.MessageFormat;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
@@ -11,6 +15,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.power.Capacitors;
+import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
 import crazypants.util.Lang;
@@ -20,6 +26,35 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
 
   public GuiStirlingGenerator(InventoryPlayer par1InventoryPlayer, TileEntityStirlingGenerator te) {
     super(te, new StirlingGeneratorContainer(par1InventoryPlayer, te));
+
+    final StirlingGeneratorContainer c = (StirlingGeneratorContainer)inventorySlots;
+    Rectangle r = new Rectangle(c.getUpgradeOffset(), new Dimension(16, 16));
+    MessageFormat fmt = new MessageFormat(Lang.localize("stirlingGenerator.upgrades"));
+    ttMan.addToolTip(new GuiToolTip(r,
+            Lang.localize("stirlingGenerator.upgradeslot"),
+            formatUpgrade(fmt, Capacitors.ACTIVATED_CAPACITOR),
+            formatUpgrade(fmt, Capacitors.ENDER_CAPACITOR)) {
+      @Override
+      public boolean shouldDraw() {
+        return !c.getUpgradeSlot().getHasStack() && super.shouldDraw();
+      }
+    });
+  }
+
+  private static float getFactor(Capacitors upgrade) {
+    return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) /
+            TileEntityStirlingGenerator.getBurnTimeMultiplier(upgrade);
+  }
+
+  private static String formatUpgrade(MessageFormat fmt, Capacitors upgrade) {
+    float efficiency = getFactor(upgrade) / getFactor(Capacitors.BASIC_CAPACITOR);
+    Object[] args = new Object[] {
+      Lang.localize(upgrade.unlocalisedName.concat(".name"), false),
+      efficiency,
+      EnumChatFormatting.WHITE,
+      EnumChatFormatting.GRAY
+    };
+    return fmt.format(args, new StringBuffer(), null).toString();
   }
 
   @Override

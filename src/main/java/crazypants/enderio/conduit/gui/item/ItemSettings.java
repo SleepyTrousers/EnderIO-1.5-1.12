@@ -18,6 +18,7 @@ import crazypants.enderio.conduit.item.filter.ExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.IItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
+import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.ColorButton;
@@ -269,6 +270,8 @@ public class ItemSettings extends BaseSettingsPanel {
       return new ExistingItemFilterGui(gui, itemConduit, isInput);
     } else if(filter instanceof ModItemFilter) {
       return new ModItemFilterGui(gui, itemConduit, isInput);
+    } else if(filter instanceof PowerItemFilter) {
+      return new PowerItemFilterGui(gui, itemConduit, isInput);
     }
     return null;
   }

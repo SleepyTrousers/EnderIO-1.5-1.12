@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.oredict.OreDictionary;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import crazypants.enderio.network.NetworkUtil;
+import net.minecraft.inventory.IInventory;
 
 public class ExistingItemFilter implements IItemFilter {
 
@@ -39,10 +40,15 @@ public class ExistingItemFilter implements IItemFilter {
         }
       }
     } else {
-      for(ItemStack stack : snapshot) {
-        if(stackEqual(item, stack)) {
-          return true;
-        }
+      return isStackInSnapshot(item);
+    }
+    return false;
+  }
+
+  boolean isStackInSnapshot(ItemStack item) {
+    for(ItemStack stack : snapshot) {
+      if(stackEqual(item, stack)) {
+        return true;
       }
     }
     return false;
@@ -93,13 +99,36 @@ public class ExistingItemFilter implements IItemFilter {
   
   public void setSnapshot(NetworkedInventory ni) {
     snapshot = new ArrayList<ItemStack>();
+    mergeSnapshot(ni);
+  }
+
+  public void mergeSnapshot(NetworkedInventory ni) {
+    if(snapshot == null) {
+      snapshot = new ArrayList<ItemStack>();
+    }
     int[] slots = ni.getInventory().getAccessibleSlotsFromSide(ni.getInventorySide());
     for (int i = 0; i < slots.length; i++) {
       ItemStack stack = ni.getInventory().getStackInSlot(i);
-      if(stack != null) {
+      if(stack != null && !isStackInSnapshot(stack)) {
         snapshot.add(stack);
       }
     }
+  }
+
+  public boolean mergeSnapshot(IInventory inventory) {
+    if(snapshot == null) {
+      snapshot = new ArrayList<ItemStack>();
+    }
+    int size = inventory.getSizeInventory();
+    boolean added = false;
+    for (int i = 0; i < size; i++) {
+      ItemStack stack = inventory.getStackInSlot(i);
+      if(stack != null && !isStackInSnapshot(stack)) {
+        snapshot.add(stack);
+        added = true;
+      }
+    }
+    return added;
   }
 
   public List<ItemStack> getSnapshot() {

@@ -10,7 +10,7 @@ public interface ICellWorkbenchItem
 	/**
 	 * if this return false, the item will not be treated as a cell, and cannot be inserted into the work bench.
 	 * 
-	 * @param is
+	 * @param is item
 	 * @return true if the item should be editable in the cell workbench.
 	 */
 	boolean isEditable(ItemStack is);

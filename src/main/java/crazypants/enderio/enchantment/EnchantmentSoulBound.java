@@ -36,13 +36,13 @@ public class EnchantmentSoulBound extends Enchantment {
   }
 
   @Override
-  public int getMinEnchantability(int p_77321_1_) {
-    return 0;
+  public int getMaxEnchantability(int level) {
+    return super.getMaxEnchantability(level) + 30;
   }
 
   @Override
-  public int getMaxEnchantability(int p_77317_1_) {
-    return Integer.MAX_VALUE;
+  public int getMinEnchantability(int level) {
+    return super.getMinEnchantability(level);
   }
 
   @Override

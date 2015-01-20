@@ -16,6 +16,10 @@ import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.gui.IResourceTooltipProvider;
 import crazypants.enderio.gui.TooltipAddera;
 import crazypants.util.Lang;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
 public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
@@ -47,6 +51,29 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   }
 
   @Override
+  public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    if(world.isRemote) {
+      return true;
+    }
+
+    if(player.isSneaking()) {
+      TileEntity te = world.getTileEntity(x, y, z);
+      if(te instanceof IInventory) {
+        ExistingItemFilter filter = (ExistingItemFilter)createFilterFromStack(item);
+        if(filter.mergeSnapshot((IInventory)te)) {
+          player.addChatComponentMessage(new ChatComponentText(Lang.localize("item.itemExistingItemFilter.filterUpdated")));
+        } else {
+          player.addChatComponentMessage(new ChatComponentText(Lang.localize("item.itemExistingItemFilter.filterNotUpdated")));
+        }
+        FilterRegister.writeFilterToStack(filter, item);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
   public void registerIcons(IIconRegister IIconRegister) {
     itemIcon = IIconRegister.registerIcon("enderio:existingItemFilter");
   }
@@ -58,15 +85,13 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
   
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {          
-    if(FilterRegister.isFilterSet(par1ItemStack)) {      
-      if(TooltipAddera.instance.showAdvancedTooltips()) {        
+  public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    if(FilterRegister.isFilterSet(par1ItemStack)) {
+      if(TooltipAddera.showAdvancedTooltips()) {
         par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.configured"));
         par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
-      }      
+      }
     }
   }
-  
-  //par3List.add(EnumChatFormatting.ITALIC + Lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
 
 }

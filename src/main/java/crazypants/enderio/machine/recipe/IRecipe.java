@@ -20,6 +20,8 @@ public interface IRecipe {
 
   List<FluidStack> getInputFluidStacks();
 
+  RecipeBonusType getBonusType();
+
   //  boolean isInputForRecipe(List<ItemStack> test);
   //
   //  boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);

@@ -428,7 +428,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
 
-    facing = nbtRoot.getShort("facing");
+    setFacing(nbtRoot.getShort("facing"));
     redstoneCheckPassed = nbtRoot.getBoolean("redstoneCheckPassed");
     forceClientUpdate = nbtRoot.getBoolean("forceClientUpdate");
     readCommon(nbtRoot);
@@ -651,6 +651,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements ISi
     if(!slotDefinition.isOutputSlot(slot)) {
       return false;
     }
+    return canExtractItem(slot, itemstack);
+  }
+
+  protected boolean canExtractItem(int slot, ItemStack itemstack) {
     if(inventory[slot] == null || inventory[slot].stackSize < itemstack.stackSize) {
       return false;
     }

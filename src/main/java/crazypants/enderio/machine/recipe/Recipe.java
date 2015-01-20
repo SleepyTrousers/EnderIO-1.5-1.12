@@ -14,19 +14,21 @@ public class Recipe implements IRecipe {
   private final RecipeInput[] inputs;
   private final RecipeOutput[] outputs;
   private final int energyRequired;
+  private final RecipeBonusType bonusType;
 
-  public Recipe(RecipeOutput output, int energyRequired, RecipeInput... input) {
-    this(input, new RecipeOutput[] { output }, energyRequired);
+  public Recipe(RecipeOutput output, int energyRequired, RecipeBonusType bonusType, RecipeInput... input) {
+    this(input, new RecipeOutput[] { output }, energyRequired, bonusType);
   }
 
-  public Recipe(RecipeInput input, int energyRequired, RecipeOutput... output) {
-    this(new RecipeInput[] { input }, output, energyRequired);
+  public Recipe(RecipeInput input, int energyRequired, RecipeBonusType bonusType, RecipeOutput... output) {
+    this(new RecipeInput[] { input }, output, energyRequired, bonusType);
   }
 
-  public Recipe(RecipeInput[] input, RecipeOutput[] output, int energyRequired) {
+  public Recipe(RecipeInput[] input, RecipeOutput[] output, int energyRequired, RecipeBonusType bonusType) {
     this.inputs = input;
     this.outputs = output;
     this.energyRequired = energyRequired;
+    this.bonusType = bonusType;
   }
 
   @Override
@@ -143,6 +145,11 @@ public class Recipe implements IRecipe {
   @Override
   public RecipeOutput[] getOutputs() {
     return outputs;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType() {
+    return bonusType;
   }
 
   public boolean hasOuput(ItemStack result) {

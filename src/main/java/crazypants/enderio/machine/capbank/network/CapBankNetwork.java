@@ -139,7 +139,7 @@ public class CapBankNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public List<TileCapBank> getMembers() {
+  public Collection<TileCapBank> getMembers() {
     return capBanks;
   }
 
@@ -568,6 +568,10 @@ public class CapBankNetwork implements ICapBankNetwork {
   public boolean isNetworkControlledIo(ForgeDirection direction) {
     //This is handled at the block level based on the IO mode
     return true;
+  }
+
+  @Override
+  public void invalidateDisplayInfoCache() {
   }
 
 }

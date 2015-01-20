@@ -84,7 +84,7 @@ public class ItemFilter implements IInventory, IItemFilter {
         matched = true;
         if(matchMeta && item.getItemDamage() != it.getItemDamage()) {
           matched = false;
-        } else if(matchNBT && !ItemStack.areItemStackTagsEqual(item, it)) {
+        } else if(matchNBT && !isNBTMatch(item, it)) {
           matched = false;
         }        
       }
@@ -119,6 +119,18 @@ public class ItemFilter implements IInventory, IItemFilter {
       }
     }    
     return false;
+  }
+  
+  private boolean isNBTMatch(ItemStack filter, ItemStack item)
+  {
+    if (filter.stackTagCompound == null && item.stackTagCompound == null) return true;
+    if (filter.stackTagCompound == null || item.stackTagCompound == null) return false;
+    if (!filter.getTagCompound().hasKey("GEN")) return filter.stackTagCompound.equals(item.stackTagCompound);
+    NBTTagCompound filterTag = (NBTTagCompound) filter.getTagCompound().copy();
+    NBTTagCompound itemTag = (NBTTagCompound) item.getTagCompound().copy();
+    filterTag.removeTag("GEN");
+    itemTag.removeTag("GEN");
+    return filterTag.equals(itemTag);
   }
 
   private int[] getCachedIds(int filterItemIndex) {   

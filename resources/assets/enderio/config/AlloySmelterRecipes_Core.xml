@@ -1,5 +1,10 @@
 <!-- 
 
+IMPORTANT:
+  This is the core recipe file. Modifying this file will have no effect.
+  It will be rewritten by EnderIO and all modifications made to it will be lost. To add
+  or modify recipes please use 'AlloySmelterRecipes_User.xml'
+
 Please refer to the documentation in SAGMillRecipes_Core/_User for details on the format used.
 Recipes for the alloy smelter have multiple inputs (up to three) and a single output. Multiple output tags
 can be used as long as they are for the same item. This allows 'chance' outputs, for example, if you wanted to 
@@ -333,8 +338,8 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
     
     <recipe name="Bronze" energyCost="4000">
       <input>
-        <itemStack oreDictionary="ingotTin" number="3" />
-        <itemStack oreDictionary="ingotCopper" />        
+        <itemStack oreDictionary="ingotCopper" number="3" />
+        <itemStack oreDictionary="ingotTin" />        
       </input>
       <output>
         <itemStack oreDictionary="ingotBronze" number="4" />
@@ -373,6 +378,39 @@ To write the contents of the ore dictionary to config/oreDictionaryRegistery.txt
       </input>
       <output>
         <itemStack oreDictionary="ingotElectrumFlux" number="2" />
+      </output>
+    </recipe>
+    
+    <recipe name="Signalum" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotCopper" number="3" />
+        <itemStack oreDictionary="ingotSilver" />
+        <itemStack modID="minecraft" itemName="redstone" number="10" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotSignalum" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Lumium from dust" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotTin" number="3" />
+        <itemStack oreDictionary="ingotSilver" />
+        <itemStack modID="minecraft" itemName="glowstone_dust" number="4" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotLumium" number="4" />
+      </output>
+    </recipe>
+    
+    <recipe name="Lumium" energyCost="32000">
+      <input>
+        <itemStack oreDictionary="ingotTin" number="3" />
+        <itemStack oreDictionary="ingotSilver" />
+        <itemStack modID="minecraft" itemName="glowstone" />
+      </input>
+      <output>
+        <itemStack oreDictionary="ingotLumium" number="4" />
       </output>
     </recipe>
     

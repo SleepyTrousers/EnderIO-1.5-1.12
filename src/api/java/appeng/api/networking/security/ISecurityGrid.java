@@ -15,8 +15,8 @@ public interface ISecurityGrid extends IGridCache
 	/**
 	 * Check if a player has permissions.
 	 * 
-	 * @param player
-	 * @param perm
+	 * @param player to be checked player
+	 * @param perm checked permissions
 	 * 
 	 * @return true if the player has permissions.
 	 */
@@ -25,8 +25,8 @@ public interface ISecurityGrid extends IGridCache
 	/**
 	 * Check if a player has permissions.
 	 * 
-	 * @param player
-	 * @param perm
+	 * @param playerID id of player
+	 * @param perm checked permissions
 	 * 
 	 * @return true if the player has permissions.
 	 */

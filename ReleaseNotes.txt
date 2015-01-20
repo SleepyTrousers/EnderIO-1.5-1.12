@@ -1,4 +1,70 @@
 ------------------------------------------------------
+Version 2.2.7
+------------------------------------------------------
+New
+- IO labels on capacitor banks can now be expanded to any square size, no longer limited to one face (MatthiasM2)
+- Add chargeable item filter, allows RF containing items to be filtered based on their fullness (MatthiasM2)
+- Add blacklist option for ender fluid conduits (MatthiasM2)
+
+Changes
+- #1549 All appropriate blocks are now mined faster with a pickaxe
+- DS Armor solar upgrade can now charge other mods' armors (configurable)
+- Clean up all button/widget textures (RandomGenius)
+- Add some more default whitelisted hoes (MatthiasM2)
+- Added some more ExN recipes for the SAG Mill (MatthiasM2)
+- Update Russian translation (Adaptivity)
+- Update Chinese translation (mymagadsl)
+- Add warning comment to all XML files
+- Killer Joe now needs line-of-sight to hit mobs (configurable) (hilburn)
+- Change default vanilla SAG Mill recipes to use oredict (LordBlackhole)
+- Conduit facades painted as fused quartz/quite clear glass will have connected textures (MatthiasM2)
+- Capacitor Banks will stack in more cases, "NONE" face mode no longer saves to NBT (MatthiasM2)
+- Allow configuration of XP juice ID, uses OpenBlocks' value by default (MatthiasM2)
+- Wither skeleton is now a unique entity, this should allow powered spawners to spawn them in the overworld, and fix a host of other similar issues in other mods. Configurable. (hilburn)
+- Added recipes for Lumium and Signalum to default XML (MatthiasM2)
+- Show mob name in soul vial tooltip (MatthiasM2)
+- Allow naming of soul vials (MatthiasM2)
+- Show moo fluid name in soul vial tooltip (MatthiasM2)
+- Show mob health in soul vial tooltips (MatthiasM2)
+- Show sheep color in soul vial tooltips (MatthiasM2)
+- Add soul bound enchantment description (MatthiasM2)
+- Implement IInventoryConnection on item conduits. Should improve compatibility with TE (hilburn)
+- #1458 Add button to merge inventory with existing snapshot in the existing item filter (MatthiasM2)
+- Right clicking while sneaking with an existing item filter will add the content to the snapshot (MatthiasM2)
+- Fluid conduits will now show their information in WAILA (MatthiasM2)
+- Add detailed tooltips to fuel items while inside the Stirling Generator GUI (MatthiasM2)
+- Process IMC from mods that send them in Post-Init (Parker8283)
+- Show upgrade information in Stirling Generator GUI (MatthiasM2)
+- Localized recipe names and keybind names (Adaptivity)
+
+Bugs
+- Fix power monitor reading int values where it saved long values
+- #1556 Fix farming station allowing 2 of the same kind of tool in the inventory
+- Fix disabled mode not being accessible when a capacitor bank was against a generator
+- #1548 Fix wireless charger redstone control not affecting wireless lights
+- Fix farming station not accepting wooden axes (hilburn)
+- Fix farming station allowing broken Tcon tools to be used (hilburn)
+- Prevent crash when XP juice could not be found (MatthiasM2)
+- #1595 Fix all buffers showing as Item Buffer in WAILA
+- #1600 Travel Anchor crashes when painted as itself
+- Fix fluid containers not being drained when the top side is configured for push (MatthiasM2)
+- #1607 Fix farm damaging some items incorrectly
+- #1433 Fix crash when Mekanism cable broken while next to capacitor bank (MatthiasM2)
+- #1627 Fix not being able to extract from an unconfigured side on buffers (MatthiasM2)
+- Fix Stirling Generator not pushing out empty buckets (MatthiasM2)
+- Fix soul binder caching IIcons and rendering incorrectly after texture restitch
+- Fixed author list in mcmod.info (Adaptivity)
+- Fixed ExU colored blocks not rendering properly in facades (MatthiasM2)
+- Fixed light calculation of painted slabs to match vanilla (MatthiasM2)
+- #1673 Fix grinding ball percentage tooltip being invalid sometimes (MatthiasM2)
+- #1655 Fix conduit probe not copying redstone mode of fluid conduits (MatthiasM2)
+- #1609 Fix buffer buttons having incorrect tooltips (MatthiasM2)
+- #1701 Bucket interaction on tanks no longer takes side configuration into account (MatthiasM2)
+- Fix fused quartz/quite clear glass sides not rendering when they are occluded by different types of the same block
+- #1640 Fix soulbound having ridiculous values for enchantability
+- #1643 Fix Ender Rail breaking instantly
+
+------------------------------------------------------
 Version 2.2.6
 ------------------------------------------------------
 New
@@ -12,6 +78,17 @@ New
 
 Changes
 - #1456 Wireless Charger can be deactivated with redstone
+- Add support for old and new chisel versions
+- Add farming support for cocoa (hilburn)
+- Add farming support for mana beans - disabled by default (hilburn)
+- Add farming station support for giant mushrooms (hilburn)
+- Add a percentage tooltip to the grinding ball remaining bar
+- **REMOVE AE2 rv1 SUPPORT COMPLETELY**
+- Farm axe detection should now support most modded axes
+- Add ExNihilo recipes to SAG mill default recipes (MatthiasM2)
+- Add "modes" for SAG mill bonuses, allow you to disable the main output bonus (MatthiasM2)
+- Add whitelist for hoes supported by farming station
+- #1490 Add SAG mill recipe for charged certus quartz crystals
 
 Bugs
 - Fix obelisk hovering item being stuttery
@@ -26,6 +103,10 @@ Bugs
 - #1501 Fix travel anchor dropping in creative
 - #1445 Fix cap banks refusing to be set to input mode when connected to certain blocks
 - Fix crash when tons (thousands) of cap banks edited at once.
+- #1416 Fix advanced item filter not matching some bees properly (hilburn)
+- Fix obelisk hovering item rendering being broken in fast graphics mode
+- Fix grinding ball duration bar not rendering sometimes
+- Fix fill gauge connecting on creative capacitor banks
 
 ------------------------------------------------------
 Version 2.2.5

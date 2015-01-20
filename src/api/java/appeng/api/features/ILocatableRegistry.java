@@ -10,9 +10,9 @@ public interface ILocatableRegistry
 	 * Attempts to find the object with the serial specified, if it can it
 	 * returns the object.
 	 * 
-	 * @param ser
+	 * @param serial serial
 	 * @return requestedObject, or null
 	 */
-	public abstract Object findLocateableBySerial(long ser);
+	public abstract Object findLocatableBySerial(long serial);
 
 }

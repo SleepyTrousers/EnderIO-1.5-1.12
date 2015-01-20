@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.util.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.init.Blocks;
@@ -10,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.util.BlockCoord;
 
 public class CocoaFarmer extends CustomSeedFarmer
 {
@@ -17,6 +18,9 @@ public class CocoaFarmer extends CustomSeedFarmer
     {
         super(Blocks.cocoa, new ItemStack(Items.dye,1,3));
         this.requiresFarmland = false;
+        if (!Config.farmHarvestJungleWhenCocoa) {
+          this.disableTreeFarm = true;
+        }
     }
 
     @Override
@@ -28,9 +32,9 @@ public class CocoaFarmer extends CustomSeedFarmer
     @Override
     protected boolean plant(TileFarmStation farm, World worldObj, BlockCoord bc)
     {
+        worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
         int dir = getPlantDirection(worldObj,bc);
         if (dir<0) return false;
-        worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
         worldObj.setBlock(bc.x, bc.y, bc.z, getPlantedBlock(), Direction.facingToDirection[dir], 1 | 2);
         farm.actionPerformed(false);
         return true;

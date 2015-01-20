@@ -10,6 +10,7 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.util.EntityUtil;
 
 public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
@@ -24,6 +25,11 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   @Override
   public int getEnergyRequired(MachineRecipeInput... inputs) {
     return Config.soulBinderBrokenSpawnerRF;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
   }
 
   @Override
@@ -64,7 +70,7 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

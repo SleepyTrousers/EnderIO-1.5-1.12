@@ -11,7 +11,7 @@ public interface IRegistryContainer
 	/**
 	 * Use the movable registry to white list your tiles.
 	 */
-	IMovableRegistry moveable();
+	IMovableRegistry movable();
 
 	/**
 	 * Add new Grid Caches for use during run time, only use during loading phase.
@@ -20,19 +20,19 @@ public interface IRegistryContainer
 
 	/**
 	 * Add additional storage bus handlers to improve interplay with mod blocks that contains special inventories that
-	 * function unlike vanilla chests. AE uses this internally for barrels, dsu's, quantum chests, AE Networks and more.
+	 * function unlike vanilla chests. AE uses this internally for barrels, DSU's, quantum chests, AE Networks and more.
 	 */
 	IExternalStorageRegistry externalStorage();
 
 	/**
 	 * Add additional special comparison functionality, AE Uses this internally for Bees.
 	 */
-	ISpecialComparisonRegistry specialComparson();
+	ISpecialComparisonRegistry specialComparison();
 
 	/**
 	 * Lets you register your items as wireless terminals
 	 */
-	IWirelessTermRegistery wireless();
+	IWirelessTermRegistry wireless();
 
 	/**
 	 * Allows you to register new cell types, these will function in drives
@@ -47,7 +47,7 @@ public interface IRegistryContainer
 	/**
 	 * get access to the locatable registry
 	 */
-	ILocatableRegistry locateable();
+	ILocatableRegistry locatable();
 
 	/**
 	 * get access to the p2p tunnel registry.

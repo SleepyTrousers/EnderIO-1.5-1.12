@@ -5,7 +5,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
@@ -107,6 +109,10 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return Math.round(ENERGY_PER_TICK * getEnergyMultiplier());
   }
 
+  public int getBurnTime(ItemStack item) {
+    return Math.round(TileEntityFurnace.getItemBurnTime(item) / getBurnTimeMultiplier());
+  }
+
   @Override
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
@@ -126,7 +132,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
       if(burnTime <= 0 && getEnergyStored() < getMaxEnergyStored()) {
         if(inventory[0] != null && inventory[0].stackSize > 0) {
-          burnTime = Math.round(TileEntityFurnace.getItemBurnTime(inventory[0]) / getBurnTimeMultiplier());
+          burnTime = getBurnTime(inventory[0]);
           if(burnTime > 0) {
             totalBurnTime = burnTime;
             ItemStack containedItem = inventory[0].getItem().getContainerItem(inventory[0]);
@@ -147,22 +153,50 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return needsUpdate;
   }
 
-  private float getEnergyMultiplier() {
-    if(getCapacitorType() == Capacitors.ACTIVATED_CAPACITOR) {
+  @Override
+  protected boolean doPush(ForgeDirection dir) {
+    if(inventory[0] == null) {
+      return false;
+    }
+
+    if(worldObj.getTotalWorldTime() % 20 != 0) {
+      return false;
+    }
+
+    if(!canExtractItem(0, inventory[0], 0)) {
+      return false;
+    }
+
+    BlockCoord loc = getLocation().getLocation(dir);
+    TileEntity te = worldObj.getTileEntity(loc.x, loc.y, loc.z);
+
+    return doPush(dir, te, 0, 0);
+  }
+
+  public static float getEnergyMultiplier(Capacitors capacitorType) {
+    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
       return 2;
-    } else if(getCapacitorType() == Capacitors.ENDER_CAPACITOR) {
+    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
       return 4;
     }
     return 1;
   }
 
-  public float getBurnTimeMultiplier() {
-    if(getCapacitorType() == Capacitors.ACTIVATED_CAPACITOR) {
+  private float getEnergyMultiplier() {
+    return getEnergyMultiplier(getCapacitorType());
+  }
+
+  public static float getBurnTimeMultiplier(Capacitors capacitorType) {
+    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
       return 1.5f;
-    } else if(getCapacitorType() == Capacitors.ENDER_CAPACITOR) {
+    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
       return 1.5f;
     }
     return 2;
+  }
+
+  public float getBurnTimeMultiplier() {
+    return getBurnTimeMultiplier(getCapacitorType());
   }
 
   //private PowerDistributor powerDis;

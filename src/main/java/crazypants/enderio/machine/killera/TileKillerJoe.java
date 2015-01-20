@@ -6,11 +6,13 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,6 +47,8 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
   private static int IO_MB_TICK = 250;
 
   protected AxisAlignedBB killBounds;
+
+  private int[] frontFaceAndSides;
 
   protected AxisAlignedBB hooverBounds;
 
@@ -164,7 +168,9 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     if(!entsInBounds.isEmpty()) {
 
       for (EntityLivingBase ent : entsInBounds) {
-        if(!ent.isDead) {
+        if(!ent.isDead && !ent.isEntityInvulnerable()) {
+          if (ent instanceof EntityPlayer && ((EntityPlayer)ent).capabilities.disableDamage) continue;  //Ignore players in creative, can't damage them;
+          if (Config.killerJoeMustSee && !canJoeSee(ent)) continue;
           FakePlayer fakee = getAttackera();
           fakee.setCurrentItemOrArmor(0, getStackInSlot(0));
           fakee.attackTargetEntityWithCurrentItem(ent);
@@ -179,6 +185,25 @@ public class TileKillerJoe extends AbstractMachineEntity implements IFluidHandle
     }
     return false;
   }
+
+  private boolean canJoeSee(EntityLivingBase ent)
+  {
+    Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ);
+    for (int facing:frontFaceAndSides)
+    {
+      if (this.worldObj.rayTraceBlocks(Vec3.createVectorHelper(this.xCoord + faceMidPoints[facing][0], this.yCoord + faceMidPoints[facing][1], this.zCoord + faceMidPoints[facing][2]), entPos) == null) return true;
+    }
+    return false;
+  }
+
+  @Override
+  public void setFacing(short facing)
+  {
+    super.setFacing(facing);
+    frontFaceAndSides = new int[]{this.facing,ForgeDirection.ROTATION_MATRIX[0][this.facing],ForgeDirection.ROTATION_MATRIX[1][this.facing]};
+  }
+
+  private static double[][] faceMidPoints = new double[][]{{0.5D,0.0D,0.5D},{0.5D,1.0D,0.5D},{0.5D,0.5D,0.0D},{0.5D,0.5D,1.0D},{0.0D,0.5D,0.5D},{1.0D,0.5D,0.5D}};
 
   //-------------------------------  XP
 

@@ -21,9 +21,9 @@ public interface IMEInventory<StackType extends IAEStack>
 	/**
 	 * Store new items, or simulate the addition of new items into the ME Inventory.
 	 * 
-	 * @param input
-	 *            item to add.
-	 * @param mode
+	 * @param input item to add.
+	 * @param type action type
+	 * @param src action source
 	 * @return returns the number of items not added.
 	 */
 	public StackType injectItems(StackType input, Actionable type, BaseActionSource src);

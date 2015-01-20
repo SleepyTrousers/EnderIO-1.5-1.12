@@ -28,7 +28,7 @@ public interface IIngredient {
 	ItemStack[] getItemStackSet() throws RegistrationError, MissingIngredientError;
 
 	/**
-	 * If you wish to support air, you must test before geting the ItemStack, or ItemStackSet
+	 * If you wish to support air, you must test before getting the ItemStack, or ItemStackSet
 	 * 
 	 * @return true if this slot contains no ItemStack, this is passed as "_"
 	 */

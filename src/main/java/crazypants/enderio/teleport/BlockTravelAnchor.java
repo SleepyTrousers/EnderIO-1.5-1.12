@@ -1,7 +1,5 @@
 package crazypants.enderio.teleport;
 
-import info.jbcs.minecraft.chisel.api.IFacade;
-
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -36,6 +34,7 @@ import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.util.IFacade;
 import crazypants.util.Lang;
 
 public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
@@ -215,6 +214,9 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
   }
 
   public ItemStack createItemStackForSourceBlock(Block block, int damage) {
+    if(block == this) {
+      return new ItemStack(this);
+    }
     ItemStack result = new ItemStack(this, 1, damage);
     PainterUtil.setSourceBlock(result, block, damage);
     return result;
@@ -239,7 +241,6 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
       }
       return new ResultStack[] { new ResultStack(createItemStackForSourceBlock(Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage())) };
     }
-
   }
 
   @Override

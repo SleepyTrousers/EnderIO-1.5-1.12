@@ -38,22 +38,41 @@ import crazypants.util.Lang;
 public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   public enum ToolType {
-    HOE     { boolean match(ItemStack item) { return item.getItem() instanceof ItemHoe;                       }}, 
-    AXE     { boolean match(ItemStack item) { return item.getItem().getHarvestLevel(item, "axe") > 0;         }},
+    HOE { 
+      boolean match(ItemStack item) {
+        for (ItemStack stack : Config.farmHoes) {
+          if (stack.getItem() == item.getItem()) {
+            return true;
+          }
+        }
+        return false;
+      }
+    },
+    
+    AXE     { boolean match(ItemStack item) { return item.getItem().getHarvestLevel(item, "axe") >= 0;         }},
     TREETAP { boolean match(ItemStack item) { return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap;}};
     
     public final boolean itemMatches(ItemStack item) {
       if (item == null) {
         return false;
       }
-      
-      return match(item);
+      return match(item) && !isBrokenTinkerTool(item);
     }
-    
+
+    private boolean isBrokenTinkerTool(ItemStack item)
+    {
+      return item.hasTagCompound() && item.getTagCompound().hasKey("InfiTool") && item.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
+    }
+
     abstract boolean match(ItemStack item);
 
     public static boolean isTool(ItemStack stack) {
-      return HOE.itemMatches(stack) || AXE.itemMatches(stack);
+      for (ToolType type : values()) {
+        if (type.itemMatches(stack)) {
+          return true;
+        }
+      }
+      return false;
     }
   }
   
@@ -173,7 +192,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private ItemStack getTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(type.itemMatches(inventory[i])) {
+      if(type.itemMatches(inventory[i]) && inventory[i].stackSize>0) {
         return inventory[i];
       }
     }
@@ -192,9 +211,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return;
     }
     boolean canDamage = canDamage(tool);
-    if(tool.getItem() instanceof ItemAxe) {            
+    if(type == ToolType.AXE) {            
       tool.getItem().onBlockDestroyed(tool, worldObj, blk, bc.x, bc.y, bc.z, farmerJoe);      
-    } else if(tool.getItem() instanceof ItemHoe) {
+    } else if(type == ToolType.HOE) {
       int origDamage = tool.getItemDamage();
       tool.getItem().onItemUse(tool, farmerJoe, worldObj, bc.x, bc.y, bc.z, 1, 0.5f, 0.5f, 0.5f);
       if(origDamage == tool.getItemDamage() && canDamage) {
@@ -204,7 +223,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       tool.damageItem(1, farmerJoe);
     }
 
-    if(canDamage && tool.getItemDamage() >= tool.getMaxDamage()) {
+    if(tool.stackSize == 0 || (canDamage && tool.getItemDamage() >= tool.getMaxDamage())) {
       destroyTool(type);
     }
   }
@@ -215,7 +234,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   private void destroyTool(ToolType type) {
     for (int i = minToolSlot; i <= maxToolSlot; i++) {
-      if(type.itemMatches(inventory[i])) {
+      if(type.itemMatches(inventory[i]) && inventory[i].stackSize==0) {
         inventory[i] = null;
         markDirty();
         return;
@@ -279,7 +298,20 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       return false;
     }
     if(i <= maxToolSlot) {
-        return ToolType.isTool(stack) || getLooting(stack) > 0;          
+        if (ToolType.isTool(stack)) {          
+          int otherSlot = i == minToolSlot ? maxToolSlot : minToolSlot;
+          if (inventory[otherSlot] == null) {
+            return true;
+          } else { // let's make sure there's not one of this type in here already
+            for (ToolType type : ToolType.values()) {
+              if (type.itemMatches(inventory[otherSlot]) && type.itemMatches(stack)) {
+                return false;
+              }
+            }
+            return true;
+          }
+        }
+      return false;
     }
     return (inventory[i] != null || !isSlotLocked(i)) && FarmersCommune.instance.canPlant(stack);
   }
@@ -459,7 +491,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
       if(entity instanceof EntityItem && !entity.isDead) {
         EntityItem item = (EntityItem) entity;
         ItemStack stack = item.getEntityItem().copy();
-
         int numInserted = insertResult(stack);
         stack.stackSize -= numInserted;
         item.setEntityItemStack(stack);
@@ -468,8 +499,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         }
       }
     }
-
   }
+
 
   private int insertResult(ItemStack stack) {
 

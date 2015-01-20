@@ -1,6 +1,7 @@
 package crazypants.enderio.machine;
 
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ContinuousTask implements IPoweredTask {
@@ -47,6 +48,11 @@ public class ContinuousTask implements IPoweredTask {
   @Override
   public float getChance() {
     return 1;
+  }
+
+  @Override
+  public RecipeBonusType getBonusType() {
+    return RecipeBonusType.NONE;
   }
 
   @Override

@@ -16,7 +16,6 @@ import crazypants.enderio.gui.CheckBoxEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.gui.GuiContainerBase;
-import crazypants.gui.GuiScreenBase;
 import crazypants.gui.GuiToolTip;
 import crazypants.render.ColorUtil;
 import crazypants.render.RenderUtil;
@@ -321,7 +320,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
     sb.append(" ");
     sb.append(PowerDisplayUtil.ofStr());
     sb.append(" ");
-    sb.append(formatPower(te.maxPowerInCoduits));
+    sb.append(formatPower(te.maxPowerInConduits));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     fontRenderer.drawString(sb.toString(), x, y, rgb, false);
@@ -386,7 +385,7 @@ public class GuiPowerMonitor extends GuiContainerBase {
     rgb = valuesCol;
     y += fontRenderer.FONT_HEIGHT + 2;
     sb = new StringBuilder();
-    sb.append(formatPowerFloat(te.aveRfRecieved));
+    sb.append(formatPowerFloat(te.aveRfReceived));
     sb.append(" ");
     sb.append(PowerDisplayUtil.abrevation());
     sb.append(PowerDisplayUtil.perTickStr());

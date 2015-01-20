@@ -1,7 +1,7 @@
 package appeng.api.implementations;
 
 /**
- * This is intended for use on the client side to provide details to Waila.
+ * This is intended for use on the client side to provide details to WAILA.
  */
 public interface IPowerChannelState
 {

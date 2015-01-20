@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
@@ -16,6 +17,14 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     }
     IRecipe recipe = getRecipeForInputs(inputs);
     return recipe == null ? 0 : recipe.getEnergyRequired();
+  }
+
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    if(inputs == null || inputs.length <= 0) {
+      return RecipeBonusType.NONE;
+    }
+    IRecipe recipe = getRecipeForInputs(inputs);
+    return recipe == null ? RecipeBonusType.NONE : recipe.getBonusType();
   }
 
   public abstract IRecipe getRecipeForInputs(MachineRecipeInput[] inputs);
@@ -65,13 +74,13 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       ItemStack availableStack = available.item;
       ItemStack requiredStack = required.getInput();
 
-      ItemStack comsumedStack = requiredStack.copy();
-      comsumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
+      ItemStack consumedStack = requiredStack.copy();
+      consumedStack.stackSize = Math.min(requiredStack.stackSize, availableStack.stackSize);
 
-      requiredStack.stackSize -= comsumedStack.stackSize;
-      availableStack.stackSize -= comsumedStack.stackSize;
+      requiredStack.stackSize -= consumedStack.stackSize;
+      availableStack.stackSize -= consumedStack.stackSize;
 
-      consumedInputs.add(new MachineRecipeInput(available.slotNumber, comsumedStack));
+      consumedInputs.add(new MachineRecipeInput(available.slotNumber, consumedStack));
 
       if(requiredStack.stackSize <= 0) {
         //Fully met the requirement
@@ -93,7 +102,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

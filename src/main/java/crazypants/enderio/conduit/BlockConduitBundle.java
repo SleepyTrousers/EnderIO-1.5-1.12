@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit;
 
-import info.jbcs.minecraft.chisel.api.IFacade;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,6 +57,7 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.render.BoundingBox;
+import crazypants.util.IFacade;
 import crazypants.util.Util;
 
 @Optional.Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded")
@@ -309,7 +308,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   
   @SubscribeEvent
   public void onBreakSpeed(BreakSpeed event) {
-    if (event.block == this) {
+    if (event.block == this && event.entityPlayer.getCurrentEquippedItem() == null) {
       event.newSpeed *= 3;
     }
   }

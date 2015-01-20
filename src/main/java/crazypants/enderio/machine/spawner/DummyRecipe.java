@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class DummyRecipe implements IMachineRecipe {
 
@@ -32,7 +33,12 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public float getExperianceForOutput(ItemStack output) {
+  public RecipeBonusType getBonusType(MachineRecipeInput... inputs) {
+    return RecipeBonusType.NONE;
+  }
+
+  @Override
+  public float getExperienceForOutput(ItemStack output) {
     return 0;
   }
 

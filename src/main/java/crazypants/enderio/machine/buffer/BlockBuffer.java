@@ -1,16 +1,16 @@
 package crazypants.enderio.machine.buffer;
 
-import info.jbcs.minecraft.chisel.api.IFacade;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
@@ -27,6 +28,7 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
+import crazypants.util.IFacade;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
 
@@ -36,10 +38,13 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
     res.init();
     return res;
   }
-
+  
+  private static final String[] textureNames = new String[] { "blockBufferItem", "blockBufferPower", "blockBufferOmni", "blockBufferCreative" };
+  @SideOnly(Side.CLIENT)
+  private IIcon[] textures;
+  
   private BlockBuffer() {
     super(ModObject.blockBuffer, TileBuffer.class);
-    setBlockTextureName("enderio:blockBuffer");
   }
 
   @Override
@@ -72,22 +77,27 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
   protected int getGuiId() {
     return GuiHandler.GUI_ID_BUFFER;
   }
-
+  
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerBlockIcons(IIconRegister iIconRegister) {
+    super.registerBlockIcons(iIconRegister);
+    textures = new IIcon[textureNames.length];
+    for (int i = 0; i < textureNames.length; i++) {
+      textures[i] = iIconRegister.registerIcon("enderio:" + textureNames[i]);
+    }
+  }
+  
   @Override
   protected String getMachineFrontIconKey(boolean active) {
-    return this.textureName;
+    return getSideIconKey(active);
   }
 
   @Override
-  protected String getBackIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
+  public IIcon getIcon(int blockSide, int blockMeta) {
+    return blockSide > 1 ? textures[blockMeta] : super.getIcon(blockSide, blockMeta);
   }
-
-  @Override
-  protected String getSideIconKey(boolean active) {
-    return getMachineFrontIconKey(active);
-  }
-
+  
   @Override
   public IIcon getIcon(IBlockAccess world, int x, int y, int z, int blockSide) {
     TileEntity te = world.getTileEntity(x, y, z);
@@ -95,6 +105,8 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       TileBuffer tef = (TileBuffer) te;
       if(tef.getSourceBlock() != null) {
         return tef.getSourceBlock().getIcon(blockSide, tef.getSourceBlockMetadata());
+      } else if (blockSide > 1){
+        return textures[world.getBlockMetadata(x, y, z)];
       }
     }
     return super.getIcon(world, x, y, z, blockSide);
@@ -136,6 +148,12 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
       }
     }
     return super.removedByPlayer(world, player, x, y, z, willHarvest);
+  }
+  
+  // TODO refactor machines so all have this functionality
+  @Override
+  public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    return createDrop((TileBuffer) world.getTileEntity(x, y, z));
   }
 
   private ItemStack createDrop(TileBuffer te) {

@@ -6,8 +6,8 @@ public interface IBoxProvider
 	/**
 	 * add your collision information to the the list.
 	 * 
-	 * @param boxes
+	 * @param boxes collision boxes
 	 */
-	void getBoxes(IPartCollsionHelper bch);
+	void getBoxes(IPartCollisionHelper boxes);
 
 }
